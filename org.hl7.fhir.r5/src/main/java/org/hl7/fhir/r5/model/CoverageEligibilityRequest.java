@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -96,6 +96,7 @@ public class CoverageEligibilityRequest extends DomainResource {
             case BENEFITS: return "benefits";
             case DISCOVERY: return "discovery";
             case VALIDATION: return "validation";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +106,7 @@ public class CoverageEligibilityRequest extends DomainResource {
             case BENEFITS: return "http://hl7.org/fhir/eligibilityrequest-purpose";
             case DISCOVERY: return "http://hl7.org/fhir/eligibilityrequest-purpose";
             case VALIDATION: return "http://hl7.org/fhir/eligibilityrequest-purpose";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +116,7 @@ public class CoverageEligibilityRequest extends DomainResource {
             case BENEFITS: return "The plan benefits and optionally benefits consumed  for the listed, or discovered if specified, converages are requested.";
             case DISCOVERY: return "The insurer is requested to report on any coverages which they are aware of in addition to any specifed.";
             case VALIDATION: return "A check that the specified coverages are in-force is requested.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -123,6 +126,7 @@ public class CoverageEligibilityRequest extends DomainResource {
             case BENEFITS: return "Coverage benefits";
             case DISCOVERY: return "Coverage Discovery";
             case VALIDATION: return "Coverage Validation";
+            case NULL: return null;
             default: return "?";
           }
         }

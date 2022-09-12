@@ -49,7 +49,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * Base StructureDefinition for ProdCharacteristic Type: The marketing status describes the date when a medicinal product is actually put on the market or the date as of which it is no longer available.
  */
 @DatatypeDef(name="ProdCharacteristic")
-public class ProdCharacteristic extends DataType implements ICompositeType {
+public class ProdCharacteristic extends BackboneType implements ICompositeType {
 
     /**
      * Where applicable, the height can be specified using a numerical value and its unit of measurement The unit of measurement shall be specified in accordance with ISO 11240 and the resulting terminology The symbol and the symbol identifier shall be used.

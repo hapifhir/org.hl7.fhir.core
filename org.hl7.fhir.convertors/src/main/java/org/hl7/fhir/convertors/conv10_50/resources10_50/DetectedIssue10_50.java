@@ -16,8 +16,8 @@ public class DetectedIssue10_50 {
       return null;
     org.hl7.fhir.dstu2.model.DetectedIssue tgt = new org.hl7.fhir.dstu2.model.DetectedIssue();
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyDomainResource(src, tgt);
-    if (src.hasPatient())
-      tgt.setPatient(Reference10_50.convertReference(src.getPatient()));
+    if (src.hasSubject())
+      tgt.setPatient(Reference10_50.convertReference(src.getSubject()));
     if (src.hasCode())
       tgt.setCategory(CodeableConcept10_50.convertCodeableConcept(src.getCode()));
     if (src.hasSeverity())
@@ -44,7 +44,7 @@ public class DetectedIssue10_50 {
     org.hl7.fhir.r5.model.DetectedIssue tgt = new org.hl7.fhir.r5.model.DetectedIssue();
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyDomainResource(src, tgt);
     if (src.hasPatient())
-      tgt.setPatient(Reference10_50.convertReference(src.getPatient()));
+      tgt.setSubject(Reference10_50.convertReference(src.getPatient()));
     if (src.hasCategory())
       tgt.setCode(CodeableConcept10_50.convertCodeableConcept(src.getCategory()));
     if (src.hasSeverity())
@@ -70,7 +70,7 @@ public class DetectedIssue10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.DetectedIssue.DetectedIssueMitigationComponent tgt = new org.hl7.fhir.dstu2.model.DetectedIssue.DetectedIssueMitigationComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasAction())
       tgt.setAction(CodeableConcept10_50.convertCodeableConcept(src.getAction()));
     if (src.hasDate())
@@ -84,7 +84,7 @@ public class DetectedIssue10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueMitigationComponent tgt = new org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueMitigationComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasAction())
       tgt.setAction(CodeableConcept10_50.convertCodeableConcept(src.getAction()));
     if (src.hasDate())

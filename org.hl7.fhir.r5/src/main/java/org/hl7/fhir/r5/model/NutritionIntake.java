@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,7 +48,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * A record of food or fluid that is being consumed by a patient.   A NutritionIntake may indicate that the patient may be consuming the food or fluid now or has consumed the food or fluid in the past.  The source of this information can be the patient, significant other (such as a family member or spouse), or a clinician.  A common scenario where this information is captured is during the history taking process during a patient visit or stay or through an app that tracks food or fluids consumed.   The consumption information may come from sources such as the patient's memory, from a nutrition label,  or from a clinician documenting observed intake.
+ * A record of food or fluid that is being consumed by a patient.  A NutritionIntake may indicate that the patient may be consuming the food or fluid now or has consumed the food or fluid in the past.  The source of this information can be the patient, significant other (such as a family member or spouse), or a clinician.  A common scenario where this information is captured is during the history taking process during a patient visit or stay or through an app that tracks food or fluids consumed.   The consumption information may come from sources such as the patient's memory, from a nutrition label,  or from a clinician documenting observed intake.
  */
 @ResourceDef(name="NutritionIntake", profile="http://hl7.org/fhir/StructureDefinition/NutritionIntake")
 public class NutritionIntake extends DomainResource {
@@ -989,14 +989,14 @@ public class NutritionIntake extends DomainResource {
      */
     @Child(name = "statusReason", type = {CodeableConcept.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Reason for current status", formalDefinition="Captures the reason for the current state of the NutritionIntake." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/reason-medication-status-codes")
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/clinicalimpression-status-reason")
     protected List<CodeableConcept> statusReason;
 
     /**
-     * Type of nutrition intake setting/reporting.
+     * Overall type of nutrition intake.
      */
     @Child(name = "code", type = {CodeableConcept.class}, order=7, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Type of nutrition intake setting/reporting", formalDefinition="Type of nutrition intake setting/reporting." )
+    @Description(shortDefinition="Code representing an overall type of nutrition intake", formalDefinition="Overall type of nutrition intake." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/diet-type")
     protected CodeableConcept code;
 
@@ -1484,7 +1484,7 @@ public class NutritionIntake extends DomainResource {
     }
 
     /**
-     * @return {@link #code} (Type of nutrition intake setting/reporting.)
+     * @return {@link #code} (Overall type of nutrition intake.)
      */
     public CodeableConcept getCode() { 
       if (this.code == null)
@@ -1500,7 +1500,7 @@ public class NutritionIntake extends DomainResource {
     }
 
     /**
-     * @param value {@link #code} (Type of nutrition intake setting/reporting.)
+     * @param value {@link #code} (Overall type of nutrition intake.)
      */
     public NutritionIntake setCode(CodeableConcept value) { 
       this.code = value;
@@ -2051,13 +2051,13 @@ public class NutritionIntake extends DomainResource {
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Identifiers associated with this Nutrition Intake that are defined by business processes and/or used to refer to it when a direct URL reference to the resource itself is not appropriate. They are business identifiers assigned to this resource by the performer or other systems and remain constant as the resource is updated and propagates from server to server.", 0, java.lang.Integer.MAX_VALUE, identifier));
-        children.add(new Property("instantiatesCanonical", "canonical(ActivityDefinition|ArtifactAssessment|EventDefinition|EvidenceVariable|Measure|OperationDefinition|PlanDefinition|Questionnaire|SubscriptionTopic)", "Instantiates FHIR protocol or definition.", 0, java.lang.Integer.MAX_VALUE, instantiatesCanonical));
+        children.add(new Property("instantiatesCanonical", "canonical(ActivityDefinition|ChargeItemDefinition|EventDefinition|Measure|MessageDefinition|ObservationDefinition|OperationDefinition|PlanDefinition|Questionnaire|SubscriptionTopic|TestScript)", "Instantiates FHIR protocol or definition.", 0, java.lang.Integer.MAX_VALUE, instantiatesCanonical));
         children.add(new Property("instantiatesUri", "uri", "Instantiates external protocol or definition.", 0, java.lang.Integer.MAX_VALUE, instantiatesUri));
         children.add(new Property("basedOn", "Reference(NutritionOrder|CarePlan|ServiceRequest)", "A plan, proposal or order that is fulfilled in whole or in part by this event.", 0, java.lang.Integer.MAX_VALUE, basedOn));
         children.add(new Property("partOf", "Reference(NutritionIntake|Procedure|Observation)", "A larger event of which this particular event is a component or step.", 0, java.lang.Integer.MAX_VALUE, partOf));
         children.add(new Property("status", "code", "A code representing the patient or other source's judgment about the state of the intake that this assertion is about.  Generally, this will be active or completed.", 0, 1, status));
         children.add(new Property("statusReason", "CodeableConcept", "Captures the reason for the current state of the NutritionIntake.", 0, java.lang.Integer.MAX_VALUE, statusReason));
-        children.add(new Property("code", "CodeableConcept", "Type of nutrition intake setting/reporting.", 0, 1, code));
+        children.add(new Property("code", "CodeableConcept", "Overall type of nutrition intake.", 0, 1, code));
         children.add(new Property("subject", "Reference(Patient|Group)", "The person, animal or group who is/was consuming the food or fluid.", 0, 1, subject));
         children.add(new Property("encounter", "Reference(Encounter)", "The encounter that establishes the context for this NutritionIntake.", 0, 1, encounter));
         children.add(new Property("occurrence[x]", "dateTime|Period", "The interval of time during which it is being asserted that the patient is/was consuming the food or fluid.", 0, 1, occurrence));
@@ -2076,13 +2076,13 @@ public class NutritionIntake extends DomainResource {
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Identifiers associated with this Nutrition Intake that are defined by business processes and/or used to refer to it when a direct URL reference to the resource itself is not appropriate. They are business identifiers assigned to this resource by the performer or other systems and remain constant as the resource is updated and propagates from server to server.", 0, java.lang.Integer.MAX_VALUE, identifier);
-        case 8911915: /*instantiatesCanonical*/  return new Property("instantiatesCanonical", "canonical(ActivityDefinition|ArtifactAssessment|EventDefinition|EvidenceVariable|Measure|OperationDefinition|PlanDefinition|Questionnaire|SubscriptionTopic)", "Instantiates FHIR protocol or definition.", 0, java.lang.Integer.MAX_VALUE, instantiatesCanonical);
+        case 8911915: /*instantiatesCanonical*/  return new Property("instantiatesCanonical", "canonical(ActivityDefinition|ChargeItemDefinition|EventDefinition|Measure|MessageDefinition|ObservationDefinition|OperationDefinition|PlanDefinition|Questionnaire|SubscriptionTopic|TestScript)", "Instantiates FHIR protocol or definition.", 0, java.lang.Integer.MAX_VALUE, instantiatesCanonical);
         case -1926393373: /*instantiatesUri*/  return new Property("instantiatesUri", "uri", "Instantiates external protocol or definition.", 0, java.lang.Integer.MAX_VALUE, instantiatesUri);
         case -332612366: /*basedOn*/  return new Property("basedOn", "Reference(NutritionOrder|CarePlan|ServiceRequest)", "A plan, proposal or order that is fulfilled in whole or in part by this event.", 0, java.lang.Integer.MAX_VALUE, basedOn);
         case -995410646: /*partOf*/  return new Property("partOf", "Reference(NutritionIntake|Procedure|Observation)", "A larger event of which this particular event is a component or step.", 0, java.lang.Integer.MAX_VALUE, partOf);
         case -892481550: /*status*/  return new Property("status", "code", "A code representing the patient or other source's judgment about the state of the intake that this assertion is about.  Generally, this will be active or completed.", 0, 1, status);
         case 2051346646: /*statusReason*/  return new Property("statusReason", "CodeableConcept", "Captures the reason for the current state of the NutritionIntake.", 0, java.lang.Integer.MAX_VALUE, statusReason);
-        case 3059181: /*code*/  return new Property("code", "CodeableConcept", "Type of nutrition intake setting/reporting.", 0, 1, code);
+        case 3059181: /*code*/  return new Property("code", "CodeableConcept", "Overall type of nutrition intake.", 0, 1, code);
         case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Group)", "The person, animal or group who is/was consuming the food or fluid.", 0, 1, subject);
         case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "The encounter that establishes the context for this NutritionIntake.", 0, 1, encounter);
         case -2022646513: /*occurrence[x]*/  return new Property("occurrence[x]", "dateTime|Period", "The interval of time during which it is being asserted that the patient is/was consuming the food or fluid.", 0, 1, occurrence);
@@ -2605,48 +2605,22 @@ public class NutritionIntake extends DomainResource {
  /**
    * Search parameter: <b>nutrition</b>
    * <p>
-   * Description: <b>Return statements of this medication reference</b><br>
+   * Description: <b>Return intakes for a specific consumed item</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>NutritionIntake.consumedItem.nutritionProduct</b><br>
+   * Path: <b>NutritionIntake.consumedItem.nutritionProduct.concept</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="nutrition", path="NutritionIntake.consumedItem.nutritionProduct", description="Return statements of this medication reference", type="token" )
+  @SearchParamDefinition(name="nutrition", path="NutritionIntake.consumedItem.nutritionProduct.concept", description="Return intakes for a specific consumed item", type="token" )
   public static final String SP_NUTRITION = "nutrition";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>nutrition</b>
    * <p>
-   * Description: <b>Return statements of this medication reference</b><br>
+   * Description: <b>Return intakes for a specific consumed item</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>NutritionIntake.consumedItem.nutritionProduct</b><br>
+   * Path: <b>NutritionIntake.consumedItem.nutritionProduct.concept</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam NUTRITION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_NUTRITION);
-
- /**
-   * Search parameter: <b>part-of</b>
-   * <p>
-   * Description: <b>Returns statements that are part of another event.</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>NutritionIntake.partOf</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="part-of", path="NutritionIntake.partOf", description="Returns statements that are part of another event.", type="reference", target={NutritionIntake.class, Observation.class, Procedure.class } )
-  public static final String SP_PART_OF = "part-of";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>part-of</b>
-   * <p>
-   * Description: <b>Returns statements that are part of another event.</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>NutritionIntake.partOf</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PART_OF = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PART_OF);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>NutritionIntake:part-of</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PART_OF = new ca.uhn.fhir.model.api.Include("NutritionIntake:part-of").toLocked();
 
  /**
    * Search parameter: <b>patient</b>
@@ -2656,7 +2630,7 @@ public class NutritionIntake extends DomainResource {
    * Path: <b>NutritionIntake.subject.where(resolve() is Patient)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="NutritionIntake.subject.where(resolve() is Patient)", description="Returns statements for a specific patient.", type="reference", target={Group.class, Patient.class } )
+  @SearchParamDefinition(name="patient", path="NutritionIntake.subject.where(resolve() is Patient)", description="Returns statements for a specific patient.", type="reference", target={Patient.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>

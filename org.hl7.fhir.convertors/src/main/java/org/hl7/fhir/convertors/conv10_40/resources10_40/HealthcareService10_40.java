@@ -1,14 +1,18 @@
 package org.hl7.fhir.convertors.conv10_40.resources10_40;
 
+import java.util.stream.Collectors;
+
 import org.hl7.fhir.convertors.context.ConversionContext10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Reference10_40;
-import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.*;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Attachment10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.CodeableConcept10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.ContactPoint10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Identifier10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Period10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Boolean10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.String10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Time10_40;
 import org.hl7.fhir.exceptions.FHIRException;
-
-import java.util.stream.Collectors;
 
 public class HealthcareService10_40 {
 
@@ -179,7 +183,7 @@ public class HealthcareService10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.HealthcareService.HealthcareServiceAvailableTimeComponent tgt = new org.hl7.fhir.r4.model.HealthcareService.HealthcareServiceAvailableTimeComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     tgt.setDaysOfWeek(src.getDaysOfWeek().stream()
       .map(HealthcareService10_40::convertDaysOfWeek)
       .collect(Collectors.toList()));
@@ -196,7 +200,7 @@ public class HealthcareService10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.HealthcareService.HealthcareServiceAvailableTimeComponent tgt = new org.hl7.fhir.dstu2.model.HealthcareService.HealthcareServiceAvailableTimeComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     tgt.setDaysOfWeek(src.getDaysOfWeek().stream()
       .map(HealthcareService10_40::convertDaysOfWeek)
       .collect(Collectors.toList()));
@@ -213,7 +217,7 @@ public class HealthcareService10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.HealthcareService.HealthcareServiceNotAvailableComponent tgt = new org.hl7.fhir.dstu2.model.HealthcareService.HealthcareServiceNotAvailableComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasDescriptionElement())
       tgt.setDescriptionElement(String10_40.convertString(src.getDescriptionElement()));
     if (src.hasDuring())
@@ -225,7 +229,7 @@ public class HealthcareService10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.HealthcareService.HealthcareServiceNotAvailableComponent tgt = new org.hl7.fhir.r4.model.HealthcareService.HealthcareServiceNotAvailableComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasDescriptionElement())
       tgt.setDescriptionElement(String10_40.convertString(src.getDescriptionElement()));
     if (src.hasDuring())

@@ -111,15 +111,20 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
   }
 
 
-  protected void addMapHeaders(XhtmlNode tr, List<UsedConceptMap> maps) throws FHIRFormatError, DefinitionException, IOException {
+  protected XhtmlNode addMapHeaders(XhtmlNode tr, List<UsedConceptMap> maps) throws FHIRFormatError, DefinitionException, IOException {
     for (UsedConceptMap m : maps) {
       XhtmlNode td = tr.td();
       XhtmlNode b = td.b();
-      XhtmlNode a = b.ah(getContext().getSpecificationLink()+m.getLink());
+      String link = m.getLink();
+      if (!Utilities.isAbsoluteUrl(link)) {
+        link = getContext().getSpecificationLink()+link;
+      }
+      XhtmlNode a = b.ah(link);
       a.addText(m.getDetails().getName());
       if (m.getDetails().isDoDescription() && m.getMap().hasDescription())
         addMarkdown(td, m.getMap().getDescription());
     }
+    return tr;
   }
 
   protected String getHeader() {
@@ -311,8 +316,6 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     }
   }
 
-
-
   protected String getDisplayForConcept(String system, String version, String value) {
     if (value == null || system == null)
       return null;
@@ -320,4 +323,13 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     return cl == null ? null : cl.getDisplay();
   }
 
+
+  protected void clipboard(XhtmlNode x, String img, String title, String source) {
+    XhtmlNode span = x.span("cursor: pointer", "Copy "+title+" Format to clipboard");
+    span.attribute("onClick", "navigator.clipboard.writeText('"+Utilities.escapeJson(source)+"');");
+    span.img(img, "btn").setAttribute("width", "24px").setAttribute("height", "16px");
+  }
+  
+
+  
 }

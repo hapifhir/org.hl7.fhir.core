@@ -103,11 +103,19 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
 
   @Override
   public boolean render(XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException {
+    boolean idDone = false;
+    XhtmlNode p = x.para();
     if (context.isAddGeneratedNarrativeHeader()) {
-      x.para().b().tx("Generated Narrative");
+      p.b().tx("Generated Narrative: "+r.fhirType());
+      p.an(r.getId());
+      idDone = true;      
     }
-    if (context.isTechnicalMode()) {
-      renderResourceHeader(r, x);
+    if (context.isTechnicalMode() && !context.isContained()) {
+      renderResourceHeader(r, x, !idDone);
+      idDone = true;
+    }
+    if (!Utilities.noString(r.getId()) && !idDone) {
+      x.para().an(r.getId());
     }
     try {
       StructureDefinition sd = r.getDefinition();
@@ -312,9 +320,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       x.addText(new Base64().encodeAsString(((Base64BinaryType) e).getValue()));
     else if (e instanceof org.hl7.fhir.r4b.model.DateType) {
       org.hl7.fhir.r4b.model.DateType dt = ((org.hl7.fhir.r4b.model.DateType) e);
-      if (((org.hl7.fhir.r4b.model.DateType) e).hasValue()) {
-        x.addText(((org.hl7.fhir.r4b.model.DateType) e).toHumanDisplay());
-      }
+      renderDate(x, dt);
     } else if (e instanceof Enumeration) {
       Object ev = ((Enumeration<?>) e).getValue();
       x.addText(ev == null ? "" : ev.toString()); // todo: look up a display name if there is one
@@ -397,9 +403,17 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
           if (rw == null) {
             renderReference(res, x, r);
           } else {
+            String ref = context.getResolver().urlForContained(context, res.fhirType(), res.getId(), rw.fhirType(), rw.getId());
+            if (ref == null) {
             x.an(rw.getId());
-            ResourceRenderer rr = RendererFactory.factory(rw, context.copy().setAddGeneratedNarrativeHeader(false));
+              RenderingContext ctxtc = context.copy();
+              ctxtc.setAddGeneratedNarrativeHeader(false);
+              ctxtc.setContained(true);
+              ResourceRenderer rr = RendererFactory.factory(rw, ctxtc);
             rr.render(parent.blockquote(), rw);
+            } else {
+              x.ah(ref).tx("See "+rw.fhirType());              
+            }
           }
         }
       } else {
@@ -649,7 +663,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
   private boolean generateByProfile(StructureDefinition profile, boolean showCodeDetails) {
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
     if(context.isAddGeneratedNarrativeHeader()) {
-      x.para().b().tx("Generated Narrative"+(showCodeDetails ? " with Details" : ""));
+      x.para().b().tx("Generated Narrative: "+profile.present()+(showCodeDetails ? " with Details" : ""));
     }
     try {
       generateByProfile(rcontext.getResourceResource(), profile, rcontext.getResourceResource(), profile.getSnapshot().getElement(), profile.getSnapshot().getElement().get(0), getChildrenForPath(profile.getSnapshot().getElement(), rcontext.getResourceResource().getResourceType().toString()), x, rcontext.getResourceResource().getResourceType().toString(), showCodeDetails);
@@ -689,10 +703,13 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       boolean showCodeDetails, int indent, PropertyWrapper p, ElementDefinition child) throws UnsupportedEncodingException, IOException, EOperationOutcome {
     Map<String, String> displayHints = readDisplayHints(child);
     if ("DomainResource.contained".equals(child.getBase().getPath())) {
-//              if (p.getValues().size() > 0 && child != null) {
 //                for (BaseWrapper v : p.getValues()) {
-//                  x.an(v.get("id").primitiveValue());
-//                }
+//        x.hr();
+//        RenderingContext ctxt = context.clone();
+//        ctxt.setContained(true);
+//        ResourceRenderer rnd = RendererFactory.factory(v.fhirType(), ctxt);
+//        ResourceWrapper rw = new ElementWrappers.ResourceWrapperMetaElement(ctxt, (org.hl7.fhir.r5.elementmodel.Element) v.getBase());
+//        rnd.render(x.blockquote(), rw);
 //              }
     } else if (!exemptFromRendering(child)) {
       if (isExtension(p)) {

@@ -1,14 +1,5 @@
 package org.hl7.fhir.convertors.misc;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
-import org.hl7.fhir.utilities.CSVReader;
-import org.hl7.fhir.utilities.TextFile;
-import org.hl7.fhir.utilities.Utilities;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -16,6 +7,16 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.formats.IParser.OutputStyle;
+import org.hl7.fhir.r5.formats.JsonParser;
+import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
+import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
+import org.hl7.fhir.utilities.CSVReader;
+import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.Utilities;
 
 public class PhinVadsImporter extends OIDBasedValueSetImporter {
 
@@ -36,7 +37,7 @@ public class PhinVadsImporter extends OIDBasedValueSetImporter {
         System.out.println("Process " + f.getName());
         ValueSet vs = importValueSet(TextFile.fileToBytes(f));
         if (vs.getId() != null) {
-          new JsonParser().compose(new FileOutputStream(Utilities.path(dest, "ValueSet-" + vs.getId() + ".json")), vs);
+          new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "ValueSet-" + vs.getId() + ".json")), vs);
         }
       } catch (Exception e) {
         e.printStackTrace();

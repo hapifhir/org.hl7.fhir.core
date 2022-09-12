@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -131,6 +131,7 @@ public class DeviceDispense extends DomainResource {
             case STOPPED: return "stopped";
             case DECLINED: return "declined";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -145,6 +146,7 @@ public class DeviceDispense extends DomainResource {
             case STOPPED: return "http://terminology.hl7.org/CodeSystem/devicedispense-status";
             case DECLINED: return "http://terminology.hl7.org/CodeSystem/devicedispense-status";
             case UNKNOWN: return "http://terminology.hl7.org/CodeSystem/devicedispense-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -159,6 +161,7 @@ public class DeviceDispense extends DomainResource {
             case STOPPED: return "Actions implied by the dispense have been permanently halted, before all of them occurred.";
             case DECLINED: return "The dispense was declined and not performed.";
             case UNKNOWN: return "The authoring system does not know which of the status values applies for this dispense.  Note: this concept is not to be used for other - one of the listed statuses is presumed to apply, it's just now known which one.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -173,6 +176,7 @@ public class DeviceDispense extends DomainResource {
             case STOPPED: return "Stopped";
             case DECLINED: return "Declined";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
         }

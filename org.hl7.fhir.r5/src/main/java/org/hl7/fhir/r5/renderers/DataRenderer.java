@@ -679,6 +679,13 @@ public class DataRenderer extends Renderer {
       renderSampledData(x, (SampledData) type);
     } else if (type instanceof Reference) {
       renderReference(x, (Reference) type);
+    } else if (type instanceof CodeableReference) {
+      CodeableReference cr = (CodeableReference) type;
+      if (cr.hasConcept()) {
+        renderCodeableConcept(x, cr.getConcept());
+      } else { 
+        renderReference(x, cr.getReference());
+      }
     } else if (type instanceof MarkdownType) {
       addMarkdown(x, ((MarkdownType) type).asStringValue());
     } else if (type.isPrimitive()) {
@@ -1607,8 +1614,12 @@ public class DataRenderer extends Renderer {
     if (s.hasOrigin())
       b.append("Origin: "+displayQuantity(s.getOrigin()));
 
-    if (s.hasPeriod())
-      b.append("Period: "+s.getPeriod().toString());
+    if (s.hasInterval()) {
+      b.append("Interval: "+s.getInterval().toString());
+
+      if (s.hasIntervalUnit())
+        b.append(s.getIntervalUnit().toString());
+    }
 
     if (s.hasFactor())
       b.append("Factor: "+s.getFactor().toString());

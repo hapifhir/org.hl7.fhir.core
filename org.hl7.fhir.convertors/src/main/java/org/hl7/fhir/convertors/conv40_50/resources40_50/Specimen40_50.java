@@ -1,7 +1,11 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.*;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Annotation40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Duration40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.SimpleQuantity40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
@@ -154,7 +158,7 @@ public class Specimen40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Specimen.SpecimenCollectionComponent tgt = new org.hl7.fhir.r5.model.Specimen.SpecimenCollectionComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCollector())
       tgt.setCollector(Reference40_50.convertReference(src.getCollector()));
     if (src.hasCollected())
@@ -176,7 +180,7 @@ public class Specimen40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Specimen.SpecimenCollectionComponent tgt = new org.hl7.fhir.r4.model.Specimen.SpecimenCollectionComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCollector())
       tgt.setCollector(Reference40_50.convertReference(src.getCollector()));
     if (src.hasCollected())
@@ -198,7 +202,7 @@ public class Specimen40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Specimen.SpecimenProcessingComponent tgt = new org.hl7.fhir.r5.model.Specimen.SpecimenProcessingComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
 //    if (src.hasProcedure())
@@ -213,7 +217,7 @@ public class Specimen40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Specimen.SpecimenProcessingComponent tgt = new org.hl7.fhir.r4.model.Specimen.SpecimenProcessingComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
 //    if (src.hasProcedure())
@@ -228,19 +232,19 @@ public class Specimen40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Specimen.SpecimenContainerComponent tgt = new org.hl7.fhir.r5.model.Specimen.SpecimenContainerComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-    if (src.hasDescription())
-      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
-    if (src.hasType())
-      tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
-    if (src.hasCapacity())
-      tgt.setCapacity(SimpleQuantity40_50.convertSimpleQuantity(src.getCapacity()));
-    if (src.hasSpecimenQuantity())
-      tgt.setSpecimenQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getSpecimenQuantity()));
-    if (src.hasAdditive())
-      tgt.setAdditive(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getAdditive()));
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
+//    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
+//      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+//    if (src.hasDescription())
+//      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
+//    if (src.hasType())
+//      tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
+//    if (src.hasCapacity())
+//      tgt.setCapacity(SimpleQuantity40_50.convertSimpleQuantity(src.getCapacity()));
+//    if (src.hasSpecimenQuantity())
+//      tgt.setSpecimenQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getSpecimenQuantity()));
+//    if (src.hasAdditive())
+//      tgt.setAdditive(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getAdditive()));
     return tgt;
   }
 
@@ -248,19 +252,19 @@ public class Specimen40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Specimen.SpecimenContainerComponent tgt = new org.hl7.fhir.r4.model.Specimen.SpecimenContainerComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-    if (src.hasDescription())
-      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
-    if (src.hasType())
-      tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
-    if (src.hasCapacity())
-      tgt.setCapacity(SimpleQuantity40_50.convertSimpleQuantity(src.getCapacity()));
-    if (src.hasSpecimenQuantity())
-      tgt.setSpecimenQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getSpecimenQuantity()));
-    if (src.hasAdditive())
-      tgt.setAdditive(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getAdditive()));
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
+//    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
+//      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+//    if (src.hasDescription())
+//      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
+//    if (src.hasType())
+//      tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
+//    if (src.hasCapacity())
+//      tgt.setCapacity(SimpleQuantity40_50.convertSimpleQuantity(src.getCapacity()));
+//    if (src.hasSpecimenQuantity())
+//      tgt.setSpecimenQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getSpecimenQuantity()));
+//    if (src.hasAdditive())
+//      tgt.setAdditive(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getAdditive()));
     return tgt;
   }
 }

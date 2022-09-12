@@ -7,6 +7,7 @@ import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Identi
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Period10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.String10_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CodeableReference;
 
 public class Schedule10_50 {
 
@@ -17,8 +18,9 @@ public class Schedule10_50 {
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier10_50.convertIdentifier(t));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getServiceType())
-      tgt.addType(CodeableConcept10_50.convertCodeableConcept(t));
+    for (CodeableReference t : src.getServiceType())
+      if (t.hasConcept())
+        tgt.addType(CodeableConcept10_50.convertCodeableConcept(t.getConcept()));
     if (src.hasActor())
       tgt.setActor(Reference10_50.convertReference(src.getActorFirstRep()));
     if (src.hasPlanningHorizon())
@@ -36,7 +38,7 @@ public class Schedule10_50 {
     for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier10_50.convertIdentifier(t));
     for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getType())
-      tgt.addServiceType(CodeableConcept10_50.convertCodeableConcept(t));
+      tgt.addServiceType(new CodeableReference().setConcept(CodeableConcept10_50.convertCodeableConcept(t)));
     if (src.hasActor())
       tgt.addActor(Reference10_50.convertReference(src.getActor()));
     if (src.hasPlanningHorizon())

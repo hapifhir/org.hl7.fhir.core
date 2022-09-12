@@ -1,17 +1,17 @@
 package org.hl7.fhir.convertors.conv10_50.resources10_50;
 
+import java.util.Collections;
+
 import org.hl7.fhir.convertors.context.ConversionContext10_50;
-import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.Narrative10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.Reference10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.CodeableConcept10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Identifier10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Period10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Code10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.DateTime10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.String10_50;
 import org.hl7.fhir.exceptions.FHIRException;
-
-import java.util.Collections;
 
 public class Composition10_50 {
 
@@ -21,7 +21,7 @@ public class Composition10_50 {
     org.hl7.fhir.r5.model.Composition tgt = new org.hl7.fhir.r5.model.Composition();
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyDomainResource(src, tgt);
     if (src.hasIdentifier())
-      tgt.setIdentifier(Identifier10_50.convertIdentifier(src.getIdentifier()));
+      tgt.addIdentifier(Identifier10_50.convertIdentifier(src.getIdentifier()));
     if (src.hasDate())
       tgt.setDateElement(DateTime10_50.convertDateTime(src.getDateElement()));
     if (src.hasType())
@@ -34,12 +34,12 @@ public class Composition10_50 {
       tgt.setStatusElement(convertCompositionStatus(src.getStatusElement()));
     try {
       if (src.hasConfidentiality())
-        tgt.setConfidentiality(src.getConfidentiality());
+        tgt.getMeta().addSecurity().setCodeElement(Code10_50.convertCode(src.getConfidentialityElement()));
     } catch (org.hl7.fhir.exceptions.FHIRException e) {
       throw new FHIRException(e);
     }
     if (src.hasSubject())
-      tgt.setSubject(Reference10_50.convertReference(src.getSubject()));
+      tgt.addSubject(Reference10_50.convertReference(src.getSubject()));
     for (org.hl7.fhir.dstu2.model.Reference t : src.getAuthor()) tgt.addAuthor(Reference10_50.convertReference(t));
     for (org.hl7.fhir.dstu2.model.Composition.CompositionAttesterComponent t : src.getAttester())
       tgt.addAttester(convertCompositionAttesterComponent(t));
@@ -60,7 +60,7 @@ public class Composition10_50 {
     org.hl7.fhir.dstu2.model.Composition tgt = new org.hl7.fhir.dstu2.model.Composition();
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyDomainResource(src, tgt);
     if (src.hasIdentifier())
-      tgt.setIdentifier(Identifier10_50.convertIdentifier(src.getIdentifier()));
+      tgt.setIdentifier(Identifier10_50.convertIdentifier(src.getIdentifierFirstRep()));
     if (src.hasDate())
       tgt.setDateElement(DateTime10_50.convertDateTime(src.getDateElement()));
     if (src.hasType())
@@ -71,9 +71,9 @@ public class Composition10_50 {
       tgt.setTitleElement(String10_50.convertString(src.getTitleElement()));
     if (src.hasStatus())
       tgt.setStatusElement(convertCompositionStatus(src.getStatusElement()));
-    tgt.setConfidentiality(src.getConfidentiality());
+    tgt.setConfidentiality(src.getMeta().getSecurityFirstRep().getCode());
     if (src.hasSubject())
-      tgt.setSubject(Reference10_50.convertReference(src.getSubject()));
+      tgt.setSubject(Reference10_50.convertReference(src.getSubjectFirstRep()));
     for (org.hl7.fhir.r5.model.Reference t : src.getAuthor()) tgt.addAuthor(Reference10_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Composition.CompositionAttesterComponent t : src.getAttester())
       tgt.addAttester(convertCompositionAttesterComponent(t));
@@ -140,7 +140,7 @@ public class Composition10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Composition.CompositionAttesterComponent tgt = new org.hl7.fhir.dstu2.model.Composition.CompositionAttesterComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasMode())
       tgt.setMode(Collections.singletonList(convertCompositionAttestationMode(src.getMode())));
     if (src.hasTimeElement())
@@ -154,7 +154,7 @@ public class Composition10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Composition.CompositionAttesterComponent tgt = new org.hl7.fhir.r5.model.Composition.CompositionAttesterComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasMode())
       tgt.setMode(convertCompositionAttestationMode(src.getMode().get(0)));
     if (src.hasTimeElement())
@@ -168,7 +168,7 @@ public class Composition10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Composition.CompositionEventComponent tgt = new org.hl7.fhir.dstu2.model.Composition.CompositionEventComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCode())
       tgt.addCode(CodeableConcept10_50.convertCodeableConcept(t));
     if (src.hasPeriod())
@@ -181,7 +181,7 @@ public class Composition10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Composition.CompositionEventComponent tgt = new org.hl7.fhir.r5.model.Composition.CompositionEventComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getCode())
       tgt.addCode(CodeableConcept10_50.convertCodeableConcept(t));
     if (src.hasPeriod())
@@ -244,7 +244,7 @@ public class Composition10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Composition.SectionComponent tgt = new org.hl7.fhir.dstu2.model.Composition.SectionComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasTitleElement())
       tgt.setTitleElement(String10_50.convertString(src.getTitleElement()));
     if (src.hasCode())
@@ -266,7 +266,7 @@ public class Composition10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Composition.SectionComponent tgt = new org.hl7.fhir.r5.model.Composition.SectionComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasTitleElement())
       tgt.setTitleElement(String10_50.convertString(src.getTitleElement()));
     if (src.hasCode())

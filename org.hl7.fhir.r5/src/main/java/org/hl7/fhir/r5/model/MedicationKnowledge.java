@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -89,6 +89,7 @@ public class MedicationKnowledge extends DomainResource {
             case ACTIVE: return "active";
             case ENTEREDINERROR: return "entered-in-error";
             case INACTIVE: return "inactive";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -97,6 +98,7 @@ public class MedicationKnowledge extends DomainResource {
             case ACTIVE: return "http://hl7.org/fhir/CodeSystem/medicationknowledge-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/CodeSystem/medicationknowledge-status";
             case INACTIVE: return "http://hl7.org/fhir/CodeSystem/medicationknowledge-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +107,7 @@ public class MedicationKnowledge extends DomainResource {
             case ACTIVE: return "The medication referred to by this MedicationKnowledge is in active use within the drug database or inventory system.";
             case ENTEREDINERROR: return "The medication referred to by this MedicationKnowledge was entered in error within the drug database or inventory system.";
             case INACTIVE: return "The medication referred to by this MedicationKnowledge is not in active use within the drug database or inventory system.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -113,6 +116,7 @@ public class MedicationKnowledge extends DomainResource {
             case ACTIVE: return "Active";
             case ENTEREDINERROR: return "Entered in Error";
             case INACTIVE: return "Inactive";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2917,6 +2921,654 @@ public class MedicationKnowledge extends DomainResource {
   }
 
     @Block()
+    public static class MedicationKnowledgeStorageGuidelineComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Reference to additional information about the storage guidelines.
+         */
+        @Child(name = "reference", type = {UriType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Reference to additional information", formalDefinition="Reference to additional information about the storage guidelines." )
+        protected UriType reference;
+
+        /**
+         * Additional notes about the storage.
+         */
+        @Child(name = "note", type = {Annotation.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Additional storage notes", formalDefinition="Additional notes about the storage." )
+        protected List<Annotation> note;
+
+        /**
+         * Duration that the medication remains stable if the environmentalSetting is respected.
+         */
+        @Child(name = "stabilityDuration", type = {Duration.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Duration remains stable", formalDefinition="Duration that the medication remains stable if the environmentalSetting is respected." )
+        protected Duration stabilityDuration;
+
+        /**
+         * Describes a setting/value on the environment for the adequate storage of the medication and other substances.  Environment settings may involve temperature, humidity, or exposure to light.
+         */
+        @Child(name = "environmentalSetting", type = {}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Setting or value of environment for adequate storage", formalDefinition="Describes a setting/value on the environment for the adequate storage of the medication and other substances.  Environment settings may involve temperature, humidity, or exposure to light." )
+        protected List<MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent> environmentalSetting;
+
+        private static final long serialVersionUID = -304442588L;
+
+    /**
+     * Constructor
+     */
+      public MedicationKnowledgeStorageGuidelineComponent() {
+        super();
+      }
+
+        /**
+         * @return {@link #reference} (Reference to additional information about the storage guidelines.). This is the underlying object with id, value and extensions. The accessor "getReference" gives direct access to the value
+         */
+        public UriType getReferenceElement() { 
+          if (this.reference == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create MedicationKnowledgeStorageGuidelineComponent.reference");
+            else if (Configuration.doAutoCreate())
+              this.reference = new UriType(); // bb
+          return this.reference;
+        }
+
+        public boolean hasReferenceElement() { 
+          return this.reference != null && !this.reference.isEmpty();
+        }
+
+        public boolean hasReference() { 
+          return this.reference != null && !this.reference.isEmpty();
+        }
+
+        /**
+         * @param value {@link #reference} (Reference to additional information about the storage guidelines.). This is the underlying object with id, value and extensions. The accessor "getReference" gives direct access to the value
+         */
+        public MedicationKnowledgeStorageGuidelineComponent setReferenceElement(UriType value) { 
+          this.reference = value;
+          return this;
+        }
+
+        /**
+         * @return Reference to additional information about the storage guidelines.
+         */
+        public String getReference() { 
+          return this.reference == null ? null : this.reference.getValue();
+        }
+
+        /**
+         * @param value Reference to additional information about the storage guidelines.
+         */
+        public MedicationKnowledgeStorageGuidelineComponent setReference(String value) { 
+          if (Utilities.noString(value))
+            this.reference = null;
+          else {
+            if (this.reference == null)
+              this.reference = new UriType();
+            this.reference.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #note} (Additional notes about the storage.)
+         */
+        public List<Annotation> getNote() { 
+          if (this.note == null)
+            this.note = new ArrayList<Annotation>();
+          return this.note;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public MedicationKnowledgeStorageGuidelineComponent setNote(List<Annotation> theNote) { 
+          this.note = theNote;
+          return this;
+        }
+
+        public boolean hasNote() { 
+          if (this.note == null)
+            return false;
+          for (Annotation item : this.note)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public Annotation addNote() { //3
+          Annotation t = new Annotation();
+          if (this.note == null)
+            this.note = new ArrayList<Annotation>();
+          this.note.add(t);
+          return t;
+        }
+
+        public MedicationKnowledgeStorageGuidelineComponent addNote(Annotation t) { //3
+          if (t == null)
+            return this;
+          if (this.note == null)
+            this.note = new ArrayList<Annotation>();
+          this.note.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist {3}
+         */
+        public Annotation getNoteFirstRep() { 
+          if (getNote().isEmpty()) {
+            addNote();
+          }
+          return getNote().get(0);
+        }
+
+        /**
+         * @return {@link #stabilityDuration} (Duration that the medication remains stable if the environmentalSetting is respected.)
+         */
+        public Duration getStabilityDuration() { 
+          if (this.stabilityDuration == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create MedicationKnowledgeStorageGuidelineComponent.stabilityDuration");
+            else if (Configuration.doAutoCreate())
+              this.stabilityDuration = new Duration(); // cc
+          return this.stabilityDuration;
+        }
+
+        public boolean hasStabilityDuration() { 
+          return this.stabilityDuration != null && !this.stabilityDuration.isEmpty();
+        }
+
+        /**
+         * @param value {@link #stabilityDuration} (Duration that the medication remains stable if the environmentalSetting is respected.)
+         */
+        public MedicationKnowledgeStorageGuidelineComponent setStabilityDuration(Duration value) { 
+          this.stabilityDuration = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #environmentalSetting} (Describes a setting/value on the environment for the adequate storage of the medication and other substances.  Environment settings may involve temperature, humidity, or exposure to light.)
+         */
+        public List<MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent> getEnvironmentalSetting() { 
+          if (this.environmentalSetting == null)
+            this.environmentalSetting = new ArrayList<MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent>();
+          return this.environmentalSetting;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public MedicationKnowledgeStorageGuidelineComponent setEnvironmentalSetting(List<MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent> theEnvironmentalSetting) { 
+          this.environmentalSetting = theEnvironmentalSetting;
+          return this;
+        }
+
+        public boolean hasEnvironmentalSetting() { 
+          if (this.environmentalSetting == null)
+            return false;
+          for (MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent item : this.environmentalSetting)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent addEnvironmentalSetting() { //3
+          MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent t = new MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent();
+          if (this.environmentalSetting == null)
+            this.environmentalSetting = new ArrayList<MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent>();
+          this.environmentalSetting.add(t);
+          return t;
+        }
+
+        public MedicationKnowledgeStorageGuidelineComponent addEnvironmentalSetting(MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.environmentalSetting == null)
+            this.environmentalSetting = new ArrayList<MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent>();
+          this.environmentalSetting.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #environmentalSetting}, creating it if it does not already exist {3}
+         */
+        public MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent getEnvironmentalSettingFirstRep() { 
+          if (getEnvironmentalSetting().isEmpty()) {
+            addEnvironmentalSetting();
+          }
+          return getEnvironmentalSetting().get(0);
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("reference", "uri", "Reference to additional information about the storage guidelines.", 0, 1, reference));
+          children.add(new Property("note", "Annotation", "Additional notes about the storage.", 0, java.lang.Integer.MAX_VALUE, note));
+          children.add(new Property("stabilityDuration", "Duration", "Duration that the medication remains stable if the environmentalSetting is respected.", 0, 1, stabilityDuration));
+          children.add(new Property("environmentalSetting", "", "Describes a setting/value on the environment for the adequate storage of the medication and other substances.  Environment settings may involve temperature, humidity, or exposure to light.", 0, java.lang.Integer.MAX_VALUE, environmentalSetting));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case -925155509: /*reference*/  return new Property("reference", "uri", "Reference to additional information about the storage guidelines.", 0, 1, reference);
+          case 3387378: /*note*/  return new Property("note", "Annotation", "Additional notes about the storage.", 0, java.lang.Integer.MAX_VALUE, note);
+          case 1823268957: /*stabilityDuration*/  return new Property("stabilityDuration", "Duration", "Duration that the medication remains stable if the environmentalSetting is respected.", 0, 1, stabilityDuration);
+          case 105846514: /*environmentalSetting*/  return new Property("environmentalSetting", "", "Describes a setting/value on the environment for the adequate storage of the medication and other substances.  Environment settings may involve temperature, humidity, or exposure to light.", 0, java.lang.Integer.MAX_VALUE, environmentalSetting);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case -925155509: /*reference*/ return this.reference == null ? new Base[0] : new Base[] {this.reference}; // UriType
+        case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
+        case 1823268957: /*stabilityDuration*/ return this.stabilityDuration == null ? new Base[0] : new Base[] {this.stabilityDuration}; // Duration
+        case 105846514: /*environmentalSetting*/ return this.environmentalSetting == null ? new Base[0] : this.environmentalSetting.toArray(new Base[this.environmentalSetting.size()]); // MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case -925155509: // reference
+          this.reference = TypeConvertor.castToUri(value); // UriType
+          return value;
+        case 3387378: // note
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
+          return value;
+        case 1823268957: // stabilityDuration
+          this.stabilityDuration = TypeConvertor.castToDuration(value); // Duration
+          return value;
+        case 105846514: // environmentalSetting
+          this.getEnvironmentalSetting().add((MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent) value); // MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("reference")) {
+          this.reference = TypeConvertor.castToUri(value); // UriType
+        } else if (name.equals("note")) {
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
+        } else if (name.equals("stabilityDuration")) {
+          this.stabilityDuration = TypeConvertor.castToDuration(value); // Duration
+        } else if (name.equals("environmentalSetting")) {
+          this.getEnvironmentalSetting().add((MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent) value);
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -925155509:  return getReferenceElement();
+        case 3387378:  return addNote(); 
+        case 1823268957:  return getStabilityDuration();
+        case 105846514:  return addEnvironmentalSetting(); 
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -925155509: /*reference*/ return new String[] {"uri"};
+        case 3387378: /*note*/ return new String[] {"Annotation"};
+        case 1823268957: /*stabilityDuration*/ return new String[] {"Duration"};
+        case 105846514: /*environmentalSetting*/ return new String[] {};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("reference")) {
+          throw new FHIRException("Cannot call addChild on a primitive type MedicationKnowledge.storageGuideline.reference");
+        }
+        else if (name.equals("note")) {
+          return addNote();
+        }
+        else if (name.equals("stabilityDuration")) {
+          this.stabilityDuration = new Duration();
+          return this.stabilityDuration;
+        }
+        else if (name.equals("environmentalSetting")) {
+          return addEnvironmentalSetting();
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public MedicationKnowledgeStorageGuidelineComponent copy() {
+        MedicationKnowledgeStorageGuidelineComponent dst = new MedicationKnowledgeStorageGuidelineComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationKnowledgeStorageGuidelineComponent dst) {
+        super.copyValues(dst);
+        dst.reference = reference == null ? null : reference.copy();
+        if (note != null) {
+          dst.note = new ArrayList<Annotation>();
+          for (Annotation i : note)
+            dst.note.add(i.copy());
+        };
+        dst.stabilityDuration = stabilityDuration == null ? null : stabilityDuration.copy();
+        if (environmentalSetting != null) {
+          dst.environmentalSetting = new ArrayList<MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent>();
+          for (MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent i : environmentalSetting)
+            dst.environmentalSetting.add(i.copy());
+        };
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof MedicationKnowledgeStorageGuidelineComponent))
+          return false;
+        MedicationKnowledgeStorageGuidelineComponent o = (MedicationKnowledgeStorageGuidelineComponent) other_;
+        return compareDeep(reference, o.reference, true) && compareDeep(note, o.note, true) && compareDeep(stabilityDuration, o.stabilityDuration, true)
+           && compareDeep(environmentalSetting, o.environmentalSetting, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof MedicationKnowledgeStorageGuidelineComponent))
+          return false;
+        MedicationKnowledgeStorageGuidelineComponent o = (MedicationKnowledgeStorageGuidelineComponent) other_;
+        return compareValues(reference, o.reference, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(reference, note, stabilityDuration
+          , environmentalSetting);
+      }
+
+  public String fhirType() {
+    return "MedicationKnowledge.storageGuideline";
+
+  }
+
+  }
+
+    @Block()
+    public static class MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Identifies the category or type of setting (e.g., type of location, temperature, humidity).
+         */
+        @Child(name = "type", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Categorization of the setting", formalDefinition="Identifies the category or type of setting (e.g., type of location, temperature, humidity)." )
+        protected CodeableConcept type;
+
+        /**
+         * Value associated to the setting. E.g., 40° – 50°F for temperature.
+         */
+        @Child(name = "value", type = {Quantity.class, Range.class, CodeableConcept.class}, order=2, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Value of the setting", formalDefinition="Value associated to the setting. E.g., 40° – 50°F for temperature." )
+        protected DataType value;
+
+        private static final long serialVersionUID = -1659186716L;
+
+    /**
+     * Constructor
+     */
+      public MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent(CodeableConcept type, DataType value) {
+        super();
+        this.setType(type);
+        this.setValue(value);
+      }
+
+        /**
+         * @return {@link #type} (Identifies the category or type of setting (e.g., type of location, temperature, humidity).)
+         */
+        public CodeableConcept getType() { 
+          if (this.type == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent.type");
+            else if (Configuration.doAutoCreate())
+              this.type = new CodeableConcept(); // cc
+          return this.type;
+        }
+
+        public boolean hasType() { 
+          return this.type != null && !this.type.isEmpty();
+        }
+
+        /**
+         * @param value {@link #type} (Identifies the category or type of setting (e.g., type of location, temperature, humidity).)
+         */
+        public MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent setType(CodeableConcept value) { 
+          this.type = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #value} (Value associated to the setting. E.g., 40° – 50°F for temperature.)
+         */
+        public DataType getValue() { 
+          return this.value;
+        }
+
+        /**
+         * @return {@link #value} (Value associated to the setting. E.g., 40° – 50°F for temperature.)
+         */
+        public Quantity getValueQuantity() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Quantity();
+          if (!(this.value instanceof Quantity))
+            throw new FHIRException("Type mismatch: the type Quantity was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Quantity) this.value;
+        }
+
+        public boolean hasValueQuantity() { 
+          return this != null && this.value instanceof Quantity;
+        }
+
+        /**
+         * @return {@link #value} (Value associated to the setting. E.g., 40° – 50°F for temperature.)
+         */
+        public Range getValueRange() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Range();
+          if (!(this.value instanceof Range))
+            throw new FHIRException("Type mismatch: the type Range was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Range) this.value;
+        }
+
+        public boolean hasValueRange() { 
+          return this != null && this.value instanceof Range;
+        }
+
+        /**
+         * @return {@link #value} (Value associated to the setting. E.g., 40° – 50°F for temperature.)
+         */
+        public CodeableConcept getValueCodeableConcept() throws FHIRException { 
+          if (this.value == null)
+            this.value = new CodeableConcept();
+          if (!(this.value instanceof CodeableConcept))
+            throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (CodeableConcept) this.value;
+        }
+
+        public boolean hasValueCodeableConcept() { 
+          return this != null && this.value instanceof CodeableConcept;
+        }
+
+        public boolean hasValue() { 
+          return this.value != null && !this.value.isEmpty();
+        }
+
+        /**
+         * @param value {@link #value} (Value associated to the setting. E.g., 40° – 50°F for temperature.)
+         */
+        public MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent setValue(DataType value) { 
+          if (value != null && !(value instanceof Quantity || value instanceof Range || value instanceof CodeableConcept))
+            throw new Error("Not the right type for MedicationKnowledge.storageGuideline.environmentalSetting.value[x]: "+value.fhirType());
+          this.value = value;
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("type", "CodeableConcept", "Identifies the category or type of setting (e.g., type of location, temperature, humidity).", 0, 1, type));
+          children.add(new Property("value[x]", "Quantity|Range|CodeableConcept", "Value associated to the setting. E.g., 40° – 50°F for temperature.", 0, 1, value));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Identifies the category or type of setting (e.g., type of location, temperature, humidity).", 0, 1, type);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "Quantity|Range|CodeableConcept", "Value associated to the setting. E.g., 40° – 50°F for temperature.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "Quantity|Range|CodeableConcept", "Value associated to the setting. E.g., 40° – 50°F for temperature.", 0, 1, value);
+          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "Value associated to the setting. E.g., 40° – 50°F for temperature.", 0, 1, value);
+          case 2030761548: /*valueRange*/  return new Property("value[x]", "Range", "Value associated to the setting. E.g., 40° – 50°F for temperature.", 0, 1, value);
+          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "Value associated to the setting. E.g., 40° – 50°F for temperature.", 0, 1, value);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3575610: // type
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 111972721: // value
+          this.value = TypeConvertor.castToType(value); // DataType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("value[x]")) {
+          this.value = TypeConvertor.castToType(value); // DataType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3575610:  return getType();
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
+        case 111972721: /*value*/ return new String[] {"Quantity", "Range", "CodeableConcept"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = new CodeableConcept();
+          return this.type;
+        }
+        else if (name.equals("valueQuantity")) {
+          this.value = new Quantity();
+          return this.value;
+        }
+        else if (name.equals("valueRange")) {
+          this.value = new Range();
+          return this.value;
+        }
+        else if (name.equals("valueCodeableConcept")) {
+          this.value = new CodeableConcept();
+          return this.value;
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent copy() {
+        MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent dst = new MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent dst) {
+        super.copyValues(dst);
+        dst.type = type == null ? null : type.copy();
+        dst.value = value == null ? null : value.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent))
+          return false;
+        MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent o = (MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent) other_;
+        return compareDeep(type, o.type, true) && compareDeep(value, o.value, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent))
+          return false;
+        MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent o = (MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent) other_;
+        return true;
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, value);
+      }
+
+  public String fhirType() {
+    return "MedicationKnowledge.storageGuideline.environmentalSetting";
+
+  }
+
+  }
+
+    @Block()
     public static class MedicationKnowledgeRegulatoryComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * The authority that is specifying the regulations.
@@ -4926,20 +5578,27 @@ public class MedicationKnowledge extends DomainResource {
     protected List<Reference> clinicalUseIssue;
 
     /**
+     * Information on how the medication should be stored, for example, refrigeration temperatures and length of stability at a given temperature.
+     */
+    @Child(name = "storageGuideline", type = {}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="How the medication should be stored", formalDefinition="Information on how the medication should be stored, for example, refrigeration temperatures and length of stability at a given temperature." )
+    protected List<MedicationKnowledgeStorageGuidelineComponent> storageGuideline;
+
+    /**
      * Regulatory information about a medication.
      */
-    @Child(name = "regulatory", type = {}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "regulatory", type = {}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Regulatory information about a medication", formalDefinition="Regulatory information about a medication." )
     protected List<MedicationKnowledgeRegulatoryComponent> regulatory;
 
     /**
      * Along with the link to a Medicinal Product Definition resource, this information provides common definitional elements that are needed to understand the specific medication that is being described.
      */
-    @Child(name = "definitional", type = {}, order=18, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "definitional", type = {}, order=19, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Minimal definition information about the medication", formalDefinition="Along with the link to a Medicinal Product Definition resource, this information provides common definitional elements that are needed to understand the specific medication that is being described." )
     protected MedicationKnowledgeDefinitionalComponent definitional;
 
-    private static final long serialVersionUID = 259479639L;
+    private static final long serialVersionUID = -814493741L;
 
   /**
    * Constructor
@@ -5792,6 +6451,59 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     /**
+     * @return {@link #storageGuideline} (Information on how the medication should be stored, for example, refrigeration temperatures and length of stability at a given temperature.)
+     */
+    public List<MedicationKnowledgeStorageGuidelineComponent> getStorageGuideline() { 
+      if (this.storageGuideline == null)
+        this.storageGuideline = new ArrayList<MedicationKnowledgeStorageGuidelineComponent>();
+      return this.storageGuideline;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public MedicationKnowledge setStorageGuideline(List<MedicationKnowledgeStorageGuidelineComponent> theStorageGuideline) { 
+      this.storageGuideline = theStorageGuideline;
+      return this;
+    }
+
+    public boolean hasStorageGuideline() { 
+      if (this.storageGuideline == null)
+        return false;
+      for (MedicationKnowledgeStorageGuidelineComponent item : this.storageGuideline)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public MedicationKnowledgeStorageGuidelineComponent addStorageGuideline() { //3
+      MedicationKnowledgeStorageGuidelineComponent t = new MedicationKnowledgeStorageGuidelineComponent();
+      if (this.storageGuideline == null)
+        this.storageGuideline = new ArrayList<MedicationKnowledgeStorageGuidelineComponent>();
+      this.storageGuideline.add(t);
+      return t;
+    }
+
+    public MedicationKnowledge addStorageGuideline(MedicationKnowledgeStorageGuidelineComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.storageGuideline == null)
+        this.storageGuideline = new ArrayList<MedicationKnowledgeStorageGuidelineComponent>();
+      this.storageGuideline.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #storageGuideline}, creating it if it does not already exist {3}
+     */
+    public MedicationKnowledgeStorageGuidelineComponent getStorageGuidelineFirstRep() { 
+      if (getStorageGuideline().isEmpty()) {
+        addStorageGuideline();
+      }
+      return getStorageGuideline().get(0);
+    }
+
+    /**
      * @return {@link #regulatory} (Regulatory information about a medication.)
      */
     public List<MedicationKnowledgeRegulatoryComponent> getRegulatory() { 
@@ -5887,6 +6599,7 @@ public class MedicationKnowledge extends DomainResource {
         children.add(new Property("medicineClassification", "", "Categorization of the medication within a formulary or classification system.", 0, java.lang.Integer.MAX_VALUE, medicineClassification));
         children.add(new Property("packaging", "", "Information that only applies to packages (not products).", 0, java.lang.Integer.MAX_VALUE, packaging));
         children.add(new Property("clinicalUseIssue", "Reference(ClinicalUseDefinition)", "Potential clinical issue with or between medication(s) (for example, drug-drug interaction, drug-disease contraindication, drug-allergy interaction, etc.).", 0, java.lang.Integer.MAX_VALUE, clinicalUseIssue));
+        children.add(new Property("storageGuideline", "", "Information on how the medication should be stored, for example, refrigeration temperatures and length of stability at a given temperature.", 0, java.lang.Integer.MAX_VALUE, storageGuideline));
         children.add(new Property("regulatory", "", "Regulatory information about a medication.", 0, java.lang.Integer.MAX_VALUE, regulatory));
         children.add(new Property("definitional", "", "Along with the link to a Medicinal Product Definition resource, this information provides common definitional elements that are needed to understand the specific medication that is being described.", 0, 1, definitional));
       }
@@ -5911,6 +6624,7 @@ public class MedicationKnowledge extends DomainResource {
         case 1791551680: /*medicineClassification*/  return new Property("medicineClassification", "", "Categorization of the medication within a formulary or classification system.", 0, java.lang.Integer.MAX_VALUE, medicineClassification);
         case 1802065795: /*packaging*/  return new Property("packaging", "", "Information that only applies to packages (not products).", 0, java.lang.Integer.MAX_VALUE, packaging);
         case 251885509: /*clinicalUseIssue*/  return new Property("clinicalUseIssue", "Reference(ClinicalUseDefinition)", "Potential clinical issue with or between medication(s) (for example, drug-drug interaction, drug-disease contraindication, drug-allergy interaction, etc.).", 0, java.lang.Integer.MAX_VALUE, clinicalUseIssue);
+        case 1618773173: /*storageGuideline*/  return new Property("storageGuideline", "", "Information on how the medication should be stored, for example, refrigeration temperatures and length of stability at a given temperature.", 0, java.lang.Integer.MAX_VALUE, storageGuideline);
         case -27327848: /*regulatory*/  return new Property("regulatory", "", "Regulatory information about a medication.", 0, java.lang.Integer.MAX_VALUE, regulatory);
         case 101791934: /*definitional*/  return new Property("definitional", "", "Along with the link to a Medicinal Product Definition resource, this information provides common definitional elements that are needed to understand the specific medication that is being described.", 0, 1, definitional);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -5938,6 +6652,7 @@ public class MedicationKnowledge extends DomainResource {
         case 1791551680: /*medicineClassification*/ return this.medicineClassification == null ? new Base[0] : this.medicineClassification.toArray(new Base[this.medicineClassification.size()]); // MedicationKnowledgeMedicineClassificationComponent
         case 1802065795: /*packaging*/ return this.packaging == null ? new Base[0] : this.packaging.toArray(new Base[this.packaging.size()]); // MedicationKnowledgePackagingComponent
         case 251885509: /*clinicalUseIssue*/ return this.clinicalUseIssue == null ? new Base[0] : this.clinicalUseIssue.toArray(new Base[this.clinicalUseIssue.size()]); // Reference
+        case 1618773173: /*storageGuideline*/ return this.storageGuideline == null ? new Base[0] : this.storageGuideline.toArray(new Base[this.storageGuideline.size()]); // MedicationKnowledgeStorageGuidelineComponent
         case -27327848: /*regulatory*/ return this.regulatory == null ? new Base[0] : this.regulatory.toArray(new Base[this.regulatory.size()]); // MedicationKnowledgeRegulatoryComponent
         case 101791934: /*definitional*/ return this.definitional == null ? new Base[0] : new Base[] {this.definitional}; // MedicationKnowledgeDefinitionalComponent
         default: return super.getProperty(hash, name, checkValid);
@@ -6000,6 +6715,9 @@ public class MedicationKnowledge extends DomainResource {
         case 251885509: // clinicalUseIssue
           this.getClinicalUseIssue().add(TypeConvertor.castToReference(value)); // Reference
           return value;
+        case 1618773173: // storageGuideline
+          this.getStorageGuideline().add((MedicationKnowledgeStorageGuidelineComponent) value); // MedicationKnowledgeStorageGuidelineComponent
+          return value;
         case -27327848: // regulatory
           this.getRegulatory().add((MedicationKnowledgeRegulatoryComponent) value); // MedicationKnowledgeRegulatoryComponent
           return value;
@@ -6048,6 +6766,8 @@ public class MedicationKnowledge extends DomainResource {
           this.getPackaging().add((MedicationKnowledgePackagingComponent) value);
         } else if (name.equals("clinicalUseIssue")) {
           this.getClinicalUseIssue().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("storageGuideline")) {
+          this.getStorageGuideline().add((MedicationKnowledgeStorageGuidelineComponent) value);
         } else if (name.equals("regulatory")) {
           this.getRegulatory().add((MedicationKnowledgeRegulatoryComponent) value);
         } else if (name.equals("definitional")) {
@@ -6077,6 +6797,7 @@ public class MedicationKnowledge extends DomainResource {
         case 1791551680:  return addMedicineClassification(); 
         case 1802065795:  return addPackaging(); 
         case 251885509:  return addClinicalUseIssue(); 
+        case 1618773173:  return addStorageGuideline(); 
         case -27327848:  return addRegulatory(); 
         case 101791934:  return getDefinitional();
         default: return super.makeProperty(hash, name);
@@ -6104,6 +6825,7 @@ public class MedicationKnowledge extends DomainResource {
         case 1791551680: /*medicineClassification*/ return new String[] {};
         case 1802065795: /*packaging*/ return new String[] {};
         case 251885509: /*clinicalUseIssue*/ return new String[] {"Reference"};
+        case 1618773173: /*storageGuideline*/ return new String[] {};
         case -27327848: /*regulatory*/ return new String[] {};
         case 101791934: /*definitional*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
@@ -6165,6 +6887,9 @@ public class MedicationKnowledge extends DomainResource {
         }
         else if (name.equals("clinicalUseIssue")) {
           return addClinicalUseIssue();
+        }
+        else if (name.equals("storageGuideline")) {
+          return addStorageGuideline();
         }
         else if (name.equals("regulatory")) {
           return addRegulatory();
@@ -6259,6 +6984,11 @@ public class MedicationKnowledge extends DomainResource {
           for (Reference i : clinicalUseIssue)
             dst.clinicalUseIssue.add(i.copy());
         };
+        if (storageGuideline != null) {
+          dst.storageGuideline = new ArrayList<MedicationKnowledgeStorageGuidelineComponent>();
+          for (MedicationKnowledgeStorageGuidelineComponent i : storageGuideline)
+            dst.storageGuideline.add(i.copy());
+        };
         if (regulatory != null) {
           dst.regulatory = new ArrayList<MedicationKnowledgeRegulatoryComponent>();
           for (MedicationKnowledgeRegulatoryComponent i : regulatory)
@@ -6286,8 +7016,8 @@ public class MedicationKnowledge extends DomainResource {
            && compareDeep(cost, o.cost, true) && compareDeep(monitoringProgram, o.monitoringProgram, true)
            && compareDeep(indicationGuideline, o.indicationGuideline, true) && compareDeep(medicineClassification, o.medicineClassification, true)
            && compareDeep(packaging, o.packaging, true) && compareDeep(clinicalUseIssue, o.clinicalUseIssue, true)
-           && compareDeep(regulatory, o.regulatory, true) && compareDeep(definitional, o.definitional, true)
-          ;
+           && compareDeep(storageGuideline, o.storageGuideline, true) && compareDeep(regulatory, o.regulatory, true)
+           && compareDeep(definitional, o.definitional, true);
       }
 
       @Override
@@ -6305,7 +7035,8 @@ public class MedicationKnowledge extends DomainResource {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, code, status
           , author, intendedJurisdiction, name, relatedMedicationKnowledge, associatedMedication
           , productType, monograph, preparationInstruction, cost, monitoringProgram, indicationGuideline
-          , medicineClassification, packaging, clinicalUseIssue, regulatory, definitional);
+          , medicineClassification, packaging, clinicalUseIssue, storageGuideline, regulatory
+          , definitional);
       }
 
   @Override

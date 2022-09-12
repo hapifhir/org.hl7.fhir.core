@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,6 +51,216 @@ import ca.uhn.fhir.model.api.annotation.Block;
  */
 @ResourceDef(name="Condition", profile="http://hl7.org/fhir/StructureDefinition/Condition")
 public class Condition extends DomainResource {
+
+    @Block()
+    public static class ConditionParticipantComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Distinguishes the type of involvement of the actor in the activities related to the condition.
+         */
+        @Child(name = "function", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Type of involvement", formalDefinition="Distinguishes the type of involvement of the actor in the activities related to the condition." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/participation-role-type")
+        protected CodeableConcept function;
+
+        /**
+         * Indicates who or what participated in the activities related to the condition.
+         */
+        @Child(name = "actor", type = {Practitioner.class, PractitionerRole.class, Patient.class, RelatedPerson.class, Device.class, Organization.class, CareTeam.class}, order=2, min=1, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Who or what participated in the activities related to the condition", formalDefinition="Indicates who or what participated in the activities related to the condition." )
+        protected Reference actor;
+
+        private static final long serialVersionUID = -576943815L;
+
+    /**
+     * Constructor
+     */
+      public ConditionParticipantComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public ConditionParticipantComponent(Reference actor) {
+        super();
+        this.setActor(actor);
+      }
+
+        /**
+         * @return {@link #function} (Distinguishes the type of involvement of the actor in the activities related to the condition.)
+         */
+        public CodeableConcept getFunction() { 
+          if (this.function == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ConditionParticipantComponent.function");
+            else if (Configuration.doAutoCreate())
+              this.function = new CodeableConcept(); // cc
+          return this.function;
+        }
+
+        public boolean hasFunction() { 
+          return this.function != null && !this.function.isEmpty();
+        }
+
+        /**
+         * @param value {@link #function} (Distinguishes the type of involvement of the actor in the activities related to the condition.)
+         */
+        public ConditionParticipantComponent setFunction(CodeableConcept value) { 
+          this.function = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #actor} (Indicates who or what participated in the activities related to the condition.)
+         */
+        public Reference getActor() { 
+          if (this.actor == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ConditionParticipantComponent.actor");
+            else if (Configuration.doAutoCreate())
+              this.actor = new Reference(); // cc
+          return this.actor;
+        }
+
+        public boolean hasActor() { 
+          return this.actor != null && !this.actor.isEmpty();
+        }
+
+        /**
+         * @param value {@link #actor} (Indicates who or what participated in the activities related to the condition.)
+         */
+        public ConditionParticipantComponent setActor(Reference value) { 
+          this.actor = value;
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("function", "CodeableConcept", "Distinguishes the type of involvement of the actor in the activities related to the condition.", 0, 1, function));
+          children.add(new Property("actor", "Reference(Practitioner|PractitionerRole|Patient|RelatedPerson|Device|Organization|CareTeam)", "Indicates who or what participated in the activities related to the condition.", 0, 1, actor));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 1380938712: /*function*/  return new Property("function", "CodeableConcept", "Distinguishes the type of involvement of the actor in the activities related to the condition.", 0, 1, function);
+          case 92645877: /*actor*/  return new Property("actor", "Reference(Practitioner|PractitionerRole|Patient|RelatedPerson|Device|Organization|CareTeam)", "Indicates who or what participated in the activities related to the condition.", 0, 1, actor);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 1380938712: /*function*/ return this.function == null ? new Base[0] : new Base[] {this.function}; // CodeableConcept
+        case 92645877: /*actor*/ return this.actor == null ? new Base[0] : new Base[] {this.actor}; // Reference
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 1380938712: // function
+          this.function = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 92645877: // actor
+          this.actor = TypeConvertor.castToReference(value); // Reference
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("function")) {
+          this.function = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("actor")) {
+          this.actor = TypeConvertor.castToReference(value); // Reference
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 1380938712:  return getFunction();
+        case 92645877:  return getActor();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 1380938712: /*function*/ return new String[] {"CodeableConcept"};
+        case 92645877: /*actor*/ return new String[] {"Reference"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("function")) {
+          this.function = new CodeableConcept();
+          return this.function;
+        }
+        else if (name.equals("actor")) {
+          this.actor = new Reference();
+          return this.actor;
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public ConditionParticipantComponent copy() {
+        ConditionParticipantComponent dst = new ConditionParticipantComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ConditionParticipantComponent dst) {
+        super.copyValues(dst);
+        dst.function = function == null ? null : function.copy();
+        dst.actor = actor == null ? null : actor.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof ConditionParticipantComponent))
+          return false;
+        ConditionParticipantComponent o = (ConditionParticipantComponent) other_;
+        return compareDeep(function, o.function, true) && compareDeep(actor, o.actor, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof ConditionParticipantComponent))
+          return false;
+        ConditionParticipantComponent o = (ConditionParticipantComponent) other_;
+        return true;
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(function, actor);
+      }
+
+  public String fhirType() {
+    return "Condition.participant";
+
+  }
+
+  }
 
     @Block()
     public static class ConditionStageComponent extends BackboneElement implements IBaseBackboneElement {
@@ -335,272 +545,6 @@ public class Condition extends DomainResource {
 
   }
 
-    @Block()
-    public static class ConditionEvidenceComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * A manifestation or symptom that led to the recording of this condition.
-         */
-        @Child(name = "code", type = {CodeableConcept.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Manifestation/symptom", formalDefinition="A manifestation or symptom that led to the recording of this condition." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/manifestation-or-symptom")
-        protected List<CodeableConcept> code;
-
-        /**
-         * Links to other relevant information, including pathology reports.
-         */
-        @Child(name = "detail", type = {Reference.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Supporting information found elsewhere", formalDefinition="Links to other relevant information, including pathology reports." )
-        protected List<Reference> detail;
-
-        private static final long serialVersionUID = -672691342L;
-
-    /**
-     * Constructor
-     */
-      public ConditionEvidenceComponent() {
-        super();
-      }
-
-        /**
-         * @return {@link #code} (A manifestation or symptom that led to the recording of this condition.)
-         */
-        public List<CodeableConcept> getCode() { 
-          if (this.code == null)
-            this.code = new ArrayList<CodeableConcept>();
-          return this.code;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public ConditionEvidenceComponent setCode(List<CodeableConcept> theCode) { 
-          this.code = theCode;
-          return this;
-        }
-
-        public boolean hasCode() { 
-          if (this.code == null)
-            return false;
-          for (CodeableConcept item : this.code)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public CodeableConcept addCode() { //3
-          CodeableConcept t = new CodeableConcept();
-          if (this.code == null)
-            this.code = new ArrayList<CodeableConcept>();
-          this.code.add(t);
-          return t;
-        }
-
-        public ConditionEvidenceComponent addCode(CodeableConcept t) { //3
-          if (t == null)
-            return this;
-          if (this.code == null)
-            this.code = new ArrayList<CodeableConcept>();
-          this.code.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #code}, creating it if it does not already exist {3}
-         */
-        public CodeableConcept getCodeFirstRep() { 
-          if (getCode().isEmpty()) {
-            addCode();
-          }
-          return getCode().get(0);
-        }
-
-        /**
-         * @return {@link #detail} (Links to other relevant information, including pathology reports.)
-         */
-        public List<Reference> getDetail() { 
-          if (this.detail == null)
-            this.detail = new ArrayList<Reference>();
-          return this.detail;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public ConditionEvidenceComponent setDetail(List<Reference> theDetail) { 
-          this.detail = theDetail;
-          return this;
-        }
-
-        public boolean hasDetail() { 
-          if (this.detail == null)
-            return false;
-          for (Reference item : this.detail)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public Reference addDetail() { //3
-          Reference t = new Reference();
-          if (this.detail == null)
-            this.detail = new ArrayList<Reference>();
-          this.detail.add(t);
-          return t;
-        }
-
-        public ConditionEvidenceComponent addDetail(Reference t) { //3
-          if (t == null)
-            return this;
-          if (this.detail == null)
-            this.detail = new ArrayList<Reference>();
-          this.detail.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #detail}, creating it if it does not already exist {3}
-         */
-        public Reference getDetailFirstRep() { 
-          if (getDetail().isEmpty()) {
-            addDetail();
-          }
-          return getDetail().get(0);
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("code", "CodeableConcept", "A manifestation or symptom that led to the recording of this condition.", 0, java.lang.Integer.MAX_VALUE, code));
-          children.add(new Property("detail", "Reference(Any)", "Links to other relevant information, including pathology reports.", 0, java.lang.Integer.MAX_VALUE, detail));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case 3059181: /*code*/  return new Property("code", "CodeableConcept", "A manifestation or symptom that led to the recording of this condition.", 0, java.lang.Integer.MAX_VALUE, code);
-          case -1335224239: /*detail*/  return new Property("detail", "Reference(Any)", "Links to other relevant information, including pathology reports.", 0, java.lang.Integer.MAX_VALUE, detail);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case 3059181: /*code*/ return this.code == null ? new Base[0] : this.code.toArray(new Base[this.code.size()]); // CodeableConcept
-        case -1335224239: /*detail*/ return this.detail == null ? new Base[0] : this.detail.toArray(new Base[this.detail.size()]); // Reference
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case 3059181: // code
-          this.getCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
-          return value;
-        case -1335224239: // detail
-          this.getDetail().add(TypeConvertor.castToReference(value)); // Reference
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("code")) {
-          this.getCode().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("detail")) {
-          this.getDetail().add(TypeConvertor.castToReference(value));
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 3059181:  return addCode(); 
-        case -1335224239:  return addDetail(); 
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 3059181: /*code*/ return new String[] {"CodeableConcept"};
-        case -1335224239: /*detail*/ return new String[] {"Reference"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("code")) {
-          return addCode();
-        }
-        else if (name.equals("detail")) {
-          return addDetail();
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public ConditionEvidenceComponent copy() {
-        ConditionEvidenceComponent dst = new ConditionEvidenceComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(ConditionEvidenceComponent dst) {
-        super.copyValues(dst);
-        if (code != null) {
-          dst.code = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : code)
-            dst.code.add(i.copy());
-        };
-        if (detail != null) {
-          dst.detail = new ArrayList<Reference>();
-          for (Reference i : detail)
-            dst.detail.add(i.copy());
-        };
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof ConditionEvidenceComponent))
-          return false;
-        ConditionEvidenceComponent o = (ConditionEvidenceComponent) other_;
-        return compareDeep(code, o.code, true) && compareDeep(detail, o.detail, true);
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof ConditionEvidenceComponent))
-          return false;
-        ConditionEvidenceComponent o = (ConditionEvidenceComponent) other_;
-        return true;
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, detail);
-      }
-
-  public String fhirType() {
-    return "Condition.evidence";
-
-  }
-
-  }
-
     /**
      * Business identifiers assigned to this condition by the performer or other systems which remain constant as the resource is updated and propagates from server to server.
      */
@@ -688,45 +632,39 @@ public class Condition extends DomainResource {
      * The recordedDate represents when this particular Condition record was created in the system, which is often a system-generated date.
      */
     @Child(name = "recordedDate", type = {DateTimeType.class}, order=11, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Date record was first recorded", formalDefinition="The recordedDate represents when this particular Condition record was created in the system, which is often a system-generated date." )
+    @Description(shortDefinition="Date condition was first recorded", formalDefinition="The recordedDate represents when this particular Condition record was created in the system, which is often a system-generated date." )
     protected DateTimeType recordedDate;
 
     /**
-     * Individual who recorded the record and takes responsibility for its content.
+     * Indicates who or what participated in the activities related to the condition and how they were involved.
      */
-    @Child(name = "recorder", type = {Practitioner.class, PractitionerRole.class, Patient.class, RelatedPerson.class}, order=12, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Who recorded the condition", formalDefinition="Individual who recorded the record and takes responsibility for its content." )
-    protected Reference recorder;
-
-    /**
-     * Individual or device that is making the condition statement.
-     */
-    @Child(name = "asserter", type = {Practitioner.class, PractitionerRole.class, Patient.class, RelatedPerson.class, Device.class}, order=13, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Person or device that asserts this condition", formalDefinition="Individual or device that is making the condition statement." )
-    protected Reference asserter;
+    @Child(name = "participant", type = {}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Who or what participated in the activities related to the condition and how they were involved", formalDefinition="Indicates who or what participated in the activities related to the condition and how they were involved." )
+    protected List<ConditionParticipantComponent> participant;
 
     /**
      * A simple summary of the stage such as "Stage 3" or "Early Onset". The determination of the stage is disease-specific, such as cancer, retinopathy of prematurity, kidney diseases, Alzheimer's, or Parkinson disease.
      */
-    @Child(name = "stage", type = {}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "stage", type = {}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Stage/grade, usually assessed formally", formalDefinition="A simple summary of the stage such as \"Stage 3\" or \"Early Onset\". The determination of the stage is disease-specific, such as cancer, retinopathy of prematurity, kidney diseases, Alzheimer's, or Parkinson disease." )
     protected List<ConditionStageComponent> stage;
 
     /**
      * Supporting evidence / manifestations that are the basis of the Condition's verification status, such as evidence that confirmed or refuted the condition.
      */
-    @Child(name = "evidence", type = {}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "evidence", type = {CodeableReference.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Supporting evidence for the verification status", formalDefinition="Supporting evidence / manifestations that are the basis of the Condition's verification status, such as evidence that confirmed or refuted the condition." )
-    protected List<ConditionEvidenceComponent> evidence;
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/clinical-findings")
+    protected List<CodeableReference> evidence;
 
     /**
      * Additional information about the Condition. This is a general notes/comments entry  for description of the Condition, its diagnosis and prognosis.
      */
-    @Child(name = "note", type = {Annotation.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "note", type = {Annotation.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Additional information about the Condition", formalDefinition="Additional information about the Condition. This is a general notes/comments entry  for description of the Condition, its diagnosis and prognosis." )
     protected List<Annotation> note;
 
-    private static final long serialVersionUID = -1921558897L;
+    private static final long serialVersionUID = -610903427L;
 
   /**
    * Constructor
@@ -1289,51 +1227,56 @@ public class Condition extends DomainResource {
     }
 
     /**
-     * @return {@link #recorder} (Individual who recorded the record and takes responsibility for its content.)
+     * @return {@link #participant} (Indicates who or what participated in the activities related to the condition and how they were involved.)
      */
-    public Reference getRecorder() { 
-      if (this.recorder == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Condition.recorder");
-        else if (Configuration.doAutoCreate())
-          this.recorder = new Reference(); // cc
-      return this.recorder;
-    }
-
-    public boolean hasRecorder() { 
-      return this.recorder != null && !this.recorder.isEmpty();
+    public List<ConditionParticipantComponent> getParticipant() { 
+      if (this.participant == null)
+        this.participant = new ArrayList<ConditionParticipantComponent>();
+      return this.participant;
     }
 
     /**
-     * @param value {@link #recorder} (Individual who recorded the record and takes responsibility for its content.)
+     * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Condition setRecorder(Reference value) { 
-      this.recorder = value;
+    public Condition setParticipant(List<ConditionParticipantComponent> theParticipant) { 
+      this.participant = theParticipant;
+      return this;
+    }
+
+    public boolean hasParticipant() { 
+      if (this.participant == null)
+        return false;
+      for (ConditionParticipantComponent item : this.participant)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public ConditionParticipantComponent addParticipant() { //3
+      ConditionParticipantComponent t = new ConditionParticipantComponent();
+      if (this.participant == null)
+        this.participant = new ArrayList<ConditionParticipantComponent>();
+      this.participant.add(t);
+      return t;
+    }
+
+    public Condition addParticipant(ConditionParticipantComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.participant == null)
+        this.participant = new ArrayList<ConditionParticipantComponent>();
+      this.participant.add(t);
       return this;
     }
 
     /**
-     * @return {@link #asserter} (Individual or device that is making the condition statement.)
+     * @return The first repetition of repeating field {@link #participant}, creating it if it does not already exist {3}
      */
-    public Reference getAsserter() { 
-      if (this.asserter == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Condition.asserter");
-        else if (Configuration.doAutoCreate())
-          this.asserter = new Reference(); // cc
-      return this.asserter;
-    }
-
-    public boolean hasAsserter() { 
-      return this.asserter != null && !this.asserter.isEmpty();
-    }
-
-    /**
-     * @param value {@link #asserter} (Individual or device that is making the condition statement.)
-     */
-    public Condition setAsserter(Reference value) { 
-      this.asserter = value;
-      return this;
+    public ConditionParticipantComponent getParticipantFirstRep() { 
+      if (getParticipant().isEmpty()) {
+        addParticipant();
+      }
+      return getParticipant().get(0);
     }
 
     /**
@@ -1392,16 +1335,16 @@ public class Condition extends DomainResource {
     /**
      * @return {@link #evidence} (Supporting evidence / manifestations that are the basis of the Condition's verification status, such as evidence that confirmed or refuted the condition.)
      */
-    public List<ConditionEvidenceComponent> getEvidence() { 
+    public List<CodeableReference> getEvidence() { 
       if (this.evidence == null)
-        this.evidence = new ArrayList<ConditionEvidenceComponent>();
+        this.evidence = new ArrayList<CodeableReference>();
       return this.evidence;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Condition setEvidence(List<ConditionEvidenceComponent> theEvidence) { 
+    public Condition setEvidence(List<CodeableReference> theEvidence) { 
       this.evidence = theEvidence;
       return this;
     }
@@ -1409,25 +1352,25 @@ public class Condition extends DomainResource {
     public boolean hasEvidence() { 
       if (this.evidence == null)
         return false;
-      for (ConditionEvidenceComponent item : this.evidence)
+      for (CodeableReference item : this.evidence)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public ConditionEvidenceComponent addEvidence() { //3
-      ConditionEvidenceComponent t = new ConditionEvidenceComponent();
+    public CodeableReference addEvidence() { //3
+      CodeableReference t = new CodeableReference();
       if (this.evidence == null)
-        this.evidence = new ArrayList<ConditionEvidenceComponent>();
+        this.evidence = new ArrayList<CodeableReference>();
       this.evidence.add(t);
       return t;
     }
 
-    public Condition addEvidence(ConditionEvidenceComponent t) { //3
+    public Condition addEvidence(CodeableReference t) { //3
       if (t == null)
         return this;
       if (this.evidence == null)
-        this.evidence = new ArrayList<ConditionEvidenceComponent>();
+        this.evidence = new ArrayList<CodeableReference>();
       this.evidence.add(t);
       return this;
     }
@@ -1435,7 +1378,7 @@ public class Condition extends DomainResource {
     /**
      * @return The first repetition of repeating field {@link #evidence}, creating it if it does not already exist {3}
      */
-    public ConditionEvidenceComponent getEvidenceFirstRep() { 
+    public CodeableReference getEvidenceFirstRep() { 
       if (getEvidence().isEmpty()) {
         addEvidence();
       }
@@ -1509,10 +1452,9 @@ public class Condition extends DomainResource {
         children.add(new Property("onset[x]", "dateTime|Age|Period|Range|string", "Estimated or actual date or date-time  the condition began, in the opinion of the clinician.", 0, 1, onset));
         children.add(new Property("abatement[x]", "dateTime|Age|Period|Range|string", "The date or estimated date that the condition resolved or went into remission. This is called \"abatement\" because of the many overloaded connotations associated with \"remission\" or \"resolution\" - Some conditions, such as chronic conditions, are never really resolved, but they can abate.", 0, 1, abatement));
         children.add(new Property("recordedDate", "dateTime", "The recordedDate represents when this particular Condition record was created in the system, which is often a system-generated date.", 0, 1, recordedDate));
-        children.add(new Property("recorder", "Reference(Practitioner|PractitionerRole|Patient|RelatedPerson)", "Individual who recorded the record and takes responsibility for its content.", 0, 1, recorder));
-        children.add(new Property("asserter", "Reference(Practitioner|PractitionerRole|Patient|RelatedPerson|Device)", "Individual or device that is making the condition statement.", 0, 1, asserter));
+        children.add(new Property("participant", "", "Indicates who or what participated in the activities related to the condition and how they were involved.", 0, java.lang.Integer.MAX_VALUE, participant));
         children.add(new Property("stage", "", "A simple summary of the stage such as \"Stage 3\" or \"Early Onset\". The determination of the stage is disease-specific, such as cancer, retinopathy of prematurity, kidney diseases, Alzheimer's, or Parkinson disease.", 0, java.lang.Integer.MAX_VALUE, stage));
-        children.add(new Property("evidence", "", "Supporting evidence / manifestations that are the basis of the Condition's verification status, such as evidence that confirmed or refuted the condition.", 0, java.lang.Integer.MAX_VALUE, evidence));
+        children.add(new Property("evidence", "CodeableReference(Any)", "Supporting evidence / manifestations that are the basis of the Condition's verification status, such as evidence that confirmed or refuted the condition.", 0, java.lang.Integer.MAX_VALUE, evidence));
         children.add(new Property("note", "Annotation", "Additional information about the Condition. This is a general notes/comments entry  for description of the Condition, its diagnosis and prognosis.", 0, java.lang.Integer.MAX_VALUE, note));
       }
 
@@ -1543,10 +1485,9 @@ public class Condition extends DomainResource {
         case 1218906830: /*abatementRange*/  return new Property("abatement[x]", "Range", "The date or estimated date that the condition resolved or went into remission. This is called \"abatement\" because of the many overloaded connotations associated with \"remission\" or \"resolution\" - Some conditions, such as chronic conditions, are never really resolved, but they can abate.", 0, 1, abatement);
         case -822296416: /*abatementString*/  return new Property("abatement[x]", "string", "The date or estimated date that the condition resolved or went into remission. This is called \"abatement\" because of the many overloaded connotations associated with \"remission\" or \"resolution\" - Some conditions, such as chronic conditions, are never really resolved, but they can abate.", 0, 1, abatement);
         case -1952893826: /*recordedDate*/  return new Property("recordedDate", "dateTime", "The recordedDate represents when this particular Condition record was created in the system, which is often a system-generated date.", 0, 1, recordedDate);
-        case -799233858: /*recorder*/  return new Property("recorder", "Reference(Practitioner|PractitionerRole|Patient|RelatedPerson)", "Individual who recorded the record and takes responsibility for its content.", 0, 1, recorder);
-        case -373242253: /*asserter*/  return new Property("asserter", "Reference(Practitioner|PractitionerRole|Patient|RelatedPerson|Device)", "Individual or device that is making the condition statement.", 0, 1, asserter);
+        case 767422259: /*participant*/  return new Property("participant", "", "Indicates who or what participated in the activities related to the condition and how they were involved.", 0, java.lang.Integer.MAX_VALUE, participant);
         case 109757182: /*stage*/  return new Property("stage", "", "A simple summary of the stage such as \"Stage 3\" or \"Early Onset\". The determination of the stage is disease-specific, such as cancer, retinopathy of prematurity, kidney diseases, Alzheimer's, or Parkinson disease.", 0, java.lang.Integer.MAX_VALUE, stage);
-        case 382967383: /*evidence*/  return new Property("evidence", "", "Supporting evidence / manifestations that are the basis of the Condition's verification status, such as evidence that confirmed or refuted the condition.", 0, java.lang.Integer.MAX_VALUE, evidence);
+        case 382967383: /*evidence*/  return new Property("evidence", "CodeableReference(Any)", "Supporting evidence / manifestations that are the basis of the Condition's verification status, such as evidence that confirmed or refuted the condition.", 0, java.lang.Integer.MAX_VALUE, evidence);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Additional information about the Condition. This is a general notes/comments entry  for description of the Condition, its diagnosis and prognosis.", 0, java.lang.Integer.MAX_VALUE, note);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -1568,10 +1509,9 @@ public class Condition extends DomainResource {
         case 105901603: /*onset*/ return this.onset == null ? new Base[0] : new Base[] {this.onset}; // DataType
         case -921554001: /*abatement*/ return this.abatement == null ? new Base[0] : new Base[] {this.abatement}; // DataType
         case -1952893826: /*recordedDate*/ return this.recordedDate == null ? new Base[0] : new Base[] {this.recordedDate}; // DateTimeType
-        case -799233858: /*recorder*/ return this.recorder == null ? new Base[0] : new Base[] {this.recorder}; // Reference
-        case -373242253: /*asserter*/ return this.asserter == null ? new Base[0] : new Base[] {this.asserter}; // Reference
+        case 767422259: /*participant*/ return this.participant == null ? new Base[0] : this.participant.toArray(new Base[this.participant.size()]); // ConditionParticipantComponent
         case 109757182: /*stage*/ return this.stage == null ? new Base[0] : this.stage.toArray(new Base[this.stage.size()]); // ConditionStageComponent
-        case 382967383: /*evidence*/ return this.evidence == null ? new Base[0] : this.evidence.toArray(new Base[this.evidence.size()]); // ConditionEvidenceComponent
+        case 382967383: /*evidence*/ return this.evidence == null ? new Base[0] : this.evidence.toArray(new Base[this.evidence.size()]); // CodeableReference
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -1617,17 +1557,14 @@ public class Condition extends DomainResource {
         case -1952893826: // recordedDate
           this.recordedDate = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
-        case -799233858: // recorder
-          this.recorder = TypeConvertor.castToReference(value); // Reference
-          return value;
-        case -373242253: // asserter
-          this.asserter = TypeConvertor.castToReference(value); // Reference
+        case 767422259: // participant
+          this.getParticipant().add((ConditionParticipantComponent) value); // ConditionParticipantComponent
           return value;
         case 109757182: // stage
           this.getStage().add((ConditionStageComponent) value); // ConditionStageComponent
           return value;
         case 382967383: // evidence
-          this.getEvidence().add((ConditionEvidenceComponent) value); // ConditionEvidenceComponent
+          this.getEvidence().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
         case 3387378: // note
           this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
@@ -1663,14 +1600,12 @@ public class Condition extends DomainResource {
           this.abatement = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("recordedDate")) {
           this.recordedDate = TypeConvertor.castToDateTime(value); // DateTimeType
-        } else if (name.equals("recorder")) {
-          this.recorder = TypeConvertor.castToReference(value); // Reference
-        } else if (name.equals("asserter")) {
-          this.asserter = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("participant")) {
+          this.getParticipant().add((ConditionParticipantComponent) value);
         } else if (name.equals("stage")) {
           this.getStage().add((ConditionStageComponent) value);
         } else if (name.equals("evidence")) {
-          this.getEvidence().add((ConditionEvidenceComponent) value);
+          this.getEvidence().add(TypeConvertor.castToCodeableReference(value));
         } else if (name.equals("note")) {
           this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else
@@ -1695,8 +1630,7 @@ public class Condition extends DomainResource {
         case -584196495:  return getAbatement();
         case -921554001:  return getAbatement();
         case -1952893826:  return getRecordedDateElement();
-        case -799233858:  return getRecorder();
-        case -373242253:  return getAsserter();
+        case 767422259:  return addParticipant(); 
         case 109757182:  return addStage(); 
         case 382967383:  return addEvidence(); 
         case 3387378:  return addNote(); 
@@ -1720,10 +1654,9 @@ public class Condition extends DomainResource {
         case 105901603: /*onset*/ return new String[] {"dateTime", "Age", "Period", "Range", "string"};
         case -921554001: /*abatement*/ return new String[] {"dateTime", "Age", "Period", "Range", "string"};
         case -1952893826: /*recordedDate*/ return new String[] {"dateTime"};
-        case -799233858: /*recorder*/ return new String[] {"Reference"};
-        case -373242253: /*asserter*/ return new String[] {"Reference"};
+        case 767422259: /*participant*/ return new String[] {};
         case 109757182: /*stage*/ return new String[] {};
-        case 382967383: /*evidence*/ return new String[] {};
+        case 382967383: /*evidence*/ return new String[] {"CodeableReference"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -1808,13 +1741,8 @@ public class Condition extends DomainResource {
         else if (name.equals("recordedDate")) {
           throw new FHIRException("Cannot call addChild on a primitive type Condition.recordedDate");
         }
-        else if (name.equals("recorder")) {
-          this.recorder = new Reference();
-          return this.recorder;
-        }
-        else if (name.equals("asserter")) {
-          this.asserter = new Reference();
-          return this.asserter;
+        else if (name.equals("participant")) {
+          return addParticipant();
         }
         else if (name.equals("stage")) {
           return addStage();
@@ -1866,16 +1794,19 @@ public class Condition extends DomainResource {
         dst.onset = onset == null ? null : onset.copy();
         dst.abatement = abatement == null ? null : abatement.copy();
         dst.recordedDate = recordedDate == null ? null : recordedDate.copy();
-        dst.recorder = recorder == null ? null : recorder.copy();
-        dst.asserter = asserter == null ? null : asserter.copy();
+        if (participant != null) {
+          dst.participant = new ArrayList<ConditionParticipantComponent>();
+          for (ConditionParticipantComponent i : participant)
+            dst.participant.add(i.copy());
+        };
         if (stage != null) {
           dst.stage = new ArrayList<ConditionStageComponent>();
           for (ConditionStageComponent i : stage)
             dst.stage.add(i.copy());
         };
         if (evidence != null) {
-          dst.evidence = new ArrayList<ConditionEvidenceComponent>();
-          for (ConditionEvidenceComponent i : evidence)
+          dst.evidence = new ArrayList<CodeableReference>();
+          for (CodeableReference i : evidence)
             dst.evidence.add(i.copy());
         };
         if (note != null) {
@@ -1901,8 +1832,8 @@ public class Condition extends DomainResource {
            && compareDeep(severity, o.severity, true) && compareDeep(code, o.code, true) && compareDeep(bodySite, o.bodySite, true)
            && compareDeep(subject, o.subject, true) && compareDeep(encounter, o.encounter, true) && compareDeep(onset, o.onset, true)
            && compareDeep(abatement, o.abatement, true) && compareDeep(recordedDate, o.recordedDate, true)
-           && compareDeep(recorder, o.recorder, true) && compareDeep(asserter, o.asserter, true) && compareDeep(stage, o.stage, true)
-           && compareDeep(evidence, o.evidence, true) && compareDeep(note, o.note, true);
+           && compareDeep(participant, o.participant, true) && compareDeep(stage, o.stage, true) && compareDeep(evidence, o.evidence, true)
+           && compareDeep(note, o.note, true);
       }
 
       @Override
@@ -1918,7 +1849,7 @@ public class Condition extends DomainResource {
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, clinicalStatus
           , verificationStatus, category, severity, code, bodySite, subject, encounter, onset
-          , abatement, recordedDate, recorder, asserter, stage, evidence, note);
+          , abatement, recordedDate, participant, stage, evidence, note);
       }
 
   @Override
@@ -1931,17 +1862,17 @@ public class Condition extends DomainResource {
    * <p>
    * Description: <b>Abatement as age or age range</b><br>
    * Type: <b>quantity</b><br>
-   * Path: <b>Condition.abatement.as(Age) | Condition.abatement.as(Range)</b><br>
+   * Path: <b>Condition.abatement.ofType(Age) | Condition.abatement.ofType(Range)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="abatement-age", path="Condition.abatement.as(Age) | Condition.abatement.as(Range)", description="Abatement as age or age range", type="quantity" )
+  @SearchParamDefinition(name="abatement-age", path="Condition.abatement.ofType(Age) | Condition.abatement.ofType(Range)", description="Abatement as age or age range", type="quantity" )
   public static final String SP_ABATEMENT_AGE = "abatement-age";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>abatement-age</b>
    * <p>
    * Description: <b>Abatement as age or age range</b><br>
    * Type: <b>quantity</b><br>
-   * Path: <b>Condition.abatement.as(Age) | Condition.abatement.as(Range)</b><br>
+   * Path: <b>Condition.abatement.ofType(Age) | Condition.abatement.ofType(Range)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.QuantityClientParam ABATEMENT_AGE = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_ABATEMENT_AGE);
@@ -1951,17 +1882,17 @@ public class Condition extends DomainResource {
    * <p>
    * Description: <b>Date-related abatements (dateTime and period)</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>Condition.abatement.as(dateTime) | Condition.abatement.as(Period)</b><br>
+   * Path: <b>Condition.abatement.ofType(dateTime) | Condition.abatement.ofType(Period)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="abatement-date", path="Condition.abatement.as(dateTime) | Condition.abatement.as(Period)", description="Date-related abatements (dateTime and period)", type="date" )
+  @SearchParamDefinition(name="abatement-date", path="Condition.abatement.ofType(dateTime) | Condition.abatement.ofType(Period)", description="Date-related abatements (dateTime and period)", type="date" )
   public static final String SP_ABATEMENT_DATE = "abatement-date";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>abatement-date</b>
    * <p>
    * Description: <b>Date-related abatements (dateTime and period)</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>Condition.abatement.as(dateTime) | Condition.abatement.as(Period)</b><br>
+   * Path: <b>Condition.abatement.ofType(dateTime) | Condition.abatement.ofType(Period)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam ABATEMENT_DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_ABATEMENT_DATE);
@@ -1971,46 +1902,20 @@ public class Condition extends DomainResource {
    * <p>
    * Description: <b>Abatement as a string</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Condition.abatement.as(string)</b><br>
+   * Path: <b>Condition.abatement.ofType(string)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="abatement-string", path="Condition.abatement.as(string)", description="Abatement as a string", type="string" )
+  @SearchParamDefinition(name="abatement-string", path="Condition.abatement.ofType(string)", description="Abatement as a string", type="string" )
   public static final String SP_ABATEMENT_STRING = "abatement-string";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>abatement-string</b>
    * <p>
    * Description: <b>Abatement as a string</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Condition.abatement.as(string)</b><br>
+   * Path: <b>Condition.abatement.ofType(string)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.StringClientParam ABATEMENT_STRING = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ABATEMENT_STRING);
-
- /**
-   * Search parameter: <b>asserter</b>
-   * <p>
-   * Description: <b>Person or device that asserts this condition</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Condition.asserter</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="asserter", path="Condition.asserter", description="Person or device that asserts this condition", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={Device.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
-  public static final String SP_ASSERTER = "asserter";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>asserter</b>
-   * <p>
-   * Description: <b>Person or device that asserts this condition</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Condition.asserter</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ASSERTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ASSERTER);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Condition:asserter</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ASSERTER = new ca.uhn.fhir.model.api.Include("Condition:asserter").toLocked();
 
  /**
    * Search parameter: <b>body-site</b>
@@ -2103,17 +2008,17 @@ public class Condition extends DomainResource {
    * <p>
    * Description: <b>Supporting information found elsewhere</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Condition.evidence.detail</b><br>
+   * Path: <b>Condition.evidence.reference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="evidence-detail", path="Condition.evidence.detail", description="Supporting information found elsewhere", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="evidence-detail", path="Condition.evidence.reference", description="Supporting information found elsewhere", type="reference" )
   public static final String SP_EVIDENCE_DETAIL = "evidence-detail";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>evidence-detail</b>
    * <p>
    * Description: <b>Supporting information found elsewhere</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Condition.evidence.detail</b><br>
+   * Path: <b>Condition.evidence.reference</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam EVIDENCE_DETAIL = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_EVIDENCE_DETAIL);
@@ -2129,17 +2034,17 @@ public class Condition extends DomainResource {
    * <p>
    * Description: <b>Manifestation/symptom</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Condition.evidence.code</b><br>
+   * Path: <b>Condition.evidence.concept</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="evidence", path="Condition.evidence.code", description="Manifestation/symptom", type="token" )
+  @SearchParamDefinition(name="evidence", path="Condition.evidence.concept", description="Manifestation/symptom", type="token" )
   public static final String SP_EVIDENCE = "evidence";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>evidence</b>
    * <p>
    * Description: <b>Manifestation/symptom</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Condition.evidence.code</b><br>
+   * Path: <b>Condition.evidence.concept</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam EVIDENCE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EVIDENCE);
@@ -2149,17 +2054,17 @@ public class Condition extends DomainResource {
    * <p>
    * Description: <b>Onsets as age or age range</b><br>
    * Type: <b>quantity</b><br>
-   * Path: <b>Condition.onset.as(Age) | Condition.onset.as(Range)</b><br>
+   * Path: <b>Condition.onset.ofType(Age) | Condition.onset.ofType(Range)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="onset-age", path="Condition.onset.as(Age) | Condition.onset.as(Range)", description="Onsets as age or age range", type="quantity" )
+  @SearchParamDefinition(name="onset-age", path="Condition.onset.ofType(Age) | Condition.onset.ofType(Range)", description="Onsets as age or age range", type="quantity" )
   public static final String SP_ONSET_AGE = "onset-age";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>onset-age</b>
    * <p>
    * Description: <b>Onsets as age or age range</b><br>
    * Type: <b>quantity</b><br>
-   * Path: <b>Condition.onset.as(Age) | Condition.onset.as(Range)</b><br>
+   * Path: <b>Condition.onset.ofType(Age) | Condition.onset.ofType(Range)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.QuantityClientParam ONSET_AGE = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_ONSET_AGE);
@@ -2169,17 +2074,17 @@ public class Condition extends DomainResource {
    * <p>
    * Description: <b>Date related onsets (dateTime and Period)</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>Condition.onset.as(dateTime) | Condition.onset.as(Period)</b><br>
+   * Path: <b>Condition.onset.ofType(dateTime) | Condition.onset.ofType(Period)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="onset-date", path="Condition.onset.as(dateTime) | Condition.onset.as(Period)", description="Date related onsets (dateTime and Period)", type="date" )
+  @SearchParamDefinition(name="onset-date", path="Condition.onset.ofType(dateTime) | Condition.onset.ofType(Period)", description="Date related onsets (dateTime and Period)", type="date" )
   public static final String SP_ONSET_DATE = "onset-date";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>onset-date</b>
    * <p>
    * Description: <b>Date related onsets (dateTime and Period)</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>Condition.onset.as(dateTime) | Condition.onset.as(Period)</b><br>
+   * Path: <b>Condition.onset.ofType(dateTime) | Condition.onset.ofType(Period)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam ONSET_DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_ONSET_DATE);
@@ -2189,20 +2094,66 @@ public class Condition extends DomainResource {
    * <p>
    * Description: <b>Onsets as a string</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Condition.onset.as(string)</b><br>
+   * Path: <b>Condition.onset.ofType(string)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="onset-info", path="Condition.onset.as(string)", description="Onsets as a string", type="string" )
+  @SearchParamDefinition(name="onset-info", path="Condition.onset.ofType(string)", description="Onsets as a string", type="string" )
   public static final String SP_ONSET_INFO = "onset-info";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>onset-info</b>
    * <p>
    * Description: <b>Onsets as a string</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Condition.onset.as(string)</b><br>
+   * Path: <b>Condition.onset.ofType(string)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.StringClientParam ONSET_INFO = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ONSET_INFO);
+
+ /**
+   * Search parameter: <b>participant-actor</b>
+   * <p>
+   * Description: <b>Who or what participated in the activities related to the condition</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Condition.participant.actor</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="participant-actor", path="Condition.participant.actor", description="Who or what participated in the activities related to the condition", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={CareTeam.class, Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  public static final String SP_PARTICIPANT_ACTOR = "participant-actor";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>participant-actor</b>
+   * <p>
+   * Description: <b>Who or what participated in the activities related to the condition</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Condition.participant.actor</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PARTICIPANT_ACTOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PARTICIPANT_ACTOR);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Condition:participant-actor</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PARTICIPANT_ACTOR = new ca.uhn.fhir.model.api.Include("Condition:participant-actor").toLocked();
+
+ /**
+   * Search parameter: <b>participant-function</b>
+   * <p>
+   * Description: <b>Type of involvement of the actor in the activities related to the condition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Condition.participant.function</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="participant-function", path="Condition.participant.function", description="Type of involvement of the actor in the activities related to the condition", type="token" )
+  public static final String SP_PARTICIPANT_FUNCTION = "participant-function";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>participant-function</b>
+   * <p>
+   * Description: <b>Type of involvement of the actor in the activities related to the condition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Condition.participant.function</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PARTICIPANT_FUNCTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PARTICIPANT_FUNCTION);
 
  /**
    * Search parameter: <b>recorded-date</b>
@@ -2328,13 +2279,12 @@ public class Condition extends DomainResource {
 * [MedicationUsage](medicationusage.html): Return statements of this medication code
 * [Observation](observation.html): The code of the observation type
 * [Procedure](procedure.html): A code to identify a  procedure
-* [ServiceRequest](servicerequest.html): What is being requested/ordered
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | DeviceRequest.code.concept | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | MedicationAdministration.medication.concept | MedicationDispense.medication.concept | MedicationRequest.medication.concept | MedicationUsage.medication.concept | Observation.code | Procedure.code | ServiceRequest.code</b><br>
+   * Path: <b>AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | DeviceRequest.code.concept | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | MedicationAdministration.medication.concept | MedicationDispense.medication.concept | MedicationRequest.medication.concept | MedicationUsage.medication.concept | Observation.code | Procedure.code</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="code", path="AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | DeviceRequest.code.concept | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | MedicationAdministration.medication.concept | MedicationDispense.medication.concept | MedicationRequest.medication.concept | MedicationUsage.medication.concept | Observation.code | Procedure.code | ServiceRequest.code", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Code that identifies the allergy or intolerance\r\n* [Condition](condition.html): Code for the condition\r\n* [DeviceRequest](devicerequest.html): Code for what is being requested/ordered\r\n* [DiagnosticReport](diagnosticreport.html): The code for the report, as opposed to codes for the atomic results, which are the names on the observation resource referred to from the result\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a condition code\r\n* [List](list.html): What the purpose of this list is\r\n* [Medication](medication.html): Returns medications for a specific code\r\n* [MedicationAdministration](medicationadministration.html): Return administrations of this medication code\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses of this medicine code\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions of this medication code\r\n* [MedicationUsage](medicationusage.html): Return statements of this medication code\r\n* [Observation](observation.html): The code of the observation type\r\n* [Procedure](procedure.html): A code to identify a  procedure\r\n* [ServiceRequest](servicerequest.html): What is being requested/ordered\r\n", type="token" )
+  @SearchParamDefinition(name="code", path="AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | DeviceRequest.code.concept | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | MedicationAdministration.medication.concept | MedicationDispense.medication.concept | MedicationRequest.medication.concept | MedicationUsage.medication.concept | Observation.code | Procedure.code", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Code that identifies the allergy or intolerance\r\n* [Condition](condition.html): Code for the condition\r\n* [DeviceRequest](devicerequest.html): Code for what is being requested/ordered\r\n* [DiagnosticReport](diagnosticreport.html): The code for the report, as opposed to codes for the atomic results, which are the names on the observation resource referred to from the result\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a condition code\r\n* [List](list.html): What the purpose of this list is\r\n* [Medication](medication.html): Returns medications for a specific code\r\n* [MedicationAdministration](medicationadministration.html): Return administrations of this medication code\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses of this medicine code\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions of this medication code\r\n* [MedicationUsage](medicationusage.html): Return statements of this medication code\r\n* [Observation](observation.html): The code of the observation type\r\n* [Procedure](procedure.html): A code to identify a  procedure\r\n", type="token" )
   public static final String SP_CODE = "code";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>code</b>
@@ -2354,10 +2304,9 @@ public class Condition extends DomainResource {
 * [MedicationUsage](medicationusage.html): Return statements of this medication code
 * [Observation](observation.html): The code of the observation type
 * [Procedure](procedure.html): A code to identify a  procedure
-* [ServiceRequest](servicerequest.html): What is being requested/ordered
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | DeviceRequest.code.concept | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | MedicationAdministration.medication.concept | MedicationDispense.medication.concept | MedicationRequest.medication.concept | MedicationUsage.medication.concept | Observation.code | Procedure.code | ServiceRequest.code</b><br>
+   * Path: <b>AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | DeviceRequest.code.concept | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | MedicationAdministration.medication.concept | MedicationDispense.medication.concept | MedicationRequest.medication.concept | MedicationUsage.medication.concept | Observation.code | Procedure.code</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
@@ -2399,10 +2348,10 @@ public class Condition extends DomainResource {
 * [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.content.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier</b><br>
+   * Path: <b>AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="identifier", path="AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.content.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): External ids for this item\r\n* [CarePlan](careplan.html): External Ids for this plan\r\n* [CareTeam](careteam.html): External Ids for this team\r\n* [Composition](composition.html): Version-independent identifier for the Composition\r\n* [Condition](condition.html): A unique identifier of the condition record\r\n* [Consent](consent.html): Identifier for this record (external references)\r\n* [DetectedIssue](detectedissue.html): Unique id for the detected issue\r\n* [DeviceRequest](devicerequest.html): Business identifier for request/order\r\n* [DiagnosticReport](diagnosticreport.html): An identifier for the report\r\n* [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents\r\n* [DocumentReference](documentreference.html): Identifier of the attachment binary\r\n* [Encounter](encounter.html): Identifier(s) by which this encounter is known\r\n* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier\r\n* [Goal](goal.html): External Ids for this goal\r\n* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID\r\n* [Immunization](immunization.html): Business identifier\r\n* [List](list.html): Business identifier\r\n* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier\r\n* [MedicationUsage](medicationusage.html): Return statements with this external identifier\r\n* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier\r\n* [Observation](observation.html): The unique id for a particular observation\r\n* [Procedure](procedure.html): A unique identifier for a procedure\r\n* [RiskAssessment](riskassessment.html): Unique identifier for the assessment\r\n* [ServiceRequest](servicerequest.html): Identifiers assigned to this order\r\n* [SupplyDelivery](supplydelivery.html): External identifier\r\n* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest\r\n* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier\r\n", type="token" )
+  @SearchParamDefinition(name="identifier", path="AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): External ids for this item\r\n* [CarePlan](careplan.html): External Ids for this plan\r\n* [CareTeam](careteam.html): External Ids for this team\r\n* [Composition](composition.html): Version-independent identifier for the Composition\r\n* [Condition](condition.html): A unique identifier of the condition record\r\n* [Consent](consent.html): Identifier for this record (external references)\r\n* [DetectedIssue](detectedissue.html): Unique id for the detected issue\r\n* [DeviceRequest](devicerequest.html): Business identifier for request/order\r\n* [DiagnosticReport](diagnosticreport.html): An identifier for the report\r\n* [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents\r\n* [DocumentReference](documentreference.html): Identifier of the attachment binary\r\n* [Encounter](encounter.html): Identifier(s) by which this encounter is known\r\n* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier\r\n* [Goal](goal.html): External Ids for this goal\r\n* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID\r\n* [Immunization](immunization.html): Business identifier\r\n* [List](list.html): Business identifier\r\n* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier\r\n* [MedicationUsage](medicationusage.html): Return statements with this external identifier\r\n* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier\r\n* [Observation](observation.html): The unique id for a particular observation\r\n* [Procedure](procedure.html): A unique identifier for a procedure\r\n* [RiskAssessment](riskassessment.html): Unique identifier for the assessment\r\n* [ServiceRequest](servicerequest.html): Identifiers assigned to this order\r\n* [SupplyDelivery](supplydelivery.html): External identifier\r\n* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest\r\n* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier\r\n", type="token" )
   public static final String SP_IDENTIFIER = "identifier";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
@@ -2441,7 +2390,7 @@ public class Condition extends DomainResource {
 * [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.content.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier</b><br>
+   * Path: <b>AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
@@ -2476,7 +2425,7 @@ public class Condition extends DomainResource {
 * [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
 * [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
 * [MedicationUsage](medicationusage.html): Returns statements for a specific patient.
-* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement
+* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement
 * [Observation](observation.html): The subject that the observation is about (if patient)
 * [Procedure](procedure.html): Search by subject - a patient
 * [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
@@ -2485,10 +2434,10 @@ public class Condition extends DomainResource {
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={BiologicallyDerivedProduct.class, Device.class, Group.class, Location.class, Medication.class, NutritionProduct.class, Organization.class, Patient.class, Practitioner.class, Procedure.class, Substance.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
@@ -2520,7 +2469,7 @@ public class Condition extends DomainResource {
 * [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
 * [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
 * [MedicationUsage](medicationusage.html): Returns statements for a specific patient.
-* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement
+* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement
 * [Observation](observation.html): The subject that the observation is about (if patient)
 * [Procedure](procedure.html): Search by subject - a patient
 * [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
@@ -2529,7 +2478,7 @@ public class Condition extends DomainResource {
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);

@@ -54,7 +54,6 @@ import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Enumeration;
-import org.hl7.fhir.r5.model.Enumerations.ResourceTypeEnum;
 import org.hl7.fhir.r5.model.Enumerations.SearchParamType;
 import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.model.StringType;
@@ -2364,7 +2363,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
        */
       jdoc(indent, "@return Returns a reference to <code>this</code> for easy method chaining");
       write(indent+"public " + className + " set"+getTitle(getElementName(e.getName(), false))+"(" + "List<"+listGenericType+"> the" + getTitle(getElementName(e.getName(), false)) + ") { \r\n");
-      write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
+      write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
       write(indent+"}\r\n");
 
       /*
@@ -2380,7 +2379,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
          */
         jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
         write(indent+"public "+tn+" add"+getTitle(getElementName(e.getName(), false))+"Element(){//2 \r\n");
-        write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
+        write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
         write(indent+"}\r\n");
 
         /*
@@ -2388,7 +2387,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
          */
         jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
         write(indent+"public "+className+" add"+getTitle(getElementName(e.getName(), false))+"("+simpleType+" value) { //1\r\n");
-        write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
+        write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
         write(indent+"}\r\n");
 
         /*
@@ -2404,21 +2403,21 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
            * addXXX() for repeatable composite
            */
           write(indent+"public "+tn+" add"+getTitle(getElementName(e.getName(), false))+"() { //3\r\n");
-          write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
+          write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
           write(indent+"}\r\n");
 
           /*
            * addXXX(foo) for repeatable composite
            */
           write(indent+"public "+className+" add"+getTitle(getElementName(e.getName(), false))+"("+tn+" t) { //3\r\n");
-          write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
+          write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
           write(indent+"}\r\n");
         } else {
           /*
            * addXXX(foo) for repeatable composite
            */
           write(indent+"public "+className+" add"+getTitle(getElementName(e.getName(), false))+"("+tn+" t) { //3\r\n");
-          write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
+          write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
           write(indent+"}\r\n");
         }
 
@@ -2428,7 +2427,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
         if (!"DomainResource".equals(className)) {
           jdoc(indent, "@return The first repetition of repeating field {@link #"+getElementName(e.getName(), true)+"}, creating it if it does not already exist {2}");
           write(indent+"public "+tn+" get"+getTitle(getElementName(e.getName(), false))+"FirstRep() { \r\n");
-          write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
+          write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
           write(indent+"}\r\n");
         }
       }
@@ -2456,10 +2455,10 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
         write("\r\n");
         jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+"). This is the underlying object with id, value and extensions. The accessor \"get"+getTitle(getElementName(e.getName(), false))+"\" gives direct access to the value");
         write(indent+"public "+className+" set"+getTitle(getElementName(e.getName(), false))+"Element("+tn+" value) { \r\n");
-        write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
+        write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
         write(indent+"}\r\n");
         write(indent+"public "+simpleType+" get"+getTitle(getElementName(e.getName(), false))+"() { \r\n");
-        write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
+        write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
         write(indent+"}\r\n");
         generateUnimplementedSetter(analysis, e, indent, className, tn, simpleType, analysis.getName());
 
@@ -2471,16 +2470,18 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
       } else {
         jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
         write(indent+"public "+tn+" get"+getTitle(getElementName(e.getName(), false))+"() { \r\n");
-        write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
+        write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
         write(indent+"}\r\n");
         if (e.getType().size() > 1 && (tn.equals("DataType") || !tn.endsWith(".DataType"))) {
           for (TypeRefComponent t : e.getType()) {
             jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
             String ttn = getTypename(t);
-            write(indent+"public "+ttn+" get"+getTitle(getElementName(e.getName(), false))+ttn+"() { throws FHIRException; \r\n");
-            write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
+            write(indent+"public "+ttn+" get"+getTitle(getElementName(e.getName(), false))+ttn+"() { \r\n");
+            write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
             write(indent+"}\r\n");
             write(indent+"public boolean has"+getTitle(getElementName(e.getName(), false))+ttn+"() { \r\n");
+            write(indent+"  return false;////K \r\n");
+            write(indent+"}\r\n");
           }
         }
         write(indent+"public boolean has"+getTitle(getElementName(e.getName(), false))+"() { \r\n");
@@ -2488,7 +2489,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
         write(indent+"}\r\n");
         jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
         write(indent+"public "+className+" set"+getTitle(getElementName(e.getName(), false))+"("+tn+" value) { \r\n");
-        write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
+        write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
         write(indent+"}\r\n");
         write("\r\n");
       }
@@ -2500,7 +2501,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
   private void generateUnimplementedSetter(Analysis analysis, ElementDefinition e, String indent, String className, String tn, String simpleType, String rn) throws IOException {
     jdoc(indent, "@param value "+replaceTitle(rn, e.getDefinition()));
     write(indent+"public "+className+" set"+getTitle(getElementName(e.getName(), false))+"("+simpleType+" value) { \r\n");
-    write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
+    write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
     write(indent+"}\r\n");
   }
 }

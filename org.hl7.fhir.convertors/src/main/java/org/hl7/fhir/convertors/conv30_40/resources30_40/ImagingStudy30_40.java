@@ -1,5 +1,7 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
+import java.util.List;
+
 import org.hl7.fhir.convertors.context.ConversionContext30_40;
 import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
@@ -12,8 +14,6 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Unsi
 import org.hl7.fhir.dstu3.model.Reference;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.CodeableConcept;
-
-import java.util.List;
 
 public class ImagingStudy30_40 {
 
@@ -202,7 +202,7 @@ public class ImagingStudy30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ImagingStudy.ImagingStudySeriesComponent tgt = new org.hl7.fhir.r4.model.ImagingStudy.ImagingStudySeriesComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasUid()) {
       if (src.hasUid())
         tgt.setUid(src.getUid());
@@ -248,7 +248,7 @@ public class ImagingStudy30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.ImagingStudy.ImagingStudySeriesComponent tgt = new org.hl7.fhir.dstu3.model.ImagingStudy.ImagingStudySeriesComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasUid()) {
       if (src.hasUid())
         tgt.setUid(src.getUid());
@@ -294,7 +294,7 @@ public class ImagingStudy30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ImagingStudy.ImagingStudySeriesInstanceComponent tgt = new org.hl7.fhir.r4.model.ImagingStudy.ImagingStudySeriesInstanceComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasUid()) {
       if (src.hasUid())
         tgt.setUid(src.getUid());
@@ -320,7 +320,7 @@ public class ImagingStudy30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.ImagingStudy.ImagingStudySeriesInstanceComponent tgt = new org.hl7.fhir.dstu3.model.ImagingStudy.ImagingStudySeriesInstanceComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasUid()) {
       if (src.hasUid())
         tgt.setUid(src.getUid());

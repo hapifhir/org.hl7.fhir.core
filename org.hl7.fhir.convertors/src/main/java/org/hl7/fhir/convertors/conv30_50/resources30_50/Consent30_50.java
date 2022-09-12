@@ -20,77 +20,77 @@ public class Consent30_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.Consent.ConsentPolicyComponent convertConsentPolicyComponent(org.hl7.fhir.dstu3.model.Consent.ConsentPolicyComponent src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Consent.ConsentPolicyBasisComponent convertConsentPolicyComponent(org.hl7.fhir.dstu3.model.Consent.ConsentPolicyComponent src) throws FHIRException {
     if (src == null) return null;
-    org.hl7.fhir.r5.model.Consent.ConsentPolicyComponent tgt = new org.hl7.fhir.r5.model.Consent.ConsentPolicyComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
-    if (src.hasAuthority()) tgt.setAuthorityElement(Uri30_50.convertUri(src.getAuthorityElement()));
-    if (src.hasUri()) tgt.setUriElement(Uri30_50.convertUri(src.getUriElement()));
+    org.hl7.fhir.r5.model.Consent.ConsentPolicyBasisComponent tgt = new org.hl7.fhir.r5.model.Consent.ConsentPolicyBasisComponent();
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
+//    if (src.hasAuthority()) tgt.setRefereceElement(Uri30_50.convertUri(src.getAuthorityElement()));
+    if (src.hasUri()) tgt.setUrl(src.getUri());
     return tgt;
   }
 
-  public static org.hl7.fhir.dstu3.model.Consent.ConsentPolicyComponent convertConsentPolicyComponent(org.hl7.fhir.r5.model.Consent.ConsentPolicyComponent src) throws FHIRException {
+  public static org.hl7.fhir.dstu3.model.Consent.ConsentPolicyComponent convertConsentPolicyComponent(org.hl7.fhir.r5.model.Consent.ConsentPolicyBasisComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.dstu3.model.Consent.ConsentPolicyComponent tgt = new org.hl7.fhir.dstu3.model.Consent.ConsentPolicyComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
-    if (src.hasAuthority()) tgt.setAuthorityElement(Uri30_50.convertUri(src.getAuthorityElement()));
-    if (src.hasUri()) tgt.setUriElement(Uri30_50.convertUri(src.getUriElement()));
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
+//    if (src.hasAuthority()) tgt.setAuthorityElement(Uri30_50.convertUri(src.getReferenceElement()));
+    if (src.hasUrl()) tgt.setUriElement(Uri30_50.convertUri(src.getUrlElement()));
     return tgt;
   }
 
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Consent.ConsentDataMeaning> convertConsentDataMeaning(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Consent.ConsentDataMeaning> src) throws FHIRException {
-    if (src == null || src.isEmpty()) return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Consent.ConsentDataMeaning> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Consent.ConsentDataMeaningEnumFactory());
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
-    if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentDataMeaning.NULL);
-    } else {
-      switch (src.getValue()) {
-        case INSTANCE:
-          tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentDataMeaning.INSTANCE);
-          break;
-        case RELATED:
-          tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentDataMeaning.RELATED);
-          break;
-        case DEPENDENTS:
-          tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentDataMeaning.DEPENDENTS);
-          break;
-        case AUTHOREDBY:
-          tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentDataMeaning.AUTHOREDBY);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentDataMeaning.NULL);
-          break;
-      }
-    }
-    return tgt;
-  }
-
-  static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Consent.ConsentDataMeaning> convertConsentDataMeaning(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Consent.ConsentDataMeaning> src) throws FHIRException {
-    if (src == null || src.isEmpty()) return null;
-    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Consent.ConsentDataMeaning> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Consent.ConsentDataMeaningEnumFactory());
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
-    if (src.getValue() == null) {
-      tgt.setValue(org.hl7.fhir.dstu3.model.Consent.ConsentDataMeaning.NULL);
-    } else {
-      switch (src.getValue()) {
-        case INSTANCE:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Consent.ConsentDataMeaning.INSTANCE);
-          break;
-        case RELATED:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Consent.ConsentDataMeaning.RELATED);
-          break;
-        case DEPENDENTS:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Consent.ConsentDataMeaning.DEPENDENTS);
-          break;
-        case AUTHOREDBY:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Consent.ConsentDataMeaning.AUTHOREDBY);
-          break;
-        default:
-          tgt.setValue(org.hl7.fhir.dstu3.model.Consent.ConsentDataMeaning.NULL);
-          break;
-      }
-    }
-    return tgt;
-  }
+//  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Consent.ConsentDataMeaning> convertConsentDataMeaning(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Consent.ConsentDataMeaning> src) throws FHIRException {
+//    if (src == null || src.isEmpty()) return null;
+//    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Consent.ConsentDataMeaning> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Consent.ConsentDataMeaningEnumFactory());
+//    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+//    if (src.getValue() == null) {
+//      tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentDataMeaning.NULL);
+//    } else {
+//      switch (src.getValue()) {
+//        case INSTANCE:
+//          tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentDataMeaning.INSTANCE);
+//          break;
+//        case RELATED:
+//          tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentDataMeaning.RELATED);
+//          break;
+//        case DEPENDENTS:
+//          tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentDataMeaning.DEPENDENTS);
+//          break;
+//        case AUTHOREDBY:
+//          tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentDataMeaning.AUTHOREDBY);
+//          break;
+//        default:
+//          tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentDataMeaning.NULL);
+//          break;
+//      }
+//    }
+//    return tgt;
+//  }
+//
+//  static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Consent.ConsentDataMeaning> convertConsentDataMeaning(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Consent.ConsentDataMeaning> src) throws FHIRException {
+//    if (src == null || src.isEmpty()) return null;
+//    org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Consent.ConsentDataMeaning> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Consent.ConsentDataMeaningEnumFactory());
+//    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+//    if (src.getValue() == null) {
+//      tgt.setValue(org.hl7.fhir.dstu3.model.Consent.ConsentDataMeaning.NULL);
+//    } else {
+//      switch (src.getValue()) {
+//        case INSTANCE:
+//          tgt.setValue(org.hl7.fhir.dstu3.model.Consent.ConsentDataMeaning.INSTANCE);
+//          break;
+//        case RELATED:
+//          tgt.setValue(org.hl7.fhir.dstu3.model.Consent.ConsentDataMeaning.RELATED);
+//          break;
+//        case DEPENDENTS:
+//          tgt.setValue(org.hl7.fhir.dstu3.model.Consent.ConsentDataMeaning.DEPENDENTS);
+//          break;
+//        case AUTHOREDBY:
+//          tgt.setValue(org.hl7.fhir.dstu3.model.Consent.ConsentDataMeaning.AUTHOREDBY);
+//          break;
+//        default:
+//          tgt.setValue(org.hl7.fhir.dstu3.model.Consent.ConsentDataMeaning.NULL);
+//          break;
+//      }
+//    }
+//    return tgt;
+//  }
 }

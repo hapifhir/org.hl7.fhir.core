@@ -3,7 +3,12 @@ package org.hl7.fhir.convertors.conv30_50.resources30_50;
 import org.hl7.fhir.convertors.context.ConversionContext30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Dosage30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Reference30_50;
-import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.*;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Annotation30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Duration30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Period30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.SimpleQuantity30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Boolean30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.DateTime30_50;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -58,8 +63,8 @@ public class MedicationRequest30_50 {
       tgt.setSubstitution(convertMedicationRequestSubstitutionComponent(src.getSubstitution()));
     if (src.hasPriorPrescription())
       tgt.setPriorPrescription(Reference30_50.convertReference(src.getPriorPrescription()));
-    for (org.hl7.fhir.r5.model.Reference t : src.getDetectedIssue())
-      tgt.addDetectedIssue(Reference30_50.convertReference(t));
+//    for (org.hl7.fhir.r5.model.Reference t : src.getDetectedIssue())
+//      tgt.addDetectedIssue(Reference30_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getEventHistory())
       tgt.addEventHistory(Reference30_50.convertReference(t));
     return tgt;
@@ -108,8 +113,8 @@ public class MedicationRequest30_50 {
       tgt.setSubstitution(convertMedicationRequestSubstitutionComponent(src.getSubstitution()));
     if (src.hasPriorPrescription())
       tgt.setPriorPrescription(Reference30_50.convertReference(src.getPriorPrescription()));
-    for (org.hl7.fhir.dstu3.model.Reference t : src.getDetectedIssue())
-      tgt.addDetectedIssue(Reference30_50.convertReference(t));
+//    for (org.hl7.fhir.dstu3.model.Reference t : src.getDetectedIssue())
+//      tgt.addDetectedIssue(Reference30_50.convertReference(t));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getEventHistory())
       tgt.addEventHistory(Reference30_50.convertReference(t));
     return tgt;
@@ -119,7 +124,7 @@ public class MedicationRequest30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestDispenseRequestComponent tgt = new org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestDispenseRequestComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasValidityPeriod())
       tgt.setValidityPeriod(Period30_50.convertPeriod(src.getValidityPeriod()));
     if (src.hasNumberOfRepeatsAllowed())
@@ -137,7 +142,7 @@ public class MedicationRequest30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.MedicationRequest.MedicationRequestDispenseRequestComponent tgt = new org.hl7.fhir.dstu3.model.MedicationRequest.MedicationRequestDispenseRequestComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasValidityPeriod())
       tgt.setValidityPeriod(Period30_50.convertPeriod(src.getValidityPeriod()));
     if (src.hasNumberOfRepeatsAllowed())
@@ -329,7 +334,7 @@ public class MedicationRequest30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestSubstitutionComponent tgt = new org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestSubstitutionComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasAllowed())
       tgt.setAllowed(Boolean30_50.convertBoolean(src.getAllowedElement()));
     if (src.hasReason())
@@ -341,7 +346,7 @@ public class MedicationRequest30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.MedicationRequest.MedicationRequestSubstitutionComponent tgt = new org.hl7.fhir.dstu3.model.MedicationRequest.MedicationRequestSubstitutionComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasAllowedBooleanType())
       tgt.setAllowedElement(Boolean30_50.convertBoolean(src.getAllowedBooleanType()));
     if (src.hasReason())

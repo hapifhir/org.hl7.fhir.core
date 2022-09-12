@@ -1,10 +1,16 @@
 package org.hl7.fhir.convertors.conv10_50.resources10_50;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hl7.fhir.convertors.context.ConversionContext10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.Reference10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.CodeableConcept10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Identifier10_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CodeableConcept;
+import org.hl7.fhir.r5.model.CodeableReference;
+import org.hl7.fhir.r5.model.Coding;
 
 public class Condition10_50 {
 
@@ -19,9 +25,10 @@ public class Condition10_50 {
       tgt.setPatient(Reference10_50.convertReference(src.getSubject()));
     if (src.hasEncounter())
       tgt.setEncounter(Reference10_50.convertReference(src.getEncounter()));
-    if (src.hasAsserter())
-      tgt.setAsserter(Reference10_50.convertReference(src.getAsserter()));
-    if (src.hasRecordedDate())
+    for (org.hl7.fhir.r5.model.Condition.ConditionParticipantComponent t : src.getParticipant()) {
+      if (t.getFunction().hasCoding("http://terminology.hl7.org/CodeSystem/provenance-participant-type", "informant"))
+        tgt.setAsserter(Reference10_50.convertReference(t.getActor()));
+    }    if (src.hasRecordedDate())
       tgt.setDateRecorded(src.getRecordedDate());
     if (src.hasCode())
       tgt.setCode(CodeableConcept10_50.convertCodeableConcept(src.getCode()));
@@ -39,7 +46,7 @@ public class Condition10_50 {
       tgt.setAbatement(ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getAbatement()));
     if (src.hasStage())
       tgt.setStage(convertConditionStageComponent(src.getStageFirstRep()));
-    for (org.hl7.fhir.r5.model.Condition.ConditionEvidenceComponent t : src.getEvidence())
+    for (CodeableReference t : src.getEvidence())
       tgt.addEvidence(convertConditionEvidenceComponent(t));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getBodySite())
       tgt.addBodySite(CodeableConcept10_50.convertCodeableConcept(t));
@@ -58,7 +65,7 @@ public class Condition10_50 {
     if (src.hasEncounter())
       tgt.setEncounter(Reference10_50.convertReference(src.getEncounter()));
     if (src.hasAsserter())
-      tgt.setAsserter(Reference10_50.convertReference(src.getAsserter()));
+      tgt.addParticipant().setFunction(new CodeableConcept(new Coding("http://terminology.hl7.org/CodeSystem/provenance-participant-type", "informant", "Informant"))).setActor(Reference10_50.convertReference(src.getAsserter()));
     if (src.hasDateRecorded())
       tgt.setRecordedDate(src.getDateRecorded());
     if (src.hasCode())
@@ -78,7 +85,7 @@ public class Condition10_50 {
     if (src.hasStage())
       tgt.addStage(convertConditionStageComponent(src.getStage()));
     for (org.hl7.fhir.dstu2.model.Condition.ConditionEvidenceComponent t : src.getEvidence())
-      tgt.addEvidence(convertConditionEvidenceComponent(t));
+      tgt.getEvidence().addAll(convertConditionEvidenceComponent(t));
     for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getBodySite())
       tgt.addBodySite(CodeableConcept10_50.convertCodeableConcept(t));
     return tgt;
@@ -102,25 +109,34 @@ public class Condition10_50 {
     return null;
   }
 
-  public static org.hl7.fhir.dstu2.model.Condition.ConditionEvidenceComponent convertConditionEvidenceComponent(org.hl7.fhir.r5.model.Condition.ConditionEvidenceComponent src) throws FHIRException {
-    if (src == null || src.isEmpty())
+  public static List<org.hl7.fhir.r5.model.CodeableReference> convertConditionEvidenceComponent(org.hl7.fhir.dstu2.model.Condition.ConditionEvidenceComponent src) throws FHIRException {
+    if (src == null)
+      return null;
+    List<org.hl7.fhir.r5.model.CodeableReference> list = new ArrayList<>();
+    if (src.hasCode()) {
+      org.hl7.fhir.r5.model.CodeableReference tgt = new org.hl7.fhir.r5.model.CodeableReference();
+      ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+      tgt.setConcept(CodeableConcept10_50.convertCodeableConcept(src.getCode()));
+      list.add(tgt);
+    }
+    for (org.hl7.fhir.dstu2.model.Reference t : src.getDetail()) {
+      org.hl7.fhir.r5.model.CodeableReference tgt = new org.hl7.fhir.r5.model.CodeableReference();
+      ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+      tgt.setReference(Reference10_50.convertReference(t));
+      list.add(tgt);
+    }
+    return list;
+  }
+
+  public static org.hl7.fhir.dstu2.model.Condition.ConditionEvidenceComponent convertConditionEvidenceComponent(org.hl7.fhir.r5.model.CodeableReference src) throws FHIRException {
+    if (src == null)
       return null;
     org.hl7.fhir.dstu2.model.Condition.ConditionEvidenceComponent tgt = new org.hl7.fhir.dstu2.model.Condition.ConditionEvidenceComponent();
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
-    for (org.hl7.fhir.r5.model.CodeableConcept cc : src.getCode())
-      tgt.setCode(CodeableConcept10_50.convertCodeableConcept(cc));
-    for (org.hl7.fhir.r5.model.Reference t : src.getDetail()) tgt.addDetail(Reference10_50.convertReference(t));
-    return tgt;
-  }
-
-  public static org.hl7.fhir.r5.model.Condition.ConditionEvidenceComponent convertConditionEvidenceComponent(org.hl7.fhir.dstu2.model.Condition.ConditionEvidenceComponent src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Condition.ConditionEvidenceComponent tgt = new org.hl7.fhir.r5.model.Condition.ConditionEvidenceComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
-    if (src.hasCode())
-      tgt.addCode(CodeableConcept10_50.convertCodeableConcept(src.getCode()));
-    for (org.hl7.fhir.dstu2.model.Reference t : src.getDetail()) tgt.addDetail(Reference10_50.convertReference(t));
+    if (src.hasConcept())
+      tgt.setCode(CodeableConcept10_50.convertCodeableConcept(src.getConcept()));
+    if (src.hasReference())
+      tgt.addDetail(Reference10_50.convertReference(src.getReference()));
     return tgt;
   }
 
@@ -128,7 +144,7 @@ public class Condition10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Condition.ConditionStageComponent tgt = new org.hl7.fhir.dstu2.model.Condition.ConditionStageComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasSummary())
       tgt.setSummary(CodeableConcept10_50.convertCodeableConcept(src.getSummary()));
     for (org.hl7.fhir.r5.model.Reference t : src.getAssessment()) tgt.addAssessment(Reference10_50.convertReference(t));
@@ -139,7 +155,7 @@ public class Condition10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Condition.ConditionStageComponent tgt = new org.hl7.fhir.r5.model.Condition.ConditionStageComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasSummary())
       tgt.setSummary(CodeableConcept10_50.convertCodeableConcept(src.getSummary()));
     for (org.hl7.fhir.dstu2.model.Reference t : src.getAssessment())

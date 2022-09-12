@@ -27,4 +27,11 @@ public class Date30_50 {
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     return tgt;
   }
+
+  public static org.hl7.fhir.r5.model.DateTimeType convertDatetoDateTime(org.hl7.fhir.dstu3.model.DateType src) {
+    org.hl7.fhir.r5.model.DateTimeType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.DateTimeType(src.getValueAsString()) : new org.hl7.fhir.r5.model.DateTimeType();
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    return tgt;
+  }
+  
 }

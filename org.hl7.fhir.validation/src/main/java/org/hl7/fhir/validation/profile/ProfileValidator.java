@@ -51,9 +51,11 @@ public class ProfileValidator extends BaseValidator {
 
   private boolean checkAggregation = false;
   private boolean checkMustSupport = false;
+  private FHIRPathEngine fpe;
 
   public ProfileValidator(IWorkerContext context, XVerExtensionManager xverManager) {
     super(context, xverManager);
+    fpe = new FHIRPathEngine(context);
   }
 
   public boolean isCheckAggregation() {
@@ -95,16 +97,15 @@ public class ProfileValidator extends BaseValidator {
       Hashtable<String, ElementDefinition> snapshotElements = new Hashtable<String, ElementDefinition>();
       for (ElementDefinition ed : profile.getSnapshot().getElement()) {
         snapshotElements.put(ed.getId(), ed);
-        checkExtensions(profile, errors, "snapshot", ed);
         for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
           if (forBuild) {
             if (!inExemptList(inv.getKey())) {
               if (rule(errors, IssueType.BUSINESSRULE, profile.getId()+"::"+ed.getPath()+"::"+inv.getKey(), inv.hasExpression(), "The invariant has no FHIR Path expression ("+inv.getXpath()+")")) {
-                try {
-                  new FHIRPathEngine(context).check(null, profile.getType(), ed.getPath(), inv.getExpression()); // , inv.hasXpath() && inv.getXpath().startsWith("@value")
-                } catch (Exception e) {
-//                  rule(errors, IssueType.STRUCTURE, profile.getId()+"::"+ed.getPath()+"::"+inv.getId(), exprExt != null, e.getMessage());
-                }
+//                try {
+//                  fpe.check(null, profile.getType(), ed.getPath(), inv.getExpression()); // , inv.hasXpath() && inv.getXpath().startsWith("@value")
+//                } catch (Exception e) {
+//                  // rule(errors, IssueType.STRUCTURE, profile.getId()+"::"+ed.getPath()+"::"+inv.getId(), false, e.getMessage());
+//                }
               } 
             }
           }

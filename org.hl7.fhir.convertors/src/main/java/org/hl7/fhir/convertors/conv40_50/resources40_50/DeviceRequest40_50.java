@@ -54,8 +54,8 @@ public class DeviceRequest40_50 {
     for (org.hl7.fhir.r4.model.UriType t : src.getInstantiatesUri())
       tgt.getInstantiatesUri().add(Uri40_50.convertUri(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_50.convertReference(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getPriorRequest())
-      tgt.addPriorRequest(Reference40_50.convertReference(t));
+//    for (org.hl7.fhir.r4.model.Reference t : src.getPriorRequest())
+//      tgt.addPriorRequest(Reference40_50.convertReference(t));
     if (src.hasGroupIdentifier())
       tgt.setGroupIdentifier(Identifier40_50.convertIdentifier(src.getGroupIdentifier()));
     if (src.hasStatus())
@@ -110,8 +110,8 @@ public class DeviceRequest40_50 {
     for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri())
       tgt.getInstantiatesUri().add(Uri40_50.convertUri(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_50.convertReference(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getPriorRequest())
-      tgt.addPriorRequest(Reference40_50.convertReference(t));
+//    for (org.hl7.fhir.r5.model.Reference t : src.getPriorRequest())
+//      tgt.addPriorRequest(Reference40_50.convertReference(t));
     if (src.hasGroupIdentifier())
       tgt.setGroupIdentifier(Identifier40_50.convertIdentifier(src.getGroupIdentifier()));
     if (src.hasStatus())
@@ -357,7 +357,7 @@ public class DeviceRequest40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.DeviceRequest.DeviceRequestParameterComponent tgt = new org.hl7.fhir.r5.model.DeviceRequest.DeviceRequestParameterComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
     if (src.hasValue())
@@ -369,7 +369,7 @@ public class DeviceRequest40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestParameterComponent tgt = new org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestParameterComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
     if (src.hasValue())

@@ -6,10 +6,16 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.ContactDetail30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.UsageContext30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
-import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.*;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Boolean30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Code30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.DateTime30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.MarkDown30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Uri30_50;
 import org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CanonicalType;
+import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
@@ -53,10 +59,10 @@ public class ConceptMap30_50 {
       tgt.setPurposeElement(MarkDown30_50.convertMarkdown(src.getPurposeElement()));
     if (src.hasCopyright())
       tgt.setCopyrightElement(MarkDown30_50.convertMarkdown(src.getCopyrightElement()));
-    if (src.hasSource())
-      tgt.setSource(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getSource()));
-    if (src.hasTarget())
-      tgt.setTarget(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getTarget()));
+    if (src.hasSourceScope())
+      tgt.setSource(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getSourceScope()));
+    if (src.hasTargetScope())
+      tgt.setTarget(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getTargetScope()));
     for (org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent t : src.getGroup())
       tgt.addGroup(convertConceptMapGroupComponent(t));
     return tgt;
@@ -99,11 +105,11 @@ public class ConceptMap30_50 {
       tgt.setCopyrightElement(MarkDown30_50.convertMarkdown(src.getCopyrightElement()));
     if (src.hasSource()) {
       org.hl7.fhir.r5.model.DataType t = ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getSource());
-      tgt.setSource(t instanceof org.hl7.fhir.r5.model.Reference ? new org.hl7.fhir.r5.model.CanonicalType(((org.hl7.fhir.r5.model.Reference) t).getReference()) : t);
+      tgt.setSourceScope(t instanceof org.hl7.fhir.r5.model.Reference ? new org.hl7.fhir.r5.model.CanonicalType(((org.hl7.fhir.r5.model.Reference) t).getReference()) : t);
     }
     if (src.hasTarget()) {
       org.hl7.fhir.r5.model.DataType t = ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getTarget());
-      tgt.setTarget(t instanceof org.hl7.fhir.r5.model.Reference ? new org.hl7.fhir.r5.model.CanonicalType(((org.hl7.fhir.r5.model.Reference) t).getReference()) : t);
+      tgt.setTargetScope(t instanceof org.hl7.fhir.r5.model.Reference ? new org.hl7.fhir.r5.model.CanonicalType(((org.hl7.fhir.r5.model.Reference) t).getReference()) : t);
     }
     for (org.hl7.fhir.dstu3.model.ConceptMap.ConceptMapGroupComponent t : src.getGroup())
       tgt.addGroup(convertConceptMapGroupComponent(t));
@@ -114,7 +120,7 @@ public class ConceptMap30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent tgt = new org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasSource() || src.hasSourceVersion())
       tgt.setSourceElement(convertUriAndVersionToCanonical(src.getSourceElement(), src.getSourceVersionElement()));
     if (src.hasTarget() || src.hasTargetVersion())
@@ -131,7 +137,7 @@ public class ConceptMap30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.ConceptMap.ConceptMapGroupComponent tgt = new org.hl7.fhir.dstu3.model.ConceptMap.ConceptMapGroupComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasSource()) {
       CanonicalPair cp = new CanonicalPair(src.getSource());
       tgt.setSource(cp.getUrl());
@@ -169,7 +175,7 @@ public class ConceptMap30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupUnmappedComponent tgt = new org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupUnmappedComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasMode())
       tgt.setModeElement(convertConceptMapGroupUnmappedMode(src.getModeElement()));
     if (src.hasCode())
@@ -177,7 +183,7 @@ public class ConceptMap30_50 {
     if (src.hasDisplay())
       tgt.setDisplayElement(String30_50.convertString(src.getDisplayElement()));
     if (src.hasUrl())
-      tgt.setUrl(src.getUrl());
+      tgt.setOtherMap(src.getUrl());
     return tgt;
   }
 
@@ -185,47 +191,47 @@ public class ConceptMap30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.ConceptMap.ConceptMapGroupUnmappedComponent tgt = new org.hl7.fhir.dstu3.model.ConceptMap.ConceptMapGroupUnmappedComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasMode())
       tgt.setModeElement(convertConceptMapGroupUnmappedMode(src.getModeElement()));
     if (src.hasCode())
       tgt.setCodeElement(Code30_50.convertCode(src.getCodeElement()));
     if (src.hasDisplay())
       tgt.setDisplayElement(String30_50.convertString(src.getDisplayElement()));
-    if (src.hasUrl())
-      tgt.setUrl(src.getUrl());
+    if (src.hasOtherMap())
+      tgt.setUrl(src.getOtherMap());
     return tgt;
   }
 
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ConceptMapGroupUnmappedMode> convertConceptMapGroupUnmappedMode(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ConceptMap.ConceptMapGroupUnmappedMode> src) throws FHIRException {
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupUnmappedMode> convertConceptMapGroupUnmappedMode(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ConceptMap.ConceptMapGroupUnmappedMode> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ConceptMapGroupUnmappedMode> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.ConceptMapGroupUnmappedModeEnumFactory());
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupUnmappedMode> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupUnmappedModeEnumFactory());
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case PROVIDED:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapGroupUnmappedMode.PROVIDED);
+        tgt.setValue(org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupUnmappedMode.USESOURCECODE);
         break;
       case FIXED:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapGroupUnmappedMode.FIXED);
+        tgt.setValue(org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupUnmappedMode.FIXED);
         break;
       case OTHERMAP:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapGroupUnmappedMode.OTHERMAP);
+        tgt.setValue(org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupUnmappedMode.OTHERMAP);
         break;
       default:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapGroupUnmappedMode.NULL);
+        tgt.setValue(org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupUnmappedMode.NULL);
         break;
     }
     return tgt;
   }
 
-  static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ConceptMap.ConceptMapGroupUnmappedMode> convertConceptMapGroupUnmappedMode(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ConceptMapGroupUnmappedMode> src) throws FHIRException {
+  static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ConceptMap.ConceptMapGroupUnmappedMode> convertConceptMapGroupUnmappedMode(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupUnmappedMode> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ConceptMap.ConceptMapGroupUnmappedMode> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ConceptMap.ConceptMapGroupUnmappedModeEnumFactory());
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     switch (src.getValue()) {
-      case PROVIDED:
+      case USESOURCECODE:
         tgt.setValue(org.hl7.fhir.dstu3.model.ConceptMap.ConceptMapGroupUnmappedMode.PROVIDED);
         break;
       case FIXED:
@@ -315,15 +321,15 @@ public class ConceptMap30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ConceptMap.OtherElementComponent tgt = new org.hl7.fhir.r5.model.ConceptMap.OtherElementComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasProperty())
       tgt.setPropertyElement(Uri30_50.convertUri(src.getPropertyElement()));
-    if (src.hasSystem())
-      tgt.setSystem(src.getSystem());
-    if (src.hasCode())
-      tgt.setValueElement(String30_50.convertString(src.getCodeElement()));
-    if (src.hasDisplay())
-      tgt.setDisplayElement(String30_50.convertString(src.getDisplayElement()));
+    
+    if (src.hasSystem()) {
+      tgt.setValue(new Coding().setSystem(src.getSystem()).setCode(src.getCode()).setDisplay(src.getDisplay()));
+    } else if (src.hasCodeElement()) {
+      tgt.setValue(String30_50.convertString(src.getCodeElement()));
+    }
     return tgt;
   }
 
@@ -331,15 +337,17 @@ public class ConceptMap30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.ConceptMap.OtherElementComponent tgt = new org.hl7.fhir.dstu3.model.ConceptMap.OtherElementComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasProperty())
       tgt.setPropertyElement(Uri30_50.convertUri(src.getPropertyElement()));
-    if (src.hasSystem())
-      tgt.setSystem(src.getSystem());
-    if (src.hasValue())
-      tgt.setCodeElement(String30_50.convertString(src.getValueElement()));
-    if (src.hasDisplay())
-      tgt.setDisplayElement(String30_50.convertString(src.getDisplayElement()));
+    
+    if (src.hasValueCoding()) {
+      tgt.setSystem(src.getValueCoding().getSystem());
+      tgt.setCode(src.getValueCoding().getCode());
+      tgt.setDisplay(src.getValueCoding().getDisplay());
+    } else if (src.hasValue()) {
+        tgt.setCode(src.getValue().primitiveValue());
+    }
     return tgt;
   }
 
@@ -347,7 +355,7 @@ public class ConceptMap30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.ConceptMap.SourceElementComponent tgt = new org.hl7.fhir.dstu3.model.ConceptMap.SourceElementComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCodeElement(Code30_50.convertCode(src.getCodeElement()));
     if (src.hasDisplay())
@@ -365,7 +373,7 @@ public class ConceptMap30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent tgt = new org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCodeElement(Code30_50.convertCode(src.getCodeElement()));
     if (src.hasDisplay())
@@ -383,7 +391,7 @@ public class ConceptMap30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent tgt = new org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCodeElement(Code30_50.convertCode(src.getCodeElement()));
     if (src.hasDisplay())
@@ -403,7 +411,7 @@ public class ConceptMap30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.ConceptMap.TargetElementComponent tgt = new org.hl7.fhir.dstu3.model.ConceptMap.TargetElementComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCodeElement(Code30_50.convertCode(src.getCodeElement()));
     if (src.hasDisplay())

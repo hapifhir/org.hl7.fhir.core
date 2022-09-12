@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -88,10 +88,10 @@ public class OrganizationAffiliation extends DomainResource {
     protected Reference participatingOrganization;
 
     /**
-     * Health insurance provider network in which the participatingOrganization provides the role's services (if defined) at the indicated locations (if defined).
+     * The network in which the participatingOrganization provides the role's services (if defined) at the indicated locations (if defined).
      */
     @Child(name = "network", type = {Organization.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Health insurance provider network in which the participatingOrganization provides the role's services (if defined) at the indicated locations (if defined)", formalDefinition="Health insurance provider network in which the participatingOrganization provides the role's services (if defined) at the indicated locations (if defined)." )
+    @Description(shortDefinition="The network in which the participatingOrganization provides the role's services (if defined) at the indicated locations (if defined)", formalDefinition="The network in which the participatingOrganization provides the role's services (if defined) at the indicated locations (if defined)." )
     protected List<Reference> network;
 
     /**
@@ -125,11 +125,11 @@ public class OrganizationAffiliation extends DomainResource {
     protected List<Reference> healthcareService;
 
     /**
-     * Contact details at the participatingOrganization relevant to this Affiliation.
+     * The contact details of communication devices available at the participatingOrganization relevant to this Affiliation.
      */
-    @Child(name = "telecom", type = {ContactPoint.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Contact details at the participatingOrganization relevant to this Affiliation", formalDefinition="Contact details at the participatingOrganization relevant to this Affiliation." )
-    protected List<ContactPoint> telecom;
+    @Child(name = "contact", type = {ExtendedContactDetail.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Official contact details at the participatingOrganization relevant to this Affiliation", formalDefinition="The contact details of communication devices available at the participatingOrganization relevant to this Affiliation." )
+    protected List<ExtendedContactDetail> contact;
 
     /**
      * Technical endpoints providing access to services operated for this role.
@@ -138,7 +138,7 @@ public class OrganizationAffiliation extends DomainResource {
     @Description(shortDefinition="Technical endpoints providing access to services operated for this role", formalDefinition="Technical endpoints providing access to services operated for this role." )
     protected List<Reference> endpoint;
 
-    private static final long serialVersionUID = 522401879L;
+    private static final long serialVersionUID = -509714744L;
 
   /**
    * Constructor
@@ -318,7 +318,7 @@ public class OrganizationAffiliation extends DomainResource {
     }
 
     /**
-     * @return {@link #network} (Health insurance provider network in which the participatingOrganization provides the role's services (if defined) at the indicated locations (if defined).)
+     * @return {@link #network} (The network in which the participatingOrganization provides the role's services (if defined) at the indicated locations (if defined).)
      */
     public List<Reference> getNetwork() { 
       if (this.network == null)
@@ -583,56 +583,56 @@ public class OrganizationAffiliation extends DomainResource {
     }
 
     /**
-     * @return {@link #telecom} (Contact details at the participatingOrganization relevant to this Affiliation.)
+     * @return {@link #contact} (The contact details of communication devices available at the participatingOrganization relevant to this Affiliation.)
      */
-    public List<ContactPoint> getTelecom() { 
-      if (this.telecom == null)
-        this.telecom = new ArrayList<ContactPoint>();
-      return this.telecom;
+    public List<ExtendedContactDetail> getContact() { 
+      if (this.contact == null)
+        this.contact = new ArrayList<ExtendedContactDetail>();
+      return this.contact;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public OrganizationAffiliation setTelecom(List<ContactPoint> theTelecom) { 
-      this.telecom = theTelecom;
+    public OrganizationAffiliation setContact(List<ExtendedContactDetail> theContact) { 
+      this.contact = theContact;
       return this;
     }
 
-    public boolean hasTelecom() { 
-      if (this.telecom == null)
+    public boolean hasContact() { 
+      if (this.contact == null)
         return false;
-      for (ContactPoint item : this.telecom)
+      for (ExtendedContactDetail item : this.contact)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public ContactPoint addTelecom() { //3
-      ContactPoint t = new ContactPoint();
-      if (this.telecom == null)
-        this.telecom = new ArrayList<ContactPoint>();
-      this.telecom.add(t);
+    public ExtendedContactDetail addContact() { //3
+      ExtendedContactDetail t = new ExtendedContactDetail();
+      if (this.contact == null)
+        this.contact = new ArrayList<ExtendedContactDetail>();
+      this.contact.add(t);
       return t;
     }
 
-    public OrganizationAffiliation addTelecom(ContactPoint t) { //3
+    public OrganizationAffiliation addContact(ExtendedContactDetail t) { //3
       if (t == null)
         return this;
-      if (this.telecom == null)
-        this.telecom = new ArrayList<ContactPoint>();
-      this.telecom.add(t);
+      if (this.contact == null)
+        this.contact = new ArrayList<ExtendedContactDetail>();
+      this.contact.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #telecom}, creating it if it does not already exist {3}
+     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist {3}
      */
-    public ContactPoint getTelecomFirstRep() { 
-      if (getTelecom().isEmpty()) {
-        addTelecom();
+    public ExtendedContactDetail getContactFirstRep() { 
+      if (getContact().isEmpty()) {
+        addContact();
       }
-      return getTelecom().get(0);
+      return getContact().get(0);
     }
 
     /**
@@ -695,12 +695,12 @@ public class OrganizationAffiliation extends DomainResource {
         children.add(new Property("period", "Period", "The period during which the participatingOrganization is affiliated with the primary organization.", 0, 1, period));
         children.add(new Property("organization", "Reference(Organization)", "Organization where the role is available (primary organization/has members).", 0, 1, organization));
         children.add(new Property("participatingOrganization", "Reference(Organization)", "The Participating Organization provides/performs the role(s) defined by the code to the Primary Organization (e.g. providing services or is a member of).", 0, 1, participatingOrganization));
-        children.add(new Property("network", "Reference(Organization)", "Health insurance provider network in which the participatingOrganization provides the role's services (if defined) at the indicated locations (if defined).", 0, java.lang.Integer.MAX_VALUE, network));
+        children.add(new Property("network", "Reference(Organization)", "The network in which the participatingOrganization provides the role's services (if defined) at the indicated locations (if defined).", 0, java.lang.Integer.MAX_VALUE, network));
         children.add(new Property("code", "CodeableConcept", "Definition of the role the participatingOrganization plays in the association.", 0, java.lang.Integer.MAX_VALUE, code));
         children.add(new Property("specialty", "CodeableConcept", "Specific specialty of the participatingOrganization in the context of the role.", 0, java.lang.Integer.MAX_VALUE, specialty));
         children.add(new Property("location", "Reference(Location)", "The location(s) at which the role occurs.", 0, java.lang.Integer.MAX_VALUE, location));
         children.add(new Property("healthcareService", "Reference(HealthcareService)", "Healthcare services provided through the role.", 0, java.lang.Integer.MAX_VALUE, healthcareService));
-        children.add(new Property("telecom", "ContactPoint", "Contact details at the participatingOrganization relevant to this Affiliation.", 0, java.lang.Integer.MAX_VALUE, telecom));
+        children.add(new Property("contact", "ExtendedContactDetail", "The contact details of communication devices available at the participatingOrganization relevant to this Affiliation.", 0, java.lang.Integer.MAX_VALUE, contact));
         children.add(new Property("endpoint", "Reference(Endpoint)", "Technical endpoints providing access to services operated for this role.", 0, java.lang.Integer.MAX_VALUE, endpoint));
       }
 
@@ -712,12 +712,12 @@ public class OrganizationAffiliation extends DomainResource {
         case -991726143: /*period*/  return new Property("period", "Period", "The period during which the participatingOrganization is affiliated with the primary organization.", 0, 1, period);
         case 1178922291: /*organization*/  return new Property("organization", "Reference(Organization)", "Organization where the role is available (primary organization/has members).", 0, 1, organization);
         case 1593310702: /*participatingOrganization*/  return new Property("participatingOrganization", "Reference(Organization)", "The Participating Organization provides/performs the role(s) defined by the code to the Primary Organization (e.g. providing services or is a member of).", 0, 1, participatingOrganization);
-        case 1843485230: /*network*/  return new Property("network", "Reference(Organization)", "Health insurance provider network in which the participatingOrganization provides the role's services (if defined) at the indicated locations (if defined).", 0, java.lang.Integer.MAX_VALUE, network);
+        case 1843485230: /*network*/  return new Property("network", "Reference(Organization)", "The network in which the participatingOrganization provides the role's services (if defined) at the indicated locations (if defined).", 0, java.lang.Integer.MAX_VALUE, network);
         case 3059181: /*code*/  return new Property("code", "CodeableConcept", "Definition of the role the participatingOrganization plays in the association.", 0, java.lang.Integer.MAX_VALUE, code);
         case -1694759682: /*specialty*/  return new Property("specialty", "CodeableConcept", "Specific specialty of the participatingOrganization in the context of the role.", 0, java.lang.Integer.MAX_VALUE, specialty);
         case 1901043637: /*location*/  return new Property("location", "Reference(Location)", "The location(s) at which the role occurs.", 0, java.lang.Integer.MAX_VALUE, location);
         case 1289661064: /*healthcareService*/  return new Property("healthcareService", "Reference(HealthcareService)", "Healthcare services provided through the role.", 0, java.lang.Integer.MAX_VALUE, healthcareService);
-        case -1429363305: /*telecom*/  return new Property("telecom", "ContactPoint", "Contact details at the participatingOrganization relevant to this Affiliation.", 0, java.lang.Integer.MAX_VALUE, telecom);
+        case 951526432: /*contact*/  return new Property("contact", "ExtendedContactDetail", "The contact details of communication devices available at the participatingOrganization relevant to this Affiliation.", 0, java.lang.Integer.MAX_VALUE, contact);
         case 1741102485: /*endpoint*/  return new Property("endpoint", "Reference(Endpoint)", "Technical endpoints providing access to services operated for this role.", 0, java.lang.Integer.MAX_VALUE, endpoint);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -737,7 +737,7 @@ public class OrganizationAffiliation extends DomainResource {
         case -1694759682: /*specialty*/ return this.specialty == null ? new Base[0] : this.specialty.toArray(new Base[this.specialty.size()]); // CodeableConcept
         case 1901043637: /*location*/ return this.location == null ? new Base[0] : this.location.toArray(new Base[this.location.size()]); // Reference
         case 1289661064: /*healthcareService*/ return this.healthcareService == null ? new Base[0] : this.healthcareService.toArray(new Base[this.healthcareService.size()]); // Reference
-        case -1429363305: /*telecom*/ return this.telecom == null ? new Base[0] : this.telecom.toArray(new Base[this.telecom.size()]); // ContactPoint
+        case 951526432: /*contact*/ return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // ExtendedContactDetail
         case 1741102485: /*endpoint*/ return this.endpoint == null ? new Base[0] : this.endpoint.toArray(new Base[this.endpoint.size()]); // Reference
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -777,8 +777,8 @@ public class OrganizationAffiliation extends DomainResource {
         case 1289661064: // healthcareService
           this.getHealthcareService().add(TypeConvertor.castToReference(value)); // Reference
           return value;
-        case -1429363305: // telecom
-          this.getTelecom().add(TypeConvertor.castToContactPoint(value)); // ContactPoint
+        case 951526432: // contact
+          this.getContact().add(TypeConvertor.castToExtendedContactDetail(value)); // ExtendedContactDetail
           return value;
         case 1741102485: // endpoint
           this.getEndpoint().add(TypeConvertor.castToReference(value)); // Reference
@@ -810,8 +810,8 @@ public class OrganizationAffiliation extends DomainResource {
           this.getLocation().add(TypeConvertor.castToReference(value));
         } else if (name.equals("healthcareService")) {
           this.getHealthcareService().add(TypeConvertor.castToReference(value));
-        } else if (name.equals("telecom")) {
-          this.getTelecom().add(TypeConvertor.castToContactPoint(value));
+        } else if (name.equals("contact")) {
+          this.getContact().add(TypeConvertor.castToExtendedContactDetail(value));
         } else if (name.equals("endpoint")) {
           this.getEndpoint().add(TypeConvertor.castToReference(value));
         } else
@@ -832,7 +832,7 @@ public class OrganizationAffiliation extends DomainResource {
         case -1694759682:  return addSpecialty(); 
         case 1901043637:  return addLocation(); 
         case 1289661064:  return addHealthcareService(); 
-        case -1429363305:  return addTelecom(); 
+        case 951526432:  return addContact(); 
         case 1741102485:  return addEndpoint(); 
         default: return super.makeProperty(hash, name);
         }
@@ -852,7 +852,7 @@ public class OrganizationAffiliation extends DomainResource {
         case -1694759682: /*specialty*/ return new String[] {"CodeableConcept"};
         case 1901043637: /*location*/ return new String[] {"Reference"};
         case 1289661064: /*healthcareService*/ return new String[] {"Reference"};
-        case -1429363305: /*telecom*/ return new String[] {"ContactPoint"};
+        case 951526432: /*contact*/ return new String[] {"ExtendedContactDetail"};
         case 1741102485: /*endpoint*/ return new String[] {"Reference"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -894,8 +894,8 @@ public class OrganizationAffiliation extends DomainResource {
         else if (name.equals("healthcareService")) {
           return addHealthcareService();
         }
-        else if (name.equals("telecom")) {
-          return addTelecom();
+        else if (name.equals("contact")) {
+          return addContact();
         }
         else if (name.equals("endpoint")) {
           return addEndpoint();
@@ -951,10 +951,10 @@ public class OrganizationAffiliation extends DomainResource {
           for (Reference i : healthcareService)
             dst.healthcareService.add(i.copy());
         };
-        if (telecom != null) {
-          dst.telecom = new ArrayList<ContactPoint>();
-          for (ContactPoint i : telecom)
-            dst.telecom.add(i.copy());
+        if (contact != null) {
+          dst.contact = new ArrayList<ExtendedContactDetail>();
+          for (ExtendedContactDetail i : contact)
+            dst.contact.add(i.copy());
         };
         if (endpoint != null) {
           dst.endpoint = new ArrayList<Reference>();
@@ -978,7 +978,7 @@ public class OrganizationAffiliation extends DomainResource {
            && compareDeep(organization, o.organization, true) && compareDeep(participatingOrganization, o.participatingOrganization, true)
            && compareDeep(network, o.network, true) && compareDeep(code, o.code, true) && compareDeep(specialty, o.specialty, true)
            && compareDeep(location, o.location, true) && compareDeep(healthcareService, o.healthcareService, true)
-           && compareDeep(telecom, o.telecom, true) && compareDeep(endpoint, o.endpoint, true);
+           && compareDeep(contact, o.contact, true) && compareDeep(endpoint, o.endpoint, true);
       }
 
       @Override
@@ -994,7 +994,7 @@ public class OrganizationAffiliation extends DomainResource {
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, active, period
           , organization, participatingOrganization, network, code, specialty, location, healthcareService
-          , telecom, endpoint);
+          , contact, endpoint);
       }
 
   @Override
@@ -1047,17 +1047,17 @@ public class OrganizationAffiliation extends DomainResource {
    * <p>
    * Description: <b>A value in an email contact</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>OrganizationAffiliation.telecom.where(system='email')</b><br>
+   * Path: <b>OrganizationAffiliation.contact.telecom.where(system='email')</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="email", path="OrganizationAffiliation.telecom.where(system='email')", description="A value in an email contact", type="token" )
+  @SearchParamDefinition(name="email", path="OrganizationAffiliation.contact.telecom.where(system='email')", description="A value in an email contact", type="token" )
   public static final String SP_EMAIL = "email";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>email</b>
    * <p>
    * Description: <b>A value in an email contact</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>OrganizationAffiliation.telecom.where(system='email')</b><br>
+   * Path: <b>OrganizationAffiliation.contact.telecom.where(system='email')</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam EMAIL = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EMAIL);
@@ -1191,17 +1191,17 @@ public class OrganizationAffiliation extends DomainResource {
    * <p>
    * Description: <b>A value in a phone contact</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>OrganizationAffiliation.telecom.where(system='phone')</b><br>
+   * Path: <b>OrganizationAffiliation.contact.telecom.where(system='phone')</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="phone", path="OrganizationAffiliation.telecom.where(system='phone')", description="A value in a phone contact", type="token" )
+  @SearchParamDefinition(name="phone", path="OrganizationAffiliation.contact.telecom.where(system='phone')", description="A value in a phone contact", type="token" )
   public static final String SP_PHONE = "phone";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>phone</b>
    * <p>
    * Description: <b>A value in a phone contact</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>OrganizationAffiliation.telecom.where(system='phone')</b><br>
+   * Path: <b>OrganizationAffiliation.contact.telecom.where(system='phone')</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam PHONE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PHONE);
@@ -1303,17 +1303,17 @@ public class OrganizationAffiliation extends DomainResource {
    * <p>
    * Description: <b>The value in any kind of contact</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>OrganizationAffiliation.telecom</b><br>
+   * Path: <b>OrganizationAffiliation.contact.telecom</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="telecom", path="OrganizationAffiliation.telecom", description="The value in any kind of contact", type="token" )
+  @SearchParamDefinition(name="telecom", path="OrganizationAffiliation.contact.telecom", description="The value in any kind of contact", type="token" )
   public static final String SP_TELECOM = "telecom";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>telecom</b>
    * <p>
    * Description: <b>The value in any kind of contact</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>OrganizationAffiliation.telecom</b><br>
+   * Path: <b>OrganizationAffiliation.contact.telecom</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam TELECOM = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TELECOM);

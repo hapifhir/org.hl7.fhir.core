@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -57,27 +57,27 @@ public class ChargeItemDefinition extends MetadataResource {
     @Block()
     public static class ChargeItemDefinitionApplicabilityComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * A brief, natural language description of the condition that effectively communicates the intended semantics.
-         */
-        @Child(name = "description", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Natural language description of the condition", formalDefinition="A brief, natural language description of the condition that effectively communicates the intended semantics." )
-        protected StringType description;
-
-        /**
-         * The media type of the language for the expression, e.g. "text/cql" for Clinical Query Language expressions or "text/fhirpath" for FHIRPath expressions.
-         */
-        @Child(name = "language", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Language of the expression", formalDefinition="The media type of the language for the expression, e.g. \"text/cql\" for Clinical Query Language expressions or \"text/fhirpath\" for FHIRPath expressions." )
-        protected StringType language;
-
-        /**
          * An expression that returns true or false, indicating whether the condition is satisfied. When using FHIRPath expressions, the %context environment variable must be replaced at runtime with the ChargeItem resource to which this definition is applied.
          */
-        @Child(name = "expression", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "condition", type = {Expression.class}, order=1, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Boolean-valued expression", formalDefinition="An expression that returns true or false, indicating whether the condition is satisfied. When using FHIRPath expressions, the %context environment variable must be replaced at runtime with the ChargeItem resource to which this definition is applied." )
-        protected StringType expression;
+        protected Expression condition;
 
-        private static final long serialVersionUID = 1354288281L;
+        /**
+         * The period during which the charge item definition content was or is planned to be in active use.
+         */
+        @Child(name = "effectivePeriod", type = {Period.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="When the charge item definition is expected to be used", formalDefinition="The period during which the charge item definition content was or is planned to be in active use." )
+        protected Period effectivePeriod;
+
+        /**
+         * Reference to / quotation of the external source of the group of properties.
+         */
+        @Child(name = "relatedArtifact", type = {RelatedArtifact.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Reference to / quotation of the external source of the group of properties", formalDefinition="Reference to / quotation of the external source of the group of properties." )
+        protected RelatedArtifact relatedArtifact;
+
+        private static final long serialVersionUID = -1706427366L;
 
     /**
      * Constructor
@@ -87,165 +87,90 @@ public class ChargeItemDefinition extends MetadataResource {
       }
 
         /**
-         * @return {@link #description} (A brief, natural language description of the condition that effectively communicates the intended semantics.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+         * @return {@link #condition} (An expression that returns true or false, indicating whether the condition is satisfied. When using FHIRPath expressions, the %context environment variable must be replaced at runtime with the ChargeItem resource to which this definition is applied.)
          */
-        public StringType getDescriptionElement() { 
-          if (this.description == null)
+        public Expression getCondition() { 
+          if (this.condition == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ChargeItemDefinitionApplicabilityComponent.description");
+              throw new Error("Attempt to auto-create ChargeItemDefinitionApplicabilityComponent.condition");
             else if (Configuration.doAutoCreate())
-              this.description = new StringType(); // bb
-          return this.description;
+              this.condition = new Expression(); // cc
+          return this.condition;
         }
 
-        public boolean hasDescriptionElement() { 
-          return this.description != null && !this.description.isEmpty();
-        }
-
-        public boolean hasDescription() { 
-          return this.description != null && !this.description.isEmpty();
+        public boolean hasCondition() { 
+          return this.condition != null && !this.condition.isEmpty();
         }
 
         /**
-         * @param value {@link #description} (A brief, natural language description of the condition that effectively communicates the intended semantics.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+         * @param value {@link #condition} (An expression that returns true or false, indicating whether the condition is satisfied. When using FHIRPath expressions, the %context environment variable must be replaced at runtime with the ChargeItem resource to which this definition is applied.)
          */
-        public ChargeItemDefinitionApplicabilityComponent setDescriptionElement(StringType value) { 
-          this.description = value;
+        public ChargeItemDefinitionApplicabilityComponent setCondition(Expression value) { 
+          this.condition = value;
           return this;
         }
 
         /**
-         * @return A brief, natural language description of the condition that effectively communicates the intended semantics.
+         * @return {@link #effectivePeriod} (The period during which the charge item definition content was or is planned to be in active use.)
          */
-        public String getDescription() { 
-          return this.description == null ? null : this.description.getValue();
-        }
-
-        /**
-         * @param value A brief, natural language description of the condition that effectively communicates the intended semantics.
-         */
-        public ChargeItemDefinitionApplicabilityComponent setDescription(String value) { 
-          if (Utilities.noString(value))
-            this.description = null;
-          else {
-            if (this.description == null)
-              this.description = new StringType();
-            this.description.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #language} (The media type of the language for the expression, e.g. "text/cql" for Clinical Query Language expressions or "text/fhirpath" for FHIRPath expressions.). This is the underlying object with id, value and extensions. The accessor "getLanguage" gives direct access to the value
-         */
-        public StringType getLanguageElement() { 
-          if (this.language == null)
+        public Period getEffectivePeriod() { 
+          if (this.effectivePeriod == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ChargeItemDefinitionApplicabilityComponent.language");
+              throw new Error("Attempt to auto-create ChargeItemDefinitionApplicabilityComponent.effectivePeriod");
             else if (Configuration.doAutoCreate())
-              this.language = new StringType(); // bb
-          return this.language;
+              this.effectivePeriod = new Period(); // cc
+          return this.effectivePeriod;
         }
 
-        public boolean hasLanguageElement() { 
-          return this.language != null && !this.language.isEmpty();
-        }
-
-        public boolean hasLanguage() { 
-          return this.language != null && !this.language.isEmpty();
+        public boolean hasEffectivePeriod() { 
+          return this.effectivePeriod != null && !this.effectivePeriod.isEmpty();
         }
 
         /**
-         * @param value {@link #language} (The media type of the language for the expression, e.g. "text/cql" for Clinical Query Language expressions or "text/fhirpath" for FHIRPath expressions.). This is the underlying object with id, value and extensions. The accessor "getLanguage" gives direct access to the value
+         * @param value {@link #effectivePeriod} (The period during which the charge item definition content was or is planned to be in active use.)
          */
-        public ChargeItemDefinitionApplicabilityComponent setLanguageElement(StringType value) { 
-          this.language = value;
+        public ChargeItemDefinitionApplicabilityComponent setEffectivePeriod(Period value) { 
+          this.effectivePeriod = value;
           return this;
         }
 
         /**
-         * @return The media type of the language for the expression, e.g. "text/cql" for Clinical Query Language expressions or "text/fhirpath" for FHIRPath expressions.
+         * @return {@link #relatedArtifact} (Reference to / quotation of the external source of the group of properties.)
          */
-        public String getLanguage() { 
-          return this.language == null ? null : this.language.getValue();
-        }
-
-        /**
-         * @param value The media type of the language for the expression, e.g. "text/cql" for Clinical Query Language expressions or "text/fhirpath" for FHIRPath expressions.
-         */
-        public ChargeItemDefinitionApplicabilityComponent setLanguage(String value) { 
-          if (Utilities.noString(value))
-            this.language = null;
-          else {
-            if (this.language == null)
-              this.language = new StringType();
-            this.language.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #expression} (An expression that returns true or false, indicating whether the condition is satisfied. When using FHIRPath expressions, the %context environment variable must be replaced at runtime with the ChargeItem resource to which this definition is applied.). This is the underlying object with id, value and extensions. The accessor "getExpression" gives direct access to the value
-         */
-        public StringType getExpressionElement() { 
-          if (this.expression == null)
+        public RelatedArtifact getRelatedArtifact() { 
+          if (this.relatedArtifact == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ChargeItemDefinitionApplicabilityComponent.expression");
+              throw new Error("Attempt to auto-create ChargeItemDefinitionApplicabilityComponent.relatedArtifact");
             else if (Configuration.doAutoCreate())
-              this.expression = new StringType(); // bb
-          return this.expression;
+              this.relatedArtifact = new RelatedArtifact(); // cc
+          return this.relatedArtifact;
         }
 
-        public boolean hasExpressionElement() { 
-          return this.expression != null && !this.expression.isEmpty();
-        }
-
-        public boolean hasExpression() { 
-          return this.expression != null && !this.expression.isEmpty();
+        public boolean hasRelatedArtifact() { 
+          return this.relatedArtifact != null && !this.relatedArtifact.isEmpty();
         }
 
         /**
-         * @param value {@link #expression} (An expression that returns true or false, indicating whether the condition is satisfied. When using FHIRPath expressions, the %context environment variable must be replaced at runtime with the ChargeItem resource to which this definition is applied.). This is the underlying object with id, value and extensions. The accessor "getExpression" gives direct access to the value
+         * @param value {@link #relatedArtifact} (Reference to / quotation of the external source of the group of properties.)
          */
-        public ChargeItemDefinitionApplicabilityComponent setExpressionElement(StringType value) { 
-          this.expression = value;
-          return this;
-        }
-
-        /**
-         * @return An expression that returns true or false, indicating whether the condition is satisfied. When using FHIRPath expressions, the %context environment variable must be replaced at runtime with the ChargeItem resource to which this definition is applied.
-         */
-        public String getExpression() { 
-          return this.expression == null ? null : this.expression.getValue();
-        }
-
-        /**
-         * @param value An expression that returns true or false, indicating whether the condition is satisfied. When using FHIRPath expressions, the %context environment variable must be replaced at runtime with the ChargeItem resource to which this definition is applied.
-         */
-        public ChargeItemDefinitionApplicabilityComponent setExpression(String value) { 
-          if (Utilities.noString(value))
-            this.expression = null;
-          else {
-            if (this.expression == null)
-              this.expression = new StringType();
-            this.expression.setValue(value);
-          }
+        public ChargeItemDefinitionApplicabilityComponent setRelatedArtifact(RelatedArtifact value) { 
+          this.relatedArtifact = value;
           return this;
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("description", "string", "A brief, natural language description of the condition that effectively communicates the intended semantics.", 0, 1, description));
-          children.add(new Property("language", "string", "The media type of the language for the expression, e.g. \"text/cql\" for Clinical Query Language expressions or \"text/fhirpath\" for FHIRPath expressions.", 0, 1, language));
-          children.add(new Property("expression", "string", "An expression that returns true or false, indicating whether the condition is satisfied. When using FHIRPath expressions, the %context environment variable must be replaced at runtime with the ChargeItem resource to which this definition is applied.", 0, 1, expression));
+          children.add(new Property("condition", "Expression", "An expression that returns true or false, indicating whether the condition is satisfied. When using FHIRPath expressions, the %context environment variable must be replaced at runtime with the ChargeItem resource to which this definition is applied.", 0, 1, condition));
+          children.add(new Property("effectivePeriod", "Period", "The period during which the charge item definition content was or is planned to be in active use.", 0, 1, effectivePeriod));
+          children.add(new Property("relatedArtifact", "RelatedArtifact", "Reference to / quotation of the external source of the group of properties.", 0, 1, relatedArtifact));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -1724546052: /*description*/  return new Property("description", "string", "A brief, natural language description of the condition that effectively communicates the intended semantics.", 0, 1, description);
-          case -1613589672: /*language*/  return new Property("language", "string", "The media type of the language for the expression, e.g. \"text/cql\" for Clinical Query Language expressions or \"text/fhirpath\" for FHIRPath expressions.", 0, 1, language);
-          case -1795452264: /*expression*/  return new Property("expression", "string", "An expression that returns true or false, indicating whether the condition is satisfied. When using FHIRPath expressions, the %context environment variable must be replaced at runtime with the ChargeItem resource to which this definition is applied.", 0, 1, expression);
+          case -861311717: /*condition*/  return new Property("condition", "Expression", "An expression that returns true or false, indicating whether the condition is satisfied. When using FHIRPath expressions, the %context environment variable must be replaced at runtime with the ChargeItem resource to which this definition is applied.", 0, 1, condition);
+          case -403934648: /*effectivePeriod*/  return new Property("effectivePeriod", "Period", "The period during which the charge item definition content was or is planned to be in active use.", 0, 1, effectivePeriod);
+          case 666807069: /*relatedArtifact*/  return new Property("relatedArtifact", "RelatedArtifact", "Reference to / quotation of the external source of the group of properties.", 0, 1, relatedArtifact);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -254,9 +179,9 @@ public class ChargeItemDefinition extends MetadataResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
-        case -1613589672: /*language*/ return this.language == null ? new Base[0] : new Base[] {this.language}; // StringType
-        case -1795452264: /*expression*/ return this.expression == null ? new Base[0] : new Base[] {this.expression}; // StringType
+        case -861311717: /*condition*/ return this.condition == null ? new Base[0] : new Base[] {this.condition}; // Expression
+        case -403934648: /*effectivePeriod*/ return this.effectivePeriod == null ? new Base[0] : new Base[] {this.effectivePeriod}; // Period
+        case 666807069: /*relatedArtifact*/ return this.relatedArtifact == null ? new Base[0] : new Base[] {this.relatedArtifact}; // RelatedArtifact
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -265,14 +190,14 @@ public class ChargeItemDefinition extends MetadataResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
-        case -1724546052: // description
-          this.description = TypeConvertor.castToString(value); // StringType
+        case -861311717: // condition
+          this.condition = TypeConvertor.castToExpression(value); // Expression
           return value;
-        case -1613589672: // language
-          this.language = TypeConvertor.castToString(value); // StringType
+        case -403934648: // effectivePeriod
+          this.effectivePeriod = TypeConvertor.castToPeriod(value); // Period
           return value;
-        case -1795452264: // expression
-          this.expression = TypeConvertor.castToString(value); // StringType
+        case 666807069: // relatedArtifact
+          this.relatedArtifact = TypeConvertor.castToRelatedArtifact(value); // RelatedArtifact
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -281,12 +206,12 @@ public class ChargeItemDefinition extends MetadataResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("description")) {
-          this.description = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("language")) {
-          this.language = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("expression")) {
-          this.expression = TypeConvertor.castToString(value); // StringType
+        if (name.equals("condition")) {
+          this.condition = TypeConvertor.castToExpression(value); // Expression
+        } else if (name.equals("effectivePeriod")) {
+          this.effectivePeriod = TypeConvertor.castToPeriod(value); // Period
+        } else if (name.equals("relatedArtifact")) {
+          this.relatedArtifact = TypeConvertor.castToRelatedArtifact(value); // RelatedArtifact
         } else
           return super.setProperty(name, value);
         return value;
@@ -295,9 +220,9 @@ public class ChargeItemDefinition extends MetadataResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1724546052:  return getDescriptionElement();
-        case -1613589672:  return getLanguageElement();
-        case -1795452264:  return getExpressionElement();
+        case -861311717:  return getCondition();
+        case -403934648:  return getEffectivePeriod();
+        case 666807069:  return getRelatedArtifact();
         default: return super.makeProperty(hash, name);
         }
 
@@ -306,9 +231,9 @@ public class ChargeItemDefinition extends MetadataResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1724546052: /*description*/ return new String[] {"string"};
-        case -1613589672: /*language*/ return new String[] {"string"};
-        case -1795452264: /*expression*/ return new String[] {"string"};
+        case -861311717: /*condition*/ return new String[] {"Expression"};
+        case -403934648: /*effectivePeriod*/ return new String[] {"Period"};
+        case 666807069: /*relatedArtifact*/ return new String[] {"RelatedArtifact"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -316,14 +241,17 @@ public class ChargeItemDefinition extends MetadataResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.applicability.description");
+        if (name.equals("condition")) {
+          this.condition = new Expression();
+          return this.condition;
         }
-        else if (name.equals("language")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.applicability.language");
+        else if (name.equals("effectivePeriod")) {
+          this.effectivePeriod = new Period();
+          return this.effectivePeriod;
         }
-        else if (name.equals("expression")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.applicability.expression");
+        else if (name.equals("relatedArtifact")) {
+          this.relatedArtifact = new RelatedArtifact();
+          return this.relatedArtifact;
         }
         else
           return super.addChild(name);
@@ -337,9 +265,9 @@ public class ChargeItemDefinition extends MetadataResource {
 
       public void copyValues(ChargeItemDefinitionApplicabilityComponent dst) {
         super.copyValues(dst);
-        dst.description = description == null ? null : description.copy();
-        dst.language = language == null ? null : language.copy();
-        dst.expression = expression == null ? null : expression.copy();
+        dst.condition = condition == null ? null : condition.copy();
+        dst.effectivePeriod = effectivePeriod == null ? null : effectivePeriod.copy();
+        dst.relatedArtifact = relatedArtifact == null ? null : relatedArtifact.copy();
       }
 
       @Override
@@ -349,8 +277,8 @@ public class ChargeItemDefinition extends MetadataResource {
         if (!(other_ instanceof ChargeItemDefinitionApplicabilityComponent))
           return false;
         ChargeItemDefinitionApplicabilityComponent o = (ChargeItemDefinitionApplicabilityComponent) other_;
-        return compareDeep(description, o.description, true) && compareDeep(language, o.language, true)
-           && compareDeep(expression, o.expression, true);
+        return compareDeep(condition, o.condition, true) && compareDeep(effectivePeriod, o.effectivePeriod, true)
+           && compareDeep(relatedArtifact, o.relatedArtifact, true);
       }
 
       @Override
@@ -360,13 +288,12 @@ public class ChargeItemDefinition extends MetadataResource {
         if (!(other_ instanceof ChargeItemDefinitionApplicabilityComponent))
           return false;
         ChargeItemDefinitionApplicabilityComponent o = (ChargeItemDefinitionApplicabilityComponent) other_;
-        return compareValues(description, o.description, true) && compareValues(language, o.language, true)
-           && compareValues(expression, o.expression, true);
+        return true;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(description, language, expression
-          );
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(condition, effectivePeriod
+          , relatedArtifact);
       }
 
   public String fhirType() {
@@ -388,11 +315,11 @@ public class ChargeItemDefinition extends MetadataResource {
         /**
          * The price for a ChargeItem may be calculated as a base price with surcharges/deductions that apply in certain conditions. A ChargeItemDefinition resource that defines the prices, factors and conditions that apply to a billing code is currently under development. The priceComponent element can be used to offer transparency to the recipient of the Invoice of how the prices have been calculated.
          */
-        @Child(name = "priceComponent", type = {}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "priceComponent", type = {MonetaryComponent.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Components of total line item price", formalDefinition="The price for a ChargeItem may be calculated as a base price with surcharges/deductions that apply in certain conditions. A ChargeItemDefinition resource that defines the prices, factors and conditions that apply to a billing code is currently under development. The priceComponent element can be used to offer transparency to the recipient of the Invoice of how the prices have been calculated." )
-        protected List<ChargeItemDefinitionPropertyGroupPriceComponentComponent> priceComponent;
+        protected List<MonetaryComponent> priceComponent;
 
-        private static final long serialVersionUID = 1723436176L;
+        private static final long serialVersionUID = -1829474901L;
 
     /**
      * Constructor
@@ -457,16 +384,16 @@ public class ChargeItemDefinition extends MetadataResource {
         /**
          * @return {@link #priceComponent} (The price for a ChargeItem may be calculated as a base price with surcharges/deductions that apply in certain conditions. A ChargeItemDefinition resource that defines the prices, factors and conditions that apply to a billing code is currently under development. The priceComponent element can be used to offer transparency to the recipient of the Invoice of how the prices have been calculated.)
          */
-        public List<ChargeItemDefinitionPropertyGroupPriceComponentComponent> getPriceComponent() { 
+        public List<MonetaryComponent> getPriceComponent() { 
           if (this.priceComponent == null)
-            this.priceComponent = new ArrayList<ChargeItemDefinitionPropertyGroupPriceComponentComponent>();
+            this.priceComponent = new ArrayList<MonetaryComponent>();
           return this.priceComponent;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public ChargeItemDefinitionPropertyGroupComponent setPriceComponent(List<ChargeItemDefinitionPropertyGroupPriceComponentComponent> thePriceComponent) { 
+        public ChargeItemDefinitionPropertyGroupComponent setPriceComponent(List<MonetaryComponent> thePriceComponent) { 
           this.priceComponent = thePriceComponent;
           return this;
         }
@@ -474,25 +401,25 @@ public class ChargeItemDefinition extends MetadataResource {
         public boolean hasPriceComponent() { 
           if (this.priceComponent == null)
             return false;
-          for (ChargeItemDefinitionPropertyGroupPriceComponentComponent item : this.priceComponent)
+          for (MonetaryComponent item : this.priceComponent)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public ChargeItemDefinitionPropertyGroupPriceComponentComponent addPriceComponent() { //3
-          ChargeItemDefinitionPropertyGroupPriceComponentComponent t = new ChargeItemDefinitionPropertyGroupPriceComponentComponent();
+        public MonetaryComponent addPriceComponent() { //3
+          MonetaryComponent t = new MonetaryComponent();
           if (this.priceComponent == null)
-            this.priceComponent = new ArrayList<ChargeItemDefinitionPropertyGroupPriceComponentComponent>();
+            this.priceComponent = new ArrayList<MonetaryComponent>();
           this.priceComponent.add(t);
           return t;
         }
 
-        public ChargeItemDefinitionPropertyGroupComponent addPriceComponent(ChargeItemDefinitionPropertyGroupPriceComponentComponent t) { //3
+        public ChargeItemDefinitionPropertyGroupComponent addPriceComponent(MonetaryComponent t) { //3
           if (t == null)
             return this;
           if (this.priceComponent == null)
-            this.priceComponent = new ArrayList<ChargeItemDefinitionPropertyGroupPriceComponentComponent>();
+            this.priceComponent = new ArrayList<MonetaryComponent>();
           this.priceComponent.add(t);
           return this;
         }
@@ -500,7 +427,7 @@ public class ChargeItemDefinition extends MetadataResource {
         /**
          * @return The first repetition of repeating field {@link #priceComponent}, creating it if it does not already exist {3}
          */
-        public ChargeItemDefinitionPropertyGroupPriceComponentComponent getPriceComponentFirstRep() { 
+        public MonetaryComponent getPriceComponentFirstRep() { 
           if (getPriceComponent().isEmpty()) {
             addPriceComponent();
           }
@@ -510,14 +437,14 @@ public class ChargeItemDefinition extends MetadataResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("applicability", "@ChargeItemDefinition.applicability", "Expressions that describe applicability criteria for the priceComponent.", 0, java.lang.Integer.MAX_VALUE, applicability));
-          children.add(new Property("priceComponent", "", "The price for a ChargeItem may be calculated as a base price with surcharges/deductions that apply in certain conditions. A ChargeItemDefinition resource that defines the prices, factors and conditions that apply to a billing code is currently under development. The priceComponent element can be used to offer transparency to the recipient of the Invoice of how the prices have been calculated.", 0, java.lang.Integer.MAX_VALUE, priceComponent));
+          children.add(new Property("priceComponent", "MonetaryComponent", "The price for a ChargeItem may be calculated as a base price with surcharges/deductions that apply in certain conditions. A ChargeItemDefinition resource that defines the prices, factors and conditions that apply to a billing code is currently under development. The priceComponent element can be used to offer transparency to the recipient of the Invoice of how the prices have been calculated.", 0, java.lang.Integer.MAX_VALUE, priceComponent));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case -1526770491: /*applicability*/  return new Property("applicability", "@ChargeItemDefinition.applicability", "Expressions that describe applicability criteria for the priceComponent.", 0, java.lang.Integer.MAX_VALUE, applicability);
-          case 1219095988: /*priceComponent*/  return new Property("priceComponent", "", "The price for a ChargeItem may be calculated as a base price with surcharges/deductions that apply in certain conditions. A ChargeItemDefinition resource that defines the prices, factors and conditions that apply to a billing code is currently under development. The priceComponent element can be used to offer transparency to the recipient of the Invoice of how the prices have been calculated.", 0, java.lang.Integer.MAX_VALUE, priceComponent);
+          case 1219095988: /*priceComponent*/  return new Property("priceComponent", "MonetaryComponent", "The price for a ChargeItem may be calculated as a base price with surcharges/deductions that apply in certain conditions. A ChargeItemDefinition resource that defines the prices, factors and conditions that apply to a billing code is currently under development. The priceComponent element can be used to offer transparency to the recipient of the Invoice of how the prices have been calculated.", 0, java.lang.Integer.MAX_VALUE, priceComponent);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -527,7 +454,7 @@ public class ChargeItemDefinition extends MetadataResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -1526770491: /*applicability*/ return this.applicability == null ? new Base[0] : this.applicability.toArray(new Base[this.applicability.size()]); // ChargeItemDefinitionApplicabilityComponent
-        case 1219095988: /*priceComponent*/ return this.priceComponent == null ? new Base[0] : this.priceComponent.toArray(new Base[this.priceComponent.size()]); // ChargeItemDefinitionPropertyGroupPriceComponentComponent
+        case 1219095988: /*priceComponent*/ return this.priceComponent == null ? new Base[0] : this.priceComponent.toArray(new Base[this.priceComponent.size()]); // MonetaryComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -540,7 +467,7 @@ public class ChargeItemDefinition extends MetadataResource {
           this.getApplicability().add((ChargeItemDefinitionApplicabilityComponent) value); // ChargeItemDefinitionApplicabilityComponent
           return value;
         case 1219095988: // priceComponent
-          this.getPriceComponent().add((ChargeItemDefinitionPropertyGroupPriceComponentComponent) value); // ChargeItemDefinitionPropertyGroupPriceComponentComponent
+          this.getPriceComponent().add(TypeConvertor.castToMonetaryComponent(value)); // MonetaryComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -552,7 +479,7 @@ public class ChargeItemDefinition extends MetadataResource {
         if (name.equals("applicability")) {
           this.getApplicability().add((ChargeItemDefinitionApplicabilityComponent) value);
         } else if (name.equals("priceComponent")) {
-          this.getPriceComponent().add((ChargeItemDefinitionPropertyGroupPriceComponentComponent) value);
+          this.getPriceComponent().add(TypeConvertor.castToMonetaryComponent(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -572,7 +499,7 @@ public class ChargeItemDefinition extends MetadataResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1526770491: /*applicability*/ return new String[] {"@ChargeItemDefinition.applicability"};
-        case 1219095988: /*priceComponent*/ return new String[] {};
+        case 1219095988: /*priceComponent*/ return new String[] {"MonetaryComponent"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -604,8 +531,8 @@ public class ChargeItemDefinition extends MetadataResource {
             dst.applicability.add(i.copy());
         };
         if (priceComponent != null) {
-          dst.priceComponent = new ArrayList<ChargeItemDefinitionPropertyGroupPriceComponentComponent>();
-          for (ChargeItemDefinitionPropertyGroupPriceComponentComponent i : priceComponent)
+          dst.priceComponent = new ArrayList<MonetaryComponent>();
+          for (MonetaryComponent i : priceComponent)
             dst.priceComponent.add(i.copy());
         };
       }
@@ -643,379 +570,11 @@ public class ChargeItemDefinition extends MetadataResource {
 
   }
 
-    @Block()
-    public static class ChargeItemDefinitionPropertyGroupPriceComponentComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * This code identifies the type of the component.
-         */
-        @Child(name = "type", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="base | surcharge | deduction | discount | tax | informational", formalDefinition="This code identifies the type of the component." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/invoice-priceComponentType")
-        protected Enumeration<InvoicePriceComponentType> type;
-
-        /**
-         * A code that identifies the component. Codes may be used to differentiate between kinds of taxes, surcharges, discounts etc.
-         */
-        @Child(name = "code", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Code identifying the specific component", formalDefinition="A code that identifies the component. Codes may be used to differentiate between kinds of taxes, surcharges, discounts etc." )
-        protected CodeableConcept code;
-
-        /**
-         * The factor that has been applied on the base price for calculating this component.
-         */
-        @Child(name = "factor", type = {DecimalType.class}, order=3, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Factor used for calculating this component", formalDefinition="The factor that has been applied on the base price for calculating this component." )
-        protected DecimalType factor;
-
-        /**
-         * The amount calculated for this component.
-         */
-        @Child(name = "amount", type = {Money.class}, order=4, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Monetary amount associated with this component", formalDefinition="The amount calculated for this component." )
-        protected Money amount;
-
-        private static final long serialVersionUID = 1223988958L;
-
     /**
-     * Constructor
-     */
-      public ChargeItemDefinitionPropertyGroupPriceComponentComponent() {
-        super();
-      }
-
-    /**
-     * Constructor
-     */
-      public ChargeItemDefinitionPropertyGroupPriceComponentComponent(InvoicePriceComponentType type) {
-        super();
-        this.setType(type);
-      }
-
-        /**
-         * @return {@link #type} (This code identifies the type of the component.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
-         */
-        public Enumeration<InvoicePriceComponentType> getTypeElement() { 
-          if (this.type == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ChargeItemDefinitionPropertyGroupPriceComponentComponent.type");
-            else if (Configuration.doAutoCreate())
-              this.type = new Enumeration<InvoicePriceComponentType>(new InvoicePriceComponentTypeEnumFactory()); // bb
-          return this.type;
-        }
-
-        public boolean hasTypeElement() { 
-          return this.type != null && !this.type.isEmpty();
-        }
-
-        public boolean hasType() { 
-          return this.type != null && !this.type.isEmpty();
-        }
-
-        /**
-         * @param value {@link #type} (This code identifies the type of the component.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
-         */
-        public ChargeItemDefinitionPropertyGroupPriceComponentComponent setTypeElement(Enumeration<InvoicePriceComponentType> value) { 
-          this.type = value;
-          return this;
-        }
-
-        /**
-         * @return This code identifies the type of the component.
-         */
-        public InvoicePriceComponentType getType() { 
-          return this.type == null ? null : this.type.getValue();
-        }
-
-        /**
-         * @param value This code identifies the type of the component.
-         */
-        public ChargeItemDefinitionPropertyGroupPriceComponentComponent setType(InvoicePriceComponentType value) { 
-            if (this.type == null)
-              this.type = new Enumeration<InvoicePriceComponentType>(new InvoicePriceComponentTypeEnumFactory());
-            this.type.setValue(value);
-          return this;
-        }
-
-        /**
-         * @return {@link #code} (A code that identifies the component. Codes may be used to differentiate between kinds of taxes, surcharges, discounts etc.)
-         */
-        public CodeableConcept getCode() { 
-          if (this.code == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ChargeItemDefinitionPropertyGroupPriceComponentComponent.code");
-            else if (Configuration.doAutoCreate())
-              this.code = new CodeableConcept(); // cc
-          return this.code;
-        }
-
-        public boolean hasCode() { 
-          return this.code != null && !this.code.isEmpty();
-        }
-
-        /**
-         * @param value {@link #code} (A code that identifies the component. Codes may be used to differentiate between kinds of taxes, surcharges, discounts etc.)
-         */
-        public ChargeItemDefinitionPropertyGroupPriceComponentComponent setCode(CodeableConcept value) { 
-          this.code = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #factor} (The factor that has been applied on the base price for calculating this component.). This is the underlying object with id, value and extensions. The accessor "getFactor" gives direct access to the value
-         */
-        public DecimalType getFactorElement() { 
-          if (this.factor == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ChargeItemDefinitionPropertyGroupPriceComponentComponent.factor");
-            else if (Configuration.doAutoCreate())
-              this.factor = new DecimalType(); // bb
-          return this.factor;
-        }
-
-        public boolean hasFactorElement() { 
-          return this.factor != null && !this.factor.isEmpty();
-        }
-
-        public boolean hasFactor() { 
-          return this.factor != null && !this.factor.isEmpty();
-        }
-
-        /**
-         * @param value {@link #factor} (The factor that has been applied on the base price for calculating this component.). This is the underlying object with id, value and extensions. The accessor "getFactor" gives direct access to the value
-         */
-        public ChargeItemDefinitionPropertyGroupPriceComponentComponent setFactorElement(DecimalType value) { 
-          this.factor = value;
-          return this;
-        }
-
-        /**
-         * @return The factor that has been applied on the base price for calculating this component.
-         */
-        public BigDecimal getFactor() { 
-          return this.factor == null ? null : this.factor.getValue();
-        }
-
-        /**
-         * @param value The factor that has been applied on the base price for calculating this component.
-         */
-        public ChargeItemDefinitionPropertyGroupPriceComponentComponent setFactor(BigDecimal value) { 
-          if (value == null)
-            this.factor = null;
-          else {
-            if (this.factor == null)
-              this.factor = new DecimalType();
-            this.factor.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @param value The factor that has been applied on the base price for calculating this component.
-         */
-        public ChargeItemDefinitionPropertyGroupPriceComponentComponent setFactor(long value) { 
-              this.factor = new DecimalType();
-            this.factor.setValue(value);
-          return this;
-        }
-
-        /**
-         * @param value The factor that has been applied on the base price for calculating this component.
-         */
-        public ChargeItemDefinitionPropertyGroupPriceComponentComponent setFactor(double value) { 
-              this.factor = new DecimalType();
-            this.factor.setValue(value);
-          return this;
-        }
-
-        /**
-         * @return {@link #amount} (The amount calculated for this component.)
-         */
-        public Money getAmount() { 
-          if (this.amount == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ChargeItemDefinitionPropertyGroupPriceComponentComponent.amount");
-            else if (Configuration.doAutoCreate())
-              this.amount = new Money(); // cc
-          return this.amount;
-        }
-
-        public boolean hasAmount() { 
-          return this.amount != null && !this.amount.isEmpty();
-        }
-
-        /**
-         * @param value {@link #amount} (The amount calculated for this component.)
-         */
-        public ChargeItemDefinitionPropertyGroupPriceComponentComponent setAmount(Money value) { 
-          this.amount = value;
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("type", "code", "This code identifies the type of the component.", 0, 1, type));
-          children.add(new Property("code", "CodeableConcept", "A code that identifies the component. Codes may be used to differentiate between kinds of taxes, surcharges, discounts etc.", 0, 1, code));
-          children.add(new Property("factor", "decimal", "The factor that has been applied on the base price for calculating this component.", 0, 1, factor));
-          children.add(new Property("amount", "Money", "The amount calculated for this component.", 0, 1, amount));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case 3575610: /*type*/  return new Property("type", "code", "This code identifies the type of the component.", 0, 1, type);
-          case 3059181: /*code*/  return new Property("code", "CodeableConcept", "A code that identifies the component. Codes may be used to differentiate between kinds of taxes, surcharges, discounts etc.", 0, 1, code);
-          case -1282148017: /*factor*/  return new Property("factor", "decimal", "The factor that has been applied on the base price for calculating this component.", 0, 1, factor);
-          case -1413853096: /*amount*/  return new Property("amount", "Money", "The amount calculated for this component.", 0, 1, amount);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<InvoicePriceComponentType>
-        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
-        case -1282148017: /*factor*/ return this.factor == null ? new Base[0] : new Base[] {this.factor}; // DecimalType
-        case -1413853096: /*amount*/ return this.amount == null ? new Base[0] : new Base[] {this.amount}; // Money
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case 3575610: // type
-          value = new InvoicePriceComponentTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.type = (Enumeration) value; // Enumeration<InvoicePriceComponentType>
-          return value;
-        case 3059181: // code
-          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case -1282148017: // factor
-          this.factor = TypeConvertor.castToDecimal(value); // DecimalType
-          return value;
-        case -1413853096: // amount
-          this.amount = TypeConvertor.castToMoney(value); // Money
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("type")) {
-          value = new InvoicePriceComponentTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.type = (Enumeration) value; // Enumeration<InvoicePriceComponentType>
-        } else if (name.equals("code")) {
-          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("factor")) {
-          this.factor = TypeConvertor.castToDecimal(value); // DecimalType
-        } else if (name.equals("amount")) {
-          this.amount = TypeConvertor.castToMoney(value); // Money
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 3575610:  return getTypeElement();
-        case 3059181:  return getCode();
-        case -1282148017:  return getFactorElement();
-        case -1413853096:  return getAmount();
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 3575610: /*type*/ return new String[] {"code"};
-        case 3059181: /*code*/ return new String[] {"CodeableConcept"};
-        case -1282148017: /*factor*/ return new String[] {"decimal"};
-        case -1413853096: /*amount*/ return new String[] {"Money"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.propertyGroup.priceComponent.type");
-        }
-        else if (name.equals("code")) {
-          this.code = new CodeableConcept();
-          return this.code;
-        }
-        else if (name.equals("factor")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.propertyGroup.priceComponent.factor");
-        }
-        else if (name.equals("amount")) {
-          this.amount = new Money();
-          return this.amount;
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public ChargeItemDefinitionPropertyGroupPriceComponentComponent copy() {
-        ChargeItemDefinitionPropertyGroupPriceComponentComponent dst = new ChargeItemDefinitionPropertyGroupPriceComponentComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(ChargeItemDefinitionPropertyGroupPriceComponentComponent dst) {
-        super.copyValues(dst);
-        dst.type = type == null ? null : type.copy();
-        dst.code = code == null ? null : code.copy();
-        dst.factor = factor == null ? null : factor.copy();
-        dst.amount = amount == null ? null : amount.copy();
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof ChargeItemDefinitionPropertyGroupPriceComponentComponent))
-          return false;
-        ChargeItemDefinitionPropertyGroupPriceComponentComponent o = (ChargeItemDefinitionPropertyGroupPriceComponentComponent) other_;
-        return compareDeep(type, o.type, true) && compareDeep(code, o.code, true) && compareDeep(factor, o.factor, true)
-           && compareDeep(amount, o.amount, true);
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof ChargeItemDefinitionPropertyGroupPriceComponentComponent))
-          return false;
-        ChargeItemDefinitionPropertyGroupPriceComponentComponent o = (ChargeItemDefinitionPropertyGroupPriceComponentComponent) other_;
-        return compareValues(type, o.type, true) && compareValues(factor, o.factor, true);
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, code, factor, amount
-          );
-      }
-
-  public String fhirType() {
-    return "ChargeItemDefinition.propertyGroup.priceComponent";
-
-  }
-
-  }
-
-    /**
-     * An absolute URI that is used to identify this charge item definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this charge item definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the charge item definition is stored on different servers.
+     * An absolute URI that is used to identify this charge item definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this charge item definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the charge item definition is stored on different servers.
      */
     @Child(name = "url", type = {UriType.class}, order=0, min=1, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Canonical identifier for this charge item definition, represented as a URI (globally unique)", formalDefinition="An absolute URI that is used to identify this charge item definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this charge item definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the charge item definition is stored on different servers." )
+    @Description(shortDefinition="Canonical identifier for this charge item definition, represented as a URI (globally unique)", formalDefinition="An absolute URI that is used to identify this charge item definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this charge item definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the charge item definition is stored on different servers." )
     protected UriType url;
 
     /**
@@ -1033,37 +592,44 @@ public class ChargeItemDefinition extends MetadataResource {
     protected StringType version;
 
     /**
+     * A natural language name identifying the ChargeItemDefinition. This name should be usable as an identifier for the module by machine processing applications such as code generation.
+     */
+    @Child(name = "name", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Name for this charge item definition (computer friendly)", formalDefinition="A natural language name identifying the ChargeItemDefinition. This name should be usable as an identifier for the module by machine processing applications such as code generation." )
+    protected StringType name;
+
+    /**
      * A short, descriptive, user-friendly title for the charge item definition.
      */
-    @Child(name = "title", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "title", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Name for this charge item definition (human friendly)", formalDefinition="A short, descriptive, user-friendly title for the charge item definition." )
     protected StringType title;
 
     /**
      * The URL pointing to an externally-defined charge item definition that is adhered to in whole or in part by this definition.
      */
-    @Child(name = "derivedFromUri", type = {UriType.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "derivedFromUri", type = {UriType.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Underlying externally-defined charge item definition", formalDefinition="The URL pointing to an externally-defined charge item definition that is adhered to in whole or in part by this definition." )
     protected List<UriType> derivedFromUri;
 
     /**
      * A larger definition of which this particular definition is a component or step.
      */
-    @Child(name = "partOf", type = {CanonicalType.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "partOf", type = {CanonicalType.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="A larger definition of which this particular definition is a component or step", formalDefinition="A larger definition of which this particular definition is a component or step." )
     protected List<CanonicalType> partOf;
 
     /**
      * As new versions of a protocol or guideline are defined, allows identification of what versions are replaced by a new instance.
      */
-    @Child(name = "replaces", type = {CanonicalType.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "replaces", type = {CanonicalType.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Completed or terminated request(s) whose function is taken by this new request", formalDefinition="As new versions of a protocol or guideline are defined, allows identification of what versions are replaced by a new instance." )
     protected List<CanonicalType> replaces;
 
     /**
      * The current state of the ChargeItemDefinition.
      */
-    @Child(name = "status", type = {CodeType.class}, order=7, min=1, max=1, modifier=true, summary=true)
+    @Child(name = "status", type = {CodeType.class}, order=8, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The current state of the ChargeItemDefinition." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
     protected Enumeration<PublicationStatus> status;
@@ -1071,85 +637,85 @@ public class ChargeItemDefinition extends MetadataResource {
     /**
      * A Boolean value to indicate that this charge item definition is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
      */
-    @Child(name = "experimental", type = {BooleanType.class}, order=8, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "experimental", type = {BooleanType.class}, order=9, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="For testing purposes, not real usage", formalDefinition="A Boolean value to indicate that this charge item definition is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage." )
     protected BooleanType experimental;
 
     /**
      * The date  (and optionally time) when the charge item definition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the charge item definition changes.
      */
-    @Child(name = "date", type = {DateTimeType.class}, order=9, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "date", type = {DateTimeType.class}, order=10, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Date last changed", formalDefinition="The date  (and optionally time) when the charge item definition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the charge item definition changes." )
     protected DateTimeType date;
 
     /**
-     * The name of the organization or individual that published the charge item definition.
+     * The name of the organization or individual responsible for the release and ongoing maintenance of the charge item definition.
      */
-    @Child(name = "publisher", type = {StringType.class}, order=10, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Name of the publisher (organization or individual)", formalDefinition="The name of the organization or individual that published the charge item definition." )
+    @Child(name = "publisher", type = {StringType.class}, order=11, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Name of the publisher/steward (organization or individual)", formalDefinition="The name of the organization or individual responsible for the release and ongoing maintenance of the charge item definition." )
     protected StringType publisher;
 
     /**
      * Contact details to assist a user in finding and communicating with the publisher.
      */
-    @Child(name = "contact", type = {ContactDetail.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "contact", type = {ContactDetail.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Contact details for the publisher", formalDefinition="Contact details to assist a user in finding and communicating with the publisher." )
     protected List<ContactDetail> contact;
 
     /**
      * A free text natural language description of the charge item definition from a consumer's perspective.
      */
-    @Child(name = "description", type = {MarkdownType.class}, order=12, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "description", type = {MarkdownType.class}, order=13, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Natural language description of the charge item definition", formalDefinition="A free text natural language description of the charge item definition from a consumer's perspective." )
     protected MarkdownType description;
 
     /**
      * The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate charge item definition instances.
      */
-    @Child(name = "useContext", type = {UsageContext.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "useContext", type = {UsageContext.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The context that the content is intended to support", formalDefinition="The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate charge item definition instances." )
     protected List<UsageContext> useContext;
 
     /**
      * A legal or geographic region in which the charge item definition is intended to be used.
      */
-    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Intended jurisdiction for charge item definition (if applicable)", formalDefinition="A legal or geographic region in which the charge item definition is intended to be used." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/jurisdiction")
     protected List<CodeableConcept> jurisdiction;
 
     /**
+     * Explanation of why this charge item definition is needed and why it has been designed as it has.
+     */
+    @Child(name = "purpose", type = {MarkdownType.class}, order=16, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Why this charge item definition is defined", formalDefinition="Explanation of why this charge item definition is needed and why it has been designed as it has." )
+    protected MarkdownType purpose;
+
+    /**
      * A copyright statement relating to the charge item definition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the charge item definition.
      */
-    @Child(name = "copyright", type = {MarkdownType.class}, order=15, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "copyright", type = {MarkdownType.class}, order=17, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Use and/or publishing restrictions", formalDefinition="A copyright statement relating to the charge item definition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the charge item definition." )
     protected MarkdownType copyright;
 
     /**
      * The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
-    @Child(name = "approvalDate", type = {DateType.class}, order=16, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "approvalDate", type = {DateType.class}, order=18, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When the charge item definition was approved by publisher", formalDefinition="The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage." )
     protected DateType approvalDate;
 
     /**
      * The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
      */
-    @Child(name = "lastReviewDate", type = {DateType.class}, order=17, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "lastReviewDate", type = {DateType.class}, order=19, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When the charge item definition was last reviewed", formalDefinition="The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date." )
     protected DateType lastReviewDate;
 
     /**
-     * The period during which the charge item definition content was or is planned to be in active use.
-     */
-    @Child(name = "effectivePeriod", type = {Period.class}, order=18, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="When the charge item definition is expected to be used", formalDefinition="The period during which the charge item definition content was or is planned to be in active use." )
-    protected Period effectivePeriod;
-
-    /**
      * The defined billing details in this resource pertain to the given billing code.
      */
-    @Child(name = "code", type = {CodeableConcept.class}, order=19, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "code", type = {CodeableConcept.class}, order=20, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Billing code or product type this definition applies to", formalDefinition="The defined billing details in this resource pertain to the given billing code." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/chargeitem-billingcodes")
     protected CodeableConcept code;
@@ -1157,25 +723,25 @@ public class ChargeItemDefinition extends MetadataResource {
     /**
      * The defined billing details in this resource pertain to the given product instance(s).
      */
-    @Child(name = "instance", type = {Medication.class, Substance.class, Device.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "instance", type = {Medication.class, Substance.class, Device.class, DeviceDefinition.class, ActivityDefinition.class, PlanDefinition.class, HealthcareService.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Instances this definition applies to", formalDefinition="The defined billing details in this resource pertain to the given product instance(s)." )
     protected List<Reference> instance;
 
     /**
      * Expressions that describe applicability criteria for the billing code.
      */
-    @Child(name = "applicability", type = {}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "applicability", type = {}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Whether or not the billing code is applicable", formalDefinition="Expressions that describe applicability criteria for the billing code." )
     protected List<ChargeItemDefinitionApplicabilityComponent> applicability;
 
     /**
      * Group of properties which are applicable under the same conditions. If no applicability rules are established for the group, then all properties always apply.
      */
-    @Child(name = "propertyGroup", type = {}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "propertyGroup", type = {}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Group of properties which are applicable under the same conditions", formalDefinition="Group of properties which are applicable under the same conditions. If no applicability rules are established for the group, then all properties always apply." )
     protected List<ChargeItemDefinitionPropertyGroupComponent> propertyGroup;
 
-    private static final long serialVersionUID = -789505112L;
+    private static final long serialVersionUID = 1866277744L;
 
   /**
    * Constructor
@@ -1194,7 +760,7 @@ public class ChargeItemDefinition extends MetadataResource {
     }
 
     /**
-     * @return {@link #url} (An absolute URI that is used to identify this charge item definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this charge item definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the charge item definition is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @return {@link #url} (An absolute URI that is used to identify this charge item definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this charge item definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the charge item definition is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public UriType getUrlElement() { 
       if (this.url == null)
@@ -1214,7 +780,7 @@ public class ChargeItemDefinition extends MetadataResource {
     }
 
     /**
-     * @param value {@link #url} (An absolute URI that is used to identify this charge item definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this charge item definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the charge item definition is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @param value {@link #url} (An absolute URI that is used to identify this charge item definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this charge item definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the charge item definition is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public ChargeItemDefinition setUrlElement(UriType value) { 
       this.url = value;
@@ -1222,14 +788,14 @@ public class ChargeItemDefinition extends MetadataResource {
     }
 
     /**
-     * @return An absolute URI that is used to identify this charge item definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this charge item definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the charge item definition is stored on different servers.
+     * @return An absolute URI that is used to identify this charge item definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this charge item definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the charge item definition is stored on different servers.
      */
     public String getUrl() { 
       return this.url == null ? null : this.url.getValue();
     }
 
     /**
-     * @param value An absolute URI that is used to identify this charge item definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this charge item definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the charge item definition is stored on different servers.
+     * @param value An absolute URI that is used to identify this charge item definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this charge item definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the charge item definition is stored on different servers.
      */
     public ChargeItemDefinition setUrl(String value) { 
         if (this.url == null)
@@ -1336,6 +902,55 @@ public class ChargeItemDefinition extends MetadataResource {
         if (this.version == null)
           this.version = new StringType();
         this.version.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #name} (A natural language name identifying the ChargeItemDefinition. This name should be usable as an identifier for the module by machine processing applications such as code generation.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+     */
+    public StringType getNameElement() { 
+      if (this.name == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create ChargeItemDefinition.name");
+        else if (Configuration.doAutoCreate())
+          this.name = new StringType(); // bb
+      return this.name;
+    }
+
+    public boolean hasNameElement() { 
+      return this.name != null && !this.name.isEmpty();
+    }
+
+    public boolean hasName() { 
+      return this.name != null && !this.name.isEmpty();
+    }
+
+    /**
+     * @param value {@link #name} (A natural language name identifying the ChargeItemDefinition. This name should be usable as an identifier for the module by machine processing applications such as code generation.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+     */
+    public ChargeItemDefinition setNameElement(StringType value) { 
+      this.name = value;
+      return this;
+    }
+
+    /**
+     * @return A natural language name identifying the ChargeItemDefinition. This name should be usable as an identifier for the module by machine processing applications such as code generation.
+     */
+    public String getName() { 
+      return this.name == null ? null : this.name.getValue();
+    }
+
+    /**
+     * @param value A natural language name identifying the ChargeItemDefinition. This name should be usable as an identifier for the module by machine processing applications such as code generation.
+     */
+    public ChargeItemDefinition setName(String value) { 
+      if (Utilities.noString(value))
+        this.name = null;
+      else {
+        if (this.name == null)
+          this.name = new StringType();
+        this.name.setValue(value);
       }
       return this;
     }
@@ -1712,7 +1327,7 @@ public class ChargeItemDefinition extends MetadataResource {
     }
 
     /**
-     * @return {@link #publisher} (The name of the organization or individual that published the charge item definition.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     * @return {@link #publisher} (The name of the organization or individual responsible for the release and ongoing maintenance of the charge item definition.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
     public StringType getPublisherElement() { 
       if (this.publisher == null)
@@ -1732,7 +1347,7 @@ public class ChargeItemDefinition extends MetadataResource {
     }
 
     /**
-     * @param value {@link #publisher} (The name of the organization or individual that published the charge item definition.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     * @param value {@link #publisher} (The name of the organization or individual responsible for the release and ongoing maintenance of the charge item definition.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
     public ChargeItemDefinition setPublisherElement(StringType value) { 
       this.publisher = value;
@@ -1740,14 +1355,14 @@ public class ChargeItemDefinition extends MetadataResource {
     }
 
     /**
-     * @return The name of the organization or individual that published the charge item definition.
+     * @return The name of the organization or individual responsible for the release and ongoing maintenance of the charge item definition.
      */
     public String getPublisher() { 
       return this.publisher == null ? null : this.publisher.getValue();
     }
 
     /**
-     * @param value The name of the organization or individual that published the charge item definition.
+     * @param value The name of the organization or individual responsible for the release and ongoing maintenance of the charge item definition.
      */
     public ChargeItemDefinition setPublisher(String value) { 
       if (Utilities.noString(value))
@@ -1969,6 +1584,55 @@ public class ChargeItemDefinition extends MetadataResource {
     }
 
     /**
+     * @return {@link #purpose} (Explanation of why this charge item definition is needed and why it has been designed as it has.). This is the underlying object with id, value and extensions. The accessor "getPurpose" gives direct access to the value
+     */
+    public MarkdownType getPurposeElement() { 
+      if (this.purpose == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create ChargeItemDefinition.purpose");
+        else if (Configuration.doAutoCreate())
+          this.purpose = new MarkdownType(); // bb
+      return this.purpose;
+    }
+
+    public boolean hasPurposeElement() { 
+      return this.purpose != null && !this.purpose.isEmpty();
+    }
+
+    public boolean hasPurpose() { 
+      return this.purpose != null && !this.purpose.isEmpty();
+    }
+
+    /**
+     * @param value {@link #purpose} (Explanation of why this charge item definition is needed and why it has been designed as it has.). This is the underlying object with id, value and extensions. The accessor "getPurpose" gives direct access to the value
+     */
+    public ChargeItemDefinition setPurposeElement(MarkdownType value) { 
+      this.purpose = value;
+      return this;
+    }
+
+    /**
+     * @return Explanation of why this charge item definition is needed and why it has been designed as it has.
+     */
+    public String getPurpose() { 
+      return this.purpose == null ? null : this.purpose.getValue();
+    }
+
+    /**
+     * @param value Explanation of why this charge item definition is needed and why it has been designed as it has.
+     */
+    public ChargeItemDefinition setPurpose(String value) { 
+      if (value == null)
+        this.purpose = null;
+      else {
+        if (this.purpose == null)
+          this.purpose = new MarkdownType();
+        this.purpose.setValue(value);
+      }
+      return this;
+    }
+
+    /**
      * @return {@link #copyright} (A copyright statement relating to the charge item definition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the charge item definition.). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value
      */
     public MarkdownType getCopyrightElement() { 
@@ -2112,30 +1776,6 @@ public class ChargeItemDefinition extends MetadataResource {
           this.lastReviewDate = new DateType();
         this.lastReviewDate.setValue(value);
       }
-      return this;
-    }
-
-    /**
-     * @return {@link #effectivePeriod} (The period during which the charge item definition content was or is planned to be in active use.)
-     */
-    public Period getEffectivePeriod() { 
-      if (this.effectivePeriod == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ChargeItemDefinition.effectivePeriod");
-        else if (Configuration.doAutoCreate())
-          this.effectivePeriod = new Period(); // cc
-      return this.effectivePeriod;
-    }
-
-    public boolean hasEffectivePeriod() { 
-      return this.effectivePeriod != null && !this.effectivePeriod.isEmpty();
-    }
-
-    /**
-     * @param value {@link #effectivePeriod} (The period during which the charge item definition content was or is planned to be in active use.)
-     */
-    public ChargeItemDefinition setEffectivePeriod(Period value) { 
-      this.effectivePeriod = value;
       return this;
     }
 
@@ -2326,74 +1966,102 @@ public class ChargeItemDefinition extends MetadataResource {
      * not supported on this implementation
      */
     @Override
-    public int getNameMax() { 
+    public int getVersionAlgorithmMax() { 
       return 0;
     }
     /**
-     * @return {@link #name} (A natural language name identifying the charge item definition. This name should be usable as an identifier for the module by machine processing applications such as code generation.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
      */
-    public StringType getNameElement() { 
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"name\"");
+    public DataType getVersionAlgorithm() { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"versionAlgorithm[x]\""); 
     }
-
-    public boolean hasNameElement() { 
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public StringType getVersionAlgorithmStringType() { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    public boolean hasVersionAlgorithmStringType() { 
+      return false;////K 
+    }
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public Coding getVersionAlgorithmCoding() { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    public boolean hasVersionAlgorithmCoding() { 
+      return false;////K 
+    }
+    public boolean hasVersionAlgorithm() { 
       return false;
     }
-    public boolean hasName() {
+    /**
+     * @param value {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public ChargeItemDefinition setVersionAlgorithm(DataType value) { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getCopyrightLabelMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public StringType getCopyrightLabelElement() { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"copyrightLabel\"");
+    }
+
+    public boolean hasCopyrightLabelElement() { 
+      return false;
+    }
+    public boolean hasCopyrightLabel() {
       return false;
     }
 
     /**
-     * @param value {@link #name} (A natural language name identifying the charge item definition. This name should be usable as an identifier for the module by machine processing applications such as code generation.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+     * @param value {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
      */
-    public ChargeItemDefinition setNameElement(StringType value) { 
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"name\"");
+    public ChargeItemDefinition setCopyrightLabelElement(StringType value) { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"copyrightLabel\""); 
     }
-    public String getName() { 
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"name\"");
+    public String getCopyrightLabel() { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"copyrightLabel\""); 
     }
     /**
-     * @param value A natural language name identifying the charge item definition. This name should be usable as an identifier for the module by machine processing applications such as code generation.
+     * @param value A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
      */
-    public ChargeItemDefinition setName(String value) { 
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"name\"");
+    public ChargeItemDefinition setCopyrightLabel(String value) { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"copyrightLabel\""); 
     }
     /**
      * not supported on this implementation
      */
     @Override
-    public int getPurposeMax() { 
+    public int getEffectivePeriodMax() { 
       return 0;
     }
     /**
-     * @return {@link #purpose} (Explanation of why this charge item definition is needed and why it has been designed as it has.). This is the underlying object with id, value and extensions. The accessor "getPurpose" gives direct access to the value
+     * @return {@link #effectivePeriod} (The period during which the charge item definition content was or is planned to be in active use.)
      */
-    public MarkdownType getPurposeElement() { 
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"purpose\"");
+    public Period getEffectivePeriod() { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"effectivePeriod\""); 
     }
-
-    public boolean hasPurposeElement() { 
+    public boolean hasEffectivePeriod() { 
       return false;
     }
-    public boolean hasPurpose() {
-      return false;
+    /**
+     * @param value {@link #effectivePeriod} (The period during which the charge item definition content was or is planned to be in active use.)
+     */
+    public ChargeItemDefinition setEffectivePeriod(Period value) { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"effectivePeriod\""); 
     }
 
-    /**
-     * @param value {@link #purpose} (Explanation of why this charge item definition is needed and why it has been designed as it has.). This is the underlying object with id, value and extensions. The accessor "getPurpose" gives direct access to the value
-     */
-    public ChargeItemDefinition setPurposeElement(MarkdownType value) { 
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"purpose\"");
-    }
-    public String getPurpose() { 
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"purpose\"");
-    }
-    /**
-     * @param value Explanation of why this charge item definition is needed and why it has been designed as it has.
-     */
-    public ChargeItemDefinition setPurpose(String value) { 
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"purpose\"");
-    }
     /**
      * not supported on this implementation
      */
@@ -2402,7 +2070,7 @@ public class ChargeItemDefinition extends MetadataResource {
       return 0;
     }
     /**
-     * @return {@link #topic} (Descriptive topics related to the content of the library. Topics provide a high-level categorization of the library that can be useful for filtering and searching.)
+     * @return {@link #topic} (Descriptive topics related to the content of the charge item definition. Topics provide a high-level categorization as well as keywords for the charge item definition that can be useful for filtering and searching.)
      */
     public List<CodeableConcept> getTopic() { 
       return new ArrayList<>();
@@ -2411,23 +2079,23 @@ public class ChargeItemDefinition extends MetadataResource {
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
     public ChargeItemDefinition setTopic(List<CodeableConcept> theTopic) { 
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"topic\"");
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"topic\""); 
     }
     public boolean hasTopic() { 
       return false;
     }
 
     public CodeableConcept addTopic() { //3
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"topic\"");
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"topic\""); 
     }
     public ChargeItemDefinition addTopic(CodeableConcept t) { //3
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"topic\"");
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"topic\""); 
     }
     /**
      * @return The first repetition of repeating field {@link #topic}, creating it if it does not already exist {2}
      */
     public CodeableConcept getTopicFirstRep() { 
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"topic\"");
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"topic\""); 
     }
     /**
      * not supported on this implementation
@@ -2446,23 +2114,23 @@ public class ChargeItemDefinition extends MetadataResource {
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
     public ChargeItemDefinition setAuthor(List<ContactDetail> theAuthor) { 
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"author\"");
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"author\""); 
     }
     public boolean hasAuthor() { 
       return false;
     }
 
     public ContactDetail addAuthor() { //3
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"author\"");
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"author\""); 
     }
     public ChargeItemDefinition addAuthor(ContactDetail t) { //3
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"author\"");
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"author\""); 
     }
     /**
      * @return The first repetition of repeating field {@link #author}, creating it if it does not already exist {2}
      */
     public ContactDetail getAuthorFirstRep() { 
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"author\"");
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"author\""); 
     }
     /**
      * not supported on this implementation
@@ -2481,23 +2149,23 @@ public class ChargeItemDefinition extends MetadataResource {
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
     public ChargeItemDefinition setEditor(List<ContactDetail> theEditor) { 
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"editor\"");
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"editor\""); 
     }
     public boolean hasEditor() { 
       return false;
     }
 
     public ContactDetail addEditor() { //3
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"editor\"");
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"editor\""); 
     }
     public ChargeItemDefinition addEditor(ContactDetail t) { //3
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"editor\"");
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"editor\""); 
     }
     /**
      * @return The first repetition of repeating field {@link #editor}, creating it if it does not already exist {2}
      */
     public ContactDetail getEditorFirstRep() { 
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"editor\"");
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"editor\""); 
     }
     /**
      * not supported on this implementation
@@ -2516,23 +2184,23 @@ public class ChargeItemDefinition extends MetadataResource {
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
     public ChargeItemDefinition setReviewer(List<ContactDetail> theReviewer) { 
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"reviewer\"");
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"reviewer\""); 
     }
     public boolean hasReviewer() { 
       return false;
     }
 
     public ContactDetail addReviewer() { //3
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"reviewer\"");
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"reviewer\""); 
     }
     public ChargeItemDefinition addReviewer(ContactDetail t) { //3
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"reviewer\"");
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"reviewer\""); 
     }
     /**
      * @return The first repetition of repeating field {@link #reviewer}, creating it if it does not already exist {2}
      */
     public ContactDetail getReviewerFirstRep() { 
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"reviewer\"");
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"reviewer\""); 
     }
     /**
      * not supported on this implementation
@@ -2551,23 +2219,23 @@ public class ChargeItemDefinition extends MetadataResource {
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
     public ChargeItemDefinition setEndorser(List<ContactDetail> theEndorser) { 
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"endorser\"");
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"endorser\""); 
     }
     public boolean hasEndorser() { 
       return false;
     }
 
     public ContactDetail addEndorser() { //3
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"endorser\"");
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"endorser\""); 
     }
     public ChargeItemDefinition addEndorser(ContactDetail t) { //3
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"endorser\"");
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"endorser\""); 
     }
     /**
      * @return The first repetition of repeating field {@link #endorser}, creating it if it does not already exist {2}
      */
     public ContactDetail getEndorserFirstRep() { 
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"endorser\"");
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"endorser\""); 
     }
     /**
      * not supported on this implementation
@@ -2586,29 +2254,30 @@ public class ChargeItemDefinition extends MetadataResource {
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
     public ChargeItemDefinition setRelatedArtifact(List<RelatedArtifact> theRelatedArtifact) { 
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"relatedArtifact\"");
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"relatedArtifact\""); 
     }
     public boolean hasRelatedArtifact() { 
       return false;
     }
 
     public RelatedArtifact addRelatedArtifact() { //3
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"relatedArtifact\"");
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"relatedArtifact\""); 
     }
     public ChargeItemDefinition addRelatedArtifact(RelatedArtifact t) { //3
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"relatedArtifact\"");
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"relatedArtifact\""); 
     }
     /**
      * @return The first repetition of repeating field {@link #relatedArtifact}, creating it if it does not already exist {2}
      */
     public RelatedArtifact getRelatedArtifactFirstRep() { 
-      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"relatedArtifact\"");
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"relatedArtifact\""); 
     }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("url", "uri", "An absolute URI that is used to identify this charge item definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this charge item definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the charge item definition is stored on different servers.", 0, 1, url));
+        children.add(new Property("url", "uri", "An absolute URI that is used to identify this charge item definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this charge item definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the charge item definition is stored on different servers.", 0, 1, url));
         children.add(new Property("identifier", "Identifier", "A formal identifier that is used to identify this charge item definition when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("version", "string", "The identifier that is used to identify this version of the charge item definition when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the charge item definition author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence. To provide a version consistent with the Decision Support Service specification, use the format Major.Minor.Revision (e.g. 1.0.0). For more information on versioning knowledge assets, refer to the Decision Support Service specification. Note that a version is required for non-experimental active assets.", 0, 1, version));
+        children.add(new Property("name", "string", "A natural language name identifying the ChargeItemDefinition. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name));
         children.add(new Property("title", "string", "A short, descriptive, user-friendly title for the charge item definition.", 0, 1, title));
         children.add(new Property("derivedFromUri", "uri", "The URL pointing to an externally-defined charge item definition that is adhered to in whole or in part by this definition.", 0, java.lang.Integer.MAX_VALUE, derivedFromUri));
         children.add(new Property("partOf", "canonical(ChargeItemDefinition)", "A larger definition of which this particular definition is a component or step.", 0, java.lang.Integer.MAX_VALUE, partOf));
@@ -2616,17 +2285,17 @@ public class ChargeItemDefinition extends MetadataResource {
         children.add(new Property("status", "code", "The current state of the ChargeItemDefinition.", 0, 1, status));
         children.add(new Property("experimental", "boolean", "A Boolean value to indicate that this charge item definition is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.", 0, 1, experimental));
         children.add(new Property("date", "dateTime", "The date  (and optionally time) when the charge item definition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the charge item definition changes.", 0, 1, date));
-        children.add(new Property("publisher", "string", "The name of the organization or individual that published the charge item definition.", 0, 1, publisher));
+        children.add(new Property("publisher", "string", "The name of the organization or individual responsible for the release and ongoing maintenance of the charge item definition.", 0, 1, publisher));
         children.add(new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact));
         children.add(new Property("description", "markdown", "A free text natural language description of the charge item definition from a consumer's perspective.", 0, 1, description));
         children.add(new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate charge item definition instances.", 0, java.lang.Integer.MAX_VALUE, useContext));
         children.add(new Property("jurisdiction", "CodeableConcept", "A legal or geographic region in which the charge item definition is intended to be used.", 0, java.lang.Integer.MAX_VALUE, jurisdiction));
+        children.add(new Property("purpose", "markdown", "Explanation of why this charge item definition is needed and why it has been designed as it has.", 0, 1, purpose));
         children.add(new Property("copyright", "markdown", "A copyright statement relating to the charge item definition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the charge item definition.", 0, 1, copyright));
         children.add(new Property("approvalDate", "date", "The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.", 0, 1, approvalDate));
         children.add(new Property("lastReviewDate", "date", "The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.", 0, 1, lastReviewDate));
-        children.add(new Property("effectivePeriod", "Period", "The period during which the charge item definition content was or is planned to be in active use.", 0, 1, effectivePeriod));
         children.add(new Property("code", "CodeableConcept", "The defined billing details in this resource pertain to the given billing code.", 0, 1, code));
-        children.add(new Property("instance", "Reference(Medication|Substance|Device)", "The defined billing details in this resource pertain to the given product instance(s).", 0, java.lang.Integer.MAX_VALUE, instance));
+        children.add(new Property("instance", "Reference(Medication|Substance|Device|DeviceDefinition|ActivityDefinition|PlanDefinition|HealthcareService)", "The defined billing details in this resource pertain to the given product instance(s).", 0, java.lang.Integer.MAX_VALUE, instance));
         children.add(new Property("applicability", "", "Expressions that describe applicability criteria for the billing code.", 0, java.lang.Integer.MAX_VALUE, applicability));
         children.add(new Property("propertyGroup", "", "Group of properties which are applicable under the same conditions. If no applicability rules are established for the group, then all properties always apply.", 0, java.lang.Integer.MAX_VALUE, propertyGroup));
       }
@@ -2634,9 +2303,10 @@ public class ChargeItemDefinition extends MetadataResource {
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this charge item definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this charge item definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the charge item definition is stored on different servers.", 0, 1, url);
+        case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this charge item definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this charge item definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the charge item definition is stored on different servers.", 0, 1, url);
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "A formal identifier that is used to identify this charge item definition when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case 351608024: /*version*/  return new Property("version", "string", "The identifier that is used to identify this version of the charge item definition when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the charge item definition author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence. To provide a version consistent with the Decision Support Service specification, use the format Major.Minor.Revision (e.g. 1.0.0). For more information on versioning knowledge assets, refer to the Decision Support Service specification. Note that a version is required for non-experimental active assets.", 0, 1, version);
+        case 3373707: /*name*/  return new Property("name", "string", "A natural language name identifying the ChargeItemDefinition. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name);
         case 110371416: /*title*/  return new Property("title", "string", "A short, descriptive, user-friendly title for the charge item definition.", 0, 1, title);
         case -1076333435: /*derivedFromUri*/  return new Property("derivedFromUri", "uri", "The URL pointing to an externally-defined charge item definition that is adhered to in whole or in part by this definition.", 0, java.lang.Integer.MAX_VALUE, derivedFromUri);
         case -995410646: /*partOf*/  return new Property("partOf", "canonical(ChargeItemDefinition)", "A larger definition of which this particular definition is a component or step.", 0, java.lang.Integer.MAX_VALUE, partOf);
@@ -2644,17 +2314,17 @@ public class ChargeItemDefinition extends MetadataResource {
         case -892481550: /*status*/  return new Property("status", "code", "The current state of the ChargeItemDefinition.", 0, 1, status);
         case -404562712: /*experimental*/  return new Property("experimental", "boolean", "A Boolean value to indicate that this charge item definition is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.", 0, 1, experimental);
         case 3076014: /*date*/  return new Property("date", "dateTime", "The date  (and optionally time) when the charge item definition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the charge item definition changes.", 0, 1, date);
-        case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual that published the charge item definition.", 0, 1, publisher);
+        case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual responsible for the release and ongoing maintenance of the charge item definition.", 0, 1, publisher);
         case 951526432: /*contact*/  return new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact);
         case -1724546052: /*description*/  return new Property("description", "markdown", "A free text natural language description of the charge item definition from a consumer's perspective.", 0, 1, description);
         case -669707736: /*useContext*/  return new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate charge item definition instances.", 0, java.lang.Integer.MAX_VALUE, useContext);
         case -507075711: /*jurisdiction*/  return new Property("jurisdiction", "CodeableConcept", "A legal or geographic region in which the charge item definition is intended to be used.", 0, java.lang.Integer.MAX_VALUE, jurisdiction);
+        case -220463842: /*purpose*/  return new Property("purpose", "markdown", "Explanation of why this charge item definition is needed and why it has been designed as it has.", 0, 1, purpose);
         case 1522889671: /*copyright*/  return new Property("copyright", "markdown", "A copyright statement relating to the charge item definition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the charge item definition.", 0, 1, copyright);
         case 223539345: /*approvalDate*/  return new Property("approvalDate", "date", "The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.", 0, 1, approvalDate);
         case -1687512484: /*lastReviewDate*/  return new Property("lastReviewDate", "date", "The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.", 0, 1, lastReviewDate);
-        case -403934648: /*effectivePeriod*/  return new Property("effectivePeriod", "Period", "The period during which the charge item definition content was or is planned to be in active use.", 0, 1, effectivePeriod);
         case 3059181: /*code*/  return new Property("code", "CodeableConcept", "The defined billing details in this resource pertain to the given billing code.", 0, 1, code);
-        case 555127957: /*instance*/  return new Property("instance", "Reference(Medication|Substance|Device)", "The defined billing details in this resource pertain to the given product instance(s).", 0, java.lang.Integer.MAX_VALUE, instance);
+        case 555127957: /*instance*/  return new Property("instance", "Reference(Medication|Substance|Device|DeviceDefinition|ActivityDefinition|PlanDefinition|HealthcareService)", "The defined billing details in this resource pertain to the given product instance(s).", 0, java.lang.Integer.MAX_VALUE, instance);
         case -1526770491: /*applicability*/  return new Property("applicability", "", "Expressions that describe applicability criteria for the billing code.", 0, java.lang.Integer.MAX_VALUE, applicability);
         case -1041594966: /*propertyGroup*/  return new Property("propertyGroup", "", "Group of properties which are applicable under the same conditions. If no applicability rules are established for the group, then all properties always apply.", 0, java.lang.Integer.MAX_VALUE, propertyGroup);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -2668,6 +2338,7 @@ public class ChargeItemDefinition extends MetadataResource {
         case 116079: /*url*/ return this.url == null ? new Base[0] : new Base[] {this.url}; // UriType
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case 351608024: /*version*/ return this.version == null ? new Base[0] : new Base[] {this.version}; // StringType
+        case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
         case 110371416: /*title*/ return this.title == null ? new Base[0] : new Base[] {this.title}; // StringType
         case -1076333435: /*derivedFromUri*/ return this.derivedFromUri == null ? new Base[0] : this.derivedFromUri.toArray(new Base[this.derivedFromUri.size()]); // UriType
         case -995410646: /*partOf*/ return this.partOf == null ? new Base[0] : this.partOf.toArray(new Base[this.partOf.size()]); // CanonicalType
@@ -2680,10 +2351,10 @@ public class ChargeItemDefinition extends MetadataResource {
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // MarkdownType
         case -669707736: /*useContext*/ return this.useContext == null ? new Base[0] : this.useContext.toArray(new Base[this.useContext.size()]); // UsageContext
         case -507075711: /*jurisdiction*/ return this.jurisdiction == null ? new Base[0] : this.jurisdiction.toArray(new Base[this.jurisdiction.size()]); // CodeableConcept
+        case -220463842: /*purpose*/ return this.purpose == null ? new Base[0] : new Base[] {this.purpose}; // MarkdownType
         case 1522889671: /*copyright*/ return this.copyright == null ? new Base[0] : new Base[] {this.copyright}; // MarkdownType
         case 223539345: /*approvalDate*/ return this.approvalDate == null ? new Base[0] : new Base[] {this.approvalDate}; // DateType
         case -1687512484: /*lastReviewDate*/ return this.lastReviewDate == null ? new Base[0] : new Base[] {this.lastReviewDate}; // DateType
-        case -403934648: /*effectivePeriod*/ return this.effectivePeriod == null ? new Base[0] : new Base[] {this.effectivePeriod}; // Period
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
         case 555127957: /*instance*/ return this.instance == null ? new Base[0] : this.instance.toArray(new Base[this.instance.size()]); // Reference
         case -1526770491: /*applicability*/ return this.applicability == null ? new Base[0] : this.applicability.toArray(new Base[this.applicability.size()]); // ChargeItemDefinitionApplicabilityComponent
@@ -2704,6 +2375,9 @@ public class ChargeItemDefinition extends MetadataResource {
           return value;
         case 351608024: // version
           this.version = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 3373707: // name
+          this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case 110371416: // title
           this.title = TypeConvertor.castToString(value); // StringType
@@ -2742,6 +2416,9 @@ public class ChargeItemDefinition extends MetadataResource {
         case -507075711: // jurisdiction
           this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
+        case -220463842: // purpose
+          this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
+          return value;
         case 1522889671: // copyright
           this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
@@ -2750,9 +2427,6 @@ public class ChargeItemDefinition extends MetadataResource {
           return value;
         case -1687512484: // lastReviewDate
           this.lastReviewDate = TypeConvertor.castToDate(value); // DateType
-          return value;
-        case -403934648: // effectivePeriod
-          this.effectivePeriod = TypeConvertor.castToPeriod(value); // Period
           return value;
         case 3059181: // code
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -2779,6 +2453,8 @@ public class ChargeItemDefinition extends MetadataResource {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("version")) {
           this.version = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("name")) {
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
           this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("derivedFromUri")) {
@@ -2804,14 +2480,14 @@ public class ChargeItemDefinition extends MetadataResource {
           this.getUseContext().add(TypeConvertor.castToUsageContext(value));
         } else if (name.equals("jurisdiction")) {
           this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value));
+        } else if (name.equals("purpose")) {
+          this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("copyright")) {
           this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("approvalDate")) {
           this.approvalDate = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("lastReviewDate")) {
           this.lastReviewDate = TypeConvertor.castToDate(value); // DateType
-        } else if (name.equals("effectivePeriod")) {
-          this.effectivePeriod = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("code")) {
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("instance")) {
@@ -2831,6 +2507,7 @@ public class ChargeItemDefinition extends MetadataResource {
         case 116079:  return getUrlElement();
         case -1618432855:  return addIdentifier(); 
         case 351608024:  return getVersionElement();
+        case 3373707:  return getNameElement();
         case 110371416:  return getTitleElement();
         case -1076333435:  return addDerivedFromUriElement();
         case -995410646:  return addPartOfElement();
@@ -2843,10 +2520,10 @@ public class ChargeItemDefinition extends MetadataResource {
         case -1724546052:  return getDescriptionElement();
         case -669707736:  return addUseContext(); 
         case -507075711:  return addJurisdiction(); 
+        case -220463842:  return getPurposeElement();
         case 1522889671:  return getCopyrightElement();
         case 223539345:  return getApprovalDateElement();
         case -1687512484:  return getLastReviewDateElement();
-        case -403934648:  return getEffectivePeriod();
         case 3059181:  return getCode();
         case 555127957:  return addInstance(); 
         case -1526770491:  return addApplicability(); 
@@ -2862,6 +2539,7 @@ public class ChargeItemDefinition extends MetadataResource {
         case 116079: /*url*/ return new String[] {"uri"};
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case 351608024: /*version*/ return new String[] {"string"};
+        case 3373707: /*name*/ return new String[] {"string"};
         case 110371416: /*title*/ return new String[] {"string"};
         case -1076333435: /*derivedFromUri*/ return new String[] {"uri"};
         case -995410646: /*partOf*/ return new String[] {"canonical"};
@@ -2874,10 +2552,10 @@ public class ChargeItemDefinition extends MetadataResource {
         case -1724546052: /*description*/ return new String[] {"markdown"};
         case -669707736: /*useContext*/ return new String[] {"UsageContext"};
         case -507075711: /*jurisdiction*/ return new String[] {"CodeableConcept"};
+        case -220463842: /*purpose*/ return new String[] {"markdown"};
         case 1522889671: /*copyright*/ return new String[] {"markdown"};
         case 223539345: /*approvalDate*/ return new String[] {"date"};
         case -1687512484: /*lastReviewDate*/ return new String[] {"date"};
-        case -403934648: /*effectivePeriod*/ return new String[] {"Period"};
         case 3059181: /*code*/ return new String[] {"CodeableConcept"};
         case 555127957: /*instance*/ return new String[] {"Reference"};
         case -1526770491: /*applicability*/ return new String[] {};
@@ -2897,6 +2575,9 @@ public class ChargeItemDefinition extends MetadataResource {
         }
         else if (name.equals("version")) {
           throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.version");
+        }
+        else if (name.equals("name")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.name");
         }
         else if (name.equals("title")) {
           throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.title");
@@ -2934,6 +2615,9 @@ public class ChargeItemDefinition extends MetadataResource {
         else if (name.equals("jurisdiction")) {
           return addJurisdiction();
         }
+        else if (name.equals("purpose")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.purpose");
+        }
         else if (name.equals("copyright")) {
           throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.copyright");
         }
@@ -2942,10 +2626,6 @@ public class ChargeItemDefinition extends MetadataResource {
         }
         else if (name.equals("lastReviewDate")) {
           throw new FHIRException("Cannot call addChild on a primitive type ChargeItemDefinition.lastReviewDate");
-        }
-        else if (name.equals("effectivePeriod")) {
-          this.effectivePeriod = new Period();
-          return this.effectivePeriod;
         }
         else if (name.equals("code")) {
           this.code = new CodeableConcept();
@@ -2984,6 +2664,7 @@ public class ChargeItemDefinition extends MetadataResource {
             dst.identifier.add(i.copy());
         };
         dst.version = version == null ? null : version.copy();
+        dst.name = name == null ? null : name.copy();
         dst.title = title == null ? null : title.copy();
         if (derivedFromUri != null) {
           dst.derivedFromUri = new ArrayList<UriType>();
@@ -3020,10 +2701,10 @@ public class ChargeItemDefinition extends MetadataResource {
           for (CodeableConcept i : jurisdiction)
             dst.jurisdiction.add(i.copy());
         };
+        dst.purpose = purpose == null ? null : purpose.copy();
         dst.copyright = copyright == null ? null : copyright.copy();
         dst.approvalDate = approvalDate == null ? null : approvalDate.copy();
         dst.lastReviewDate = lastReviewDate == null ? null : lastReviewDate.copy();
-        dst.effectivePeriod = effectivePeriod == null ? null : effectivePeriod.copy();
         dst.code = code == null ? null : code.copy();
         if (instance != null) {
           dst.instance = new ArrayList<Reference>();
@@ -3054,15 +2735,14 @@ public class ChargeItemDefinition extends MetadataResource {
           return false;
         ChargeItemDefinition o = (ChargeItemDefinition) other_;
         return compareDeep(url, o.url, true) && compareDeep(identifier, o.identifier, true) && compareDeep(version, o.version, true)
-           && compareDeep(title, o.title, true) && compareDeep(derivedFromUri, o.derivedFromUri, true) && compareDeep(partOf, o.partOf, true)
-           && compareDeep(replaces, o.replaces, true) && compareDeep(status, o.status, true) && compareDeep(experimental, o.experimental, true)
-           && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true) && compareDeep(contact, o.contact, true)
-           && compareDeep(description, o.description, true) && compareDeep(useContext, o.useContext, true)
-           && compareDeep(jurisdiction, o.jurisdiction, true) && compareDeep(copyright, o.copyright, true)
+           && compareDeep(name, o.name, true) && compareDeep(title, o.title, true) && compareDeep(derivedFromUri, o.derivedFromUri, true)
+           && compareDeep(partOf, o.partOf, true) && compareDeep(replaces, o.replaces, true) && compareDeep(status, o.status, true)
+           && compareDeep(experimental, o.experimental, true) && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true)
+           && compareDeep(contact, o.contact, true) && compareDeep(description, o.description, true) && compareDeep(useContext, o.useContext, true)
+           && compareDeep(jurisdiction, o.jurisdiction, true) && compareDeep(purpose, o.purpose, true) && compareDeep(copyright, o.copyright, true)
            && compareDeep(approvalDate, o.approvalDate, true) && compareDeep(lastReviewDate, o.lastReviewDate, true)
-           && compareDeep(effectivePeriod, o.effectivePeriod, true) && compareDeep(code, o.code, true) && compareDeep(instance, o.instance, true)
-           && compareDeep(applicability, o.applicability, true) && compareDeep(propertyGroup, o.propertyGroup, true)
-          ;
+           && compareDeep(code, o.code, true) && compareDeep(instance, o.instance, true) && compareDeep(applicability, o.applicability, true)
+           && compareDeep(propertyGroup, o.propertyGroup, true);
       }
 
       @Override
@@ -3072,19 +2752,19 @@ public class ChargeItemDefinition extends MetadataResource {
         if (!(other_ instanceof ChargeItemDefinition))
           return false;
         ChargeItemDefinition o = (ChargeItemDefinition) other_;
-        return compareValues(url, o.url, true) && compareValues(version, o.version, true) && compareValues(title, o.title, true)
-           && compareValues(derivedFromUri, o.derivedFromUri, true) && compareValues(partOf, o.partOf, true) && compareValues(replaces, o.replaces, true)
-           && compareValues(status, o.status, true) && compareValues(experimental, o.experimental, true) && compareValues(date, o.date, true)
-           && compareValues(publisher, o.publisher, true) && compareValues(description, o.description, true) && compareValues(copyright, o.copyright, true)
-           && compareValues(approvalDate, o.approvalDate, true) && compareValues(lastReviewDate, o.lastReviewDate, true)
-          ;
+        return compareValues(url, o.url, true) && compareValues(version, o.version, true) && compareValues(name, o.name, true)
+           && compareValues(title, o.title, true) && compareValues(derivedFromUri, o.derivedFromUri, true) && compareValues(partOf, o.partOf, true)
+           && compareValues(replaces, o.replaces, true) && compareValues(status, o.status, true) && compareValues(experimental, o.experimental, true)
+           && compareValues(date, o.date, true) && compareValues(publisher, o.publisher, true) && compareValues(description, o.description, true)
+           && compareValues(purpose, o.purpose, true) && compareValues(copyright, o.copyright, true) && compareValues(approvalDate, o.approvalDate, true)
+           && compareValues(lastReviewDate, o.lastReviewDate, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, identifier, version
-          , title, derivedFromUri, partOf, replaces, status, experimental, date, publisher
-          , contact, description, useContext, jurisdiction, copyright, approvalDate, lastReviewDate
-          , effectivePeriod, code, instance, applicability, propertyGroup);
+          , name, title, derivedFromUri, partOf, replaces, status, experimental, date
+          , publisher, contact, description, useContext, jurisdiction, purpose, copyright
+          , approvalDate, lastReviewDate, code, instance, applicability, propertyGroup);
       }
 
   @Override
@@ -3237,17 +2917,17 @@ public class ChargeItemDefinition extends MetadataResource {
    * <p>
    * Description: <b>The time during which the charge item definition is intended to be in use</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>ChargeItemDefinition.effectivePeriod</b><br>
+   * Path: <b>ChargeItemDefinition.applicability.effectivePeriod</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="effective", path="ChargeItemDefinition.effectivePeriod", description="The time during which the charge item definition is intended to be in use", type="date" )
+  @SearchParamDefinition(name="effective", path="ChargeItemDefinition.applicability.effectivePeriod", description="The time during which the charge item definition is intended to be in use", type="date" )
   public static final String SP_EFFECTIVE = "effective";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>effective</b>
    * <p>
    * Description: <b>The time during which the charge item definition is intended to be in use</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>ChargeItemDefinition.effectivePeriod</b><br>
+   * Path: <b>ChargeItemDefinition.applicability.effectivePeriod</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam EFFECTIVE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_EFFECTIVE);

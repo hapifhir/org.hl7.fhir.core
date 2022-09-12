@@ -1,5 +1,7 @@
 package org.hl7.fhir.convertors.conv10_40.resources10_40;
 
+import java.util.Collections;
+
 import org.hl7.fhir.convertors.context.ConversionContext10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Narrative10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Reference10_40;
@@ -9,8 +11,6 @@ import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Period
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.DateTime10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.String10_40;
 import org.hl7.fhir.exceptions.FHIRException;
-
-import java.util.Collections;
 
 public class Composition10_40 {
 
@@ -141,7 +141,7 @@ public class Composition10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Composition.CompositionAttesterComponent tgt = new org.hl7.fhir.dstu2.model.Composition.CompositionAttesterComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasMode())
       tgt.setMode(Collections.singletonList(convertCompositionAttestationMode(src.getModeElement())));
     if (src.hasTimeElement())
@@ -155,7 +155,7 @@ public class Composition10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Composition.CompositionAttesterComponent tgt = new org.hl7.fhir.r4.model.Composition.CompositionAttesterComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasMode())
       tgt.setModeElement(convertCompositionAttestationMode(src.getMode().get(0)));
     if (src.hasTimeElement())
@@ -169,7 +169,7 @@ public class Composition10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Composition.CompositionEventComponent tgt = new org.hl7.fhir.dstu2.model.Composition.CompositionEventComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode())
       tgt.addCode(CodeableConcept10_40.convertCodeableConcept(t));
     if (src.hasPeriod())
@@ -182,7 +182,7 @@ public class Composition10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Composition.CompositionEventComponent tgt = new org.hl7.fhir.r4.model.Composition.CompositionEventComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getCode())
       tgt.addCode(CodeableConcept10_40.convertCodeableConcept(t));
     if (src.hasPeriod())
@@ -245,7 +245,7 @@ public class Composition10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Composition.SectionComponent tgt = new org.hl7.fhir.r4.model.Composition.SectionComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasTitleElement())
       tgt.setTitleElement(String10_40.convertString(src.getTitleElement()));
     if (src.hasCode())
@@ -272,7 +272,7 @@ public class Composition10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Composition.SectionComponent tgt = new org.hl7.fhir.dstu2.model.Composition.SectionComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasTitleElement())
       tgt.setTitleElement(String10_40.convertString(src.getTitleElement()));
     if (src.hasCode())

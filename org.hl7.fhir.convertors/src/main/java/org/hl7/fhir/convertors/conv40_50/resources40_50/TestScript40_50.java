@@ -6,10 +6,17 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Coding40_50
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.ContactDetail40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.UsageContext40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Boolean40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Canonical40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Code40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Id40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Integer40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.MarkDown40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4.utils.ToolingExtensions;
 import org.hl7.fhir.r5.model.TestScript.TestScriptScopeComponent;
 
 /*
@@ -189,7 +196,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TestScript.TestScriptOriginComponent tgt = new org.hl7.fhir.r5.model.TestScript.TestScriptOriginComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasIndex())
       tgt.setIndexElement(Integer40_50.convertInteger(src.getIndexElement()));
     if (src.hasProfile())
@@ -201,7 +208,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.TestScript.TestScriptOriginComponent tgt = new org.hl7.fhir.r4.model.TestScript.TestScriptOriginComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasIndex())
       tgt.setIndexElement(Integer40_50.convertInteger(src.getIndexElement()));
     if (src.hasProfile())
@@ -213,7 +220,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TestScript.TestScriptDestinationComponent tgt = new org.hl7.fhir.r5.model.TestScript.TestScriptDestinationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasIndex())
       tgt.setIndexElement(Integer40_50.convertInteger(src.getIndexElement()));
     if (src.hasProfile())
@@ -225,7 +232,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.TestScript.TestScriptDestinationComponent tgt = new org.hl7.fhir.r4.model.TestScript.TestScriptDestinationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasIndex())
       tgt.setIndexElement(Integer40_50.convertInteger(src.getIndexElement()));
     if (src.hasProfile())
@@ -237,7 +244,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TestScript.TestScriptMetadataComponent tgt = new org.hl7.fhir.r5.model.TestScript.TestScriptMetadataComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r4.model.TestScript.TestScriptMetadataLinkComponent t : src.getLink())
       tgt.addLink(convertTestScriptMetadataLinkComponent(t));
     for (org.hl7.fhir.r4.model.TestScript.TestScriptMetadataCapabilityComponent t : src.getCapability())
@@ -249,7 +256,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.TestScript.TestScriptMetadataComponent tgt = new org.hl7.fhir.r4.model.TestScript.TestScriptMetadataComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r5.model.TestScript.TestScriptMetadataLinkComponent t : src.getLink())
       tgt.addLink(convertTestScriptMetadataLinkComponent(t));
     for (org.hl7.fhir.r5.model.TestScript.TestScriptMetadataCapabilityComponent t : src.getCapability())
@@ -261,7 +268,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TestScript.TestScriptMetadataLinkComponent tgt = new org.hl7.fhir.r5.model.TestScript.TestScriptMetadataLinkComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_50.convertUri(src.getUrlElement()));
     if (src.hasDescription())
@@ -273,7 +280,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.TestScript.TestScriptMetadataLinkComponent tgt = new org.hl7.fhir.r4.model.TestScript.TestScriptMetadataLinkComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_50.convertUri(src.getUrlElement()));
     if (src.hasDescription())
@@ -285,7 +292,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TestScript.TestScriptMetadataCapabilityComponent tgt = new org.hl7.fhir.r5.model.TestScript.TestScriptMetadataCapabilityComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasRequired())
       tgt.setRequiredElement(Boolean40_50.convertBoolean(src.getRequiredElement()));
     if (src.hasValidated())
@@ -305,7 +312,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.TestScript.TestScriptMetadataCapabilityComponent tgt = new org.hl7.fhir.r4.model.TestScript.TestScriptMetadataCapabilityComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasRequired())
       tgt.setRequiredElement(Boolean40_50.convertBoolean(src.getRequiredElement()));
     if (src.hasValidated())
@@ -325,7 +332,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TestScript.TestScriptFixtureComponent tgt = new org.hl7.fhir.r5.model.TestScript.TestScriptFixtureComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasAutocreate())
       tgt.setAutocreateElement(Boolean40_50.convertBoolean(src.getAutocreateElement()));
     if (src.hasAutodelete())
@@ -339,7 +346,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.TestScript.TestScriptFixtureComponent tgt = new org.hl7.fhir.r4.model.TestScript.TestScriptFixtureComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasAutocreate())
       tgt.setAutocreateElement(Boolean40_50.convertBoolean(src.getAutocreateElement()));
     if (src.hasAutodelete())
@@ -353,7 +360,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TestScript.TestScriptVariableComponent tgt = new org.hl7.fhir.r5.model.TestScript.TestScriptVariableComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasName())
       tgt.setNameElement(String40_50.convertString(src.getNameElement()));
     if (src.hasDefaultValue())
@@ -377,7 +384,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.TestScript.TestScriptVariableComponent tgt = new org.hl7.fhir.r4.model.TestScript.TestScriptVariableComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasName())
       tgt.setNameElement(String40_50.convertString(src.getNameElement()));
     if (src.hasDefaultValue())
@@ -401,7 +408,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TestScript.TestScriptSetupComponent tgt = new org.hl7.fhir.r5.model.TestScript.TestScriptSetupComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r4.model.TestScript.SetupActionComponent t : src.getAction())
       tgt.addAction(convertSetupActionComponent(t));
     return tgt;
@@ -411,7 +418,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.TestScript.TestScriptSetupComponent tgt = new org.hl7.fhir.r4.model.TestScript.TestScriptSetupComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r5.model.TestScript.SetupActionComponent t : src.getAction())
       tgt.addAction(convertSetupActionComponent(t));
     return tgt;
@@ -421,7 +428,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TestScript.SetupActionComponent tgt = new org.hl7.fhir.r5.model.TestScript.SetupActionComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasOperation())
       tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
     if (src.hasAssert())
@@ -433,7 +440,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.TestScript.SetupActionComponent tgt = new org.hl7.fhir.r4.model.TestScript.SetupActionComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasOperation())
       tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
     if (src.hasAssert())
@@ -445,11 +452,11 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TestScript.SetupActionOperationComponent tgt = new org.hl7.fhir.r5.model.TestScript.SetupActionOperationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setType(Coding40_50.convertCoding(src.getType()));
     if (src.hasResource())
-      tgt.setResource(org.hl7.fhir.r5.model.TestScript.FHIRDefinedType.fromCode(src.getResource()));
+      tgt.setResource(src.getResource());
     if (src.hasLabel())
       tgt.setLabelElement(String40_50.convertString(src.getLabelElement()));
     if (src.hasDescription())
@@ -487,11 +494,11 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.TestScript.SetupActionOperationComponent tgt = new org.hl7.fhir.r4.model.TestScript.SetupActionOperationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setType(Coding40_50.convertCoding(src.getType()));
     if (src.hasResource())
-      tgt.setResource(src.getResource().toCode());
+      tgt.setResource(src.getResource());
     if (src.hasLabel())
       tgt.setLabelElement(String40_50.convertString(src.getLabelElement()));
     if (src.hasDescription())
@@ -597,7 +604,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TestScript.SetupActionOperationRequestHeaderComponent tgt = new org.hl7.fhir.r5.model.TestScript.SetupActionOperationRequestHeaderComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasField())
       tgt.setFieldElement(String40_50.convertString(src.getFieldElement()));
     if (src.hasValue())
@@ -609,7 +616,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.TestScript.SetupActionOperationRequestHeaderComponent tgt = new org.hl7.fhir.r4.model.TestScript.SetupActionOperationRequestHeaderComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasField())
       tgt.setFieldElement(String40_50.convertString(src.getFieldElement()));
     if (src.hasValue())
@@ -621,7 +628,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TestScript.SetupActionAssertComponent tgt = new org.hl7.fhir.r5.model.TestScript.SetupActionAssertComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasLabel())
       tgt.setLabelElement(String40_50.convertString(src.getLabelElement()));
     if (src.hasDescription())
@@ -653,7 +660,7 @@ public class TestScript40_50 {
     if (src.hasRequestURL())
       tgt.setRequestURLElement(String40_50.convertString(src.getRequestURLElement()));
     if (src.hasResource())
-      tgt.setResource(org.hl7.fhir.r5.model.TestScript.FHIRDefinedType.fromCode(src.getResource()));
+      tgt.setResource(src.getResource());
     if (src.hasResponse())
       tgt.setResponseElement(convertAssertionResponseTypes(src.getResponseElement()));
     if (src.hasResponseCode())
@@ -673,7 +680,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.TestScript.SetupActionAssertComponent tgt = new org.hl7.fhir.r4.model.TestScript.SetupActionAssertComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasLabel())
       tgt.setLabelElement(String40_50.convertString(src.getLabelElement()));
     if (src.hasDescription())
@@ -705,7 +712,7 @@ public class TestScript40_50 {
     if (src.hasRequestURL())
       tgt.setRequestURLElement(String40_50.convertString(src.getRequestURLElement()));
     if (src.hasResource())
-      tgt.setResource(src.getResource().toCode());
+      tgt.setResource(src.getResource());
     if (src.hasResponse())
       tgt.setResponseElement(convertAssertionResponseTypes(src.getResponseElement()));
     if (src.hasResponseCode())
@@ -953,7 +960,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TestScript.TestScriptTestComponent tgt = new org.hl7.fhir.r5.model.TestScript.TestScriptTestComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasName())
       tgt.setNameElement(String40_50.convertString(src.getNameElement()));
     if (src.hasDescription())
@@ -967,7 +974,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.TestScript.TestScriptTestComponent tgt = new org.hl7.fhir.r4.model.TestScript.TestScriptTestComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasName())
       tgt.setNameElement(String40_50.convertString(src.getNameElement()));
     if (src.hasDescription())
@@ -981,7 +988,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TestScript.TestActionComponent tgt = new org.hl7.fhir.r5.model.TestScript.TestActionComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasOperation())
       tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
     if (src.hasAssert())
@@ -993,7 +1000,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.TestScript.TestActionComponent tgt = new org.hl7.fhir.r4.model.TestScript.TestActionComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasOperation())
       tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
     if (src.hasAssert())
@@ -1005,7 +1012,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TestScript.TestScriptTeardownComponent tgt = new org.hl7.fhir.r5.model.TestScript.TestScriptTeardownComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r4.model.TestScript.TeardownActionComponent t : src.getAction())
       tgt.addAction(convertTeardownActionComponent(t));
     return tgt;
@@ -1015,7 +1022,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.TestScript.TestScriptTeardownComponent tgt = new org.hl7.fhir.r4.model.TestScript.TestScriptTeardownComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r5.model.TestScript.TeardownActionComponent t : src.getAction())
       tgt.addAction(convertTeardownActionComponent(t));
     return tgt;
@@ -1025,7 +1032,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TestScript.TeardownActionComponent tgt = new org.hl7.fhir.r5.model.TestScript.TeardownActionComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasOperation())
       tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
     return tgt;
@@ -1035,7 +1042,7 @@ public class TestScript40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.TestScript.TeardownActionComponent tgt = new org.hl7.fhir.r4.model.TestScript.TeardownActionComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasOperation())
       tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
     return tgt;

@@ -35,11 +35,11 @@ public class Immunization30_50 {
     if (src.hasPrimarySource())
       tgt.setPrimarySourceElement(Boolean30_50.convertBoolean(src.getPrimarySourceElement()));
     if (src.hasReportOrigin())
-      tgt.setInformationSource(CodeableConcept30_50.convertCodeableConcept(src.getReportOrigin()));
+      tgt.setInformationSource(new CodeableReference(CodeableConcept30_50.convertCodeableConcept(src.getReportOrigin())));
     if (src.hasLocation())
       tgt.setLocation(Reference30_50.convertReference(src.getLocation()));
     if (src.hasManufacturer())
-      tgt.setManufacturer(Reference30_50.convertReference(src.getManufacturer()));
+      tgt.setManufacturer(Reference30_50.convertReferenceToCodableReference(src.getManufacturer()));
     if (src.hasLotNumber())
       tgt.setLotNumberElement(String30_50.convertString(src.getLotNumberElement()));
     if (src.hasExpirationDate())
@@ -77,12 +77,12 @@ public class Immunization30_50 {
       tgt.setDateElement(DateTime30_50.convertDateTime(src.getOccurrenceDateTimeType()));
     if (src.hasPrimarySource())
       tgt.setPrimarySourceElement(Boolean30_50.convertBoolean(src.getPrimarySourceElement()));
-    if (src.hasInformationSourceCodeableConcept())
-      tgt.setReportOrigin(CodeableConcept30_50.convertCodeableConcept(src.getInformationSourceCodeableConcept()));
+    if (src.getInformationSource().hasConcept())
+      tgt.setReportOrigin(CodeableConcept30_50.convertCodeableConcept(src.getInformationSource().getConcept()));
     if (src.hasLocation())
       tgt.setLocation(Reference30_50.convertReference(src.getLocation()));
     if (src.hasManufacturer())
-      tgt.setManufacturer(Reference30_50.convertReference(src.getManufacturer()));
+      tgt.setManufacturer(Reference30_50.convertCodeableReferenceToReference(src.getManufacturer()));
     if (src.hasLotNumber())
       tgt.setLotNumberElement(String30_50.convertString(src.getLotNumberElement()));
     if (src.hasExpirationDate())
@@ -106,7 +106,7 @@ public class Immunization30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Immunization.ImmunizationPractitionerComponent tgt = new org.hl7.fhir.dstu3.model.Immunization.ImmunizationPractitionerComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasFunction())
       tgt.setRole(CodeableConcept30_50.convertCodeableConcept(src.getFunction()));
     if (src.hasActor())
@@ -118,7 +118,7 @@ public class Immunization30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Immunization.ImmunizationPerformerComponent tgt = new org.hl7.fhir.r5.model.Immunization.ImmunizationPerformerComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasRole())
       tgt.setFunction(CodeableConcept30_50.convertCodeableConcept(src.getRole()));
     if (src.hasActor())

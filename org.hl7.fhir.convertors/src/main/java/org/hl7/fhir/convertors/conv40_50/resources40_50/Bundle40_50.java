@@ -3,8 +3,13 @@ package org.hl7.fhir.convertors.conv40_50.resources40_50;
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Signature40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Decimal40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Instant40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.UnsignedInt40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Bundle.LinkRelationTypes;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -163,9 +168,9 @@ public class Bundle40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Bundle.BundleLinkComponent tgt = new org.hl7.fhir.r5.model.Bundle.BundleLinkComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasRelation())
-      tgt.setRelationElement(String40_50.convertString(src.getRelationElement()));
+      tgt.setRelation(LinkRelationTypes.fromCode(src.getRelation()));
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_50.convertUri(src.getUrlElement()));
     return tgt;
@@ -175,9 +180,9 @@ public class Bundle40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Bundle.BundleLinkComponent tgt = new org.hl7.fhir.r4.model.Bundle.BundleLinkComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasRelation())
-      tgt.setRelationElement(String40_50.convertString(src.getRelationElement()));
+      tgt.setRelation((src.getRelation().toCode()));
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_50.convertUri(src.getUrlElement()));
     return tgt;
@@ -187,7 +192,7 @@ public class Bundle40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Bundle.BundleEntryComponent tgt = new org.hl7.fhir.r5.model.Bundle.BundleEntryComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r4.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
     if (src.hasFullUrl())
       tgt.setFullUrlElement(Uri40_50.convertUri(src.getFullUrlElement()));
@@ -206,7 +211,7 @@ public class Bundle40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Bundle.BundleEntryComponent tgt = new org.hl7.fhir.r4.model.Bundle.BundleEntryComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r5.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
     if (src.hasFullUrl())
       tgt.setFullUrlElement(Uri40_50.convertUri(src.getFullUrlElement()));
@@ -225,7 +230,7 @@ public class Bundle40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Bundle.BundleEntrySearchComponent tgt = new org.hl7.fhir.r5.model.Bundle.BundleEntrySearchComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasMode())
       tgt.setModeElement(convertSearchEntryMode(src.getModeElement()));
     if (src.hasScore())
@@ -237,7 +242,7 @@ public class Bundle40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Bundle.BundleEntrySearchComponent tgt = new org.hl7.fhir.r4.model.Bundle.BundleEntrySearchComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasMode())
       tgt.setModeElement(convertSearchEntryMode(src.getModeElement()));
     if (src.hasScore())
@@ -293,7 +298,7 @@ public class Bundle40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Bundle.BundleEntryRequestComponent tgt = new org.hl7.fhir.r5.model.Bundle.BundleEntryRequestComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasMethod())
       tgt.setMethodElement(convertHTTPVerb(src.getMethodElement()));
     if (src.hasUrl())
@@ -313,7 +318,7 @@ public class Bundle40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Bundle.BundleEntryRequestComponent tgt = new org.hl7.fhir.r4.model.Bundle.BundleEntryRequestComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasMethod())
       tgt.setMethodElement(convertHTTPVerb(src.getMethodElement()));
     if (src.hasUrl())
@@ -395,7 +400,7 @@ public class Bundle40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Bundle.BundleEntryResponseComponent tgt = new org.hl7.fhir.r5.model.Bundle.BundleEntryResponseComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasStatus())
       tgt.setStatusElement(String40_50.convertString(src.getStatusElement()));
     if (src.hasLocation())
@@ -413,7 +418,7 @@ public class Bundle40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Bundle.BundleEntryResponseComponent tgt = new org.hl7.fhir.r4.model.Bundle.BundleEntryResponseComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasStatus())
       tgt.setStatusElement(String40_50.convertString(src.getStatusElement()));
     if (src.hasLocation())

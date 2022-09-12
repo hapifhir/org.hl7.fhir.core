@@ -91,7 +91,7 @@ public class Condition10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Condition.ConditionEvidenceComponent tgt = new org.hl7.fhir.dstu2.model.Condition.ConditionEvidenceComponent();
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.dstu3.model.CodeableConcept cc : src.getCode())
       tgt.setCode(CodeableConcept10_30.convertCodeableConcept(cc));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getDetail()) tgt.addDetail(Reference10_30.convertReference(t));
@@ -102,7 +102,7 @@ public class Condition10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Condition.ConditionEvidenceComponent tgt = new org.hl7.fhir.dstu3.model.Condition.ConditionEvidenceComponent();
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.addCode(CodeableConcept10_30.convertCodeableConcept(src.getCode()));
     for (org.hl7.fhir.dstu2.model.Reference t : src.getDetail()) tgt.addDetail(Reference10_30.convertReference(t));
@@ -113,7 +113,7 @@ public class Condition10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Condition.ConditionStageComponent tgt = new org.hl7.fhir.dstu3.model.Condition.ConditionStageComponent();
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyBackboneElement(src,tgt);
     if (src.hasSummary())
       tgt.setSummary(CodeableConcept10_30.convertCodeableConcept(src.getSummary()));
     for (org.hl7.fhir.dstu2.model.Reference t : src.getAssessment())
@@ -125,7 +125,7 @@ public class Condition10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Condition.ConditionStageComponent tgt = new org.hl7.fhir.dstu2.model.Condition.ConditionStageComponent();
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyBackboneElement(src,tgt);
     if (src.hasSummary())
       tgt.setSummary(CodeableConcept10_30.convertCodeableConcept(src.getSummary()));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getAssessment())

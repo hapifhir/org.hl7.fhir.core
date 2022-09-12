@@ -431,7 +431,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 //    
 ////  if (i.hasExtension("http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-choiceOrientation")) {
 ////  String code = ToolingExtensions.readStringExtension(i,  "http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-choiceOrientation");
-////  flags.addPiece(gen.new Piece("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-observationLinkPeriod", null, "Orientation: "+code).addHtml(new XhtmlNode(NodeType.Element, "img").attribute("src", Utilities.path(context.getLocalPrefix(), "icon-qi-"+code+".png"))));
+////  flags.addPiece(gen.new Piece("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-observationLinkPeriod", null, "Orientation: "+code).addHtml(new XhtmlNode(NodeType.Element, "img").attribute("alt", "icon").attribute("src", Utilities.path(context.getLocalPrefix(), "icon-qi-"+code+".png"))));
 ////}
 //
 //    

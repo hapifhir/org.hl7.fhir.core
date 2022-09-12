@@ -3,8 +3,13 @@ package org.hl7.fhir.convertors.conv10_50.resources10_50;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_50;
 import org.hl7.fhir.convertors.context.ConversionContext10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Signature10_50;
-import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.*;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Decimal10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Instant10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.String10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.UnsignedInt10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Uri10_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Bundle.LinkRelationTypes;
 import org.hl7.fhir.utilities.FhirPublication;
 
 public class Bundle10_50 {
@@ -52,7 +57,7 @@ public class Bundle10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Bundle.BundleEntryComponent tgt = new org.hl7.fhir.r5.model.Bundle.BundleEntryComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.dstu2.model.Bundle.BundleLinkComponent t : src.getLink())
       tgt.addLink(convertBundleLinkComponent(t));
     if (src.hasFullUrlElement())
@@ -74,7 +79,7 @@ public class Bundle10_50 {
     if (advisor.ignoreEntry(src, FhirPublication.DSTU2))
       return null;
     org.hl7.fhir.dstu2.model.Bundle.BundleEntryComponent tgt = new org.hl7.fhir.dstu2.model.Bundle.BundleEntryComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.r5.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
     if (src.hasFullUrlElement())
       tgt.setFullUrlElement(Uri10_50.convertUri(src.getFullUrlElement()));
@@ -97,7 +102,7 @@ public class Bundle10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Bundle.BundleEntryRequestComponent tgt = new org.hl7.fhir.dstu2.model.Bundle.BundleEntryRequestComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasMethod())
       tgt.setMethodElement(convertHTTPVerb(src.getMethodElement()));
     if (src.hasUrlElement())
@@ -117,7 +122,7 @@ public class Bundle10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Bundle.BundleEntryRequestComponent tgt = new org.hl7.fhir.r5.model.Bundle.BundleEntryRequestComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasMethod())
       tgt.setMethodElement(convertHTTPVerb(src.getMethodElement()));
     if (src.hasUrlElement())
@@ -137,7 +142,7 @@ public class Bundle10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Bundle.BundleEntryResponseComponent tgt = new org.hl7.fhir.dstu2.model.Bundle.BundleEntryResponseComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasStatusElement())
       tgt.setStatusElement(String10_50.convertString(src.getStatusElement()));
     if (src.hasLocationElement())
@@ -153,7 +158,7 @@ public class Bundle10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Bundle.BundleEntryResponseComponent tgt = new org.hl7.fhir.r5.model.Bundle.BundleEntryResponseComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasStatusElement())
       tgt.setStatusElement(String10_50.convertString(src.getStatusElement()));
     if (src.hasLocationElement())
@@ -169,7 +174,7 @@ public class Bundle10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Bundle.BundleEntrySearchComponent tgt = new org.hl7.fhir.dstu2.model.Bundle.BundleEntrySearchComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasMode())
       tgt.setModeElement(convertSearchEntryMode(src.getModeElement()));
     if (src.hasScoreElement())
@@ -181,7 +186,7 @@ public class Bundle10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Bundle.BundleEntrySearchComponent tgt = new org.hl7.fhir.r5.model.Bundle.BundleEntrySearchComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasMode())
       tgt.setModeElement(convertSearchEntryMode(src.getModeElement()));
     if (src.hasScoreElement())
@@ -193,9 +198,9 @@ public class Bundle10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Bundle.BundleLinkComponent tgt = new org.hl7.fhir.r5.model.Bundle.BundleLinkComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasRelationElement())
-      tgt.setRelationElement(String10_50.convertString(src.getRelationElement()));
+      tgt.setRelation(LinkRelationTypes.fromCode(src.getRelation()));
     if (src.hasUrlElement())
       tgt.setUrlElement(Uri10_50.convertUri(src.getUrlElement()));
     return tgt;
@@ -205,9 +210,9 @@ public class Bundle10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Bundle.BundleLinkComponent tgt = new org.hl7.fhir.dstu2.model.Bundle.BundleLinkComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasRelationElement())
-      tgt.setRelationElement(String10_50.convertString(src.getRelationElement()));
+      tgt.setRelation((src.getRelation().toCode()));
     if (src.hasUrlElement())
       tgt.setUrlElement(Uri10_50.convertUri(src.getUrlElement()));
     return tgt;

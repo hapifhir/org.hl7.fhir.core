@@ -5,6 +5,7 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Codeab
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Ratio30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.SimpleQuantity30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Timing30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Boolean30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Integer30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -21,8 +22,11 @@ public class Dosage30_50 {
     if (src.hasPatientInstruction())
       tgt.setPatientInstructionElement(String30_50.convertString(src.getPatientInstructionElement()));
     if (src.hasTiming()) tgt.setTiming(Timing30_50.convertTiming(src.getTiming()));
-    if (src.hasAsNeeded())
-      tgt.setAsNeeded(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getAsNeeded()));
+    if (src.hasAsNeededBooleanType())
+      tgt.setAsNeededElement(Boolean30_50.convertBoolean(src.getAsNeededBooleanType()));
+    if (src.hasAsNeededCodeableConcept()) {
+      tgt.addAsNeededFor(CodeableConcept30_50.convertCodeableConcept(src.getAsNeededCodeableConcept()));      
+    }
     if (src.hasSite()) tgt.setSite(CodeableConcept30_50.convertCodeableConcept(src.getSite()));
     if (src.hasRoute()) tgt.setRoute(CodeableConcept30_50.convertCodeableConcept(src.getRoute()));
     if (src.hasMethod()) tgt.setMethod(CodeableConcept30_50.convertCodeableConcept(src.getMethod()));
@@ -33,7 +37,7 @@ public class Dosage30_50 {
       if (src.hasRate())
         dr.setRate(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getRate()));
     }
-    if (src.hasMaxDosePerPeriod()) tgt.setMaxDosePerPeriod(Ratio30_50.convertRatio(src.getMaxDosePerPeriod()));
+    if (src.hasMaxDosePerPeriod()) tgt.addMaxDosePerPeriod(Ratio30_50.convertRatio(src.getMaxDosePerPeriod()));
     if (src.hasMaxDosePerAdministration())
       tgt.setMaxDosePerAdministration(SimpleQuantity30_50.convertSimpleQuantity(src.getMaxDosePerAdministration()));
     if (src.hasMaxDosePerLifetime())
@@ -53,13 +57,15 @@ public class Dosage30_50 {
       tgt.setPatientInstructionElement(String30_50.convertString(src.getPatientInstructionElement()));
     if (src.hasTiming()) tgt.setTiming(Timing30_50.convertTiming(src.getTiming()));
     if (src.hasAsNeeded())
-      tgt.setAsNeeded(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getAsNeeded()));
+      tgt.setAsNeeded(Boolean30_50.convertBoolean(src.getAsNeededElement()));
+    if (src.hasAsNeededFor())
+      tgt.setAsNeeded(CodeableConcept30_50.convertCodeableConcept(src.getAsNeededForFirstRep()));
     if (src.hasSite()) tgt.setSite(CodeableConcept30_50.convertCodeableConcept(src.getSite()));
     if (src.hasRoute()) tgt.setRoute(CodeableConcept30_50.convertCodeableConcept(src.getRoute()));
     if (src.hasMethod()) tgt.setMethod(CodeableConcept30_50.convertCodeableConcept(src.getMethod()));
     if (src.hasDoseAndRate() && src.getDoseAndRate().get(0).hasDose())
       tgt.setDose(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getDoseAndRate().get(0).getDose()));
-    if (src.hasMaxDosePerPeriod()) tgt.setMaxDosePerPeriod(Ratio30_50.convertRatio(src.getMaxDosePerPeriod()));
+    if (src.hasMaxDosePerPeriod()) tgt.setMaxDosePerPeriod(Ratio30_50.convertRatio(src.getMaxDosePerPeriodFirstRep()));
     if (src.hasMaxDosePerAdministration())
       tgt.setMaxDosePerAdministration(SimpleQuantity30_50.convertSimpleQuantity(src.getMaxDosePerAdministration()));
     if (src.hasMaxDosePerLifetime())

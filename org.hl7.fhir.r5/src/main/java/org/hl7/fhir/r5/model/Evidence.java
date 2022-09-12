@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -3614,10 +3614,10 @@ public class Evidence extends MetadataResource {
   }
 
     /**
-     * An absolute URI that is used to identify this evidence when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.
+     * An absolute URI that is used to identify this evidence when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.
      */
     @Child(name = "url", type = {UriType.class}, order=0, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Canonical identifier for this evidence, represented as a globally unique URI", formalDefinition="An absolute URI that is used to identify this evidence when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers." )
+    @Description(shortDefinition="Canonical identifier for this evidence, represented as a globally unique URI", formalDefinition="An absolute URI that is used to identify this evidence when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers." )
     protected UriType url;
 
     /**
@@ -3635,163 +3635,177 @@ public class Evidence extends MetadataResource {
     protected StringType version;
 
     /**
+     * A natural language name identifying the evidence. This name should be usable as an identifier for the module by machine processing applications such as code generation.
+     */
+    @Child(name = "name", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Name for this summary (machine friendly)", formalDefinition="A natural language name identifying the evidence. This name should be usable as an identifier for the module by machine processing applications such as code generation." )
+    protected StringType name;
+
+    /**
      * A short, descriptive, user-friendly title for the summary.
      */
-    @Child(name = "title", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "title", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Name for this summary (human friendly)", formalDefinition="A short, descriptive, user-friendly title for the summary." )
     protected StringType title;
 
     /**
      * Citation Resource or display of suggested citation for this evidence.
      */
-    @Child(name = "citeAs", type = {Citation.class, MarkdownType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "citeAs", type = {Citation.class, MarkdownType.class}, order=5, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Citation for this evidence", formalDefinition="Citation Resource or display of suggested citation for this evidence." )
     protected DataType citeAs;
 
     /**
      * The status of this summary. Enables tracking the life-cycle of the content.
      */
-    @Child(name = "status", type = {CodeType.class}, order=5, min=1, max=1, modifier=true, summary=true)
+    @Child(name = "status", type = {CodeType.class}, order=6, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The status of this summary. Enables tracking the life-cycle of the content." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
     protected Enumeration<PublicationStatus> status;
 
     /**
+     * A Boolean value to indicate that this resource is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
+     */
+    @Child(name = "experimental", type = {BooleanType.class}, order=7, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="For testing purposes, not real usage", formalDefinition="A Boolean value to indicate that this resource is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage." )
+    protected BooleanType experimental;
+
+    /**
      * The date  (and optionally time) when the summary was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the summary changes.
      */
-    @Child(name = "date", type = {DateTimeType.class}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "date", type = {DateTimeType.class}, order=8, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Date last changed", formalDefinition="The date  (and optionally time) when the summary was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the summary changes." )
     protected DateTimeType date;
 
     /**
      * The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate evidence instances.
      */
-    @Child(name = "useContext", type = {UsageContext.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "useContext", type = {UsageContext.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The context that the content is intended to support", formalDefinition="The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate evidence instances." )
     protected List<UsageContext> useContext;
 
     /**
      * The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
-    @Child(name = "approvalDate", type = {DateType.class}, order=8, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "approvalDate", type = {DateType.class}, order=10, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When the summary was approved by publisher", formalDefinition="The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage." )
     protected DateType approvalDate;
 
     /**
      * The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
      */
-    @Child(name = "lastReviewDate", type = {DateType.class}, order=9, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "lastReviewDate", type = {DateType.class}, order=11, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When the summary was last reviewed", formalDefinition="The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date." )
     protected DateType lastReviewDate;
 
     /**
-     * The name of the organization or individual that published the evidence.
+     * The name of the organization or individual responsible for the release and ongoing maintenance of the evidence.
      */
-    @Child(name = "publisher", type = {StringType.class}, order=10, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Name of the publisher (organization or individual)", formalDefinition="The name of the organization or individual that published the evidence." )
+    @Child(name = "publisher", type = {StringType.class}, order=12, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Name of the publisher/steward (organization or individual)", formalDefinition="The name of the organization or individual responsible for the release and ongoing maintenance of the evidence." )
     protected StringType publisher;
 
     /**
      * Contact details to assist a user in finding and communicating with the publisher.
      */
-    @Child(name = "contact", type = {ContactDetail.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "contact", type = {ContactDetail.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Contact details for the publisher", formalDefinition="Contact details to assist a user in finding and communicating with the publisher." )
     protected List<ContactDetail> contact;
 
     /**
      * An individiual, organization, or device primarily involved in the creation and maintenance of the content.
      */
-    @Child(name = "author", type = {ContactDetail.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "author", type = {ContactDetail.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Who authored the content", formalDefinition="An individiual, organization, or device primarily involved in the creation and maintenance of the content." )
     protected List<ContactDetail> author;
 
     /**
      * An individiual, organization, or device primarily responsible for internal coherence of the content.
      */
-    @Child(name = "editor", type = {ContactDetail.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "editor", type = {ContactDetail.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who edited the content", formalDefinition="An individiual, organization, or device primarily responsible for internal coherence of the content." )
     protected List<ContactDetail> editor;
 
     /**
      * An individiual, organization, or device primarily responsible for review of some aspect of the content.
      */
-    @Child(name = "reviewer", type = {ContactDetail.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "reviewer", type = {ContactDetail.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who reviewed the content", formalDefinition="An individiual, organization, or device primarily responsible for review of some aspect of the content." )
     protected List<ContactDetail> reviewer;
 
     /**
      * An individiual, organization, or device responsible for officially endorsing the content for use in some setting.
      */
-    @Child(name = "endorser", type = {ContactDetail.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "endorser", type = {ContactDetail.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Who endorsed the content", formalDefinition="An individiual, organization, or device responsible for officially endorsing the content for use in some setting." )
     protected List<ContactDetail> endorser;
 
     /**
      * Link or citation to artifact associated with the summary.
      */
-    @Child(name = "relatedArtifact", type = {RelatedArtifact.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "relatedArtifact", type = {RelatedArtifact.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Link or citation to artifact associated with the summary", formalDefinition="Link or citation to artifact associated with the summary." )
     protected List<RelatedArtifact> relatedArtifact;
 
     /**
      * A free text natural language description of the evidence from a consumer's perspective.
      */
-    @Child(name = "description", type = {MarkdownType.class}, order=17, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "description", type = {MarkdownType.class}, order=19, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Description of the particular summary", formalDefinition="A free text natural language description of the evidence from a consumer's perspective." )
     protected MarkdownType description;
 
     /**
      * Declarative description of the Evidence.
      */
-    @Child(name = "assertion", type = {MarkdownType.class}, order=18, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "assertion", type = {MarkdownType.class}, order=20, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Declarative description of the Evidence", formalDefinition="Declarative description of the Evidence." )
     protected MarkdownType assertion;
 
     /**
      * Footnotes and/or explanatory notes.
      */
-    @Child(name = "note", type = {Annotation.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "note", type = {Annotation.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Footnotes and/or explanatory notes", formalDefinition="Footnotes and/or explanatory notes." )
     protected List<Annotation> note;
 
     /**
      * Evidence variable such as population, exposure, or outcome.
      */
-    @Child(name = "variableDefinition", type = {}, order=20, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "variableDefinition", type = {}, order=22, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Evidence variable such as population, exposure, or outcome", formalDefinition="Evidence variable such as population, exposure, or outcome." )
     protected List<EvidenceVariableDefinitionComponent> variableDefinition;
 
     /**
      * The method to combine studies.
      */
-    @Child(name = "synthesisType", type = {CodeableConcept.class}, order=21, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "synthesisType", type = {CodeableConcept.class}, order=23, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="The method to combine studies", formalDefinition="The method to combine studies." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/synthesis-type")
     protected CodeableConcept synthesisType;
 
     /**
-     * The type of study that produced this evidence.
+     * The design of the study that produced this evidence. The design is described with any number of study design characteristics.
      */
-    @Child(name = "studyType", type = {CodeableConcept.class}, order=22, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="The type of study that produced this evidence", formalDefinition="The type of study that produced this evidence." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/study-type")
-    protected CodeableConcept studyType;
+    @Child(name = "studyDesign", type = {CodeableConcept.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="The design of the study that produced this evidence", formalDefinition="The design of the study that produced this evidence. The design is described with any number of study design characteristics." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/study-design")
+    protected List<CodeableConcept> studyDesign;
 
     /**
      * Values and parameters for a single statistic.
      */
-    @Child(name = "statistic", type = {}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "statistic", type = {}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Values and parameters for a single statistic", formalDefinition="Values and parameters for a single statistic." )
     protected List<EvidenceStatisticComponent> statistic;
 
     /**
      * Assessment of certainty, confidence in the estimates, or quality of the evidence.
      */
-    @Child(name = "certainty", type = {}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "certainty", type = {}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Certainty or quality of the evidence", formalDefinition="Assessment of certainty, confidence in the estimates, or quality of the evidence." )
     protected List<EvidenceCertaintyComponent> certainty;
 
-    private static final long serialVersionUID = -468979974L;
+    private static final long serialVersionUID = 168184840L;
 
   /**
    * Constructor
@@ -3810,7 +3824,7 @@ public class Evidence extends MetadataResource {
     }
 
     /**
-     * @return {@link #url} (An absolute URI that is used to identify this evidence when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @return {@link #url} (An absolute URI that is used to identify this evidence when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public UriType getUrlElement() { 
       if (this.url == null)
@@ -3830,7 +3844,7 @@ public class Evidence extends MetadataResource {
     }
 
     /**
-     * @param value {@link #url} (An absolute URI that is used to identify this evidence when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @param value {@link #url} (An absolute URI that is used to identify this evidence when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public Evidence setUrlElement(UriType value) { 
       this.url = value;
@@ -3838,14 +3852,14 @@ public class Evidence extends MetadataResource {
     }
 
     /**
-     * @return An absolute URI that is used to identify this evidence when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.
+     * @return An absolute URI that is used to identify this evidence when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.
      */
     public String getUrl() { 
       return this.url == null ? null : this.url.getValue();
     }
 
     /**
-     * @param value An absolute URI that is used to identify this evidence when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.
+     * @param value An absolute URI that is used to identify this evidence when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.
      */
     public Evidence setUrl(String value) { 
       if (Utilities.noString(value))
@@ -3956,6 +3970,55 @@ public class Evidence extends MetadataResource {
         if (this.version == null)
           this.version = new StringType();
         this.version.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #name} (A natural language name identifying the evidence. This name should be usable as an identifier for the module by machine processing applications such as code generation.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+     */
+    public StringType getNameElement() { 
+      if (this.name == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Evidence.name");
+        else if (Configuration.doAutoCreate())
+          this.name = new StringType(); // bb
+      return this.name;
+    }
+
+    public boolean hasNameElement() { 
+      return this.name != null && !this.name.isEmpty();
+    }
+
+    public boolean hasName() { 
+      return this.name != null && !this.name.isEmpty();
+    }
+
+    /**
+     * @param value {@link #name} (A natural language name identifying the evidence. This name should be usable as an identifier for the module by machine processing applications such as code generation.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+     */
+    public Evidence setNameElement(StringType value) { 
+      this.name = value;
+      return this;
+    }
+
+    /**
+     * @return A natural language name identifying the evidence. This name should be usable as an identifier for the module by machine processing applications such as code generation.
+     */
+    public String getName() { 
+      return this.name == null ? null : this.name.getValue();
+    }
+
+    /**
+     * @param value A natural language name identifying the evidence. This name should be usable as an identifier for the module by machine processing applications such as code generation.
+     */
+    public Evidence setName(String value) { 
+      if (Utilities.noString(value))
+        this.name = null;
+      else {
+        if (this.name == null)
+          this.name = new StringType();
+        this.name.setValue(value);
       }
       return this;
     }
@@ -4102,6 +4165,51 @@ public class Evidence extends MetadataResource {
         if (this.status == null)
           this.status = new Enumeration<PublicationStatus>(new PublicationStatusEnumFactory());
         this.status.setValue(value);
+      return this;
+    }
+
+    /**
+     * @return {@link #experimental} (A Boolean value to indicate that this resource is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.). This is the underlying object with id, value and extensions. The accessor "getExperimental" gives direct access to the value
+     */
+    public BooleanType getExperimentalElement() { 
+      if (this.experimental == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Evidence.experimental");
+        else if (Configuration.doAutoCreate())
+          this.experimental = new BooleanType(); // bb
+      return this.experimental;
+    }
+
+    public boolean hasExperimentalElement() { 
+      return this.experimental != null && !this.experimental.isEmpty();
+    }
+
+    public boolean hasExperimental() { 
+      return this.experimental != null && !this.experimental.isEmpty();
+    }
+
+    /**
+     * @param value {@link #experimental} (A Boolean value to indicate that this resource is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.). This is the underlying object with id, value and extensions. The accessor "getExperimental" gives direct access to the value
+     */
+    public Evidence setExperimentalElement(BooleanType value) { 
+      this.experimental = value;
+      return this;
+    }
+
+    /**
+     * @return A Boolean value to indicate that this resource is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
+     */
+    public boolean getExperimental() { 
+      return this.experimental == null || this.experimental.isEmpty() ? false : this.experimental.getValue();
+    }
+
+    /**
+     * @param value A Boolean value to indicate that this resource is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
+     */
+    public Evidence setExperimental(boolean value) { 
+        if (this.experimental == null)
+          this.experimental = new BooleanType();
+        this.experimental.setValue(value);
       return this;
     }
 
@@ -4306,7 +4414,7 @@ public class Evidence extends MetadataResource {
     }
 
     /**
-     * @return {@link #publisher} (The name of the organization or individual that published the evidence.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     * @return {@link #publisher} (The name of the organization or individual responsible for the release and ongoing maintenance of the evidence.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
     public StringType getPublisherElement() { 
       if (this.publisher == null)
@@ -4326,7 +4434,7 @@ public class Evidence extends MetadataResource {
     }
 
     /**
-     * @param value {@link #publisher} (The name of the organization or individual that published the evidence.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     * @param value {@link #publisher} (The name of the organization or individual responsible for the release and ongoing maintenance of the evidence.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
     public Evidence setPublisherElement(StringType value) { 
       this.publisher = value;
@@ -4334,14 +4442,14 @@ public class Evidence extends MetadataResource {
     }
 
     /**
-     * @return The name of the organization or individual that published the evidence.
+     * @return The name of the organization or individual responsible for the release and ongoing maintenance of the evidence.
      */
     public String getPublisher() { 
       return this.publisher == null ? null : this.publisher.getValue();
     }
 
     /**
-     * @param value The name of the organization or individual that published the evidence.
+     * @param value The name of the organization or individual responsible for the release and ongoing maintenance of the evidence.
      */
     public Evidence setPublisher(String value) { 
       if (Utilities.noString(value))
@@ -4901,27 +5009,56 @@ public class Evidence extends MetadataResource {
     }
 
     /**
-     * @return {@link #studyType} (The type of study that produced this evidence.)
+     * @return {@link #studyDesign} (The design of the study that produced this evidence. The design is described with any number of study design characteristics.)
      */
-    public CodeableConcept getStudyType() { 
-      if (this.studyType == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Evidence.studyType");
-        else if (Configuration.doAutoCreate())
-          this.studyType = new CodeableConcept(); // cc
-      return this.studyType;
-    }
-
-    public boolean hasStudyType() { 
-      return this.studyType != null && !this.studyType.isEmpty();
+    public List<CodeableConcept> getStudyDesign() { 
+      if (this.studyDesign == null)
+        this.studyDesign = new ArrayList<CodeableConcept>();
+      return this.studyDesign;
     }
 
     /**
-     * @param value {@link #studyType} (The type of study that produced this evidence.)
+     * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Evidence setStudyType(CodeableConcept value) { 
-      this.studyType = value;
+    public Evidence setStudyDesign(List<CodeableConcept> theStudyDesign) { 
+      this.studyDesign = theStudyDesign;
       return this;
+    }
+
+    public boolean hasStudyDesign() { 
+      if (this.studyDesign == null)
+        return false;
+      for (CodeableConcept item : this.studyDesign)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public CodeableConcept addStudyDesign() { //3
+      CodeableConcept t = new CodeableConcept();
+      if (this.studyDesign == null)
+        this.studyDesign = new ArrayList<CodeableConcept>();
+      this.studyDesign.add(t);
+      return t;
+    }
+
+    public Evidence addStudyDesign(CodeableConcept t) { //3
+      if (t == null)
+        return this;
+      if (this.studyDesign == null)
+        this.studyDesign = new ArrayList<CodeableConcept>();
+      this.studyDesign.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #studyDesign}, creating it if it does not already exist {3}
+     */
+    public CodeableConcept getStudyDesignFirstRep() { 
+      if (getStudyDesign().isEmpty()) {
+        addStudyDesign();
+      }
+      return getStudyDesign().get(0);
     }
 
     /**
@@ -5034,74 +5171,43 @@ public class Evidence extends MetadataResource {
      * not supported on this implementation
      */
     @Override
-    public int getNameMax() { 
+    public int getVersionAlgorithmMax() { 
       return 0;
     }
     /**
-     * @return {@link #name} (A natural language name identifying the evidence. This name should be usable as an identifier for the module by machine processing applications such as code generation.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
      */
-    public StringType getNameElement() { 
-      throw new Error("The resource type \"Evidence\" does not implement the property \"name\"");
+    public DataType getVersionAlgorithm() { 
+      throw new Error("The resource type \"Evidence\" does not implement the property \"versionAlgorithm[x]\""); 
     }
-
-    public boolean hasNameElement() { 
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public StringType getVersionAlgorithmStringType() { 
+      throw new Error("The resource type \"Evidence\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    public boolean hasVersionAlgorithmStringType() { 
+      return false;////K 
+    }
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public Coding getVersionAlgorithmCoding() { 
+      throw new Error("The resource type \"Evidence\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    public boolean hasVersionAlgorithmCoding() { 
+      return false;////K 
+    }
+    public boolean hasVersionAlgorithm() { 
       return false;
     }
-    public boolean hasName() {
-      return false;
+    /**
+     * @param value {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public Evidence setVersionAlgorithm(DataType value) { 
+      throw new Error("The resource type \"Evidence\" does not implement the property \"versionAlgorithm[x]\""); 
     }
 
-    /**
-     * @param value {@link #name} (A natural language name identifying the evidence. This name should be usable as an identifier for the module by machine processing applications such as code generation.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
-     */
-    public Evidence setNameElement(StringType value) { 
-      throw new Error("The resource type \"Evidence\" does not implement the property \"name\"");
-    }
-    public String getName() { 
-      throw new Error("The resource type \"Evidence\" does not implement the property \"name\"");
-    }
-    /**
-     * @param value A natural language name identifying the evidence. This name should be usable as an identifier for the module by machine processing applications such as code generation.
-     */
-    public Evidence setName(String value) { 
-      throw new Error("The resource type \"Evidence\" does not implement the property \"name\"");
-    }
-    /**
-     * not supported on this implementation
-     */
-    @Override
-    public int getExperimentalMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #experimental} (A Boolean value to indicate that this evidence is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.). This is the underlying object with id, value and extensions. The accessor "getExperimental" gives direct access to the value
-     */
-    public BooleanType getExperimentalElement() { 
-      throw new Error("The resource type \"Evidence\" does not implement the property \"experimental\"");
-    }
-
-    public boolean hasExperimentalElement() { 
-      return false;
-    }
-    public boolean hasExperimental() {
-      return false;
-    }
-
-    /**
-     * @param value {@link #experimental} (A Boolean value to indicate that this evidence is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.). This is the underlying object with id, value and extensions. The accessor "getExperimental" gives direct access to the value
-     */
-    public Evidence setExperimentalElement(BooleanType value) { 
-      throw new Error("The resource type \"Evidence\" does not implement the property \"experimental\"");
-    }
-    public boolean getExperimental() { 
-      throw new Error("The resource type \"Evidence\" does not implement the property \"experimental\"");
-    }
-    /**
-     * @param value A Boolean value to indicate that this evidence is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
-     */
-    public Evidence setExperimental(boolean value) { 
-      throw new Error("The resource type \"Evidence\" does not implement the property \"experimental\"");
-    }
     /**
      * not supported on this implementation
      */
@@ -5119,23 +5225,23 @@ public class Evidence extends MetadataResource {
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
     public Evidence setJurisdiction(List<CodeableConcept> theJurisdiction) { 
-      throw new Error("The resource type \"Evidence\" does not implement the property \"jurisdiction\"");
+      throw new Error("The resource type \"Evidence\" does not implement the property \"jurisdiction\""); 
     }
     public boolean hasJurisdiction() { 
       return false;
     }
 
     public CodeableConcept addJurisdiction() { //3
-      throw new Error("The resource type \"Evidence\" does not implement the property \"jurisdiction\"");
+      throw new Error("The resource type \"Evidence\" does not implement the property \"jurisdiction\""); 
     }
     public Evidence addJurisdiction(CodeableConcept t) { //3
-      throw new Error("The resource type \"Evidence\" does not implement the property \"jurisdiction\"");
+      throw new Error("The resource type \"Evidence\" does not implement the property \"jurisdiction\""); 
     }
     /**
      * @return The first repetition of repeating field {@link #jurisdiction}, creating it if it does not already exist {2}
      */
     public CodeableConcept getJurisdictionFirstRep() { 
-      throw new Error("The resource type \"Evidence\" does not implement the property \"jurisdiction\"");
+      throw new Error("The resource type \"Evidence\" does not implement the property \"jurisdiction\""); 
     }
     /**
      * not supported on this implementation
@@ -5162,16 +5268,16 @@ public class Evidence extends MetadataResource {
      * @param value {@link #purpose} (Explanation of why this evidence is needed and why it has been designed as it has.). This is the underlying object with id, value and extensions. The accessor "getPurpose" gives direct access to the value
      */
     public Evidence setPurposeElement(MarkdownType value) { 
-      throw new Error("The resource type \"Evidence\" does not implement the property \"purpose\"");
+      throw new Error("The resource type \"Evidence\" does not implement the property \"purpose\""); 
     }
     public String getPurpose() { 
-      throw new Error("The resource type \"Evidence\" does not implement the property \"purpose\"");
+      throw new Error("The resource type \"Evidence\" does not implement the property \"purpose\""); 
     }
     /**
      * @param value Explanation of why this evidence is needed and why it has been designed as it has.
      */
     public Evidence setPurpose(String value) { 
-      throw new Error("The resource type \"Evidence\" does not implement the property \"purpose\"");
+      throw new Error("The resource type \"Evidence\" does not implement the property \"purpose\""); 
     }
     /**
      * not supported on this implementation
@@ -5198,16 +5304,52 @@ public class Evidence extends MetadataResource {
      * @param value {@link #copyright} (A copyright statement relating to the evidence and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the evidence.). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value
      */
     public Evidence setCopyrightElement(MarkdownType value) { 
-      throw new Error("The resource type \"Evidence\" does not implement the property \"copyright\"");
+      throw new Error("The resource type \"Evidence\" does not implement the property \"copyright\""); 
     }
     public String getCopyright() { 
-      throw new Error("The resource type \"Evidence\" does not implement the property \"copyright\"");
+      throw new Error("The resource type \"Evidence\" does not implement the property \"copyright\""); 
     }
     /**
      * @param value A copyright statement relating to the evidence and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the evidence.
      */
     public Evidence setCopyright(String value) { 
-      throw new Error("The resource type \"Evidence\" does not implement the property \"copyright\"");
+      throw new Error("The resource type \"Evidence\" does not implement the property \"copyright\""); 
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getCopyrightLabelMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public StringType getCopyrightLabelElement() { 
+      throw new Error("The resource type \"Evidence\" does not implement the property \"copyrightLabel\"");
+    }
+
+    public boolean hasCopyrightLabelElement() { 
+      return false;
+    }
+    public boolean hasCopyrightLabel() {
+      return false;
+    }
+
+    /**
+     * @param value {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public Evidence setCopyrightLabelElement(StringType value) { 
+      throw new Error("The resource type \"Evidence\" does not implement the property \"copyrightLabel\""); 
+    }
+    public String getCopyrightLabel() { 
+      throw new Error("The resource type \"Evidence\" does not implement the property \"copyrightLabel\""); 
+    }
+    /**
+     * @param value A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    public Evidence setCopyrightLabel(String value) { 
+      throw new Error("The resource type \"Evidence\" does not implement the property \"copyrightLabel\""); 
     }
     /**
      * not supported on this implementation
@@ -5220,7 +5362,7 @@ public class Evidence extends MetadataResource {
      * @return {@link #effectivePeriod} (The period during which the evidence content was or is planned to be in active use.)
      */
     public Period getEffectivePeriod() { 
-      throw new Error("The resource type \"Evidence\" does not implement the property \"effectivePeriod\"");
+      throw new Error("The resource type \"Evidence\" does not implement the property \"effectivePeriod\""); 
     }
     public boolean hasEffectivePeriod() { 
       return false;
@@ -5229,7 +5371,7 @@ public class Evidence extends MetadataResource {
      * @param value {@link #effectivePeriod} (The period during which the evidence content was or is planned to be in active use.)
      */
     public Evidence setEffectivePeriod(Period value) { 
-      throw new Error("The resource type \"Evidence\" does not implement the property \"effectivePeriod\"");
+      throw new Error("The resource type \"Evidence\" does not implement the property \"effectivePeriod\""); 
     }
 
     /**
@@ -5240,7 +5382,7 @@ public class Evidence extends MetadataResource {
       return 0;
     }
     /**
-     * @return {@link #topic} (Descriptive topics related to the content of the library. Topics provide a high-level categorization of the library that can be useful for filtering and searching.)
+     * @return {@link #topic} (Descriptive topics related to the content of the evidence. Topics provide a high-level categorization as well as keywords for the evidence that can be useful for filtering and searching.)
      */
     public List<CodeableConcept> getTopic() { 
       return new ArrayList<>();
@@ -5249,37 +5391,39 @@ public class Evidence extends MetadataResource {
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
     public Evidence setTopic(List<CodeableConcept> theTopic) { 
-      throw new Error("The resource type \"Evidence\" does not implement the property \"topic\"");
+      throw new Error("The resource type \"Evidence\" does not implement the property \"topic\""); 
     }
     public boolean hasTopic() { 
       return false;
     }
 
     public CodeableConcept addTopic() { //3
-      throw new Error("The resource type \"Evidence\" does not implement the property \"topic\"");
+      throw new Error("The resource type \"Evidence\" does not implement the property \"topic\""); 
     }
     public Evidence addTopic(CodeableConcept t) { //3
-      throw new Error("The resource type \"Evidence\" does not implement the property \"topic\"");
+      throw new Error("The resource type \"Evidence\" does not implement the property \"topic\""); 
     }
     /**
      * @return The first repetition of repeating field {@link #topic}, creating it if it does not already exist {2}
      */
     public CodeableConcept getTopicFirstRep() { 
-      throw new Error("The resource type \"Evidence\" does not implement the property \"topic\"");
+      throw new Error("The resource type \"Evidence\" does not implement the property \"topic\""); 
     }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("url", "uri", "An absolute URI that is used to identify this evidence when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.", 0, 1, url));
+        children.add(new Property("url", "uri", "An absolute URI that is used to identify this evidence when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.", 0, 1, url));
         children.add(new Property("identifier", "Identifier", "A formal identifier that is used to identify this summary when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("version", "string", "The identifier that is used to identify this version of the summary when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the summary author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version));
+        children.add(new Property("name", "string", "A natural language name identifying the evidence. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name));
         children.add(new Property("title", "string", "A short, descriptive, user-friendly title for the summary.", 0, 1, title));
         children.add(new Property("citeAs[x]", "Reference(Citation)|markdown", "Citation Resource or display of suggested citation for this evidence.", 0, 1, citeAs));
         children.add(new Property("status", "code", "The status of this summary. Enables tracking the life-cycle of the content.", 0, 1, status));
+        children.add(new Property("experimental", "boolean", "A Boolean value to indicate that this resource is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.", 0, 1, experimental));
         children.add(new Property("date", "dateTime", "The date  (and optionally time) when the summary was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the summary changes.", 0, 1, date));
         children.add(new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate evidence instances.", 0, java.lang.Integer.MAX_VALUE, useContext));
         children.add(new Property("approvalDate", "date", "The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.", 0, 1, approvalDate));
         children.add(new Property("lastReviewDate", "date", "The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.", 0, 1, lastReviewDate));
-        children.add(new Property("publisher", "string", "The name of the organization or individual that published the evidence.", 0, 1, publisher));
+        children.add(new Property("publisher", "string", "The name of the organization or individual responsible for the release and ongoing maintenance of the evidence.", 0, 1, publisher));
         children.add(new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact));
         children.add(new Property("author", "ContactDetail", "An individiual, organization, or device primarily involved in the creation and maintenance of the content.", 0, java.lang.Integer.MAX_VALUE, author));
         children.add(new Property("editor", "ContactDetail", "An individiual, organization, or device primarily responsible for internal coherence of the content.", 0, java.lang.Integer.MAX_VALUE, editor));
@@ -5291,7 +5435,7 @@ public class Evidence extends MetadataResource {
         children.add(new Property("note", "Annotation", "Footnotes and/or explanatory notes.", 0, java.lang.Integer.MAX_VALUE, note));
         children.add(new Property("variableDefinition", "", "Evidence variable such as population, exposure, or outcome.", 0, java.lang.Integer.MAX_VALUE, variableDefinition));
         children.add(new Property("synthesisType", "CodeableConcept", "The method to combine studies.", 0, 1, synthesisType));
-        children.add(new Property("studyType", "CodeableConcept", "The type of study that produced this evidence.", 0, 1, studyType));
+        children.add(new Property("studyDesign", "CodeableConcept", "The design of the study that produced this evidence. The design is described with any number of study design characteristics.", 0, java.lang.Integer.MAX_VALUE, studyDesign));
         children.add(new Property("statistic", "", "Values and parameters for a single statistic.", 0, java.lang.Integer.MAX_VALUE, statistic));
         children.add(new Property("certainty", "", "Assessment of certainty, confidence in the estimates, or quality of the evidence.", 0, java.lang.Integer.MAX_VALUE, certainty));
       }
@@ -5299,20 +5443,22 @@ public class Evidence extends MetadataResource {
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this evidence when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.", 0, 1, url);
+        case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this evidence when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.", 0, 1, url);
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "A formal identifier that is used to identify this summary when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case 351608024: /*version*/  return new Property("version", "string", "The identifier that is used to identify this version of the summary when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the summary author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version);
+        case 3373707: /*name*/  return new Property("name", "string", "A natural language name identifying the evidence. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name);
         case 110371416: /*title*/  return new Property("title", "string", "A short, descriptive, user-friendly title for the summary.", 0, 1, title);
         case -1706539017: /*citeAs[x]*/  return new Property("citeAs[x]", "Reference(Citation)|markdown", "Citation Resource or display of suggested citation for this evidence.", 0, 1, citeAs);
         case -1360156695: /*citeAs*/  return new Property("citeAs[x]", "Reference(Citation)|markdown", "Citation Resource or display of suggested citation for this evidence.", 0, 1, citeAs);
         case 1269009762: /*citeAsReference*/  return new Property("citeAs[x]", "Reference(Citation)", "Citation Resource or display of suggested citation for this evidence.", 0, 1, citeAs);
         case 456265720: /*citeAsMarkdown*/  return new Property("citeAs[x]", "markdown", "Citation Resource or display of suggested citation for this evidence.", 0, 1, citeAs);
         case -892481550: /*status*/  return new Property("status", "code", "The status of this summary. Enables tracking the life-cycle of the content.", 0, 1, status);
+        case -404562712: /*experimental*/  return new Property("experimental", "boolean", "A Boolean value to indicate that this resource is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.", 0, 1, experimental);
         case 3076014: /*date*/  return new Property("date", "dateTime", "The date  (and optionally time) when the summary was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the summary changes.", 0, 1, date);
         case -669707736: /*useContext*/  return new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate evidence instances.", 0, java.lang.Integer.MAX_VALUE, useContext);
         case 223539345: /*approvalDate*/  return new Property("approvalDate", "date", "The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.", 0, 1, approvalDate);
         case -1687512484: /*lastReviewDate*/  return new Property("lastReviewDate", "date", "The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.", 0, 1, lastReviewDate);
-        case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual that published the evidence.", 0, 1, publisher);
+        case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual responsible for the release and ongoing maintenance of the evidence.", 0, 1, publisher);
         case 951526432: /*contact*/  return new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact);
         case -1406328437: /*author*/  return new Property("author", "ContactDetail", "An individiual, organization, or device primarily involved in the creation and maintenance of the content.", 0, java.lang.Integer.MAX_VALUE, author);
         case -1307827859: /*editor*/  return new Property("editor", "ContactDetail", "An individiual, organization, or device primarily responsible for internal coherence of the content.", 0, java.lang.Integer.MAX_VALUE, editor);
@@ -5324,7 +5470,7 @@ public class Evidence extends MetadataResource {
         case 3387378: /*note*/  return new Property("note", "Annotation", "Footnotes and/or explanatory notes.", 0, java.lang.Integer.MAX_VALUE, note);
         case -1807222545: /*variableDefinition*/  return new Property("variableDefinition", "", "Evidence variable such as population, exposure, or outcome.", 0, java.lang.Integer.MAX_VALUE, variableDefinition);
         case 672726254: /*synthesisType*/  return new Property("synthesisType", "CodeableConcept", "The method to combine studies.", 0, 1, synthesisType);
-        case -1955265373: /*studyType*/  return new Property("studyType", "CodeableConcept", "The type of study that produced this evidence.", 0, 1, studyType);
+        case 1709211879: /*studyDesign*/  return new Property("studyDesign", "CodeableConcept", "The design of the study that produced this evidence. The design is described with any number of study design characteristics.", 0, java.lang.Integer.MAX_VALUE, studyDesign);
         case -2081261232: /*statistic*/  return new Property("statistic", "", "Values and parameters for a single statistic.", 0, java.lang.Integer.MAX_VALUE, statistic);
         case -1404142937: /*certainty*/  return new Property("certainty", "", "Assessment of certainty, confidence in the estimates, or quality of the evidence.", 0, java.lang.Integer.MAX_VALUE, certainty);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -5338,9 +5484,11 @@ public class Evidence extends MetadataResource {
         case 116079: /*url*/ return this.url == null ? new Base[0] : new Base[] {this.url}; // UriType
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case 351608024: /*version*/ return this.version == null ? new Base[0] : new Base[] {this.version}; // StringType
+        case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
         case 110371416: /*title*/ return this.title == null ? new Base[0] : new Base[] {this.title}; // StringType
         case -1360156695: /*citeAs*/ return this.citeAs == null ? new Base[0] : new Base[] {this.citeAs}; // DataType
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<PublicationStatus>
+        case -404562712: /*experimental*/ return this.experimental == null ? new Base[0] : new Base[] {this.experimental}; // BooleanType
         case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // DateTimeType
         case -669707736: /*useContext*/ return this.useContext == null ? new Base[0] : this.useContext.toArray(new Base[this.useContext.size()]); // UsageContext
         case 223539345: /*approvalDate*/ return this.approvalDate == null ? new Base[0] : new Base[] {this.approvalDate}; // DateType
@@ -5357,7 +5505,7 @@ public class Evidence extends MetadataResource {
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
         case -1807222545: /*variableDefinition*/ return this.variableDefinition == null ? new Base[0] : this.variableDefinition.toArray(new Base[this.variableDefinition.size()]); // EvidenceVariableDefinitionComponent
         case 672726254: /*synthesisType*/ return this.synthesisType == null ? new Base[0] : new Base[] {this.synthesisType}; // CodeableConcept
-        case -1955265373: /*studyType*/ return this.studyType == null ? new Base[0] : new Base[] {this.studyType}; // CodeableConcept
+        case 1709211879: /*studyDesign*/ return this.studyDesign == null ? new Base[0] : this.studyDesign.toArray(new Base[this.studyDesign.size()]); // CodeableConcept
         case -2081261232: /*statistic*/ return this.statistic == null ? new Base[0] : this.statistic.toArray(new Base[this.statistic.size()]); // EvidenceStatisticComponent
         case -1404142937: /*certainty*/ return this.certainty == null ? new Base[0] : this.certainty.toArray(new Base[this.certainty.size()]); // EvidenceCertaintyComponent
         default: return super.getProperty(hash, name, checkValid);
@@ -5377,6 +5525,9 @@ public class Evidence extends MetadataResource {
         case 351608024: // version
           this.version = TypeConvertor.castToString(value); // StringType
           return value;
+        case 3373707: // name
+          this.name = TypeConvertor.castToString(value); // StringType
+          return value;
         case 110371416: // title
           this.title = TypeConvertor.castToString(value); // StringType
           return value;
@@ -5386,6 +5537,9 @@ public class Evidence extends MetadataResource {
         case -892481550: // status
           value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
+          return value;
+        case -404562712: // experimental
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 3076014: // date
           this.date = TypeConvertor.castToDateTime(value); // DateTimeType
@@ -5435,8 +5589,8 @@ public class Evidence extends MetadataResource {
         case 672726254: // synthesisType
           this.synthesisType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
-        case -1955265373: // studyType
-          this.studyType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        case 1709211879: // studyDesign
+          this.getStudyDesign().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -2081261232: // statistic
           this.getStatistic().add((EvidenceStatisticComponent) value); // EvidenceStatisticComponent
@@ -5457,6 +5611,8 @@ public class Evidence extends MetadataResource {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("version")) {
           this.version = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("name")) {
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
           this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("citeAs[x]")) {
@@ -5464,6 +5620,8 @@ public class Evidence extends MetadataResource {
         } else if (name.equals("status")) {
           value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
+        } else if (name.equals("experimental")) {
+          this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("date")) {
           this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("useContext")) {
@@ -5496,8 +5654,8 @@ public class Evidence extends MetadataResource {
           this.getVariableDefinition().add((EvidenceVariableDefinitionComponent) value);
         } else if (name.equals("synthesisType")) {
           this.synthesisType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("studyType")) {
-          this.studyType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("studyDesign")) {
+          this.getStudyDesign().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("statistic")) {
           this.getStatistic().add((EvidenceStatisticComponent) value);
         } else if (name.equals("certainty")) {
@@ -5513,10 +5671,12 @@ public class Evidence extends MetadataResource {
         case 116079:  return getUrlElement();
         case -1618432855:  return addIdentifier(); 
         case 351608024:  return getVersionElement();
+        case 3373707:  return getNameElement();
         case 110371416:  return getTitleElement();
         case -1706539017:  return getCiteAs();
         case -1360156695:  return getCiteAs();
         case -892481550:  return getStatusElement();
+        case -404562712:  return getExperimentalElement();
         case 3076014:  return getDateElement();
         case -669707736:  return addUseContext(); 
         case 223539345:  return getApprovalDateElement();
@@ -5533,7 +5693,7 @@ public class Evidence extends MetadataResource {
         case 3387378:  return addNote(); 
         case -1807222545:  return addVariableDefinition(); 
         case 672726254:  return getSynthesisType();
-        case -1955265373:  return getStudyType();
+        case 1709211879:  return addStudyDesign(); 
         case -2081261232:  return addStatistic(); 
         case -1404142937:  return addCertainty(); 
         default: return super.makeProperty(hash, name);
@@ -5547,9 +5707,11 @@ public class Evidence extends MetadataResource {
         case 116079: /*url*/ return new String[] {"uri"};
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case 351608024: /*version*/ return new String[] {"string"};
+        case 3373707: /*name*/ return new String[] {"string"};
         case 110371416: /*title*/ return new String[] {"string"};
         case -1360156695: /*citeAs*/ return new String[] {"Reference", "markdown"};
         case -892481550: /*status*/ return new String[] {"code"};
+        case -404562712: /*experimental*/ return new String[] {"boolean"};
         case 3076014: /*date*/ return new String[] {"dateTime"};
         case -669707736: /*useContext*/ return new String[] {"UsageContext"};
         case 223539345: /*approvalDate*/ return new String[] {"date"};
@@ -5566,7 +5728,7 @@ public class Evidence extends MetadataResource {
         case 3387378: /*note*/ return new String[] {"Annotation"};
         case -1807222545: /*variableDefinition*/ return new String[] {};
         case 672726254: /*synthesisType*/ return new String[] {"CodeableConcept"};
-        case -1955265373: /*studyType*/ return new String[] {"CodeableConcept"};
+        case 1709211879: /*studyDesign*/ return new String[] {"CodeableConcept"};
         case -2081261232: /*statistic*/ return new String[] {};
         case -1404142937: /*certainty*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
@@ -5585,6 +5747,9 @@ public class Evidence extends MetadataResource {
         else if (name.equals("version")) {
           throw new FHIRException("Cannot call addChild on a primitive type Evidence.version");
         }
+        else if (name.equals("name")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Evidence.name");
+        }
         else if (name.equals("title")) {
           throw new FHIRException("Cannot call addChild on a primitive type Evidence.title");
         }
@@ -5598,6 +5763,9 @@ public class Evidence extends MetadataResource {
         }
         else if (name.equals("status")) {
           throw new FHIRException("Cannot call addChild on a primitive type Evidence.status");
+        }
+        else if (name.equals("experimental")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Evidence.experimental");
         }
         else if (name.equals("date")) {
           throw new FHIRException("Cannot call addChild on a primitive type Evidence.date");
@@ -5648,9 +5816,8 @@ public class Evidence extends MetadataResource {
           this.synthesisType = new CodeableConcept();
           return this.synthesisType;
         }
-        else if (name.equals("studyType")) {
-          this.studyType = new CodeableConcept();
-          return this.studyType;
+        else if (name.equals("studyDesign")) {
+          return addStudyDesign();
         }
         else if (name.equals("statistic")) {
           return addStatistic();
@@ -5682,9 +5849,11 @@ public class Evidence extends MetadataResource {
             dst.identifier.add(i.copy());
         };
         dst.version = version == null ? null : version.copy();
+        dst.name = name == null ? null : name.copy();
         dst.title = title == null ? null : title.copy();
         dst.citeAs = citeAs == null ? null : citeAs.copy();
         dst.status = status == null ? null : status.copy();
+        dst.experimental = experimental == null ? null : experimental.copy();
         dst.date = date == null ? null : date.copy();
         if (useContext != null) {
           dst.useContext = new ArrayList<UsageContext>();
@@ -5737,7 +5906,11 @@ public class Evidence extends MetadataResource {
             dst.variableDefinition.add(i.copy());
         };
         dst.synthesisType = synthesisType == null ? null : synthesisType.copy();
-        dst.studyType = studyType == null ? null : studyType.copy();
+        if (studyDesign != null) {
+          dst.studyDesign = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : studyDesign)
+            dst.studyDesign.add(i.copy());
+        };
         if (statistic != null) {
           dst.statistic = new ArrayList<EvidenceStatisticComponent>();
           for (EvidenceStatisticComponent i : statistic)
@@ -5762,14 +5935,15 @@ public class Evidence extends MetadataResource {
           return false;
         Evidence o = (Evidence) other_;
         return compareDeep(url, o.url, true) && compareDeep(identifier, o.identifier, true) && compareDeep(version, o.version, true)
-           && compareDeep(title, o.title, true) && compareDeep(citeAs, o.citeAs, true) && compareDeep(status, o.status, true)
-           && compareDeep(date, o.date, true) && compareDeep(useContext, o.useContext, true) && compareDeep(approvalDate, o.approvalDate, true)
+           && compareDeep(name, o.name, true) && compareDeep(title, o.title, true) && compareDeep(citeAs, o.citeAs, true)
+           && compareDeep(status, o.status, true) && compareDeep(experimental, o.experimental, true) && compareDeep(date, o.date, true)
+           && compareDeep(useContext, o.useContext, true) && compareDeep(approvalDate, o.approvalDate, true)
            && compareDeep(lastReviewDate, o.lastReviewDate, true) && compareDeep(publisher, o.publisher, true)
            && compareDeep(contact, o.contact, true) && compareDeep(author, o.author, true) && compareDeep(editor, o.editor, true)
            && compareDeep(reviewer, o.reviewer, true) && compareDeep(endorser, o.endorser, true) && compareDeep(relatedArtifact, o.relatedArtifact, true)
            && compareDeep(description, o.description, true) && compareDeep(assertion, o.assertion, true) && compareDeep(note, o.note, true)
            && compareDeep(variableDefinition, o.variableDefinition, true) && compareDeep(synthesisType, o.synthesisType, true)
-           && compareDeep(studyType, o.studyType, true) && compareDeep(statistic, o.statistic, true) && compareDeep(certainty, o.certainty, true)
+           && compareDeep(studyDesign, o.studyDesign, true) && compareDeep(statistic, o.statistic, true) && compareDeep(certainty, o.certainty, true)
           ;
       }
 
@@ -5780,17 +5954,19 @@ public class Evidence extends MetadataResource {
         if (!(other_ instanceof Evidence))
           return false;
         Evidence o = (Evidence) other_;
-        return compareValues(url, o.url, true) && compareValues(version, o.version, true) && compareValues(title, o.title, true)
-           && compareValues(status, o.status, true) && compareValues(date, o.date, true) && compareValues(approvalDate, o.approvalDate, true)
-           && compareValues(lastReviewDate, o.lastReviewDate, true) && compareValues(publisher, o.publisher, true)
-           && compareValues(description, o.description, true) && compareValues(assertion, o.assertion, true);
+        return compareValues(url, o.url, true) && compareValues(version, o.version, true) && compareValues(name, o.name, true)
+           && compareValues(title, o.title, true) && compareValues(status, o.status, true) && compareValues(experimental, o.experimental, true)
+           && compareValues(date, o.date, true) && compareValues(approvalDate, o.approvalDate, true) && compareValues(lastReviewDate, o.lastReviewDate, true)
+           && compareValues(publisher, o.publisher, true) && compareValues(description, o.description, true) && compareValues(assertion, o.assertion, true)
+          ;
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, identifier, version
-          , title, citeAs, status, date, useContext, approvalDate, lastReviewDate, publisher
-          , contact, author, editor, reviewer, endorser, relatedArtifact, description, assertion
-          , note, variableDefinition, synthesisType, studyType, statistic, certainty);
+          , name, title, citeAs, status, experimental, date, useContext, approvalDate
+          , lastReviewDate, publisher, contact, author, editor, reviewer, endorser, relatedArtifact
+          , description, assertion, note, variableDefinition, synthesisType, studyDesign, statistic
+          , certainty);
       }
 
   @Override

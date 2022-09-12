@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -77,7 +77,21 @@ public class CompartmentDefinition extends CanonicalResource {
         @Description(shortDefinition="Additional documentation about the resource and compartment", formalDefinition="Additional documentation about the resource and compartment." )
         protected StringType documentation;
 
-        private static final long serialVersionUID = 988080897L;
+        /**
+         * Search Parameter for mapping requests made with $everything.start (e.g. on [Patient.$everything](patient-operation-everything.html)).
+         */
+        @Child(name = "startParam", type = {UriType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Search Param for interpreting $everything.start", formalDefinition="Search Parameter for mapping requests made with $everything.start (e.g. on [Patient.$everything](patient-operation-everything.html))." )
+        protected UriType startParam;
+
+        /**
+         * Search Parameter for mapping requests made with $everything.end (e.g. on [Patient.$everything](patient-operation-everything.html)).
+         */
+        @Child(name = "endParam", type = {UriType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Search Param for interpreting $everything.end", formalDefinition="Search Parameter for mapping requests made with $everything.end (e.g. on [Patient.$everything](patient-operation-everything.html))." )
+        protected UriType endParam;
+
+        private static final long serialVersionUID = 1245370010L;
 
     /**
      * Constructor
@@ -249,11 +263,111 @@ public class CompartmentDefinition extends CanonicalResource {
           return this;
         }
 
+        /**
+         * @return {@link #startParam} (Search Parameter for mapping requests made with $everything.start (e.g. on [Patient.$everything](patient-operation-everything.html)).). This is the underlying object with id, value and extensions. The accessor "getStartParam" gives direct access to the value
+         */
+        public UriType getStartParamElement() { 
+          if (this.startParam == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CompartmentDefinitionResourceComponent.startParam");
+            else if (Configuration.doAutoCreate())
+              this.startParam = new UriType(); // bb
+          return this.startParam;
+        }
+
+        public boolean hasStartParamElement() { 
+          return this.startParam != null && !this.startParam.isEmpty();
+        }
+
+        public boolean hasStartParam() { 
+          return this.startParam != null && !this.startParam.isEmpty();
+        }
+
+        /**
+         * @param value {@link #startParam} (Search Parameter for mapping requests made with $everything.start (e.g. on [Patient.$everything](patient-operation-everything.html)).). This is the underlying object with id, value and extensions. The accessor "getStartParam" gives direct access to the value
+         */
+        public CompartmentDefinitionResourceComponent setStartParamElement(UriType value) { 
+          this.startParam = value;
+          return this;
+        }
+
+        /**
+         * @return Search Parameter for mapping requests made with $everything.start (e.g. on [Patient.$everything](patient-operation-everything.html)).
+         */
+        public String getStartParam() { 
+          return this.startParam == null ? null : this.startParam.getValue();
+        }
+
+        /**
+         * @param value Search Parameter for mapping requests made with $everything.start (e.g. on [Patient.$everything](patient-operation-everything.html)).
+         */
+        public CompartmentDefinitionResourceComponent setStartParam(String value) { 
+          if (Utilities.noString(value))
+            this.startParam = null;
+          else {
+            if (this.startParam == null)
+              this.startParam = new UriType();
+            this.startParam.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #endParam} (Search Parameter for mapping requests made with $everything.end (e.g. on [Patient.$everything](patient-operation-everything.html)).). This is the underlying object with id, value and extensions. The accessor "getEndParam" gives direct access to the value
+         */
+        public UriType getEndParamElement() { 
+          if (this.endParam == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CompartmentDefinitionResourceComponent.endParam");
+            else if (Configuration.doAutoCreate())
+              this.endParam = new UriType(); // bb
+          return this.endParam;
+        }
+
+        public boolean hasEndParamElement() { 
+          return this.endParam != null && !this.endParam.isEmpty();
+        }
+
+        public boolean hasEndParam() { 
+          return this.endParam != null && !this.endParam.isEmpty();
+        }
+
+        /**
+         * @param value {@link #endParam} (Search Parameter for mapping requests made with $everything.end (e.g. on [Patient.$everything](patient-operation-everything.html)).). This is the underlying object with id, value and extensions. The accessor "getEndParam" gives direct access to the value
+         */
+        public CompartmentDefinitionResourceComponent setEndParamElement(UriType value) { 
+          this.endParam = value;
+          return this;
+        }
+
+        /**
+         * @return Search Parameter for mapping requests made with $everything.end (e.g. on [Patient.$everything](patient-operation-everything.html)).
+         */
+        public String getEndParam() { 
+          return this.endParam == null ? null : this.endParam.getValue();
+        }
+
+        /**
+         * @param value Search Parameter for mapping requests made with $everything.end (e.g. on [Patient.$everything](patient-operation-everything.html)).
+         */
+        public CompartmentDefinitionResourceComponent setEndParam(String value) { 
+          if (Utilities.noString(value))
+            this.endParam = null;
+          else {
+            if (this.endParam == null)
+              this.endParam = new UriType();
+            this.endParam.setValue(value);
+          }
+          return this;
+        }
+
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("code", "code", "The name of a resource supported by the server.", 0, 1, code));
           children.add(new Property("param", "string", "The name of a search parameter that represents the link to the compartment. More than one may be listed because a resource may be linked to a compartment in more than one way,.", 0, java.lang.Integer.MAX_VALUE, param));
           children.add(new Property("documentation", "string", "Additional documentation about the resource and compartment.", 0, 1, documentation));
+          children.add(new Property("startParam", "uri", "Search Parameter for mapping requests made with $everything.start (e.g. on [Patient.$everything](patient-operation-everything.html)).", 0, 1, startParam));
+          children.add(new Property("endParam", "uri", "Search Parameter for mapping requests made with $everything.end (e.g. on [Patient.$everything](patient-operation-everything.html)).", 0, 1, endParam));
         }
 
         @Override
@@ -262,6 +376,8 @@ public class CompartmentDefinition extends CanonicalResource {
           case 3059181: /*code*/  return new Property("code", "code", "The name of a resource supported by the server.", 0, 1, code);
           case 106436749: /*param*/  return new Property("param", "string", "The name of a search parameter that represents the link to the compartment. More than one may be listed because a resource may be linked to a compartment in more than one way,.", 0, java.lang.Integer.MAX_VALUE, param);
           case 1587405498: /*documentation*/  return new Property("documentation", "string", "Additional documentation about the resource and compartment.", 0, 1, documentation);
+          case -1587556021: /*startParam*/  return new Property("startParam", "uri", "Search Parameter for mapping requests made with $everything.start (e.g. on [Patient.$everything](patient-operation-everything.html)).", 0, 1, startParam);
+          case 1711140978: /*endParam*/  return new Property("endParam", "uri", "Search Parameter for mapping requests made with $everything.end (e.g. on [Patient.$everything](patient-operation-everything.html)).", 0, 1, endParam);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -273,6 +389,8 @@ public class CompartmentDefinition extends CanonicalResource {
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeType
         case 106436749: /*param*/ return this.param == null ? new Base[0] : this.param.toArray(new Base[this.param.size()]); // StringType
         case 1587405498: /*documentation*/ return this.documentation == null ? new Base[0] : new Base[] {this.documentation}; // StringType
+        case -1587556021: /*startParam*/ return this.startParam == null ? new Base[0] : new Base[] {this.startParam}; // UriType
+        case 1711140978: /*endParam*/ return this.endParam == null ? new Base[0] : new Base[] {this.endParam}; // UriType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -290,6 +408,12 @@ public class CompartmentDefinition extends CanonicalResource {
         case 1587405498: // documentation
           this.documentation = TypeConvertor.castToString(value); // StringType
           return value;
+        case -1587556021: // startParam
+          this.startParam = TypeConvertor.castToUri(value); // UriType
+          return value;
+        case 1711140978: // endParam
+          this.endParam = TypeConvertor.castToUri(value); // UriType
+          return value;
         default: return super.setProperty(hash, name, value);
         }
 
@@ -303,6 +427,10 @@ public class CompartmentDefinition extends CanonicalResource {
           this.getParam().add(TypeConvertor.castToString(value));
         } else if (name.equals("documentation")) {
           this.documentation = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("startParam")) {
+          this.startParam = TypeConvertor.castToUri(value); // UriType
+        } else if (name.equals("endParam")) {
+          this.endParam = TypeConvertor.castToUri(value); // UriType
         } else
           return super.setProperty(name, value);
         return value;
@@ -314,6 +442,8 @@ public class CompartmentDefinition extends CanonicalResource {
         case 3059181:  return getCodeElement();
         case 106436749:  return addParamElement();
         case 1587405498:  return getDocumentationElement();
+        case -1587556021:  return getStartParamElement();
+        case 1711140978:  return getEndParamElement();
         default: return super.makeProperty(hash, name);
         }
 
@@ -325,6 +455,8 @@ public class CompartmentDefinition extends CanonicalResource {
         case 3059181: /*code*/ return new String[] {"code"};
         case 106436749: /*param*/ return new String[] {"string"};
         case 1587405498: /*documentation*/ return new String[] {"string"};
+        case -1587556021: /*startParam*/ return new String[] {"uri"};
+        case 1711140978: /*endParam*/ return new String[] {"uri"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -340,6 +472,12 @@ public class CompartmentDefinition extends CanonicalResource {
         }
         else if (name.equals("documentation")) {
           throw new FHIRException("Cannot call addChild on a primitive type CompartmentDefinition.resource.documentation");
+        }
+        else if (name.equals("startParam")) {
+          throw new FHIRException("Cannot call addChild on a primitive type CompartmentDefinition.resource.startParam");
+        }
+        else if (name.equals("endParam")) {
+          throw new FHIRException("Cannot call addChild on a primitive type CompartmentDefinition.resource.endParam");
         }
         else
           return super.addChild(name);
@@ -360,6 +498,8 @@ public class CompartmentDefinition extends CanonicalResource {
             dst.param.add(i.copy());
         };
         dst.documentation = documentation == null ? null : documentation.copy();
+        dst.startParam = startParam == null ? null : startParam.copy();
+        dst.endParam = endParam == null ? null : endParam.copy();
       }
 
       @Override
@@ -370,7 +510,7 @@ public class CompartmentDefinition extends CanonicalResource {
           return false;
         CompartmentDefinitionResourceComponent o = (CompartmentDefinitionResourceComponent) other_;
         return compareDeep(code, o.code, true) && compareDeep(param, o.param, true) && compareDeep(documentation, o.documentation, true)
-          ;
+           && compareDeep(startParam, o.startParam, true) && compareDeep(endParam, o.endParam, true);
       }
 
       @Override
@@ -381,12 +521,12 @@ public class CompartmentDefinition extends CanonicalResource {
           return false;
         CompartmentDefinitionResourceComponent o = (CompartmentDefinitionResourceComponent) other_;
         return compareValues(code, o.code, true) && compareValues(param, o.param, true) && compareValues(documentation, o.documentation, true)
-          ;
+           && compareValues(startParam, o.startParam, true) && compareValues(endParam, o.endParam, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, param, documentation
-          );
+          , startParam, endParam);
       }
 
   public String fhirType() {
@@ -397,10 +537,10 @@ public class CompartmentDefinition extends CanonicalResource {
   }
 
     /**
-     * An absolute URI that is used to identify this compartment definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this compartment definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the compartment definition is stored on different servers.
+     * An absolute URI that is used to identify this compartment definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this compartment definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the compartment definition is stored on different servers.
      */
     @Child(name = "url", type = {UriType.class}, order=0, min=1, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Canonical identifier for this compartment definition, represented as a URI (globally unique)", formalDefinition="An absolute URI that is used to identify this compartment definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this compartment definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the compartment definition is stored on different servers." )
+    @Description(shortDefinition="Canonical identifier for this compartment definition, represented as a URI (globally unique)", formalDefinition="An absolute URI that is used to identify this compartment definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this compartment definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the compartment definition is stored on different servers." )
     protected UriType url;
 
     /**
@@ -411,16 +551,31 @@ public class CompartmentDefinition extends CanonicalResource {
     protected StringType version;
 
     /**
+     * Indicates the mechanism used to compare versions to determine which is more current.
+     */
+    @Child(name = "versionAlgorithm", type = {StringType.class, Coding.class}, order=2, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="How to compare versions", formalDefinition="Indicates the mechanism used to compare versions to determine which is more current." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/version-algorithm")
+    protected DataType versionAlgorithm;
+
+    /**
      * A natural language name identifying the compartment definition. This name should be usable as an identifier for the module by machine processing applications such as code generation.
      */
-    @Child(name = "name", type = {StringType.class}, order=2, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "name", type = {StringType.class}, order=3, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Name for this compartment definition (computer friendly)", formalDefinition="A natural language name identifying the compartment definition. This name should be usable as an identifier for the module by machine processing applications such as code generation." )
     protected StringType name;
 
     /**
+     * A short, descriptive, user-friendly title for the capability statement.
+     */
+    @Child(name = "title", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Name for this compartment definition (human friendly)", formalDefinition="A short, descriptive, user-friendly title for the capability statement." )
+    protected StringType title;
+
+    /**
      * The status of this compartment definition. Enables tracking the life-cycle of the content.
      */
-    @Child(name = "status", type = {CodeType.class}, order=3, min=1, max=1, modifier=true, summary=true)
+    @Child(name = "status", type = {CodeType.class}, order=5, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The status of this compartment definition. Enables tracking the life-cycle of the content." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
     protected Enumeration<PublicationStatus> status;
@@ -428,56 +583,56 @@ public class CompartmentDefinition extends CanonicalResource {
     /**
      * A Boolean value to indicate that this compartment definition is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
      */
-    @Child(name = "experimental", type = {BooleanType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "experimental", type = {BooleanType.class}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="For testing purposes, not real usage", formalDefinition="A Boolean value to indicate that this compartment definition is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage." )
     protected BooleanType experimental;
 
     /**
      * The date  (and optionally time) when the compartment definition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the compartment definition changes.
      */
-    @Child(name = "date", type = {DateTimeType.class}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "date", type = {DateTimeType.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Date last changed", formalDefinition="The date  (and optionally time) when the compartment definition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the compartment definition changes." )
     protected DateTimeType date;
 
     /**
-     * The name of the organization or individual that published the compartment definition.
+     * The name of the organization or individual responsible for the release and ongoing maintenance of the compartment definition.
      */
-    @Child(name = "publisher", type = {StringType.class}, order=6, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Name of the publisher (organization or individual)", formalDefinition="The name of the organization or individual that published the compartment definition." )
+    @Child(name = "publisher", type = {StringType.class}, order=8, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Name of the publisher/steward (organization or individual)", formalDefinition="The name of the organization or individual responsible for the release and ongoing maintenance of the compartment definition." )
     protected StringType publisher;
 
     /**
      * Contact details to assist a user in finding and communicating with the publisher.
      */
-    @Child(name = "contact", type = {ContactDetail.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "contact", type = {ContactDetail.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Contact details for the publisher", formalDefinition="Contact details to assist a user in finding and communicating with the publisher." )
     protected List<ContactDetail> contact;
 
     /**
      * A free text natural language description of the compartment definition from a consumer's perspective.
      */
-    @Child(name = "description", type = {MarkdownType.class}, order=8, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "description", type = {MarkdownType.class}, order=10, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Natural language description of the compartment definition", formalDefinition="A free text natural language description of the compartment definition from a consumer's perspective." )
     protected MarkdownType description;
 
     /**
      * The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate compartment definition instances.
      */
-    @Child(name = "useContext", type = {UsageContext.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "useContext", type = {UsageContext.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The context that the content is intended to support", formalDefinition="The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate compartment definition instances." )
     protected List<UsageContext> useContext;
 
     /**
      * Explanation of why this compartment definition is needed and why it has been designed as it has.
      */
-    @Child(name = "purpose", type = {MarkdownType.class}, order=10, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "purpose", type = {MarkdownType.class}, order=12, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Why this compartment definition is defined", formalDefinition="Explanation of why this compartment definition is needed and why it has been designed as it has." )
     protected MarkdownType purpose;
 
     /**
      * Which compartment this definition describes.
      */
-    @Child(name = "code", type = {CodeType.class}, order=11, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "code", type = {CodeType.class}, order=13, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Patient | Encounter | RelatedPerson | Practitioner | Device", formalDefinition="Which compartment this definition describes." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/compartment-type")
     protected Enumeration<CompartmentType> code;
@@ -485,18 +640,18 @@ public class CompartmentDefinition extends CanonicalResource {
     /**
      * Whether the search syntax is supported,.
      */
-    @Child(name = "search", type = {BooleanType.class}, order=12, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "search", type = {BooleanType.class}, order=14, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Whether the search syntax is supported", formalDefinition="Whether the search syntax is supported,." )
     protected BooleanType search;
 
     /**
      * Information about how a resource is related to the compartment.
      */
-    @Child(name = "resource", type = {}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "resource", type = {}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="How a resource is related to the compartment", formalDefinition="Information about how a resource is related to the compartment." )
     protected List<CompartmentDefinitionResourceComponent> resource;
 
-    private static final long serialVersionUID = 1358693010L;
+    private static final long serialVersionUID = 140986198L;
 
   /**
    * Constructor
@@ -518,7 +673,7 @@ public class CompartmentDefinition extends CanonicalResource {
     }
 
     /**
-     * @return {@link #url} (An absolute URI that is used to identify this compartment definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this compartment definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the compartment definition is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @return {@link #url} (An absolute URI that is used to identify this compartment definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this compartment definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the compartment definition is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public UriType getUrlElement() { 
       if (this.url == null)
@@ -538,7 +693,7 @@ public class CompartmentDefinition extends CanonicalResource {
     }
 
     /**
-     * @param value {@link #url} (An absolute URI that is used to identify this compartment definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this compartment definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the compartment definition is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @param value {@link #url} (An absolute URI that is used to identify this compartment definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this compartment definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the compartment definition is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public CompartmentDefinition setUrlElement(UriType value) { 
       this.url = value;
@@ -546,14 +701,14 @@ public class CompartmentDefinition extends CanonicalResource {
     }
 
     /**
-     * @return An absolute URI that is used to identify this compartment definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this compartment definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the compartment definition is stored on different servers.
+     * @return An absolute URI that is used to identify this compartment definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this compartment definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the compartment definition is stored on different servers.
      */
     public String getUrl() { 
       return this.url == null ? null : this.url.getValue();
     }
 
     /**
-     * @param value An absolute URI that is used to identify this compartment definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this compartment definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the compartment definition is stored on different servers.
+     * @param value An absolute URI that is used to identify this compartment definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this compartment definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the compartment definition is stored on different servers.
      */
     public CompartmentDefinition setUrl(String value) { 
         if (this.url == null)
@@ -612,6 +767,57 @@ public class CompartmentDefinition extends CanonicalResource {
     }
 
     /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public DataType getVersionAlgorithm() { 
+      return this.versionAlgorithm;
+    }
+
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public StringType getVersionAlgorithmStringType() throws FHIRException { 
+      if (this.versionAlgorithm == null)
+        this.versionAlgorithm = new StringType();
+      if (!(this.versionAlgorithm instanceof StringType))
+        throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.versionAlgorithm.getClass().getName()+" was encountered");
+      return (StringType) this.versionAlgorithm;
+    }
+
+    public boolean hasVersionAlgorithmStringType() { 
+      return this != null && this.versionAlgorithm instanceof StringType;
+    }
+
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public Coding getVersionAlgorithmCoding() throws FHIRException { 
+      if (this.versionAlgorithm == null)
+        this.versionAlgorithm = new Coding();
+      if (!(this.versionAlgorithm instanceof Coding))
+        throw new FHIRException("Type mismatch: the type Coding was expected, but "+this.versionAlgorithm.getClass().getName()+" was encountered");
+      return (Coding) this.versionAlgorithm;
+    }
+
+    public boolean hasVersionAlgorithmCoding() { 
+      return this != null && this.versionAlgorithm instanceof Coding;
+    }
+
+    public boolean hasVersionAlgorithm() { 
+      return this.versionAlgorithm != null && !this.versionAlgorithm.isEmpty();
+    }
+
+    /**
+     * @param value {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public CompartmentDefinition setVersionAlgorithm(DataType value) { 
+      if (value != null && !(value instanceof StringType || value instanceof Coding))
+        throw new Error("Not the right type for CompartmentDefinition.versionAlgorithm[x]: "+value.fhirType());
+      this.versionAlgorithm = value;
+      return this;
+    }
+
+    /**
      * @return {@link #name} (A natural language name identifying the compartment definition. This name should be usable as an identifier for the module by machine processing applications such as code generation.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
      */
     public StringType getNameElement() { 
@@ -653,6 +859,55 @@ public class CompartmentDefinition extends CanonicalResource {
         if (this.name == null)
           this.name = new StringType();
         this.name.setValue(value);
+      return this;
+    }
+
+    /**
+     * @return {@link #title} (A short, descriptive, user-friendly title for the capability statement.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
+     */
+    public StringType getTitleElement() { 
+      if (this.title == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create CompartmentDefinition.title");
+        else if (Configuration.doAutoCreate())
+          this.title = new StringType(); // bb
+      return this.title;
+    }
+
+    public boolean hasTitleElement() { 
+      return this.title != null && !this.title.isEmpty();
+    }
+
+    public boolean hasTitle() { 
+      return this.title != null && !this.title.isEmpty();
+    }
+
+    /**
+     * @param value {@link #title} (A short, descriptive, user-friendly title for the capability statement.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
+     */
+    public CompartmentDefinition setTitleElement(StringType value) { 
+      this.title = value;
+      return this;
+    }
+
+    /**
+     * @return A short, descriptive, user-friendly title for the capability statement.
+     */
+    public String getTitle() { 
+      return this.title == null ? null : this.title.getValue();
+    }
+
+    /**
+     * @param value A short, descriptive, user-friendly title for the capability statement.
+     */
+    public CompartmentDefinition setTitle(String value) { 
+      if (Utilities.noString(value))
+        this.title = null;
+      else {
+        if (this.title == null)
+          this.title = new StringType();
+        this.title.setValue(value);
+      }
       return this;
     }
 
@@ -796,7 +1051,7 @@ public class CompartmentDefinition extends CanonicalResource {
     }
 
     /**
-     * @return {@link #publisher} (The name of the organization or individual that published the compartment definition.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     * @return {@link #publisher} (The name of the organization or individual responsible for the release and ongoing maintenance of the compartment definition.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
     public StringType getPublisherElement() { 
       if (this.publisher == null)
@@ -816,7 +1071,7 @@ public class CompartmentDefinition extends CanonicalResource {
     }
 
     /**
-     * @param value {@link #publisher} (The name of the organization or individual that published the compartment definition.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     * @param value {@link #publisher} (The name of the organization or individual responsible for the release and ongoing maintenance of the compartment definition.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
     public CompartmentDefinition setPublisherElement(StringType value) { 
       this.publisher = value;
@@ -824,14 +1079,14 @@ public class CompartmentDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The name of the organization or individual that published the compartment definition.
+     * @return The name of the organization or individual responsible for the release and ongoing maintenance of the compartment definition.
      */
     public String getPublisher() { 
       return this.publisher == null ? null : this.publisher.getValue();
     }
 
     /**
-     * @param value The name of the organization or individual that published the compartment definition.
+     * @param value The name of the organization or individual responsible for the release and ongoing maintenance of the compartment definition.
      */
     public CompartmentDefinition setPublisher(String value) { 
       if (Utilities.noString(value))
@@ -1208,59 +1463,23 @@ public class CompartmentDefinition extends CanonicalResource {
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
     public CompartmentDefinition setIdentifier(List<Identifier> theIdentifier) { 
-      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"identifier\"");
+      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"identifier\""); 
     }
     public boolean hasIdentifier() { 
       return false;
     }
 
     public Identifier addIdentifier() { //3
-      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"identifier\"");
+      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"identifier\""); 
     }
     public CompartmentDefinition addIdentifier(Identifier t) { //3
-      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"identifier\"");
+      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"identifier\""); 
     }
     /**
      * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {2}
      */
     public Identifier getIdentifierFirstRep() { 
-      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"identifier\"");
-    }
-    /**
-     * not supported on this implementation
-     */
-    @Override
-    public int getTitleMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #title} (A short, descriptive, user-friendly title for the compartment definition.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
-     */
-    public StringType getTitleElement() { 
-      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"title\"");
-    }
-
-    public boolean hasTitleElement() { 
-      return false;
-    }
-    public boolean hasTitle() {
-      return false;
-    }
-
-    /**
-     * @param value {@link #title} (A short, descriptive, user-friendly title for the compartment definition.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
-     */
-    public CompartmentDefinition setTitleElement(StringType value) { 
-      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"title\"");
-    }
-    public String getTitle() { 
-      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"title\"");
-    }
-    /**
-     * @param value A short, descriptive, user-friendly title for the compartment definition.
-     */
-    public CompartmentDefinition setTitle(String value) { 
-      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"title\"");
+      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"identifier\""); 
     }
     /**
      * not supported on this implementation
@@ -1279,23 +1498,23 @@ public class CompartmentDefinition extends CanonicalResource {
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
     public CompartmentDefinition setJurisdiction(List<CodeableConcept> theJurisdiction) { 
-      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"jurisdiction\"");
+      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"jurisdiction\""); 
     }
     public boolean hasJurisdiction() { 
       return false;
     }
 
     public CodeableConcept addJurisdiction() { //3
-      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"jurisdiction\"");
+      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"jurisdiction\""); 
     }
     public CompartmentDefinition addJurisdiction(CodeableConcept t) { //3
-      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"jurisdiction\"");
+      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"jurisdiction\""); 
     }
     /**
      * @return The first repetition of repeating field {@link #jurisdiction}, creating it if it does not already exist {2}
      */
     public CodeableConcept getJurisdictionFirstRep() { 
-      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"jurisdiction\"");
+      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"jurisdiction\""); 
     }
     /**
      * not supported on this implementation
@@ -1322,26 +1541,64 @@ public class CompartmentDefinition extends CanonicalResource {
      * @param value {@link #copyright} (A copyright statement relating to the compartment definition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the compartment definition.). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value
      */
     public CompartmentDefinition setCopyrightElement(MarkdownType value) { 
-      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"copyright\"");
+      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"copyright\""); 
     }
     public String getCopyright() { 
-      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"copyright\"");
+      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"copyright\""); 
     }
     /**
      * @param value A copyright statement relating to the compartment definition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the compartment definition.
      */
     public CompartmentDefinition setCopyright(String value) { 
-      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"copyright\"");
+      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"copyright\""); 
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getCopyrightLabelMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public StringType getCopyrightLabelElement() { 
+      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"copyrightLabel\"");
+    }
+
+    public boolean hasCopyrightLabelElement() { 
+      return false;
+    }
+    public boolean hasCopyrightLabel() {
+      return false;
+    }
+
+    /**
+     * @param value {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public CompartmentDefinition setCopyrightLabelElement(StringType value) { 
+      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"copyrightLabel\""); 
+    }
+    public String getCopyrightLabel() { 
+      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"copyrightLabel\""); 
+    }
+    /**
+     * @param value A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    public CompartmentDefinition setCopyrightLabel(String value) { 
+      throw new Error("The resource type \"CompartmentDefinition\" does not implement the property \"copyrightLabel\""); 
     }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("url", "uri", "An absolute URI that is used to identify this compartment definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this compartment definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the compartment definition is stored on different servers.", 0, 1, url));
+        children.add(new Property("url", "uri", "An absolute URI that is used to identify this compartment definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this compartment definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the compartment definition is stored on different servers.", 0, 1, url));
         children.add(new Property("version", "string", "The identifier that is used to identify this version of the compartment definition when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the compartment definition author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version));
+        children.add(new Property("versionAlgorithm[x]", "string|Coding", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm));
         children.add(new Property("name", "string", "A natural language name identifying the compartment definition. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name));
+        children.add(new Property("title", "string", "A short, descriptive, user-friendly title for the capability statement.", 0, 1, title));
         children.add(new Property("status", "code", "The status of this compartment definition. Enables tracking the life-cycle of the content.", 0, 1, status));
         children.add(new Property("experimental", "boolean", "A Boolean value to indicate that this compartment definition is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.", 0, 1, experimental));
         children.add(new Property("date", "dateTime", "The date  (and optionally time) when the compartment definition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the compartment definition changes.", 0, 1, date));
-        children.add(new Property("publisher", "string", "The name of the organization or individual that published the compartment definition.", 0, 1, publisher));
+        children.add(new Property("publisher", "string", "The name of the organization or individual responsible for the release and ongoing maintenance of the compartment definition.", 0, 1, publisher));
         children.add(new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact));
         children.add(new Property("description", "markdown", "A free text natural language description of the compartment definition from a consumer's perspective.", 0, 1, description));
         children.add(new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate compartment definition instances.", 0, java.lang.Integer.MAX_VALUE, useContext));
@@ -1354,13 +1611,18 @@ public class CompartmentDefinition extends CanonicalResource {
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this compartment definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this compartment definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the compartment definition is stored on different servers.", 0, 1, url);
+        case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this compartment definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this compartment definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the compartment definition is stored on different servers.", 0, 1, url);
         case 351608024: /*version*/  return new Property("version", "string", "The identifier that is used to identify this version of the compartment definition when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the compartment definition author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version);
+        case -115699031: /*versionAlgorithm[x]*/  return new Property("versionAlgorithm[x]", "string|Coding", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm);
+        case 1508158071: /*versionAlgorithm*/  return new Property("versionAlgorithm[x]", "string|Coding", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm);
+        case 1836908904: /*versionAlgorithmString*/  return new Property("versionAlgorithm[x]", "string", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm);
+        case 1373807809: /*versionAlgorithmCoding*/  return new Property("versionAlgorithm[x]", "Coding", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm);
         case 3373707: /*name*/  return new Property("name", "string", "A natural language name identifying the compartment definition. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name);
+        case 110371416: /*title*/  return new Property("title", "string", "A short, descriptive, user-friendly title for the capability statement.", 0, 1, title);
         case -892481550: /*status*/  return new Property("status", "code", "The status of this compartment definition. Enables tracking the life-cycle of the content.", 0, 1, status);
         case -404562712: /*experimental*/  return new Property("experimental", "boolean", "A Boolean value to indicate that this compartment definition is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.", 0, 1, experimental);
         case 3076014: /*date*/  return new Property("date", "dateTime", "The date  (and optionally time) when the compartment definition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the compartment definition changes.", 0, 1, date);
-        case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual that published the compartment definition.", 0, 1, publisher);
+        case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual responsible for the release and ongoing maintenance of the compartment definition.", 0, 1, publisher);
         case 951526432: /*contact*/  return new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact);
         case -1724546052: /*description*/  return new Property("description", "markdown", "A free text natural language description of the compartment definition from a consumer's perspective.", 0, 1, description);
         case -669707736: /*useContext*/  return new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate compartment definition instances.", 0, java.lang.Integer.MAX_VALUE, useContext);
@@ -1378,7 +1640,9 @@ public class CompartmentDefinition extends CanonicalResource {
         switch (hash) {
         case 116079: /*url*/ return this.url == null ? new Base[0] : new Base[] {this.url}; // UriType
         case 351608024: /*version*/ return this.version == null ? new Base[0] : new Base[] {this.version}; // StringType
+        case 1508158071: /*versionAlgorithm*/ return this.versionAlgorithm == null ? new Base[0] : new Base[] {this.versionAlgorithm}; // DataType
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
+        case 110371416: /*title*/ return this.title == null ? new Base[0] : new Base[] {this.title}; // StringType
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<PublicationStatus>
         case -404562712: /*experimental*/ return this.experimental == null ? new Base[0] : new Base[] {this.experimental}; // BooleanType
         case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // DateTimeType
@@ -1404,8 +1668,14 @@ public class CompartmentDefinition extends CanonicalResource {
         case 351608024: // version
           this.version = TypeConvertor.castToString(value); // StringType
           return value;
+        case 1508158071: // versionAlgorithm
+          this.versionAlgorithm = TypeConvertor.castToType(value); // DataType
+          return value;
         case 3373707: // name
           this.name = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 110371416: // title
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case -892481550: // status
           value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
@@ -1453,8 +1723,12 @@ public class CompartmentDefinition extends CanonicalResource {
           this.url = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("version")) {
           this.version = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("versionAlgorithm[x]")) {
+          this.versionAlgorithm = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("name")) {
           this.name = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("title")) {
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("status")) {
           value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
@@ -1489,7 +1763,10 @@ public class CompartmentDefinition extends CanonicalResource {
         switch (hash) {
         case 116079:  return getUrlElement();
         case 351608024:  return getVersionElement();
+        case -115699031:  return getVersionAlgorithm();
+        case 1508158071:  return getVersionAlgorithm();
         case 3373707:  return getNameElement();
+        case 110371416:  return getTitleElement();
         case -892481550:  return getStatusElement();
         case -404562712:  return getExperimentalElement();
         case 3076014:  return getDateElement();
@@ -1511,7 +1788,9 @@ public class CompartmentDefinition extends CanonicalResource {
         switch (hash) {
         case 116079: /*url*/ return new String[] {"uri"};
         case 351608024: /*version*/ return new String[] {"string"};
+        case 1508158071: /*versionAlgorithm*/ return new String[] {"string", "Coding"};
         case 3373707: /*name*/ return new String[] {"string"};
+        case 110371416: /*title*/ return new String[] {"string"};
         case -892481550: /*status*/ return new String[] {"code"};
         case -404562712: /*experimental*/ return new String[] {"boolean"};
         case 3076014: /*date*/ return new String[] {"dateTime"};
@@ -1536,8 +1815,19 @@ public class CompartmentDefinition extends CanonicalResource {
         else if (name.equals("version")) {
           throw new FHIRException("Cannot call addChild on a primitive type CompartmentDefinition.version");
         }
+        else if (name.equals("versionAlgorithmString")) {
+          this.versionAlgorithm = new StringType();
+          return this.versionAlgorithm;
+        }
+        else if (name.equals("versionAlgorithmCoding")) {
+          this.versionAlgorithm = new Coding();
+          return this.versionAlgorithm;
+        }
         else if (name.equals("name")) {
           throw new FHIRException("Cannot call addChild on a primitive type CompartmentDefinition.name");
+        }
+        else if (name.equals("title")) {
+          throw new FHIRException("Cannot call addChild on a primitive type CompartmentDefinition.title");
         }
         else if (name.equals("status")) {
           throw new FHIRException("Cannot call addChild on a primitive type CompartmentDefinition.status");
@@ -1591,7 +1881,9 @@ public class CompartmentDefinition extends CanonicalResource {
         super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         dst.version = version == null ? null : version.copy();
+        dst.versionAlgorithm = versionAlgorithm == null ? null : versionAlgorithm.copy();
         dst.name = name == null ? null : name.copy();
+        dst.title = title == null ? null : title.copy();
         dst.status = status == null ? null : status.copy();
         dst.experimental = experimental == null ? null : experimental.copy();
         dst.date = date == null ? null : date.copy();
@@ -1628,11 +1920,12 @@ public class CompartmentDefinition extends CanonicalResource {
         if (!(other_ instanceof CompartmentDefinition))
           return false;
         CompartmentDefinition o = (CompartmentDefinition) other_;
-        return compareDeep(url, o.url, true) && compareDeep(version, o.version, true) && compareDeep(name, o.name, true)
-           && compareDeep(status, o.status, true) && compareDeep(experimental, o.experimental, true) && compareDeep(date, o.date, true)
-           && compareDeep(publisher, o.publisher, true) && compareDeep(contact, o.contact, true) && compareDeep(description, o.description, true)
-           && compareDeep(useContext, o.useContext, true) && compareDeep(purpose, o.purpose, true) && compareDeep(code, o.code, true)
-           && compareDeep(search, o.search, true) && compareDeep(resource, o.resource, true);
+        return compareDeep(url, o.url, true) && compareDeep(version, o.version, true) && compareDeep(versionAlgorithm, o.versionAlgorithm, true)
+           && compareDeep(name, o.name, true) && compareDeep(title, o.title, true) && compareDeep(status, o.status, true)
+           && compareDeep(experimental, o.experimental, true) && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true)
+           && compareDeep(contact, o.contact, true) && compareDeep(description, o.description, true) && compareDeep(useContext, o.useContext, true)
+           && compareDeep(purpose, o.purpose, true) && compareDeep(code, o.code, true) && compareDeep(search, o.search, true)
+           && compareDeep(resource, o.resource, true);
       }
 
       @Override
@@ -1643,15 +1936,16 @@ public class CompartmentDefinition extends CanonicalResource {
           return false;
         CompartmentDefinition o = (CompartmentDefinition) other_;
         return compareValues(url, o.url, true) && compareValues(version, o.version, true) && compareValues(name, o.name, true)
-           && compareValues(status, o.status, true) && compareValues(experimental, o.experimental, true) && compareValues(date, o.date, true)
-           && compareValues(publisher, o.publisher, true) && compareValues(description, o.description, true) && compareValues(purpose, o.purpose, true)
-           && compareValues(code, o.code, true) && compareValues(search, o.search, true);
+           && compareValues(title, o.title, true) && compareValues(status, o.status, true) && compareValues(experimental, o.experimental, true)
+           && compareValues(date, o.date, true) && compareValues(publisher, o.publisher, true) && compareValues(description, o.description, true)
+           && compareValues(purpose, o.purpose, true) && compareValues(code, o.code, true) && compareValues(search, o.search, true)
+          ;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, version, name, status
-          , experimental, date, publisher, contact, description, useContext, purpose, code
-          , search, resource);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, version, versionAlgorithm
+          , name, title, status, experimental, date, publisher, contact, description, useContext
+          , purpose, code, search, resource);
       }
 
   @Override
@@ -2227,7 +2521,7 @@ public class CompartmentDefinition extends CanonicalResource {
 * [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement
 * [CodeSystem](codesystem.html): The uri that identifies the code system
 * [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition
-* [ConceptMap](conceptmap.html): The uri that identifies the concept map
+* [ConceptMap](conceptmap.html): The URI that identifies the concept map
 * [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition
 * [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide
 * [MessageDefinition](messagedefinition.html): The uri that identifies the message definition
@@ -2243,7 +2537,7 @@ public class CompartmentDefinition extends CanonicalResource {
    * Path: <b>CapabilityStatement.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | GraphDefinition.url | ImplementationGuide.url | MessageDefinition.url | NamingSystem.url | OperationDefinition.url | SearchParameter.url | StructureDefinition.url | StructureMap.url | TerminologyCapabilities.url | ValueSet.url</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="url", path="CapabilityStatement.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | GraphDefinition.url | ImplementationGuide.url | MessageDefinition.url | NamingSystem.url | OperationDefinition.url | SearchParameter.url | StructureDefinition.url | StructureMap.url | TerminologyCapabilities.url | ValueSet.url", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement\r\n* [CodeSystem](codesystem.html): The uri that identifies the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition\r\n* [ConceptMap](conceptmap.html): The uri that identifies the concept map\r\n* [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition\r\n* [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide\r\n* [MessageDefinition](messagedefinition.html): The uri that identifies the message definition\r\n* [NamingSystem](namingsystem.html): The uri that identifies the naming system\r\n* [OperationDefinition](operationdefinition.html): The uri that identifies the operation definition\r\n* [SearchParameter](searchparameter.html): The uri that identifies the search parameter\r\n* [StructureDefinition](structuredefinition.html): The uri that identifies the structure definition\r\n* [StructureMap](structuremap.html): The uri that identifies the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): The uri that identifies the terminology capabilities\r\n* [ValueSet](valueset.html): The uri that identifies the value set\r\n", type="uri" )
+  @SearchParamDefinition(name="url", path="CapabilityStatement.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | GraphDefinition.url | ImplementationGuide.url | MessageDefinition.url | NamingSystem.url | OperationDefinition.url | SearchParameter.url | StructureDefinition.url | StructureMap.url | TerminologyCapabilities.url | ValueSet.url", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement\r\n* [CodeSystem](codesystem.html): The uri that identifies the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition\r\n* [ConceptMap](conceptmap.html): The URI that identifies the concept map\r\n* [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition\r\n* [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide\r\n* [MessageDefinition](messagedefinition.html): The uri that identifies the message definition\r\n* [NamingSystem](namingsystem.html): The uri that identifies the naming system\r\n* [OperationDefinition](operationdefinition.html): The uri that identifies the operation definition\r\n* [SearchParameter](searchparameter.html): The uri that identifies the search parameter\r\n* [StructureDefinition](structuredefinition.html): The uri that identifies the structure definition\r\n* [StructureMap](structuremap.html): The uri that identifies the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): The uri that identifies the terminology capabilities\r\n* [ValueSet](valueset.html): The uri that identifies the value set\r\n", type="uri" )
   public static final String SP_URL = "url";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>url</b>
@@ -2253,7 +2547,7 @@ public class CompartmentDefinition extends CanonicalResource {
 * [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement
 * [CodeSystem](codesystem.html): The uri that identifies the code system
 * [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition
-* [ConceptMap](conceptmap.html): The uri that identifies the concept map
+* [ConceptMap](conceptmap.html): The URI that identifies the concept map
 * [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition
 * [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide
 * [MessageDefinition](messagedefinition.html): The uri that identifies the message definition

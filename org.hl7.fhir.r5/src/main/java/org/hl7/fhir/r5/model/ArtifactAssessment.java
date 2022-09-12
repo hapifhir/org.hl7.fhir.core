@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,7 +51,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * This Resource provides one or more comments, classifiers or ratings about a Resource and supports attribution and rights management metadata for the added content.
  */
 @ResourceDef(name="ArtifactAssessment", profile="http://hl7.org/fhir/StructureDefinition/ArtifactAssessment")
-public class ArtifactAssessment extends MetadataResource {
+public class ArtifactAssessment extends DomainResource {
 
     public enum ArtifactAssessmentDisposition {
         /**
@@ -103,6 +103,7 @@ public class ArtifactAssessment extends MetadataResource {
             case PERSUASIVE: return "persuasive";
             case PERSUASIVEWITHMODIFICATION: return "persuasive-with-modification";
             case NOTPERSUASIVEWITHMODIFICATION: return "not-persuasive-with-modification";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -113,6 +114,7 @@ public class ArtifactAssessment extends MetadataResource {
             case PERSUASIVE: return "http://hl7.org/fhir/artifactassessment-disposition";
             case PERSUASIVEWITHMODIFICATION: return "http://hl7.org/fhir/artifactassessment-disposition";
             case NOTPERSUASIVEWITHMODIFICATION: return "http://hl7.org/fhir/artifactassessment-disposition";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -123,6 +125,7 @@ public class ArtifactAssessment extends MetadataResource {
             case PERSUASIVE: return "The comment is persuasive (accepted in full)";
             case PERSUASIVEWITHMODIFICATION: return "The comment is persuasive with modification (partially accepted)";
             case NOTPERSUASIVEWITHMODIFICATION: return "The comment is not persuasive with modification (partially rejected)";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -133,6 +136,7 @@ public class ArtifactAssessment extends MetadataResource {
             case PERSUASIVE: return "Persuasive";
             case PERSUASIVEWITHMODIFICATION: return "Persuasive with Modification";
             case NOTPERSUASIVEWITHMODIFICATION: return "Not Persuasive with Modification";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -250,6 +254,7 @@ public class ArtifactAssessment extends MetadataResource {
             case CONTAINER: return "container";
             case RESPONSE: return "response";
             case CHANGEREQUEST: return "change-request";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -261,6 +266,7 @@ public class ArtifactAssessment extends MetadataResource {
             case CONTAINER: return "http://hl7.org/fhir/artifactassessment-information-type";
             case RESPONSE: return "http://hl7.org/fhir/artifactassessment-information-type";
             case CHANGEREQUEST: return "http://hl7.org/fhir/artifactassessment-information-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -272,6 +278,7 @@ public class ArtifactAssessment extends MetadataResource {
             case CONTAINER: return "A container for multiple components";
             case RESPONSE: return "A response to a comment";
             case CHANGEREQUEST: return "A change request for the artifact";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -283,6 +290,7 @@ public class ArtifactAssessment extends MetadataResource {
             case CONTAINER: return "Container";
             case RESPONSE: return "Response";
             case CHANGEREQUEST: return "Change Request";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -427,6 +435,7 @@ public class ArtifactAssessment extends MetadataResource {
             case DUPLICATE: return "duplicate";
             case APPLIED: return "applied";
             case PUBLISHED: return "published";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -441,6 +450,7 @@ public class ArtifactAssessment extends MetadataResource {
             case DUPLICATE: return "http://hl7.org/fhir/artifactassessment-workflow-status";
             case APPLIED: return "http://hl7.org/fhir/artifactassessment-workflow-status";
             case PUBLISHED: return "http://hl7.org/fhir/artifactassessment-workflow-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -455,6 +465,7 @@ public class ArtifactAssessment extends MetadataResource {
             case DUPLICATE: return "The comment is a duplicate of another comment already received";
             case APPLIED: return "The comment is resolved and any necessary changes have been applied";
             case PUBLISHED: return "The necessary changes to the artifact have been published in a new version of the artifact";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -469,6 +480,7 @@ public class ArtifactAssessment extends MetadataResource {
             case DUPLICATE: return "Duplicate";
             case APPLIED: return "Applied";
             case PUBLISHED: return "Published";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1896,668 +1908,6 @@ public class ArtifactAssessment extends MetadataResource {
       return this;
     }
 
-    /**
-     * not supported on this implementation
-     */
-    @Override
-    public int getUrlMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #url} (An absolute URI that is used to identify this artifact assessment when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this artifact assessment is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the artifact assessment is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
-     */
-    public UriType getUrlElement() { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"url\"");
-    }
-
-    public boolean hasUrlElement() { 
-      return false;
-    }
-    public boolean hasUrl() {
-      return false;
-    }
-
-    /**
-     * @param value {@link #url} (An absolute URI that is used to identify this artifact assessment when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this artifact assessment is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the artifact assessment is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
-     */
-    public ArtifactAssessment setUrlElement(UriType value) { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"url\"");
-    }
-    public String getUrl() { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"url\"");
-    }
-    /**
-     * @param value An absolute URI that is used to identify this artifact assessment when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this artifact assessment is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the artifact assessment is stored on different servers.
-     */
-    public ArtifactAssessment setUrl(String value) { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"url\"");
-    }
-    /**
-     * not supported on this implementation
-     */
-    @Override
-    public int getVersionMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #version} (The identifier that is used to identify this version of the artifact assessment when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the artifact assessment author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
-     */
-    public StringType getVersionElement() { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"version\"");
-    }
-
-    public boolean hasVersionElement() { 
-      return false;
-    }
-    public boolean hasVersion() {
-      return false;
-    }
-
-    /**
-     * @param value {@link #version} (The identifier that is used to identify this version of the artifact assessment when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the artifact assessment author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
-     */
-    public ArtifactAssessment setVersionElement(StringType value) { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"version\"");
-    }
-    public String getVersion() { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"version\"");
-    }
-    /**
-     * @param value The identifier that is used to identify this version of the artifact assessment when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the artifact assessment author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.
-     */
-    public ArtifactAssessment setVersion(String value) { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"version\"");
-    }
-    /**
-     * not supported on this implementation
-     */
-    @Override
-    public int getNameMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #name} (A natural language name identifying the artifact assessment. This name should be usable as an identifier for the module by machine processing applications such as code generation.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
-     */
-    public StringType getNameElement() { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"name\"");
-    }
-
-    public boolean hasNameElement() { 
-      return false;
-    }
-    public boolean hasName() {
-      return false;
-    }
-
-    /**
-     * @param value {@link #name} (A natural language name identifying the artifact assessment. This name should be usable as an identifier for the module by machine processing applications such as code generation.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
-     */
-    public ArtifactAssessment setNameElement(StringType value) { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"name\"");
-    }
-    public String getName() { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"name\"");
-    }
-    /**
-     * @param value A natural language name identifying the artifact assessment. This name should be usable as an identifier for the module by machine processing applications such as code generation.
-     */
-    public ArtifactAssessment setName(String value) { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"name\"");
-    }
-    /**
-     * not supported on this implementation
-     */
-    @Override
-    public int getTitleMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #title} (A short, descriptive, user-friendly title for the artifact assessment.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
-     */
-    public StringType getTitleElement() { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"title\"");
-    }
-
-    public boolean hasTitleElement() { 
-      return false;
-    }
-    public boolean hasTitle() {
-      return false;
-    }
-
-    /**
-     * @param value {@link #title} (A short, descriptive, user-friendly title for the artifact assessment.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
-     */
-    public ArtifactAssessment setTitleElement(StringType value) { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"title\"");
-    }
-    public String getTitle() { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"title\"");
-    }
-    /**
-     * @param value A short, descriptive, user-friendly title for the artifact assessment.
-     */
-    public ArtifactAssessment setTitle(String value) { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"title\"");
-    }
-    /**
-     * not supported on this implementation
-     */
-    @Override
-    public int getStatusMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #status} (The status of this artifact assessment. Enables tracking the life-cycle of the content.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
-     */
-    public Enumeration<PublicationStatus> getStatusElement() { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"status\"");
-    }
-
-    public boolean hasStatusElement() { 
-      return false;
-    }
-    public boolean hasStatus() {
-      return false;
-    }
-
-    /**
-     * @param value {@link #status} (The status of this artifact assessment. Enables tracking the life-cycle of the content.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
-     */
-    public ArtifactAssessment setStatusElement(Enumeration<PublicationStatus> value) { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"status\"");
-    }
-    public PublicationStatus getStatus() { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"status\"");
-    }
-    /**
-     * @param value The status of this artifact assessment. Enables tracking the life-cycle of the content.
-     */
-    public ArtifactAssessment setStatus(PublicationStatus value) { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"status\"");
-    }
-    /**
-     * not supported on this implementation
-     */
-    @Override
-    public int getExperimentalMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #experimental} (A Boolean value to indicate that this artifact assessment is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.). This is the underlying object with id, value and extensions. The accessor "getExperimental" gives direct access to the value
-     */
-    public BooleanType getExperimentalElement() { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"experimental\"");
-    }
-
-    public boolean hasExperimentalElement() { 
-      return false;
-    }
-    public boolean hasExperimental() {
-      return false;
-    }
-
-    /**
-     * @param value {@link #experimental} (A Boolean value to indicate that this artifact assessment is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.). This is the underlying object with id, value and extensions. The accessor "getExperimental" gives direct access to the value
-     */
-    public ArtifactAssessment setExperimentalElement(BooleanType value) { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"experimental\"");
-    }
-    public boolean getExperimental() { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"experimental\"");
-    }
-    /**
-     * @param value A Boolean value to indicate that this artifact assessment is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
-     */
-    public ArtifactAssessment setExperimental(boolean value) { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"experimental\"");
-    }
-    /**
-     * not supported on this implementation
-     */
-    @Override
-    public int getPublisherMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #publisher} (The name of the organization or individual that published the artifact assessment.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
-     */
-    public StringType getPublisherElement() { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"publisher\"");
-    }
-
-    public boolean hasPublisherElement() { 
-      return false;
-    }
-    public boolean hasPublisher() {
-      return false;
-    }
-
-    /**
-     * @param value {@link #publisher} (The name of the organization or individual that published the artifact assessment.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
-     */
-    public ArtifactAssessment setPublisherElement(StringType value) { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"publisher\"");
-    }
-    public String getPublisher() { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"publisher\"");
-    }
-    /**
-     * @param value The name of the organization or individual that published the artifact assessment.
-     */
-    public ArtifactAssessment setPublisher(String value) { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"publisher\"");
-    }
-    /**
-     * not supported on this implementation
-     */
-    @Override
-    public int getContactMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #contact} (Contact details to assist a user in finding and communicating with the publisher.)
-     */
-    public List<ContactDetail> getContact() { 
-      return new ArrayList<>();
-    }
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public ArtifactAssessment setContact(List<ContactDetail> theContact) { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"contact\"");
-    }
-    public boolean hasContact() { 
-      return false;
-    }
-
-    public ContactDetail addContact() { //3
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"contact\"");
-    }
-    public ArtifactAssessment addContact(ContactDetail t) { //3
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"contact\"");
-    }
-    /**
-     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist {2}
-     */
-    public ContactDetail getContactFirstRep() { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"contact\"");
-    }
-    /**
-     * not supported on this implementation
-     */
-    @Override
-    public int getDescriptionMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #description} (A free text natural language description of the artifact assessment from a consumer's perspective.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
-     */
-    public MarkdownType getDescriptionElement() { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"description\"");
-    }
-
-    public boolean hasDescriptionElement() { 
-      return false;
-    }
-    public boolean hasDescription() {
-      return false;
-    }
-
-    /**
-     * @param value {@link #description} (A free text natural language description of the artifact assessment from a consumer's perspective.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
-     */
-    public ArtifactAssessment setDescriptionElement(MarkdownType value) { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"description\"");
-    }
-    public String getDescription() { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"description\"");
-    }
-    /**
-     * @param value A free text natural language description of the artifact assessment from a consumer's perspective.
-     */
-    public ArtifactAssessment setDescription(String value) { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"description\"");
-    }
-    /**
-     * not supported on this implementation
-     */
-    @Override
-    public int getUseContextMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #useContext} (The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate artifact assessment instances.)
-     */
-    public List<UsageContext> getUseContext() { 
-      return new ArrayList<>();
-    }
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public ArtifactAssessment setUseContext(List<UsageContext> theUseContext) { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"useContext\"");
-    }
-    public boolean hasUseContext() { 
-      return false;
-    }
-
-    public UsageContext addUseContext() { //3
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"useContext\"");
-    }
-    public ArtifactAssessment addUseContext(UsageContext t) { //3
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"useContext\"");
-    }
-    /**
-     * @return The first repetition of repeating field {@link #useContext}, creating it if it does not already exist {2}
-     */
-    public UsageContext getUseContextFirstRep() { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"useContext\"");
-    }
-    /**
-     * not supported on this implementation
-     */
-    @Override
-    public int getJurisdictionMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #jurisdiction} (A legal or geographic region in which the artifact assessment is intended to be used.)
-     */
-    public List<CodeableConcept> getJurisdiction() { 
-      return new ArrayList<>();
-    }
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public ArtifactAssessment setJurisdiction(List<CodeableConcept> theJurisdiction) { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"jurisdiction\"");
-    }
-    public boolean hasJurisdiction() { 
-      return false;
-    }
-
-    public CodeableConcept addJurisdiction() { //3
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"jurisdiction\"");
-    }
-    public ArtifactAssessment addJurisdiction(CodeableConcept t) { //3
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"jurisdiction\"");
-    }
-    /**
-     * @return The first repetition of repeating field {@link #jurisdiction}, creating it if it does not already exist {2}
-     */
-    public CodeableConcept getJurisdictionFirstRep() { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"jurisdiction\"");
-    }
-    /**
-     * not supported on this implementation
-     */
-    @Override
-    public int getPurposeMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #purpose} (Explanation of why this artifact assessment is needed and why it has been designed as it has.). This is the underlying object with id, value and extensions. The accessor "getPurpose" gives direct access to the value
-     */
-    public MarkdownType getPurposeElement() { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"purpose\"");
-    }
-
-    public boolean hasPurposeElement() { 
-      return false;
-    }
-    public boolean hasPurpose() {
-      return false;
-    }
-
-    /**
-     * @param value {@link #purpose} (Explanation of why this artifact assessment is needed and why it has been designed as it has.). This is the underlying object with id, value and extensions. The accessor "getPurpose" gives direct access to the value
-     */
-    public ArtifactAssessment setPurposeElement(MarkdownType value) { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"purpose\"");
-    }
-    public String getPurpose() { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"purpose\"");
-    }
-    /**
-     * @param value Explanation of why this artifact assessment is needed and why it has been designed as it has.
-     */
-    public ArtifactAssessment setPurpose(String value) { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"purpose\"");
-    }
-    /**
-     * not supported on this implementation
-     */
-    @Override
-    public int getEffectivePeriodMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #effectivePeriod} (The period during which the artifact assessment content was or is planned to be in active use.)
-     */
-    public Period getEffectivePeriod() { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"effectivePeriod\"");
-    }
-    public boolean hasEffectivePeriod() { 
-      return false;
-    }
-    /**
-     * @param value {@link #effectivePeriod} (The period during which the artifact assessment content was or is planned to be in active use.)
-     */
-    public ArtifactAssessment setEffectivePeriod(Period value) { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"effectivePeriod\"");
-    }
-
-    /**
-     * not supported on this implementation
-     */
-    @Override
-    public int getTopicMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #topic} (Descriptive topics related to the content of the library. Topics provide a high-level categorization of the library that can be useful for filtering and searching.)
-     */
-    public List<CodeableConcept> getTopic() { 
-      return new ArrayList<>();
-    }
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public ArtifactAssessment setTopic(List<CodeableConcept> theTopic) { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"topic\"");
-    }
-    public boolean hasTopic() { 
-      return false;
-    }
-
-    public CodeableConcept addTopic() { //3
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"topic\"");
-    }
-    public ArtifactAssessment addTopic(CodeableConcept t) { //3
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"topic\"");
-    }
-    /**
-     * @return The first repetition of repeating field {@link #topic}, creating it if it does not already exist {2}
-     */
-    public CodeableConcept getTopicFirstRep() { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"topic\"");
-    }
-    /**
-     * not supported on this implementation
-     */
-    @Override
-    public int getAuthorMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #author} (An individiual or organization primarily involved in the creation and maintenance of the artifact assessment.)
-     */
-    public List<ContactDetail> getAuthor() { 
-      return new ArrayList<>();
-    }
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public ArtifactAssessment setAuthor(List<ContactDetail> theAuthor) { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"author\"");
-    }
-    public boolean hasAuthor() { 
-      return false;
-    }
-
-    public ContactDetail addAuthor() { //3
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"author\"");
-    }
-    public ArtifactAssessment addAuthor(ContactDetail t) { //3
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"author\"");
-    }
-    /**
-     * @return The first repetition of repeating field {@link #author}, creating it if it does not already exist {2}
-     */
-    public ContactDetail getAuthorFirstRep() { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"author\"");
-    }
-    /**
-     * not supported on this implementation
-     */
-    @Override
-    public int getEditorMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #editor} (An individual or organization primarily responsible for internal coherence of the artifact assessment.)
-     */
-    public List<ContactDetail> getEditor() { 
-      return new ArrayList<>();
-    }
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public ArtifactAssessment setEditor(List<ContactDetail> theEditor) { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"editor\"");
-    }
-    public boolean hasEditor() { 
-      return false;
-    }
-
-    public ContactDetail addEditor() { //3
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"editor\"");
-    }
-    public ArtifactAssessment addEditor(ContactDetail t) { //3
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"editor\"");
-    }
-    /**
-     * @return The first repetition of repeating field {@link #editor}, creating it if it does not already exist {2}
-     */
-    public ContactDetail getEditorFirstRep() { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"editor\"");
-    }
-    /**
-     * not supported on this implementation
-     */
-    @Override
-    public int getReviewerMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #reviewer} (An individual or organization primarily responsible for review of some aspect of the artifact assessment.)
-     */
-    public List<ContactDetail> getReviewer() { 
-      return new ArrayList<>();
-    }
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public ArtifactAssessment setReviewer(List<ContactDetail> theReviewer) { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"reviewer\"");
-    }
-    public boolean hasReviewer() { 
-      return false;
-    }
-
-    public ContactDetail addReviewer() { //3
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"reviewer\"");
-    }
-    public ArtifactAssessment addReviewer(ContactDetail t) { //3
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"reviewer\"");
-    }
-    /**
-     * @return The first repetition of repeating field {@link #reviewer}, creating it if it does not already exist {2}
-     */
-    public ContactDetail getReviewerFirstRep() { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"reviewer\"");
-    }
-    /**
-     * not supported on this implementation
-     */
-    @Override
-    public int getEndorserMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #endorser} (An individual or organization responsible for officially endorsing the artifact assessment for use in some setting.)
-     */
-    public List<ContactDetail> getEndorser() { 
-      return new ArrayList<>();
-    }
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public ArtifactAssessment setEndorser(List<ContactDetail> theEndorser) { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"endorser\"");
-    }
-    public boolean hasEndorser() { 
-      return false;
-    }
-
-    public ContactDetail addEndorser() { //3
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"endorser\"");
-    }
-    public ArtifactAssessment addEndorser(ContactDetail t) { //3
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"endorser\"");
-    }
-    /**
-     * @return The first repetition of repeating field {@link #endorser}, creating it if it does not already exist {2}
-     */
-    public ContactDetail getEndorserFirstRep() { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"endorser\"");
-    }
-    /**
-     * not supported on this implementation
-     */
-    @Override
-    public int getRelatedArtifactMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #relatedArtifact} (Related artifacts such as additional documentation, justification, dependencies, bibliographic references, and predecessor and successor artifacts.)
-     */
-    public List<RelatedArtifact> getRelatedArtifact() { 
-      return new ArrayList<>();
-    }
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public ArtifactAssessment setRelatedArtifact(List<RelatedArtifact> theRelatedArtifact) { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"relatedArtifact\"");
-    }
-    public boolean hasRelatedArtifact() { 
-      return false;
-    }
-
-    public RelatedArtifact addRelatedArtifact() { //3
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"relatedArtifact\"");
-    }
-    public ArtifactAssessment addRelatedArtifact(RelatedArtifact t) { //3
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"relatedArtifact\"");
-    }
-    /**
-     * @return The first repetition of repeating field {@link #relatedArtifact}, creating it if it does not already exist {2}
-     */
-    public RelatedArtifact getRelatedArtifactFirstRep() { 
-      throw new Error("The resource type \"ArtifactAssessment\" does not implement the property \"relatedArtifact\"");
-    }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "A formal identifier that is used to identify this artifact assessment when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier));

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -103,6 +103,7 @@ public class AuditEvent extends DomainResource {
             case U: return "U";
             case D: return "D";
             case E: return "E";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -113,6 +114,7 @@ public class AuditEvent extends DomainResource {
             case U: return "http://hl7.org/fhir/audit-event-action";
             case D: return "http://hl7.org/fhir/audit-event-action";
             case E: return "http://hl7.org/fhir/audit-event-action";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -123,6 +125,7 @@ public class AuditEvent extends DomainResource {
             case U: return "Update data, such as revise patient information.";
             case D: return "Delete items, such as a doctor master file record.";
             case E: return "Perform a system or application function such as log-on, program execution or use of an object's method, or perform a query/search operation.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -133,6 +136,7 @@ public class AuditEvent extends DomainResource {
             case U: return "Update";
             case D: return "Delete";
             case E: return "Execute";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -195,35 +199,35 @@ public class AuditEvent extends DomainResource {
 
     public enum AuditEventSeverity {
         /**
-         * System is unusable.
+         * System is unusable. e.g., This level should only be reported by infrastructure and should not be used by applications.
          */
         EMERGENCY, 
         /**
-         * Action must be taken immediately.
+         * Notification should be sent to trigger action be taken. e.g., Loss of the primary network connection needing attention.
          */
         ALERT, 
         /**
-         * Critical conditions.
+         * Critical conditions. e.g., A failure in the system's primary application that will reset automatically.
          */
         CRITICAL, 
         /**
-         * Error conditions.
+         * Error conditions. e.g., An application has exceeded its file storage limit and attempts to write are failing. 
          */
         ERROR, 
         /**
-         * Warning conditions.
+         * Warning conditions. May indicate that an error will occur if action is not taken. e.g., A non-root file system has only 2GB remaining.
          */
         WARNING, 
         /**
-         * Normal but significant condition.
+         * Notice messages. Normal but significant condition. Events that are unusual, but not error conditions.
          */
         NOTICE, 
         /**
-         * Informational messages.
+         * Normal operational messages that require no action. e.g., An application has started, paused, or ended successfully.
          */
         INFORMATIONAL, 
         /**
-         * Debug-level messages.
+         * Debug-level messages. Information useful to developers for debugging the application.
          */
         DEBUG, 
         /**
@@ -264,6 +268,7 @@ public class AuditEvent extends DomainResource {
             case NOTICE: return "notice";
             case INFORMATIONAL: return "informational";
             case DEBUG: return "debug";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -277,19 +282,21 @@ public class AuditEvent extends DomainResource {
             case NOTICE: return "http://hl7.org/fhir/audit-event-severity";
             case INFORMATIONAL: return "http://hl7.org/fhir/audit-event-severity";
             case DEBUG: return "http://hl7.org/fhir/audit-event-severity";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDefinition() {
           switch (this) {
-            case EMERGENCY: return "System is unusable.";
-            case ALERT: return "Action must be taken immediately.";
-            case CRITICAL: return "Critical conditions.";
-            case ERROR: return "Error conditions.";
-            case WARNING: return "Warning conditions.";
-            case NOTICE: return "Normal but significant condition.";
-            case INFORMATIONAL: return "Informational messages.";
-            case DEBUG: return "Debug-level messages.";
+            case EMERGENCY: return "System is unusable. e.g., This level should only be reported by infrastructure and should not be used by applications.";
+            case ALERT: return "Notification should be sent to trigger action be taken. e.g., Loss of the primary network connection needing attention.";
+            case CRITICAL: return "Critical conditions. e.g., A failure in the system's primary application that will reset automatically.";
+            case ERROR: return "Error conditions. e.g., An application has exceeded its file storage limit and attempts to write are failing. ";
+            case WARNING: return "Warning conditions. May indicate that an error will occur if action is not taken. e.g., A non-root file system has only 2GB remaining.";
+            case NOTICE: return "Notice messages. Normal but significant condition. Events that are unusual, but not error conditions.";
+            case INFORMATIONAL: return "Normal operational messages that require no action. e.g., An application has started, paused, or ended successfully.";
+            case DEBUG: return "Debug-level messages. Information useful to developers for debugging the application.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -303,6 +310,7 @@ public class AuditEvent extends DomainResource {
             case NOTICE: return "Notice";
             case INFORMATIONAL: return "Informational";
             case DEBUG: return "Debug";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1586,10 +1594,10 @@ public class AuditEvent extends DomainResource {
     @Block()
     public static class AuditEventEntityComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Identifies a specific instance of the entity. The reference should be version specific.
+         * Identifies a specific instance of the entity. The reference should be version specific. This is allowed to be a Parameters resource.
          */
         @Child(name = "what", type = {Reference.class}, order=1, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Specific instance of resource", formalDefinition="Identifies a specific instance of the entity. The reference should be version specific." )
+        @Description(shortDefinition="Specific instance of resource", formalDefinition="Identifies a specific instance of the entity. The reference should be version specific. This is allowed to be a Parameters resource." )
         protected Reference what;
 
         /**
@@ -1605,7 +1613,7 @@ public class AuditEvent extends DomainResource {
          */
         @Child(name = "securityLabel", type = {CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Security labels on the entity", formalDefinition="Security labels for the identified entity." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/security-labels")
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/security-label-examples")
         protected List<CodeableConcept> securityLabel;
 
         /**
@@ -1639,7 +1647,7 @@ public class AuditEvent extends DomainResource {
       }
 
         /**
-         * @return {@link #what} (Identifies a specific instance of the entity. The reference should be version specific.)
+         * @return {@link #what} (Identifies a specific instance of the entity. The reference should be version specific. This is allowed to be a Parameters resource.)
          */
         public Reference getWhat() { 
           if (this.what == null)
@@ -1655,7 +1663,7 @@ public class AuditEvent extends DomainResource {
         }
 
         /**
-         * @param value {@link #what} (Identifies a specific instance of the entity. The reference should be version specific.)
+         * @param value {@link #what} (Identifies a specific instance of the entity. The reference should be version specific. This is allowed to be a Parameters resource.)
          */
         public AuditEventEntityComponent setWhat(Reference value) { 
           this.what = value;
@@ -1896,7 +1904,7 @@ public class AuditEvent extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("what", "Reference(Any)", "Identifies a specific instance of the entity. The reference should be version specific.", 0, 1, what));
+          children.add(new Property("what", "Reference(Any)", "Identifies a specific instance of the entity. The reference should be version specific. This is allowed to be a Parameters resource.", 0, 1, what));
           children.add(new Property("role", "CodeableConcept", "Code representing the role the entity played in the event being audited.", 0, 1, role));
           children.add(new Property("securityLabel", "CodeableConcept", "Security labels for the identified entity.", 0, java.lang.Integer.MAX_VALUE, securityLabel));
           children.add(new Property("query", "base64Binary", "The query parameters for a query-type entities.", 0, 1, query));
@@ -1907,7 +1915,7 @@ public class AuditEvent extends DomainResource {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3648196: /*what*/  return new Property("what", "Reference(Any)", "Identifies a specific instance of the entity. The reference should be version specific.", 0, 1, what);
+          case 3648196: /*what*/  return new Property("what", "Reference(Any)", "Identifies a specific instance of the entity. The reference should be version specific. This is allowed to be a Parameters resource.", 0, 1, what);
           case 3506294: /*role*/  return new Property("role", "CodeableConcept", "Code representing the role the entity played in the event being audited.", 0, 1, role);
           case -722296940: /*securityLabel*/  return new Property("securityLabel", "CodeableConcept", "Security labels for the identified entity.", 0, java.lang.Integer.MAX_VALUE, securityLabel);
           case 107944136: /*query*/  return new Property("query", "base64Binary", "The query parameters for a query-type entities.", 0, 1, query);
@@ -2588,34 +2596,41 @@ public class AuditEvent extends DomainResource {
     protected List<Reference> basedOn;
 
     /**
+     * The patient element is available to enable deterministic tracking of activities that involve the patient as the subject of the data used in an activity.
+     */
+    @Child(name = "patient", type = {Patient.class}, order=9, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="The patient is the subject of the data used/created/updated/deleted during the activity", formalDefinition="The patient element is available to enable deterministic tracking of activities that involve the patient as the subject of the data used in an activity." )
+    protected Reference patient;
+
+    /**
      * This will typically be the encounter the event occurred, but some events may be initiated prior to or after the official completion of an encounter but still be tied to the context of the encounter (e.g. pre-admission lab tests).
      */
-    @Child(name = "encounter", type = {Encounter.class}, order=9, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "encounter", type = {Encounter.class}, order=10, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Encounter within which this event occurred or which the event is tightly associated", formalDefinition="This will typically be the encounter the event occurred, but some events may be initiated prior to or after the official completion of an encounter but still be tied to the context of the encounter (e.g. pre-admission lab tests)." )
     protected Reference encounter;
 
     /**
      * An actor taking an active role in the event or activity that is logged.
      */
-    @Child(name = "agent", type = {}, order=10, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "agent", type = {}, order=11, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Actor involved in the event", formalDefinition="An actor taking an active role in the event or activity that is logged." )
     protected List<AuditEventAgentComponent> agent;
 
     /**
      * The actor that is reporting the event.
      */
-    @Child(name = "source", type = {}, order=11, min=1, max=1, modifier=false, summary=false)
+    @Child(name = "source", type = {}, order=12, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Audit Event Reporter", formalDefinition="The actor that is reporting the event." )
     protected AuditEventSourceComponent source;
 
     /**
      * Specific instances of data or objects that have been accessed.
      */
-    @Child(name = "entity", type = {}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "entity", type = {}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Data or objects used", formalDefinition="Specific instances of data or objects that have been accessed." )
     protected List<AuditEventEntityComponent> entity;
 
-    private static final long serialVersionUID = 1019127386L;
+    private static final long serialVersionUID = -1335832480L;
 
   /**
    * Constructor
@@ -3037,6 +3052,30 @@ public class AuditEvent extends DomainResource {
     }
 
     /**
+     * @return {@link #patient} (The patient element is available to enable deterministic tracking of activities that involve the patient as the subject of the data used in an activity.)
+     */
+    public Reference getPatient() { 
+      if (this.patient == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create AuditEvent.patient");
+        else if (Configuration.doAutoCreate())
+          this.patient = new Reference(); // cc
+      return this.patient;
+    }
+
+    public boolean hasPatient() { 
+      return this.patient != null && !this.patient.isEmpty();
+    }
+
+    /**
+     * @param value {@link #patient} (The patient element is available to enable deterministic tracking of activities that involve the patient as the subject of the data used in an activity.)
+     */
+    public AuditEvent setPatient(Reference value) { 
+      this.patient = value;
+      return this;
+    }
+
+    /**
      * @return {@link #encounter} (This will typically be the encounter the event occurred, but some events may be initiated prior to or after the official completion of an encounter but still be tied to the context of the encounter (e.g. pre-admission lab tests).)
      */
     public Reference getEncounter() { 
@@ -3201,6 +3240,7 @@ public class AuditEvent extends DomainResource {
         children.add(new Property("outcome", "", "Indicates whether the event succeeded or failed. A free text descripiton can be given in outcome.text.", 0, 1, outcome));
         children.add(new Property("authorization", "CodeableConcept", "The authorization (e.g., PurposeOfUse) that was used during the event being recorded.", 0, java.lang.Integer.MAX_VALUE, authorization));
         children.add(new Property("basedOn", "Reference(CarePlan|DeviceRequest|ImmunizationRecommendation|MedicationRequest|NutritionOrder|ServiceRequest|Task)", "Allows tracing of authorizatino for the events and tracking whether proposals/recommendations were acted upon.", 0, java.lang.Integer.MAX_VALUE, basedOn));
+        children.add(new Property("patient", "Reference(Patient)", "The patient element is available to enable deterministic tracking of activities that involve the patient as the subject of the data used in an activity.", 0, 1, patient));
         children.add(new Property("encounter", "Reference(Encounter)", "This will typically be the encounter the event occurred, but some events may be initiated prior to or after the official completion of an encounter but still be tied to the context of the encounter (e.g. pre-admission lab tests).", 0, 1, encounter));
         children.add(new Property("agent", "", "An actor taking an active role in the event or activity that is logged.", 0, java.lang.Integer.MAX_VALUE, agent));
         children.add(new Property("source", "", "The actor that is reporting the event.", 0, 1, source));
@@ -3222,6 +3262,7 @@ public class AuditEvent extends DomainResource {
         case -1106507950: /*outcome*/  return new Property("outcome", "", "Indicates whether the event succeeded or failed. A free text descripiton can be given in outcome.text.", 0, 1, outcome);
         case -1385570183: /*authorization*/  return new Property("authorization", "CodeableConcept", "The authorization (e.g., PurposeOfUse) that was used during the event being recorded.", 0, java.lang.Integer.MAX_VALUE, authorization);
         case -332612366: /*basedOn*/  return new Property("basedOn", "Reference(CarePlan|DeviceRequest|ImmunizationRecommendation|MedicationRequest|NutritionOrder|ServiceRequest|Task)", "Allows tracing of authorizatino for the events and tracking whether proposals/recommendations were acted upon.", 0, java.lang.Integer.MAX_VALUE, basedOn);
+        case -791418107: /*patient*/  return new Property("patient", "Reference(Patient)", "The patient element is available to enable deterministic tracking of activities that involve the patient as the subject of the data used in an activity.", 0, 1, patient);
         case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "This will typically be the encounter the event occurred, but some events may be initiated prior to or after the official completion of an encounter but still be tied to the context of the encounter (e.g. pre-admission lab tests).", 0, 1, encounter);
         case 92750597: /*agent*/  return new Property("agent", "", "An actor taking an active role in the event or activity that is logged.", 0, java.lang.Integer.MAX_VALUE, agent);
         case -896505829: /*source*/  return new Property("source", "", "The actor that is reporting the event.", 0, 1, source);
@@ -3243,6 +3284,7 @@ public class AuditEvent extends DomainResource {
         case -1106507950: /*outcome*/ return this.outcome == null ? new Base[0] : new Base[] {this.outcome}; // AuditEventOutcomeComponent
         case -1385570183: /*authorization*/ return this.authorization == null ? new Base[0] : this.authorization.toArray(new Base[this.authorization.size()]); // CodeableConcept
         case -332612366: /*basedOn*/ return this.basedOn == null ? new Base[0] : this.basedOn.toArray(new Base[this.basedOn.size()]); // Reference
+        case -791418107: /*patient*/ return this.patient == null ? new Base[0] : new Base[] {this.patient}; // Reference
         case 1524132147: /*encounter*/ return this.encounter == null ? new Base[0] : new Base[] {this.encounter}; // Reference
         case 92750597: /*agent*/ return this.agent == null ? new Base[0] : this.agent.toArray(new Base[this.agent.size()]); // AuditEventAgentComponent
         case -896505829: /*source*/ return this.source == null ? new Base[0] : new Base[] {this.source}; // AuditEventSourceComponent
@@ -3284,6 +3326,9 @@ public class AuditEvent extends DomainResource {
         case -332612366: // basedOn
           this.getBasedOn().add(TypeConvertor.castToReference(value)); // Reference
           return value;
+        case -791418107: // patient
+          this.patient = TypeConvertor.castToReference(value); // Reference
+          return value;
         case 1524132147: // encounter
           this.encounter = TypeConvertor.castToReference(value); // Reference
           return value;
@@ -3323,6 +3368,8 @@ public class AuditEvent extends DomainResource {
           this.getAuthorization().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("basedOn")) {
           this.getBasedOn().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("patient")) {
+          this.patient = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("encounter")) {
           this.encounter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("agent")) {
@@ -3349,6 +3396,7 @@ public class AuditEvent extends DomainResource {
         case -1106507950:  return getOutcome();
         case -1385570183:  return addAuthorization(); 
         case -332612366:  return addBasedOn(); 
+        case -791418107:  return getPatient();
         case 1524132147:  return getEncounter();
         case 92750597:  return addAgent(); 
         case -896505829:  return getSource();
@@ -3370,6 +3418,7 @@ public class AuditEvent extends DomainResource {
         case -1106507950: /*outcome*/ return new String[] {};
         case -1385570183: /*authorization*/ return new String[] {"CodeableConcept"};
         case -332612366: /*basedOn*/ return new String[] {"Reference"};
+        case -791418107: /*patient*/ return new String[] {"Reference"};
         case 1524132147: /*encounter*/ return new String[] {"Reference"};
         case 92750597: /*agent*/ return new String[] {};
         case -896505829: /*source*/ return new String[] {};
@@ -3414,6 +3463,10 @@ public class AuditEvent extends DomainResource {
         }
         else if (name.equals("basedOn")) {
           return addBasedOn();
+        }
+        else if (name.equals("patient")) {
+          this.patient = new Reference();
+          return this.patient;
         }
         else if (name.equals("encounter")) {
           this.encounter = new Reference();
@@ -3467,6 +3520,7 @@ public class AuditEvent extends DomainResource {
           for (Reference i : basedOn)
             dst.basedOn.add(i.copy());
         };
+        dst.patient = patient == null ? null : patient.copy();
         dst.encounter = encounter == null ? null : encounter.copy();
         if (agent != null) {
           dst.agent = new ArrayList<AuditEventAgentComponent>();
@@ -3495,8 +3549,8 @@ public class AuditEvent extends DomainResource {
         return compareDeep(category, o.category, true) && compareDeep(code, o.code, true) && compareDeep(action, o.action, true)
            && compareDeep(severity, o.severity, true) && compareDeep(occurred, o.occurred, true) && compareDeep(recorded, o.recorded, true)
            && compareDeep(outcome, o.outcome, true) && compareDeep(authorization, o.authorization, true) && compareDeep(basedOn, o.basedOn, true)
-           && compareDeep(encounter, o.encounter, true) && compareDeep(agent, o.agent, true) && compareDeep(source, o.source, true)
-           && compareDeep(entity, o.entity, true);
+           && compareDeep(patient, o.patient, true) && compareDeep(encounter, o.encounter, true) && compareDeep(agent, o.agent, true)
+           && compareDeep(source, o.source, true) && compareDeep(entity, o.entity, true);
       }
 
       @Override
@@ -3512,8 +3566,8 @@ public class AuditEvent extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(category, code, action, severity
-          , occurred, recorded, outcome, authorization, basedOn, encounter, agent, source
-          , entity);
+          , occurred, recorded, outcome, authorization, basedOn, patient, encounter, agent
+          , source, entity);
       }
 
   @Override
@@ -3727,7 +3781,7 @@ public class AuditEvent extends DomainResource {
    * Path: <b>AuditEvent.entity.what</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="entity", path="AuditEvent.entity.what", description="Specific instance of resource", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="entity", path="AuditEvent.entity.what", description="Specific instance of resource", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_ENTITY = "entity";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>entity</b>
@@ -3768,19 +3822,19 @@ public class AuditEvent extends DomainResource {
  /**
    * Search parameter: <b>patient</b>
    * <p>
-   * Description: <b>Identifier of who</b><br>
+   * Description: <b>Where the activity involved patient data</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AuditEvent.agent.who.where(resolve() is Patient) | AuditEvent.entity.what.where(resolve() is Patient)</b><br>
+   * Path: <b>AuditEvent.patient</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="AuditEvent.agent.who.where(resolve() is Patient) | AuditEvent.entity.what.where(resolve() is Patient)", description="Identifier of who", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="patient", path="AuditEvent.patient", description="Where the activity involved patient data", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
    * <p>
-   * Description: <b>Identifier of who</b><br>
+   * Description: <b>Where the activity involved patient data</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AuditEvent.agent.who.where(resolve() is Patient) | AuditEvent.entity.what.where(resolve() is Patient)</b><br>
+   * Path: <b>AuditEvent.patient</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,7 +47,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * Base StructureDefinition for Timing Type: Specifies an event that may occur multiple times. Timing schedules are used to record when things are planned, expected or requested to occur. The most common usage is in dosage instructions for medications. They are also used when planning care of various kinds, and may be used for reporting the schedule to which past regular activities were carried out.
+ * Timing Type: Specifies an event that may occur multiple times. Timing schedules are used to record when things are planned, expected or requested to occur. The most common usage is in dosage instructions for medications. They are also used when planning care of various kinds, and may be used for reporting the schedule to which past regular activities were carried out.
  */
 @DatatypeDef(name="Timing")
 public class Timing extends BackboneType implements ICompositeType {
@@ -256,6 +256,7 @@ public class Timing extends BackboneType implements ICompositeType {
             case PCM: return "PCM";
             case PCD: return "PCD";
             case PCV: return "PCV";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -288,6 +289,7 @@ public class Timing extends BackboneType implements ICompositeType {
             case PCM: return "http://terminology.hl7.org/CodeSystem/v3-TimingEvent";
             case PCD: return "http://terminology.hl7.org/CodeSystem/v3-TimingEvent";
             case PCV: return "http://terminology.hl7.org/CodeSystem/v3-TimingEvent";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -320,6 +322,7 @@ public class Timing extends BackboneType implements ICompositeType {
             case PCM: return "";
             case PCD: return "";
             case PCV: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -352,6 +355,7 @@ public class Timing extends BackboneType implements ICompositeType {
             case PCM: return "PCM";
             case PCD: return "PCD";
             case PCV: return "PCV";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -608,6 +612,7 @@ public class Timing extends BackboneType implements ICompositeType {
             case WK: return "wk";
             case MO: return "mo";
             case A: return "a";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -620,6 +625,7 @@ public class Timing extends BackboneType implements ICompositeType {
             case WK: return "http://unitsofmeasure.org";
             case MO: return "http://unitsofmeasure.org";
             case A: return "http://unitsofmeasure.org";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -632,6 +638,7 @@ public class Timing extends BackboneType implements ICompositeType {
             case WK: return "";
             case MO: return "";
             case A: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -644,6 +651,7 @@ public class Timing extends BackboneType implements ICompositeType {
             case WK: return "星期";
             case MO: return "月";
             case A: return "年";
+            case NULL: return null;
             default: return "?";
           }
         }

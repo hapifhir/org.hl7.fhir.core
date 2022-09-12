@@ -1,7 +1,13 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.*;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Address40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Attachment40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.ContactPoint40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.HumanName40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Period40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Boolean40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Date40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
@@ -100,7 +106,7 @@ public class RelatedPerson40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.RelatedPerson.RelatedPersonCommunicationComponent tgt = new org.hl7.fhir.r5.model.RelatedPerson.RelatedPersonCommunicationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasLanguage())
       tgt.setLanguage(CodeableConcept40_50.convertCodeableConcept(src.getLanguage()));
     if (src.hasPreferred())
@@ -112,7 +118,7 @@ public class RelatedPerson40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.RelatedPerson.RelatedPersonCommunicationComponent tgt = new org.hl7.fhir.r4.model.RelatedPerson.RelatedPersonCommunicationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasLanguage())
       tgt.setLanguage(CodeableConcept40_50.convertCodeableConcept(src.getLanguage()));
     if (src.hasPreferred())

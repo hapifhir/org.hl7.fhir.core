@@ -1,9 +1,13 @@
 package org.hl7.fhir.convertors.conv30_50.resources30_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext30_50;
-import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Reference30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
-import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.*;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.DateTime30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Decimal30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.MarkDown30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Uri30_50;
+import org.hl7.fhir.dstu3.model.Reference;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class TestReport30_50 {
@@ -20,7 +24,7 @@ public class TestReport30_50 {
     if (src.hasStatus())
       tgt.setStatusElement(convertTestReportStatus(src.getStatusElement()));
     if (src.hasTestScript())
-      tgt.setTestScript(Reference30_50.convertReference(src.getTestScript()));
+      tgt.setTestScript(new Reference().setReference(src.getTestScript()));
     if (src.hasResult())
       tgt.setResultElement(convertTestReportResult(src.getResultElement()));
     if (src.hasScore())
@@ -52,7 +56,7 @@ public class TestReport30_50 {
     if (src.hasStatus())
       tgt.setStatusElement(convertTestReportStatus(src.getStatusElement()));
     if (src.hasTestScript())
-      tgt.setTestScript(Reference30_50.convertReference(src.getTestScript()));
+      tgt.setTestScript(src.getTestScript().getReference());
     if (src.hasResult())
       tgt.setResultElement(convertTestReportResult(src.getResultElement()));
     if (src.hasScore())
@@ -76,7 +80,7 @@ public class TestReport30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.TestReport.TestReportParticipantComponent tgt = new org.hl7.fhir.dstu3.model.TestReport.TestReportParticipantComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasType())
       tgt.setTypeElement(convertTestReportParticipantType(src.getTypeElement()));
     if (src.hasUri())
@@ -90,7 +94,7 @@ public class TestReport30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TestReport.TestReportParticipantComponent tgt = new org.hl7.fhir.r5.model.TestReport.TestReportParticipantComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasType())
       tgt.setTypeElement(convertTestReportParticipantType(src.getTypeElement()));
     if (src.hasUri())
@@ -192,7 +196,7 @@ public class TestReport30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TestReport.TestReportSetupComponent tgt = new org.hl7.fhir.r5.model.TestReport.TestReportSetupComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.dstu3.model.TestReport.SetupActionComponent t : src.getAction())
       tgt.addAction(convertSetupActionComponent(t));
     return tgt;
@@ -202,7 +206,7 @@ public class TestReport30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.TestReport.TestReportSetupComponent tgt = new org.hl7.fhir.dstu3.model.TestReport.TestReportSetupComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.r5.model.TestReport.SetupActionComponent t : src.getAction())
       tgt.addAction(convertSetupActionComponent(t));
     return tgt;
@@ -268,7 +272,7 @@ public class TestReport30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.TestReport.TestReportTeardownComponent tgt = new org.hl7.fhir.dstu3.model.TestReport.TestReportTeardownComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.r5.model.TestReport.TeardownActionComponent t : src.getAction())
       tgt.addAction(convertTeardownActionComponent(t));
     return tgt;
@@ -278,7 +282,7 @@ public class TestReport30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TestReport.TestReportTeardownComponent tgt = new org.hl7.fhir.r5.model.TestReport.TestReportTeardownComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.dstu3.model.TestReport.TeardownActionComponent t : src.getAction())
       tgt.addAction(convertTeardownActionComponent(t));
     return tgt;
@@ -288,7 +292,7 @@ public class TestReport30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.TestReport.TestReportTestComponent tgt = new org.hl7.fhir.dstu3.model.TestReport.TestReportTestComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasName())
       tgt.setNameElement(String30_50.convertString(src.getNameElement()));
     if (src.hasDescription())
@@ -302,7 +306,7 @@ public class TestReport30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TestReport.TestReportTestComponent tgt = new org.hl7.fhir.r5.model.TestReport.TestReportTestComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasName())
       tgt.setNameElement(String30_50.convertString(src.getNameElement()));
     if (src.hasDescription())
@@ -315,7 +319,7 @@ public class TestReport30_50 {
   public static org.hl7.fhir.r5.model.TestReport.SetupActionComponent convertSetupActionComponent(org.hl7.fhir.dstu3.model.TestReport.SetupActionComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r5.model.TestReport.SetupActionComponent tgt = new org.hl7.fhir.r5.model.TestReport.SetupActionComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasOperation()) tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
     if (src.hasAssert()) tgt.setAssert(convertSetupActionAssertComponent(src.getAssert()));
     return tgt;
@@ -324,7 +328,7 @@ public class TestReport30_50 {
   public static org.hl7.fhir.dstu3.model.TestReport.SetupActionComponent convertSetupActionComponent(org.hl7.fhir.r5.model.TestReport.SetupActionComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.dstu3.model.TestReport.SetupActionComponent tgt = new org.hl7.fhir.dstu3.model.TestReport.SetupActionComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasOperation()) tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
     if (src.hasAssert()) tgt.setAssert(convertSetupActionAssertComponent(src.getAssert()));
     return tgt;
@@ -333,7 +337,7 @@ public class TestReport30_50 {
   public static org.hl7.fhir.r5.model.TestReport.SetupActionOperationComponent convertSetupActionOperationComponent(org.hl7.fhir.dstu3.model.TestReport.SetupActionOperationComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r5.model.TestReport.SetupActionOperationComponent tgt = new org.hl7.fhir.r5.model.TestReport.SetupActionOperationComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasResult()) tgt.setResultElement(convertTestReportActionResult(src.getResultElement()));
     if (src.hasMessage()) tgt.setMessageElement(MarkDown30_50.convertMarkdown(src.getMessageElement()));
     if (src.hasDetail()) tgt.setDetailElement(Uri30_50.convertUri(src.getDetailElement()));
@@ -343,7 +347,7 @@ public class TestReport30_50 {
   public static org.hl7.fhir.dstu3.model.TestReport.SetupActionOperationComponent convertSetupActionOperationComponent(org.hl7.fhir.r5.model.TestReport.SetupActionOperationComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.dstu3.model.TestReport.SetupActionOperationComponent tgt = new org.hl7.fhir.dstu3.model.TestReport.SetupActionOperationComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasResult()) tgt.setResultElement(convertTestReportActionResult(src.getResultElement()));
     if (src.hasMessage()) tgt.setMessageElement(MarkDown30_50.convertMarkdown(src.getMessageElement()));
     if (src.hasDetail()) tgt.setDetailElement(Uri30_50.convertUri(src.getDetailElement()));
@@ -415,7 +419,7 @@ public class TestReport30_50 {
   public static org.hl7.fhir.r5.model.TestReport.SetupActionAssertComponent convertSetupActionAssertComponent(org.hl7.fhir.dstu3.model.TestReport.SetupActionAssertComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r5.model.TestReport.SetupActionAssertComponent tgt = new org.hl7.fhir.r5.model.TestReport.SetupActionAssertComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasResult()) tgt.setResultElement(convertTestReportActionResult(src.getResultElement()));
     if (src.hasMessage()) tgt.setMessageElement(MarkDown30_50.convertMarkdown(src.getMessageElement()));
     if (src.hasDetail()) tgt.setDetailElement(String30_50.convertString(src.getDetailElement()));
@@ -425,7 +429,7 @@ public class TestReport30_50 {
   public static org.hl7.fhir.dstu3.model.TestReport.SetupActionAssertComponent convertSetupActionAssertComponent(org.hl7.fhir.r5.model.TestReport.SetupActionAssertComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.dstu3.model.TestReport.SetupActionAssertComponent tgt = new org.hl7.fhir.dstu3.model.TestReport.SetupActionAssertComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasResult()) tgt.setResultElement(convertTestReportActionResult(src.getResultElement()));
     if (src.hasMessage()) tgt.setMessageElement(MarkDown30_50.convertMarkdown(src.getMessageElement()));
     if (src.hasDetail()) tgt.setDetailElement(String30_50.convertString(src.getDetailElement()));
@@ -435,7 +439,7 @@ public class TestReport30_50 {
   public static org.hl7.fhir.r5.model.TestReport.TestActionComponent convertTestActionComponent(org.hl7.fhir.dstu3.model.TestReport.TestActionComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r5.model.TestReport.TestActionComponent tgt = new org.hl7.fhir.r5.model.TestReport.TestActionComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasOperation()) tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
     if (src.hasAssert()) tgt.setAssert(convertSetupActionAssertComponent(src.getAssert()));
     return tgt;
@@ -444,7 +448,7 @@ public class TestReport30_50 {
   public static org.hl7.fhir.dstu3.model.TestReport.TestActionComponent convertTestActionComponent(org.hl7.fhir.r5.model.TestReport.TestActionComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.dstu3.model.TestReport.TestActionComponent tgt = new org.hl7.fhir.dstu3.model.TestReport.TestActionComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasOperation()) tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
     if (src.hasAssert()) tgt.setAssert(convertSetupActionAssertComponent(src.getAssert()));
     return tgt;
@@ -453,7 +457,7 @@ public class TestReport30_50 {
   public static org.hl7.fhir.r5.model.TestReport.TeardownActionComponent convertTeardownActionComponent(org.hl7.fhir.dstu3.model.TestReport.TeardownActionComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r5.model.TestReport.TeardownActionComponent tgt = new org.hl7.fhir.r5.model.TestReport.TeardownActionComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasOperation()) tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
     return tgt;
   }
@@ -461,7 +465,7 @@ public class TestReport30_50 {
   public static org.hl7.fhir.dstu3.model.TestReport.TeardownActionComponent convertTeardownActionComponent(org.hl7.fhir.r5.model.TestReport.TeardownActionComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.dstu3.model.TestReport.TeardownActionComponent tgt = new org.hl7.fhir.dstu3.model.TestReport.TeardownActionComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasOperation()) tgt.setOperation(convertSetupActionOperationComponent(src.getOperation()));
     return tgt;
   }

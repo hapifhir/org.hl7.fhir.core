@@ -6,7 +6,12 @@ import org.hl7.fhir.convertors.conv14_30.datatypes14_30.Reference14_30;
 import org.hl7.fhir.convertors.conv14_30.datatypes14_30.complextypes14_30.CodeableConcept14_30;
 import org.hl7.fhir.convertors.conv14_30.datatypes14_30.complextypes14_30.ContactPoint14_30;
 import org.hl7.fhir.convertors.conv14_30.datatypes14_30.complextypes14_30.Identifier14_30;
-import org.hl7.fhir.convertors.conv14_30.datatypes14_30.primitivetypes14_30.*;
+import org.hl7.fhir.convertors.conv14_30.datatypes14_30.primitivetypes14_30.Boolean14_30;
+import org.hl7.fhir.convertors.conv14_30.datatypes14_30.primitivetypes14_30.Code14_30;
+import org.hl7.fhir.convertors.conv14_30.datatypes14_30.primitivetypes14_30.DateTime14_30;
+import org.hl7.fhir.convertors.conv14_30.datatypes14_30.primitivetypes14_30.Integer14_30;
+import org.hl7.fhir.convertors.conv14_30.datatypes14_30.primitivetypes14_30.String14_30;
+import org.hl7.fhir.convertors.conv14_30.datatypes14_30.primitivetypes14_30.Uri14_30;
 import org.hl7.fhir.dstu3.model.ContactDetail;
 import org.hl7.fhir.dstu3.model.UsageContext;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -92,7 +97,7 @@ public class Questionnaire14_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Questionnaire.QuestionnaireItemComponent tgt = new org.hl7.fhir.dstu3.model.Questionnaire.QuestionnaireItemComponent();
-    ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
+    ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyBackboneElement(src,tgt);
     if (src.hasLinkId())
       tgt.setLinkIdElement(String14_30.convertString(src.getLinkIdElement()));
     for (org.hl7.fhir.dstu2016may.model.Coding t : src.getConcept()) tgt.addCode(Code14_30.convertCoding(t));
@@ -127,7 +132,7 @@ public class Questionnaire14_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemComponent tgt = new org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemComponent();
-    ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
+    ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyBackboneElement(src,tgt);
     if (src.hasLinkId())
       tgt.setLinkIdElement(String14_30.convertString(src.getLinkIdElement()));
     for (org.hl7.fhir.dstu3.model.Coding t : src.getCode()) tgt.addConcept(Code14_30.convertCoding(t));
@@ -162,7 +167,7 @@ public class Questionnaire14_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemEnableWhenComponent tgt = new org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemEnableWhenComponent();
-    ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
+    ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyBackboneElement(src,tgt);
     if (src.hasQuestionElement())
       tgt.setQuestionElement(String14_30.convertString(src.getQuestionElement()));
     if (src.hasHasAnswer())
@@ -176,7 +181,7 @@ public class Questionnaire14_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Questionnaire.QuestionnaireItemEnableWhenComponent tgt = new org.hl7.fhir.dstu3.model.Questionnaire.QuestionnaireItemEnableWhenComponent();
-    ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
+    ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyBackboneElement(src,tgt);
     if (src.hasQuestionElement())
       tgt.setQuestionElement(String14_30.convertString(src.getQuestionElement()));
     if (src.hasAnswered())
@@ -190,7 +195,7 @@ public class Questionnaire14_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemOptionComponent tgt = new org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemOptionComponent();
-    ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
+    ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyBackboneElement(src,tgt);
     if (src.hasValue())
       tgt.setValue(ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().convertType(src.getValue()));
     return tgt;
@@ -200,7 +205,7 @@ public class Questionnaire14_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Questionnaire.QuestionnaireItemOptionComponent tgt = new org.hl7.fhir.dstu3.model.Questionnaire.QuestionnaireItemOptionComponent();
-    ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
+    ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyBackboneElement(src,tgt);
     if (src.hasValue())
       tgt.setValue(ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().convertType(src.getValue()));
     return tgt;

@@ -2,10 +2,13 @@ package org.hl7.fhir.convertors.conv30_50.resources30_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Reference30_50;
-import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.*;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Attachment30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Period30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.DocumentReference.DocumentAttestationMode;
+import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.r5.model.DocumentReference.DocumentReferenceAttesterComponent;
 
 public class DocumentReference30_50 {
@@ -32,7 +35,8 @@ public class DocumentReference30_50 {
     if (src.hasCreated())
       tgt.setDate(src.getCreated());
     if (src.hasAuthenticator())
-      tgt.addAttester().setMode(DocumentAttestationMode.OFFICIAL).setParty(Reference30_50.convertReference(src.getAuthenticator()));
+      tgt.addAttester().setMode(new org.hl7.fhir.r5.model.CodeableConcept().addCoding(new org.hl7.fhir.r5.model.Coding("http://hl7.org/fhir/composition-attestation-mode","official", "Official")))
+        .setParty(Reference30_50.convertReference(src.getAuthenticator()));
     if (src.hasCustodian())
       tgt.setCustodian(Reference30_50.convertReference(src.getCustodian()));
     for (org.hl7.fhir.dstu3.model.DocumentReference.DocumentReferenceRelatesToComponent t : src.getRelatesTo())
@@ -70,7 +74,7 @@ public class DocumentReference30_50 {
     if (src.hasDate())
       tgt.setCreated(src.getDate());
     for (DocumentReferenceAttesterComponent t : src.getAttester()) {
-      if (t.getMode() == DocumentAttestationMode.OFFICIAL)
+      if (t.getMode().hasCoding("http://hl7.org/fhir/composition-attestation-mode", "official"))
         tgt.setAuthenticator(Reference30_50.convertReference(t.getParty()));
     }
     if (src.hasCustodian())
@@ -91,11 +95,9 @@ public class DocumentReference30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.DocumentReference.DocumentReferenceContentComponent tgt = new org.hl7.fhir.dstu3.model.DocumentReference.DocumentReferenceContentComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasAttachment())
       tgt.setAttachment(Attachment30_50.convertAttachment(src.getAttachment()));
-    if (src.hasFormat())
-      tgt.setFormat(Coding30_50.convertCoding(src.getFormat()));
     return tgt;
   }
 
@@ -103,46 +105,45 @@ public class DocumentReference30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.DocumentReference.DocumentReferenceContentComponent tgt = new org.hl7.fhir.r5.model.DocumentReference.DocumentReferenceContentComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasAttachment())
       tgt.setAttachment(Attachment30_50.convertAttachment(src.getAttachment()));
-    if (src.hasFormat())
-      tgt.setFormat(Coding30_50.convertCoding(src.getFormat()));
     return tgt;
   }
 
   public static void convertDocumentReferenceContextComponent(org.hl7.fhir.r5.model.DocumentReference src, org.hl7.fhir.dstu3.model.DocumentReference.DocumentReferenceContextComponent tgt) throws FHIRException {
-    if (src.hasEncounter())
-      tgt.setEncounter(Reference30_50.convertReference(src.getEncounterFirstRep()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getEvent())
-      tgt.addEvent(CodeableConcept30_50.convertCodeableConcept(t));
+    if (src.hasContext())
+      tgt.setEncounter(Reference30_50.convertReference(src.getContextFirstRep()));
+    for (CodeableReference t : src.getEvent())
+      if (t.hasConcept())
+      tgt.addEvent(CodeableConcept30_50.convertCodeableConcept(t.getConcept()));
     if (src.hasPeriod())
       tgt.setPeriod(Period30_50.convertPeriod(src.getPeriod()));
     if (src.hasFacilityType())
       tgt.setFacilityType(CodeableConcept30_50.convertCodeableConcept(src.getFacilityType()));
     if (src.hasPracticeSetting())
       tgt.setPracticeSetting(CodeableConcept30_50.convertCodeableConcept(src.getPracticeSetting()));
-    if (src.hasSourcePatientInfo())
-      tgt.setSourcePatientInfo(Reference30_50.convertReference(src.getSourcePatientInfo()));
-    for (org.hl7.fhir.r5.model.Reference t : src.getRelated())
-      tgt.addRelated(convertDocumentReferenceContextRelatedComponent(t));
+//    if (src.hasSourcePatientInfo())
+//      tgt.setSourcePatientInfo(Reference30_50.convertReference(src.getSourcePatientInfo()));
+//    for (org.hl7.fhir.r5.model.Reference t : src.getRelated())
+//      tgt.addRelated(convertDocumentReferenceContextRelatedComponent(t));
   }
 
   public static void convertDocumentReferenceContextComponent(org.hl7.fhir.dstu3.model.DocumentReference.DocumentReferenceContextComponent src, org.hl7.fhir.r5.model.DocumentReference tgt) throws FHIRException {
     if (src.hasEncounter())
-      tgt.addEncounter(Reference30_50.convertReference(src.getEncounter()));
+      tgt.addContext(Reference30_50.convertReference(src.getEncounter()));
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getEvent())
-      tgt.addEvent(CodeableConcept30_50.convertCodeableConcept(t));
+      tgt.addEvent(new CodeableReference().setConcept(CodeableConcept30_50.convertCodeableConcept(t)));
     if (src.hasPeriod())
       tgt.setPeriod(Period30_50.convertPeriod(src.getPeriod()));
     if (src.hasFacilityType())
       tgt.setFacilityType(CodeableConcept30_50.convertCodeableConcept(src.getFacilityType()));
     if (src.hasPracticeSetting())
       tgt.setPracticeSetting(CodeableConcept30_50.convertCodeableConcept(src.getPracticeSetting()));
-    if (src.hasSourcePatientInfo())
-      tgt.setSourcePatientInfo(Reference30_50.convertReference(src.getSourcePatientInfo()));
-    for (org.hl7.fhir.dstu3.model.DocumentReference.DocumentReferenceContextRelatedComponent t : src.getRelated())
-      tgt.addRelated(convertDocumentReferenceContextRelatedComponent(t));
+//    if (src.hasSourcePatientInfo())
+//      tgt.setSourcePatientInfo(Reference30_50.convertReference(src.getSourcePatientInfo()));
+//    for (org.hl7.fhir.dstu3.model.DocumentReference.DocumentReferenceContextRelatedComponent t : src.getRelated())
+//      tgt.addRelated(convertDocumentReferenceContextRelatedComponent(t));
   }
 
   public static org.hl7.fhir.r5.model.Reference convertDocumentReferenceContextRelatedComponent(org.hl7.fhir.dstu3.model.DocumentReference.DocumentReferenceContextRelatedComponent src) throws FHIRException {
@@ -170,7 +171,7 @@ public class DocumentReference30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.DocumentReference.DocumentReferenceRelatesToComponent tgt = new org.hl7.fhir.r5.model.DocumentReference.DocumentReferenceRelatesToComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCode(convertDocumentRelationshipType(src.getCodeElement()));
     if (src.hasTarget())
@@ -182,7 +183,7 @@ public class DocumentReference30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.DocumentReference.DocumentReferenceRelatesToComponent tgt = new org.hl7.fhir.dstu3.model.DocumentReference.DocumentReferenceRelatesToComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCodeElement(convertDocumentRelationshipType2(src.getCode()));
     if (src.hasTarget())

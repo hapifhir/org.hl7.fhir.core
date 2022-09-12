@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -71,20 +71,28 @@ public class ClaimResponse extends DomainResource {
         protected List<PositiveIntType> noteNumber;
 
         /**
+         * The result of the claim, predetermination, or preauthorization adjudication.
+         */
+        @Child(name = "decision", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Result of the adjudication", formalDefinition="The result of the claim, predetermination, or preauthorization adjudication." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-decision")
+        protected CodeableConcept decision;
+
+        /**
          * If this item is a group then the values here are a summary of the adjudication of the detail items. If this item is a simple product or service then this is the result of the adjudication of this item.
          */
-        @Child(name = "adjudication", type = {}, order=3, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "adjudication", type = {}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Adjudication details", formalDefinition="If this item is a group then the values here are a summary of the adjudication of the detail items. If this item is a simple product or service then this is the result of the adjudication of this item." )
         protected List<AdjudicationComponent> adjudication;
 
         /**
          * A claim detail. Either a simple (a product or service) or a 'group' of sub-details which are simple items.
          */
-        @Child(name = "detail", type = {}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "detail", type = {}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Adjudication for claim details", formalDefinition="A claim detail. Either a simple (a product or service) or a 'group' of sub-details which are simple items." )
         protected List<ItemDetailComponent> detail;
 
-        private static final long serialVersionUID = 701277928L;
+        private static final long serialVersionUID = 820014025L;
 
     /**
      * Constructor
@@ -96,10 +104,9 @@ public class ClaimResponse extends DomainResource {
     /**
      * Constructor
      */
-      public ItemComponent(int itemSequence, AdjudicationComponent adjudication) {
+      public ItemComponent(int itemSequence) {
         super();
         this.setItemSequence(itemSequence);
-        this.addAdjudication(adjudication);
       }
 
         /**
@@ -206,6 +213,30 @@ public class ClaimResponse extends DomainResource {
             if (v.getValue().equals(value)) // positiveInt
               return true;
           return false;
+        }
+
+        /**
+         * @return {@link #decision} (The result of the claim, predetermination, or preauthorization adjudication.)
+         */
+        public CodeableConcept getDecision() { 
+          if (this.decision == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ItemComponent.decision");
+            else if (Configuration.doAutoCreate())
+              this.decision = new CodeableConcept(); // cc
+          return this.decision;
+        }
+
+        public boolean hasDecision() { 
+          return this.decision != null && !this.decision.isEmpty();
+        }
+
+        /**
+         * @param value {@link #decision} (The result of the claim, predetermination, or preauthorization adjudication.)
+         */
+        public ItemComponent setDecision(CodeableConcept value) { 
+          this.decision = value;
+          return this;
         }
 
         /**
@@ -318,6 +349,7 @@ public class ClaimResponse extends DomainResource {
           super.listChildren(children);
           children.add(new Property("itemSequence", "positiveInt", "A number to uniquely reference the claim item entries.", 0, 1, itemSequence));
           children.add(new Property("noteNumber", "positiveInt", "The numbers associated with notes below which apply to the adjudication of this item.", 0, java.lang.Integer.MAX_VALUE, noteNumber));
+          children.add(new Property("decision", "CodeableConcept", "The result of the claim, predetermination, or preauthorization adjudication.", 0, 1, decision));
           children.add(new Property("adjudication", "", "If this item is a group then the values here are a summary of the adjudication of the detail items. If this item is a simple product or service then this is the result of the adjudication of this item.", 0, java.lang.Integer.MAX_VALUE, adjudication));
           children.add(new Property("detail", "", "A claim detail. Either a simple (a product or service) or a 'group' of sub-details which are simple items.", 0, java.lang.Integer.MAX_VALUE, detail));
         }
@@ -327,6 +359,7 @@ public class ClaimResponse extends DomainResource {
           switch (_hash) {
           case 1977979892: /*itemSequence*/  return new Property("itemSequence", "positiveInt", "A number to uniquely reference the claim item entries.", 0, 1, itemSequence);
           case -1110033957: /*noteNumber*/  return new Property("noteNumber", "positiveInt", "The numbers associated with notes below which apply to the adjudication of this item.", 0, java.lang.Integer.MAX_VALUE, noteNumber);
+          case 565719004: /*decision*/  return new Property("decision", "CodeableConcept", "The result of the claim, predetermination, or preauthorization adjudication.", 0, 1, decision);
           case -231349275: /*adjudication*/  return new Property("adjudication", "", "If this item is a group then the values here are a summary of the adjudication of the detail items. If this item is a simple product or service then this is the result of the adjudication of this item.", 0, java.lang.Integer.MAX_VALUE, adjudication);
           case -1335224239: /*detail*/  return new Property("detail", "", "A claim detail. Either a simple (a product or service) or a 'group' of sub-details which are simple items.", 0, java.lang.Integer.MAX_VALUE, detail);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -339,6 +372,7 @@ public class ClaimResponse extends DomainResource {
         switch (hash) {
         case 1977979892: /*itemSequence*/ return this.itemSequence == null ? new Base[0] : new Base[] {this.itemSequence}; // PositiveIntType
         case -1110033957: /*noteNumber*/ return this.noteNumber == null ? new Base[0] : this.noteNumber.toArray(new Base[this.noteNumber.size()]); // PositiveIntType
+        case 565719004: /*decision*/ return this.decision == null ? new Base[0] : new Base[] {this.decision}; // CodeableConcept
         case -231349275: /*adjudication*/ return this.adjudication == null ? new Base[0] : this.adjudication.toArray(new Base[this.adjudication.size()]); // AdjudicationComponent
         case -1335224239: /*detail*/ return this.detail == null ? new Base[0] : this.detail.toArray(new Base[this.detail.size()]); // ItemDetailComponent
         default: return super.getProperty(hash, name, checkValid);
@@ -354,6 +388,9 @@ public class ClaimResponse extends DomainResource {
           return value;
         case -1110033957: // noteNumber
           this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value)); // PositiveIntType
+          return value;
+        case 565719004: // decision
+          this.decision = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -231349275: // adjudication
           this.getAdjudication().add((AdjudicationComponent) value); // AdjudicationComponent
@@ -372,6 +409,8 @@ public class ClaimResponse extends DomainResource {
           this.itemSequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else if (name.equals("noteNumber")) {
           this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value));
+        } else if (name.equals("decision")) {
+          this.decision = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("adjudication")) {
           this.getAdjudication().add((AdjudicationComponent) value);
         } else if (name.equals("detail")) {
@@ -386,6 +425,7 @@ public class ClaimResponse extends DomainResource {
         switch (hash) {
         case 1977979892:  return getItemSequenceElement();
         case -1110033957:  return addNoteNumberElement();
+        case 565719004:  return getDecision();
         case -231349275:  return addAdjudication(); 
         case -1335224239:  return addDetail(); 
         default: return super.makeProperty(hash, name);
@@ -398,6 +438,7 @@ public class ClaimResponse extends DomainResource {
         switch (hash) {
         case 1977979892: /*itemSequence*/ return new String[] {"positiveInt"};
         case -1110033957: /*noteNumber*/ return new String[] {"positiveInt"};
+        case 565719004: /*decision*/ return new String[] {"CodeableConcept"};
         case -231349275: /*adjudication*/ return new String[] {};
         case -1335224239: /*detail*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
@@ -412,6 +453,10 @@ public class ClaimResponse extends DomainResource {
         }
         else if (name.equals("noteNumber")) {
           throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.item.noteNumber");
+        }
+        else if (name.equals("decision")) {
+          this.decision = new CodeableConcept();
+          return this.decision;
         }
         else if (name.equals("adjudication")) {
           return addAdjudication();
@@ -437,6 +482,7 @@ public class ClaimResponse extends DomainResource {
           for (PositiveIntType i : noteNumber)
             dst.noteNumber.add(i.copy());
         };
+        dst.decision = decision == null ? null : decision.copy();
         if (adjudication != null) {
           dst.adjudication = new ArrayList<AdjudicationComponent>();
           for (AdjudicationComponent i : adjudication)
@@ -457,7 +503,8 @@ public class ClaimResponse extends DomainResource {
           return false;
         ItemComponent o = (ItemComponent) other_;
         return compareDeep(itemSequence, o.itemSequence, true) && compareDeep(noteNumber, o.noteNumber, true)
-           && compareDeep(adjudication, o.adjudication, true) && compareDeep(detail, o.detail, true);
+           && compareDeep(decision, o.decision, true) && compareDeep(adjudication, o.adjudication, true) && compareDeep(detail, o.detail, true)
+          ;
       }
 
       @Override
@@ -472,8 +519,8 @@ public class ClaimResponse extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(itemSequence, noteNumber, adjudication
-          , detail);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(itemSequence, noteNumber, decision
+          , adjudication, detail);
       }
 
   public String fhirType() {
@@ -847,20 +894,28 @@ public class ClaimResponse extends DomainResource {
         protected List<PositiveIntType> noteNumber;
 
         /**
+         * The result of the claim, predetermination, or preauthorization adjudication.
+         */
+        @Child(name = "decision", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Result of the adjudication", formalDefinition="The result of the claim, predetermination, or preauthorization adjudication." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-decision")
+        protected CodeableConcept decision;
+
+        /**
          * The adjudication results.
          */
-        @Child(name = "adjudication", type = {AdjudicationComponent.class}, order=3, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "adjudication", type = {AdjudicationComponent.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Detail level adjudication details", formalDefinition="The adjudication results." )
         protected List<AdjudicationComponent> adjudication;
 
         /**
          * A sub-detail adjudication of a simple product or service.
          */
-        @Child(name = "subDetail", type = {}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "subDetail", type = {}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Adjudication for claim sub-details", formalDefinition="A sub-detail adjudication of a simple product or service." )
         protected List<SubDetailComponent> subDetail;
 
-        private static final long serialVersionUID = 1066636111L;
+        private static final long serialVersionUID = -271758028L;
 
     /**
      * Constructor
@@ -872,10 +927,9 @@ public class ClaimResponse extends DomainResource {
     /**
      * Constructor
      */
-      public ItemDetailComponent(int detailSequence, AdjudicationComponent adjudication) {
+      public ItemDetailComponent(int detailSequence) {
         super();
         this.setDetailSequence(detailSequence);
-        this.addAdjudication(adjudication);
       }
 
         /**
@@ -982,6 +1036,30 @@ public class ClaimResponse extends DomainResource {
             if (v.getValue().equals(value)) // positiveInt
               return true;
           return false;
+        }
+
+        /**
+         * @return {@link #decision} (The result of the claim, predetermination, or preauthorization adjudication.)
+         */
+        public CodeableConcept getDecision() { 
+          if (this.decision == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ItemDetailComponent.decision");
+            else if (Configuration.doAutoCreate())
+              this.decision = new CodeableConcept(); // cc
+          return this.decision;
+        }
+
+        public boolean hasDecision() { 
+          return this.decision != null && !this.decision.isEmpty();
+        }
+
+        /**
+         * @param value {@link #decision} (The result of the claim, predetermination, or preauthorization adjudication.)
+         */
+        public ItemDetailComponent setDecision(CodeableConcept value) { 
+          this.decision = value;
+          return this;
         }
 
         /**
@@ -1094,6 +1172,7 @@ public class ClaimResponse extends DomainResource {
           super.listChildren(children);
           children.add(new Property("detailSequence", "positiveInt", "A number to uniquely reference the claim detail entry.", 0, 1, detailSequence));
           children.add(new Property("noteNumber", "positiveInt", "The numbers associated with notes below which apply to the adjudication of this item.", 0, java.lang.Integer.MAX_VALUE, noteNumber));
+          children.add(new Property("decision", "CodeableConcept", "The result of the claim, predetermination, or preauthorization adjudication.", 0, 1, decision));
           children.add(new Property("adjudication", "@ClaimResponse.item.adjudication", "The adjudication results.", 0, java.lang.Integer.MAX_VALUE, adjudication));
           children.add(new Property("subDetail", "", "A sub-detail adjudication of a simple product or service.", 0, java.lang.Integer.MAX_VALUE, subDetail));
         }
@@ -1103,6 +1182,7 @@ public class ClaimResponse extends DomainResource {
           switch (_hash) {
           case 1321472818: /*detailSequence*/  return new Property("detailSequence", "positiveInt", "A number to uniquely reference the claim detail entry.", 0, 1, detailSequence);
           case -1110033957: /*noteNumber*/  return new Property("noteNumber", "positiveInt", "The numbers associated with notes below which apply to the adjudication of this item.", 0, java.lang.Integer.MAX_VALUE, noteNumber);
+          case 565719004: /*decision*/  return new Property("decision", "CodeableConcept", "The result of the claim, predetermination, or preauthorization adjudication.", 0, 1, decision);
           case -231349275: /*adjudication*/  return new Property("adjudication", "@ClaimResponse.item.adjudication", "The adjudication results.", 0, java.lang.Integer.MAX_VALUE, adjudication);
           case -828829007: /*subDetail*/  return new Property("subDetail", "", "A sub-detail adjudication of a simple product or service.", 0, java.lang.Integer.MAX_VALUE, subDetail);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -1115,6 +1195,7 @@ public class ClaimResponse extends DomainResource {
         switch (hash) {
         case 1321472818: /*detailSequence*/ return this.detailSequence == null ? new Base[0] : new Base[] {this.detailSequence}; // PositiveIntType
         case -1110033957: /*noteNumber*/ return this.noteNumber == null ? new Base[0] : this.noteNumber.toArray(new Base[this.noteNumber.size()]); // PositiveIntType
+        case 565719004: /*decision*/ return this.decision == null ? new Base[0] : new Base[] {this.decision}; // CodeableConcept
         case -231349275: /*adjudication*/ return this.adjudication == null ? new Base[0] : this.adjudication.toArray(new Base[this.adjudication.size()]); // AdjudicationComponent
         case -828829007: /*subDetail*/ return this.subDetail == null ? new Base[0] : this.subDetail.toArray(new Base[this.subDetail.size()]); // SubDetailComponent
         default: return super.getProperty(hash, name, checkValid);
@@ -1130,6 +1211,9 @@ public class ClaimResponse extends DomainResource {
           return value;
         case -1110033957: // noteNumber
           this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value)); // PositiveIntType
+          return value;
+        case 565719004: // decision
+          this.decision = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -231349275: // adjudication
           this.getAdjudication().add((AdjudicationComponent) value); // AdjudicationComponent
@@ -1148,6 +1232,8 @@ public class ClaimResponse extends DomainResource {
           this.detailSequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else if (name.equals("noteNumber")) {
           this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value));
+        } else if (name.equals("decision")) {
+          this.decision = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("adjudication")) {
           this.getAdjudication().add((AdjudicationComponent) value);
         } else if (name.equals("subDetail")) {
@@ -1162,6 +1248,7 @@ public class ClaimResponse extends DomainResource {
         switch (hash) {
         case 1321472818:  return getDetailSequenceElement();
         case -1110033957:  return addNoteNumberElement();
+        case 565719004:  return getDecision();
         case -231349275:  return addAdjudication(); 
         case -828829007:  return addSubDetail(); 
         default: return super.makeProperty(hash, name);
@@ -1174,6 +1261,7 @@ public class ClaimResponse extends DomainResource {
         switch (hash) {
         case 1321472818: /*detailSequence*/ return new String[] {"positiveInt"};
         case -1110033957: /*noteNumber*/ return new String[] {"positiveInt"};
+        case 565719004: /*decision*/ return new String[] {"CodeableConcept"};
         case -231349275: /*adjudication*/ return new String[] {"@ClaimResponse.item.adjudication"};
         case -828829007: /*subDetail*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
@@ -1188,6 +1276,10 @@ public class ClaimResponse extends DomainResource {
         }
         else if (name.equals("noteNumber")) {
           throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.item.detail.noteNumber");
+        }
+        else if (name.equals("decision")) {
+          this.decision = new CodeableConcept();
+          return this.decision;
         }
         else if (name.equals("adjudication")) {
           return addAdjudication();
@@ -1213,6 +1305,7 @@ public class ClaimResponse extends DomainResource {
           for (PositiveIntType i : noteNumber)
             dst.noteNumber.add(i.copy());
         };
+        dst.decision = decision == null ? null : decision.copy();
         if (adjudication != null) {
           dst.adjudication = new ArrayList<AdjudicationComponent>();
           for (AdjudicationComponent i : adjudication)
@@ -1233,7 +1326,7 @@ public class ClaimResponse extends DomainResource {
           return false;
         ItemDetailComponent o = (ItemDetailComponent) other_;
         return compareDeep(detailSequence, o.detailSequence, true) && compareDeep(noteNumber, o.noteNumber, true)
-           && compareDeep(adjudication, o.adjudication, true) && compareDeep(subDetail, o.subDetail, true)
+           && compareDeep(decision, o.decision, true) && compareDeep(adjudication, o.adjudication, true) && compareDeep(subDetail, o.subDetail, true)
           ;
       }
 
@@ -1250,7 +1343,7 @@ public class ClaimResponse extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(detailSequence, noteNumber
-          , adjudication, subDetail);
+          , decision, adjudication, subDetail);
       }
 
   public String fhirType() {
@@ -1277,13 +1370,21 @@ public class ClaimResponse extends DomainResource {
         protected List<PositiveIntType> noteNumber;
 
         /**
+         * The result of the claim, predetermination, or preauthorization adjudication.
+         */
+        @Child(name = "decision", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Result of the adjudication", formalDefinition="The result of the claim, predetermination, or preauthorization adjudication." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-decision")
+        protected CodeableConcept decision;
+
+        /**
          * The adjudication results.
          */
-        @Child(name = "adjudication", type = {AdjudicationComponent.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "adjudication", type = {AdjudicationComponent.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Subdetail level adjudication details", formalDefinition="The adjudication results." )
         protected List<AdjudicationComponent> adjudication;
 
-        private static final long serialVersionUID = -1083724362L;
+        private static final long serialVersionUID = 861687209L;
 
     /**
      * Constructor
@@ -1407,6 +1508,30 @@ public class ClaimResponse extends DomainResource {
         }
 
         /**
+         * @return {@link #decision} (The result of the claim, predetermination, or preauthorization adjudication.)
+         */
+        public CodeableConcept getDecision() { 
+          if (this.decision == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create SubDetailComponent.decision");
+            else if (Configuration.doAutoCreate())
+              this.decision = new CodeableConcept(); // cc
+          return this.decision;
+        }
+
+        public boolean hasDecision() { 
+          return this.decision != null && !this.decision.isEmpty();
+        }
+
+        /**
+         * @param value {@link #decision} (The result of the claim, predetermination, or preauthorization adjudication.)
+         */
+        public SubDetailComponent setDecision(CodeableConcept value) { 
+          this.decision = value;
+          return this;
+        }
+
+        /**
          * @return {@link #adjudication} (The adjudication results.)
          */
         public List<AdjudicationComponent> getAdjudication() { 
@@ -1463,6 +1588,7 @@ public class ClaimResponse extends DomainResource {
           super.listChildren(children);
           children.add(new Property("subDetailSequence", "positiveInt", "A number to uniquely reference the claim sub-detail entry.", 0, 1, subDetailSequence));
           children.add(new Property("noteNumber", "positiveInt", "The numbers associated with notes below which apply to the adjudication of this item.", 0, java.lang.Integer.MAX_VALUE, noteNumber));
+          children.add(new Property("decision", "CodeableConcept", "The result of the claim, predetermination, or preauthorization adjudication.", 0, 1, decision));
           children.add(new Property("adjudication", "@ClaimResponse.item.adjudication", "The adjudication results.", 0, java.lang.Integer.MAX_VALUE, adjudication));
         }
 
@@ -1471,6 +1597,7 @@ public class ClaimResponse extends DomainResource {
           switch (_hash) {
           case -855462510: /*subDetailSequence*/  return new Property("subDetailSequence", "positiveInt", "A number to uniquely reference the claim sub-detail entry.", 0, 1, subDetailSequence);
           case -1110033957: /*noteNumber*/  return new Property("noteNumber", "positiveInt", "The numbers associated with notes below which apply to the adjudication of this item.", 0, java.lang.Integer.MAX_VALUE, noteNumber);
+          case 565719004: /*decision*/  return new Property("decision", "CodeableConcept", "The result of the claim, predetermination, or preauthorization adjudication.", 0, 1, decision);
           case -231349275: /*adjudication*/  return new Property("adjudication", "@ClaimResponse.item.adjudication", "The adjudication results.", 0, java.lang.Integer.MAX_VALUE, adjudication);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -1482,6 +1609,7 @@ public class ClaimResponse extends DomainResource {
         switch (hash) {
         case -855462510: /*subDetailSequence*/ return this.subDetailSequence == null ? new Base[0] : new Base[] {this.subDetailSequence}; // PositiveIntType
         case -1110033957: /*noteNumber*/ return this.noteNumber == null ? new Base[0] : this.noteNumber.toArray(new Base[this.noteNumber.size()]); // PositiveIntType
+        case 565719004: /*decision*/ return this.decision == null ? new Base[0] : new Base[] {this.decision}; // CodeableConcept
         case -231349275: /*adjudication*/ return this.adjudication == null ? new Base[0] : this.adjudication.toArray(new Base[this.adjudication.size()]); // AdjudicationComponent
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -1497,6 +1625,9 @@ public class ClaimResponse extends DomainResource {
         case -1110033957: // noteNumber
           this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value)); // PositiveIntType
           return value;
+        case 565719004: // decision
+          this.decision = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
         case -231349275: // adjudication
           this.getAdjudication().add((AdjudicationComponent) value); // AdjudicationComponent
           return value;
@@ -1511,6 +1642,8 @@ public class ClaimResponse extends DomainResource {
           this.subDetailSequence = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else if (name.equals("noteNumber")) {
           this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value));
+        } else if (name.equals("decision")) {
+          this.decision = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("adjudication")) {
           this.getAdjudication().add((AdjudicationComponent) value);
         } else
@@ -1523,6 +1656,7 @@ public class ClaimResponse extends DomainResource {
         switch (hash) {
         case -855462510:  return getSubDetailSequenceElement();
         case -1110033957:  return addNoteNumberElement();
+        case 565719004:  return getDecision();
         case -231349275:  return addAdjudication(); 
         default: return super.makeProperty(hash, name);
         }
@@ -1534,6 +1668,7 @@ public class ClaimResponse extends DomainResource {
         switch (hash) {
         case -855462510: /*subDetailSequence*/ return new String[] {"positiveInt"};
         case -1110033957: /*noteNumber*/ return new String[] {"positiveInt"};
+        case 565719004: /*decision*/ return new String[] {"CodeableConcept"};
         case -231349275: /*adjudication*/ return new String[] {"@ClaimResponse.item.adjudication"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -1547,6 +1682,10 @@ public class ClaimResponse extends DomainResource {
         }
         else if (name.equals("noteNumber")) {
           throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.item.detail.subDetail.noteNumber");
+        }
+        else if (name.equals("decision")) {
+          this.decision = new CodeableConcept();
+          return this.decision;
         }
         else if (name.equals("adjudication")) {
           return addAdjudication();
@@ -1569,6 +1708,7 @@ public class ClaimResponse extends DomainResource {
           for (PositiveIntType i : noteNumber)
             dst.noteNumber.add(i.copy());
         };
+        dst.decision = decision == null ? null : decision.copy();
         if (adjudication != null) {
           dst.adjudication = new ArrayList<AdjudicationComponent>();
           for (AdjudicationComponent i : adjudication)
@@ -1584,7 +1724,7 @@ public class ClaimResponse extends DomainResource {
           return false;
         SubDetailComponent o = (SubDetailComponent) other_;
         return compareDeep(subDetailSequence, o.subDetailSequence, true) && compareDeep(noteNumber, o.noteNumber, true)
-           && compareDeep(adjudication, o.adjudication, true);
+           && compareDeep(decision, o.decision, true) && compareDeep(adjudication, o.adjudication, true);
       }
 
       @Override
@@ -1600,7 +1740,7 @@ public class ClaimResponse extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(subDetailSequence, noteNumber
-          , adjudication);
+          , decision, adjudication);
       }
 
   public String fhirType() {
@@ -1641,17 +1781,33 @@ public class ClaimResponse extends DomainResource {
         protected List<Reference> provider;
 
         /**
-         * When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.
+         * The type of revenue or cost center providing the product and/or service.
          */
-        @Child(name = "productOrService", type = {CodeableConcept.class}, order=5, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Billing, service, product, or drug code", formalDefinition="When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item." )
+        @Child(name = "revenue", type = {CodeableConcept.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Revenue or cost center code", formalDefinition="The type of revenue or cost center providing the product and/or service." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ex-revenue-center")
+        protected CodeableConcept revenue;
+
+        /**
+         * When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.
+         */
+        @Child(name = "productOrService", type = {CodeableConcept.class}, order=6, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Billing, service, product, or drug code", formalDefinition="When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-uscls")
         protected CodeableConcept productOrService;
 
         /**
+         * This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.
+         */
+        @Child(name = "productOrServiceEnd", type = {CodeableConcept.class}, order=7, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="End of a range of codes", formalDefinition="This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-uscls")
+        protected CodeableConcept productOrServiceEnd;
+
+        /**
          * Item typification or modifiers codes to convey additional context for the product or service.
          */
-        @Child(name = "modifier", type = {CodeableConcept.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "modifier", type = {CodeableConcept.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Service/Product billing modifiers", formalDefinition="Item typification or modifiers codes to convey additional context for the product or service." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-modifiers")
         protected List<CodeableConcept> modifier;
@@ -1659,7 +1815,7 @@ public class ClaimResponse extends DomainResource {
         /**
          * Identifies the program under which this may be recovered.
          */
-        @Child(name = "programCode", type = {CodeableConcept.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "programCode", type = {CodeableConcept.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Program the product or service is provided under", formalDefinition="Identifies the program under which this may be recovered." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ex-program-code")
         protected List<CodeableConcept> programCode;
@@ -1667,14 +1823,14 @@ public class ClaimResponse extends DomainResource {
         /**
          * The date or dates when the service or product was supplied, performed or completed.
          */
-        @Child(name = "serviced", type = {DateType.class, Period.class}, order=8, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "serviced", type = {DateType.class, Period.class}, order=10, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Date or dates of service or product delivery", formalDefinition="The date or dates when the service or product was supplied, performed or completed." )
         protected DataType serviced;
 
         /**
          * Where the product or service was provided.
          */
-        @Child(name = "location", type = {CodeableConcept.class, Address.class, Location.class}, order=9, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "location", type = {CodeableConcept.class, Address.class, Location.class}, order=11, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Place of service or where product was supplied", formalDefinition="Where the product or service was provided." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-place")
         protected DataType location;
@@ -1682,84 +1838,81 @@ public class ClaimResponse extends DomainResource {
         /**
          * The number of repetitions of a service or product.
          */
-        @Child(name = "quantity", type = {Quantity.class}, order=10, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "quantity", type = {Quantity.class}, order=12, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Count of products or services", formalDefinition="The number of repetitions of a service or product." )
         protected Quantity quantity;
 
         /**
          * If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.
          */
-        @Child(name = "unitPrice", type = {Money.class}, order=11, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "unitPrice", type = {Money.class}, order=13, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Fee, charge or cost per item", formalDefinition="If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group." )
         protected Money unitPrice;
 
         /**
          * A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.
          */
-        @Child(name = "factor", type = {DecimalType.class}, order=12, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "factor", type = {DecimalType.class}, order=14, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Price scaling factor", formalDefinition="A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount." )
         protected DecimalType factor;
 
         /**
+         * The total of taxes applicable for this product or service.
+         */
+        @Child(name = "tax", type = {Money.class}, order=15, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Total tax", formalDefinition="The total of taxes applicable for this product or service." )
+        protected Money tax;
+
+        /**
          * The quantity times the unit price for an additional service or product or charge.
          */
-        @Child(name = "net", type = {Money.class}, order=13, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "net", type = {Money.class}, order=16, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Total item cost", formalDefinition="The quantity times the unit price for an additional service or product or charge." )
         protected Money net;
 
         /**
-         * Physical service site on the patient (limb, tooth, etc.).
+         * Physical location where the service is performed or applies.
          */
-        @Child(name = "bodySite", type = {CodeableConcept.class}, order=14, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Anatomical location", formalDefinition="Physical service site on the patient (limb, tooth, etc.)." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/tooth")
-        protected CodeableConcept bodySite;
-
-        /**
-         * A region or surface of the bodySite, e.g. limb region or tooth surface(s).
-         */
-        @Child(name = "subSite", type = {CodeableConcept.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Anatomical sub-location", formalDefinition="A region or surface of the bodySite, e.g. limb region or tooth surface(s)." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/surface")
-        protected List<CodeableConcept> subSite;
+        @Child(name = "bodySite", type = {}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Anatomical location", formalDefinition="Physical location where the service is performed or applies." )
+        protected List<BodySiteComponent> bodySite;
 
         /**
          * The numbers associated with notes below which apply to the adjudication of this item.
          */
-        @Child(name = "noteNumber", type = {PositiveIntType.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "noteNumber", type = {PositiveIntType.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Applicable note numbers", formalDefinition="The numbers associated with notes below which apply to the adjudication of this item." )
         protected List<PositiveIntType> noteNumber;
 
         /**
+         * The result of the claim, predetermination, or preauthorization adjudication.
+         */
+        @Child(name = "decision", type = {CodeableConcept.class}, order=19, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Result of the adjudication", formalDefinition="The result of the claim, predetermination, or preauthorization adjudication." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-decision")
+        protected CodeableConcept decision;
+
+        /**
          * The adjudication results.
          */
-        @Child(name = "adjudication", type = {AdjudicationComponent.class}, order=17, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "adjudication", type = {AdjudicationComponent.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Added items adjudication", formalDefinition="The adjudication results." )
         protected List<AdjudicationComponent> adjudication;
 
         /**
          * The second-tier service adjudications for payor added services.
          */
-        @Child(name = "detail", type = {}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "detail", type = {}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Insurer added line details", formalDefinition="The second-tier service adjudications for payor added services." )
         protected List<AddedItemDetailComponent> detail;
 
-        private static final long serialVersionUID = -1008423576L;
+        private static final long serialVersionUID = 1717713947L;
 
     /**
      * Constructor
      */
       public AddedItemComponent() {
         super();
-      }
-
-    /**
-     * Constructor
-     */
-      public AddedItemComponent(CodeableConcept productOrService, AdjudicationComponent adjudication) {
-        super();
-        this.setProductOrService(productOrService);
-        this.addAdjudication(adjudication);
       }
 
         /**
@@ -1999,7 +2152,31 @@ public class ClaimResponse extends DomainResource {
         }
 
         /**
-         * @return {@link #productOrService} (When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.)
+         * @return {@link #revenue} (The type of revenue or cost center providing the product and/or service.)
+         */
+        public CodeableConcept getRevenue() { 
+          if (this.revenue == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AddedItemComponent.revenue");
+            else if (Configuration.doAutoCreate())
+              this.revenue = new CodeableConcept(); // cc
+          return this.revenue;
+        }
+
+        public boolean hasRevenue() { 
+          return this.revenue != null && !this.revenue.isEmpty();
+        }
+
+        /**
+         * @param value {@link #revenue} (The type of revenue or cost center providing the product and/or service.)
+         */
+        public AddedItemComponent setRevenue(CodeableConcept value) { 
+          this.revenue = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #productOrService} (When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.)
          */
         public CodeableConcept getProductOrService() { 
           if (this.productOrService == null)
@@ -2015,10 +2192,34 @@ public class ClaimResponse extends DomainResource {
         }
 
         /**
-         * @param value {@link #productOrService} (When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.)
+         * @param value {@link #productOrService} (When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.)
          */
         public AddedItemComponent setProductOrService(CodeableConcept value) { 
           this.productOrService = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #productOrServiceEnd} (This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.)
+         */
+        public CodeableConcept getProductOrServiceEnd() { 
+          if (this.productOrServiceEnd == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AddedItemComponent.productOrServiceEnd");
+            else if (Configuration.doAutoCreate())
+              this.productOrServiceEnd = new CodeableConcept(); // cc
+          return this.productOrServiceEnd;
+        }
+
+        public boolean hasProductOrServiceEnd() { 
+          return this.productOrServiceEnd != null && !this.productOrServiceEnd.isEmpty();
+        }
+
+        /**
+         * @param value {@link #productOrServiceEnd} (This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.)
+         */
+        public AddedItemComponent setProductOrServiceEnd(CodeableConcept value) { 
+          this.productOrServiceEnd = value;
           return this;
         }
 
@@ -2361,6 +2562,30 @@ public class ClaimResponse extends DomainResource {
         }
 
         /**
+         * @return {@link #tax} (The total of taxes applicable for this product or service.)
+         */
+        public Money getTax() { 
+          if (this.tax == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AddedItemComponent.tax");
+            else if (Configuration.doAutoCreate())
+              this.tax = new Money(); // cc
+          return this.tax;
+        }
+
+        public boolean hasTax() { 
+          return this.tax != null && !this.tax.isEmpty();
+        }
+
+        /**
+         * @param value {@link #tax} (The total of taxes applicable for this product or service.)
+         */
+        public AddedItemComponent setTax(Money value) { 
+          this.tax = value;
+          return this;
+        }
+
+        /**
          * @return {@link #net} (The quantity times the unit price for an additional service or product or charge.)
          */
         public Money getNet() { 
@@ -2385,80 +2610,56 @@ public class ClaimResponse extends DomainResource {
         }
 
         /**
-         * @return {@link #bodySite} (Physical service site on the patient (limb, tooth, etc.).)
+         * @return {@link #bodySite} (Physical location where the service is performed or applies.)
          */
-        public CodeableConcept getBodySite() { 
+        public List<BodySiteComponent> getBodySite() { 
           if (this.bodySite == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create AddedItemComponent.bodySite");
-            else if (Configuration.doAutoCreate())
-              this.bodySite = new CodeableConcept(); // cc
+            this.bodySite = new ArrayList<BodySiteComponent>();
           return this.bodySite;
-        }
-
-        public boolean hasBodySite() { 
-          return this.bodySite != null && !this.bodySite.isEmpty();
-        }
-
-        /**
-         * @param value {@link #bodySite} (Physical service site on the patient (limb, tooth, etc.).)
-         */
-        public AddedItemComponent setBodySite(CodeableConcept value) { 
-          this.bodySite = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #subSite} (A region or surface of the bodySite, e.g. limb region or tooth surface(s).)
-         */
-        public List<CodeableConcept> getSubSite() { 
-          if (this.subSite == null)
-            this.subSite = new ArrayList<CodeableConcept>();
-          return this.subSite;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public AddedItemComponent setSubSite(List<CodeableConcept> theSubSite) { 
-          this.subSite = theSubSite;
+        public AddedItemComponent setBodySite(List<BodySiteComponent> theBodySite) { 
+          this.bodySite = theBodySite;
           return this;
         }
 
-        public boolean hasSubSite() { 
-          if (this.subSite == null)
+        public boolean hasBodySite() { 
+          if (this.bodySite == null)
             return false;
-          for (CodeableConcept item : this.subSite)
+          for (BodySiteComponent item : this.bodySite)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public CodeableConcept addSubSite() { //3
-          CodeableConcept t = new CodeableConcept();
-          if (this.subSite == null)
-            this.subSite = new ArrayList<CodeableConcept>();
-          this.subSite.add(t);
+        public BodySiteComponent addBodySite() { //3
+          BodySiteComponent t = new BodySiteComponent();
+          if (this.bodySite == null)
+            this.bodySite = new ArrayList<BodySiteComponent>();
+          this.bodySite.add(t);
           return t;
         }
 
-        public AddedItemComponent addSubSite(CodeableConcept t) { //3
+        public AddedItemComponent addBodySite(BodySiteComponent t) { //3
           if (t == null)
             return this;
-          if (this.subSite == null)
-            this.subSite = new ArrayList<CodeableConcept>();
-          this.subSite.add(t);
+          if (this.bodySite == null)
+            this.bodySite = new ArrayList<BodySiteComponent>();
+          this.bodySite.add(t);
           return this;
         }
 
         /**
-         * @return The first repetition of repeating field {@link #subSite}, creating it if it does not already exist {3}
+         * @return The first repetition of repeating field {@link #bodySite}, creating it if it does not already exist {3}
          */
-        public CodeableConcept getSubSiteFirstRep() { 
-          if (getSubSite().isEmpty()) {
-            addSubSite();
+        public BodySiteComponent getBodySiteFirstRep() { 
+          if (getBodySite().isEmpty()) {
+            addBodySite();
           }
-          return getSubSite().get(0);
+          return getBodySite().get(0);
         }
 
         /**
@@ -2520,6 +2721,30 @@ public class ClaimResponse extends DomainResource {
             if (v.getValue().equals(value)) // positiveInt
               return true;
           return false;
+        }
+
+        /**
+         * @return {@link #decision} (The result of the claim, predetermination, or preauthorization adjudication.)
+         */
+        public CodeableConcept getDecision() { 
+          if (this.decision == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AddedItemComponent.decision");
+            else if (Configuration.doAutoCreate())
+              this.decision = new CodeableConcept(); // cc
+          return this.decision;
+        }
+
+        public boolean hasDecision() { 
+          return this.decision != null && !this.decision.isEmpty();
+        }
+
+        /**
+         * @param value {@link #decision} (The result of the claim, predetermination, or preauthorization adjudication.)
+         */
+        public AddedItemComponent setDecision(CodeableConcept value) { 
+          this.decision = value;
+          return this;
         }
 
         /**
@@ -2634,7 +2859,9 @@ public class ClaimResponse extends DomainResource {
           children.add(new Property("detailSequence", "positiveInt", "The sequence number of the details within the claim item which this line is intended to replace.", 0, java.lang.Integer.MAX_VALUE, detailSequence));
           children.add(new Property("subdetailSequence", "positiveInt", "The sequence number of the sub-details within the details within the claim item which this line is intended to replace.", 0, java.lang.Integer.MAX_VALUE, subdetailSequence));
           children.add(new Property("provider", "Reference(Practitioner|PractitionerRole|Organization)", "The providers who are authorized for the services rendered to the patient.", 0, java.lang.Integer.MAX_VALUE, provider));
-          children.add(new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.", 0, 1, productOrService));
+          children.add(new Property("revenue", "CodeableConcept", "The type of revenue or cost center providing the product and/or service.", 0, 1, revenue));
+          children.add(new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.", 0, 1, productOrService));
+          children.add(new Property("productOrServiceEnd", "CodeableConcept", "This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.", 0, 1, productOrServiceEnd));
           children.add(new Property("modifier", "CodeableConcept", "Item typification or modifiers codes to convey additional context for the product or service.", 0, java.lang.Integer.MAX_VALUE, modifier));
           children.add(new Property("programCode", "CodeableConcept", "Identifies the program under which this may be recovered.", 0, java.lang.Integer.MAX_VALUE, programCode));
           children.add(new Property("serviced[x]", "date|Period", "The date or dates when the service or product was supplied, performed or completed.", 0, 1, serviced));
@@ -2642,10 +2869,11 @@ public class ClaimResponse extends DomainResource {
           children.add(new Property("quantity", "Quantity", "The number of repetitions of a service or product.", 0, 1, quantity));
           children.add(new Property("unitPrice", "Money", "If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.", 0, 1, unitPrice));
           children.add(new Property("factor", "decimal", "A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.", 0, 1, factor));
+          children.add(new Property("tax", "Money", "The total of taxes applicable for this product or service.", 0, 1, tax));
           children.add(new Property("net", "Money", "The quantity times the unit price for an additional service or product or charge.", 0, 1, net));
-          children.add(new Property("bodySite", "CodeableConcept", "Physical service site on the patient (limb, tooth, etc.).", 0, 1, bodySite));
-          children.add(new Property("subSite", "CodeableConcept", "A region or surface of the bodySite, e.g. limb region or tooth surface(s).", 0, java.lang.Integer.MAX_VALUE, subSite));
+          children.add(new Property("bodySite", "", "Physical location where the service is performed or applies.", 0, java.lang.Integer.MAX_VALUE, bodySite));
           children.add(new Property("noteNumber", "positiveInt", "The numbers associated with notes below which apply to the adjudication of this item.", 0, java.lang.Integer.MAX_VALUE, noteNumber));
+          children.add(new Property("decision", "CodeableConcept", "The result of the claim, predetermination, or preauthorization adjudication.", 0, 1, decision));
           children.add(new Property("adjudication", "@ClaimResponse.item.adjudication", "The adjudication results.", 0, java.lang.Integer.MAX_VALUE, adjudication));
           children.add(new Property("detail", "", "The second-tier service adjudications for payor added services.", 0, java.lang.Integer.MAX_VALUE, detail));
         }
@@ -2657,7 +2885,9 @@ public class ClaimResponse extends DomainResource {
           case 1321472818: /*detailSequence*/  return new Property("detailSequence", "positiveInt", "The sequence number of the details within the claim item which this line is intended to replace.", 0, java.lang.Integer.MAX_VALUE, detailSequence);
           case 146530674: /*subdetailSequence*/  return new Property("subdetailSequence", "positiveInt", "The sequence number of the sub-details within the details within the claim item which this line is intended to replace.", 0, java.lang.Integer.MAX_VALUE, subdetailSequence);
           case -987494927: /*provider*/  return new Property("provider", "Reference(Practitioner|PractitionerRole|Organization)", "The providers who are authorized for the services rendered to the patient.", 0, java.lang.Integer.MAX_VALUE, provider);
-          case 1957227299: /*productOrService*/  return new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.", 0, 1, productOrService);
+          case 1099842588: /*revenue*/  return new Property("revenue", "CodeableConcept", "The type of revenue or cost center providing the product and/or service.", 0, 1, revenue);
+          case 1957227299: /*productOrService*/  return new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.", 0, 1, productOrService);
+          case -717476168: /*productOrServiceEnd*/  return new Property("productOrServiceEnd", "CodeableConcept", "This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.", 0, 1, productOrServiceEnd);
           case -615513385: /*modifier*/  return new Property("modifier", "CodeableConcept", "Item typification or modifiers codes to convey additional context for the product or service.", 0, java.lang.Integer.MAX_VALUE, modifier);
           case 1010065041: /*programCode*/  return new Property("programCode", "CodeableConcept", "Identifies the program under which this may be recovered.", 0, java.lang.Integer.MAX_VALUE, programCode);
           case -1927922223: /*serviced[x]*/  return new Property("serviced[x]", "date|Period", "The date or dates when the service or product was supplied, performed or completed.", 0, 1, serviced);
@@ -2672,10 +2902,11 @@ public class ClaimResponse extends DomainResource {
           case -1285004149: /*quantity*/  return new Property("quantity", "Quantity", "The number of repetitions of a service or product.", 0, 1, quantity);
           case -486196699: /*unitPrice*/  return new Property("unitPrice", "Money", "If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.", 0, 1, unitPrice);
           case -1282148017: /*factor*/  return new Property("factor", "decimal", "A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.", 0, 1, factor);
+          case 114603: /*tax*/  return new Property("tax", "Money", "The total of taxes applicable for this product or service.", 0, 1, tax);
           case 108957: /*net*/  return new Property("net", "Money", "The quantity times the unit price for an additional service or product or charge.", 0, 1, net);
-          case 1702620169: /*bodySite*/  return new Property("bodySite", "CodeableConcept", "Physical service site on the patient (limb, tooth, etc.).", 0, 1, bodySite);
-          case -1868566105: /*subSite*/  return new Property("subSite", "CodeableConcept", "A region or surface of the bodySite, e.g. limb region or tooth surface(s).", 0, java.lang.Integer.MAX_VALUE, subSite);
+          case 1702620169: /*bodySite*/  return new Property("bodySite", "", "Physical location where the service is performed or applies.", 0, java.lang.Integer.MAX_VALUE, bodySite);
           case -1110033957: /*noteNumber*/  return new Property("noteNumber", "positiveInt", "The numbers associated with notes below which apply to the adjudication of this item.", 0, java.lang.Integer.MAX_VALUE, noteNumber);
+          case 565719004: /*decision*/  return new Property("decision", "CodeableConcept", "The result of the claim, predetermination, or preauthorization adjudication.", 0, 1, decision);
           case -231349275: /*adjudication*/  return new Property("adjudication", "@ClaimResponse.item.adjudication", "The adjudication results.", 0, java.lang.Integer.MAX_VALUE, adjudication);
           case -1335224239: /*detail*/  return new Property("detail", "", "The second-tier service adjudications for payor added services.", 0, java.lang.Integer.MAX_VALUE, detail);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -2690,7 +2921,9 @@ public class ClaimResponse extends DomainResource {
         case 1321472818: /*detailSequence*/ return this.detailSequence == null ? new Base[0] : this.detailSequence.toArray(new Base[this.detailSequence.size()]); // PositiveIntType
         case 146530674: /*subdetailSequence*/ return this.subdetailSequence == null ? new Base[0] : this.subdetailSequence.toArray(new Base[this.subdetailSequence.size()]); // PositiveIntType
         case -987494927: /*provider*/ return this.provider == null ? new Base[0] : this.provider.toArray(new Base[this.provider.size()]); // Reference
+        case 1099842588: /*revenue*/ return this.revenue == null ? new Base[0] : new Base[] {this.revenue}; // CodeableConcept
         case 1957227299: /*productOrService*/ return this.productOrService == null ? new Base[0] : new Base[] {this.productOrService}; // CodeableConcept
+        case -717476168: /*productOrServiceEnd*/ return this.productOrServiceEnd == null ? new Base[0] : new Base[] {this.productOrServiceEnd}; // CodeableConcept
         case -615513385: /*modifier*/ return this.modifier == null ? new Base[0] : this.modifier.toArray(new Base[this.modifier.size()]); // CodeableConcept
         case 1010065041: /*programCode*/ return this.programCode == null ? new Base[0] : this.programCode.toArray(new Base[this.programCode.size()]); // CodeableConcept
         case 1379209295: /*serviced*/ return this.serviced == null ? new Base[0] : new Base[] {this.serviced}; // DataType
@@ -2698,10 +2931,11 @@ public class ClaimResponse extends DomainResource {
         case -1285004149: /*quantity*/ return this.quantity == null ? new Base[0] : new Base[] {this.quantity}; // Quantity
         case -486196699: /*unitPrice*/ return this.unitPrice == null ? new Base[0] : new Base[] {this.unitPrice}; // Money
         case -1282148017: /*factor*/ return this.factor == null ? new Base[0] : new Base[] {this.factor}; // DecimalType
+        case 114603: /*tax*/ return this.tax == null ? new Base[0] : new Base[] {this.tax}; // Money
         case 108957: /*net*/ return this.net == null ? new Base[0] : new Base[] {this.net}; // Money
-        case 1702620169: /*bodySite*/ return this.bodySite == null ? new Base[0] : new Base[] {this.bodySite}; // CodeableConcept
-        case -1868566105: /*subSite*/ return this.subSite == null ? new Base[0] : this.subSite.toArray(new Base[this.subSite.size()]); // CodeableConcept
+        case 1702620169: /*bodySite*/ return this.bodySite == null ? new Base[0] : this.bodySite.toArray(new Base[this.bodySite.size()]); // BodySiteComponent
         case -1110033957: /*noteNumber*/ return this.noteNumber == null ? new Base[0] : this.noteNumber.toArray(new Base[this.noteNumber.size()]); // PositiveIntType
+        case 565719004: /*decision*/ return this.decision == null ? new Base[0] : new Base[] {this.decision}; // CodeableConcept
         case -231349275: /*adjudication*/ return this.adjudication == null ? new Base[0] : this.adjudication.toArray(new Base[this.adjudication.size()]); // AdjudicationComponent
         case -1335224239: /*detail*/ return this.detail == null ? new Base[0] : this.detail.toArray(new Base[this.detail.size()]); // AddedItemDetailComponent
         default: return super.getProperty(hash, name, checkValid);
@@ -2724,8 +2958,14 @@ public class ClaimResponse extends DomainResource {
         case -987494927: // provider
           this.getProvider().add(TypeConvertor.castToReference(value)); // Reference
           return value;
+        case 1099842588: // revenue
+          this.revenue = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
         case 1957227299: // productOrService
           this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -717476168: // productOrServiceEnd
+          this.productOrServiceEnd = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -615513385: // modifier
           this.getModifier().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
@@ -2748,17 +2988,20 @@ public class ClaimResponse extends DomainResource {
         case -1282148017: // factor
           this.factor = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
+        case 114603: // tax
+          this.tax = TypeConvertor.castToMoney(value); // Money
+          return value;
         case 108957: // net
           this.net = TypeConvertor.castToMoney(value); // Money
           return value;
         case 1702620169: // bodySite
-          this.bodySite = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case -1868566105: // subSite
-          this.getSubSite().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          this.getBodySite().add((BodySiteComponent) value); // BodySiteComponent
           return value;
         case -1110033957: // noteNumber
           this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value)); // PositiveIntType
+          return value;
+        case 565719004: // decision
+          this.decision = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -231349275: // adjudication
           this.getAdjudication().add((AdjudicationComponent) value); // AdjudicationComponent
@@ -2781,8 +3024,12 @@ public class ClaimResponse extends DomainResource {
           this.getSubdetailSequence().add(TypeConvertor.castToPositiveInt(value));
         } else if (name.equals("provider")) {
           this.getProvider().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("revenue")) {
+          this.revenue = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("productOrService")) {
           this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("productOrServiceEnd")) {
+          this.productOrServiceEnd = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("modifier")) {
           this.getModifier().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("programCode")) {
@@ -2797,14 +3044,16 @@ public class ClaimResponse extends DomainResource {
           this.unitPrice = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("factor")) {
           this.factor = TypeConvertor.castToDecimal(value); // DecimalType
+        } else if (name.equals("tax")) {
+          this.tax = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("net")) {
           this.net = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("bodySite")) {
-          this.bodySite = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("subSite")) {
-          this.getSubSite().add(TypeConvertor.castToCodeableConcept(value));
+          this.getBodySite().add((BodySiteComponent) value);
         } else if (name.equals("noteNumber")) {
           this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value));
+        } else if (name.equals("decision")) {
+          this.decision = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("adjudication")) {
           this.getAdjudication().add((AdjudicationComponent) value);
         } else if (name.equals("detail")) {
@@ -2821,7 +3070,9 @@ public class ClaimResponse extends DomainResource {
         case 1321472818:  return addDetailSequenceElement();
         case 146530674:  return addSubdetailSequenceElement();
         case -987494927:  return addProvider(); 
+        case 1099842588:  return getRevenue();
         case 1957227299:  return getProductOrService();
+        case -717476168:  return getProductOrServiceEnd();
         case -615513385:  return addModifier(); 
         case 1010065041:  return addProgramCode(); 
         case -1927922223:  return getServiced();
@@ -2831,10 +3082,11 @@ public class ClaimResponse extends DomainResource {
         case -1285004149:  return getQuantity();
         case -486196699:  return getUnitPrice();
         case -1282148017:  return getFactorElement();
+        case 114603:  return getTax();
         case 108957:  return getNet();
-        case 1702620169:  return getBodySite();
-        case -1868566105:  return addSubSite(); 
+        case 1702620169:  return addBodySite(); 
         case -1110033957:  return addNoteNumberElement();
+        case 565719004:  return getDecision();
         case -231349275:  return addAdjudication(); 
         case -1335224239:  return addDetail(); 
         default: return super.makeProperty(hash, name);
@@ -2849,7 +3101,9 @@ public class ClaimResponse extends DomainResource {
         case 1321472818: /*detailSequence*/ return new String[] {"positiveInt"};
         case 146530674: /*subdetailSequence*/ return new String[] {"positiveInt"};
         case -987494927: /*provider*/ return new String[] {"Reference"};
+        case 1099842588: /*revenue*/ return new String[] {"CodeableConcept"};
         case 1957227299: /*productOrService*/ return new String[] {"CodeableConcept"};
+        case -717476168: /*productOrServiceEnd*/ return new String[] {"CodeableConcept"};
         case -615513385: /*modifier*/ return new String[] {"CodeableConcept"};
         case 1010065041: /*programCode*/ return new String[] {"CodeableConcept"};
         case 1379209295: /*serviced*/ return new String[] {"date", "Period"};
@@ -2857,10 +3111,11 @@ public class ClaimResponse extends DomainResource {
         case -1285004149: /*quantity*/ return new String[] {"Quantity"};
         case -486196699: /*unitPrice*/ return new String[] {"Money"};
         case -1282148017: /*factor*/ return new String[] {"decimal"};
+        case 114603: /*tax*/ return new String[] {"Money"};
         case 108957: /*net*/ return new String[] {"Money"};
-        case 1702620169: /*bodySite*/ return new String[] {"CodeableConcept"};
-        case -1868566105: /*subSite*/ return new String[] {"CodeableConcept"};
+        case 1702620169: /*bodySite*/ return new String[] {};
         case -1110033957: /*noteNumber*/ return new String[] {"positiveInt"};
+        case 565719004: /*decision*/ return new String[] {"CodeableConcept"};
         case -231349275: /*adjudication*/ return new String[] {"@ClaimResponse.item.adjudication"};
         case -1335224239: /*detail*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
@@ -2882,9 +3137,17 @@ public class ClaimResponse extends DomainResource {
         else if (name.equals("provider")) {
           return addProvider();
         }
+        else if (name.equals("revenue")) {
+          this.revenue = new CodeableConcept();
+          return this.revenue;
+        }
         else if (name.equals("productOrService")) {
           this.productOrService = new CodeableConcept();
           return this.productOrService;
+        }
+        else if (name.equals("productOrServiceEnd")) {
+          this.productOrServiceEnd = new CodeableConcept();
+          return this.productOrServiceEnd;
         }
         else if (name.equals("modifier")) {
           return addModifier();
@@ -2923,19 +3186,23 @@ public class ClaimResponse extends DomainResource {
         else if (name.equals("factor")) {
           throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.addItem.factor");
         }
+        else if (name.equals("tax")) {
+          this.tax = new Money();
+          return this.tax;
+        }
         else if (name.equals("net")) {
           this.net = new Money();
           return this.net;
         }
         else if (name.equals("bodySite")) {
-          this.bodySite = new CodeableConcept();
-          return this.bodySite;
-        }
-        else if (name.equals("subSite")) {
-          return addSubSite();
+          return addBodySite();
         }
         else if (name.equals("noteNumber")) {
           throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.addItem.noteNumber");
+        }
+        else if (name.equals("decision")) {
+          this.decision = new CodeableConcept();
+          return this.decision;
         }
         else if (name.equals("adjudication")) {
           return addAdjudication();
@@ -2975,7 +3242,9 @@ public class ClaimResponse extends DomainResource {
           for (Reference i : provider)
             dst.provider.add(i.copy());
         };
+        dst.revenue = revenue == null ? null : revenue.copy();
         dst.productOrService = productOrService == null ? null : productOrService.copy();
+        dst.productOrServiceEnd = productOrServiceEnd == null ? null : productOrServiceEnd.copy();
         if (modifier != null) {
           dst.modifier = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : modifier)
@@ -2991,18 +3260,19 @@ public class ClaimResponse extends DomainResource {
         dst.quantity = quantity == null ? null : quantity.copy();
         dst.unitPrice = unitPrice == null ? null : unitPrice.copy();
         dst.factor = factor == null ? null : factor.copy();
+        dst.tax = tax == null ? null : tax.copy();
         dst.net = net == null ? null : net.copy();
-        dst.bodySite = bodySite == null ? null : bodySite.copy();
-        if (subSite != null) {
-          dst.subSite = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : subSite)
-            dst.subSite.add(i.copy());
+        if (bodySite != null) {
+          dst.bodySite = new ArrayList<BodySiteComponent>();
+          for (BodySiteComponent i : bodySite)
+            dst.bodySite.add(i.copy());
         };
         if (noteNumber != null) {
           dst.noteNumber = new ArrayList<PositiveIntType>();
           for (PositiveIntType i : noteNumber)
             dst.noteNumber.add(i.copy());
         };
+        dst.decision = decision == null ? null : decision.copy();
         if (adjudication != null) {
           dst.adjudication = new ArrayList<AdjudicationComponent>();
           for (AdjudicationComponent i : adjudication)
@@ -3024,11 +3294,12 @@ public class ClaimResponse extends DomainResource {
         AddedItemComponent o = (AddedItemComponent) other_;
         return compareDeep(itemSequence, o.itemSequence, true) && compareDeep(detailSequence, o.detailSequence, true)
            && compareDeep(subdetailSequence, o.subdetailSequence, true) && compareDeep(provider, o.provider, true)
-           && compareDeep(productOrService, o.productOrService, true) && compareDeep(modifier, o.modifier, true)
+           && compareDeep(revenue, o.revenue, true) && compareDeep(productOrService, o.productOrService, true)
+           && compareDeep(productOrServiceEnd, o.productOrServiceEnd, true) && compareDeep(modifier, o.modifier, true)
            && compareDeep(programCode, o.programCode, true) && compareDeep(serviced, o.serviced, true) && compareDeep(location, o.location, true)
            && compareDeep(quantity, o.quantity, true) && compareDeep(unitPrice, o.unitPrice, true) && compareDeep(factor, o.factor, true)
-           && compareDeep(net, o.net, true) && compareDeep(bodySite, o.bodySite, true) && compareDeep(subSite, o.subSite, true)
-           && compareDeep(noteNumber, o.noteNumber, true) && compareDeep(adjudication, o.adjudication, true)
+           && compareDeep(tax, o.tax, true) && compareDeep(net, o.net, true) && compareDeep(bodySite, o.bodySite, true)
+           && compareDeep(noteNumber, o.noteNumber, true) && compareDeep(decision, o.decision, true) && compareDeep(adjudication, o.adjudication, true)
            && compareDeep(detail, o.detail, true);
       }
 
@@ -3046,9 +3317,9 @@ public class ClaimResponse extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(itemSequence, detailSequence
-          , subdetailSequence, provider, productOrService, modifier, programCode, serviced
-          , location, quantity, unitPrice, factor, net, bodySite, subSite, noteNumber
-          , adjudication, detail);
+          , subdetailSequence, provider, revenue, productOrService, productOrServiceEnd, modifier
+          , programCode, serviced, location, quantity, unitPrice, factor, tax, net, bodySite
+          , noteNumber, decision, adjudication, detail);
       }
 
   public String fhirType() {
@@ -3059,19 +3330,310 @@ public class ClaimResponse extends DomainResource {
   }
 
     @Block()
+    public static class BodySiteComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Physical service site on the patient (limb, tooth, etc.).
+         */
+        @Child(name = "site", type = {CodeableReference.class}, order=1, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Location", formalDefinition="Physical service site on the patient (limb, tooth, etc.)." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/tooth")
+        protected List<CodeableReference> site;
+
+        /**
+         * A region or surface of the bodySite, e.g. limb region or tooth surface(s).
+         */
+        @Child(name = "subSite", type = {CodeableConcept.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Sub-location", formalDefinition="A region or surface of the bodySite, e.g. limb region or tooth surface(s)." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/surface")
+        protected List<CodeableConcept> subSite;
+
+        private static final long serialVersionUID = 1190632415L;
+
+    /**
+     * Constructor
+     */
+      public BodySiteComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public BodySiteComponent(CodeableReference site) {
+        super();
+        this.addSite(site);
+      }
+
+        /**
+         * @return {@link #site} (Physical service site on the patient (limb, tooth, etc.).)
+         */
+        public List<CodeableReference> getSite() { 
+          if (this.site == null)
+            this.site = new ArrayList<CodeableReference>();
+          return this.site;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public BodySiteComponent setSite(List<CodeableReference> theSite) { 
+          this.site = theSite;
+          return this;
+        }
+
+        public boolean hasSite() { 
+          if (this.site == null)
+            return false;
+          for (CodeableReference item : this.site)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public CodeableReference addSite() { //3
+          CodeableReference t = new CodeableReference();
+          if (this.site == null)
+            this.site = new ArrayList<CodeableReference>();
+          this.site.add(t);
+          return t;
+        }
+
+        public BodySiteComponent addSite(CodeableReference t) { //3
+          if (t == null)
+            return this;
+          if (this.site == null)
+            this.site = new ArrayList<CodeableReference>();
+          this.site.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #site}, creating it if it does not already exist {3}
+         */
+        public CodeableReference getSiteFirstRep() { 
+          if (getSite().isEmpty()) {
+            addSite();
+          }
+          return getSite().get(0);
+        }
+
+        /**
+         * @return {@link #subSite} (A region or surface of the bodySite, e.g. limb region or tooth surface(s).)
+         */
+        public List<CodeableConcept> getSubSite() { 
+          if (this.subSite == null)
+            this.subSite = new ArrayList<CodeableConcept>();
+          return this.subSite;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public BodySiteComponent setSubSite(List<CodeableConcept> theSubSite) { 
+          this.subSite = theSubSite;
+          return this;
+        }
+
+        public boolean hasSubSite() { 
+          if (this.subSite == null)
+            return false;
+          for (CodeableConcept item : this.subSite)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public CodeableConcept addSubSite() { //3
+          CodeableConcept t = new CodeableConcept();
+          if (this.subSite == null)
+            this.subSite = new ArrayList<CodeableConcept>();
+          this.subSite.add(t);
+          return t;
+        }
+
+        public BodySiteComponent addSubSite(CodeableConcept t) { //3
+          if (t == null)
+            return this;
+          if (this.subSite == null)
+            this.subSite = new ArrayList<CodeableConcept>();
+          this.subSite.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #subSite}, creating it if it does not already exist {3}
+         */
+        public CodeableConcept getSubSiteFirstRep() { 
+          if (getSubSite().isEmpty()) {
+            addSubSite();
+          }
+          return getSubSite().get(0);
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("site", "CodeableReference(BodyStructure)", "Physical service site on the patient (limb, tooth, etc.).", 0, java.lang.Integer.MAX_VALUE, site));
+          children.add(new Property("subSite", "CodeableConcept", "A region or surface of the bodySite, e.g. limb region or tooth surface(s).", 0, java.lang.Integer.MAX_VALUE, subSite));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3530567: /*site*/  return new Property("site", "CodeableReference(BodyStructure)", "Physical service site on the patient (limb, tooth, etc.).", 0, java.lang.Integer.MAX_VALUE, site);
+          case -1868566105: /*subSite*/  return new Property("subSite", "CodeableConcept", "A region or surface of the bodySite, e.g. limb region or tooth surface(s).", 0, java.lang.Integer.MAX_VALUE, subSite);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3530567: /*site*/ return this.site == null ? new Base[0] : this.site.toArray(new Base[this.site.size()]); // CodeableReference
+        case -1868566105: /*subSite*/ return this.subSite == null ? new Base[0] : this.subSite.toArray(new Base[this.subSite.size()]); // CodeableConcept
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3530567: // site
+          this.getSite().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
+          return value;
+        case -1868566105: // subSite
+          this.getSubSite().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("site")) {
+          this.getSite().add(TypeConvertor.castToCodeableReference(value));
+        } else if (name.equals("subSite")) {
+          this.getSubSite().add(TypeConvertor.castToCodeableConcept(value));
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3530567:  return addSite(); 
+        case -1868566105:  return addSubSite(); 
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3530567: /*site*/ return new String[] {"CodeableReference"};
+        case -1868566105: /*subSite*/ return new String[] {"CodeableConcept"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("site")) {
+          return addSite();
+        }
+        else if (name.equals("subSite")) {
+          return addSubSite();
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public BodySiteComponent copy() {
+        BodySiteComponent dst = new BodySiteComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(BodySiteComponent dst) {
+        super.copyValues(dst);
+        if (site != null) {
+          dst.site = new ArrayList<CodeableReference>();
+          for (CodeableReference i : site)
+            dst.site.add(i.copy());
+        };
+        if (subSite != null) {
+          dst.subSite = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : subSite)
+            dst.subSite.add(i.copy());
+        };
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof BodySiteComponent))
+          return false;
+        BodySiteComponent o = (BodySiteComponent) other_;
+        return compareDeep(site, o.site, true) && compareDeep(subSite, o.subSite, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof BodySiteComponent))
+          return false;
+        BodySiteComponent o = (BodySiteComponent) other_;
+        return true;
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(site, subSite);
+      }
+
+  public String fhirType() {
+    return "ClaimResponse.addItem.bodySite";
+
+  }
+
+  }
+
+    @Block()
     public static class AddedItemDetailComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.
+         * The type of revenue or cost center providing the product and/or service.
          */
-        @Child(name = "productOrService", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Billing, service, product, or drug code", formalDefinition="When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item." )
+        @Child(name = "revenue", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Revenue or cost center code", formalDefinition="The type of revenue or cost center providing the product and/or service." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ex-revenue-center")
+        protected CodeableConcept revenue;
+
+        /**
+         * When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.
+         */
+        @Child(name = "productOrService", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Billing, service, product, or drug code", formalDefinition="When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-uscls")
         protected CodeableConcept productOrService;
 
         /**
+         * This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.
+         */
+        @Child(name = "productOrServiceEnd", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="End of a range of codes", formalDefinition="This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-uscls")
+        protected CodeableConcept productOrServiceEnd;
+
+        /**
          * Item typification or modifiers codes to convey additional context for the product or service.
          */
-        @Child(name = "modifier", type = {CodeableConcept.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "modifier", type = {CodeableConcept.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Service/Product billing modifiers", formalDefinition="Item typification or modifiers codes to convey additional context for the product or service." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-modifiers")
         protected List<CodeableConcept> modifier;
@@ -3079,53 +3641,68 @@ public class ClaimResponse extends DomainResource {
         /**
          * The number of repetitions of a service or product.
          */
-        @Child(name = "quantity", type = {Quantity.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "quantity", type = {Quantity.class}, order=5, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Count of products or services", formalDefinition="The number of repetitions of a service or product." )
         protected Quantity quantity;
 
         /**
          * If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.
          */
-        @Child(name = "unitPrice", type = {Money.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "unitPrice", type = {Money.class}, order=6, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Fee, charge or cost per item", formalDefinition="If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group." )
         protected Money unitPrice;
 
         /**
          * A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.
          */
-        @Child(name = "factor", type = {DecimalType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "factor", type = {DecimalType.class}, order=7, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Price scaling factor", formalDefinition="A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount." )
         protected DecimalType factor;
 
         /**
+         * The total of taxes applicable for this product or service.
+         */
+        @Child(name = "tax", type = {Money.class}, order=8, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Total tax", formalDefinition="The total of taxes applicable for this product or service." )
+        protected Money tax;
+
+        /**
          * The quantity times the unit price for an additional service or product or charge.
          */
-        @Child(name = "net", type = {Money.class}, order=6, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "net", type = {Money.class}, order=9, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Total item cost", formalDefinition="The quantity times the unit price for an additional service or product or charge." )
         protected Money net;
 
         /**
          * The numbers associated with notes below which apply to the adjudication of this item.
          */
-        @Child(name = "noteNumber", type = {PositiveIntType.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "noteNumber", type = {PositiveIntType.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Applicable note numbers", formalDefinition="The numbers associated with notes below which apply to the adjudication of this item." )
         protected List<PositiveIntType> noteNumber;
 
         /**
+         * The result of the claim, predetermination, or preauthorization adjudication.
+         */
+        @Child(name = "decision", type = {CodeableConcept.class}, order=11, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Result of the adjudication", formalDefinition="The result of the claim, predetermination, or preauthorization adjudication." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-decision")
+        protected CodeableConcept decision;
+
+        /**
          * The adjudication results.
          */
-        @Child(name = "adjudication", type = {AdjudicationComponent.class}, order=8, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "adjudication", type = {AdjudicationComponent.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Added items detail adjudication", formalDefinition="The adjudication results." )
         protected List<AdjudicationComponent> adjudication;
 
         /**
          * The third-tier service adjudications for payor added services.
          */
-        @Child(name = "subDetail", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "subDetail", type = {}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Insurer added line items", formalDefinition="The third-tier service adjudications for payor added services." )
         protected List<AddedItemSubDetailComponent> subDetail;
 
-        private static final long serialVersionUID = -1436724060L;
+        private static final long serialVersionUID = -341633776L;
 
     /**
      * Constructor
@@ -3134,17 +3711,32 @@ public class ClaimResponse extends DomainResource {
         super();
       }
 
-    /**
-     * Constructor
-     */
-      public AddedItemDetailComponent(CodeableConcept productOrService, AdjudicationComponent adjudication) {
-        super();
-        this.setProductOrService(productOrService);
-        this.addAdjudication(adjudication);
-      }
+        /**
+         * @return {@link #revenue} (The type of revenue or cost center providing the product and/or service.)
+         */
+        public CodeableConcept getRevenue() { 
+          if (this.revenue == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AddedItemDetailComponent.revenue");
+            else if (Configuration.doAutoCreate())
+              this.revenue = new CodeableConcept(); // cc
+          return this.revenue;
+        }
+
+        public boolean hasRevenue() { 
+          return this.revenue != null && !this.revenue.isEmpty();
+        }
 
         /**
-         * @return {@link #productOrService} (When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.)
+         * @param value {@link #revenue} (The type of revenue or cost center providing the product and/or service.)
+         */
+        public AddedItemDetailComponent setRevenue(CodeableConcept value) { 
+          this.revenue = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #productOrService} (When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.)
          */
         public CodeableConcept getProductOrService() { 
           if (this.productOrService == null)
@@ -3160,10 +3752,34 @@ public class ClaimResponse extends DomainResource {
         }
 
         /**
-         * @param value {@link #productOrService} (When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.)
+         * @param value {@link #productOrService} (When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.)
          */
         public AddedItemDetailComponent setProductOrService(CodeableConcept value) { 
           this.productOrService = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #productOrServiceEnd} (This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.)
+         */
+        public CodeableConcept getProductOrServiceEnd() { 
+          if (this.productOrServiceEnd == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AddedItemDetailComponent.productOrServiceEnd");
+            else if (Configuration.doAutoCreate())
+              this.productOrServiceEnd = new CodeableConcept(); // cc
+          return this.productOrServiceEnd;
+        }
+
+        public boolean hasProductOrServiceEnd() { 
+          return this.productOrServiceEnd != null && !this.productOrServiceEnd.isEmpty();
+        }
+
+        /**
+         * @param value {@link #productOrServiceEnd} (This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.)
+         */
+        public AddedItemDetailComponent setProductOrServiceEnd(CodeableConcept value) { 
+          this.productOrServiceEnd = value;
           return this;
         }
 
@@ -3336,6 +3952,30 @@ public class ClaimResponse extends DomainResource {
         }
 
         /**
+         * @return {@link #tax} (The total of taxes applicable for this product or service.)
+         */
+        public Money getTax() { 
+          if (this.tax == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AddedItemDetailComponent.tax");
+            else if (Configuration.doAutoCreate())
+              this.tax = new Money(); // cc
+          return this.tax;
+        }
+
+        public boolean hasTax() { 
+          return this.tax != null && !this.tax.isEmpty();
+        }
+
+        /**
+         * @param value {@link #tax} (The total of taxes applicable for this product or service.)
+         */
+        public AddedItemDetailComponent setTax(Money value) { 
+          this.tax = value;
+          return this;
+        }
+
+        /**
          * @return {@link #net} (The quantity times the unit price for an additional service or product or charge.)
          */
         public Money getNet() { 
@@ -3418,6 +4058,30 @@ public class ClaimResponse extends DomainResource {
             if (v.getValue().equals(value)) // positiveInt
               return true;
           return false;
+        }
+
+        /**
+         * @return {@link #decision} (The result of the claim, predetermination, or preauthorization adjudication.)
+         */
+        public CodeableConcept getDecision() { 
+          if (this.decision == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AddedItemDetailComponent.decision");
+            else if (Configuration.doAutoCreate())
+              this.decision = new CodeableConcept(); // cc
+          return this.decision;
+        }
+
+        public boolean hasDecision() { 
+          return this.decision != null && !this.decision.isEmpty();
+        }
+
+        /**
+         * @param value {@link #decision} (The result of the claim, predetermination, or preauthorization adjudication.)
+         */
+        public AddedItemDetailComponent setDecision(CodeableConcept value) { 
+          this.decision = value;
+          return this;
         }
 
         /**
@@ -3528,13 +4192,17 @@ public class ClaimResponse extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.", 0, 1, productOrService));
+          children.add(new Property("revenue", "CodeableConcept", "The type of revenue or cost center providing the product and/or service.", 0, 1, revenue));
+          children.add(new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.", 0, 1, productOrService));
+          children.add(new Property("productOrServiceEnd", "CodeableConcept", "This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.", 0, 1, productOrServiceEnd));
           children.add(new Property("modifier", "CodeableConcept", "Item typification or modifiers codes to convey additional context for the product or service.", 0, java.lang.Integer.MAX_VALUE, modifier));
           children.add(new Property("quantity", "Quantity", "The number of repetitions of a service or product.", 0, 1, quantity));
           children.add(new Property("unitPrice", "Money", "If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.", 0, 1, unitPrice));
           children.add(new Property("factor", "decimal", "A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.", 0, 1, factor));
+          children.add(new Property("tax", "Money", "The total of taxes applicable for this product or service.", 0, 1, tax));
           children.add(new Property("net", "Money", "The quantity times the unit price for an additional service or product or charge.", 0, 1, net));
           children.add(new Property("noteNumber", "positiveInt", "The numbers associated with notes below which apply to the adjudication of this item.", 0, java.lang.Integer.MAX_VALUE, noteNumber));
+          children.add(new Property("decision", "CodeableConcept", "The result of the claim, predetermination, or preauthorization adjudication.", 0, 1, decision));
           children.add(new Property("adjudication", "@ClaimResponse.item.adjudication", "The adjudication results.", 0, java.lang.Integer.MAX_VALUE, adjudication));
           children.add(new Property("subDetail", "", "The third-tier service adjudications for payor added services.", 0, java.lang.Integer.MAX_VALUE, subDetail));
         }
@@ -3542,13 +4210,17 @@ public class ClaimResponse extends DomainResource {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 1957227299: /*productOrService*/  return new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.", 0, 1, productOrService);
+          case 1099842588: /*revenue*/  return new Property("revenue", "CodeableConcept", "The type of revenue or cost center providing the product and/or service.", 0, 1, revenue);
+          case 1957227299: /*productOrService*/  return new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.", 0, 1, productOrService);
+          case -717476168: /*productOrServiceEnd*/  return new Property("productOrServiceEnd", "CodeableConcept", "This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.", 0, 1, productOrServiceEnd);
           case -615513385: /*modifier*/  return new Property("modifier", "CodeableConcept", "Item typification or modifiers codes to convey additional context for the product or service.", 0, java.lang.Integer.MAX_VALUE, modifier);
           case -1285004149: /*quantity*/  return new Property("quantity", "Quantity", "The number of repetitions of a service or product.", 0, 1, quantity);
           case -486196699: /*unitPrice*/  return new Property("unitPrice", "Money", "If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.", 0, 1, unitPrice);
           case -1282148017: /*factor*/  return new Property("factor", "decimal", "A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.", 0, 1, factor);
+          case 114603: /*tax*/  return new Property("tax", "Money", "The total of taxes applicable for this product or service.", 0, 1, tax);
           case 108957: /*net*/  return new Property("net", "Money", "The quantity times the unit price for an additional service or product or charge.", 0, 1, net);
           case -1110033957: /*noteNumber*/  return new Property("noteNumber", "positiveInt", "The numbers associated with notes below which apply to the adjudication of this item.", 0, java.lang.Integer.MAX_VALUE, noteNumber);
+          case 565719004: /*decision*/  return new Property("decision", "CodeableConcept", "The result of the claim, predetermination, or preauthorization adjudication.", 0, 1, decision);
           case -231349275: /*adjudication*/  return new Property("adjudication", "@ClaimResponse.item.adjudication", "The adjudication results.", 0, java.lang.Integer.MAX_VALUE, adjudication);
           case -828829007: /*subDetail*/  return new Property("subDetail", "", "The third-tier service adjudications for payor added services.", 0, java.lang.Integer.MAX_VALUE, subDetail);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -3559,13 +4231,17 @@ public class ClaimResponse extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
+        case 1099842588: /*revenue*/ return this.revenue == null ? new Base[0] : new Base[] {this.revenue}; // CodeableConcept
         case 1957227299: /*productOrService*/ return this.productOrService == null ? new Base[0] : new Base[] {this.productOrService}; // CodeableConcept
+        case -717476168: /*productOrServiceEnd*/ return this.productOrServiceEnd == null ? new Base[0] : new Base[] {this.productOrServiceEnd}; // CodeableConcept
         case -615513385: /*modifier*/ return this.modifier == null ? new Base[0] : this.modifier.toArray(new Base[this.modifier.size()]); // CodeableConcept
         case -1285004149: /*quantity*/ return this.quantity == null ? new Base[0] : new Base[] {this.quantity}; // Quantity
         case -486196699: /*unitPrice*/ return this.unitPrice == null ? new Base[0] : new Base[] {this.unitPrice}; // Money
         case -1282148017: /*factor*/ return this.factor == null ? new Base[0] : new Base[] {this.factor}; // DecimalType
+        case 114603: /*tax*/ return this.tax == null ? new Base[0] : new Base[] {this.tax}; // Money
         case 108957: /*net*/ return this.net == null ? new Base[0] : new Base[] {this.net}; // Money
         case -1110033957: /*noteNumber*/ return this.noteNumber == null ? new Base[0] : this.noteNumber.toArray(new Base[this.noteNumber.size()]); // PositiveIntType
+        case 565719004: /*decision*/ return this.decision == null ? new Base[0] : new Base[] {this.decision}; // CodeableConcept
         case -231349275: /*adjudication*/ return this.adjudication == null ? new Base[0] : this.adjudication.toArray(new Base[this.adjudication.size()]); // AdjudicationComponent
         case -828829007: /*subDetail*/ return this.subDetail == null ? new Base[0] : this.subDetail.toArray(new Base[this.subDetail.size()]); // AddedItemSubDetailComponent
         default: return super.getProperty(hash, name, checkValid);
@@ -3576,8 +4252,14 @@ public class ClaimResponse extends DomainResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
+        case 1099842588: // revenue
+          this.revenue = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
         case 1957227299: // productOrService
           this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -717476168: // productOrServiceEnd
+          this.productOrServiceEnd = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -615513385: // modifier
           this.getModifier().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
@@ -3591,11 +4273,17 @@ public class ClaimResponse extends DomainResource {
         case -1282148017: // factor
           this.factor = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
+        case 114603: // tax
+          this.tax = TypeConvertor.castToMoney(value); // Money
+          return value;
         case 108957: // net
           this.net = TypeConvertor.castToMoney(value); // Money
           return value;
         case -1110033957: // noteNumber
           this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value)); // PositiveIntType
+          return value;
+        case 565719004: // decision
+          this.decision = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -231349275: // adjudication
           this.getAdjudication().add((AdjudicationComponent) value); // AdjudicationComponent
@@ -3610,8 +4298,12 @@ public class ClaimResponse extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("productOrService")) {
+        if (name.equals("revenue")) {
+          this.revenue = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("productOrService")) {
           this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("productOrServiceEnd")) {
+          this.productOrServiceEnd = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("modifier")) {
           this.getModifier().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("quantity")) {
@@ -3620,10 +4312,14 @@ public class ClaimResponse extends DomainResource {
           this.unitPrice = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("factor")) {
           this.factor = TypeConvertor.castToDecimal(value); // DecimalType
+        } else if (name.equals("tax")) {
+          this.tax = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("net")) {
           this.net = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("noteNumber")) {
           this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value));
+        } else if (name.equals("decision")) {
+          this.decision = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("adjudication")) {
           this.getAdjudication().add((AdjudicationComponent) value);
         } else if (name.equals("subDetail")) {
@@ -3636,13 +4332,17 @@ public class ClaimResponse extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
+        case 1099842588:  return getRevenue();
         case 1957227299:  return getProductOrService();
+        case -717476168:  return getProductOrServiceEnd();
         case -615513385:  return addModifier(); 
         case -1285004149:  return getQuantity();
         case -486196699:  return getUnitPrice();
         case -1282148017:  return getFactorElement();
+        case 114603:  return getTax();
         case 108957:  return getNet();
         case -1110033957:  return addNoteNumberElement();
+        case 565719004:  return getDecision();
         case -231349275:  return addAdjudication(); 
         case -828829007:  return addSubDetail(); 
         default: return super.makeProperty(hash, name);
@@ -3653,13 +4353,17 @@ public class ClaimResponse extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
+        case 1099842588: /*revenue*/ return new String[] {"CodeableConcept"};
         case 1957227299: /*productOrService*/ return new String[] {"CodeableConcept"};
+        case -717476168: /*productOrServiceEnd*/ return new String[] {"CodeableConcept"};
         case -615513385: /*modifier*/ return new String[] {"CodeableConcept"};
         case -1285004149: /*quantity*/ return new String[] {"Quantity"};
         case -486196699: /*unitPrice*/ return new String[] {"Money"};
         case -1282148017: /*factor*/ return new String[] {"decimal"};
+        case 114603: /*tax*/ return new String[] {"Money"};
         case 108957: /*net*/ return new String[] {"Money"};
         case -1110033957: /*noteNumber*/ return new String[] {"positiveInt"};
+        case 565719004: /*decision*/ return new String[] {"CodeableConcept"};
         case -231349275: /*adjudication*/ return new String[] {"@ClaimResponse.item.adjudication"};
         case -828829007: /*subDetail*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
@@ -3669,9 +4373,17 @@ public class ClaimResponse extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("productOrService")) {
+        if (name.equals("revenue")) {
+          this.revenue = new CodeableConcept();
+          return this.revenue;
+        }
+        else if (name.equals("productOrService")) {
           this.productOrService = new CodeableConcept();
           return this.productOrService;
+        }
+        else if (name.equals("productOrServiceEnd")) {
+          this.productOrServiceEnd = new CodeableConcept();
+          return this.productOrServiceEnd;
         }
         else if (name.equals("modifier")) {
           return addModifier();
@@ -3687,12 +4399,20 @@ public class ClaimResponse extends DomainResource {
         else if (name.equals("factor")) {
           throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.addItem.detail.factor");
         }
+        else if (name.equals("tax")) {
+          this.tax = new Money();
+          return this.tax;
+        }
         else if (name.equals("net")) {
           this.net = new Money();
           return this.net;
         }
         else if (name.equals("noteNumber")) {
           throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.addItem.detail.noteNumber");
+        }
+        else if (name.equals("decision")) {
+          this.decision = new CodeableConcept();
+          return this.decision;
         }
         else if (name.equals("adjudication")) {
           return addAdjudication();
@@ -3712,7 +4432,9 @@ public class ClaimResponse extends DomainResource {
 
       public void copyValues(AddedItemDetailComponent dst) {
         super.copyValues(dst);
+        dst.revenue = revenue == null ? null : revenue.copy();
         dst.productOrService = productOrService == null ? null : productOrService.copy();
+        dst.productOrServiceEnd = productOrServiceEnd == null ? null : productOrServiceEnd.copy();
         if (modifier != null) {
           dst.modifier = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : modifier)
@@ -3721,12 +4443,14 @@ public class ClaimResponse extends DomainResource {
         dst.quantity = quantity == null ? null : quantity.copy();
         dst.unitPrice = unitPrice == null ? null : unitPrice.copy();
         dst.factor = factor == null ? null : factor.copy();
+        dst.tax = tax == null ? null : tax.copy();
         dst.net = net == null ? null : net.copy();
         if (noteNumber != null) {
           dst.noteNumber = new ArrayList<PositiveIntType>();
           for (PositiveIntType i : noteNumber)
             dst.noteNumber.add(i.copy());
         };
+        dst.decision = decision == null ? null : decision.copy();
         if (adjudication != null) {
           dst.adjudication = new ArrayList<AdjudicationComponent>();
           for (AdjudicationComponent i : adjudication)
@@ -3746,10 +4470,12 @@ public class ClaimResponse extends DomainResource {
         if (!(other_ instanceof AddedItemDetailComponent))
           return false;
         AddedItemDetailComponent o = (AddedItemDetailComponent) other_;
-        return compareDeep(productOrService, o.productOrService, true) && compareDeep(modifier, o.modifier, true)
+        return compareDeep(revenue, o.revenue, true) && compareDeep(productOrService, o.productOrService, true)
+           && compareDeep(productOrServiceEnd, o.productOrServiceEnd, true) && compareDeep(modifier, o.modifier, true)
            && compareDeep(quantity, o.quantity, true) && compareDeep(unitPrice, o.unitPrice, true) && compareDeep(factor, o.factor, true)
-           && compareDeep(net, o.net, true) && compareDeep(noteNumber, o.noteNumber, true) && compareDeep(adjudication, o.adjudication, true)
-           && compareDeep(subDetail, o.subDetail, true);
+           && compareDeep(tax, o.tax, true) && compareDeep(net, o.net, true) && compareDeep(noteNumber, o.noteNumber, true)
+           && compareDeep(decision, o.decision, true) && compareDeep(adjudication, o.adjudication, true) && compareDeep(subDetail, o.subDetail, true)
+          ;
       }
 
       @Override
@@ -3763,8 +4489,9 @@ public class ClaimResponse extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(productOrService, modifier
-          , quantity, unitPrice, factor, net, noteNumber, adjudication, subDetail);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(revenue, productOrService
+          , productOrServiceEnd, modifier, quantity, unitPrice, factor, tax, net, noteNumber
+          , decision, adjudication, subDetail);
       }
 
   public String fhirType() {
@@ -3777,17 +4504,33 @@ public class ClaimResponse extends DomainResource {
     @Block()
     public static class AddedItemSubDetailComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.
+         * The type of revenue or cost center providing the product and/or service.
          */
-        @Child(name = "productOrService", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Billing, service, product, or drug code", formalDefinition="When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item." )
+        @Child(name = "revenue", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Revenue or cost center code", formalDefinition="The type of revenue or cost center providing the product and/or service." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ex-revenue-center")
+        protected CodeableConcept revenue;
+
+        /**
+         * When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.
+         */
+        @Child(name = "productOrService", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Billing, service, product, or drug code", formalDefinition="When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-uscls")
         protected CodeableConcept productOrService;
 
         /**
+         * This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.
+         */
+        @Child(name = "productOrServiceEnd", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="End of a range of codes", formalDefinition="This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-uscls")
+        protected CodeableConcept productOrServiceEnd;
+
+        /**
          * Item typification or modifiers codes to convey additional context for the product or service.
          */
-        @Child(name = "modifier", type = {CodeableConcept.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "modifier", type = {CodeableConcept.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Service/Product billing modifiers", formalDefinition="Item typification or modifiers codes to convey additional context for the product or service." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-modifiers")
         protected List<CodeableConcept> modifier;
@@ -3795,46 +4538,61 @@ public class ClaimResponse extends DomainResource {
         /**
          * The number of repetitions of a service or product.
          */
-        @Child(name = "quantity", type = {Quantity.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "quantity", type = {Quantity.class}, order=5, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Count of products or services", formalDefinition="The number of repetitions of a service or product." )
         protected Quantity quantity;
 
         /**
          * If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.
          */
-        @Child(name = "unitPrice", type = {Money.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "unitPrice", type = {Money.class}, order=6, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Fee, charge or cost per item", formalDefinition="If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group." )
         protected Money unitPrice;
 
         /**
          * A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.
          */
-        @Child(name = "factor", type = {DecimalType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "factor", type = {DecimalType.class}, order=7, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Price scaling factor", formalDefinition="A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount." )
         protected DecimalType factor;
 
         /**
+         * The total of taxes applicable for this product or service.
+         */
+        @Child(name = "tax", type = {Money.class}, order=8, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Total tax", formalDefinition="The total of taxes applicable for this product or service." )
+        protected Money tax;
+
+        /**
          * The quantity times the unit price for an additional service or product or charge.
          */
-        @Child(name = "net", type = {Money.class}, order=6, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "net", type = {Money.class}, order=9, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Total item cost", formalDefinition="The quantity times the unit price for an additional service or product or charge." )
         protected Money net;
 
         /**
          * The numbers associated with notes below which apply to the adjudication of this item.
          */
-        @Child(name = "noteNumber", type = {PositiveIntType.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "noteNumber", type = {PositiveIntType.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Applicable note numbers", formalDefinition="The numbers associated with notes below which apply to the adjudication of this item." )
         protected List<PositiveIntType> noteNumber;
 
         /**
+         * The result of the claim, predetermination, or preauthorization adjudication.
+         */
+        @Child(name = "decision", type = {CodeableConcept.class}, order=11, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Result of the adjudication", formalDefinition="The result of the claim, predetermination, or preauthorization adjudication." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-decision")
+        protected CodeableConcept decision;
+
+        /**
          * The adjudication results.
          */
-        @Child(name = "adjudication", type = {AdjudicationComponent.class}, order=8, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "adjudication", type = {AdjudicationComponent.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Added items detail adjudication", formalDefinition="The adjudication results." )
         protected List<AdjudicationComponent> adjudication;
 
-        private static final long serialVersionUID = 1301363592L;
+        private static final long serialVersionUID = 1259363316L;
 
     /**
      * Constructor
@@ -3843,17 +4601,32 @@ public class ClaimResponse extends DomainResource {
         super();
       }
 
-    /**
-     * Constructor
-     */
-      public AddedItemSubDetailComponent(CodeableConcept productOrService, AdjudicationComponent adjudication) {
-        super();
-        this.setProductOrService(productOrService);
-        this.addAdjudication(adjudication);
-      }
+        /**
+         * @return {@link #revenue} (The type of revenue or cost center providing the product and/or service.)
+         */
+        public CodeableConcept getRevenue() { 
+          if (this.revenue == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AddedItemSubDetailComponent.revenue");
+            else if (Configuration.doAutoCreate())
+              this.revenue = new CodeableConcept(); // cc
+          return this.revenue;
+        }
+
+        public boolean hasRevenue() { 
+          return this.revenue != null && !this.revenue.isEmpty();
+        }
 
         /**
-         * @return {@link #productOrService} (When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.)
+         * @param value {@link #revenue} (The type of revenue or cost center providing the product and/or service.)
+         */
+        public AddedItemSubDetailComponent setRevenue(CodeableConcept value) { 
+          this.revenue = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #productOrService} (When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.)
          */
         public CodeableConcept getProductOrService() { 
           if (this.productOrService == null)
@@ -3869,10 +4642,34 @@ public class ClaimResponse extends DomainResource {
         }
 
         /**
-         * @param value {@link #productOrService} (When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.)
+         * @param value {@link #productOrService} (When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.)
          */
         public AddedItemSubDetailComponent setProductOrService(CodeableConcept value) { 
           this.productOrService = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #productOrServiceEnd} (This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.)
+         */
+        public CodeableConcept getProductOrServiceEnd() { 
+          if (this.productOrServiceEnd == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AddedItemSubDetailComponent.productOrServiceEnd");
+            else if (Configuration.doAutoCreate())
+              this.productOrServiceEnd = new CodeableConcept(); // cc
+          return this.productOrServiceEnd;
+        }
+
+        public boolean hasProductOrServiceEnd() { 
+          return this.productOrServiceEnd != null && !this.productOrServiceEnd.isEmpty();
+        }
+
+        /**
+         * @param value {@link #productOrServiceEnd} (This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.)
+         */
+        public AddedItemSubDetailComponent setProductOrServiceEnd(CodeableConcept value) { 
+          this.productOrServiceEnd = value;
           return this;
         }
 
@@ -4045,6 +4842,30 @@ public class ClaimResponse extends DomainResource {
         }
 
         /**
+         * @return {@link #tax} (The total of taxes applicable for this product or service.)
+         */
+        public Money getTax() { 
+          if (this.tax == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AddedItemSubDetailComponent.tax");
+            else if (Configuration.doAutoCreate())
+              this.tax = new Money(); // cc
+          return this.tax;
+        }
+
+        public boolean hasTax() { 
+          return this.tax != null && !this.tax.isEmpty();
+        }
+
+        /**
+         * @param value {@link #tax} (The total of taxes applicable for this product or service.)
+         */
+        public AddedItemSubDetailComponent setTax(Money value) { 
+          this.tax = value;
+          return this;
+        }
+
+        /**
          * @return {@link #net} (The quantity times the unit price for an additional service or product or charge.)
          */
         public Money getNet() { 
@@ -4130,6 +4951,30 @@ public class ClaimResponse extends DomainResource {
         }
 
         /**
+         * @return {@link #decision} (The result of the claim, predetermination, or preauthorization adjudication.)
+         */
+        public CodeableConcept getDecision() { 
+          if (this.decision == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AddedItemSubDetailComponent.decision");
+            else if (Configuration.doAutoCreate())
+              this.decision = new CodeableConcept(); // cc
+          return this.decision;
+        }
+
+        public boolean hasDecision() { 
+          return this.decision != null && !this.decision.isEmpty();
+        }
+
+        /**
+         * @param value {@link #decision} (The result of the claim, predetermination, or preauthorization adjudication.)
+         */
+        public AddedItemSubDetailComponent setDecision(CodeableConcept value) { 
+          this.decision = value;
+          return this;
+        }
+
+        /**
          * @return {@link #adjudication} (The adjudication results.)
          */
         public List<AdjudicationComponent> getAdjudication() { 
@@ -4184,26 +5029,34 @@ public class ClaimResponse extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.", 0, 1, productOrService));
+          children.add(new Property("revenue", "CodeableConcept", "The type of revenue or cost center providing the product and/or service.", 0, 1, revenue));
+          children.add(new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.", 0, 1, productOrService));
+          children.add(new Property("productOrServiceEnd", "CodeableConcept", "This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.", 0, 1, productOrServiceEnd));
           children.add(new Property("modifier", "CodeableConcept", "Item typification or modifiers codes to convey additional context for the product or service.", 0, java.lang.Integer.MAX_VALUE, modifier));
           children.add(new Property("quantity", "Quantity", "The number of repetitions of a service or product.", 0, 1, quantity));
           children.add(new Property("unitPrice", "Money", "If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.", 0, 1, unitPrice));
           children.add(new Property("factor", "decimal", "A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.", 0, 1, factor));
+          children.add(new Property("tax", "Money", "The total of taxes applicable for this product or service.", 0, 1, tax));
           children.add(new Property("net", "Money", "The quantity times the unit price for an additional service or product or charge.", 0, 1, net));
           children.add(new Property("noteNumber", "positiveInt", "The numbers associated with notes below which apply to the adjudication of this item.", 0, java.lang.Integer.MAX_VALUE, noteNumber));
+          children.add(new Property("decision", "CodeableConcept", "The result of the claim, predetermination, or preauthorization adjudication.", 0, 1, decision));
           children.add(new Property("adjudication", "@ClaimResponse.item.adjudication", "The adjudication results.", 0, java.lang.Integer.MAX_VALUE, adjudication));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 1957227299: /*productOrService*/  return new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.", 0, 1, productOrService);
+          case 1099842588: /*revenue*/  return new Property("revenue", "CodeableConcept", "The type of revenue or cost center providing the product and/or service.", 0, 1, revenue);
+          case 1957227299: /*productOrService*/  return new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.", 0, 1, productOrService);
+          case -717476168: /*productOrServiceEnd*/  return new Property("productOrServiceEnd", "CodeableConcept", "This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.", 0, 1, productOrServiceEnd);
           case -615513385: /*modifier*/  return new Property("modifier", "CodeableConcept", "Item typification or modifiers codes to convey additional context for the product or service.", 0, java.lang.Integer.MAX_VALUE, modifier);
           case -1285004149: /*quantity*/  return new Property("quantity", "Quantity", "The number of repetitions of a service or product.", 0, 1, quantity);
           case -486196699: /*unitPrice*/  return new Property("unitPrice", "Money", "If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.", 0, 1, unitPrice);
           case -1282148017: /*factor*/  return new Property("factor", "decimal", "A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.", 0, 1, factor);
+          case 114603: /*tax*/  return new Property("tax", "Money", "The total of taxes applicable for this product or service.", 0, 1, tax);
           case 108957: /*net*/  return new Property("net", "Money", "The quantity times the unit price for an additional service or product or charge.", 0, 1, net);
           case -1110033957: /*noteNumber*/  return new Property("noteNumber", "positiveInt", "The numbers associated with notes below which apply to the adjudication of this item.", 0, java.lang.Integer.MAX_VALUE, noteNumber);
+          case 565719004: /*decision*/  return new Property("decision", "CodeableConcept", "The result of the claim, predetermination, or preauthorization adjudication.", 0, 1, decision);
           case -231349275: /*adjudication*/  return new Property("adjudication", "@ClaimResponse.item.adjudication", "The adjudication results.", 0, java.lang.Integer.MAX_VALUE, adjudication);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -4213,13 +5066,17 @@ public class ClaimResponse extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
+        case 1099842588: /*revenue*/ return this.revenue == null ? new Base[0] : new Base[] {this.revenue}; // CodeableConcept
         case 1957227299: /*productOrService*/ return this.productOrService == null ? new Base[0] : new Base[] {this.productOrService}; // CodeableConcept
+        case -717476168: /*productOrServiceEnd*/ return this.productOrServiceEnd == null ? new Base[0] : new Base[] {this.productOrServiceEnd}; // CodeableConcept
         case -615513385: /*modifier*/ return this.modifier == null ? new Base[0] : this.modifier.toArray(new Base[this.modifier.size()]); // CodeableConcept
         case -1285004149: /*quantity*/ return this.quantity == null ? new Base[0] : new Base[] {this.quantity}; // Quantity
         case -486196699: /*unitPrice*/ return this.unitPrice == null ? new Base[0] : new Base[] {this.unitPrice}; // Money
         case -1282148017: /*factor*/ return this.factor == null ? new Base[0] : new Base[] {this.factor}; // DecimalType
+        case 114603: /*tax*/ return this.tax == null ? new Base[0] : new Base[] {this.tax}; // Money
         case 108957: /*net*/ return this.net == null ? new Base[0] : new Base[] {this.net}; // Money
         case -1110033957: /*noteNumber*/ return this.noteNumber == null ? new Base[0] : this.noteNumber.toArray(new Base[this.noteNumber.size()]); // PositiveIntType
+        case 565719004: /*decision*/ return this.decision == null ? new Base[0] : new Base[] {this.decision}; // CodeableConcept
         case -231349275: /*adjudication*/ return this.adjudication == null ? new Base[0] : this.adjudication.toArray(new Base[this.adjudication.size()]); // AdjudicationComponent
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -4229,8 +5086,14 @@ public class ClaimResponse extends DomainResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
+        case 1099842588: // revenue
+          this.revenue = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
         case 1957227299: // productOrService
           this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -717476168: // productOrServiceEnd
+          this.productOrServiceEnd = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -615513385: // modifier
           this.getModifier().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
@@ -4244,11 +5107,17 @@ public class ClaimResponse extends DomainResource {
         case -1282148017: // factor
           this.factor = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
+        case 114603: // tax
+          this.tax = TypeConvertor.castToMoney(value); // Money
+          return value;
         case 108957: // net
           this.net = TypeConvertor.castToMoney(value); // Money
           return value;
         case -1110033957: // noteNumber
           this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value)); // PositiveIntType
+          return value;
+        case 565719004: // decision
+          this.decision = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -231349275: // adjudication
           this.getAdjudication().add((AdjudicationComponent) value); // AdjudicationComponent
@@ -4260,8 +5129,12 @@ public class ClaimResponse extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("productOrService")) {
+        if (name.equals("revenue")) {
+          this.revenue = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("productOrService")) {
           this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("productOrServiceEnd")) {
+          this.productOrServiceEnd = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("modifier")) {
           this.getModifier().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("quantity")) {
@@ -4270,10 +5143,14 @@ public class ClaimResponse extends DomainResource {
           this.unitPrice = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("factor")) {
           this.factor = TypeConvertor.castToDecimal(value); // DecimalType
+        } else if (name.equals("tax")) {
+          this.tax = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("net")) {
           this.net = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("noteNumber")) {
           this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value));
+        } else if (name.equals("decision")) {
+          this.decision = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("adjudication")) {
           this.getAdjudication().add((AdjudicationComponent) value);
         } else
@@ -4284,13 +5161,17 @@ public class ClaimResponse extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
+        case 1099842588:  return getRevenue();
         case 1957227299:  return getProductOrService();
+        case -717476168:  return getProductOrServiceEnd();
         case -615513385:  return addModifier(); 
         case -1285004149:  return getQuantity();
         case -486196699:  return getUnitPrice();
         case -1282148017:  return getFactorElement();
+        case 114603:  return getTax();
         case 108957:  return getNet();
         case -1110033957:  return addNoteNumberElement();
+        case 565719004:  return getDecision();
         case -231349275:  return addAdjudication(); 
         default: return super.makeProperty(hash, name);
         }
@@ -4300,13 +5181,17 @@ public class ClaimResponse extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
+        case 1099842588: /*revenue*/ return new String[] {"CodeableConcept"};
         case 1957227299: /*productOrService*/ return new String[] {"CodeableConcept"};
+        case -717476168: /*productOrServiceEnd*/ return new String[] {"CodeableConcept"};
         case -615513385: /*modifier*/ return new String[] {"CodeableConcept"};
         case -1285004149: /*quantity*/ return new String[] {"Quantity"};
         case -486196699: /*unitPrice*/ return new String[] {"Money"};
         case -1282148017: /*factor*/ return new String[] {"decimal"};
+        case 114603: /*tax*/ return new String[] {"Money"};
         case 108957: /*net*/ return new String[] {"Money"};
         case -1110033957: /*noteNumber*/ return new String[] {"positiveInt"};
+        case 565719004: /*decision*/ return new String[] {"CodeableConcept"};
         case -231349275: /*adjudication*/ return new String[] {"@ClaimResponse.item.adjudication"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -4315,9 +5200,17 @@ public class ClaimResponse extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("productOrService")) {
+        if (name.equals("revenue")) {
+          this.revenue = new CodeableConcept();
+          return this.revenue;
+        }
+        else if (name.equals("productOrService")) {
           this.productOrService = new CodeableConcept();
           return this.productOrService;
+        }
+        else if (name.equals("productOrServiceEnd")) {
+          this.productOrServiceEnd = new CodeableConcept();
+          return this.productOrServiceEnd;
         }
         else if (name.equals("modifier")) {
           return addModifier();
@@ -4333,12 +5226,20 @@ public class ClaimResponse extends DomainResource {
         else if (name.equals("factor")) {
           throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.addItem.detail.subDetail.factor");
         }
+        else if (name.equals("tax")) {
+          this.tax = new Money();
+          return this.tax;
+        }
         else if (name.equals("net")) {
           this.net = new Money();
           return this.net;
         }
         else if (name.equals("noteNumber")) {
           throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.addItem.detail.subDetail.noteNumber");
+        }
+        else if (name.equals("decision")) {
+          this.decision = new CodeableConcept();
+          return this.decision;
         }
         else if (name.equals("adjudication")) {
           return addAdjudication();
@@ -4355,7 +5256,9 @@ public class ClaimResponse extends DomainResource {
 
       public void copyValues(AddedItemSubDetailComponent dst) {
         super.copyValues(dst);
+        dst.revenue = revenue == null ? null : revenue.copy();
         dst.productOrService = productOrService == null ? null : productOrService.copy();
+        dst.productOrServiceEnd = productOrServiceEnd == null ? null : productOrServiceEnd.copy();
         if (modifier != null) {
           dst.modifier = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : modifier)
@@ -4364,12 +5267,14 @@ public class ClaimResponse extends DomainResource {
         dst.quantity = quantity == null ? null : quantity.copy();
         dst.unitPrice = unitPrice == null ? null : unitPrice.copy();
         dst.factor = factor == null ? null : factor.copy();
+        dst.tax = tax == null ? null : tax.copy();
         dst.net = net == null ? null : net.copy();
         if (noteNumber != null) {
           dst.noteNumber = new ArrayList<PositiveIntType>();
           for (PositiveIntType i : noteNumber)
             dst.noteNumber.add(i.copy());
         };
+        dst.decision = decision == null ? null : decision.copy();
         if (adjudication != null) {
           dst.adjudication = new ArrayList<AdjudicationComponent>();
           for (AdjudicationComponent i : adjudication)
@@ -4384,10 +5289,11 @@ public class ClaimResponse extends DomainResource {
         if (!(other_ instanceof AddedItemSubDetailComponent))
           return false;
         AddedItemSubDetailComponent o = (AddedItemSubDetailComponent) other_;
-        return compareDeep(productOrService, o.productOrService, true) && compareDeep(modifier, o.modifier, true)
+        return compareDeep(revenue, o.revenue, true) && compareDeep(productOrService, o.productOrService, true)
+           && compareDeep(productOrServiceEnd, o.productOrServiceEnd, true) && compareDeep(modifier, o.modifier, true)
            && compareDeep(quantity, o.quantity, true) && compareDeep(unitPrice, o.unitPrice, true) && compareDeep(factor, o.factor, true)
-           && compareDeep(net, o.net, true) && compareDeep(noteNumber, o.noteNumber, true) && compareDeep(adjudication, o.adjudication, true)
-          ;
+           && compareDeep(tax, o.tax, true) && compareDeep(net, o.net, true) && compareDeep(noteNumber, o.noteNumber, true)
+           && compareDeep(decision, o.decision, true) && compareDeep(adjudication, o.adjudication, true);
       }
 
       @Override
@@ -4401,8 +5307,9 @@ public class ClaimResponse extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(productOrService, modifier
-          , quantity, unitPrice, factor, net, noteNumber, adjudication);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(revenue, productOrService
+          , productOrServiceEnd, modifier, quantity, unitPrice, factor, tax, net, noteNumber
+          , decision, adjudication);
       }
 
   public String fhirType() {
@@ -6233,10 +7140,10 @@ public class ClaimResponse extends DomainResource {
     protected CodeableConcept subType;
 
     /**
-     * A code to indicate whether the nature of the request is: to request adjudication of products and services previously rendered; or requesting authorization and adjudication for provision in the future; or requesting the non-binding adjudication of the listed products and services which could be provided in the future.
+     * A code to indicate whether the nature of the request is: Claim - A request to an Insurer to adjudicate the supplied charges for health care goods and services under the identified policy and to pay the determined Benefit amount, if any; Preauthorization - A request to an Insurer to adjudicate the supplied proposed future charges for health care goods and services under the identified policy and to approve the services and provide the expected benefit amounts and potentially to reserve funds to pay the benefits when Claims for the indicated services are later submitted; or, Pre-determination - A request to an Insurer to adjudicate the supplied 'what if' charges for health care goods and services under the identified policy and report back what the Benefit payable would be had the services actually been provided.
      */
     @Child(name = "use", type = {CodeType.class}, order=4, min=1, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="claim | preauthorization | predetermination", formalDefinition="A code to indicate whether the nature of the request is: to request adjudication of products and services previously rendered; or requesting authorization and adjudication for provision in the future; or requesting the non-binding adjudication of the listed products and services which could be provided in the future." )
+    @Description(shortDefinition="claim | preauthorization | predetermination", formalDefinition="A code to indicate whether the nature of the request is: Claim - A request to an Insurer to adjudicate the supplied charges for health care goods and services under the identified policy and to pay the determined Benefit amount, if any; Preauthorization - A request to an Insurer to adjudicate the supplied proposed future charges for health care goods and services under the identified policy and to approve the services and provide the expected benefit amounts and potentially to reserve funds to pay the benefits when Claims for the indicated services are later submitted; or, Pre-determination - A request to an Insurer to adjudicate the supplied 'what if' charges for health care goods and services under the identified policy and report back what the Benefit payable would be had the services actually been provided." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-use")
     protected Enumeration<Use> use;
 
@@ -6257,7 +7164,7 @@ public class ClaimResponse extends DomainResource {
     /**
      * The party responsible for authorization, adjudication and reimbursement.
      */
-    @Child(name = "insurer", type = {Organization.class}, order=7, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "insurer", type = {Organization.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Party responsible for reimbursement", formalDefinition="The party responsible for authorization, adjudication and reimbursement." )
     protected Reference insurer;
 
@@ -6284,73 +7191,96 @@ public class ClaimResponse extends DomainResource {
     protected Enumeration<ClaimProcessingCodes> outcome;
 
     /**
+     * The result of the claim, predetermination, or preauthorization adjudication.
+     */
+    @Child(name = "decision", type = {CodeableConcept.class}, order=11, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Result of the adjudication", formalDefinition="The result of the claim, predetermination, or preauthorization adjudication." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-decision")
+    protected CodeableConcept decision;
+
+    /**
      * A human readable description of the status of the adjudication.
      */
-    @Child(name = "disposition", type = {StringType.class}, order=11, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "disposition", type = {StringType.class}, order=12, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Disposition Message", formalDefinition="A human readable description of the status of the adjudication." )
     protected StringType disposition;
 
     /**
      * Reference from the Insurer which is used in later communications which refers to this adjudication.
      */
-    @Child(name = "preAuthRef", type = {StringType.class}, order=12, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "preAuthRef", type = {StringType.class}, order=13, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Preauthorization reference", formalDefinition="Reference from the Insurer which is used in later communications which refers to this adjudication." )
     protected StringType preAuthRef;
 
     /**
      * The time frame during which this authorization is effective.
      */
-    @Child(name = "preAuthPeriod", type = {Period.class}, order=13, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "preAuthPeriod", type = {Period.class}, order=14, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Preauthorization reference effective period", formalDefinition="The time frame during which this authorization is effective." )
     protected Period preAuthPeriod;
 
     /**
      * Type of Party to be reimbursed: subscriber, provider, other.
      */
-    @Child(name = "payeeType", type = {CodeableConcept.class}, order=14, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "payeeType", type = {CodeableConcept.class}, order=15, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Party to be paid any benefits payable", formalDefinition="Type of Party to be reimbursed: subscriber, provider, other." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/payeetype")
     protected CodeableConcept payeeType;
 
     /**
+     * The Encounters during which this Claim was created or to which the creation of this record is tightly associated.
+     */
+    @Child(name = "encounter", type = {Encounter.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Encounters related to this billed item", formalDefinition="The Encounters during which this Claim was created or to which the creation of this record is tightly associated." )
+    protected List<Reference> encounter;
+
+    /**
+     * A package billing code or bundle code used to group products and services to a particular health condition (such as heart attack) which is based on a predetermined grouping code system.
+     */
+    @Child(name = "diagnosisRelatedGroup", type = {CodeableConcept.class}, order=17, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Package billing code", formalDefinition="A package billing code or bundle code used to group products and services to a particular health condition (such as heart attack) which is based on a predetermined grouping code system." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ex-diagnosisrelatedgroup")
+    protected CodeableConcept diagnosisRelatedGroup;
+
+    /**
      * A claim line. Either a simple (a product or service) or a 'group' of details which can also be a simple items or groups of sub-details.
      */
-    @Child(name = "item", type = {}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "item", type = {}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Adjudication for claim line items", formalDefinition="A claim line. Either a simple (a product or service) or a 'group' of details which can also be a simple items or groups of sub-details." )
     protected List<ItemComponent> item;
 
     /**
      * The first-tier service adjudications for payor added product or service lines.
      */
-    @Child(name = "addItem", type = {}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "addItem", type = {}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Insurer added line items", formalDefinition="The first-tier service adjudications for payor added product or service lines." )
     protected List<AddedItemComponent> addItem;
 
     /**
      * The adjudication results which are presented at the header level rather than at the line-item or add-item levels.
      */
-    @Child(name = "adjudication", type = {AdjudicationComponent.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "adjudication", type = {AdjudicationComponent.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Header-level adjudication", formalDefinition="The adjudication results which are presented at the header level rather than at the line-item or add-item levels." )
     protected List<AdjudicationComponent> adjudication;
 
     /**
      * Categorized monetary totals for the adjudication.
      */
-    @Child(name = "total", type = {}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "total", type = {}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Adjudication totals", formalDefinition="Categorized monetary totals for the adjudication." )
     protected List<TotalComponent> total;
 
     /**
      * Payment details for the adjudication of the claim.
      */
-    @Child(name = "payment", type = {}, order=19, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "payment", type = {}, order=22, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Payment Details", formalDefinition="Payment details for the adjudication of the claim." )
     protected PaymentComponent payment;
 
     /**
      * A code, used only on a response to a preauthorization, to indicate whether the benefits payable have been reserved and for whom.
      */
-    @Child(name = "fundsReserve", type = {CodeableConcept.class}, order=20, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "fundsReserve", type = {CodeableConcept.class}, order=23, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Funds reserved status", formalDefinition="A code, used only on a response to a preauthorization, to indicate whether the benefits payable have been reserved and for whom." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/fundsreserve")
     protected CodeableConcept fundsReserve;
@@ -6358,7 +7288,7 @@ public class ClaimResponse extends DomainResource {
     /**
      * A code for the form to be used for printing the content.
      */
-    @Child(name = "formCode", type = {CodeableConcept.class}, order=21, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "formCode", type = {CodeableConcept.class}, order=24, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Printed form identifier", formalDefinition="A code for the form to be used for printing the content." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/forms")
     protected CodeableConcept formCode;
@@ -6366,39 +7296,39 @@ public class ClaimResponse extends DomainResource {
     /**
      * The actual form, by reference or inclusion, for printing the content or an EOB.
      */
-    @Child(name = "form", type = {Attachment.class}, order=22, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "form", type = {Attachment.class}, order=25, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Printed reference or actual form", formalDefinition="The actual form, by reference or inclusion, for printing the content or an EOB." )
     protected Attachment form;
 
     /**
      * A note that describes or explains adjudication results in a human readable form.
      */
-    @Child(name = "processNote", type = {}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "processNote", type = {}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Note concerning adjudication", formalDefinition="A note that describes or explains adjudication results in a human readable form." )
     protected List<NoteComponent> processNote;
 
     /**
      * Request for additional supporting or authorizing information.
      */
-    @Child(name = "communicationRequest", type = {CommunicationRequest.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "communicationRequest", type = {CommunicationRequest.class}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Request for additional information", formalDefinition="Request for additional supporting or authorizing information." )
     protected List<Reference> communicationRequest;
 
     /**
      * Financial instruments for reimbursement for the health care products and services specified on the claim.
      */
-    @Child(name = "insurance", type = {}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "insurance", type = {}, order=28, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Patient insurance information", formalDefinition="Financial instruments for reimbursement for the health care products and services specified on the claim." )
     protected List<InsuranceComponent> insurance;
 
     /**
      * Errors encountered during the processing of the adjudication.
      */
-    @Child(name = "error", type = {}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "error", type = {}, order=29, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Processing errors", formalDefinition="Errors encountered during the processing of the adjudication." )
     protected List<ErrorComponent> error;
 
-    private static final long serialVersionUID = -868588335L;
+    private static final long serialVersionUID = -1308435182L;
 
   /**
    * Constructor
@@ -6410,14 +7340,13 @@ public class ClaimResponse extends DomainResource {
   /**
    * Constructor
    */
-    public ClaimResponse(FinancialResourceStatusCodes status, CodeableConcept type, Use use, Reference patient, Date created, Reference insurer, ClaimProcessingCodes outcome) {
+    public ClaimResponse(FinancialResourceStatusCodes status, CodeableConcept type, Use use, Reference patient, Date created, ClaimProcessingCodes outcome) {
       super();
       this.setStatus(status);
       this.setType(type);
       this.setUse(use);
       this.setPatient(patient);
       this.setCreated(created);
-      this.setInsurer(insurer);
       this.setOutcome(outcome);
     }
 
@@ -6568,7 +7497,7 @@ public class ClaimResponse extends DomainResource {
     }
 
     /**
-     * @return {@link #use} (A code to indicate whether the nature of the request is: to request adjudication of products and services previously rendered; or requesting authorization and adjudication for provision in the future; or requesting the non-binding adjudication of the listed products and services which could be provided in the future.). This is the underlying object with id, value and extensions. The accessor "getUse" gives direct access to the value
+     * @return {@link #use} (A code to indicate whether the nature of the request is: Claim - A request to an Insurer to adjudicate the supplied charges for health care goods and services under the identified policy and to pay the determined Benefit amount, if any; Preauthorization - A request to an Insurer to adjudicate the supplied proposed future charges for health care goods and services under the identified policy and to approve the services and provide the expected benefit amounts and potentially to reserve funds to pay the benefits when Claims for the indicated services are later submitted; or, Pre-determination - A request to an Insurer to adjudicate the supplied 'what if' charges for health care goods and services under the identified policy and report back what the Benefit payable would be had the services actually been provided.). This is the underlying object with id, value and extensions. The accessor "getUse" gives direct access to the value
      */
     public Enumeration<Use> getUseElement() { 
       if (this.use == null)
@@ -6588,7 +7517,7 @@ public class ClaimResponse extends DomainResource {
     }
 
     /**
-     * @param value {@link #use} (A code to indicate whether the nature of the request is: to request adjudication of products and services previously rendered; or requesting authorization and adjudication for provision in the future; or requesting the non-binding adjudication of the listed products and services which could be provided in the future.). This is the underlying object with id, value and extensions. The accessor "getUse" gives direct access to the value
+     * @param value {@link #use} (A code to indicate whether the nature of the request is: Claim - A request to an Insurer to adjudicate the supplied charges for health care goods and services under the identified policy and to pay the determined Benefit amount, if any; Preauthorization - A request to an Insurer to adjudicate the supplied proposed future charges for health care goods and services under the identified policy and to approve the services and provide the expected benefit amounts and potentially to reserve funds to pay the benefits when Claims for the indicated services are later submitted; or, Pre-determination - A request to an Insurer to adjudicate the supplied 'what if' charges for health care goods and services under the identified policy and report back what the Benefit payable would be had the services actually been provided.). This is the underlying object with id, value and extensions. The accessor "getUse" gives direct access to the value
      */
     public ClaimResponse setUseElement(Enumeration<Use> value) { 
       this.use = value;
@@ -6596,14 +7525,14 @@ public class ClaimResponse extends DomainResource {
     }
 
     /**
-     * @return A code to indicate whether the nature of the request is: to request adjudication of products and services previously rendered; or requesting authorization and adjudication for provision in the future; or requesting the non-binding adjudication of the listed products and services which could be provided in the future.
+     * @return A code to indicate whether the nature of the request is: Claim - A request to an Insurer to adjudicate the supplied charges for health care goods and services under the identified policy and to pay the determined Benefit amount, if any; Preauthorization - A request to an Insurer to adjudicate the supplied proposed future charges for health care goods and services under the identified policy and to approve the services and provide the expected benefit amounts and potentially to reserve funds to pay the benefits when Claims for the indicated services are later submitted; or, Pre-determination - A request to an Insurer to adjudicate the supplied 'what if' charges for health care goods and services under the identified policy and report back what the Benefit payable would be had the services actually been provided.
      */
     public Use getUse() { 
       return this.use == null ? null : this.use.getValue();
     }
 
     /**
-     * @param value A code to indicate whether the nature of the request is: to request adjudication of products and services previously rendered; or requesting authorization and adjudication for provision in the future; or requesting the non-binding adjudication of the listed products and services which could be provided in the future.
+     * @param value A code to indicate whether the nature of the request is: Claim - A request to an Insurer to adjudicate the supplied charges for health care goods and services under the identified policy and to pay the determined Benefit amount, if any; Preauthorization - A request to an Insurer to adjudicate the supplied proposed future charges for health care goods and services under the identified policy and to approve the services and provide the expected benefit amounts and potentially to reserve funds to pay the benefits when Claims for the indicated services are later submitted; or, Pre-determination - A request to an Insurer to adjudicate the supplied 'what if' charges for health care goods and services under the identified policy and report back what the Benefit payable would be had the services actually been provided.
      */
     public ClaimResponse setUse(Use value) { 
         if (this.use == null)
@@ -6799,6 +7728,30 @@ public class ClaimResponse extends DomainResource {
     }
 
     /**
+     * @return {@link #decision} (The result of the claim, predetermination, or preauthorization adjudication.)
+     */
+    public CodeableConcept getDecision() { 
+      if (this.decision == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create ClaimResponse.decision");
+        else if (Configuration.doAutoCreate())
+          this.decision = new CodeableConcept(); // cc
+      return this.decision;
+    }
+
+    public boolean hasDecision() { 
+      return this.decision != null && !this.decision.isEmpty();
+    }
+
+    /**
+     * @param value {@link #decision} (The result of the claim, predetermination, or preauthorization adjudication.)
+     */
+    public ClaimResponse setDecision(CodeableConcept value) { 
+      this.decision = value;
+      return this;
+    }
+
+    /**
      * @return {@link #disposition} (A human readable description of the status of the adjudication.). This is the underlying object with id, value and extensions. The accessor "getDisposition" gives direct access to the value
      */
     public StringType getDispositionElement() { 
@@ -6941,6 +7894,83 @@ public class ClaimResponse extends DomainResource {
      */
     public ClaimResponse setPayeeType(CodeableConcept value) { 
       this.payeeType = value;
+      return this;
+    }
+
+    /**
+     * @return {@link #encounter} (The Encounters during which this Claim was created or to which the creation of this record is tightly associated.)
+     */
+    public List<Reference> getEncounter() { 
+      if (this.encounter == null)
+        this.encounter = new ArrayList<Reference>();
+      return this.encounter;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ClaimResponse setEncounter(List<Reference> theEncounter) { 
+      this.encounter = theEncounter;
+      return this;
+    }
+
+    public boolean hasEncounter() { 
+      if (this.encounter == null)
+        return false;
+      for (Reference item : this.encounter)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public Reference addEncounter() { //3
+      Reference t = new Reference();
+      if (this.encounter == null)
+        this.encounter = new ArrayList<Reference>();
+      this.encounter.add(t);
+      return t;
+    }
+
+    public ClaimResponse addEncounter(Reference t) { //3
+      if (t == null)
+        return this;
+      if (this.encounter == null)
+        this.encounter = new ArrayList<Reference>();
+      this.encounter.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #encounter}, creating it if it does not already exist {3}
+     */
+    public Reference getEncounterFirstRep() { 
+      if (getEncounter().isEmpty()) {
+        addEncounter();
+      }
+      return getEncounter().get(0);
+    }
+
+    /**
+     * @return {@link #diagnosisRelatedGroup} (A package billing code or bundle code used to group products and services to a particular health condition (such as heart attack) which is based on a predetermined grouping code system.)
+     */
+    public CodeableConcept getDiagnosisRelatedGroup() { 
+      if (this.diagnosisRelatedGroup == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create ClaimResponse.diagnosisRelatedGroup");
+        else if (Configuration.doAutoCreate())
+          this.diagnosisRelatedGroup = new CodeableConcept(); // cc
+      return this.diagnosisRelatedGroup;
+    }
+
+    public boolean hasDiagnosisRelatedGroup() { 
+      return this.diagnosisRelatedGroup != null && !this.diagnosisRelatedGroup.isEmpty();
+    }
+
+    /**
+     * @param value {@link #diagnosisRelatedGroup} (A package billing code or bundle code used to group products and services to a particular health condition (such as heart attack) which is based on a predetermined grouping code system.)
+     */
+    public ClaimResponse setDiagnosisRelatedGroup(CodeableConcept value) { 
+      this.diagnosisRelatedGroup = value;
       return this;
     }
 
@@ -7470,17 +8500,20 @@ public class ClaimResponse extends DomainResource {
         children.add(new Property("status", "code", "The status of the resource instance.", 0, 1, status));
         children.add(new Property("type", "CodeableConcept", "A finer grained suite of claim type codes which may convey additional information such as Inpatient vs Outpatient and/or a specialty service.", 0, 1, type));
         children.add(new Property("subType", "CodeableConcept", "A finer grained suite of claim type codes which may convey additional information such as Inpatient vs Outpatient and/or a specialty service.", 0, 1, subType));
-        children.add(new Property("use", "code", "A code to indicate whether the nature of the request is: to request adjudication of products and services previously rendered; or requesting authorization and adjudication for provision in the future; or requesting the non-binding adjudication of the listed products and services which could be provided in the future.", 0, 1, use));
+        children.add(new Property("use", "code", "A code to indicate whether the nature of the request is: Claim - A request to an Insurer to adjudicate the supplied charges for health care goods and services under the identified policy and to pay the determined Benefit amount, if any; Preauthorization - A request to an Insurer to adjudicate the supplied proposed future charges for health care goods and services under the identified policy and to approve the services and provide the expected benefit amounts and potentially to reserve funds to pay the benefits when Claims for the indicated services are later submitted; or, Pre-determination - A request to an Insurer to adjudicate the supplied 'what if' charges for health care goods and services under the identified policy and report back what the Benefit payable would be had the services actually been provided.", 0, 1, use));
         children.add(new Property("patient", "Reference(Patient)", "The party to whom the professional services and/or products have been supplied or are being considered and for whom actual for facast reimbursement is sought.", 0, 1, patient));
         children.add(new Property("created", "dateTime", "The date this resource was created.", 0, 1, created));
         children.add(new Property("insurer", "Reference(Organization)", "The party responsible for authorization, adjudication and reimbursement.", 0, 1, insurer));
         children.add(new Property("requestor", "Reference(Practitioner|PractitionerRole|Organization)", "The provider which is responsible for the claim, predetermination or preauthorization.", 0, 1, requestor));
         children.add(new Property("request", "Reference(Claim)", "Original request resource reference.", 0, 1, request));
         children.add(new Property("outcome", "code", "The outcome of the claim, predetermination, or preauthorization processing.", 0, 1, outcome));
+        children.add(new Property("decision", "CodeableConcept", "The result of the claim, predetermination, or preauthorization adjudication.", 0, 1, decision));
         children.add(new Property("disposition", "string", "A human readable description of the status of the adjudication.", 0, 1, disposition));
         children.add(new Property("preAuthRef", "string", "Reference from the Insurer which is used in later communications which refers to this adjudication.", 0, 1, preAuthRef));
         children.add(new Property("preAuthPeriod", "Period", "The time frame during which this authorization is effective.", 0, 1, preAuthPeriod));
         children.add(new Property("payeeType", "CodeableConcept", "Type of Party to be reimbursed: subscriber, provider, other.", 0, 1, payeeType));
+        children.add(new Property("encounter", "Reference(Encounter)", "The Encounters during which this Claim was created or to which the creation of this record is tightly associated.", 0, java.lang.Integer.MAX_VALUE, encounter));
+        children.add(new Property("diagnosisRelatedGroup", "CodeableConcept", "A package billing code or bundle code used to group products and services to a particular health condition (such as heart attack) which is based on a predetermined grouping code system.", 0, 1, diagnosisRelatedGroup));
         children.add(new Property("item", "", "A claim line. Either a simple (a product or service) or a 'group' of details which can also be a simple items or groups of sub-details.", 0, java.lang.Integer.MAX_VALUE, item));
         children.add(new Property("addItem", "", "The first-tier service adjudications for payor added product or service lines.", 0, java.lang.Integer.MAX_VALUE, addItem));
         children.add(new Property("adjudication", "@ClaimResponse.item.adjudication", "The adjudication results which are presented at the header level rather than at the line-item or add-item levels.", 0, java.lang.Integer.MAX_VALUE, adjudication));
@@ -7502,17 +8535,20 @@ public class ClaimResponse extends DomainResource {
         case -892481550: /*status*/  return new Property("status", "code", "The status of the resource instance.", 0, 1, status);
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "A finer grained suite of claim type codes which may convey additional information such as Inpatient vs Outpatient and/or a specialty service.", 0, 1, type);
         case -1868521062: /*subType*/  return new Property("subType", "CodeableConcept", "A finer grained suite of claim type codes which may convey additional information such as Inpatient vs Outpatient and/or a specialty service.", 0, 1, subType);
-        case 116103: /*use*/  return new Property("use", "code", "A code to indicate whether the nature of the request is: to request adjudication of products and services previously rendered; or requesting authorization and adjudication for provision in the future; or requesting the non-binding adjudication of the listed products and services which could be provided in the future.", 0, 1, use);
+        case 116103: /*use*/  return new Property("use", "code", "A code to indicate whether the nature of the request is: Claim - A request to an Insurer to adjudicate the supplied charges for health care goods and services under the identified policy and to pay the determined Benefit amount, if any; Preauthorization - A request to an Insurer to adjudicate the supplied proposed future charges for health care goods and services under the identified policy and to approve the services and provide the expected benefit amounts and potentially to reserve funds to pay the benefits when Claims for the indicated services are later submitted; or, Pre-determination - A request to an Insurer to adjudicate the supplied 'what if' charges for health care goods and services under the identified policy and report back what the Benefit payable would be had the services actually been provided.", 0, 1, use);
         case -791418107: /*patient*/  return new Property("patient", "Reference(Patient)", "The party to whom the professional services and/or products have been supplied or are being considered and for whom actual for facast reimbursement is sought.", 0, 1, patient);
         case 1028554472: /*created*/  return new Property("created", "dateTime", "The date this resource was created.", 0, 1, created);
         case 1957615864: /*insurer*/  return new Property("insurer", "Reference(Organization)", "The party responsible for authorization, adjudication and reimbursement.", 0, 1, insurer);
         case 693934258: /*requestor*/  return new Property("requestor", "Reference(Practitioner|PractitionerRole|Organization)", "The provider which is responsible for the claim, predetermination or preauthorization.", 0, 1, requestor);
         case 1095692943: /*request*/  return new Property("request", "Reference(Claim)", "Original request resource reference.", 0, 1, request);
         case -1106507950: /*outcome*/  return new Property("outcome", "code", "The outcome of the claim, predetermination, or preauthorization processing.", 0, 1, outcome);
+        case 565719004: /*decision*/  return new Property("decision", "CodeableConcept", "The result of the claim, predetermination, or preauthorization adjudication.", 0, 1, decision);
         case 583380919: /*disposition*/  return new Property("disposition", "string", "A human readable description of the status of the adjudication.", 0, 1, disposition);
         case 522246568: /*preAuthRef*/  return new Property("preAuthRef", "string", "Reference from the Insurer which is used in later communications which refers to this adjudication.", 0, 1, preAuthRef);
         case 1819164812: /*preAuthPeriod*/  return new Property("preAuthPeriod", "Period", "The time frame during which this authorization is effective.", 0, 1, preAuthPeriod);
         case -316321118: /*payeeType*/  return new Property("payeeType", "CodeableConcept", "Type of Party to be reimbursed: subscriber, provider, other.", 0, 1, payeeType);
+        case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "The Encounters during which this Claim was created or to which the creation of this record is tightly associated.", 0, java.lang.Integer.MAX_VALUE, encounter);
+        case -1599182171: /*diagnosisRelatedGroup*/  return new Property("diagnosisRelatedGroup", "CodeableConcept", "A package billing code or bundle code used to group products and services to a particular health condition (such as heart attack) which is based on a predetermined grouping code system.", 0, 1, diagnosisRelatedGroup);
         case 3242771: /*item*/  return new Property("item", "", "A claim line. Either a simple (a product or service) or a 'group' of details which can also be a simple items or groups of sub-details.", 0, java.lang.Integer.MAX_VALUE, item);
         case -1148899500: /*addItem*/  return new Property("addItem", "", "The first-tier service adjudications for payor added product or service lines.", 0, java.lang.Integer.MAX_VALUE, addItem);
         case -231349275: /*adjudication*/  return new Property("adjudication", "@ClaimResponse.item.adjudication", "The adjudication results which are presented at the header level rather than at the line-item or add-item levels.", 0, java.lang.Integer.MAX_VALUE, adjudication);
@@ -7544,10 +8580,13 @@ public class ClaimResponse extends DomainResource {
         case 693934258: /*requestor*/ return this.requestor == null ? new Base[0] : new Base[] {this.requestor}; // Reference
         case 1095692943: /*request*/ return this.request == null ? new Base[0] : new Base[] {this.request}; // Reference
         case -1106507950: /*outcome*/ return this.outcome == null ? new Base[0] : new Base[] {this.outcome}; // Enumeration<ClaimProcessingCodes>
+        case 565719004: /*decision*/ return this.decision == null ? new Base[0] : new Base[] {this.decision}; // CodeableConcept
         case 583380919: /*disposition*/ return this.disposition == null ? new Base[0] : new Base[] {this.disposition}; // StringType
         case 522246568: /*preAuthRef*/ return this.preAuthRef == null ? new Base[0] : new Base[] {this.preAuthRef}; // StringType
         case 1819164812: /*preAuthPeriod*/ return this.preAuthPeriod == null ? new Base[0] : new Base[] {this.preAuthPeriod}; // Period
         case -316321118: /*payeeType*/ return this.payeeType == null ? new Base[0] : new Base[] {this.payeeType}; // CodeableConcept
+        case 1524132147: /*encounter*/ return this.encounter == null ? new Base[0] : this.encounter.toArray(new Base[this.encounter.size()]); // Reference
+        case -1599182171: /*diagnosisRelatedGroup*/ return this.diagnosisRelatedGroup == null ? new Base[0] : new Base[] {this.diagnosisRelatedGroup}; // CodeableConcept
         case 3242771: /*item*/ return this.item == null ? new Base[0] : this.item.toArray(new Base[this.item.size()]); // ItemComponent
         case -1148899500: /*addItem*/ return this.addItem == null ? new Base[0] : this.addItem.toArray(new Base[this.addItem.size()]); // AddedItemComponent
         case -231349275: /*adjudication*/ return this.adjudication == null ? new Base[0] : this.adjudication.toArray(new Base[this.adjudication.size()]); // AdjudicationComponent
@@ -7604,6 +8643,9 @@ public class ClaimResponse extends DomainResource {
           value = new ClaimProcessingCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.outcome = (Enumeration) value; // Enumeration<ClaimProcessingCodes>
           return value;
+        case 565719004: // decision
+          this.decision = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
         case 583380919: // disposition
           this.disposition = TypeConvertor.castToString(value); // StringType
           return value;
@@ -7615,6 +8657,12 @@ public class ClaimResponse extends DomainResource {
           return value;
         case -316321118: // payeeType
           this.payeeType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 1524132147: // encounter
+          this.getEncounter().add(TypeConvertor.castToReference(value)); // Reference
+          return value;
+        case -1599182171: // diagnosisRelatedGroup
+          this.diagnosisRelatedGroup = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3242771: // item
           this.getItem().add((ItemComponent) value); // ItemComponent
@@ -7684,6 +8732,8 @@ public class ClaimResponse extends DomainResource {
         } else if (name.equals("outcome")) {
           value = new ClaimProcessingCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.outcome = (Enumeration) value; // Enumeration<ClaimProcessingCodes>
+        } else if (name.equals("decision")) {
+          this.decision = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("disposition")) {
           this.disposition = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("preAuthRef")) {
@@ -7692,6 +8742,10 @@ public class ClaimResponse extends DomainResource {
           this.preAuthPeriod = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("payeeType")) {
           this.payeeType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("encounter")) {
+          this.getEncounter().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("diagnosisRelatedGroup")) {
+          this.diagnosisRelatedGroup = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("item")) {
           this.getItem().add((ItemComponent) value);
         } else if (name.equals("addItem")) {
@@ -7735,10 +8789,13 @@ public class ClaimResponse extends DomainResource {
         case 693934258:  return getRequestor();
         case 1095692943:  return getRequest();
         case -1106507950:  return getOutcomeElement();
+        case 565719004:  return getDecision();
         case 583380919:  return getDispositionElement();
         case 522246568:  return getPreAuthRefElement();
         case 1819164812:  return getPreAuthPeriod();
         case -316321118:  return getPayeeType();
+        case 1524132147:  return addEncounter(); 
+        case -1599182171:  return getDiagnosisRelatedGroup();
         case 3242771:  return addItem(); 
         case -1148899500:  return addAddItem(); 
         case -231349275:  return addAdjudication(); 
@@ -7770,10 +8827,13 @@ public class ClaimResponse extends DomainResource {
         case 693934258: /*requestor*/ return new String[] {"Reference"};
         case 1095692943: /*request*/ return new String[] {"Reference"};
         case -1106507950: /*outcome*/ return new String[] {"code"};
+        case 565719004: /*decision*/ return new String[] {"CodeableConcept"};
         case 583380919: /*disposition*/ return new String[] {"string"};
         case 522246568: /*preAuthRef*/ return new String[] {"string"};
         case 1819164812: /*preAuthPeriod*/ return new String[] {"Period"};
         case -316321118: /*payeeType*/ return new String[] {"CodeableConcept"};
+        case 1524132147: /*encounter*/ return new String[] {"Reference"};
+        case -1599182171: /*diagnosisRelatedGroup*/ return new String[] {"CodeableConcept"};
         case 3242771: /*item*/ return new String[] {};
         case -1148899500: /*addItem*/ return new String[] {};
         case -231349275: /*adjudication*/ return new String[] {"@ClaimResponse.item.adjudication"};
@@ -7832,6 +8892,10 @@ public class ClaimResponse extends DomainResource {
         else if (name.equals("outcome")) {
           throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.outcome");
         }
+        else if (name.equals("decision")) {
+          this.decision = new CodeableConcept();
+          return this.decision;
+        }
         else if (name.equals("disposition")) {
           throw new FHIRException("Cannot call addChild on a primitive type ClaimResponse.disposition");
         }
@@ -7845,6 +8909,13 @@ public class ClaimResponse extends DomainResource {
         else if (name.equals("payeeType")) {
           this.payeeType = new CodeableConcept();
           return this.payeeType;
+        }
+        else if (name.equals("encounter")) {
+          return addEncounter();
+        }
+        else if (name.equals("diagnosisRelatedGroup")) {
+          this.diagnosisRelatedGroup = new CodeableConcept();
+          return this.diagnosisRelatedGroup;
         }
         else if (name.equals("item")) {
           return addItem();
@@ -7918,10 +8989,17 @@ public class ClaimResponse extends DomainResource {
         dst.requestor = requestor == null ? null : requestor.copy();
         dst.request = request == null ? null : request.copy();
         dst.outcome = outcome == null ? null : outcome.copy();
+        dst.decision = decision == null ? null : decision.copy();
         dst.disposition = disposition == null ? null : disposition.copy();
         dst.preAuthRef = preAuthRef == null ? null : preAuthRef.copy();
         dst.preAuthPeriod = preAuthPeriod == null ? null : preAuthPeriod.copy();
         dst.payeeType = payeeType == null ? null : payeeType.copy();
+        if (encounter != null) {
+          dst.encounter = new ArrayList<Reference>();
+          for (Reference i : encounter)
+            dst.encounter.add(i.copy());
+        };
+        dst.diagnosisRelatedGroup = diagnosisRelatedGroup == null ? null : diagnosisRelatedGroup.copy();
         if (item != null) {
           dst.item = new ArrayList<ItemComponent>();
           for (ItemComponent i : item)
@@ -7982,13 +9060,15 @@ public class ClaimResponse extends DomainResource {
         return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(type, o.type, true)
            && compareDeep(subType, o.subType, true) && compareDeep(use, o.use, true) && compareDeep(patient, o.patient, true)
            && compareDeep(created, o.created, true) && compareDeep(insurer, o.insurer, true) && compareDeep(requestor, o.requestor, true)
-           && compareDeep(request, o.request, true) && compareDeep(outcome, o.outcome, true) && compareDeep(disposition, o.disposition, true)
-           && compareDeep(preAuthRef, o.preAuthRef, true) && compareDeep(preAuthPeriod, o.preAuthPeriod, true)
-           && compareDeep(payeeType, o.payeeType, true) && compareDeep(item, o.item, true) && compareDeep(addItem, o.addItem, true)
-           && compareDeep(adjudication, o.adjudication, true) && compareDeep(total, o.total, true) && compareDeep(payment, o.payment, true)
-           && compareDeep(fundsReserve, o.fundsReserve, true) && compareDeep(formCode, o.formCode, true) && compareDeep(form, o.form, true)
-           && compareDeep(processNote, o.processNote, true) && compareDeep(communicationRequest, o.communicationRequest, true)
-           && compareDeep(insurance, o.insurance, true) && compareDeep(error, o.error, true);
+           && compareDeep(request, o.request, true) && compareDeep(outcome, o.outcome, true) && compareDeep(decision, o.decision, true)
+           && compareDeep(disposition, o.disposition, true) && compareDeep(preAuthRef, o.preAuthRef, true)
+           && compareDeep(preAuthPeriod, o.preAuthPeriod, true) && compareDeep(payeeType, o.payeeType, true)
+           && compareDeep(encounter, o.encounter, true) && compareDeep(diagnosisRelatedGroup, o.diagnosisRelatedGroup, true)
+           && compareDeep(item, o.item, true) && compareDeep(addItem, o.addItem, true) && compareDeep(adjudication, o.adjudication, true)
+           && compareDeep(total, o.total, true) && compareDeep(payment, o.payment, true) && compareDeep(fundsReserve, o.fundsReserve, true)
+           && compareDeep(formCode, o.formCode, true) && compareDeep(form, o.form, true) && compareDeep(processNote, o.processNote, true)
+           && compareDeep(communicationRequest, o.communicationRequest, true) && compareDeep(insurance, o.insurance, true)
+           && compareDeep(error, o.error, true);
       }
 
       @Override
@@ -8005,10 +9085,10 @@ public class ClaimResponse extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, type
-          , subType, use, patient, created, insurer, requestor, request, outcome, disposition
-          , preAuthRef, preAuthPeriod, payeeType, item, addItem, adjudication, total, payment
-          , fundsReserve, formCode, form, processNote, communicationRequest, insurance, error
-          );
+          , subType, use, patient, created, insurer, requestor, request, outcome, decision
+          , disposition, preAuthRef, preAuthPeriod, payeeType, encounter, diagnosisRelatedGroup
+          , item, addItem, adjudication, total, payment, fundsReserve, formCode, form
+          , processNote, communicationRequest, insurance, error);
       }
 
   @Override

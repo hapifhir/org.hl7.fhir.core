@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,7 +46,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 /**
- * Base StructureDefinition for Period Type: A time period defined by a start and end date and optionally time.
+ * Period Type: A time period defined by a start and end date and optionally time.
  */
 @DatatypeDef(name="Period")
 public class Period extends DataType implements ICompositeType {

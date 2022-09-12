@@ -5,7 +5,6 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Codeab
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.CodeableReference;
 
 public class Reference30_50 {
   public static org.hl7.fhir.r5.model.Reference convertReference(org.hl7.fhir.dstu3.model.Reference src) throws FHIRException {
@@ -28,14 +27,21 @@ public class Reference30_50 {
     return tgt;
   }
 
-  static public CodeableReference convertReferenceToCodableReference(org.hl7.fhir.dstu3.model.Reference src) {
-    CodeableReference tgt = new CodeableReference();
+  static public org.hl7.fhir.r5.model.CodeableReference convertReferenceToCodableReference(org.hl7.fhir.dstu3.model.Reference src) {
+    org.hl7.fhir.r5.model.CodeableReference tgt = new org.hl7.fhir.r5.model.CodeableReference();
     tgt.setReference(convertReference(src));
     return tgt;
   }
 
-  static public CodeableReference convertCodeableConceptToCodableReference(org.hl7.fhir.dstu3.model.CodeableConcept src) {
-    CodeableReference tgt = new CodeableReference();
+  static public org.hl7.fhir.dstu3.model.Reference convertCodeableReferenceToReference(org.hl7.fhir.r5.model.CodeableReference src) {
+    org.hl7.fhir.dstu3.model.Reference tgt = new org.hl7.fhir.dstu3.model.Reference();
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    tgt.setReference(src.getReference().getReference());
+    return tgt;
+  }
+
+  static public org.hl7.fhir.r5.model.CodeableReference convertCodeableConceptToCodableReference(org.hl7.fhir.dstu3.model.CodeableConcept src) {
+    org.hl7.fhir.r5.model.CodeableReference tgt = new org.hl7.fhir.r5.model.CodeableReference();
     tgt.setConcept(CodeableConcept30_50.convertCodeableConcept(src));
     return tgt;
   }

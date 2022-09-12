@@ -44,13 +44,13 @@ public class ConceptMapRenderer extends TerminologyRenderer {
 
     XhtmlNode p = x.para();
     p.tx("Mapping from ");
-    if (cm.hasSource())
-      AddVsRef(cm.getSource().primitiveValue(), p);
+    if (cm.hasSourceScope())
+      AddVsRef(cm.getSourceScope().primitiveValue(), p);
     else
       p.tx("(not specified)");
     p.tx(" to ");
-    if (cm.hasTarget())
-      AddVsRef(cm.getTarget().primitiveValue(), p);
+    if (cm.hasTargetScope())
+      AddVsRef(cm.getTargetScope().primitiveValue(), p);
     else 
       p.tx("(not specified)");
 
@@ -112,12 +112,12 @@ public class ConceptMapRenderer extends TerminologyRenderer {
           for (OtherElementComponent d : ccm.getDependsOn()) {
             if (!sources.containsKey(d.getProperty()))
               sources.put(d.getProperty(), new HashSet<String>());
-            sources.get(d.getProperty()).add(d.getSystem());
+//            sources.get(d.getProperty()).add(d.getSystem());
           }
           for (OtherElementComponent d : ccm.getProduct()) {
             if (!targets.containsKey(d.getProperty()))
               targets.put(d.getProperty(), new HashSet<String>());
-            targets.get(d.getProperty()).add(d.getSystem());
+//            targets.get(d.getProperty()).add(d.getSystem());
           }
         }
       }
@@ -129,7 +129,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         XhtmlNode tr = tbl.tr();
         tr.td().b().tx("Source Code");
         tr.td().b().tx("Relationship");
-        tr.td().b().tx("Destination Code");
+        tr.td().b().tx("Target Code");
         if (comment)
           tr.td().b().tx("Comment");
         tr = tbl.tr();
@@ -159,9 +159,9 @@ public class ConceptMapRenderer extends TerminologyRenderer {
           else {
             if (ccm.getRelationshipElement().hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
               String code = ToolingExtensions.readStringExtension(ccm.getRelationshipElement(), ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
-              tr.td().ah(eqpath+"#"+code).tx(presentEquivalenceCode(code));                
+              tr.td().ah(eqpath+"#"+code, code).tx(presentEquivalenceCode(code));                
             } else {
-              tr.td().ah(eqpath+"#"+ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
+              tr.td().ah(eqpath+"#"+ccm.getRelationship().toCode(), ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
             }
           }
           td = tr.td();
@@ -192,7 +192,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         if (hasRelationships) {
           tr.td().b().tx("Relationship");
         }
-        tr.td().colspan(Integer.toString(1+targets.size())).b().tx("Destination Concept Details");
+        tr.td().colspan(Integer.toString(1+targets.size())).b().tx("Target Concept Details");
         if (comment) {
           tr.td().b().tx("Comment");
         }
@@ -299,9 +299,9 @@ public class ConceptMapRenderer extends TerminologyRenderer {
                 else {
                   if (ccm.getRelationshipElement().hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
                     String code = ToolingExtensions.readStringExtension(ccm.getRelationshipElement(), ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
-                    tr.td().ah(eqpath+"#"+code).tx(presentEquivalenceCode(code));                
+                    tr.td().ah(eqpath+"#"+code, code).tx(presentEquivalenceCode(code));                
                   } else {
-                    tr.td().ah(eqpath+"#"+ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
+                    tr.td().ah(eqpath+"#"+ccm.getRelationship().toCode(), ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
                   }
                 }
               }
@@ -425,17 +425,18 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     for (OtherElementComponent c : list) {
       if (s.equals(c.getProperty()))
         if (withSystem)
-          return c.getSystem()+" / "+c.getValue();
+          return /*c.getSystem()+" / "+*/c.getValue().primitiveValue();
         else
-          return c.getValue();
+          return c.getValue().primitiveValue();
     }
     return null;
   }
 
   private String getDisplay(List<OtherElementComponent> list, String s) {
     for (OtherElementComponent c : list) {
-      if (s.equals(c.getProperty()))
-        return getDisplayForConcept(systemFromCanonical(c.getSystem()), versionFromCanonical(c.getSystem()), c.getValue());
+      if (s.equals(c.getProperty())) {
+        // return getDisplayForConcept(systemFromCanonical(c.getSystem()), versionFromCanonical(c.getSystem()), c.getValue());
+      }
     }
     return null;
   }

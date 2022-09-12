@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -82,6 +82,7 @@ public class ImmunizationEvaluation extends DomainResource {
           switch (this) {
             case COMPLETED: return "completed";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -89,6 +90,7 @@ public class ImmunizationEvaluation extends DomainResource {
           switch (this) {
             case COMPLETED: return "http://hl7.org/fhir/CodeSystem/medication-admin-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/CodeSystem/medication-admin-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -96,6 +98,7 @@ public class ImmunizationEvaluation extends DomainResource {
           switch (this) {
             case COMPLETED: return "All actions that are implied by the administration have occurred.";
             case ENTEREDINERROR: return "The administration was entered in error and therefore nullified.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -103,6 +106,7 @@ public class ImmunizationEvaluation extends DomainResource {
           switch (this) {
             case COMPLETED: return "Completed";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -185,8 +189,8 @@ public class ImmunizationEvaluation extends DomainResource {
      * The vaccine preventable disease the dose is being evaluated against.
      */
     @Child(name = "targetDisease", type = {CodeableConcept.class}, order=5, min=1, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Evaluation target disease", formalDefinition="The vaccine preventable disease the dose is being evaluated against." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/immunization-evaluation-target-disease")
+    @Description(shortDefinition="The vaccine preventable disease schedule being evaluated", formalDefinition="The vaccine preventable disease the dose is being evaluated against." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/immunization-target-disease")
     protected CodeableConcept targetDisease;
 
     /**
@@ -208,7 +212,7 @@ public class ImmunizationEvaluation extends DomainResource {
      * Provides an explanation as to why the vaccine administration event is valid or not relative to the published recommendations.
      */
     @Child(name = "doseStatusReason", type = {CodeableConcept.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Reason for the dose status", formalDefinition="Provides an explanation as to why the vaccine administration event is valid or not relative to the published recommendations." )
+    @Description(shortDefinition="Reason why the doese is considered valid, invalid or some other status", formalDefinition="Provides an explanation as to why the vaccine administration event is valid or not relative to the published recommendations." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/immunization-evaluation-dose-status-reason")
     protected List<CodeableConcept> doseStatusReason;
 

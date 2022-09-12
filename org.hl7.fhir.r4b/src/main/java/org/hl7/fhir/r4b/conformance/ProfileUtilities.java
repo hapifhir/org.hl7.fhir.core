@@ -624,6 +624,8 @@ public class ProfileUtilities extends TranslatingUtilities {
       throw new DefinitionException(context.formatMessage(I18nConstants.BASE__DERIVED_PROFILES_HAVE_DIFFERENT_TYPES____VS___, base.getUrl(), base.getType(), derived.getUrl(), derived.getType()));
     }
     
+    fixTypeOfResourceId(base);
+    
     if (snapshotStack.contains(derived.getUrl())) {
       throw new DefinitionException(context.formatMessage(I18nConstants.CIRCULAR_SNAPSHOT_REFERENCES_DETECTED_CANNOT_GENERATE_SNAPSHOT_STACK__, snapshotStack.toString()));
     }
@@ -801,6 +803,25 @@ public class ProfileUtilities extends TranslatingUtilities {
       derived.clearUserData("profileutils.snapshot.generating");
       snapshotStack.remove(derived.getUrl());
     }
+  }
+
+  private void fixTypeOfResourceId(StructureDefinition base) {
+    if (base.getKind() == StructureDefinitionKind.RESOURCE && (base.getFhirVersion() == null || VersionUtilities.isR4Plus(base.getFhirVersion().toCode()))) {
+      fixTypeOfResourceId(base.getSnapshot().getElement());
+      fixTypeOfResourceId(base.getDifferential().getElement());      
+    }
+  }
+
+  private void fixTypeOfResourceId(List<ElementDefinition> list) {
+    for (ElementDefinition ed : list) {
+      if (ed.hasBase() && ed.getBase().getPath().equals("Resource.id")) {
+        for (TypeRefComponent tr : ed.getType()) {
+          tr.setCode("http://hl7.org/fhirpath/System.String");
+          tr.removeExtension(ToolingExtensions.EXT_FHIR_TYPE);
+          ToolingExtensions.addUrlExtension(tr, ToolingExtensions.EXT_FHIR_TYPE, "id");
+        }
+      }
+    }    
   }
 
   public void checkDifferentialBaseType(StructureDefinition derived) throws Error {
@@ -1333,7 +1354,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           if (shortCut) {
             // this is the short cut method, we've just dived in and specified a type slice.
             // in R3 (and unpatched R4, as a workaround right now...
-            if (!FHIRVersion.isR4Plus(context.getVersion()) || !newSlicingProcessing) { // newSlicingProcessing is a work around for editorial loop dependency
+            if (!VersionUtilities.isR4Plus(context.getVersion()) || !newSlicingProcessing) { // newSlicingProcessing is a work around for editorial loop dependency
               // we insert a cloned element with the right types at the start of the diffMatches
               ElementDefinition ed = new ElementDefinition();
               ed.setPath(determineTypeSlicePath(diffMatches.get(0).getPath(), cpath));
@@ -1631,7 +1652,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           if (shortCut) {
             // this is the short cut method, we've just dived in and specified a type slice.
             // in R3 (and unpatched R4, as a workaround right now...
-            if (!FHIRVersion.isR4Plus(context.getVersion()) || !newSlicingProcessing) { // newSlicingProcessing is a work around for editorial loop dependency
+            if (!VersionUtilities.isR4Plus(context.getVersion()) || !newSlicingProcessing) { // newSlicingProcessing is a work around for editorial loop dependency
               // we insert a cloned element with the right types at the start of the diffMatches
               ElementDefinition ed = new ElementDefinition();
               ed.setPath(determineTypeSlicePath(diffMatches.get(0).getPath(), cpath));
@@ -3740,7 +3761,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
     } else if (Utilities.isAbsoluteUrl(u)) {
       StructureDefinition sd = context.fetchResource(StructureDefinition.class, u);
-      if (sd != null) {
+      if (sd != null && pkp != null) {
         String disp = sd.hasTitle() ? sd.getTitle() : sd.getName();
         String ref = pkp.getLinkForProfile(null, sd.getUrl());
         if (ref != null && ref.contains("|"))
@@ -4214,6 +4235,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         Row currRow = row;
         List<ElementChoiceGroup> groups = readChoices(element, children);
         boolean isExtension = Utilities.existsInList(tail(element.getPath()), "extension", "modifierExtension");
+        if (!element.prohibited()) {
         for (ElementDefinition child : children) {
           if (!child.hasSliceName()) {
             currRow = row; 
@@ -4223,6 +4245,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           if (logicalModel || !child.getPath().endsWith(".id") || (child.getPath().endsWith(".id") && (profile != null) && (profile.getDerivation() == TypeDerivationRule.CONSTRAINT))) {  
             currRow = genElement(defPath, gen, childRow.getSubRows(), child, all, profiles, showMissing, profileBaseFileName, isExtension, snapshot, corePath, imagePath, false, logicalModel, isConstraintMode, allInvariants, currRow, mustSupport, rc);
           }
+        }
         }
 //        if (!snapshot && (extensions == null || !extensions))
 //          for (ElementDefinition child : children)
@@ -4334,7 +4357,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           res.add(addCell(row, gen.new Cell(null, null, "?gen-e1? "+element.getType().get(0).getProfile(), null, null)));
           res.add(generateDescription(gen, row, element, (ElementDefinition) element.getUserData(DERIVATION_POINTER), used.used, profile == null ? "" : profile.getUrl(), eurl, profile, corePath, imagePath, root, logicalModel, allInvariants, snapshot, mustSupport, allowSubRows, rc));
         } else {
-          String name = urltail(eurl);
+          String name = element.hasSliceName() ? element.getSliceName() : urltail(eurl);
           nameCell.getPieces().get(0).setText(name);
           // left.getPieces().get(0).setReference((String) extDefn.getExtensionStructure().getTag("filename"));
           nameCell.getPieces().get(0).setHint(translate("sd.table", "Extension URL")+" = "+extDefn.getUrl());

@@ -5,7 +5,14 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableCon
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.ContactDetail40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.UsageContext40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Boolean40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Canonical40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Code40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.MarkDown40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.UnsignedInt40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -90,7 +97,7 @@ public class MessageDefinition40_50 {
       tgt.setResponseRequiredElement(convertMessageheaderResponseRequest(src.getResponseRequiredElement()));
     for (org.hl7.fhir.r4.model.MessageDefinition.MessageDefinitionAllowedResponseComponent t : src.getAllowedResponse())
       tgt.addAllowedResponse(convertMessageDefinitionAllowedResponseComponent(t));
-    for (org.hl7.fhir.r4.model.CanonicalType t : src.getGraph()) tgt.getGraph().add(Canonical40_50.convertCanonical(t));
+    for (org.hl7.fhir.r4.model.CanonicalType t : src.getGraph()) tgt.setGraphElement(Canonical40_50.convertCanonical(t));
     return tgt;
   }
 
@@ -145,7 +152,8 @@ public class MessageDefinition40_50 {
       tgt.setResponseRequiredElement(convertMessageheaderResponseRequest(src.getResponseRequiredElement()));
     for (org.hl7.fhir.r5.model.MessageDefinition.MessageDefinitionAllowedResponseComponent t : src.getAllowedResponse())
       tgt.addAllowedResponse(convertMessageDefinitionAllowedResponseComponent(t));
-    for (org.hl7.fhir.r5.model.CanonicalType t : src.getGraph()) tgt.getGraph().add(Canonical40_50.convertCanonical(t));
+    if (src.hasGraph()) 
+      tgt.getGraph().add(Canonical40_50.convertCanonical(src.getGraphElement()));
     return tgt;
   }
 
@@ -247,9 +255,9 @@ public class MessageDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.MessageDefinition.MessageDefinitionFocusComponent tgt = new org.hl7.fhir.r5.model.MessageDefinition.MessageDefinitionFocusComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCode())
-      tgt.setCodeElement(Code40_50.convertResourceEnum(src.getCodeElement()));
+      tgt.setCodeElement(Code40_50.convertCode(src.getCodeElement()));
     if (src.hasProfile())
       tgt.setProfileElement(Canonical40_50.convertCanonical(src.getProfileElement()));
     if (src.hasMin())
@@ -263,9 +271,9 @@ public class MessageDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MessageDefinition.MessageDefinitionFocusComponent tgt = new org.hl7.fhir.r4.model.MessageDefinition.MessageDefinitionFocusComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCode())
-      tgt.setCodeElement(Code40_50.convertResourceEnum(src.getCodeElement()));
+      tgt.setCodeElement(Code40_50.convertCode(src.getCodeElement()));
     if (src.hasProfile())
       tgt.setProfileElement(Canonical40_50.convertCanonical(src.getProfileElement()));
     if (src.hasMin())
@@ -279,7 +287,7 @@ public class MessageDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.MessageDefinition.MessageDefinitionAllowedResponseComponent tgt = new org.hl7.fhir.r5.model.MessageDefinition.MessageDefinitionAllowedResponseComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasMessage())
       tgt.setMessageElement(Canonical40_50.convertCanonical(src.getMessageElement()));
     if (src.hasSituation())
@@ -291,7 +299,7 @@ public class MessageDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MessageDefinition.MessageDefinitionAllowedResponseComponent tgt = new org.hl7.fhir.r4.model.MessageDefinition.MessageDefinitionAllowedResponseComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasMessage())
       tgt.setMessageElement(Canonical40_50.convertCanonical(src.getMessageElement()));
     if (src.hasSituation())

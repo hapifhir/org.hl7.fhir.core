@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -66,6 +66,7 @@ public class RegulatedAuthorization extends DomainResource {
          */
         @Child(name = "type", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="The defining type of case", formalDefinition="The defining type of case." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/regulated-authorization-case-type")
         protected CodeableConcept type;
 
         /**
@@ -73,20 +74,21 @@ public class RegulatedAuthorization extends DomainResource {
          */
         @Child(name = "status", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="The status associated with the case", formalDefinition="The status associated with the case." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
         protected CodeableConcept status;
 
         /**
-         * Relevant date for this of case.
+         * Relevant date for this case.
          */
         @Child(name = "date", type = {Period.class, DateTimeType.class}, order=4, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Relevant date for this of case", formalDefinition="Relevant date for this of case." )
+        @Description(shortDefinition="Relevant date for this case", formalDefinition="Relevant date for this case." )
         protected DataType date;
 
         /**
-         * Applications submitted to obtain a marketing authorization. Steps within the longer running case or procedure.
+         * A regulatory submission from an organization to a regulator, as part of an assessing case. Multiple applications may occur over time, with more or different information to support or modify the submission or the authorization. The applications can be considered as steps within the longer running case or procedure for this authorization process.
          */
         @Child(name = "application", type = {RegulatedAuthorizationCaseComponent.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Applications submitted to obtain a marketing authorization. Steps within the longer running case or procedure", formalDefinition="Applications submitted to obtain a marketing authorization. Steps within the longer running case or procedure." )
+        @Description(shortDefinition="Applications submitted to obtain a regulated authorization. Steps within the longer running case or procedure", formalDefinition="A regulatory submission from an organization to a regulator, as part of an assessing case. Multiple applications may occur over time, with more or different information to support or modify the submission or the authorization. The applications can be considered as steps within the longer running case or procedure for this authorization process." )
         protected List<RegulatedAuthorizationCaseComponent> application;
 
         private static final long serialVersionUID = 2052202113L;
@@ -171,14 +173,14 @@ public class RegulatedAuthorization extends DomainResource {
         }
 
         /**
-         * @return {@link #date} (Relevant date for this of case.)
+         * @return {@link #date} (Relevant date for this case.)
          */
         public DataType getDate() { 
           return this.date;
         }
 
         /**
-         * @return {@link #date} (Relevant date for this of case.)
+         * @return {@link #date} (Relevant date for this case.)
          */
         public Period getDatePeriod() throws FHIRException { 
           if (this.date == null)
@@ -193,7 +195,7 @@ public class RegulatedAuthorization extends DomainResource {
         }
 
         /**
-         * @return {@link #date} (Relevant date for this of case.)
+         * @return {@link #date} (Relevant date for this case.)
          */
         public DateTimeType getDateDateTimeType() throws FHIRException { 
           if (this.date == null)
@@ -212,7 +214,7 @@ public class RegulatedAuthorization extends DomainResource {
         }
 
         /**
-         * @param value {@link #date} (Relevant date for this of case.)
+         * @param value {@link #date} (Relevant date for this case.)
          */
         public RegulatedAuthorizationCaseComponent setDate(DataType value) { 
           if (value != null && !(value instanceof Period || value instanceof DateTimeType))
@@ -222,7 +224,7 @@ public class RegulatedAuthorization extends DomainResource {
         }
 
         /**
-         * @return {@link #application} (Applications submitted to obtain a marketing authorization. Steps within the longer running case or procedure.)
+         * @return {@link #application} (A regulatory submission from an organization to a regulator, as part of an assessing case. Multiple applications may occur over time, with more or different information to support or modify the submission or the authorization. The applications can be considered as steps within the longer running case or procedure for this authorization process.)
          */
         public List<RegulatedAuthorizationCaseComponent> getApplication() { 
           if (this.application == null)
@@ -279,8 +281,8 @@ public class RegulatedAuthorization extends DomainResource {
           children.add(new Property("identifier", "Identifier", "Identifier by which this case can be referenced.", 0, 1, identifier));
           children.add(new Property("type", "CodeableConcept", "The defining type of case.", 0, 1, type));
           children.add(new Property("status", "CodeableConcept", "The status associated with the case.", 0, 1, status));
-          children.add(new Property("date[x]", "Period|dateTime", "Relevant date for this of case.", 0, 1, date));
-          children.add(new Property("application", "@RegulatedAuthorization.case", "Applications submitted to obtain a marketing authorization. Steps within the longer running case or procedure.", 0, java.lang.Integer.MAX_VALUE, application));
+          children.add(new Property("date[x]", "Period|dateTime", "Relevant date for this case.", 0, 1, date));
+          children.add(new Property("application", "@RegulatedAuthorization.case", "A regulatory submission from an organization to a regulator, as part of an assessing case. Multiple applications may occur over time, with more or different information to support or modify the submission or the authorization. The applications can be considered as steps within the longer running case or procedure for this authorization process.", 0, java.lang.Integer.MAX_VALUE, application));
         }
 
         @Override
@@ -289,11 +291,11 @@ public class RegulatedAuthorization extends DomainResource {
           case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Identifier by which this case can be referenced.", 0, 1, identifier);
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The defining type of case.", 0, 1, type);
           case -892481550: /*status*/  return new Property("status", "CodeableConcept", "The status associated with the case.", 0, 1, status);
-          case 1443311122: /*date[x]*/  return new Property("date[x]", "Period|dateTime", "Relevant date for this of case.", 0, 1, date);
-          case 3076014: /*date*/  return new Property("date[x]", "Period|dateTime", "Relevant date for this of case.", 0, 1, date);
-          case 432297743: /*datePeriod*/  return new Property("date[x]", "Period", "Relevant date for this of case.", 0, 1, date);
-          case 185136489: /*dateDateTime*/  return new Property("date[x]", "dateTime", "Relevant date for this of case.", 0, 1, date);
-          case 1554253136: /*application*/  return new Property("application", "@RegulatedAuthorization.case", "Applications submitted to obtain a marketing authorization. Steps within the longer running case or procedure.", 0, java.lang.Integer.MAX_VALUE, application);
+          case 1443311122: /*date[x]*/  return new Property("date[x]", "Period|dateTime", "Relevant date for this case.", 0, 1, date);
+          case 3076014: /*date*/  return new Property("date[x]", "Period|dateTime", "Relevant date for this case.", 0, 1, date);
+          case 432297743: /*datePeriod*/  return new Property("date[x]", "Period", "Relevant date for this case.", 0, 1, date);
+          case 185136489: /*dateDateTime*/  return new Property("date[x]", "dateTime", "Relevant date for this case.", 0, 1, date);
+          case 1554253136: /*application*/  return new Property("application", "@RegulatedAuthorization.case", "A regulatory submission from an organization to a regulator, as part of an assessing case. Multiple applications may occur over time, with more or different information to support or modify the submission or the authorization. The applications can be considered as steps within the longer running case or procedure for this authorization process.", 0, java.lang.Integer.MAX_VALUE, application);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -470,7 +472,7 @@ public class RegulatedAuthorization extends DomainResource {
     /**
      * The product type, treatment, facility or activity that is being authorized.
      */
-    @Child(name = "subject", type = {MedicinalProductDefinition.class, BiologicallyDerivedProduct.class, NutritionProduct.class, PackagedProductDefinition.class, SubstanceDefinition.class, DeviceDefinition.class, ResearchStudy.class, ActivityDefinition.class, PlanDefinition.class, ObservationDefinition.class, Practitioner.class, Organization.class, Location.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "subject", type = {MedicinalProductDefinition.class, BiologicallyDerivedProduct.class, NutritionProduct.class, PackagedProductDefinition.class, ManufacturedItemDefinition.class, Ingredient.class, SubstanceDefinition.class, DeviceDefinition.class, ResearchStudy.class, ActivityDefinition.class, PlanDefinition.class, ObservationDefinition.class, Practitioner.class, Organization.class, Location.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The product type, treatment, facility or activity that is being authorized", formalDefinition="The product type, treatment, facility or activity that is being authorized." )
     protected List<Reference> subject;
 
@@ -479,6 +481,7 @@ public class RegulatedAuthorization extends DomainResource {
      */
     @Child(name = "type", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Overall type of this authorization, for example drug marketing approval, orphan drug designation", formalDefinition="Overall type of this authorization, for example drug marketing approval, orphan drug designation." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/regulated-authorization-type")
     protected CodeableConcept type;
 
     /**
@@ -492,14 +495,16 @@ public class RegulatedAuthorization extends DomainResource {
      * The territory (e.g., country, jurisdiction etc.) in which the authorization has been granted.
      */
     @Child(name = "region", type = {CodeableConcept.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="The territory (e.g., country, jurisdiction etc.) in which the authorization has been granted", formalDefinition="The territory (e.g., country, jurisdiction etc.) in which the authorization has been granted." )
+    @Description(shortDefinition="The territory in which the authorization has been granted", formalDefinition="The territory (e.g., country, jurisdiction etc.) in which the authorization has been granted." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/jurisdiction")
     protected List<CodeableConcept> region;
 
     /**
-     * The status that is authorised e.g. approved. Intermediate states can be tracked with cases and applications.
+     * The status that is authorised e.g. approved. Intermediate states and actions can be tracked with cases and applications.
      */
     @Child(name = "status", type = {CodeableConcept.class}, order=5, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="The status that is authorised e.g. approved. Intermediate states can be tracked with cases and applications", formalDefinition="The status that is authorised e.g. approved. Intermediate states can be tracked with cases and applications." )
+    @Description(shortDefinition="The status that is authorised e.g. approved. Intermediate states can be tracked with cases and applications", formalDefinition="The status that is authorised e.g. approved. Intermediate states and actions can be tracked with cases and applications." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
     protected CodeableConcept status;
 
     /**
@@ -513,35 +518,37 @@ public class RegulatedAuthorization extends DomainResource {
      * The time period in which the regulatory approval, clearance or licencing is in effect. As an example, a Marketing Authorization includes the date of authorization and/or an expiration date.
      */
     @Child(name = "validityPeriod", type = {Period.class}, order=7, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="The time period in which the regulatory approval, clearance or licencing is in effect. As an example, a Marketing Authorization includes the date of authorization and/or an expiration date", formalDefinition="The time period in which the regulatory approval, clearance or licencing is in effect. As an example, a Marketing Authorization includes the date of authorization and/or an expiration date." )
+    @Description(shortDefinition="The time period in which the regulatory approval etc. is in effect, e.g. a Marketing Authorization includes the date of authorization and/or expiration date", formalDefinition="The time period in which the regulatory approval, clearance or licencing is in effect. As an example, a Marketing Authorization includes the date of authorization and/or an expiration date." )
     protected Period validityPeriod;
 
     /**
      * Condition for which the use of the regulated product applies.
      */
-    @Child(name = "indication", type = {CodeableReference.class}, order=8, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Condition for which the use of the regulated product  applies", formalDefinition="Condition for which the use of the regulated product applies." )
-    protected CodeableReference indication;
+    @Child(name = "indication", type = {CodeableReference.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Condition for which the use of the regulated product applies", formalDefinition="Condition for which the use of the regulated product applies." )
+    protected List<CodeableReference> indication;
 
     /**
-     * The intended use of the product, e.g. prevention, treatment.
+     * The intended use of the product, e.g. prevention, treatment, diagnosis.
      */
     @Child(name = "intendedUse", type = {CodeableConcept.class}, order=9, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="The intended use of the product, e.g. prevention, treatment", formalDefinition="The intended use of the product, e.g. prevention, treatment." )
+    @Description(shortDefinition="The intended use of the product, e.g. prevention, treatment", formalDefinition="The intended use of the product, e.g. prevention, treatment, diagnosis." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/product-intended-use")
     protected CodeableConcept intendedUse;
 
     /**
      * The legal or regulatory framework against which this authorization is granted, or other reasons for it.
      */
     @Child(name = "basis", type = {CodeableConcept.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="The legal or regulatory framework against which this authorization is granted, or other reasons for it", formalDefinition="The legal or regulatory framework against which this authorization is granted, or other reasons for it." )
+    @Description(shortDefinition="The legal/regulatory framework or reasons under which this authorization is granted", formalDefinition="The legal or regulatory framework against which this authorization is granted, or other reasons for it." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/regulated-authorization-basis")
     protected List<CodeableConcept> basis;
 
     /**
-     * The organization that holds the granted authorization.
+     * The organization that has been granted this authorization, by some authoritative body (the 'regulator').
      */
     @Child(name = "holder", type = {Organization.class}, order=11, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="The organization that holds the granted authorization", formalDefinition="The organization that holds the granted authorization." )
+    @Description(shortDefinition="The organization that has been granted this authorization, by the regulator", formalDefinition="The organization that has been granted this authorization, by some authoritative body (the 'regulator')." )
     protected Reference holder;
 
     /**
@@ -559,13 +566,13 @@ public class RegulatedAuthorization extends DomainResource {
     protected List<Reference> attachedDocument;
 
     /**
-     * The case or regulatory procedure for granting or amending a marketing authorization. Note: This area is subject to ongoing review and the workgroup is seeking implementer feedback on its use (see link at bottom of page).
+     * The case or regulatory procedure for granting or amending a regulated authorization. An authorization is granted in response to submissions/applications by those seeking authorization. A case is the administrative process that deals with the application(s) that relate to this and assesses them. Note: This area is subject to ongoing review and the workgroup is seeking implementer feedback on its use (see link at bottom of page).
      */
     @Child(name = "case", type = {}, order=14, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="The case or regulatory procedure for granting or amending a marketing authorization. Note: This area is subject to ongoing review and the workgroup is seeking implementer feedback on its use (see link at bottom of page)", formalDefinition="The case or regulatory procedure for granting or amending a marketing authorization. Note: This area is subject to ongoing review and the workgroup is seeking implementer feedback on its use (see link at bottom of page)." )
+    @Description(shortDefinition="The case or regulatory procedure for granting or amending a regulated authorization. Note: This area is subject to ongoing review and the workgroup is seeking implementer feedback on its use (see link at bottom of page)", formalDefinition="The case or regulatory procedure for granting or amending a regulated authorization. An authorization is granted in response to submissions/applications by those seeking authorization. A case is the administrative process that deals with the application(s) that relate to this and assesses them. Note: This area is subject to ongoing review and the workgroup is seeking implementer feedback on its use (see link at bottom of page)." )
     protected RegulatedAuthorizationCaseComponent case_;
 
-    private static final long serialVersionUID = 1242044467L;
+    private static final long serialVersionUID = 1227409639L;
 
   /**
    * Constructor
@@ -807,7 +814,7 @@ public class RegulatedAuthorization extends DomainResource {
     }
 
     /**
-     * @return {@link #status} (The status that is authorised e.g. approved. Intermediate states can be tracked with cases and applications.)
+     * @return {@link #status} (The status that is authorised e.g. approved. Intermediate states and actions can be tracked with cases and applications.)
      */
     public CodeableConcept getStatus() { 
       if (this.status == null)
@@ -823,7 +830,7 @@ public class RegulatedAuthorization extends DomainResource {
     }
 
     /**
-     * @param value {@link #status} (The status that is authorised e.g. approved. Intermediate states can be tracked with cases and applications.)
+     * @param value {@link #status} (The status that is authorised e.g. approved. Intermediate states and actions can be tracked with cases and applications.)
      */
     public RegulatedAuthorization setStatus(CodeableConcept value) { 
       this.status = value;
@@ -906,29 +913,58 @@ public class RegulatedAuthorization extends DomainResource {
     /**
      * @return {@link #indication} (Condition for which the use of the regulated product applies.)
      */
-    public CodeableReference getIndication() { 
+    public List<CodeableReference> getIndication() { 
       if (this.indication == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create RegulatedAuthorization.indication");
-        else if (Configuration.doAutoCreate())
-          this.indication = new CodeableReference(); // cc
+        this.indication = new ArrayList<CodeableReference>();
       return this.indication;
     }
 
-    public boolean hasIndication() { 
-      return this.indication != null && !this.indication.isEmpty();
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public RegulatedAuthorization setIndication(List<CodeableReference> theIndication) { 
+      this.indication = theIndication;
+      return this;
     }
 
-    /**
-     * @param value {@link #indication} (Condition for which the use of the regulated product applies.)
-     */
-    public RegulatedAuthorization setIndication(CodeableReference value) { 
-      this.indication = value;
+    public boolean hasIndication() { 
+      if (this.indication == null)
+        return false;
+      for (CodeableReference item : this.indication)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public CodeableReference addIndication() { //3
+      CodeableReference t = new CodeableReference();
+      if (this.indication == null)
+        this.indication = new ArrayList<CodeableReference>();
+      this.indication.add(t);
+      return t;
+    }
+
+    public RegulatedAuthorization addIndication(CodeableReference t) { //3
+      if (t == null)
+        return this;
+      if (this.indication == null)
+        this.indication = new ArrayList<CodeableReference>();
+      this.indication.add(t);
       return this;
     }
 
     /**
-     * @return {@link #intendedUse} (The intended use of the product, e.g. prevention, treatment.)
+     * @return The first repetition of repeating field {@link #indication}, creating it if it does not already exist {3}
+     */
+    public CodeableReference getIndicationFirstRep() { 
+      if (getIndication().isEmpty()) {
+        addIndication();
+      }
+      return getIndication().get(0);
+    }
+
+    /**
+     * @return {@link #intendedUse} (The intended use of the product, e.g. prevention, treatment, diagnosis.)
      */
     public CodeableConcept getIntendedUse() { 
       if (this.intendedUse == null)
@@ -944,7 +980,7 @@ public class RegulatedAuthorization extends DomainResource {
     }
 
     /**
-     * @param value {@link #intendedUse} (The intended use of the product, e.g. prevention, treatment.)
+     * @param value {@link #intendedUse} (The intended use of the product, e.g. prevention, treatment, diagnosis.)
      */
     public RegulatedAuthorization setIntendedUse(CodeableConcept value) { 
       this.intendedUse = value;
@@ -1005,7 +1041,7 @@ public class RegulatedAuthorization extends DomainResource {
     }
 
     /**
-     * @return {@link #holder} (The organization that holds the granted authorization.)
+     * @return {@link #holder} (The organization that has been granted this authorization, by some authoritative body (the 'regulator').)
      */
     public Reference getHolder() { 
       if (this.holder == null)
@@ -1021,7 +1057,7 @@ public class RegulatedAuthorization extends DomainResource {
     }
 
     /**
-     * @param value {@link #holder} (The organization that holds the granted authorization.)
+     * @param value {@link #holder} (The organization that has been granted this authorization, by some authoritative body (the 'regulator').)
      */
     public RegulatedAuthorization setHolder(Reference value) { 
       this.holder = value;
@@ -1106,7 +1142,7 @@ public class RegulatedAuthorization extends DomainResource {
     }
 
     /**
-     * @return {@link #case_} (The case or regulatory procedure for granting or amending a marketing authorization. Note: This area is subject to ongoing review and the workgroup is seeking implementer feedback on its use (see link at bottom of page).)
+     * @return {@link #case_} (The case or regulatory procedure for granting or amending a regulated authorization. An authorization is granted in response to submissions/applications by those seeking authorization. A case is the administrative process that deals with the application(s) that relate to this and assesses them. Note: This area is subject to ongoing review and the workgroup is seeking implementer feedback on its use (see link at bottom of page).)
      */
     public RegulatedAuthorizationCaseComponent getCase() { 
       if (this.case_ == null)
@@ -1122,7 +1158,7 @@ public class RegulatedAuthorization extends DomainResource {
     }
 
     /**
-     * @param value {@link #case_} (The case or regulatory procedure for granting or amending a marketing authorization. Note: This area is subject to ongoing review and the workgroup is seeking implementer feedback on its use (see link at bottom of page).)
+     * @param value {@link #case_} (The case or regulatory procedure for granting or amending a regulated authorization. An authorization is granted in response to submissions/applications by those seeking authorization. A case is the administrative process that deals with the application(s) that relate to this and assesses them. Note: This area is subject to ongoing review and the workgroup is seeking implementer feedback on its use (see link at bottom of page).)
      */
     public RegulatedAuthorization setCase(RegulatedAuthorizationCaseComponent value) { 
       this.case_ = value;
@@ -1132,40 +1168,40 @@ public class RegulatedAuthorization extends DomainResource {
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Business identifier for the authorization, typically assigned by the authorizing body.", 0, java.lang.Integer.MAX_VALUE, identifier));
-        children.add(new Property("subject", "Reference(MedicinalProductDefinition|BiologicallyDerivedProduct|NutritionProduct|PackagedProductDefinition|SubstanceDefinition|DeviceDefinition|ResearchStudy|ActivityDefinition|PlanDefinition|ObservationDefinition|Practitioner|Organization|Location)", "The product type, treatment, facility or activity that is being authorized.", 0, java.lang.Integer.MAX_VALUE, subject));
+        children.add(new Property("subject", "Reference(MedicinalProductDefinition|BiologicallyDerivedProduct|NutritionProduct|PackagedProductDefinition|ManufacturedItemDefinition|Ingredient|SubstanceDefinition|DeviceDefinition|ResearchStudy|ActivityDefinition|PlanDefinition|ObservationDefinition|Practitioner|Organization|Location)", "The product type, treatment, facility or activity that is being authorized.", 0, java.lang.Integer.MAX_VALUE, subject));
         children.add(new Property("type", "CodeableConcept", "Overall type of this authorization, for example drug marketing approval, orphan drug designation.", 0, 1, type));
         children.add(new Property("description", "markdown", "General textual supporting information.", 0, 1, description));
         children.add(new Property("region", "CodeableConcept", "The territory (e.g., country, jurisdiction etc.) in which the authorization has been granted.", 0, java.lang.Integer.MAX_VALUE, region));
-        children.add(new Property("status", "CodeableConcept", "The status that is authorised e.g. approved. Intermediate states can be tracked with cases and applications.", 0, 1, status));
+        children.add(new Property("status", "CodeableConcept", "The status that is authorised e.g. approved. Intermediate states and actions can be tracked with cases and applications.", 0, 1, status));
         children.add(new Property("statusDate", "dateTime", "The date at which the current status was assigned.", 0, 1, statusDate));
         children.add(new Property("validityPeriod", "Period", "The time period in which the regulatory approval, clearance or licencing is in effect. As an example, a Marketing Authorization includes the date of authorization and/or an expiration date.", 0, 1, validityPeriod));
-        children.add(new Property("indication", "CodeableReference(ClinicalUseDefinition)", "Condition for which the use of the regulated product applies.", 0, 1, indication));
-        children.add(new Property("intendedUse", "CodeableConcept", "The intended use of the product, e.g. prevention, treatment.", 0, 1, intendedUse));
+        children.add(new Property("indication", "CodeableReference(ClinicalUseDefinition)", "Condition for which the use of the regulated product applies.", 0, java.lang.Integer.MAX_VALUE, indication));
+        children.add(new Property("intendedUse", "CodeableConcept", "The intended use of the product, e.g. prevention, treatment, diagnosis.", 0, 1, intendedUse));
         children.add(new Property("basis", "CodeableConcept", "The legal or regulatory framework against which this authorization is granted, or other reasons for it.", 0, java.lang.Integer.MAX_VALUE, basis));
-        children.add(new Property("holder", "Reference(Organization)", "The organization that holds the granted authorization.", 0, 1, holder));
+        children.add(new Property("holder", "Reference(Organization)", "The organization that has been granted this authorization, by some authoritative body (the 'regulator').", 0, 1, holder));
         children.add(new Property("regulator", "Reference(Organization)", "The regulatory authority or authorizing body granting the authorization. For example, European Medicines Agency (EMA), Food and Drug Administration (FDA), Health Canada (HC), etc.", 0, 1, regulator));
         children.add(new Property("attachedDocument", "Reference(DocumentReference)", "Additional information or supporting documentation about the authorization.", 0, java.lang.Integer.MAX_VALUE, attachedDocument));
-        children.add(new Property("case", "", "The case or regulatory procedure for granting or amending a marketing authorization. Note: This area is subject to ongoing review and the workgroup is seeking implementer feedback on its use (see link at bottom of page).", 0, 1, case_));
+        children.add(new Property("case", "", "The case or regulatory procedure for granting or amending a regulated authorization. An authorization is granted in response to submissions/applications by those seeking authorization. A case is the administrative process that deals with the application(s) that relate to this and assesses them. Note: This area is subject to ongoing review and the workgroup is seeking implementer feedback on its use (see link at bottom of page).", 0, 1, case_));
       }
 
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Business identifier for the authorization, typically assigned by the authorizing body.", 0, java.lang.Integer.MAX_VALUE, identifier);
-        case -1867885268: /*subject*/  return new Property("subject", "Reference(MedicinalProductDefinition|BiologicallyDerivedProduct|NutritionProduct|PackagedProductDefinition|SubstanceDefinition|DeviceDefinition|ResearchStudy|ActivityDefinition|PlanDefinition|ObservationDefinition|Practitioner|Organization|Location)", "The product type, treatment, facility or activity that is being authorized.", 0, java.lang.Integer.MAX_VALUE, subject);
+        case -1867885268: /*subject*/  return new Property("subject", "Reference(MedicinalProductDefinition|BiologicallyDerivedProduct|NutritionProduct|PackagedProductDefinition|ManufacturedItemDefinition|Ingredient|SubstanceDefinition|DeviceDefinition|ResearchStudy|ActivityDefinition|PlanDefinition|ObservationDefinition|Practitioner|Organization|Location)", "The product type, treatment, facility or activity that is being authorized.", 0, java.lang.Integer.MAX_VALUE, subject);
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Overall type of this authorization, for example drug marketing approval, orphan drug designation.", 0, 1, type);
         case -1724546052: /*description*/  return new Property("description", "markdown", "General textual supporting information.", 0, 1, description);
         case -934795532: /*region*/  return new Property("region", "CodeableConcept", "The territory (e.g., country, jurisdiction etc.) in which the authorization has been granted.", 0, java.lang.Integer.MAX_VALUE, region);
-        case -892481550: /*status*/  return new Property("status", "CodeableConcept", "The status that is authorised e.g. approved. Intermediate states can be tracked with cases and applications.", 0, 1, status);
+        case -892481550: /*status*/  return new Property("status", "CodeableConcept", "The status that is authorised e.g. approved. Intermediate states and actions can be tracked with cases and applications.", 0, 1, status);
         case 247524032: /*statusDate*/  return new Property("statusDate", "dateTime", "The date at which the current status was assigned.", 0, 1, statusDate);
         case -1434195053: /*validityPeriod*/  return new Property("validityPeriod", "Period", "The time period in which the regulatory approval, clearance or licencing is in effect. As an example, a Marketing Authorization includes the date of authorization and/or an expiration date.", 0, 1, validityPeriod);
-        case -597168804: /*indication*/  return new Property("indication", "CodeableReference(ClinicalUseDefinition)", "Condition for which the use of the regulated product applies.", 0, 1, indication);
-        case -1618671268: /*intendedUse*/  return new Property("intendedUse", "CodeableConcept", "The intended use of the product, e.g. prevention, treatment.", 0, 1, intendedUse);
+        case -597168804: /*indication*/  return new Property("indication", "CodeableReference(ClinicalUseDefinition)", "Condition for which the use of the regulated product applies.", 0, java.lang.Integer.MAX_VALUE, indication);
+        case -1618671268: /*intendedUse*/  return new Property("intendedUse", "CodeableConcept", "The intended use of the product, e.g. prevention, treatment, diagnosis.", 0, 1, intendedUse);
         case 93508670: /*basis*/  return new Property("basis", "CodeableConcept", "The legal or regulatory framework against which this authorization is granted, or other reasons for it.", 0, java.lang.Integer.MAX_VALUE, basis);
-        case -1211707988: /*holder*/  return new Property("holder", "Reference(Organization)", "The organization that holds the granted authorization.", 0, 1, holder);
+        case -1211707988: /*holder*/  return new Property("holder", "Reference(Organization)", "The organization that has been granted this authorization, by some authoritative body (the 'regulator').", 0, 1, holder);
         case 414760449: /*regulator*/  return new Property("regulator", "Reference(Organization)", "The regulatory authority or authorizing body granting the authorization. For example, European Medicines Agency (EMA), Food and Drug Administration (FDA), Health Canada (HC), etc.", 0, 1, regulator);
         case -513945889: /*attachedDocument*/  return new Property("attachedDocument", "Reference(DocumentReference)", "Additional information or supporting documentation about the authorization.", 0, java.lang.Integer.MAX_VALUE, attachedDocument);
-        case 3046192: /*case*/  return new Property("case", "", "The case or regulatory procedure for granting or amending a marketing authorization. Note: This area is subject to ongoing review and the workgroup is seeking implementer feedback on its use (see link at bottom of page).", 0, 1, case_);
+        case 3046192: /*case*/  return new Property("case", "", "The case or regulatory procedure for granting or amending a regulated authorization. An authorization is granted in response to submissions/applications by those seeking authorization. A case is the administrative process that deals with the application(s) that relate to this and assesses them. Note: This area is subject to ongoing review and the workgroup is seeking implementer feedback on its use (see link at bottom of page).", 0, 1, case_);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -1182,7 +1218,7 @@ public class RegulatedAuthorization extends DomainResource {
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // CodeableConcept
         case 247524032: /*statusDate*/ return this.statusDate == null ? new Base[0] : new Base[] {this.statusDate}; // DateTimeType
         case -1434195053: /*validityPeriod*/ return this.validityPeriod == null ? new Base[0] : new Base[] {this.validityPeriod}; // Period
-        case -597168804: /*indication*/ return this.indication == null ? new Base[0] : new Base[] {this.indication}; // CodeableReference
+        case -597168804: /*indication*/ return this.indication == null ? new Base[0] : this.indication.toArray(new Base[this.indication.size()]); // CodeableReference
         case -1618671268: /*intendedUse*/ return this.intendedUse == null ? new Base[0] : new Base[] {this.intendedUse}; // CodeableConcept
         case 93508670: /*basis*/ return this.basis == null ? new Base[0] : this.basis.toArray(new Base[this.basis.size()]); // CodeableConcept
         case -1211707988: /*holder*/ return this.holder == null ? new Base[0] : new Base[] {this.holder}; // Reference
@@ -1222,7 +1258,7 @@ public class RegulatedAuthorization extends DomainResource {
           this.validityPeriod = TypeConvertor.castToPeriod(value); // Period
           return value;
         case -597168804: // indication
-          this.indication = TypeConvertor.castToCodeableReference(value); // CodeableReference
+          this.getIndication().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
         case -1618671268: // intendedUse
           this.intendedUse = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -1266,7 +1302,7 @@ public class RegulatedAuthorization extends DomainResource {
         } else if (name.equals("validityPeriod")) {
           this.validityPeriod = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("indication")) {
-          this.indication = TypeConvertor.castToCodeableReference(value); // CodeableReference
+          this.getIndication().add(TypeConvertor.castToCodeableReference(value));
         } else if (name.equals("intendedUse")) {
           this.intendedUse = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("basis")) {
@@ -1295,7 +1331,7 @@ public class RegulatedAuthorization extends DomainResource {
         case -892481550:  return getStatus();
         case 247524032:  return getStatusDateElement();
         case -1434195053:  return getValidityPeriod();
-        case -597168804:  return getIndication();
+        case -597168804:  return addIndication(); 
         case -1618671268:  return getIntendedUse();
         case 93508670:  return addBasis(); 
         case -1211707988:  return getHolder();
@@ -1360,8 +1396,7 @@ public class RegulatedAuthorization extends DomainResource {
           return this.validityPeriod;
         }
         else if (name.equals("indication")) {
-          this.indication = new CodeableReference();
-          return this.indication;
+          return addIndication();
         }
         else if (name.equals("intendedUse")) {
           this.intendedUse = new CodeableConcept();
@@ -1422,7 +1457,11 @@ public class RegulatedAuthorization extends DomainResource {
         dst.status = status == null ? null : status.copy();
         dst.statusDate = statusDate == null ? null : statusDate.copy();
         dst.validityPeriod = validityPeriod == null ? null : validityPeriod.copy();
-        dst.indication = indication == null ? null : indication.copy();
+        if (indication != null) {
+          dst.indication = new ArrayList<CodeableReference>();
+          for (CodeableReference i : indication)
+            dst.indication.add(i.copy());
+        };
         dst.intendedUse = intendedUse == null ? null : intendedUse.copy();
         if (basis != null) {
           dst.basis = new ArrayList<CodeableConcept>();
@@ -1615,7 +1654,7 @@ public class RegulatedAuthorization extends DomainResource {
    * Path: <b>RegulatedAuthorization.subject</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="subject", path="RegulatedAuthorization.subject", description="The type of regulated product, treatment, facility or activity that is being authorized", type="reference", target={ActivityDefinition.class, BiologicallyDerivedProduct.class, DeviceDefinition.class, Location.class, MedicinalProductDefinition.class, NutritionProduct.class, ObservationDefinition.class, Organization.class, PackagedProductDefinition.class, PlanDefinition.class, Practitioner.class, ResearchStudy.class, SubstanceDefinition.class } )
+  @SearchParamDefinition(name="subject", path="RegulatedAuthorization.subject", description="The type of regulated product, treatment, facility or activity that is being authorized", type="reference", target={ActivityDefinition.class, BiologicallyDerivedProduct.class, DeviceDefinition.class, Ingredient.class, Location.class, ManufacturedItemDefinition.class, MedicinalProductDefinition.class, NutritionProduct.class, ObservationDefinition.class, Organization.class, PackagedProductDefinition.class, PlanDefinition.class, Practitioner.class, ResearchStudy.class, SubstanceDefinition.class } )
   public static final String SP_SUBJECT = "subject";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>subject</b>

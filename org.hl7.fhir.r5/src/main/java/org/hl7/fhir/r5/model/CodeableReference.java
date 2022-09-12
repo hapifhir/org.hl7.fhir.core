@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,16 +45,16 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * Base StructureDefinition for CodeableReference Type: A reference to a resource (by instance), or instead, a reference to a cencept defined in a terminology or ontology (by class).
+ * CodeableReference Type: A reference to a resource (by instance), or instead, a reference to a concept defined in a terminology or ontology (by class).
  */
 @DatatypeDef(name="CodeableReference")
 public class CodeableReference extends DataType implements ICompositeType {
 
     /**
-     * A reference to a concept - e.g. the information is identified by it's general classto the degree of precision found in the terminology.
+     * A reference to a concept - e.g. the information is identified by its general class to the degree of precision found in the terminology.
      */
     @Child(name = "concept", type = {CodeableConcept.class}, order=0, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Reference to a concept (by class)", formalDefinition="A reference to a concept - e.g. the information is identified by it's general classto the degree of precision found in the terminology." )
+    @Description(shortDefinition="Reference to a concept (by class)", formalDefinition="A reference to a concept - e.g. the information is identified by its general class to the degree of precision found in the terminology." )
     protected CodeableConcept concept;
 
     /**
@@ -74,7 +74,7 @@ public class CodeableReference extends DataType implements ICompositeType {
     }
 
     /**
-     * @return {@link #concept} (A reference to a concept - e.g. the information is identified by it's general classto the degree of precision found in the terminology.)
+     * @return {@link #concept} (A reference to a concept - e.g. the information is identified by its general class to the degree of precision found in the terminology.)
      */
     public CodeableConcept getConcept() { 
       if (this.concept == null)
@@ -90,7 +90,7 @@ public class CodeableReference extends DataType implements ICompositeType {
     }
 
     /**
-     * @param value {@link #concept} (A reference to a concept - e.g. the information is identified by it's general classto the degree of precision found in the terminology.)
+     * @param value {@link #concept} (A reference to a concept - e.g. the information is identified by its general class to the degree of precision found in the terminology.)
      */
     public CodeableReference setConcept(CodeableConcept value) { 
       this.concept = value;
@@ -123,14 +123,14 @@ public class CodeableReference extends DataType implements ICompositeType {
 
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("concept", "CodeableConcept", "A reference to a concept - e.g. the information is identified by it's general classto the degree of precision found in the terminology.", 0, 1, concept));
+        children.add(new Property("concept", "CodeableConcept", "A reference to a concept - e.g. the information is identified by its general class to the degree of precision found in the terminology.", 0, 1, concept));
         children.add(new Property("reference", "Reference", "A reference to a resource the provides exact details about the information being referenced.", 0, 1, reference));
       }
 
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case 951024232: /*concept*/  return new Property("concept", "CodeableConcept", "A reference to a concept - e.g. the information is identified by it's general classto the degree of precision found in the terminology.", 0, 1, concept);
+        case 951024232: /*concept*/  return new Property("concept", "CodeableConcept", "A reference to a concept - e.g. the information is identified by its general class to the degree of precision found in the terminology.", 0, 1, concept);
         case -925155509: /*reference*/  return new Property("reference", "Reference", "A reference to a resource the provides exact details about the information being referenced.", 0, 1, reference);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }

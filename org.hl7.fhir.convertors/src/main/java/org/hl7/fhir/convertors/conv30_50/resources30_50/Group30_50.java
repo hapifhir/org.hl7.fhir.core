@@ -9,6 +9,7 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Bool
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.UnsignedInt30_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Group.GroupMembershipBasis;
 
 public class Group30_50 {
 
@@ -24,7 +25,7 @@ public class Group30_50 {
     if (src.hasType())
       tgt.setTypeElement(convertGroupType(src.getTypeElement()));
     if (src.hasActual())
-      tgt.setActualElement(Boolean30_50.convertBoolean(src.getActualElement()));
+      tgt.setMembership(src.getActual() ? GroupMembershipBasis.ENUMERATED : GroupMembershipBasis.DEFINITIONAL);
     if (src.hasCode())
       tgt.setCode(CodeableConcept30_50.convertCodeableConcept(src.getCode()));
     if (src.hasName())
@@ -49,8 +50,8 @@ public class Group30_50 {
       tgt.setActiveElement(Boolean30_50.convertBoolean(src.getActiveElement()));
     if (src.hasType())
       tgt.setTypeElement(convertGroupType(src.getTypeElement()));
-    if (src.hasActual())
-      tgt.setActualElement(Boolean30_50.convertBoolean(src.getActualElement()));
+    if (src.hasMembership())
+      tgt.setActual(src.getMembership() == GroupMembershipBasis.ENUMERATED);
     if (src.hasCode())
       tgt.setCode(CodeableConcept30_50.convertCodeableConcept(src.getCode()));
     if (src.hasName())
@@ -68,7 +69,7 @@ public class Group30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Group.GroupCharacteristicComponent tgt = new org.hl7.fhir.r5.model.Group.GroupCharacteristicComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept30_50.convertCodeableConcept(src.getCode()));
     if (src.hasValue())
@@ -84,7 +85,7 @@ public class Group30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Group.GroupCharacteristicComponent tgt = new org.hl7.fhir.dstu3.model.Group.GroupCharacteristicComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept30_50.convertCodeableConcept(src.getCode()));
     if (src.hasValue())
@@ -100,7 +101,7 @@ public class Group30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Group.GroupMemberComponent tgt = new org.hl7.fhir.dstu3.model.Group.GroupMemberComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasEntity())
       tgt.setEntity(Reference30_50.convertReference(src.getEntity()));
     if (src.hasPeriod())
@@ -114,7 +115,7 @@ public class Group30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Group.GroupMemberComponent tgt = new org.hl7.fhir.r5.model.Group.GroupMemberComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasEntity())
       tgt.setEntity(Reference30_50.convertReference(src.getEntity()));
     if (src.hasPeriod())
@@ -142,12 +143,6 @@ public class Group30_50 {
       case DEVICE:
         tgt.setValue(org.hl7.fhir.dstu3.model.Group.GroupType.DEVICE);
         break;
-      case MEDICATION:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Group.GroupType.MEDICATION);
-        break;
-      case SUBSTANCE:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Group.GroupType.SUBSTANCE);
-        break;
       default:
         tgt.setValue(org.hl7.fhir.dstu3.model.Group.GroupType.NULL);
         break;
@@ -172,12 +167,6 @@ public class Group30_50 {
         break;
       case DEVICE:
         tgt.setValue(org.hl7.fhir.r5.model.Group.GroupType.DEVICE);
-        break;
-      case MEDICATION:
-        tgt.setValue(org.hl7.fhir.r5.model.Group.GroupType.MEDICATION);
-        break;
-      case SUBSTANCE:
-        tgt.setValue(org.hl7.fhir.r5.model.Group.GroupType.SUBSTANCE);
         break;
       default:
         tgt.setValue(org.hl7.fhir.r5.model.Group.GroupType.NULL);

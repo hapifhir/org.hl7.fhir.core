@@ -55,8 +55,8 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.utilities.ElementDecoration;
 import org.hl7.fhir.utilities.ElementDecoration.DecorationType;
-import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 /**
@@ -360,9 +360,12 @@ public class Element extends Base {
     if (childMap == null) {
       childMap = new HashMap<>();
       for (Element child : children) {
-        String n = child.getName();
-        if (n.endsWith("[x]")) {
+        String n;
+        if (child.getProperty().getName().endsWith("[x]")) {
+          n = child.getProperty().getName();
           n = n.substring(0, n.length()-3);
+        } else {
+          n = child.getName();
         }
         List<Element> l = childMap.get(n);
         if (l == null) {

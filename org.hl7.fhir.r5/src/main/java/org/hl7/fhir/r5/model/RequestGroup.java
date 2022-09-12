@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -96,7 +96,7 @@ public class RequestGroup extends DomainResource {
         @Child(name = "priority", type = {CodeType.class}, order=6, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="routine | urgent | asap | stat", formalDefinition="Indicates how quickly the action should be addressed with respect to other actions." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/request-priority")
-        protected Enumeration<RequestPriority> priority;
+        protected CodeType priority;
 
         /**
          * A code that provides meaning for the action or action group. For example, a section may have a LOINC code for a section of a documentation template.
@@ -169,7 +169,7 @@ public class RequestGroup extends DomainResource {
         @Child(name = "groupingBehavior", type = {CodeType.class}, order=16, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="visual-group | logical-group | sentence-group", formalDefinition="Defines the grouping behavior for the action and its children." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-grouping-behavior")
-        protected Enumeration<ActionGroupingBehavior> groupingBehavior;
+        protected CodeType groupingBehavior;
 
         /**
          * Defines the selection behavior for the action and its children.
@@ -177,7 +177,7 @@ public class RequestGroup extends DomainResource {
         @Child(name = "selectionBehavior", type = {CodeType.class}, order=17, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="any | all | all-or-none | exactly-one | at-most-one | one-or-more", formalDefinition="Defines the selection behavior for the action and its children." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-selection-behavior")
-        protected Enumeration<ActionSelectionBehavior> selectionBehavior;
+        protected CodeType selectionBehavior;
 
         /**
          * Defines expectations around whether an action is required.
@@ -185,7 +185,7 @@ public class RequestGroup extends DomainResource {
         @Child(name = "requiredBehavior", type = {CodeType.class}, order=18, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="must | could | must-unless-documented", formalDefinition="Defines expectations around whether an action is required." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-required-behavior")
-        protected Enumeration<ActionRequiredBehavior> requiredBehavior;
+        protected CodeType requiredBehavior;
 
         /**
          * Defines whether the action should usually be preselected.
@@ -193,7 +193,7 @@ public class RequestGroup extends DomainResource {
         @Child(name = "precheckBehavior", type = {CodeType.class}, order=19, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="yes | no", formalDefinition="Defines whether the action should usually be preselected." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-precheck-behavior")
-        protected Enumeration<ActionPrecheckBehavior> precheckBehavior;
+        protected CodeType precheckBehavior;
 
         /**
          * Defines whether the action can be selected multiple times.
@@ -201,7 +201,7 @@ public class RequestGroup extends DomainResource {
         @Child(name = "cardinalityBehavior", type = {CodeType.class}, order=20, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="single | multiple", formalDefinition="Defines whether the action can be selected multiple times." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-cardinality-behavior")
-        protected Enumeration<ActionCardinalityBehavior> cardinalityBehavior;
+        protected CodeType cardinalityBehavior;
 
         /**
          * The resource that is the target of the action (e.g. CommunicationRequest).
@@ -217,7 +217,7 @@ public class RequestGroup extends DomainResource {
         @Description(shortDefinition="Sub action", formalDefinition="Sub actions." )
         protected List<RequestGroupActionComponent> action;
 
-        private static final long serialVersionUID = 969411112L;
+        private static final long serialVersionUID = 478054352L;
 
     /**
      * Constructor
@@ -474,12 +474,12 @@ public class RequestGroup extends DomainResource {
         /**
          * @return {@link #priority} (Indicates how quickly the action should be addressed with respect to other actions.). This is the underlying object with id, value and extensions. The accessor "getPriority" gives direct access to the value
          */
-        public Enumeration<RequestPriority> getPriorityElement() { 
+        public CodeType getPriorityElement() { 
           if (this.priority == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create RequestGroupActionComponent.priority");
             else if (Configuration.doAutoCreate())
-              this.priority = new Enumeration<RequestPriority>(new RequestPriorityEnumFactory()); // bb
+              this.priority = new CodeType(); // bb
           return this.priority;
         }
 
@@ -494,7 +494,7 @@ public class RequestGroup extends DomainResource {
         /**
          * @param value {@link #priority} (Indicates how quickly the action should be addressed with respect to other actions.). This is the underlying object with id, value and extensions. The accessor "getPriority" gives direct access to the value
          */
-        public RequestGroupActionComponent setPriorityElement(Enumeration<RequestPriority> value) { 
+        public RequestGroupActionComponent setPriorityElement(CodeType value) { 
           this.priority = value;
           return this;
         }
@@ -502,19 +502,19 @@ public class RequestGroup extends DomainResource {
         /**
          * @return Indicates how quickly the action should be addressed with respect to other actions.
          */
-        public RequestPriority getPriority() { 
+        public String getPriority() { 
           return this.priority == null ? null : this.priority.getValue();
         }
 
         /**
          * @param value Indicates how quickly the action should be addressed with respect to other actions.
          */
-        public RequestGroupActionComponent setPriority(RequestPriority value) { 
-          if (value == null)
+        public RequestGroupActionComponent setPriority(String value) { 
+          if (Utilities.noString(value))
             this.priority = null;
           else {
             if (this.priority == null)
-              this.priority = new Enumeration<RequestPriority>(new RequestPriorityEnumFactory());
+              this.priority = new CodeType();
             this.priority.setValue(value);
           }
           return this;
@@ -1000,12 +1000,12 @@ public class RequestGroup extends DomainResource {
         /**
          * @return {@link #groupingBehavior} (Defines the grouping behavior for the action and its children.). This is the underlying object with id, value and extensions. The accessor "getGroupingBehavior" gives direct access to the value
          */
-        public Enumeration<ActionGroupingBehavior> getGroupingBehaviorElement() { 
+        public CodeType getGroupingBehaviorElement() { 
           if (this.groupingBehavior == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create RequestGroupActionComponent.groupingBehavior");
             else if (Configuration.doAutoCreate())
-              this.groupingBehavior = new Enumeration<ActionGroupingBehavior>(new ActionGroupingBehaviorEnumFactory()); // bb
+              this.groupingBehavior = new CodeType(); // bb
           return this.groupingBehavior;
         }
 
@@ -1020,7 +1020,7 @@ public class RequestGroup extends DomainResource {
         /**
          * @param value {@link #groupingBehavior} (Defines the grouping behavior for the action and its children.). This is the underlying object with id, value and extensions. The accessor "getGroupingBehavior" gives direct access to the value
          */
-        public RequestGroupActionComponent setGroupingBehaviorElement(Enumeration<ActionGroupingBehavior> value) { 
+        public RequestGroupActionComponent setGroupingBehaviorElement(CodeType value) { 
           this.groupingBehavior = value;
           return this;
         }
@@ -1028,19 +1028,19 @@ public class RequestGroup extends DomainResource {
         /**
          * @return Defines the grouping behavior for the action and its children.
          */
-        public ActionGroupingBehavior getGroupingBehavior() { 
+        public String getGroupingBehavior() { 
           return this.groupingBehavior == null ? null : this.groupingBehavior.getValue();
         }
 
         /**
          * @param value Defines the grouping behavior for the action and its children.
          */
-        public RequestGroupActionComponent setGroupingBehavior(ActionGroupingBehavior value) { 
-          if (value == null)
+        public RequestGroupActionComponent setGroupingBehavior(String value) { 
+          if (Utilities.noString(value))
             this.groupingBehavior = null;
           else {
             if (this.groupingBehavior == null)
-              this.groupingBehavior = new Enumeration<ActionGroupingBehavior>(new ActionGroupingBehaviorEnumFactory());
+              this.groupingBehavior = new CodeType();
             this.groupingBehavior.setValue(value);
           }
           return this;
@@ -1049,12 +1049,12 @@ public class RequestGroup extends DomainResource {
         /**
          * @return {@link #selectionBehavior} (Defines the selection behavior for the action and its children.). This is the underlying object with id, value and extensions. The accessor "getSelectionBehavior" gives direct access to the value
          */
-        public Enumeration<ActionSelectionBehavior> getSelectionBehaviorElement() { 
+        public CodeType getSelectionBehaviorElement() { 
           if (this.selectionBehavior == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create RequestGroupActionComponent.selectionBehavior");
             else if (Configuration.doAutoCreate())
-              this.selectionBehavior = new Enumeration<ActionSelectionBehavior>(new ActionSelectionBehaviorEnumFactory()); // bb
+              this.selectionBehavior = new CodeType(); // bb
           return this.selectionBehavior;
         }
 
@@ -1069,7 +1069,7 @@ public class RequestGroup extends DomainResource {
         /**
          * @param value {@link #selectionBehavior} (Defines the selection behavior for the action and its children.). This is the underlying object with id, value and extensions. The accessor "getSelectionBehavior" gives direct access to the value
          */
-        public RequestGroupActionComponent setSelectionBehaviorElement(Enumeration<ActionSelectionBehavior> value) { 
+        public RequestGroupActionComponent setSelectionBehaviorElement(CodeType value) { 
           this.selectionBehavior = value;
           return this;
         }
@@ -1077,19 +1077,19 @@ public class RequestGroup extends DomainResource {
         /**
          * @return Defines the selection behavior for the action and its children.
          */
-        public ActionSelectionBehavior getSelectionBehavior() { 
+        public String getSelectionBehavior() { 
           return this.selectionBehavior == null ? null : this.selectionBehavior.getValue();
         }
 
         /**
          * @param value Defines the selection behavior for the action and its children.
          */
-        public RequestGroupActionComponent setSelectionBehavior(ActionSelectionBehavior value) { 
-          if (value == null)
+        public RequestGroupActionComponent setSelectionBehavior(String value) { 
+          if (Utilities.noString(value))
             this.selectionBehavior = null;
           else {
             if (this.selectionBehavior == null)
-              this.selectionBehavior = new Enumeration<ActionSelectionBehavior>(new ActionSelectionBehaviorEnumFactory());
+              this.selectionBehavior = new CodeType();
             this.selectionBehavior.setValue(value);
           }
           return this;
@@ -1098,12 +1098,12 @@ public class RequestGroup extends DomainResource {
         /**
          * @return {@link #requiredBehavior} (Defines expectations around whether an action is required.). This is the underlying object with id, value and extensions. The accessor "getRequiredBehavior" gives direct access to the value
          */
-        public Enumeration<ActionRequiredBehavior> getRequiredBehaviorElement() { 
+        public CodeType getRequiredBehaviorElement() { 
           if (this.requiredBehavior == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create RequestGroupActionComponent.requiredBehavior");
             else if (Configuration.doAutoCreate())
-              this.requiredBehavior = new Enumeration<ActionRequiredBehavior>(new ActionRequiredBehaviorEnumFactory()); // bb
+              this.requiredBehavior = new CodeType(); // bb
           return this.requiredBehavior;
         }
 
@@ -1118,7 +1118,7 @@ public class RequestGroup extends DomainResource {
         /**
          * @param value {@link #requiredBehavior} (Defines expectations around whether an action is required.). This is the underlying object with id, value and extensions. The accessor "getRequiredBehavior" gives direct access to the value
          */
-        public RequestGroupActionComponent setRequiredBehaviorElement(Enumeration<ActionRequiredBehavior> value) { 
+        public RequestGroupActionComponent setRequiredBehaviorElement(CodeType value) { 
           this.requiredBehavior = value;
           return this;
         }
@@ -1126,19 +1126,19 @@ public class RequestGroup extends DomainResource {
         /**
          * @return Defines expectations around whether an action is required.
          */
-        public ActionRequiredBehavior getRequiredBehavior() { 
+        public String getRequiredBehavior() { 
           return this.requiredBehavior == null ? null : this.requiredBehavior.getValue();
         }
 
         /**
          * @param value Defines expectations around whether an action is required.
          */
-        public RequestGroupActionComponent setRequiredBehavior(ActionRequiredBehavior value) { 
-          if (value == null)
+        public RequestGroupActionComponent setRequiredBehavior(String value) { 
+          if (Utilities.noString(value))
             this.requiredBehavior = null;
           else {
             if (this.requiredBehavior == null)
-              this.requiredBehavior = new Enumeration<ActionRequiredBehavior>(new ActionRequiredBehaviorEnumFactory());
+              this.requiredBehavior = new CodeType();
             this.requiredBehavior.setValue(value);
           }
           return this;
@@ -1147,12 +1147,12 @@ public class RequestGroup extends DomainResource {
         /**
          * @return {@link #precheckBehavior} (Defines whether the action should usually be preselected.). This is the underlying object with id, value and extensions. The accessor "getPrecheckBehavior" gives direct access to the value
          */
-        public Enumeration<ActionPrecheckBehavior> getPrecheckBehaviorElement() { 
+        public CodeType getPrecheckBehaviorElement() { 
           if (this.precheckBehavior == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create RequestGroupActionComponent.precheckBehavior");
             else if (Configuration.doAutoCreate())
-              this.precheckBehavior = new Enumeration<ActionPrecheckBehavior>(new ActionPrecheckBehaviorEnumFactory()); // bb
+              this.precheckBehavior = new CodeType(); // bb
           return this.precheckBehavior;
         }
 
@@ -1167,7 +1167,7 @@ public class RequestGroup extends DomainResource {
         /**
          * @param value {@link #precheckBehavior} (Defines whether the action should usually be preselected.). This is the underlying object with id, value and extensions. The accessor "getPrecheckBehavior" gives direct access to the value
          */
-        public RequestGroupActionComponent setPrecheckBehaviorElement(Enumeration<ActionPrecheckBehavior> value) { 
+        public RequestGroupActionComponent setPrecheckBehaviorElement(CodeType value) { 
           this.precheckBehavior = value;
           return this;
         }
@@ -1175,19 +1175,19 @@ public class RequestGroup extends DomainResource {
         /**
          * @return Defines whether the action should usually be preselected.
          */
-        public ActionPrecheckBehavior getPrecheckBehavior() { 
+        public String getPrecheckBehavior() { 
           return this.precheckBehavior == null ? null : this.precheckBehavior.getValue();
         }
 
         /**
          * @param value Defines whether the action should usually be preselected.
          */
-        public RequestGroupActionComponent setPrecheckBehavior(ActionPrecheckBehavior value) { 
-          if (value == null)
+        public RequestGroupActionComponent setPrecheckBehavior(String value) { 
+          if (Utilities.noString(value))
             this.precheckBehavior = null;
           else {
             if (this.precheckBehavior == null)
-              this.precheckBehavior = new Enumeration<ActionPrecheckBehavior>(new ActionPrecheckBehaviorEnumFactory());
+              this.precheckBehavior = new CodeType();
             this.precheckBehavior.setValue(value);
           }
           return this;
@@ -1196,12 +1196,12 @@ public class RequestGroup extends DomainResource {
         /**
          * @return {@link #cardinalityBehavior} (Defines whether the action can be selected multiple times.). This is the underlying object with id, value and extensions. The accessor "getCardinalityBehavior" gives direct access to the value
          */
-        public Enumeration<ActionCardinalityBehavior> getCardinalityBehaviorElement() { 
+        public CodeType getCardinalityBehaviorElement() { 
           if (this.cardinalityBehavior == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create RequestGroupActionComponent.cardinalityBehavior");
             else if (Configuration.doAutoCreate())
-              this.cardinalityBehavior = new Enumeration<ActionCardinalityBehavior>(new ActionCardinalityBehaviorEnumFactory()); // bb
+              this.cardinalityBehavior = new CodeType(); // bb
           return this.cardinalityBehavior;
         }
 
@@ -1216,7 +1216,7 @@ public class RequestGroup extends DomainResource {
         /**
          * @param value {@link #cardinalityBehavior} (Defines whether the action can be selected multiple times.). This is the underlying object with id, value and extensions. The accessor "getCardinalityBehavior" gives direct access to the value
          */
-        public RequestGroupActionComponent setCardinalityBehaviorElement(Enumeration<ActionCardinalityBehavior> value) { 
+        public RequestGroupActionComponent setCardinalityBehaviorElement(CodeType value) { 
           this.cardinalityBehavior = value;
           return this;
         }
@@ -1224,19 +1224,19 @@ public class RequestGroup extends DomainResource {
         /**
          * @return Defines whether the action can be selected multiple times.
          */
-        public ActionCardinalityBehavior getCardinalityBehavior() { 
+        public String getCardinalityBehavior() { 
           return this.cardinalityBehavior == null ? null : this.cardinalityBehavior.getValue();
         }
 
         /**
          * @param value Defines whether the action can be selected multiple times.
          */
-        public RequestGroupActionComponent setCardinalityBehavior(ActionCardinalityBehavior value) { 
-          if (value == null)
+        public RequestGroupActionComponent setCardinalityBehavior(String value) { 
+          if (Utilities.noString(value))
             this.cardinalityBehavior = null;
           else {
             if (this.cardinalityBehavior == null)
-              this.cardinalityBehavior = new Enumeration<ActionCardinalityBehavior>(new ActionCardinalityBehaviorEnumFactory());
+              this.cardinalityBehavior = new CodeType();
             this.cardinalityBehavior.setValue(value);
           }
           return this;
@@ -1390,7 +1390,7 @@ public class RequestGroup extends DomainResource {
         case 110371416: /*title*/ return this.title == null ? new Base[0] : new Base[] {this.title}; // StringType
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
         case -900391049: /*textEquivalent*/ return this.textEquivalent == null ? new Base[0] : new Base[] {this.textEquivalent}; // StringType
-        case -1165461084: /*priority*/ return this.priority == null ? new Base[0] : new Base[] {this.priority}; // Enumeration<RequestPriority>
+        case -1165461084: /*priority*/ return this.priority == null ? new Base[0] : new Base[] {this.priority}; // CodeType
         case 3059181: /*code*/ return this.code == null ? new Base[0] : this.code.toArray(new Base[this.code.size()]); // CodeableConcept
         case 1587405498: /*documentation*/ return this.documentation == null ? new Base[0] : this.documentation.toArray(new Base[this.documentation.size()]); // RelatedArtifact
         case 3178259: /*goal*/ return this.goal == null ? new Base[0] : this.goal.toArray(new Base[this.goal.size()]); // Reference
@@ -1400,11 +1400,11 @@ public class RequestGroup extends DomainResource {
         case 1901043637: /*location*/ return this.location == null ? new Base[0] : new Base[] {this.location}; // CodeableReference
         case 767422259: /*participant*/ return this.participant == null ? new Base[0] : this.participant.toArray(new Base[this.participant.size()]); // RequestGroupActionParticipantComponent
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
-        case 586678389: /*groupingBehavior*/ return this.groupingBehavior == null ? new Base[0] : new Base[] {this.groupingBehavior}; // Enumeration<ActionGroupingBehavior>
-        case 168639486: /*selectionBehavior*/ return this.selectionBehavior == null ? new Base[0] : new Base[] {this.selectionBehavior}; // Enumeration<ActionSelectionBehavior>
-        case -1163906287: /*requiredBehavior*/ return this.requiredBehavior == null ? new Base[0] : new Base[] {this.requiredBehavior}; // Enumeration<ActionRequiredBehavior>
-        case -1174249033: /*precheckBehavior*/ return this.precheckBehavior == null ? new Base[0] : new Base[] {this.precheckBehavior}; // Enumeration<ActionPrecheckBehavior>
-        case -922577408: /*cardinalityBehavior*/ return this.cardinalityBehavior == null ? new Base[0] : new Base[] {this.cardinalityBehavior}; // Enumeration<ActionCardinalityBehavior>
+        case 586678389: /*groupingBehavior*/ return this.groupingBehavior == null ? new Base[0] : new Base[] {this.groupingBehavior}; // CodeType
+        case 168639486: /*selectionBehavior*/ return this.selectionBehavior == null ? new Base[0] : new Base[] {this.selectionBehavior}; // CodeType
+        case -1163906287: /*requiredBehavior*/ return this.requiredBehavior == null ? new Base[0] : new Base[] {this.requiredBehavior}; // CodeType
+        case -1174249033: /*precheckBehavior*/ return this.precheckBehavior == null ? new Base[0] : new Base[] {this.precheckBehavior}; // CodeType
+        case -922577408: /*cardinalityBehavior*/ return this.cardinalityBehavior == null ? new Base[0] : new Base[] {this.cardinalityBehavior}; // CodeType
         case -341064690: /*resource*/ return this.resource == null ? new Base[0] : new Base[] {this.resource}; // Reference
         case -1422950858: /*action*/ return this.action == null ? new Base[0] : this.action.toArray(new Base[this.action.size()]); // RequestGroupActionComponent
         default: return super.getProperty(hash, name, checkValid);
@@ -1431,8 +1431,7 @@ public class RequestGroup extends DomainResource {
           this.textEquivalent = TypeConvertor.castToString(value); // StringType
           return value;
         case -1165461084: // priority
-          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.priority = (Enumeration) value; // Enumeration<RequestPriority>
+          this.priority = TypeConvertor.castToCode(value); // CodeType
           return value;
         case 3059181: // code
           this.getCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
@@ -1462,24 +1461,19 @@ public class RequestGroup extends DomainResource {
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 586678389: // groupingBehavior
-          value = new ActionGroupingBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.groupingBehavior = (Enumeration) value; // Enumeration<ActionGroupingBehavior>
+          this.groupingBehavior = TypeConvertor.castToCode(value); // CodeType
           return value;
         case 168639486: // selectionBehavior
-          value = new ActionSelectionBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.selectionBehavior = (Enumeration) value; // Enumeration<ActionSelectionBehavior>
+          this.selectionBehavior = TypeConvertor.castToCode(value); // CodeType
           return value;
         case -1163906287: // requiredBehavior
-          value = new ActionRequiredBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.requiredBehavior = (Enumeration) value; // Enumeration<ActionRequiredBehavior>
+          this.requiredBehavior = TypeConvertor.castToCode(value); // CodeType
           return value;
         case -1174249033: // precheckBehavior
-          value = new ActionPrecheckBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.precheckBehavior = (Enumeration) value; // Enumeration<ActionPrecheckBehavior>
+          this.precheckBehavior = TypeConvertor.castToCode(value); // CodeType
           return value;
         case -922577408: // cardinalityBehavior
-          value = new ActionCardinalityBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.cardinalityBehavior = (Enumeration) value; // Enumeration<ActionCardinalityBehavior>
+          this.cardinalityBehavior = TypeConvertor.castToCode(value); // CodeType
           return value;
         case -341064690: // resource
           this.resource = TypeConvertor.castToReference(value); // Reference
@@ -1505,8 +1499,7 @@ public class RequestGroup extends DomainResource {
         } else if (name.equals("textEquivalent")) {
           this.textEquivalent = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("priority")) {
-          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.priority = (Enumeration) value; // Enumeration<RequestPriority>
+          this.priority = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("code")) {
           this.getCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("documentation")) {
@@ -1526,20 +1519,15 @@ public class RequestGroup extends DomainResource {
         } else if (name.equals("type")) {
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("groupingBehavior")) {
-          value = new ActionGroupingBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.groupingBehavior = (Enumeration) value; // Enumeration<ActionGroupingBehavior>
+          this.groupingBehavior = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("selectionBehavior")) {
-          value = new ActionSelectionBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.selectionBehavior = (Enumeration) value; // Enumeration<ActionSelectionBehavior>
+          this.selectionBehavior = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("requiredBehavior")) {
-          value = new ActionRequiredBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.requiredBehavior = (Enumeration) value; // Enumeration<ActionRequiredBehavior>
+          this.requiredBehavior = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("precheckBehavior")) {
-          value = new ActionPrecheckBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.precheckBehavior = (Enumeration) value; // Enumeration<ActionPrecheckBehavior>
+          this.precheckBehavior = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("cardinalityBehavior")) {
-          value = new ActionCardinalityBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.cardinalityBehavior = (Enumeration) value; // Enumeration<ActionCardinalityBehavior>
+          this.cardinalityBehavior = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("resource")) {
           this.resource = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("action")) {
@@ -1821,7 +1809,7 @@ public class RequestGroup extends DomainResource {
         @Child(name = "kind", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="applicability | start | stop", formalDefinition="The kind of condition." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-condition-kind")
-        protected Enumeration<ActionConditionKind> kind;
+        protected CodeType kind;
 
         /**
          * An expression that returns true or false, indicating whether or not the condition is satisfied.
@@ -1830,7 +1818,7 @@ public class RequestGroup extends DomainResource {
         @Description(shortDefinition="Boolean-valued expression", formalDefinition="An expression that returns true or false, indicating whether or not the condition is satisfied." )
         protected Expression expression;
 
-        private static final long serialVersionUID = -455150438L;
+        private static final long serialVersionUID = 372366087L;
 
     /**
      * Constructor
@@ -1842,7 +1830,7 @@ public class RequestGroup extends DomainResource {
     /**
      * Constructor
      */
-      public RequestGroupActionConditionComponent(ActionConditionKind kind) {
+      public RequestGroupActionConditionComponent(String kind) {
         super();
         this.setKind(kind);
       }
@@ -1850,12 +1838,12 @@ public class RequestGroup extends DomainResource {
         /**
          * @return {@link #kind} (The kind of condition.). This is the underlying object with id, value and extensions. The accessor "getKind" gives direct access to the value
          */
-        public Enumeration<ActionConditionKind> getKindElement() { 
+        public CodeType getKindElement() { 
           if (this.kind == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create RequestGroupActionConditionComponent.kind");
             else if (Configuration.doAutoCreate())
-              this.kind = new Enumeration<ActionConditionKind>(new ActionConditionKindEnumFactory()); // bb
+              this.kind = new CodeType(); // bb
           return this.kind;
         }
 
@@ -1870,7 +1858,7 @@ public class RequestGroup extends DomainResource {
         /**
          * @param value {@link #kind} (The kind of condition.). This is the underlying object with id, value and extensions. The accessor "getKind" gives direct access to the value
          */
-        public RequestGroupActionConditionComponent setKindElement(Enumeration<ActionConditionKind> value) { 
+        public RequestGroupActionConditionComponent setKindElement(CodeType value) { 
           this.kind = value;
           return this;
         }
@@ -1878,16 +1866,16 @@ public class RequestGroup extends DomainResource {
         /**
          * @return The kind of condition.
          */
-        public ActionConditionKind getKind() { 
+        public String getKind() { 
           return this.kind == null ? null : this.kind.getValue();
         }
 
         /**
          * @param value The kind of condition.
          */
-        public RequestGroupActionConditionComponent setKind(ActionConditionKind value) { 
+        public RequestGroupActionConditionComponent setKind(String value) { 
             if (this.kind == null)
-              this.kind = new Enumeration<ActionConditionKind>(new ActionConditionKindEnumFactory());
+              this.kind = new CodeType();
             this.kind.setValue(value);
           return this;
         }
@@ -1935,7 +1923,7 @@ public class RequestGroup extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 3292052: /*kind*/ return this.kind == null ? new Base[0] : new Base[] {this.kind}; // Enumeration<ActionConditionKind>
+        case 3292052: /*kind*/ return this.kind == null ? new Base[0] : new Base[] {this.kind}; // CodeType
         case -1795452264: /*expression*/ return this.expression == null ? new Base[0] : new Base[] {this.expression}; // Expression
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -1946,8 +1934,7 @@ public class RequestGroup extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3292052: // kind
-          value = new ActionConditionKindEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.kind = (Enumeration) value; // Enumeration<ActionConditionKind>
+          this.kind = TypeConvertor.castToCode(value); // CodeType
           return value;
         case -1795452264: // expression
           this.expression = TypeConvertor.castToExpression(value); // Expression
@@ -1960,8 +1947,7 @@ public class RequestGroup extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("kind")) {
-          value = new ActionConditionKindEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.kind = (Enumeration) value; // Enumeration<ActionConditionKind>
+          this.kind = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("expression")) {
           this.expression = TypeConvertor.castToExpression(value); // Expression
         } else
@@ -2060,7 +2046,7 @@ public class RequestGroup extends DomainResource {
         @Child(name = "relationship", type = {CodeType.class}, order=2, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="before-start | before | before-end | concurrent-with-start | concurrent | concurrent-with-end | after-start | after | after-end", formalDefinition="The relationship of this action to the related action." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-relationship-type")
-        protected Enumeration<ActionRelationshipType> relationship;
+        protected CodeType relationship;
 
         /**
          * A duration or range of durations to apply to the relationship. For example, 30-60 minutes before.
@@ -2069,7 +2055,7 @@ public class RequestGroup extends DomainResource {
         @Description(shortDefinition="Time offset for the relationship", formalDefinition="A duration or range of durations to apply to the relationship. For example, 30-60 minutes before." )
         protected DataType offset;
 
-        private static final long serialVersionUID = -462773513L;
+        private static final long serialVersionUID = 1412792231L;
 
     /**
      * Constructor
@@ -2081,7 +2067,7 @@ public class RequestGroup extends DomainResource {
     /**
      * Constructor
      */
-      public RequestGroupActionRelatedActionComponent(String targetId, ActionRelationshipType relationship) {
+      public RequestGroupActionRelatedActionComponent(String targetId, String relationship) {
         super();
         this.setTargetId(targetId);
         this.setRelationship(relationship);
@@ -2135,12 +2121,12 @@ public class RequestGroup extends DomainResource {
         /**
          * @return {@link #relationship} (The relationship of this action to the related action.). This is the underlying object with id, value and extensions. The accessor "getRelationship" gives direct access to the value
          */
-        public Enumeration<ActionRelationshipType> getRelationshipElement() { 
+        public CodeType getRelationshipElement() { 
           if (this.relationship == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create RequestGroupActionRelatedActionComponent.relationship");
             else if (Configuration.doAutoCreate())
-              this.relationship = new Enumeration<ActionRelationshipType>(new ActionRelationshipTypeEnumFactory()); // bb
+              this.relationship = new CodeType(); // bb
           return this.relationship;
         }
 
@@ -2155,7 +2141,7 @@ public class RequestGroup extends DomainResource {
         /**
          * @param value {@link #relationship} (The relationship of this action to the related action.). This is the underlying object with id, value and extensions. The accessor "getRelationship" gives direct access to the value
          */
-        public RequestGroupActionRelatedActionComponent setRelationshipElement(Enumeration<ActionRelationshipType> value) { 
+        public RequestGroupActionRelatedActionComponent setRelationshipElement(CodeType value) { 
           this.relationship = value;
           return this;
         }
@@ -2163,16 +2149,16 @@ public class RequestGroup extends DomainResource {
         /**
          * @return The relationship of this action to the related action.
          */
-        public ActionRelationshipType getRelationship() { 
+        public String getRelationship() { 
           return this.relationship == null ? null : this.relationship.getValue();
         }
 
         /**
          * @param value The relationship of this action to the related action.
          */
-        public RequestGroupActionRelatedActionComponent setRelationship(ActionRelationshipType value) { 
+        public RequestGroupActionRelatedActionComponent setRelationship(String value) { 
             if (this.relationship == null)
-              this.relationship = new Enumeration<ActionRelationshipType>(new ActionRelationshipTypeEnumFactory());
+              this.relationship = new CodeType();
             this.relationship.setValue(value);
           return this;
         }
@@ -2253,7 +2239,7 @@ public class RequestGroup extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -441951604: /*targetId*/ return this.targetId == null ? new Base[0] : new Base[] {this.targetId}; // IdType
-        case -261851592: /*relationship*/ return this.relationship == null ? new Base[0] : new Base[] {this.relationship}; // Enumeration<ActionRelationshipType>
+        case -261851592: /*relationship*/ return this.relationship == null ? new Base[0] : new Base[] {this.relationship}; // CodeType
         case -1019779949: /*offset*/ return this.offset == null ? new Base[0] : new Base[] {this.offset}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -2267,8 +2253,7 @@ public class RequestGroup extends DomainResource {
           this.targetId = TypeConvertor.castToId(value); // IdType
           return value;
         case -261851592: // relationship
-          value = new ActionRelationshipTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.relationship = (Enumeration) value; // Enumeration<ActionRelationshipType>
+          this.relationship = TypeConvertor.castToCode(value); // CodeType
           return value;
         case -1019779949: // offset
           this.offset = TypeConvertor.castToType(value); // DataType
@@ -2283,8 +2268,7 @@ public class RequestGroup extends DomainResource {
         if (name.equals("targetId")) {
           this.targetId = TypeConvertor.castToId(value); // IdType
         } else if (name.equals("relationship")) {
-          value = new ActionRelationshipTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.relationship = (Enumeration) value; // Enumeration<ActionRelationshipType>
+          this.relationship = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("offset[x]")) {
           this.offset = TypeConvertor.castToType(value); // DataType
         } else
@@ -2390,7 +2374,7 @@ public class RequestGroup extends DomainResource {
         @Child(name = "type", type = {CodeType.class}, order=1, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="careteam | device | group | healthcareservice | location | organization | patient | practitioner | practitionerrole | relatedperson", formalDefinition="The type of participant in the action." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-participant-type")
-        protected Enumeration<ActionParticipantType> type;
+        protected CodeType type;
 
         /**
          * The type of participant in the action.
@@ -2422,7 +2406,7 @@ public class RequestGroup extends DomainResource {
         @Description(shortDefinition="Who/what is participating?", formalDefinition="A reference to the actual participant." )
         protected Reference actor;
 
-        private static final long serialVersionUID = -2026277374L;
+        private static final long serialVersionUID = 354939821L;
 
     /**
      * Constructor
@@ -2434,12 +2418,12 @@ public class RequestGroup extends DomainResource {
         /**
          * @return {@link #type} (The type of participant in the action.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
          */
-        public Enumeration<ActionParticipantType> getTypeElement() { 
+        public CodeType getTypeElement() { 
           if (this.type == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create RequestGroupActionParticipantComponent.type");
             else if (Configuration.doAutoCreate())
-              this.type = new Enumeration<ActionParticipantType>(new ActionParticipantTypeEnumFactory()); // bb
+              this.type = new CodeType(); // bb
           return this.type;
         }
 
@@ -2454,7 +2438,7 @@ public class RequestGroup extends DomainResource {
         /**
          * @param value {@link #type} (The type of participant in the action.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
          */
-        public RequestGroupActionParticipantComponent setTypeElement(Enumeration<ActionParticipantType> value) { 
+        public RequestGroupActionParticipantComponent setTypeElement(CodeType value) { 
           this.type = value;
           return this;
         }
@@ -2462,19 +2446,19 @@ public class RequestGroup extends DomainResource {
         /**
          * @return The type of participant in the action.
          */
-        public ActionParticipantType getType() { 
+        public String getType() { 
           return this.type == null ? null : this.type.getValue();
         }
 
         /**
          * @param value The type of participant in the action.
          */
-        public RequestGroupActionParticipantComponent setType(ActionParticipantType value) { 
-          if (value == null)
+        public RequestGroupActionParticipantComponent setType(String value) { 
+          if (Utilities.noString(value))
             this.type = null;
           else {
             if (this.type == null)
-              this.type = new Enumeration<ActionParticipantType>(new ActionParticipantTypeEnumFactory());
+              this.type = new CodeType();
             this.type.setValue(value);
           }
           return this;
@@ -2601,7 +2585,7 @@ public class RequestGroup extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<ActionParticipantType>
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeType
         case 2074825009: /*typeReference*/ return this.typeReference == null ? new Base[0] : new Base[] {this.typeReference}; // Reference
         case 3506294: /*role*/ return this.role == null ? new Base[0] : new Base[] {this.role}; // CodeableConcept
         case 1380938712: /*function*/ return this.function == null ? new Base[0] : new Base[] {this.function}; // CodeableConcept
@@ -2615,8 +2599,7 @@ public class RequestGroup extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          value = new ActionParticipantTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.type = (Enumeration) value; // Enumeration<ActionParticipantType>
+          this.type = TypeConvertor.castToCode(value); // CodeType
           return value;
         case 2074825009: // typeReference
           this.typeReference = TypeConvertor.castToReference(value); // Reference
@@ -2638,8 +2621,7 @@ public class RequestGroup extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          value = new ActionParticipantTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.type = (Enumeration) value; // Enumeration<ActionParticipantType>
+          this.type = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("typeReference")) {
           this.typeReference = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("role")) {
@@ -2800,7 +2782,7 @@ public class RequestGroup extends DomainResource {
     @Child(name = "status", type = {CodeType.class}, order=6, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="draft | active | on-hold | revoked | completed | entered-in-error | unknown", formalDefinition="The current state of the request. For request groups, the status reflects the status of all the requests in the group." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/request-status")
-    protected Enumeration<RequestStatus> status;
+    protected CodeType status;
 
     /**
      * Indicates the level of authority/intentionality associated with the request and where the request fits into the workflow chain.
@@ -2808,7 +2790,7 @@ public class RequestGroup extends DomainResource {
     @Child(name = "intent", type = {CodeType.class}, order=7, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="proposal | plan | directive | order | original-order | reflex-order | filler-order | instance-order | option", formalDefinition="Indicates the level of authority/intentionality associated with the request and where the request fits into the workflow chain." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/request-intent")
-    protected Enumeration<RequestIntent> intent;
+    protected CodeType intent;
 
     /**
      * Indicates how quickly the request should be addressed with respect to other requests.
@@ -2816,7 +2798,7 @@ public class RequestGroup extends DomainResource {
     @Child(name = "priority", type = {CodeType.class}, order=8, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="routine | urgent | asap | stat", formalDefinition="Indicates how quickly the request should be addressed with respect to other requests." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/request-priority")
-    protected Enumeration<RequestPriority> priority;
+    protected CodeType priority;
 
     /**
      * A code that identifies what the overall request group is.
@@ -2883,7 +2865,7 @@ public class RequestGroup extends DomainResource {
     @Description(shortDefinition="Proposed actions, if any", formalDefinition="The actions, if any, produced by the evaluation of the artifact." )
     protected List<RequestGroupActionComponent> action;
 
-    private static final long serialVersionUID = -2038374873L;
+    private static final long serialVersionUID = 248789676L;
 
   /**
    * Constructor
@@ -2895,7 +2877,7 @@ public class RequestGroup extends DomainResource {
   /**
    * Constructor
    */
-    public RequestGroup(RequestStatus status, RequestIntent intent) {
+    public RequestGroup(String status, String intent) {
       super();
       this.setStatus(status);
       this.setIntent(intent);
@@ -3209,12 +3191,12 @@ public class RequestGroup extends DomainResource {
     /**
      * @return {@link #status} (The current state of the request. For request groups, the status reflects the status of all the requests in the group.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public Enumeration<RequestStatus> getStatusElement() { 
+    public CodeType getStatusElement() { 
       if (this.status == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create RequestGroup.status");
         else if (Configuration.doAutoCreate())
-          this.status = new Enumeration<RequestStatus>(new RequestStatusEnumFactory()); // bb
+          this.status = new CodeType(); // bb
       return this.status;
     }
 
@@ -3229,7 +3211,7 @@ public class RequestGroup extends DomainResource {
     /**
      * @param value {@link #status} (The current state of the request. For request groups, the status reflects the status of all the requests in the group.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public RequestGroup setStatusElement(Enumeration<RequestStatus> value) { 
+    public RequestGroup setStatusElement(CodeType value) { 
       this.status = value;
       return this;
     }
@@ -3237,16 +3219,16 @@ public class RequestGroup extends DomainResource {
     /**
      * @return The current state of the request. For request groups, the status reflects the status of all the requests in the group.
      */
-    public RequestStatus getStatus() { 
+    public String getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
      * @param value The current state of the request. For request groups, the status reflects the status of all the requests in the group.
      */
-    public RequestGroup setStatus(RequestStatus value) { 
+    public RequestGroup setStatus(String value) { 
         if (this.status == null)
-          this.status = new Enumeration<RequestStatus>(new RequestStatusEnumFactory());
+          this.status = new CodeType();
         this.status.setValue(value);
       return this;
     }
@@ -3254,12 +3236,12 @@ public class RequestGroup extends DomainResource {
     /**
      * @return {@link #intent} (Indicates the level of authority/intentionality associated with the request and where the request fits into the workflow chain.). This is the underlying object with id, value and extensions. The accessor "getIntent" gives direct access to the value
      */
-    public Enumeration<RequestIntent> getIntentElement() { 
+    public CodeType getIntentElement() { 
       if (this.intent == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create RequestGroup.intent");
         else if (Configuration.doAutoCreate())
-          this.intent = new Enumeration<RequestIntent>(new RequestIntentEnumFactory()); // bb
+          this.intent = new CodeType(); // bb
       return this.intent;
     }
 
@@ -3274,7 +3256,7 @@ public class RequestGroup extends DomainResource {
     /**
      * @param value {@link #intent} (Indicates the level of authority/intentionality associated with the request and where the request fits into the workflow chain.). This is the underlying object with id, value and extensions. The accessor "getIntent" gives direct access to the value
      */
-    public RequestGroup setIntentElement(Enumeration<RequestIntent> value) { 
+    public RequestGroup setIntentElement(CodeType value) { 
       this.intent = value;
       return this;
     }
@@ -3282,16 +3264,16 @@ public class RequestGroup extends DomainResource {
     /**
      * @return Indicates the level of authority/intentionality associated with the request and where the request fits into the workflow chain.
      */
-    public RequestIntent getIntent() { 
+    public String getIntent() { 
       return this.intent == null ? null : this.intent.getValue();
     }
 
     /**
      * @param value Indicates the level of authority/intentionality associated with the request and where the request fits into the workflow chain.
      */
-    public RequestGroup setIntent(RequestIntent value) { 
+    public RequestGroup setIntent(String value) { 
         if (this.intent == null)
-          this.intent = new Enumeration<RequestIntent>(new RequestIntentEnumFactory());
+          this.intent = new CodeType();
         this.intent.setValue(value);
       return this;
     }
@@ -3299,12 +3281,12 @@ public class RequestGroup extends DomainResource {
     /**
      * @return {@link #priority} (Indicates how quickly the request should be addressed with respect to other requests.). This is the underlying object with id, value and extensions. The accessor "getPriority" gives direct access to the value
      */
-    public Enumeration<RequestPriority> getPriorityElement() { 
+    public CodeType getPriorityElement() { 
       if (this.priority == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create RequestGroup.priority");
         else if (Configuration.doAutoCreate())
-          this.priority = new Enumeration<RequestPriority>(new RequestPriorityEnumFactory()); // bb
+          this.priority = new CodeType(); // bb
       return this.priority;
     }
 
@@ -3319,7 +3301,7 @@ public class RequestGroup extends DomainResource {
     /**
      * @param value {@link #priority} (Indicates how quickly the request should be addressed with respect to other requests.). This is the underlying object with id, value and extensions. The accessor "getPriority" gives direct access to the value
      */
-    public RequestGroup setPriorityElement(Enumeration<RequestPriority> value) { 
+    public RequestGroup setPriorityElement(CodeType value) { 
       this.priority = value;
       return this;
     }
@@ -3327,19 +3309,19 @@ public class RequestGroup extends DomainResource {
     /**
      * @return Indicates how quickly the request should be addressed with respect to other requests.
      */
-    public RequestPriority getPriority() { 
+    public String getPriority() { 
       return this.priority == null ? null : this.priority.getValue();
     }
 
     /**
      * @param value Indicates how quickly the request should be addressed with respect to other requests.
      */
-    public RequestGroup setPriority(RequestPriority value) { 
-      if (value == null)
+    public RequestGroup setPriority(String value) { 
+      if (Utilities.noString(value))
         this.priority = null;
       else {
         if (this.priority == null)
-          this.priority = new Enumeration<RequestPriority>(new RequestPriorityEnumFactory());
+          this.priority = new CodeType();
         this.priority.setValue(value);
       }
       return this;
@@ -3759,9 +3741,9 @@ public class RequestGroup extends DomainResource {
         case -332612366: /*basedOn*/ return this.basedOn == null ? new Base[0] : this.basedOn.toArray(new Base[this.basedOn.size()]); // Reference
         case -430332865: /*replaces*/ return this.replaces == null ? new Base[0] : this.replaces.toArray(new Base[this.replaces.size()]); // Reference
         case -445338488: /*groupIdentifier*/ return this.groupIdentifier == null ? new Base[0] : new Base[] {this.groupIdentifier}; // Identifier
-        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<RequestStatus>
-        case -1183762788: /*intent*/ return this.intent == null ? new Base[0] : new Base[] {this.intent}; // Enumeration<RequestIntent>
-        case -1165461084: /*priority*/ return this.priority == null ? new Base[0] : new Base[] {this.priority}; // Enumeration<RequestPriority>
+        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // CodeType
+        case -1183762788: /*intent*/ return this.intent == null ? new Base[0] : new Base[] {this.intent}; // CodeType
+        case -1165461084: /*priority*/ return this.priority == null ? new Base[0] : new Base[] {this.priority}; // CodeType
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Reference
         case 1524132147: /*encounter*/ return this.encounter == null ? new Base[0] : new Base[] {this.encounter}; // Reference
@@ -3798,16 +3780,13 @@ public class RequestGroup extends DomainResource {
           this.groupIdentifier = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case -892481550: // status
-          value = new RequestStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<RequestStatus>
+          this.status = TypeConvertor.castToCode(value); // CodeType
           return value;
         case -1183762788: // intent
-          value = new RequestIntentEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.intent = (Enumeration) value; // Enumeration<RequestIntent>
+          this.intent = TypeConvertor.castToCode(value); // CodeType
           return value;
         case -1165461084: // priority
-          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.priority = (Enumeration) value; // Enumeration<RequestPriority>
+          this.priority = TypeConvertor.castToCode(value); // CodeType
           return value;
         case 3059181: // code
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -3856,14 +3835,11 @@ public class RequestGroup extends DomainResource {
         } else if (name.equals("groupIdentifier")) {
           this.groupIdentifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("status")) {
-          value = new RequestStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<RequestStatus>
+          this.status = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("intent")) {
-          value = new RequestIntentEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.intent = (Enumeration) value; // Enumeration<RequestIntent>
+          this.intent = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("priority")) {
-          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.priority = (Enumeration) value; // Enumeration<RequestPriority>
+          this.priority = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("code")) {
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subject")) {
@@ -4117,322 +4093,6 @@ public class RequestGroup extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.RequestGroup;
    }
-
- /**
-   * Search parameter: <b>author</b>
-   * <p>
-   * Description: <b>The author of the request group</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>RequestGroup.author</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="author", path="RequestGroup.author", description="The author of the request group", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Device.class, Practitioner.class, PractitionerRole.class } )
-  public static final String SP_AUTHOR = "author";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>author</b>
-   * <p>
-   * Description: <b>The author of the request group</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>RequestGroup.author</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam AUTHOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_AUTHOR);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>RequestGroup:author</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_AUTHOR = new ca.uhn.fhir.model.api.Include("RequestGroup:author").toLocked();
-
- /**
-   * Search parameter: <b>authored</b>
-   * <p>
-   * Description: <b>The date the request group was authored</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>RequestGroup.authoredOn</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="authored", path="RequestGroup.authoredOn", description="The date the request group was authored", type="date" )
-  public static final String SP_AUTHORED = "authored";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>authored</b>
-   * <p>
-   * Description: <b>The date the request group was authored</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>RequestGroup.authoredOn</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam AUTHORED = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_AUTHORED);
-
- /**
-   * Search parameter: <b>code</b>
-   * <p>
-   * Description: <b>The code of the request group</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>RequestGroup.code</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="code", path="RequestGroup.code", description="The code of the request group", type="token" )
-  public static final String SP_CODE = "code";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>code</b>
-   * <p>
-   * Description: <b>The code of the request group</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>RequestGroup.code</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
-
- /**
-   * Search parameter: <b>encounter</b>
-   * <p>
-   * Description: <b>The encounter the request group applies to</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>RequestGroup.encounter</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="encounter", path="RequestGroup.encounter", description="The encounter the request group applies to", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Encounter") }, target={Encounter.class } )
-  public static final String SP_ENCOUNTER = "encounter";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
-   * <p>
-   * Description: <b>The encounter the request group applies to</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>RequestGroup.encounter</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENCOUNTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENCOUNTER);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>RequestGroup:encounter</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("RequestGroup:encounter").toLocked();
-
- /**
-   * Search parameter: <b>group-identifier</b>
-   * <p>
-   * Description: <b>The group identifier for the request group</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>RequestGroup.groupIdentifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="group-identifier", path="RequestGroup.groupIdentifier", description="The group identifier for the request group", type="token" )
-  public static final String SP_GROUP_IDENTIFIER = "group-identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>group-identifier</b>
-   * <p>
-   * Description: <b>The group identifier for the request group</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>RequestGroup.groupIdentifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam GROUP_IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_GROUP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>External identifiers for the request group</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>RequestGroup.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="RequestGroup.identifier", description="External identifiers for the request group", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>External identifiers for the request group</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>RequestGroup.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>instantiates-canonical</b>
-   * <p>
-   * Description: <b>The FHIR-based definition from which the request group is realized</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>RequestGroup.instantiatesCanonical</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="instantiates-canonical", path="RequestGroup.instantiatesCanonical", description="The FHIR-based definition from which the request group is realized", type="reference" )
-  public static final String SP_INSTANTIATES_CANONICAL = "instantiates-canonical";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>instantiates-canonical</b>
-   * <p>
-   * Description: <b>The FHIR-based definition from which the request group is realized</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>RequestGroup.instantiatesCanonical</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam INSTANTIATES_CANONICAL = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_INSTANTIATES_CANONICAL);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>RequestGroup:instantiates-canonical</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_INSTANTIATES_CANONICAL = new ca.uhn.fhir.model.api.Include("RequestGroup:instantiates-canonical").toLocked();
-
- /**
-   * Search parameter: <b>instantiates-uri</b>
-   * <p>
-   * Description: <b>The external definition from which the request group is realized</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>RequestGroup.instantiatesUri</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="instantiates-uri", path="RequestGroup.instantiatesUri", description="The external definition from which the request group is realized", type="uri" )
-  public static final String SP_INSTANTIATES_URI = "instantiates-uri";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>instantiates-uri</b>
-   * <p>
-   * Description: <b>The external definition from which the request group is realized</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>RequestGroup.instantiatesUri</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam INSTANTIATES_URI = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_INSTANTIATES_URI);
-
- /**
-   * Search parameter: <b>intent</b>
-   * <p>
-   * Description: <b>The intent of the request group</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>RequestGroup.intent</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="intent", path="RequestGroup.intent", description="The intent of the request group", type="token" )
-  public static final String SP_INTENT = "intent";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>intent</b>
-   * <p>
-   * Description: <b>The intent of the request group</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>RequestGroup.intent</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam INTENT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_INTENT);
-
- /**
-   * Search parameter: <b>participant</b>
-   * <p>
-   * Description: <b>The participant in the requests in the group</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>RequestGroup.action.participant.actor</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="participant", path="RequestGroup.action.participant.actor", description="The participant in the requests in the group", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={CareTeam.class, Device.class, Group.class, HealthcareService.class, Location.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
-  public static final String SP_PARTICIPANT = "participant";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>participant</b>
-   * <p>
-   * Description: <b>The participant in the requests in the group</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>RequestGroup.action.participant.actor</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PARTICIPANT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PARTICIPANT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>RequestGroup:participant</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PARTICIPANT = new ca.uhn.fhir.model.api.Include("RequestGroup:participant").toLocked();
-
- /**
-   * Search parameter: <b>patient</b>
-   * <p>
-   * Description: <b>The identity of a patient to search for request groups</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>RequestGroup.subject.where(resolve() is Patient)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="patient", path="RequestGroup.subject.where(resolve() is Patient)", description="The identity of a patient to search for request groups", type="reference", target={Group.class, Patient.class } )
-  public static final String SP_PATIENT = "patient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
-   * <p>
-   * Description: <b>The identity of a patient to search for request groups</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>RequestGroup.subject.where(resolve() is Patient)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>RequestGroup:patient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("RequestGroup:patient").toLocked();
-
- /**
-   * Search parameter: <b>priority</b>
-   * <p>
-   * Description: <b>The priority of the request group</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>RequestGroup.priority</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="priority", path="RequestGroup.priority", description="The priority of the request group", type="token" )
-  public static final String SP_PRIORITY = "priority";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>priority</b>
-   * <p>
-   * Description: <b>The priority of the request group</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>RequestGroup.priority</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PRIORITY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PRIORITY);
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>The status of the request group</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>RequestGroup.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="status", path="RequestGroup.status", description="The status of the request group", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>The status of the request group</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>RequestGroup.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
-
- /**
-   * Search parameter: <b>subject</b>
-   * <p>
-   * Description: <b>The subject that the request group is about</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>RequestGroup.subject</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="subject", path="RequestGroup.subject", description="The subject that the request group is about", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Group.class, Patient.class } )
-  public static final String SP_SUBJECT = "subject";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
-   * <p>
-   * Description: <b>The subject that the request group is about</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>RequestGroup.subject</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>RequestGroup:subject</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("RequestGroup:subject").toLocked();
 
 
 }

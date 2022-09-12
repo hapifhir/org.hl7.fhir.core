@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,7 +48,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * A person who is directly or indirectly involved in the provisioning of healthcare.
+ * A person who is directly or indirectly involved in the provisioning of healthcare or related services.
  */
 @ResourceDef(name="Practitioner", profile="http://hl7.org/fhir/StructureDefinition/Practitioner")
 public class Practitioner extends DomainResource {
@@ -56,10 +56,10 @@ public class Practitioner extends DomainResource {
     @Block()
     public static class PractitionerQualificationComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * An identifier that applies to this person's qualification in this role.
+         * An identifier that applies to this person's qualification.
          */
         @Child(name = "identifier", type = {Identifier.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="An identifier for this qualification for the practitioner", formalDefinition="An identifier that applies to this person's qualification in this role." )
+        @Description(shortDefinition="An identifier for this qualification for the practitioner", formalDefinition="An identifier that applies to this person's qualification." )
         protected List<Identifier> identifier;
 
         /**
@@ -102,7 +102,7 @@ public class Practitioner extends DomainResource {
       }
 
         /**
-         * @return {@link #identifier} (An identifier that applies to this person's qualification in this role.)
+         * @return {@link #identifier} (An identifier that applies to this person's qualification.)
          */
         public List<Identifier> getIdentifier() { 
           if (this.identifier == null)
@@ -228,7 +228,7 @@ public class Practitioner extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("identifier", "Identifier", "An identifier that applies to this person's qualification in this role.", 0, java.lang.Integer.MAX_VALUE, identifier));
+          children.add(new Property("identifier", "Identifier", "An identifier that applies to this person's qualification.", 0, java.lang.Integer.MAX_VALUE, identifier));
           children.add(new Property("code", "CodeableConcept", "Coded representation of the qualification.", 0, 1, code));
           children.add(new Property("period", "Period", "Period during which the qualification is valid.", 0, 1, period));
           children.add(new Property("issuer", "Reference(Organization)", "Organization that regulates and issues the qualification.", 0, 1, issuer));
@@ -237,7 +237,7 @@ public class Practitioner extends DomainResource {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "An identifier that applies to this person's qualification in this role.", 0, java.lang.Integer.MAX_VALUE, identifier);
+          case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "An identifier that applies to this person's qualification.", 0, java.lang.Integer.MAX_VALUE, identifier);
           case 3059181: /*code*/  return new Property("code", "CodeableConcept", "Coded representation of the qualification.", 0, 1, code);
           case -991726143: /*period*/  return new Property("period", "Period", "Period during which the qualification is valid.", 0, 1, period);
           case -1179159879: /*issuer*/  return new Property("issuer", "Reference(Organization)", "Organization that regulates and issues the qualification.", 0, 1, issuer);
@@ -399,7 +399,7 @@ public class Practitioner extends DomainResource {
     /**
      * Whether this practitioner's record is in active use.
      */
-    @Child(name = "active", type = {BooleanType.class}, order=1, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "active", type = {BooleanType.class}, order=1, min=0, max=1, modifier=true, summary=true)
     @Description(shortDefinition="Whether this practitioner's record is in active use", formalDefinition="Whether this practitioner's record is in active use." )
     protected BooleanType active;
 
@@ -418,23 +418,9 @@ public class Practitioner extends DomainResource {
     protected List<ContactPoint> telecom;
 
     /**
-     * Indicates if the practitioner is deceased or not.
-     */
-    @Child(name = "deceased", type = {BooleanType.class, DateTimeType.class}, order=4, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Indicates if the practitioner is deceased or not", formalDefinition="Indicates if the practitioner is deceased or not." )
-    protected DataType deceased;
-
-    /**
-     * Address(es) of the practitioner that are not role specific (typically home address). Work addresses are not typically entered in this property as they are usually role dependent.
-     */
-    @Child(name = "address", type = {Address.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Address(es) of the practitioner that are not role specific (typically home address)", formalDefinition="Address(es) of the practitioner that are not role specific (typically home address). \rWork addresses are not typically entered in this property as they are usually role dependent." )
-    protected List<Address> address;
-
-    /**
      * Administrative Gender - the gender that the person is considered to have for administration and record keeping purposes.
      */
-    @Child(name = "gender", type = {CodeType.class}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "gender", type = {CodeType.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="male | female | other | unknown", formalDefinition="Administrative Gender - the gender that the person is considered to have for administration and record keeping purposes." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/administrative-gender")
     protected Enumeration<AdministrativeGender> gender;
@@ -442,9 +428,23 @@ public class Practitioner extends DomainResource {
     /**
      * The date of birth for the practitioner.
      */
-    @Child(name = "birthDate", type = {DateType.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "birthDate", type = {DateType.class}, order=5, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The date  on which the practitioner was born", formalDefinition="The date of birth for the practitioner." )
     protected DateType birthDate;
+
+    /**
+     * Indicates if the practitioner is deceased or not.
+     */
+    @Child(name = "deceased", type = {BooleanType.class, DateTimeType.class}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Indicates if the practitioner is deceased or not", formalDefinition="Indicates if the practitioner is deceased or not." )
+    protected DataType deceased;
+
+    /**
+     * Address(es) of the practitioner that are not role specific (typically home address). Work addresses are not typically entered in this property as they are usually role dependent.
+     */
+    @Child(name = "address", type = {Address.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Address(es) of the practitioner that are not role specific (typically home address)", formalDefinition="Address(es) of the practitioner that are not role specific (typically home address). \rWork addresses are not typically entered in this property as they are usually role dependent." )
+    protected List<Address> address;
 
     /**
      * Image of the person.
@@ -454,10 +454,10 @@ public class Practitioner extends DomainResource {
     protected List<Attachment> photo;
 
     /**
-     * The official certifications, training, and licenses that authorize or otherwise pertain to the provision of care by the practitioner.  For example, a medical license issued by a medical board authorizing the practitioner to practice medicine within a certain locality.
+     * The official qualifications, certifications, accreditations, training, licenses (and other types of educations/skills/capabilities) that authorize or otherwise pertain to the provision of care by the practitioner.For example, a medical license issued by a medical board of licensure authorizing the practitioner to practice medicine within a certain locality.
      */
     @Child(name = "qualification", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Certification, licenses, or training pertaining to the provision of care", formalDefinition="The official certifications, training, and licenses that authorize or otherwise pertain to the provision of care by the practitioner.  For example, a medical license issued by a medical board authorizing the practitioner to practice medicine within a certain locality." )
+    @Description(shortDefinition="Qualifications, certifications, accreditations, licenses, training, etc pertaining to the provision of care", formalDefinition="The official qualifications, certifications, accreditations, training, licenses (and other types of educations/skills/capabilities) that authorize or otherwise pertain to the provision of care by the practitioner.\r\rFor example, a medical license issued by a medical board of licensure authorizing the practitioner to practice medicine within a certain locality." )
     protected List<PractitionerQualificationComponent> qualification;
 
     /**
@@ -468,7 +468,7 @@ public class Practitioner extends DomainResource {
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/languages")
     protected List<CodeableConcept> communication;
 
-    private static final long serialVersionUID = 908417317L;
+    private static final long serialVersionUID = 20718373L;
 
   /**
    * Constructor
@@ -682,6 +682,104 @@ public class Practitioner extends DomainResource {
     }
 
     /**
+     * @return {@link #gender} (Administrative Gender - the gender that the person is considered to have for administration and record keeping purposes.). This is the underlying object with id, value and extensions. The accessor "getGender" gives direct access to the value
+     */
+    public Enumeration<AdministrativeGender> getGenderElement() { 
+      if (this.gender == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Practitioner.gender");
+        else if (Configuration.doAutoCreate())
+          this.gender = new Enumeration<AdministrativeGender>(new AdministrativeGenderEnumFactory()); // bb
+      return this.gender;
+    }
+
+    public boolean hasGenderElement() { 
+      return this.gender != null && !this.gender.isEmpty();
+    }
+
+    public boolean hasGender() { 
+      return this.gender != null && !this.gender.isEmpty();
+    }
+
+    /**
+     * @param value {@link #gender} (Administrative Gender - the gender that the person is considered to have for administration and record keeping purposes.). This is the underlying object with id, value and extensions. The accessor "getGender" gives direct access to the value
+     */
+    public Practitioner setGenderElement(Enumeration<AdministrativeGender> value) { 
+      this.gender = value;
+      return this;
+    }
+
+    /**
+     * @return Administrative Gender - the gender that the person is considered to have for administration and record keeping purposes.
+     */
+    public AdministrativeGender getGender() { 
+      return this.gender == null ? null : this.gender.getValue();
+    }
+
+    /**
+     * @param value Administrative Gender - the gender that the person is considered to have for administration and record keeping purposes.
+     */
+    public Practitioner setGender(AdministrativeGender value) { 
+      if (value == null)
+        this.gender = null;
+      else {
+        if (this.gender == null)
+          this.gender = new Enumeration<AdministrativeGender>(new AdministrativeGenderEnumFactory());
+        this.gender.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #birthDate} (The date of birth for the practitioner.). This is the underlying object with id, value and extensions. The accessor "getBirthDate" gives direct access to the value
+     */
+    public DateType getBirthDateElement() { 
+      if (this.birthDate == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Practitioner.birthDate");
+        else if (Configuration.doAutoCreate())
+          this.birthDate = new DateType(); // bb
+      return this.birthDate;
+    }
+
+    public boolean hasBirthDateElement() { 
+      return this.birthDate != null && !this.birthDate.isEmpty();
+    }
+
+    public boolean hasBirthDate() { 
+      return this.birthDate != null && !this.birthDate.isEmpty();
+    }
+
+    /**
+     * @param value {@link #birthDate} (The date of birth for the practitioner.). This is the underlying object with id, value and extensions. The accessor "getBirthDate" gives direct access to the value
+     */
+    public Practitioner setBirthDateElement(DateType value) { 
+      this.birthDate = value;
+      return this;
+    }
+
+    /**
+     * @return The date of birth for the practitioner.
+     */
+    public Date getBirthDate() { 
+      return this.birthDate == null ? null : this.birthDate.getValue();
+    }
+
+    /**
+     * @param value The date of birth for the practitioner.
+     */
+    public Practitioner setBirthDate(Date value) { 
+      if (value == null)
+        this.birthDate = null;
+      else {
+        if (this.birthDate == null)
+          this.birthDate = new DateType();
+        this.birthDate.setValue(value);
+      }
+      return this;
+    }
+
+    /**
      * @return {@link #deceased} (Indicates if the practitioner is deceased or not.)
      */
     public DataType getDeceased() { 
@@ -786,104 +884,6 @@ public class Practitioner extends DomainResource {
     }
 
     /**
-     * @return {@link #gender} (Administrative Gender - the gender that the person is considered to have for administration and record keeping purposes.). This is the underlying object with id, value and extensions. The accessor "getGender" gives direct access to the value
-     */
-    public Enumeration<AdministrativeGender> getGenderElement() { 
-      if (this.gender == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Practitioner.gender");
-        else if (Configuration.doAutoCreate())
-          this.gender = new Enumeration<AdministrativeGender>(new AdministrativeGenderEnumFactory()); // bb
-      return this.gender;
-    }
-
-    public boolean hasGenderElement() { 
-      return this.gender != null && !this.gender.isEmpty();
-    }
-
-    public boolean hasGender() { 
-      return this.gender != null && !this.gender.isEmpty();
-    }
-
-    /**
-     * @param value {@link #gender} (Administrative Gender - the gender that the person is considered to have for administration and record keeping purposes.). This is the underlying object with id, value and extensions. The accessor "getGender" gives direct access to the value
-     */
-    public Practitioner setGenderElement(Enumeration<AdministrativeGender> value) { 
-      this.gender = value;
-      return this;
-    }
-
-    /**
-     * @return Administrative Gender - the gender that the person is considered to have for administration and record keeping purposes.
-     */
-    public AdministrativeGender getGender() { 
-      return this.gender == null ? null : this.gender.getValue();
-    }
-
-    /**
-     * @param value Administrative Gender - the gender that the person is considered to have for administration and record keeping purposes.
-     */
-    public Practitioner setGender(AdministrativeGender value) { 
-      if (value == null)
-        this.gender = null;
-      else {
-        if (this.gender == null)
-          this.gender = new Enumeration<AdministrativeGender>(new AdministrativeGenderEnumFactory());
-        this.gender.setValue(value);
-      }
-      return this;
-    }
-
-    /**
-     * @return {@link #birthDate} (The date of birth for the practitioner.). This is the underlying object with id, value and extensions. The accessor "getBirthDate" gives direct access to the value
-     */
-    public DateType getBirthDateElement() { 
-      if (this.birthDate == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Practitioner.birthDate");
-        else if (Configuration.doAutoCreate())
-          this.birthDate = new DateType(); // bb
-      return this.birthDate;
-    }
-
-    public boolean hasBirthDateElement() { 
-      return this.birthDate != null && !this.birthDate.isEmpty();
-    }
-
-    public boolean hasBirthDate() { 
-      return this.birthDate != null && !this.birthDate.isEmpty();
-    }
-
-    /**
-     * @param value {@link #birthDate} (The date of birth for the practitioner.). This is the underlying object with id, value and extensions. The accessor "getBirthDate" gives direct access to the value
-     */
-    public Practitioner setBirthDateElement(DateType value) { 
-      this.birthDate = value;
-      return this;
-    }
-
-    /**
-     * @return The date of birth for the practitioner.
-     */
-    public Date getBirthDate() { 
-      return this.birthDate == null ? null : this.birthDate.getValue();
-    }
-
-    /**
-     * @param value The date of birth for the practitioner.
-     */
-    public Practitioner setBirthDate(Date value) { 
-      if (value == null)
-        this.birthDate = null;
-      else {
-        if (this.birthDate == null)
-          this.birthDate = new DateType();
-        this.birthDate.setValue(value);
-      }
-      return this;
-    }
-
-    /**
      * @return {@link #photo} (Image of the person.)
      */
     public List<Attachment> getPhoto() { 
@@ -937,7 +937,7 @@ public class Practitioner extends DomainResource {
     }
 
     /**
-     * @return {@link #qualification} (The official certifications, training, and licenses that authorize or otherwise pertain to the provision of care by the practitioner.  For example, a medical license issued by a medical board authorizing the practitioner to practice medicine within a certain locality.)
+     * @return {@link #qualification} (The official qualifications, certifications, accreditations, training, licenses (and other types of educations/skills/capabilities) that authorize or otherwise pertain to the provision of care by the practitioner.For example, a medical license issued by a medical board of licensure authorizing the practitioner to practice medicine within a certain locality.)
      */
     public List<PractitionerQualificationComponent> getQualification() { 
       if (this.qualification == null)
@@ -1048,12 +1048,12 @@ public class Practitioner extends DomainResource {
         children.add(new Property("active", "boolean", "Whether this practitioner's record is in active use.", 0, 1, active));
         children.add(new Property("name", "HumanName", "The name(s) associated with the practitioner.", 0, java.lang.Integer.MAX_VALUE, name));
         children.add(new Property("telecom", "ContactPoint", "A contact detail for the practitioner, e.g. a telephone number or an email address.", 0, java.lang.Integer.MAX_VALUE, telecom));
-        children.add(new Property("deceased[x]", "boolean|dateTime", "Indicates if the practitioner is deceased or not.", 0, 1, deceased));
-        children.add(new Property("address", "Address", "Address(es) of the practitioner that are not role specific (typically home address). \rWork addresses are not typically entered in this property as they are usually role dependent.", 0, java.lang.Integer.MAX_VALUE, address));
         children.add(new Property("gender", "code", "Administrative Gender - the gender that the person is considered to have for administration and record keeping purposes.", 0, 1, gender));
         children.add(new Property("birthDate", "date", "The date of birth for the practitioner.", 0, 1, birthDate));
+        children.add(new Property("deceased[x]", "boolean|dateTime", "Indicates if the practitioner is deceased or not.", 0, 1, deceased));
+        children.add(new Property("address", "Address", "Address(es) of the practitioner that are not role specific (typically home address). \rWork addresses are not typically entered in this property as they are usually role dependent.", 0, java.lang.Integer.MAX_VALUE, address));
         children.add(new Property("photo", "Attachment", "Image of the person.", 0, java.lang.Integer.MAX_VALUE, photo));
-        children.add(new Property("qualification", "", "The official certifications, training, and licenses that authorize or otherwise pertain to the provision of care by the practitioner.  For example, a medical license issued by a medical board authorizing the practitioner to practice medicine within a certain locality.", 0, java.lang.Integer.MAX_VALUE, qualification));
+        children.add(new Property("qualification", "", "The official qualifications, certifications, accreditations, training, licenses (and other types of educations/skills/capabilities) that authorize or otherwise pertain to the provision of care by the practitioner.\r\rFor example, a medical license issued by a medical board of licensure authorizing the practitioner to practice medicine within a certain locality.", 0, java.lang.Integer.MAX_VALUE, qualification));
         children.add(new Property("communication", "CodeableConcept", "A language the practitioner can use in patient communication.", 0, java.lang.Integer.MAX_VALUE, communication));
       }
 
@@ -1064,15 +1064,15 @@ public class Practitioner extends DomainResource {
         case -1422950650: /*active*/  return new Property("active", "boolean", "Whether this practitioner's record is in active use.", 0, 1, active);
         case 3373707: /*name*/  return new Property("name", "HumanName", "The name(s) associated with the practitioner.", 0, java.lang.Integer.MAX_VALUE, name);
         case -1429363305: /*telecom*/  return new Property("telecom", "ContactPoint", "A contact detail for the practitioner, e.g. a telephone number or an email address.", 0, java.lang.Integer.MAX_VALUE, telecom);
+        case -1249512767: /*gender*/  return new Property("gender", "code", "Administrative Gender - the gender that the person is considered to have for administration and record keeping purposes.", 0, 1, gender);
+        case -1210031859: /*birthDate*/  return new Property("birthDate", "date", "The date of birth for the practitioner.", 0, 1, birthDate);
         case -1311442804: /*deceased[x]*/  return new Property("deceased[x]", "boolean|dateTime", "Indicates if the practitioner is deceased or not.", 0, 1, deceased);
         case 561497972: /*deceased*/  return new Property("deceased[x]", "boolean|dateTime", "Indicates if the practitioner is deceased or not.", 0, 1, deceased);
         case 497463828: /*deceasedBoolean*/  return new Property("deceased[x]", "boolean", "Indicates if the practitioner is deceased or not.", 0, 1, deceased);
         case -1971804369: /*deceasedDateTime*/  return new Property("deceased[x]", "dateTime", "Indicates if the practitioner is deceased or not.", 0, 1, deceased);
         case -1147692044: /*address*/  return new Property("address", "Address", "Address(es) of the practitioner that are not role specific (typically home address). \rWork addresses are not typically entered in this property as they are usually role dependent.", 0, java.lang.Integer.MAX_VALUE, address);
-        case -1249512767: /*gender*/  return new Property("gender", "code", "Administrative Gender - the gender that the person is considered to have for administration and record keeping purposes.", 0, 1, gender);
-        case -1210031859: /*birthDate*/  return new Property("birthDate", "date", "The date of birth for the practitioner.", 0, 1, birthDate);
         case 106642994: /*photo*/  return new Property("photo", "Attachment", "Image of the person.", 0, java.lang.Integer.MAX_VALUE, photo);
-        case -631333393: /*qualification*/  return new Property("qualification", "", "The official certifications, training, and licenses that authorize or otherwise pertain to the provision of care by the practitioner.  For example, a medical license issued by a medical board authorizing the practitioner to practice medicine within a certain locality.", 0, java.lang.Integer.MAX_VALUE, qualification);
+        case -631333393: /*qualification*/  return new Property("qualification", "", "The official qualifications, certifications, accreditations, training, licenses (and other types of educations/skills/capabilities) that authorize or otherwise pertain to the provision of care by the practitioner.\r\rFor example, a medical license issued by a medical board of licensure authorizing the practitioner to practice medicine within a certain locality.", 0, java.lang.Integer.MAX_VALUE, qualification);
         case -1035284522: /*communication*/  return new Property("communication", "CodeableConcept", "A language the practitioner can use in patient communication.", 0, java.lang.Integer.MAX_VALUE, communication);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -1086,10 +1086,10 @@ public class Practitioner extends DomainResource {
         case -1422950650: /*active*/ return this.active == null ? new Base[0] : new Base[] {this.active}; // BooleanType
         case 3373707: /*name*/ return this.name == null ? new Base[0] : this.name.toArray(new Base[this.name.size()]); // HumanName
         case -1429363305: /*telecom*/ return this.telecom == null ? new Base[0] : this.telecom.toArray(new Base[this.telecom.size()]); // ContactPoint
-        case 561497972: /*deceased*/ return this.deceased == null ? new Base[0] : new Base[] {this.deceased}; // DataType
-        case -1147692044: /*address*/ return this.address == null ? new Base[0] : this.address.toArray(new Base[this.address.size()]); // Address
         case -1249512767: /*gender*/ return this.gender == null ? new Base[0] : new Base[] {this.gender}; // Enumeration<AdministrativeGender>
         case -1210031859: /*birthDate*/ return this.birthDate == null ? new Base[0] : new Base[] {this.birthDate}; // DateType
+        case 561497972: /*deceased*/ return this.deceased == null ? new Base[0] : new Base[] {this.deceased}; // DataType
+        case -1147692044: /*address*/ return this.address == null ? new Base[0] : this.address.toArray(new Base[this.address.size()]); // Address
         case 106642994: /*photo*/ return this.photo == null ? new Base[0] : this.photo.toArray(new Base[this.photo.size()]); // Attachment
         case -631333393: /*qualification*/ return this.qualification == null ? new Base[0] : this.qualification.toArray(new Base[this.qualification.size()]); // PractitionerQualificationComponent
         case -1035284522: /*communication*/ return this.communication == null ? new Base[0] : this.communication.toArray(new Base[this.communication.size()]); // CodeableConcept
@@ -1113,18 +1113,18 @@ public class Practitioner extends DomainResource {
         case -1429363305: // telecom
           this.getTelecom().add(TypeConvertor.castToContactPoint(value)); // ContactPoint
           return value;
-        case 561497972: // deceased
-          this.deceased = TypeConvertor.castToType(value); // DataType
-          return value;
-        case -1147692044: // address
-          this.getAddress().add(TypeConvertor.castToAddress(value)); // Address
-          return value;
         case -1249512767: // gender
           value = new AdministrativeGenderEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.gender = (Enumeration) value; // Enumeration<AdministrativeGender>
           return value;
         case -1210031859: // birthDate
           this.birthDate = TypeConvertor.castToDate(value); // DateType
+          return value;
+        case 561497972: // deceased
+          this.deceased = TypeConvertor.castToType(value); // DataType
+          return value;
+        case -1147692044: // address
+          this.getAddress().add(TypeConvertor.castToAddress(value)); // Address
           return value;
         case 106642994: // photo
           this.getPhoto().add(TypeConvertor.castToAttachment(value)); // Attachment
@@ -1150,15 +1150,15 @@ public class Practitioner extends DomainResource {
           this.getName().add(TypeConvertor.castToHumanName(value));
         } else if (name.equals("telecom")) {
           this.getTelecom().add(TypeConvertor.castToContactPoint(value));
-        } else if (name.equals("deceased[x]")) {
-          this.deceased = TypeConvertor.castToType(value); // DataType
-        } else if (name.equals("address")) {
-          this.getAddress().add(TypeConvertor.castToAddress(value));
         } else if (name.equals("gender")) {
           value = new AdministrativeGenderEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.gender = (Enumeration) value; // Enumeration<AdministrativeGender>
         } else if (name.equals("birthDate")) {
           this.birthDate = TypeConvertor.castToDate(value); // DateType
+        } else if (name.equals("deceased[x]")) {
+          this.deceased = TypeConvertor.castToType(value); // DataType
+        } else if (name.equals("address")) {
+          this.getAddress().add(TypeConvertor.castToAddress(value));
         } else if (name.equals("photo")) {
           this.getPhoto().add(TypeConvertor.castToAttachment(value));
         } else if (name.equals("qualification")) {
@@ -1177,11 +1177,11 @@ public class Practitioner extends DomainResource {
         case -1422950650:  return getActiveElement();
         case 3373707:  return addName(); 
         case -1429363305:  return addTelecom(); 
+        case -1249512767:  return getGenderElement();
+        case -1210031859:  return getBirthDateElement();
         case -1311442804:  return getDeceased();
         case 561497972:  return getDeceased();
         case -1147692044:  return addAddress(); 
-        case -1249512767:  return getGenderElement();
-        case -1210031859:  return getBirthDateElement();
         case 106642994:  return addPhoto(); 
         case -631333393:  return addQualification(); 
         case -1035284522:  return addCommunication(); 
@@ -1197,10 +1197,10 @@ public class Practitioner extends DomainResource {
         case -1422950650: /*active*/ return new String[] {"boolean"};
         case 3373707: /*name*/ return new String[] {"HumanName"};
         case -1429363305: /*telecom*/ return new String[] {"ContactPoint"};
-        case 561497972: /*deceased*/ return new String[] {"boolean", "dateTime"};
-        case -1147692044: /*address*/ return new String[] {"Address"};
         case -1249512767: /*gender*/ return new String[] {"code"};
         case -1210031859: /*birthDate*/ return new String[] {"date"};
+        case 561497972: /*deceased*/ return new String[] {"boolean", "dateTime"};
+        case -1147692044: /*address*/ return new String[] {"Address"};
         case 106642994: /*photo*/ return new String[] {"Attachment"};
         case -631333393: /*qualification*/ return new String[] {};
         case -1035284522: /*communication*/ return new String[] {"CodeableConcept"};
@@ -1223,6 +1223,12 @@ public class Practitioner extends DomainResource {
         else if (name.equals("telecom")) {
           return addTelecom();
         }
+        else if (name.equals("gender")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Practitioner.gender");
+        }
+        else if (name.equals("birthDate")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Practitioner.birthDate");
+        }
         else if (name.equals("deceasedBoolean")) {
           this.deceased = new BooleanType();
           return this.deceased;
@@ -1233,12 +1239,6 @@ public class Practitioner extends DomainResource {
         }
         else if (name.equals("address")) {
           return addAddress();
-        }
-        else if (name.equals("gender")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Practitioner.gender");
-        }
-        else if (name.equals("birthDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Practitioner.birthDate");
         }
         else if (name.equals("photo")) {
           return addPhoto();
@@ -1282,14 +1282,14 @@ public class Practitioner extends DomainResource {
           for (ContactPoint i : telecom)
             dst.telecom.add(i.copy());
         };
+        dst.gender = gender == null ? null : gender.copy();
+        dst.birthDate = birthDate == null ? null : birthDate.copy();
         dst.deceased = deceased == null ? null : deceased.copy();
         if (address != null) {
           dst.address = new ArrayList<Address>();
           for (Address i : address)
             dst.address.add(i.copy());
         };
-        dst.gender = gender == null ? null : gender.copy();
-        dst.birthDate = birthDate == null ? null : birthDate.copy();
         if (photo != null) {
           dst.photo = new ArrayList<Attachment>();
           for (Attachment i : photo)
@@ -1319,8 +1319,8 @@ public class Practitioner extends DomainResource {
           return false;
         Practitioner o = (Practitioner) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(active, o.active, true) && compareDeep(name, o.name, true)
-           && compareDeep(telecom, o.telecom, true) && compareDeep(deceased, o.deceased, true) && compareDeep(address, o.address, true)
-           && compareDeep(gender, o.gender, true) && compareDeep(birthDate, o.birthDate, true) && compareDeep(photo, o.photo, true)
+           && compareDeep(telecom, o.telecom, true) && compareDeep(gender, o.gender, true) && compareDeep(birthDate, o.birthDate, true)
+           && compareDeep(deceased, o.deceased, true) && compareDeep(address, o.address, true) && compareDeep(photo, o.photo, true)
            && compareDeep(qualification, o.qualification, true) && compareDeep(communication, o.communication, true)
           ;
       }
@@ -1338,7 +1338,7 @@ public class Practitioner extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, active, name
-          , telecom, deceased, address, gender, birthDate, photo, qualification, communication
+          , telecom, gender, birthDate, deceased, address, photo, qualification, communication
           );
       }
 
@@ -1432,17 +1432,17 @@ public class Practitioner extends DomainResource {
    * <p>
    * Description: <b>A practitioner's Identifier</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Practitioner.identifier</b><br>
+   * Path: <b>Practitioner.identifier | Practitioner.qualification.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="identifier", path="Practitioner.identifier", description="A practitioner's Identifier", type="token" )
+  @SearchParamDefinition(name="identifier", path="Practitioner.identifier | Practitioner.qualification.identifier", description="A practitioner's Identifier", type="token" )
   public static final String SP_IDENTIFIER = "identifier";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
    * <p>
    * Description: <b>A practitioner's Identifier</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Practitioner.identifier</b><br>
+   * Path: <b>Practitioner.identifier | Practitioner.qualification.identifier</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
@@ -1466,6 +1466,26 @@ public class Practitioner extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
+
+ /**
+   * Search parameter: <b>qualification-period</b>
+   * <p>
+   * Description: <b>The date(s) a qualification is valid for</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>Practitioner.qualification.period</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="qualification-period", path="Practitioner.qualification.period", description="The date(s) a qualification is valid for", type="date" )
+  public static final String SP_QUALIFICATION_PERIOD = "qualification-period";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>qualification-period</b>
+   * <p>
+   * Description: <b>The date(s) a qualification is valid for</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>Practitioner.qualification.period</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam QUALIFICATION_PERIOD = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_QUALIFICATION_PERIOD);
 
  /**
    * Search parameter: <b>address-city</b>
@@ -1671,10 +1691,10 @@ public class Practitioner extends DomainResource {
 * [RelatedPerson](relatedperson.html): A value in an email contact
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')</b><br>
+   * Path: <b>Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.contact.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="email", path="Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A value in an email contact\r\n* [Person](person.html): A value in an email contact\r\n* [Practitioner](practitioner.html): A value in an email contact\r\n* [PractitionerRole](practitionerrole.html): A value in an email contact\r\n* [RelatedPerson](relatedperson.html): A value in an email contact\r\n", type="token" )
+  @SearchParamDefinition(name="email", path="Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.contact.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A value in an email contact\r\n* [Person](person.html): A value in an email contact\r\n* [Practitioner](practitioner.html): A value in an email contact\r\n* [PractitionerRole](practitionerrole.html): A value in an email contact\r\n* [RelatedPerson](relatedperson.html): A value in an email contact\r\n", type="token" )
   public static final String SP_EMAIL = "email";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>email</b>
@@ -1688,7 +1708,7 @@ public class Practitioner extends DomainResource {
 * [RelatedPerson](relatedperson.html): A value in an email contact
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')</b><br>
+   * Path: <b>Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.contact.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam EMAIL = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EMAIL);
@@ -1793,10 +1813,10 @@ public class Practitioner extends DomainResource {
 * [RelatedPerson](relatedperson.html): A value in a phone contact
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone')</b><br>
+   * Path: <b>Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.contact.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone')</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="phone", path="Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone')", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A value in a phone contact\r\n* [Person](person.html): A value in a phone contact\r\n* [Practitioner](practitioner.html): A value in a phone contact\r\n* [PractitionerRole](practitionerrole.html): A value in a phone contact\r\n* [RelatedPerson](relatedperson.html): A value in a phone contact\r\n", type="token" )
+  @SearchParamDefinition(name="phone", path="Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.contact.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone')", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A value in a phone contact\r\n* [Person](person.html): A value in a phone contact\r\n* [Practitioner](practitioner.html): A value in a phone contact\r\n* [PractitionerRole](practitionerrole.html): A value in a phone contact\r\n* [RelatedPerson](relatedperson.html): A value in a phone contact\r\n", type="token" )
   public static final String SP_PHONE = "phone";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>phone</b>
@@ -1810,7 +1830,7 @@ public class Practitioner extends DomainResource {
 * [RelatedPerson](relatedperson.html): A value in a phone contact
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone')</b><br>
+   * Path: <b>Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.contact.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone')</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam PHONE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PHONE);
@@ -1859,10 +1879,10 @@ public class Practitioner extends DomainResource {
 * [RelatedPerson](relatedperson.html): The value in any kind of contact
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.telecom | RelatedPerson.telecom</b><br>
+   * Path: <b>Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.contact.telecom | RelatedPerson.telecom</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="telecom", path="Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.telecom | RelatedPerson.telecom", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): The value in any kind of telecom details of the patient\r\n* [Person](person.html): The value in any kind of contact\r\n* [Practitioner](practitioner.html): The value in any kind of contact\r\n* [PractitionerRole](practitionerrole.html): The value in any kind of contact\r\n* [RelatedPerson](relatedperson.html): The value in any kind of contact\r\n", type="token" )
+  @SearchParamDefinition(name="telecom", path="Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.contact.telecom | RelatedPerson.telecom", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): The value in any kind of telecom details of the patient\r\n* [Person](person.html): The value in any kind of contact\r\n* [Practitioner](practitioner.html): The value in any kind of contact\r\n* [PractitionerRole](practitionerrole.html): The value in any kind of contact\r\n* [RelatedPerson](relatedperson.html): The value in any kind of contact\r\n", type="token" )
   public static final String SP_TELECOM = "telecom";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>telecom</b>
@@ -1876,7 +1896,7 @@ public class Practitioner extends DomainResource {
 * [RelatedPerson](relatedperson.html): The value in any kind of contact
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.telecom | RelatedPerson.telecom</b><br>
+   * Path: <b>Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.contact.telecom | RelatedPerson.telecom</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam TELECOM = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TELECOM);

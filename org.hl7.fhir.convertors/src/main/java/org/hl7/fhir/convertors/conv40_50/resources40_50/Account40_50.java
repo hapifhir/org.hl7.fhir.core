@@ -65,8 +65,8 @@ public class Account40_50 {
       tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
     for (org.hl7.fhir.r4.model.Account.GuarantorComponent t : src.getGuarantor())
       tgt.addGuarantor(convertGuarantorComponent(t));
-    if (src.hasPartOf())
-      tgt.setPartOf(Reference40_50.convertReference(src.getPartOf()));
+//    if (src.hasPartOf())
+//      tgt.setPartOf(Reference40_50.convertReference(src.getPartOf()));
     return tgt;
   }
 
@@ -94,8 +94,8 @@ public class Account40_50 {
       tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
     for (org.hl7.fhir.r5.model.Account.GuarantorComponent t : src.getGuarantor())
       tgt.addGuarantor(convertGuarantorComponent(t));
-    if (src.hasPartOf())
-      tgt.setPartOf(Reference40_50.convertReference(src.getPartOf()));
+//    if (src.hasPartOf())
+//      tgt.setPartOf(Reference40_50.convertReference(src.getPartOf()));
     return tgt;
   }
 
@@ -159,7 +159,7 @@ public class Account40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Account.CoverageComponent tgt = new org.hl7.fhir.r5.model.Account.CoverageComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCoverage())
       tgt.setCoverage(Reference40_50.convertReference(src.getCoverage()));
     if (src.hasPriority())
@@ -171,7 +171,7 @@ public class Account40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Account.CoverageComponent tgt = new org.hl7.fhir.r4.model.Account.CoverageComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCoverage())
       tgt.setCoverage(Reference40_50.convertReference(src.getCoverage()));
     if (src.hasPriority())
@@ -183,7 +183,7 @@ public class Account40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Account.GuarantorComponent tgt = new org.hl7.fhir.r5.model.Account.GuarantorComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasParty())
       tgt.setParty(Reference40_50.convertReference(src.getParty()));
     if (src.hasOnHold())
@@ -197,7 +197,7 @@ public class Account40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Account.GuarantorComponent tgt = new org.hl7.fhir.r4.model.Account.GuarantorComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasParty())
       tgt.setParty(Reference40_50.convertReference(src.getParty()));
     if (src.hasOnHold())

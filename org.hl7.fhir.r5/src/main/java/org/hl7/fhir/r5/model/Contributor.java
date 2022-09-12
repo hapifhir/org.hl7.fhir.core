@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,7 +46,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * Base StructureDefinition for Contributor Type: A contributor to the content of a knowledge asset, including authors, editors, reviewers, and endorsers.
+ * Contributor Type: A contributor to the content of a knowledge asset, including authors, editors, reviewers, and endorsers.
  */
 @DatatypeDef(name="Contributor")
 public class Contributor extends DataType implements ICompositeType {
@@ -94,6 +94,7 @@ public class Contributor extends DataType implements ICompositeType {
             case EDITOR: return "editor";
             case REVIEWER: return "reviewer";
             case ENDORSER: return "endorser";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -103,6 +104,7 @@ public class Contributor extends DataType implements ICompositeType {
             case EDITOR: return "http://hl7.org/fhir/contributor-type";
             case REVIEWER: return "http://hl7.org/fhir/contributor-type";
             case ENDORSER: return "http://hl7.org/fhir/contributor-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -112,6 +114,7 @@ public class Contributor extends DataType implements ICompositeType {
             case EDITOR: return "An editor of the content of the module.";
             case REVIEWER: return "A reviewer of the content of the module.";
             case ENDORSER: return "An endorser of the content of the module.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -121,6 +124,7 @@ public class Contributor extends DataType implements ICompositeType {
             case EDITOR: return "Editor";
             case REVIEWER: return "Reviewer";
             case ENDORSER: return "Endorser";
+            case NULL: return null;
             default: return "?";
           }
         }

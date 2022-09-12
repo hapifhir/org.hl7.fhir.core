@@ -193,6 +193,10 @@ public interface IWorkerContext {
     public Date getDate() {
       return date;
     }
+    public boolean isHTO() {
+      boolean b = id.startsWith("hl7.terminology.r");
+      return b;
+    }
     
   }
 
@@ -833,7 +837,28 @@ public interface IWorkerContext {
   public void setUcumService(UcumService ucumService);
 
   public String getLinkForUrl(String corePath, String s);
-  public Map<String, byte[]> getBinaries();
+
+  /**
+   * Returns a set of keys that can be used to get binaries from this context.
+   *
+   * @return a set of binaries or null
+   */
+  public Set<String> getBinaryKeysAsSet();
+
+  /**
+   * Returns true if this worker context contains a binary for this key.
+   *
+   * @param binaryKey
+   * @return true if binary is available for this key
+   */
+  public boolean hasBinaryKey(String binaryKey);
+
+  /**
+   * Returns the binary for the key
+   * @param binaryKey
+   * @return
+   */
+  public byte[] getBinaryForKey(String binaryKey);
 
   /**
    * Load relevant resources of the appropriate types (as specified by the loader) from the nominated package

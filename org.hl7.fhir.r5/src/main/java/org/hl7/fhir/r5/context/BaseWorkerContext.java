@@ -111,6 +111,7 @@ import org.hl7.fhir.r5.terminologies.ValueSetCheckerSimple;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.ValueSetExpanderSimple;
+import org.hl7.fhir.r5.utils.PackageHackerR5;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.utilities.OIDUtils;
@@ -121,6 +122,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nBase;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.npm.PackageHacker;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -312,6 +314,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   
 
   public void registerResourceFromPackage(CanonicalResourceProxy r, PackageVersion packageInfo) throws FHIRException {
+    PackageHackerR5.fixLoadedResource(r, packageInfo);
     
     synchronized (lock) {
       if (r.getId() != null) {
@@ -326,12 +329,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
 
       String url = r.getUrl();
-      if (!allowLoadingDuplicates && hasResource(r.getType(), url)) {
+      if (!allowLoadingDuplicates && hasResourceVersion(r.getType(), url, r.getVersion()) && !packageInfo.isHTO()) {
         // spcial workaround for known problems with existing packages
         if (Utilities.existsInList(url, "http://hl7.org/fhir/SearchParameter/example")) {
           return;
         }
-        throw new DefinitionException(formatMessage(I18nConstants.DUPLICATE_RESOURCE_, url));
+        CanonicalResource ex = fetchResourceWithException(r.getType(), url);
+        throw new DefinitionException(formatMessage(I18nConstants.DUPLICATE_RESOURCE_, url, r.getVersion(), ex.getVersion(),
+            ex.fhirType()));
       }
       switch(r.getType()) {
       case "StructureDefinition":
@@ -412,7 +417,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           if (Utilities.existsInList(url, "http://hl7.org/fhir/SearchParameter/example")) {
             return;
           }
-          throw new DefinitionException(formatMessage(I18nConstants.DUPLICATE_RESOURCE_, url));
+          CanonicalResource ex = (CanonicalResource) fetchResourceWithException(r.getClass(), url);
+          throw new DefinitionException(formatMessage(I18nConstants.DUPLICATE_RESOURCE_, url, ((CanonicalResource) r).getVersion(), ex.getVersion(),
+              ex.fhirType()));
         }
         if (r instanceof StructureDefinition) {
           StructureDefinition sd = (StructureDefinition) m;
@@ -1296,7 +1303,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     synchronized (lock) {
       List<ConceptMap> res = new ArrayList<ConceptMap>();
       for (ConceptMap map : maps.getList()) {
-        if (((Reference) map.getSource()).getReference().equals(url)) { 
+        if (((Reference) map.getSourceScope()).getReference().equals(url)) { 
           res.add(map);
         } 
       } 
@@ -1362,15 +1369,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
   
   public <T extends Resource> T fetchResourceWithException(String cls, String uri) throws FHIRException {
-    return fetchResourceWithException(cls, uri, null);
+    return fetchResourceWithExceptionByVersion(cls, uri, null, null);
   }
   
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, CanonicalResource source) throws FHIRException {
-    return fetchResourceWithException(class_, uri, null, source);
+    return fetchResourceWithExceptionByVersion(class_, uri, null, source);
   }
   
   @SuppressWarnings("unchecked")
-  public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, String version, CanonicalResource source) throws FHIRException {
+  public <T extends Resource> T fetchResourceWithExceptionByVersion(Class<T> class_, String uri, String version, CanonicalResource source) throws FHIRException {
     if (uri == null) {
       return null;
     }
@@ -1380,9 +1387,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     synchronized (lock) {
 
-      if (uri.contains("|")) {
-        version = uri.substring(uri.lastIndexOf("|")+1);
-        uri = uri.substring(0, uri.lastIndexOf("|"));
+      if (version == null) {
+        if (uri.contains("|")) {
+          version = uri.substring(uri.lastIndexOf("|")+1);
+          uri = uri.substring(0, uri.lastIndexOf("|"));
+        }
+      } else {
+        assert !uri.contains("|");
       }
       if (uri.contains("#")) {
         uri = uri.substring(0, uri.indexOf("#"));
@@ -1554,7 +1565,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
   
   @SuppressWarnings("unchecked")
-  public <T extends Resource> T fetchResourceWithException(String cls, String uri, CanonicalResource source) throws FHIRException {
+  public <T extends Resource> T fetchResourceWithExceptionByVersion(String cls, String uri, String version, CanonicalResource source) throws FHIRException {
     if (uri == null) {
       return null;
     }
@@ -1564,10 +1575,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     synchronized (lock) {
 
-      String version = null;
-      if (uri.contains("|")) {
-        version = uri.substring(uri.lastIndexOf("|")+1);
-        uri = uri.substring(0, uri.lastIndexOf("|"));
+      if (version == null) {
+        if (uri.contains("|")) {
+          version = uri.substring(uri.lastIndexOf("|")+1);
+          uri = uri.substring(0, uri.lastIndexOf("|"));
+        }
+      } else {
+        boolean b = !uri.contains("|");
+        assert b;
       }
       if (uri.contains("#")) {
         uri = uri.substring(0, uri.indexOf("#"));
@@ -1726,7 +1741,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   
   public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version) {
     try {
-      return fetchResourceWithException(class_, uri, version, null);
+      return fetchResourceWithExceptionByVersion(class_, uri, version, null);
     } catch (FHIRException e) {
       throw new Error(e);
     }
@@ -1744,6 +1759,22 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public <T extends Resource> boolean hasResource(String cls, String uri) {
     try {
       return fetchResourceWithException(cls, uri) != null;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  public <T extends Resource> boolean hasResourceVersion(Class<T> class_, String uri, String version) {
+    try {
+      return fetchResourceWithExceptionByVersion(class_, uri, version, null) != null;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  public <T extends Resource> boolean hasResourceVersion(String cls, String uri, String version) {
+    try {
+      return fetchResourceWithExceptionByVersion(cls, uri, version, null) != null;
     } catch (Exception e) {
       return false;
     }
@@ -2159,10 +2190,18 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   @Override
-  public Map<String, byte[]> getBinaries() {
-    return binaries;
+  public Set<String> getBinaryKeysAsSet() { return binaries.keySet(); }
+
+  @Override
+  public boolean hasBinaryKey(String binaryKey) {
+    return binaries.containsKey(binaryKey);
   }
-  
+
+  @Override
+  public byte[] getBinaryForKey(String binaryKey) {
+    return binaries.get(binaryKey);
+  }
+
   public void finishLoading() {
     for (StructureDefinition sd : listStructures()) {
       try {

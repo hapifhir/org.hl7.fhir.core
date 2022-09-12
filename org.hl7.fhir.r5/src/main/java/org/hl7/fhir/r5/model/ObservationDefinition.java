@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -146,6 +146,7 @@ public class ObservationDefinition extends DomainResource {
             case TIME: return "time";
             case DATETIME: return "dateTime";
             case PERIOD: return "Period";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -162,6 +163,7 @@ public class ObservationDefinition extends DomainResource {
             case TIME: return "http://hl7.org/fhir/permitted-data-type";
             case DATETIME: return "http://hl7.org/fhir/permitted-data-type";
             case PERIOD: return "http://hl7.org/fhir/permitted-data-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -178,6 +180,7 @@ public class ObservationDefinition extends DomainResource {
             case TIME: return "A time during the day, in the format hh:mm:ss.";
             case DATETIME: return "A date, date-time or partial date (e.g. just year or year + month) as used in human communication.";
             case PERIOD: return "A time range defined by start and end date/time.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -194,6 +197,7 @@ public class ObservationDefinition extends DomainResource {
             case TIME: return "time";
             case DATETIME: return "dateTime";
             case PERIOD: return "Period";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -326,6 +330,7 @@ public class ObservationDefinition extends DomainResource {
             case REFERENCE: return "reference";
             case CRITICAL: return "critical";
             case ABSOLUTE: return "absolute";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -334,6 +339,7 @@ public class ObservationDefinition extends DomainResource {
             case REFERENCE: return "http://hl7.org/fhir/observation-range-category";
             case CRITICAL: return "http://hl7.org/fhir/observation-range-category";
             case ABSOLUTE: return "http://hl7.org/fhir/observation-range-category";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -342,6 +348,7 @@ public class ObservationDefinition extends DomainResource {
             case REFERENCE: return "Reference (Normal) Range for Ordinal and Continuous Observations.";
             case CRITICAL: return "Critical Range for Ordinal and Continuous Observations. Results outside this range are critical.";
             case ABSOLUTE: return "Absolute Range for Ordinal and Continuous Observations. Results outside this range are not possible.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -350,6 +357,7 @@ public class ObservationDefinition extends DomainResource {
             case REFERENCE: return "reference range";
             case CRITICAL: return "critical range";
             case ABSOLUTE: return "absolute range";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2062,7 +2070,7 @@ public class ObservationDefinition extends DomainResource {
     /**
      * A flag to indicate that this ObservationDefinition is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage.
      */
-    @Child(name = "experimental", type = {BooleanType.class}, order=6, min=0, max=1, modifier=true, summary=true)
+    @Child(name = "experimental", type = {BooleanType.class}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="If for testing purposes, not real usage", formalDefinition="A flag to indicate that this ObservationDefinition is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage." )
     protected BooleanType experimental;
 

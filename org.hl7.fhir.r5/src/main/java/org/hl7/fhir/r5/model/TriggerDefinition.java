@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,7 +46,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * Base StructureDefinition for TriggerDefinition Type: A description of a triggering event. Triggering events can be named events, data events, or periodic, as determined by the type element.
+ * TriggerDefinition Type: A description of a triggering event. Triggering events can be named events, data events, or periodic, as determined by the type element.
  */
 @DatatypeDef(name="TriggerDefinition")
 public class TriggerDefinition extends DataType implements ICompositeType {
@@ -122,6 +122,7 @@ public class TriggerDefinition extends DataType implements ICompositeType {
             case DATAREMOVED: return "data-removed";
             case DATAACCESSED: return "data-accessed";
             case DATAACCESSENDED: return "data-access-ended";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +136,7 @@ public class TriggerDefinition extends DataType implements ICompositeType {
             case DATAREMOVED: return "http://hl7.org/fhir/trigger-type";
             case DATAACCESSED: return "http://hl7.org/fhir/trigger-type";
             case DATAACCESSENDED: return "http://hl7.org/fhir/trigger-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -148,6 +150,7 @@ public class TriggerDefinition extends DataType implements ICompositeType {
             case DATAREMOVED: return "The trigger occurs whenever data of a particular type is removed.";
             case DATAACCESSED: return "The trigger occurs whenever data of a particular type is accessed.";
             case DATAACCESSENDED: return "The trigger occurs whenever access to data of a particular type is completed.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -161,6 +164,7 @@ public class TriggerDefinition extends DataType implements ICompositeType {
             case DATAREMOVED: return "Data Removed";
             case DATAACCESSED: return "Data Accessed";
             case DATAACCESSENDED: return "Data Access Ended";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -255,27 +259,41 @@ public class TriggerDefinition extends DataType implements ICompositeType {
     protected StringType name;
 
     /**
+     * A code that identifies the event.
+     */
+    @Child(name = "code", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Coded definition of the event", formalDefinition="A code that identifies the event." )
+    protected CodeableConcept code;
+
+    /**
+     * A reference to a SubscriptionTopic resource that defines the event. If this element is provided, no other information about the trigger definition may be supplied.
+     */
+    @Child(name = "subscriptionTopic", type = {CanonicalType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="What event", formalDefinition="A reference to a SubscriptionTopic resource that defines the event. If this element is provided, no other information about the trigger definition may be supplied." )
+    protected CanonicalType subscriptionTopic;
+
+    /**
      * The timing of the event (if this is a periodic trigger).
      */
-    @Child(name = "timing", type = {Timing.class, Schedule.class, DateType.class, DateTimeType.class}, order=2, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "timing", type = {Timing.class, Schedule.class, DateType.class, DateTimeType.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Timing of the event", formalDefinition="The timing of the event (if this is a periodic trigger)." )
     protected DataType timing;
 
     /**
      * The triggering data of the event (if this is a data trigger). If more than one data is requirement is specified, then all the data requirements must be true.
      */
-    @Child(name = "data", type = {DataRequirement.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "data", type = {DataRequirement.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Triggering data of the event (multiple = 'and')", formalDefinition="The triggering data of the event (if this is a data trigger). If more than one data is requirement is specified, then all the data requirements must be true." )
     protected List<DataRequirement> data;
 
     /**
      * A boolean-valued expression that is evaluated in the context of the container of the trigger definition and returns whether or not the trigger fires.
      */
-    @Child(name = "condition", type = {Expression.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "condition", type = {Expression.class}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Whether the event triggers (boolean expression)", formalDefinition="A boolean-valued expression that is evaluated in the context of the container of the trigger definition and returns whether or not the trigger fires." )
     protected Expression condition;
 
-    private static final long serialVersionUID = 137099027L;
+    private static final long serialVersionUID = -1823040479L;
 
   /**
    * Constructor
@@ -382,6 +400,79 @@ public class TriggerDefinition extends DataType implements ICompositeType {
         if (this.name == null)
           this.name = new StringType();
         this.name.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #code} (A code that identifies the event.)
+     */
+    public CodeableConcept getCode() { 
+      if (this.code == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create TriggerDefinition.code");
+        else if (Configuration.doAutoCreate())
+          this.code = new CodeableConcept(); // cc
+      return this.code;
+    }
+
+    public boolean hasCode() { 
+      return this.code != null && !this.code.isEmpty();
+    }
+
+    /**
+     * @param value {@link #code} (A code that identifies the event.)
+     */
+    public TriggerDefinition setCode(CodeableConcept value) { 
+      this.code = value;
+      return this;
+    }
+
+    /**
+     * @return {@link #subscriptionTopic} (A reference to a SubscriptionTopic resource that defines the event. If this element is provided, no other information about the trigger definition may be supplied.). This is the underlying object with id, value and extensions. The accessor "getSubscriptionTopic" gives direct access to the value
+     */
+    public CanonicalType getSubscriptionTopicElement() { 
+      if (this.subscriptionTopic == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create TriggerDefinition.subscriptionTopic");
+        else if (Configuration.doAutoCreate())
+          this.subscriptionTopic = new CanonicalType(); // bb
+      return this.subscriptionTopic;
+    }
+
+    public boolean hasSubscriptionTopicElement() { 
+      return this.subscriptionTopic != null && !this.subscriptionTopic.isEmpty();
+    }
+
+    public boolean hasSubscriptionTopic() { 
+      return this.subscriptionTopic != null && !this.subscriptionTopic.isEmpty();
+    }
+
+    /**
+     * @param value {@link #subscriptionTopic} (A reference to a SubscriptionTopic resource that defines the event. If this element is provided, no other information about the trigger definition may be supplied.). This is the underlying object with id, value and extensions. The accessor "getSubscriptionTopic" gives direct access to the value
+     */
+    public TriggerDefinition setSubscriptionTopicElement(CanonicalType value) { 
+      this.subscriptionTopic = value;
+      return this;
+    }
+
+    /**
+     * @return A reference to a SubscriptionTopic resource that defines the event. If this element is provided, no other information about the trigger definition may be supplied.
+     */
+    public String getSubscriptionTopic() { 
+      return this.subscriptionTopic == null ? null : this.subscriptionTopic.getValue();
+    }
+
+    /**
+     * @param value A reference to a SubscriptionTopic resource that defines the event. If this element is provided, no other information about the trigger definition may be supplied.
+     */
+    public TriggerDefinition setSubscriptionTopic(String value) { 
+      if (Utilities.noString(value))
+        this.subscriptionTopic = null;
+      else {
+        if (this.subscriptionTopic == null)
+          this.subscriptionTopic = new CanonicalType();
+        this.subscriptionTopic.setValue(value);
       }
       return this;
     }
@@ -548,6 +639,8 @@ public class TriggerDefinition extends DataType implements ICompositeType {
         super.listChildren(children);
         children.add(new Property("type", "code", "The type of triggering event.", 0, 1, type));
         children.add(new Property("name", "string", "A formal name for the event. This may be an absolute URI that identifies the event formally (e.g. from a trigger registry), or a simple relative URI that identifies the event in a local context.", 0, 1, name));
+        children.add(new Property("code", "CodeableConcept", "A code that identifies the event.", 0, 1, code));
+        children.add(new Property("subscriptionTopic", "canonical(SubscriptionTopic)", "A reference to a SubscriptionTopic resource that defines the event. If this element is provided, no other information about the trigger definition may be supplied.", 0, 1, subscriptionTopic));
         children.add(new Property("timing[x]", "Timing|Reference(Schedule)|date|dateTime", "The timing of the event (if this is a periodic trigger).", 0, 1, timing));
         children.add(new Property("data", "DataRequirement", "The triggering data of the event (if this is a data trigger). If more than one data is requirement is specified, then all the data requirements must be true.", 0, java.lang.Integer.MAX_VALUE, data));
         children.add(new Property("condition", "Expression", "A boolean-valued expression that is evaluated in the context of the container of the trigger definition and returns whether or not the trigger fires.", 0, 1, condition));
@@ -558,6 +651,8 @@ public class TriggerDefinition extends DataType implements ICompositeType {
         switch (_hash) {
         case 3575610: /*type*/  return new Property("type", "code", "The type of triggering event.", 0, 1, type);
         case 3373707: /*name*/  return new Property("name", "string", "A formal name for the event. This may be an absolute URI that identifies the event formally (e.g. from a trigger registry), or a simple relative URI that identifies the event in a local context.", 0, 1, name);
+        case 3059181: /*code*/  return new Property("code", "CodeableConcept", "A code that identifies the event.", 0, 1, code);
+        case 1191816722: /*subscriptionTopic*/  return new Property("subscriptionTopic", "canonical(SubscriptionTopic)", "A reference to a SubscriptionTopic resource that defines the event. If this element is provided, no other information about the trigger definition may be supplied.", 0, 1, subscriptionTopic);
         case 164632566: /*timing[x]*/  return new Property("timing[x]", "Timing|Reference(Schedule)|date|dateTime", "The timing of the event (if this is a periodic trigger).", 0, 1, timing);
         case -873664438: /*timing*/  return new Property("timing[x]", "Timing|Reference(Schedule)|date|dateTime", "The timing of the event (if this is a periodic trigger).", 0, 1, timing);
         case -497554124: /*timingTiming*/  return new Property("timing[x]", "Timing", "The timing of the event (if this is a periodic trigger).", 0, 1, timing);
@@ -576,6 +671,8 @@ public class TriggerDefinition extends DataType implements ICompositeType {
         switch (hash) {
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<TriggerType>
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
+        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
+        case 1191816722: /*subscriptionTopic*/ return this.subscriptionTopic == null ? new Base[0] : new Base[] {this.subscriptionTopic}; // CanonicalType
         case -873664438: /*timing*/ return this.timing == null ? new Base[0] : new Base[] {this.timing}; // DataType
         case 3076010: /*data*/ return this.data == null ? new Base[0] : this.data.toArray(new Base[this.data.size()]); // DataRequirement
         case -861311717: /*condition*/ return this.condition == null ? new Base[0] : new Base[] {this.condition}; // Expression
@@ -593,6 +690,12 @@ public class TriggerDefinition extends DataType implements ICompositeType {
           return value;
         case 3373707: // name
           this.name = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 3059181: // code
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 1191816722: // subscriptionTopic
+          this.subscriptionTopic = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         case -873664438: // timing
           this.timing = TypeConvertor.castToType(value); // DataType
@@ -615,6 +718,10 @@ public class TriggerDefinition extends DataType implements ICompositeType {
           this.type = (Enumeration) value; // Enumeration<TriggerType>
         } else if (name.equals("name")) {
           this.name = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("code")) {
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("subscriptionTopic")) {
+          this.subscriptionTopic = TypeConvertor.castToCanonical(value); // CanonicalType
         } else if (name.equals("timing[x]")) {
           this.timing = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("data")) {
@@ -631,6 +738,8 @@ public class TriggerDefinition extends DataType implements ICompositeType {
         switch (hash) {
         case 3575610:  return getTypeElement();
         case 3373707:  return getNameElement();
+        case 3059181:  return getCode();
+        case 1191816722:  return getSubscriptionTopicElement();
         case 164632566:  return getTiming();
         case -873664438:  return getTiming();
         case 3076010:  return addData(); 
@@ -645,6 +754,8 @@ public class TriggerDefinition extends DataType implements ICompositeType {
         switch (hash) {
         case 3575610: /*type*/ return new String[] {"code"};
         case 3373707: /*name*/ return new String[] {"string"};
+        case 3059181: /*code*/ return new String[] {"CodeableConcept"};
+        case 1191816722: /*subscriptionTopic*/ return new String[] {"canonical"};
         case -873664438: /*timing*/ return new String[] {"Timing", "Reference", "date", "dateTime"};
         case 3076010: /*data*/ return new String[] {"DataRequirement"};
         case -861311717: /*condition*/ return new String[] {"Expression"};
@@ -660,6 +771,13 @@ public class TriggerDefinition extends DataType implements ICompositeType {
         }
         else if (name.equals("name")) {
           throw new FHIRException("Cannot call addChild on a primitive type TriggerDefinition.name");
+        }
+        else if (name.equals("code")) {
+          this.code = new CodeableConcept();
+          return this.code;
+        }
+        else if (name.equals("subscriptionTopic")) {
+          throw new FHIRException("Cannot call addChild on a primitive type TriggerDefinition.subscriptionTopic");
         }
         else if (name.equals("timingTiming")) {
           this.timing = new Timing();
@@ -703,6 +821,8 @@ public class TriggerDefinition extends DataType implements ICompositeType {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.name = name == null ? null : name.copy();
+        dst.code = code == null ? null : code.copy();
+        dst.subscriptionTopic = subscriptionTopic == null ? null : subscriptionTopic.copy();
         dst.timing = timing == null ? null : timing.copy();
         if (data != null) {
           dst.data = new ArrayList<DataRequirement>();
@@ -723,7 +843,8 @@ public class TriggerDefinition extends DataType implements ICompositeType {
         if (!(other_ instanceof TriggerDefinition))
           return false;
         TriggerDefinition o = (TriggerDefinition) other_;
-        return compareDeep(type, o.type, true) && compareDeep(name, o.name, true) && compareDeep(timing, o.timing, true)
+        return compareDeep(type, o.type, true) && compareDeep(name, o.name, true) && compareDeep(code, o.code, true)
+           && compareDeep(subscriptionTopic, o.subscriptionTopic, true) && compareDeep(timing, o.timing, true)
            && compareDeep(data, o.data, true) && compareDeep(condition, o.condition, true);
       }
 
@@ -734,12 +855,13 @@ public class TriggerDefinition extends DataType implements ICompositeType {
         if (!(other_ instanceof TriggerDefinition))
           return false;
         TriggerDefinition o = (TriggerDefinition) other_;
-        return compareValues(type, o.type, true) && compareValues(name, o.name, true);
+        return compareValues(type, o.type, true) && compareValues(name, o.name, true) && compareValues(subscriptionTopic, o.subscriptionTopic, true)
+          ;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, name, timing, data
-          , condition);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, name, code, subscriptionTopic
+          , timing, data, condition);
       }
 
 

@@ -79,7 +79,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
    */
   public BaseDateTimeType(Date theDate, TemporalPrecisionEnum thePrecision) {
     setValue(theDate, thePrecision);
-    validatePrecisionAndThrowDataFormatException(getValueAsString(), getPrecision());
+    validatePrecisionAndThrowIllegalArgumentException();
   }
 
   /**
@@ -88,7 +88,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   public BaseDateTimeType(Date theDate, TemporalPrecisionEnum thePrecision, TimeZone theTimeZone) {
     this(theDate, thePrecision);
     setTimeZone(theTimeZone);
-    validatePrecisionAndThrowDataFormatException(getValueAsString(), getPrecision());
+    validatePrecisionAndThrowIllegalArgumentException();
   }
 
   /**
@@ -99,7 +99,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
    */
   public BaseDateTimeType(String theString) {
     setValueAsString(theString);
-
+    validatePrecisionAndThrowIllegalArgumentException();
   }
 
   /**
@@ -504,7 +504,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
     }
 
     if (precision == TemporalPrecisionEnum.MINUTE) {
-      validatePrecisionAndThrowDataFormatException(value, precision);
+      validatePrecisionAndThrowIllegalArgumentException();
     }
 
     myPrecision = precision;
@@ -539,7 +539,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
     validateValueInRange(theValue, theMinimum, theMaximum);
     Calendar cal;
     if (getValue() == null) {
-      cal = new GregorianCalendar(0, 0, 0);
+      cal = new GregorianCalendar();
     } else {
       cal = getValueAsCalendar();
     }
@@ -713,7 +713,6 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   public void setValueAsString(String theString) throws DataFormatException {
     clearTimeZone();
     super.setValueAsString(theString);
-    validatePrecisionAndThrowDataFormatException(theString, getPrecision());
   }
 
   protected void setValueAsV3String(String theV3String) {
@@ -833,9 +832,9 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
     }
   }
 
-  private void validatePrecisionAndThrowDataFormatException(String theValue, TemporalPrecisionEnum thePrecision) {
-    if (isPrecisionAllowed(thePrecision) == false) {
-      throw new DataFormatException("Invalid date/time string (datatype " + getClass().getSimpleName() + " does not support " + thePrecision + " precision): " + theValue);
+  private void validatePrecisionAndThrowIllegalArgumentException() {
+    if (!isPrecisionAllowed(getPrecision())) {
+      throw new IllegalArgumentException("Invalid date/time string (datatype " + getClass().getSimpleName() + " does not support " + getPrecision() + " precision): " + getValueAsString());
     }
   }
 

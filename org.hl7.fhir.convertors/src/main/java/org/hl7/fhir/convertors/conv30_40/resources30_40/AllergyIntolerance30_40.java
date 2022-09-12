@@ -1,5 +1,7 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
+import java.util.stream.Collectors;
+
 import org.hl7.fhir.convertors.context.ConversionContext30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Annotation30_40;
@@ -8,8 +10,6 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identi
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.DateTime30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
 import org.hl7.fhir.exceptions.FHIRException;
-
-import java.util.stream.Collectors;
 
 public class AllergyIntolerance30_40 {
 
@@ -214,7 +214,7 @@ public class AllergyIntolerance30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceReactionComponent tgt = new org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceReactionComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasSubstance())
       tgt.setSubstance(CodeableConcept30_40.convertCodeableConcept(src.getSubstance()));
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getManifestation())
@@ -235,7 +235,7 @@ public class AllergyIntolerance30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.AllergyIntolerance.AllergyIntoleranceReactionComponent tgt = new org.hl7.fhir.dstu3.model.AllergyIntolerance.AllergyIntoleranceReactionComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasSubstance())
       tgt.setSubstance(CodeableConcept30_40.convertCodeableConcept(src.getSubstance()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getManifestation())

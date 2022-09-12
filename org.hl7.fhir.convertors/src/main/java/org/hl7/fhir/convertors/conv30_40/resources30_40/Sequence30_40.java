@@ -191,7 +191,7 @@ public class Sequence30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceQualityComponent tgt = new org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceQualityComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasType())
       tgt.setTypeElement(convertQualityType(src.getTypeElement()));
     if (src.hasStandardSequence())
@@ -227,7 +227,7 @@ public class Sequence30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Sequence.SequenceQualityComponent tgt = new org.hl7.fhir.dstu3.model.Sequence.SequenceQualityComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasType())
       tgt.setTypeElement(convertQualityType(src.getTypeElement()));
     if (src.hasStandardSequence())
@@ -263,7 +263,7 @@ public class Sequence30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Sequence.SequenceReferenceSeqComponent tgt = new org.hl7.fhir.dstu3.model.Sequence.SequenceReferenceSeqComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasChromosome())
       tgt.setChromosome(CodeableConcept30_40.convertCodeableConcept(src.getChromosome()));
     if (src.hasGenomeBuild())
@@ -285,7 +285,7 @@ public class Sequence30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceReferenceSeqComponent tgt = new org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceReferenceSeqComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasChromosome())
       tgt.setChromosome(CodeableConcept30_40.convertCodeableConcept(src.getChromosome()));
     if (src.hasGenomeBuild())
@@ -307,7 +307,7 @@ public class Sequence30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceRepositoryComponent tgt = new org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceRepositoryComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasType())
       tgt.setTypeElement(convertRepositoryType(src.getTypeElement()));
     if (src.hasUrl())
@@ -327,7 +327,7 @@ public class Sequence30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Sequence.SequenceRepositoryComponent tgt = new org.hl7.fhir.dstu3.model.Sequence.SequenceRepositoryComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasType())
       tgt.setTypeElement(convertRepositoryType(src.getTypeElement()));
     if (src.hasUrl())
@@ -391,7 +391,7 @@ public class Sequence30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceVariantComponent tgt = new org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceVariantComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasStart())
       tgt.setStartElement(Integer30_40.convertInteger(src.getStartElement()));
     if (src.hasEnd())
@@ -411,7 +411,7 @@ public class Sequence30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Sequence.SequenceVariantComponent tgt = new org.hl7.fhir.dstu3.model.Sequence.SequenceVariantComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasStart())
       tgt.setStartElement(Integer30_40.convertInteger(src.getStartElement()));
     if (src.hasEnd())

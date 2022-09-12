@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,7 +51,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * The CodeSystem resource is used to declare the existence of and describe a code system or code system supplement and its key properties, and optionally define a part or all of its content.
  */
 @ResourceDef(name="CodeSystem", profile="http://hl7.org/fhir/StructureDefinition/CodeSystem")
-public class CodeSystem extends CanonicalResource {
+public class CodeSystem extends MetadataResource {
 
     public enum CodeSystemContentMode {
         /**
@@ -103,6 +103,7 @@ public class CodeSystem extends CanonicalResource {
             case FRAGMENT: return "fragment";
             case COMPLETE: return "complete";
             case SUPPLEMENT: return "supplement";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -113,6 +114,7 @@ public class CodeSystem extends CanonicalResource {
             case FRAGMENT: return "http://hl7.org/fhir/codesystem-content-mode";
             case COMPLETE: return "http://hl7.org/fhir/codesystem-content-mode";
             case SUPPLEMENT: return "http://hl7.org/fhir/codesystem-content-mode";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -123,6 +125,7 @@ public class CodeSystem extends CanonicalResource {
             case FRAGMENT: return "A subset of the code system concepts are included in the code system resource. This is a curated subset released for a specific purpose under the governance of the code system steward, and that the intent, bounds and consequences of the fragmentation are clearly defined in the fragment or the code system documentation. Fragments are also known as partitions.";
             case COMPLETE: return "All the concepts defined by the code system are included in the code system resource.";
             case SUPPLEMENT: return "The resource doesn't define any new concepts; it just provides additional designations and properties to another code system.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -133,6 +136,7 @@ public class CodeSystem extends CanonicalResource {
             case FRAGMENT: return "Fragment";
             case COMPLETE: return "Complete";
             case SUPPLEMENT: return "Supplement";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -199,7 +203,7 @@ public class CodeSystem extends CanonicalResource {
          */
         GROUPEDBY, 
         /**
-         * A hierarchy where the child concepts have an IS-A relationship with the parents - that is, all the properties of the parent are also true for its child concepts. Not that is-a is a property of the concepts, so additional subsumption relationships may be defined using properties or the [subsumes](extension-codesystem-subsumes.html) extension.
+         * A hierarchy where the child concepts have an IS-A relationship with the parents - that is, all the properties of the parent are also true for its child concepts. Not that is-a is a property of the concepts, so additional subsumption relationships may be defined using properties.
          */
         ISA, 
         /**
@@ -236,6 +240,7 @@ public class CodeSystem extends CanonicalResource {
             case ISA: return "is-a";
             case PARTOF: return "part-of";
             case CLASSIFIEDWITH: return "classified-with";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -245,15 +250,17 @@ public class CodeSystem extends CanonicalResource {
             case ISA: return "http://hl7.org/fhir/codesystem-hierarchy-meaning";
             case PARTOF: return "http://hl7.org/fhir/codesystem-hierarchy-meaning";
             case CLASSIFIEDWITH: return "http://hl7.org/fhir/codesystem-hierarchy-meaning";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDefinition() {
           switch (this) {
             case GROUPEDBY: return "No particular relationship between the concepts can be assumed, except what can be determined by inspection of the definitions of the elements (possible reasons to use this: importing from a source where this is not defined, or where various parts of the hierarchy have different meanings).";
-            case ISA: return "A hierarchy where the child concepts have an IS-A relationship with the parents - that is, all the properties of the parent are also true for its child concepts. Not that is-a is a property of the concepts, so additional subsumption relationships may be defined using properties or the [subsumes](extension-codesystem-subsumes.html) extension.";
+            case ISA: return "A hierarchy where the child concepts have an IS-A relationship with the parents - that is, all the properties of the parent are also true for its child concepts. Not that is-a is a property of the concepts, so additional subsumption relationships may be defined using properties.";
             case PARTOF: return "Child elements list the individual parts of a composite whole (e.g. body site).";
             case CLASSIFIEDWITH: return "Child concepts in the hierarchy may have only one parent, and there is a presumption that the code system is a \"closed world\" meaning all things must be in the hierarchy. This results in concepts such as \"not otherwise classified.\".";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -263,6 +270,7 @@ public class CodeSystem extends CanonicalResource {
             case ISA: return "Is-A";
             case PARTOF: return "Part Of";
             case CLASSIFIEDWITH: return "Classified With";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -331,7 +339,7 @@ public class CodeSystem extends CanonicalResource {
          */
         STRING, 
         /**
-         * The property value is a string (often used to assign ranking values to concepts for supporting score assessments).
+         * The property value is an integer (often used to assign ranking values to concepts for supporting score assessments).
          */
         INTEGER, 
         /**
@@ -381,6 +389,7 @@ public class CodeSystem extends CanonicalResource {
             case BOOLEAN: return "boolean";
             case DATETIME: return "dateTime";
             case DECIMAL: return "decimal";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -393,6 +402,7 @@ public class CodeSystem extends CanonicalResource {
             case BOOLEAN: return "http://hl7.org/fhir/concept-property-type";
             case DATETIME: return "http://hl7.org/fhir/concept-property-type";
             case DECIMAL: return "http://hl7.org/fhir/concept-property-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -401,10 +411,11 @@ public class CodeSystem extends CanonicalResource {
             case CODE: return "The property value is a code that identifies a concept defined in the code system.";
             case CODING: return "The property  value is a code defined in an external code system. This may be used for translations, but is not the intent.";
             case STRING: return "The property value is a string.";
-            case INTEGER: return "The property value is a string (often used to assign ranking values to concepts for supporting score assessments).";
+            case INTEGER: return "The property value is an integer (often used to assign ranking values to concepts for supporting score assessments).";
             case BOOLEAN: return "The property value is a boolean true | false.";
             case DATETIME: return "The property is a date or a date + time.";
             case DECIMAL: return "The property value is a decimal number.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -417,6 +428,7 @@ public class CodeSystem extends CanonicalResource {
             case BOOLEAN: return "boolean";
             case DATETIME: return "dateTime";
             case DECIMAL: return "decimal";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1884,13 +1896,21 @@ public class CodeSystem extends CanonicalResource {
         protected Coding use;
 
         /**
+         * Additional codes that detail how this designation would be used, if there is more than one use.
+         */
+        @Child(name = "additionalUse", type = {Coding.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Additional ways how this designation would be used", formalDefinition="Additional codes that detail how this designation would be used, if there is more than one use." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/designation-use")
+        protected List<Coding> additionalUse;
+
+        /**
          * The text value for this designation.
          */
-        @Child(name = "value", type = {StringType.class}, order=3, min=1, max=1, modifier=false, summary=false)
+        @Child(name = "value", type = {StringType.class}, order=4, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="The text value for this designation", formalDefinition="The text value for this designation." )
         protected StringType value;
 
-        private static final long serialVersionUID = 1515662414L;
+        private static final long serialVersionUID = -141147882L;
 
     /**
      * Constructor
@@ -1981,6 +2001,59 @@ public class CodeSystem extends CanonicalResource {
         }
 
         /**
+         * @return {@link #additionalUse} (Additional codes that detail how this designation would be used, if there is more than one use.)
+         */
+        public List<Coding> getAdditionalUse() { 
+          if (this.additionalUse == null)
+            this.additionalUse = new ArrayList<Coding>();
+          return this.additionalUse;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public ConceptDefinitionDesignationComponent setAdditionalUse(List<Coding> theAdditionalUse) { 
+          this.additionalUse = theAdditionalUse;
+          return this;
+        }
+
+        public boolean hasAdditionalUse() { 
+          if (this.additionalUse == null)
+            return false;
+          for (Coding item : this.additionalUse)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public Coding addAdditionalUse() { //3
+          Coding t = new Coding();
+          if (this.additionalUse == null)
+            this.additionalUse = new ArrayList<Coding>();
+          this.additionalUse.add(t);
+          return t;
+        }
+
+        public ConceptDefinitionDesignationComponent addAdditionalUse(Coding t) { //3
+          if (t == null)
+            return this;
+          if (this.additionalUse == null)
+            this.additionalUse = new ArrayList<Coding>();
+          this.additionalUse.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #additionalUse}, creating it if it does not already exist {3}
+         */
+        public Coding getAdditionalUseFirstRep() { 
+          if (getAdditionalUse().isEmpty()) {
+            addAdditionalUse();
+          }
+          return getAdditionalUse().get(0);
+        }
+
+        /**
          * @return {@link #value} (The text value for this designation.). This is the underlying object with id, value and extensions. The accessor "getValue" gives direct access to the value
          */
         public StringType getValueElement() { 
@@ -2029,6 +2102,7 @@ public class CodeSystem extends CanonicalResource {
           super.listChildren(children);
           children.add(new Property("language", "code", "The language this designation is defined for.", 0, 1, language));
           children.add(new Property("use", "Coding", "A code that details how this designation would be used.", 0, 1, use));
+          children.add(new Property("additionalUse", "Coding", "Additional codes that detail how this designation would be used, if there is more than one use.", 0, java.lang.Integer.MAX_VALUE, additionalUse));
           children.add(new Property("value", "string", "The text value for this designation.", 0, 1, value));
         }
 
@@ -2037,6 +2111,7 @@ public class CodeSystem extends CanonicalResource {
           switch (_hash) {
           case -1613589672: /*language*/  return new Property("language", "code", "The language this designation is defined for.", 0, 1, language);
           case 116103: /*use*/  return new Property("use", "Coding", "A code that details how this designation would be used.", 0, 1, use);
+          case 938414048: /*additionalUse*/  return new Property("additionalUse", "Coding", "Additional codes that detail how this designation would be used, if there is more than one use.", 0, java.lang.Integer.MAX_VALUE, additionalUse);
           case 111972721: /*value*/  return new Property("value", "string", "The text value for this designation.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -2048,6 +2123,7 @@ public class CodeSystem extends CanonicalResource {
         switch (hash) {
         case -1613589672: /*language*/ return this.language == null ? new Base[0] : new Base[] {this.language}; // CodeType
         case 116103: /*use*/ return this.use == null ? new Base[0] : new Base[] {this.use}; // Coding
+        case 938414048: /*additionalUse*/ return this.additionalUse == null ? new Base[0] : this.additionalUse.toArray(new Base[this.additionalUse.size()]); // Coding
         case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // StringType
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -2063,6 +2139,9 @@ public class CodeSystem extends CanonicalResource {
         case 116103: // use
           this.use = TypeConvertor.castToCoding(value); // Coding
           return value;
+        case 938414048: // additionalUse
+          this.getAdditionalUse().add(TypeConvertor.castToCoding(value)); // Coding
+          return value;
         case 111972721: // value
           this.value = TypeConvertor.castToString(value); // StringType
           return value;
@@ -2077,6 +2156,8 @@ public class CodeSystem extends CanonicalResource {
           this.language = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("use")) {
           this.use = TypeConvertor.castToCoding(value); // Coding
+        } else if (name.equals("additionalUse")) {
+          this.getAdditionalUse().add(TypeConvertor.castToCoding(value));
         } else if (name.equals("value")) {
           this.value = TypeConvertor.castToString(value); // StringType
         } else
@@ -2089,6 +2170,7 @@ public class CodeSystem extends CanonicalResource {
         switch (hash) {
         case -1613589672:  return getLanguageElement();
         case 116103:  return getUse();
+        case 938414048:  return addAdditionalUse(); 
         case 111972721:  return getValueElement();
         default: return super.makeProperty(hash, name);
         }
@@ -2100,6 +2182,7 @@ public class CodeSystem extends CanonicalResource {
         switch (hash) {
         case -1613589672: /*language*/ return new String[] {"code"};
         case 116103: /*use*/ return new String[] {"Coding"};
+        case 938414048: /*additionalUse*/ return new String[] {"Coding"};
         case 111972721: /*value*/ return new String[] {"string"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -2114,6 +2197,9 @@ public class CodeSystem extends CanonicalResource {
         else if (name.equals("use")) {
           this.use = new Coding();
           return this.use;
+        }
+        else if (name.equals("additionalUse")) {
+          return addAdditionalUse();
         }
         else if (name.equals("value")) {
           throw new FHIRException("Cannot call addChild on a primitive type CodeSystem.concept.designation.value");
@@ -2132,6 +2218,11 @@ public class CodeSystem extends CanonicalResource {
         super.copyValues(dst);
         dst.language = language == null ? null : language.copy();
         dst.use = use == null ? null : use.copy();
+        if (additionalUse != null) {
+          dst.additionalUse = new ArrayList<Coding>();
+          for (Coding i : additionalUse)
+            dst.additionalUse.add(i.copy());
+        };
         dst.value = value == null ? null : value.copy();
       }
 
@@ -2142,8 +2233,8 @@ public class CodeSystem extends CanonicalResource {
         if (!(other_ instanceof ConceptDefinitionDesignationComponent))
           return false;
         ConceptDefinitionDesignationComponent o = (ConceptDefinitionDesignationComponent) other_;
-        return compareDeep(language, o.language, true) && compareDeep(use, o.use, true) && compareDeep(value, o.value, true)
-          ;
+        return compareDeep(language, o.language, true) && compareDeep(use, o.use, true) && compareDeep(additionalUse, o.additionalUse, true)
+           && compareDeep(value, o.value, true);
       }
 
       @Override
@@ -2157,7 +2248,8 @@ public class CodeSystem extends CanonicalResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(language, use, value);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(language, use, additionalUse
+          , value);
       }
 
   public String fhirType() {
@@ -2533,10 +2625,10 @@ public class CodeSystem extends CanonicalResource {
   }
 
     /**
-     * An absolute URI that is used to identify this code system when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this code system is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the code system is stored on different servers. This is used in [Coding](datatypes.html#Coding).system.
+     * An absolute URI that is used to identify this code system when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this code system is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the code system is stored on different servers. This is used in [Coding](datatypes.html#Coding).system.
      */
     @Child(name = "url", type = {UriType.class}, order=0, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Canonical identifier for this code system, represented as a URI (globally unique) (Coding.system)", formalDefinition="An absolute URI that is used to identify this code system when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this code system is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the code system is stored on different servers. This is used in [Coding](datatypes.html#Coding).system." )
+    @Description(shortDefinition="Canonical identifier for this code system, represented as a URI (globally unique) (Coding.system)", formalDefinition="An absolute URI that is used to identify this code system when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this code system is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the code system is stored on different servers. This is used in [Coding](datatypes.html#Coding).system." )
     protected UriType url;
 
     /**
@@ -2568,10 +2660,10 @@ public class CodeSystem extends CanonicalResource {
     protected StringType title;
 
     /**
-     * The date (and optionally time) when the code system resource was created or revised.
+     * The status of this code system. Enables tracking the life-cycle of the content.
      */
     @Child(name = "status", type = {CodeType.class}, order=5, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The date (and optionally time) when the code system resource was created or revised." )
+    @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The status of this code system. Enables tracking the life-cycle of the content." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
     protected Enumeration<PublicationStatus> status;
 
@@ -2590,10 +2682,10 @@ public class CodeSystem extends CanonicalResource {
     protected DateTimeType date;
 
     /**
-     * The name of the organization or individual that published the code system.
+     * The name of the organization or individual responsible for the release and ongoing maintenance of the code system.
      */
     @Child(name = "publisher", type = {StringType.class}, order=8, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Name of the publisher (organization or individual)", formalDefinition="The name of the organization or individual that published the code system." )
+    @Description(shortDefinition="Name of the publisher/steward (organization or individual)", formalDefinition="The name of the organization or individual responsible for the release and ongoing maintenance of the code system." )
     protected StringType publisher;
 
     /**
@@ -2640,23 +2732,87 @@ public class CodeSystem extends CanonicalResource {
     protected MarkdownType copyright;
 
     /**
+     * The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
+     */
+    @Child(name = "approvalDate", type = {DateType.class}, order=15, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="When the CodeSystem was approved by publisher", formalDefinition="The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage." )
+    protected DateType approvalDate;
+
+    /**
+     * The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
+     */
+    @Child(name = "lastReviewDate", type = {DateType.class}, order=16, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="When the CodeSystem was last reviewed", formalDefinition="The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date." )
+    protected DateType lastReviewDate;
+
+    /**
+     * The period during which the CodeSystem content was or is planned to be in active use.
+     */
+    @Child(name = "effectivePeriod", type = {Period.class}, order=17, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="When the CodeSystem is expected to be used", formalDefinition="The period during which the CodeSystem content was or is planned to be in active use." )
+    protected Period effectivePeriod;
+
+    /**
+     * Descriptions related to the content of the CodeSystem. Topics provide a high-level categorization as well as keywords for the CodeSystem that can be useful for filtering and searching.
+     */
+    @Child(name = "topic", type = {CodeableConcept.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="E.g. Education, Treatment, Assessment, etc.", formalDefinition="Descriptions related to the content of the CodeSystem. Topics provide a high-level categorization as well as keywords for the CodeSystem that can be useful for filtering and searching." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/definition-topic")
+    protected List<CodeableConcept> topic;
+
+    /**
+     * An individiual or organization primarily involved in the creation and maintenance of the CodeSystem.
+     */
+    @Child(name = "author", type = {ContactDetail.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Who authored the CodeSystem", formalDefinition="An individiual or organization primarily involved in the creation and maintenance of the CodeSystem." )
+    protected List<ContactDetail> author;
+
+    /**
+     * An individual or organization primarily responsible for internal coherence of the CodeSystem.
+     */
+    @Child(name = "editor", type = {ContactDetail.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Who edited the CodeSystem", formalDefinition="An individual or organization primarily responsible for internal coherence of the CodeSystem." )
+    protected List<ContactDetail> editor;
+
+    /**
+     * An individual or organization primarily responsible for review of some aspect of the CodeSystem.
+     */
+    @Child(name = "reviewer", type = {ContactDetail.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Who reviewed the CodeSystem", formalDefinition="An individual or organization primarily responsible for review of some aspect of the CodeSystem." )
+    protected List<ContactDetail> reviewer;
+
+    /**
+     * An individual or organization responsible for officially endorsing the CodeSystem for use in some setting.
+     */
+    @Child(name = "endorser", type = {ContactDetail.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Who endorsed the CodeSystem", formalDefinition="An individual or organization responsible for officially endorsing the CodeSystem for use in some setting." )
+    protected List<ContactDetail> endorser;
+
+    /**
+     * Related artifacts such as additional documentation, justification, dependencies, bibliographic references, and predecessor and successor artifacts.
+     */
+    @Child(name = "relatedArtifact", type = {RelatedArtifact.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Additional documentation, citations, etc.", formalDefinition="Related artifacts such as additional documentation, justification, dependencies, bibliographic references, and predecessor and successor artifacts." )
+    protected List<RelatedArtifact> relatedArtifact;
+
+    /**
      * If code comparison is case sensitive when codes within this system are compared to each other.
      */
-    @Child(name = "caseSensitive", type = {BooleanType.class}, order=15, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "caseSensitive", type = {BooleanType.class}, order=24, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="If code comparison is case sensitive", formalDefinition="If code comparison is case sensitive when codes within this system are compared to each other." )
     protected BooleanType caseSensitive;
 
     /**
-     * Canonical reference to the value set that contains the entire code system.
+     * Canonical reference to the value set that contains all codes in the code system independent of code status.
      */
-    @Child(name = "valueSet", type = {CanonicalType.class}, order=16, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Canonical reference to the value set with entire code system", formalDefinition="Canonical reference to the value set that contains the entire code system." )
+    @Child(name = "valueSet", type = {CanonicalType.class}, order=25, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Canonical reference to the value set with entire code system", formalDefinition="Canonical reference to the value set that contains all codes in the code system independent of code status." )
     protected CanonicalType valueSet;
 
     /**
      * The meaning of the hierarchy of concepts as represented in this resource.
      */
-    @Child(name = "hierarchyMeaning", type = {CodeType.class}, order=17, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "hierarchyMeaning", type = {CodeType.class}, order=26, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="grouped-by | is-a | part-of | classified-with", formalDefinition="The meaning of the hierarchy of concepts as represented in this resource." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/codesystem-hierarchy-meaning")
     protected Enumeration<CodeSystemHierarchyMeaning> hierarchyMeaning;
@@ -2664,21 +2820,21 @@ public class CodeSystem extends CanonicalResource {
     /**
      * The code system defines a compositional (post-coordination) grammar.
      */
-    @Child(name = "compositional", type = {BooleanType.class}, order=18, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "compositional", type = {BooleanType.class}, order=27, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="If code system defines a compositional grammar", formalDefinition="The code system defines a compositional (post-coordination) grammar." )
     protected BooleanType compositional;
 
     /**
      * This flag is used to signify that the code system does not commit to concept permanence across versions. If true, a version must be specified when referencing this code system.
      */
-    @Child(name = "versionNeeded", type = {BooleanType.class}, order=19, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "versionNeeded", type = {BooleanType.class}, order=28, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="If definitions are not stable", formalDefinition="This flag is used to signify that the code system does not commit to concept permanence across versions. If true, a version must be specified when referencing this code system." )
     protected BooleanType versionNeeded;
 
     /**
      * The extent of the content of the code system (the concepts and codes it defines) are represented in this resource instance.
      */
-    @Child(name = "content", type = {CodeType.class}, order=20, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "content", type = {CodeType.class}, order=29, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="not-present | example | fragment | complete | supplement", formalDefinition="The extent of the content of the code system (the concepts and codes it defines) are represented in this resource instance." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/codesystem-content-mode")
     protected Enumeration<CodeSystemContentMode> content;
@@ -2686,39 +2842,39 @@ public class CodeSystem extends CanonicalResource {
     /**
      * The canonical URL of the code system that this code system supplement is adding designations and properties to.
      */
-    @Child(name = "supplements", type = {CanonicalType.class}, order=21, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "supplements", type = {CanonicalType.class}, order=30, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Canonical URL of Code System this adds designations and properties to", formalDefinition="The canonical URL of the code system that this code system supplement is adding designations and properties to." )
     protected CanonicalType supplements;
 
     /**
      * The total number of concepts defined by the code system. Where the code system has a compositional grammar, the basis of this count is defined by the system steward.
      */
-    @Child(name = "count", type = {UnsignedIntType.class}, order=22, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "count", type = {UnsignedIntType.class}, order=31, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Total concepts in the code system", formalDefinition="The total number of concepts defined by the code system. Where the code system has a compositional grammar, the basis of this count is defined by the system steward." )
     protected UnsignedIntType count;
 
     /**
      * A filter that can be used in a value set compose statement when selecting concepts using a filter.
      */
-    @Child(name = "filter", type = {}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "filter", type = {}, order=32, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Filter that can be used in a value set", formalDefinition="A filter that can be used in a value set compose statement when selecting concepts using a filter." )
     protected List<CodeSystemFilterComponent> filter;
 
     /**
      * A property defines an additional slot through which additional information can be provided about a concept.
      */
-    @Child(name = "property", type = {}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "property", type = {}, order=33, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Additional information supplied about each concept", formalDefinition="A property defines an additional slot through which additional information can be provided about a concept." )
     protected List<PropertyComponent> property;
 
     /**
      * Concepts that are in the code system. The concept definitions are inherently hierarchical, but the definitions must be consulted to determine what the meanings of the hierarchical relationships are.
      */
-    @Child(name = "concept", type = {}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "concept", type = {}, order=34, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Concepts in the code system", formalDefinition="Concepts that are in the code system. The concept definitions are inherently hierarchical, but the definitions must be consulted to determine what the meanings of the hierarchical relationships are." )
     protected List<ConceptDefinitionComponent> concept;
 
-    private static final long serialVersionUID = -499428696L;
+    private static final long serialVersionUID = -1497068225L;
 
   /**
    * Constructor
@@ -2737,7 +2893,7 @@ public class CodeSystem extends CanonicalResource {
     }
 
     /**
-     * @return {@link #url} (An absolute URI that is used to identify this code system when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this code system is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the code system is stored on different servers. This is used in [Coding](datatypes.html#Coding).system.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @return {@link #url} (An absolute URI that is used to identify this code system when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this code system is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the code system is stored on different servers. This is used in [Coding](datatypes.html#Coding).system.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public UriType getUrlElement() { 
       if (this.url == null)
@@ -2757,7 +2913,7 @@ public class CodeSystem extends CanonicalResource {
     }
 
     /**
-     * @param value {@link #url} (An absolute URI that is used to identify this code system when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this code system is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the code system is stored on different servers. This is used in [Coding](datatypes.html#Coding).system.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @param value {@link #url} (An absolute URI that is used to identify this code system when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this code system is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the code system is stored on different servers. This is used in [Coding](datatypes.html#Coding).system.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public CodeSystem setUrlElement(UriType value) { 
       this.url = value;
@@ -2765,14 +2921,14 @@ public class CodeSystem extends CanonicalResource {
     }
 
     /**
-     * @return An absolute URI that is used to identify this code system when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this code system is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the code system is stored on different servers. This is used in [Coding](datatypes.html#Coding).system.
+     * @return An absolute URI that is used to identify this code system when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this code system is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the code system is stored on different servers. This is used in [Coding](datatypes.html#Coding).system.
      */
     public String getUrl() { 
       return this.url == null ? null : this.url.getValue();
     }
 
     /**
-     * @param value An absolute URI that is used to identify this code system when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this code system is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the code system is stored on different servers. This is used in [Coding](datatypes.html#Coding).system.
+     * @param value An absolute URI that is used to identify this code system when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this code system is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the code system is stored on different servers. This is used in [Coding](datatypes.html#Coding).system.
      */
     public CodeSystem setUrl(String value) { 
       if (Utilities.noString(value))
@@ -2986,7 +3142,7 @@ public class CodeSystem extends CanonicalResource {
     }
 
     /**
-     * @return {@link #status} (The date (and optionally time) when the code system resource was created or revised.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     * @return {@link #status} (The status of this code system. Enables tracking the life-cycle of the content.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
     public Enumeration<PublicationStatus> getStatusElement() { 
       if (this.status == null)
@@ -3006,7 +3162,7 @@ public class CodeSystem extends CanonicalResource {
     }
 
     /**
-     * @param value {@link #status} (The date (and optionally time) when the code system resource was created or revised.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     * @param value {@link #status} (The status of this code system. Enables tracking the life-cycle of the content.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
     public CodeSystem setStatusElement(Enumeration<PublicationStatus> value) { 
       this.status = value;
@@ -3014,14 +3170,14 @@ public class CodeSystem extends CanonicalResource {
     }
 
     /**
-     * @return The date (and optionally time) when the code system resource was created or revised.
+     * @return The status of this code system. Enables tracking the life-cycle of the content.
      */
     public PublicationStatus getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
-     * @param value The date (and optionally time) when the code system resource was created or revised.
+     * @param value The status of this code system. Enables tracking the life-cycle of the content.
      */
     public CodeSystem setStatus(PublicationStatus value) { 
         if (this.status == null)
@@ -3125,7 +3281,7 @@ public class CodeSystem extends CanonicalResource {
     }
 
     /**
-     * @return {@link #publisher} (The name of the organization or individual that published the code system.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     * @return {@link #publisher} (The name of the organization or individual responsible for the release and ongoing maintenance of the code system.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
     public StringType getPublisherElement() { 
       if (this.publisher == null)
@@ -3145,7 +3301,7 @@ public class CodeSystem extends CanonicalResource {
     }
 
     /**
-     * @param value {@link #publisher} (The name of the organization or individual that published the code system.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     * @param value {@link #publisher} (The name of the organization or individual responsible for the release and ongoing maintenance of the code system.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
     public CodeSystem setPublisherElement(StringType value) { 
       this.publisher = value;
@@ -3153,14 +3309,14 @@ public class CodeSystem extends CanonicalResource {
     }
 
     /**
-     * @return The name of the organization or individual that published the code system.
+     * @return The name of the organization or individual responsible for the release and ongoing maintenance of the code system.
      */
     public String getPublisher() { 
       return this.publisher == null ? null : this.publisher.getValue();
     }
 
     /**
-     * @param value The name of the organization or individual that published the code system.
+     * @param value The name of the organization or individual responsible for the release and ongoing maintenance of the code system.
      */
     public CodeSystem setPublisher(String value) { 
       if (Utilities.noString(value))
@@ -3480,6 +3636,446 @@ public class CodeSystem extends CanonicalResource {
     }
 
     /**
+     * @return {@link #approvalDate} (The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.). This is the underlying object with id, value and extensions. The accessor "getApprovalDate" gives direct access to the value
+     */
+    public DateType getApprovalDateElement() { 
+      if (this.approvalDate == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create CodeSystem.approvalDate");
+        else if (Configuration.doAutoCreate())
+          this.approvalDate = new DateType(); // bb
+      return this.approvalDate;
+    }
+
+    public boolean hasApprovalDateElement() { 
+      return this.approvalDate != null && !this.approvalDate.isEmpty();
+    }
+
+    public boolean hasApprovalDate() { 
+      return this.approvalDate != null && !this.approvalDate.isEmpty();
+    }
+
+    /**
+     * @param value {@link #approvalDate} (The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.). This is the underlying object with id, value and extensions. The accessor "getApprovalDate" gives direct access to the value
+     */
+    public CodeSystem setApprovalDateElement(DateType value) { 
+      this.approvalDate = value;
+      return this;
+    }
+
+    /**
+     * @return The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
+     */
+    public Date getApprovalDate() { 
+      return this.approvalDate == null ? null : this.approvalDate.getValue();
+    }
+
+    /**
+     * @param value The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
+     */
+    public CodeSystem setApprovalDate(Date value) { 
+      if (value == null)
+        this.approvalDate = null;
+      else {
+        if (this.approvalDate == null)
+          this.approvalDate = new DateType();
+        this.approvalDate.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #lastReviewDate} (The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.). This is the underlying object with id, value and extensions. The accessor "getLastReviewDate" gives direct access to the value
+     */
+    public DateType getLastReviewDateElement() { 
+      if (this.lastReviewDate == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create CodeSystem.lastReviewDate");
+        else if (Configuration.doAutoCreate())
+          this.lastReviewDate = new DateType(); // bb
+      return this.lastReviewDate;
+    }
+
+    public boolean hasLastReviewDateElement() { 
+      return this.lastReviewDate != null && !this.lastReviewDate.isEmpty();
+    }
+
+    public boolean hasLastReviewDate() { 
+      return this.lastReviewDate != null && !this.lastReviewDate.isEmpty();
+    }
+
+    /**
+     * @param value {@link #lastReviewDate} (The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.). This is the underlying object with id, value and extensions. The accessor "getLastReviewDate" gives direct access to the value
+     */
+    public CodeSystem setLastReviewDateElement(DateType value) { 
+      this.lastReviewDate = value;
+      return this;
+    }
+
+    /**
+     * @return The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
+     */
+    public Date getLastReviewDate() { 
+      return this.lastReviewDate == null ? null : this.lastReviewDate.getValue();
+    }
+
+    /**
+     * @param value The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
+     */
+    public CodeSystem setLastReviewDate(Date value) { 
+      if (value == null)
+        this.lastReviewDate = null;
+      else {
+        if (this.lastReviewDate == null)
+          this.lastReviewDate = new DateType();
+        this.lastReviewDate.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #effectivePeriod} (The period during which the CodeSystem content was or is planned to be in active use.)
+     */
+    public Period getEffectivePeriod() { 
+      if (this.effectivePeriod == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create CodeSystem.effectivePeriod");
+        else if (Configuration.doAutoCreate())
+          this.effectivePeriod = new Period(); // cc
+      return this.effectivePeriod;
+    }
+
+    public boolean hasEffectivePeriod() { 
+      return this.effectivePeriod != null && !this.effectivePeriod.isEmpty();
+    }
+
+    /**
+     * @param value {@link #effectivePeriod} (The period during which the CodeSystem content was or is planned to be in active use.)
+     */
+    public CodeSystem setEffectivePeriod(Period value) { 
+      this.effectivePeriod = value;
+      return this;
+    }
+
+    /**
+     * @return {@link #topic} (Descriptions related to the content of the CodeSystem. Topics provide a high-level categorization as well as keywords for the CodeSystem that can be useful for filtering and searching.)
+     */
+    public List<CodeableConcept> getTopic() { 
+      if (this.topic == null)
+        this.topic = new ArrayList<CodeableConcept>();
+      return this.topic;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public CodeSystem setTopic(List<CodeableConcept> theTopic) { 
+      this.topic = theTopic;
+      return this;
+    }
+
+    public boolean hasTopic() { 
+      if (this.topic == null)
+        return false;
+      for (CodeableConcept item : this.topic)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public CodeableConcept addTopic() { //3
+      CodeableConcept t = new CodeableConcept();
+      if (this.topic == null)
+        this.topic = new ArrayList<CodeableConcept>();
+      this.topic.add(t);
+      return t;
+    }
+
+    public CodeSystem addTopic(CodeableConcept t) { //3
+      if (t == null)
+        return this;
+      if (this.topic == null)
+        this.topic = new ArrayList<CodeableConcept>();
+      this.topic.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #topic}, creating it if it does not already exist {3}
+     */
+    public CodeableConcept getTopicFirstRep() { 
+      if (getTopic().isEmpty()) {
+        addTopic();
+      }
+      return getTopic().get(0);
+    }
+
+    /**
+     * @return {@link #author} (An individiual or organization primarily involved in the creation and maintenance of the CodeSystem.)
+     */
+    public List<ContactDetail> getAuthor() { 
+      if (this.author == null)
+        this.author = new ArrayList<ContactDetail>();
+      return this.author;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public CodeSystem setAuthor(List<ContactDetail> theAuthor) { 
+      this.author = theAuthor;
+      return this;
+    }
+
+    public boolean hasAuthor() { 
+      if (this.author == null)
+        return false;
+      for (ContactDetail item : this.author)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public ContactDetail addAuthor() { //3
+      ContactDetail t = new ContactDetail();
+      if (this.author == null)
+        this.author = new ArrayList<ContactDetail>();
+      this.author.add(t);
+      return t;
+    }
+
+    public CodeSystem addAuthor(ContactDetail t) { //3
+      if (t == null)
+        return this;
+      if (this.author == null)
+        this.author = new ArrayList<ContactDetail>();
+      this.author.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #author}, creating it if it does not already exist {3}
+     */
+    public ContactDetail getAuthorFirstRep() { 
+      if (getAuthor().isEmpty()) {
+        addAuthor();
+      }
+      return getAuthor().get(0);
+    }
+
+    /**
+     * @return {@link #editor} (An individual or organization primarily responsible for internal coherence of the CodeSystem.)
+     */
+    public List<ContactDetail> getEditor() { 
+      if (this.editor == null)
+        this.editor = new ArrayList<ContactDetail>();
+      return this.editor;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public CodeSystem setEditor(List<ContactDetail> theEditor) { 
+      this.editor = theEditor;
+      return this;
+    }
+
+    public boolean hasEditor() { 
+      if (this.editor == null)
+        return false;
+      for (ContactDetail item : this.editor)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public ContactDetail addEditor() { //3
+      ContactDetail t = new ContactDetail();
+      if (this.editor == null)
+        this.editor = new ArrayList<ContactDetail>();
+      this.editor.add(t);
+      return t;
+    }
+
+    public CodeSystem addEditor(ContactDetail t) { //3
+      if (t == null)
+        return this;
+      if (this.editor == null)
+        this.editor = new ArrayList<ContactDetail>();
+      this.editor.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #editor}, creating it if it does not already exist {3}
+     */
+    public ContactDetail getEditorFirstRep() { 
+      if (getEditor().isEmpty()) {
+        addEditor();
+      }
+      return getEditor().get(0);
+    }
+
+    /**
+     * @return {@link #reviewer} (An individual or organization primarily responsible for review of some aspect of the CodeSystem.)
+     */
+    public List<ContactDetail> getReviewer() { 
+      if (this.reviewer == null)
+        this.reviewer = new ArrayList<ContactDetail>();
+      return this.reviewer;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public CodeSystem setReviewer(List<ContactDetail> theReviewer) { 
+      this.reviewer = theReviewer;
+      return this;
+    }
+
+    public boolean hasReviewer() { 
+      if (this.reviewer == null)
+        return false;
+      for (ContactDetail item : this.reviewer)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public ContactDetail addReviewer() { //3
+      ContactDetail t = new ContactDetail();
+      if (this.reviewer == null)
+        this.reviewer = new ArrayList<ContactDetail>();
+      this.reviewer.add(t);
+      return t;
+    }
+
+    public CodeSystem addReviewer(ContactDetail t) { //3
+      if (t == null)
+        return this;
+      if (this.reviewer == null)
+        this.reviewer = new ArrayList<ContactDetail>();
+      this.reviewer.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #reviewer}, creating it if it does not already exist {3}
+     */
+    public ContactDetail getReviewerFirstRep() { 
+      if (getReviewer().isEmpty()) {
+        addReviewer();
+      }
+      return getReviewer().get(0);
+    }
+
+    /**
+     * @return {@link #endorser} (An individual or organization responsible for officially endorsing the CodeSystem for use in some setting.)
+     */
+    public List<ContactDetail> getEndorser() { 
+      if (this.endorser == null)
+        this.endorser = new ArrayList<ContactDetail>();
+      return this.endorser;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public CodeSystem setEndorser(List<ContactDetail> theEndorser) { 
+      this.endorser = theEndorser;
+      return this;
+    }
+
+    public boolean hasEndorser() { 
+      if (this.endorser == null)
+        return false;
+      for (ContactDetail item : this.endorser)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public ContactDetail addEndorser() { //3
+      ContactDetail t = new ContactDetail();
+      if (this.endorser == null)
+        this.endorser = new ArrayList<ContactDetail>();
+      this.endorser.add(t);
+      return t;
+    }
+
+    public CodeSystem addEndorser(ContactDetail t) { //3
+      if (t == null)
+        return this;
+      if (this.endorser == null)
+        this.endorser = new ArrayList<ContactDetail>();
+      this.endorser.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #endorser}, creating it if it does not already exist {3}
+     */
+    public ContactDetail getEndorserFirstRep() { 
+      if (getEndorser().isEmpty()) {
+        addEndorser();
+      }
+      return getEndorser().get(0);
+    }
+
+    /**
+     * @return {@link #relatedArtifact} (Related artifacts such as additional documentation, justification, dependencies, bibliographic references, and predecessor and successor artifacts.)
+     */
+    public List<RelatedArtifact> getRelatedArtifact() { 
+      if (this.relatedArtifact == null)
+        this.relatedArtifact = new ArrayList<RelatedArtifact>();
+      return this.relatedArtifact;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public CodeSystem setRelatedArtifact(List<RelatedArtifact> theRelatedArtifact) { 
+      this.relatedArtifact = theRelatedArtifact;
+      return this;
+    }
+
+    public boolean hasRelatedArtifact() { 
+      if (this.relatedArtifact == null)
+        return false;
+      for (RelatedArtifact item : this.relatedArtifact)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public RelatedArtifact addRelatedArtifact() { //3
+      RelatedArtifact t = new RelatedArtifact();
+      if (this.relatedArtifact == null)
+        this.relatedArtifact = new ArrayList<RelatedArtifact>();
+      this.relatedArtifact.add(t);
+      return t;
+    }
+
+    public CodeSystem addRelatedArtifact(RelatedArtifact t) { //3
+      if (t == null)
+        return this;
+      if (this.relatedArtifact == null)
+        this.relatedArtifact = new ArrayList<RelatedArtifact>();
+      this.relatedArtifact.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #relatedArtifact}, creating it if it does not already exist {3}
+     */
+    public RelatedArtifact getRelatedArtifactFirstRep() { 
+      if (getRelatedArtifact().isEmpty()) {
+        addRelatedArtifact();
+      }
+      return getRelatedArtifact().get(0);
+    }
+
+    /**
      * @return {@link #caseSensitive} (If code comparison is case sensitive when codes within this system are compared to each other.). This is the underlying object with id, value and extensions. The accessor "getCaseSensitive" gives direct access to the value
      */
     public BooleanType getCaseSensitiveElement() { 
@@ -3525,7 +4121,7 @@ public class CodeSystem extends CanonicalResource {
     }
 
     /**
-     * @return {@link #valueSet} (Canonical reference to the value set that contains the entire code system.). This is the underlying object with id, value and extensions. The accessor "getValueSet" gives direct access to the value
+     * @return {@link #valueSet} (Canonical reference to the value set that contains all codes in the code system independent of code status.). This is the underlying object with id, value and extensions. The accessor "getValueSet" gives direct access to the value
      */
     public CanonicalType getValueSetElement() { 
       if (this.valueSet == null)
@@ -3545,7 +4141,7 @@ public class CodeSystem extends CanonicalResource {
     }
 
     /**
-     * @param value {@link #valueSet} (Canonical reference to the value set that contains the entire code system.). This is the underlying object with id, value and extensions. The accessor "getValueSet" gives direct access to the value
+     * @param value {@link #valueSet} (Canonical reference to the value set that contains all codes in the code system independent of code status.). This is the underlying object with id, value and extensions. The accessor "getValueSet" gives direct access to the value
      */
     public CodeSystem setValueSetElement(CanonicalType value) { 
       this.valueSet = value;
@@ -3553,14 +4149,14 @@ public class CodeSystem extends CanonicalResource {
     }
 
     /**
-     * @return Canonical reference to the value set that contains the entire code system.
+     * @return Canonical reference to the value set that contains all codes in the code system independent of code status.
      */
     public String getValueSet() { 
       return this.valueSet == null ? null : this.valueSet.getValue();
     }
 
     /**
-     * @param value Canonical reference to the value set that contains the entire code system.
+     * @param value Canonical reference to the value set that contains all codes in the code system independent of code status.
      */
     public CodeSystem setValueSet(String value) { 
       if (Utilities.noString(value))
@@ -4010,25 +4606,111 @@ public class CodeSystem extends CanonicalResource {
       return getConcept().get(0);
     }
 
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getVersionAlgorithmMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public DataType getVersionAlgorithm() { 
+      throw new Error("The resource type \"CodeSystem\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public StringType getVersionAlgorithmStringType() { 
+      throw new Error("The resource type \"CodeSystem\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    public boolean hasVersionAlgorithmStringType() { 
+      return false;////K 
+    }
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public Coding getVersionAlgorithmCoding() { 
+      throw new Error("The resource type \"CodeSystem\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    public boolean hasVersionAlgorithmCoding() { 
+      return false;////K 
+    }
+    public boolean hasVersionAlgorithm() { 
+      return false;
+    }
+    /**
+     * @param value {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public CodeSystem setVersionAlgorithm(DataType value) { 
+      throw new Error("The resource type \"CodeSystem\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getCopyrightLabelMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public StringType getCopyrightLabelElement() { 
+      throw new Error("The resource type \"CodeSystem\" does not implement the property \"copyrightLabel\"");
+    }
+
+    public boolean hasCopyrightLabelElement() { 
+      return false;
+    }
+    public boolean hasCopyrightLabel() {
+      return false;
+    }
+
+    /**
+     * @param value {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public CodeSystem setCopyrightLabelElement(StringType value) { 
+      throw new Error("The resource type \"CodeSystem\" does not implement the property \"copyrightLabel\""); 
+    }
+    public String getCopyrightLabel() { 
+      throw new Error("The resource type \"CodeSystem\" does not implement the property \"copyrightLabel\""); 
+    }
+    /**
+     * @param value A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    public CodeSystem setCopyrightLabel(String value) { 
+      throw new Error("The resource type \"CodeSystem\" does not implement the property \"copyrightLabel\""); 
+    }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("url", "uri", "An absolute URI that is used to identify this code system when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this code system is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the code system is stored on different servers. This is used in [Coding](datatypes.html#Coding).system.", 0, 1, url));
+        children.add(new Property("url", "uri", "An absolute URI that is used to identify this code system when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this code system is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the code system is stored on different servers. This is used in [Coding](datatypes.html#Coding).system.", 0, 1, url));
         children.add(new Property("identifier", "Identifier", "A formal identifier that is used to identify this code system when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("version", "string", "The identifier that is used to identify this version of the code system when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the code system author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence. This is used in [Coding](datatypes.html#Coding).version.", 0, 1, version));
         children.add(new Property("name", "string", "A natural language name identifying the code system. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name));
         children.add(new Property("title", "string", "A short, descriptive, user-friendly title for the code system.", 0, 1, title));
-        children.add(new Property("status", "code", "The date (and optionally time) when the code system resource was created or revised.", 0, 1, status));
+        children.add(new Property("status", "code", "The status of this code system. Enables tracking the life-cycle of the content.", 0, 1, status));
         children.add(new Property("experimental", "boolean", "A Boolean value to indicate that this code system is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.", 0, 1, experimental));
         children.add(new Property("date", "dateTime", "The date  (and optionally time) when the code system was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the code system changes.", 0, 1, date));
-        children.add(new Property("publisher", "string", "The name of the organization or individual that published the code system.", 0, 1, publisher));
+        children.add(new Property("publisher", "string", "The name of the organization or individual responsible for the release and ongoing maintenance of the code system.", 0, 1, publisher));
         children.add(new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact));
         children.add(new Property("description", "markdown", "A free text natural language description of the code system from a consumer's perspective.", 0, 1, description));
         children.add(new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate code system instances.", 0, java.lang.Integer.MAX_VALUE, useContext));
         children.add(new Property("jurisdiction", "CodeableConcept", "A legal or geographic region in which the code system is intended to be used.", 0, java.lang.Integer.MAX_VALUE, jurisdiction));
         children.add(new Property("purpose", "markdown", "Explanation of why this code system is needed and why it has been designed as it has.", 0, 1, purpose));
         children.add(new Property("copyright", "markdown", "A copyright statement relating to the code system and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the code system.", 0, 1, copyright));
+        children.add(new Property("approvalDate", "date", "The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.", 0, 1, approvalDate));
+        children.add(new Property("lastReviewDate", "date", "The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.", 0, 1, lastReviewDate));
+        children.add(new Property("effectivePeriod", "Period", "The period during which the CodeSystem content was or is planned to be in active use.", 0, 1, effectivePeriod));
+        children.add(new Property("topic", "CodeableConcept", "Descriptions related to the content of the CodeSystem. Topics provide a high-level categorization as well as keywords for the CodeSystem that can be useful for filtering and searching.", 0, java.lang.Integer.MAX_VALUE, topic));
+        children.add(new Property("author", "ContactDetail", "An individiual or organization primarily involved in the creation and maintenance of the CodeSystem.", 0, java.lang.Integer.MAX_VALUE, author));
+        children.add(new Property("editor", "ContactDetail", "An individual or organization primarily responsible for internal coherence of the CodeSystem.", 0, java.lang.Integer.MAX_VALUE, editor));
+        children.add(new Property("reviewer", "ContactDetail", "An individual or organization primarily responsible for review of some aspect of the CodeSystem.", 0, java.lang.Integer.MAX_VALUE, reviewer));
+        children.add(new Property("endorser", "ContactDetail", "An individual or organization responsible for officially endorsing the CodeSystem for use in some setting.", 0, java.lang.Integer.MAX_VALUE, endorser));
+        children.add(new Property("relatedArtifact", "RelatedArtifact", "Related artifacts such as additional documentation, justification, dependencies, bibliographic references, and predecessor and successor artifacts.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact));
         children.add(new Property("caseSensitive", "boolean", "If code comparison is case sensitive when codes within this system are compared to each other.", 0, 1, caseSensitive));
-        children.add(new Property("valueSet", "canonical(ValueSet)", "Canonical reference to the value set that contains the entire code system.", 0, 1, valueSet));
+        children.add(new Property("valueSet", "canonical(ValueSet)", "Canonical reference to the value set that contains all codes in the code system independent of code status.", 0, 1, valueSet));
         children.add(new Property("hierarchyMeaning", "code", "The meaning of the hierarchy of concepts as represented in this resource.", 0, 1, hierarchyMeaning));
         children.add(new Property("compositional", "boolean", "The code system defines a compositional (post-coordination) grammar.", 0, 1, compositional));
         children.add(new Property("versionNeeded", "boolean", "This flag is used to signify that the code system does not commit to concept permanence across versions. If true, a version must be specified when referencing this code system.", 0, 1, versionNeeded));
@@ -4043,23 +4725,32 @@ public class CodeSystem extends CanonicalResource {
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this code system when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this code system is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the code system is stored on different servers. This is used in [Coding](datatypes.html#Coding).system.", 0, 1, url);
+        case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this code system when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this code system is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the code system is stored on different servers. This is used in [Coding](datatypes.html#Coding).system.", 0, 1, url);
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "A formal identifier that is used to identify this code system when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case 351608024: /*version*/  return new Property("version", "string", "The identifier that is used to identify this version of the code system when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the code system author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence. This is used in [Coding](datatypes.html#Coding).version.", 0, 1, version);
         case 3373707: /*name*/  return new Property("name", "string", "A natural language name identifying the code system. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name);
         case 110371416: /*title*/  return new Property("title", "string", "A short, descriptive, user-friendly title for the code system.", 0, 1, title);
-        case -892481550: /*status*/  return new Property("status", "code", "The date (and optionally time) when the code system resource was created or revised.", 0, 1, status);
+        case -892481550: /*status*/  return new Property("status", "code", "The status of this code system. Enables tracking the life-cycle of the content.", 0, 1, status);
         case -404562712: /*experimental*/  return new Property("experimental", "boolean", "A Boolean value to indicate that this code system is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.", 0, 1, experimental);
         case 3076014: /*date*/  return new Property("date", "dateTime", "The date  (and optionally time) when the code system was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the code system changes.", 0, 1, date);
-        case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual that published the code system.", 0, 1, publisher);
+        case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual responsible for the release and ongoing maintenance of the code system.", 0, 1, publisher);
         case 951526432: /*contact*/  return new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact);
         case -1724546052: /*description*/  return new Property("description", "markdown", "A free text natural language description of the code system from a consumer's perspective.", 0, 1, description);
         case -669707736: /*useContext*/  return new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate code system instances.", 0, java.lang.Integer.MAX_VALUE, useContext);
         case -507075711: /*jurisdiction*/  return new Property("jurisdiction", "CodeableConcept", "A legal or geographic region in which the code system is intended to be used.", 0, java.lang.Integer.MAX_VALUE, jurisdiction);
         case -220463842: /*purpose*/  return new Property("purpose", "markdown", "Explanation of why this code system is needed and why it has been designed as it has.", 0, 1, purpose);
         case 1522889671: /*copyright*/  return new Property("copyright", "markdown", "A copyright statement relating to the code system and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the code system.", 0, 1, copyright);
+        case 223539345: /*approvalDate*/  return new Property("approvalDate", "date", "The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.", 0, 1, approvalDate);
+        case -1687512484: /*lastReviewDate*/  return new Property("lastReviewDate", "date", "The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.", 0, 1, lastReviewDate);
+        case -403934648: /*effectivePeriod*/  return new Property("effectivePeriod", "Period", "The period during which the CodeSystem content was or is planned to be in active use.", 0, 1, effectivePeriod);
+        case 110546223: /*topic*/  return new Property("topic", "CodeableConcept", "Descriptions related to the content of the CodeSystem. Topics provide a high-level categorization as well as keywords for the CodeSystem that can be useful for filtering and searching.", 0, java.lang.Integer.MAX_VALUE, topic);
+        case -1406328437: /*author*/  return new Property("author", "ContactDetail", "An individiual or organization primarily involved in the creation and maintenance of the CodeSystem.", 0, java.lang.Integer.MAX_VALUE, author);
+        case -1307827859: /*editor*/  return new Property("editor", "ContactDetail", "An individual or organization primarily responsible for internal coherence of the CodeSystem.", 0, java.lang.Integer.MAX_VALUE, editor);
+        case -261190139: /*reviewer*/  return new Property("reviewer", "ContactDetail", "An individual or organization primarily responsible for review of some aspect of the CodeSystem.", 0, java.lang.Integer.MAX_VALUE, reviewer);
+        case 1740277666: /*endorser*/  return new Property("endorser", "ContactDetail", "An individual or organization responsible for officially endorsing the CodeSystem for use in some setting.", 0, java.lang.Integer.MAX_VALUE, endorser);
+        case 666807069: /*relatedArtifact*/  return new Property("relatedArtifact", "RelatedArtifact", "Related artifacts such as additional documentation, justification, dependencies, bibliographic references, and predecessor and successor artifacts.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact);
         case -35616442: /*caseSensitive*/  return new Property("caseSensitive", "boolean", "If code comparison is case sensitive when codes within this system are compared to each other.", 0, 1, caseSensitive);
-        case -1410174671: /*valueSet*/  return new Property("valueSet", "canonical(ValueSet)", "Canonical reference to the value set that contains the entire code system.", 0, 1, valueSet);
+        case -1410174671: /*valueSet*/  return new Property("valueSet", "canonical(ValueSet)", "Canonical reference to the value set that contains all codes in the code system independent of code status.", 0, 1, valueSet);
         case 1913078280: /*hierarchyMeaning*/  return new Property("hierarchyMeaning", "code", "The meaning of the hierarchy of concepts as represented in this resource.", 0, 1, hierarchyMeaning);
         case 1248023381: /*compositional*/  return new Property("compositional", "boolean", "The code system defines a compositional (post-coordination) grammar.", 0, 1, compositional);
         case 617270957: /*versionNeeded*/  return new Property("versionNeeded", "boolean", "This flag is used to signify that the code system does not commit to concept permanence across versions. If true, a version must be specified when referencing this code system.", 0, 1, versionNeeded);
@@ -4092,6 +4783,15 @@ public class CodeSystem extends CanonicalResource {
         case -507075711: /*jurisdiction*/ return this.jurisdiction == null ? new Base[0] : this.jurisdiction.toArray(new Base[this.jurisdiction.size()]); // CodeableConcept
         case -220463842: /*purpose*/ return this.purpose == null ? new Base[0] : new Base[] {this.purpose}; // MarkdownType
         case 1522889671: /*copyright*/ return this.copyright == null ? new Base[0] : new Base[] {this.copyright}; // MarkdownType
+        case 223539345: /*approvalDate*/ return this.approvalDate == null ? new Base[0] : new Base[] {this.approvalDate}; // DateType
+        case -1687512484: /*lastReviewDate*/ return this.lastReviewDate == null ? new Base[0] : new Base[] {this.lastReviewDate}; // DateType
+        case -403934648: /*effectivePeriod*/ return this.effectivePeriod == null ? new Base[0] : new Base[] {this.effectivePeriod}; // Period
+        case 110546223: /*topic*/ return this.topic == null ? new Base[0] : this.topic.toArray(new Base[this.topic.size()]); // CodeableConcept
+        case -1406328437: /*author*/ return this.author == null ? new Base[0] : this.author.toArray(new Base[this.author.size()]); // ContactDetail
+        case -1307827859: /*editor*/ return this.editor == null ? new Base[0] : this.editor.toArray(new Base[this.editor.size()]); // ContactDetail
+        case -261190139: /*reviewer*/ return this.reviewer == null ? new Base[0] : this.reviewer.toArray(new Base[this.reviewer.size()]); // ContactDetail
+        case 1740277666: /*endorser*/ return this.endorser == null ? new Base[0] : this.endorser.toArray(new Base[this.endorser.size()]); // ContactDetail
+        case 666807069: /*relatedArtifact*/ return this.relatedArtifact == null ? new Base[0] : this.relatedArtifact.toArray(new Base[this.relatedArtifact.size()]); // RelatedArtifact
         case -35616442: /*caseSensitive*/ return this.caseSensitive == null ? new Base[0] : new Base[] {this.caseSensitive}; // BooleanType
         case -1410174671: /*valueSet*/ return this.valueSet == null ? new Base[0] : new Base[] {this.valueSet}; // CanonicalType
         case 1913078280: /*hierarchyMeaning*/ return this.hierarchyMeaning == null ? new Base[0] : new Base[] {this.hierarchyMeaning}; // Enumeration<CodeSystemHierarchyMeaning>
@@ -4156,6 +4856,33 @@ public class CodeSystem extends CanonicalResource {
           return value;
         case 1522889671: // copyright
           this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
+          return value;
+        case 223539345: // approvalDate
+          this.approvalDate = TypeConvertor.castToDate(value); // DateType
+          return value;
+        case -1687512484: // lastReviewDate
+          this.lastReviewDate = TypeConvertor.castToDate(value); // DateType
+          return value;
+        case -403934648: // effectivePeriod
+          this.effectivePeriod = TypeConvertor.castToPeriod(value); // Period
+          return value;
+        case 110546223: // topic
+          this.getTopic().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          return value;
+        case -1406328437: // author
+          this.getAuthor().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
+          return value;
+        case -1307827859: // editor
+          this.getEditor().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
+          return value;
+        case -261190139: // reviewer
+          this.getReviewer().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
+          return value;
+        case 1740277666: // endorser
+          this.getEndorser().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
+          return value;
+        case 666807069: // relatedArtifact
+          this.getRelatedArtifact().add(TypeConvertor.castToRelatedArtifact(value)); // RelatedArtifact
           return value;
         case -35616442: // caseSensitive
           this.caseSensitive = TypeConvertor.castToBoolean(value); // BooleanType
@@ -4230,6 +4957,24 @@ public class CodeSystem extends CanonicalResource {
           this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("copyright")) {
           this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
+        } else if (name.equals("approvalDate")) {
+          this.approvalDate = TypeConvertor.castToDate(value); // DateType
+        } else if (name.equals("lastReviewDate")) {
+          this.lastReviewDate = TypeConvertor.castToDate(value); // DateType
+        } else if (name.equals("effectivePeriod")) {
+          this.effectivePeriod = TypeConvertor.castToPeriod(value); // Period
+        } else if (name.equals("topic")) {
+          this.getTopic().add(TypeConvertor.castToCodeableConcept(value));
+        } else if (name.equals("author")) {
+          this.getAuthor().add(TypeConvertor.castToContactDetail(value));
+        } else if (name.equals("editor")) {
+          this.getEditor().add(TypeConvertor.castToContactDetail(value));
+        } else if (name.equals("reviewer")) {
+          this.getReviewer().add(TypeConvertor.castToContactDetail(value));
+        } else if (name.equals("endorser")) {
+          this.getEndorser().add(TypeConvertor.castToContactDetail(value));
+        } else if (name.equals("relatedArtifact")) {
+          this.getRelatedArtifact().add(TypeConvertor.castToRelatedArtifact(value));
         } else if (name.equals("caseSensitive")) {
           this.caseSensitive = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("valueSet")) {
@@ -4277,6 +5022,15 @@ public class CodeSystem extends CanonicalResource {
         case -507075711:  return addJurisdiction(); 
         case -220463842:  return getPurposeElement();
         case 1522889671:  return getCopyrightElement();
+        case 223539345:  return getApprovalDateElement();
+        case -1687512484:  return getLastReviewDateElement();
+        case -403934648:  return getEffectivePeriod();
+        case 110546223:  return addTopic(); 
+        case -1406328437:  return addAuthor(); 
+        case -1307827859:  return addEditor(); 
+        case -261190139:  return addReviewer(); 
+        case 1740277666:  return addEndorser(); 
+        case 666807069:  return addRelatedArtifact(); 
         case -35616442:  return getCaseSensitiveElement();
         case -1410174671:  return getValueSetElement();
         case 1913078280:  return getHierarchyMeaningElement();
@@ -4311,6 +5065,15 @@ public class CodeSystem extends CanonicalResource {
         case -507075711: /*jurisdiction*/ return new String[] {"CodeableConcept"};
         case -220463842: /*purpose*/ return new String[] {"markdown"};
         case 1522889671: /*copyright*/ return new String[] {"markdown"};
+        case 223539345: /*approvalDate*/ return new String[] {"date"};
+        case -1687512484: /*lastReviewDate*/ return new String[] {"date"};
+        case -403934648: /*effectivePeriod*/ return new String[] {"Period"};
+        case 110546223: /*topic*/ return new String[] {"CodeableConcept"};
+        case -1406328437: /*author*/ return new String[] {"ContactDetail"};
+        case -1307827859: /*editor*/ return new String[] {"ContactDetail"};
+        case -261190139: /*reviewer*/ return new String[] {"ContactDetail"};
+        case 1740277666: /*endorser*/ return new String[] {"ContactDetail"};
+        case 666807069: /*relatedArtifact*/ return new String[] {"RelatedArtifact"};
         case -35616442: /*caseSensitive*/ return new String[] {"boolean"};
         case -1410174671: /*valueSet*/ return new String[] {"canonical"};
         case 1913078280: /*hierarchyMeaning*/ return new String[] {"code"};
@@ -4373,6 +5136,34 @@ public class CodeSystem extends CanonicalResource {
         }
         else if (name.equals("copyright")) {
           throw new FHIRException("Cannot call addChild on a primitive type CodeSystem.copyright");
+        }
+        else if (name.equals("approvalDate")) {
+          throw new FHIRException("Cannot call addChild on a primitive type CodeSystem.approvalDate");
+        }
+        else if (name.equals("lastReviewDate")) {
+          throw new FHIRException("Cannot call addChild on a primitive type CodeSystem.lastReviewDate");
+        }
+        else if (name.equals("effectivePeriod")) {
+          this.effectivePeriod = new Period();
+          return this.effectivePeriod;
+        }
+        else if (name.equals("topic")) {
+          return addTopic();
+        }
+        else if (name.equals("author")) {
+          return addAuthor();
+        }
+        else if (name.equals("editor")) {
+          return addEditor();
+        }
+        else if (name.equals("reviewer")) {
+          return addReviewer();
+        }
+        else if (name.equals("endorser")) {
+          return addEndorser();
+        }
+        else if (name.equals("relatedArtifact")) {
+          return addRelatedArtifact();
         }
         else if (name.equals("caseSensitive")) {
           throw new FHIRException("Cannot call addChild on a primitive type CodeSystem.caseSensitive");
@@ -4455,6 +5246,39 @@ public class CodeSystem extends CanonicalResource {
         };
         dst.purpose = purpose == null ? null : purpose.copy();
         dst.copyright = copyright == null ? null : copyright.copy();
+        dst.approvalDate = approvalDate == null ? null : approvalDate.copy();
+        dst.lastReviewDate = lastReviewDate == null ? null : lastReviewDate.copy();
+        dst.effectivePeriod = effectivePeriod == null ? null : effectivePeriod.copy();
+        if (topic != null) {
+          dst.topic = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : topic)
+            dst.topic.add(i.copy());
+        };
+        if (author != null) {
+          dst.author = new ArrayList<ContactDetail>();
+          for (ContactDetail i : author)
+            dst.author.add(i.copy());
+        };
+        if (editor != null) {
+          dst.editor = new ArrayList<ContactDetail>();
+          for (ContactDetail i : editor)
+            dst.editor.add(i.copy());
+        };
+        if (reviewer != null) {
+          dst.reviewer = new ArrayList<ContactDetail>();
+          for (ContactDetail i : reviewer)
+            dst.reviewer.add(i.copy());
+        };
+        if (endorser != null) {
+          dst.endorser = new ArrayList<ContactDetail>();
+          for (ContactDetail i : endorser)
+            dst.endorser.add(i.copy());
+        };
+        if (relatedArtifact != null) {
+          dst.relatedArtifact = new ArrayList<RelatedArtifact>();
+          for (RelatedArtifact i : relatedArtifact)
+            dst.relatedArtifact.add(i.copy());
+        };
         dst.caseSensitive = caseSensitive == null ? null : caseSensitive.copy();
         dst.valueSet = valueSet == null ? null : valueSet.copy();
         dst.hierarchyMeaning = hierarchyMeaning == null ? null : hierarchyMeaning.copy();
@@ -4496,11 +5320,15 @@ public class CodeSystem extends CanonicalResource {
            && compareDeep(experimental, o.experimental, true) && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true)
            && compareDeep(contact, o.contact, true) && compareDeep(description, o.description, true) && compareDeep(useContext, o.useContext, true)
            && compareDeep(jurisdiction, o.jurisdiction, true) && compareDeep(purpose, o.purpose, true) && compareDeep(copyright, o.copyright, true)
-           && compareDeep(caseSensitive, o.caseSensitive, true) && compareDeep(valueSet, o.valueSet, true)
-           && compareDeep(hierarchyMeaning, o.hierarchyMeaning, true) && compareDeep(compositional, o.compositional, true)
-           && compareDeep(versionNeeded, o.versionNeeded, true) && compareDeep(content, o.content, true) && compareDeep(supplements, o.supplements, true)
-           && compareDeep(count, o.count, true) && compareDeep(filter, o.filter, true) && compareDeep(property, o.property, true)
-           && compareDeep(concept, o.concept, true);
+           && compareDeep(approvalDate, o.approvalDate, true) && compareDeep(lastReviewDate, o.lastReviewDate, true)
+           && compareDeep(effectivePeriod, o.effectivePeriod, true) && compareDeep(topic, o.topic, true) && compareDeep(author, o.author, true)
+           && compareDeep(editor, o.editor, true) && compareDeep(reviewer, o.reviewer, true) && compareDeep(endorser, o.endorser, true)
+           && compareDeep(relatedArtifact, o.relatedArtifact, true) && compareDeep(caseSensitive, o.caseSensitive, true)
+           && compareDeep(valueSet, o.valueSet, true) && compareDeep(hierarchyMeaning, o.hierarchyMeaning, true)
+           && compareDeep(compositional, o.compositional, true) && compareDeep(versionNeeded, o.versionNeeded, true)
+           && compareDeep(content, o.content, true) && compareDeep(supplements, o.supplements, true) && compareDeep(count, o.count, true)
+           && compareDeep(filter, o.filter, true) && compareDeep(property, o.property, true) && compareDeep(concept, o.concept, true)
+          ;
       }
 
       @Override
@@ -4513,7 +5341,8 @@ public class CodeSystem extends CanonicalResource {
         return compareValues(url, o.url, true) && compareValues(version, o.version, true) && compareValues(name, o.name, true)
            && compareValues(title, o.title, true) && compareValues(status, o.status, true) && compareValues(experimental, o.experimental, true)
            && compareValues(date, o.date, true) && compareValues(publisher, o.publisher, true) && compareValues(description, o.description, true)
-           && compareValues(purpose, o.purpose, true) && compareValues(copyright, o.copyright, true) && compareValues(caseSensitive, o.caseSensitive, true)
+           && compareValues(purpose, o.purpose, true) && compareValues(copyright, o.copyright, true) && compareValues(approvalDate, o.approvalDate, true)
+           && compareValues(lastReviewDate, o.lastReviewDate, true) && compareValues(caseSensitive, o.caseSensitive, true)
            && compareValues(valueSet, o.valueSet, true) && compareValues(hierarchyMeaning, o.hierarchyMeaning, true)
            && compareValues(compositional, o.compositional, true) && compareValues(versionNeeded, o.versionNeeded, true)
            && compareValues(content, o.content, true) && compareValues(supplements, o.supplements, true) && compareValues(count, o.count, true)
@@ -4523,8 +5352,10 @@ public class CodeSystem extends CanonicalResource {
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, identifier, version
           , name, title, status, experimental, date, publisher, contact, description, useContext
-          , jurisdiction, purpose, copyright, caseSensitive, valueSet, hierarchyMeaning, compositional
-          , versionNeeded, content, supplements, count, filter, property, concept);
+          , jurisdiction, purpose, copyright, approvalDate, lastReviewDate, effectivePeriod
+          , topic, author, editor, reviewer, endorser, relatedArtifact, caseSensitive, valueSet
+          , hierarchyMeaning, compositional, versionNeeded, content, supplements, count, filter
+          , property, concept);
       }
 
   @Override
@@ -4573,6 +5404,32 @@ public class CodeSystem extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTENT_MODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTENT_MODE);
 
  /**
+   * Search parameter: <b>derived-from</b>
+   * <p>
+   * Description: <b>A resource that the CodeSystem is derived from</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CodeSystem.relatedArtifact.where(type='derived-from').resource</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="derived-from", path="CodeSystem.relatedArtifact.where(type='derived-from').resource", description="A resource that the CodeSystem is derived from", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_DERIVED_FROM = "derived-from";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>derived-from</b>
+   * <p>
+   * Description: <b>A resource that the CodeSystem is derived from</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CodeSystem.relatedArtifact.where(type='derived-from').resource</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DERIVED_FROM = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DERIVED_FROM);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>CodeSystem:derived-from</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_DERIVED_FROM = new ca.uhn.fhir.model.api.Include("CodeSystem:derived-from").toLocked();
+
+ /**
    * Search parameter: <b>language</b>
    * <p>
    * Description: <b>A language in which a designation is provided</b><br>
@@ -4591,6 +5448,32 @@ public class CodeSystem extends CanonicalResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam LANGUAGE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_LANGUAGE);
+
+ /**
+   * Search parameter: <b>predecessor</b>
+   * <p>
+   * Description: <b>The predecessor of the CodeSystem</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CodeSystem.relatedArtifact.where(type='predecessor').resource</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="predecessor", path="CodeSystem.relatedArtifact.where(type='predecessor').resource", description="The predecessor of the CodeSystem", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_PREDECESSOR = "predecessor";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>predecessor</b>
+   * <p>
+   * Description: <b>The predecessor of the CodeSystem</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CodeSystem.relatedArtifact.where(type='predecessor').resource</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PREDECESSOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PREDECESSOR);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>CodeSystem:predecessor</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PREDECESSOR = new ca.uhn.fhir.model.api.Include("CodeSystem:predecessor").toLocked();
 
  /**
    * Search parameter: <b>supplements</b>
@@ -4637,6 +5520,126 @@ public class CodeSystem extends CanonicalResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.UriClientParam SYSTEM = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_SYSTEM);
+
+ /**
+   * Search parameter: <b>topic</b>
+   * <p>
+   * Description: <b>Topics associated with the CodeSystem</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CodeSystem.topic</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="topic", path="CodeSystem.topic", description="Topics associated with the CodeSystem", type="token" )
+  public static final String SP_TOPIC = "topic";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>topic</b>
+   * <p>
+   * Description: <b>Topics associated with the CodeSystem</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CodeSystem.topic</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TOPIC = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TOPIC);
+
+ /**
+   * Search parameter: <b>author</b>
+   * <p>
+   * Description: <b>Optional Extensions Element</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>CodeSystem.extension('http://hl7.org/fhir/StructureDefinition/codesystem-author').value</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="author", path="CodeSystem.extension('http://hl7.org/fhir/StructureDefinition/codesystem-author').value", description="Optional Extensions Element", type="string" )
+  public static final String SP_AUTHOR = "author";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>author</b>
+   * <p>
+   * Description: <b>Optional Extensions Element</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>CodeSystem.extension('http://hl7.org/fhir/StructureDefinition/codesystem-author').value</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam AUTHOR = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_AUTHOR);
+
+ /**
+   * Search parameter: <b>effective</b>
+   * <p>
+   * Description: <b>Optional Extensions Element</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>CodeSystem.extension('http://hl7.org/fhir/StructureDefinition/codesystem-effectiveDate'.value)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="effective", path="CodeSystem.extension('http://hl7.org/fhir/StructureDefinition/codesystem-effectiveDate'.value)", description="Optional Extensions Element", type="date" )
+  public static final String SP_EFFECTIVE = "effective";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>effective</b>
+   * <p>
+   * Description: <b>Optional Extensions Element</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>CodeSystem.extension('http://hl7.org/fhir/StructureDefinition/codesystem-effectiveDate'.value)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam EFFECTIVE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_EFFECTIVE);
+
+ /**
+   * Search parameter: <b>end</b>
+   * <p>
+   * Description: <b>Optional Extensions Element</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>CodeSystem.extension('http://hl7.org/fhir/StructureDefinition/codesystem-expirationDate').value</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="end", path="CodeSystem.extension('http://hl7.org/fhir/StructureDefinition/codesystem-expirationDate').value", description="Optional Extensions Element", type="date" )
+  public static final String SP_END = "end";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>end</b>
+   * <p>
+   * Description: <b>Optional Extensions Element</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>CodeSystem.extension('http://hl7.org/fhir/StructureDefinition/codesystem-expirationDate').value</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam END = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_END);
+
+ /**
+   * Search parameter: <b>keyword</b>
+   * <p>
+   * Description: <b>Optional Extensions Element</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>CodeSystem.extension('http://hl7.org/fhir/StructureDefinition/codesystem-keyWord').value</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="keyword", path="CodeSystem.extension('http://hl7.org/fhir/StructureDefinition/codesystem-keyWord').value", description="Optional Extensions Element", type="string" )
+  public static final String SP_KEYWORD = "keyword";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>keyword</b>
+   * <p>
+   * Description: <b>Optional Extensions Element</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>CodeSystem.extension('http://hl7.org/fhir/StructureDefinition/codesystem-keyWord').value</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam KEYWORD = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_KEYWORD);
+
+ /**
+   * Search parameter: <b>workflow</b>
+   * <p>
+   * Description: <b>Optional Extensions Element</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CodeSystem.extension('http://hl7.org/fhir/StructureDefinition/codesystem-workflowStatus').value</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="workflow", path="CodeSystem.extension('http://hl7.org/fhir/StructureDefinition/codesystem-workflowStatus').value", description="Optional Extensions Element", type="token" )
+  public static final String SP_WORKFLOW = "workflow";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>workflow</b>
+   * <p>
+   * Description: <b>Optional Extensions Element</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CodeSystem.extension('http://hl7.org/fhir/StructureDefinition/codesystem-workflowStatus').value</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam WORKFLOW = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_WORKFLOW);
 
  /**
    * Search parameter: <b>context-quantity</b>
@@ -5010,16 +6013,17 @@ public class CodeSystem extends CanonicalResource {
 * [CodeSystem](codesystem.html): External identifier for the code system
 * [ConceptMap](conceptmap.html): External identifier for the concept map
 * [MessageDefinition](messagedefinition.html): External identifier for the message definition
+* [NamingSystem](namingsystem.html): External identifier for the naming system
 * [StructureDefinition](structuredefinition.html): External identifier for the structure definition
 * [StructureMap](structuremap.html): External identifier for the structure map
 * [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities
 * [ValueSet](valueset.html): External identifier for the value set
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier</b><br>
+   * Path: <b>CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | NamingSystem.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="identifier", path="CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier", description="Multiple Resources: \r\n\r\n* [CodeSystem](codesystem.html): External identifier for the code system\r\n* [ConceptMap](conceptmap.html): External identifier for the concept map\r\n* [MessageDefinition](messagedefinition.html): External identifier for the message definition\r\n* [StructureDefinition](structuredefinition.html): External identifier for the structure definition\r\n* [StructureMap](structuremap.html): External identifier for the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities\r\n* [ValueSet](valueset.html): External identifier for the value set\r\n", type="token" )
+  @SearchParamDefinition(name="identifier", path="CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | NamingSystem.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier", description="Multiple Resources: \r\n\r\n* [CodeSystem](codesystem.html): External identifier for the code system\r\n* [ConceptMap](conceptmap.html): External identifier for the concept map\r\n* [MessageDefinition](messagedefinition.html): External identifier for the message definition\r\n* [NamingSystem](namingsystem.html): External identifier for the naming system\r\n* [StructureDefinition](structuredefinition.html): External identifier for the structure definition\r\n* [StructureMap](structuremap.html): External identifier for the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities\r\n* [ValueSet](valueset.html): External identifier for the value set\r\n", type="token" )
   public static final String SP_IDENTIFIER = "identifier";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
@@ -5029,13 +6033,14 @@ public class CodeSystem extends CanonicalResource {
 * [CodeSystem](codesystem.html): External identifier for the code system
 * [ConceptMap](conceptmap.html): External identifier for the concept map
 * [MessageDefinition](messagedefinition.html): External identifier for the message definition
+* [NamingSystem](namingsystem.html): External identifier for the naming system
 * [StructureDefinition](structuredefinition.html): External identifier for the structure definition
 * [StructureMap](structuremap.html): External identifier for the structure map
 * [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities
 * [ValueSet](valueset.html): External identifier for the value set
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier</b><br>
+   * Path: <b>CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | NamingSystem.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
@@ -5298,7 +6303,7 @@ public class CodeSystem extends CanonicalResource {
 * [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement
 * [CodeSystem](codesystem.html): The uri that identifies the code system
 * [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition
-* [ConceptMap](conceptmap.html): The uri that identifies the concept map
+* [ConceptMap](conceptmap.html): The URI that identifies the concept map
 * [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition
 * [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide
 * [MessageDefinition](messagedefinition.html): The uri that identifies the message definition
@@ -5314,7 +6319,7 @@ public class CodeSystem extends CanonicalResource {
    * Path: <b>CapabilityStatement.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | GraphDefinition.url | ImplementationGuide.url | MessageDefinition.url | NamingSystem.url | OperationDefinition.url | SearchParameter.url | StructureDefinition.url | StructureMap.url | TerminologyCapabilities.url | ValueSet.url</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="url", path="CapabilityStatement.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | GraphDefinition.url | ImplementationGuide.url | MessageDefinition.url | NamingSystem.url | OperationDefinition.url | SearchParameter.url | StructureDefinition.url | StructureMap.url | TerminologyCapabilities.url | ValueSet.url", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement\r\n* [CodeSystem](codesystem.html): The uri that identifies the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition\r\n* [ConceptMap](conceptmap.html): The uri that identifies the concept map\r\n* [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition\r\n* [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide\r\n* [MessageDefinition](messagedefinition.html): The uri that identifies the message definition\r\n* [NamingSystem](namingsystem.html): The uri that identifies the naming system\r\n* [OperationDefinition](operationdefinition.html): The uri that identifies the operation definition\r\n* [SearchParameter](searchparameter.html): The uri that identifies the search parameter\r\n* [StructureDefinition](structuredefinition.html): The uri that identifies the structure definition\r\n* [StructureMap](structuremap.html): The uri that identifies the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): The uri that identifies the terminology capabilities\r\n* [ValueSet](valueset.html): The uri that identifies the value set\r\n", type="uri" )
+  @SearchParamDefinition(name="url", path="CapabilityStatement.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | GraphDefinition.url | ImplementationGuide.url | MessageDefinition.url | NamingSystem.url | OperationDefinition.url | SearchParameter.url | StructureDefinition.url | StructureMap.url | TerminologyCapabilities.url | ValueSet.url", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement\r\n* [CodeSystem](codesystem.html): The uri that identifies the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition\r\n* [ConceptMap](conceptmap.html): The URI that identifies the concept map\r\n* [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition\r\n* [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide\r\n* [MessageDefinition](messagedefinition.html): The uri that identifies the message definition\r\n* [NamingSystem](namingsystem.html): The uri that identifies the naming system\r\n* [OperationDefinition](operationdefinition.html): The uri that identifies the operation definition\r\n* [SearchParameter](searchparameter.html): The uri that identifies the search parameter\r\n* [StructureDefinition](structuredefinition.html): The uri that identifies the structure definition\r\n* [StructureMap](structuremap.html): The uri that identifies the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): The uri that identifies the terminology capabilities\r\n* [ValueSet](valueset.html): The uri that identifies the value set\r\n", type="uri" )
   public static final String SP_URL = "url";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>url</b>
@@ -5324,7 +6329,7 @@ public class CodeSystem extends CanonicalResource {
 * [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement
 * [CodeSystem](codesystem.html): The uri that identifies the code system
 * [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition
-* [ConceptMap](conceptmap.html): The uri that identifies the concept map
+* [ConceptMap](conceptmap.html): The URI that identifies the concept map
 * [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition
 * [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide
 * [MessageDefinition](messagedefinition.html): The uri that identifies the message definition

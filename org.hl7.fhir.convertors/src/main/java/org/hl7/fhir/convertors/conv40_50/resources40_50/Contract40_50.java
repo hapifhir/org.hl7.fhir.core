@@ -1,8 +1,21 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.*;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Annotation40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Coding40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Money40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Period40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Signature40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.SimpleQuantity40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Boolean40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Decimal40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.MarkDown40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.UnsignedInt40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
@@ -294,7 +307,7 @@ public class Contract40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Contract.ContentDefinitionComponent tgt = new org.hl7.fhir.r5.model.Contract.ContentDefinitionComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasSubType())
@@ -314,7 +327,7 @@ public class Contract40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Contract.ContentDefinitionComponent tgt = new org.hl7.fhir.r4.model.Contract.ContentDefinitionComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasSubType())
@@ -450,7 +463,7 @@ public class Contract40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Contract.TermComponent tgt = new org.hl7.fhir.r5.model.Contract.TermComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasIdentifier())
       tgt.setIdentifier(Identifier40_50.convertIdentifier(src.getIdentifier()));
     if (src.hasIssued())
@@ -480,7 +493,7 @@ public class Contract40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Contract.TermComponent tgt = new org.hl7.fhir.r4.model.Contract.TermComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasIdentifier())
       tgt.setIdentifier(Identifier40_50.convertIdentifier(src.getIdentifier()));
     if (src.hasIssued())
@@ -510,7 +523,7 @@ public class Contract40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Contract.SecurityLabelComponent tgt = new org.hl7.fhir.r5.model.Contract.SecurityLabelComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r4.model.UnsignedIntType t : src.getNumber())
       tgt.getNumber().add(UnsignedInt40_50.convertUnsignedInt(t));
     if (src.hasClassification())
@@ -524,7 +537,7 @@ public class Contract40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Contract.SecurityLabelComponent tgt = new org.hl7.fhir.r4.model.Contract.SecurityLabelComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r5.model.UnsignedIntType t : src.getNumber())
       tgt.getNumber().add(UnsignedInt40_50.convertUnsignedInt(t));
     if (src.hasClassification())
@@ -538,7 +551,7 @@ public class Contract40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Contract.ContractOfferComponent tgt = new org.hl7.fhir.r5.model.Contract.ContractOfferComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
     for (org.hl7.fhir.r4.model.Contract.ContractPartyComponent t : src.getParty())
@@ -564,7 +577,7 @@ public class Contract40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Contract.ContractOfferComponent tgt = new org.hl7.fhir.r4.model.Contract.ContractOfferComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
     for (org.hl7.fhir.r5.model.Contract.ContractPartyComponent t : src.getParty())
@@ -590,7 +603,7 @@ public class Contract40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Contract.ContractPartyComponent tgt = new org.hl7.fhir.r5.model.Contract.ContractPartyComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r4.model.Reference t : src.getReference()) tgt.addReference(Reference40_50.convertReference(t));
     if (src.hasRole())
       tgt.setRole(CodeableConcept40_50.convertCodeableConcept(src.getRole()));
@@ -601,7 +614,7 @@ public class Contract40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Contract.ContractPartyComponent tgt = new org.hl7.fhir.r4.model.Contract.ContractPartyComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r5.model.Reference t : src.getReference()) tgt.addReference(Reference40_50.convertReference(t));
     if (src.hasRole())
       tgt.setRole(CodeableConcept40_50.convertCodeableConcept(src.getRole()));
@@ -612,7 +625,7 @@ public class Contract40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Contract.AnswerComponent tgt = new org.hl7.fhir.r5.model.Contract.AnswerComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasValue())
       tgt.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue()));
     return tgt;
@@ -622,7 +635,7 @@ public class Contract40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Contract.AnswerComponent tgt = new org.hl7.fhir.r4.model.Contract.AnswerComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasValue())
       tgt.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue()));
     return tgt;
@@ -632,7 +645,7 @@ public class Contract40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Contract.ContractAssetComponent tgt = new org.hl7.fhir.r5.model.Contract.ContractAssetComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasScope())
       tgt.setScope(CodeableConcept40_50.convertCodeableConcept(src.getScope()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType())
@@ -666,7 +679,7 @@ public class Contract40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Contract.ContractAssetComponent tgt = new org.hl7.fhir.r4.model.Contract.ContractAssetComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasScope())
       tgt.setScope(CodeableConcept40_50.convertCodeableConcept(src.getScope()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType())
@@ -700,7 +713,7 @@ public class Contract40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Contract.AssetContextComponent tgt = new org.hl7.fhir.r5.model.Contract.AssetContextComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasReference())
       tgt.setReference(Reference40_50.convertReference(src.getReference()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode())
@@ -714,7 +727,7 @@ public class Contract40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Contract.AssetContextComponent tgt = new org.hl7.fhir.r4.model.Contract.AssetContextComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasReference())
       tgt.setReference(Reference40_50.convertReference(src.getReference()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCode())
@@ -728,7 +741,7 @@ public class Contract40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Contract.ValuedItemComponent tgt = new org.hl7.fhir.r5.model.Contract.ValuedItemComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasEntity())
       tgt.setEntity(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getEntity()));
     if (src.hasIdentifier())
@@ -763,7 +776,7 @@ public class Contract40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Contract.ValuedItemComponent tgt = new org.hl7.fhir.r4.model.Contract.ValuedItemComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasEntity())
       tgt.setEntity(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getEntity()));
     if (src.hasIdentifier())
@@ -798,7 +811,7 @@ public class Contract40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Contract.ActionComponent tgt = new org.hl7.fhir.r5.model.Contract.ActionComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasDoNotPerform())
       tgt.setDoNotPerformElement(Boolean40_50.convertBoolean(src.getDoNotPerformElement()));
     if (src.hasType())
@@ -843,7 +856,7 @@ public class Contract40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Contract.ActionComponent tgt = new org.hl7.fhir.r4.model.Contract.ActionComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasDoNotPerform())
       tgt.setDoNotPerformElement(Boolean40_50.convertBoolean(src.getDoNotPerformElement()));
     if (src.hasType())
@@ -891,7 +904,7 @@ public class Contract40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Contract.ActionSubjectComponent tgt = new org.hl7.fhir.r5.model.Contract.ActionSubjectComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r4.model.Reference t : src.getReference()) tgt.addReference(Reference40_50.convertReference(t));
     if (src.hasRole())
       tgt.setRole(CodeableConcept40_50.convertCodeableConcept(src.getRole()));
@@ -902,7 +915,7 @@ public class Contract40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Contract.ActionSubjectComponent tgt = new org.hl7.fhir.r4.model.Contract.ActionSubjectComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r5.model.Reference t : src.getReference()) tgt.addReference(Reference40_50.convertReference(t));
     if (src.hasRole())
       tgt.setRole(CodeableConcept40_50.convertCodeableConcept(src.getRole()));
@@ -913,7 +926,7 @@ public class Contract40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Contract.SignatoryComponent tgt = new org.hl7.fhir.r5.model.Contract.SignatoryComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setType(Coding40_50.convertCoding(src.getType()));
     if (src.hasParty())
@@ -926,7 +939,7 @@ public class Contract40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Contract.SignatoryComponent tgt = new org.hl7.fhir.r4.model.Contract.SignatoryComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setType(Coding40_50.convertCoding(src.getType()));
     if (src.hasParty())
@@ -939,7 +952,7 @@ public class Contract40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Contract.FriendlyLanguageComponent tgt = new org.hl7.fhir.r5.model.Contract.FriendlyLanguageComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasContent())
       tgt.setContent(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getContent()));
     return tgt;
@@ -949,7 +962,7 @@ public class Contract40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Contract.FriendlyLanguageComponent tgt = new org.hl7.fhir.r4.model.Contract.FriendlyLanguageComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasContent())
       tgt.setContent(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getContent()));
     return tgt;
@@ -959,7 +972,7 @@ public class Contract40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Contract.LegalLanguageComponent tgt = new org.hl7.fhir.r5.model.Contract.LegalLanguageComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasContent())
       tgt.setContent(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getContent()));
     return tgt;
@@ -969,7 +982,7 @@ public class Contract40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Contract.LegalLanguageComponent tgt = new org.hl7.fhir.r4.model.Contract.LegalLanguageComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasContent())
       tgt.setContent(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getContent()));
     return tgt;
@@ -979,7 +992,7 @@ public class Contract40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Contract.ComputableLanguageComponent tgt = new org.hl7.fhir.r5.model.Contract.ComputableLanguageComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasContent())
       tgt.setContent(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getContent()));
     return tgt;
@@ -989,7 +1002,7 @@ public class Contract40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Contract.ComputableLanguageComponent tgt = new org.hl7.fhir.r4.model.Contract.ComputableLanguageComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasContent())
       tgt.setContent(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getContent()));
     return tgt;

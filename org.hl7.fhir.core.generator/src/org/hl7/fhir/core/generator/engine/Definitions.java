@@ -13,6 +13,8 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.Utilities;
 
 public class Definitions {
 
@@ -77,25 +79,31 @@ public class Definitions {
     return sd;
   }
   public void fix() {
-    StructureDefinition aa = structures.get("http://hl7.org/fhir/StructureDefinition/ArtifactAssessment");
-    if (aa != null) {
-      for (ElementDefinition ed : aa.getSnapshot().getElement()) {
-        fixAATypes(ed);
-      }
-      for (ElementDefinition ed : aa.getDifferential().getElement()) {
-        fixAATypes(ed);
+//    StructureDefinition aa = structures.get("http://hl7.org/fhir/StructureDefinition/ArtifactAssessment");
+//    if (aa != null) {
+//      for (ElementDefinition ed : aa.getSnapshot().getElement()) {
+//        fixAATypes(ed);
+//      }
+//      for (ElementDefinition ed : aa.getDifferential().getElement()) {
+//        fixAATypes(ed);
+//      }
+//    }
+    for (StructureDefinition sd : structures.getList()) {
+      if (sd.hasExtension(ToolingExtensions.EXT_RESOURCE_IMPLEMENTS) &&
+          !Utilities.existsInList(sd.getType(), "MedicationKnowledge", "ObservationDefinition", "SpecimenDefinition")) {
+        sd.setBaseDefinition(ToolingExtensions.readStringExtension(sd, ToolingExtensions.EXT_RESOURCE_IMPLEMENTS));
       }
     }
   }
   
-  private void fixAATypes(ElementDefinition ed) {
-    if (ed.getPath().equals("ArtifactAssessment.approvalDate")) {
-      ed.getTypeFirstRep().setCode("date");
-    }
-    if (ed.getPath().equals("ArtifactAssessment.lastReviewDate")) {
-      ed.getTypeFirstRep().setCode("date");
-    }
-  }
+//  private void fixAATypes(ElementDefinition ed) {
+//    if (ed.getPath().equals("ArtifactAssessment.approvalDate")) {
+//      ed.getTypeFirstRep().setCode("date");
+//    }
+//    if (ed.getPath().equals("ArtifactAssessment.lastReviewDate")) {
+//      ed.getTypeFirstRep().setCode("date");
+//    }
+//  }
  
  
   

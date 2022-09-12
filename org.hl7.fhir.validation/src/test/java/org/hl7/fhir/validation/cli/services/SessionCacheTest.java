@@ -48,4 +48,17 @@ class SessionCacheTest {
     SessionCache cache = new SessionCache();
     Assertions.assertFalse(cache.sessionExists(null));
   }
+
+  @Test
+  @DisplayName("test that explicit removeExiredSessions works")
+  void testRemoveExpiredSessions() throws InterruptedException, IOException {
+    final long EXPIRE_TIME = 5L;
+    SessionCache cache = new SessionCache(EXPIRE_TIME, TimeUnit.SECONDS);
+    ValidationEngine testEngine = new ValidationEngine.ValidationEngineBuilder().fromNothing();
+    String sessionId = cache.cacheSession(testEngine);
+    Assertions.assertTrue(cache.sessionExists(sessionId));
+    TimeUnit.SECONDS.sleep(EXPIRE_TIME + 1L);
+    cache.removeExpiredSessions();
+    Assertions.assertTrue(cache.getSessionIds().isEmpty());
+  }
 }

@@ -57,7 +57,7 @@ public class Coverage40_50 {
     if (src.hasSubscriber())
       tgt.setSubscriber(Reference40_50.convertReference(src.getSubscriber()));
     if (src.hasSubscriberId())
-      tgt.getSubscriberId().setValueElement(String40_50.convertString(src.getSubscriberIdElement()));
+      tgt.getSubscriberIdFirstRep().setValueElement(String40_50.convertString(src.getSubscriberIdElement()));
     if (src.hasBeneficiary())
       tgt.setBeneficiary(Reference40_50.convertReference(src.getBeneficiary()));
     if (src.hasDependent())
@@ -66,7 +66,7 @@ public class Coverage40_50 {
       tgt.setRelationship(CodeableConcept40_50.convertCodeableConcept(src.getRelationship()));
     if (src.hasPeriod())
       tgt.setPeriod(Period40_50.convertPeriod(src.getPeriod()));
-    for (org.hl7.fhir.r4.model.Reference t : src.getPayor()) tgt.addPayor(Reference40_50.convertReference(t));
+    for (org.hl7.fhir.r4.model.Reference t : src.getPayor()) tgt.setInsurer(Reference40_50.convertReference(t));
     for (org.hl7.fhir.r4.model.Coverage.ClassComponent t : src.getClass_()) tgt.addClass_(convertClassComponent(t));
     if (src.hasOrder())
       tgt.setOrderElement(PositiveInt40_50.convertPositiveInt(src.getOrderElement()));
@@ -96,7 +96,7 @@ public class Coverage40_50 {
     if (src.hasSubscriber())
       tgt.setSubscriber(Reference40_50.convertReference(src.getSubscriber()));
     if (src.hasSubscriberId())
-      tgt.setSubscriberIdElement(String40_50.convertString(src.getSubscriberId().getValueElement()));
+      tgt.setSubscriberIdElement(String40_50.convertString(src.getSubscriberIdFirstRep().getValueElement()));
     if (src.hasBeneficiary())
       tgt.setBeneficiary(Reference40_50.convertReference(src.getBeneficiary()));
     if (src.hasDependent())
@@ -105,7 +105,7 @@ public class Coverage40_50 {
       tgt.setRelationship(CodeableConcept40_50.convertCodeableConcept(src.getRelationship()));
     if (src.hasPeriod())
       tgt.setPeriod(Period40_50.convertPeriod(src.getPeriod()));
-    for (org.hl7.fhir.r5.model.Reference t : src.getPayor()) tgt.addPayor(Reference40_50.convertReference(t));
+    tgt.addPayor(Reference40_50.convertReference(src.getInsurer()));
     for (org.hl7.fhir.r5.model.Coverage.ClassComponent t : src.getClass_()) tgt.addClass_(convertClassComponent(t));
     if (src.hasOrder())
       tgt.setOrderElement(PositiveInt40_50.convertPositiveInt(src.getOrderElement()));
@@ -173,11 +173,11 @@ public class Coverage40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Coverage.ClassComponent tgt = new org.hl7.fhir.r5.model.Coverage.ClassComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasValue())
-      tgt.setValueElement(String40_50.convertString(src.getValueElement()));
+      tgt.getValue().setValueElement(String40_50.convertString(src.getValueElement()));
     if (src.hasName())
       tgt.setNameElement(String40_50.convertString(src.getNameElement()));
     return tgt;
@@ -187,11 +187,11 @@ public class Coverage40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Coverage.ClassComponent tgt = new org.hl7.fhir.r4.model.Coverage.ClassComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasValue())
-      tgt.setValueElement(String40_50.convertString(src.getValueElement()));
+      tgt.setValueElement(String40_50.convertString(src.getValue().getValueElement()));
     if (src.hasName())
       tgt.setNameElement(String40_50.convertString(src.getNameElement()));
     return tgt;
@@ -201,7 +201,7 @@ public class Coverage40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Coverage.CostToBeneficiaryComponent tgt = new org.hl7.fhir.r5.model.Coverage.CostToBeneficiaryComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasValue())
@@ -215,7 +215,7 @@ public class Coverage40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Coverage.CostToBeneficiaryComponent tgt = new org.hl7.fhir.r4.model.Coverage.CostToBeneficiaryComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasValue())
@@ -229,7 +229,7 @@ public class Coverage40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Coverage.ExemptionComponent tgt = new org.hl7.fhir.r5.model.Coverage.ExemptionComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasPeriod())
@@ -241,7 +241,7 @@ public class Coverage40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Coverage.ExemptionComponent tgt = new org.hl7.fhir.r4.model.Coverage.ExemptionComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasPeriod())

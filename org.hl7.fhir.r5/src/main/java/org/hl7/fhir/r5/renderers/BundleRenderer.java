@@ -17,12 +17,15 @@ import org.hl7.fhir.r5.model.Bundle.BundleEntrySearchComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleType;
 import org.hl7.fhir.r5.model.Composition;
 import org.hl7.fhir.r5.model.Composition.SectionComponent;
+import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Provenance;
 import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
+import org.hl7.fhir.r5.renderers.utils.BaseWrappers.PropertyWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
@@ -167,6 +170,9 @@ public class BundleRenderer extends ResourceRenderer {
   }
 
   private ResourceWrapper resolveReference(List<BaseWrapper> entries, Base base) throws UnsupportedEncodingException, FHIRException, IOException {
+    if (base == null) {
+      return null;
+    }
     Property prop = base.getChildByName("reference");
     if (prop.hasValues()) {
       String ref = prop.getValues().get(0).primitiveValue();
@@ -192,22 +198,25 @@ public class BundleRenderer extends ResourceRenderer {
     // * The Composition resource Narrative
     // * The section.text Narratives
     Composition comp = (Composition) b.getEntry().get(0).getResource();
-    Resource subject = resolveReference(b, comp.getSubject());
+    Resource subject = resolveReference(b, comp.getSubjectFirstRep());
     if (subject != null) {
       XhtmlNode nx = (subject instanceof DomainResource) ? ((DomainResource) subject).getText().getDiv() : null;
-      if (nx != null) {
+      if (nx != null && !nx.isEmpty()) {
         x.addChildren(nx);        
       } else {
         RendererFactory.factory(subject, context).render(x, subject);
       }
     }
     x.hr();
+    if (!comp.getText().hasDiv()) {
+      ResourceRenderer rr = RendererFactory.factory(comp, getContext());      rr.render(comp);
+    }
     if (comp.getText().hasDiv()) {
       x.addChildren(comp.getText().getDiv());
       x.hr();    
     }
     for (SectionComponent section : comp.getSection()) {
-      addSection(x, section, 2, false);
+      addSection(x, section, 2, false, comp);
     }
     return false;
   }
@@ -226,7 +235,7 @@ public class BundleRenderer extends ResourceRenderer {
   }
 
 
-  private void addSection(XhtmlNode x, SectionComponent section, int level, boolean nested) throws UnsupportedEncodingException, FHIRException, IOException {
+  private void addSection(XhtmlNode x, SectionComponent section, int level, boolean nested, Composition c) throws UnsupportedEncodingException, FHIRException, IOException {
     if (section.hasTitle() || section.hasCode() || section.hasText() || section.hasSection()) {
       XhtmlNode div = x.div();
       if (section.hasTitle()) {
@@ -236,14 +245,20 @@ public class BundleRenderer extends ResourceRenderer {
       }
       if (section.hasText()) {
         x.addChildren(section.getText().getDiv());
-      }      
+      } 
+      if (section.hasEntry()) {
+        XhtmlNode ul = x.ul();
+        for (Reference r : section.getEntry()) {
+          renderReference(c, ul.li(), r);
+        }
+      }
       if (section.hasSection()) {
         List<SectionComponent> sections = section.getSection();
         for (SectionComponent child : sections) {
           if (nested) {
-            addSection(x.blockquote().para(), child, level+1, true);
+            addSection(x.blockquote().para(), child, level+1, true, c);
           } else {
-            addSection(x, child, level+1, true);            
+            addSection(x, child, level+1, true, c);            
           }
         }
       }      
@@ -253,58 +268,78 @@ public class BundleRenderer extends ResourceRenderer {
 
   
   public XhtmlNode render(Bundle b) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    if (b.getType() == BundleType.DOCUMENT) {
-      if (!b.hasEntry() || !(b.getEntryFirstRep().hasResource() && b.getEntryFirstRep().getResource() instanceof Composition)) {
-        throw new FHIRException("Invalid document - first entry is not a Composition");
-      }
-      XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
-      renderDocument(x, b);
-      return x;
-    } else if ((b.getType() == BundleType.COLLECTION && allEntresAreHistoryProvenance(b))) {
+    if ((b.getType() == BundleType.COLLECTION && allEntresAreHistoryProvenance(b))) {
       return null;
     } else {
-      XhtmlNode root = new XhtmlNode(NodeType.Element, "div");
-      root.para().addText(formatMessage(RENDER_BUNDLE_HEADER_ROOT, b.getId(), b.getType().toCode()));
+      int start = 0;
+      boolean docMode = false;
+      XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+      if (b.getType() == BundleType.DOCUMENT) {
+        if (!b.hasEntry() || !(b.getEntryFirstRep().hasResource() && b.getEntryFirstRep().getResource() instanceof Composition)) {
+          throw new FHIRException("Invalid document - first entry is not a Composition");
+        }
+        renderDocument(x, b);
+        start = 1;
+        docMode = true;
+        x.hr();
+        x.h2().addText(formatMessage(RENDER_BUNDLE_DOCUMENT_CONTENT, b.getId(), b.getType().toCode()));
+      } else {
+        x.para().addText(formatMessage(RENDER_BUNDLE_HEADER_ROOT, b.getId(), b.getType().toCode()));
+      }
       int i = 0;
       for (BundleEntryComponent be : b.getEntry()) {
         i++;
-        if (be.hasFullUrl())
-          root.an(makeInternalBundleLink(be.getFullUrl()));
-        if (be.hasResource() && be.getResource().hasId())
-          root.an(be.getResource().getResourceType().name() + "_" + be.getResource().getId());
-        root.hr();
-        if (be.hasFullUrl()) {
-          root.para().addText(formatMessage(RENDER_BUNDLE_HEADER_ENTRY_URL, Integer.toString(i), be.getFullUrl()));
-        } else {
-          root.para().addText(formatMessage(RENDER_BUNDLE_HEADER_ENTRY, Integer.toString(i)));
-        }
-        if (be.hasRequest())
-          renderRequest(root, be.getRequest());
-        if (be.hasSearch())
-          renderSearch(root, be.getSearch());
-        if (be.hasResponse())
-          renderResponse(root, be.getResponse());
-        if (be.hasResource()) {
-          root.para().addText(formatMessage(RENDER_BUNDLE_RESOURCE, be.getResource().fhirType()));
+        if (i > start) {
+          if (be.hasFullUrl())
+            x.an(makeInternalBundleLink(be.getFullUrl()));
+          if (be.hasResource() && be.getResource().hasId())
+            x.an(be.getResource().getResourceType().name() + "_" + be.getResource().getId());
+          x.hr();
+          if (docMode) {
+            if (be.hasFullUrl() && be.hasResource()) {
+              x.para().addText(formatMessage(RENDER_BUNDLE_HEADER_DOC_ENTRY_URD, Integer.toString(i), be.getFullUrl(), be.getResource().fhirType(), be.getResource().getIdBase()));
+            } else if (be.hasFullUrl()) {
+              x.para().addText(formatMessage(RENDER_BUNDLE_HEADER_DOC_ENTRY_U, Integer.toString(i), be.getFullUrl()));
+            } else if (be.hasResource()) {
+              x.para().addText(formatMessage(RENDER_BUNDLE_HEADER_DOC_ENTRY_RD, Integer.toString(i), be.getResource().fhirType(), be.getResource().getIdBase()));              
+            }
+          } else {
+            if (be.hasFullUrl()) {
+              x.para().addText(formatMessage(RENDER_BUNDLE_HEADER_ENTRY_URL, Integer.toString(i), be.getFullUrl()));
+            } else {
+              x.para().addText(formatMessage(RENDER_BUNDLE_HEADER_ENTRY, Integer.toString(i)));
+            }
+            if (be.hasRequest())
+              renderRequest(x, be.getRequest());
+            if (be.hasSearch())
+              renderSearch(x, be.getSearch());
+            if (be.hasResponse())
+              renderResponse(x, be.getResponse());
+          }
           if (be.hasResource()) {
-            XhtmlNode xn = null;
-            if (be.getResource() instanceof DomainResource) {
-              DomainResource dr = (DomainResource) be.getResource();
-              xn = dr.getText().getDiv();
+            if (!docMode) {
+              x.para().addText(formatMessage(RENDER_BUNDLE_RESOURCE, be.getResource().fhirType()));
             }
-            if (xn == null || xn.isEmpty()) {
-              ResourceRenderer rr = RendererFactory.factory(be.getResource(), context);
-              try {
-                xn = rr.build(be.getResource());
-              } catch (Exception e) {
-                xn = makeExceptionXhtml(e, "generating narrative");
+            if (be.hasResource()) {
+              XhtmlNode xn = null;
+              if (be.getResource() instanceof DomainResource) {
+                DomainResource dr = (DomainResource) be.getResource();
+                xn = dr.getText().getDiv();
               }
+              if (xn == null || xn.isEmpty()) {
+                ResourceRenderer rr = RendererFactory.factory(be.getResource(), context);
+                try {
+                  xn = rr.build(be.getResource());
+                } catch (Exception e) {
+                  xn = makeExceptionXhtml(e, "generating narrative");
+                }
+              }
+              x.blockquote().para().getChildNodes().addAll(checkInternalLinks(b, xn.getChildNodes()));
             }
-            root.blockquote().para().getChildNodes().addAll(checkInternalLinks(b, xn.getChildNodes()));
           }
         }
       }
-      return root;
+      return x;
     }
   }
 

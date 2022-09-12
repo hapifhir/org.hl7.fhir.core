@@ -8,6 +8,7 @@ import org.hl7.fhir.r5.context.IWorkerContext.ICanonicalResourceLocator;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
@@ -152,7 +153,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
       }
       if (pi != null) {
         context.loadFromPackage(pi, null);
-        return pi.hasCanonical(url);
+        return pi.hasCanonical(url) ||  context.fetchResource(Resource.class, url) != null;
       }
     }
 

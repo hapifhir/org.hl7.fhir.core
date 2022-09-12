@@ -1,8 +1,16 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.*;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Annotation40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Period40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.SimpleQuantity40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Boolean40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Canonical40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
@@ -71,7 +79,7 @@ public class CarePlan40_50 {
     if (src.hasCreated())
       tgt.setCreatedElement(DateTime40_50.convertDateTime(src.getCreatedElement()));
     if (src.hasAuthor())
-      tgt.setAuthor(Reference40_50.convertReference(src.getAuthor()));
+      tgt.setCustodian(Reference40_50.convertReference(src.getAuthor()));
     for (org.hl7.fhir.r4.model.Reference t : src.getContributor())
       tgt.addContributor(Reference40_50.convertReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getCareTeam()) tgt.addCareTeam(Reference40_50.convertReference(t));
@@ -118,8 +126,8 @@ public class CarePlan40_50 {
       tgt.setPeriod(Period40_50.convertPeriod(src.getPeriod()));
     if (src.hasCreated())
       tgt.setCreatedElement(DateTime40_50.convertDateTime(src.getCreatedElement()));
-    if (src.hasAuthor())
-      tgt.setAuthor(Reference40_50.convertReference(src.getAuthor()));
+    if (src.hasCustodian())
+      tgt.setAuthor(Reference40_50.convertReference(src.getCustodian()));
     for (org.hl7.fhir.r5.model.Reference t : src.getContributor())
       tgt.addContributor(Reference40_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getCareTeam()) tgt.addCareTeam(Reference40_50.convertReference(t));
@@ -257,7 +265,7 @@ public class CarePlan40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.CarePlan.CarePlanActivityComponent tgt = new org.hl7.fhir.r5.model.CarePlan.CarePlanActivityComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getOutcomeCodeableConcept())
       tgt.addPerformedActivity(CodeableConcept40_50.convertCodeableConceptToCodeableReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getOutcomeReference())
@@ -274,7 +282,7 @@ public class CarePlan40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.CarePlan.CarePlanActivityComponent tgt = new org.hl7.fhir.r4.model.CarePlan.CarePlanActivityComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     for (CodeableReference t : src.getPerformedActivity())
       if (t.hasConcept())
         tgt.addOutcomeCodeableConcept(CodeableConcept40_50.convertCodeableConcept(t.getConcept()));
@@ -293,7 +301,7 @@ public class CarePlan40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.CarePlan.CarePlanActivityPlannedActivityDetailComponent tgt = new org.hl7.fhir.r5.model.CarePlan.CarePlanActivityPlannedActivityDetailComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasKind())
       tgt.setKindElement(convertCarePlanActivityKind(src.getKindElement()));
     for (org.hl7.fhir.r4.model.CanonicalType t : src.getInstantiatesCanonical())
@@ -333,7 +341,7 @@ public class CarePlan40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.CarePlan.CarePlanActivityDetailComponent tgt = new org.hl7.fhir.r4.model.CarePlan.CarePlanActivityDetailComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasKind())
       tgt.setKindElement(convertCarePlanActivityKind(src.getKindElement()));
     for (org.hl7.fhir.r5.model.CanonicalType t : src.getInstantiatesCanonical())

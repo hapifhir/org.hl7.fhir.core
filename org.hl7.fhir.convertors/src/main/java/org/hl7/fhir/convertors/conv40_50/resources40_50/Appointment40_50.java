@@ -60,7 +60,7 @@ public class Appointment40_50 {
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getServiceCategory())
       tgt.addServiceCategory(CodeableConcept40_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getServiceType())
-      tgt.addServiceType(CodeableConcept40_50.convertCodeableConcept(t));
+      tgt.addServiceType().setConcept(CodeableConcept40_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSpecialty())
       tgt.addSpecialty(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasAppointmentType())
@@ -109,8 +109,8 @@ public class Appointment40_50 {
       tgt.setCancelationReason(CodeableConcept40_50.convertCodeableConcept(src.getCancellationReason()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getServiceCategory())
       tgt.addServiceCategory(CodeableConcept40_50.convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getServiceType())
-      tgt.addServiceType(CodeableConcept40_50.convertCodeableConcept(t));
+    for (org.hl7.fhir.r5.model.CodeableReference t : src.getServiceType())
+      tgt.addServiceType(CodeableConcept40_50.convertCodeableConcept(t.getConcept()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSpecialty())
       tgt.addSpecialty(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasAppointmentType())
@@ -259,7 +259,7 @@ public class Appointment40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Appointment.AppointmentParticipantComponent tgt = new org.hl7.fhir.r5.model.Appointment.AppointmentParticipantComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType())
       tgt.addType(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasActor())
@@ -277,7 +277,7 @@ public class Appointment40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Appointment.AppointmentParticipantComponent tgt = new org.hl7.fhir.r4.model.Appointment.AppointmentParticipantComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType())
       tgt.addType(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasActor())

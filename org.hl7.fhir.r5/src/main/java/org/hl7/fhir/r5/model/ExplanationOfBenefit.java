@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -97,6 +97,7 @@ public class ExplanationOfBenefit extends DomainResource {
             case CANCELLED: return "cancelled";
             case DRAFT: return "draft";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public class ExplanationOfBenefit extends DomainResource {
             case CANCELLED: return "http://hl7.org/fhir/explanationofbenefit-status";
             case DRAFT: return "http://hl7.org/fhir/explanationofbenefit-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/explanationofbenefit-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -115,6 +117,7 @@ public class ExplanationOfBenefit extends DomainResource {
             case CANCELLED: return "The resource instance is withdrawn, rescinded or reversed.";
             case DRAFT: return "A new resource instance the contents of which is not complete.";
             case ENTEREDINERROR: return "The resource instance was entered in error.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -124,6 +127,7 @@ public class ExplanationOfBenefit extends DomainResource {
             case CANCELLED: return "Cancelled";
             case DRAFT: return "Draft";
             case ENTEREDINERROR: return "Entered In Error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -662,14 +666,14 @@ public class ExplanationOfBenefit extends DomainResource {
         protected CodeableConcept role;
 
         /**
-         * The qualification of the practitioner which is applicable for this service.
+         * The specialization of the practitioner or provider which is applicable for this service.
          */
-        @Child(name = "qualification", type = {CodeableConcept.class}, order=5, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Practitioner credential or specialization", formalDefinition="The qualification of the practitioner which is applicable for this service." )
+        @Child(name = "specialty", type = {CodeableConcept.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Practitioner or provider specialization", formalDefinition="The specialization of the practitioner or provider which is applicable for this service." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/provider-qualification")
-        protected CodeableConcept qualification;
+        protected CodeableConcept specialty;
 
-        private static final long serialVersionUID = 1479624238L;
+        private static final long serialVersionUID = 1238813503L;
 
     /**
      * Constructor
@@ -826,26 +830,26 @@ public class ExplanationOfBenefit extends DomainResource {
         }
 
         /**
-         * @return {@link #qualification} (The qualification of the practitioner which is applicable for this service.)
+         * @return {@link #specialty} (The specialization of the practitioner or provider which is applicable for this service.)
          */
-        public CodeableConcept getQualification() { 
-          if (this.qualification == null)
+        public CodeableConcept getSpecialty() { 
+          if (this.specialty == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CareTeamComponent.qualification");
+              throw new Error("Attempt to auto-create CareTeamComponent.specialty");
             else if (Configuration.doAutoCreate())
-              this.qualification = new CodeableConcept(); // cc
-          return this.qualification;
+              this.specialty = new CodeableConcept(); // cc
+          return this.specialty;
         }
 
-        public boolean hasQualification() { 
-          return this.qualification != null && !this.qualification.isEmpty();
+        public boolean hasSpecialty() { 
+          return this.specialty != null && !this.specialty.isEmpty();
         }
 
         /**
-         * @param value {@link #qualification} (The qualification of the practitioner which is applicable for this service.)
+         * @param value {@link #specialty} (The specialization of the practitioner or provider which is applicable for this service.)
          */
-        public CareTeamComponent setQualification(CodeableConcept value) { 
-          this.qualification = value;
+        public CareTeamComponent setSpecialty(CodeableConcept value) { 
+          this.specialty = value;
           return this;
         }
 
@@ -855,7 +859,7 @@ public class ExplanationOfBenefit extends DomainResource {
           children.add(new Property("provider", "Reference(Practitioner|PractitionerRole|Organization)", "Member of the team who provided the product or service.", 0, 1, provider));
           children.add(new Property("responsible", "boolean", "The party who is billing and/or responsible for the claimed products or services.", 0, 1, responsible));
           children.add(new Property("role", "CodeableConcept", "The lead, assisting or supervising practitioner and their discipline if a multidisciplinary team.", 0, 1, role));
-          children.add(new Property("qualification", "CodeableConcept", "The qualification of the practitioner which is applicable for this service.", 0, 1, qualification));
+          children.add(new Property("specialty", "CodeableConcept", "The specialization of the practitioner or provider which is applicable for this service.", 0, 1, specialty));
         }
 
         @Override
@@ -865,7 +869,7 @@ public class ExplanationOfBenefit extends DomainResource {
           case -987494927: /*provider*/  return new Property("provider", "Reference(Practitioner|PractitionerRole|Organization)", "Member of the team who provided the product or service.", 0, 1, provider);
           case 1847674614: /*responsible*/  return new Property("responsible", "boolean", "The party who is billing and/or responsible for the claimed products or services.", 0, 1, responsible);
           case 3506294: /*role*/  return new Property("role", "CodeableConcept", "The lead, assisting or supervising practitioner and their discipline if a multidisciplinary team.", 0, 1, role);
-          case -631333393: /*qualification*/  return new Property("qualification", "CodeableConcept", "The qualification of the practitioner which is applicable for this service.", 0, 1, qualification);
+          case -1694759682: /*specialty*/  return new Property("specialty", "CodeableConcept", "The specialization of the practitioner or provider which is applicable for this service.", 0, 1, specialty);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -878,7 +882,7 @@ public class ExplanationOfBenefit extends DomainResource {
         case -987494927: /*provider*/ return this.provider == null ? new Base[0] : new Base[] {this.provider}; // Reference
         case 1847674614: /*responsible*/ return this.responsible == null ? new Base[0] : new Base[] {this.responsible}; // BooleanType
         case 3506294: /*role*/ return this.role == null ? new Base[0] : new Base[] {this.role}; // CodeableConcept
-        case -631333393: /*qualification*/ return this.qualification == null ? new Base[0] : new Base[] {this.qualification}; // CodeableConcept
+        case -1694759682: /*specialty*/ return this.specialty == null ? new Base[0] : new Base[] {this.specialty}; // CodeableConcept
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -899,8 +903,8 @@ public class ExplanationOfBenefit extends DomainResource {
         case 3506294: // role
           this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
-        case -631333393: // qualification
-          this.qualification = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        case -1694759682: // specialty
+          this.specialty = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -917,8 +921,8 @@ public class ExplanationOfBenefit extends DomainResource {
           this.responsible = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("role")) {
           this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("qualification")) {
-          this.qualification = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("specialty")) {
+          this.specialty = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;
@@ -931,7 +935,7 @@ public class ExplanationOfBenefit extends DomainResource {
         case -987494927:  return getProvider();
         case 1847674614:  return getResponsibleElement();
         case 3506294:  return getRole();
-        case -631333393:  return getQualification();
+        case -1694759682:  return getSpecialty();
         default: return super.makeProperty(hash, name);
         }
 
@@ -944,7 +948,7 @@ public class ExplanationOfBenefit extends DomainResource {
         case -987494927: /*provider*/ return new String[] {"Reference"};
         case 1847674614: /*responsible*/ return new String[] {"boolean"};
         case 3506294: /*role*/ return new String[] {"CodeableConcept"};
-        case -631333393: /*qualification*/ return new String[] {"CodeableConcept"};
+        case -1694759682: /*specialty*/ return new String[] {"CodeableConcept"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -966,9 +970,9 @@ public class ExplanationOfBenefit extends DomainResource {
           this.role = new CodeableConcept();
           return this.role;
         }
-        else if (name.equals("qualification")) {
-          this.qualification = new CodeableConcept();
-          return this.qualification;
+        else if (name.equals("specialty")) {
+          this.specialty = new CodeableConcept();
+          return this.specialty;
         }
         else
           return super.addChild(name);
@@ -986,7 +990,7 @@ public class ExplanationOfBenefit extends DomainResource {
         dst.provider = provider == null ? null : provider.copy();
         dst.responsible = responsible == null ? null : responsible.copy();
         dst.role = role == null ? null : role.copy();
-        dst.qualification = qualification == null ? null : qualification.copy();
+        dst.specialty = specialty == null ? null : specialty.copy();
       }
 
       @Override
@@ -997,7 +1001,7 @@ public class ExplanationOfBenefit extends DomainResource {
           return false;
         CareTeamComponent o = (CareTeamComponent) other_;
         return compareDeep(sequence, o.sequence, true) && compareDeep(provider, o.provider, true) && compareDeep(responsible, o.responsible, true)
-           && compareDeep(role, o.role, true) && compareDeep(qualification, o.qualification, true);
+           && compareDeep(role, o.role, true) && compareDeep(specialty, o.specialty, true);
       }
 
       @Override
@@ -1013,7 +1017,7 @@ public class ExplanationOfBenefit extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(sequence, provider, responsible
-          , role, qualification);
+          , role, specialty);
       }
 
   public String fhirType() {
@@ -1058,7 +1062,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * Additional data or information such as resources, documents, images etc. including references to the data or the actual inclusion of the data.
          */
-        @Child(name = "value", type = {BooleanType.class, StringType.class, Quantity.class, Attachment.class, Reference.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "value", type = {BooleanType.class, StringType.class, Quantity.class, Attachment.class, Reference.class, Identifier.class}, order=5, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Data to be provided", formalDefinition="Additional data or information such as resources, documents, images etc. including references to the data or the actual inclusion of the data." )
         protected DataType value;
 
@@ -1314,6 +1318,21 @@ public class ExplanationOfBenefit extends DomainResource {
           return this != null && this.value instanceof Reference;
         }
 
+        /**
+         * @return {@link #value} (Additional data or information such as resources, documents, images etc. including references to the data or the actual inclusion of the data.)
+         */
+        public Identifier getValueIdentifier() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Identifier();
+          if (!(this.value instanceof Identifier))
+            throw new FHIRException("Type mismatch: the type Identifier was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Identifier) this.value;
+        }
+
+        public boolean hasValueIdentifier() { 
+          return this != null && this.value instanceof Identifier;
+        }
+
         public boolean hasValue() { 
           return this.value != null && !this.value.isEmpty();
         }
@@ -1322,7 +1341,7 @@ public class ExplanationOfBenefit extends DomainResource {
          * @param value {@link #value} (Additional data or information such as resources, documents, images etc. including references to the data or the actual inclusion of the data.)
          */
         public SupportingInformationComponent setValue(DataType value) { 
-          if (value != null && !(value instanceof BooleanType || value instanceof StringType || value instanceof Quantity || value instanceof Attachment || value instanceof Reference))
+          if (value != null && !(value instanceof BooleanType || value instanceof StringType || value instanceof Quantity || value instanceof Attachment || value instanceof Reference || value instanceof Identifier))
             throw new Error("Not the right type for ExplanationOfBenefit.supportingInfo.value[x]: "+value.fhirType());
           this.value = value;
           return this;
@@ -1358,7 +1377,7 @@ public class ExplanationOfBenefit extends DomainResource {
           children.add(new Property("category", "CodeableConcept", "The general class of the information supplied: information; exception; accident, employment; onset, etc.", 0, 1, category));
           children.add(new Property("code", "CodeableConcept", "System and code pertaining to the specific information regarding special conditions relating to the setting, treatment or patient  for which care is sought.", 0, 1, code));
           children.add(new Property("timing[x]", "date|Period", "The date when or period to which this information refers.", 0, 1, timing));
-          children.add(new Property("value[x]", "boolean|string|Quantity|Attachment|Reference(Any)", "Additional data or information such as resources, documents, images etc. including references to the data or the actual inclusion of the data.", 0, 1, value));
+          children.add(new Property("value[x]", "boolean|string|Quantity|Attachment|Reference(Any)|Identifier", "Additional data or information such as resources, documents, images etc. including references to the data or the actual inclusion of the data.", 0, 1, value));
           children.add(new Property("reason", "Coding", "Provides the reason in the situation where a reason code is required in addition to the content.", 0, 1, reason));
         }
 
@@ -1372,13 +1391,14 @@ public class ExplanationOfBenefit extends DomainResource {
           case -873664438: /*timing*/  return new Property("timing[x]", "date|Period", "The date when or period to which this information refers.", 0, 1, timing);
           case 807935768: /*timingDate*/  return new Property("timing[x]", "date", "The date when or period to which this information refers.", 0, 1, timing);
           case -615615829: /*timingPeriod*/  return new Property("timing[x]", "Period", "The date when or period to which this information refers.", 0, 1, timing);
-          case -1410166417: /*value[x]*/  return new Property("value[x]", "boolean|string|Quantity|Attachment|Reference(Any)", "Additional data or information such as resources, documents, images etc. including references to the data or the actual inclusion of the data.", 0, 1, value);
-          case 111972721: /*value*/  return new Property("value[x]", "boolean|string|Quantity|Attachment|Reference(Any)", "Additional data or information such as resources, documents, images etc. including references to the data or the actual inclusion of the data.", 0, 1, value);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "boolean|string|Quantity|Attachment|Reference(Any)|Identifier", "Additional data or information such as resources, documents, images etc. including references to the data or the actual inclusion of the data.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "boolean|string|Quantity|Attachment|Reference(Any)|Identifier", "Additional data or information such as resources, documents, images etc. including references to the data or the actual inclusion of the data.", 0, 1, value);
           case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "Additional data or information such as resources, documents, images etc. including references to the data or the actual inclusion of the data.", 0, 1, value);
           case -1424603934: /*valueString*/  return new Property("value[x]", "string", "Additional data or information such as resources, documents, images etc. including references to the data or the actual inclusion of the data.", 0, 1, value);
           case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "Additional data or information such as resources, documents, images etc. including references to the data or the actual inclusion of the data.", 0, 1, value);
           case -475566732: /*valueAttachment*/  return new Property("value[x]", "Attachment", "Additional data or information such as resources, documents, images etc. including references to the data or the actual inclusion of the data.", 0, 1, value);
           case 1755241690: /*valueReference*/  return new Property("value[x]", "Reference(Any)", "Additional data or information such as resources, documents, images etc. including references to the data or the actual inclusion of the data.", 0, 1, value);
+          case -130498310: /*valueIdentifier*/  return new Property("value[x]", "Identifier", "Additional data or information such as resources, documents, images etc. including references to the data or the actual inclusion of the data.", 0, 1, value);
           case -934964668: /*reason*/  return new Property("reason", "Coding", "Provides the reason in the situation where a reason code is required in addition to the content.", 0, 1, reason);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -1467,7 +1487,7 @@ public class ExplanationOfBenefit extends DomainResource {
         case 50511102: /*category*/ return new String[] {"CodeableConcept"};
         case 3059181: /*code*/ return new String[] {"CodeableConcept"};
         case -873664438: /*timing*/ return new String[] {"date", "Period"};
-        case 111972721: /*value*/ return new String[] {"boolean", "string", "Quantity", "Attachment", "Reference"};
+        case 111972721: /*value*/ return new String[] {"boolean", "string", "Quantity", "Attachment", "Reference", "Identifier"};
         case -934964668: /*reason*/ return new String[] {"Coding"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -1513,6 +1533,10 @@ public class ExplanationOfBenefit extends DomainResource {
         }
         else if (name.equals("valueReference")) {
           this.value = new Reference();
+          return this.value;
+        }
+        else if (name.equals("valueIdentifier")) {
+          this.value = new Identifier();
           return this.value;
         }
         else if (name.equals("reason")) {
@@ -1606,15 +1630,7 @@ public class ExplanationOfBenefit extends DomainResource {
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ex-diagnosis-on-admission")
         protected CodeableConcept onAdmission;
 
-        /**
-         * A package billing code or bundle code used to group products and services to a particular health condition (such as heart attack) which is based on a predetermined grouping code system.
-         */
-        @Child(name = "packageCode", type = {CodeableConcept.class}, order=5, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Package billing code", formalDefinition="A package billing code or bundle code used to group products and services to a particular health condition (such as heart attack) which is based on a predetermined grouping code system." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ex-diagnosisrelatedgroup")
-        protected CodeableConcept packageCode;
-
-        private static final long serialVersionUID = 550515328L;
+        private static final long serialVersionUID = -320261526L;
 
     /**
      * Constructor
@@ -1805,37 +1821,12 @@ public class ExplanationOfBenefit extends DomainResource {
           return this;
         }
 
-        /**
-         * @return {@link #packageCode} (A package billing code or bundle code used to group products and services to a particular health condition (such as heart attack) which is based on a predetermined grouping code system.)
-         */
-        public CodeableConcept getPackageCode() { 
-          if (this.packageCode == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create DiagnosisComponent.packageCode");
-            else if (Configuration.doAutoCreate())
-              this.packageCode = new CodeableConcept(); // cc
-          return this.packageCode;
-        }
-
-        public boolean hasPackageCode() { 
-          return this.packageCode != null && !this.packageCode.isEmpty();
-        }
-
-        /**
-         * @param value {@link #packageCode} (A package billing code or bundle code used to group products and services to a particular health condition (such as heart attack) which is based on a predetermined grouping code system.)
-         */
-        public DiagnosisComponent setPackageCode(CodeableConcept value) { 
-          this.packageCode = value;
-          return this;
-        }
-
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("sequence", "positiveInt", "A number to uniquely identify diagnosis entries.", 0, 1, sequence));
           children.add(new Property("diagnosis[x]", "CodeableConcept|Reference(Condition)", "The nature of illness or problem in a coded form or as a reference to an external defined Condition.", 0, 1, diagnosis));
           children.add(new Property("type", "CodeableConcept", "When the condition was observed or the relative ranking.", 0, java.lang.Integer.MAX_VALUE, type));
           children.add(new Property("onAdmission", "CodeableConcept", "Indication of whether the diagnosis was present on admission to a facility.", 0, 1, onAdmission));
-          children.add(new Property("packageCode", "CodeableConcept", "A package billing code or bundle code used to group products and services to a particular health condition (such as heart attack) which is based on a predetermined grouping code system.", 0, 1, packageCode));
         }
 
         @Override
@@ -1848,7 +1839,6 @@ public class ExplanationOfBenefit extends DomainResource {
           case 2050454362: /*diagnosisReference*/  return new Property("diagnosis[x]", "Reference(Condition)", "The nature of illness or problem in a coded form or as a reference to an external defined Condition.", 0, 1, diagnosis);
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "When the condition was observed or the relative ranking.", 0, java.lang.Integer.MAX_VALUE, type);
           case -3386134: /*onAdmission*/  return new Property("onAdmission", "CodeableConcept", "Indication of whether the diagnosis was present on admission to a facility.", 0, 1, onAdmission);
-          case 908444499: /*packageCode*/  return new Property("packageCode", "CodeableConcept", "A package billing code or bundle code used to group products and services to a particular health condition (such as heart attack) which is based on a predetermined grouping code system.", 0, 1, packageCode);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1861,7 +1851,6 @@ public class ExplanationOfBenefit extends DomainResource {
         case 1196993265: /*diagnosis*/ return this.diagnosis == null ? new Base[0] : new Base[] {this.diagnosis}; // DataType
         case 3575610: /*type*/ return this.type == null ? new Base[0] : this.type.toArray(new Base[this.type.size()]); // CodeableConcept
         case -3386134: /*onAdmission*/ return this.onAdmission == null ? new Base[0] : new Base[] {this.onAdmission}; // CodeableConcept
-        case 908444499: /*packageCode*/ return this.packageCode == null ? new Base[0] : new Base[] {this.packageCode}; // CodeableConcept
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1882,9 +1871,6 @@ public class ExplanationOfBenefit extends DomainResource {
         case -3386134: // onAdmission
           this.onAdmission = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
-        case 908444499: // packageCode
-          this.packageCode = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
         default: return super.setProperty(hash, name, value);
         }
 
@@ -1900,8 +1886,6 @@ public class ExplanationOfBenefit extends DomainResource {
           this.getType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("onAdmission")) {
           this.onAdmission = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("packageCode")) {
-          this.packageCode = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;
@@ -1915,7 +1899,6 @@ public class ExplanationOfBenefit extends DomainResource {
         case 1196993265:  return getDiagnosis();
         case 3575610:  return addType(); 
         case -3386134:  return getOnAdmission();
-        case 908444499:  return getPackageCode();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1928,7 +1911,6 @@ public class ExplanationOfBenefit extends DomainResource {
         case 1196993265: /*diagnosis*/ return new String[] {"CodeableConcept", "Reference"};
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
         case -3386134: /*onAdmission*/ return new String[] {"CodeableConcept"};
-        case 908444499: /*packageCode*/ return new String[] {"CodeableConcept"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1954,10 +1936,6 @@ public class ExplanationOfBenefit extends DomainResource {
           this.onAdmission = new CodeableConcept();
           return this.onAdmission;
         }
-        else if (name.equals("packageCode")) {
-          this.packageCode = new CodeableConcept();
-          return this.packageCode;
-        }
         else
           return super.addChild(name);
       }
@@ -1978,7 +1956,6 @@ public class ExplanationOfBenefit extends DomainResource {
             dst.type.add(i.copy());
         };
         dst.onAdmission = onAdmission == null ? null : onAdmission.copy();
-        dst.packageCode = packageCode == null ? null : packageCode.copy();
       }
 
       @Override
@@ -1989,8 +1966,7 @@ public class ExplanationOfBenefit extends DomainResource {
           return false;
         DiagnosisComponent o = (DiagnosisComponent) other_;
         return compareDeep(sequence, o.sequence, true) && compareDeep(diagnosis, o.diagnosis, true) && compareDeep(type, o.type, true)
-           && compareDeep(onAdmission, o.onAdmission, true) && compareDeep(packageCode, o.packageCode, true)
-          ;
+           && compareDeep(onAdmission, o.onAdmission, true);
       }
 
       @Override
@@ -2005,7 +1981,7 @@ public class ExplanationOfBenefit extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(sequence, diagnosis, type
-          , onAdmission, packageCode);
+          , onAdmission);
       }
 
   public String fhirType() {
@@ -3190,17 +3166,25 @@ public class ExplanationOfBenefit extends DomainResource {
         protected CodeableConcept category;
 
         /**
-         * When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.
+         * When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.
          */
-        @Child(name = "productOrService", type = {CodeableConcept.class}, order=8, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Billing, service, product, or drug code", formalDefinition="When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item." )
+        @Child(name = "productOrService", type = {CodeableConcept.class}, order=8, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Billing, service, product, or drug code", formalDefinition="When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-uscls")
         protected CodeableConcept productOrService;
 
         /**
+         * This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.
+         */
+        @Child(name = "productOrServiceEnd", type = {CodeableConcept.class}, order=9, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="End of a range of codes", formalDefinition="This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-uscls")
+        protected CodeableConcept productOrServiceEnd;
+
+        /**
          * Item typification or modifiers codes to convey additional context for the product or service.
          */
-        @Child(name = "modifier", type = {CodeableConcept.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "modifier", type = {CodeableConcept.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Product or service billing modifiers", formalDefinition="Item typification or modifiers codes to convey additional context for the product or service." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-modifiers")
         protected List<CodeableConcept> modifier;
@@ -3208,7 +3192,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * Identifies the program under which this may be recovered.
          */
-        @Child(name = "programCode", type = {CodeableConcept.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "programCode", type = {CodeableConcept.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Program the product or service is provided under", formalDefinition="Identifies the program under which this may be recovered." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ex-program-code")
         protected List<CodeableConcept> programCode;
@@ -3216,98 +3200,111 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * The date or dates when the service or product was supplied, performed or completed.
          */
-        @Child(name = "serviced", type = {DateType.class, Period.class}, order=11, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "serviced", type = {DateType.class, Period.class}, order=12, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Date or dates of service or product delivery", formalDefinition="The date or dates when the service or product was supplied, performed or completed." )
         protected DataType serviced;
 
         /**
          * Where the product or service was provided.
          */
-        @Child(name = "location", type = {CodeableConcept.class, Address.class, Location.class}, order=12, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "location", type = {CodeableConcept.class, Address.class, Location.class}, order=13, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Place of service or where product was supplied", formalDefinition="Where the product or service was provided." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-place")
         protected DataType location;
 
         /**
+         * The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.
+         */
+        @Child(name = "patientPaid", type = {Money.class}, order=14, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Paid by the patient", formalDefinition="The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services." )
+        protected Money patientPaid;
+
+        /**
          * The number of repetitions of a service or product.
          */
-        @Child(name = "quantity", type = {Quantity.class}, order=13, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "quantity", type = {Quantity.class}, order=15, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Count of products or services", formalDefinition="The number of repetitions of a service or product." )
         protected Quantity quantity;
 
         /**
          * If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.
          */
-        @Child(name = "unitPrice", type = {Money.class}, order=14, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "unitPrice", type = {Money.class}, order=16, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Fee, charge or cost per item", formalDefinition="If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group." )
         protected Money unitPrice;
 
         /**
          * A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.
          */
-        @Child(name = "factor", type = {DecimalType.class}, order=15, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "factor", type = {DecimalType.class}, order=17, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Price scaling factor", formalDefinition="A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount." )
         protected DecimalType factor;
 
         /**
+         * The total of taxes applicable for this product or service.
+         */
+        @Child(name = "tax", type = {Money.class}, order=18, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Total tax", formalDefinition="The total of taxes applicable for this product or service." )
+        protected Money tax;
+
+        /**
          * The quantity times the unit price for an additional service or product or charge.
          */
-        @Child(name = "net", type = {Money.class}, order=16, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "net", type = {Money.class}, order=19, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Total item cost", formalDefinition="The quantity times the unit price for an additional service or product or charge." )
         protected Money net;
 
         /**
          * Unique Device Identifiers associated with this line item.
          */
-        @Child(name = "udi", type = {Device.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "udi", type = {Device.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Unique device identifier", formalDefinition="Unique Device Identifiers associated with this line item." )
         protected List<Reference> udi;
 
         /**
-         * Physical service site on the patient (limb, tooth, etc.).
+         * Physical location where the service is performed or applies.
          */
-        @Child(name = "bodySite", type = {CodeableConcept.class}, order=18, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Anatomical location", formalDefinition="Physical service site on the patient (limb, tooth, etc.)." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/tooth")
-        protected CodeableConcept bodySite;
-
-        /**
-         * A region or surface of the bodySite, e.g. limb region or tooth surface(s).
-         */
-        @Child(name = "subSite", type = {CodeableConcept.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Anatomical sub-location", formalDefinition="A region or surface of the bodySite, e.g. limb region or tooth surface(s)." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/surface")
-        protected List<CodeableConcept> subSite;
+        @Child(name = "bodySite", type = {}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Anatomical location", formalDefinition="Physical location where the service is performed or applies." )
+        protected List<BodySiteComponent> bodySite;
 
         /**
          * A billed item may include goods or services provided in multiple encounters.
          */
-        @Child(name = "encounter", type = {Encounter.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "encounter", type = {Encounter.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Encounters related to this billed item", formalDefinition="A billed item may include goods or services provided in multiple encounters." )
         protected List<Reference> encounter;
 
         /**
          * The numbers associated with notes below which apply to the adjudication of this item.
          */
-        @Child(name = "noteNumber", type = {PositiveIntType.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "noteNumber", type = {PositiveIntType.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Applicable note numbers", formalDefinition="The numbers associated with notes below which apply to the adjudication of this item." )
         protected List<PositiveIntType> noteNumber;
 
         /**
+         * The result of the claim, predetermination, or preauthorization adjudication.
+         */
+        @Child(name = "decision", type = {CodeableConcept.class}, order=24, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Result of the adjudication", formalDefinition="The result of the claim, predetermination, or preauthorization adjudication." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-decision")
+        protected CodeableConcept decision;
+
+        /**
          * If this item is a group then the values here are a summary of the adjudication of the detail items. If this item is a simple product or service then this is the result of the adjudication of this item.
          */
-        @Child(name = "adjudication", type = {}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "adjudication", type = {}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Adjudication details", formalDefinition="If this item is a group then the values here are a summary of the adjudication of the detail items. If this item is a simple product or service then this is the result of the adjudication of this item." )
         protected List<AdjudicationComponent> adjudication;
 
         /**
          * Second-tier of goods and services.
          */
-        @Child(name = "detail", type = {}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "detail", type = {}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Additional items", formalDefinition="Second-tier of goods and services." )
         protected List<DetailComponent> detail;
 
-        private static final long serialVersionUID = -1350957145L;
+        private static final long serialVersionUID = -1358223284L;
 
     /**
      * Constructor
@@ -3319,10 +3316,9 @@ public class ExplanationOfBenefit extends DomainResource {
     /**
      * Constructor
      */
-      public ItemComponent(int sequence, CodeableConcept productOrService) {
+      public ItemComponent(int sequence) {
         super();
         this.setSequence(sequence);
-        this.setProductOrService(productOrService);
       }
 
         /**
@@ -3663,7 +3659,7 @@ public class ExplanationOfBenefit extends DomainResource {
         }
 
         /**
-         * @return {@link #productOrService} (When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.)
+         * @return {@link #productOrService} (When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.)
          */
         public CodeableConcept getProductOrService() { 
           if (this.productOrService == null)
@@ -3679,10 +3675,34 @@ public class ExplanationOfBenefit extends DomainResource {
         }
 
         /**
-         * @param value {@link #productOrService} (When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.)
+         * @param value {@link #productOrService} (When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.)
          */
         public ItemComponent setProductOrService(CodeableConcept value) { 
           this.productOrService = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #productOrServiceEnd} (This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.)
+         */
+        public CodeableConcept getProductOrServiceEnd() { 
+          if (this.productOrServiceEnd == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ItemComponent.productOrServiceEnd");
+            else if (Configuration.doAutoCreate())
+              this.productOrServiceEnd = new CodeableConcept(); // cc
+          return this.productOrServiceEnd;
+        }
+
+        public boolean hasProductOrServiceEnd() { 
+          return this.productOrServiceEnd != null && !this.productOrServiceEnd.isEmpty();
+        }
+
+        /**
+         * @param value {@link #productOrServiceEnd} (This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.)
+         */
+        public ItemComponent setProductOrServiceEnd(CodeableConcept value) { 
+          this.productOrServiceEnd = value;
           return this;
         }
 
@@ -3910,6 +3930,30 @@ public class ExplanationOfBenefit extends DomainResource {
         }
 
         /**
+         * @return {@link #patientPaid} (The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.)
+         */
+        public Money getPatientPaid() { 
+          if (this.patientPaid == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ItemComponent.patientPaid");
+            else if (Configuration.doAutoCreate())
+              this.patientPaid = new Money(); // cc
+          return this.patientPaid;
+        }
+
+        public boolean hasPatientPaid() { 
+          return this.patientPaid != null && !this.patientPaid.isEmpty();
+        }
+
+        /**
+         * @param value {@link #patientPaid} (The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.)
+         */
+        public ItemComponent setPatientPaid(Money value) { 
+          this.patientPaid = value;
+          return this;
+        }
+
+        /**
          * @return {@link #quantity} (The number of repetitions of a service or product.)
          */
         public Quantity getQuantity() { 
@@ -4025,6 +4069,30 @@ public class ExplanationOfBenefit extends DomainResource {
         }
 
         /**
+         * @return {@link #tax} (The total of taxes applicable for this product or service.)
+         */
+        public Money getTax() { 
+          if (this.tax == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ItemComponent.tax");
+            else if (Configuration.doAutoCreate())
+              this.tax = new Money(); // cc
+          return this.tax;
+        }
+
+        public boolean hasTax() { 
+          return this.tax != null && !this.tax.isEmpty();
+        }
+
+        /**
+         * @param value {@link #tax} (The total of taxes applicable for this product or service.)
+         */
+        public ItemComponent setTax(Money value) { 
+          this.tax = value;
+          return this;
+        }
+
+        /**
          * @return {@link #net} (The quantity times the unit price for an additional service or product or charge.)
          */
         public Money getNet() { 
@@ -4102,80 +4170,56 @@ public class ExplanationOfBenefit extends DomainResource {
         }
 
         /**
-         * @return {@link #bodySite} (Physical service site on the patient (limb, tooth, etc.).)
+         * @return {@link #bodySite} (Physical location where the service is performed or applies.)
          */
-        public CodeableConcept getBodySite() { 
+        public List<BodySiteComponent> getBodySite() { 
           if (this.bodySite == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ItemComponent.bodySite");
-            else if (Configuration.doAutoCreate())
-              this.bodySite = new CodeableConcept(); // cc
+            this.bodySite = new ArrayList<BodySiteComponent>();
           return this.bodySite;
-        }
-
-        public boolean hasBodySite() { 
-          return this.bodySite != null && !this.bodySite.isEmpty();
-        }
-
-        /**
-         * @param value {@link #bodySite} (Physical service site on the patient (limb, tooth, etc.).)
-         */
-        public ItemComponent setBodySite(CodeableConcept value) { 
-          this.bodySite = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #subSite} (A region or surface of the bodySite, e.g. limb region or tooth surface(s).)
-         */
-        public List<CodeableConcept> getSubSite() { 
-          if (this.subSite == null)
-            this.subSite = new ArrayList<CodeableConcept>();
-          return this.subSite;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public ItemComponent setSubSite(List<CodeableConcept> theSubSite) { 
-          this.subSite = theSubSite;
+        public ItemComponent setBodySite(List<BodySiteComponent> theBodySite) { 
+          this.bodySite = theBodySite;
           return this;
         }
 
-        public boolean hasSubSite() { 
-          if (this.subSite == null)
+        public boolean hasBodySite() { 
+          if (this.bodySite == null)
             return false;
-          for (CodeableConcept item : this.subSite)
+          for (BodySiteComponent item : this.bodySite)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public CodeableConcept addSubSite() { //3
-          CodeableConcept t = new CodeableConcept();
-          if (this.subSite == null)
-            this.subSite = new ArrayList<CodeableConcept>();
-          this.subSite.add(t);
+        public BodySiteComponent addBodySite() { //3
+          BodySiteComponent t = new BodySiteComponent();
+          if (this.bodySite == null)
+            this.bodySite = new ArrayList<BodySiteComponent>();
+          this.bodySite.add(t);
           return t;
         }
 
-        public ItemComponent addSubSite(CodeableConcept t) { //3
+        public ItemComponent addBodySite(BodySiteComponent t) { //3
           if (t == null)
             return this;
-          if (this.subSite == null)
-            this.subSite = new ArrayList<CodeableConcept>();
-          this.subSite.add(t);
+          if (this.bodySite == null)
+            this.bodySite = new ArrayList<BodySiteComponent>();
+          this.bodySite.add(t);
           return this;
         }
 
         /**
-         * @return The first repetition of repeating field {@link #subSite}, creating it if it does not already exist {3}
+         * @return The first repetition of repeating field {@link #bodySite}, creating it if it does not already exist {3}
          */
-        public CodeableConcept getSubSiteFirstRep() { 
-          if (getSubSite().isEmpty()) {
-            addSubSite();
+        public BodySiteComponent getBodySiteFirstRep() { 
+          if (getBodySite().isEmpty()) {
+            addBodySite();
           }
-          return getSubSite().get(0);
+          return getBodySite().get(0);
         }
 
         /**
@@ -4293,6 +4337,30 @@ public class ExplanationOfBenefit extends DomainResource {
         }
 
         /**
+         * @return {@link #decision} (The result of the claim, predetermination, or preauthorization adjudication.)
+         */
+        public CodeableConcept getDecision() { 
+          if (this.decision == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ItemComponent.decision");
+            else if (Configuration.doAutoCreate())
+              this.decision = new CodeableConcept(); // cc
+          return this.decision;
+        }
+
+        public boolean hasDecision() { 
+          return this.decision != null && !this.decision.isEmpty();
+        }
+
+        /**
+         * @param value {@link #decision} (The result of the claim, predetermination, or preauthorization adjudication.)
+         */
+        public ItemComponent setDecision(CodeableConcept value) { 
+          this.decision = value;
+          return this;
+        }
+
+        /**
          * @return {@link #adjudication} (If this item is a group then the values here are a summary of the adjudication of the detail items. If this item is a simple product or service then this is the result of the adjudication of this item.)
          */
         public List<AdjudicationComponent> getAdjudication() { 
@@ -4407,20 +4475,23 @@ public class ExplanationOfBenefit extends DomainResource {
           children.add(new Property("informationSequence", "positiveInt", "Exceptions, special conditions and supporting information applicable for this service or product.", 0, java.lang.Integer.MAX_VALUE, informationSequence));
           children.add(new Property("revenue", "CodeableConcept", "The type of revenue or cost center providing the product and/or service.", 0, 1, revenue));
           children.add(new Property("category", "CodeableConcept", "Code to identify the general type of benefits under which products and services are provided.", 0, 1, category));
-          children.add(new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.", 0, 1, productOrService));
+          children.add(new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.", 0, 1, productOrService));
+          children.add(new Property("productOrServiceEnd", "CodeableConcept", "This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.", 0, 1, productOrServiceEnd));
           children.add(new Property("modifier", "CodeableConcept", "Item typification or modifiers codes to convey additional context for the product or service.", 0, java.lang.Integer.MAX_VALUE, modifier));
           children.add(new Property("programCode", "CodeableConcept", "Identifies the program under which this may be recovered.", 0, java.lang.Integer.MAX_VALUE, programCode));
           children.add(new Property("serviced[x]", "date|Period", "The date or dates when the service or product was supplied, performed or completed.", 0, 1, serviced));
           children.add(new Property("location[x]", "CodeableConcept|Address|Reference(Location)", "Where the product or service was provided.", 0, 1, location));
+          children.add(new Property("patientPaid", "Money", "The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.", 0, 1, patientPaid));
           children.add(new Property("quantity", "Quantity", "The number of repetitions of a service or product.", 0, 1, quantity));
           children.add(new Property("unitPrice", "Money", "If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.", 0, 1, unitPrice));
           children.add(new Property("factor", "decimal", "A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.", 0, 1, factor));
+          children.add(new Property("tax", "Money", "The total of taxes applicable for this product or service.", 0, 1, tax));
           children.add(new Property("net", "Money", "The quantity times the unit price for an additional service or product or charge.", 0, 1, net));
           children.add(new Property("udi", "Reference(Device)", "Unique Device Identifiers associated with this line item.", 0, java.lang.Integer.MAX_VALUE, udi));
-          children.add(new Property("bodySite", "CodeableConcept", "Physical service site on the patient (limb, tooth, etc.).", 0, 1, bodySite));
-          children.add(new Property("subSite", "CodeableConcept", "A region or surface of the bodySite, e.g. limb region or tooth surface(s).", 0, java.lang.Integer.MAX_VALUE, subSite));
+          children.add(new Property("bodySite", "", "Physical location where the service is performed or applies.", 0, java.lang.Integer.MAX_VALUE, bodySite));
           children.add(new Property("encounter", "Reference(Encounter)", "A billed item may include goods or services provided in multiple encounters.", 0, java.lang.Integer.MAX_VALUE, encounter));
           children.add(new Property("noteNumber", "positiveInt", "The numbers associated with notes below which apply to the adjudication of this item.", 0, java.lang.Integer.MAX_VALUE, noteNumber));
+          children.add(new Property("decision", "CodeableConcept", "The result of the claim, predetermination, or preauthorization adjudication.", 0, 1, decision));
           children.add(new Property("adjudication", "", "If this item is a group then the values here are a summary of the adjudication of the detail items. If this item is a simple product or service then this is the result of the adjudication of this item.", 0, java.lang.Integer.MAX_VALUE, adjudication));
           children.add(new Property("detail", "", "Second-tier of goods and services.", 0, java.lang.Integer.MAX_VALUE, detail));
         }
@@ -4435,7 +4506,8 @@ public class ExplanationOfBenefit extends DomainResource {
           case -702585587: /*informationSequence*/  return new Property("informationSequence", "positiveInt", "Exceptions, special conditions and supporting information applicable for this service or product.", 0, java.lang.Integer.MAX_VALUE, informationSequence);
           case 1099842588: /*revenue*/  return new Property("revenue", "CodeableConcept", "The type of revenue or cost center providing the product and/or service.", 0, 1, revenue);
           case 50511102: /*category*/  return new Property("category", "CodeableConcept", "Code to identify the general type of benefits under which products and services are provided.", 0, 1, category);
-          case 1957227299: /*productOrService*/  return new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.", 0, 1, productOrService);
+          case 1957227299: /*productOrService*/  return new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.", 0, 1, productOrService);
+          case -717476168: /*productOrServiceEnd*/  return new Property("productOrServiceEnd", "CodeableConcept", "This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.", 0, 1, productOrServiceEnd);
           case -615513385: /*modifier*/  return new Property("modifier", "CodeableConcept", "Item typification or modifiers codes to convey additional context for the product or service.", 0, java.lang.Integer.MAX_VALUE, modifier);
           case 1010065041: /*programCode*/  return new Property("programCode", "CodeableConcept", "Identifies the program under which this may be recovered.", 0, java.lang.Integer.MAX_VALUE, programCode);
           case -1927922223: /*serviced[x]*/  return new Property("serviced[x]", "date|Period", "The date or dates when the service or product was supplied, performed or completed.", 0, 1, serviced);
@@ -4447,15 +4519,17 @@ public class ExplanationOfBenefit extends DomainResource {
           case -1224800468: /*locationCodeableConcept*/  return new Property("location[x]", "CodeableConcept", "Where the product or service was provided.", 0, 1, location);
           case -1280020865: /*locationAddress*/  return new Property("location[x]", "Address", "Where the product or service was provided.", 0, 1, location);
           case 755866390: /*locationReference*/  return new Property("location[x]", "Reference(Location)", "Where the product or service was provided.", 0, 1, location);
+          case 525514609: /*patientPaid*/  return new Property("patientPaid", "Money", "The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.", 0, 1, patientPaid);
           case -1285004149: /*quantity*/  return new Property("quantity", "Quantity", "The number of repetitions of a service or product.", 0, 1, quantity);
           case -486196699: /*unitPrice*/  return new Property("unitPrice", "Money", "If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.", 0, 1, unitPrice);
           case -1282148017: /*factor*/  return new Property("factor", "decimal", "A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.", 0, 1, factor);
+          case 114603: /*tax*/  return new Property("tax", "Money", "The total of taxes applicable for this product or service.", 0, 1, tax);
           case 108957: /*net*/  return new Property("net", "Money", "The quantity times the unit price for an additional service or product or charge.", 0, 1, net);
           case 115642: /*udi*/  return new Property("udi", "Reference(Device)", "Unique Device Identifiers associated with this line item.", 0, java.lang.Integer.MAX_VALUE, udi);
-          case 1702620169: /*bodySite*/  return new Property("bodySite", "CodeableConcept", "Physical service site on the patient (limb, tooth, etc.).", 0, 1, bodySite);
-          case -1868566105: /*subSite*/  return new Property("subSite", "CodeableConcept", "A region or surface of the bodySite, e.g. limb region or tooth surface(s).", 0, java.lang.Integer.MAX_VALUE, subSite);
+          case 1702620169: /*bodySite*/  return new Property("bodySite", "", "Physical location where the service is performed or applies.", 0, java.lang.Integer.MAX_VALUE, bodySite);
           case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "A billed item may include goods or services provided in multiple encounters.", 0, java.lang.Integer.MAX_VALUE, encounter);
           case -1110033957: /*noteNumber*/  return new Property("noteNumber", "positiveInt", "The numbers associated with notes below which apply to the adjudication of this item.", 0, java.lang.Integer.MAX_VALUE, noteNumber);
+          case 565719004: /*decision*/  return new Property("decision", "CodeableConcept", "The result of the claim, predetermination, or preauthorization adjudication.", 0, 1, decision);
           case -231349275: /*adjudication*/  return new Property("adjudication", "", "If this item is a group then the values here are a summary of the adjudication of the detail items. If this item is a simple product or service then this is the result of the adjudication of this item.", 0, java.lang.Integer.MAX_VALUE, adjudication);
           case -1335224239: /*detail*/  return new Property("detail", "", "Second-tier of goods and services.", 0, java.lang.Integer.MAX_VALUE, detail);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -4474,19 +4548,22 @@ public class ExplanationOfBenefit extends DomainResource {
         case 1099842588: /*revenue*/ return this.revenue == null ? new Base[0] : new Base[] {this.revenue}; // CodeableConcept
         case 50511102: /*category*/ return this.category == null ? new Base[0] : new Base[] {this.category}; // CodeableConcept
         case 1957227299: /*productOrService*/ return this.productOrService == null ? new Base[0] : new Base[] {this.productOrService}; // CodeableConcept
+        case -717476168: /*productOrServiceEnd*/ return this.productOrServiceEnd == null ? new Base[0] : new Base[] {this.productOrServiceEnd}; // CodeableConcept
         case -615513385: /*modifier*/ return this.modifier == null ? new Base[0] : this.modifier.toArray(new Base[this.modifier.size()]); // CodeableConcept
         case 1010065041: /*programCode*/ return this.programCode == null ? new Base[0] : this.programCode.toArray(new Base[this.programCode.size()]); // CodeableConcept
         case 1379209295: /*serviced*/ return this.serviced == null ? new Base[0] : new Base[] {this.serviced}; // DataType
         case 1901043637: /*location*/ return this.location == null ? new Base[0] : new Base[] {this.location}; // DataType
+        case 525514609: /*patientPaid*/ return this.patientPaid == null ? new Base[0] : new Base[] {this.patientPaid}; // Money
         case -1285004149: /*quantity*/ return this.quantity == null ? new Base[0] : new Base[] {this.quantity}; // Quantity
         case -486196699: /*unitPrice*/ return this.unitPrice == null ? new Base[0] : new Base[] {this.unitPrice}; // Money
         case -1282148017: /*factor*/ return this.factor == null ? new Base[0] : new Base[] {this.factor}; // DecimalType
+        case 114603: /*tax*/ return this.tax == null ? new Base[0] : new Base[] {this.tax}; // Money
         case 108957: /*net*/ return this.net == null ? new Base[0] : new Base[] {this.net}; // Money
         case 115642: /*udi*/ return this.udi == null ? new Base[0] : this.udi.toArray(new Base[this.udi.size()]); // Reference
-        case 1702620169: /*bodySite*/ return this.bodySite == null ? new Base[0] : new Base[] {this.bodySite}; // CodeableConcept
-        case -1868566105: /*subSite*/ return this.subSite == null ? new Base[0] : this.subSite.toArray(new Base[this.subSite.size()]); // CodeableConcept
+        case 1702620169: /*bodySite*/ return this.bodySite == null ? new Base[0] : this.bodySite.toArray(new Base[this.bodySite.size()]); // BodySiteComponent
         case 1524132147: /*encounter*/ return this.encounter == null ? new Base[0] : this.encounter.toArray(new Base[this.encounter.size()]); // Reference
         case -1110033957: /*noteNumber*/ return this.noteNumber == null ? new Base[0] : this.noteNumber.toArray(new Base[this.noteNumber.size()]); // PositiveIntType
+        case 565719004: /*decision*/ return this.decision == null ? new Base[0] : new Base[] {this.decision}; // CodeableConcept
         case -231349275: /*adjudication*/ return this.adjudication == null ? new Base[0] : this.adjudication.toArray(new Base[this.adjudication.size()]); // AdjudicationComponent
         case -1335224239: /*detail*/ return this.detail == null ? new Base[0] : this.detail.toArray(new Base[this.detail.size()]); // DetailComponent
         default: return super.getProperty(hash, name, checkValid);
@@ -4521,6 +4598,9 @@ public class ExplanationOfBenefit extends DomainResource {
         case 1957227299: // productOrService
           this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
+        case -717476168: // productOrServiceEnd
+          this.productOrServiceEnd = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
         case -615513385: // modifier
           this.getModifier().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
@@ -4533,6 +4613,9 @@ public class ExplanationOfBenefit extends DomainResource {
         case 1901043637: // location
           this.location = TypeConvertor.castToType(value); // DataType
           return value;
+        case 525514609: // patientPaid
+          this.patientPaid = TypeConvertor.castToMoney(value); // Money
+          return value;
         case -1285004149: // quantity
           this.quantity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
@@ -4542,6 +4625,9 @@ public class ExplanationOfBenefit extends DomainResource {
         case -1282148017: // factor
           this.factor = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
+        case 114603: // tax
+          this.tax = TypeConvertor.castToMoney(value); // Money
+          return value;
         case 108957: // net
           this.net = TypeConvertor.castToMoney(value); // Money
           return value;
@@ -4549,16 +4635,16 @@ public class ExplanationOfBenefit extends DomainResource {
           this.getUdi().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1702620169: // bodySite
-          this.bodySite = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case -1868566105: // subSite
-          this.getSubSite().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          this.getBodySite().add((BodySiteComponent) value); // BodySiteComponent
           return value;
         case 1524132147: // encounter
           this.getEncounter().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1110033957: // noteNumber
           this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value)); // PositiveIntType
+          return value;
+        case 565719004: // decision
+          this.decision = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -231349275: // adjudication
           this.getAdjudication().add((AdjudicationComponent) value); // AdjudicationComponent
@@ -4589,6 +4675,8 @@ public class ExplanationOfBenefit extends DomainResource {
           this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("productOrService")) {
           this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("productOrServiceEnd")) {
+          this.productOrServiceEnd = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("modifier")) {
           this.getModifier().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("programCode")) {
@@ -4597,24 +4685,28 @@ public class ExplanationOfBenefit extends DomainResource {
           this.serviced = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("location[x]")) {
           this.location = TypeConvertor.castToType(value); // DataType
+        } else if (name.equals("patientPaid")) {
+          this.patientPaid = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("quantity")) {
           this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("unitPrice")) {
           this.unitPrice = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("factor")) {
           this.factor = TypeConvertor.castToDecimal(value); // DecimalType
+        } else if (name.equals("tax")) {
+          this.tax = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("net")) {
           this.net = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("udi")) {
           this.getUdi().add(TypeConvertor.castToReference(value));
         } else if (name.equals("bodySite")) {
-          this.bodySite = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("subSite")) {
-          this.getSubSite().add(TypeConvertor.castToCodeableConcept(value));
+          this.getBodySite().add((BodySiteComponent) value);
         } else if (name.equals("encounter")) {
           this.getEncounter().add(TypeConvertor.castToReference(value));
         } else if (name.equals("noteNumber")) {
           this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value));
+        } else if (name.equals("decision")) {
+          this.decision = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("adjudication")) {
           this.getAdjudication().add((AdjudicationComponent) value);
         } else if (name.equals("detail")) {
@@ -4635,21 +4727,24 @@ public class ExplanationOfBenefit extends DomainResource {
         case 1099842588:  return getRevenue();
         case 50511102:  return getCategory();
         case 1957227299:  return getProductOrService();
+        case -717476168:  return getProductOrServiceEnd();
         case -615513385:  return addModifier(); 
         case 1010065041:  return addProgramCode(); 
         case -1927922223:  return getServiced();
         case 1379209295:  return getServiced();
         case 552316075:  return getLocation();
         case 1901043637:  return getLocation();
+        case 525514609:  return getPatientPaid();
         case -1285004149:  return getQuantity();
         case -486196699:  return getUnitPrice();
         case -1282148017:  return getFactorElement();
+        case 114603:  return getTax();
         case 108957:  return getNet();
         case 115642:  return addUdi(); 
-        case 1702620169:  return getBodySite();
-        case -1868566105:  return addSubSite(); 
+        case 1702620169:  return addBodySite(); 
         case 1524132147:  return addEncounter(); 
         case -1110033957:  return addNoteNumberElement();
+        case 565719004:  return getDecision();
         case -231349275:  return addAdjudication(); 
         case -1335224239:  return addDetail(); 
         default: return super.makeProperty(hash, name);
@@ -4668,19 +4763,22 @@ public class ExplanationOfBenefit extends DomainResource {
         case 1099842588: /*revenue*/ return new String[] {"CodeableConcept"};
         case 50511102: /*category*/ return new String[] {"CodeableConcept"};
         case 1957227299: /*productOrService*/ return new String[] {"CodeableConcept"};
+        case -717476168: /*productOrServiceEnd*/ return new String[] {"CodeableConcept"};
         case -615513385: /*modifier*/ return new String[] {"CodeableConcept"};
         case 1010065041: /*programCode*/ return new String[] {"CodeableConcept"};
         case 1379209295: /*serviced*/ return new String[] {"date", "Period"};
         case 1901043637: /*location*/ return new String[] {"CodeableConcept", "Address", "Reference"};
+        case 525514609: /*patientPaid*/ return new String[] {"Money"};
         case -1285004149: /*quantity*/ return new String[] {"Quantity"};
         case -486196699: /*unitPrice*/ return new String[] {"Money"};
         case -1282148017: /*factor*/ return new String[] {"decimal"};
+        case 114603: /*tax*/ return new String[] {"Money"};
         case 108957: /*net*/ return new String[] {"Money"};
         case 115642: /*udi*/ return new String[] {"Reference"};
-        case 1702620169: /*bodySite*/ return new String[] {"CodeableConcept"};
-        case -1868566105: /*subSite*/ return new String[] {"CodeableConcept"};
+        case 1702620169: /*bodySite*/ return new String[] {};
         case 1524132147: /*encounter*/ return new String[] {"Reference"};
         case -1110033957: /*noteNumber*/ return new String[] {"positiveInt"};
+        case 565719004: /*decision*/ return new String[] {"CodeableConcept"};
         case -231349275: /*adjudication*/ return new String[] {};
         case -1335224239: /*detail*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
@@ -4717,6 +4815,10 @@ public class ExplanationOfBenefit extends DomainResource {
           this.productOrService = new CodeableConcept();
           return this.productOrService;
         }
+        else if (name.equals("productOrServiceEnd")) {
+          this.productOrServiceEnd = new CodeableConcept();
+          return this.productOrServiceEnd;
+        }
         else if (name.equals("modifier")) {
           return addModifier();
         }
@@ -4743,6 +4845,10 @@ public class ExplanationOfBenefit extends DomainResource {
           this.location = new Reference();
           return this.location;
         }
+        else if (name.equals("patientPaid")) {
+          this.patientPaid = new Money();
+          return this.patientPaid;
+        }
         else if (name.equals("quantity")) {
           this.quantity = new Quantity();
           return this.quantity;
@@ -4754,6 +4860,10 @@ public class ExplanationOfBenefit extends DomainResource {
         else if (name.equals("factor")) {
           throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.item.factor");
         }
+        else if (name.equals("tax")) {
+          this.tax = new Money();
+          return this.tax;
+        }
         else if (name.equals("net")) {
           this.net = new Money();
           return this.net;
@@ -4762,17 +4872,17 @@ public class ExplanationOfBenefit extends DomainResource {
           return addUdi();
         }
         else if (name.equals("bodySite")) {
-          this.bodySite = new CodeableConcept();
-          return this.bodySite;
-        }
-        else if (name.equals("subSite")) {
-          return addSubSite();
+          return addBodySite();
         }
         else if (name.equals("encounter")) {
           return addEncounter();
         }
         else if (name.equals("noteNumber")) {
           throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.item.noteNumber");
+        }
+        else if (name.equals("decision")) {
+          this.decision = new CodeableConcept();
+          return this.decision;
         }
         else if (name.equals("adjudication")) {
           return addAdjudication();
@@ -4816,6 +4926,7 @@ public class ExplanationOfBenefit extends DomainResource {
         dst.revenue = revenue == null ? null : revenue.copy();
         dst.category = category == null ? null : category.copy();
         dst.productOrService = productOrService == null ? null : productOrService.copy();
+        dst.productOrServiceEnd = productOrServiceEnd == null ? null : productOrServiceEnd.copy();
         if (modifier != null) {
           dst.modifier = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : modifier)
@@ -4828,20 +4939,21 @@ public class ExplanationOfBenefit extends DomainResource {
         };
         dst.serviced = serviced == null ? null : serviced.copy();
         dst.location = location == null ? null : location.copy();
+        dst.patientPaid = patientPaid == null ? null : patientPaid.copy();
         dst.quantity = quantity == null ? null : quantity.copy();
         dst.unitPrice = unitPrice == null ? null : unitPrice.copy();
         dst.factor = factor == null ? null : factor.copy();
+        dst.tax = tax == null ? null : tax.copy();
         dst.net = net == null ? null : net.copy();
         if (udi != null) {
           dst.udi = new ArrayList<Reference>();
           for (Reference i : udi)
             dst.udi.add(i.copy());
         };
-        dst.bodySite = bodySite == null ? null : bodySite.copy();
-        if (subSite != null) {
-          dst.subSite = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : subSite)
-            dst.subSite.add(i.copy());
+        if (bodySite != null) {
+          dst.bodySite = new ArrayList<BodySiteComponent>();
+          for (BodySiteComponent i : bodySite)
+            dst.bodySite.add(i.copy());
         };
         if (encounter != null) {
           dst.encounter = new ArrayList<Reference>();
@@ -4853,6 +4965,7 @@ public class ExplanationOfBenefit extends DomainResource {
           for (PositiveIntType i : noteNumber)
             dst.noteNumber.add(i.copy());
         };
+        dst.decision = decision == null ? null : decision.copy();
         if (adjudication != null) {
           dst.adjudication = new ArrayList<AdjudicationComponent>();
           for (AdjudicationComponent i : adjudication)
@@ -4876,11 +4989,12 @@ public class ExplanationOfBenefit extends DomainResource {
            && compareDeep(diagnosisSequence, o.diagnosisSequence, true) && compareDeep(procedureSequence, o.procedureSequence, true)
            && compareDeep(informationSequence, o.informationSequence, true) && compareDeep(revenue, o.revenue, true)
            && compareDeep(category, o.category, true) && compareDeep(productOrService, o.productOrService, true)
-           && compareDeep(modifier, o.modifier, true) && compareDeep(programCode, o.programCode, true) && compareDeep(serviced, o.serviced, true)
-           && compareDeep(location, o.location, true) && compareDeep(quantity, o.quantity, true) && compareDeep(unitPrice, o.unitPrice, true)
-           && compareDeep(factor, o.factor, true) && compareDeep(net, o.net, true) && compareDeep(udi, o.udi, true)
-           && compareDeep(bodySite, o.bodySite, true) && compareDeep(subSite, o.subSite, true) && compareDeep(encounter, o.encounter, true)
-           && compareDeep(noteNumber, o.noteNumber, true) && compareDeep(adjudication, o.adjudication, true)
+           && compareDeep(productOrServiceEnd, o.productOrServiceEnd, true) && compareDeep(modifier, o.modifier, true)
+           && compareDeep(programCode, o.programCode, true) && compareDeep(serviced, o.serviced, true) && compareDeep(location, o.location, true)
+           && compareDeep(patientPaid, o.patientPaid, true) && compareDeep(quantity, o.quantity, true) && compareDeep(unitPrice, o.unitPrice, true)
+           && compareDeep(factor, o.factor, true) && compareDeep(tax, o.tax, true) && compareDeep(net, o.net, true)
+           && compareDeep(udi, o.udi, true) && compareDeep(bodySite, o.bodySite, true) && compareDeep(encounter, o.encounter, true)
+           && compareDeep(noteNumber, o.noteNumber, true) && compareDeep(decision, o.decision, true) && compareDeep(adjudication, o.adjudication, true)
            && compareDeep(detail, o.detail, true);
       }
 
@@ -4900,12 +5014,288 @@ public class ExplanationOfBenefit extends DomainResource {
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(sequence, careTeamSequence
           , diagnosisSequence, procedureSequence, informationSequence, revenue, category, productOrService
-          , modifier, programCode, serviced, location, quantity, unitPrice, factor, net
-          , udi, bodySite, subSite, encounter, noteNumber, adjudication, detail);
+          , productOrServiceEnd, modifier, programCode, serviced, location, patientPaid, quantity
+          , unitPrice, factor, tax, net, udi, bodySite, encounter, noteNumber, decision
+          , adjudication, detail);
       }
 
   public String fhirType() {
     return "ExplanationOfBenefit.item";
+
+  }
+
+  }
+
+    @Block()
+    public static class BodySiteComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Physical service site on the patient (limb, tooth, etc.).
+         */
+        @Child(name = "site", type = {CodeableReference.class}, order=1, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Location", formalDefinition="Physical service site on the patient (limb, tooth, etc.)." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/tooth")
+        protected List<CodeableReference> site;
+
+        /**
+         * A region or surface of the bodySite, e.g. limb region or tooth surface(s).
+         */
+        @Child(name = "subSite", type = {CodeableConcept.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Sub-location", formalDefinition="A region or surface of the bodySite, e.g. limb region or tooth surface(s)." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/surface")
+        protected List<CodeableConcept> subSite;
+
+        private static final long serialVersionUID = 1190632415L;
+
+    /**
+     * Constructor
+     */
+      public BodySiteComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public BodySiteComponent(CodeableReference site) {
+        super();
+        this.addSite(site);
+      }
+
+        /**
+         * @return {@link #site} (Physical service site on the patient (limb, tooth, etc.).)
+         */
+        public List<CodeableReference> getSite() { 
+          if (this.site == null)
+            this.site = new ArrayList<CodeableReference>();
+          return this.site;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public BodySiteComponent setSite(List<CodeableReference> theSite) { 
+          this.site = theSite;
+          return this;
+        }
+
+        public boolean hasSite() { 
+          if (this.site == null)
+            return false;
+          for (CodeableReference item : this.site)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public CodeableReference addSite() { //3
+          CodeableReference t = new CodeableReference();
+          if (this.site == null)
+            this.site = new ArrayList<CodeableReference>();
+          this.site.add(t);
+          return t;
+        }
+
+        public BodySiteComponent addSite(CodeableReference t) { //3
+          if (t == null)
+            return this;
+          if (this.site == null)
+            this.site = new ArrayList<CodeableReference>();
+          this.site.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #site}, creating it if it does not already exist {3}
+         */
+        public CodeableReference getSiteFirstRep() { 
+          if (getSite().isEmpty()) {
+            addSite();
+          }
+          return getSite().get(0);
+        }
+
+        /**
+         * @return {@link #subSite} (A region or surface of the bodySite, e.g. limb region or tooth surface(s).)
+         */
+        public List<CodeableConcept> getSubSite() { 
+          if (this.subSite == null)
+            this.subSite = new ArrayList<CodeableConcept>();
+          return this.subSite;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public BodySiteComponent setSubSite(List<CodeableConcept> theSubSite) { 
+          this.subSite = theSubSite;
+          return this;
+        }
+
+        public boolean hasSubSite() { 
+          if (this.subSite == null)
+            return false;
+          for (CodeableConcept item : this.subSite)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public CodeableConcept addSubSite() { //3
+          CodeableConcept t = new CodeableConcept();
+          if (this.subSite == null)
+            this.subSite = new ArrayList<CodeableConcept>();
+          this.subSite.add(t);
+          return t;
+        }
+
+        public BodySiteComponent addSubSite(CodeableConcept t) { //3
+          if (t == null)
+            return this;
+          if (this.subSite == null)
+            this.subSite = new ArrayList<CodeableConcept>();
+          this.subSite.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #subSite}, creating it if it does not already exist {3}
+         */
+        public CodeableConcept getSubSiteFirstRep() { 
+          if (getSubSite().isEmpty()) {
+            addSubSite();
+          }
+          return getSubSite().get(0);
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("site", "CodeableReference(BodyStructure)", "Physical service site on the patient (limb, tooth, etc.).", 0, java.lang.Integer.MAX_VALUE, site));
+          children.add(new Property("subSite", "CodeableConcept", "A region or surface of the bodySite, e.g. limb region or tooth surface(s).", 0, java.lang.Integer.MAX_VALUE, subSite));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3530567: /*site*/  return new Property("site", "CodeableReference(BodyStructure)", "Physical service site on the patient (limb, tooth, etc.).", 0, java.lang.Integer.MAX_VALUE, site);
+          case -1868566105: /*subSite*/  return new Property("subSite", "CodeableConcept", "A region or surface of the bodySite, e.g. limb region or tooth surface(s).", 0, java.lang.Integer.MAX_VALUE, subSite);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3530567: /*site*/ return this.site == null ? new Base[0] : this.site.toArray(new Base[this.site.size()]); // CodeableReference
+        case -1868566105: /*subSite*/ return this.subSite == null ? new Base[0] : this.subSite.toArray(new Base[this.subSite.size()]); // CodeableConcept
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3530567: // site
+          this.getSite().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
+          return value;
+        case -1868566105: // subSite
+          this.getSubSite().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("site")) {
+          this.getSite().add(TypeConvertor.castToCodeableReference(value));
+        } else if (name.equals("subSite")) {
+          this.getSubSite().add(TypeConvertor.castToCodeableConcept(value));
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3530567:  return addSite(); 
+        case -1868566105:  return addSubSite(); 
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3530567: /*site*/ return new String[] {"CodeableReference"};
+        case -1868566105: /*subSite*/ return new String[] {"CodeableConcept"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("site")) {
+          return addSite();
+        }
+        else if (name.equals("subSite")) {
+          return addSubSite();
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public BodySiteComponent copy() {
+        BodySiteComponent dst = new BodySiteComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(BodySiteComponent dst) {
+        super.copyValues(dst);
+        if (site != null) {
+          dst.site = new ArrayList<CodeableReference>();
+          for (CodeableReference i : site)
+            dst.site.add(i.copy());
+        };
+        if (subSite != null) {
+          dst.subSite = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : subSite)
+            dst.subSite.add(i.copy());
+        };
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof BodySiteComponent))
+          return false;
+        BodySiteComponent o = (BodySiteComponent) other_;
+        return compareDeep(site, o.site, true) && compareDeep(subSite, o.subSite, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof BodySiteComponent))
+          return false;
+        BodySiteComponent o = (BodySiteComponent) other_;
+        return true;
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(site, subSite);
+      }
+
+  public String fhirType() {
+    return "ExplanationOfBenefit.item.bodySite";
 
   }
 
@@ -5284,17 +5674,25 @@ public class ExplanationOfBenefit extends DomainResource {
         protected CodeableConcept category;
 
         /**
-         * When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.
+         * When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.
          */
-        @Child(name = "productOrService", type = {CodeableConcept.class}, order=4, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Billing, service, product, or drug code", formalDefinition="When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item." )
+        @Child(name = "productOrService", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Billing, service, product, or drug code", formalDefinition="When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-uscls")
         protected CodeableConcept productOrService;
 
         /**
+         * This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.
+         */
+        @Child(name = "productOrServiceEnd", type = {CodeableConcept.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="End of a range of codes", formalDefinition="This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-uscls")
+        protected CodeableConcept productOrServiceEnd;
+
+        /**
          * Item typification or modifiers codes to convey additional context for the product or service.
          */
-        @Child(name = "modifier", type = {CodeableConcept.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "modifier", type = {CodeableConcept.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Service/Product billing modifiers", formalDefinition="Item typification or modifiers codes to convey additional context for the product or service." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-modifiers")
         protected List<CodeableConcept> modifier;
@@ -5302,68 +5700,90 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * Identifies the program under which this may be recovered.
          */
-        @Child(name = "programCode", type = {CodeableConcept.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "programCode", type = {CodeableConcept.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Program the product or service is provided under", formalDefinition="Identifies the program under which this may be recovered." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ex-program-code")
         protected List<CodeableConcept> programCode;
 
         /**
+         * The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.
+         */
+        @Child(name = "patientPaid", type = {Money.class}, order=8, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Paid by the patient", formalDefinition="The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services." )
+        protected Money patientPaid;
+
+        /**
          * The number of repetitions of a service or product.
          */
-        @Child(name = "quantity", type = {Quantity.class}, order=7, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "quantity", type = {Quantity.class}, order=9, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Count of products or services", formalDefinition="The number of repetitions of a service or product." )
         protected Quantity quantity;
 
         /**
          * If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.
          */
-        @Child(name = "unitPrice", type = {Money.class}, order=8, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "unitPrice", type = {Money.class}, order=10, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Fee, charge or cost per item", formalDefinition="If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group." )
         protected Money unitPrice;
 
         /**
          * A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.
          */
-        @Child(name = "factor", type = {DecimalType.class}, order=9, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "factor", type = {DecimalType.class}, order=11, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Price scaling factor", formalDefinition="A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount." )
         protected DecimalType factor;
 
         /**
+         * The total of taxes applicable for this product or service.
+         */
+        @Child(name = "tax", type = {Money.class}, order=12, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Total tax", formalDefinition="The total of taxes applicable for this product or service." )
+        protected Money tax;
+
+        /**
          * The quantity times the unit price for an additional service or product or charge.
          */
-        @Child(name = "net", type = {Money.class}, order=10, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "net", type = {Money.class}, order=13, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Total item cost", formalDefinition="The quantity times the unit price for an additional service or product or charge." )
         protected Money net;
 
         /**
          * Unique Device Identifiers associated with this line item.
          */
-        @Child(name = "udi", type = {Device.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "udi", type = {Device.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Unique device identifier", formalDefinition="Unique Device Identifiers associated with this line item." )
         protected List<Reference> udi;
 
         /**
          * The numbers associated with notes below which apply to the adjudication of this item.
          */
-        @Child(name = "noteNumber", type = {PositiveIntType.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "noteNumber", type = {PositiveIntType.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Applicable note numbers", formalDefinition="The numbers associated with notes below which apply to the adjudication of this item." )
         protected List<PositiveIntType> noteNumber;
 
         /**
+         * The result of the claim, predetermination, or preauthorization adjudication.
+         */
+        @Child(name = "decision", type = {CodeableConcept.class}, order=16, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Result of the adjudication", formalDefinition="The result of the claim, predetermination, or preauthorization adjudication." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-decision")
+        protected CodeableConcept decision;
+
+        /**
          * The adjudication results.
          */
-        @Child(name = "adjudication", type = {AdjudicationComponent.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "adjudication", type = {AdjudicationComponent.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Detail level adjudication details", formalDefinition="The adjudication results." )
         protected List<AdjudicationComponent> adjudication;
 
         /**
          * Third-tier of goods and services.
          */
-        @Child(name = "subDetail", type = {}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "subDetail", type = {}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Additional items", formalDefinition="Third-tier of goods and services." )
         protected List<SubDetailComponent> subDetail;
 
-        private static final long serialVersionUID = -318460001L;
+        private static final long serialVersionUID = -1135131173L;
 
     /**
      * Constructor
@@ -5375,10 +5795,9 @@ public class ExplanationOfBenefit extends DomainResource {
     /**
      * Constructor
      */
-      public DetailComponent(int sequence, CodeableConcept productOrService) {
+      public DetailComponent(int sequence) {
         super();
         this.setSequence(sequence);
-        this.setProductOrService(productOrService);
       }
 
         /**
@@ -5475,7 +5894,7 @@ public class ExplanationOfBenefit extends DomainResource {
         }
 
         /**
-         * @return {@link #productOrService} (When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.)
+         * @return {@link #productOrService} (When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.)
          */
         public CodeableConcept getProductOrService() { 
           if (this.productOrService == null)
@@ -5491,10 +5910,34 @@ public class ExplanationOfBenefit extends DomainResource {
         }
 
         /**
-         * @param value {@link #productOrService} (When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.)
+         * @param value {@link #productOrService} (When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.)
          */
         public DetailComponent setProductOrService(CodeableConcept value) { 
           this.productOrService = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #productOrServiceEnd} (This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.)
+         */
+        public CodeableConcept getProductOrServiceEnd() { 
+          if (this.productOrServiceEnd == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create DetailComponent.productOrServiceEnd");
+            else if (Configuration.doAutoCreate())
+              this.productOrServiceEnd = new CodeableConcept(); // cc
+          return this.productOrServiceEnd;
+        }
+
+        public boolean hasProductOrServiceEnd() { 
+          return this.productOrServiceEnd != null && !this.productOrServiceEnd.isEmpty();
+        }
+
+        /**
+         * @param value {@link #productOrServiceEnd} (This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.)
+         */
+        public DetailComponent setProductOrServiceEnd(CodeableConcept value) { 
+          this.productOrServiceEnd = value;
           return this;
         }
 
@@ -5602,6 +6045,30 @@ public class ExplanationOfBenefit extends DomainResource {
             addProgramCode();
           }
           return getProgramCode().get(0);
+        }
+
+        /**
+         * @return {@link #patientPaid} (The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.)
+         */
+        public Money getPatientPaid() { 
+          if (this.patientPaid == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create DetailComponent.patientPaid");
+            else if (Configuration.doAutoCreate())
+              this.patientPaid = new Money(); // cc
+          return this.patientPaid;
+        }
+
+        public boolean hasPatientPaid() { 
+          return this.patientPaid != null && !this.patientPaid.isEmpty();
+        }
+
+        /**
+         * @param value {@link #patientPaid} (The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.)
+         */
+        public DetailComponent setPatientPaid(Money value) { 
+          this.patientPaid = value;
+          return this;
         }
 
         /**
@@ -5716,6 +6183,30 @@ public class ExplanationOfBenefit extends DomainResource {
         public DetailComponent setFactor(double value) { 
               this.factor = new DecimalType();
             this.factor.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #tax} (The total of taxes applicable for this product or service.)
+         */
+        public Money getTax() { 
+          if (this.tax == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create DetailComponent.tax");
+            else if (Configuration.doAutoCreate())
+              this.tax = new Money(); // cc
+          return this.tax;
+        }
+
+        public boolean hasTax() { 
+          return this.tax != null && !this.tax.isEmpty();
+        }
+
+        /**
+         * @param value {@link #tax} (The total of taxes applicable for this product or service.)
+         */
+        public DetailComponent setTax(Money value) { 
+          this.tax = value;
           return this;
         }
 
@@ -5858,6 +6349,30 @@ public class ExplanationOfBenefit extends DomainResource {
         }
 
         /**
+         * @return {@link #decision} (The result of the claim, predetermination, or preauthorization adjudication.)
+         */
+        public CodeableConcept getDecision() { 
+          if (this.decision == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create DetailComponent.decision");
+            else if (Configuration.doAutoCreate())
+              this.decision = new CodeableConcept(); // cc
+          return this.decision;
+        }
+
+        public boolean hasDecision() { 
+          return this.decision != null && !this.decision.isEmpty();
+        }
+
+        /**
+         * @param value {@link #decision} (The result of the claim, predetermination, or preauthorization adjudication.)
+         */
+        public DetailComponent setDecision(CodeableConcept value) { 
+          this.decision = value;
+          return this;
+        }
+
+        /**
          * @return {@link #adjudication} (The adjudication results.)
          */
         public List<AdjudicationComponent> getAdjudication() { 
@@ -5968,15 +6483,19 @@ public class ExplanationOfBenefit extends DomainResource {
           children.add(new Property("sequence", "positiveInt", "A claim detail line. Either a simple (a product or service) or a 'group' of sub-details which are simple items.", 0, 1, sequence));
           children.add(new Property("revenue", "CodeableConcept", "The type of revenue or cost center providing the product and/or service.", 0, 1, revenue));
           children.add(new Property("category", "CodeableConcept", "Code to identify the general type of benefits under which products and services are provided.", 0, 1, category));
-          children.add(new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.", 0, 1, productOrService));
+          children.add(new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.", 0, 1, productOrService));
+          children.add(new Property("productOrServiceEnd", "CodeableConcept", "This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.", 0, 1, productOrServiceEnd));
           children.add(new Property("modifier", "CodeableConcept", "Item typification or modifiers codes to convey additional context for the product or service.", 0, java.lang.Integer.MAX_VALUE, modifier));
           children.add(new Property("programCode", "CodeableConcept", "Identifies the program under which this may be recovered.", 0, java.lang.Integer.MAX_VALUE, programCode));
+          children.add(new Property("patientPaid", "Money", "The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.", 0, 1, patientPaid));
           children.add(new Property("quantity", "Quantity", "The number of repetitions of a service or product.", 0, 1, quantity));
           children.add(new Property("unitPrice", "Money", "If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.", 0, 1, unitPrice));
           children.add(new Property("factor", "decimal", "A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.", 0, 1, factor));
+          children.add(new Property("tax", "Money", "The total of taxes applicable for this product or service.", 0, 1, tax));
           children.add(new Property("net", "Money", "The quantity times the unit price for an additional service or product or charge.", 0, 1, net));
           children.add(new Property("udi", "Reference(Device)", "Unique Device Identifiers associated with this line item.", 0, java.lang.Integer.MAX_VALUE, udi));
           children.add(new Property("noteNumber", "positiveInt", "The numbers associated with notes below which apply to the adjudication of this item.", 0, java.lang.Integer.MAX_VALUE, noteNumber));
+          children.add(new Property("decision", "CodeableConcept", "The result of the claim, predetermination, or preauthorization adjudication.", 0, 1, decision));
           children.add(new Property("adjudication", "@ExplanationOfBenefit.item.adjudication", "The adjudication results.", 0, java.lang.Integer.MAX_VALUE, adjudication));
           children.add(new Property("subDetail", "", "Third-tier of goods and services.", 0, java.lang.Integer.MAX_VALUE, subDetail));
         }
@@ -5987,15 +6506,19 @@ public class ExplanationOfBenefit extends DomainResource {
           case 1349547969: /*sequence*/  return new Property("sequence", "positiveInt", "A claim detail line. Either a simple (a product or service) or a 'group' of sub-details which are simple items.", 0, 1, sequence);
           case 1099842588: /*revenue*/  return new Property("revenue", "CodeableConcept", "The type of revenue or cost center providing the product and/or service.", 0, 1, revenue);
           case 50511102: /*category*/  return new Property("category", "CodeableConcept", "Code to identify the general type of benefits under which products and services are provided.", 0, 1, category);
-          case 1957227299: /*productOrService*/  return new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.", 0, 1, productOrService);
+          case 1957227299: /*productOrService*/  return new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.", 0, 1, productOrService);
+          case -717476168: /*productOrServiceEnd*/  return new Property("productOrServiceEnd", "CodeableConcept", "This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.", 0, 1, productOrServiceEnd);
           case -615513385: /*modifier*/  return new Property("modifier", "CodeableConcept", "Item typification or modifiers codes to convey additional context for the product or service.", 0, java.lang.Integer.MAX_VALUE, modifier);
           case 1010065041: /*programCode*/  return new Property("programCode", "CodeableConcept", "Identifies the program under which this may be recovered.", 0, java.lang.Integer.MAX_VALUE, programCode);
+          case 525514609: /*patientPaid*/  return new Property("patientPaid", "Money", "The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.", 0, 1, patientPaid);
           case -1285004149: /*quantity*/  return new Property("quantity", "Quantity", "The number of repetitions of a service or product.", 0, 1, quantity);
           case -486196699: /*unitPrice*/  return new Property("unitPrice", "Money", "If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.", 0, 1, unitPrice);
           case -1282148017: /*factor*/  return new Property("factor", "decimal", "A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.", 0, 1, factor);
+          case 114603: /*tax*/  return new Property("tax", "Money", "The total of taxes applicable for this product or service.", 0, 1, tax);
           case 108957: /*net*/  return new Property("net", "Money", "The quantity times the unit price for an additional service or product or charge.", 0, 1, net);
           case 115642: /*udi*/  return new Property("udi", "Reference(Device)", "Unique Device Identifiers associated with this line item.", 0, java.lang.Integer.MAX_VALUE, udi);
           case -1110033957: /*noteNumber*/  return new Property("noteNumber", "positiveInt", "The numbers associated with notes below which apply to the adjudication of this item.", 0, java.lang.Integer.MAX_VALUE, noteNumber);
+          case 565719004: /*decision*/  return new Property("decision", "CodeableConcept", "The result of the claim, predetermination, or preauthorization adjudication.", 0, 1, decision);
           case -231349275: /*adjudication*/  return new Property("adjudication", "@ExplanationOfBenefit.item.adjudication", "The adjudication results.", 0, java.lang.Integer.MAX_VALUE, adjudication);
           case -828829007: /*subDetail*/  return new Property("subDetail", "", "Third-tier of goods and services.", 0, java.lang.Integer.MAX_VALUE, subDetail);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -6010,14 +6533,18 @@ public class ExplanationOfBenefit extends DomainResource {
         case 1099842588: /*revenue*/ return this.revenue == null ? new Base[0] : new Base[] {this.revenue}; // CodeableConcept
         case 50511102: /*category*/ return this.category == null ? new Base[0] : new Base[] {this.category}; // CodeableConcept
         case 1957227299: /*productOrService*/ return this.productOrService == null ? new Base[0] : new Base[] {this.productOrService}; // CodeableConcept
+        case -717476168: /*productOrServiceEnd*/ return this.productOrServiceEnd == null ? new Base[0] : new Base[] {this.productOrServiceEnd}; // CodeableConcept
         case -615513385: /*modifier*/ return this.modifier == null ? new Base[0] : this.modifier.toArray(new Base[this.modifier.size()]); // CodeableConcept
         case 1010065041: /*programCode*/ return this.programCode == null ? new Base[0] : this.programCode.toArray(new Base[this.programCode.size()]); // CodeableConcept
+        case 525514609: /*patientPaid*/ return this.patientPaid == null ? new Base[0] : new Base[] {this.patientPaid}; // Money
         case -1285004149: /*quantity*/ return this.quantity == null ? new Base[0] : new Base[] {this.quantity}; // Quantity
         case -486196699: /*unitPrice*/ return this.unitPrice == null ? new Base[0] : new Base[] {this.unitPrice}; // Money
         case -1282148017: /*factor*/ return this.factor == null ? new Base[0] : new Base[] {this.factor}; // DecimalType
+        case 114603: /*tax*/ return this.tax == null ? new Base[0] : new Base[] {this.tax}; // Money
         case 108957: /*net*/ return this.net == null ? new Base[0] : new Base[] {this.net}; // Money
         case 115642: /*udi*/ return this.udi == null ? new Base[0] : this.udi.toArray(new Base[this.udi.size()]); // Reference
         case -1110033957: /*noteNumber*/ return this.noteNumber == null ? new Base[0] : this.noteNumber.toArray(new Base[this.noteNumber.size()]); // PositiveIntType
+        case 565719004: /*decision*/ return this.decision == null ? new Base[0] : new Base[] {this.decision}; // CodeableConcept
         case -231349275: /*adjudication*/ return this.adjudication == null ? new Base[0] : this.adjudication.toArray(new Base[this.adjudication.size()]); // AdjudicationComponent
         case -828829007: /*subDetail*/ return this.subDetail == null ? new Base[0] : this.subDetail.toArray(new Base[this.subDetail.size()]); // SubDetailComponent
         default: return super.getProperty(hash, name, checkValid);
@@ -6040,11 +6567,17 @@ public class ExplanationOfBenefit extends DomainResource {
         case 1957227299: // productOrService
           this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
+        case -717476168: // productOrServiceEnd
+          this.productOrServiceEnd = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
         case -615513385: // modifier
           this.getModifier().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1010065041: // programCode
           this.getProgramCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          return value;
+        case 525514609: // patientPaid
+          this.patientPaid = TypeConvertor.castToMoney(value); // Money
           return value;
         case -1285004149: // quantity
           this.quantity = TypeConvertor.castToQuantity(value); // Quantity
@@ -6055,6 +6588,9 @@ public class ExplanationOfBenefit extends DomainResource {
         case -1282148017: // factor
           this.factor = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
+        case 114603: // tax
+          this.tax = TypeConvertor.castToMoney(value); // Money
+          return value;
         case 108957: // net
           this.net = TypeConvertor.castToMoney(value); // Money
           return value;
@@ -6063,6 +6599,9 @@ public class ExplanationOfBenefit extends DomainResource {
           return value;
         case -1110033957: // noteNumber
           this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value)); // PositiveIntType
+          return value;
+        case 565719004: // decision
+          this.decision = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -231349275: // adjudication
           this.getAdjudication().add((AdjudicationComponent) value); // AdjudicationComponent
@@ -6085,22 +6624,30 @@ public class ExplanationOfBenefit extends DomainResource {
           this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("productOrService")) {
           this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("productOrServiceEnd")) {
+          this.productOrServiceEnd = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("modifier")) {
           this.getModifier().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("programCode")) {
           this.getProgramCode().add(TypeConvertor.castToCodeableConcept(value));
+        } else if (name.equals("patientPaid")) {
+          this.patientPaid = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("quantity")) {
           this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("unitPrice")) {
           this.unitPrice = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("factor")) {
           this.factor = TypeConvertor.castToDecimal(value); // DecimalType
+        } else if (name.equals("tax")) {
+          this.tax = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("net")) {
           this.net = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("udi")) {
           this.getUdi().add(TypeConvertor.castToReference(value));
         } else if (name.equals("noteNumber")) {
           this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value));
+        } else if (name.equals("decision")) {
+          this.decision = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("adjudication")) {
           this.getAdjudication().add((AdjudicationComponent) value);
         } else if (name.equals("subDetail")) {
@@ -6117,14 +6664,18 @@ public class ExplanationOfBenefit extends DomainResource {
         case 1099842588:  return getRevenue();
         case 50511102:  return getCategory();
         case 1957227299:  return getProductOrService();
+        case -717476168:  return getProductOrServiceEnd();
         case -615513385:  return addModifier(); 
         case 1010065041:  return addProgramCode(); 
+        case 525514609:  return getPatientPaid();
         case -1285004149:  return getQuantity();
         case -486196699:  return getUnitPrice();
         case -1282148017:  return getFactorElement();
+        case 114603:  return getTax();
         case 108957:  return getNet();
         case 115642:  return addUdi(); 
         case -1110033957:  return addNoteNumberElement();
+        case 565719004:  return getDecision();
         case -231349275:  return addAdjudication(); 
         case -828829007:  return addSubDetail(); 
         default: return super.makeProperty(hash, name);
@@ -6139,14 +6690,18 @@ public class ExplanationOfBenefit extends DomainResource {
         case 1099842588: /*revenue*/ return new String[] {"CodeableConcept"};
         case 50511102: /*category*/ return new String[] {"CodeableConcept"};
         case 1957227299: /*productOrService*/ return new String[] {"CodeableConcept"};
+        case -717476168: /*productOrServiceEnd*/ return new String[] {"CodeableConcept"};
         case -615513385: /*modifier*/ return new String[] {"CodeableConcept"};
         case 1010065041: /*programCode*/ return new String[] {"CodeableConcept"};
+        case 525514609: /*patientPaid*/ return new String[] {"Money"};
         case -1285004149: /*quantity*/ return new String[] {"Quantity"};
         case -486196699: /*unitPrice*/ return new String[] {"Money"};
         case -1282148017: /*factor*/ return new String[] {"decimal"};
+        case 114603: /*tax*/ return new String[] {"Money"};
         case 108957: /*net*/ return new String[] {"Money"};
         case 115642: /*udi*/ return new String[] {"Reference"};
         case -1110033957: /*noteNumber*/ return new String[] {"positiveInt"};
+        case 565719004: /*decision*/ return new String[] {"CodeableConcept"};
         case -231349275: /*adjudication*/ return new String[] {"@ExplanationOfBenefit.item.adjudication"};
         case -828829007: /*subDetail*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
@@ -6171,11 +6726,19 @@ public class ExplanationOfBenefit extends DomainResource {
           this.productOrService = new CodeableConcept();
           return this.productOrService;
         }
+        else if (name.equals("productOrServiceEnd")) {
+          this.productOrServiceEnd = new CodeableConcept();
+          return this.productOrServiceEnd;
+        }
         else if (name.equals("modifier")) {
           return addModifier();
         }
         else if (name.equals("programCode")) {
           return addProgramCode();
+        }
+        else if (name.equals("patientPaid")) {
+          this.patientPaid = new Money();
+          return this.patientPaid;
         }
         else if (name.equals("quantity")) {
           this.quantity = new Quantity();
@@ -6188,6 +6751,10 @@ public class ExplanationOfBenefit extends DomainResource {
         else if (name.equals("factor")) {
           throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.item.detail.factor");
         }
+        else if (name.equals("tax")) {
+          this.tax = new Money();
+          return this.tax;
+        }
         else if (name.equals("net")) {
           this.net = new Money();
           return this.net;
@@ -6197,6 +6764,10 @@ public class ExplanationOfBenefit extends DomainResource {
         }
         else if (name.equals("noteNumber")) {
           throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.item.detail.noteNumber");
+        }
+        else if (name.equals("decision")) {
+          this.decision = new CodeableConcept();
+          return this.decision;
         }
         else if (name.equals("adjudication")) {
           return addAdjudication();
@@ -6220,6 +6791,7 @@ public class ExplanationOfBenefit extends DomainResource {
         dst.revenue = revenue == null ? null : revenue.copy();
         dst.category = category == null ? null : category.copy();
         dst.productOrService = productOrService == null ? null : productOrService.copy();
+        dst.productOrServiceEnd = productOrServiceEnd == null ? null : productOrServiceEnd.copy();
         if (modifier != null) {
           dst.modifier = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : modifier)
@@ -6230,9 +6802,11 @@ public class ExplanationOfBenefit extends DomainResource {
           for (CodeableConcept i : programCode)
             dst.programCode.add(i.copy());
         };
+        dst.patientPaid = patientPaid == null ? null : patientPaid.copy();
         dst.quantity = quantity == null ? null : quantity.copy();
         dst.unitPrice = unitPrice == null ? null : unitPrice.copy();
         dst.factor = factor == null ? null : factor.copy();
+        dst.tax = tax == null ? null : tax.copy();
         dst.net = net == null ? null : net.copy();
         if (udi != null) {
           dst.udi = new ArrayList<Reference>();
@@ -6244,6 +6818,7 @@ public class ExplanationOfBenefit extends DomainResource {
           for (PositiveIntType i : noteNumber)
             dst.noteNumber.add(i.copy());
         };
+        dst.decision = decision == null ? null : decision.copy();
         if (adjudication != null) {
           dst.adjudication = new ArrayList<AdjudicationComponent>();
           for (AdjudicationComponent i : adjudication)
@@ -6264,10 +6839,11 @@ public class ExplanationOfBenefit extends DomainResource {
           return false;
         DetailComponent o = (DetailComponent) other_;
         return compareDeep(sequence, o.sequence, true) && compareDeep(revenue, o.revenue, true) && compareDeep(category, o.category, true)
-           && compareDeep(productOrService, o.productOrService, true) && compareDeep(modifier, o.modifier, true)
-           && compareDeep(programCode, o.programCode, true) && compareDeep(quantity, o.quantity, true) && compareDeep(unitPrice, o.unitPrice, true)
-           && compareDeep(factor, o.factor, true) && compareDeep(net, o.net, true) && compareDeep(udi, o.udi, true)
-           && compareDeep(noteNumber, o.noteNumber, true) && compareDeep(adjudication, o.adjudication, true)
+           && compareDeep(productOrService, o.productOrService, true) && compareDeep(productOrServiceEnd, o.productOrServiceEnd, true)
+           && compareDeep(modifier, o.modifier, true) && compareDeep(programCode, o.programCode, true) && compareDeep(patientPaid, o.patientPaid, true)
+           && compareDeep(quantity, o.quantity, true) && compareDeep(unitPrice, o.unitPrice, true) && compareDeep(factor, o.factor, true)
+           && compareDeep(tax, o.tax, true) && compareDeep(net, o.net, true) && compareDeep(udi, o.udi, true)
+           && compareDeep(noteNumber, o.noteNumber, true) && compareDeep(decision, o.decision, true) && compareDeep(adjudication, o.adjudication, true)
            && compareDeep(subDetail, o.subDetail, true);
       }
 
@@ -6284,8 +6860,9 @@ public class ExplanationOfBenefit extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(sequence, revenue, category
-          , productOrService, modifier, programCode, quantity, unitPrice, factor, net, udi
-          , noteNumber, adjudication, subDetail);
+          , productOrService, productOrServiceEnd, modifier, programCode, patientPaid, quantity
+          , unitPrice, factor, tax, net, udi, noteNumber, decision, adjudication, subDetail
+          );
       }
 
   public String fhirType() {
@@ -6321,17 +6898,25 @@ public class ExplanationOfBenefit extends DomainResource {
         protected CodeableConcept category;
 
         /**
-         * When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.
+         * When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.
          */
-        @Child(name = "productOrService", type = {CodeableConcept.class}, order=4, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Billing, service, product, or drug code", formalDefinition="When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item." )
+        @Child(name = "productOrService", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Billing, service, product, or drug code", formalDefinition="When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-uscls")
         protected CodeableConcept productOrService;
 
         /**
+         * This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.
+         */
+        @Child(name = "productOrServiceEnd", type = {CodeableConcept.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="End of a range of codes", formalDefinition="This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-uscls")
+        protected CodeableConcept productOrServiceEnd;
+
+        /**
          * Item typification or modifiers codes to convey additional context for the product or service.
          */
-        @Child(name = "modifier", type = {CodeableConcept.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "modifier", type = {CodeableConcept.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Service/Product billing modifiers", formalDefinition="Item typification or modifiers codes to convey additional context for the product or service." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-modifiers")
         protected List<CodeableConcept> modifier;
@@ -6339,61 +6924,83 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * Identifies the program under which this may be recovered.
          */
-        @Child(name = "programCode", type = {CodeableConcept.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "programCode", type = {CodeableConcept.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Program the product or service is provided under", formalDefinition="Identifies the program under which this may be recovered." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ex-program-code")
         protected List<CodeableConcept> programCode;
 
         /**
+         * The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.
+         */
+        @Child(name = "patientPaid", type = {Money.class}, order=8, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Paid by the patient", formalDefinition="The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services." )
+        protected Money patientPaid;
+
+        /**
          * The number of repetitions of a service or product.
          */
-        @Child(name = "quantity", type = {Quantity.class}, order=7, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "quantity", type = {Quantity.class}, order=9, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Count of products or services", formalDefinition="The number of repetitions of a service or product." )
         protected Quantity quantity;
 
         /**
          * If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.
          */
-        @Child(name = "unitPrice", type = {Money.class}, order=8, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "unitPrice", type = {Money.class}, order=10, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Fee, charge or cost per item", formalDefinition="If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group." )
         protected Money unitPrice;
 
         /**
          * A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.
          */
-        @Child(name = "factor", type = {DecimalType.class}, order=9, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "factor", type = {DecimalType.class}, order=11, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Price scaling factor", formalDefinition="A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount." )
         protected DecimalType factor;
 
         /**
+         * The total of taxes applicable for this product or service.
+         */
+        @Child(name = "tax", type = {Money.class}, order=12, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Total tax", formalDefinition="The total of taxes applicable for this product or service." )
+        protected Money tax;
+
+        /**
          * The quantity times the unit price for an additional service or product or charge.
          */
-        @Child(name = "net", type = {Money.class}, order=10, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "net", type = {Money.class}, order=13, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Total item cost", formalDefinition="The quantity times the unit price for an additional service or product or charge." )
         protected Money net;
 
         /**
          * Unique Device Identifiers associated with this line item.
          */
-        @Child(name = "udi", type = {Device.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "udi", type = {Device.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Unique device identifier", formalDefinition="Unique Device Identifiers associated with this line item." )
         protected List<Reference> udi;
 
         /**
          * The numbers associated with notes below which apply to the adjudication of this item.
          */
-        @Child(name = "noteNumber", type = {PositiveIntType.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "noteNumber", type = {PositiveIntType.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Applicable note numbers", formalDefinition="The numbers associated with notes below which apply to the adjudication of this item." )
         protected List<PositiveIntType> noteNumber;
 
         /**
+         * The result of the claim, predetermination, or preauthorization adjudication.
+         */
+        @Child(name = "decision", type = {CodeableConcept.class}, order=16, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Result of the adjudication", formalDefinition="The result of the claim, predetermination, or preauthorization adjudication." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-decision")
+        protected CodeableConcept decision;
+
+        /**
          * The adjudication results.
          */
-        @Child(name = "adjudication", type = {AdjudicationComponent.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "adjudication", type = {AdjudicationComponent.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Subdetail level adjudication details", formalDefinition="The adjudication results." )
         protected List<AdjudicationComponent> adjudication;
 
-        private static final long serialVersionUID = -579551678L;
+        private static final long serialVersionUID = 971869062L;
 
     /**
      * Constructor
@@ -6405,10 +7012,9 @@ public class ExplanationOfBenefit extends DomainResource {
     /**
      * Constructor
      */
-      public SubDetailComponent(int sequence, CodeableConcept productOrService) {
+      public SubDetailComponent(int sequence) {
         super();
         this.setSequence(sequence);
-        this.setProductOrService(productOrService);
       }
 
         /**
@@ -6505,7 +7111,7 @@ public class ExplanationOfBenefit extends DomainResource {
         }
 
         /**
-         * @return {@link #productOrService} (When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.)
+         * @return {@link #productOrService} (When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.)
          */
         public CodeableConcept getProductOrService() { 
           if (this.productOrService == null)
@@ -6521,10 +7127,34 @@ public class ExplanationOfBenefit extends DomainResource {
         }
 
         /**
-         * @param value {@link #productOrService} (When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.)
+         * @param value {@link #productOrService} (When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.)
          */
         public SubDetailComponent setProductOrService(CodeableConcept value) { 
           this.productOrService = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #productOrServiceEnd} (This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.)
+         */
+        public CodeableConcept getProductOrServiceEnd() { 
+          if (this.productOrServiceEnd == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create SubDetailComponent.productOrServiceEnd");
+            else if (Configuration.doAutoCreate())
+              this.productOrServiceEnd = new CodeableConcept(); // cc
+          return this.productOrServiceEnd;
+        }
+
+        public boolean hasProductOrServiceEnd() { 
+          return this.productOrServiceEnd != null && !this.productOrServiceEnd.isEmpty();
+        }
+
+        /**
+         * @param value {@link #productOrServiceEnd} (This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.)
+         */
+        public SubDetailComponent setProductOrServiceEnd(CodeableConcept value) { 
+          this.productOrServiceEnd = value;
           return this;
         }
 
@@ -6632,6 +7262,30 @@ public class ExplanationOfBenefit extends DomainResource {
             addProgramCode();
           }
           return getProgramCode().get(0);
+        }
+
+        /**
+         * @return {@link #patientPaid} (The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.)
+         */
+        public Money getPatientPaid() { 
+          if (this.patientPaid == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create SubDetailComponent.patientPaid");
+            else if (Configuration.doAutoCreate())
+              this.patientPaid = new Money(); // cc
+          return this.patientPaid;
+        }
+
+        public boolean hasPatientPaid() { 
+          return this.patientPaid != null && !this.patientPaid.isEmpty();
+        }
+
+        /**
+         * @param value {@link #patientPaid} (The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.)
+         */
+        public SubDetailComponent setPatientPaid(Money value) { 
+          this.patientPaid = value;
+          return this;
         }
 
         /**
@@ -6746,6 +7400,30 @@ public class ExplanationOfBenefit extends DomainResource {
         public SubDetailComponent setFactor(double value) { 
               this.factor = new DecimalType();
             this.factor.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #tax} (The total of taxes applicable for this product or service.)
+         */
+        public Money getTax() { 
+          if (this.tax == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create SubDetailComponent.tax");
+            else if (Configuration.doAutoCreate())
+              this.tax = new Money(); // cc
+          return this.tax;
+        }
+
+        public boolean hasTax() { 
+          return this.tax != null && !this.tax.isEmpty();
+        }
+
+        /**
+         * @param value {@link #tax} (The total of taxes applicable for this product or service.)
+         */
+        public SubDetailComponent setTax(Money value) { 
+          this.tax = value;
           return this;
         }
 
@@ -6888,6 +7566,30 @@ public class ExplanationOfBenefit extends DomainResource {
         }
 
         /**
+         * @return {@link #decision} (The result of the claim, predetermination, or preauthorization adjudication.)
+         */
+        public CodeableConcept getDecision() { 
+          if (this.decision == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create SubDetailComponent.decision");
+            else if (Configuration.doAutoCreate())
+              this.decision = new CodeableConcept(); // cc
+          return this.decision;
+        }
+
+        public boolean hasDecision() { 
+          return this.decision != null && !this.decision.isEmpty();
+        }
+
+        /**
+         * @param value {@link #decision} (The result of the claim, predetermination, or preauthorization adjudication.)
+         */
+        public SubDetailComponent setDecision(CodeableConcept value) { 
+          this.decision = value;
+          return this;
+        }
+
+        /**
          * @return {@link #adjudication} (The adjudication results.)
          */
         public List<AdjudicationComponent> getAdjudication() { 
@@ -6945,15 +7647,19 @@ public class ExplanationOfBenefit extends DomainResource {
           children.add(new Property("sequence", "positiveInt", "A claim detail line. Either a simple (a product or service) or a 'group' of sub-details which are simple items.", 0, 1, sequence));
           children.add(new Property("revenue", "CodeableConcept", "The type of revenue or cost center providing the product and/or service.", 0, 1, revenue));
           children.add(new Property("category", "CodeableConcept", "Code to identify the general type of benefits under which products and services are provided.", 0, 1, category));
-          children.add(new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.", 0, 1, productOrService));
+          children.add(new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.", 0, 1, productOrService));
+          children.add(new Property("productOrServiceEnd", "CodeableConcept", "This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.", 0, 1, productOrServiceEnd));
           children.add(new Property("modifier", "CodeableConcept", "Item typification or modifiers codes to convey additional context for the product or service.", 0, java.lang.Integer.MAX_VALUE, modifier));
           children.add(new Property("programCode", "CodeableConcept", "Identifies the program under which this may be recovered.", 0, java.lang.Integer.MAX_VALUE, programCode));
+          children.add(new Property("patientPaid", "Money", "The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.", 0, 1, patientPaid));
           children.add(new Property("quantity", "Quantity", "The number of repetitions of a service or product.", 0, 1, quantity));
           children.add(new Property("unitPrice", "Money", "If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.", 0, 1, unitPrice));
           children.add(new Property("factor", "decimal", "A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.", 0, 1, factor));
+          children.add(new Property("tax", "Money", "The total of taxes applicable for this product or service.", 0, 1, tax));
           children.add(new Property("net", "Money", "The quantity times the unit price for an additional service or product or charge.", 0, 1, net));
           children.add(new Property("udi", "Reference(Device)", "Unique Device Identifiers associated with this line item.", 0, java.lang.Integer.MAX_VALUE, udi));
           children.add(new Property("noteNumber", "positiveInt", "The numbers associated with notes below which apply to the adjudication of this item.", 0, java.lang.Integer.MAX_VALUE, noteNumber));
+          children.add(new Property("decision", "CodeableConcept", "The result of the claim, predetermination, or preauthorization adjudication.", 0, 1, decision));
           children.add(new Property("adjudication", "@ExplanationOfBenefit.item.adjudication", "The adjudication results.", 0, java.lang.Integer.MAX_VALUE, adjudication));
         }
 
@@ -6963,15 +7669,19 @@ public class ExplanationOfBenefit extends DomainResource {
           case 1349547969: /*sequence*/  return new Property("sequence", "positiveInt", "A claim detail line. Either a simple (a product or service) or a 'group' of sub-details which are simple items.", 0, 1, sequence);
           case 1099842588: /*revenue*/  return new Property("revenue", "CodeableConcept", "The type of revenue or cost center providing the product and/or service.", 0, 1, revenue);
           case 50511102: /*category*/  return new Property("category", "CodeableConcept", "Code to identify the general type of benefits under which products and services are provided.", 0, 1, category);
-          case 1957227299: /*productOrService*/  return new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.", 0, 1, productOrService);
+          case 1957227299: /*productOrService*/  return new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.", 0, 1, productOrService);
+          case -717476168: /*productOrServiceEnd*/  return new Property("productOrServiceEnd", "CodeableConcept", "This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.", 0, 1, productOrServiceEnd);
           case -615513385: /*modifier*/  return new Property("modifier", "CodeableConcept", "Item typification or modifiers codes to convey additional context for the product or service.", 0, java.lang.Integer.MAX_VALUE, modifier);
           case 1010065041: /*programCode*/  return new Property("programCode", "CodeableConcept", "Identifies the program under which this may be recovered.", 0, java.lang.Integer.MAX_VALUE, programCode);
+          case 525514609: /*patientPaid*/  return new Property("patientPaid", "Money", "The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.", 0, 1, patientPaid);
           case -1285004149: /*quantity*/  return new Property("quantity", "Quantity", "The number of repetitions of a service or product.", 0, 1, quantity);
           case -486196699: /*unitPrice*/  return new Property("unitPrice", "Money", "If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.", 0, 1, unitPrice);
           case -1282148017: /*factor*/  return new Property("factor", "decimal", "A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.", 0, 1, factor);
+          case 114603: /*tax*/  return new Property("tax", "Money", "The total of taxes applicable for this product or service.", 0, 1, tax);
           case 108957: /*net*/  return new Property("net", "Money", "The quantity times the unit price for an additional service or product or charge.", 0, 1, net);
           case 115642: /*udi*/  return new Property("udi", "Reference(Device)", "Unique Device Identifiers associated with this line item.", 0, java.lang.Integer.MAX_VALUE, udi);
           case -1110033957: /*noteNumber*/  return new Property("noteNumber", "positiveInt", "The numbers associated with notes below which apply to the adjudication of this item.", 0, java.lang.Integer.MAX_VALUE, noteNumber);
+          case 565719004: /*decision*/  return new Property("decision", "CodeableConcept", "The result of the claim, predetermination, or preauthorization adjudication.", 0, 1, decision);
           case -231349275: /*adjudication*/  return new Property("adjudication", "@ExplanationOfBenefit.item.adjudication", "The adjudication results.", 0, java.lang.Integer.MAX_VALUE, adjudication);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -6985,14 +7695,18 @@ public class ExplanationOfBenefit extends DomainResource {
         case 1099842588: /*revenue*/ return this.revenue == null ? new Base[0] : new Base[] {this.revenue}; // CodeableConcept
         case 50511102: /*category*/ return this.category == null ? new Base[0] : new Base[] {this.category}; // CodeableConcept
         case 1957227299: /*productOrService*/ return this.productOrService == null ? new Base[0] : new Base[] {this.productOrService}; // CodeableConcept
+        case -717476168: /*productOrServiceEnd*/ return this.productOrServiceEnd == null ? new Base[0] : new Base[] {this.productOrServiceEnd}; // CodeableConcept
         case -615513385: /*modifier*/ return this.modifier == null ? new Base[0] : this.modifier.toArray(new Base[this.modifier.size()]); // CodeableConcept
         case 1010065041: /*programCode*/ return this.programCode == null ? new Base[0] : this.programCode.toArray(new Base[this.programCode.size()]); // CodeableConcept
+        case 525514609: /*patientPaid*/ return this.patientPaid == null ? new Base[0] : new Base[] {this.patientPaid}; // Money
         case -1285004149: /*quantity*/ return this.quantity == null ? new Base[0] : new Base[] {this.quantity}; // Quantity
         case -486196699: /*unitPrice*/ return this.unitPrice == null ? new Base[0] : new Base[] {this.unitPrice}; // Money
         case -1282148017: /*factor*/ return this.factor == null ? new Base[0] : new Base[] {this.factor}; // DecimalType
+        case 114603: /*tax*/ return this.tax == null ? new Base[0] : new Base[] {this.tax}; // Money
         case 108957: /*net*/ return this.net == null ? new Base[0] : new Base[] {this.net}; // Money
         case 115642: /*udi*/ return this.udi == null ? new Base[0] : this.udi.toArray(new Base[this.udi.size()]); // Reference
         case -1110033957: /*noteNumber*/ return this.noteNumber == null ? new Base[0] : this.noteNumber.toArray(new Base[this.noteNumber.size()]); // PositiveIntType
+        case 565719004: /*decision*/ return this.decision == null ? new Base[0] : new Base[] {this.decision}; // CodeableConcept
         case -231349275: /*adjudication*/ return this.adjudication == null ? new Base[0] : this.adjudication.toArray(new Base[this.adjudication.size()]); // AdjudicationComponent
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -7014,11 +7728,17 @@ public class ExplanationOfBenefit extends DomainResource {
         case 1957227299: // productOrService
           this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
+        case -717476168: // productOrServiceEnd
+          this.productOrServiceEnd = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
         case -615513385: // modifier
           this.getModifier().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1010065041: // programCode
           this.getProgramCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          return value;
+        case 525514609: // patientPaid
+          this.patientPaid = TypeConvertor.castToMoney(value); // Money
           return value;
         case -1285004149: // quantity
           this.quantity = TypeConvertor.castToQuantity(value); // Quantity
@@ -7029,6 +7749,9 @@ public class ExplanationOfBenefit extends DomainResource {
         case -1282148017: // factor
           this.factor = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
+        case 114603: // tax
+          this.tax = TypeConvertor.castToMoney(value); // Money
+          return value;
         case 108957: // net
           this.net = TypeConvertor.castToMoney(value); // Money
           return value;
@@ -7037,6 +7760,9 @@ public class ExplanationOfBenefit extends DomainResource {
           return value;
         case -1110033957: // noteNumber
           this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value)); // PositiveIntType
+          return value;
+        case 565719004: // decision
+          this.decision = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -231349275: // adjudication
           this.getAdjudication().add((AdjudicationComponent) value); // AdjudicationComponent
@@ -7056,22 +7782,30 @@ public class ExplanationOfBenefit extends DomainResource {
           this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("productOrService")) {
           this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("productOrServiceEnd")) {
+          this.productOrServiceEnd = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("modifier")) {
           this.getModifier().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("programCode")) {
           this.getProgramCode().add(TypeConvertor.castToCodeableConcept(value));
+        } else if (name.equals("patientPaid")) {
+          this.patientPaid = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("quantity")) {
           this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("unitPrice")) {
           this.unitPrice = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("factor")) {
           this.factor = TypeConvertor.castToDecimal(value); // DecimalType
+        } else if (name.equals("tax")) {
+          this.tax = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("net")) {
           this.net = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("udi")) {
           this.getUdi().add(TypeConvertor.castToReference(value));
         } else if (name.equals("noteNumber")) {
           this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value));
+        } else if (name.equals("decision")) {
+          this.decision = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("adjudication")) {
           this.getAdjudication().add((AdjudicationComponent) value);
         } else
@@ -7086,14 +7820,18 @@ public class ExplanationOfBenefit extends DomainResource {
         case 1099842588:  return getRevenue();
         case 50511102:  return getCategory();
         case 1957227299:  return getProductOrService();
+        case -717476168:  return getProductOrServiceEnd();
         case -615513385:  return addModifier(); 
         case 1010065041:  return addProgramCode(); 
+        case 525514609:  return getPatientPaid();
         case -1285004149:  return getQuantity();
         case -486196699:  return getUnitPrice();
         case -1282148017:  return getFactorElement();
+        case 114603:  return getTax();
         case 108957:  return getNet();
         case 115642:  return addUdi(); 
         case -1110033957:  return addNoteNumberElement();
+        case 565719004:  return getDecision();
         case -231349275:  return addAdjudication(); 
         default: return super.makeProperty(hash, name);
         }
@@ -7107,14 +7845,18 @@ public class ExplanationOfBenefit extends DomainResource {
         case 1099842588: /*revenue*/ return new String[] {"CodeableConcept"};
         case 50511102: /*category*/ return new String[] {"CodeableConcept"};
         case 1957227299: /*productOrService*/ return new String[] {"CodeableConcept"};
+        case -717476168: /*productOrServiceEnd*/ return new String[] {"CodeableConcept"};
         case -615513385: /*modifier*/ return new String[] {"CodeableConcept"};
         case 1010065041: /*programCode*/ return new String[] {"CodeableConcept"};
+        case 525514609: /*patientPaid*/ return new String[] {"Money"};
         case -1285004149: /*quantity*/ return new String[] {"Quantity"};
         case -486196699: /*unitPrice*/ return new String[] {"Money"};
         case -1282148017: /*factor*/ return new String[] {"decimal"};
+        case 114603: /*tax*/ return new String[] {"Money"};
         case 108957: /*net*/ return new String[] {"Money"};
         case 115642: /*udi*/ return new String[] {"Reference"};
         case -1110033957: /*noteNumber*/ return new String[] {"positiveInt"};
+        case 565719004: /*decision*/ return new String[] {"CodeableConcept"};
         case -231349275: /*adjudication*/ return new String[] {"@ExplanationOfBenefit.item.adjudication"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -7138,11 +7880,19 @@ public class ExplanationOfBenefit extends DomainResource {
           this.productOrService = new CodeableConcept();
           return this.productOrService;
         }
+        else if (name.equals("productOrServiceEnd")) {
+          this.productOrServiceEnd = new CodeableConcept();
+          return this.productOrServiceEnd;
+        }
         else if (name.equals("modifier")) {
           return addModifier();
         }
         else if (name.equals("programCode")) {
           return addProgramCode();
+        }
+        else if (name.equals("patientPaid")) {
+          this.patientPaid = new Money();
+          return this.patientPaid;
         }
         else if (name.equals("quantity")) {
           this.quantity = new Quantity();
@@ -7155,6 +7905,10 @@ public class ExplanationOfBenefit extends DomainResource {
         else if (name.equals("factor")) {
           throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.item.detail.subDetail.factor");
         }
+        else if (name.equals("tax")) {
+          this.tax = new Money();
+          return this.tax;
+        }
         else if (name.equals("net")) {
           this.net = new Money();
           return this.net;
@@ -7164,6 +7918,10 @@ public class ExplanationOfBenefit extends DomainResource {
         }
         else if (name.equals("noteNumber")) {
           throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.item.detail.subDetail.noteNumber");
+        }
+        else if (name.equals("decision")) {
+          this.decision = new CodeableConcept();
+          return this.decision;
         }
         else if (name.equals("adjudication")) {
           return addAdjudication();
@@ -7184,6 +7942,7 @@ public class ExplanationOfBenefit extends DomainResource {
         dst.revenue = revenue == null ? null : revenue.copy();
         dst.category = category == null ? null : category.copy();
         dst.productOrService = productOrService == null ? null : productOrService.copy();
+        dst.productOrServiceEnd = productOrServiceEnd == null ? null : productOrServiceEnd.copy();
         if (modifier != null) {
           dst.modifier = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : modifier)
@@ -7194,9 +7953,11 @@ public class ExplanationOfBenefit extends DomainResource {
           for (CodeableConcept i : programCode)
             dst.programCode.add(i.copy());
         };
+        dst.patientPaid = patientPaid == null ? null : patientPaid.copy();
         dst.quantity = quantity == null ? null : quantity.copy();
         dst.unitPrice = unitPrice == null ? null : unitPrice.copy();
         dst.factor = factor == null ? null : factor.copy();
+        dst.tax = tax == null ? null : tax.copy();
         dst.net = net == null ? null : net.copy();
         if (udi != null) {
           dst.udi = new ArrayList<Reference>();
@@ -7208,6 +7969,7 @@ public class ExplanationOfBenefit extends DomainResource {
           for (PositiveIntType i : noteNumber)
             dst.noteNumber.add(i.copy());
         };
+        dst.decision = decision == null ? null : decision.copy();
         if (adjudication != null) {
           dst.adjudication = new ArrayList<AdjudicationComponent>();
           for (AdjudicationComponent i : adjudication)
@@ -7223,10 +7985,11 @@ public class ExplanationOfBenefit extends DomainResource {
           return false;
         SubDetailComponent o = (SubDetailComponent) other_;
         return compareDeep(sequence, o.sequence, true) && compareDeep(revenue, o.revenue, true) && compareDeep(category, o.category, true)
-           && compareDeep(productOrService, o.productOrService, true) && compareDeep(modifier, o.modifier, true)
-           && compareDeep(programCode, o.programCode, true) && compareDeep(quantity, o.quantity, true) && compareDeep(unitPrice, o.unitPrice, true)
-           && compareDeep(factor, o.factor, true) && compareDeep(net, o.net, true) && compareDeep(udi, o.udi, true)
-           && compareDeep(noteNumber, o.noteNumber, true) && compareDeep(adjudication, o.adjudication, true)
+           && compareDeep(productOrService, o.productOrService, true) && compareDeep(productOrServiceEnd, o.productOrServiceEnd, true)
+           && compareDeep(modifier, o.modifier, true) && compareDeep(programCode, o.programCode, true) && compareDeep(patientPaid, o.patientPaid, true)
+           && compareDeep(quantity, o.quantity, true) && compareDeep(unitPrice, o.unitPrice, true) && compareDeep(factor, o.factor, true)
+           && compareDeep(tax, o.tax, true) && compareDeep(net, o.net, true) && compareDeep(udi, o.udi, true)
+           && compareDeep(noteNumber, o.noteNumber, true) && compareDeep(decision, o.decision, true) && compareDeep(adjudication, o.adjudication, true)
           ;
       }
 
@@ -7243,8 +8006,8 @@ public class ExplanationOfBenefit extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(sequence, revenue, category
-          , productOrService, modifier, programCode, quantity, unitPrice, factor, net, udi
-          , noteNumber, adjudication);
+          , productOrService, productOrServiceEnd, modifier, programCode, patientPaid, quantity
+          , unitPrice, factor, tax, net, udi, noteNumber, decision, adjudication);
       }
 
   public String fhirType() {
@@ -7285,17 +8048,33 @@ public class ExplanationOfBenefit extends DomainResource {
         protected List<Reference> provider;
 
         /**
-         * When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.
+         * The type of revenue or cost center providing the product and/or service.
          */
-        @Child(name = "productOrService", type = {CodeableConcept.class}, order=5, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Billing, service, product, or drug code", formalDefinition="When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item." )
+        @Child(name = "revenue", type = {CodeableConcept.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Revenue or cost center code", formalDefinition="The type of revenue or cost center providing the product and/or service." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ex-revenue-center")
+        protected CodeableConcept revenue;
+
+        /**
+         * When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.
+         */
+        @Child(name = "productOrService", type = {CodeableConcept.class}, order=6, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Billing, service, product, or drug code", formalDefinition="When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-uscls")
         protected CodeableConcept productOrService;
 
         /**
+         * This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.
+         */
+        @Child(name = "productOrServiceEnd", type = {CodeableConcept.class}, order=7, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="End of a range of codes", formalDefinition="This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-uscls")
+        protected CodeableConcept productOrServiceEnd;
+
+        /**
          * Item typification or modifiers codes to convey additional context for the product or service.
          */
-        @Child(name = "modifier", type = {CodeableConcept.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "modifier", type = {CodeableConcept.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Service/Product billing modifiers", formalDefinition="Item typification or modifiers codes to convey additional context for the product or service." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-modifiers")
         protected List<CodeableConcept> modifier;
@@ -7303,7 +8082,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * Identifies the program under which this may be recovered.
          */
-        @Child(name = "programCode", type = {CodeableConcept.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "programCode", type = {CodeableConcept.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Program the product or service is provided under", formalDefinition="Identifies the program under which this may be recovered." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ex-program-code")
         protected List<CodeableConcept> programCode;
@@ -7311,98 +8090,103 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * The date or dates when the service or product was supplied, performed or completed.
          */
-        @Child(name = "serviced", type = {DateType.class, Period.class}, order=8, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "serviced", type = {DateType.class, Period.class}, order=10, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Date or dates of service or product delivery", formalDefinition="The date or dates when the service or product was supplied, performed or completed." )
         protected DataType serviced;
 
         /**
          * Where the product or service was provided.
          */
-        @Child(name = "location", type = {CodeableConcept.class, Address.class, Location.class}, order=9, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "location", type = {CodeableConcept.class, Address.class, Location.class}, order=11, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Place of service or where product was supplied", formalDefinition="Where the product or service was provided." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-place")
         protected DataType location;
 
         /**
+         * The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.
+         */
+        @Child(name = "patientPaid", type = {Money.class}, order=12, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Paid by the patient", formalDefinition="The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services." )
+        protected Money patientPaid;
+
+        /**
          * The number of repetitions of a service or product.
          */
-        @Child(name = "quantity", type = {Quantity.class}, order=10, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "quantity", type = {Quantity.class}, order=13, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Count of products or services", formalDefinition="The number of repetitions of a service or product." )
         protected Quantity quantity;
 
         /**
          * If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.
          */
-        @Child(name = "unitPrice", type = {Money.class}, order=11, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "unitPrice", type = {Money.class}, order=14, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Fee, charge or cost per item", formalDefinition="If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group." )
         protected Money unitPrice;
 
         /**
          * A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.
          */
-        @Child(name = "factor", type = {DecimalType.class}, order=12, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "factor", type = {DecimalType.class}, order=15, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Price scaling factor", formalDefinition="A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount." )
         protected DecimalType factor;
 
         /**
+         * The total of taxes applicable for this product or service.
+         */
+        @Child(name = "tax", type = {Money.class}, order=16, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Total tax", formalDefinition="The total of taxes applicable for this product or service." )
+        protected Money tax;
+
+        /**
          * The quantity times the unit price for an additional service or product or charge.
          */
-        @Child(name = "net", type = {Money.class}, order=13, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "net", type = {Money.class}, order=17, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Total item cost", formalDefinition="The quantity times the unit price for an additional service or product or charge." )
         protected Money net;
 
         /**
-         * Physical service site on the patient (limb, tooth, etc.).
+         * Physical location where the service is performed or applies.
          */
-        @Child(name = "bodySite", type = {CodeableConcept.class}, order=14, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Anatomical location", formalDefinition="Physical service site on the patient (limb, tooth, etc.)." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/tooth")
-        protected CodeableConcept bodySite;
-
-        /**
-         * A region or surface of the bodySite, e.g. limb region or tooth surface(s).
-         */
-        @Child(name = "subSite", type = {CodeableConcept.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Anatomical sub-location", formalDefinition="A region or surface of the bodySite, e.g. limb region or tooth surface(s)." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/surface")
-        protected List<CodeableConcept> subSite;
+        @Child(name = "bodySite", type = {}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Anatomical location", formalDefinition="Physical location where the service is performed or applies." )
+        protected List<BodySiteComponentA> bodySite;
 
         /**
          * The numbers associated with notes below which apply to the adjudication of this item.
          */
-        @Child(name = "noteNumber", type = {PositiveIntType.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "noteNumber", type = {PositiveIntType.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Applicable note numbers", formalDefinition="The numbers associated with notes below which apply to the adjudication of this item." )
         protected List<PositiveIntType> noteNumber;
 
         /**
+         * The result of the claim, predetermination, or preauthorization adjudication.
+         */
+        @Child(name = "decision", type = {CodeableConcept.class}, order=20, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Result of the adjudication", formalDefinition="The result of the claim, predetermination, or preauthorization adjudication." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-decision")
+        protected CodeableConcept decision;
+
+        /**
          * The adjudication results.
          */
-        @Child(name = "adjudication", type = {AdjudicationComponent.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "adjudication", type = {AdjudicationComponent.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Added items adjudication", formalDefinition="The adjudication results." )
         protected List<AdjudicationComponent> adjudication;
 
         /**
          * The second-tier service adjudications for payor added services.
          */
-        @Child(name = "detail", type = {}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "detail", type = {}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Insurer added line items", formalDefinition="The second-tier service adjudications for payor added services." )
         protected List<AddedItemDetailComponent> detail;
 
-        private static final long serialVersionUID = 2055842184L;
+        private static final long serialVersionUID = -256167577L;
 
     /**
      * Constructor
      */
       public AddedItemComponent() {
         super();
-      }
-
-    /**
-     * Constructor
-     */
-      public AddedItemComponent(CodeableConcept productOrService) {
-        super();
-        this.setProductOrService(productOrService);
       }
 
         /**
@@ -7642,7 +8426,31 @@ public class ExplanationOfBenefit extends DomainResource {
         }
 
         /**
-         * @return {@link #productOrService} (When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.)
+         * @return {@link #revenue} (The type of revenue or cost center providing the product and/or service.)
+         */
+        public CodeableConcept getRevenue() { 
+          if (this.revenue == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AddedItemComponent.revenue");
+            else if (Configuration.doAutoCreate())
+              this.revenue = new CodeableConcept(); // cc
+          return this.revenue;
+        }
+
+        public boolean hasRevenue() { 
+          return this.revenue != null && !this.revenue.isEmpty();
+        }
+
+        /**
+         * @param value {@link #revenue} (The type of revenue or cost center providing the product and/or service.)
+         */
+        public AddedItemComponent setRevenue(CodeableConcept value) { 
+          this.revenue = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #productOrService} (When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.)
          */
         public CodeableConcept getProductOrService() { 
           if (this.productOrService == null)
@@ -7658,10 +8466,34 @@ public class ExplanationOfBenefit extends DomainResource {
         }
 
         /**
-         * @param value {@link #productOrService} (When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.)
+         * @param value {@link #productOrService} (When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.)
          */
         public AddedItemComponent setProductOrService(CodeableConcept value) { 
           this.productOrService = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #productOrServiceEnd} (This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.)
+         */
+        public CodeableConcept getProductOrServiceEnd() { 
+          if (this.productOrServiceEnd == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AddedItemComponent.productOrServiceEnd");
+            else if (Configuration.doAutoCreate())
+              this.productOrServiceEnd = new CodeableConcept(); // cc
+          return this.productOrServiceEnd;
+        }
+
+        public boolean hasProductOrServiceEnd() { 
+          return this.productOrServiceEnd != null && !this.productOrServiceEnd.isEmpty();
+        }
+
+        /**
+         * @param value {@link #productOrServiceEnd} (This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.)
+         */
+        public AddedItemComponent setProductOrServiceEnd(CodeableConcept value) { 
+          this.productOrServiceEnd = value;
           return this;
         }
 
@@ -7889,6 +8721,30 @@ public class ExplanationOfBenefit extends DomainResource {
         }
 
         /**
+         * @return {@link #patientPaid} (The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.)
+         */
+        public Money getPatientPaid() { 
+          if (this.patientPaid == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AddedItemComponent.patientPaid");
+            else if (Configuration.doAutoCreate())
+              this.patientPaid = new Money(); // cc
+          return this.patientPaid;
+        }
+
+        public boolean hasPatientPaid() { 
+          return this.patientPaid != null && !this.patientPaid.isEmpty();
+        }
+
+        /**
+         * @param value {@link #patientPaid} (The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.)
+         */
+        public AddedItemComponent setPatientPaid(Money value) { 
+          this.patientPaid = value;
+          return this;
+        }
+
+        /**
          * @return {@link #quantity} (The number of repetitions of a service or product.)
          */
         public Quantity getQuantity() { 
@@ -8004,6 +8860,30 @@ public class ExplanationOfBenefit extends DomainResource {
         }
 
         /**
+         * @return {@link #tax} (The total of taxes applicable for this product or service.)
+         */
+        public Money getTax() { 
+          if (this.tax == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AddedItemComponent.tax");
+            else if (Configuration.doAutoCreate())
+              this.tax = new Money(); // cc
+          return this.tax;
+        }
+
+        public boolean hasTax() { 
+          return this.tax != null && !this.tax.isEmpty();
+        }
+
+        /**
+         * @param value {@link #tax} (The total of taxes applicable for this product or service.)
+         */
+        public AddedItemComponent setTax(Money value) { 
+          this.tax = value;
+          return this;
+        }
+
+        /**
          * @return {@link #net} (The quantity times the unit price for an additional service or product or charge.)
          */
         public Money getNet() { 
@@ -8028,80 +8908,56 @@ public class ExplanationOfBenefit extends DomainResource {
         }
 
         /**
-         * @return {@link #bodySite} (Physical service site on the patient (limb, tooth, etc.).)
+         * @return {@link #bodySite} (Physical location where the service is performed or applies.)
          */
-        public CodeableConcept getBodySite() { 
+        public List<BodySiteComponentA> getBodySite() { 
           if (this.bodySite == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create AddedItemComponent.bodySite");
-            else if (Configuration.doAutoCreate())
-              this.bodySite = new CodeableConcept(); // cc
+            this.bodySite = new ArrayList<BodySiteComponentA>();
           return this.bodySite;
-        }
-
-        public boolean hasBodySite() { 
-          return this.bodySite != null && !this.bodySite.isEmpty();
-        }
-
-        /**
-         * @param value {@link #bodySite} (Physical service site on the patient (limb, tooth, etc.).)
-         */
-        public AddedItemComponent setBodySite(CodeableConcept value) { 
-          this.bodySite = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #subSite} (A region or surface of the bodySite, e.g. limb region or tooth surface(s).)
-         */
-        public List<CodeableConcept> getSubSite() { 
-          if (this.subSite == null)
-            this.subSite = new ArrayList<CodeableConcept>();
-          return this.subSite;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public AddedItemComponent setSubSite(List<CodeableConcept> theSubSite) { 
-          this.subSite = theSubSite;
+        public AddedItemComponent setBodySite(List<BodySiteComponentA> theBodySite) { 
+          this.bodySite = theBodySite;
           return this;
         }
 
-        public boolean hasSubSite() { 
-          if (this.subSite == null)
+        public boolean hasBodySite() { 
+          if (this.bodySite == null)
             return false;
-          for (CodeableConcept item : this.subSite)
+          for (BodySiteComponentA item : this.bodySite)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public CodeableConcept addSubSite() { //3
-          CodeableConcept t = new CodeableConcept();
-          if (this.subSite == null)
-            this.subSite = new ArrayList<CodeableConcept>();
-          this.subSite.add(t);
+        public BodySiteComponentA addBodySite() { //3
+          BodySiteComponentA t = new BodySiteComponentA();
+          if (this.bodySite == null)
+            this.bodySite = new ArrayList<BodySiteComponentA>();
+          this.bodySite.add(t);
           return t;
         }
 
-        public AddedItemComponent addSubSite(CodeableConcept t) { //3
+        public AddedItemComponent addBodySite(BodySiteComponentA t) { //3
           if (t == null)
             return this;
-          if (this.subSite == null)
-            this.subSite = new ArrayList<CodeableConcept>();
-          this.subSite.add(t);
+          if (this.bodySite == null)
+            this.bodySite = new ArrayList<BodySiteComponentA>();
+          this.bodySite.add(t);
           return this;
         }
 
         /**
-         * @return The first repetition of repeating field {@link #subSite}, creating it if it does not already exist {3}
+         * @return The first repetition of repeating field {@link #bodySite}, creating it if it does not already exist {3}
          */
-        public CodeableConcept getSubSiteFirstRep() { 
-          if (getSubSite().isEmpty()) {
-            addSubSite();
+        public BodySiteComponentA getBodySiteFirstRep() { 
+          if (getBodySite().isEmpty()) {
+            addBodySite();
           }
-          return getSubSite().get(0);
+          return getBodySite().get(0);
         }
 
         /**
@@ -8163,6 +9019,30 @@ public class ExplanationOfBenefit extends DomainResource {
             if (v.getValue().equals(value)) // positiveInt
               return true;
           return false;
+        }
+
+        /**
+         * @return {@link #decision} (The result of the claim, predetermination, or preauthorization adjudication.)
+         */
+        public CodeableConcept getDecision() { 
+          if (this.decision == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AddedItemComponent.decision");
+            else if (Configuration.doAutoCreate())
+              this.decision = new CodeableConcept(); // cc
+          return this.decision;
+        }
+
+        public boolean hasDecision() { 
+          return this.decision != null && !this.decision.isEmpty();
+        }
+
+        /**
+         * @param value {@link #decision} (The result of the claim, predetermination, or preauthorization adjudication.)
+         */
+        public AddedItemComponent setDecision(CodeableConcept value) { 
+          this.decision = value;
+          return this;
         }
 
         /**
@@ -8277,18 +9157,22 @@ public class ExplanationOfBenefit extends DomainResource {
           children.add(new Property("detailSequence", "positiveInt", "The sequence number of the details within the claim item which this line is intended to replace.", 0, java.lang.Integer.MAX_VALUE, detailSequence));
           children.add(new Property("subDetailSequence", "positiveInt", "The sequence number of the sub-details woithin the details within the claim item which this line is intended to replace.", 0, java.lang.Integer.MAX_VALUE, subDetailSequence));
           children.add(new Property("provider", "Reference(Practitioner|PractitionerRole|Organization)", "The providers who are authorized for the services rendered to the patient.", 0, java.lang.Integer.MAX_VALUE, provider));
-          children.add(new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.", 0, 1, productOrService));
+          children.add(new Property("revenue", "CodeableConcept", "The type of revenue or cost center providing the product and/or service.", 0, 1, revenue));
+          children.add(new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.", 0, 1, productOrService));
+          children.add(new Property("productOrServiceEnd", "CodeableConcept", "This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.", 0, 1, productOrServiceEnd));
           children.add(new Property("modifier", "CodeableConcept", "Item typification or modifiers codes to convey additional context for the product or service.", 0, java.lang.Integer.MAX_VALUE, modifier));
           children.add(new Property("programCode", "CodeableConcept", "Identifies the program under which this may be recovered.", 0, java.lang.Integer.MAX_VALUE, programCode));
           children.add(new Property("serviced[x]", "date|Period", "The date or dates when the service or product was supplied, performed or completed.", 0, 1, serviced));
           children.add(new Property("location[x]", "CodeableConcept|Address|Reference(Location)", "Where the product or service was provided.", 0, 1, location));
+          children.add(new Property("patientPaid", "Money", "The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.", 0, 1, patientPaid));
           children.add(new Property("quantity", "Quantity", "The number of repetitions of a service or product.", 0, 1, quantity));
           children.add(new Property("unitPrice", "Money", "If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.", 0, 1, unitPrice));
           children.add(new Property("factor", "decimal", "A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.", 0, 1, factor));
+          children.add(new Property("tax", "Money", "The total of taxes applicable for this product or service.", 0, 1, tax));
           children.add(new Property("net", "Money", "The quantity times the unit price for an additional service or product or charge.", 0, 1, net));
-          children.add(new Property("bodySite", "CodeableConcept", "Physical service site on the patient (limb, tooth, etc.).", 0, 1, bodySite));
-          children.add(new Property("subSite", "CodeableConcept", "A region or surface of the bodySite, e.g. limb region or tooth surface(s).", 0, java.lang.Integer.MAX_VALUE, subSite));
+          children.add(new Property("bodySite", "", "Physical location where the service is performed or applies.", 0, java.lang.Integer.MAX_VALUE, bodySite));
           children.add(new Property("noteNumber", "positiveInt", "The numbers associated with notes below which apply to the adjudication of this item.", 0, java.lang.Integer.MAX_VALUE, noteNumber));
+          children.add(new Property("decision", "CodeableConcept", "The result of the claim, predetermination, or preauthorization adjudication.", 0, 1, decision));
           children.add(new Property("adjudication", "@ExplanationOfBenefit.item.adjudication", "The adjudication results.", 0, java.lang.Integer.MAX_VALUE, adjudication));
           children.add(new Property("detail", "", "The second-tier service adjudications for payor added services.", 0, java.lang.Integer.MAX_VALUE, detail));
         }
@@ -8300,7 +9184,9 @@ public class ExplanationOfBenefit extends DomainResource {
           case 1321472818: /*detailSequence*/  return new Property("detailSequence", "positiveInt", "The sequence number of the details within the claim item which this line is intended to replace.", 0, java.lang.Integer.MAX_VALUE, detailSequence);
           case -855462510: /*subDetailSequence*/  return new Property("subDetailSequence", "positiveInt", "The sequence number of the sub-details woithin the details within the claim item which this line is intended to replace.", 0, java.lang.Integer.MAX_VALUE, subDetailSequence);
           case -987494927: /*provider*/  return new Property("provider", "Reference(Practitioner|PractitionerRole|Organization)", "The providers who are authorized for the services rendered to the patient.", 0, java.lang.Integer.MAX_VALUE, provider);
-          case 1957227299: /*productOrService*/  return new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.", 0, 1, productOrService);
+          case 1099842588: /*revenue*/  return new Property("revenue", "CodeableConcept", "The type of revenue or cost center providing the product and/or service.", 0, 1, revenue);
+          case 1957227299: /*productOrService*/  return new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.", 0, 1, productOrService);
+          case -717476168: /*productOrServiceEnd*/  return new Property("productOrServiceEnd", "CodeableConcept", "This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.", 0, 1, productOrServiceEnd);
           case -615513385: /*modifier*/  return new Property("modifier", "CodeableConcept", "Item typification or modifiers codes to convey additional context for the product or service.", 0, java.lang.Integer.MAX_VALUE, modifier);
           case 1010065041: /*programCode*/  return new Property("programCode", "CodeableConcept", "Identifies the program under which this may be recovered.", 0, java.lang.Integer.MAX_VALUE, programCode);
           case -1927922223: /*serviced[x]*/  return new Property("serviced[x]", "date|Period", "The date or dates when the service or product was supplied, performed or completed.", 0, 1, serviced);
@@ -8312,13 +9198,15 @@ public class ExplanationOfBenefit extends DomainResource {
           case -1224800468: /*locationCodeableConcept*/  return new Property("location[x]", "CodeableConcept", "Where the product or service was provided.", 0, 1, location);
           case -1280020865: /*locationAddress*/  return new Property("location[x]", "Address", "Where the product or service was provided.", 0, 1, location);
           case 755866390: /*locationReference*/  return new Property("location[x]", "Reference(Location)", "Where the product or service was provided.", 0, 1, location);
+          case 525514609: /*patientPaid*/  return new Property("patientPaid", "Money", "The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.", 0, 1, patientPaid);
           case -1285004149: /*quantity*/  return new Property("quantity", "Quantity", "The number of repetitions of a service or product.", 0, 1, quantity);
           case -486196699: /*unitPrice*/  return new Property("unitPrice", "Money", "If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.", 0, 1, unitPrice);
           case -1282148017: /*factor*/  return new Property("factor", "decimal", "A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.", 0, 1, factor);
+          case 114603: /*tax*/  return new Property("tax", "Money", "The total of taxes applicable for this product or service.", 0, 1, tax);
           case 108957: /*net*/  return new Property("net", "Money", "The quantity times the unit price for an additional service or product or charge.", 0, 1, net);
-          case 1702620169: /*bodySite*/  return new Property("bodySite", "CodeableConcept", "Physical service site on the patient (limb, tooth, etc.).", 0, 1, bodySite);
-          case -1868566105: /*subSite*/  return new Property("subSite", "CodeableConcept", "A region or surface of the bodySite, e.g. limb region or tooth surface(s).", 0, java.lang.Integer.MAX_VALUE, subSite);
+          case 1702620169: /*bodySite*/  return new Property("bodySite", "", "Physical location where the service is performed or applies.", 0, java.lang.Integer.MAX_VALUE, bodySite);
           case -1110033957: /*noteNumber*/  return new Property("noteNumber", "positiveInt", "The numbers associated with notes below which apply to the adjudication of this item.", 0, java.lang.Integer.MAX_VALUE, noteNumber);
+          case 565719004: /*decision*/  return new Property("decision", "CodeableConcept", "The result of the claim, predetermination, or preauthorization adjudication.", 0, 1, decision);
           case -231349275: /*adjudication*/  return new Property("adjudication", "@ExplanationOfBenefit.item.adjudication", "The adjudication results.", 0, java.lang.Integer.MAX_VALUE, adjudication);
           case -1335224239: /*detail*/  return new Property("detail", "", "The second-tier service adjudications for payor added services.", 0, java.lang.Integer.MAX_VALUE, detail);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -8333,18 +9221,22 @@ public class ExplanationOfBenefit extends DomainResource {
         case 1321472818: /*detailSequence*/ return this.detailSequence == null ? new Base[0] : this.detailSequence.toArray(new Base[this.detailSequence.size()]); // PositiveIntType
         case -855462510: /*subDetailSequence*/ return this.subDetailSequence == null ? new Base[0] : this.subDetailSequence.toArray(new Base[this.subDetailSequence.size()]); // PositiveIntType
         case -987494927: /*provider*/ return this.provider == null ? new Base[0] : this.provider.toArray(new Base[this.provider.size()]); // Reference
+        case 1099842588: /*revenue*/ return this.revenue == null ? new Base[0] : new Base[] {this.revenue}; // CodeableConcept
         case 1957227299: /*productOrService*/ return this.productOrService == null ? new Base[0] : new Base[] {this.productOrService}; // CodeableConcept
+        case -717476168: /*productOrServiceEnd*/ return this.productOrServiceEnd == null ? new Base[0] : new Base[] {this.productOrServiceEnd}; // CodeableConcept
         case -615513385: /*modifier*/ return this.modifier == null ? new Base[0] : this.modifier.toArray(new Base[this.modifier.size()]); // CodeableConcept
         case 1010065041: /*programCode*/ return this.programCode == null ? new Base[0] : this.programCode.toArray(new Base[this.programCode.size()]); // CodeableConcept
         case 1379209295: /*serviced*/ return this.serviced == null ? new Base[0] : new Base[] {this.serviced}; // DataType
         case 1901043637: /*location*/ return this.location == null ? new Base[0] : new Base[] {this.location}; // DataType
+        case 525514609: /*patientPaid*/ return this.patientPaid == null ? new Base[0] : new Base[] {this.patientPaid}; // Money
         case -1285004149: /*quantity*/ return this.quantity == null ? new Base[0] : new Base[] {this.quantity}; // Quantity
         case -486196699: /*unitPrice*/ return this.unitPrice == null ? new Base[0] : new Base[] {this.unitPrice}; // Money
         case -1282148017: /*factor*/ return this.factor == null ? new Base[0] : new Base[] {this.factor}; // DecimalType
+        case 114603: /*tax*/ return this.tax == null ? new Base[0] : new Base[] {this.tax}; // Money
         case 108957: /*net*/ return this.net == null ? new Base[0] : new Base[] {this.net}; // Money
-        case 1702620169: /*bodySite*/ return this.bodySite == null ? new Base[0] : new Base[] {this.bodySite}; // CodeableConcept
-        case -1868566105: /*subSite*/ return this.subSite == null ? new Base[0] : this.subSite.toArray(new Base[this.subSite.size()]); // CodeableConcept
+        case 1702620169: /*bodySite*/ return this.bodySite == null ? new Base[0] : this.bodySite.toArray(new Base[this.bodySite.size()]); // BodySiteComponentA
         case -1110033957: /*noteNumber*/ return this.noteNumber == null ? new Base[0] : this.noteNumber.toArray(new Base[this.noteNumber.size()]); // PositiveIntType
+        case 565719004: /*decision*/ return this.decision == null ? new Base[0] : new Base[] {this.decision}; // CodeableConcept
         case -231349275: /*adjudication*/ return this.adjudication == null ? new Base[0] : this.adjudication.toArray(new Base[this.adjudication.size()]); // AdjudicationComponent
         case -1335224239: /*detail*/ return this.detail == null ? new Base[0] : this.detail.toArray(new Base[this.detail.size()]); // AddedItemDetailComponent
         default: return super.getProperty(hash, name, checkValid);
@@ -8367,8 +9259,14 @@ public class ExplanationOfBenefit extends DomainResource {
         case -987494927: // provider
           this.getProvider().add(TypeConvertor.castToReference(value)); // Reference
           return value;
+        case 1099842588: // revenue
+          this.revenue = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
         case 1957227299: // productOrService
           this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -717476168: // productOrServiceEnd
+          this.productOrServiceEnd = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -615513385: // modifier
           this.getModifier().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
@@ -8382,6 +9280,9 @@ public class ExplanationOfBenefit extends DomainResource {
         case 1901043637: // location
           this.location = TypeConvertor.castToType(value); // DataType
           return value;
+        case 525514609: // patientPaid
+          this.patientPaid = TypeConvertor.castToMoney(value); // Money
+          return value;
         case -1285004149: // quantity
           this.quantity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
@@ -8391,17 +9292,20 @@ public class ExplanationOfBenefit extends DomainResource {
         case -1282148017: // factor
           this.factor = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
+        case 114603: // tax
+          this.tax = TypeConvertor.castToMoney(value); // Money
+          return value;
         case 108957: // net
           this.net = TypeConvertor.castToMoney(value); // Money
           return value;
         case 1702620169: // bodySite
-          this.bodySite = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case -1868566105: // subSite
-          this.getSubSite().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          this.getBodySite().add((BodySiteComponentA) value); // BodySiteComponentA
           return value;
         case -1110033957: // noteNumber
           this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value)); // PositiveIntType
+          return value;
+        case 565719004: // decision
+          this.decision = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -231349275: // adjudication
           this.getAdjudication().add((AdjudicationComponent) value); // AdjudicationComponent
@@ -8424,8 +9328,12 @@ public class ExplanationOfBenefit extends DomainResource {
           this.getSubDetailSequence().add(TypeConvertor.castToPositiveInt(value));
         } else if (name.equals("provider")) {
           this.getProvider().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("revenue")) {
+          this.revenue = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("productOrService")) {
           this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("productOrServiceEnd")) {
+          this.productOrServiceEnd = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("modifier")) {
           this.getModifier().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("programCode")) {
@@ -8434,20 +9342,24 @@ public class ExplanationOfBenefit extends DomainResource {
           this.serviced = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("location[x]")) {
           this.location = TypeConvertor.castToType(value); // DataType
+        } else if (name.equals("patientPaid")) {
+          this.patientPaid = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("quantity")) {
           this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("unitPrice")) {
           this.unitPrice = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("factor")) {
           this.factor = TypeConvertor.castToDecimal(value); // DecimalType
+        } else if (name.equals("tax")) {
+          this.tax = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("net")) {
           this.net = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("bodySite")) {
-          this.bodySite = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("subSite")) {
-          this.getSubSite().add(TypeConvertor.castToCodeableConcept(value));
+          this.getBodySite().add((BodySiteComponentA) value);
         } else if (name.equals("noteNumber")) {
           this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value));
+        } else if (name.equals("decision")) {
+          this.decision = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("adjudication")) {
           this.getAdjudication().add((AdjudicationComponent) value);
         } else if (name.equals("detail")) {
@@ -8464,20 +9376,24 @@ public class ExplanationOfBenefit extends DomainResource {
         case 1321472818:  return addDetailSequenceElement();
         case -855462510:  return addSubDetailSequenceElement();
         case -987494927:  return addProvider(); 
+        case 1099842588:  return getRevenue();
         case 1957227299:  return getProductOrService();
+        case -717476168:  return getProductOrServiceEnd();
         case -615513385:  return addModifier(); 
         case 1010065041:  return addProgramCode(); 
         case -1927922223:  return getServiced();
         case 1379209295:  return getServiced();
         case 552316075:  return getLocation();
         case 1901043637:  return getLocation();
+        case 525514609:  return getPatientPaid();
         case -1285004149:  return getQuantity();
         case -486196699:  return getUnitPrice();
         case -1282148017:  return getFactorElement();
+        case 114603:  return getTax();
         case 108957:  return getNet();
-        case 1702620169:  return getBodySite();
-        case -1868566105:  return addSubSite(); 
+        case 1702620169:  return addBodySite(); 
         case -1110033957:  return addNoteNumberElement();
+        case 565719004:  return getDecision();
         case -231349275:  return addAdjudication(); 
         case -1335224239:  return addDetail(); 
         default: return super.makeProperty(hash, name);
@@ -8492,18 +9408,22 @@ public class ExplanationOfBenefit extends DomainResource {
         case 1321472818: /*detailSequence*/ return new String[] {"positiveInt"};
         case -855462510: /*subDetailSequence*/ return new String[] {"positiveInt"};
         case -987494927: /*provider*/ return new String[] {"Reference"};
+        case 1099842588: /*revenue*/ return new String[] {"CodeableConcept"};
         case 1957227299: /*productOrService*/ return new String[] {"CodeableConcept"};
+        case -717476168: /*productOrServiceEnd*/ return new String[] {"CodeableConcept"};
         case -615513385: /*modifier*/ return new String[] {"CodeableConcept"};
         case 1010065041: /*programCode*/ return new String[] {"CodeableConcept"};
         case 1379209295: /*serviced*/ return new String[] {"date", "Period"};
         case 1901043637: /*location*/ return new String[] {"CodeableConcept", "Address", "Reference"};
+        case 525514609: /*patientPaid*/ return new String[] {"Money"};
         case -1285004149: /*quantity*/ return new String[] {"Quantity"};
         case -486196699: /*unitPrice*/ return new String[] {"Money"};
         case -1282148017: /*factor*/ return new String[] {"decimal"};
+        case 114603: /*tax*/ return new String[] {"Money"};
         case 108957: /*net*/ return new String[] {"Money"};
-        case 1702620169: /*bodySite*/ return new String[] {"CodeableConcept"};
-        case -1868566105: /*subSite*/ return new String[] {"CodeableConcept"};
+        case 1702620169: /*bodySite*/ return new String[] {};
         case -1110033957: /*noteNumber*/ return new String[] {"positiveInt"};
+        case 565719004: /*decision*/ return new String[] {"CodeableConcept"};
         case -231349275: /*adjudication*/ return new String[] {"@ExplanationOfBenefit.item.adjudication"};
         case -1335224239: /*detail*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
@@ -8525,9 +9445,17 @@ public class ExplanationOfBenefit extends DomainResource {
         else if (name.equals("provider")) {
           return addProvider();
         }
+        else if (name.equals("revenue")) {
+          this.revenue = new CodeableConcept();
+          return this.revenue;
+        }
         else if (name.equals("productOrService")) {
           this.productOrService = new CodeableConcept();
           return this.productOrService;
+        }
+        else if (name.equals("productOrServiceEnd")) {
+          this.productOrServiceEnd = new CodeableConcept();
+          return this.productOrServiceEnd;
         }
         else if (name.equals("modifier")) {
           return addModifier();
@@ -8555,6 +9483,10 @@ public class ExplanationOfBenefit extends DomainResource {
           this.location = new Reference();
           return this.location;
         }
+        else if (name.equals("patientPaid")) {
+          this.patientPaid = new Money();
+          return this.patientPaid;
+        }
         else if (name.equals("quantity")) {
           this.quantity = new Quantity();
           return this.quantity;
@@ -8566,19 +9498,23 @@ public class ExplanationOfBenefit extends DomainResource {
         else if (name.equals("factor")) {
           throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.addItem.factor");
         }
+        else if (name.equals("tax")) {
+          this.tax = new Money();
+          return this.tax;
+        }
         else if (name.equals("net")) {
           this.net = new Money();
           return this.net;
         }
         else if (name.equals("bodySite")) {
-          this.bodySite = new CodeableConcept();
-          return this.bodySite;
-        }
-        else if (name.equals("subSite")) {
-          return addSubSite();
+          return addBodySite();
         }
         else if (name.equals("noteNumber")) {
           throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.addItem.noteNumber");
+        }
+        else if (name.equals("decision")) {
+          this.decision = new CodeableConcept();
+          return this.decision;
         }
         else if (name.equals("adjudication")) {
           return addAdjudication();
@@ -8618,7 +9554,9 @@ public class ExplanationOfBenefit extends DomainResource {
           for (Reference i : provider)
             dst.provider.add(i.copy());
         };
+        dst.revenue = revenue == null ? null : revenue.copy();
         dst.productOrService = productOrService == null ? null : productOrService.copy();
+        dst.productOrServiceEnd = productOrServiceEnd == null ? null : productOrServiceEnd.copy();
         if (modifier != null) {
           dst.modifier = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : modifier)
@@ -8631,21 +9569,23 @@ public class ExplanationOfBenefit extends DomainResource {
         };
         dst.serviced = serviced == null ? null : serviced.copy();
         dst.location = location == null ? null : location.copy();
+        dst.patientPaid = patientPaid == null ? null : patientPaid.copy();
         dst.quantity = quantity == null ? null : quantity.copy();
         dst.unitPrice = unitPrice == null ? null : unitPrice.copy();
         dst.factor = factor == null ? null : factor.copy();
+        dst.tax = tax == null ? null : tax.copy();
         dst.net = net == null ? null : net.copy();
-        dst.bodySite = bodySite == null ? null : bodySite.copy();
-        if (subSite != null) {
-          dst.subSite = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : subSite)
-            dst.subSite.add(i.copy());
+        if (bodySite != null) {
+          dst.bodySite = new ArrayList<BodySiteComponentA>();
+          for (BodySiteComponentA i : bodySite)
+            dst.bodySite.add(i.copy());
         };
         if (noteNumber != null) {
           dst.noteNumber = new ArrayList<PositiveIntType>();
           for (PositiveIntType i : noteNumber)
             dst.noteNumber.add(i.copy());
         };
+        dst.decision = decision == null ? null : decision.copy();
         if (adjudication != null) {
           dst.adjudication = new ArrayList<AdjudicationComponent>();
           for (AdjudicationComponent i : adjudication)
@@ -8667,12 +9607,13 @@ public class ExplanationOfBenefit extends DomainResource {
         AddedItemComponent o = (AddedItemComponent) other_;
         return compareDeep(itemSequence, o.itemSequence, true) && compareDeep(detailSequence, o.detailSequence, true)
            && compareDeep(subDetailSequence, o.subDetailSequence, true) && compareDeep(provider, o.provider, true)
-           && compareDeep(productOrService, o.productOrService, true) && compareDeep(modifier, o.modifier, true)
+           && compareDeep(revenue, o.revenue, true) && compareDeep(productOrService, o.productOrService, true)
+           && compareDeep(productOrServiceEnd, o.productOrServiceEnd, true) && compareDeep(modifier, o.modifier, true)
            && compareDeep(programCode, o.programCode, true) && compareDeep(serviced, o.serviced, true) && compareDeep(location, o.location, true)
-           && compareDeep(quantity, o.quantity, true) && compareDeep(unitPrice, o.unitPrice, true) && compareDeep(factor, o.factor, true)
-           && compareDeep(net, o.net, true) && compareDeep(bodySite, o.bodySite, true) && compareDeep(subSite, o.subSite, true)
-           && compareDeep(noteNumber, o.noteNumber, true) && compareDeep(adjudication, o.adjudication, true)
-           && compareDeep(detail, o.detail, true);
+           && compareDeep(patientPaid, o.patientPaid, true) && compareDeep(quantity, o.quantity, true) && compareDeep(unitPrice, o.unitPrice, true)
+           && compareDeep(factor, o.factor, true) && compareDeep(tax, o.tax, true) && compareDeep(net, o.net, true)
+           && compareDeep(bodySite, o.bodySite, true) && compareDeep(noteNumber, o.noteNumber, true) && compareDeep(decision, o.decision, true)
+           && compareDeep(adjudication, o.adjudication, true) && compareDeep(detail, o.detail, true);
       }
 
       @Override
@@ -8689,9 +9630,9 @@ public class ExplanationOfBenefit extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(itemSequence, detailSequence
-          , subDetailSequence, provider, productOrService, modifier, programCode, serviced
-          , location, quantity, unitPrice, factor, net, bodySite, subSite, noteNumber
-          , adjudication, detail);
+          , subDetailSequence, provider, revenue, productOrService, productOrServiceEnd, modifier
+          , programCode, serviced, location, patientPaid, quantity, unitPrice, factor, tax
+          , net, bodySite, noteNumber, decision, adjudication, detail);
       }
 
   public String fhirType() {
@@ -8702,73 +9643,386 @@ public class ExplanationOfBenefit extends DomainResource {
   }
 
     @Block()
+    public static class BodySiteComponentA extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Physical service site on the patient (limb, tooth, etc.).
+         */
+        @Child(name = "site", type = {CodeableReference.class}, order=1, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Location", formalDefinition="Physical service site on the patient (limb, tooth, etc.)." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/tooth")
+        protected List<CodeableReference> site;
+
+        /**
+         * A region or surface of the bodySite, e.g. limb region or tooth surface(s).
+         */
+        @Child(name = "subSite", type = {CodeableConcept.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Sub-location", formalDefinition="A region or surface of the bodySite, e.g. limb region or tooth surface(s)." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/surface")
+        protected List<CodeableConcept> subSite;
+
+        private static final long serialVersionUID = 1190632415L;
+
+    /**
+     * Constructor
+     */
+      public BodySiteComponentA() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public BodySiteComponentA(CodeableReference site) {
+        super();
+        this.addSite(site);
+      }
+
+        /**
+         * @return {@link #site} (Physical service site on the patient (limb, tooth, etc.).)
+         */
+        public List<CodeableReference> getSite() { 
+          if (this.site == null)
+            this.site = new ArrayList<CodeableReference>();
+          return this.site;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public BodySiteComponentA setSite(List<CodeableReference> theSite) { 
+          this.site = theSite;
+          return this;
+        }
+
+        public boolean hasSite() { 
+          if (this.site == null)
+            return false;
+          for (CodeableReference item : this.site)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public CodeableReference addSite() { //3
+          CodeableReference t = new CodeableReference();
+          if (this.site == null)
+            this.site = new ArrayList<CodeableReference>();
+          this.site.add(t);
+          return t;
+        }
+
+        public BodySiteComponentA addSite(CodeableReference t) { //3
+          if (t == null)
+            return this;
+          if (this.site == null)
+            this.site = new ArrayList<CodeableReference>();
+          this.site.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #site}, creating it if it does not already exist {3}
+         */
+        public CodeableReference getSiteFirstRep() { 
+          if (getSite().isEmpty()) {
+            addSite();
+          }
+          return getSite().get(0);
+        }
+
+        /**
+         * @return {@link #subSite} (A region or surface of the bodySite, e.g. limb region or tooth surface(s).)
+         */
+        public List<CodeableConcept> getSubSite() { 
+          if (this.subSite == null)
+            this.subSite = new ArrayList<CodeableConcept>();
+          return this.subSite;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public BodySiteComponentA setSubSite(List<CodeableConcept> theSubSite) { 
+          this.subSite = theSubSite;
+          return this;
+        }
+
+        public boolean hasSubSite() { 
+          if (this.subSite == null)
+            return false;
+          for (CodeableConcept item : this.subSite)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public CodeableConcept addSubSite() { //3
+          CodeableConcept t = new CodeableConcept();
+          if (this.subSite == null)
+            this.subSite = new ArrayList<CodeableConcept>();
+          this.subSite.add(t);
+          return t;
+        }
+
+        public BodySiteComponentA addSubSite(CodeableConcept t) { //3
+          if (t == null)
+            return this;
+          if (this.subSite == null)
+            this.subSite = new ArrayList<CodeableConcept>();
+          this.subSite.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #subSite}, creating it if it does not already exist {3}
+         */
+        public CodeableConcept getSubSiteFirstRep() { 
+          if (getSubSite().isEmpty()) {
+            addSubSite();
+          }
+          return getSubSite().get(0);
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("site", "CodeableReference(BodyStructure)", "Physical service site on the patient (limb, tooth, etc.).", 0, java.lang.Integer.MAX_VALUE, site));
+          children.add(new Property("subSite", "CodeableConcept", "A region or surface of the bodySite, e.g. limb region or tooth surface(s).", 0, java.lang.Integer.MAX_VALUE, subSite));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3530567: /*site*/  return new Property("site", "CodeableReference(BodyStructure)", "Physical service site on the patient (limb, tooth, etc.).", 0, java.lang.Integer.MAX_VALUE, site);
+          case -1868566105: /*subSite*/  return new Property("subSite", "CodeableConcept", "A region or surface of the bodySite, e.g. limb region or tooth surface(s).", 0, java.lang.Integer.MAX_VALUE, subSite);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3530567: /*site*/ return this.site == null ? new Base[0] : this.site.toArray(new Base[this.site.size()]); // CodeableReference
+        case -1868566105: /*subSite*/ return this.subSite == null ? new Base[0] : this.subSite.toArray(new Base[this.subSite.size()]); // CodeableConcept
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3530567: // site
+          this.getSite().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
+          return value;
+        case -1868566105: // subSite
+          this.getSubSite().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("site")) {
+          this.getSite().add(TypeConvertor.castToCodeableReference(value));
+        } else if (name.equals("subSite")) {
+          this.getSubSite().add(TypeConvertor.castToCodeableConcept(value));
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3530567:  return addSite(); 
+        case -1868566105:  return addSubSite(); 
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3530567: /*site*/ return new String[] {"CodeableReference"};
+        case -1868566105: /*subSite*/ return new String[] {"CodeableConcept"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("site")) {
+          return addSite();
+        }
+        else if (name.equals("subSite")) {
+          return addSubSite();
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public BodySiteComponentA copy() {
+        BodySiteComponentA dst = new BodySiteComponentA();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(BodySiteComponentA dst) {
+        super.copyValues(dst);
+        if (site != null) {
+          dst.site = new ArrayList<CodeableReference>();
+          for (CodeableReference i : site)
+            dst.site.add(i.copy());
+        };
+        if (subSite != null) {
+          dst.subSite = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : subSite)
+            dst.subSite.add(i.copy());
+        };
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof BodySiteComponentA))
+          return false;
+        BodySiteComponentA o = (BodySiteComponentA) other_;
+        return compareDeep(site, o.site, true) && compareDeep(subSite, o.subSite, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof BodySiteComponentA))
+          return false;
+        BodySiteComponentA o = (BodySiteComponentA) other_;
+        return true;
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(site, subSite);
+      }
+
+  public String fhirType() {
+    return "ExplanationOfBenefit.addItem.bodySite";
+
+  }
+
+  }
+
+    @Block()
     public static class AddedItemDetailComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.
+         * The type of revenue or cost center providing the product and/or service.
          */
-        @Child(name = "productOrService", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Billing, service, product, or drug code", formalDefinition="When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item." )
+        @Child(name = "revenue", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Revenue or cost center code", formalDefinition="The type of revenue or cost center providing the product and/or service." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ex-revenue-center")
+        protected CodeableConcept revenue;
+
+        /**
+         * When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.
+         */
+        @Child(name = "productOrService", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Billing, service, product, or drug code", formalDefinition="When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-uscls")
         protected CodeableConcept productOrService;
 
         /**
+         * This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.
+         */
+        @Child(name = "productOrServiceEnd", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="End of a range of codes", formalDefinition="This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-uscls")
+        protected CodeableConcept productOrServiceEnd;
+
+        /**
          * Item typification or modifiers codes to convey additional context for the product or service.
          */
-        @Child(name = "modifier", type = {CodeableConcept.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "modifier", type = {CodeableConcept.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Service/Product billing modifiers", formalDefinition="Item typification or modifiers codes to convey additional context for the product or service." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-modifiers")
         protected List<CodeableConcept> modifier;
 
         /**
+         * The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.
+         */
+        @Child(name = "patientPaid", type = {Money.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Paid by the patient", formalDefinition="The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services." )
+        protected Money patientPaid;
+
+        /**
          * The number of repetitions of a service or product.
          */
-        @Child(name = "quantity", type = {Quantity.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "quantity", type = {Quantity.class}, order=6, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Count of products or services", formalDefinition="The number of repetitions of a service or product." )
         protected Quantity quantity;
 
         /**
          * If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.
          */
-        @Child(name = "unitPrice", type = {Money.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "unitPrice", type = {Money.class}, order=7, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Fee, charge or cost per item", formalDefinition="If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group." )
         protected Money unitPrice;
 
         /**
          * A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.
          */
-        @Child(name = "factor", type = {DecimalType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "factor", type = {DecimalType.class}, order=8, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Price scaling factor", formalDefinition="A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount." )
         protected DecimalType factor;
 
         /**
+         * The total of taxes applicable for this product or service.
+         */
+        @Child(name = "tax", type = {Money.class}, order=9, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Total tax", formalDefinition="The total of taxes applicable for this product or service." )
+        protected Money tax;
+
+        /**
          * The quantity times the unit price for an additional service or product or charge.
          */
-        @Child(name = "net", type = {Money.class}, order=6, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "net", type = {Money.class}, order=10, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Total item cost", formalDefinition="The quantity times the unit price for an additional service or product or charge." )
         protected Money net;
 
         /**
          * The numbers associated with notes below which apply to the adjudication of this item.
          */
-        @Child(name = "noteNumber", type = {PositiveIntType.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "noteNumber", type = {PositiveIntType.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Applicable note numbers", formalDefinition="The numbers associated with notes below which apply to the adjudication of this item." )
         protected List<PositiveIntType> noteNumber;
 
         /**
+         * The result of the claim, predetermination, or preauthorization adjudication.
+         */
+        @Child(name = "decision", type = {CodeableConcept.class}, order=12, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Result of the adjudication", formalDefinition="The result of the claim, predetermination, or preauthorization adjudication." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-decision")
+        protected CodeableConcept decision;
+
+        /**
          * The adjudication results.
          */
-        @Child(name = "adjudication", type = {AdjudicationComponent.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "adjudication", type = {AdjudicationComponent.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Added items adjudication", formalDefinition="The adjudication results." )
         protected List<AdjudicationComponent> adjudication;
 
         /**
          * The third-tier service adjudications for payor added services.
          */
-        @Child(name = "subDetail", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "subDetail", type = {}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Insurer added line items", formalDefinition="The third-tier service adjudications for payor added services." )
         protected List<AddedItemDetailSubDetailComponent> subDetail;
 
-        private static final long serialVersionUID = 295910869L;
+        private static final long serialVersionUID = 1514057274L;
 
     /**
      * Constructor
@@ -8777,16 +10031,32 @@ public class ExplanationOfBenefit extends DomainResource {
         super();
       }
 
-    /**
-     * Constructor
-     */
-      public AddedItemDetailComponent(CodeableConcept productOrService) {
-        super();
-        this.setProductOrService(productOrService);
-      }
+        /**
+         * @return {@link #revenue} (The type of revenue or cost center providing the product and/or service.)
+         */
+        public CodeableConcept getRevenue() { 
+          if (this.revenue == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AddedItemDetailComponent.revenue");
+            else if (Configuration.doAutoCreate())
+              this.revenue = new CodeableConcept(); // cc
+          return this.revenue;
+        }
+
+        public boolean hasRevenue() { 
+          return this.revenue != null && !this.revenue.isEmpty();
+        }
 
         /**
-         * @return {@link #productOrService} (When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.)
+         * @param value {@link #revenue} (The type of revenue or cost center providing the product and/or service.)
+         */
+        public AddedItemDetailComponent setRevenue(CodeableConcept value) { 
+          this.revenue = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #productOrService} (When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.)
          */
         public CodeableConcept getProductOrService() { 
           if (this.productOrService == null)
@@ -8802,10 +10072,34 @@ public class ExplanationOfBenefit extends DomainResource {
         }
 
         /**
-         * @param value {@link #productOrService} (When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.)
+         * @param value {@link #productOrService} (When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.)
          */
         public AddedItemDetailComponent setProductOrService(CodeableConcept value) { 
           this.productOrService = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #productOrServiceEnd} (This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.)
+         */
+        public CodeableConcept getProductOrServiceEnd() { 
+          if (this.productOrServiceEnd == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AddedItemDetailComponent.productOrServiceEnd");
+            else if (Configuration.doAutoCreate())
+              this.productOrServiceEnd = new CodeableConcept(); // cc
+          return this.productOrServiceEnd;
+        }
+
+        public boolean hasProductOrServiceEnd() { 
+          return this.productOrServiceEnd != null && !this.productOrServiceEnd.isEmpty();
+        }
+
+        /**
+         * @param value {@link #productOrServiceEnd} (This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.)
+         */
+        public AddedItemDetailComponent setProductOrServiceEnd(CodeableConcept value) { 
+          this.productOrServiceEnd = value;
           return this;
         }
 
@@ -8860,6 +10154,30 @@ public class ExplanationOfBenefit extends DomainResource {
             addModifier();
           }
           return getModifier().get(0);
+        }
+
+        /**
+         * @return {@link #patientPaid} (The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.)
+         */
+        public Money getPatientPaid() { 
+          if (this.patientPaid == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AddedItemDetailComponent.patientPaid");
+            else if (Configuration.doAutoCreate())
+              this.patientPaid = new Money(); // cc
+          return this.patientPaid;
+        }
+
+        public boolean hasPatientPaid() { 
+          return this.patientPaid != null && !this.patientPaid.isEmpty();
+        }
+
+        /**
+         * @param value {@link #patientPaid} (The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.)
+         */
+        public AddedItemDetailComponent setPatientPaid(Money value) { 
+          this.patientPaid = value;
+          return this;
         }
 
         /**
@@ -8978,6 +10296,30 @@ public class ExplanationOfBenefit extends DomainResource {
         }
 
         /**
+         * @return {@link #tax} (The total of taxes applicable for this product or service.)
+         */
+        public Money getTax() { 
+          if (this.tax == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AddedItemDetailComponent.tax");
+            else if (Configuration.doAutoCreate())
+              this.tax = new Money(); // cc
+          return this.tax;
+        }
+
+        public boolean hasTax() { 
+          return this.tax != null && !this.tax.isEmpty();
+        }
+
+        /**
+         * @param value {@link #tax} (The total of taxes applicable for this product or service.)
+         */
+        public AddedItemDetailComponent setTax(Money value) { 
+          this.tax = value;
+          return this;
+        }
+
+        /**
          * @return {@link #net} (The quantity times the unit price for an additional service or product or charge.)
          */
         public Money getNet() { 
@@ -9060,6 +10402,30 @@ public class ExplanationOfBenefit extends DomainResource {
             if (v.getValue().equals(value)) // positiveInt
               return true;
           return false;
+        }
+
+        /**
+         * @return {@link #decision} (The result of the claim, predetermination, or preauthorization adjudication.)
+         */
+        public CodeableConcept getDecision() { 
+          if (this.decision == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AddedItemDetailComponent.decision");
+            else if (Configuration.doAutoCreate())
+              this.decision = new CodeableConcept(); // cc
+          return this.decision;
+        }
+
+        public boolean hasDecision() { 
+          return this.decision != null && !this.decision.isEmpty();
+        }
+
+        /**
+         * @param value {@link #decision} (The result of the claim, predetermination, or preauthorization adjudication.)
+         */
+        public AddedItemDetailComponent setDecision(CodeableConcept value) { 
+          this.decision = value;
+          return this;
         }
 
         /**
@@ -9170,13 +10536,18 @@ public class ExplanationOfBenefit extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.", 0, 1, productOrService));
+          children.add(new Property("revenue", "CodeableConcept", "The type of revenue or cost center providing the product and/or service.", 0, 1, revenue));
+          children.add(new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.", 0, 1, productOrService));
+          children.add(new Property("productOrServiceEnd", "CodeableConcept", "This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.", 0, 1, productOrServiceEnd));
           children.add(new Property("modifier", "CodeableConcept", "Item typification or modifiers codes to convey additional context for the product or service.", 0, java.lang.Integer.MAX_VALUE, modifier));
+          children.add(new Property("patientPaid", "Money", "The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.", 0, 1, patientPaid));
           children.add(new Property("quantity", "Quantity", "The number of repetitions of a service or product.", 0, 1, quantity));
           children.add(new Property("unitPrice", "Money", "If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.", 0, 1, unitPrice));
           children.add(new Property("factor", "decimal", "A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.", 0, 1, factor));
+          children.add(new Property("tax", "Money", "The total of taxes applicable for this product or service.", 0, 1, tax));
           children.add(new Property("net", "Money", "The quantity times the unit price for an additional service or product or charge.", 0, 1, net));
           children.add(new Property("noteNumber", "positiveInt", "The numbers associated with notes below which apply to the adjudication of this item.", 0, java.lang.Integer.MAX_VALUE, noteNumber));
+          children.add(new Property("decision", "CodeableConcept", "The result of the claim, predetermination, or preauthorization adjudication.", 0, 1, decision));
           children.add(new Property("adjudication", "@ExplanationOfBenefit.item.adjudication", "The adjudication results.", 0, java.lang.Integer.MAX_VALUE, adjudication));
           children.add(new Property("subDetail", "", "The third-tier service adjudications for payor added services.", 0, java.lang.Integer.MAX_VALUE, subDetail));
         }
@@ -9184,13 +10555,18 @@ public class ExplanationOfBenefit extends DomainResource {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 1957227299: /*productOrService*/  return new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.", 0, 1, productOrService);
+          case 1099842588: /*revenue*/  return new Property("revenue", "CodeableConcept", "The type of revenue or cost center providing the product and/or service.", 0, 1, revenue);
+          case 1957227299: /*productOrService*/  return new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.", 0, 1, productOrService);
+          case -717476168: /*productOrServiceEnd*/  return new Property("productOrServiceEnd", "CodeableConcept", "This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.", 0, 1, productOrServiceEnd);
           case -615513385: /*modifier*/  return new Property("modifier", "CodeableConcept", "Item typification or modifiers codes to convey additional context for the product or service.", 0, java.lang.Integer.MAX_VALUE, modifier);
+          case 525514609: /*patientPaid*/  return new Property("patientPaid", "Money", "The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.", 0, 1, patientPaid);
           case -1285004149: /*quantity*/  return new Property("quantity", "Quantity", "The number of repetitions of a service or product.", 0, 1, quantity);
           case -486196699: /*unitPrice*/  return new Property("unitPrice", "Money", "If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.", 0, 1, unitPrice);
           case -1282148017: /*factor*/  return new Property("factor", "decimal", "A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.", 0, 1, factor);
+          case 114603: /*tax*/  return new Property("tax", "Money", "The total of taxes applicable for this product or service.", 0, 1, tax);
           case 108957: /*net*/  return new Property("net", "Money", "The quantity times the unit price for an additional service or product or charge.", 0, 1, net);
           case -1110033957: /*noteNumber*/  return new Property("noteNumber", "positiveInt", "The numbers associated with notes below which apply to the adjudication of this item.", 0, java.lang.Integer.MAX_VALUE, noteNumber);
+          case 565719004: /*decision*/  return new Property("decision", "CodeableConcept", "The result of the claim, predetermination, or preauthorization adjudication.", 0, 1, decision);
           case -231349275: /*adjudication*/  return new Property("adjudication", "@ExplanationOfBenefit.item.adjudication", "The adjudication results.", 0, java.lang.Integer.MAX_VALUE, adjudication);
           case -828829007: /*subDetail*/  return new Property("subDetail", "", "The third-tier service adjudications for payor added services.", 0, java.lang.Integer.MAX_VALUE, subDetail);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -9201,13 +10577,18 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
+        case 1099842588: /*revenue*/ return this.revenue == null ? new Base[0] : new Base[] {this.revenue}; // CodeableConcept
         case 1957227299: /*productOrService*/ return this.productOrService == null ? new Base[0] : new Base[] {this.productOrService}; // CodeableConcept
+        case -717476168: /*productOrServiceEnd*/ return this.productOrServiceEnd == null ? new Base[0] : new Base[] {this.productOrServiceEnd}; // CodeableConcept
         case -615513385: /*modifier*/ return this.modifier == null ? new Base[0] : this.modifier.toArray(new Base[this.modifier.size()]); // CodeableConcept
+        case 525514609: /*patientPaid*/ return this.patientPaid == null ? new Base[0] : new Base[] {this.patientPaid}; // Money
         case -1285004149: /*quantity*/ return this.quantity == null ? new Base[0] : new Base[] {this.quantity}; // Quantity
         case -486196699: /*unitPrice*/ return this.unitPrice == null ? new Base[0] : new Base[] {this.unitPrice}; // Money
         case -1282148017: /*factor*/ return this.factor == null ? new Base[0] : new Base[] {this.factor}; // DecimalType
+        case 114603: /*tax*/ return this.tax == null ? new Base[0] : new Base[] {this.tax}; // Money
         case 108957: /*net*/ return this.net == null ? new Base[0] : new Base[] {this.net}; // Money
         case -1110033957: /*noteNumber*/ return this.noteNumber == null ? new Base[0] : this.noteNumber.toArray(new Base[this.noteNumber.size()]); // PositiveIntType
+        case 565719004: /*decision*/ return this.decision == null ? new Base[0] : new Base[] {this.decision}; // CodeableConcept
         case -231349275: /*adjudication*/ return this.adjudication == null ? new Base[0] : this.adjudication.toArray(new Base[this.adjudication.size()]); // AdjudicationComponent
         case -828829007: /*subDetail*/ return this.subDetail == null ? new Base[0] : this.subDetail.toArray(new Base[this.subDetail.size()]); // AddedItemDetailSubDetailComponent
         default: return super.getProperty(hash, name, checkValid);
@@ -9218,11 +10599,20 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
+        case 1099842588: // revenue
+          this.revenue = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
         case 1957227299: // productOrService
           this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
+        case -717476168: // productOrServiceEnd
+          this.productOrServiceEnd = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
         case -615513385: // modifier
           this.getModifier().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          return value;
+        case 525514609: // patientPaid
+          this.patientPaid = TypeConvertor.castToMoney(value); // Money
           return value;
         case -1285004149: // quantity
           this.quantity = TypeConvertor.castToQuantity(value); // Quantity
@@ -9233,11 +10623,17 @@ public class ExplanationOfBenefit extends DomainResource {
         case -1282148017: // factor
           this.factor = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
+        case 114603: // tax
+          this.tax = TypeConvertor.castToMoney(value); // Money
+          return value;
         case 108957: // net
           this.net = TypeConvertor.castToMoney(value); // Money
           return value;
         case -1110033957: // noteNumber
           this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value)); // PositiveIntType
+          return value;
+        case 565719004: // decision
+          this.decision = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -231349275: // adjudication
           this.getAdjudication().add((AdjudicationComponent) value); // AdjudicationComponent
@@ -9252,20 +10648,30 @@ public class ExplanationOfBenefit extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("productOrService")) {
+        if (name.equals("revenue")) {
+          this.revenue = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("productOrService")) {
           this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("productOrServiceEnd")) {
+          this.productOrServiceEnd = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("modifier")) {
           this.getModifier().add(TypeConvertor.castToCodeableConcept(value));
+        } else if (name.equals("patientPaid")) {
+          this.patientPaid = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("quantity")) {
           this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("unitPrice")) {
           this.unitPrice = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("factor")) {
           this.factor = TypeConvertor.castToDecimal(value); // DecimalType
+        } else if (name.equals("tax")) {
+          this.tax = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("net")) {
           this.net = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("noteNumber")) {
           this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value));
+        } else if (name.equals("decision")) {
+          this.decision = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("adjudication")) {
           this.getAdjudication().add((AdjudicationComponent) value);
         } else if (name.equals("subDetail")) {
@@ -9278,13 +10684,18 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
+        case 1099842588:  return getRevenue();
         case 1957227299:  return getProductOrService();
+        case -717476168:  return getProductOrServiceEnd();
         case -615513385:  return addModifier(); 
+        case 525514609:  return getPatientPaid();
         case -1285004149:  return getQuantity();
         case -486196699:  return getUnitPrice();
         case -1282148017:  return getFactorElement();
+        case 114603:  return getTax();
         case 108957:  return getNet();
         case -1110033957:  return addNoteNumberElement();
+        case 565719004:  return getDecision();
         case -231349275:  return addAdjudication(); 
         case -828829007:  return addSubDetail(); 
         default: return super.makeProperty(hash, name);
@@ -9295,13 +10706,18 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
+        case 1099842588: /*revenue*/ return new String[] {"CodeableConcept"};
         case 1957227299: /*productOrService*/ return new String[] {"CodeableConcept"};
+        case -717476168: /*productOrServiceEnd*/ return new String[] {"CodeableConcept"};
         case -615513385: /*modifier*/ return new String[] {"CodeableConcept"};
+        case 525514609: /*patientPaid*/ return new String[] {"Money"};
         case -1285004149: /*quantity*/ return new String[] {"Quantity"};
         case -486196699: /*unitPrice*/ return new String[] {"Money"};
         case -1282148017: /*factor*/ return new String[] {"decimal"};
+        case 114603: /*tax*/ return new String[] {"Money"};
         case 108957: /*net*/ return new String[] {"Money"};
         case -1110033957: /*noteNumber*/ return new String[] {"positiveInt"};
+        case 565719004: /*decision*/ return new String[] {"CodeableConcept"};
         case -231349275: /*adjudication*/ return new String[] {"@ExplanationOfBenefit.item.adjudication"};
         case -828829007: /*subDetail*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
@@ -9311,12 +10727,24 @@ public class ExplanationOfBenefit extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("productOrService")) {
+        if (name.equals("revenue")) {
+          this.revenue = new CodeableConcept();
+          return this.revenue;
+        }
+        else if (name.equals("productOrService")) {
           this.productOrService = new CodeableConcept();
           return this.productOrService;
         }
+        else if (name.equals("productOrServiceEnd")) {
+          this.productOrServiceEnd = new CodeableConcept();
+          return this.productOrServiceEnd;
+        }
         else if (name.equals("modifier")) {
           return addModifier();
+        }
+        else if (name.equals("patientPaid")) {
+          this.patientPaid = new Money();
+          return this.patientPaid;
         }
         else if (name.equals("quantity")) {
           this.quantity = new Quantity();
@@ -9329,12 +10757,20 @@ public class ExplanationOfBenefit extends DomainResource {
         else if (name.equals("factor")) {
           throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.addItem.detail.factor");
         }
+        else if (name.equals("tax")) {
+          this.tax = new Money();
+          return this.tax;
+        }
         else if (name.equals("net")) {
           this.net = new Money();
           return this.net;
         }
         else if (name.equals("noteNumber")) {
           throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.addItem.detail.noteNumber");
+        }
+        else if (name.equals("decision")) {
+          this.decision = new CodeableConcept();
+          return this.decision;
         }
         else if (name.equals("adjudication")) {
           return addAdjudication();
@@ -9354,21 +10790,26 @@ public class ExplanationOfBenefit extends DomainResource {
 
       public void copyValues(AddedItemDetailComponent dst) {
         super.copyValues(dst);
+        dst.revenue = revenue == null ? null : revenue.copy();
         dst.productOrService = productOrService == null ? null : productOrService.copy();
+        dst.productOrServiceEnd = productOrServiceEnd == null ? null : productOrServiceEnd.copy();
         if (modifier != null) {
           dst.modifier = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : modifier)
             dst.modifier.add(i.copy());
         };
+        dst.patientPaid = patientPaid == null ? null : patientPaid.copy();
         dst.quantity = quantity == null ? null : quantity.copy();
         dst.unitPrice = unitPrice == null ? null : unitPrice.copy();
         dst.factor = factor == null ? null : factor.copy();
+        dst.tax = tax == null ? null : tax.copy();
         dst.net = net == null ? null : net.copy();
         if (noteNumber != null) {
           dst.noteNumber = new ArrayList<PositiveIntType>();
           for (PositiveIntType i : noteNumber)
             dst.noteNumber.add(i.copy());
         };
+        dst.decision = decision == null ? null : decision.copy();
         if (adjudication != null) {
           dst.adjudication = new ArrayList<AdjudicationComponent>();
           for (AdjudicationComponent i : adjudication)
@@ -9388,9 +10829,11 @@ public class ExplanationOfBenefit extends DomainResource {
         if (!(other_ instanceof AddedItemDetailComponent))
           return false;
         AddedItemDetailComponent o = (AddedItemDetailComponent) other_;
-        return compareDeep(productOrService, o.productOrService, true) && compareDeep(modifier, o.modifier, true)
-           && compareDeep(quantity, o.quantity, true) && compareDeep(unitPrice, o.unitPrice, true) && compareDeep(factor, o.factor, true)
-           && compareDeep(net, o.net, true) && compareDeep(noteNumber, o.noteNumber, true) && compareDeep(adjudication, o.adjudication, true)
+        return compareDeep(revenue, o.revenue, true) && compareDeep(productOrService, o.productOrService, true)
+           && compareDeep(productOrServiceEnd, o.productOrServiceEnd, true) && compareDeep(modifier, o.modifier, true)
+           && compareDeep(patientPaid, o.patientPaid, true) && compareDeep(quantity, o.quantity, true) && compareDeep(unitPrice, o.unitPrice, true)
+           && compareDeep(factor, o.factor, true) && compareDeep(tax, o.tax, true) && compareDeep(net, o.net, true)
+           && compareDeep(noteNumber, o.noteNumber, true) && compareDeep(decision, o.decision, true) && compareDeep(adjudication, o.adjudication, true)
            && compareDeep(subDetail, o.subDetail, true);
       }
 
@@ -9405,8 +10848,9 @@ public class ExplanationOfBenefit extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(productOrService, modifier
-          , quantity, unitPrice, factor, net, noteNumber, adjudication, subDetail);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(revenue, productOrService
+          , productOrServiceEnd, modifier, patientPaid, quantity, unitPrice, factor, tax
+          , net, noteNumber, decision, adjudication, subDetail);
       }
 
   public String fhirType() {
@@ -9419,64 +10863,102 @@ public class ExplanationOfBenefit extends DomainResource {
     @Block()
     public static class AddedItemDetailSubDetailComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.
+         * The type of revenue or cost center providing the product and/or service.
          */
-        @Child(name = "productOrService", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Billing, service, product, or drug code", formalDefinition="When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item." )
+        @Child(name = "revenue", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Revenue or cost center code", formalDefinition="The type of revenue or cost center providing the product and/or service." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ex-revenue-center")
+        protected CodeableConcept revenue;
+
+        /**
+         * When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.
+         */
+        @Child(name = "productOrService", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Billing, service, product, or drug code", formalDefinition="When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-uscls")
         protected CodeableConcept productOrService;
 
         /**
+         * This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.
+         */
+        @Child(name = "productOrServiceEnd", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="End of a range of codes", formalDefinition="This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-uscls")
+        protected CodeableConcept productOrServiceEnd;
+
+        /**
          * Item typification or modifiers codes to convey additional context for the product or service.
          */
-        @Child(name = "modifier", type = {CodeableConcept.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "modifier", type = {CodeableConcept.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Service/Product billing modifiers", formalDefinition="Item typification or modifiers codes to convey additional context for the product or service." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-modifiers")
         protected List<CodeableConcept> modifier;
 
         /**
+         * The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.
+         */
+        @Child(name = "patientPaid", type = {Money.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Paid by the patient", formalDefinition="The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services." )
+        protected Money patientPaid;
+
+        /**
          * The number of repetitions of a service or product.
          */
-        @Child(name = "quantity", type = {Quantity.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "quantity", type = {Quantity.class}, order=6, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Count of products or services", formalDefinition="The number of repetitions of a service or product." )
         protected Quantity quantity;
 
         /**
          * If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.
          */
-        @Child(name = "unitPrice", type = {Money.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "unitPrice", type = {Money.class}, order=7, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Fee, charge or cost per item", formalDefinition="If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group." )
         protected Money unitPrice;
 
         /**
          * A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.
          */
-        @Child(name = "factor", type = {DecimalType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "factor", type = {DecimalType.class}, order=8, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Price scaling factor", formalDefinition="A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount." )
         protected DecimalType factor;
 
         /**
+         * The total of taxes applicable for this product or service.
+         */
+        @Child(name = "tax", type = {Money.class}, order=9, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Total tax", formalDefinition="The total of taxes applicable for this product or service." )
+        protected Money tax;
+
+        /**
          * The quantity times the unit price for an additional service or product or charge.
          */
-        @Child(name = "net", type = {Money.class}, order=6, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "net", type = {Money.class}, order=10, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Total item cost", formalDefinition="The quantity times the unit price for an additional service or product or charge." )
         protected Money net;
 
         /**
          * The numbers associated with notes below which apply to the adjudication of this item.
          */
-        @Child(name = "noteNumber", type = {PositiveIntType.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "noteNumber", type = {PositiveIntType.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Applicable note numbers", formalDefinition="The numbers associated with notes below which apply to the adjudication of this item." )
         protected List<PositiveIntType> noteNumber;
 
         /**
+         * The result of the claim, predetermination, or preauthorization adjudication.
+         */
+        @Child(name = "decision", type = {CodeableConcept.class}, order=12, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Result of the adjudication", formalDefinition="The result of the claim, predetermination, or preauthorization adjudication." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-decision")
+        protected CodeableConcept decision;
+
+        /**
          * The adjudication results.
          */
-        @Child(name = "adjudication", type = {AdjudicationComponent.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "adjudication", type = {AdjudicationComponent.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Added items adjudication", formalDefinition="The adjudication results." )
         protected List<AdjudicationComponent> adjudication;
 
-        private static final long serialVersionUID = 1301363592L;
+        private static final long serialVersionUID = 1436664749L;
 
     /**
      * Constructor
@@ -9485,16 +10967,32 @@ public class ExplanationOfBenefit extends DomainResource {
         super();
       }
 
-    /**
-     * Constructor
-     */
-      public AddedItemDetailSubDetailComponent(CodeableConcept productOrService) {
-        super();
-        this.setProductOrService(productOrService);
-      }
+        /**
+         * @return {@link #revenue} (The type of revenue or cost center providing the product and/or service.)
+         */
+        public CodeableConcept getRevenue() { 
+          if (this.revenue == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AddedItemDetailSubDetailComponent.revenue");
+            else if (Configuration.doAutoCreate())
+              this.revenue = new CodeableConcept(); // cc
+          return this.revenue;
+        }
+
+        public boolean hasRevenue() { 
+          return this.revenue != null && !this.revenue.isEmpty();
+        }
 
         /**
-         * @return {@link #productOrService} (When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.)
+         * @param value {@link #revenue} (The type of revenue or cost center providing the product and/or service.)
+         */
+        public AddedItemDetailSubDetailComponent setRevenue(CodeableConcept value) { 
+          this.revenue = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #productOrService} (When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.)
          */
         public CodeableConcept getProductOrService() { 
           if (this.productOrService == null)
@@ -9510,10 +11008,34 @@ public class ExplanationOfBenefit extends DomainResource {
         }
 
         /**
-         * @param value {@link #productOrService} (When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.)
+         * @param value {@link #productOrService} (When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.)
          */
         public AddedItemDetailSubDetailComponent setProductOrService(CodeableConcept value) { 
           this.productOrService = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #productOrServiceEnd} (This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.)
+         */
+        public CodeableConcept getProductOrServiceEnd() { 
+          if (this.productOrServiceEnd == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AddedItemDetailSubDetailComponent.productOrServiceEnd");
+            else if (Configuration.doAutoCreate())
+              this.productOrServiceEnd = new CodeableConcept(); // cc
+          return this.productOrServiceEnd;
+        }
+
+        public boolean hasProductOrServiceEnd() { 
+          return this.productOrServiceEnd != null && !this.productOrServiceEnd.isEmpty();
+        }
+
+        /**
+         * @param value {@link #productOrServiceEnd} (This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.)
+         */
+        public AddedItemDetailSubDetailComponent setProductOrServiceEnd(CodeableConcept value) { 
+          this.productOrServiceEnd = value;
           return this;
         }
 
@@ -9568,6 +11090,30 @@ public class ExplanationOfBenefit extends DomainResource {
             addModifier();
           }
           return getModifier().get(0);
+        }
+
+        /**
+         * @return {@link #patientPaid} (The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.)
+         */
+        public Money getPatientPaid() { 
+          if (this.patientPaid == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AddedItemDetailSubDetailComponent.patientPaid");
+            else if (Configuration.doAutoCreate())
+              this.patientPaid = new Money(); // cc
+          return this.patientPaid;
+        }
+
+        public boolean hasPatientPaid() { 
+          return this.patientPaid != null && !this.patientPaid.isEmpty();
+        }
+
+        /**
+         * @param value {@link #patientPaid} (The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.)
+         */
+        public AddedItemDetailSubDetailComponent setPatientPaid(Money value) { 
+          this.patientPaid = value;
+          return this;
         }
 
         /**
@@ -9686,6 +11232,30 @@ public class ExplanationOfBenefit extends DomainResource {
         }
 
         /**
+         * @return {@link #tax} (The total of taxes applicable for this product or service.)
+         */
+        public Money getTax() { 
+          if (this.tax == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AddedItemDetailSubDetailComponent.tax");
+            else if (Configuration.doAutoCreate())
+              this.tax = new Money(); // cc
+          return this.tax;
+        }
+
+        public boolean hasTax() { 
+          return this.tax != null && !this.tax.isEmpty();
+        }
+
+        /**
+         * @param value {@link #tax} (The total of taxes applicable for this product or service.)
+         */
+        public AddedItemDetailSubDetailComponent setTax(Money value) { 
+          this.tax = value;
+          return this;
+        }
+
+        /**
          * @return {@link #net} (The quantity times the unit price for an additional service or product or charge.)
          */
         public Money getNet() { 
@@ -9771,6 +11341,30 @@ public class ExplanationOfBenefit extends DomainResource {
         }
 
         /**
+         * @return {@link #decision} (The result of the claim, predetermination, or preauthorization adjudication.)
+         */
+        public CodeableConcept getDecision() { 
+          if (this.decision == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AddedItemDetailSubDetailComponent.decision");
+            else if (Configuration.doAutoCreate())
+              this.decision = new CodeableConcept(); // cc
+          return this.decision;
+        }
+
+        public boolean hasDecision() { 
+          return this.decision != null && !this.decision.isEmpty();
+        }
+
+        /**
+         * @param value {@link #decision} (The result of the claim, predetermination, or preauthorization adjudication.)
+         */
+        public AddedItemDetailSubDetailComponent setDecision(CodeableConcept value) { 
+          this.decision = value;
+          return this;
+        }
+
+        /**
          * @return {@link #adjudication} (The adjudication results.)
          */
         public List<AdjudicationComponent> getAdjudication() { 
@@ -9825,26 +11419,36 @@ public class ExplanationOfBenefit extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.", 0, 1, productOrService));
+          children.add(new Property("revenue", "CodeableConcept", "The type of revenue or cost center providing the product and/or service.", 0, 1, revenue));
+          children.add(new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.", 0, 1, productOrService));
+          children.add(new Property("productOrServiceEnd", "CodeableConcept", "This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.", 0, 1, productOrServiceEnd));
           children.add(new Property("modifier", "CodeableConcept", "Item typification or modifiers codes to convey additional context for the product or service.", 0, java.lang.Integer.MAX_VALUE, modifier));
+          children.add(new Property("patientPaid", "Money", "The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.", 0, 1, patientPaid));
           children.add(new Property("quantity", "Quantity", "The number of repetitions of a service or product.", 0, 1, quantity));
           children.add(new Property("unitPrice", "Money", "If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.", 0, 1, unitPrice));
           children.add(new Property("factor", "decimal", "A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.", 0, 1, factor));
+          children.add(new Property("tax", "Money", "The total of taxes applicable for this product or service.", 0, 1, tax));
           children.add(new Property("net", "Money", "The quantity times the unit price for an additional service or product or charge.", 0, 1, net));
           children.add(new Property("noteNumber", "positiveInt", "The numbers associated with notes below which apply to the adjudication of this item.", 0, java.lang.Integer.MAX_VALUE, noteNumber));
+          children.add(new Property("decision", "CodeableConcept", "The result of the claim, predetermination, or preauthorization adjudication.", 0, 1, decision));
           children.add(new Property("adjudication", "@ExplanationOfBenefit.item.adjudication", "The adjudication results.", 0, java.lang.Integer.MAX_VALUE, adjudication));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 1957227299: /*productOrService*/  return new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related claim details, otherwise this contains the product, service, drug or other billing code for the item.", 0, 1, productOrService);
+          case 1099842588: /*revenue*/  return new Property("revenue", "CodeableConcept", "The type of revenue or cost center providing the product and/or service.", 0, 1, revenue);
+          case 1957227299: /*productOrService*/  return new Property("productOrService", "CodeableConcept", "When the value is a group code then this item collects a set of related item details, otherwise this contains the product, service, drug or other billing code for the item. This element may be the start of a range of .productOrService codes used in conjunction with .productOrServiceEnd or it may be a solo element where .productOrServiceEnd is not used.", 0, 1, productOrService);
+          case -717476168: /*productOrServiceEnd*/  return new Property("productOrServiceEnd", "CodeableConcept", "This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.", 0, 1, productOrServiceEnd);
           case -615513385: /*modifier*/  return new Property("modifier", "CodeableConcept", "Item typification or modifiers codes to convey additional context for the product or service.", 0, java.lang.Integer.MAX_VALUE, modifier);
+          case 525514609: /*patientPaid*/  return new Property("patientPaid", "Money", "The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.", 0, 1, patientPaid);
           case -1285004149: /*quantity*/  return new Property("quantity", "Quantity", "The number of repetitions of a service or product.", 0, 1, quantity);
           case -486196699: /*unitPrice*/  return new Property("unitPrice", "Money", "If the item is not a group then this is the fee for the product or service, otherwise this is the total of the fees for the details of the group.", 0, 1, unitPrice);
           case -1282148017: /*factor*/  return new Property("factor", "decimal", "A real number that represents a multiplier used in determining the overall value of services delivered and/or goods received. The concept of a Factor allows for a discount or surcharge multiplier to be applied to a monetary amount.", 0, 1, factor);
+          case 114603: /*tax*/  return new Property("tax", "Money", "The total of taxes applicable for this product or service.", 0, 1, tax);
           case 108957: /*net*/  return new Property("net", "Money", "The quantity times the unit price for an additional service or product or charge.", 0, 1, net);
           case -1110033957: /*noteNumber*/  return new Property("noteNumber", "positiveInt", "The numbers associated with notes below which apply to the adjudication of this item.", 0, java.lang.Integer.MAX_VALUE, noteNumber);
+          case 565719004: /*decision*/  return new Property("decision", "CodeableConcept", "The result of the claim, predetermination, or preauthorization adjudication.", 0, 1, decision);
           case -231349275: /*adjudication*/  return new Property("adjudication", "@ExplanationOfBenefit.item.adjudication", "The adjudication results.", 0, java.lang.Integer.MAX_VALUE, adjudication);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -9854,13 +11458,18 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
+        case 1099842588: /*revenue*/ return this.revenue == null ? new Base[0] : new Base[] {this.revenue}; // CodeableConcept
         case 1957227299: /*productOrService*/ return this.productOrService == null ? new Base[0] : new Base[] {this.productOrService}; // CodeableConcept
+        case -717476168: /*productOrServiceEnd*/ return this.productOrServiceEnd == null ? new Base[0] : new Base[] {this.productOrServiceEnd}; // CodeableConcept
         case -615513385: /*modifier*/ return this.modifier == null ? new Base[0] : this.modifier.toArray(new Base[this.modifier.size()]); // CodeableConcept
+        case 525514609: /*patientPaid*/ return this.patientPaid == null ? new Base[0] : new Base[] {this.patientPaid}; // Money
         case -1285004149: /*quantity*/ return this.quantity == null ? new Base[0] : new Base[] {this.quantity}; // Quantity
         case -486196699: /*unitPrice*/ return this.unitPrice == null ? new Base[0] : new Base[] {this.unitPrice}; // Money
         case -1282148017: /*factor*/ return this.factor == null ? new Base[0] : new Base[] {this.factor}; // DecimalType
+        case 114603: /*tax*/ return this.tax == null ? new Base[0] : new Base[] {this.tax}; // Money
         case 108957: /*net*/ return this.net == null ? new Base[0] : new Base[] {this.net}; // Money
         case -1110033957: /*noteNumber*/ return this.noteNumber == null ? new Base[0] : this.noteNumber.toArray(new Base[this.noteNumber.size()]); // PositiveIntType
+        case 565719004: /*decision*/ return this.decision == null ? new Base[0] : new Base[] {this.decision}; // CodeableConcept
         case -231349275: /*adjudication*/ return this.adjudication == null ? new Base[0] : this.adjudication.toArray(new Base[this.adjudication.size()]); // AdjudicationComponent
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -9870,11 +11479,20 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
+        case 1099842588: // revenue
+          this.revenue = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
         case 1957227299: // productOrService
           this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
+        case -717476168: // productOrServiceEnd
+          this.productOrServiceEnd = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
         case -615513385: // modifier
           this.getModifier().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          return value;
+        case 525514609: // patientPaid
+          this.patientPaid = TypeConvertor.castToMoney(value); // Money
           return value;
         case -1285004149: // quantity
           this.quantity = TypeConvertor.castToQuantity(value); // Quantity
@@ -9885,11 +11503,17 @@ public class ExplanationOfBenefit extends DomainResource {
         case -1282148017: // factor
           this.factor = TypeConvertor.castToDecimal(value); // DecimalType
           return value;
+        case 114603: // tax
+          this.tax = TypeConvertor.castToMoney(value); // Money
+          return value;
         case 108957: // net
           this.net = TypeConvertor.castToMoney(value); // Money
           return value;
         case -1110033957: // noteNumber
           this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value)); // PositiveIntType
+          return value;
+        case 565719004: // decision
+          this.decision = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -231349275: // adjudication
           this.getAdjudication().add((AdjudicationComponent) value); // AdjudicationComponent
@@ -9901,20 +11525,30 @@ public class ExplanationOfBenefit extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("productOrService")) {
+        if (name.equals("revenue")) {
+          this.revenue = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("productOrService")) {
           this.productOrService = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("productOrServiceEnd")) {
+          this.productOrServiceEnd = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("modifier")) {
           this.getModifier().add(TypeConvertor.castToCodeableConcept(value));
+        } else if (name.equals("patientPaid")) {
+          this.patientPaid = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("quantity")) {
           this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("unitPrice")) {
           this.unitPrice = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("factor")) {
           this.factor = TypeConvertor.castToDecimal(value); // DecimalType
+        } else if (name.equals("tax")) {
+          this.tax = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("net")) {
           this.net = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("noteNumber")) {
           this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value));
+        } else if (name.equals("decision")) {
+          this.decision = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("adjudication")) {
           this.getAdjudication().add((AdjudicationComponent) value);
         } else
@@ -9925,13 +11559,18 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
+        case 1099842588:  return getRevenue();
         case 1957227299:  return getProductOrService();
+        case -717476168:  return getProductOrServiceEnd();
         case -615513385:  return addModifier(); 
+        case 525514609:  return getPatientPaid();
         case -1285004149:  return getQuantity();
         case -486196699:  return getUnitPrice();
         case -1282148017:  return getFactorElement();
+        case 114603:  return getTax();
         case 108957:  return getNet();
         case -1110033957:  return addNoteNumberElement();
+        case 565719004:  return getDecision();
         case -231349275:  return addAdjudication(); 
         default: return super.makeProperty(hash, name);
         }
@@ -9941,13 +11580,18 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
+        case 1099842588: /*revenue*/ return new String[] {"CodeableConcept"};
         case 1957227299: /*productOrService*/ return new String[] {"CodeableConcept"};
+        case -717476168: /*productOrServiceEnd*/ return new String[] {"CodeableConcept"};
         case -615513385: /*modifier*/ return new String[] {"CodeableConcept"};
+        case 525514609: /*patientPaid*/ return new String[] {"Money"};
         case -1285004149: /*quantity*/ return new String[] {"Quantity"};
         case -486196699: /*unitPrice*/ return new String[] {"Money"};
         case -1282148017: /*factor*/ return new String[] {"decimal"};
+        case 114603: /*tax*/ return new String[] {"Money"};
         case 108957: /*net*/ return new String[] {"Money"};
         case -1110033957: /*noteNumber*/ return new String[] {"positiveInt"};
+        case 565719004: /*decision*/ return new String[] {"CodeableConcept"};
         case -231349275: /*adjudication*/ return new String[] {"@ExplanationOfBenefit.item.adjudication"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -9956,12 +11600,24 @@ public class ExplanationOfBenefit extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("productOrService")) {
+        if (name.equals("revenue")) {
+          this.revenue = new CodeableConcept();
+          return this.revenue;
+        }
+        else if (name.equals("productOrService")) {
           this.productOrService = new CodeableConcept();
           return this.productOrService;
         }
+        else if (name.equals("productOrServiceEnd")) {
+          this.productOrServiceEnd = new CodeableConcept();
+          return this.productOrServiceEnd;
+        }
         else if (name.equals("modifier")) {
           return addModifier();
+        }
+        else if (name.equals("patientPaid")) {
+          this.patientPaid = new Money();
+          return this.patientPaid;
         }
         else if (name.equals("quantity")) {
           this.quantity = new Quantity();
@@ -9974,12 +11630,20 @@ public class ExplanationOfBenefit extends DomainResource {
         else if (name.equals("factor")) {
           throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.addItem.detail.subDetail.factor");
         }
+        else if (name.equals("tax")) {
+          this.tax = new Money();
+          return this.tax;
+        }
         else if (name.equals("net")) {
           this.net = new Money();
           return this.net;
         }
         else if (name.equals("noteNumber")) {
           throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.addItem.detail.subDetail.noteNumber");
+        }
+        else if (name.equals("decision")) {
+          this.decision = new CodeableConcept();
+          return this.decision;
         }
         else if (name.equals("adjudication")) {
           return addAdjudication();
@@ -9996,21 +11660,26 @@ public class ExplanationOfBenefit extends DomainResource {
 
       public void copyValues(AddedItemDetailSubDetailComponent dst) {
         super.copyValues(dst);
+        dst.revenue = revenue == null ? null : revenue.copy();
         dst.productOrService = productOrService == null ? null : productOrService.copy();
+        dst.productOrServiceEnd = productOrServiceEnd == null ? null : productOrServiceEnd.copy();
         if (modifier != null) {
           dst.modifier = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : modifier)
             dst.modifier.add(i.copy());
         };
+        dst.patientPaid = patientPaid == null ? null : patientPaid.copy();
         dst.quantity = quantity == null ? null : quantity.copy();
         dst.unitPrice = unitPrice == null ? null : unitPrice.copy();
         dst.factor = factor == null ? null : factor.copy();
+        dst.tax = tax == null ? null : tax.copy();
         dst.net = net == null ? null : net.copy();
         if (noteNumber != null) {
           dst.noteNumber = new ArrayList<PositiveIntType>();
           for (PositiveIntType i : noteNumber)
             dst.noteNumber.add(i.copy());
         };
+        dst.decision = decision == null ? null : decision.copy();
         if (adjudication != null) {
           dst.adjudication = new ArrayList<AdjudicationComponent>();
           for (AdjudicationComponent i : adjudication)
@@ -10025,9 +11694,11 @@ public class ExplanationOfBenefit extends DomainResource {
         if (!(other_ instanceof AddedItemDetailSubDetailComponent))
           return false;
         AddedItemDetailSubDetailComponent o = (AddedItemDetailSubDetailComponent) other_;
-        return compareDeep(productOrService, o.productOrService, true) && compareDeep(modifier, o.modifier, true)
-           && compareDeep(quantity, o.quantity, true) && compareDeep(unitPrice, o.unitPrice, true) && compareDeep(factor, o.factor, true)
-           && compareDeep(net, o.net, true) && compareDeep(noteNumber, o.noteNumber, true) && compareDeep(adjudication, o.adjudication, true)
+        return compareDeep(revenue, o.revenue, true) && compareDeep(productOrService, o.productOrService, true)
+           && compareDeep(productOrServiceEnd, o.productOrServiceEnd, true) && compareDeep(modifier, o.modifier, true)
+           && compareDeep(patientPaid, o.patientPaid, true) && compareDeep(quantity, o.quantity, true) && compareDeep(unitPrice, o.unitPrice, true)
+           && compareDeep(factor, o.factor, true) && compareDeep(tax, o.tax, true) && compareDeep(net, o.net, true)
+           && compareDeep(noteNumber, o.noteNumber, true) && compareDeep(decision, o.decision, true) && compareDeep(adjudication, o.adjudication, true)
           ;
       }
 
@@ -10042,8 +11713,9 @@ public class ExplanationOfBenefit extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(productOrService, modifier
-          , quantity, unitPrice, factor, net, noteNumber, adjudication);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(revenue, productOrService
+          , productOrServiceEnd, modifier, patientPaid, quantity, unitPrice, factor, tax
+          , net, noteNumber, decision, adjudication);
       }
 
   public String fhirType() {
@@ -12018,10 +13690,10 @@ public class ExplanationOfBenefit extends DomainResource {
     protected CodeableConcept subType;
 
     /**
-     * A code to indicate whether the nature of the request is: to request adjudication of products and services previously rendered; or requesting authorization and adjudication for provision in the future; or requesting the non-binding adjudication of the listed products and services which could be provided in the future.
+     * A code to indicate whether the nature of the request is: Claim - A request to an Insurer to adjudicate the supplied charges for health care goods and services under the identified policy and to pay the determined Benefit amount, if any; Preauthorization - A request to an Insurer to adjudicate the supplied proposed future charges for health care goods and services under the identified policy and to approve the services and provide the expected benefit amounts and potentially to reserve funds to pay the benefits when Claims for the indicated services are later submitted; or, Pre-determination - A request to an Insurer to adjudicate the supplied 'what if' charges for health care goods and services under the identified policy and report back what the Benefit payable would be had the services actually been provided.
      */
     @Child(name = "use", type = {CodeType.class}, order=4, min=1, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="claim | preauthorization | predetermination", formalDefinition="A code to indicate whether the nature of the request is: to request adjudication of products and services previously rendered; or requesting authorization and adjudication for provision in the future; or requesting the non-binding adjudication of the listed products and services which could be provided in the future." )
+    @Description(shortDefinition="claim | preauthorization | predetermination", formalDefinition="A code to indicate whether the nature of the request is: Claim - A request to an Insurer to adjudicate the supplied charges for health care goods and services under the identified policy and to pay the determined Benefit amount, if any; Preauthorization - A request to an Insurer to adjudicate the supplied proposed future charges for health care goods and services under the identified policy and to approve the services and provide the expected benefit amounts and potentially to reserve funds to pay the benefits when Claims for the indicated services are later submitted; or, Pre-determination - A request to an Insurer to adjudicate the supplied 'what if' charges for health care goods and services under the identified policy and report back what the Benefit payable would be had the services actually been provided." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-use")
     protected Enumeration<Use> use;
 
@@ -12049,30 +13721,30 @@ public class ExplanationOfBenefit extends DomainResource {
     /**
      * Individual who created the claim, predetermination or preauthorization.
      */
-    @Child(name = "enterer", type = {Practitioner.class, PractitionerRole.class}, order=8, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "enterer", type = {Practitioner.class, PractitionerRole.class, Patient.class, RelatedPerson.class}, order=8, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Author of the claim", formalDefinition="Individual who created the claim, predetermination or preauthorization." )
     protected Reference enterer;
 
     /**
      * The party responsible for authorization, adjudication and reimbursement.
      */
-    @Child(name = "insurer", type = {Organization.class}, order=9, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "insurer", type = {Organization.class}, order=9, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Party responsible for reimbursement", formalDefinition="The party responsible for authorization, adjudication and reimbursement." )
     protected Reference insurer;
 
     /**
      * The provider which is responsible for the claim, predetermination or preauthorization.
      */
-    @Child(name = "provider", type = {Practitioner.class, PractitionerRole.class, Organization.class}, order=10, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "provider", type = {Practitioner.class, PractitionerRole.class, Organization.class}, order=10, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Party responsible for the claim", formalDefinition="The provider which is responsible for the claim, predetermination or preauthorization." )
     protected Reference provider;
 
     /**
-     * The provider-required urgency of processing the request. Typical values include: stat, routine deferred.
+     * The provider-required urgency of processing the request. Typical values include: stat, normal deferred.
      */
     @Child(name = "priority", type = {CodeableConcept.class}, order=11, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Desired processing urgency", formalDefinition="The provider-required urgency of processing the request. Typical values include: stat, routine deferred." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/CodeSystem/processpriority")
+    @Description(shortDefinition="Desired processing urgency", formalDefinition="The provider-required urgency of processing the request. Typical values include: stat, normal deferred." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/process-priority")
     protected CodeableConcept priority;
 
     /**
@@ -12099,10 +13771,10 @@ public class ExplanationOfBenefit extends DomainResource {
     protected List<RelatedClaimComponent> related;
 
     /**
-     * Prescription to support the dispensing of pharmacy, device or vision products.
+     * Prescription is the document/authorization given to the claim author for them to provide products and services for which consideration (reimbursement) is sought. Could be a RX for medications, an 'order' for oxygen or wheelchair or physiotherapy treatments.
      */
     @Child(name = "prescription", type = {MedicationRequest.class, VisionPrescription.class}, order=15, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Prescription authorizing services or products", formalDefinition="Prescription to support the dispensing of pharmacy, device or vision products." )
+    @Description(shortDefinition="Prescription authorizing services or products", formalDefinition="Prescription is the document/authorization given to the claim author for them to provide products and services for which consideration (reimbursement) is sought. Could be a RX for medications, an 'order' for oxygen or wheelchair or physiotherapy treatments." )
     protected Reference prescription;
 
     /**
@@ -12120,150 +13792,180 @@ public class ExplanationOfBenefit extends DomainResource {
     protected PayeeComponent payee;
 
     /**
-     * A reference to a referral resource.
+     * The referral information received by the claim author, it is not to be used when the author generates a referral for a patient. A copy of that referral may be provided as supporting information. Some insurers require proof of referral to pay for services or to pay specialist rates for services.
      */
     @Child(name = "referral", type = {ServiceRequest.class}, order=18, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Treatment Referral", formalDefinition="A reference to a referral resource." )
+    @Description(shortDefinition="Treatment Referral", formalDefinition="The referral information received by the claim author, it is not to be used when the author generates a referral for a patient. A copy of that referral may be provided as supporting information. Some insurers require proof of referral to pay for services or to pay specialist rates for services." )
     protected Reference referral;
+
+    /**
+     * A billed item may include goods or services provided in multiple encounters.
+     */
+    @Child(name = "encounter", type = {Encounter.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Encounters related to this billed item", formalDefinition="A billed item may include goods or services provided in multiple encounters." )
+    protected List<Reference> encounter;
 
     /**
      * Facility where the services were provided.
      */
-    @Child(name = "facility", type = {Location.class}, order=19, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "facility", type = {Location.class, Organization.class}, order=20, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Servicing Facility", formalDefinition="Facility where the services were provided." )
     protected Reference facility;
 
     /**
      * The business identifier for the instance of the adjudication request: claim predetermination or preauthorization.
      */
-    @Child(name = "claim", type = {Claim.class}, order=20, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "claim", type = {Claim.class}, order=21, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Claim reference", formalDefinition="The business identifier for the instance of the adjudication request: claim predetermination or preauthorization." )
     protected Reference claim;
 
     /**
      * The business identifier for the instance of the adjudication response: claim, predetermination or preauthorization response.
      */
-    @Child(name = "claimResponse", type = {ClaimResponse.class}, order=21, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "claimResponse", type = {ClaimResponse.class}, order=22, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Claim response reference", formalDefinition="The business identifier for the instance of the adjudication response: claim, predetermination or preauthorization response." )
     protected Reference claimResponse;
 
     /**
      * The outcome of the claim, predetermination, or preauthorization processing.
      */
-    @Child(name = "outcome", type = {CodeType.class}, order=22, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "outcome", type = {CodeType.class}, order=23, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="queued | complete | error | partial", formalDefinition="The outcome of the claim, predetermination, or preauthorization processing." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-outcome")
     protected Enumeration<ClaimProcessingCodes> outcome;
 
     /**
+     * The result of the claim, predetermination, or preauthorization adjudication.
+     */
+    @Child(name = "decision", type = {CodeableConcept.class}, order=24, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Result of the adjudication", formalDefinition="The result of the claim, predetermination, or preauthorization adjudication." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/claim-decision")
+    protected CodeableConcept decision;
+
+    /**
      * A human readable description of the status of the adjudication.
      */
-    @Child(name = "disposition", type = {StringType.class}, order=23, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "disposition", type = {StringType.class}, order=25, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Disposition Message", formalDefinition="A human readable description of the status of the adjudication." )
     protected StringType disposition;
 
     /**
      * Reference from the Insurer which is used in later communications which refers to this adjudication.
      */
-    @Child(name = "preAuthRef", type = {StringType.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "preAuthRef", type = {StringType.class}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Preauthorization reference", formalDefinition="Reference from the Insurer which is used in later communications which refers to this adjudication." )
     protected List<StringType> preAuthRef;
 
     /**
      * The timeframe during which the supplied preauthorization reference may be quoted on claims to obtain the adjudication as provided.
      */
-    @Child(name = "preAuthRefPeriod", type = {Period.class}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "preAuthRefPeriod", type = {Period.class}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Preauthorization in-effect period", formalDefinition="The timeframe during which the supplied preauthorization reference may be quoted on claims to obtain the adjudication as provided." )
     protected List<Period> preAuthRefPeriod;
 
     /**
+     * A package billing code or bundle code used to group products and services to a particular health condition (such as heart attack) which is based on a predetermined grouping code system.
+     */
+    @Child(name = "diagnosisRelatedGroup", type = {CodeableConcept.class}, order=28, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Package billing code", formalDefinition="A package billing code or bundle code used to group products and services to a particular health condition (such as heart attack) which is based on a predetermined grouping code system." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ex-diagnosisrelatedgroup")
+    protected CodeableConcept diagnosisRelatedGroup;
+
+    /**
      * The members of the team who provided the products and services.
      */
-    @Child(name = "careTeam", type = {}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "careTeam", type = {}, order=29, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Care Team members", formalDefinition="The members of the team who provided the products and services." )
     protected List<CareTeamComponent> careTeam;
 
     /**
      * Additional information codes regarding exceptions, special considerations, the condition, situation, prior or concurrent issues.
      */
-    @Child(name = "supportingInfo", type = {}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "supportingInfo", type = {}, order=30, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Supporting information", formalDefinition="Additional information codes regarding exceptions, special considerations, the condition, situation, prior or concurrent issues." )
     protected List<SupportingInformationComponent> supportingInfo;
 
     /**
      * Information about diagnoses relevant to the claim items.
      */
-    @Child(name = "diagnosis", type = {}, order=28, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "diagnosis", type = {}, order=31, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Pertinent diagnosis information", formalDefinition="Information about diagnoses relevant to the claim items." )
     protected List<DiagnosisComponent> diagnosis;
 
     /**
      * Procedures performed on the patient relevant to the billing items with the claim.
      */
-    @Child(name = "procedure", type = {}, order=29, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "procedure", type = {}, order=32, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Clinical procedures performed", formalDefinition="Procedures performed on the patient relevant to the billing items with the claim." )
     protected List<ProcedureComponent> procedure;
 
     /**
      * This indicates the relative order of a series of EOBs related to different coverages for the same suite of services.
      */
-    @Child(name = "precedence", type = {PositiveIntType.class}, order=30, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "precedence", type = {PositiveIntType.class}, order=33, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Precedence (primary, secondary, etc.)", formalDefinition="This indicates the relative order of a series of EOBs related to different coverages for the same suite of services." )
     protected PositiveIntType precedence;
 
     /**
      * Financial instruments for reimbursement for the health care products and services specified on the claim.
      */
-    @Child(name = "insurance", type = {}, order=31, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "insurance", type = {}, order=34, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Patient insurance information", formalDefinition="Financial instruments for reimbursement for the health care products and services specified on the claim." )
     protected List<InsuranceComponent> insurance;
 
     /**
      * Details of a accident which resulted in injuries which required the products and services listed in the claim.
      */
-    @Child(name = "accident", type = {}, order=32, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "accident", type = {}, order=35, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Details of the event", formalDefinition="Details of a accident which resulted in injuries which required the products and services listed in the claim." )
     protected AccidentComponent accident;
 
     /**
+     * The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.
+     */
+    @Child(name = "patientPaid", type = {Money.class}, order=36, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Paid by the patient", formalDefinition="The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services." )
+    protected Money patientPaid;
+
+    /**
      * A claim line. Either a simple (a product or service) or a 'group' of details which can also be a simple items or groups of sub-details.
      */
-    @Child(name = "item", type = {}, order=33, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "item", type = {}, order=37, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Product or service provided", formalDefinition="A claim line. Either a simple (a product or service) or a 'group' of details which can also be a simple items or groups of sub-details." )
     protected List<ItemComponent> item;
 
     /**
      * The first-tier service adjudications for payor added product or service lines.
      */
-    @Child(name = "addItem", type = {}, order=34, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "addItem", type = {}, order=38, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Insurer added line items", formalDefinition="The first-tier service adjudications for payor added product or service lines." )
     protected List<AddedItemComponent> addItem;
 
     /**
      * The adjudication results which are presented at the header level rather than at the line-item or add-item levels.
      */
-    @Child(name = "adjudication", type = {AdjudicationComponent.class}, order=35, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "adjudication", type = {AdjudicationComponent.class}, order=39, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Header-level adjudication", formalDefinition="The adjudication results which are presented at the header level rather than at the line-item or add-item levels." )
     protected List<AdjudicationComponent> adjudication;
 
     /**
      * Categorized monetary totals for the adjudication.
      */
-    @Child(name = "total", type = {}, order=36, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "total", type = {}, order=40, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Adjudication totals", formalDefinition="Categorized monetary totals for the adjudication." )
     protected List<TotalComponent> total;
 
     /**
      * Payment details for the adjudication of the claim.
      */
-    @Child(name = "payment", type = {}, order=37, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "payment", type = {}, order=41, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Payment Details", formalDefinition="Payment details for the adjudication of the claim." )
     protected PaymentComponent payment;
 
     /**
      * A code for the form to be used for printing the content.
      */
-    @Child(name = "formCode", type = {CodeableConcept.class}, order=38, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "formCode", type = {CodeableConcept.class}, order=42, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Printed form identifier", formalDefinition="A code for the form to be used for printing the content." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/forms")
     protected CodeableConcept formCode;
@@ -12271,32 +13973,32 @@ public class ExplanationOfBenefit extends DomainResource {
     /**
      * The actual form, by reference or inclusion, for printing the content or an EOB.
      */
-    @Child(name = "form", type = {Attachment.class}, order=39, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "form", type = {Attachment.class}, order=43, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Printed reference or actual form", formalDefinition="The actual form, by reference or inclusion, for printing the content or an EOB." )
     protected Attachment form;
 
     /**
      * A note that describes or explains adjudication results in a human readable form.
      */
-    @Child(name = "processNote", type = {}, order=40, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "processNote", type = {}, order=44, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Note concerning adjudication", formalDefinition="A note that describes or explains adjudication results in a human readable form." )
     protected List<NoteComponent> processNote;
 
     /**
      * The term of the benefits documented in this response.
      */
-    @Child(name = "benefitPeriod", type = {Period.class}, order=41, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "benefitPeriod", type = {Period.class}, order=45, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When the benefits are applicable", formalDefinition="The term of the benefits documented in this response." )
     protected Period benefitPeriod;
 
     /**
      * Balance by Benefit Category.
      */
-    @Child(name = "benefitBalance", type = {}, order=42, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "benefitBalance", type = {}, order=46, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Balance by Benefit Category", formalDefinition="Balance by Benefit Category." )
     protected List<BenefitBalanceComponent> benefitBalance;
 
-    private static final long serialVersionUID = -1934679453L;
+    private static final long serialVersionUID = 934384125L;
 
   /**
    * Constructor
@@ -12308,17 +14010,14 @@ public class ExplanationOfBenefit extends DomainResource {
   /**
    * Constructor
    */
-    public ExplanationOfBenefit(ExplanationOfBenefitStatus status, CodeableConcept type, Use use, Reference patient, Date created, Reference insurer, Reference provider, ClaimProcessingCodes outcome, InsuranceComponent insurance) {
+    public ExplanationOfBenefit(ExplanationOfBenefitStatus status, CodeableConcept type, Use use, Reference patient, Date created, ClaimProcessingCodes outcome) {
       super();
       this.setStatus(status);
       this.setType(type);
       this.setUse(use);
       this.setPatient(patient);
       this.setCreated(created);
-      this.setInsurer(insurer);
-      this.setProvider(provider);
       this.setOutcome(outcome);
-      this.addInsurance(insurance);
     }
 
     /**
@@ -12468,7 +14167,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     /**
-     * @return {@link #use} (A code to indicate whether the nature of the request is: to request adjudication of products and services previously rendered; or requesting authorization and adjudication for provision in the future; or requesting the non-binding adjudication of the listed products and services which could be provided in the future.). This is the underlying object with id, value and extensions. The accessor "getUse" gives direct access to the value
+     * @return {@link #use} (A code to indicate whether the nature of the request is: Claim - A request to an Insurer to adjudicate the supplied charges for health care goods and services under the identified policy and to pay the determined Benefit amount, if any; Preauthorization - A request to an Insurer to adjudicate the supplied proposed future charges for health care goods and services under the identified policy and to approve the services and provide the expected benefit amounts and potentially to reserve funds to pay the benefits when Claims for the indicated services are later submitted; or, Pre-determination - A request to an Insurer to adjudicate the supplied 'what if' charges for health care goods and services under the identified policy and report back what the Benefit payable would be had the services actually been provided.). This is the underlying object with id, value and extensions. The accessor "getUse" gives direct access to the value
      */
     public Enumeration<Use> getUseElement() { 
       if (this.use == null)
@@ -12488,7 +14187,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     /**
-     * @param value {@link #use} (A code to indicate whether the nature of the request is: to request adjudication of products and services previously rendered; or requesting authorization and adjudication for provision in the future; or requesting the non-binding adjudication of the listed products and services which could be provided in the future.). This is the underlying object with id, value and extensions. The accessor "getUse" gives direct access to the value
+     * @param value {@link #use} (A code to indicate whether the nature of the request is: Claim - A request to an Insurer to adjudicate the supplied charges for health care goods and services under the identified policy and to pay the determined Benefit amount, if any; Preauthorization - A request to an Insurer to adjudicate the supplied proposed future charges for health care goods and services under the identified policy and to approve the services and provide the expected benefit amounts and potentially to reserve funds to pay the benefits when Claims for the indicated services are later submitted; or, Pre-determination - A request to an Insurer to adjudicate the supplied 'what if' charges for health care goods and services under the identified policy and report back what the Benefit payable would be had the services actually been provided.). This is the underlying object with id, value and extensions. The accessor "getUse" gives direct access to the value
      */
     public ExplanationOfBenefit setUseElement(Enumeration<Use> value) { 
       this.use = value;
@@ -12496,14 +14195,14 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     /**
-     * @return A code to indicate whether the nature of the request is: to request adjudication of products and services previously rendered; or requesting authorization and adjudication for provision in the future; or requesting the non-binding adjudication of the listed products and services which could be provided in the future.
+     * @return A code to indicate whether the nature of the request is: Claim - A request to an Insurer to adjudicate the supplied charges for health care goods and services under the identified policy and to pay the determined Benefit amount, if any; Preauthorization - A request to an Insurer to adjudicate the supplied proposed future charges for health care goods and services under the identified policy and to approve the services and provide the expected benefit amounts and potentially to reserve funds to pay the benefits when Claims for the indicated services are later submitted; or, Pre-determination - A request to an Insurer to adjudicate the supplied 'what if' charges for health care goods and services under the identified policy and report back what the Benefit payable would be had the services actually been provided.
      */
     public Use getUse() { 
       return this.use == null ? null : this.use.getValue();
     }
 
     /**
-     * @param value A code to indicate whether the nature of the request is: to request adjudication of products and services previously rendered; or requesting authorization and adjudication for provision in the future; or requesting the non-binding adjudication of the listed products and services which could be provided in the future.
+     * @param value A code to indicate whether the nature of the request is: Claim - A request to an Insurer to adjudicate the supplied charges for health care goods and services under the identified policy and to pay the determined Benefit amount, if any; Preauthorization - A request to an Insurer to adjudicate the supplied proposed future charges for health care goods and services under the identified policy and to approve the services and provide the expected benefit amounts and potentially to reserve funds to pay the benefits when Claims for the indicated services are later submitted; or, Pre-determination - A request to an Insurer to adjudicate the supplied 'what if' charges for health care goods and services under the identified policy and report back what the Benefit payable would be had the services actually been provided.
      */
     public ExplanationOfBenefit setUse(Use value) { 
         if (this.use == null)
@@ -12678,7 +14377,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     /**
-     * @return {@link #priority} (The provider-required urgency of processing the request. Typical values include: stat, routine deferred.)
+     * @return {@link #priority} (The provider-required urgency of processing the request. Typical values include: stat, normal deferred.)
      */
     public CodeableConcept getPriority() { 
       if (this.priority == null)
@@ -12694,7 +14393,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     /**
-     * @param value {@link #priority} (The provider-required urgency of processing the request. Typical values include: stat, routine deferred.)
+     * @param value {@link #priority} (The provider-required urgency of processing the request. Typical values include: stat, normal deferred.)
      */
     public ExplanationOfBenefit setPriority(CodeableConcept value) { 
       this.priority = value;
@@ -12803,7 +14502,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     /**
-     * @return {@link #prescription} (Prescription to support the dispensing of pharmacy, device or vision products.)
+     * @return {@link #prescription} (Prescription is the document/authorization given to the claim author for them to provide products and services for which consideration (reimbursement) is sought. Could be a RX for medications, an 'order' for oxygen or wheelchair or physiotherapy treatments.)
      */
     public Reference getPrescription() { 
       if (this.prescription == null)
@@ -12819,7 +14518,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     /**
-     * @param value {@link #prescription} (Prescription to support the dispensing of pharmacy, device or vision products.)
+     * @param value {@link #prescription} (Prescription is the document/authorization given to the claim author for them to provide products and services for which consideration (reimbursement) is sought. Could be a RX for medications, an 'order' for oxygen or wheelchair or physiotherapy treatments.)
      */
     public ExplanationOfBenefit setPrescription(Reference value) { 
       this.prescription = value;
@@ -12875,7 +14574,7 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     /**
-     * @return {@link #referral} (A reference to a referral resource.)
+     * @return {@link #referral} (The referral information received by the claim author, it is not to be used when the author generates a referral for a patient. A copy of that referral may be provided as supporting information. Some insurers require proof of referral to pay for services or to pay specialist rates for services.)
      */
     public Reference getReferral() { 
       if (this.referral == null)
@@ -12891,11 +14590,64 @@ public class ExplanationOfBenefit extends DomainResource {
     }
 
     /**
-     * @param value {@link #referral} (A reference to a referral resource.)
+     * @param value {@link #referral} (The referral information received by the claim author, it is not to be used when the author generates a referral for a patient. A copy of that referral may be provided as supporting information. Some insurers require proof of referral to pay for services or to pay specialist rates for services.)
      */
     public ExplanationOfBenefit setReferral(Reference value) { 
       this.referral = value;
       return this;
+    }
+
+    /**
+     * @return {@link #encounter} (A billed item may include goods or services provided in multiple encounters.)
+     */
+    public List<Reference> getEncounter() { 
+      if (this.encounter == null)
+        this.encounter = new ArrayList<Reference>();
+      return this.encounter;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ExplanationOfBenefit setEncounter(List<Reference> theEncounter) { 
+      this.encounter = theEncounter;
+      return this;
+    }
+
+    public boolean hasEncounter() { 
+      if (this.encounter == null)
+        return false;
+      for (Reference item : this.encounter)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public Reference addEncounter() { //3
+      Reference t = new Reference();
+      if (this.encounter == null)
+        this.encounter = new ArrayList<Reference>();
+      this.encounter.add(t);
+      return t;
+    }
+
+    public ExplanationOfBenefit addEncounter(Reference t) { //3
+      if (t == null)
+        return this;
+      if (this.encounter == null)
+        this.encounter = new ArrayList<Reference>();
+      this.encounter.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #encounter}, creating it if it does not already exist {3}
+     */
+    public Reference getEncounterFirstRep() { 
+      if (getEncounter().isEmpty()) {
+        addEncounter();
+      }
+      return getEncounter().get(0);
     }
 
     /**
@@ -13012,6 +14764,30 @@ public class ExplanationOfBenefit extends DomainResource {
         if (this.outcome == null)
           this.outcome = new Enumeration<ClaimProcessingCodes>(new ClaimProcessingCodesEnumFactory());
         this.outcome.setValue(value);
+      return this;
+    }
+
+    /**
+     * @return {@link #decision} (The result of the claim, predetermination, or preauthorization adjudication.)
+     */
+    public CodeableConcept getDecision() { 
+      if (this.decision == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create ExplanationOfBenefit.decision");
+        else if (Configuration.doAutoCreate())
+          this.decision = new CodeableConcept(); // cc
+      return this.decision;
+    }
+
+    public boolean hasDecision() { 
+      return this.decision != null && !this.decision.isEmpty();
+    }
+
+    /**
+     * @param value {@link #decision} (The result of the claim, predetermination, or preauthorization adjudication.)
+     */
+    public ExplanationOfBenefit setDecision(CodeableConcept value) { 
+      this.decision = value;
       return this;
     }
 
@@ -13176,6 +14952,30 @@ public class ExplanationOfBenefit extends DomainResource {
         addPreAuthRefPeriod();
       }
       return getPreAuthRefPeriod().get(0);
+    }
+
+    /**
+     * @return {@link #diagnosisRelatedGroup} (A package billing code or bundle code used to group products and services to a particular health condition (such as heart attack) which is based on a predetermined grouping code system.)
+     */
+    public CodeableConcept getDiagnosisRelatedGroup() { 
+      if (this.diagnosisRelatedGroup == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create ExplanationOfBenefit.diagnosisRelatedGroup");
+        else if (Configuration.doAutoCreate())
+          this.diagnosisRelatedGroup = new CodeableConcept(); // cc
+      return this.diagnosisRelatedGroup;
+    }
+
+    public boolean hasDiagnosisRelatedGroup() { 
+      return this.diagnosisRelatedGroup != null && !this.diagnosisRelatedGroup.isEmpty();
+    }
+
+    /**
+     * @param value {@link #diagnosisRelatedGroup} (A package billing code or bundle code used to group products and services to a particular health condition (such as heart attack) which is based on a predetermined grouping code system.)
+     */
+    public ExplanationOfBenefit setDiagnosisRelatedGroup(CodeableConcept value) { 
+      this.diagnosisRelatedGroup = value;
+      return this;
     }
 
     /**
@@ -13509,6 +15309,30 @@ public class ExplanationOfBenefit extends DomainResource {
      */
     public ExplanationOfBenefit setAccident(AccidentComponent value) { 
       this.accident = value;
+      return this;
+    }
+
+    /**
+     * @return {@link #patientPaid} (The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.)
+     */
+    public Money getPatientPaid() { 
+      if (this.patientPaid == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create ExplanationOfBenefit.patientPaid");
+        else if (Configuration.doAutoCreate())
+          this.patientPaid = new Money(); // cc
+      return this.patientPaid;
+    }
+
+    public boolean hasPatientPaid() { 
+      return this.patientPaid != null && !this.patientPaid.isEmpty();
+    }
+
+    /**
+     * @param value {@link #patientPaid} (The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.)
+     */
+    public ExplanationOfBenefit setPatientPaid(Money value) { 
+      this.patientPaid = value;
       return this;
     }
 
@@ -13932,28 +15756,31 @@ public class ExplanationOfBenefit extends DomainResource {
         children.add(new Property("status", "code", "The status of the resource instance.", 0, 1, status));
         children.add(new Property("type", "CodeableConcept", "The category of claim, e.g. oral, pharmacy, vision, institutional, professional.", 0, 1, type));
         children.add(new Property("subType", "CodeableConcept", "A finer grained suite of claim type codes which may convey additional information such as Inpatient vs Outpatient and/or a specialty service.", 0, 1, subType));
-        children.add(new Property("use", "code", "A code to indicate whether the nature of the request is: to request adjudication of products and services previously rendered; or requesting authorization and adjudication for provision in the future; or requesting the non-binding adjudication of the listed products and services which could be provided in the future.", 0, 1, use));
+        children.add(new Property("use", "code", "A code to indicate whether the nature of the request is: Claim - A request to an Insurer to adjudicate the supplied charges for health care goods and services under the identified policy and to pay the determined Benefit amount, if any; Preauthorization - A request to an Insurer to adjudicate the supplied proposed future charges for health care goods and services under the identified policy and to approve the services and provide the expected benefit amounts and potentially to reserve funds to pay the benefits when Claims for the indicated services are later submitted; or, Pre-determination - A request to an Insurer to adjudicate the supplied 'what if' charges for health care goods and services under the identified policy and report back what the Benefit payable would be had the services actually been provided.", 0, 1, use));
         children.add(new Property("patient", "Reference(Patient)", "The party to whom the professional services and/or products have been supplied or are being considered and for whom actual for forecast reimbursement is sought.", 0, 1, patient));
         children.add(new Property("billablePeriod", "Period", "The period for which charges are being submitted.", 0, 1, billablePeriod));
         children.add(new Property("created", "dateTime", "The date this resource was created.", 0, 1, created));
-        children.add(new Property("enterer", "Reference(Practitioner|PractitionerRole)", "Individual who created the claim, predetermination or preauthorization.", 0, 1, enterer));
+        children.add(new Property("enterer", "Reference(Practitioner|PractitionerRole|Patient|RelatedPerson)", "Individual who created the claim, predetermination or preauthorization.", 0, 1, enterer));
         children.add(new Property("insurer", "Reference(Organization)", "The party responsible for authorization, adjudication and reimbursement.", 0, 1, insurer));
         children.add(new Property("provider", "Reference(Practitioner|PractitionerRole|Organization)", "The provider which is responsible for the claim, predetermination or preauthorization.", 0, 1, provider));
-        children.add(new Property("priority", "CodeableConcept", "The provider-required urgency of processing the request. Typical values include: stat, routine deferred.", 0, 1, priority));
+        children.add(new Property("priority", "CodeableConcept", "The provider-required urgency of processing the request. Typical values include: stat, normal deferred.", 0, 1, priority));
         children.add(new Property("fundsReserveRequested", "CodeableConcept", "A code to indicate whether and for whom funds are to be reserved for future claims.", 0, 1, fundsReserveRequested));
         children.add(new Property("fundsReserve", "CodeableConcept", "A code, used only on a response to a preauthorization, to indicate whether the benefits payable have been reserved and for whom.", 0, 1, fundsReserve));
         children.add(new Property("related", "", "Other claims which are related to this claim such as prior submissions or claims for related services or for the same event.", 0, java.lang.Integer.MAX_VALUE, related));
-        children.add(new Property("prescription", "Reference(MedicationRequest|VisionPrescription)", "Prescription to support the dispensing of pharmacy, device or vision products.", 0, 1, prescription));
+        children.add(new Property("prescription", "Reference(MedicationRequest|VisionPrescription)", "Prescription is the document/authorization given to the claim author for them to provide products and services for which consideration (reimbursement) is sought. Could be a RX for medications, an 'order' for oxygen or wheelchair or physiotherapy treatments.", 0, 1, prescription));
         children.add(new Property("originalPrescription", "Reference(MedicationRequest)", "Original prescription which has been superseded by this prescription to support the dispensing of pharmacy services, medications or products.", 0, 1, originalPrescription));
         children.add(new Property("payee", "", "The party to be reimbursed for cost of the products and services according to the terms of the policy.", 0, 1, payee));
-        children.add(new Property("referral", "Reference(ServiceRequest)", "A reference to a referral resource.", 0, 1, referral));
-        children.add(new Property("facility", "Reference(Location)", "Facility where the services were provided.", 0, 1, facility));
+        children.add(new Property("referral", "Reference(ServiceRequest)", "The referral information received by the claim author, it is not to be used when the author generates a referral for a patient. A copy of that referral may be provided as supporting information. Some insurers require proof of referral to pay for services or to pay specialist rates for services.", 0, 1, referral));
+        children.add(new Property("encounter", "Reference(Encounter)", "A billed item may include goods or services provided in multiple encounters.", 0, java.lang.Integer.MAX_VALUE, encounter));
+        children.add(new Property("facility", "Reference(Location|Organization)", "Facility where the services were provided.", 0, 1, facility));
         children.add(new Property("claim", "Reference(Claim)", "The business identifier for the instance of the adjudication request: claim predetermination or preauthorization.", 0, 1, claim));
         children.add(new Property("claimResponse", "Reference(ClaimResponse)", "The business identifier for the instance of the adjudication response: claim, predetermination or preauthorization response.", 0, 1, claimResponse));
         children.add(new Property("outcome", "code", "The outcome of the claim, predetermination, or preauthorization processing.", 0, 1, outcome));
+        children.add(new Property("decision", "CodeableConcept", "The result of the claim, predetermination, or preauthorization adjudication.", 0, 1, decision));
         children.add(new Property("disposition", "string", "A human readable description of the status of the adjudication.", 0, 1, disposition));
         children.add(new Property("preAuthRef", "string", "Reference from the Insurer which is used in later communications which refers to this adjudication.", 0, java.lang.Integer.MAX_VALUE, preAuthRef));
         children.add(new Property("preAuthRefPeriod", "Period", "The timeframe during which the supplied preauthorization reference may be quoted on claims to obtain the adjudication as provided.", 0, java.lang.Integer.MAX_VALUE, preAuthRefPeriod));
+        children.add(new Property("diagnosisRelatedGroup", "CodeableConcept", "A package billing code or bundle code used to group products and services to a particular health condition (such as heart attack) which is based on a predetermined grouping code system.", 0, 1, diagnosisRelatedGroup));
         children.add(new Property("careTeam", "", "The members of the team who provided the products and services.", 0, java.lang.Integer.MAX_VALUE, careTeam));
         children.add(new Property("supportingInfo", "", "Additional information codes regarding exceptions, special considerations, the condition, situation, prior or concurrent issues.", 0, java.lang.Integer.MAX_VALUE, supportingInfo));
         children.add(new Property("diagnosis", "", "Information about diagnoses relevant to the claim items.", 0, java.lang.Integer.MAX_VALUE, diagnosis));
@@ -13961,6 +15788,7 @@ public class ExplanationOfBenefit extends DomainResource {
         children.add(new Property("precedence", "positiveInt", "This indicates the relative order of a series of EOBs related to different coverages for the same suite of services.", 0, 1, precedence));
         children.add(new Property("insurance", "", "Financial instruments for reimbursement for the health care products and services specified on the claim.", 0, java.lang.Integer.MAX_VALUE, insurance));
         children.add(new Property("accident", "", "Details of a accident which resulted in injuries which required the products and services listed in the claim.", 0, 1, accident));
+        children.add(new Property("patientPaid", "Money", "The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.", 0, 1, patientPaid));
         children.add(new Property("item", "", "A claim line. Either a simple (a product or service) or a 'group' of details which can also be a simple items or groups of sub-details.", 0, java.lang.Integer.MAX_VALUE, item));
         children.add(new Property("addItem", "", "The first-tier service adjudications for payor added product or service lines.", 0, java.lang.Integer.MAX_VALUE, addItem));
         children.add(new Property("adjudication", "@ExplanationOfBenefit.item.adjudication", "The adjudication results which are presented at the header level rather than at the line-item or add-item levels.", 0, java.lang.Integer.MAX_VALUE, adjudication));
@@ -13980,28 +15808,31 @@ public class ExplanationOfBenefit extends DomainResource {
         case -892481550: /*status*/  return new Property("status", "code", "The status of the resource instance.", 0, 1, status);
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The category of claim, e.g. oral, pharmacy, vision, institutional, professional.", 0, 1, type);
         case -1868521062: /*subType*/  return new Property("subType", "CodeableConcept", "A finer grained suite of claim type codes which may convey additional information such as Inpatient vs Outpatient and/or a specialty service.", 0, 1, subType);
-        case 116103: /*use*/  return new Property("use", "code", "A code to indicate whether the nature of the request is: to request adjudication of products and services previously rendered; or requesting authorization and adjudication for provision in the future; or requesting the non-binding adjudication of the listed products and services which could be provided in the future.", 0, 1, use);
+        case 116103: /*use*/  return new Property("use", "code", "A code to indicate whether the nature of the request is: Claim - A request to an Insurer to adjudicate the supplied charges for health care goods and services under the identified policy and to pay the determined Benefit amount, if any; Preauthorization - A request to an Insurer to adjudicate the supplied proposed future charges for health care goods and services under the identified policy and to approve the services and provide the expected benefit amounts and potentially to reserve funds to pay the benefits when Claims for the indicated services are later submitted; or, Pre-determination - A request to an Insurer to adjudicate the supplied 'what if' charges for health care goods and services under the identified policy and report back what the Benefit payable would be had the services actually been provided.", 0, 1, use);
         case -791418107: /*patient*/  return new Property("patient", "Reference(Patient)", "The party to whom the professional services and/or products have been supplied or are being considered and for whom actual for forecast reimbursement is sought.", 0, 1, patient);
         case -332066046: /*billablePeriod*/  return new Property("billablePeriod", "Period", "The period for which charges are being submitted.", 0, 1, billablePeriod);
         case 1028554472: /*created*/  return new Property("created", "dateTime", "The date this resource was created.", 0, 1, created);
-        case -1591951995: /*enterer*/  return new Property("enterer", "Reference(Practitioner|PractitionerRole)", "Individual who created the claim, predetermination or preauthorization.", 0, 1, enterer);
+        case -1591951995: /*enterer*/  return new Property("enterer", "Reference(Practitioner|PractitionerRole|Patient|RelatedPerson)", "Individual who created the claim, predetermination or preauthorization.", 0, 1, enterer);
         case 1957615864: /*insurer*/  return new Property("insurer", "Reference(Organization)", "The party responsible for authorization, adjudication and reimbursement.", 0, 1, insurer);
         case -987494927: /*provider*/  return new Property("provider", "Reference(Practitioner|PractitionerRole|Organization)", "The provider which is responsible for the claim, predetermination or preauthorization.", 0, 1, provider);
-        case -1165461084: /*priority*/  return new Property("priority", "CodeableConcept", "The provider-required urgency of processing the request. Typical values include: stat, routine deferred.", 0, 1, priority);
+        case -1165461084: /*priority*/  return new Property("priority", "CodeableConcept", "The provider-required urgency of processing the request. Typical values include: stat, normal deferred.", 0, 1, priority);
         case -1688904576: /*fundsReserveRequested*/  return new Property("fundsReserveRequested", "CodeableConcept", "A code to indicate whether and for whom funds are to be reserved for future claims.", 0, 1, fundsReserveRequested);
         case 1314609806: /*fundsReserve*/  return new Property("fundsReserve", "CodeableConcept", "A code, used only on a response to a preauthorization, to indicate whether the benefits payable have been reserved and for whom.", 0, 1, fundsReserve);
         case 1090493483: /*related*/  return new Property("related", "", "Other claims which are related to this claim such as prior submissions or claims for related services or for the same event.", 0, java.lang.Integer.MAX_VALUE, related);
-        case 460301338: /*prescription*/  return new Property("prescription", "Reference(MedicationRequest|VisionPrescription)", "Prescription to support the dispensing of pharmacy, device or vision products.", 0, 1, prescription);
+        case 460301338: /*prescription*/  return new Property("prescription", "Reference(MedicationRequest|VisionPrescription)", "Prescription is the document/authorization given to the claim author for them to provide products and services for which consideration (reimbursement) is sought. Could be a RX for medications, an 'order' for oxygen or wheelchair or physiotherapy treatments.", 0, 1, prescription);
         case -1814015861: /*originalPrescription*/  return new Property("originalPrescription", "Reference(MedicationRequest)", "Original prescription which has been superseded by this prescription to support the dispensing of pharmacy services, medications or products.", 0, 1, originalPrescription);
         case 106443592: /*payee*/  return new Property("payee", "", "The party to be reimbursed for cost of the products and services according to the terms of the policy.", 0, 1, payee);
-        case -722568291: /*referral*/  return new Property("referral", "Reference(ServiceRequest)", "A reference to a referral resource.", 0, 1, referral);
-        case 501116579: /*facility*/  return new Property("facility", "Reference(Location)", "Facility where the services were provided.", 0, 1, facility);
+        case -722568291: /*referral*/  return new Property("referral", "Reference(ServiceRequest)", "The referral information received by the claim author, it is not to be used when the author generates a referral for a patient. A copy of that referral may be provided as supporting information. Some insurers require proof of referral to pay for services or to pay specialist rates for services.", 0, 1, referral);
+        case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "A billed item may include goods or services provided in multiple encounters.", 0, java.lang.Integer.MAX_VALUE, encounter);
+        case 501116579: /*facility*/  return new Property("facility", "Reference(Location|Organization)", "Facility where the services were provided.", 0, 1, facility);
         case 94742588: /*claim*/  return new Property("claim", "Reference(Claim)", "The business identifier for the instance of the adjudication request: claim predetermination or preauthorization.", 0, 1, claim);
         case 689513629: /*claimResponse*/  return new Property("claimResponse", "Reference(ClaimResponse)", "The business identifier for the instance of the adjudication response: claim, predetermination or preauthorization response.", 0, 1, claimResponse);
         case -1106507950: /*outcome*/  return new Property("outcome", "code", "The outcome of the claim, predetermination, or preauthorization processing.", 0, 1, outcome);
+        case 565719004: /*decision*/  return new Property("decision", "CodeableConcept", "The result of the claim, predetermination, or preauthorization adjudication.", 0, 1, decision);
         case 583380919: /*disposition*/  return new Property("disposition", "string", "A human readable description of the status of the adjudication.", 0, 1, disposition);
         case 522246568: /*preAuthRef*/  return new Property("preAuthRef", "string", "Reference from the Insurer which is used in later communications which refers to this adjudication.", 0, java.lang.Integer.MAX_VALUE, preAuthRef);
         case -1262920311: /*preAuthRefPeriod*/  return new Property("preAuthRefPeriod", "Period", "The timeframe during which the supplied preauthorization reference may be quoted on claims to obtain the adjudication as provided.", 0, java.lang.Integer.MAX_VALUE, preAuthRefPeriod);
+        case -1599182171: /*diagnosisRelatedGroup*/  return new Property("diagnosisRelatedGroup", "CodeableConcept", "A package billing code or bundle code used to group products and services to a particular health condition (such as heart attack) which is based on a predetermined grouping code system.", 0, 1, diagnosisRelatedGroup);
         case -7323378: /*careTeam*/  return new Property("careTeam", "", "The members of the team who provided the products and services.", 0, java.lang.Integer.MAX_VALUE, careTeam);
         case 1922406657: /*supportingInfo*/  return new Property("supportingInfo", "", "Additional information codes regarding exceptions, special considerations, the condition, situation, prior or concurrent issues.", 0, java.lang.Integer.MAX_VALUE, supportingInfo);
         case 1196993265: /*diagnosis*/  return new Property("diagnosis", "", "Information about diagnoses relevant to the claim items.", 0, java.lang.Integer.MAX_VALUE, diagnosis);
@@ -14009,6 +15840,7 @@ public class ExplanationOfBenefit extends DomainResource {
         case 159695370: /*precedence*/  return new Property("precedence", "positiveInt", "This indicates the relative order of a series of EOBs related to different coverages for the same suite of services.", 0, 1, precedence);
         case 73049818: /*insurance*/  return new Property("insurance", "", "Financial instruments for reimbursement for the health care products and services specified on the claim.", 0, java.lang.Integer.MAX_VALUE, insurance);
         case -2143202801: /*accident*/  return new Property("accident", "", "Details of a accident which resulted in injuries which required the products and services listed in the claim.", 0, 1, accident);
+        case 525514609: /*patientPaid*/  return new Property("patientPaid", "Money", "The amount paid by the patient, in total at the claim claim level or specifically for the item and detail level, to the provider for goods and services.", 0, 1, patientPaid);
         case 3242771: /*item*/  return new Property("item", "", "A claim line. Either a simple (a product or service) or a 'group' of details which can also be a simple items or groups of sub-details.", 0, java.lang.Integer.MAX_VALUE, item);
         case -1148899500: /*addItem*/  return new Property("addItem", "", "The first-tier service adjudications for payor added product or service lines.", 0, java.lang.Integer.MAX_VALUE, addItem);
         case -231349275: /*adjudication*/  return new Property("adjudication", "@ExplanationOfBenefit.item.adjudication", "The adjudication results which are presented at the header level rather than at the line-item or add-item levels.", 0, java.lang.Integer.MAX_VALUE, adjudication);
@@ -14046,13 +15878,16 @@ public class ExplanationOfBenefit extends DomainResource {
         case -1814015861: /*originalPrescription*/ return this.originalPrescription == null ? new Base[0] : new Base[] {this.originalPrescription}; // Reference
         case 106443592: /*payee*/ return this.payee == null ? new Base[0] : new Base[] {this.payee}; // PayeeComponent
         case -722568291: /*referral*/ return this.referral == null ? new Base[0] : new Base[] {this.referral}; // Reference
+        case 1524132147: /*encounter*/ return this.encounter == null ? new Base[0] : this.encounter.toArray(new Base[this.encounter.size()]); // Reference
         case 501116579: /*facility*/ return this.facility == null ? new Base[0] : new Base[] {this.facility}; // Reference
         case 94742588: /*claim*/ return this.claim == null ? new Base[0] : new Base[] {this.claim}; // Reference
         case 689513629: /*claimResponse*/ return this.claimResponse == null ? new Base[0] : new Base[] {this.claimResponse}; // Reference
         case -1106507950: /*outcome*/ return this.outcome == null ? new Base[0] : new Base[] {this.outcome}; // Enumeration<ClaimProcessingCodes>
+        case 565719004: /*decision*/ return this.decision == null ? new Base[0] : new Base[] {this.decision}; // CodeableConcept
         case 583380919: /*disposition*/ return this.disposition == null ? new Base[0] : new Base[] {this.disposition}; // StringType
         case 522246568: /*preAuthRef*/ return this.preAuthRef == null ? new Base[0] : this.preAuthRef.toArray(new Base[this.preAuthRef.size()]); // StringType
         case -1262920311: /*preAuthRefPeriod*/ return this.preAuthRefPeriod == null ? new Base[0] : this.preAuthRefPeriod.toArray(new Base[this.preAuthRefPeriod.size()]); // Period
+        case -1599182171: /*diagnosisRelatedGroup*/ return this.diagnosisRelatedGroup == null ? new Base[0] : new Base[] {this.diagnosisRelatedGroup}; // CodeableConcept
         case -7323378: /*careTeam*/ return this.careTeam == null ? new Base[0] : this.careTeam.toArray(new Base[this.careTeam.size()]); // CareTeamComponent
         case 1922406657: /*supportingInfo*/ return this.supportingInfo == null ? new Base[0] : this.supportingInfo.toArray(new Base[this.supportingInfo.size()]); // SupportingInformationComponent
         case 1196993265: /*diagnosis*/ return this.diagnosis == null ? new Base[0] : this.diagnosis.toArray(new Base[this.diagnosis.size()]); // DiagnosisComponent
@@ -14060,6 +15895,7 @@ public class ExplanationOfBenefit extends DomainResource {
         case 159695370: /*precedence*/ return this.precedence == null ? new Base[0] : new Base[] {this.precedence}; // PositiveIntType
         case 73049818: /*insurance*/ return this.insurance == null ? new Base[0] : this.insurance.toArray(new Base[this.insurance.size()]); // InsuranceComponent
         case -2143202801: /*accident*/ return this.accident == null ? new Base[0] : new Base[] {this.accident}; // AccidentComponent
+        case 525514609: /*patientPaid*/ return this.patientPaid == null ? new Base[0] : new Base[] {this.patientPaid}; // Money
         case 3242771: /*item*/ return this.item == null ? new Base[0] : this.item.toArray(new Base[this.item.size()]); // ItemComponent
         case -1148899500: /*addItem*/ return this.addItem == null ? new Base[0] : this.addItem.toArray(new Base[this.addItem.size()]); // AddedItemComponent
         case -231349275: /*adjudication*/ return this.adjudication == null ? new Base[0] : this.adjudication.toArray(new Base[this.adjudication.size()]); // AdjudicationComponent
@@ -14137,6 +15973,9 @@ public class ExplanationOfBenefit extends DomainResource {
         case -722568291: // referral
           this.referral = TypeConvertor.castToReference(value); // Reference
           return value;
+        case 1524132147: // encounter
+          this.getEncounter().add(TypeConvertor.castToReference(value)); // Reference
+          return value;
         case 501116579: // facility
           this.facility = TypeConvertor.castToReference(value); // Reference
           return value;
@@ -14150,6 +15989,9 @@ public class ExplanationOfBenefit extends DomainResource {
           value = new ClaimProcessingCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.outcome = (Enumeration) value; // Enumeration<ClaimProcessingCodes>
           return value;
+        case 565719004: // decision
+          this.decision = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
         case 583380919: // disposition
           this.disposition = TypeConvertor.castToString(value); // StringType
           return value;
@@ -14158,6 +16000,9 @@ public class ExplanationOfBenefit extends DomainResource {
           return value;
         case -1262920311: // preAuthRefPeriod
           this.getPreAuthRefPeriod().add(TypeConvertor.castToPeriod(value)); // Period
+          return value;
+        case -1599182171: // diagnosisRelatedGroup
+          this.diagnosisRelatedGroup = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -7323378: // careTeam
           this.getCareTeam().add((CareTeamComponent) value); // CareTeamComponent
@@ -14179,6 +16024,9 @@ public class ExplanationOfBenefit extends DomainResource {
           return value;
         case -2143202801: // accident
           this.accident = (AccidentComponent) value; // AccidentComponent
+          return value;
+        case 525514609: // patientPaid
+          this.patientPaid = TypeConvertor.castToMoney(value); // Money
           return value;
         case 3242771: // item
           this.getItem().add((ItemComponent) value); // ItemComponent
@@ -14257,6 +16105,8 @@ public class ExplanationOfBenefit extends DomainResource {
           this.payee = (PayeeComponent) value; // PayeeComponent
         } else if (name.equals("referral")) {
           this.referral = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("encounter")) {
+          this.getEncounter().add(TypeConvertor.castToReference(value));
         } else if (name.equals("facility")) {
           this.facility = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("claim")) {
@@ -14266,12 +16116,16 @@ public class ExplanationOfBenefit extends DomainResource {
         } else if (name.equals("outcome")) {
           value = new ClaimProcessingCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.outcome = (Enumeration) value; // Enumeration<ClaimProcessingCodes>
+        } else if (name.equals("decision")) {
+          this.decision = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("disposition")) {
           this.disposition = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("preAuthRef")) {
           this.getPreAuthRef().add(TypeConvertor.castToString(value));
         } else if (name.equals("preAuthRefPeriod")) {
           this.getPreAuthRefPeriod().add(TypeConvertor.castToPeriod(value));
+        } else if (name.equals("diagnosisRelatedGroup")) {
+          this.diagnosisRelatedGroup = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("careTeam")) {
           this.getCareTeam().add((CareTeamComponent) value);
         } else if (name.equals("supportingInfo")) {
@@ -14286,6 +16140,8 @@ public class ExplanationOfBenefit extends DomainResource {
           this.getInsurance().add((InsuranceComponent) value);
         } else if (name.equals("accident")) {
           this.accident = (AccidentComponent) value; // AccidentComponent
+        } else if (name.equals("patientPaid")) {
+          this.patientPaid = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("item")) {
           this.getItem().add((ItemComponent) value);
         } else if (name.equals("addItem")) {
@@ -14333,13 +16189,16 @@ public class ExplanationOfBenefit extends DomainResource {
         case -1814015861:  return getOriginalPrescription();
         case 106443592:  return getPayee();
         case -722568291:  return getReferral();
+        case 1524132147:  return addEncounter(); 
         case 501116579:  return getFacility();
         case 94742588:  return getClaim();
         case 689513629:  return getClaimResponse();
         case -1106507950:  return getOutcomeElement();
+        case 565719004:  return getDecision();
         case 583380919:  return getDispositionElement();
         case 522246568:  return addPreAuthRefElement();
         case -1262920311:  return addPreAuthRefPeriod(); 
+        case -1599182171:  return getDiagnosisRelatedGroup();
         case -7323378:  return addCareTeam(); 
         case 1922406657:  return addSupportingInfo(); 
         case 1196993265:  return addDiagnosis(); 
@@ -14347,6 +16206,7 @@ public class ExplanationOfBenefit extends DomainResource {
         case 159695370:  return getPrecedenceElement();
         case 73049818:  return addInsurance(); 
         case -2143202801:  return getAccident();
+        case 525514609:  return getPatientPaid();
         case 3242771:  return addItem(); 
         case -1148899500:  return addAddItem(); 
         case -231349275:  return addAdjudication(); 
@@ -14384,13 +16244,16 @@ public class ExplanationOfBenefit extends DomainResource {
         case -1814015861: /*originalPrescription*/ return new String[] {"Reference"};
         case 106443592: /*payee*/ return new String[] {};
         case -722568291: /*referral*/ return new String[] {"Reference"};
+        case 1524132147: /*encounter*/ return new String[] {"Reference"};
         case 501116579: /*facility*/ return new String[] {"Reference"};
         case 94742588: /*claim*/ return new String[] {"Reference"};
         case 689513629: /*claimResponse*/ return new String[] {"Reference"};
         case -1106507950: /*outcome*/ return new String[] {"code"};
+        case 565719004: /*decision*/ return new String[] {"CodeableConcept"};
         case 583380919: /*disposition*/ return new String[] {"string"};
         case 522246568: /*preAuthRef*/ return new String[] {"string"};
         case -1262920311: /*preAuthRefPeriod*/ return new String[] {"Period"};
+        case -1599182171: /*diagnosisRelatedGroup*/ return new String[] {"CodeableConcept"};
         case -7323378: /*careTeam*/ return new String[] {};
         case 1922406657: /*supportingInfo*/ return new String[] {};
         case 1196993265: /*diagnosis*/ return new String[] {};
@@ -14398,6 +16261,7 @@ public class ExplanationOfBenefit extends DomainResource {
         case 159695370: /*precedence*/ return new String[] {"positiveInt"};
         case 73049818: /*insurance*/ return new String[] {};
         case -2143202801: /*accident*/ return new String[] {};
+        case 525514609: /*patientPaid*/ return new String[] {"Money"};
         case 3242771: /*item*/ return new String[] {};
         case -1148899500: /*addItem*/ return new String[] {};
         case -231349275: /*adjudication*/ return new String[] {"@ExplanationOfBenefit.item.adjudication"};
@@ -14486,6 +16350,9 @@ public class ExplanationOfBenefit extends DomainResource {
           this.referral = new Reference();
           return this.referral;
         }
+        else if (name.equals("encounter")) {
+          return addEncounter();
+        }
         else if (name.equals("facility")) {
           this.facility = new Reference();
           return this.facility;
@@ -14501,6 +16368,10 @@ public class ExplanationOfBenefit extends DomainResource {
         else if (name.equals("outcome")) {
           throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.outcome");
         }
+        else if (name.equals("decision")) {
+          this.decision = new CodeableConcept();
+          return this.decision;
+        }
         else if (name.equals("disposition")) {
           throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.disposition");
         }
@@ -14509,6 +16380,10 @@ public class ExplanationOfBenefit extends DomainResource {
         }
         else if (name.equals("preAuthRefPeriod")) {
           return addPreAuthRefPeriod();
+        }
+        else if (name.equals("diagnosisRelatedGroup")) {
+          this.diagnosisRelatedGroup = new CodeableConcept();
+          return this.diagnosisRelatedGroup;
         }
         else if (name.equals("careTeam")) {
           return addCareTeam();
@@ -14531,6 +16406,10 @@ public class ExplanationOfBenefit extends DomainResource {
         else if (name.equals("accident")) {
           this.accident = new AccidentComponent();
           return this.accident;
+        }
+        else if (name.equals("patientPaid")) {
+          this.patientPaid = new Money();
+          return this.patientPaid;
         }
         else if (name.equals("item")) {
           return addItem();
@@ -14610,10 +16489,16 @@ public class ExplanationOfBenefit extends DomainResource {
         dst.originalPrescription = originalPrescription == null ? null : originalPrescription.copy();
         dst.payee = payee == null ? null : payee.copy();
         dst.referral = referral == null ? null : referral.copy();
+        if (encounter != null) {
+          dst.encounter = new ArrayList<Reference>();
+          for (Reference i : encounter)
+            dst.encounter.add(i.copy());
+        };
         dst.facility = facility == null ? null : facility.copy();
         dst.claim = claim == null ? null : claim.copy();
         dst.claimResponse = claimResponse == null ? null : claimResponse.copy();
         dst.outcome = outcome == null ? null : outcome.copy();
+        dst.decision = decision == null ? null : decision.copy();
         dst.disposition = disposition == null ? null : disposition.copy();
         if (preAuthRef != null) {
           dst.preAuthRef = new ArrayList<StringType>();
@@ -14625,6 +16510,7 @@ public class ExplanationOfBenefit extends DomainResource {
           for (Period i : preAuthRefPeriod)
             dst.preAuthRefPeriod.add(i.copy());
         };
+        dst.diagnosisRelatedGroup = diagnosisRelatedGroup == null ? null : diagnosisRelatedGroup.copy();
         if (careTeam != null) {
           dst.careTeam = new ArrayList<CareTeamComponent>();
           for (CareTeamComponent i : careTeam)
@@ -14652,6 +16538,7 @@ public class ExplanationOfBenefit extends DomainResource {
             dst.insurance.add(i.copy());
         };
         dst.accident = accident == null ? null : accident.copy();
+        dst.patientPaid = patientPaid == null ? null : patientPaid.copy();
         if (item != null) {
           dst.item = new ArrayList<ItemComponent>();
           for (ItemComponent i : item)
@@ -14706,15 +16593,16 @@ public class ExplanationOfBenefit extends DomainResource {
            && compareDeep(priority, o.priority, true) && compareDeep(fundsReserveRequested, o.fundsReserveRequested, true)
            && compareDeep(fundsReserve, o.fundsReserve, true) && compareDeep(related, o.related, true) && compareDeep(prescription, o.prescription, true)
            && compareDeep(originalPrescription, o.originalPrescription, true) && compareDeep(payee, o.payee, true)
-           && compareDeep(referral, o.referral, true) && compareDeep(facility, o.facility, true) && compareDeep(claim, o.claim, true)
-           && compareDeep(claimResponse, o.claimResponse, true) && compareDeep(outcome, o.outcome, true) && compareDeep(disposition, o.disposition, true)
-           && compareDeep(preAuthRef, o.preAuthRef, true) && compareDeep(preAuthRefPeriod, o.preAuthRefPeriod, true)
+           && compareDeep(referral, o.referral, true) && compareDeep(encounter, o.encounter, true) && compareDeep(facility, o.facility, true)
+           && compareDeep(claim, o.claim, true) && compareDeep(claimResponse, o.claimResponse, true) && compareDeep(outcome, o.outcome, true)
+           && compareDeep(decision, o.decision, true) && compareDeep(disposition, o.disposition, true) && compareDeep(preAuthRef, o.preAuthRef, true)
+           && compareDeep(preAuthRefPeriod, o.preAuthRefPeriod, true) && compareDeep(diagnosisRelatedGroup, o.diagnosisRelatedGroup, true)
            && compareDeep(careTeam, o.careTeam, true) && compareDeep(supportingInfo, o.supportingInfo, true)
            && compareDeep(diagnosis, o.diagnosis, true) && compareDeep(procedure, o.procedure, true) && compareDeep(precedence, o.precedence, true)
-           && compareDeep(insurance, o.insurance, true) && compareDeep(accident, o.accident, true) && compareDeep(item, o.item, true)
-           && compareDeep(addItem, o.addItem, true) && compareDeep(adjudication, o.adjudication, true) && compareDeep(total, o.total, true)
-           && compareDeep(payment, o.payment, true) && compareDeep(formCode, o.formCode, true) && compareDeep(form, o.form, true)
-           && compareDeep(processNote, o.processNote, true) && compareDeep(benefitPeriod, o.benefitPeriod, true)
+           && compareDeep(insurance, o.insurance, true) && compareDeep(accident, o.accident, true) && compareDeep(patientPaid, o.patientPaid, true)
+           && compareDeep(item, o.item, true) && compareDeep(addItem, o.addItem, true) && compareDeep(adjudication, o.adjudication, true)
+           && compareDeep(total, o.total, true) && compareDeep(payment, o.payment, true) && compareDeep(formCode, o.formCode, true)
+           && compareDeep(form, o.form, true) && compareDeep(processNote, o.processNote, true) && compareDeep(benefitPeriod, o.benefitPeriod, true)
            && compareDeep(benefitBalance, o.benefitBalance, true);
       }
 
@@ -14734,10 +16622,11 @@ public class ExplanationOfBenefit extends DomainResource {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, type
           , subType, use, patient, billablePeriod, created, enterer, insurer, provider
           , priority, fundsReserveRequested, fundsReserve, related, prescription, originalPrescription
-          , payee, referral, facility, claim, claimResponse, outcome, disposition, preAuthRef
-          , preAuthRefPeriod, careTeam, supportingInfo, diagnosis, procedure, precedence, insurance
-          , accident, item, addItem, adjudication, total, payment, formCode, form, processNote
-          , benefitPeriod, benefitBalance);
+          , payee, referral, encounter, facility, claim, claimResponse, outcome, decision
+          , disposition, preAuthRef, preAuthRefPeriod, diagnosisRelatedGroup, careTeam, supportingInfo
+          , diagnosis, procedure, precedence, insurance, accident, patientPaid, item, addItem
+          , adjudication, total, payment, formCode, form, processNote, benefitPeriod, benefitBalance
+          );
       }
 
   @Override
@@ -14923,7 +16812,7 @@ public class ExplanationOfBenefit extends DomainResource {
    * Path: <b>ExplanationOfBenefit.enterer</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="enterer", path="ExplanationOfBenefit.enterer", description="The party responsible for the entry of the Claim", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Practitioner.class, PractitionerRole.class } )
+  @SearchParamDefinition(name="enterer", path="ExplanationOfBenefit.enterer", description="The party responsible for the entry of the Claim", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
   public static final String SP_ENTERER = "enterer";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>enterer</b>
@@ -14949,7 +16838,7 @@ public class ExplanationOfBenefit extends DomainResource {
    * Path: <b>ExplanationOfBenefit.facility</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="facility", path="ExplanationOfBenefit.facility", description="Facility responsible for the goods and services", type="reference", target={Location.class } )
+  @SearchParamDefinition(name="facility", path="ExplanationOfBenefit.facility", description="Facility responsible for the goods and services", type="reference", target={Location.class, Organization.class } )
   public static final String SP_FACILITY = "facility";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>facility</b>

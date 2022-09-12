@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,7 +48,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
 import ca.uhn.fhir.util.DatatypeUtil;
 import  org.hl7.fhir.instance.model.api.IPrimitiveType;
 /**
- * Base StructureDefinition for HumanName Type: A human's name with the ability to identify parts and usage.
+ * HumanName Type: A name, normally of a human, that can be used for other living entities (eg. animals but not organizations) that have been assigned names by a human and may need the use of name parts or the need for usage information.
  */
 @DatatypeDef(name="HumanName")
 public class HumanName extends DataType implements ICompositeType {
@@ -117,6 +117,7 @@ public class HumanName extends DataType implements ICompositeType {
             case ANONYMOUS: return "anonymous";
             case OLD: return "old";
             case MAIDEN: return "maiden";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -129,6 +130,7 @@ public class HumanName extends DataType implements ICompositeType {
             case ANONYMOUS: return "http://hl7.org/fhir/name-use";
             case OLD: return "http://hl7.org/fhir/name-use";
             case MAIDEN: return "http://hl7.org/fhir/name-use";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -141,6 +143,7 @@ public class HumanName extends DataType implements ICompositeType {
             case ANONYMOUS: return "Anonymous assigned name, alias, or pseudonym (used to protect a person's identity for privacy reasons).";
             case OLD: return "This name is no longer in use (or was never correct, but retained for records).";
             case MAIDEN: return "A name used prior to changing name because of marriage. This name use is for use by applications that collect and store names that were used prior to a marriage. Marriage naming customs vary greatly around the world, and are constantly changing. This term is not gender specific. The use of this term does not imply any particular history for a person's name.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -153,6 +156,7 @@ public class HumanName extends DataType implements ICompositeType {
             case ANONYMOUS: return "Anonymous";
             case OLD: return "Old";
             case MAIDEN: return "Name changed for Marriage";
+            case NULL: return null;
             default: return "?";
           }
         }

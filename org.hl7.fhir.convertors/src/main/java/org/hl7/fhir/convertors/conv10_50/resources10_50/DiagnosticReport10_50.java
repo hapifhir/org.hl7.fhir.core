@@ -34,8 +34,6 @@ public class DiagnosticReport10_50 {
       tgt.setIssuedElement(Instant10_50.convertInstant(src.getIssuedElement()));
     for (org.hl7.fhir.dstu2.model.Reference t : src.getSpecimen()) tgt.addSpecimen(Reference10_50.convertReference(t));
     for (org.hl7.fhir.dstu2.model.Reference t : src.getResult()) tgt.addResult(Reference10_50.convertReference(t));
-    for (org.hl7.fhir.dstu2.model.Reference t : src.getImagingStudy())
-      tgt.addImagingStudy(Reference10_50.convertReference(t));
     for (org.hl7.fhir.dstu2.model.DiagnosticReport.DiagnosticReportImageComponent t : src.getImage())
       tgt.addMedia(convertDiagnosticReportImageComponent(t));
     if (src.hasConclusionElement())
@@ -70,8 +68,6 @@ public class DiagnosticReport10_50 {
       tgt.setIssuedElement(Instant10_50.convertInstant(src.getIssuedElement()));
     for (org.hl7.fhir.r5.model.Reference t : src.getSpecimen()) tgt.addSpecimen(Reference10_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getResult()) tgt.addResult(Reference10_50.convertReference(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getImagingStudy())
-      tgt.addImagingStudy(Reference10_50.convertReference(t));
     for (org.hl7.fhir.r5.model.DiagnosticReport.DiagnosticReportMediaComponent t : src.getMedia())
       tgt.addImage(convertDiagnosticReportImageComponent(t));
     if (src.hasConclusionElement())
@@ -87,7 +83,7 @@ public class DiagnosticReport10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.DiagnosticReport.DiagnosticReportMediaComponent tgt = new org.hl7.fhir.r5.model.DiagnosticReport.DiagnosticReportMediaComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasCommentElement())
       tgt.setCommentElement(String10_50.convertString(src.getCommentElement()));
     if (src.hasLink())
@@ -99,7 +95,7 @@ public class DiagnosticReport10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.DiagnosticReport.DiagnosticReportImageComponent tgt = new org.hl7.fhir.dstu2.model.DiagnosticReport.DiagnosticReportImageComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasCommentElement())
       tgt.setCommentElement(String10_50.convertString(src.getCommentElement()));
     if (src.hasLink())

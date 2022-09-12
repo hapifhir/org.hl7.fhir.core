@@ -5,6 +5,7 @@ import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.context.SystemOutLoggingService;
 import org.hl7.fhir.r5.context.TerminologyCache;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.R5ExtensionsLoader;
 import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.context.SimpleWorkerContext.PackageResourceLoader;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -327,6 +328,7 @@ public class ValidationService {
 
   public String initializeValidator(CliContext cliContext, String definitions, TimeTracker tt, String sessionId) throws Exception {
     tt.milestone();
+    sessionCache.removeExpiredSessions();
     if (!sessionCache.sessionExists(sessionId)) {
       if (sessionId != null) {
         System.out.println("No such cached session exists for session id " + sessionId + ", re-instantiating validator.");
@@ -341,7 +343,9 @@ public class ValidationService {
       System.out.println(" - " + validator.getContext().countAllCaches() + " resources (" + tt.milestone() + ")");
       igLoader.loadIg(validator.getIgs(), validator.getBinaries(), "hl7.terminology", false);
       System.out.print("  Load R5 Extensions");
-      System.out.println(" - " + ProfileUtilities.loadR5Extensions(validator.getPcm(), validator.getContext()) + " resources (" + tt.milestone() + ")");
+      R5ExtensionsLoader r5e = new R5ExtensionsLoader(validator.getPcm());
+      r5e.loadR5Extensions(validator.getContext());
+      System.out.println(" - " + r5e.getCount() + " resources (" + tt.milestone() + ")");
       System.out.print("  Terminology server " + cliContext.getTxServer());
       String txver = validator.setTerminologyServer(cliContext.getTxServer(), cliContext.getTxLog(), ver);
       System.out.println(" - Version " + txver + " (" + tt.milestone() + ")");

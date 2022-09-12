@@ -1,5 +1,7 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
+import java.util.stream.Collectors;
+
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
@@ -8,8 +10,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Decimal40
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Integer40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.exceptions.FHIRException;
-
-import java.util.stream.Collectors;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -206,7 +206,7 @@ public class ObservationDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ObservationDefinition.ObservationDefinitionQuantitativeDetailsComponent tgt = new org.hl7.fhir.r5.model.ObservationDefinition.ObservationDefinitionQuantitativeDetailsComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCustomaryUnit())
       tgt.setCustomaryUnit(CodeableConcept40_50.convertCodeableConcept(src.getCustomaryUnit()));
     if (src.hasUnit())
@@ -222,7 +222,7 @@ public class ObservationDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ObservationDefinition.ObservationDefinitionQuantitativeDetailsComponent tgt = new org.hl7.fhir.r4.model.ObservationDefinition.ObservationDefinitionQuantitativeDetailsComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCustomaryUnit())
       tgt.setCustomaryUnit(CodeableConcept40_50.convertCodeableConcept(src.getCustomaryUnit()));
     if (src.hasUnit())

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,185 +54,192 @@ import ca.uhn.fhir.model.api.annotation.Block;
 public class Organization extends DomainResource {
 
     @Block()
-    public static class OrganizationContactComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class OrganizationQualificationComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Indicates a purpose for which the contact can be reached.
+         * An identifier allocated to this qualification for this organization.
          */
-        @Child(name = "purpose", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The type of contact", formalDefinition="Indicates a purpose for which the contact can be reached." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/contactentity-type")
-        protected CodeableConcept purpose;
+        @Child(name = "identifier", type = {Identifier.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="An identifier for this qualification for the organization", formalDefinition="An identifier allocated to this qualification for this organization." )
+        protected List<Identifier> identifier;
 
         /**
-         * A name associated with the contact.
+         * Coded representation of the qualification.
          */
-        @Child(name = "name", type = {HumanName.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="A name associated with the contact", formalDefinition="A name associated with the contact." )
-        protected HumanName name;
+        @Child(name = "code", type = {CodeableConcept.class}, order=2, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Coded representation of the qualification", formalDefinition="Coded representation of the qualification." )
+        protected CodeableConcept code;
 
         /**
-         * A contact detail (e.g. a telephone number or an email address) by which the party may be contacted.
+         * Period during which the qualification is valid.
          */
-        @Child(name = "telecom", type = {ContactPoint.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Contact details (telephone, email, etc.)  for a contact", formalDefinition="A contact detail (e.g. a telephone number or an email address) by which the party may be contacted." )
-        protected List<ContactPoint> telecom;
+        @Child(name = "period", type = {Period.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Period during which the qualification is valid", formalDefinition="Period during which the qualification is valid." )
+        protected Period period;
 
         /**
-         * Visiting or postal addresses for the contact.
+         * Organization that regulates and issues the qualification.
          */
-        @Child(name = "address", type = {Address.class}, order=4, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Visiting or postal addresses for the contact", formalDefinition="Visiting or postal addresses for the contact." )
-        protected Address address;
+        @Child(name = "issuer", type = {Organization.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Organization that regulates and issues the qualification", formalDefinition="Organization that regulates and issues the qualification." )
+        protected Reference issuer;
 
-        private static final long serialVersionUID = 1831121305L;
+        private static final long serialVersionUID = 1561812204L;
 
     /**
      * Constructor
      */
-      public OrganizationContactComponent() {
+      public OrganizationQualificationComponent() {
         super();
       }
 
-        /**
-         * @return {@link #purpose} (Indicates a purpose for which the contact can be reached.)
-         */
-        public CodeableConcept getPurpose() { 
-          if (this.purpose == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create OrganizationContactComponent.purpose");
-            else if (Configuration.doAutoCreate())
-              this.purpose = new CodeableConcept(); // cc
-          return this.purpose;
-        }
-
-        public boolean hasPurpose() { 
-          return this.purpose != null && !this.purpose.isEmpty();
-        }
+    /**
+     * Constructor
+     */
+      public OrganizationQualificationComponent(CodeableConcept code) {
+        super();
+        this.setCode(code);
+      }
 
         /**
-         * @param value {@link #purpose} (Indicates a purpose for which the contact can be reached.)
+         * @return {@link #identifier} (An identifier allocated to this qualification for this organization.)
          */
-        public OrganizationContactComponent setPurpose(CodeableConcept value) { 
-          this.purpose = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #name} (A name associated with the contact.)
-         */
-        public HumanName getName() { 
-          if (this.name == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create OrganizationContactComponent.name");
-            else if (Configuration.doAutoCreate())
-              this.name = new HumanName(); // cc
-          return this.name;
-        }
-
-        public boolean hasName() { 
-          return this.name != null && !this.name.isEmpty();
-        }
-
-        /**
-         * @param value {@link #name} (A name associated with the contact.)
-         */
-        public OrganizationContactComponent setName(HumanName value) { 
-          this.name = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #telecom} (A contact detail (e.g. a telephone number or an email address) by which the party may be contacted.)
-         */
-        public List<ContactPoint> getTelecom() { 
-          if (this.telecom == null)
-            this.telecom = new ArrayList<ContactPoint>();
-          return this.telecom;
+        public List<Identifier> getIdentifier() { 
+          if (this.identifier == null)
+            this.identifier = new ArrayList<Identifier>();
+          return this.identifier;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public OrganizationContactComponent setTelecom(List<ContactPoint> theTelecom) { 
-          this.telecom = theTelecom;
+        public OrganizationQualificationComponent setIdentifier(List<Identifier> theIdentifier) { 
+          this.identifier = theIdentifier;
           return this;
         }
 
-        public boolean hasTelecom() { 
-          if (this.telecom == null)
+        public boolean hasIdentifier() { 
+          if (this.identifier == null)
             return false;
-          for (ContactPoint item : this.telecom)
+          for (Identifier item : this.identifier)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public ContactPoint addTelecom() { //3
-          ContactPoint t = new ContactPoint();
-          if (this.telecom == null)
-            this.telecom = new ArrayList<ContactPoint>();
-          this.telecom.add(t);
+        public Identifier addIdentifier() { //3
+          Identifier t = new Identifier();
+          if (this.identifier == null)
+            this.identifier = new ArrayList<Identifier>();
+          this.identifier.add(t);
           return t;
         }
 
-        public OrganizationContactComponent addTelecom(ContactPoint t) { //3
+        public OrganizationQualificationComponent addIdentifier(Identifier t) { //3
           if (t == null)
             return this;
-          if (this.telecom == null)
-            this.telecom = new ArrayList<ContactPoint>();
-          this.telecom.add(t);
+          if (this.identifier == null)
+            this.identifier = new ArrayList<Identifier>();
+          this.identifier.add(t);
           return this;
         }
 
         /**
-         * @return The first repetition of repeating field {@link #telecom}, creating it if it does not already exist {3}
+         * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
          */
-        public ContactPoint getTelecomFirstRep() { 
-          if (getTelecom().isEmpty()) {
-            addTelecom();
+        public Identifier getIdentifierFirstRep() { 
+          if (getIdentifier().isEmpty()) {
+            addIdentifier();
           }
-          return getTelecom().get(0);
+          return getIdentifier().get(0);
         }
 
         /**
-         * @return {@link #address} (Visiting or postal addresses for the contact.)
+         * @return {@link #code} (Coded representation of the qualification.)
          */
-        public Address getAddress() { 
-          if (this.address == null)
+        public CodeableConcept getCode() { 
+          if (this.code == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create OrganizationContactComponent.address");
+              throw new Error("Attempt to auto-create OrganizationQualificationComponent.code");
             else if (Configuration.doAutoCreate())
-              this.address = new Address(); // cc
-          return this.address;
+              this.code = new CodeableConcept(); // cc
+          return this.code;
         }
 
-        public boolean hasAddress() { 
-          return this.address != null && !this.address.isEmpty();
+        public boolean hasCode() { 
+          return this.code != null && !this.code.isEmpty();
         }
 
         /**
-         * @param value {@link #address} (Visiting or postal addresses for the contact.)
+         * @param value {@link #code} (Coded representation of the qualification.)
          */
-        public OrganizationContactComponent setAddress(Address value) { 
-          this.address = value;
+        public OrganizationQualificationComponent setCode(CodeableConcept value) { 
+          this.code = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #period} (Period during which the qualification is valid.)
+         */
+        public Period getPeriod() { 
+          if (this.period == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create OrganizationQualificationComponent.period");
+            else if (Configuration.doAutoCreate())
+              this.period = new Period(); // cc
+          return this.period;
+        }
+
+        public boolean hasPeriod() { 
+          return this.period != null && !this.period.isEmpty();
+        }
+
+        /**
+         * @param value {@link #period} (Period during which the qualification is valid.)
+         */
+        public OrganizationQualificationComponent setPeriod(Period value) { 
+          this.period = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #issuer} (Organization that regulates and issues the qualification.)
+         */
+        public Reference getIssuer() { 
+          if (this.issuer == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create OrganizationQualificationComponent.issuer");
+            else if (Configuration.doAutoCreate())
+              this.issuer = new Reference(); // cc
+          return this.issuer;
+        }
+
+        public boolean hasIssuer() { 
+          return this.issuer != null && !this.issuer.isEmpty();
+        }
+
+        /**
+         * @param value {@link #issuer} (Organization that regulates and issues the qualification.)
+         */
+        public OrganizationQualificationComponent setIssuer(Reference value) { 
+          this.issuer = value;
           return this;
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("purpose", "CodeableConcept", "Indicates a purpose for which the contact can be reached.", 0, 1, purpose));
-          children.add(new Property("name", "HumanName", "A name associated with the contact.", 0, 1, name));
-          children.add(new Property("telecom", "ContactPoint", "A contact detail (e.g. a telephone number or an email address) by which the party may be contacted.", 0, java.lang.Integer.MAX_VALUE, telecom));
-          children.add(new Property("address", "Address", "Visiting or postal addresses for the contact.", 0, 1, address));
+          children.add(new Property("identifier", "Identifier", "An identifier allocated to this qualification for this organization.", 0, java.lang.Integer.MAX_VALUE, identifier));
+          children.add(new Property("code", "CodeableConcept", "Coded representation of the qualification.", 0, 1, code));
+          children.add(new Property("period", "Period", "Period during which the qualification is valid.", 0, 1, period));
+          children.add(new Property("issuer", "Reference(Organization)", "Organization that regulates and issues the qualification.", 0, 1, issuer));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -220463842: /*purpose*/  return new Property("purpose", "CodeableConcept", "Indicates a purpose for which the contact can be reached.", 0, 1, purpose);
-          case 3373707: /*name*/  return new Property("name", "HumanName", "A name associated with the contact.", 0, 1, name);
-          case -1429363305: /*telecom*/  return new Property("telecom", "ContactPoint", "A contact detail (e.g. a telephone number or an email address) by which the party may be contacted.", 0, java.lang.Integer.MAX_VALUE, telecom);
-          case -1147692044: /*address*/  return new Property("address", "Address", "Visiting or postal addresses for the contact.", 0, 1, address);
+          case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "An identifier allocated to this qualification for this organization.", 0, java.lang.Integer.MAX_VALUE, identifier);
+          case 3059181: /*code*/  return new Property("code", "CodeableConcept", "Coded representation of the qualification.", 0, 1, code);
+          case -991726143: /*period*/  return new Property("period", "Period", "Period during which the qualification is valid.", 0, 1, period);
+          case -1179159879: /*issuer*/  return new Property("issuer", "Reference(Organization)", "Organization that regulates and issues the qualification.", 0, 1, issuer);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -241,10 +248,10 @@ public class Organization extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -220463842: /*purpose*/ return this.purpose == null ? new Base[0] : new Base[] {this.purpose}; // CodeableConcept
-        case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // HumanName
-        case -1429363305: /*telecom*/ return this.telecom == null ? new Base[0] : this.telecom.toArray(new Base[this.telecom.size()]); // ContactPoint
-        case -1147692044: /*address*/ return this.address == null ? new Base[0] : new Base[] {this.address}; // Address
+        case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
+        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
+        case -991726143: /*period*/ return this.period == null ? new Base[0] : new Base[] {this.period}; // Period
+        case -1179159879: /*issuer*/ return this.issuer == null ? new Base[0] : new Base[] {this.issuer}; // Reference
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -253,17 +260,17 @@ public class Organization extends DomainResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
-        case -220463842: // purpose
-          this.purpose = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        case -1618432855: // identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
-        case 3373707: // name
-          this.name = TypeConvertor.castToHumanName(value); // HumanName
+        case 3059181: // code
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
-        case -1429363305: // telecom
-          this.getTelecom().add(TypeConvertor.castToContactPoint(value)); // ContactPoint
+        case -991726143: // period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
-        case -1147692044: // address
-          this.address = TypeConvertor.castToAddress(value); // Address
+        case -1179159879: // issuer
+          this.issuer = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -272,14 +279,14 @@ public class Organization extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("purpose")) {
-          this.purpose = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("name")) {
-          this.name = TypeConvertor.castToHumanName(value); // HumanName
-        } else if (name.equals("telecom")) {
-          this.getTelecom().add(TypeConvertor.castToContactPoint(value));
-        } else if (name.equals("address")) {
-          this.address = TypeConvertor.castToAddress(value); // Address
+        if (name.equals("identifier")) {
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
+        } else if (name.equals("code")) {
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("period")) {
+          this.period = TypeConvertor.castToPeriod(value); // Period
+        } else if (name.equals("issuer")) {
+          this.issuer = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -288,10 +295,10 @@ public class Organization extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -220463842:  return getPurpose();
-        case 3373707:  return getName();
-        case -1429363305:  return addTelecom(); 
-        case -1147692044:  return getAddress();
+        case -1618432855:  return addIdentifier(); 
+        case 3059181:  return getCode();
+        case -991726143:  return getPeriod();
+        case -1179159879:  return getIssuer();
         default: return super.makeProperty(hash, name);
         }
 
@@ -300,10 +307,10 @@ public class Organization extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -220463842: /*purpose*/ return new String[] {"CodeableConcept"};
-        case 3373707: /*name*/ return new String[] {"HumanName"};
-        case -1429363305: /*telecom*/ return new String[] {"ContactPoint"};
-        case -1147692044: /*address*/ return new String[] {"Address"};
+        case -1618432855: /*identifier*/ return new String[] {"Identifier"};
+        case 3059181: /*code*/ return new String[] {"CodeableConcept"};
+        case -991726143: /*period*/ return new String[] {"Period"};
+        case -1179159879: /*issuer*/ return new String[] {"Reference"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -311,71 +318,71 @@ public class Organization extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("purpose")) {
-          this.purpose = new CodeableConcept();
-          return this.purpose;
+        if (name.equals("identifier")) {
+          return addIdentifier();
         }
-        else if (name.equals("name")) {
-          this.name = new HumanName();
-          return this.name;
+        else if (name.equals("code")) {
+          this.code = new CodeableConcept();
+          return this.code;
         }
-        else if (name.equals("telecom")) {
-          return addTelecom();
+        else if (name.equals("period")) {
+          this.period = new Period();
+          return this.period;
         }
-        else if (name.equals("address")) {
-          this.address = new Address();
-          return this.address;
+        else if (name.equals("issuer")) {
+          this.issuer = new Reference();
+          return this.issuer;
         }
         else
           return super.addChild(name);
       }
 
-      public OrganizationContactComponent copy() {
-        OrganizationContactComponent dst = new OrganizationContactComponent();
+      public OrganizationQualificationComponent copy() {
+        OrganizationQualificationComponent dst = new OrganizationQualificationComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(OrganizationContactComponent dst) {
+      public void copyValues(OrganizationQualificationComponent dst) {
         super.copyValues(dst);
-        dst.purpose = purpose == null ? null : purpose.copy();
-        dst.name = name == null ? null : name.copy();
-        if (telecom != null) {
-          dst.telecom = new ArrayList<ContactPoint>();
-          for (ContactPoint i : telecom)
-            dst.telecom.add(i.copy());
+        if (identifier != null) {
+          dst.identifier = new ArrayList<Identifier>();
+          for (Identifier i : identifier)
+            dst.identifier.add(i.copy());
         };
-        dst.address = address == null ? null : address.copy();
+        dst.code = code == null ? null : code.copy();
+        dst.period = period == null ? null : period.copy();
+        dst.issuer = issuer == null ? null : issuer.copy();
       }
 
       @Override
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof OrganizationContactComponent))
+        if (!(other_ instanceof OrganizationQualificationComponent))
           return false;
-        OrganizationContactComponent o = (OrganizationContactComponent) other_;
-        return compareDeep(purpose, o.purpose, true) && compareDeep(name, o.name, true) && compareDeep(telecom, o.telecom, true)
-           && compareDeep(address, o.address, true);
+        OrganizationQualificationComponent o = (OrganizationQualificationComponent) other_;
+        return compareDeep(identifier, o.identifier, true) && compareDeep(code, o.code, true) && compareDeep(period, o.period, true)
+           && compareDeep(issuer, o.issuer, true);
       }
 
       @Override
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof OrganizationContactComponent))
+        if (!(other_ instanceof OrganizationQualificationComponent))
           return false;
-        OrganizationContactComponent o = (OrganizationContactComponent) other_;
+        OrganizationQualificationComponent o = (OrganizationQualificationComponent) other_;
         return true;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(purpose, name, telecom, address
-          );
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, code, period
+          , issuer);
       }
 
   public String fhirType() {
-    return "Organization.contact";
+    return "Organization.qualification";
 
   }
 
@@ -418,18 +425,18 @@ public class Organization extends DomainResource {
     protected List<StringType> alias;
 
     /**
-     * A contact detail for the organization.
+     * Description of the organization, which helps provide additional general context on the organization to ensure that the correct organization is selected.
      */
-    @Child(name = "telecom", type = {ContactPoint.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="A contact detail for the organization", formalDefinition="A contact detail for the organization." )
-    protected List<ContactPoint> telecom;
+    @Child(name = "description", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Additional details about the Organization that could be displayed as further information to identify the Organization beyond its name", formalDefinition="Description of the organization, which helps provide additional general context on the organization to ensure that the correct organization is selected." )
+    protected StringType description;
 
     /**
-     * An address for the organization.
+     * The contact details of communication devices available relevant to the specific Organization. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites.
      */
-    @Child(name = "address", type = {Address.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="An address for the organization", formalDefinition="An address for the organization." )
-    protected List<Address> address;
+    @Child(name = "contact", type = {ExtendedContactDetail.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Official contact details for the Organization", formalDefinition="The contact details of communication devices available relevant to the specific Organization. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites." )
+    protected List<ExtendedContactDetail> contact;
 
     /**
      * The organization of which this organization forms a part.
@@ -439,20 +446,20 @@ public class Organization extends DomainResource {
     protected Reference partOf;
 
     /**
-     * Contact for the organization for a certain purpose.
-     */
-    @Child(name = "contact", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Contact for the organization for a certain purpose", formalDefinition="Contact for the organization for a certain purpose." )
-    protected List<OrganizationContactComponent> contact;
-
-    /**
      * Technical endpoints providing access to services operated for the organization.
      */
-    @Child(name = "endpoint", type = {Endpoint.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "endpoint", type = {Endpoint.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Technical endpoints providing access to services operated for the organization", formalDefinition="Technical endpoints providing access to services operated for the organization." )
     protected List<Reference> endpoint;
 
-    private static final long serialVersionUID = -1305337184L;
+    /**
+     * The official certifications, accreditations, training, designations and licenses that authorize and/or otherwise endorse the provision of care by the organization.For example, an approval to provide a type of services issued by a certifying body (such as the US Joint Commission) to an organization.
+     */
+    @Child(name = "qualification", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Qualifications, certifications, accreditations, licenses, training, etc pertaining to the provision of care", formalDefinition="The official certifications, accreditations, training, designations and licenses that authorize and/or otherwise endorse the provision of care by the organization.\r\rFor example, an approval to provide a type of services issued by a certifying body (such as the US Joint Commission) to an organization." )
+    protected List<OrganizationQualificationComponent> qualification;
+
+    private static final long serialVersionUID = 918340050L;
 
   /**
    * Constructor
@@ -723,109 +730,105 @@ public class Organization extends DomainResource {
     }
 
     /**
-     * @return {@link #telecom} (A contact detail for the organization.)
+     * @return {@link #description} (Description of the organization, which helps provide additional general context on the organization to ensure that the correct organization is selected.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
      */
-    public List<ContactPoint> getTelecom() { 
-      if (this.telecom == null)
-        this.telecom = new ArrayList<ContactPoint>();
-      return this.telecom;
+    public StringType getDescriptionElement() { 
+      if (this.description == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Organization.description");
+        else if (Configuration.doAutoCreate())
+          this.description = new StringType(); // bb
+      return this.description;
+    }
+
+    public boolean hasDescriptionElement() { 
+      return this.description != null && !this.description.isEmpty();
+    }
+
+    public boolean hasDescription() { 
+      return this.description != null && !this.description.isEmpty();
+    }
+
+    /**
+     * @param value {@link #description} (Description of the organization, which helps provide additional general context on the organization to ensure that the correct organization is selected.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+     */
+    public Organization setDescriptionElement(StringType value) { 
+      this.description = value;
+      return this;
+    }
+
+    /**
+     * @return Description of the organization, which helps provide additional general context on the organization to ensure that the correct organization is selected.
+     */
+    public String getDescription() { 
+      return this.description == null ? null : this.description.getValue();
+    }
+
+    /**
+     * @param value Description of the organization, which helps provide additional general context on the organization to ensure that the correct organization is selected.
+     */
+    public Organization setDescription(String value) { 
+      if (Utilities.noString(value))
+        this.description = null;
+      else {
+        if (this.description == null)
+          this.description = new StringType();
+        this.description.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #contact} (The contact details of communication devices available relevant to the specific Organization. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites.)
+     */
+    public List<ExtendedContactDetail> getContact() { 
+      if (this.contact == null)
+        this.contact = new ArrayList<ExtendedContactDetail>();
+      return this.contact;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Organization setTelecom(List<ContactPoint> theTelecom) { 
-      this.telecom = theTelecom;
+    public Organization setContact(List<ExtendedContactDetail> theContact) { 
+      this.contact = theContact;
       return this;
     }
 
-    public boolean hasTelecom() { 
-      if (this.telecom == null)
+    public boolean hasContact() { 
+      if (this.contact == null)
         return false;
-      for (ContactPoint item : this.telecom)
+      for (ExtendedContactDetail item : this.contact)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public ContactPoint addTelecom() { //3
-      ContactPoint t = new ContactPoint();
-      if (this.telecom == null)
-        this.telecom = new ArrayList<ContactPoint>();
-      this.telecom.add(t);
+    public ExtendedContactDetail addContact() { //3
+      ExtendedContactDetail t = new ExtendedContactDetail();
+      if (this.contact == null)
+        this.contact = new ArrayList<ExtendedContactDetail>();
+      this.contact.add(t);
       return t;
     }
 
-    public Organization addTelecom(ContactPoint t) { //3
+    public Organization addContact(ExtendedContactDetail t) { //3
       if (t == null)
         return this;
-      if (this.telecom == null)
-        this.telecom = new ArrayList<ContactPoint>();
-      this.telecom.add(t);
+      if (this.contact == null)
+        this.contact = new ArrayList<ExtendedContactDetail>();
+      this.contact.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #telecom}, creating it if it does not already exist {3}
+     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist {3}
      */
-    public ContactPoint getTelecomFirstRep() { 
-      if (getTelecom().isEmpty()) {
-        addTelecom();
+    public ExtendedContactDetail getContactFirstRep() { 
+      if (getContact().isEmpty()) {
+        addContact();
       }
-      return getTelecom().get(0);
-    }
-
-    /**
-     * @return {@link #address} (An address for the organization.)
-     */
-    public List<Address> getAddress() { 
-      if (this.address == null)
-        this.address = new ArrayList<Address>();
-      return this.address;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public Organization setAddress(List<Address> theAddress) { 
-      this.address = theAddress;
-      return this;
-    }
-
-    public boolean hasAddress() { 
-      if (this.address == null)
-        return false;
-      for (Address item : this.address)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public Address addAddress() { //3
-      Address t = new Address();
-      if (this.address == null)
-        this.address = new ArrayList<Address>();
-      this.address.add(t);
-      return t;
-    }
-
-    public Organization addAddress(Address t) { //3
-      if (t == null)
-        return this;
-      if (this.address == null)
-        this.address = new ArrayList<Address>();
-      this.address.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #address}, creating it if it does not already exist {3}
-     */
-    public Address getAddressFirstRep() { 
-      if (getAddress().isEmpty()) {
-        addAddress();
-      }
-      return getAddress().get(0);
+      return getContact().get(0);
     }
 
     /**
@@ -850,59 +853,6 @@ public class Organization extends DomainResource {
     public Organization setPartOf(Reference value) { 
       this.partOf = value;
       return this;
-    }
-
-    /**
-     * @return {@link #contact} (Contact for the organization for a certain purpose.)
-     */
-    public List<OrganizationContactComponent> getContact() { 
-      if (this.contact == null)
-        this.contact = new ArrayList<OrganizationContactComponent>();
-      return this.contact;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public Organization setContact(List<OrganizationContactComponent> theContact) { 
-      this.contact = theContact;
-      return this;
-    }
-
-    public boolean hasContact() { 
-      if (this.contact == null)
-        return false;
-      for (OrganizationContactComponent item : this.contact)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public OrganizationContactComponent addContact() { //3
-      OrganizationContactComponent t = new OrganizationContactComponent();
-      if (this.contact == null)
-        this.contact = new ArrayList<OrganizationContactComponent>();
-      this.contact.add(t);
-      return t;
-    }
-
-    public Organization addContact(OrganizationContactComponent t) { //3
-      if (t == null)
-        return this;
-      if (this.contact == null)
-        this.contact = new ArrayList<OrganizationContactComponent>();
-      this.contact.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist {3}
-     */
-    public OrganizationContactComponent getContactFirstRep() { 
-      if (getContact().isEmpty()) {
-        addContact();
-      }
-      return getContact().get(0);
     }
 
     /**
@@ -958,6 +908,59 @@ public class Organization extends DomainResource {
       return getEndpoint().get(0);
     }
 
+    /**
+     * @return {@link #qualification} (The official certifications, accreditations, training, designations and licenses that authorize and/or otherwise endorse the provision of care by the organization.For example, an approval to provide a type of services issued by a certifying body (such as the US Joint Commission) to an organization.)
+     */
+    public List<OrganizationQualificationComponent> getQualification() { 
+      if (this.qualification == null)
+        this.qualification = new ArrayList<OrganizationQualificationComponent>();
+      return this.qualification;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public Organization setQualification(List<OrganizationQualificationComponent> theQualification) { 
+      this.qualification = theQualification;
+      return this;
+    }
+
+    public boolean hasQualification() { 
+      if (this.qualification == null)
+        return false;
+      for (OrganizationQualificationComponent item : this.qualification)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public OrganizationQualificationComponent addQualification() { //3
+      OrganizationQualificationComponent t = new OrganizationQualificationComponent();
+      if (this.qualification == null)
+        this.qualification = new ArrayList<OrganizationQualificationComponent>();
+      this.qualification.add(t);
+      return t;
+    }
+
+    public Organization addQualification(OrganizationQualificationComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.qualification == null)
+        this.qualification = new ArrayList<OrganizationQualificationComponent>();
+      this.qualification.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #qualification}, creating it if it does not already exist {3}
+     */
+    public OrganizationQualificationComponent getQualificationFirstRep() { 
+      if (getQualification().isEmpty()) {
+        addQualification();
+      }
+      return getQualification().get(0);
+    }
+
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Identifier for the organization that is used to identify the organization across multiple disparate systems.", 0, java.lang.Integer.MAX_VALUE, identifier));
@@ -965,11 +968,11 @@ public class Organization extends DomainResource {
         children.add(new Property("type", "CodeableConcept", "The kind(s) of organization that this is.", 0, java.lang.Integer.MAX_VALUE, type));
         children.add(new Property("name", "string", "A name associated with the organization.", 0, 1, name));
         children.add(new Property("alias", "string", "A list of alternate names that the organization is known as, or was known as in the past.", 0, java.lang.Integer.MAX_VALUE, alias));
-        children.add(new Property("telecom", "ContactPoint", "A contact detail for the organization.", 0, java.lang.Integer.MAX_VALUE, telecom));
-        children.add(new Property("address", "Address", "An address for the organization.", 0, java.lang.Integer.MAX_VALUE, address));
+        children.add(new Property("description", "string", "Description of the organization, which helps provide additional general context on the organization to ensure that the correct organization is selected.", 0, 1, description));
+        children.add(new Property("contact", "ExtendedContactDetail", "The contact details of communication devices available relevant to the specific Organization. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites.", 0, java.lang.Integer.MAX_VALUE, contact));
         children.add(new Property("partOf", "Reference(Organization)", "The organization of which this organization forms a part.", 0, 1, partOf));
-        children.add(new Property("contact", "", "Contact for the organization for a certain purpose.", 0, java.lang.Integer.MAX_VALUE, contact));
         children.add(new Property("endpoint", "Reference(Endpoint)", "Technical endpoints providing access to services operated for the organization.", 0, java.lang.Integer.MAX_VALUE, endpoint));
+        children.add(new Property("qualification", "", "The official certifications, accreditations, training, designations and licenses that authorize and/or otherwise endorse the provision of care by the organization.\r\rFor example, an approval to provide a type of services issued by a certifying body (such as the US Joint Commission) to an organization.", 0, java.lang.Integer.MAX_VALUE, qualification));
       }
 
       @Override
@@ -980,11 +983,11 @@ public class Organization extends DomainResource {
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The kind(s) of organization that this is.", 0, java.lang.Integer.MAX_VALUE, type);
         case 3373707: /*name*/  return new Property("name", "string", "A name associated with the organization.", 0, 1, name);
         case 92902992: /*alias*/  return new Property("alias", "string", "A list of alternate names that the organization is known as, or was known as in the past.", 0, java.lang.Integer.MAX_VALUE, alias);
-        case -1429363305: /*telecom*/  return new Property("telecom", "ContactPoint", "A contact detail for the organization.", 0, java.lang.Integer.MAX_VALUE, telecom);
-        case -1147692044: /*address*/  return new Property("address", "Address", "An address for the organization.", 0, java.lang.Integer.MAX_VALUE, address);
+        case -1724546052: /*description*/  return new Property("description", "string", "Description of the organization, which helps provide additional general context on the organization to ensure that the correct organization is selected.", 0, 1, description);
+        case 951526432: /*contact*/  return new Property("contact", "ExtendedContactDetail", "The contact details of communication devices available relevant to the specific Organization. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites.", 0, java.lang.Integer.MAX_VALUE, contact);
         case -995410646: /*partOf*/  return new Property("partOf", "Reference(Organization)", "The organization of which this organization forms a part.", 0, 1, partOf);
-        case 951526432: /*contact*/  return new Property("contact", "", "Contact for the organization for a certain purpose.", 0, java.lang.Integer.MAX_VALUE, contact);
         case 1741102485: /*endpoint*/  return new Property("endpoint", "Reference(Endpoint)", "Technical endpoints providing access to services operated for the organization.", 0, java.lang.Integer.MAX_VALUE, endpoint);
+        case -631333393: /*qualification*/  return new Property("qualification", "", "The official certifications, accreditations, training, designations and licenses that authorize and/or otherwise endorse the provision of care by the organization.\r\rFor example, an approval to provide a type of services issued by a certifying body (such as the US Joint Commission) to an organization.", 0, java.lang.Integer.MAX_VALUE, qualification);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -998,11 +1001,11 @@ public class Organization extends DomainResource {
         case 3575610: /*type*/ return this.type == null ? new Base[0] : this.type.toArray(new Base[this.type.size()]); // CodeableConcept
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
         case 92902992: /*alias*/ return this.alias == null ? new Base[0] : this.alias.toArray(new Base[this.alias.size()]); // StringType
-        case -1429363305: /*telecom*/ return this.telecom == null ? new Base[0] : this.telecom.toArray(new Base[this.telecom.size()]); // ContactPoint
-        case -1147692044: /*address*/ return this.address == null ? new Base[0] : this.address.toArray(new Base[this.address.size()]); // Address
+        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
+        case 951526432: /*contact*/ return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // ExtendedContactDetail
         case -995410646: /*partOf*/ return this.partOf == null ? new Base[0] : new Base[] {this.partOf}; // Reference
-        case 951526432: /*contact*/ return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // OrganizationContactComponent
         case 1741102485: /*endpoint*/ return this.endpoint == null ? new Base[0] : this.endpoint.toArray(new Base[this.endpoint.size()]); // Reference
+        case -631333393: /*qualification*/ return this.qualification == null ? new Base[0] : this.qualification.toArray(new Base[this.qualification.size()]); // OrganizationQualificationComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1026,20 +1029,20 @@ public class Organization extends DomainResource {
         case 92902992: // alias
           this.getAlias().add(TypeConvertor.castToString(value)); // StringType
           return value;
-        case -1429363305: // telecom
-          this.getTelecom().add(TypeConvertor.castToContactPoint(value)); // ContactPoint
+        case -1724546052: // description
+          this.description = TypeConvertor.castToString(value); // StringType
           return value;
-        case -1147692044: // address
-          this.getAddress().add(TypeConvertor.castToAddress(value)); // Address
+        case 951526432: // contact
+          this.getContact().add(TypeConvertor.castToExtendedContactDetail(value)); // ExtendedContactDetail
           return value;
         case -995410646: // partOf
           this.partOf = TypeConvertor.castToReference(value); // Reference
           return value;
-        case 951526432: // contact
-          this.getContact().add((OrganizationContactComponent) value); // OrganizationContactComponent
-          return value;
         case 1741102485: // endpoint
           this.getEndpoint().add(TypeConvertor.castToReference(value)); // Reference
+          return value;
+        case -631333393: // qualification
+          this.getQualification().add((OrganizationQualificationComponent) value); // OrganizationQualificationComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1058,16 +1061,16 @@ public class Organization extends DomainResource {
           this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("alias")) {
           this.getAlias().add(TypeConvertor.castToString(value));
-        } else if (name.equals("telecom")) {
-          this.getTelecom().add(TypeConvertor.castToContactPoint(value));
-        } else if (name.equals("address")) {
-          this.getAddress().add(TypeConvertor.castToAddress(value));
+        } else if (name.equals("description")) {
+          this.description = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("contact")) {
+          this.getContact().add(TypeConvertor.castToExtendedContactDetail(value));
         } else if (name.equals("partOf")) {
           this.partOf = TypeConvertor.castToReference(value); // Reference
-        } else if (name.equals("contact")) {
-          this.getContact().add((OrganizationContactComponent) value);
         } else if (name.equals("endpoint")) {
           this.getEndpoint().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("qualification")) {
+          this.getQualification().add((OrganizationQualificationComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -1081,11 +1084,11 @@ public class Organization extends DomainResource {
         case 3575610:  return addType(); 
         case 3373707:  return getNameElement();
         case 92902992:  return addAliasElement();
-        case -1429363305:  return addTelecom(); 
-        case -1147692044:  return addAddress(); 
-        case -995410646:  return getPartOf();
+        case -1724546052:  return getDescriptionElement();
         case 951526432:  return addContact(); 
+        case -995410646:  return getPartOf();
         case 1741102485:  return addEndpoint(); 
+        case -631333393:  return addQualification(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -1099,11 +1102,11 @@ public class Organization extends DomainResource {
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
         case 3373707: /*name*/ return new String[] {"string"};
         case 92902992: /*alias*/ return new String[] {"string"};
-        case -1429363305: /*telecom*/ return new String[] {"ContactPoint"};
-        case -1147692044: /*address*/ return new String[] {"Address"};
+        case -1724546052: /*description*/ return new String[] {"string"};
+        case 951526432: /*contact*/ return new String[] {"ExtendedContactDetail"};
         case -995410646: /*partOf*/ return new String[] {"Reference"};
-        case 951526432: /*contact*/ return new String[] {};
         case 1741102485: /*endpoint*/ return new String[] {"Reference"};
+        case -631333393: /*qualification*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1126,21 +1129,21 @@ public class Organization extends DomainResource {
         else if (name.equals("alias")) {
           throw new FHIRException("Cannot call addChild on a primitive type Organization.alias");
         }
-        else if (name.equals("telecom")) {
-          return addTelecom();
+        else if (name.equals("description")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Organization.description");
         }
-        else if (name.equals("address")) {
-          return addAddress();
+        else if (name.equals("contact")) {
+          return addContact();
         }
         else if (name.equals("partOf")) {
           this.partOf = new Reference();
           return this.partOf;
         }
-        else if (name.equals("contact")) {
-          return addContact();
-        }
         else if (name.equals("endpoint")) {
           return addEndpoint();
+        }
+        else if (name.equals("qualification")) {
+          return addQualification();
         }
         else
           return super.addChild(name);
@@ -1176,26 +1179,22 @@ public class Organization extends DomainResource {
           for (StringType i : alias)
             dst.alias.add(i.copy());
         };
-        if (telecom != null) {
-          dst.telecom = new ArrayList<ContactPoint>();
-          for (ContactPoint i : telecom)
-            dst.telecom.add(i.copy());
-        };
-        if (address != null) {
-          dst.address = new ArrayList<Address>();
-          for (Address i : address)
-            dst.address.add(i.copy());
-        };
-        dst.partOf = partOf == null ? null : partOf.copy();
+        dst.description = description == null ? null : description.copy();
         if (contact != null) {
-          dst.contact = new ArrayList<OrganizationContactComponent>();
-          for (OrganizationContactComponent i : contact)
+          dst.contact = new ArrayList<ExtendedContactDetail>();
+          for (ExtendedContactDetail i : contact)
             dst.contact.add(i.copy());
         };
+        dst.partOf = partOf == null ? null : partOf.copy();
         if (endpoint != null) {
           dst.endpoint = new ArrayList<Reference>();
           for (Reference i : endpoint)
             dst.endpoint.add(i.copy());
+        };
+        if (qualification != null) {
+          dst.qualification = new ArrayList<OrganizationQualificationComponent>();
+          for (OrganizationQualificationComponent i : qualification)
+            dst.qualification.add(i.copy());
         };
       }
 
@@ -1211,9 +1210,9 @@ public class Organization extends DomainResource {
           return false;
         Organization o = (Organization) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(active, o.active, true) && compareDeep(type, o.type, true)
-           && compareDeep(name, o.name, true) && compareDeep(alias, o.alias, true) && compareDeep(telecom, o.telecom, true)
-           && compareDeep(address, o.address, true) && compareDeep(partOf, o.partOf, true) && compareDeep(contact, o.contact, true)
-           && compareDeep(endpoint, o.endpoint, true);
+           && compareDeep(name, o.name, true) && compareDeep(alias, o.alias, true) && compareDeep(description, o.description, true)
+           && compareDeep(contact, o.contact, true) && compareDeep(partOf, o.partOf, true) && compareDeep(endpoint, o.endpoint, true)
+           && compareDeep(qualification, o.qualification, true);
       }
 
       @Override
@@ -1224,12 +1223,12 @@ public class Organization extends DomainResource {
           return false;
         Organization o = (Organization) other_;
         return compareValues(active, o.active, true) && compareValues(name, o.name, true) && compareValues(alias, o.alias, true)
-          ;
+           && compareValues(description, o.description, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, active, type
-          , name, alias, telecom, address, partOf, contact, endpoint);
+          , name, alias, description, contact, partOf, endpoint, qualification);
       }
 
   @Override
@@ -1262,17 +1261,17 @@ public class Organization extends DomainResource {
    * <p>
    * Description: <b>A city specified in an address</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Organization.address.city</b><br>
+   * Path: <b>Organization.contact.address.city</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="address-city", path="Organization.address.city", description="A city specified in an address", type="string" )
+  @SearchParamDefinition(name="address-city", path="Organization.contact.address.city", description="A city specified in an address", type="string" )
   public static final String SP_ADDRESS_CITY = "address-city";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>address-city</b>
    * <p>
    * Description: <b>A city specified in an address</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Organization.address.city</b><br>
+   * Path: <b>Organization.contact.address.city</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_CITY = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_CITY);
@@ -1282,17 +1281,17 @@ public class Organization extends DomainResource {
    * <p>
    * Description: <b>A country specified in an address</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Organization.address.country</b><br>
+   * Path: <b>Organization.contact.address.country</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="address-country", path="Organization.address.country", description="A country specified in an address", type="string" )
+  @SearchParamDefinition(name="address-country", path="Organization.contact.address.country", description="A country specified in an address", type="string" )
   public static final String SP_ADDRESS_COUNTRY = "address-country";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>address-country</b>
    * <p>
    * Description: <b>A country specified in an address</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Organization.address.country</b><br>
+   * Path: <b>Organization.contact.address.country</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_COUNTRY = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_COUNTRY);
@@ -1302,17 +1301,17 @@ public class Organization extends DomainResource {
    * <p>
    * Description: <b>A postal code specified in an address</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Organization.address.postalCode</b><br>
+   * Path: <b>Organization.contact.address.postalCode</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="address-postalcode", path="Organization.address.postalCode", description="A postal code specified in an address", type="string" )
+  @SearchParamDefinition(name="address-postalcode", path="Organization.contact.address.postalCode", description="A postal code specified in an address", type="string" )
   public static final String SP_ADDRESS_POSTALCODE = "address-postalcode";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>address-postalcode</b>
    * <p>
    * Description: <b>A postal code specified in an address</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Organization.address.postalCode</b><br>
+   * Path: <b>Organization.contact.address.postalCode</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_POSTALCODE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_POSTALCODE);
@@ -1322,17 +1321,17 @@ public class Organization extends DomainResource {
    * <p>
    * Description: <b>A state specified in an address</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Organization.address.state</b><br>
+   * Path: <b>Organization.contact.address.state</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="address-state", path="Organization.address.state", description="A state specified in an address", type="string" )
+  @SearchParamDefinition(name="address-state", path="Organization.contact.address.state", description="A state specified in an address", type="string" )
   public static final String SP_ADDRESS_STATE = "address-state";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>address-state</b>
    * <p>
    * Description: <b>A state specified in an address</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Organization.address.state</b><br>
+   * Path: <b>Organization.contact.address.state</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_STATE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_STATE);
@@ -1342,17 +1341,17 @@ public class Organization extends DomainResource {
    * <p>
    * Description: <b>A use code specified in an address</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Organization.address.use</b><br>
+   * Path: <b>Organization.contact.address.use</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="address-use", path="Organization.address.use", description="A use code specified in an address", type="token" )
+  @SearchParamDefinition(name="address-use", path="Organization.contact.address.use", description="A use code specified in an address", type="token" )
   public static final String SP_ADDRESS_USE = "address-use";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>address-use</b>
    * <p>
    * Description: <b>A use code specified in an address</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Organization.address.use</b><br>
+   * Path: <b>Organization.contact.address.use</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam ADDRESS_USE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ADDRESS_USE);
@@ -1362,17 +1361,17 @@ public class Organization extends DomainResource {
    * <p>
    * Description: <b>A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Organization.address</b><br>
+   * Path: <b>Organization.contact.address</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="address", path="Organization.address", description="A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text", type="string" )
+  @SearchParamDefinition(name="address", path="Organization.contact.address", description="A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text", type="string" )
   public static final String SP_ADDRESS = "address";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>address</b>
    * <p>
    * Description: <b>A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Organization.address</b><br>
+   * Path: <b>Organization.contact.address</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS);
@@ -1408,17 +1407,17 @@ public class Organization extends DomainResource {
    * <p>
    * Description: <b>Any identifier for the organization (not the accreditation issuer's identifier)</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Organization.identifier</b><br>
+   * Path: <b>Organization.identifier | Organization.qualification.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="identifier", path="Organization.identifier", description="Any identifier for the organization (not the accreditation issuer's identifier)", type="token" )
+  @SearchParamDefinition(name="identifier", path="Organization.identifier | Organization.qualification.identifier", description="Any identifier for the organization (not the accreditation issuer's identifier)", type="token" )
   public static final String SP_IDENTIFIER = "identifier";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
    * <p>
    * Description: <b>Any identifier for the organization (not the accreditation issuer's identifier)</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Organization.identifier</b><br>
+   * Path: <b>Organization.identifier | Organization.qualification.identifier</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);

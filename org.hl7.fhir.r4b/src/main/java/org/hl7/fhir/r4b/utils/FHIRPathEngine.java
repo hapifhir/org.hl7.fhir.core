@@ -261,6 +261,7 @@ public class FHIRPathEngine {
   private ProfileUtilities profileUtilities;
   private String location; // for error messages
   private boolean allowPolymorphicNames;
+  private boolean doImplicitStringConversion;
 
   // if the fhir path expressions are allowed to use constants beyond those defined in the specification
   // the application can implement them by providing a constant resolver 
@@ -445,6 +446,14 @@ public class FHIRPathEngine {
     this.legacyMode = legacyMode;
   }
 
+
+  public boolean isDoImplicitStringConversion() {
+    return doImplicitStringConversion;
+  }
+
+  public void setDoImplicitStringConversion(boolean doImplicitStringConversion) {
+    this.doImplicitStringConversion = doImplicitStringConversion;
+  }
 
   // --- public API -------------------------------------------------------
   /**
@@ -2893,6 +2902,8 @@ public class FHIRPathEngine {
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Quantity);
     } else if (constant instanceof FHIRConstant) {
       return resolveConstantType(context, ((FHIRConstant) constant).getValue(), expr);
+    } else if (constant == null) {
+      return new TypeDetails(CollectionStatus.SINGLETON);      
     } else {
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
     }
@@ -3130,60 +3141,60 @@ public class FHIRPathEngine {
       return types;
     }
     case Lower : {
-      checkContextString(focus, "lower", exp);
+      checkContextString(focus, "lower", exp, true);
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String); 
     }
     case Upper : {
-      checkContextString(focus, "upper", exp);
+      checkContextString(focus, "upper", exp, true);
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String); 
     }
     case ToChars : {
-      checkContextString(focus, "toChars", exp);
+      checkContextString(focus, "toChars", exp, true);
       return new TypeDetails(CollectionStatus.ORDERED, TypeDetails.FP_String); 
     }
     case IndexOf : {
-      checkContextString(focus, "indexOf", exp);
+      checkContextString(focus, "indexOf", exp, true);
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer); 
     }
     case Substring : {
-      checkContextString(focus, "subString", exp);
+      checkContextString(focus, "subString", exp, true);
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer), new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String); 
     }
     case StartsWith : {
-      checkContextString(focus, "startsWith", exp);
+      checkContextString(focus, "startsWith", exp, true);
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean); 
     }
     case EndsWith : {
-      checkContextString(focus, "endsWith", exp);
+      checkContextString(focus, "endsWith", exp, true);
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean); 
     }
     case Matches : {
-      checkContextString(focus, "matches", exp);
+      checkContextString(focus, "matches", exp, true);
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean); 
     }
     case MatchesFull : {
-      checkContextString(focus, "matches", exp);
+      checkContextString(focus, "matches", exp, true);
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean); 
     }
     case ReplaceMatches : {
-      checkContextString(focus, "replaceMatches", exp);
+      checkContextString(focus, "replaceMatches", exp, true);
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String), new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String); 
     }
     case Contains : {
-      checkContextString(focus, "contains", exp);
+      checkContextString(focus, "contains", exp, true);
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     }
     case Replace : {
-      checkContextString(focus, "replace", exp);
-      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, "string"), new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
+      checkContextString(focus, "replace", exp, true);
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String), new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
     }
     case Length : { 
@@ -3417,14 +3428,15 @@ public class FHIRPathEngine {
   }
 
 
-  private void checkContextString(TypeDetails focus, String name, ExpressionNode expr) throws PathEngineException {
-    if (!focus.hasType(worker, "string") && !focus.hasType(worker, "code") && !focus.hasType(worker, "uri") && !focus.hasType(worker, "canonical") && !focus.hasType(worker, "id")) {
-      throw makeException(expr, I18nConstants.FHIRPATH_STRING_ONLY, name, focus.describe());
+  private void checkContextString(TypeDetails focus, String name, ExpressionNode expr, boolean sing) throws PathEngineException {
+    if (!focus.hasNoTypes() && !focus.hasType(worker, "string") && !focus.hasType(worker, "code") && !focus.hasType(worker, "uri") && !focus.hasType(worker, "canonical") && !focus.hasType(worker, "id")) {
+      throw makeException(expr, sing ? I18nConstants.FHIRPATH_STRING_SING_ONLY : I18nConstants.FHIRPATH_STRING_ORD_ONLY, name, focus.describe());
     }
   }
 
 
   private void checkContextPrimitive(TypeDetails focus, String name, boolean canQty, ExpressionNode expr) throws PathEngineException {
+    if (!focus.hasNoTypes()) {
     if (canQty) {
        if (!focus.hasType(primitiveTypes) && !focus.hasType("Quantity")) {
          throw makeException(expr, I18nConstants.FHIRPATH_PRIMITIVE_ONLY, name, focus.describe(), "Quantity, "+primitiveTypes.toString());
@@ -3433,21 +3445,22 @@ public class FHIRPathEngine {
       throw makeException(expr, I18nConstants.FHIRPATH_PRIMITIVE_ONLY, name, focus.describe(), primitiveTypes.toString());
     }
   }
+  }
   
   private void checkContextNumerical(TypeDetails focus, String name, ExpressionNode expr) throws PathEngineException {
-    if (!focus.hasType("integer")  && !focus.hasType("decimal") && !focus.hasType("Quantity")) {
+    if (!focus.hasNoTypes() && !focus.hasType("integer")  && !focus.hasType("decimal") && !focus.hasType("Quantity")) {
       throw makeException(expr, I18nConstants.FHIRPATH_NUMERICAL_ONLY, name, focus.describe());
     }    
   }
 
   private void checkContextDecimal(TypeDetails focus, String name, ExpressionNode expr) throws PathEngineException {
-    if (!focus.hasType("decimal") && !focus.hasType("integer")) {
+    if (!focus.hasNoTypes() && !focus.hasType("decimal") && !focus.hasType("integer")) {
       throw makeException(expr, I18nConstants.FHIRPATH_DECIMAL_ONLY, name, focus.describe());
     }    
   }
 
   private void checkContextContinuous(TypeDetails focus, String name, ExpressionNode expr) throws PathEngineException {
-    if (!focus.hasType("decimal") && !focus.hasType("date") && !focus.hasType("dateTime") && !focus.hasType("time")) {
+    if (!focus.hasNoTypes() && !focus.hasType("decimal") && !focus.hasType("date") && !focus.hasType("dateTime") && !focus.hasType("time")) {
       throw makeException(expr, I18nConstants.FHIRPATH_CONTINUOUS_ONLY, name, focus.describe());
     }    
   }
@@ -3662,7 +3675,10 @@ public class FHIRPathEngine {
 
 
   private List<Base> funcExp(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
-    if (focus.size() != 1) {
+    if (focus.size() == 0) {
+      return new ArrayList<Base>();
+    }
+    if (focus.size() > 1) {
       throw makeException(expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "exp", focus.size());
     }
     Base base = focus.get(0);
@@ -4208,16 +4224,22 @@ public class FHIRPathEngine {
 
   private List<Base> funcReplace(ExecutionContext context, List<Base> focus, ExpressionNode expr) throws FHIRException, PathEngineException {
     List<Base> result = new ArrayList<Base>();
+    List<Base> tB = execute(context, focus, expr.getParameters().get(0), true);
+    String t = convertToString(tB);
+    List<Base> rB = execute(context, focus, expr.getParameters().get(1), true);
+    String r = convertToString(rB);
 
-    if (focus.size() == 1) {
+    if (focus.size() == 0 || tB.size() == 0 || rB.size() == 0) {
+      //
+    } else if (focus.size() == 1) {
+      if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
       String f = convertToString(focus.get(0));
       if (Utilities.noString(f)) {
         result.add(new StringType(""));
       } else {
-        String t = convertToString(execute(context, focus, expr.getParameters().get(0), true));
-        String r = convertToString(execute(context, focus, expr.getParameters().get(1), true));
         String n = f.replace(t, r);
         result.add(new StringType(n));
+      }
       }
     } else {
       throw makeException(expr, I18nConstants.FHIRPATH_NO_COLLECTION, "replace", focus.size());
@@ -4228,11 +4250,17 @@ public class FHIRPathEngine {
 
   private List<Base> funcReplaceMatches(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    String regex = convertToString(execute(context, focus, exp.getParameters().get(0), true));
-    String repl = convertToString(execute(context, focus, exp.getParameters().get(1), true));
+    List<Base> regexB = execute(context, focus, exp.getParameters().get(0), true);
+    String regex = convertToString(regexB);
+    List<Base> replB = execute(context, focus, exp.getParameters().get(1), true);
+    String repl = convertToString(replB);
 
-    if (focus.size() == 1 && !Utilities.noString(regex)) {
+    if (focus.size() == 0 || regexB.size() == 0 || replB.size() == 0) {
+      //
+    } else if (focus.size() == 1 && !Utilities.noString(regex)) {
+      if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
       result.add(new StringType(convertToString(focus.get(0)).replaceAll(regex, repl)).noExtensions());
+      }
     } else {
       result.add(new StringType(convertToString(focus.get(0))).noExtensions());
     }
@@ -4242,13 +4270,16 @@ public class FHIRPathEngine {
 
   private List<Base> funcEndsWith(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    String sw = convertToString(execute(context, focus, exp.getParameters().get(0), true));
+    List<Base> swb = execute(context, focus, exp.getParameters().get(0), true);
+    String sw = convertToString(swb);
 
     if (focus.size() == 0) {
-      result.add(new BooleanType(false).noExtensions());
+      //
+    } else if (swb.size() == 0) {
+      //
     } else if (Utilities.noString(sw)) {
       result.add(new BooleanType(true).noExtensions());
-    } else {
+    } else if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
       if (focus.size() == 1 && !Utilities.noString(sw)) {
         result.add(new BooleanType(convertToString(focus.get(0)).endsWith(sw)).noExtensions());
       } else {
@@ -4915,9 +4946,13 @@ public class FHIRPathEngine {
 
 	private List<Base> funcMatches(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    String sw = convertToString(execute(context, focus, exp.getParameters().get(0), true));
+    List<Base> swb = execute(context, focus, exp.getParameters().get(0), true);
+    String sw = convertToString(swb);
 
-    if (focus.size() == 1 && !Utilities.noString(sw)) {
+    if (focus.size() == 0 || swb.size() == 0) {
+      //
+    } else if (focus.size() == 1 && !Utilities.noString(sw)) {
+      if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
       String st = convertToString(focus.get(0));
       if (Utilities.noString(st)) {
         result.add(new BooleanType(false).noExtensions());
@@ -4926,6 +4961,7 @@ public class FHIRPathEngine {
         Matcher m = p.matcher(st);
         boolean ok = m.find();
         result.add(new BooleanType(ok).noExtensions());
+      }
       }
     } else {
       result.add(new BooleanType(false).noExtensions());
@@ -4938,6 +4974,7 @@ public class FHIRPathEngine {
     String sw = convertToString(execute(context, focus, exp.getParameters().get(0), true));
 
     if (focus.size() == 1 && !Utilities.noString(sw)) {
+      if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
       String st = convertToString(focus.get(0));
       if (Utilities.noString(st)) {
         result.add(new BooleanType(false).noExtensions());
@@ -4947,6 +4984,7 @@ public class FHIRPathEngine {
         boolean ok = m.matches();
         result.add(new BooleanType(ok).noExtensions());
       }
+      }
     } else {
       result.add(new BooleanType(false).noExtensions());
     }
@@ -4955,13 +4993,16 @@ public class FHIRPathEngine {
 
 	private List<Base> funcContains(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    String sw = convertToString(execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true));
+    List<Base> swb = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
+    String sw = convertToString(swb);
 
     if (focus.size() != 1) {
-      result.add(new BooleanType(false).noExtensions());
+      //
+    } else if (swb.size() != 1) {
+        //
     } else if (Utilities.noString(sw)) {
       result.add(new BooleanType(true).noExtensions());
-    } else {
+    } else if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
       String st = convertToString(focus.get(0));
       if (Utilities.noString(st)) {
         result.add(new BooleanType(false).noExtensions());
@@ -4980,7 +5021,7 @@ public class FHIRPathEngine {
 
   private List<Base> funcLength(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     List<Base> result = new ArrayList<Base>();
-    if (focus.size() == 1) {
+    if (focus.size() == 1 && (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion)) {
       String s = convertToString(focus.get(0));
       result.add(new IntegerType(s.length()).noExtensions());
     }
@@ -5000,13 +5041,16 @@ public class FHIRPathEngine {
 
 	private List<Base> funcStartsWith(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    String sw = convertToString(execute(context, focus, exp.getParameters().get(0), true));
+    List<Base> swb = execute(context, focus, exp.getParameters().get(0), true);
+    String sw = convertToString(swb);
 
     if (focus.size() == 0) {
-      result.add(new BooleanType(false).noExtensions());
+      // no result
+    } else if (swb.size() == 0) {
+      // no result
     } else if (Utilities.noString(sw)) {
       result.add(new BooleanType(true).noExtensions());
-    } else {
+    } else if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
       String s = convertToString(focus.get(0));
       if (s == null) {
         result.add(new BooleanType(false).noExtensions());
@@ -5019,7 +5063,7 @@ public class FHIRPathEngine {
 
   private List<Base> funcLower(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    if (focus.size() == 1) {
+    if (focus.size() == 1 && (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion)) {
       String s = convertToString(focus.get(0));
       if (!Utilities.noString(s)) { 
         result.add(new StringType(s.toLowerCase()).noExtensions());
@@ -5030,7 +5074,7 @@ public class FHIRPathEngine {
 
   private List<Base> funcUpper(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    if (focus.size() == 1) {
+    if (focus.size() == 1 && (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion)) {
       String s = convertToString(focus.get(0));
       if (!Utilities.noString(s)) { 
         result.add(new StringType(s.toUpperCase()).noExtensions());
@@ -5041,7 +5085,7 @@ public class FHIRPathEngine {
 
   private List<Base> funcToChars(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    if (focus.size() == 1) {
+    if (focus.size() == 1 && (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion)) {
       String s = convertToString(focus.get(0));
       for (char c : s.toCharArray()) {  
         result.add(new StringType(String.valueOf(c)).noExtensions());
@@ -5053,12 +5097,15 @@ public class FHIRPathEngine {
   private List<Base> funcIndexOf(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
     
-    String sw = convertToString(execute(context, focus, exp.getParameters().get(0), true));
+    List<Base> swb = execute(context, focus, exp.getParameters().get(0), true);
+    String sw = convertToString(swb);
     if (focus.size() == 0) {
-      result.add(new IntegerType(0).noExtensions());
+      // no result
+    } else if (swb.size() == 0) {
+      // no result
     } else if (Utilities.noString(sw)) {
       result.add(new IntegerType(0).noExtensions());
-    } else {
+    } else if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
       String s = convertToString(focus.get(0));
       if (s == null) {
         result.add(new IntegerType(0).noExtensions());
@@ -5076,10 +5123,13 @@ public class FHIRPathEngine {
     int i2 = -1;
     if (exp.parameterCount() == 2) {
       List<Base> n2 = execute(context, focus, exp.getParameters().get(1), true);
+      if (n2.isEmpty()|| !n2.get(0).isPrimitive() || !Utilities.isInteger(n2.get(0).primitiveValue())) {
+        return new ArrayList<Base>();
+      }
       i2 = Integer.parseInt(n2.get(0).primitiveValue());
     }
 
-    if (focus.size() == 1) {
+    if (focus.size() == 1 && (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion)) {
       String sw = convertToString(focus.get(0));
       String s;
       if (i1 < 0 || i1 >= sw.length()) {

@@ -29,9 +29,7 @@ public class BaseDateTimeTypeTests {
   @MethodSource("getInvalidStringParams")
   public <K extends BaseDateTimeType> void testInvalidString(Class<K> clazz, String param) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
     InvocationTargetException exceptionWrapper =  Assertions.assertThrows(InvocationTargetException.class, () ->  clazz.getConstructor(String.class).newInstance(param));
-    assertEquals(DataFormatException.class, exceptionWrapper.getTargetException().getClass());
-     K srcInstance = clazz.getDeclaredConstructor().newInstance();
-     Assertions.assertThrows(DataFormatException.class, () -> srcInstance.setValueAsString(param));
+    assertEquals(IllegalArgumentException.class, exceptionWrapper.getTargetException().getClass());
   }
 
   private static Stream<Arguments> getValidStringParams() {

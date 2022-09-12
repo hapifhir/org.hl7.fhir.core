@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -55,13 +55,17 @@ public class TerminologyCapabilities extends CanonicalResource {
 
     public enum CodeSearchSupport {
         /**
-         * The search for code on ValueSet only includes codes explicitly detailed on includes or expansions.
+         * The search for code on ValueSet returns ValueSet resources where the code is included in the extensional definition of the ValueSet.
          */
-        EXPLICIT, 
+        INCOMPOSE, 
         /**
-         * The search for code on ValueSet only includes all codes based on the expansion of the value set.
+         * The search for code on ValueSet returns ValueSet resources where the code is contained in the  ValueSet expansion.
          */
-        ALL, 
+        INEXPANSION, 
+        /**
+         * The search for code on ValueSet returns ValueSet resources where the code is included in the extensional definition or contained in the ValueSet expansion.
+         */
+        INCOMPOSEOREXPANSION, 
         /**
          * added to help the parsers with the generic types
          */
@@ -69,10 +73,12 @@ public class TerminologyCapabilities extends CanonicalResource {
         public static CodeSearchSupport fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("explicit".equals(codeString))
-          return EXPLICIT;
-        if ("all".equals(codeString))
-          return ALL;
+        if ("in-compose".equals(codeString))
+          return INCOMPOSE;
+        if ("in-expansion".equals(codeString))
+          return INEXPANSION;
+        if ("in-compose-or-expansion".equals(codeString))
+          return INCOMPOSEOREXPANSION;
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
@@ -80,29 +86,37 @@ public class TerminologyCapabilities extends CanonicalResource {
         }
         public String toCode() {
           switch (this) {
-            case EXPLICIT: return "explicit";
-            case ALL: return "all";
+            case INCOMPOSE: return "in-compose";
+            case INEXPANSION: return "in-expansion";
+            case INCOMPOSEOREXPANSION: return "in-compose-or-expansion";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getSystem() {
           switch (this) {
-            case EXPLICIT: return "http://hl7.org/fhir/code-search-support";
-            case ALL: return "http://hl7.org/fhir/code-search-support";
+            case INCOMPOSE: return "http://hl7.org/fhir/code-search-support";
+            case INEXPANSION: return "http://hl7.org/fhir/code-search-support";
+            case INCOMPOSEOREXPANSION: return "http://hl7.org/fhir/code-search-support";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDefinition() {
           switch (this) {
-            case EXPLICIT: return "The search for code on ValueSet only includes codes explicitly detailed on includes or expansions.";
-            case ALL: return "The search for code on ValueSet only includes all codes based on the expansion of the value set.";
+            case INCOMPOSE: return "The search for code on ValueSet returns ValueSet resources where the code is included in the extensional definition of the ValueSet.";
+            case INEXPANSION: return "The search for code on ValueSet returns ValueSet resources where the code is contained in the  ValueSet expansion.";
+            case INCOMPOSEOREXPANSION: return "The search for code on ValueSet returns ValueSet resources where the code is included in the extensional definition or contained in the ValueSet expansion.";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
-            case EXPLICIT: return "Explicit Codes";
-            case ALL: return "Implicit Codes";
+            case INCOMPOSE: return "In Compose";
+            case INEXPANSION: return "In Expansion";
+            case INCOMPOSEOREXPANSION: return "In Compose Or Expansion";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -113,10 +127,12 @@ public class TerminologyCapabilities extends CanonicalResource {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("explicit".equals(codeString))
-          return CodeSearchSupport.EXPLICIT;
-        if ("all".equals(codeString))
-          return CodeSearchSupport.ALL;
+        if ("in-compose".equals(codeString))
+          return CodeSearchSupport.INCOMPOSE;
+        if ("in-expansion".equals(codeString))
+          return CodeSearchSupport.INEXPANSION;
+        if ("in-compose-or-expansion".equals(codeString))
+          return CodeSearchSupport.INCOMPOSEOREXPANSION;
         throw new IllegalArgumentException("Unknown CodeSearchSupport code '"+codeString+"'");
         }
         public Enumeration<CodeSearchSupport> fromType(Base code) throws FHIRException {
@@ -127,20 +143,1000 @@ public class TerminologyCapabilities extends CanonicalResource {
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
-        if ("explicit".equals(codeString))
-          return new Enumeration<CodeSearchSupport>(this, CodeSearchSupport.EXPLICIT);
-        if ("all".equals(codeString))
-          return new Enumeration<CodeSearchSupport>(this, CodeSearchSupport.ALL);
+        if ("in-compose".equals(codeString))
+          return new Enumeration<CodeSearchSupport>(this, CodeSearchSupport.INCOMPOSE);
+        if ("in-expansion".equals(codeString))
+          return new Enumeration<CodeSearchSupport>(this, CodeSearchSupport.INEXPANSION);
+        if ("in-compose-or-expansion".equals(codeString))
+          return new Enumeration<CodeSearchSupport>(this, CodeSearchSupport.INCOMPOSEOREXPANSION);
         throw new FHIRException("Unknown CodeSearchSupport code '"+codeString+"'");
         }
     public String toCode(CodeSearchSupport code) {
-      if (code == CodeSearchSupport.EXPLICIT)
-        return "explicit";
-      if (code == CodeSearchSupport.ALL)
-        return "all";
+      if (code == CodeSearchSupport.INCOMPOSE)
+        return "in-compose";
+      if (code == CodeSearchSupport.INEXPANSION)
+        return "in-expansion";
+      if (code == CodeSearchSupport.INCOMPOSEOREXPANSION)
+        return "in-compose-or-expansion";
       return "?";
       }
     public String toSystem(CodeSearchSupport code) {
+      return code.getSystem();
+      }
+    }
+
+    public enum CommonLanguages {
+        /**
+         * 
+         */
+        AR, 
+        /**
+         * 
+         */
+        BN, 
+        /**
+         * 
+         */
+        CS, 
+        /**
+         * 
+         */
+        DA, 
+        /**
+         * 
+         */
+        DE, 
+        /**
+         * 
+         */
+        DEAT, 
+        /**
+         * 
+         */
+        DECH, 
+        /**
+         * 
+         */
+        DEDE, 
+        /**
+         * 
+         */
+        EL, 
+        /**
+         * 
+         */
+        EN, 
+        /**
+         * 
+         */
+        ENAU, 
+        /**
+         * 
+         */
+        ENCA, 
+        /**
+         * 
+         */
+        ENGB, 
+        /**
+         * 
+         */
+        ENIN, 
+        /**
+         * 
+         */
+        ENNZ, 
+        /**
+         * 
+         */
+        ENSG, 
+        /**
+         * 
+         */
+        ENUS, 
+        /**
+         * 
+         */
+        ES, 
+        /**
+         * 
+         */
+        ESAR, 
+        /**
+         * 
+         */
+        ESES, 
+        /**
+         * 
+         */
+        ESUY, 
+        /**
+         * 
+         */
+        FI, 
+        /**
+         * 
+         */
+        FR, 
+        /**
+         * 
+         */
+        FRBE, 
+        /**
+         * 
+         */
+        FRCH, 
+        /**
+         * 
+         */
+        FRFR, 
+        /**
+         * 
+         */
+        FRCA, 
+        /**
+         * 
+         */
+        FY, 
+        /**
+         * 
+         */
+        FYNL, 
+        /**
+         * 
+         */
+        HI, 
+        /**
+         * 
+         */
+        HR, 
+        /**
+         * 
+         */
+        IT, 
+        /**
+         * 
+         */
+        ITCH, 
+        /**
+         * 
+         */
+        ITIT, 
+        /**
+         * 
+         */
+        JA, 
+        /**
+         * 
+         */
+        KO, 
+        /**
+         * 
+         */
+        NL, 
+        /**
+         * 
+         */
+        NLBE, 
+        /**
+         * 
+         */
+        NLNL, 
+        /**
+         * 
+         */
+        NO, 
+        /**
+         * 
+         */
+        NONO, 
+        /**
+         * 
+         */
+        PA, 
+        /**
+         * 
+         */
+        PL, 
+        /**
+         * 
+         */
+        PT, 
+        /**
+         * 
+         */
+        PTBR, 
+        /**
+         * 
+         */
+        RU, 
+        /**
+         * 
+         */
+        RURU, 
+        /**
+         * 
+         */
+        SR, 
+        /**
+         * 
+         */
+        SRRS, 
+        /**
+         * 
+         */
+        SV, 
+        /**
+         * 
+         */
+        SVSE, 
+        /**
+         * 
+         */
+        TE, 
+        /**
+         * 
+         */
+        ZH, 
+        /**
+         * 
+         */
+        ZHCN, 
+        /**
+         * 
+         */
+        ZHHK, 
+        /**
+         * 
+         */
+        ZHSG, 
+        /**
+         * 
+         */
+        ZHTW, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static CommonLanguages fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("ar".equals(codeString))
+          return AR;
+        if ("bn".equals(codeString))
+          return BN;
+        if ("cs".equals(codeString))
+          return CS;
+        if ("da".equals(codeString))
+          return DA;
+        if ("de".equals(codeString))
+          return DE;
+        if ("de-AT".equals(codeString))
+          return DEAT;
+        if ("de-CH".equals(codeString))
+          return DECH;
+        if ("de-DE".equals(codeString))
+          return DEDE;
+        if ("el".equals(codeString))
+          return EL;
+        if ("en".equals(codeString))
+          return EN;
+        if ("en-AU".equals(codeString))
+          return ENAU;
+        if ("en-CA".equals(codeString))
+          return ENCA;
+        if ("en-GB".equals(codeString))
+          return ENGB;
+        if ("en-IN".equals(codeString))
+          return ENIN;
+        if ("en-NZ".equals(codeString))
+          return ENNZ;
+        if ("en-SG".equals(codeString))
+          return ENSG;
+        if ("en-US".equals(codeString))
+          return ENUS;
+        if ("es".equals(codeString))
+          return ES;
+        if ("es-AR".equals(codeString))
+          return ESAR;
+        if ("es-ES".equals(codeString))
+          return ESES;
+        if ("es-UY".equals(codeString))
+          return ESUY;
+        if ("fi".equals(codeString))
+          return FI;
+        if ("fr".equals(codeString))
+          return FR;
+        if ("fr-BE".equals(codeString))
+          return FRBE;
+        if ("fr-CH".equals(codeString))
+          return FRCH;
+        if ("fr-FR".equals(codeString))
+          return FRFR;
+        if ("fr-CA".equals(codeString))
+          return FRCA;
+        if ("fy".equals(codeString))
+          return FY;
+        if ("fy-NL".equals(codeString))
+          return FYNL;
+        if ("hi".equals(codeString))
+          return HI;
+        if ("hr".equals(codeString))
+          return HR;
+        if ("it".equals(codeString))
+          return IT;
+        if ("it-CH".equals(codeString))
+          return ITCH;
+        if ("it-IT".equals(codeString))
+          return ITIT;
+        if ("ja".equals(codeString))
+          return JA;
+        if ("ko".equals(codeString))
+          return KO;
+        if ("nl".equals(codeString))
+          return NL;
+        if ("nl-BE".equals(codeString))
+          return NLBE;
+        if ("nl-NL".equals(codeString))
+          return NLNL;
+        if ("no".equals(codeString))
+          return NO;
+        if ("no-NO".equals(codeString))
+          return NONO;
+        if ("pa".equals(codeString))
+          return PA;
+        if ("pl".equals(codeString))
+          return PL;
+        if ("pt".equals(codeString))
+          return PT;
+        if ("pt-BR".equals(codeString))
+          return PTBR;
+        if ("ru".equals(codeString))
+          return RU;
+        if ("ru-RU".equals(codeString))
+          return RURU;
+        if ("sr".equals(codeString))
+          return SR;
+        if ("sr-RS".equals(codeString))
+          return SRRS;
+        if ("sv".equals(codeString))
+          return SV;
+        if ("sv-SE".equals(codeString))
+          return SVSE;
+        if ("te".equals(codeString))
+          return TE;
+        if ("zh".equals(codeString))
+          return ZH;
+        if ("zh-CN".equals(codeString))
+          return ZHCN;
+        if ("zh-HK".equals(codeString))
+          return ZHHK;
+        if ("zh-SG".equals(codeString))
+          return ZHSG;
+        if ("zh-TW".equals(codeString))
+          return ZHTW;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown CommonLanguages code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case AR: return "ar";
+            case BN: return "bn";
+            case CS: return "cs";
+            case DA: return "da";
+            case DE: return "de";
+            case DEAT: return "de-AT";
+            case DECH: return "de-CH";
+            case DEDE: return "de-DE";
+            case EL: return "el";
+            case EN: return "en";
+            case ENAU: return "en-AU";
+            case ENCA: return "en-CA";
+            case ENGB: return "en-GB";
+            case ENIN: return "en-IN";
+            case ENNZ: return "en-NZ";
+            case ENSG: return "en-SG";
+            case ENUS: return "en-US";
+            case ES: return "es";
+            case ESAR: return "es-AR";
+            case ESES: return "es-ES";
+            case ESUY: return "es-UY";
+            case FI: return "fi";
+            case FR: return "fr";
+            case FRBE: return "fr-BE";
+            case FRCH: return "fr-CH";
+            case FRFR: return "fr-FR";
+            case FRCA: return "fr-CA";
+            case FY: return "fy";
+            case FYNL: return "fy-NL";
+            case HI: return "hi";
+            case HR: return "hr";
+            case IT: return "it";
+            case ITCH: return "it-CH";
+            case ITIT: return "it-IT";
+            case JA: return "ja";
+            case KO: return "ko";
+            case NL: return "nl";
+            case NLBE: return "nl-BE";
+            case NLNL: return "nl-NL";
+            case NO: return "no";
+            case NONO: return "no-NO";
+            case PA: return "pa";
+            case PL: return "pl";
+            case PT: return "pt";
+            case PTBR: return "pt-BR";
+            case RU: return "ru";
+            case RURU: return "ru-RU";
+            case SR: return "sr";
+            case SRRS: return "sr-RS";
+            case SV: return "sv";
+            case SVSE: return "sv-SE";
+            case TE: return "te";
+            case ZH: return "zh";
+            case ZHCN: return "zh-CN";
+            case ZHHK: return "zh-HK";
+            case ZHSG: return "zh-SG";
+            case ZHTW: return "zh-TW";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case AR: return "urn:ietf:bcp:47";
+            case BN: return "urn:ietf:bcp:47";
+            case CS: return "urn:ietf:bcp:47";
+            case DA: return "urn:ietf:bcp:47";
+            case DE: return "urn:ietf:bcp:47";
+            case DEAT: return "urn:ietf:bcp:47";
+            case DECH: return "urn:ietf:bcp:47";
+            case DEDE: return "urn:ietf:bcp:47";
+            case EL: return "urn:ietf:bcp:47";
+            case EN: return "urn:ietf:bcp:47";
+            case ENAU: return "urn:ietf:bcp:47";
+            case ENCA: return "urn:ietf:bcp:47";
+            case ENGB: return "urn:ietf:bcp:47";
+            case ENIN: return "urn:ietf:bcp:47";
+            case ENNZ: return "urn:ietf:bcp:47";
+            case ENSG: return "urn:ietf:bcp:47";
+            case ENUS: return "urn:ietf:bcp:47";
+            case ES: return "urn:ietf:bcp:47";
+            case ESAR: return "urn:ietf:bcp:47";
+            case ESES: return "urn:ietf:bcp:47";
+            case ESUY: return "urn:ietf:bcp:47";
+            case FI: return "urn:ietf:bcp:47";
+            case FR: return "urn:ietf:bcp:47";
+            case FRBE: return "urn:ietf:bcp:47";
+            case FRCH: return "urn:ietf:bcp:47";
+            case FRFR: return "urn:ietf:bcp:47";
+            case FRCA: return "urn:ietf:bcp:47";
+            case FY: return "urn:ietf:bcp:47";
+            case FYNL: return "urn:ietf:bcp:47";
+            case HI: return "urn:ietf:bcp:47";
+            case HR: return "urn:ietf:bcp:47";
+            case IT: return "urn:ietf:bcp:47";
+            case ITCH: return "urn:ietf:bcp:47";
+            case ITIT: return "urn:ietf:bcp:47";
+            case JA: return "urn:ietf:bcp:47";
+            case KO: return "urn:ietf:bcp:47";
+            case NL: return "urn:ietf:bcp:47";
+            case NLBE: return "urn:ietf:bcp:47";
+            case NLNL: return "urn:ietf:bcp:47";
+            case NO: return "urn:ietf:bcp:47";
+            case NONO: return "urn:ietf:bcp:47";
+            case PA: return "urn:ietf:bcp:47";
+            case PL: return "urn:ietf:bcp:47";
+            case PT: return "urn:ietf:bcp:47";
+            case PTBR: return "urn:ietf:bcp:47";
+            case RU: return "urn:ietf:bcp:47";
+            case RURU: return "urn:ietf:bcp:47";
+            case SR: return "urn:ietf:bcp:47";
+            case SRRS: return "urn:ietf:bcp:47";
+            case SV: return "urn:ietf:bcp:47";
+            case SVSE: return "urn:ietf:bcp:47";
+            case TE: return "urn:ietf:bcp:47";
+            case ZH: return "urn:ietf:bcp:47";
+            case ZHCN: return "urn:ietf:bcp:47";
+            case ZHHK: return "urn:ietf:bcp:47";
+            case ZHSG: return "urn:ietf:bcp:47";
+            case ZHTW: return "urn:ietf:bcp:47";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case AR: return "";
+            case BN: return "";
+            case CS: return "";
+            case DA: return "";
+            case DE: return "";
+            case DEAT: return "";
+            case DECH: return "";
+            case DEDE: return "";
+            case EL: return "";
+            case EN: return "";
+            case ENAU: return "";
+            case ENCA: return "";
+            case ENGB: return "";
+            case ENIN: return "";
+            case ENNZ: return "";
+            case ENSG: return "";
+            case ENUS: return "";
+            case ES: return "";
+            case ESAR: return "";
+            case ESES: return "";
+            case ESUY: return "";
+            case FI: return "";
+            case FR: return "";
+            case FRBE: return "";
+            case FRCH: return "";
+            case FRFR: return "";
+            case FRCA: return "";
+            case FY: return "";
+            case FYNL: return "";
+            case HI: return "";
+            case HR: return "";
+            case IT: return "";
+            case ITCH: return "";
+            case ITIT: return "";
+            case JA: return "";
+            case KO: return "";
+            case NL: return "";
+            case NLBE: return "";
+            case NLNL: return "";
+            case NO: return "";
+            case NONO: return "";
+            case PA: return "";
+            case PL: return "";
+            case PT: return "";
+            case PTBR: return "";
+            case RU: return "";
+            case RURU: return "";
+            case SR: return "";
+            case SRRS: return "";
+            case SV: return "";
+            case SVSE: return "";
+            case TE: return "";
+            case ZH: return "";
+            case ZHCN: return "";
+            case ZHHK: return "";
+            case ZHSG: return "";
+            case ZHTW: return "";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case AR: return "Arabisk";
+            case BN: return "Bengali";
+            case CS: return "Czech";
+            case DA: return "Danish";
+            case DE: return "German";
+            case DEAT: return "German (Austria)";
+            case DECH: return "German (Switzerland)";
+            case DEDE: return "German (Germany)";
+            case EL: return "Greek";
+            case EN: return "English";
+            case ENAU: return "English (Australia)";
+            case ENCA: return "English (Canada)";
+            case ENGB: return "English (Great Britain)";
+            case ENIN: return "English (India)";
+            case ENNZ: return "English (New Zealand)";
+            case ENSG: return "English (Singapore)";
+            case ENUS: return "English (United States)";
+            case ES: return "Spanish";
+            case ESAR: return "Spanish (Argentina)";
+            case ESES: return "Spanish (Spain)";
+            case ESUY: return "Spanish (Uruguay)";
+            case FI: return "Finnish";
+            case FR: return "French";
+            case FRBE: return "French (Belgium)";
+            case FRCH: return "French (Switzerland)";
+            case FRFR: return "French (France)";
+            case FRCA: return "French (Canada)";
+            case FY: return "Frysian";
+            case FYNL: return "Frysian (Netherlands)";
+            case HI: return "Hindi";
+            case HR: return "Croatian";
+            case IT: return "Italian";
+            case ITCH: return "Italian (Switzerland)";
+            case ITIT: return "Italian (Italy)";
+            case JA: return "Japanese";
+            case KO: return "Korean";
+            case NL: return "Dutch";
+            case NLBE: return "Dutch (Belgium)";
+            case NLNL: return "Dutch (Netherlands)";
+            case NO: return "Norwegian";
+            case NONO: return "Norwegian (Norway)";
+            case PA: return "Punjabi";
+            case PL: return "Polskie";
+            case PT: return "Portuguese";
+            case PTBR: return "Portuguese (Brazil)";
+            case RU: return "Russian";
+            case RURU: return "Russian (Russia)";
+            case SR: return "Serbian";
+            case SRRS: return "Serbian (Serbia)";
+            case SV: return "Swedish";
+            case SVSE: return "Swedish (Sweden)";
+            case TE: return "Telegu";
+            case ZH: return "Chinese";
+            case ZHCN: return "Chinese (China)";
+            case ZHHK: return "Chinese (Hong Kong)";
+            case ZHSG: return "Chinese (Singapore)";
+            case ZHTW: return "Chinese (Taiwan)";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+    }
+
+  public static class CommonLanguagesEnumFactory implements EnumFactory<CommonLanguages> {
+    public CommonLanguages fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("ar".equals(codeString))
+          return CommonLanguages.AR;
+        if ("bn".equals(codeString))
+          return CommonLanguages.BN;
+        if ("cs".equals(codeString))
+          return CommonLanguages.CS;
+        if ("da".equals(codeString))
+          return CommonLanguages.DA;
+        if ("de".equals(codeString))
+          return CommonLanguages.DE;
+        if ("de-AT".equals(codeString))
+          return CommonLanguages.DEAT;
+        if ("de-CH".equals(codeString))
+          return CommonLanguages.DECH;
+        if ("de-DE".equals(codeString))
+          return CommonLanguages.DEDE;
+        if ("el".equals(codeString))
+          return CommonLanguages.EL;
+        if ("en".equals(codeString))
+          return CommonLanguages.EN;
+        if ("en-AU".equals(codeString))
+          return CommonLanguages.ENAU;
+        if ("en-CA".equals(codeString))
+          return CommonLanguages.ENCA;
+        if ("en-GB".equals(codeString))
+          return CommonLanguages.ENGB;
+        if ("en-IN".equals(codeString))
+          return CommonLanguages.ENIN;
+        if ("en-NZ".equals(codeString))
+          return CommonLanguages.ENNZ;
+        if ("en-SG".equals(codeString))
+          return CommonLanguages.ENSG;
+        if ("en-US".equals(codeString))
+          return CommonLanguages.ENUS;
+        if ("es".equals(codeString))
+          return CommonLanguages.ES;
+        if ("es-AR".equals(codeString))
+          return CommonLanguages.ESAR;
+        if ("es-ES".equals(codeString))
+          return CommonLanguages.ESES;
+        if ("es-UY".equals(codeString))
+          return CommonLanguages.ESUY;
+        if ("fi".equals(codeString))
+          return CommonLanguages.FI;
+        if ("fr".equals(codeString))
+          return CommonLanguages.FR;
+        if ("fr-BE".equals(codeString))
+          return CommonLanguages.FRBE;
+        if ("fr-CH".equals(codeString))
+          return CommonLanguages.FRCH;
+        if ("fr-FR".equals(codeString))
+          return CommonLanguages.FRFR;
+        if ("fr-CA".equals(codeString))
+          return CommonLanguages.FRCA;
+        if ("fy".equals(codeString))
+          return CommonLanguages.FY;
+        if ("fy-NL".equals(codeString))
+          return CommonLanguages.FYNL;
+        if ("hi".equals(codeString))
+          return CommonLanguages.HI;
+        if ("hr".equals(codeString))
+          return CommonLanguages.HR;
+        if ("it".equals(codeString))
+          return CommonLanguages.IT;
+        if ("it-CH".equals(codeString))
+          return CommonLanguages.ITCH;
+        if ("it-IT".equals(codeString))
+          return CommonLanguages.ITIT;
+        if ("ja".equals(codeString))
+          return CommonLanguages.JA;
+        if ("ko".equals(codeString))
+          return CommonLanguages.KO;
+        if ("nl".equals(codeString))
+          return CommonLanguages.NL;
+        if ("nl-BE".equals(codeString))
+          return CommonLanguages.NLBE;
+        if ("nl-NL".equals(codeString))
+          return CommonLanguages.NLNL;
+        if ("no".equals(codeString))
+          return CommonLanguages.NO;
+        if ("no-NO".equals(codeString))
+          return CommonLanguages.NONO;
+        if ("pa".equals(codeString))
+          return CommonLanguages.PA;
+        if ("pl".equals(codeString))
+          return CommonLanguages.PL;
+        if ("pt".equals(codeString))
+          return CommonLanguages.PT;
+        if ("pt-BR".equals(codeString))
+          return CommonLanguages.PTBR;
+        if ("ru".equals(codeString))
+          return CommonLanguages.RU;
+        if ("ru-RU".equals(codeString))
+          return CommonLanguages.RURU;
+        if ("sr".equals(codeString))
+          return CommonLanguages.SR;
+        if ("sr-RS".equals(codeString))
+          return CommonLanguages.SRRS;
+        if ("sv".equals(codeString))
+          return CommonLanguages.SV;
+        if ("sv-SE".equals(codeString))
+          return CommonLanguages.SVSE;
+        if ("te".equals(codeString))
+          return CommonLanguages.TE;
+        if ("zh".equals(codeString))
+          return CommonLanguages.ZH;
+        if ("zh-CN".equals(codeString))
+          return CommonLanguages.ZHCN;
+        if ("zh-HK".equals(codeString))
+          return CommonLanguages.ZHHK;
+        if ("zh-SG".equals(codeString))
+          return CommonLanguages.ZHSG;
+        if ("zh-TW".equals(codeString))
+          return CommonLanguages.ZHTW;
+        throw new IllegalArgumentException("Unknown CommonLanguages code '"+codeString+"'");
+        }
+        public Enumeration<CommonLanguages> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<CommonLanguages>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("ar".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.AR);
+        if ("bn".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.BN);
+        if ("cs".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.CS);
+        if ("da".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.DA);
+        if ("de".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.DE);
+        if ("de-AT".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.DEAT);
+        if ("de-CH".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.DECH);
+        if ("de-DE".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.DEDE);
+        if ("el".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.EL);
+        if ("en".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.EN);
+        if ("en-AU".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ENAU);
+        if ("en-CA".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ENCA);
+        if ("en-GB".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ENGB);
+        if ("en-IN".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ENIN);
+        if ("en-NZ".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ENNZ);
+        if ("en-SG".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ENSG);
+        if ("en-US".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ENUS);
+        if ("es".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ES);
+        if ("es-AR".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ESAR);
+        if ("es-ES".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ESES);
+        if ("es-UY".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ESUY);
+        if ("fi".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.FI);
+        if ("fr".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.FR);
+        if ("fr-BE".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.FRBE);
+        if ("fr-CH".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.FRCH);
+        if ("fr-FR".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.FRFR);
+        if ("fr-CA".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.FRCA);
+        if ("fy".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.FY);
+        if ("fy-NL".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.FYNL);
+        if ("hi".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.HI);
+        if ("hr".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.HR);
+        if ("it".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.IT);
+        if ("it-CH".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ITCH);
+        if ("it-IT".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ITIT);
+        if ("ja".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.JA);
+        if ("ko".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.KO);
+        if ("nl".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.NL);
+        if ("nl-BE".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.NLBE);
+        if ("nl-NL".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.NLNL);
+        if ("no".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.NO);
+        if ("no-NO".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.NONO);
+        if ("pa".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.PA);
+        if ("pl".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.PL);
+        if ("pt".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.PT);
+        if ("pt-BR".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.PTBR);
+        if ("ru".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.RU);
+        if ("ru-RU".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.RURU);
+        if ("sr".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.SR);
+        if ("sr-RS".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.SRRS);
+        if ("sv".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.SV);
+        if ("sv-SE".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.SVSE);
+        if ("te".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.TE);
+        if ("zh".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ZH);
+        if ("zh-CN".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ZHCN);
+        if ("zh-HK".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ZHHK);
+        if ("zh-SG".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ZHSG);
+        if ("zh-TW".equals(codeString))
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ZHTW);
+        throw new FHIRException("Unknown CommonLanguages code '"+codeString+"'");
+        }
+    public String toCode(CommonLanguages code) {
+      if (code == CommonLanguages.AR)
+        return "ar";
+      if (code == CommonLanguages.BN)
+        return "bn";
+      if (code == CommonLanguages.CS)
+        return "cs";
+      if (code == CommonLanguages.DA)
+        return "da";
+      if (code == CommonLanguages.DE)
+        return "de";
+      if (code == CommonLanguages.DEAT)
+        return "de-AT";
+      if (code == CommonLanguages.DECH)
+        return "de-CH";
+      if (code == CommonLanguages.DEDE)
+        return "de-DE";
+      if (code == CommonLanguages.EL)
+        return "el";
+      if (code == CommonLanguages.EN)
+        return "en";
+      if (code == CommonLanguages.ENAU)
+        return "en-AU";
+      if (code == CommonLanguages.ENCA)
+        return "en-CA";
+      if (code == CommonLanguages.ENGB)
+        return "en-GB";
+      if (code == CommonLanguages.ENIN)
+        return "en-IN";
+      if (code == CommonLanguages.ENNZ)
+        return "en-NZ";
+      if (code == CommonLanguages.ENSG)
+        return "en-SG";
+      if (code == CommonLanguages.ENUS)
+        return "en-US";
+      if (code == CommonLanguages.ES)
+        return "es";
+      if (code == CommonLanguages.ESAR)
+        return "es-AR";
+      if (code == CommonLanguages.ESES)
+        return "es-ES";
+      if (code == CommonLanguages.ESUY)
+        return "es-UY";
+      if (code == CommonLanguages.FI)
+        return "fi";
+      if (code == CommonLanguages.FR)
+        return "fr";
+      if (code == CommonLanguages.FRBE)
+        return "fr-BE";
+      if (code == CommonLanguages.FRCH)
+        return "fr-CH";
+      if (code == CommonLanguages.FRFR)
+        return "fr-FR";
+      if (code == CommonLanguages.FRCA)
+        return "fr-CA";
+      if (code == CommonLanguages.FY)
+        return "fy";
+      if (code == CommonLanguages.FYNL)
+        return "fy-NL";
+      if (code == CommonLanguages.HI)
+        return "hi";
+      if (code == CommonLanguages.HR)
+        return "hr";
+      if (code == CommonLanguages.IT)
+        return "it";
+      if (code == CommonLanguages.ITCH)
+        return "it-CH";
+      if (code == CommonLanguages.ITIT)
+        return "it-IT";
+      if (code == CommonLanguages.JA)
+        return "ja";
+      if (code == CommonLanguages.KO)
+        return "ko";
+      if (code == CommonLanguages.NL)
+        return "nl";
+      if (code == CommonLanguages.NLBE)
+        return "nl-BE";
+      if (code == CommonLanguages.NLNL)
+        return "nl-NL";
+      if (code == CommonLanguages.NO)
+        return "no";
+      if (code == CommonLanguages.NONO)
+        return "no-NO";
+      if (code == CommonLanguages.PA)
+        return "pa";
+      if (code == CommonLanguages.PL)
+        return "pl";
+      if (code == CommonLanguages.PT)
+        return "pt";
+      if (code == CommonLanguages.PTBR)
+        return "pt-BR";
+      if (code == CommonLanguages.RU)
+        return "ru";
+      if (code == CommonLanguages.RURU)
+        return "ru-RU";
+      if (code == CommonLanguages.SR)
+        return "sr";
+      if (code == CommonLanguages.SRRS)
+        return "sr-RS";
+      if (code == CommonLanguages.SV)
+        return "sv";
+      if (code == CommonLanguages.SVSE)
+        return "sv-SE";
+      if (code == CommonLanguages.TE)
+        return "te";
+      if (code == CommonLanguages.ZH)
+        return "zh";
+      if (code == CommonLanguages.ZHCN)
+        return "zh-CN";
+      if (code == CommonLanguages.ZHHK)
+        return "zh-HK";
+      if (code == CommonLanguages.ZHSG)
+        return "zh-SG";
+      if (code == CommonLanguages.ZHTW)
+        return "zh-TW";
+      return "?";
+      }
+    public String toSystem(CommonLanguages code) {
       return code.getSystem();
       }
     }
@@ -668,19 +1664,35 @@ public class TerminologyCapabilities extends CanonicalResource {
         protected List<TerminologyCapabilitiesCodeSystemVersionComponent> version;
 
         /**
+         * The extent of the content of the code system (the concepts and codes it defines) are represented in this resource instance.
+         */
+        @Child(name = "content", type = {CodeType.class}, order=3, min=1, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="not-present | example | fragment | complete | supplement", formalDefinition="The extent of the content of the code system (the concepts and codes it defines) are represented in this resource instance." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/codesystem-content-mode")
+        protected CodeType content;
+
+        /**
          * True if subsumption is supported for this version of the code system.
          */
-        @Child(name = "subsumption", type = {BooleanType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "subsumption", type = {BooleanType.class}, order=4, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Whether subsumption is supported", formalDefinition="True if subsumption is supported for this version of the code system." )
         protected BooleanType subsumption;
 
-        private static final long serialVersionUID = -1593622817L;
+        private static final long serialVersionUID = 177402405L;
 
     /**
      * Constructor
      */
       public TerminologyCapabilitiesCodeSystemComponent() {
         super();
+      }
+
+    /**
+     * Constructor
+     */
+      public TerminologyCapabilitiesCodeSystemComponent(String content) {
+        super();
+        this.setContent(content);
       }
 
         /**
@@ -786,6 +1798,51 @@ public class TerminologyCapabilities extends CanonicalResource {
         }
 
         /**
+         * @return {@link #content} (The extent of the content of the code system (the concepts and codes it defines) are represented in this resource instance.). This is the underlying object with id, value and extensions. The accessor "getContent" gives direct access to the value
+         */
+        public CodeType getContentElement() { 
+          if (this.content == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create TerminologyCapabilitiesCodeSystemComponent.content");
+            else if (Configuration.doAutoCreate())
+              this.content = new CodeType(); // bb
+          return this.content;
+        }
+
+        public boolean hasContentElement() { 
+          return this.content != null && !this.content.isEmpty();
+        }
+
+        public boolean hasContent() { 
+          return this.content != null && !this.content.isEmpty();
+        }
+
+        /**
+         * @param value {@link #content} (The extent of the content of the code system (the concepts and codes it defines) are represented in this resource instance.). This is the underlying object with id, value and extensions. The accessor "getContent" gives direct access to the value
+         */
+        public TerminologyCapabilitiesCodeSystemComponent setContentElement(CodeType value) { 
+          this.content = value;
+          return this;
+        }
+
+        /**
+         * @return The extent of the content of the code system (the concepts and codes it defines) are represented in this resource instance.
+         */
+        public String getContent() { 
+          return this.content == null ? null : this.content.getValue();
+        }
+
+        /**
+         * @param value The extent of the content of the code system (the concepts and codes it defines) are represented in this resource instance.
+         */
+        public TerminologyCapabilitiesCodeSystemComponent setContent(String value) { 
+            if (this.content == null)
+              this.content = new CodeType();
+            this.content.setValue(value);
+          return this;
+        }
+
+        /**
          * @return {@link #subsumption} (True if subsumption is supported for this version of the code system.). This is the underlying object with id, value and extensions. The accessor "getSubsumption" gives direct access to the value
          */
         public BooleanType getSubsumptionElement() { 
@@ -834,6 +1891,7 @@ public class TerminologyCapabilities extends CanonicalResource {
           super.listChildren(children);
           children.add(new Property("uri", "canonical(CodeSystem)", "Canonical identifier for the code system, represented as a URI.", 0, 1, uri));
           children.add(new Property("version", "", "For the code system, a list of versions that are supported by the server.", 0, java.lang.Integer.MAX_VALUE, version));
+          children.add(new Property("content", "code", "The extent of the content of the code system (the concepts and codes it defines) are represented in this resource instance.", 0, 1, content));
           children.add(new Property("subsumption", "boolean", "True if subsumption is supported for this version of the code system.", 0, 1, subsumption));
         }
 
@@ -842,6 +1900,7 @@ public class TerminologyCapabilities extends CanonicalResource {
           switch (_hash) {
           case 116076: /*uri*/  return new Property("uri", "canonical(CodeSystem)", "Canonical identifier for the code system, represented as a URI.", 0, 1, uri);
           case 351608024: /*version*/  return new Property("version", "", "For the code system, a list of versions that are supported by the server.", 0, java.lang.Integer.MAX_VALUE, version);
+          case 951530617: /*content*/  return new Property("content", "code", "The extent of the content of the code system (the concepts and codes it defines) are represented in this resource instance.", 0, 1, content);
           case -499084711: /*subsumption*/  return new Property("subsumption", "boolean", "True if subsumption is supported for this version of the code system.", 0, 1, subsumption);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -853,6 +1912,7 @@ public class TerminologyCapabilities extends CanonicalResource {
         switch (hash) {
         case 116076: /*uri*/ return this.uri == null ? new Base[0] : new Base[] {this.uri}; // CanonicalType
         case 351608024: /*version*/ return this.version == null ? new Base[0] : this.version.toArray(new Base[this.version.size()]); // TerminologyCapabilitiesCodeSystemVersionComponent
+        case 951530617: /*content*/ return this.content == null ? new Base[0] : new Base[] {this.content}; // CodeType
         case -499084711: /*subsumption*/ return this.subsumption == null ? new Base[0] : new Base[] {this.subsumption}; // BooleanType
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -868,6 +1928,9 @@ public class TerminologyCapabilities extends CanonicalResource {
         case 351608024: // version
           this.getVersion().add((TerminologyCapabilitiesCodeSystemVersionComponent) value); // TerminologyCapabilitiesCodeSystemVersionComponent
           return value;
+        case 951530617: // content
+          this.content = TypeConvertor.castToCode(value); // CodeType
+          return value;
         case -499084711: // subsumption
           this.subsumption = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
@@ -882,6 +1945,8 @@ public class TerminologyCapabilities extends CanonicalResource {
           this.uri = TypeConvertor.castToCanonical(value); // CanonicalType
         } else if (name.equals("version")) {
           this.getVersion().add((TerminologyCapabilitiesCodeSystemVersionComponent) value);
+        } else if (name.equals("content")) {
+          this.content = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("subsumption")) {
           this.subsumption = TypeConvertor.castToBoolean(value); // BooleanType
         } else
@@ -894,6 +1959,7 @@ public class TerminologyCapabilities extends CanonicalResource {
         switch (hash) {
         case 116076:  return getUriElement();
         case 351608024:  return addVersion(); 
+        case 951530617:  return getContentElement();
         case -499084711:  return getSubsumptionElement();
         default: return super.makeProperty(hash, name);
         }
@@ -905,6 +1971,7 @@ public class TerminologyCapabilities extends CanonicalResource {
         switch (hash) {
         case 116076: /*uri*/ return new String[] {"canonical"};
         case 351608024: /*version*/ return new String[] {};
+        case 951530617: /*content*/ return new String[] {"code"};
         case -499084711: /*subsumption*/ return new String[] {"boolean"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -918,6 +1985,9 @@ public class TerminologyCapabilities extends CanonicalResource {
         }
         else if (name.equals("version")) {
           return addVersion();
+        }
+        else if (name.equals("content")) {
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.codeSystem.content");
         }
         else if (name.equals("subsumption")) {
           throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.codeSystem.subsumption");
@@ -940,6 +2010,7 @@ public class TerminologyCapabilities extends CanonicalResource {
           for (TerminologyCapabilitiesCodeSystemVersionComponent i : version)
             dst.version.add(i.copy());
         };
+        dst.content = content == null ? null : content.copy();
         dst.subsumption = subsumption == null ? null : subsumption.copy();
       }
 
@@ -950,8 +2021,8 @@ public class TerminologyCapabilities extends CanonicalResource {
         if (!(other_ instanceof TerminologyCapabilitiesCodeSystemComponent))
           return false;
         TerminologyCapabilitiesCodeSystemComponent o = (TerminologyCapabilitiesCodeSystemComponent) other_;
-        return compareDeep(uri, o.uri, true) && compareDeep(version, o.version, true) && compareDeep(subsumption, o.subsumption, true)
-          ;
+        return compareDeep(uri, o.uri, true) && compareDeep(version, o.version, true) && compareDeep(content, o.content, true)
+           && compareDeep(subsumption, o.subsumption, true);
       }
 
       @Override
@@ -961,11 +2032,12 @@ public class TerminologyCapabilities extends CanonicalResource {
         if (!(other_ instanceof TerminologyCapabilitiesCodeSystemComponent))
           return false;
         TerminologyCapabilitiesCodeSystemComponent o = (TerminologyCapabilitiesCodeSystemComponent) other_;
-        return compareValues(uri, o.uri, true) && compareValues(subsumption, o.subsumption, true);
+        return compareValues(uri, o.uri, true) && compareValues(content, o.content, true) && compareValues(subsumption, o.subsumption, true)
+          ;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(uri, version, subsumption
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(uri, version, content, subsumption
           );
       }
 
@@ -1004,7 +2076,8 @@ public class TerminologyCapabilities extends CanonicalResource {
          */
         @Child(name = "language", type = {CodeType.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Language Displays supported", formalDefinition="Language Displays supported." )
-        protected List<CodeType> language;
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/languages")
+        protected List<Enumeration<CommonLanguages>> language;
 
         /**
          * Filter Properties supported.
@@ -1020,7 +2093,7 @@ public class TerminologyCapabilities extends CanonicalResource {
         @Description(shortDefinition="Properties supported for $lookup", formalDefinition="Properties supported for $lookup." )
         protected List<CodeType> property;
 
-        private static final long serialVersionUID = 1857571343L;
+        private static final long serialVersionUID = 658198795L;
 
     /**
      * Constructor
@@ -1171,16 +2244,16 @@ public class TerminologyCapabilities extends CanonicalResource {
         /**
          * @return {@link #language} (Language Displays supported.)
          */
-        public List<CodeType> getLanguage() { 
+        public List<Enumeration<CommonLanguages>> getLanguage() { 
           if (this.language == null)
-            this.language = new ArrayList<CodeType>();
+            this.language = new ArrayList<Enumeration<CommonLanguages>>();
           return this.language;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public TerminologyCapabilitiesCodeSystemVersionComponent setLanguage(List<CodeType> theLanguage) { 
+        public TerminologyCapabilitiesCodeSystemVersionComponent setLanguage(List<Enumeration<CommonLanguages>> theLanguage) { 
           this.language = theLanguage;
           return this;
         }
@@ -1188,7 +2261,7 @@ public class TerminologyCapabilities extends CanonicalResource {
         public boolean hasLanguage() { 
           if (this.language == null)
             return false;
-          for (CodeType item : this.language)
+          for (Enumeration<CommonLanguages> item : this.language)
             if (!item.isEmpty())
               return true;
           return false;
@@ -1197,10 +2270,10 @@ public class TerminologyCapabilities extends CanonicalResource {
         /**
          * @return {@link #language} (Language Displays supported.)
          */
-        public CodeType addLanguageElement() {//2 
-          CodeType t = new CodeType();
+        public Enumeration<CommonLanguages> addLanguageElement() {//2 
+          Enumeration<CommonLanguages> t = new Enumeration<CommonLanguages>(new CommonLanguagesEnumFactory());
           if (this.language == null)
-            this.language = new ArrayList<CodeType>();
+            this.language = new ArrayList<Enumeration<CommonLanguages>>();
           this.language.add(t);
           return t;
         }
@@ -1208,11 +2281,11 @@ public class TerminologyCapabilities extends CanonicalResource {
         /**
          * @param value {@link #language} (Language Displays supported.)
          */
-        public TerminologyCapabilitiesCodeSystemVersionComponent addLanguage(String value) { //1
-          CodeType t = new CodeType();
+        public TerminologyCapabilitiesCodeSystemVersionComponent addLanguage(CommonLanguages value) { //1
+          Enumeration<CommonLanguages> t = new Enumeration<CommonLanguages>(new CommonLanguagesEnumFactory());
           t.setValue(value);
           if (this.language == null)
-            this.language = new ArrayList<CodeType>();
+            this.language = new ArrayList<Enumeration<CommonLanguages>>();
           this.language.add(t);
           return this;
         }
@@ -1220,10 +2293,10 @@ public class TerminologyCapabilities extends CanonicalResource {
         /**
          * @param value {@link #language} (Language Displays supported.)
          */
-        public boolean hasLanguage(String value) { 
+        public boolean hasLanguage(CommonLanguages value) { 
           if (this.language == null)
             return false;
-          for (CodeType v : this.language)
+          for (Enumeration<CommonLanguages> v : this.language)
             if (v.getValue().equals(value)) // code
               return true;
           return false;
@@ -1373,7 +2446,7 @@ public class TerminologyCapabilities extends CanonicalResource {
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // StringType
         case 965025207: /*isDefault*/ return this.isDefault == null ? new Base[0] : new Base[] {this.isDefault}; // BooleanType
         case 1248023381: /*compositional*/ return this.compositional == null ? new Base[0] : new Base[] {this.compositional}; // BooleanType
-        case -1613589672: /*language*/ return this.language == null ? new Base[0] : this.language.toArray(new Base[this.language.size()]); // CodeType
+        case -1613589672: /*language*/ return this.language == null ? new Base[0] : this.language.toArray(new Base[this.language.size()]); // Enumeration<CommonLanguages>
         case -1274492040: /*filter*/ return this.filter == null ? new Base[0] : this.filter.toArray(new Base[this.filter.size()]); // TerminologyCapabilitiesCodeSystemVersionFilterComponent
         case -993141291: /*property*/ return this.property == null ? new Base[0] : this.property.toArray(new Base[this.property.size()]); // CodeType
         default: return super.getProperty(hash, name, checkValid);
@@ -1394,7 +2467,8 @@ public class TerminologyCapabilities extends CanonicalResource {
           this.compositional = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -1613589672: // language
-          this.getLanguage().add(TypeConvertor.castToCode(value)); // CodeType
+          value = new CommonLanguagesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.getLanguage().add((Enumeration) value); // Enumeration<CommonLanguages>
           return value;
         case -1274492040: // filter
           this.getFilter().add((TerminologyCapabilitiesCodeSystemVersionFilterComponent) value); // TerminologyCapabilitiesCodeSystemVersionFilterComponent
@@ -1416,7 +2490,8 @@ public class TerminologyCapabilities extends CanonicalResource {
         } else if (name.equals("compositional")) {
           this.compositional = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("language")) {
-          this.getLanguage().add(TypeConvertor.castToCode(value));
+          value = new CommonLanguagesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.getLanguage().add((Enumeration) value);
         } else if (name.equals("filter")) {
           this.getFilter().add((TerminologyCapabilitiesCodeSystemVersionFilterComponent) value);
         } else if (name.equals("property")) {
@@ -1490,8 +2565,8 @@ public class TerminologyCapabilities extends CanonicalResource {
         dst.isDefault = isDefault == null ? null : isDefault.copy();
         dst.compositional = compositional == null ? null : compositional.copy();
         if (language != null) {
-          dst.language = new ArrayList<CodeType>();
-          for (CodeType i : language)
+          dst.language = new ArrayList<Enumeration<CommonLanguages>>();
+          for (Enumeration<CommonLanguages> i : language)
             dst.language.add(i.copy());
         };
         if (filter != null) {
@@ -3064,10 +4139,10 @@ public class TerminologyCapabilities extends CanonicalResource {
   }
 
     /**
-     * An absolute URI that is used to identify this terminology capabilities when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this terminology capabilities is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the terminology capabilities is stored on different servers.
+     * An absolute URI that is used to identify this terminology capabilities when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this terminology capabilities is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the terminology capabilities is stored on different servers.
      */
     @Child(name = "url", type = {UriType.class}, order=0, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Canonical identifier for this terminology capabilities, represented as a URI (globally unique)", formalDefinition="An absolute URI that is used to identify this terminology capabilities when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this terminology capabilities is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the terminology capabilities is stored on different servers." )
+    @Description(shortDefinition="Canonical identifier for this terminology capabilities, represented as a URI (globally unique)", formalDefinition="An absolute URI that is used to identify this terminology capabilities when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this terminology capabilities is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the terminology capabilities is stored on different servers." )
     protected UriType url;
 
     /**
@@ -3121,10 +4196,10 @@ public class TerminologyCapabilities extends CanonicalResource {
     protected DateTimeType date;
 
     /**
-     * The name of the organization or individual that published the terminology capabilities.
+     * The name of the organization or individual responsible for the release and ongoing maintenance of the terminology capabilities.
      */
     @Child(name = "publisher", type = {StringType.class}, order=8, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Name of the publisher (organization or individual)", formalDefinition="The name of the organization or individual that published the terminology capabilities." )
+    @Description(shortDefinition="Name of the publisher/steward (organization or individual)", formalDefinition="The name of the organization or individual responsible for the release and ongoing maintenance of the terminology capabilities." )
     protected StringType publisher;
 
     /**
@@ -3217,7 +4292,7 @@ public class TerminologyCapabilities extends CanonicalResource {
      * The degree to which the server supports the code search parameter on ValueSet, if it is supported.
      */
     @Child(name = "codeSearch", type = {CodeType.class}, order=21, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="explicit | all", formalDefinition="The degree to which the server supports the code search parameter on ValueSet, if it is supported." )
+    @Description(shortDefinition="in-compose | in-expansion | in-compose-or-expansion", formalDefinition="The degree to which the server supports the code search parameter on ValueSet, if it is supported." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/code-search-support")
     protected Enumeration<CodeSearchSupport> codeSearch;
 
@@ -3262,7 +4337,7 @@ public class TerminologyCapabilities extends CanonicalResource {
     }
 
     /**
-     * @return {@link #url} (An absolute URI that is used to identify this terminology capabilities when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this terminology capabilities is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the terminology capabilities is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @return {@link #url} (An absolute URI that is used to identify this terminology capabilities when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this terminology capabilities is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the terminology capabilities is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public UriType getUrlElement() { 
       if (this.url == null)
@@ -3282,7 +4357,7 @@ public class TerminologyCapabilities extends CanonicalResource {
     }
 
     /**
-     * @param value {@link #url} (An absolute URI that is used to identify this terminology capabilities when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this terminology capabilities is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the terminology capabilities is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @param value {@link #url} (An absolute URI that is used to identify this terminology capabilities when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this terminology capabilities is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the terminology capabilities is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public TerminologyCapabilities setUrlElement(UriType value) { 
       this.url = value;
@@ -3290,14 +4365,14 @@ public class TerminologyCapabilities extends CanonicalResource {
     }
 
     /**
-     * @return An absolute URI that is used to identify this terminology capabilities when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this terminology capabilities is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the terminology capabilities is stored on different servers.
+     * @return An absolute URI that is used to identify this terminology capabilities when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this terminology capabilities is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the terminology capabilities is stored on different servers.
      */
     public String getUrl() { 
       return this.url == null ? null : this.url.getValue();
     }
 
     /**
-     * @param value An absolute URI that is used to identify this terminology capabilities when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this terminology capabilities is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the terminology capabilities is stored on different servers.
+     * @param value An absolute URI that is used to identify this terminology capabilities when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this terminology capabilities is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the terminology capabilities is stored on different servers.
      */
     public TerminologyCapabilities setUrl(String value) { 
       if (Utilities.noString(value))
@@ -3646,7 +4721,7 @@ public class TerminologyCapabilities extends CanonicalResource {
     }
 
     /**
-     * @return {@link #publisher} (The name of the organization or individual that published the terminology capabilities.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     * @return {@link #publisher} (The name of the organization or individual responsible for the release and ongoing maintenance of the terminology capabilities.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
     public StringType getPublisherElement() { 
       if (this.publisher == null)
@@ -3666,7 +4741,7 @@ public class TerminologyCapabilities extends CanonicalResource {
     }
 
     /**
-     * @param value {@link #publisher} (The name of the organization or individual that published the terminology capabilities.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     * @param value {@link #publisher} (The name of the organization or individual responsible for the release and ongoing maintenance of the terminology capabilities.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
     public TerminologyCapabilities setPublisherElement(StringType value) { 
       this.publisher = value;
@@ -3674,14 +4749,14 @@ public class TerminologyCapabilities extends CanonicalResource {
     }
 
     /**
-     * @return The name of the organization or individual that published the terminology capabilities.
+     * @return The name of the organization or individual responsible for the release and ongoing maintenance of the terminology capabilities.
      */
     public String getPublisher() { 
       return this.publisher == null ? null : this.publisher.getValue();
     }
 
     /**
-     * @param value The name of the organization or individual that published the terminology capabilities.
+     * @param value The name of the organization or individual responsible for the release and ongoing maintenance of the terminology capabilities.
      */
     public TerminologyCapabilities setPublisher(String value) { 
       if (Utilities.noString(value))
@@ -4336,9 +5411,86 @@ public class TerminologyCapabilities extends CanonicalResource {
       return this;
     }
 
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getVersionAlgorithmMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public DataType getVersionAlgorithm() { 
+      throw new Error("The resource type \"TerminologyCapabilities\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public StringType getVersionAlgorithmStringType() { 
+      throw new Error("The resource type \"TerminologyCapabilities\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    public boolean hasVersionAlgorithmStringType() { 
+      return false;////K 
+    }
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public Coding getVersionAlgorithmCoding() { 
+      throw new Error("The resource type \"TerminologyCapabilities\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    public boolean hasVersionAlgorithmCoding() { 
+      return false;////K 
+    }
+    public boolean hasVersionAlgorithm() { 
+      return false;
+    }
+    /**
+     * @param value {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public TerminologyCapabilities setVersionAlgorithm(DataType value) { 
+      throw new Error("The resource type \"TerminologyCapabilities\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getCopyrightLabelMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public StringType getCopyrightLabelElement() { 
+      throw new Error("The resource type \"TerminologyCapabilities\" does not implement the property \"copyrightLabel\"");
+    }
+
+    public boolean hasCopyrightLabelElement() { 
+      return false;
+    }
+    public boolean hasCopyrightLabel() {
+      return false;
+    }
+
+    /**
+     * @param value {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public TerminologyCapabilities setCopyrightLabelElement(StringType value) { 
+      throw new Error("The resource type \"TerminologyCapabilities\" does not implement the property \"copyrightLabel\""); 
+    }
+    public String getCopyrightLabel() { 
+      throw new Error("The resource type \"TerminologyCapabilities\" does not implement the property \"copyrightLabel\""); 
+    }
+    /**
+     * @param value A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    public TerminologyCapabilities setCopyrightLabel(String value) { 
+      throw new Error("The resource type \"TerminologyCapabilities\" does not implement the property \"copyrightLabel\""); 
+    }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("url", "uri", "An absolute URI that is used to identify this terminology capabilities when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this terminology capabilities is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the terminology capabilities is stored on different servers.", 0, 1, url));
+        children.add(new Property("url", "uri", "An absolute URI that is used to identify this terminology capabilities when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this terminology capabilities is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the terminology capabilities is stored on different servers.", 0, 1, url));
         children.add(new Property("identifier", "Identifier", "A formal identifier that is used to identify this terminology capabilities when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("version", "string", "The identifier that is used to identify this version of the terminology capabilities when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the terminology capabilities author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version));
         children.add(new Property("name", "string", "A natural language name identifying the terminology capabilities. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name));
@@ -4346,7 +5498,7 @@ public class TerminologyCapabilities extends CanonicalResource {
         children.add(new Property("status", "code", "The status of this terminology capabilities. Enables tracking the life-cycle of the content.", 0, 1, status));
         children.add(new Property("experimental", "boolean", "A Boolean value to indicate that this terminology capabilities is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.", 0, 1, experimental));
         children.add(new Property("date", "dateTime", "The date  (and optionally time) when the terminology capabilities was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the terminology capabilities changes.", 0, 1, date));
-        children.add(new Property("publisher", "string", "The name of the organization or individual that published the terminology capabilities.", 0, 1, publisher));
+        children.add(new Property("publisher", "string", "The name of the organization or individual responsible for the release and ongoing maintenance of the terminology capabilities.", 0, 1, publisher));
         children.add(new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact));
         children.add(new Property("description", "markdown", "A free text natural language description of the terminology capabilities from a consumer's perspective. Typically, this is used when the capability statement describes a desired rather than an actual solution, for example as a formal expression of requirements as part of an RFP.", 0, 1, description));
         children.add(new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate terminology capabilities instances.", 0, java.lang.Integer.MAX_VALUE, useContext));
@@ -4368,7 +5520,7 @@ public class TerminologyCapabilities extends CanonicalResource {
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this terminology capabilities when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this terminology capabilities is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the terminology capabilities is stored on different servers.", 0, 1, url);
+        case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this terminology capabilities when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this terminology capabilities is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the terminology capabilities is stored on different servers.", 0, 1, url);
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "A formal identifier that is used to identify this terminology capabilities when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case 351608024: /*version*/  return new Property("version", "string", "The identifier that is used to identify this version of the terminology capabilities when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the terminology capabilities author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version);
         case 3373707: /*name*/  return new Property("name", "string", "A natural language name identifying the terminology capabilities. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name);
@@ -4376,7 +5528,7 @@ public class TerminologyCapabilities extends CanonicalResource {
         case -892481550: /*status*/  return new Property("status", "code", "The status of this terminology capabilities. Enables tracking the life-cycle of the content.", 0, 1, status);
         case -404562712: /*experimental*/  return new Property("experimental", "boolean", "A Boolean value to indicate that this terminology capabilities is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.", 0, 1, experimental);
         case 3076014: /*date*/  return new Property("date", "dateTime", "The date  (and optionally time) when the terminology capabilities was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the terminology capabilities changes.", 0, 1, date);
-        case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual that published the terminology capabilities.", 0, 1, publisher);
+        case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual responsible for the release and ongoing maintenance of the terminology capabilities.", 0, 1, publisher);
         case 951526432: /*contact*/  return new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact);
         case -1724546052: /*description*/  return new Property("description", "markdown", "A free text natural language description of the terminology capabilities from a consumer's perspective. Typically, this is used when the capability statement describes a desired rather than an actual solution, for example as a formal expression of requirements as part of an RFP.", 0, 1, description);
         case -669707736: /*useContext*/  return new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate terminology capabilities instances.", 0, java.lang.Integer.MAX_VALUE, useContext);
@@ -5210,16 +6362,17 @@ public class TerminologyCapabilities extends CanonicalResource {
 * [CodeSystem](codesystem.html): External identifier for the code system
 * [ConceptMap](conceptmap.html): External identifier for the concept map
 * [MessageDefinition](messagedefinition.html): External identifier for the message definition
+* [NamingSystem](namingsystem.html): External identifier for the naming system
 * [StructureDefinition](structuredefinition.html): External identifier for the structure definition
 * [StructureMap](structuremap.html): External identifier for the structure map
 * [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities
 * [ValueSet](valueset.html): External identifier for the value set
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier</b><br>
+   * Path: <b>CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | NamingSystem.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="identifier", path="CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier", description="Multiple Resources: \r\n\r\n* [CodeSystem](codesystem.html): External identifier for the code system\r\n* [ConceptMap](conceptmap.html): External identifier for the concept map\r\n* [MessageDefinition](messagedefinition.html): External identifier for the message definition\r\n* [StructureDefinition](structuredefinition.html): External identifier for the structure definition\r\n* [StructureMap](structuremap.html): External identifier for the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities\r\n* [ValueSet](valueset.html): External identifier for the value set\r\n", type="token" )
+  @SearchParamDefinition(name="identifier", path="CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | NamingSystem.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier", description="Multiple Resources: \r\n\r\n* [CodeSystem](codesystem.html): External identifier for the code system\r\n* [ConceptMap](conceptmap.html): External identifier for the concept map\r\n* [MessageDefinition](messagedefinition.html): External identifier for the message definition\r\n* [NamingSystem](namingsystem.html): External identifier for the naming system\r\n* [StructureDefinition](structuredefinition.html): External identifier for the structure definition\r\n* [StructureMap](structuremap.html): External identifier for the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities\r\n* [ValueSet](valueset.html): External identifier for the value set\r\n", type="token" )
   public static final String SP_IDENTIFIER = "identifier";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
@@ -5229,13 +6382,14 @@ public class TerminologyCapabilities extends CanonicalResource {
 * [CodeSystem](codesystem.html): External identifier for the code system
 * [ConceptMap](conceptmap.html): External identifier for the concept map
 * [MessageDefinition](messagedefinition.html): External identifier for the message definition
+* [NamingSystem](namingsystem.html): External identifier for the naming system
 * [StructureDefinition](structuredefinition.html): External identifier for the structure definition
 * [StructureMap](structuremap.html): External identifier for the structure map
 * [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities
 * [ValueSet](valueset.html): External identifier for the value set
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier</b><br>
+   * Path: <b>CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | NamingSystem.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
@@ -5498,7 +6652,7 @@ public class TerminologyCapabilities extends CanonicalResource {
 * [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement
 * [CodeSystem](codesystem.html): The uri that identifies the code system
 * [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition
-* [ConceptMap](conceptmap.html): The uri that identifies the concept map
+* [ConceptMap](conceptmap.html): The URI that identifies the concept map
 * [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition
 * [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide
 * [MessageDefinition](messagedefinition.html): The uri that identifies the message definition
@@ -5514,7 +6668,7 @@ public class TerminologyCapabilities extends CanonicalResource {
    * Path: <b>CapabilityStatement.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | GraphDefinition.url | ImplementationGuide.url | MessageDefinition.url | NamingSystem.url | OperationDefinition.url | SearchParameter.url | StructureDefinition.url | StructureMap.url | TerminologyCapabilities.url | ValueSet.url</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="url", path="CapabilityStatement.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | GraphDefinition.url | ImplementationGuide.url | MessageDefinition.url | NamingSystem.url | OperationDefinition.url | SearchParameter.url | StructureDefinition.url | StructureMap.url | TerminologyCapabilities.url | ValueSet.url", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement\r\n* [CodeSystem](codesystem.html): The uri that identifies the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition\r\n* [ConceptMap](conceptmap.html): The uri that identifies the concept map\r\n* [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition\r\n* [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide\r\n* [MessageDefinition](messagedefinition.html): The uri that identifies the message definition\r\n* [NamingSystem](namingsystem.html): The uri that identifies the naming system\r\n* [OperationDefinition](operationdefinition.html): The uri that identifies the operation definition\r\n* [SearchParameter](searchparameter.html): The uri that identifies the search parameter\r\n* [StructureDefinition](structuredefinition.html): The uri that identifies the structure definition\r\n* [StructureMap](structuremap.html): The uri that identifies the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): The uri that identifies the terminology capabilities\r\n* [ValueSet](valueset.html): The uri that identifies the value set\r\n", type="uri" )
+  @SearchParamDefinition(name="url", path="CapabilityStatement.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | GraphDefinition.url | ImplementationGuide.url | MessageDefinition.url | NamingSystem.url | OperationDefinition.url | SearchParameter.url | StructureDefinition.url | StructureMap.url | TerminologyCapabilities.url | ValueSet.url", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement\r\n* [CodeSystem](codesystem.html): The uri that identifies the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition\r\n* [ConceptMap](conceptmap.html): The URI that identifies the concept map\r\n* [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition\r\n* [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide\r\n* [MessageDefinition](messagedefinition.html): The uri that identifies the message definition\r\n* [NamingSystem](namingsystem.html): The uri that identifies the naming system\r\n* [OperationDefinition](operationdefinition.html): The uri that identifies the operation definition\r\n* [SearchParameter](searchparameter.html): The uri that identifies the search parameter\r\n* [StructureDefinition](structuredefinition.html): The uri that identifies the structure definition\r\n* [StructureMap](structuremap.html): The uri that identifies the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): The uri that identifies the terminology capabilities\r\n* [ValueSet](valueset.html): The uri that identifies the value set\r\n", type="uri" )
   public static final String SP_URL = "url";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>url</b>
@@ -5524,7 +6678,7 @@ public class TerminologyCapabilities extends CanonicalResource {
 * [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement
 * [CodeSystem](codesystem.html): The uri that identifies the code system
 * [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition
-* [ConceptMap](conceptmap.html): The uri that identifies the concept map
+* [ConceptMap](conceptmap.html): The URI that identifies the concept map
 * [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition
 * [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide
 * [MessageDefinition](messagedefinition.html): The uri that identifies the message definition

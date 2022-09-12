@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,238 +53,6 @@ import ca.uhn.fhir.model.api.annotation.Block;
 @ResourceDef(name="BiologicallyDerivedProduct", profile="http://hl7.org/fhir/StructureDefinition/BiologicallyDerivedProduct")
 public class BiologicallyDerivedProduct extends DomainResource {
 
-    public enum BiologicallyDerivedProductCategory {
-        /**
-         * A collection of tissues joined in a structural unit to serve a common function.
-         */
-        ORGAN, 
-        /**
-         * An ensemble of similar cells and their extracellular matrix from the same origin that together carry out a specific function.
-         */
-        TISSUE, 
-        /**
-         * Body fluid.
-         */
-        FLUID, 
-        /**
-         * Collection of cells.
-         */
-        CELLS, 
-        /**
-         * Biological agent of unspecified type.
-         */
-        BIOLOGICALAGENT, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static BiologicallyDerivedProductCategory fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("organ".equals(codeString))
-          return ORGAN;
-        if ("tissue".equals(codeString))
-          return TISSUE;
-        if ("fluid".equals(codeString))
-          return FLUID;
-        if ("cells".equals(codeString))
-          return CELLS;
-        if ("biologicalAgent".equals(codeString))
-          return BIOLOGICALAGENT;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown BiologicallyDerivedProductCategory code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ORGAN: return "organ";
-            case TISSUE: return "tissue";
-            case FLUID: return "fluid";
-            case CELLS: return "cells";
-            case BIOLOGICALAGENT: return "biologicalAgent";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case ORGAN: return "http://hl7.org/fhir/product-category";
-            case TISSUE: return "http://hl7.org/fhir/product-category";
-            case FLUID: return "http://hl7.org/fhir/product-category";
-            case CELLS: return "http://hl7.org/fhir/product-category";
-            case BIOLOGICALAGENT: return "http://hl7.org/fhir/product-category";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ORGAN: return "A collection of tissues joined in a structural unit to serve a common function.";
-            case TISSUE: return "An ensemble of similar cells and their extracellular matrix from the same origin that together carry out a specific function.";
-            case FLUID: return "Body fluid.";
-            case CELLS: return "Collection of cells.";
-            case BIOLOGICALAGENT: return "Biological agent of unspecified type.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ORGAN: return "Organ";
-            case TISSUE: return "Tissue";
-            case FLUID: return "Fluid";
-            case CELLS: return "Cells";
-            case BIOLOGICALAGENT: return "BiologicalAgent";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class BiologicallyDerivedProductCategoryEnumFactory implements EnumFactory<BiologicallyDerivedProductCategory> {
-    public BiologicallyDerivedProductCategory fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("organ".equals(codeString))
-          return BiologicallyDerivedProductCategory.ORGAN;
-        if ("tissue".equals(codeString))
-          return BiologicallyDerivedProductCategory.TISSUE;
-        if ("fluid".equals(codeString))
-          return BiologicallyDerivedProductCategory.FLUID;
-        if ("cells".equals(codeString))
-          return BiologicallyDerivedProductCategory.CELLS;
-        if ("biologicalAgent".equals(codeString))
-          return BiologicallyDerivedProductCategory.BIOLOGICALAGENT;
-        throw new IllegalArgumentException("Unknown BiologicallyDerivedProductCategory code '"+codeString+"'");
-        }
-        public Enumeration<BiologicallyDerivedProductCategory> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<BiologicallyDerivedProductCategory>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("organ".equals(codeString))
-          return new Enumeration<BiologicallyDerivedProductCategory>(this, BiologicallyDerivedProductCategory.ORGAN);
-        if ("tissue".equals(codeString))
-          return new Enumeration<BiologicallyDerivedProductCategory>(this, BiologicallyDerivedProductCategory.TISSUE);
-        if ("fluid".equals(codeString))
-          return new Enumeration<BiologicallyDerivedProductCategory>(this, BiologicallyDerivedProductCategory.FLUID);
-        if ("cells".equals(codeString))
-          return new Enumeration<BiologicallyDerivedProductCategory>(this, BiologicallyDerivedProductCategory.CELLS);
-        if ("biologicalAgent".equals(codeString))
-          return new Enumeration<BiologicallyDerivedProductCategory>(this, BiologicallyDerivedProductCategory.BIOLOGICALAGENT);
-        throw new FHIRException("Unknown BiologicallyDerivedProductCategory code '"+codeString+"'");
-        }
-    public String toCode(BiologicallyDerivedProductCategory code) {
-      if (code == BiologicallyDerivedProductCategory.ORGAN)
-        return "organ";
-      if (code == BiologicallyDerivedProductCategory.TISSUE)
-        return "tissue";
-      if (code == BiologicallyDerivedProductCategory.FLUID)
-        return "fluid";
-      if (code == BiologicallyDerivedProductCategory.CELLS)
-        return "cells";
-      if (code == BiologicallyDerivedProductCategory.BIOLOGICALAGENT)
-        return "biologicalAgent";
-      return "?";
-      }
-    public String toSystem(BiologicallyDerivedProductCategory code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum BiologicallyDerivedProductStatus {
-        /**
-         * Product is currently available for use.
-         */
-        AVAILABLE, 
-        /**
-         * Product is not currently available for use.
-         */
-        UNAVAILABLE, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static BiologicallyDerivedProductStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("available".equals(codeString))
-          return AVAILABLE;
-        if ("unavailable".equals(codeString))
-          return UNAVAILABLE;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown BiologicallyDerivedProductStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case AVAILABLE: return "available";
-            case UNAVAILABLE: return "unavailable";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case AVAILABLE: return "http://hl7.org/fhir/biological-product-status";
-            case UNAVAILABLE: return "http://hl7.org/fhir/biological-product-status";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case AVAILABLE: return "Product is currently available for use.";
-            case UNAVAILABLE: return "Product is not currently available for use.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case AVAILABLE: return "Available";
-            case UNAVAILABLE: return "Unavailable";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class BiologicallyDerivedProductStatusEnumFactory implements EnumFactory<BiologicallyDerivedProductStatus> {
-    public BiologicallyDerivedProductStatus fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("available".equals(codeString))
-          return BiologicallyDerivedProductStatus.AVAILABLE;
-        if ("unavailable".equals(codeString))
-          return BiologicallyDerivedProductStatus.UNAVAILABLE;
-        throw new IllegalArgumentException("Unknown BiologicallyDerivedProductStatus code '"+codeString+"'");
-        }
-        public Enumeration<BiologicallyDerivedProductStatus> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<BiologicallyDerivedProductStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("available".equals(codeString))
-          return new Enumeration<BiologicallyDerivedProductStatus>(this, BiologicallyDerivedProductStatus.AVAILABLE);
-        if ("unavailable".equals(codeString))
-          return new Enumeration<BiologicallyDerivedProductStatus>(this, BiologicallyDerivedProductStatus.UNAVAILABLE);
-        throw new FHIRException("Unknown BiologicallyDerivedProductStatus code '"+codeString+"'");
-        }
-    public String toCode(BiologicallyDerivedProductStatus code) {
-      if (code == BiologicallyDerivedProductStatus.AVAILABLE)
-        return "available";
-      if (code == BiologicallyDerivedProductStatus.UNAVAILABLE)
-        return "unavailable";
-      return "?";
-      }
-    public String toSystem(BiologicallyDerivedProductStatus code) {
-      return code.getSystem();
-      }
-    }
-
     @Block()
     public static class BiologicallyDerivedProductCollectionComponent extends BackboneElement implements IBaseBackboneElement {
         /**
@@ -298,7 +66,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
          * The patient or entity, such as a hospital or vendor in the case of a processed/manipulated/manufactured product, providing the product.
          */
         @Child(name = "source", type = {Patient.class, Organization.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Who is product from", formalDefinition="The patient or entity, such as a hospital or vendor in the case of a processed/manipulated/manufactured product, providing the product." )
+        @Description(shortDefinition="The patient or entity providing the product", formalDefinition="The patient or entity, such as a hospital or vendor in the case of a processed/manipulated/manufactured product, providing the product." )
         protected Reference source;
 
         /**
@@ -572,21 +340,21 @@ public class BiologicallyDerivedProduct extends DomainResource {
     @Block()
     public static class BiologicallyDerivedProductPropertyComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Code that specifies the property.
+         * Code that specifies the property. It should reference an established coding system.
          */
-        @Child(name = "type", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Code that specifies the property", formalDefinition="Code that specifies the property." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/NamingSystem/ib")
-        protected CodeableConcept type;
+        @Child(name = "type", type = {Coding.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Code that specifies the property", formalDefinition="Code that specifies the property. It should reference an established coding system." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/biologicallyderivedproduct-property-type-codes")
+        protected Coding type;
 
         /**
          * Property values.
          */
-        @Child(name = "value", type = {BooleanType.class, IntegerType.class, CodeableConcept.class, Quantity.class, Range.class, StringType.class, Attachment.class}, order=2, min=1, max=1, modifier=false, summary=false)
+        @Child(name = "value", type = {BooleanType.class, IntegerType.class, CodeableConcept.class, Period.class, Quantity.class, Range.class, Ratio.class, StringType.class, Attachment.class}, order=2, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Property values", formalDefinition="Property values." )
         protected DataType value;
 
-        private static final long serialVersionUID = -1659186716L;
+        private static final long serialVersionUID = -1544667497L;
 
     /**
      * Constructor
@@ -598,21 +366,21 @@ public class BiologicallyDerivedProduct extends DomainResource {
     /**
      * Constructor
      */
-      public BiologicallyDerivedProductPropertyComponent(CodeableConcept type, DataType value) {
+      public BiologicallyDerivedProductPropertyComponent(Coding type, DataType value) {
         super();
         this.setType(type);
         this.setValue(value);
       }
 
         /**
-         * @return {@link #type} (Code that specifies the property.)
+         * @return {@link #type} (Code that specifies the property. It should reference an established coding system.)
          */
-        public CodeableConcept getType() { 
+        public Coding getType() { 
           if (this.type == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create BiologicallyDerivedProductPropertyComponent.type");
             else if (Configuration.doAutoCreate())
-              this.type = new CodeableConcept(); // cc
+              this.type = new Coding(); // cc
           return this.type;
         }
 
@@ -621,9 +389,9 @@ public class BiologicallyDerivedProduct extends DomainResource {
         }
 
         /**
-         * @param value {@link #type} (Code that specifies the property.)
+         * @param value {@link #type} (Code that specifies the property. It should reference an established coding system.)
          */
-        public BiologicallyDerivedProductPropertyComponent setType(CodeableConcept value) { 
+        public BiologicallyDerivedProductPropertyComponent setType(Coding value) { 
           this.type = value;
           return this;
         }
@@ -683,6 +451,21 @@ public class BiologicallyDerivedProduct extends DomainResource {
         /**
          * @return {@link #value} (Property values.)
          */
+        public Period getValuePeriod() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Period();
+          if (!(this.value instanceof Period))
+            throw new FHIRException("Type mismatch: the type Period was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Period) this.value;
+        }
+
+        public boolean hasValuePeriod() { 
+          return this != null && this.value instanceof Period;
+        }
+
+        /**
+         * @return {@link #value} (Property values.)
+         */
         public Quantity getValueQuantity() throws FHIRException { 
           if (this.value == null)
             this.value = new Quantity();
@@ -708,6 +491,21 @@ public class BiologicallyDerivedProduct extends DomainResource {
 
         public boolean hasValueRange() { 
           return this != null && this.value instanceof Range;
+        }
+
+        /**
+         * @return {@link #value} (Property values.)
+         */
+        public Ratio getValueRatio() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Ratio();
+          if (!(this.value instanceof Ratio))
+            throw new FHIRException("Type mismatch: the type Ratio was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Ratio) this.value;
+        }
+
+        public boolean hasValueRatio() { 
+          return this != null && this.value instanceof Ratio;
         }
 
         /**
@@ -748,7 +546,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
          * @param value {@link #value} (Property values.)
          */
         public BiologicallyDerivedProductPropertyComponent setValue(DataType value) { 
-          if (value != null && !(value instanceof BooleanType || value instanceof IntegerType || value instanceof CodeableConcept || value instanceof Quantity || value instanceof Range || value instanceof StringType || value instanceof Attachment))
+          if (value != null && !(value instanceof BooleanType || value instanceof IntegerType || value instanceof CodeableConcept || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof StringType || value instanceof Attachment))
             throw new Error("Not the right type for BiologicallyDerivedProduct.property.value[x]: "+value.fhirType());
           this.value = value;
           return this;
@@ -756,21 +554,23 @@ public class BiologicallyDerivedProduct extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("type", "CodeableConcept", "Code that specifies the property.", 0, 1, type));
-          children.add(new Property("value[x]", "boolean|integer|CodeableConcept|Quantity|Range|string|Attachment", "Property values.", 0, 1, value));
+          children.add(new Property("type", "Coding", "Code that specifies the property. It should reference an established coding system.", 0, 1, type));
+          children.add(new Property("value[x]", "boolean|integer|CodeableConcept|Period|Quantity|Range|Ratio|string|Attachment", "Property values.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Code that specifies the property.", 0, 1, type);
-          case -1410166417: /*value[x]*/  return new Property("value[x]", "boolean|integer|CodeableConcept|Quantity|Range|string|Attachment", "Property values.", 0, 1, value);
-          case 111972721: /*value*/  return new Property("value[x]", "boolean|integer|CodeableConcept|Quantity|Range|string|Attachment", "Property values.", 0, 1, value);
+          case 3575610: /*type*/  return new Property("type", "Coding", "Code that specifies the property. It should reference an established coding system.", 0, 1, type);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "boolean|integer|CodeableConcept|Period|Quantity|Range|Ratio|string|Attachment", "Property values.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "boolean|integer|CodeableConcept|Period|Quantity|Range|Ratio|string|Attachment", "Property values.", 0, 1, value);
           case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "Property values.", 0, 1, value);
           case -1668204915: /*valueInteger*/  return new Property("value[x]", "integer", "Property values.", 0, 1, value);
           case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "Property values.", 0, 1, value);
+          case -1524344174: /*valuePeriod*/  return new Property("value[x]", "Period", "Property values.", 0, 1, value);
           case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "Property values.", 0, 1, value);
           case 2030761548: /*valueRange*/  return new Property("value[x]", "Range", "Property values.", 0, 1, value);
+          case 2030767386: /*valueRatio*/  return new Property("value[x]", "Ratio", "Property values.", 0, 1, value);
           case -1424603934: /*valueString*/  return new Property("value[x]", "string", "Property values.", 0, 1, value);
           case -475566732: /*valueAttachment*/  return new Property("value[x]", "Attachment", "Property values.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -781,7 +581,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Coding
         case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -792,7 +592,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCoding(value); // Coding
           return value;
         case 111972721: // value
           this.value = TypeConvertor.castToType(value); // DataType
@@ -805,7 +605,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.type = TypeConvertor.castToCoding(value); // Coding
         } else if (name.equals("value[x]")) {
           this.value = TypeConvertor.castToType(value); // DataType
         } else
@@ -827,8 +627,8 @@ public class BiologicallyDerivedProduct extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
-        case 111972721: /*value*/ return new String[] {"boolean", "integer", "CodeableConcept", "Quantity", "Range", "string", "Attachment"};
+        case 3575610: /*type*/ return new String[] {"Coding"};
+        case 111972721: /*value*/ return new String[] {"boolean", "integer", "CodeableConcept", "Period", "Quantity", "Range", "Ratio", "string", "Attachment"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -837,7 +637,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("type")) {
-          this.type = new CodeableConcept();
+          this.type = new Coding();
           return this.type;
         }
         else if (name.equals("valueBoolean")) {
@@ -852,12 +652,20 @@ public class BiologicallyDerivedProduct extends DomainResource {
           this.value = new CodeableConcept();
           return this.value;
         }
+        else if (name.equals("valuePeriod")) {
+          this.value = new Period();
+          return this.value;
+        }
         else if (name.equals("valueQuantity")) {
           this.value = new Quantity();
           return this.value;
         }
         else if (name.equals("valueRange")) {
           this.value = new Range();
+          return this.value;
+        }
+        else if (name.equals("valueRatio")) {
+          this.value = new Ratio();
           return this.value;
         }
         else if (name.equals("valueString")) {
@@ -918,73 +726,74 @@ public class BiologicallyDerivedProduct extends DomainResource {
     /**
      * Broad category of this product.
      */
-    @Child(name = "productCategory", type = {CodeType.class}, order=0, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "productCategory", type = {Coding.class}, order=0, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="organ | tissue | fluid | cells | biologicalAgent", formalDefinition="Broad category of this product." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/product-category")
-    protected Enumeration<BiologicallyDerivedProductCategory> productCategory;
+    protected Coding productCategory;
 
     /**
-     * A code that identifies the kind of this biologically derived product (SNOMED Ctcode).
+     * A codified value that systematically supports characterization and classification of medical products of human origin inclusive of processing conditions such as additives, volumes and handling conditions.
      */
     @Child(name = "productCode", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="What this biologically derived product is", formalDefinition="A code that identifies the kind of this biologically derived product (SNOMED Ctcode)." )
+    @Description(shortDefinition="A code that identifies the kind of this biologically derived product", formalDefinition="A codified value that systematically supports characterization and classification of medical products of human origin inclusive of processing conditions such as additives, volumes and handling conditions." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/biologicallyderived-productcodes")
     protected CodeableConcept productCode;
 
     /**
-     * Parent product (if any).
+     * Parent product (if any) for this biologically-derived product.
      */
     @Child(name = "parent", type = {BiologicallyDerivedProduct.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="BiologicallyDerivedProduct parent", formalDefinition="Parent product (if any)." )
+    @Description(shortDefinition="The parent biologically-derived product", formalDefinition="Parent product (if any) for this biologically-derived product." )
     protected List<Reference> parent;
 
     /**
-     * Procedure request to obtain this biologically derived product.
+     * Request to obtain and/or infuse this biologically derived product.
      */
     @Child(name = "request", type = {ServiceRequest.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Procedure request", formalDefinition="Procedure request to obtain this biologically derived product." )
+    @Description(shortDefinition="Request to obtain and/or infuse this product", formalDefinition="Request to obtain and/or infuse this biologically derived product." )
     protected List<Reference> request;
 
     /**
-     * This records identifiers associated with this biologically derived product instance that are defined by business processes and/or used to refer to it when a direct URL reference to the resource itself is not appropriate (e.g. in CDA documents, or in written / printed documentation).
+     * Unique instance identifiers assigned to a biologically derived product. Note: This is a business identifier, not a resource identifier.
      */
     @Child(name = "identifier", type = {Identifier.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="External ids for this item", formalDefinition="This records identifiers associated with this biologically derived product instance that are defined by business processes and/or used to refer to it when a direct URL reference to the resource itself is not appropriate (e.g. in CDA documents, or in written / printed documentation)." )
+    @Description(shortDefinition="Instance identifier", formalDefinition="Unique instance identifiers assigned to a biologically derived product. Note: This is a business identifier, not a resource identifier." )
     protected List<Identifier> identifier;
 
     /**
-     * An identifier that supports traceability to the biological entity that is the source of biological material in the product.
+     * An identifier that supports traceability to the event during which material in this product from one or more biological entities was obtained or pooled.
      */
-    @Child(name = "biologicalSource", type = {Identifier.class}, order=5, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="An identifier that supports traceability to the biological entity that is the source of biological material in the product", formalDefinition="An identifier that supports traceability to the biological entity that is the source of biological material in the product." )
-    protected Identifier biologicalSource;
+    @Child(name = "biologicalSourceEvent", type = {Identifier.class}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="An identifier that supports traceability to the event during which material in this product from one or more biological entities was obtained or pooled", formalDefinition="An identifier that supports traceability to the event during which material in this product from one or more biological entities was obtained or pooled." )
+    protected Identifier biologicalSourceEvent;
 
     /**
-     * Processing facilities for this biologically derived product.
+     * Processing facilities responsible for the labeling and distribution of this biologically derived product.
      */
     @Child(name = "processingFacility", type = {Organization.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Processing facility", formalDefinition="Processing facilities for this biologically derived product." )
+    @Description(shortDefinition="Processing facilities responsible for the labeling and distribution of this biologically derived product", formalDefinition="Processing facilities responsible for the labeling and distribution of this biologically derived product." )
     protected List<Reference> processingFacility;
 
     /**
-     * Description of division.
+     * A unique identifier for an aliquot of a product.  Used to distinguish individual aliquots of a product carrying the same biologicalSource and productCode identifiers.
      */
     @Child(name = "division", type = {StringType.class}, order=7, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Description of division", formalDefinition="Description of division." )
+    @Description(shortDefinition="A unique identifier for an aliquot of a product", formalDefinition="A unique identifier for an aliquot of a product.  Used to distinguish individual aliquots of a product carrying the same biologicalSource and productCode identifiers." )
     protected StringType division;
 
     /**
      * Whether the product is currently available.
      */
-    @Child(name = "status", type = {CodeType.class}, order=8, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "productStatus", type = {Coding.class}, order=8, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="available | unavailable", formalDefinition="Whether the product is currently available." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/biological-product-status")
-    protected Enumeration<BiologicallyDerivedProductStatus> status;
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/biologicallyderived-product-status")
+    protected Coding productStatus;
 
     /**
-     * Date of expiration.
+     * Date, and where relevant time, of expiration.
      */
     @Child(name = "expirationDate", type = {DateTimeType.class}, order=9, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Date of expiration", formalDefinition="Date of expiration." )
+    @Description(shortDefinition="Date, and where relevant time, of expiration", formalDefinition="Date, and where relevant time, of expiration." )
     protected DateTimeType expirationDate;
 
     /**
@@ -995,10 +804,10 @@ public class BiologicallyDerivedProduct extends DomainResource {
     protected BiologicallyDerivedProductCollectionComponent collection;
 
     /**
-     * Product storage temp requirements.
+     * The temperature requirements for storage of the biologically-derived product.
      */
     @Child(name = "storageTempRequirements", type = {Range.class}, order=11, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Product storage temp requirements", formalDefinition="Product storage temp requirements." )
+    @Description(shortDefinition="Product storage temperature requirements", formalDefinition="The temperature requirements for storage of the biologically-derived product." )
     protected Range storageTempRequirements;
 
     /**
@@ -1008,7 +817,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     @Description(shortDefinition="A property that is specific to this BiologicallyDerviedProduct instance", formalDefinition="A property that is specific to this BiologicallyDerviedProduct instance." )
     protected List<BiologicallyDerivedProductPropertyComponent> property;
 
-    private static final long serialVersionUID = -2109673989L;
+    private static final long serialVersionUID = 452844848L;
 
   /**
    * Constructor
@@ -1018,19 +827,15 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     /**
-     * @return {@link #productCategory} (Broad category of this product.). This is the underlying object with id, value and extensions. The accessor "getProductCategory" gives direct access to the value
+     * @return {@link #productCategory} (Broad category of this product.)
      */
-    public Enumeration<BiologicallyDerivedProductCategory> getProductCategoryElement() { 
+    public Coding getProductCategory() { 
       if (this.productCategory == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create BiologicallyDerivedProduct.productCategory");
         else if (Configuration.doAutoCreate())
-          this.productCategory = new Enumeration<BiologicallyDerivedProductCategory>(new BiologicallyDerivedProductCategoryEnumFactory()); // bb
+          this.productCategory = new Coding(); // cc
       return this.productCategory;
-    }
-
-    public boolean hasProductCategoryElement() { 
-      return this.productCategory != null && !this.productCategory.isEmpty();
     }
 
     public boolean hasProductCategory() { 
@@ -1038,36 +843,15 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     /**
-     * @param value {@link #productCategory} (Broad category of this product.). This is the underlying object with id, value and extensions. The accessor "getProductCategory" gives direct access to the value
+     * @param value {@link #productCategory} (Broad category of this product.)
      */
-    public BiologicallyDerivedProduct setProductCategoryElement(Enumeration<BiologicallyDerivedProductCategory> value) { 
+    public BiologicallyDerivedProduct setProductCategory(Coding value) { 
       this.productCategory = value;
       return this;
     }
 
     /**
-     * @return Broad category of this product.
-     */
-    public BiologicallyDerivedProductCategory getProductCategory() { 
-      return this.productCategory == null ? null : this.productCategory.getValue();
-    }
-
-    /**
-     * @param value Broad category of this product.
-     */
-    public BiologicallyDerivedProduct setProductCategory(BiologicallyDerivedProductCategory value) { 
-      if (value == null)
-        this.productCategory = null;
-      else {
-        if (this.productCategory == null)
-          this.productCategory = new Enumeration<BiologicallyDerivedProductCategory>(new BiologicallyDerivedProductCategoryEnumFactory());
-        this.productCategory.setValue(value);
-      }
-      return this;
-    }
-
-    /**
-     * @return {@link #productCode} (A code that identifies the kind of this biologically derived product (SNOMED Ctcode).)
+     * @return {@link #productCode} (A codified value that systematically supports characterization and classification of medical products of human origin inclusive of processing conditions such as additives, volumes and handling conditions.)
      */
     public CodeableConcept getProductCode() { 
       if (this.productCode == null)
@@ -1083,7 +867,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     /**
-     * @param value {@link #productCode} (A code that identifies the kind of this biologically derived product (SNOMED Ctcode).)
+     * @param value {@link #productCode} (A codified value that systematically supports characterization and classification of medical products of human origin inclusive of processing conditions such as additives, volumes and handling conditions.)
      */
     public BiologicallyDerivedProduct setProductCode(CodeableConcept value) { 
       this.productCode = value;
@@ -1091,7 +875,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     /**
-     * @return {@link #parent} (Parent product (if any).)
+     * @return {@link #parent} (Parent product (if any) for this biologically-derived product.)
      */
     public List<Reference> getParent() { 
       if (this.parent == null)
@@ -1144,7 +928,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     /**
-     * @return {@link #request} (Procedure request to obtain this biologically derived product.)
+     * @return {@link #request} (Request to obtain and/or infuse this biologically derived product.)
      */
     public List<Reference> getRequest() { 
       if (this.request == null)
@@ -1197,7 +981,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     /**
-     * @return {@link #identifier} (This records identifiers associated with this biologically derived product instance that are defined by business processes and/or used to refer to it when a direct URL reference to the resource itself is not appropriate (e.g. in CDA documents, or in written / printed documentation).)
+     * @return {@link #identifier} (Unique instance identifiers assigned to a biologically derived product. Note: This is a business identifier, not a resource identifier.)
      */
     public List<Identifier> getIdentifier() { 
       if (this.identifier == null)
@@ -1250,31 +1034,31 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     /**
-     * @return {@link #biologicalSource} (An identifier that supports traceability to the biological entity that is the source of biological material in the product.)
+     * @return {@link #biologicalSourceEvent} (An identifier that supports traceability to the event during which material in this product from one or more biological entities was obtained or pooled.)
      */
-    public Identifier getBiologicalSource() { 
-      if (this.biologicalSource == null)
+    public Identifier getBiologicalSourceEvent() { 
+      if (this.biologicalSourceEvent == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create BiologicallyDerivedProduct.biologicalSource");
+          throw new Error("Attempt to auto-create BiologicallyDerivedProduct.biologicalSourceEvent");
         else if (Configuration.doAutoCreate())
-          this.biologicalSource = new Identifier(); // cc
-      return this.biologicalSource;
+          this.biologicalSourceEvent = new Identifier(); // cc
+      return this.biologicalSourceEvent;
     }
 
-    public boolean hasBiologicalSource() { 
-      return this.biologicalSource != null && !this.biologicalSource.isEmpty();
+    public boolean hasBiologicalSourceEvent() { 
+      return this.biologicalSourceEvent != null && !this.biologicalSourceEvent.isEmpty();
     }
 
     /**
-     * @param value {@link #biologicalSource} (An identifier that supports traceability to the biological entity that is the source of biological material in the product.)
+     * @param value {@link #biologicalSourceEvent} (An identifier that supports traceability to the event during which material in this product from one or more biological entities was obtained or pooled.)
      */
-    public BiologicallyDerivedProduct setBiologicalSource(Identifier value) { 
-      this.biologicalSource = value;
+    public BiologicallyDerivedProduct setBiologicalSourceEvent(Identifier value) { 
+      this.biologicalSourceEvent = value;
       return this;
     }
 
     /**
-     * @return {@link #processingFacility} (Processing facilities for this biologically derived product.)
+     * @return {@link #processingFacility} (Processing facilities responsible for the labeling and distribution of this biologically derived product.)
      */
     public List<Reference> getProcessingFacility() { 
       if (this.processingFacility == null)
@@ -1327,7 +1111,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     /**
-     * @return {@link #division} (Description of division.). This is the underlying object with id, value and extensions. The accessor "getDivision" gives direct access to the value
+     * @return {@link #division} (A unique identifier for an aliquot of a product.  Used to distinguish individual aliquots of a product carrying the same biologicalSource and productCode identifiers.). This is the underlying object with id, value and extensions. The accessor "getDivision" gives direct access to the value
      */
     public StringType getDivisionElement() { 
       if (this.division == null)
@@ -1347,7 +1131,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     /**
-     * @param value {@link #division} (Description of division.). This is the underlying object with id, value and extensions. The accessor "getDivision" gives direct access to the value
+     * @param value {@link #division} (A unique identifier for an aliquot of a product.  Used to distinguish individual aliquots of a product carrying the same biologicalSource and productCode identifiers.). This is the underlying object with id, value and extensions. The accessor "getDivision" gives direct access to the value
      */
     public BiologicallyDerivedProduct setDivisionElement(StringType value) { 
       this.division = value;
@@ -1355,14 +1139,14 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     /**
-     * @return Description of division.
+     * @return A unique identifier for an aliquot of a product.  Used to distinguish individual aliquots of a product carrying the same biologicalSource and productCode identifiers.
      */
     public String getDivision() { 
       return this.division == null ? null : this.division.getValue();
     }
 
     /**
-     * @param value Description of division.
+     * @param value A unique identifier for an aliquot of a product.  Used to distinguish individual aliquots of a product carrying the same biologicalSource and productCode identifiers.
      */
     public BiologicallyDerivedProduct setDivision(String value) { 
       if (Utilities.noString(value))
@@ -1376,56 +1160,31 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     /**
-     * @return {@link #status} (Whether the product is currently available.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     * @return {@link #productStatus} (Whether the product is currently available.)
      */
-    public Enumeration<BiologicallyDerivedProductStatus> getStatusElement() { 
-      if (this.status == null)
+    public Coding getProductStatus() { 
+      if (this.productStatus == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create BiologicallyDerivedProduct.status");
+          throw new Error("Attempt to auto-create BiologicallyDerivedProduct.productStatus");
         else if (Configuration.doAutoCreate())
-          this.status = new Enumeration<BiologicallyDerivedProductStatus>(new BiologicallyDerivedProductStatusEnumFactory()); // bb
-      return this.status;
+          this.productStatus = new Coding(); // cc
+      return this.productStatus;
     }
 
-    public boolean hasStatusElement() { 
-      return this.status != null && !this.status.isEmpty();
-    }
-
-    public boolean hasStatus() { 
-      return this.status != null && !this.status.isEmpty();
+    public boolean hasProductStatus() { 
+      return this.productStatus != null && !this.productStatus.isEmpty();
     }
 
     /**
-     * @param value {@link #status} (Whether the product is currently available.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     * @param value {@link #productStatus} (Whether the product is currently available.)
      */
-    public BiologicallyDerivedProduct setStatusElement(Enumeration<BiologicallyDerivedProductStatus> value) { 
-      this.status = value;
+    public BiologicallyDerivedProduct setProductStatus(Coding value) { 
+      this.productStatus = value;
       return this;
     }
 
     /**
-     * @return Whether the product is currently available.
-     */
-    public BiologicallyDerivedProductStatus getStatus() { 
-      return this.status == null ? null : this.status.getValue();
-    }
-
-    /**
-     * @param value Whether the product is currently available.
-     */
-    public BiologicallyDerivedProduct setStatus(BiologicallyDerivedProductStatus value) { 
-      if (value == null)
-        this.status = null;
-      else {
-        if (this.status == null)
-          this.status = new Enumeration<BiologicallyDerivedProductStatus>(new BiologicallyDerivedProductStatusEnumFactory());
-        this.status.setValue(value);
-      }
-      return this;
-    }
-
-    /**
-     * @return {@link #expirationDate} (Date of expiration.). This is the underlying object with id, value and extensions. The accessor "getExpirationDate" gives direct access to the value
+     * @return {@link #expirationDate} (Date, and where relevant time, of expiration.). This is the underlying object with id, value and extensions. The accessor "getExpirationDate" gives direct access to the value
      */
     public DateTimeType getExpirationDateElement() { 
       if (this.expirationDate == null)
@@ -1445,7 +1204,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     /**
-     * @param value {@link #expirationDate} (Date of expiration.). This is the underlying object with id, value and extensions. The accessor "getExpirationDate" gives direct access to the value
+     * @param value {@link #expirationDate} (Date, and where relevant time, of expiration.). This is the underlying object with id, value and extensions. The accessor "getExpirationDate" gives direct access to the value
      */
     public BiologicallyDerivedProduct setExpirationDateElement(DateTimeType value) { 
       this.expirationDate = value;
@@ -1453,14 +1212,14 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     /**
-     * @return Date of expiration.
+     * @return Date, and where relevant time, of expiration.
      */
     public Date getExpirationDate() { 
       return this.expirationDate == null ? null : this.expirationDate.getValue();
     }
 
     /**
-     * @param value Date of expiration.
+     * @param value Date, and where relevant time, of expiration.
      */
     public BiologicallyDerivedProduct setExpirationDate(Date value) { 
       if (value == null)
@@ -1498,7 +1257,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     /**
-     * @return {@link #storageTempRequirements} (Product storage temp requirements.)
+     * @return {@link #storageTempRequirements} (The temperature requirements for storage of the biologically-derived product.)
      */
     public Range getStorageTempRequirements() { 
       if (this.storageTempRequirements == null)
@@ -1514,7 +1273,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     /**
-     * @param value {@link #storageTempRequirements} (Product storage temp requirements.)
+     * @param value {@link #storageTempRequirements} (The temperature requirements for storage of the biologically-derived product.)
      */
     public BiologicallyDerivedProduct setStorageTempRequirements(Range value) { 
       this.storageTempRequirements = value;
@@ -1576,36 +1335,36 @@ public class BiologicallyDerivedProduct extends DomainResource {
 
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("productCategory", "code", "Broad category of this product.", 0, 1, productCategory));
-        children.add(new Property("productCode", "CodeableConcept", "A code that identifies the kind of this biologically derived product (SNOMED Ctcode).", 0, 1, productCode));
-        children.add(new Property("parent", "Reference(BiologicallyDerivedProduct)", "Parent product (if any).", 0, java.lang.Integer.MAX_VALUE, parent));
-        children.add(new Property("request", "Reference(ServiceRequest)", "Procedure request to obtain this biologically derived product.", 0, java.lang.Integer.MAX_VALUE, request));
-        children.add(new Property("identifier", "Identifier", "This records identifiers associated with this biologically derived product instance that are defined by business processes and/or used to refer to it when a direct URL reference to the resource itself is not appropriate (e.g. in CDA documents, or in written / printed documentation).", 0, java.lang.Integer.MAX_VALUE, identifier));
-        children.add(new Property("biologicalSource", "Identifier", "An identifier that supports traceability to the biological entity that is the source of biological material in the product.", 0, 1, biologicalSource));
-        children.add(new Property("processingFacility", "Reference(Organization)", "Processing facilities for this biologically derived product.", 0, java.lang.Integer.MAX_VALUE, processingFacility));
-        children.add(new Property("division", "string", "Description of division.", 0, 1, division));
-        children.add(new Property("status", "code", "Whether the product is currently available.", 0, 1, status));
-        children.add(new Property("expirationDate", "dateTime", "Date of expiration.", 0, 1, expirationDate));
+        children.add(new Property("productCategory", "Coding", "Broad category of this product.", 0, 1, productCategory));
+        children.add(new Property("productCode", "CodeableConcept", "A codified value that systematically supports characterization and classification of medical products of human origin inclusive of processing conditions such as additives, volumes and handling conditions.", 0, 1, productCode));
+        children.add(new Property("parent", "Reference(BiologicallyDerivedProduct)", "Parent product (if any) for this biologically-derived product.", 0, java.lang.Integer.MAX_VALUE, parent));
+        children.add(new Property("request", "Reference(ServiceRequest)", "Request to obtain and/or infuse this biologically derived product.", 0, java.lang.Integer.MAX_VALUE, request));
+        children.add(new Property("identifier", "Identifier", "Unique instance identifiers assigned to a biologically derived product. Note: This is a business identifier, not a resource identifier.", 0, java.lang.Integer.MAX_VALUE, identifier));
+        children.add(new Property("biologicalSourceEvent", "Identifier", "An identifier that supports traceability to the event during which material in this product from one or more biological entities was obtained or pooled.", 0, 1, biologicalSourceEvent));
+        children.add(new Property("processingFacility", "Reference(Organization)", "Processing facilities responsible for the labeling and distribution of this biologically derived product.", 0, java.lang.Integer.MAX_VALUE, processingFacility));
+        children.add(new Property("division", "string", "A unique identifier for an aliquot of a product.  Used to distinguish individual aliquots of a product carrying the same biologicalSource and productCode identifiers.", 0, 1, division));
+        children.add(new Property("productStatus", "Coding", "Whether the product is currently available.", 0, 1, productStatus));
+        children.add(new Property("expirationDate", "dateTime", "Date, and where relevant time, of expiration.", 0, 1, expirationDate));
         children.add(new Property("collection", "", "How this product was collected.", 0, 1, collection));
-        children.add(new Property("storageTempRequirements", "Range", "Product storage temp requirements.", 0, 1, storageTempRequirements));
+        children.add(new Property("storageTempRequirements", "Range", "The temperature requirements for storage of the biologically-derived product.", 0, 1, storageTempRequirements));
         children.add(new Property("property", "", "A property that is specific to this BiologicallyDerviedProduct instance.", 0, java.lang.Integer.MAX_VALUE, property));
       }
 
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case 197299981: /*productCategory*/  return new Property("productCategory", "code", "Broad category of this product.", 0, 1, productCategory);
-        case -1492131972: /*productCode*/  return new Property("productCode", "CodeableConcept", "A code that identifies the kind of this biologically derived product (SNOMED Ctcode).", 0, 1, productCode);
-        case -995424086: /*parent*/  return new Property("parent", "Reference(BiologicallyDerivedProduct)", "Parent product (if any).", 0, java.lang.Integer.MAX_VALUE, parent);
-        case 1095692943: /*request*/  return new Property("request", "Reference(ServiceRequest)", "Procedure request to obtain this biologically derived product.", 0, java.lang.Integer.MAX_VALUE, request);
-        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "This records identifiers associated with this biologically derived product instance that are defined by business processes and/or used to refer to it when a direct URL reference to the resource itself is not appropriate (e.g. in CDA documents, or in written / printed documentation).", 0, java.lang.Integer.MAX_VALUE, identifier);
-        case -883952260: /*biologicalSource*/  return new Property("biologicalSource", "Identifier", "An identifier that supports traceability to the biological entity that is the source of biological material in the product.", 0, 1, biologicalSource);
-        case 39337686: /*processingFacility*/  return new Property("processingFacility", "Reference(Organization)", "Processing facilities for this biologically derived product.", 0, java.lang.Integer.MAX_VALUE, processingFacility);
-        case 364720301: /*division*/  return new Property("division", "string", "Description of division.", 0, 1, division);
-        case -892481550: /*status*/  return new Property("status", "code", "Whether the product is currently available.", 0, 1, status);
-        case -668811523: /*expirationDate*/  return new Property("expirationDate", "dateTime", "Date of expiration.", 0, 1, expirationDate);
+        case 197299981: /*productCategory*/  return new Property("productCategory", "Coding", "Broad category of this product.", 0, 1, productCategory);
+        case -1492131972: /*productCode*/  return new Property("productCode", "CodeableConcept", "A codified value that systematically supports characterization and classification of medical products of human origin inclusive of processing conditions such as additives, volumes and handling conditions.", 0, 1, productCode);
+        case -995424086: /*parent*/  return new Property("parent", "Reference(BiologicallyDerivedProduct)", "Parent product (if any) for this biologically-derived product.", 0, java.lang.Integer.MAX_VALUE, parent);
+        case 1095692943: /*request*/  return new Property("request", "Reference(ServiceRequest)", "Request to obtain and/or infuse this biologically derived product.", 0, java.lang.Integer.MAX_VALUE, request);
+        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Unique instance identifiers assigned to a biologically derived product. Note: This is a business identifier, not a resource identifier.", 0, java.lang.Integer.MAX_VALUE, identifier);
+        case -654468482: /*biologicalSourceEvent*/  return new Property("biologicalSourceEvent", "Identifier", "An identifier that supports traceability to the event during which material in this product from one or more biological entities was obtained or pooled.", 0, 1, biologicalSourceEvent);
+        case 39337686: /*processingFacility*/  return new Property("processingFacility", "Reference(Organization)", "Processing facilities responsible for the labeling and distribution of this biologically derived product.", 0, java.lang.Integer.MAX_VALUE, processingFacility);
+        case 364720301: /*division*/  return new Property("division", "string", "A unique identifier for an aliquot of a product.  Used to distinguish individual aliquots of a product carrying the same biologicalSource and productCode identifiers.", 0, 1, division);
+        case 1042864577: /*productStatus*/  return new Property("productStatus", "Coding", "Whether the product is currently available.", 0, 1, productStatus);
+        case -668811523: /*expirationDate*/  return new Property("expirationDate", "dateTime", "Date, and where relevant time, of expiration.", 0, 1, expirationDate);
         case -1741312354: /*collection*/  return new Property("collection", "", "How this product was collected.", 0, 1, collection);
-        case 1643599647: /*storageTempRequirements*/  return new Property("storageTempRequirements", "Range", "Product storage temp requirements.", 0, 1, storageTempRequirements);
+        case 1643599647: /*storageTempRequirements*/  return new Property("storageTempRequirements", "Range", "The temperature requirements for storage of the biologically-derived product.", 0, 1, storageTempRequirements);
         case -993141291: /*property*/  return new Property("property", "", "A property that is specific to this BiologicallyDerviedProduct instance.", 0, java.lang.Integer.MAX_VALUE, property);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -1615,15 +1374,15 @@ public class BiologicallyDerivedProduct extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 197299981: /*productCategory*/ return this.productCategory == null ? new Base[0] : new Base[] {this.productCategory}; // Enumeration<BiologicallyDerivedProductCategory>
+        case 197299981: /*productCategory*/ return this.productCategory == null ? new Base[0] : new Base[] {this.productCategory}; // Coding
         case -1492131972: /*productCode*/ return this.productCode == null ? new Base[0] : new Base[] {this.productCode}; // CodeableConcept
         case -995424086: /*parent*/ return this.parent == null ? new Base[0] : this.parent.toArray(new Base[this.parent.size()]); // Reference
         case 1095692943: /*request*/ return this.request == null ? new Base[0] : this.request.toArray(new Base[this.request.size()]); // Reference
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
-        case -883952260: /*biologicalSource*/ return this.biologicalSource == null ? new Base[0] : new Base[] {this.biologicalSource}; // Identifier
+        case -654468482: /*biologicalSourceEvent*/ return this.biologicalSourceEvent == null ? new Base[0] : new Base[] {this.biologicalSourceEvent}; // Identifier
         case 39337686: /*processingFacility*/ return this.processingFacility == null ? new Base[0] : this.processingFacility.toArray(new Base[this.processingFacility.size()]); // Reference
         case 364720301: /*division*/ return this.division == null ? new Base[0] : new Base[] {this.division}; // StringType
-        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<BiologicallyDerivedProductStatus>
+        case 1042864577: /*productStatus*/ return this.productStatus == null ? new Base[0] : new Base[] {this.productStatus}; // Coding
         case -668811523: /*expirationDate*/ return this.expirationDate == null ? new Base[0] : new Base[] {this.expirationDate}; // DateTimeType
         case -1741312354: /*collection*/ return this.collection == null ? new Base[0] : new Base[] {this.collection}; // BiologicallyDerivedProductCollectionComponent
         case 1643599647: /*storageTempRequirements*/ return this.storageTempRequirements == null ? new Base[0] : new Base[] {this.storageTempRequirements}; // Range
@@ -1637,8 +1396,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 197299981: // productCategory
-          value = new BiologicallyDerivedProductCategoryEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.productCategory = (Enumeration) value; // Enumeration<BiologicallyDerivedProductCategory>
+          this.productCategory = TypeConvertor.castToCoding(value); // Coding
           return value;
         case -1492131972: // productCode
           this.productCode = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -1652,8 +1410,8 @@ public class BiologicallyDerivedProduct extends DomainResource {
         case -1618432855: // identifier
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
-        case -883952260: // biologicalSource
-          this.biologicalSource = TypeConvertor.castToIdentifier(value); // Identifier
+        case -654468482: // biologicalSourceEvent
+          this.biologicalSourceEvent = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case 39337686: // processingFacility
           this.getProcessingFacility().add(TypeConvertor.castToReference(value)); // Reference
@@ -1661,9 +1419,8 @@ public class BiologicallyDerivedProduct extends DomainResource {
         case 364720301: // division
           this.division = TypeConvertor.castToString(value); // StringType
           return value;
-        case -892481550: // status
-          value = new BiologicallyDerivedProductStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<BiologicallyDerivedProductStatus>
+        case 1042864577: // productStatus
+          this.productStatus = TypeConvertor.castToCoding(value); // Coding
           return value;
         case -668811523: // expirationDate
           this.expirationDate = TypeConvertor.castToDateTime(value); // DateTimeType
@@ -1685,8 +1442,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("productCategory")) {
-          value = new BiologicallyDerivedProductCategoryEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.productCategory = (Enumeration) value; // Enumeration<BiologicallyDerivedProductCategory>
+          this.productCategory = TypeConvertor.castToCoding(value); // Coding
         } else if (name.equals("productCode")) {
           this.productCode = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("parent")) {
@@ -1695,15 +1451,14 @@ public class BiologicallyDerivedProduct extends DomainResource {
           this.getRequest().add(TypeConvertor.castToReference(value));
         } else if (name.equals("identifier")) {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
-        } else if (name.equals("biologicalSource")) {
-          this.biologicalSource = TypeConvertor.castToIdentifier(value); // Identifier
+        } else if (name.equals("biologicalSourceEvent")) {
+          this.biologicalSourceEvent = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("processingFacility")) {
           this.getProcessingFacility().add(TypeConvertor.castToReference(value));
         } else if (name.equals("division")) {
           this.division = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("status")) {
-          value = new BiologicallyDerivedProductStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<BiologicallyDerivedProductStatus>
+        } else if (name.equals("productStatus")) {
+          this.productStatus = TypeConvertor.castToCoding(value); // Coding
         } else if (name.equals("expirationDate")) {
           this.expirationDate = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("collection")) {
@@ -1720,15 +1475,15 @@ public class BiologicallyDerivedProduct extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 197299981:  return getProductCategoryElement();
+        case 197299981:  return getProductCategory();
         case -1492131972:  return getProductCode();
         case -995424086:  return addParent(); 
         case 1095692943:  return addRequest(); 
         case -1618432855:  return addIdentifier(); 
-        case -883952260:  return getBiologicalSource();
+        case -654468482:  return getBiologicalSourceEvent();
         case 39337686:  return addProcessingFacility(); 
         case 364720301:  return getDivisionElement();
-        case -892481550:  return getStatusElement();
+        case 1042864577:  return getProductStatus();
         case -668811523:  return getExpirationDateElement();
         case -1741312354:  return getCollection();
         case 1643599647:  return getStorageTempRequirements();
@@ -1741,15 +1496,15 @@ public class BiologicallyDerivedProduct extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 197299981: /*productCategory*/ return new String[] {"code"};
+        case 197299981: /*productCategory*/ return new String[] {"Coding"};
         case -1492131972: /*productCode*/ return new String[] {"CodeableConcept"};
         case -995424086: /*parent*/ return new String[] {"Reference"};
         case 1095692943: /*request*/ return new String[] {"Reference"};
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
-        case -883952260: /*biologicalSource*/ return new String[] {"Identifier"};
+        case -654468482: /*biologicalSourceEvent*/ return new String[] {"Identifier"};
         case 39337686: /*processingFacility*/ return new String[] {"Reference"};
         case 364720301: /*division*/ return new String[] {"string"};
-        case -892481550: /*status*/ return new String[] {"code"};
+        case 1042864577: /*productStatus*/ return new String[] {"Coding"};
         case -668811523: /*expirationDate*/ return new String[] {"dateTime"};
         case -1741312354: /*collection*/ return new String[] {};
         case 1643599647: /*storageTempRequirements*/ return new String[] {"Range"};
@@ -1762,7 +1517,8 @@ public class BiologicallyDerivedProduct extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("productCategory")) {
-          throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.productCategory");
+          this.productCategory = new Coding();
+          return this.productCategory;
         }
         else if (name.equals("productCode")) {
           this.productCode = new CodeableConcept();
@@ -1777,9 +1533,9 @@ public class BiologicallyDerivedProduct extends DomainResource {
         else if (name.equals("identifier")) {
           return addIdentifier();
         }
-        else if (name.equals("biologicalSource")) {
-          this.biologicalSource = new Identifier();
-          return this.biologicalSource;
+        else if (name.equals("biologicalSourceEvent")) {
+          this.biologicalSourceEvent = new Identifier();
+          return this.biologicalSourceEvent;
         }
         else if (name.equals("processingFacility")) {
           return addProcessingFacility();
@@ -1787,8 +1543,9 @@ public class BiologicallyDerivedProduct extends DomainResource {
         else if (name.equals("division")) {
           throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.division");
         }
-        else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.status");
+        else if (name.equals("productStatus")) {
+          this.productStatus = new Coding();
+          return this.productStatus;
         }
         else if (name.equals("expirationDate")) {
           throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.expirationDate");
@@ -1838,14 +1595,14 @@ public class BiologicallyDerivedProduct extends DomainResource {
           for (Identifier i : identifier)
             dst.identifier.add(i.copy());
         };
-        dst.biologicalSource = biologicalSource == null ? null : biologicalSource.copy();
+        dst.biologicalSourceEvent = biologicalSourceEvent == null ? null : biologicalSourceEvent.copy();
         if (processingFacility != null) {
           dst.processingFacility = new ArrayList<Reference>();
           for (Reference i : processingFacility)
             dst.processingFacility.add(i.copy());
         };
         dst.division = division == null ? null : division.copy();
-        dst.status = status == null ? null : status.copy();
+        dst.productStatus = productStatus == null ? null : productStatus.copy();
         dst.expirationDate = expirationDate == null ? null : expirationDate.copy();
         dst.collection = collection == null ? null : collection.copy();
         dst.storageTempRequirements = storageTempRequirements == null ? null : storageTempRequirements.copy();
@@ -1869,10 +1626,11 @@ public class BiologicallyDerivedProduct extends DomainResource {
         BiologicallyDerivedProduct o = (BiologicallyDerivedProduct) other_;
         return compareDeep(productCategory, o.productCategory, true) && compareDeep(productCode, o.productCode, true)
            && compareDeep(parent, o.parent, true) && compareDeep(request, o.request, true) && compareDeep(identifier, o.identifier, true)
-           && compareDeep(biologicalSource, o.biologicalSource, true) && compareDeep(processingFacility, o.processingFacility, true)
-           && compareDeep(division, o.division, true) && compareDeep(status, o.status, true) && compareDeep(expirationDate, o.expirationDate, true)
-           && compareDeep(collection, o.collection, true) && compareDeep(storageTempRequirements, o.storageTempRequirements, true)
-           && compareDeep(property, o.property, true);
+           && compareDeep(biologicalSourceEvent, o.biologicalSourceEvent, true) && compareDeep(processingFacility, o.processingFacility, true)
+           && compareDeep(division, o.division, true) && compareDeep(productStatus, o.productStatus, true)
+           && compareDeep(expirationDate, o.expirationDate, true) && compareDeep(collection, o.collection, true)
+           && compareDeep(storageTempRequirements, o.storageTempRequirements, true) && compareDeep(property, o.property, true)
+          ;
       }
 
       @Override
@@ -1882,14 +1640,14 @@ public class BiologicallyDerivedProduct extends DomainResource {
         if (!(other_ instanceof BiologicallyDerivedProduct))
           return false;
         BiologicallyDerivedProduct o = (BiologicallyDerivedProduct) other_;
-        return compareValues(productCategory, o.productCategory, true) && compareValues(division, o.division, true)
-           && compareValues(status, o.status, true) && compareValues(expirationDate, o.expirationDate, true);
+        return compareValues(division, o.division, true) && compareValues(expirationDate, o.expirationDate, true)
+          ;
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(productCategory, productCode
-          , parent, request, identifier, biologicalSource, processingFacility, division, status
-          , expirationDate, collection, storageTempRequirements, property);
+          , parent, request, identifier, biologicalSourceEvent, processingFacility, division
+          , productStatus, expirationDate, collection, storageTempRequirements, property);
       }
 
   @Override
@@ -1898,24 +1656,156 @@ public class BiologicallyDerivedProduct extends DomainResource {
    }
 
  /**
-   * Search parameter: <b>biological-source</b>
+   * Search parameter: <b>biological-source-event</b>
    * <p>
    * Description: <b>The biological source for the biologically derived product</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>BiologicallyDerivedProduct.biologicalSource</b><br>
+   * Path: <b>BiologicallyDerivedProduct.biologicalSourceEvent</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="biological-source", path="BiologicallyDerivedProduct.biologicalSource", description="The biological source for the biologically derived product", type="token" )
-  public static final String SP_BIOLOGICAL_SOURCE = "biological-source";
+  @SearchParamDefinition(name="biological-source-event", path="BiologicallyDerivedProduct.biologicalSourceEvent", description="The biological source for the biologically derived product", type="token" )
+  public static final String SP_BIOLOGICAL_SOURCE_EVENT = "biological-source-event";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>biological-source</b>
+   * <b>Fluent Client</b> search parameter constant for <b>biological-source-event</b>
    * <p>
    * Description: <b>The biological source for the biologically derived product</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>BiologicallyDerivedProduct.biologicalSource</b><br>
+   * Path: <b>BiologicallyDerivedProduct.biologicalSourceEvent</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam BIOLOGICAL_SOURCE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_BIOLOGICAL_SOURCE);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam BIOLOGICAL_SOURCE_EVENT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_BIOLOGICAL_SOURCE_EVENT);
+
+ /**
+   * Search parameter: <b>collector</b>
+   * <p>
+   * Description: <b>Procedure request to obtain this biologically derived product.</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>BiologicallyDerivedProduct.collection.collector</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="collector", path="BiologicallyDerivedProduct.collection.collector", description="Procedure request to obtain this biologically derived product.", type="reference", target={Practitioner.class, PractitionerRole.class } )
+  public static final String SP_COLLECTOR = "collector";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>collector</b>
+   * <p>
+   * Description: <b>Procedure request to obtain this biologically derived product.</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>BiologicallyDerivedProduct.collection.collector</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam COLLECTOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_COLLECTOR);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>BiologicallyDerivedProduct:collector</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_COLLECTOR = new ca.uhn.fhir.model.api.Include("BiologicallyDerivedProduct:collector").toLocked();
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BiologicallyDerivedProduct.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="BiologicallyDerivedProduct.identifier", description="Identifier", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BiologicallyDerivedProduct.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>product-category</b>
+   * <p>
+   * Description: <b>Broad category of this product.</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BiologicallyDerivedProduct.productCategory</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="product-category", path="BiologicallyDerivedProduct.productCategory", description="Broad category of this product.", type="token" )
+  public static final String SP_PRODUCT_CATEGORY = "product-category";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>product-category</b>
+   * <p>
+   * Description: <b>Broad category of this product.</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BiologicallyDerivedProduct.productCategory</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PRODUCT_CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PRODUCT_CATEGORY);
+
+ /**
+   * Search parameter: <b>product-code</b>
+   * <p>
+   * Description: <b>A code that identifies the kind of this biologically derived product (SNOMED CT code).</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BiologicallyDerivedProduct.productCode</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="product-code", path="BiologicallyDerivedProduct.productCode", description="A code that identifies the kind of this biologically derived product (SNOMED CT code).", type="token" )
+  public static final String SP_PRODUCT_CODE = "product-code";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>product-code</b>
+   * <p>
+   * Description: <b>A code that identifies the kind of this biologically derived product (SNOMED CT code).</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BiologicallyDerivedProduct.productCode</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PRODUCT_CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PRODUCT_CODE);
+
+ /**
+   * Search parameter: <b>product-status</b>
+   * <p>
+   * Description: <b>Whether the product is currently available.</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BiologicallyDerivedProduct.productStatus</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="product-status", path="BiologicallyDerivedProduct.productStatus", description="Whether the product is currently available.", type="token" )
+  public static final String SP_PRODUCT_STATUS = "product-status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>product-status</b>
+   * <p>
+   * Description: <b>Whether the product is currently available.</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BiologicallyDerivedProduct.productStatus</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PRODUCT_STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PRODUCT_STATUS);
+
+ /**
+   * Search parameter: <b>request</b>
+   * <p>
+   * Description: <b>Procedure request to obtain this biologically derived product.</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>BiologicallyDerivedProduct.request</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="request", path="BiologicallyDerivedProduct.request", description="Procedure request to obtain this biologically derived product.", type="reference", target={ServiceRequest.class } )
+  public static final String SP_REQUEST = "request";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>request</b>
+   * <p>
+   * Description: <b>Procedure request to obtain this biologically derived product.</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>BiologicallyDerivedProduct.request</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam REQUEST = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_REQUEST);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>BiologicallyDerivedProduct:request</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_REQUEST = new ca.uhn.fhir.model.api.Include("BiologicallyDerivedProduct:request").toLocked();
 
 
 }

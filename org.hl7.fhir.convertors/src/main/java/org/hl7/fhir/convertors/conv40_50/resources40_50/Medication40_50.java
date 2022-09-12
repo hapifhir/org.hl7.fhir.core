@@ -137,7 +137,7 @@ public class Medication40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Medication.MedicationIngredientComponent tgt = new org.hl7.fhir.r5.model.Medication.MedicationIngredientComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasItemCodeableConcept())
       tgt.getItem().setConcept(CodeableConcept40_50.convertCodeableConcept(src.getItemCodeableConcept()));
     if (src.hasItemReference())
@@ -153,7 +153,7 @@ public class Medication40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Medication.MedicationIngredientComponent tgt = new org.hl7.fhir.r4.model.Medication.MedicationIngredientComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.getItem().hasConcept())
       tgt.setItem(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getItem().getConcept()));
     if (src.getItem().hasReference())
@@ -169,7 +169,7 @@ public class Medication40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Medication.MedicationBatchComponent tgt = new org.hl7.fhir.r5.model.Medication.MedicationBatchComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasLotNumber())
       tgt.setLotNumberElement(String40_50.convertString(src.getLotNumberElement()));
     if (src.hasExpirationDate())
@@ -181,7 +181,7 @@ public class Medication40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Medication.MedicationBatchComponent tgt = new org.hl7.fhir.r4.model.Medication.MedicationBatchComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasLotNumber())
       tgt.setLotNumberElement(String40_50.convertString(src.getLotNumberElement()));
     if (src.hasExpirationDate())

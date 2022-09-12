@@ -140,7 +140,7 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
    * @return Whether to throw an exception if unknown content is found (or just skip it) 
    */
   public boolean isAllowUnknownContent() {
-    return allowUnknownContent;
+    return true; // allowUnknownContent;
   }
   /**
    * @param allowUnknownContent Whether to throw an exception if unknown content is found (or just skip it)

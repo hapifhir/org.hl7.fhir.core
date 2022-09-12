@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,7 +48,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * The technical details of an endpoint that can be used for electronic services, such as for web services providing XDS.b or a REST endpoint for another FHIR server. This may include any security context information.
+ * The technical details of an endpoint that can be used for electronic services, such as for web services providing XDS.b, a REST endpoint for another FHIR server, or a s/Mime email address. This may include any security context information.
  */
 @ResourceDef(name="Endpoint", profile="http://hl7.org/fhir/StructureDefinition/Endpoint")
 public class Endpoint extends DomainResource {
@@ -75,10 +75,6 @@ public class Endpoint extends DomainResource {
          */
         ENTEREDINERROR, 
         /**
-         * This endpoint is not intended for production usage.
-         */
-        TEST, 
-        /**
          * added to help the parsers with the generic types
          */
         NULL;
@@ -95,8 +91,6 @@ public class Endpoint extends DomainResource {
           return OFF;
         if ("entered-in-error".equals(codeString))
           return ENTEREDINERROR;
-        if ("test".equals(codeString))
-          return TEST;
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
@@ -109,7 +103,7 @@ public class Endpoint extends DomainResource {
             case ERROR: return "error";
             case OFF: return "off";
             case ENTEREDINERROR: return "entered-in-error";
-            case TEST: return "test";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -120,7 +114,7 @@ public class Endpoint extends DomainResource {
             case ERROR: return "http://hl7.org/fhir/endpoint-status";
             case OFF: return "http://hl7.org/fhir/endpoint-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/endpoint-status";
-            case TEST: return "http://hl7.org/fhir/endpoint-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -131,7 +125,7 @@ public class Endpoint extends DomainResource {
             case ERROR: return "This endpoint has exceeded connectivity thresholds and is considered in an error state and should no longer be attempted to connect to until corrective action is taken.";
             case OFF: return "This endpoint is no longer to be used.";
             case ENTEREDINERROR: return "This instance should not have been part of this patient's medical record.";
-            case TEST: return "This endpoint is not intended for production usage.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -142,7 +136,7 @@ public class Endpoint extends DomainResource {
             case ERROR: return "Error";
             case OFF: return "Off";
             case ENTEREDINERROR: return "Entered in error";
-            case TEST: return "Test";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -163,8 +157,6 @@ public class Endpoint extends DomainResource {
           return EndpointStatus.OFF;
         if ("entered-in-error".equals(codeString))
           return EndpointStatus.ENTEREDINERROR;
-        if ("test".equals(codeString))
-          return EndpointStatus.TEST;
         throw new IllegalArgumentException("Unknown EndpointStatus code '"+codeString+"'");
         }
         public Enumeration<EndpointStatus> fromType(Base code) throws FHIRException {
@@ -185,8 +177,6 @@ public class Endpoint extends DomainResource {
           return new Enumeration<EndpointStatus>(this, EndpointStatus.OFF);
         if ("entered-in-error".equals(codeString))
           return new Enumeration<EndpointStatus>(this, EndpointStatus.ENTEREDINERROR);
-        if ("test".equals(codeString))
-          return new Enumeration<EndpointStatus>(this, EndpointStatus.TEST);
         throw new FHIRException("Unknown EndpointStatus code '"+codeString+"'");
         }
     public String toCode(EndpointStatus code) {
@@ -200,8 +190,6 @@ public class Endpoint extends DomainResource {
         return "off";
       if (code == EndpointStatus.ENTEREDINERROR)
         return "entered-in-error";
-      if (code == EndpointStatus.TEST)
-        return "test";
       return "?";
       }
     public String toSystem(EndpointStatus code) {
@@ -217,20 +205,20 @@ public class Endpoint extends DomainResource {
     protected List<Identifier> identifier;
 
     /**
-     * active | suspended | error | off | test.
+     * The endpoint status represents the general expected availability of an endpoint.
      */
     @Child(name = "status", type = {CodeType.class}, order=1, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="active | suspended | error | off | entered-in-error | test", formalDefinition="active | suspended | error | off | test." )
+    @Description(shortDefinition="active | suspended | error | off | entered-in-error | test", formalDefinition="The endpoint status represents the general expected availability of an endpoint." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/endpoint-status")
     protected Enumeration<EndpointStatus> status;
 
     /**
      * A coded value that represents the technical details of the usage of this endpoint, such as what WSDLs should be used in what way. (e.g. XDS.b/DICOM/cds-hook).
      */
-    @Child(name = "connectionType", type = {Coding.class}, order=2, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "connectionType", type = {CodeableConcept.class}, order=2, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Protocol/Profile/Standard to be used with this endpoint connection", formalDefinition="A coded value that represents the technical details of the usage of this endpoint, such as what WSDLs should be used in what way. (e.g. XDS.b/DICOM/cds-hook)." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/endpoint-connection-type")
-    protected Coding connectionType;
+    protected List<CodeableConcept> connectionType;
 
     /**
      * A friendly name that this endpoint can be referred to with.
@@ -240,30 +228,45 @@ public class Endpoint extends DomainResource {
     protected StringType name;
 
     /**
+     * The description of the endpoint and what it is for (typically used as supplemental information in an endpoint directory describing it's usage/purpose).
+     */
+    @Child(name = "description", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Additional details about the endpoint that could be displayed as further information to identify the description beyond its name", formalDefinition="The description of the endpoint and what it is for (typically used as supplemental information in an endpoint directory describing it's usage/purpose)." )
+    protected StringType description;
+
+    /**
+     * The type of environment(s) exposed at this endpoint (dev, prod, test, etc).
+     */
+    @Child(name = "environmentType", type = {CodeableConcept.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="The type of environment(s) exposed at this endpoint", formalDefinition="The type of environment(s) exposed at this endpoint (dev, prod, test, etc)." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/endpoint-environment")
+    protected List<CodeableConcept> environmentType;
+
+    /**
      * The organization that manages this endpoint (even if technically another organization is hosting this in the cloud, it is the organization associated with the data).
      */
-    @Child(name = "managingOrganization", type = {Organization.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "managingOrganization", type = {Organization.class}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Organization that manages this endpoint (might not be the organization that exposes the endpoint)", formalDefinition="The organization that manages this endpoint (even if technically another organization is hosting this in the cloud, it is the organization associated with the data)." )
     protected Reference managingOrganization;
 
     /**
-     * Contact details for a human to contact about the subscription. The primary use of this for system administrator troubleshooting.
+     * Contact details for a human to contact about the endpoint. The primary use of this for system administrator troubleshooting.
      */
-    @Child(name = "contact", type = {ContactPoint.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Contact details for source (e.g. troubleshooting)", formalDefinition="Contact details for a human to contact about the subscription. The primary use of this for system administrator troubleshooting." )
+    @Child(name = "contact", type = {ContactPoint.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Contact details for source (e.g. troubleshooting)", formalDefinition="Contact details for a human to contact about the endpoint. The primary use of this for system administrator troubleshooting." )
     protected List<ContactPoint> contact;
 
     /**
      * The interval during which the endpoint is expected to be operational.
      */
-    @Child(name = "period", type = {Period.class}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "period", type = {Period.class}, order=8, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Interval the endpoint is expected to be operational", formalDefinition="The interval during which the endpoint is expected to be operational." )
     protected Period period;
 
     /**
      * The payload type describes the acceptable content that can be communicated on the endpoint.
      */
-    @Child(name = "payloadType", type = {CodeableConcept.class}, order=7, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "payloadType", type = {CodeableConcept.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The type of content that may be used at this endpoint (e.g. XDS Discharge summaries)", formalDefinition="The payload type describes the acceptable content that can be communicated on the endpoint." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/endpoint-payload-type")
     protected List<CodeableConcept> payloadType;
@@ -271,7 +274,7 @@ public class Endpoint extends DomainResource {
     /**
      * The mime type to send the payload in - e.g. application/fhir+xml, application/fhir+json. If the mime type is not specified, then the sender could send any content (including no content depending on the connectionType).
      */
-    @Child(name = "payloadMimeType", type = {CodeType.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "payloadMimeType", type = {CodeType.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Mimetype to send. If not specified, the content could be anything (including no payload, if the connectionType defined this)", formalDefinition="The mime type to send the payload in - e.g. application/fhir+xml, application/fhir+json. If the mime type is not specified, then the sender could send any content (including no content depending on the connectionType)." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/mimetypes")
     protected List<CodeType> payloadMimeType;
@@ -279,18 +282,18 @@ public class Endpoint extends DomainResource {
     /**
      * The uri that describes the actual end-point to connect to.
      */
-    @Child(name = "address", type = {UrlType.class}, order=9, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "address", type = {UrlType.class}, order=11, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The technical base address for connecting to this endpoint", formalDefinition="The uri that describes the actual end-point to connect to." )
     protected UrlType address;
 
     /**
      * Additional headers / information to send as part of the notification.
      */
-    @Child(name = "header", type = {StringType.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "header", type = {StringType.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Usage depends on the channel type", formalDefinition="Additional headers / information to send as part of the notification." )
     protected List<StringType> header;
 
-    private static final long serialVersionUID = 1528960001L;
+    private static final long serialVersionUID = -775722791L;
 
   /**
    * Constructor
@@ -302,11 +305,10 @@ public class Endpoint extends DomainResource {
   /**
    * Constructor
    */
-    public Endpoint(EndpointStatus status, Coding connectionType, CodeableConcept payloadType, String address) {
+    public Endpoint(EndpointStatus status, CodeableConcept connectionType, String address) {
       super();
       this.setStatus(status);
-      this.setConnectionType(connectionType);
-      this.addPayloadType(payloadType);
+      this.addConnectionType(connectionType);
       this.setAddress(address);
     }
 
@@ -364,7 +366,7 @@ public class Endpoint extends DomainResource {
     }
 
     /**
-     * @return {@link #status} (active | suspended | error | off | test.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     * @return {@link #status} (The endpoint status represents the general expected availability of an endpoint.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
     public Enumeration<EndpointStatus> getStatusElement() { 
       if (this.status == null)
@@ -384,7 +386,7 @@ public class Endpoint extends DomainResource {
     }
 
     /**
-     * @param value {@link #status} (active | suspended | error | off | test.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     * @param value {@link #status} (The endpoint status represents the general expected availability of an endpoint.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
     public Endpoint setStatusElement(Enumeration<EndpointStatus> value) { 
       this.status = value;
@@ -392,14 +394,14 @@ public class Endpoint extends DomainResource {
     }
 
     /**
-     * @return active | suspended | error | off | test.
+     * @return The endpoint status represents the general expected availability of an endpoint.
      */
     public EndpointStatus getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
-     * @param value active | suspended | error | off | test.
+     * @param value The endpoint status represents the general expected availability of an endpoint.
      */
     public Endpoint setStatus(EndpointStatus value) { 
         if (this.status == null)
@@ -411,25 +413,54 @@ public class Endpoint extends DomainResource {
     /**
      * @return {@link #connectionType} (A coded value that represents the technical details of the usage of this endpoint, such as what WSDLs should be used in what way. (e.g. XDS.b/DICOM/cds-hook).)
      */
-    public Coding getConnectionType() { 
+    public List<CodeableConcept> getConnectionType() { 
       if (this.connectionType == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Endpoint.connectionType");
-        else if (Configuration.doAutoCreate())
-          this.connectionType = new Coding(); // cc
+        this.connectionType = new ArrayList<CodeableConcept>();
       return this.connectionType;
     }
 
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public Endpoint setConnectionType(List<CodeableConcept> theConnectionType) { 
+      this.connectionType = theConnectionType;
+      return this;
+    }
+
     public boolean hasConnectionType() { 
-      return this.connectionType != null && !this.connectionType.isEmpty();
+      if (this.connectionType == null)
+        return false;
+      for (CodeableConcept item : this.connectionType)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public CodeableConcept addConnectionType() { //3
+      CodeableConcept t = new CodeableConcept();
+      if (this.connectionType == null)
+        this.connectionType = new ArrayList<CodeableConcept>();
+      this.connectionType.add(t);
+      return t;
+    }
+
+    public Endpoint addConnectionType(CodeableConcept t) { //3
+      if (t == null)
+        return this;
+      if (this.connectionType == null)
+        this.connectionType = new ArrayList<CodeableConcept>();
+      this.connectionType.add(t);
+      return this;
     }
 
     /**
-     * @param value {@link #connectionType} (A coded value that represents the technical details of the usage of this endpoint, such as what WSDLs should be used in what way. (e.g. XDS.b/DICOM/cds-hook).)
+     * @return The first repetition of repeating field {@link #connectionType}, creating it if it does not already exist {3}
      */
-    public Endpoint setConnectionType(Coding value) { 
-      this.connectionType = value;
-      return this;
+    public CodeableConcept getConnectionTypeFirstRep() { 
+      if (getConnectionType().isEmpty()) {
+        addConnectionType();
+      }
+      return getConnectionType().get(0);
     }
 
     /**
@@ -482,6 +513,108 @@ public class Endpoint extends DomainResource {
     }
 
     /**
+     * @return {@link #description} (The description of the endpoint and what it is for (typically used as supplemental information in an endpoint directory describing it's usage/purpose).). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+     */
+    public StringType getDescriptionElement() { 
+      if (this.description == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Endpoint.description");
+        else if (Configuration.doAutoCreate())
+          this.description = new StringType(); // bb
+      return this.description;
+    }
+
+    public boolean hasDescriptionElement() { 
+      return this.description != null && !this.description.isEmpty();
+    }
+
+    public boolean hasDescription() { 
+      return this.description != null && !this.description.isEmpty();
+    }
+
+    /**
+     * @param value {@link #description} (The description of the endpoint and what it is for (typically used as supplemental information in an endpoint directory describing it's usage/purpose).). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+     */
+    public Endpoint setDescriptionElement(StringType value) { 
+      this.description = value;
+      return this;
+    }
+
+    /**
+     * @return The description of the endpoint and what it is for (typically used as supplemental information in an endpoint directory describing it's usage/purpose).
+     */
+    public String getDescription() { 
+      return this.description == null ? null : this.description.getValue();
+    }
+
+    /**
+     * @param value The description of the endpoint and what it is for (typically used as supplemental information in an endpoint directory describing it's usage/purpose).
+     */
+    public Endpoint setDescription(String value) { 
+      if (Utilities.noString(value))
+        this.description = null;
+      else {
+        if (this.description == null)
+          this.description = new StringType();
+        this.description.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #environmentType} (The type of environment(s) exposed at this endpoint (dev, prod, test, etc).)
+     */
+    public List<CodeableConcept> getEnvironmentType() { 
+      if (this.environmentType == null)
+        this.environmentType = new ArrayList<CodeableConcept>();
+      return this.environmentType;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public Endpoint setEnvironmentType(List<CodeableConcept> theEnvironmentType) { 
+      this.environmentType = theEnvironmentType;
+      return this;
+    }
+
+    public boolean hasEnvironmentType() { 
+      if (this.environmentType == null)
+        return false;
+      for (CodeableConcept item : this.environmentType)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public CodeableConcept addEnvironmentType() { //3
+      CodeableConcept t = new CodeableConcept();
+      if (this.environmentType == null)
+        this.environmentType = new ArrayList<CodeableConcept>();
+      this.environmentType.add(t);
+      return t;
+    }
+
+    public Endpoint addEnvironmentType(CodeableConcept t) { //3
+      if (t == null)
+        return this;
+      if (this.environmentType == null)
+        this.environmentType = new ArrayList<CodeableConcept>();
+      this.environmentType.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #environmentType}, creating it if it does not already exist {3}
+     */
+    public CodeableConcept getEnvironmentTypeFirstRep() { 
+      if (getEnvironmentType().isEmpty()) {
+        addEnvironmentType();
+      }
+      return getEnvironmentType().get(0);
+    }
+
+    /**
      * @return {@link #managingOrganization} (The organization that manages this endpoint (even if technically another organization is hosting this in the cloud, it is the organization associated with the data).)
      */
     public Reference getManagingOrganization() { 
@@ -506,7 +639,7 @@ public class Endpoint extends DomainResource {
     }
 
     /**
-     * @return {@link #contact} (Contact details for a human to contact about the subscription. The primary use of this for system administrator troubleshooting.)
+     * @return {@link #contact} (Contact details for a human to contact about the endpoint. The primary use of this for system administrator troubleshooting.)
      */
     public List<ContactPoint> getContact() { 
       if (this.contact == null)
@@ -805,11 +938,13 @@ public class Endpoint extends DomainResource {
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Identifier for the organization that is used to identify the endpoint across multiple disparate systems.", 0, java.lang.Integer.MAX_VALUE, identifier));
-        children.add(new Property("status", "code", "active | suspended | error | off | test.", 0, 1, status));
-        children.add(new Property("connectionType", "Coding", "A coded value that represents the technical details of the usage of this endpoint, such as what WSDLs should be used in what way. (e.g. XDS.b/DICOM/cds-hook).", 0, 1, connectionType));
+        children.add(new Property("status", "code", "The endpoint status represents the general expected availability of an endpoint.", 0, 1, status));
+        children.add(new Property("connectionType", "CodeableConcept", "A coded value that represents the technical details of the usage of this endpoint, such as what WSDLs should be used in what way. (e.g. XDS.b/DICOM/cds-hook).", 0, java.lang.Integer.MAX_VALUE, connectionType));
         children.add(new Property("name", "string", "A friendly name that this endpoint can be referred to with.", 0, 1, name));
+        children.add(new Property("description", "string", "The description of the endpoint and what it is for (typically used as supplemental information in an endpoint directory describing it's usage/purpose).", 0, 1, description));
+        children.add(new Property("environmentType", "CodeableConcept", "The type of environment(s) exposed at this endpoint (dev, prod, test, etc).", 0, java.lang.Integer.MAX_VALUE, environmentType));
         children.add(new Property("managingOrganization", "Reference(Organization)", "The organization that manages this endpoint (even if technically another organization is hosting this in the cloud, it is the organization associated with the data).", 0, 1, managingOrganization));
-        children.add(new Property("contact", "ContactPoint", "Contact details for a human to contact about the subscription. The primary use of this for system administrator troubleshooting.", 0, java.lang.Integer.MAX_VALUE, contact));
+        children.add(new Property("contact", "ContactPoint", "Contact details for a human to contact about the endpoint. The primary use of this for system administrator troubleshooting.", 0, java.lang.Integer.MAX_VALUE, contact));
         children.add(new Property("period", "Period", "The interval during which the endpoint is expected to be operational.", 0, 1, period));
         children.add(new Property("payloadType", "CodeableConcept", "The payload type describes the acceptable content that can be communicated on the endpoint.", 0, java.lang.Integer.MAX_VALUE, payloadType));
         children.add(new Property("payloadMimeType", "code", "The mime type to send the payload in - e.g. application/fhir+xml, application/fhir+json. If the mime type is not specified, then the sender could send any content (including no content depending on the connectionType).", 0, java.lang.Integer.MAX_VALUE, payloadMimeType));
@@ -821,11 +956,13 @@ public class Endpoint extends DomainResource {
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Identifier for the organization that is used to identify the endpoint across multiple disparate systems.", 0, java.lang.Integer.MAX_VALUE, identifier);
-        case -892481550: /*status*/  return new Property("status", "code", "active | suspended | error | off | test.", 0, 1, status);
-        case 1270211384: /*connectionType*/  return new Property("connectionType", "Coding", "A coded value that represents the technical details of the usage of this endpoint, such as what WSDLs should be used in what way. (e.g. XDS.b/DICOM/cds-hook).", 0, 1, connectionType);
+        case -892481550: /*status*/  return new Property("status", "code", "The endpoint status represents the general expected availability of an endpoint.", 0, 1, status);
+        case 1270211384: /*connectionType*/  return new Property("connectionType", "CodeableConcept", "A coded value that represents the technical details of the usage of this endpoint, such as what WSDLs should be used in what way. (e.g. XDS.b/DICOM/cds-hook).", 0, java.lang.Integer.MAX_VALUE, connectionType);
         case 3373707: /*name*/  return new Property("name", "string", "A friendly name that this endpoint can be referred to with.", 0, 1, name);
+        case -1724546052: /*description*/  return new Property("description", "string", "The description of the endpoint and what it is for (typically used as supplemental information in an endpoint directory describing it's usage/purpose).", 0, 1, description);
+        case 1680602093: /*environmentType*/  return new Property("environmentType", "CodeableConcept", "The type of environment(s) exposed at this endpoint (dev, prod, test, etc).", 0, java.lang.Integer.MAX_VALUE, environmentType);
         case -2058947787: /*managingOrganization*/  return new Property("managingOrganization", "Reference(Organization)", "The organization that manages this endpoint (even if technically another organization is hosting this in the cloud, it is the organization associated with the data).", 0, 1, managingOrganization);
-        case 951526432: /*contact*/  return new Property("contact", "ContactPoint", "Contact details for a human to contact about the subscription. The primary use of this for system administrator troubleshooting.", 0, java.lang.Integer.MAX_VALUE, contact);
+        case 951526432: /*contact*/  return new Property("contact", "ContactPoint", "Contact details for a human to contact about the endpoint. The primary use of this for system administrator troubleshooting.", 0, java.lang.Integer.MAX_VALUE, contact);
         case -991726143: /*period*/  return new Property("period", "Period", "The interval during which the endpoint is expected to be operational.", 0, 1, period);
         case 909929960: /*payloadType*/  return new Property("payloadType", "CodeableConcept", "The payload type describes the acceptable content that can be communicated on the endpoint.", 0, java.lang.Integer.MAX_VALUE, payloadType);
         case -1702836932: /*payloadMimeType*/  return new Property("payloadMimeType", "code", "The mime type to send the payload in - e.g. application/fhir+xml, application/fhir+json. If the mime type is not specified, then the sender could send any content (including no content depending on the connectionType).", 0, java.lang.Integer.MAX_VALUE, payloadMimeType);
@@ -841,8 +978,10 @@ public class Endpoint extends DomainResource {
         switch (hash) {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<EndpointStatus>
-        case 1270211384: /*connectionType*/ return this.connectionType == null ? new Base[0] : new Base[] {this.connectionType}; // Coding
+        case 1270211384: /*connectionType*/ return this.connectionType == null ? new Base[0] : this.connectionType.toArray(new Base[this.connectionType.size()]); // CodeableConcept
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
+        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
+        case 1680602093: /*environmentType*/ return this.environmentType == null ? new Base[0] : this.environmentType.toArray(new Base[this.environmentType.size()]); // CodeableConcept
         case -2058947787: /*managingOrganization*/ return this.managingOrganization == null ? new Base[0] : new Base[] {this.managingOrganization}; // Reference
         case 951526432: /*contact*/ return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // ContactPoint
         case -991726143: /*period*/ return this.period == null ? new Base[0] : new Base[] {this.period}; // Period
@@ -866,10 +1005,16 @@ public class Endpoint extends DomainResource {
           this.status = (Enumeration) value; // Enumeration<EndpointStatus>
           return value;
         case 1270211384: // connectionType
-          this.connectionType = TypeConvertor.castToCoding(value); // Coding
+          this.getConnectionType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 3373707: // name
           this.name = TypeConvertor.castToString(value); // StringType
+          return value;
+        case -1724546052: // description
+          this.description = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 1680602093: // environmentType
+          this.getEnvironmentType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -2058947787: // managingOrganization
           this.managingOrganization = TypeConvertor.castToReference(value); // Reference
@@ -905,9 +1050,13 @@ public class Endpoint extends DomainResource {
           value = new EndpointStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<EndpointStatus>
         } else if (name.equals("connectionType")) {
-          this.connectionType = TypeConvertor.castToCoding(value); // Coding
+          this.getConnectionType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("name")) {
           this.name = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("description")) {
+          this.description = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("environmentType")) {
+          this.getEnvironmentType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("managingOrganization")) {
           this.managingOrganization = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("contact")) {
@@ -932,8 +1081,10 @@ public class Endpoint extends DomainResource {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
-        case 1270211384:  return getConnectionType();
+        case 1270211384:  return addConnectionType(); 
         case 3373707:  return getNameElement();
+        case -1724546052:  return getDescriptionElement();
+        case 1680602093:  return addEnvironmentType(); 
         case -2058947787:  return getManagingOrganization();
         case 951526432:  return addContact(); 
         case -991726143:  return getPeriod();
@@ -951,8 +1102,10 @@ public class Endpoint extends DomainResource {
         switch (hash) {
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case -892481550: /*status*/ return new String[] {"code"};
-        case 1270211384: /*connectionType*/ return new String[] {"Coding"};
+        case 1270211384: /*connectionType*/ return new String[] {"CodeableConcept"};
         case 3373707: /*name*/ return new String[] {"string"};
+        case -1724546052: /*description*/ return new String[] {"string"};
+        case 1680602093: /*environmentType*/ return new String[] {"CodeableConcept"};
         case -2058947787: /*managingOrganization*/ return new String[] {"Reference"};
         case 951526432: /*contact*/ return new String[] {"ContactPoint"};
         case -991726143: /*period*/ return new String[] {"Period"};
@@ -974,11 +1127,16 @@ public class Endpoint extends DomainResource {
           throw new FHIRException("Cannot call addChild on a primitive type Endpoint.status");
         }
         else if (name.equals("connectionType")) {
-          this.connectionType = new Coding();
-          return this.connectionType;
+          return addConnectionType();
         }
         else if (name.equals("name")) {
           throw new FHIRException("Cannot call addChild on a primitive type Endpoint.name");
+        }
+        else if (name.equals("description")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Endpoint.description");
+        }
+        else if (name.equals("environmentType")) {
+          return addEnvironmentType();
         }
         else if (name.equals("managingOrganization")) {
           this.managingOrganization = new Reference();
@@ -1026,8 +1184,18 @@ public class Endpoint extends DomainResource {
             dst.identifier.add(i.copy());
         };
         dst.status = status == null ? null : status.copy();
-        dst.connectionType = connectionType == null ? null : connectionType.copy();
+        if (connectionType != null) {
+          dst.connectionType = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : connectionType)
+            dst.connectionType.add(i.copy());
+        };
         dst.name = name == null ? null : name.copy();
+        dst.description = description == null ? null : description.copy();
+        if (environmentType != null) {
+          dst.environmentType = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : environmentType)
+            dst.environmentType.add(i.copy());
+        };
         dst.managingOrganization = managingOrganization == null ? null : managingOrganization.copy();
         if (contact != null) {
           dst.contact = new ArrayList<ContactPoint>();
@@ -1065,10 +1233,10 @@ public class Endpoint extends DomainResource {
           return false;
         Endpoint o = (Endpoint) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(connectionType, o.connectionType, true)
-           && compareDeep(name, o.name, true) && compareDeep(managingOrganization, o.managingOrganization, true)
-           && compareDeep(contact, o.contact, true) && compareDeep(period, o.period, true) && compareDeep(payloadType, o.payloadType, true)
-           && compareDeep(payloadMimeType, o.payloadMimeType, true) && compareDeep(address, o.address, true)
-           && compareDeep(header, o.header, true);
+           && compareDeep(name, o.name, true) && compareDeep(description, o.description, true) && compareDeep(environmentType, o.environmentType, true)
+           && compareDeep(managingOrganization, o.managingOrganization, true) && compareDeep(contact, o.contact, true)
+           && compareDeep(period, o.period, true) && compareDeep(payloadType, o.payloadType, true) && compareDeep(payloadMimeType, o.payloadMimeType, true)
+           && compareDeep(address, o.address, true) && compareDeep(header, o.header, true);
       }
 
       @Override
@@ -1078,14 +1246,15 @@ public class Endpoint extends DomainResource {
         if (!(other_ instanceof Endpoint))
           return false;
         Endpoint o = (Endpoint) other_;
-        return compareValues(status, o.status, true) && compareValues(name, o.name, true) && compareValues(payloadMimeType, o.payloadMimeType, true)
-           && compareValues(address, o.address, true) && compareValues(header, o.header, true);
+        return compareValues(status, o.status, true) && compareValues(name, o.name, true) && compareValues(description, o.description, true)
+           && compareValues(payloadMimeType, o.payloadMimeType, true) && compareValues(address, o.address, true)
+           && compareValues(header, o.header, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, connectionType
-          , name, managingOrganization, contact, period, payloadType, payloadMimeType, address
-          , header);
+          , name, description, environmentType, managingOrganization, contact, period, payloadType
+          , payloadMimeType, address, header);
       }
 
   @Override

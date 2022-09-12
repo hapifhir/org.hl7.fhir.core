@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,7 +47,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
 
 import org.hl7.fhir.instance.model.api.IBaseCoding;
 /**
- * Base StructureDefinition for Coding Type: A reference to a code defined by a terminology system.
+ * Coding Type: A reference to a code defined by a terminology system.
  */
 @DatatypeDef(name="Coding")
 public class Coding extends DataType implements IBaseCoding, ICompositeType, ICoding {

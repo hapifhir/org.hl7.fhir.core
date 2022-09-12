@@ -1,5 +1,7 @@
 package org.hl7.fhir.convertors.conv30_50.resources30_50;
 
+import java.util.stream.Collectors;
+
 import org.hl7.fhir.convertors.context.ConversionContext30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Reference30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Annotation30_50;
@@ -8,9 +10,10 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identi
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.DateTime30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.AllergyIntolerance.AllergyIntoleranceParticipantComponent;
+import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.CodeableReference;
-
-import java.util.stream.Collectors;
+import org.hl7.fhir.r5.model.Coding;
 
 public class AllergyIntolerance30_50 {
 
@@ -40,10 +43,12 @@ public class AllergyIntolerance30_50 {
       tgt.setOnset(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getOnset()));
     if (src.hasRecordedDate())
       tgt.setAssertedDateElement(DateTime30_50.convertDateTime(src.getRecordedDateElement()));
-    if (src.hasRecorder())
-      tgt.setRecorder(Reference30_50.convertReference(src.getRecorder()));
-    if (src.hasAsserter())
-      tgt.setAsserter(Reference30_50.convertReference(src.getAsserter()));
+    for (AllergyIntoleranceParticipantComponent t : src.getParticipant()) {
+      if (t.getFunction().hasCoding("http://terminology.hl7.org/CodeSystem/provenance-participant-type", "author"))
+        tgt.setRecorder(Reference30_50.convertReference(t.getActor()));
+      if (t.getFunction().hasCoding("http://terminology.hl7.org/CodeSystem/provenance-participant-type", "attester"))
+        tgt.setAsserter(Reference30_50.convertReference(t.getActor()));
+    }
     if (src.hasLastOccurrence())
       tgt.setLastOccurrenceElement(DateTime30_50.convertDateTime(src.getLastOccurrenceElement()));
     for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(Annotation30_50.convertAnnotation(t));
@@ -79,9 +84,13 @@ public class AllergyIntolerance30_50 {
     if (src.hasAssertedDate())
       tgt.setRecordedDateElement(DateTime30_50.convertDateTime(src.getAssertedDateElement()));
     if (src.hasRecorder())
-      tgt.setRecorder(Reference30_50.convertReference(src.getRecorder()));
+      tgt.addParticipant(new AllergyIntoleranceParticipantComponent()
+          .setFunction(new CodeableConcept().addCoding(new Coding("http://terminology.hl7.org/CodeSystem/provenance-participant-type", "author", "Author")))
+          .setActor(Reference30_50.convertReference(src.getRecorder())));
     if (src.hasAsserter())
-      tgt.setAsserter(Reference30_50.convertReference(src.getAsserter()));
+      tgt.addParticipant(new AllergyIntoleranceParticipantComponent()
+          .setFunction(new CodeableConcept().addCoding(new Coding("http://terminology.hl7.org/CodeSystem/provenance-participant-type", "attester", "Attester")))
+          .setActor(Reference30_50.convertReference(src.getRecorder())));
     if (src.hasLastOccurrence())
       tgt.setLastOccurrenceElement(DateTime30_50.convertDateTime(src.getLastOccurrenceElement()));
     for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(Annotation30_50.convertAnnotation(t));
@@ -215,7 +224,7 @@ public class AllergyIntolerance30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.AllergyIntolerance.AllergyIntoleranceReactionComponent tgt = new org.hl7.fhir.dstu3.model.AllergyIntolerance.AllergyIntoleranceReactionComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasSubstance())
       tgt.setSubstance(CodeableConcept30_50.convertCodeableConcept(src.getSubstance()));
     for (CodeableReference t : src.getManifestation())
@@ -236,7 +245,7 @@ public class AllergyIntolerance30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.AllergyIntolerance.AllergyIntoleranceReactionComponent tgt = new org.hl7.fhir.r5.model.AllergyIntolerance.AllergyIntoleranceReactionComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasSubstance())
       tgt.setSubstance(CodeableConcept30_50.convertCodeableConcept(src.getSubstance()));
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getManifestation())

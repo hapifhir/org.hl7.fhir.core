@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,155 +53,31 @@ import ca.uhn.fhir.model.api.annotation.Block;
 @ResourceDef(name="DocumentReference", profile="http://hl7.org/fhir/StructureDefinition/DocumentReference")
 public class DocumentReference extends DomainResource {
 
-    public enum DocumentAttestationMode {
-        /**
-         * The person authenticated the content in their personal capacity.
-         */
-        PERSONAL, 
-        /**
-         * The person authenticated the content in their professional capacity.
-         */
-        PROFESSIONAL, 
-        /**
-         * The person authenticated the content and accepted legal responsibility for its content.
-         */
-        LEGAL, 
-        /**
-         * The organization authenticated the content as consistent with their policies and procedures.
-         */
-        OFFICIAL, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static DocumentAttestationMode fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("personal".equals(codeString))
-          return PERSONAL;
-        if ("professional".equals(codeString))
-          return PROFESSIONAL;
-        if ("legal".equals(codeString))
-          return LEGAL;
-        if ("official".equals(codeString))
-          return OFFICIAL;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown DocumentAttestationMode code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case PERSONAL: return "personal";
-            case PROFESSIONAL: return "professional";
-            case LEGAL: return "legal";
-            case OFFICIAL: return "official";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case PERSONAL: return "http://hl7.org/fhir/document-attestation-mode";
-            case PROFESSIONAL: return "http://hl7.org/fhir/document-attestation-mode";
-            case LEGAL: return "http://hl7.org/fhir/document-attestation-mode";
-            case OFFICIAL: return "http://hl7.org/fhir/document-attestation-mode";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case PERSONAL: return "The person authenticated the content in their personal capacity.";
-            case PROFESSIONAL: return "The person authenticated the content in their professional capacity.";
-            case LEGAL: return "The person authenticated the content and accepted legal responsibility for its content.";
-            case OFFICIAL: return "The organization authenticated the content as consistent with their policies and procedures.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case PERSONAL: return "Personal";
-            case PROFESSIONAL: return "Professional";
-            case LEGAL: return "Legal";
-            case OFFICIAL: return "Official";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class DocumentAttestationModeEnumFactory implements EnumFactory<DocumentAttestationMode> {
-    public DocumentAttestationMode fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("personal".equals(codeString))
-          return DocumentAttestationMode.PERSONAL;
-        if ("professional".equals(codeString))
-          return DocumentAttestationMode.PROFESSIONAL;
-        if ("legal".equals(codeString))
-          return DocumentAttestationMode.LEGAL;
-        if ("official".equals(codeString))
-          return DocumentAttestationMode.OFFICIAL;
-        throw new IllegalArgumentException("Unknown DocumentAttestationMode code '"+codeString+"'");
-        }
-        public Enumeration<DocumentAttestationMode> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<DocumentAttestationMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("personal".equals(codeString))
-          return new Enumeration<DocumentAttestationMode>(this, DocumentAttestationMode.PERSONAL);
-        if ("professional".equals(codeString))
-          return new Enumeration<DocumentAttestationMode>(this, DocumentAttestationMode.PROFESSIONAL);
-        if ("legal".equals(codeString))
-          return new Enumeration<DocumentAttestationMode>(this, DocumentAttestationMode.LEGAL);
-        if ("official".equals(codeString))
-          return new Enumeration<DocumentAttestationMode>(this, DocumentAttestationMode.OFFICIAL);
-        throw new FHIRException("Unknown DocumentAttestationMode code '"+codeString+"'");
-        }
-    public String toCode(DocumentAttestationMode code) {
-      if (code == DocumentAttestationMode.PERSONAL)
-        return "personal";
-      if (code == DocumentAttestationMode.PROFESSIONAL)
-        return "professional";
-      if (code == DocumentAttestationMode.LEGAL)
-        return "legal";
-      if (code == DocumentAttestationMode.OFFICIAL)
-        return "official";
-      return "?";
-      }
-    public String toSystem(DocumentAttestationMode code) {
-      return code.getSystem();
-      }
-    }
-
     @Block()
     public static class DocumentReferenceAttesterComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * The type of attestation the authenticator offers.
          */
-        @Child(name = "mode", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Child(name = "mode", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="personal | professional | legal | official", formalDefinition="The type of attestation the authenticator offers." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/document-attestation-mode")
-        protected Enumeration<DocumentAttestationMode> mode;
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/composition-attestation-mode")
+        protected CodeableConcept mode;
 
         /**
-         * When the composition was attested by the party.
+         * When the document was attested by the party.
          */
         @Child(name = "time", type = {DateTimeType.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="When the composition was attested", formalDefinition="When the composition was attested by the party." )
+        @Description(shortDefinition="When the document was attested", formalDefinition="When the document was attested by the party." )
         protected DateTimeType time;
 
         /**
-         * Who attested the composition in the specified way.
+         * Who attested the document in the specified way.
          */
         @Child(name = "party", type = {Patient.class, RelatedPerson.class, Practitioner.class, PractitionerRole.class, Organization.class}, order=3, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Who attested the composition", formalDefinition="Who attested the composition in the specified way." )
+        @Description(shortDefinition="Who attested the document", formalDefinition="Who attested the document in the specified way." )
         protected Reference party;
 
-        private static final long serialVersionUID = -437585715L;
+        private static final long serialVersionUID = 545132751L;
 
     /**
      * Constructor
@@ -213,25 +89,21 @@ public class DocumentReference extends DomainResource {
     /**
      * Constructor
      */
-      public DocumentReferenceAttesterComponent(DocumentAttestationMode mode) {
+      public DocumentReferenceAttesterComponent(CodeableConcept mode) {
         super();
         this.setMode(mode);
       }
 
         /**
-         * @return {@link #mode} (The type of attestation the authenticator offers.). This is the underlying object with id, value and extensions. The accessor "getMode" gives direct access to the value
+         * @return {@link #mode} (The type of attestation the authenticator offers.)
          */
-        public Enumeration<DocumentAttestationMode> getModeElement() { 
+        public CodeableConcept getMode() { 
           if (this.mode == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create DocumentReferenceAttesterComponent.mode");
             else if (Configuration.doAutoCreate())
-              this.mode = new Enumeration<DocumentAttestationMode>(new DocumentAttestationModeEnumFactory()); // bb
+              this.mode = new CodeableConcept(); // cc
           return this.mode;
-        }
-
-        public boolean hasModeElement() { 
-          return this.mode != null && !this.mode.isEmpty();
         }
 
         public boolean hasMode() { 
@@ -239,32 +111,15 @@ public class DocumentReference extends DomainResource {
         }
 
         /**
-         * @param value {@link #mode} (The type of attestation the authenticator offers.). This is the underlying object with id, value and extensions. The accessor "getMode" gives direct access to the value
+         * @param value {@link #mode} (The type of attestation the authenticator offers.)
          */
-        public DocumentReferenceAttesterComponent setModeElement(Enumeration<DocumentAttestationMode> value) { 
+        public DocumentReferenceAttesterComponent setMode(CodeableConcept value) { 
           this.mode = value;
           return this;
         }
 
         /**
-         * @return The type of attestation the authenticator offers.
-         */
-        public DocumentAttestationMode getMode() { 
-          return this.mode == null ? null : this.mode.getValue();
-        }
-
-        /**
-         * @param value The type of attestation the authenticator offers.
-         */
-        public DocumentReferenceAttesterComponent setMode(DocumentAttestationMode value) { 
-            if (this.mode == null)
-              this.mode = new Enumeration<DocumentAttestationMode>(new DocumentAttestationModeEnumFactory());
-            this.mode.setValue(value);
-          return this;
-        }
-
-        /**
-         * @return {@link #time} (When the composition was attested by the party.). This is the underlying object with id, value and extensions. The accessor "getTime" gives direct access to the value
+         * @return {@link #time} (When the document was attested by the party.). This is the underlying object with id, value and extensions. The accessor "getTime" gives direct access to the value
          */
         public DateTimeType getTimeElement() { 
           if (this.time == null)
@@ -284,7 +139,7 @@ public class DocumentReference extends DomainResource {
         }
 
         /**
-         * @param value {@link #time} (When the composition was attested by the party.). This is the underlying object with id, value and extensions. The accessor "getTime" gives direct access to the value
+         * @param value {@link #time} (When the document was attested by the party.). This is the underlying object with id, value and extensions. The accessor "getTime" gives direct access to the value
          */
         public DocumentReferenceAttesterComponent setTimeElement(DateTimeType value) { 
           this.time = value;
@@ -292,14 +147,14 @@ public class DocumentReference extends DomainResource {
         }
 
         /**
-         * @return When the composition was attested by the party.
+         * @return When the document was attested by the party.
          */
         public Date getTime() { 
           return this.time == null ? null : this.time.getValue();
         }
 
         /**
-         * @param value When the composition was attested by the party.
+         * @param value When the document was attested by the party.
          */
         public DocumentReferenceAttesterComponent setTime(Date value) { 
           if (value == null)
@@ -313,7 +168,7 @@ public class DocumentReference extends DomainResource {
         }
 
         /**
-         * @return {@link #party} (Who attested the composition in the specified way.)
+         * @return {@link #party} (Who attested the document in the specified way.)
          */
         public Reference getParty() { 
           if (this.party == null)
@@ -329,7 +184,7 @@ public class DocumentReference extends DomainResource {
         }
 
         /**
-         * @param value {@link #party} (Who attested the composition in the specified way.)
+         * @param value {@link #party} (Who attested the document in the specified way.)
          */
         public DocumentReferenceAttesterComponent setParty(Reference value) { 
           this.party = value;
@@ -338,17 +193,17 @@ public class DocumentReference extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("mode", "code", "The type of attestation the authenticator offers.", 0, 1, mode));
-          children.add(new Property("time", "dateTime", "When the composition was attested by the party.", 0, 1, time));
-          children.add(new Property("party", "Reference(Patient|RelatedPerson|Practitioner|PractitionerRole|Organization)", "Who attested the composition in the specified way.", 0, 1, party));
+          children.add(new Property("mode", "CodeableConcept", "The type of attestation the authenticator offers.", 0, 1, mode));
+          children.add(new Property("time", "dateTime", "When the document was attested by the party.", 0, 1, time));
+          children.add(new Property("party", "Reference(Patient|RelatedPerson|Practitioner|PractitionerRole|Organization)", "Who attested the document in the specified way.", 0, 1, party));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3357091: /*mode*/  return new Property("mode", "code", "The type of attestation the authenticator offers.", 0, 1, mode);
-          case 3560141: /*time*/  return new Property("time", "dateTime", "When the composition was attested by the party.", 0, 1, time);
-          case 106437350: /*party*/  return new Property("party", "Reference(Patient|RelatedPerson|Practitioner|PractitionerRole|Organization)", "Who attested the composition in the specified way.", 0, 1, party);
+          case 3357091: /*mode*/  return new Property("mode", "CodeableConcept", "The type of attestation the authenticator offers.", 0, 1, mode);
+          case 3560141: /*time*/  return new Property("time", "dateTime", "When the document was attested by the party.", 0, 1, time);
+          case 106437350: /*party*/  return new Property("party", "Reference(Patient|RelatedPerson|Practitioner|PractitionerRole|Organization)", "Who attested the document in the specified way.", 0, 1, party);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -357,7 +212,7 @@ public class DocumentReference extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 3357091: /*mode*/ return this.mode == null ? new Base[0] : new Base[] {this.mode}; // Enumeration<DocumentAttestationMode>
+        case 3357091: /*mode*/ return this.mode == null ? new Base[0] : new Base[] {this.mode}; // CodeableConcept
         case 3560141: /*time*/ return this.time == null ? new Base[0] : new Base[] {this.time}; // DateTimeType
         case 106437350: /*party*/ return this.party == null ? new Base[0] : new Base[] {this.party}; // Reference
         default: return super.getProperty(hash, name, checkValid);
@@ -369,8 +224,7 @@ public class DocumentReference extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3357091: // mode
-          value = new DocumentAttestationModeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.mode = (Enumeration) value; // Enumeration<DocumentAttestationMode>
+          this.mode = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3560141: // time
           this.time = TypeConvertor.castToDateTime(value); // DateTimeType
@@ -386,8 +240,7 @@ public class DocumentReference extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("mode")) {
-          value = new DocumentAttestationModeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.mode = (Enumeration) value; // Enumeration<DocumentAttestationMode>
+          this.mode = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("time")) {
           this.time = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("party")) {
@@ -400,7 +253,7 @@ public class DocumentReference extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3357091:  return getModeElement();
+        case 3357091:  return getMode();
         case 3560141:  return getTimeElement();
         case 106437350:  return getParty();
         default: return super.makeProperty(hash, name);
@@ -411,7 +264,7 @@ public class DocumentReference extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3357091: /*mode*/ return new String[] {"code"};
+        case 3357091: /*mode*/ return new String[] {"CodeableConcept"};
         case 3560141: /*time*/ return new String[] {"dateTime"};
         case 106437350: /*party*/ return new String[] {"Reference"};
         default: return super.getTypesForProperty(hash, name);
@@ -422,7 +275,8 @@ public class DocumentReference extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("mode")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DocumentReference.attester.mode");
+          this.mode = new CodeableConcept();
+          return this.mode;
         }
         else if (name.equals("time")) {
           throw new FHIRException("Cannot call addChild on a primitive type DocumentReference.attester.time");
@@ -466,7 +320,7 @@ public class DocumentReference extends DomainResource {
         if (!(other_ instanceof DocumentReferenceAttesterComponent))
           return false;
         DocumentReferenceAttesterComponent o = (DocumentReferenceAttesterComponent) other_;
-        return compareValues(mode, o.mode, true) && compareValues(time, o.time, true);
+        return compareValues(time, o.time, true);
       }
 
       public boolean isEmpty() {
@@ -701,21 +555,13 @@ public class DocumentReference extends DomainResource {
         protected Attachment attachment;
 
         /**
-         * An identifier of the document encoding, structure, and template that the document conforms to beyond the base format indicated in the mimeType.
+         * An identifier of the document constraints, encoding, structure, and template that the document conforms to beyond the base format indicated in the mimeType.
          */
-        @Child(name = "format", type = {Coding.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Format/content rules for the document", formalDefinition="An identifier of the document encoding, structure, and template that the document conforms to beyond the base format indicated in the mimeType." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/formatcodes")
-        protected Coding format;
+        @Child(name = "profile", type = {}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Description(shortDefinition="Content profile rules for the document", formalDefinition="An identifier of the document constraints, encoding, structure, and template that the document conforms to beyond the base format indicated in the mimeType." )
+        protected List<DocumentReferenceContentProfileComponent> profile;
 
-        /**
-         * Document identifier as assigned by the source of the document. This identifier is specific to this version of the document. This unique identifier may be used elsewhere to identify this version of the document.
-         */
-        @Child(name = "identifier", type = {Identifier.class}, order=3, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Identifier of the attachment binary", formalDefinition="Document identifier as assigned by the source of the document. This identifier is specific to this version of the document. This unique identifier may be used elsewhere to identify this version of the document." )
-        protected Identifier identifier;
-
-        private static final long serialVersionUID = 1399001009L;
+        private static final long serialVersionUID = 174089424L;
 
     /**
      * Constructor
@@ -757,66 +603,69 @@ public class DocumentReference extends DomainResource {
         }
 
         /**
-         * @return {@link #format} (An identifier of the document encoding, structure, and template that the document conforms to beyond the base format indicated in the mimeType.)
+         * @return {@link #profile} (An identifier of the document constraints, encoding, structure, and template that the document conforms to beyond the base format indicated in the mimeType.)
          */
-        public Coding getFormat() { 
-          if (this.format == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create DocumentReferenceContentComponent.format");
-            else if (Configuration.doAutoCreate())
-              this.format = new Coding(); // cc
-          return this.format;
-        }
-
-        public boolean hasFormat() { 
-          return this.format != null && !this.format.isEmpty();
+        public List<DocumentReferenceContentProfileComponent> getProfile() { 
+          if (this.profile == null)
+            this.profile = new ArrayList<DocumentReferenceContentProfileComponent>();
+          return this.profile;
         }
 
         /**
-         * @param value {@link #format} (An identifier of the document encoding, structure, and template that the document conforms to beyond the base format indicated in the mimeType.)
+         * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public DocumentReferenceContentComponent setFormat(Coding value) { 
-          this.format = value;
+        public DocumentReferenceContentComponent setProfile(List<DocumentReferenceContentProfileComponent> theProfile) { 
+          this.profile = theProfile;
+          return this;
+        }
+
+        public boolean hasProfile() { 
+          if (this.profile == null)
+            return false;
+          for (DocumentReferenceContentProfileComponent item : this.profile)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public DocumentReferenceContentProfileComponent addProfile() { //3
+          DocumentReferenceContentProfileComponent t = new DocumentReferenceContentProfileComponent();
+          if (this.profile == null)
+            this.profile = new ArrayList<DocumentReferenceContentProfileComponent>();
+          this.profile.add(t);
+          return t;
+        }
+
+        public DocumentReferenceContentComponent addProfile(DocumentReferenceContentProfileComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.profile == null)
+            this.profile = new ArrayList<DocumentReferenceContentProfileComponent>();
+          this.profile.add(t);
           return this;
         }
 
         /**
-         * @return {@link #identifier} (Document identifier as assigned by the source of the document. This identifier is specific to this version of the document. This unique identifier may be used elsewhere to identify this version of the document.)
+         * @return The first repetition of repeating field {@link #profile}, creating it if it does not already exist {3}
          */
-        public Identifier getIdentifier() { 
-          if (this.identifier == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create DocumentReferenceContentComponent.identifier");
-            else if (Configuration.doAutoCreate())
-              this.identifier = new Identifier(); // cc
-          return this.identifier;
-        }
-
-        public boolean hasIdentifier() { 
-          return this.identifier != null && !this.identifier.isEmpty();
-        }
-
-        /**
-         * @param value {@link #identifier} (Document identifier as assigned by the source of the document. This identifier is specific to this version of the document. This unique identifier may be used elsewhere to identify this version of the document.)
-         */
-        public DocumentReferenceContentComponent setIdentifier(Identifier value) { 
-          this.identifier = value;
-          return this;
+        public DocumentReferenceContentProfileComponent getProfileFirstRep() { 
+          if (getProfile().isEmpty()) {
+            addProfile();
+          }
+          return getProfile().get(0);
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("attachment", "Attachment", "The document or URL of the document along with critical metadata to prove content has integrity.", 0, 1, attachment));
-          children.add(new Property("format", "Coding", "An identifier of the document encoding, structure, and template that the document conforms to beyond the base format indicated in the mimeType.", 0, 1, format));
-          children.add(new Property("identifier", "Identifier", "Document identifier as assigned by the source of the document. This identifier is specific to this version of the document. This unique identifier may be used elsewhere to identify this version of the document.", 0, 1, identifier));
+          children.add(new Property("profile", "", "An identifier of the document constraints, encoding, structure, and template that the document conforms to beyond the base format indicated in the mimeType.", 0, java.lang.Integer.MAX_VALUE, profile));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case -1963501277: /*attachment*/  return new Property("attachment", "Attachment", "The document or URL of the document along with critical metadata to prove content has integrity.", 0, 1, attachment);
-          case -1268779017: /*format*/  return new Property("format", "Coding", "An identifier of the document encoding, structure, and template that the document conforms to beyond the base format indicated in the mimeType.", 0, 1, format);
-          case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Document identifier as assigned by the source of the document. This identifier is specific to this version of the document. This unique identifier may be used elsewhere to identify this version of the document.", 0, 1, identifier);
+          case -309425751: /*profile*/  return new Property("profile", "", "An identifier of the document constraints, encoding, structure, and template that the document conforms to beyond the base format indicated in the mimeType.", 0, java.lang.Integer.MAX_VALUE, profile);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -826,8 +675,7 @@ public class DocumentReference extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -1963501277: /*attachment*/ return this.attachment == null ? new Base[0] : new Base[] {this.attachment}; // Attachment
-        case -1268779017: /*format*/ return this.format == null ? new Base[0] : new Base[] {this.format}; // Coding
-        case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : new Base[] {this.identifier}; // Identifier
+        case -309425751: /*profile*/ return this.profile == null ? new Base[0] : this.profile.toArray(new Base[this.profile.size()]); // DocumentReferenceContentProfileComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -839,11 +687,8 @@ public class DocumentReference extends DomainResource {
         case -1963501277: // attachment
           this.attachment = TypeConvertor.castToAttachment(value); // Attachment
           return value;
-        case -1268779017: // format
-          this.format = TypeConvertor.castToCoding(value); // Coding
-          return value;
-        case -1618432855: // identifier
-          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
+        case -309425751: // profile
+          this.getProfile().add((DocumentReferenceContentProfileComponent) value); // DocumentReferenceContentProfileComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -854,10 +699,8 @@ public class DocumentReference extends DomainResource {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("attachment")) {
           this.attachment = TypeConvertor.castToAttachment(value); // Attachment
-        } else if (name.equals("format")) {
-          this.format = TypeConvertor.castToCoding(value); // Coding
-        } else if (name.equals("identifier")) {
-          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
+        } else if (name.equals("profile")) {
+          this.getProfile().add((DocumentReferenceContentProfileComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -867,8 +710,7 @@ public class DocumentReference extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1963501277:  return getAttachment();
-        case -1268779017:  return getFormat();
-        case -1618432855:  return getIdentifier();
+        case -309425751:  return addProfile(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -878,8 +720,7 @@ public class DocumentReference extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1963501277: /*attachment*/ return new String[] {"Attachment"};
-        case -1268779017: /*format*/ return new String[] {"Coding"};
-        case -1618432855: /*identifier*/ return new String[] {"Identifier"};
+        case -309425751: /*profile*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -891,13 +732,8 @@ public class DocumentReference extends DomainResource {
           this.attachment = new Attachment();
           return this.attachment;
         }
-        else if (name.equals("format")) {
-          this.format = new Coding();
-          return this.format;
-        }
-        else if (name.equals("identifier")) {
-          this.identifier = new Identifier();
-          return this.identifier;
+        else if (name.equals("profile")) {
+          return addProfile();
         }
         else
           return super.addChild(name);
@@ -912,8 +748,11 @@ public class DocumentReference extends DomainResource {
       public void copyValues(DocumentReferenceContentComponent dst) {
         super.copyValues(dst);
         dst.attachment = attachment == null ? null : attachment.copy();
-        dst.format = format == null ? null : format.copy();
-        dst.identifier = identifier == null ? null : identifier.copy();
+        if (profile != null) {
+          dst.profile = new ArrayList<DocumentReferenceContentProfileComponent>();
+          for (DocumentReferenceContentProfileComponent i : profile)
+            dst.profile.add(i.copy());
+        };
       }
 
       @Override
@@ -923,8 +762,7 @@ public class DocumentReference extends DomainResource {
         if (!(other_ instanceof DocumentReferenceContentComponent))
           return false;
         DocumentReferenceContentComponent o = (DocumentReferenceContentComponent) other_;
-        return compareDeep(attachment, o.attachment, true) && compareDeep(format, o.format, true) && compareDeep(identifier, o.identifier, true)
-          ;
+        return compareDeep(attachment, o.attachment, true) && compareDeep(profile, o.profile, true);
       }
 
       @Override
@@ -938,8 +776,7 @@ public class DocumentReference extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(attachment, format, identifier
-          );
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(attachment, profile);
       }
 
   public String fhirType() {
@@ -949,17 +786,236 @@ public class DocumentReference extends DomainResource {
 
   }
 
+    @Block()
+    public static class DocumentReferenceContentProfileComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Code|uri|canonical.
+         */
+        @Child(name = "value", type = {Coding.class, UriType.class, CanonicalType.class}, order=1, min=1, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Code|uri|canonical", formalDefinition="Code|uri|canonical." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/v3-HL7FormatCodes")
+        protected DataType value;
+
+        private static final long serialVersionUID = -1135414639L;
+
     /**
-     * Other identifiers associated with the document, including version independent identifiers.
+     * Constructor
+     */
+      public DocumentReferenceContentProfileComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public DocumentReferenceContentProfileComponent(DataType value) {
+        super();
+        this.setValue(value);
+      }
+
+        /**
+         * @return {@link #value} (Code|uri|canonical.)
+         */
+        public DataType getValue() { 
+          return this.value;
+        }
+
+        /**
+         * @return {@link #value} (Code|uri|canonical.)
+         */
+        public Coding getValueCoding() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Coding();
+          if (!(this.value instanceof Coding))
+            throw new FHIRException("Type mismatch: the type Coding was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Coding) this.value;
+        }
+
+        public boolean hasValueCoding() { 
+          return this != null && this.value instanceof Coding;
+        }
+
+        /**
+         * @return {@link #value} (Code|uri|canonical.)
+         */
+        public UriType getValueUriType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new UriType();
+          if (!(this.value instanceof UriType))
+            throw new FHIRException("Type mismatch: the type UriType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (UriType) this.value;
+        }
+
+        public boolean hasValueUriType() { 
+          return this != null && this.value instanceof UriType;
+        }
+
+        /**
+         * @return {@link #value} (Code|uri|canonical.)
+         */
+        public CanonicalType getValueCanonicalType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new CanonicalType();
+          if (!(this.value instanceof CanonicalType))
+            throw new FHIRException("Type mismatch: the type CanonicalType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (CanonicalType) this.value;
+        }
+
+        public boolean hasValueCanonicalType() { 
+          return this != null && this.value instanceof CanonicalType;
+        }
+
+        public boolean hasValue() { 
+          return this.value != null && !this.value.isEmpty();
+        }
+
+        /**
+         * @param value {@link #value} (Code|uri|canonical.)
+         */
+        public DocumentReferenceContentProfileComponent setValue(DataType value) { 
+          if (value != null && !(value instanceof Coding || value instanceof UriType || value instanceof CanonicalType))
+            throw new Error("Not the right type for DocumentReference.content.profile.value[x]: "+value.fhirType());
+          this.value = value;
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("value[x]", "Coding|uri|canonical", "Code|uri|canonical.", 0, 1, value));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "Coding|uri|canonical", "Code|uri|canonical.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "Coding|uri|canonical", "Code|uri|canonical.", 0, 1, value);
+          case -1887705029: /*valueCoding*/  return new Property("value[x]", "Coding", "Code|uri|canonical.", 0, 1, value);
+          case -1410172357: /*valueUri*/  return new Property("value[x]", "uri", "Code|uri|canonical.", 0, 1, value);
+          case -786218365: /*valueCanonical*/  return new Property("value[x]", "canonical", "Code|uri|canonical.", 0, 1, value);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 111972721: // value
+          this.value = TypeConvertor.castToType(value); // DataType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("value[x]")) {
+          this.value = TypeConvertor.castToType(value); // DataType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 111972721: /*value*/ return new String[] {"Coding", "uri", "canonical"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("valueCoding")) {
+          this.value = new Coding();
+          return this.value;
+        }
+        else if (name.equals("valueUri")) {
+          this.value = new UriType();
+          return this.value;
+        }
+        else if (name.equals("valueCanonical")) {
+          this.value = new CanonicalType();
+          return this.value;
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public DocumentReferenceContentProfileComponent copy() {
+        DocumentReferenceContentProfileComponent dst = new DocumentReferenceContentProfileComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DocumentReferenceContentProfileComponent dst) {
+        super.copyValues(dst);
+        dst.value = value == null ? null : value.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof DocumentReferenceContentProfileComponent))
+          return false;
+        DocumentReferenceContentProfileComponent o = (DocumentReferenceContentProfileComponent) other_;
+        return compareDeep(value, o.value, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof DocumentReferenceContentProfileComponent))
+          return false;
+        DocumentReferenceContentProfileComponent o = (DocumentReferenceContentProfileComponent) other_;
+        return true;
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(value);
+      }
+
+  public String fhirType() {
+    return "DocumentReference.content.profile";
+
+  }
+
+  }
+
+    /**
+     * Other business identifiers associated with the document, including version independent identifiers.
      */
     @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Other identifiers for the document", formalDefinition="Other identifiers associated with the document, including version independent identifiers." )
+    @Description(shortDefinition="Business identifiers for the document", formalDefinition="Other business identifiers associated with the document, including version independent identifiers." )
     protected List<Identifier> identifier;
 
     /**
      * A procedure that is fulfilled in whole or in part by the creation of this media.
      */
-    @Child(name = "basedOn", type = {ServiceRequest.class, CarePlan.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "basedOn", type = {Appointment.class, AppointmentResponse.class, CarePlan.class, Claim.class, CommunicationRequest.class, Contract.class, CoverageEligibilityRequest.class, DeviceRequest.class, EnrollmentRequest.class, EpisodeOfCare.class, ImmunizationRecommendation.class, MedicationRequest.class, NutritionOrder.class, RequestOrchestration.class, ServiceRequest.class, SupplyRequest.class, VisionPrescription.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Procedure that caused this media to be created", formalDefinition="A procedure that is fulfilled in whole or in part by the creation of this media." )
     protected List<Reference> basedOn;
 
@@ -975,7 +1031,7 @@ public class DocumentReference extends DomainResource {
      * The status of the underlying document.
      */
     @Child(name = "docStatus", type = {CodeType.class}, order=3, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="preliminary | final | amended | entered-in-error | deprecated", formalDefinition="The status of the underlying document." )
+    @Description(shortDefinition="registered | partial | preliminary | final | amended | corrected | appended | cancelled | entered-in-error | deprecated | unknown", formalDefinition="The status of the underlying document." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/composition-status")
     protected Enumeration<CompositionStatus> docStatus;
 
@@ -984,7 +1040,7 @@ public class DocumentReference extends DomainResource {
      */
     @Child(name = "type", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Kind of document (LOINC if possible)", formalDefinition="Specifies the particular kind of document referenced  (e.g. History and Physical, Discharge Summary, Progress Note). This usually equates to the purpose of making the document referenced." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/c80-doc-typecodes")
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/doc-typecodes")
     protected CodeableConcept type;
 
     /**
@@ -992,30 +1048,30 @@ public class DocumentReference extends DomainResource {
      */
     @Child(name = "category", type = {CodeableConcept.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Categorization of document", formalDefinition="A categorization for the type of document referenced - helps for indexing and searching. This may be implied by or derived from the code specified in the DocumentReference.type." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/document-classcodes")
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/referenced-item-category")
     protected List<CodeableConcept> category;
 
     /**
      * Who or what the document is about. The document can be about a person, (patient or healthcare practitioner), a device (e.g. a machine) or even a group of subjects (such as a document about a herd of farm animals, or a set of patients that share a common exposure).
      */
-    @Child(name = "subject", type = {Patient.class, Practitioner.class, Group.class, Device.class, PractitionerRole.class, Specimen.class, Organization.class, Location.class}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "subject", type = {Reference.class}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Who/what is the subject of the document", formalDefinition="Who or what the document is about. The document can be about a person, (patient or healthcare practitioner), a device (e.g. a machine) or even a group of subjects (such as a document about a herd of farm animals, or a set of patients that share a common exposure)." )
     protected Reference subject;
 
     /**
      * Describes the clinical encounter or type of care that the document content is associated with.
      */
-    @Child(name = "encounter", type = {Encounter.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Context of the document  content", formalDefinition="Describes the clinical encounter or type of care that the document content is associated with." )
-    protected List<Reference> encounter;
+    @Child(name = "context", type = {Appointment.class, Encounter.class, EpisodeOfCare.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Context of the document content", formalDefinition="Describes the clinical encounter or type of care that the document content is associated with." )
+    protected List<Reference> context;
 
     /**
      * This list of codes represents the main clinical acts, such as a colonoscopy or an appendectomy, being documented. In some cases, the event is inherent in the type Code, such as a "History and Physical Report" in which the procedure being documented is necessarily a "History and Physical" act.
      */
-    @Child(name = "event", type = {CodeableConcept.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "event", type = {CodeableReference.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Main clinical acts documented", formalDefinition="This list of codes represents the main clinical acts, such as a colonoscopy or an appendectomy, being documented. In some cases, the event is inherent in the type Code, such as a \"History and Physical Report\" in which the procedure being documented is necessarily a \"History and Physical\" act." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/v3-ActCode")
-    protected List<CodeableConcept> event;
+    protected List<CodeableReference> event;
 
     /**
      * The kind of facility where the patient was seen.
@@ -1055,10 +1111,10 @@ public class DocumentReference extends DomainResource {
     protected List<Reference> author;
 
     /**
-     * A participant who has attested to the accuracy of the composition/document.
+     * A participant who has authenticated the accuracy of the document.
      */
     @Child(name = "attester", type = {}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Attests to accuracy of composition", formalDefinition="A participant who has attested to the accuracy of the composition/document." )
+    @Description(shortDefinition="Attests to accuracy of the document", formalDefinition="A participant who has authenticated the accuracy of the document." )
     protected List<DocumentReferenceAttesterComponent> attester;
 
     /**
@@ -1083,11 +1139,11 @@ public class DocumentReference extends DomainResource {
     protected MarkdownType description;
 
     /**
-     * A set of Security-Tag codes specifying the level of privacy/security of the Document. Note that DocumentReference.meta.security contains the security labels of the "reference" to the document, while DocumentReference.securityLabel contains a snapshot of the security labels on the document the reference refers to.
+     * A set of Security-Tag codes specifying the level of privacy/security of the Document found at DocumentReference.content.attachment.url. Note that DocumentReference.meta.security contains the security labels of the data elements in DocumentReference, while DocumentReference.securityLabel contains the security labels for the document the reference refers to. The distinction recognizes that the document may contain sensitive information, while the DocumentReference is metadata about the document and thus might not be as sensitive as the document. For example: a psychotherapy episode may contain highly sensitive information, while the metadata may simply indicate that some episode happened.
      */
     @Child(name = "securityLabel", type = {CodeableConcept.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Document security-tags", formalDefinition="A set of Security-Tag codes specifying the level of privacy/security of the Document. Note that DocumentReference.meta.security contains the security labels of the \"reference\" to the document, while DocumentReference.securityLabel contains a snapshot of the security labels on the document the reference refers to." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/security-labels")
+    @Description(shortDefinition="Document security-tags", formalDefinition="A set of Security-Tag codes specifying the level of privacy/security of the Document found at DocumentReference.content.attachment.url. Note that DocumentReference.meta.security contains the security labels of the data elements in DocumentReference, while DocumentReference.securityLabel contains the security labels for the document the reference refers to. The distinction recognizes that the document may contain sensitive information, while the DocumentReference is metadata about the document and thus might not be as sensitive as the document. For example: a psychotherapy episode may contain highly sensitive information, while the metadata may simply indicate that some episode happened." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/security-label-examples")
     protected List<CodeableConcept> securityLabel;
 
     /**
@@ -1097,21 +1153,7 @@ public class DocumentReference extends DomainResource {
     @Description(shortDefinition="Document referenced", formalDefinition="The document and format referenced.  If there are multiple content element repetitions, these must all represent the same document in different format, or attachment metadata." )
     protected List<DocumentReferenceContentComponent> content;
 
-    /**
-     * The Patient Information as known when the document was published. May be a reference to a version specific, or contained.
-     */
-    @Child(name = "sourcePatientInfo", type = {Patient.class}, order=20, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Patient demographics from source", formalDefinition="The Patient Information as known when the document was published. May be a reference to a version specific, or contained." )
-    protected Reference sourcePatientInfo;
-
-    /**
-     * Related identifiers or resources associated with the DocumentReference.
-     */
-    @Child(name = "related", type = {Reference.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Related identifiers or resources", formalDefinition="Related identifiers or resources associated with the DocumentReference." )
-    protected List<Reference> related;
-
-    private static final long serialVersionUID = -1169558405L;
+    private static final long serialVersionUID = -1268760339L;
 
   /**
    * Constructor
@@ -1130,7 +1172,7 @@ public class DocumentReference extends DomainResource {
     }
 
     /**
-     * @return {@link #identifier} (Other identifiers associated with the document, including version independent identifiers.)
+     * @return {@link #identifier} (Other business identifiers associated with the document, including version independent identifiers.)
      */
     public List<Identifier> getIdentifier() { 
       if (this.identifier == null)
@@ -1431,71 +1473,71 @@ public class DocumentReference extends DomainResource {
     }
 
     /**
-     * @return {@link #encounter} (Describes the clinical encounter or type of care that the document content is associated with.)
+     * @return {@link #context} (Describes the clinical encounter or type of care that the document content is associated with.)
      */
-    public List<Reference> getEncounter() { 
-      if (this.encounter == null)
-        this.encounter = new ArrayList<Reference>();
-      return this.encounter;
+    public List<Reference> getContext() { 
+      if (this.context == null)
+        this.context = new ArrayList<Reference>();
+      return this.context;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public DocumentReference setEncounter(List<Reference> theEncounter) { 
-      this.encounter = theEncounter;
+    public DocumentReference setContext(List<Reference> theContext) { 
+      this.context = theContext;
       return this;
     }
 
-    public boolean hasEncounter() { 
-      if (this.encounter == null)
+    public boolean hasContext() { 
+      if (this.context == null)
         return false;
-      for (Reference item : this.encounter)
+      for (Reference item : this.context)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public Reference addEncounter() { //3
+    public Reference addContext() { //3
       Reference t = new Reference();
-      if (this.encounter == null)
-        this.encounter = new ArrayList<Reference>();
-      this.encounter.add(t);
+      if (this.context == null)
+        this.context = new ArrayList<Reference>();
+      this.context.add(t);
       return t;
     }
 
-    public DocumentReference addEncounter(Reference t) { //3
+    public DocumentReference addContext(Reference t) { //3
       if (t == null)
         return this;
-      if (this.encounter == null)
-        this.encounter = new ArrayList<Reference>();
-      this.encounter.add(t);
+      if (this.context == null)
+        this.context = new ArrayList<Reference>();
+      this.context.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #encounter}, creating it if it does not already exist {3}
+     * @return The first repetition of repeating field {@link #context}, creating it if it does not already exist {3}
      */
-    public Reference getEncounterFirstRep() { 
-      if (getEncounter().isEmpty()) {
-        addEncounter();
+    public Reference getContextFirstRep() { 
+      if (getContext().isEmpty()) {
+        addContext();
       }
-      return getEncounter().get(0);
+      return getContext().get(0);
     }
 
     /**
      * @return {@link #event} (This list of codes represents the main clinical acts, such as a colonoscopy or an appendectomy, being documented. In some cases, the event is inherent in the type Code, such as a "History and Physical Report" in which the procedure being documented is necessarily a "History and Physical" act.)
      */
-    public List<CodeableConcept> getEvent() { 
+    public List<CodeableReference> getEvent() { 
       if (this.event == null)
-        this.event = new ArrayList<CodeableConcept>();
+        this.event = new ArrayList<CodeableReference>();
       return this.event;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public DocumentReference setEvent(List<CodeableConcept> theEvent) { 
+    public DocumentReference setEvent(List<CodeableReference> theEvent) { 
       this.event = theEvent;
       return this;
     }
@@ -1503,25 +1545,25 @@ public class DocumentReference extends DomainResource {
     public boolean hasEvent() { 
       if (this.event == null)
         return false;
-      for (CodeableConcept item : this.event)
+      for (CodeableReference item : this.event)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public CodeableConcept addEvent() { //3
-      CodeableConcept t = new CodeableConcept();
+    public CodeableReference addEvent() { //3
+      CodeableReference t = new CodeableReference();
       if (this.event == null)
-        this.event = new ArrayList<CodeableConcept>();
+        this.event = new ArrayList<CodeableReference>();
       this.event.add(t);
       return t;
     }
 
-    public DocumentReference addEvent(CodeableConcept t) { //3
+    public DocumentReference addEvent(CodeableReference t) { //3
       if (t == null)
         return this;
       if (this.event == null)
-        this.event = new ArrayList<CodeableConcept>();
+        this.event = new ArrayList<CodeableReference>();
       this.event.add(t);
       return this;
     }
@@ -1529,7 +1571,7 @@ public class DocumentReference extends DomainResource {
     /**
      * @return The first repetition of repeating field {@link #event}, creating it if it does not already exist {3}
      */
-    public CodeableConcept getEventFirstRep() { 
+    public CodeableReference getEventFirstRep() { 
       if (getEvent().isEmpty()) {
         addEvent();
       }
@@ -1711,7 +1753,7 @@ public class DocumentReference extends DomainResource {
     }
 
     /**
-     * @return {@link #attester} (A participant who has attested to the accuracy of the composition/document.)
+     * @return {@link #attester} (A participant who has authenticated the accuracy of the document.)
      */
     public List<DocumentReferenceAttesterComponent> getAttester() { 
       if (this.attester == null)
@@ -1890,7 +1932,7 @@ public class DocumentReference extends DomainResource {
     }
 
     /**
-     * @return {@link #securityLabel} (A set of Security-Tag codes specifying the level of privacy/security of the Document. Note that DocumentReference.meta.security contains the security labels of the "reference" to the document, while DocumentReference.securityLabel contains a snapshot of the security labels on the document the reference refers to.)
+     * @return {@link #securityLabel} (A set of Security-Tag codes specifying the level of privacy/security of the Document found at DocumentReference.content.attachment.url. Note that DocumentReference.meta.security contains the security labels of the data elements in DocumentReference, while DocumentReference.securityLabel contains the security labels for the document the reference refers to. The distinction recognizes that the document may contain sensitive information, while the DocumentReference is metadata about the document and thus might not be as sensitive as the document. For example: a psychotherapy episode may contain highly sensitive information, while the metadata may simply indicate that some episode happened.)
      */
     public List<CodeableConcept> getSecurityLabel() { 
       if (this.securityLabel == null)
@@ -1995,134 +2037,53 @@ public class DocumentReference extends DomainResource {
       return getContent().get(0);
     }
 
-    /**
-     * @return {@link #sourcePatientInfo} (The Patient Information as known when the document was published. May be a reference to a version specific, or contained.)
-     */
-    public Reference getSourcePatientInfo() { 
-      if (this.sourcePatientInfo == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create DocumentReference.sourcePatientInfo");
-        else if (Configuration.doAutoCreate())
-          this.sourcePatientInfo = new Reference(); // cc
-      return this.sourcePatientInfo;
-    }
-
-    public boolean hasSourcePatientInfo() { 
-      return this.sourcePatientInfo != null && !this.sourcePatientInfo.isEmpty();
-    }
-
-    /**
-     * @param value {@link #sourcePatientInfo} (The Patient Information as known when the document was published. May be a reference to a version specific, or contained.)
-     */
-    public DocumentReference setSourcePatientInfo(Reference value) { 
-      this.sourcePatientInfo = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #related} (Related identifiers or resources associated with the DocumentReference.)
-     */
-    public List<Reference> getRelated() { 
-      if (this.related == null)
-        this.related = new ArrayList<Reference>();
-      return this.related;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public DocumentReference setRelated(List<Reference> theRelated) { 
-      this.related = theRelated;
-      return this;
-    }
-
-    public boolean hasRelated() { 
-      if (this.related == null)
-        return false;
-      for (Reference item : this.related)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public Reference addRelated() { //3
-      Reference t = new Reference();
-      if (this.related == null)
-        this.related = new ArrayList<Reference>();
-      this.related.add(t);
-      return t;
-    }
-
-    public DocumentReference addRelated(Reference t) { //3
-      if (t == null)
-        return this;
-      if (this.related == null)
-        this.related = new ArrayList<Reference>();
-      this.related.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #related}, creating it if it does not already exist {3}
-     */
-    public Reference getRelatedFirstRep() { 
-      if (getRelated().isEmpty()) {
-        addRelated();
-      }
-      return getRelated().get(0);
-    }
-
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("identifier", "Identifier", "Other identifiers associated with the document, including version independent identifiers.", 0, java.lang.Integer.MAX_VALUE, identifier));
-        children.add(new Property("basedOn", "Reference(ServiceRequest|CarePlan)", "A procedure that is fulfilled in whole or in part by the creation of this media.", 0, java.lang.Integer.MAX_VALUE, basedOn));
+        children.add(new Property("identifier", "Identifier", "Other business identifiers associated with the document, including version independent identifiers.", 0, java.lang.Integer.MAX_VALUE, identifier));
+        children.add(new Property("basedOn", "Reference(Appointment|AppointmentResponse|CarePlan|Claim|CommunicationRequest|Contract|CoverageEligibilityRequest|DeviceRequest|EnrollmentRequest|EpisodeOfCare|ImmunizationRecommendation|MedicationRequest|NutritionOrder|RequestOrchestration|ServiceRequest|SupplyRequest|VisionPrescription)", "A procedure that is fulfilled in whole or in part by the creation of this media.", 0, java.lang.Integer.MAX_VALUE, basedOn));
         children.add(new Property("status", "code", "The status of this document reference.", 0, 1, status));
         children.add(new Property("docStatus", "code", "The status of the underlying document.", 0, 1, docStatus));
         children.add(new Property("type", "CodeableConcept", "Specifies the particular kind of document referenced  (e.g. History and Physical, Discharge Summary, Progress Note). This usually equates to the purpose of making the document referenced.", 0, 1, type));
         children.add(new Property("category", "CodeableConcept", "A categorization for the type of document referenced - helps for indexing and searching. This may be implied by or derived from the code specified in the DocumentReference.type.", 0, java.lang.Integer.MAX_VALUE, category));
-        children.add(new Property("subject", "Reference(Patient|Practitioner|Group|Device|PractitionerRole|Specimen|Organization|Location)", "Who or what the document is about. The document can be about a person, (patient or healthcare practitioner), a device (e.g. a machine) or even a group of subjects (such as a document about a herd of farm animals, or a set of patients that share a common exposure).", 0, 1, subject));
-        children.add(new Property("encounter", "Reference(Encounter)", "Describes the clinical encounter or type of care that the document content is associated with.", 0, java.lang.Integer.MAX_VALUE, encounter));
-        children.add(new Property("event", "CodeableConcept", "This list of codes represents the main clinical acts, such as a colonoscopy or an appendectomy, being documented. In some cases, the event is inherent in the type Code, such as a \"History and Physical Report\" in which the procedure being documented is necessarily a \"History and Physical\" act.", 0, java.lang.Integer.MAX_VALUE, event));
+        children.add(new Property("subject", "Reference(Any)", "Who or what the document is about. The document can be about a person, (patient or healthcare practitioner), a device (e.g. a machine) or even a group of subjects (such as a document about a herd of farm animals, or a set of patients that share a common exposure).", 0, 1, subject));
+        children.add(new Property("context", "Reference(Appointment|Encounter|EpisodeOfCare)", "Describes the clinical encounter or type of care that the document content is associated with.", 0, java.lang.Integer.MAX_VALUE, context));
+        children.add(new Property("event", "CodeableReference", "This list of codes represents the main clinical acts, such as a colonoscopy or an appendectomy, being documented. In some cases, the event is inherent in the type Code, such as a \"History and Physical Report\" in which the procedure being documented is necessarily a \"History and Physical\" act.", 0, java.lang.Integer.MAX_VALUE, event));
         children.add(new Property("facilityType", "CodeableConcept", "The kind of facility where the patient was seen.", 0, 1, facilityType));
         children.add(new Property("practiceSetting", "CodeableConcept", "This property may convey specifics about the practice setting where the content was created, often reflecting the clinical specialty.", 0, 1, practiceSetting));
         children.add(new Property("period", "Period", "The time period over which the service that is described by the document was provided.", 0, 1, period));
         children.add(new Property("date", "instant", "When the document reference was created.", 0, 1, date));
         children.add(new Property("author", "Reference(Practitioner|PractitionerRole|Organization|Device|Patient|RelatedPerson|CareTeam)", "Identifies who is responsible for adding the information to the document.", 0, java.lang.Integer.MAX_VALUE, author));
-        children.add(new Property("attester", "", "A participant who has attested to the accuracy of the composition/document.", 0, java.lang.Integer.MAX_VALUE, attester));
+        children.add(new Property("attester", "", "A participant who has authenticated the accuracy of the document.", 0, java.lang.Integer.MAX_VALUE, attester));
         children.add(new Property("custodian", "Reference(Organization)", "Identifies the organization or group who is responsible for ongoing maintenance of and access to the document.", 0, 1, custodian));
         children.add(new Property("relatesTo", "", "Relationships that this document has with other document references that already exist.", 0, java.lang.Integer.MAX_VALUE, relatesTo));
         children.add(new Property("description", "markdown", "Human-readable description of the source document.", 0, 1, description));
-        children.add(new Property("securityLabel", "CodeableConcept", "A set of Security-Tag codes specifying the level of privacy/security of the Document. Note that DocumentReference.meta.security contains the security labels of the \"reference\" to the document, while DocumentReference.securityLabel contains a snapshot of the security labels on the document the reference refers to.", 0, java.lang.Integer.MAX_VALUE, securityLabel));
+        children.add(new Property("securityLabel", "CodeableConcept", "A set of Security-Tag codes specifying the level of privacy/security of the Document found at DocumentReference.content.attachment.url. Note that DocumentReference.meta.security contains the security labels of the data elements in DocumentReference, while DocumentReference.securityLabel contains the security labels for the document the reference refers to. The distinction recognizes that the document may contain sensitive information, while the DocumentReference is metadata about the document and thus might not be as sensitive as the document. For example: a psychotherapy episode may contain highly sensitive information, while the metadata may simply indicate that some episode happened.", 0, java.lang.Integer.MAX_VALUE, securityLabel));
         children.add(new Property("content", "", "The document and format referenced.  If there are multiple content element repetitions, these must all represent the same document in different format, or attachment metadata.", 0, java.lang.Integer.MAX_VALUE, content));
-        children.add(new Property("sourcePatientInfo", "Reference(Patient)", "The Patient Information as known when the document was published. May be a reference to a version specific, or contained.", 0, 1, sourcePatientInfo));
-        children.add(new Property("related", "Reference(Any)", "Related identifiers or resources associated with the DocumentReference.", 0, java.lang.Integer.MAX_VALUE, related));
       }
 
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Other identifiers associated with the document, including version independent identifiers.", 0, java.lang.Integer.MAX_VALUE, identifier);
-        case -332612366: /*basedOn*/  return new Property("basedOn", "Reference(ServiceRequest|CarePlan)", "A procedure that is fulfilled in whole or in part by the creation of this media.", 0, java.lang.Integer.MAX_VALUE, basedOn);
+        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Other business identifiers associated with the document, including version independent identifiers.", 0, java.lang.Integer.MAX_VALUE, identifier);
+        case -332612366: /*basedOn*/  return new Property("basedOn", "Reference(Appointment|AppointmentResponse|CarePlan|Claim|CommunicationRequest|Contract|CoverageEligibilityRequest|DeviceRequest|EnrollmentRequest|EpisodeOfCare|ImmunizationRecommendation|MedicationRequest|NutritionOrder|RequestOrchestration|ServiceRequest|SupplyRequest|VisionPrescription)", "A procedure that is fulfilled in whole or in part by the creation of this media.", 0, java.lang.Integer.MAX_VALUE, basedOn);
         case -892481550: /*status*/  return new Property("status", "code", "The status of this document reference.", 0, 1, status);
         case -23496886: /*docStatus*/  return new Property("docStatus", "code", "The status of the underlying document.", 0, 1, docStatus);
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Specifies the particular kind of document referenced  (e.g. History and Physical, Discharge Summary, Progress Note). This usually equates to the purpose of making the document referenced.", 0, 1, type);
         case 50511102: /*category*/  return new Property("category", "CodeableConcept", "A categorization for the type of document referenced - helps for indexing and searching. This may be implied by or derived from the code specified in the DocumentReference.type.", 0, java.lang.Integer.MAX_VALUE, category);
-        case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Practitioner|Group|Device|PractitionerRole|Specimen|Organization|Location)", "Who or what the document is about. The document can be about a person, (patient or healthcare practitioner), a device (e.g. a machine) or even a group of subjects (such as a document about a herd of farm animals, or a set of patients that share a common exposure).", 0, 1, subject);
-        case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "Describes the clinical encounter or type of care that the document content is associated with.", 0, java.lang.Integer.MAX_VALUE, encounter);
-        case 96891546: /*event*/  return new Property("event", "CodeableConcept", "This list of codes represents the main clinical acts, such as a colonoscopy or an appendectomy, being documented. In some cases, the event is inherent in the type Code, such as a \"History and Physical Report\" in which the procedure being documented is necessarily a \"History and Physical\" act.", 0, java.lang.Integer.MAX_VALUE, event);
+        case -1867885268: /*subject*/  return new Property("subject", "Reference(Any)", "Who or what the document is about. The document can be about a person, (patient or healthcare practitioner), a device (e.g. a machine) or even a group of subjects (such as a document about a herd of farm animals, or a set of patients that share a common exposure).", 0, 1, subject);
+        case 951530927: /*context*/  return new Property("context", "Reference(Appointment|Encounter|EpisodeOfCare)", "Describes the clinical encounter or type of care that the document content is associated with.", 0, java.lang.Integer.MAX_VALUE, context);
+        case 96891546: /*event*/  return new Property("event", "CodeableReference", "This list of codes represents the main clinical acts, such as a colonoscopy or an appendectomy, being documented. In some cases, the event is inherent in the type Code, such as a \"History and Physical Report\" in which the procedure being documented is necessarily a \"History and Physical\" act.", 0, java.lang.Integer.MAX_VALUE, event);
         case 370698365: /*facilityType*/  return new Property("facilityType", "CodeableConcept", "The kind of facility where the patient was seen.", 0, 1, facilityType);
         case 331373717: /*practiceSetting*/  return new Property("practiceSetting", "CodeableConcept", "This property may convey specifics about the practice setting where the content was created, often reflecting the clinical specialty.", 0, 1, practiceSetting);
         case -991726143: /*period*/  return new Property("period", "Period", "The time period over which the service that is described by the document was provided.", 0, 1, period);
         case 3076014: /*date*/  return new Property("date", "instant", "When the document reference was created.", 0, 1, date);
         case -1406328437: /*author*/  return new Property("author", "Reference(Practitioner|PractitionerRole|Organization|Device|Patient|RelatedPerson|CareTeam)", "Identifies who is responsible for adding the information to the document.", 0, java.lang.Integer.MAX_VALUE, author);
-        case 542920370: /*attester*/  return new Property("attester", "", "A participant who has attested to the accuracy of the composition/document.", 0, java.lang.Integer.MAX_VALUE, attester);
+        case 542920370: /*attester*/  return new Property("attester", "", "A participant who has authenticated the accuracy of the document.", 0, java.lang.Integer.MAX_VALUE, attester);
         case 1611297262: /*custodian*/  return new Property("custodian", "Reference(Organization)", "Identifies the organization or group who is responsible for ongoing maintenance of and access to the document.", 0, 1, custodian);
         case -7765931: /*relatesTo*/  return new Property("relatesTo", "", "Relationships that this document has with other document references that already exist.", 0, java.lang.Integer.MAX_VALUE, relatesTo);
         case -1724546052: /*description*/  return new Property("description", "markdown", "Human-readable description of the source document.", 0, 1, description);
-        case -722296940: /*securityLabel*/  return new Property("securityLabel", "CodeableConcept", "A set of Security-Tag codes specifying the level of privacy/security of the Document. Note that DocumentReference.meta.security contains the security labels of the \"reference\" to the document, while DocumentReference.securityLabel contains a snapshot of the security labels on the document the reference refers to.", 0, java.lang.Integer.MAX_VALUE, securityLabel);
+        case -722296940: /*securityLabel*/  return new Property("securityLabel", "CodeableConcept", "A set of Security-Tag codes specifying the level of privacy/security of the Document found at DocumentReference.content.attachment.url. Note that DocumentReference.meta.security contains the security labels of the data elements in DocumentReference, while DocumentReference.securityLabel contains the security labels for the document the reference refers to. The distinction recognizes that the document may contain sensitive information, while the DocumentReference is metadata about the document and thus might not be as sensitive as the document. For example: a psychotherapy episode may contain highly sensitive information, while the metadata may simply indicate that some episode happened.", 0, java.lang.Integer.MAX_VALUE, securityLabel);
         case 951530617: /*content*/  return new Property("content", "", "The document and format referenced.  If there are multiple content element repetitions, these must all represent the same document in different format, or attachment metadata.", 0, java.lang.Integer.MAX_VALUE, content);
-        case 2031381048: /*sourcePatientInfo*/  return new Property("sourcePatientInfo", "Reference(Patient)", "The Patient Information as known when the document was published. May be a reference to a version specific, or contained.", 0, 1, sourcePatientInfo);
-        case 1090493483: /*related*/  return new Property("related", "Reference(Any)", "Related identifiers or resources associated with the DocumentReference.", 0, java.lang.Integer.MAX_VALUE, related);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -2138,8 +2099,8 @@ public class DocumentReference extends DomainResource {
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
         case 50511102: /*category*/ return this.category == null ? new Base[0] : this.category.toArray(new Base[this.category.size()]); // CodeableConcept
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Reference
-        case 1524132147: /*encounter*/ return this.encounter == null ? new Base[0] : this.encounter.toArray(new Base[this.encounter.size()]); // Reference
-        case 96891546: /*event*/ return this.event == null ? new Base[0] : this.event.toArray(new Base[this.event.size()]); // CodeableConcept
+        case 951530927: /*context*/ return this.context == null ? new Base[0] : this.context.toArray(new Base[this.context.size()]); // Reference
+        case 96891546: /*event*/ return this.event == null ? new Base[0] : this.event.toArray(new Base[this.event.size()]); // CodeableReference
         case 370698365: /*facilityType*/ return this.facilityType == null ? new Base[0] : new Base[] {this.facilityType}; // CodeableConcept
         case 331373717: /*practiceSetting*/ return this.practiceSetting == null ? new Base[0] : new Base[] {this.practiceSetting}; // CodeableConcept
         case -991726143: /*period*/ return this.period == null ? new Base[0] : new Base[] {this.period}; // Period
@@ -2151,8 +2112,6 @@ public class DocumentReference extends DomainResource {
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // MarkdownType
         case -722296940: /*securityLabel*/ return this.securityLabel == null ? new Base[0] : this.securityLabel.toArray(new Base[this.securityLabel.size()]); // CodeableConcept
         case 951530617: /*content*/ return this.content == null ? new Base[0] : this.content.toArray(new Base[this.content.size()]); // DocumentReferenceContentComponent
-        case 2031381048: /*sourcePatientInfo*/ return this.sourcePatientInfo == null ? new Base[0] : new Base[] {this.sourcePatientInfo}; // Reference
-        case 1090493483: /*related*/ return this.related == null ? new Base[0] : this.related.toArray(new Base[this.related.size()]); // Reference
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -2184,11 +2143,11 @@ public class DocumentReference extends DomainResource {
         case -1867885268: // subject
           this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
-        case 1524132147: // encounter
-          this.getEncounter().add(TypeConvertor.castToReference(value)); // Reference
+        case 951530927: // context
+          this.getContext().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 96891546: // event
-          this.getEvent().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          this.getEvent().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
         case 370698365: // facilityType
           this.facilityType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -2223,12 +2182,6 @@ public class DocumentReference extends DomainResource {
         case 951530617: // content
           this.getContent().add((DocumentReferenceContentComponent) value); // DocumentReferenceContentComponent
           return value;
-        case 2031381048: // sourcePatientInfo
-          this.sourcePatientInfo = TypeConvertor.castToReference(value); // Reference
-          return value;
-        case 1090493483: // related
-          this.getRelated().add(TypeConvertor.castToReference(value)); // Reference
-          return value;
         default: return super.setProperty(hash, name, value);
         }
 
@@ -2252,10 +2205,10 @@ public class DocumentReference extends DomainResource {
           this.getCategory().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("subject")) {
           this.subject = TypeConvertor.castToReference(value); // Reference
-        } else if (name.equals("encounter")) {
-          this.getEncounter().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("context")) {
+          this.getContext().add(TypeConvertor.castToReference(value));
         } else if (name.equals("event")) {
-          this.getEvent().add(TypeConvertor.castToCodeableConcept(value));
+          this.getEvent().add(TypeConvertor.castToCodeableReference(value));
         } else if (name.equals("facilityType")) {
           this.facilityType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("practiceSetting")) {
@@ -2278,10 +2231,6 @@ public class DocumentReference extends DomainResource {
           this.getSecurityLabel().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("content")) {
           this.getContent().add((DocumentReferenceContentComponent) value);
-        } else if (name.equals("sourcePatientInfo")) {
-          this.sourcePatientInfo = TypeConvertor.castToReference(value); // Reference
-        } else if (name.equals("related")) {
-          this.getRelated().add(TypeConvertor.castToReference(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -2297,7 +2246,7 @@ public class DocumentReference extends DomainResource {
         case 3575610:  return getType();
         case 50511102:  return addCategory(); 
         case -1867885268:  return getSubject();
-        case 1524132147:  return addEncounter(); 
+        case 951530927:  return addContext(); 
         case 96891546:  return addEvent(); 
         case 370698365:  return getFacilityType();
         case 331373717:  return getPracticeSetting();
@@ -2310,8 +2259,6 @@ public class DocumentReference extends DomainResource {
         case -1724546052:  return getDescriptionElement();
         case -722296940:  return addSecurityLabel(); 
         case 951530617:  return addContent(); 
-        case 2031381048:  return getSourcePatientInfo();
-        case 1090493483:  return addRelated(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -2327,8 +2274,8 @@ public class DocumentReference extends DomainResource {
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
         case 50511102: /*category*/ return new String[] {"CodeableConcept"};
         case -1867885268: /*subject*/ return new String[] {"Reference"};
-        case 1524132147: /*encounter*/ return new String[] {"Reference"};
-        case 96891546: /*event*/ return new String[] {"CodeableConcept"};
+        case 951530927: /*context*/ return new String[] {"Reference"};
+        case 96891546: /*event*/ return new String[] {"CodeableReference"};
         case 370698365: /*facilityType*/ return new String[] {"CodeableConcept"};
         case 331373717: /*practiceSetting*/ return new String[] {"CodeableConcept"};
         case -991726143: /*period*/ return new String[] {"Period"};
@@ -2340,8 +2287,6 @@ public class DocumentReference extends DomainResource {
         case -1724546052: /*description*/ return new String[] {"markdown"};
         case -722296940: /*securityLabel*/ return new String[] {"CodeableConcept"};
         case 951530617: /*content*/ return new String[] {};
-        case 2031381048: /*sourcePatientInfo*/ return new String[] {"Reference"};
-        case 1090493483: /*related*/ return new String[] {"Reference"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -2372,8 +2317,8 @@ public class DocumentReference extends DomainResource {
           this.subject = new Reference();
           return this.subject;
         }
-        else if (name.equals("encounter")) {
-          return addEncounter();
+        else if (name.equals("context")) {
+          return addContext();
         }
         else if (name.equals("event")) {
           return addEvent();
@@ -2415,13 +2360,6 @@ public class DocumentReference extends DomainResource {
         else if (name.equals("content")) {
           return addContent();
         }
-        else if (name.equals("sourcePatientInfo")) {
-          this.sourcePatientInfo = new Reference();
-          return this.sourcePatientInfo;
-        }
-        else if (name.equals("related")) {
-          return addRelated();
-        }
         else
           return super.addChild(name);
       }
@@ -2458,14 +2396,14 @@ public class DocumentReference extends DomainResource {
             dst.category.add(i.copy());
         };
         dst.subject = subject == null ? null : subject.copy();
-        if (encounter != null) {
-          dst.encounter = new ArrayList<Reference>();
-          for (Reference i : encounter)
-            dst.encounter.add(i.copy());
+        if (context != null) {
+          dst.context = new ArrayList<Reference>();
+          for (Reference i : context)
+            dst.context.add(i.copy());
         };
         if (event != null) {
-          dst.event = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : event)
+          dst.event = new ArrayList<CodeableReference>();
+          for (CodeableReference i : event)
             dst.event.add(i.copy());
         };
         dst.facilityType = facilityType == null ? null : facilityType.copy();
@@ -2499,12 +2437,6 @@ public class DocumentReference extends DomainResource {
           for (DocumentReferenceContentComponent i : content)
             dst.content.add(i.copy());
         };
-        dst.sourcePatientInfo = sourcePatientInfo == null ? null : sourcePatientInfo.copy();
-        if (related != null) {
-          dst.related = new ArrayList<Reference>();
-          for (Reference i : related)
-            dst.related.add(i.copy());
-        };
       }
 
       protected DocumentReference typedCopy() {
@@ -2520,13 +2452,12 @@ public class DocumentReference extends DomainResource {
         DocumentReference o = (DocumentReference) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(basedOn, o.basedOn, true) && compareDeep(status, o.status, true)
            && compareDeep(docStatus, o.docStatus, true) && compareDeep(type, o.type, true) && compareDeep(category, o.category, true)
-           && compareDeep(subject, o.subject, true) && compareDeep(encounter, o.encounter, true) && compareDeep(event, o.event, true)
+           && compareDeep(subject, o.subject, true) && compareDeep(context, o.context, true) && compareDeep(event, o.event, true)
            && compareDeep(facilityType, o.facilityType, true) && compareDeep(practiceSetting, o.practiceSetting, true)
            && compareDeep(period, o.period, true) && compareDeep(date, o.date, true) && compareDeep(author, o.author, true)
            && compareDeep(attester, o.attester, true) && compareDeep(custodian, o.custodian, true) && compareDeep(relatesTo, o.relatesTo, true)
            && compareDeep(description, o.description, true) && compareDeep(securityLabel, o.securityLabel, true)
-           && compareDeep(content, o.content, true) && compareDeep(sourcePatientInfo, o.sourcePatientInfo, true)
-           && compareDeep(related, o.related, true);
+           && compareDeep(content, o.content, true);
       }
 
       @Override
@@ -2542,9 +2473,9 @@ public class DocumentReference extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, basedOn, status
-          , docStatus, type, category, subject, encounter, event, facilityType, practiceSetting
+          , docStatus, type, category, subject, context, event, facilityType, practiceSetting
           , period, date, author, attester, custodian, relatesTo, description, securityLabel
-          , content, sourcePatientInfo, related);
+          , content);
       }
 
   @Override
@@ -2555,17 +2486,17 @@ public class DocumentReference extends DomainResource {
  /**
    * Search parameter: <b>attester</b>
    * <p>
-   * Description: <b>Who attested the composition</b><br>
+   * Description: <b>Who attested the document</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>DocumentReference.attester.party</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="attester", path="DocumentReference.attester.party", description="Who attested the composition", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  @SearchParamDefinition(name="attester", path="DocumentReference.attester.party", description="Who attested the document", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
   public static final String SP_ATTESTER = "attester";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>attester</b>
    * <p>
-   * Description: <b>Who attested the composition</b><br>
+   * Description: <b>Who attested the document</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>DocumentReference.attester.party</b><br>
    * </p>
@@ -2612,7 +2543,7 @@ public class DocumentReference extends DomainResource {
    * Path: <b>DocumentReference.basedOn</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="based-on", path="DocumentReference.basedOn", description="Procedure that caused this media to be created", type="reference", target={CarePlan.class, ServiceRequest.class } )
+  @SearchParamDefinition(name="based-on", path="DocumentReference.basedOn", description="Procedure that caused this media to be created", type="reference", target={Appointment.class, AppointmentResponse.class, CarePlan.class, Claim.class, CommunicationRequest.class, Contract.class, CoverageEligibilityRequest.class, DeviceRequest.class, EnrollmentRequest.class, EpisodeOfCare.class, ImmunizationRecommendation.class, MedicationRequest.class, NutritionOrder.class, RequestOrchestration.class, ServiceRequest.class, SupplyRequest.class, VisionPrescription.class } )
   public static final String SP_BASED_ON = "based-on";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>based-on</b>
@@ -2669,6 +2600,32 @@ public class DocumentReference extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTENTTYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTENTTYPE);
+
+ /**
+   * Search parameter: <b>context</b>
+   * <p>
+   * Description: <b>Context of the document content</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>DocumentReference.context</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context", path="DocumentReference.context", description="Context of the document content", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Encounter") }, target={Appointment.class, Encounter.class, EpisodeOfCare.class } )
+  public static final String SP_CONTEXT = "context";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context</b>
+   * <p>
+   * Description: <b>Context of the document content</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>DocumentReference.context</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_CONTEXT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>DocumentReference:context</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_CONTEXT = new ca.uhn.fhir.model.api.Include("DocumentReference:context").toLocked();
 
  /**
    * Search parameter: <b>creation</b>
@@ -2777,24 +2734,50 @@ public class DocumentReference extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam DOC_STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_DOC_STATUS);
 
  /**
-   * Search parameter: <b>event</b>
+   * Search parameter: <b>event-code</b>
    * <p>
    * Description: <b>Main clinical acts documented</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>DocumentReference.event</b><br>
+   * Path: <b>DocumentReference.event.concept</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="event", path="DocumentReference.event", description="Main clinical acts documented", type="token" )
-  public static final String SP_EVENT = "event";
+  @SearchParamDefinition(name="event-code", path="DocumentReference.event.concept", description="Main clinical acts documented", type="token" )
+  public static final String SP_EVENT_CODE = "event-code";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>event</b>
+   * <b>Fluent Client</b> search parameter constant for <b>event-code</b>
    * <p>
    * Description: <b>Main clinical acts documented</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>DocumentReference.event</b><br>
+   * Path: <b>DocumentReference.event.concept</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam EVENT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EVENT);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam EVENT_CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EVENT_CODE);
+
+ /**
+   * Search parameter: <b>event-reference</b>
+   * <p>
+   * Description: <b>Main clinical acts documented</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>DocumentReference.event.reference</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="event-reference", path="DocumentReference.event.reference", description="Main clinical acts documented", type="reference" )
+  public static final String SP_EVENT_REFERENCE = "event-reference";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>event-reference</b>
+   * <p>
+   * Description: <b>Main clinical acts documented</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>DocumentReference.event.reference</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam EVENT_REFERENCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_EVENT_REFERENCE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>DocumentReference:event-reference</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_EVENT_REFERENCE = new ca.uhn.fhir.model.api.Include("DocumentReference:event-reference").toLocked();
 
  /**
    * Search parameter: <b>facility</b>
@@ -2817,24 +2800,70 @@ public class DocumentReference extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam FACILITY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_FACILITY);
 
  /**
-   * Search parameter: <b>format</b>
+   * Search parameter: <b>format-canonical</b>
    * <p>
-   * Description: <b>Format/content rules for the document</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>DocumentReference.content.format</b><br>
+   * Description: <b>Profile canonical content rules for the document</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>(DocumentReference.content.profile.value as canonical)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="format", path="DocumentReference.content.format", description="Format/content rules for the document", type="token" )
-  public static final String SP_FORMAT = "format";
+  @SearchParamDefinition(name="format-canonical", path="(DocumentReference.content.profile.value as canonical)", description="Profile canonical content rules for the document", type="reference" )
+  public static final String SP_FORMAT_CANONICAL = "format-canonical";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>format</b>
+   * <b>Fluent Client</b> search parameter constant for <b>format-canonical</b>
    * <p>
-   * Description: <b>Format/content rules for the document</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>DocumentReference.content.format</b><br>
+   * Description: <b>Profile canonical content rules for the document</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>(DocumentReference.content.profile.value as canonical)</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam FORMAT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_FORMAT);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam FORMAT_CANONICAL = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_FORMAT_CANONICAL);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>DocumentReference:format-canonical</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_FORMAT_CANONICAL = new ca.uhn.fhir.model.api.Include("DocumentReference:format-canonical").toLocked();
+
+ /**
+   * Search parameter: <b>format-code</b>
+   * <p>
+   * Description: <b>Format code content rules for the document</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(DocumentReference.content.profile.value as Coding)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="format-code", path="(DocumentReference.content.profile.value as Coding)", description="Format code content rules for the document", type="token" )
+  public static final String SP_FORMAT_CODE = "format-code";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>format-code</b>
+   * <p>
+   * Description: <b>Format code content rules for the document</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(DocumentReference.content.profile.value as Coding)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam FORMAT_CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_FORMAT_CODE);
+
+ /**
+   * Search parameter: <b>format-uri</b>
+   * <p>
+   * Description: <b>Profile URI content rules for the document</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>(DocumentReference.content.profile.value as uri)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="format-uri", path="(DocumentReference.content.profile.value as uri)", description="Profile URI content rules for the document", type="uri" )
+  public static final String SP_FORMAT_URI = "format-uri";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>format-uri</b>
+   * <p>
+   * Description: <b>Profile URI content rules for the document</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>(DocumentReference.content.profile.value as uri)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam FORMAT_URI = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_FORMAT_URI);
 
  /**
    * Search parameter: <b>language</b>
@@ -2895,32 +2924,6 @@ public class DocumentReference extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam PERIOD = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_PERIOD);
-
- /**
-   * Search parameter: <b>related</b>
-   * <p>
-   * Description: <b>Related identifiers or resources</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>DocumentReference.related</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="related", path="DocumentReference.related", description="Related identifiers or resources", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
-  public static final String SP_RELATED = "related";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>related</b>
-   * <p>
-   * Description: <b>Related identifiers or resources</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>DocumentReference.related</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam RELATED = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_RELATED);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>DocumentReference:related</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_RELATED = new ca.uhn.fhir.model.api.Include("DocumentReference:related").toLocked();
 
  /**
    * Search parameter: <b>relatesto</b>
@@ -3056,7 +3059,7 @@ public class DocumentReference extends DomainResource {
    * Path: <b>DocumentReference.subject</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="subject", path="DocumentReference.subject", description="Who/what is the subject of the document", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Device.class, Group.class, Location.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, Specimen.class } )
+  @SearchParamDefinition(name="subject", path="DocumentReference.subject", description="Who/what is the subject of the document", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_SUBJECT = "subject";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>subject</b>
@@ -3073,60 +3076,6 @@ public class DocumentReference extends DomainResource {
    * the path value of "<b>DocumentReference:subject</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("DocumentReference:subject").toLocked();
-
- /**
-   * Search parameter: <b>encounter</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Composition](composition.html): Context of the Composition
-* [DeviceRequest](devicerequest.html): Encounter during which request was created
-* [DiagnosticReport](diagnosticreport.html): The Encounter when the order was made
-* [DocumentReference](documentreference.html): Context of the document  content
-* [Flag](flag.html): Alert relevant during encounter
-* [List](list.html): Context in which list created
-* [NutritionOrder](nutritionorder.html): Return nutrition orders with this encounter identifier
-* [Observation](observation.html): Encounter related to the observation
-* [Procedure](procedure.html): The Encounter during which this Procedure was created
-* [RiskAssessment](riskassessment.html): Where was assessment performed?
-* [ServiceRequest](servicerequest.html): An encounter in which this request is made
-* [VisionPrescription](visionprescription.html): Return prescriptions with this encounter identifier
-</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Composition.encounter | DeviceRequest.encounter | DiagnosticReport.encounter | DocumentReference.encounter | Flag.encounter | List.encounter | NutritionOrder.encounter | Observation.encounter | Procedure.encounter | RiskAssessment.encounter | ServiceRequest.encounter | VisionPrescription.encounter</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="encounter", path="Composition.encounter | DeviceRequest.encounter | DiagnosticReport.encounter | DocumentReference.encounter | Flag.encounter | List.encounter | NutritionOrder.encounter | Observation.encounter | Procedure.encounter | RiskAssessment.encounter | ServiceRequest.encounter | VisionPrescription.encounter", description="Multiple Resources: \r\n\r\n* [Composition](composition.html): Context of the Composition\r\n* [DeviceRequest](devicerequest.html): Encounter during which request was created\r\n* [DiagnosticReport](diagnosticreport.html): The Encounter when the order was made\r\n* [DocumentReference](documentreference.html): Context of the document  content\r\n* [Flag](flag.html): Alert relevant during encounter\r\n* [List](list.html): Context in which list created\r\n* [NutritionOrder](nutritionorder.html): Return nutrition orders with this encounter identifier\r\n* [Observation](observation.html): Encounter related to the observation\r\n* [Procedure](procedure.html): The Encounter during which this Procedure was created\r\n* [RiskAssessment](riskassessment.html): Where was assessment performed?\r\n* [ServiceRequest](servicerequest.html): An encounter in which this request is made\r\n* [VisionPrescription](visionprescription.html): Return prescriptions with this encounter identifier\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Encounter") }, target={Encounter.class } )
-  public static final String SP_ENCOUNTER = "encounter";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Composition](composition.html): Context of the Composition
-* [DeviceRequest](devicerequest.html): Encounter during which request was created
-* [DiagnosticReport](diagnosticreport.html): The Encounter when the order was made
-* [DocumentReference](documentreference.html): Context of the document  content
-* [Flag](flag.html): Alert relevant during encounter
-* [List](list.html): Context in which list created
-* [NutritionOrder](nutritionorder.html): Return nutrition orders with this encounter identifier
-* [Observation](observation.html): Encounter related to the observation
-* [Procedure](procedure.html): The Encounter during which this Procedure was created
-* [RiskAssessment](riskassessment.html): Where was assessment performed?
-* [ServiceRequest](servicerequest.html): An encounter in which this request is made
-* [VisionPrescription](visionprescription.html): Return prescriptions with this encounter identifier
-</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Composition.encounter | DeviceRequest.encounter | DiagnosticReport.encounter | DocumentReference.encounter | Flag.encounter | List.encounter | NutritionOrder.encounter | Observation.encounter | Procedure.encounter | RiskAssessment.encounter | ServiceRequest.encounter | VisionPrescription.encounter</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENCOUNTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENCOUNTER);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>DocumentReference:encounter</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("DocumentReference:encounter").toLocked();
 
  /**
    * Search parameter: <b>identifier</b>
@@ -3165,10 +3114,10 @@ public class DocumentReference extends DomainResource {
 * [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.content.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier</b><br>
+   * Path: <b>AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="identifier", path="AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.content.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): External ids for this item\r\n* [CarePlan](careplan.html): External Ids for this plan\r\n* [CareTeam](careteam.html): External Ids for this team\r\n* [Composition](composition.html): Version-independent identifier for the Composition\r\n* [Condition](condition.html): A unique identifier of the condition record\r\n* [Consent](consent.html): Identifier for this record (external references)\r\n* [DetectedIssue](detectedissue.html): Unique id for the detected issue\r\n* [DeviceRequest](devicerequest.html): Business identifier for request/order\r\n* [DiagnosticReport](diagnosticreport.html): An identifier for the report\r\n* [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents\r\n* [DocumentReference](documentreference.html): Identifier of the attachment binary\r\n* [Encounter](encounter.html): Identifier(s) by which this encounter is known\r\n* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier\r\n* [Goal](goal.html): External Ids for this goal\r\n* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID\r\n* [Immunization](immunization.html): Business identifier\r\n* [List](list.html): Business identifier\r\n* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier\r\n* [MedicationUsage](medicationusage.html): Return statements with this external identifier\r\n* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier\r\n* [Observation](observation.html): The unique id for a particular observation\r\n* [Procedure](procedure.html): A unique identifier for a procedure\r\n* [RiskAssessment](riskassessment.html): Unique identifier for the assessment\r\n* [ServiceRequest](servicerequest.html): Identifiers assigned to this order\r\n* [SupplyDelivery](supplydelivery.html): External identifier\r\n* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest\r\n* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier\r\n", type="token" )
+  @SearchParamDefinition(name="identifier", path="AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): External ids for this item\r\n* [CarePlan](careplan.html): External Ids for this plan\r\n* [CareTeam](careteam.html): External Ids for this team\r\n* [Composition](composition.html): Version-independent identifier for the Composition\r\n* [Condition](condition.html): A unique identifier of the condition record\r\n* [Consent](consent.html): Identifier for this record (external references)\r\n* [DetectedIssue](detectedissue.html): Unique id for the detected issue\r\n* [DeviceRequest](devicerequest.html): Business identifier for request/order\r\n* [DiagnosticReport](diagnosticreport.html): An identifier for the report\r\n* [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents\r\n* [DocumentReference](documentreference.html): Identifier of the attachment binary\r\n* [Encounter](encounter.html): Identifier(s) by which this encounter is known\r\n* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier\r\n* [Goal](goal.html): External Ids for this goal\r\n* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID\r\n* [Immunization](immunization.html): Business identifier\r\n* [List](list.html): Business identifier\r\n* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier\r\n* [MedicationUsage](medicationusage.html): Return statements with this external identifier\r\n* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier\r\n* [Observation](observation.html): The unique id for a particular observation\r\n* [Procedure](procedure.html): A unique identifier for a procedure\r\n* [RiskAssessment](riskassessment.html): Unique identifier for the assessment\r\n* [ServiceRequest](servicerequest.html): Identifiers assigned to this order\r\n* [SupplyDelivery](supplydelivery.html): External identifier\r\n* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest\r\n* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier\r\n", type="token" )
   public static final String SP_IDENTIFIER = "identifier";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
@@ -3207,7 +3156,7 @@ public class DocumentReference extends DomainResource {
 * [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.content.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier</b><br>
+   * Path: <b>AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
@@ -3242,7 +3191,7 @@ public class DocumentReference extends DomainResource {
 * [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
 * [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
 * [MedicationUsage](medicationusage.html): Returns statements for a specific patient.
-* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement
+* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement
 * [Observation](observation.html): The subject that the observation is about (if patient)
 * [Procedure](procedure.html): Search by subject - a patient
 * [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
@@ -3251,10 +3200,10 @@ public class DocumentReference extends DomainResource {
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", target={BiologicallyDerivedProduct.class, Device.class, Group.class, Location.class, Medication.class, NutritionProduct.class, Organization.class, Patient.class, Practitioner.class, Procedure.class, Substance.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
@@ -3286,7 +3235,7 @@ public class DocumentReference extends DomainResource {
 * [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
 * [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
 * [MedicationUsage](medicationusage.html): Returns statements for a specific patient.
-* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement
+* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement
 * [Observation](observation.html): The subject that the observation is about (if patient)
 * [Procedure](procedure.html): Search by subject - a patient
 * [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
@@ -3295,7 +3244,7 @@ public class DocumentReference extends DomainResource {
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -124,19 +124,21 @@ public class CarePlan extends DomainResource {
             case TASK: return "Task";
             case SERVICEREQUEST: return "ServiceRequest";
             case VISIONPRESCRIPTION: return "VisionPrescription";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getSystem() {
           switch (this) {
-            case APPOINTMENT: return "http://hl7.org/fhir/resource-types";
-            case COMMUNICATIONREQUEST: return "http://hl7.org/fhir/resource-types";
-            case DEVICEREQUEST: return "http://hl7.org/fhir/resource-types";
-            case MEDICATIONREQUEST: return "http://hl7.org/fhir/resource-types";
-            case NUTRITIONORDER: return "http://hl7.org/fhir/resource-types";
-            case TASK: return "http://hl7.org/fhir/resource-types";
-            case SERVICEREQUEST: return "http://hl7.org/fhir/resource-types";
-            case VISIONPRESCRIPTION: return "http://hl7.org/fhir/resource-types";
+            case APPOINTMENT: return "http://hl7.org/fhir/fhir-types";
+            case COMMUNICATIONREQUEST: return "http://hl7.org/fhir/fhir-types";
+            case DEVICEREQUEST: return "http://hl7.org/fhir/fhir-types";
+            case MEDICATIONREQUEST: return "http://hl7.org/fhir/fhir-types";
+            case NUTRITIONORDER: return "http://hl7.org/fhir/fhir-types";
+            case TASK: return "http://hl7.org/fhir/fhir-types";
+            case SERVICEREQUEST: return "http://hl7.org/fhir/fhir-types";
+            case VISIONPRESCRIPTION: return "http://hl7.org/fhir/fhir-types";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -150,6 +152,7 @@ public class CarePlan extends DomainResource {
             case TASK: return "A task to be performed.";
             case SERVICEREQUEST: return "A record of a request for service such as diagnostic investigations, treatments, or operations to be performed.";
             case VISIONPRESCRIPTION: return "An authorization for the provision of glasses and/or contact lenses to a patient.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -163,6 +166,7 @@ public class CarePlan extends DomainResource {
             case TASK: return "Task";
             case SERVICEREQUEST: return "ServiceRequest";
             case VISIONPRESCRIPTION: return "VisionPrescription";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -319,6 +323,7 @@ public class CarePlan extends DomainResource {
             case STOPPED: return "stopped";
             case UNKNOWN: return "unknown";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -333,6 +338,7 @@ public class CarePlan extends DomainResource {
             case STOPPED: return "http://hl7.org/fhir/care-plan-activity-status";
             case UNKNOWN: return "http://hl7.org/fhir/care-plan-activity-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/care-plan-activity-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -347,6 +353,7 @@ public class CarePlan extends DomainResource {
             case STOPPED: return "The planned care plan activity has been ended prior to completion after the activity was started.";
             case UNKNOWN: return "The current state of the care plan activity is not known.  Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply, but the authoring/source system does not know which one.";
             case ENTEREDINERROR: return "Care plan activity was entered in error and voided.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -361,6 +368,7 @@ public class CarePlan extends DomainResource {
             case STOPPED: return "Stopped";
             case UNKNOWN: return "Unknown";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -459,7 +467,7 @@ public class CarePlan extends DomainResource {
          */
         ORDER, 
         /**
-         * The request represents a component or option for a RequestGroup that establishes timing, conditionality and/or other constraints among a set of requests.  Refer to [[[RequestGroup]]] for additional information on how this status is used.
+         * The request represents a component or option for a RequestOrchestration that establishes timing, conditionality and/or other constraints among a set of requests.  Refer to [[[RequestOrchestration]]] for additional information on how this status is used.
          */
         OPTION, 
         /**
@@ -495,6 +503,7 @@ public class CarePlan extends DomainResource {
             case ORDER: return "order";
             case OPTION: return "option";
             case DIRECTIVE: return "directive";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -505,6 +514,7 @@ public class CarePlan extends DomainResource {
             case ORDER: return "http://hl7.org/fhir/request-intent";
             case OPTION: return "http://hl7.org/fhir/request-intent";
             case DIRECTIVE: return "http://hl7.org/fhir/request-intent";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -513,8 +523,9 @@ public class CarePlan extends DomainResource {
             case PROPOSAL: return "The request is a suggestion made by someone/something that does not have an intention to ensure it occurs and without providing an authorization to act.";
             case PLAN: return "The request represents an intention to ensure something occurs without providing an authorization for others to act.";
             case ORDER: return "The request represents a request/demand and authorization for action by a Practitioner.";
-            case OPTION: return "The request represents a component or option for a RequestGroup that establishes timing, conditionality and/or other constraints among a set of requests.  Refer to [[[RequestGroup]]] for additional information on how this status is used.";
+            case OPTION: return "The request represents a component or option for a RequestOrchestration that establishes timing, conditionality and/or other constraints among a set of requests.  Refer to [[[RequestOrchestration]]] for additional information on how this status is used.";
             case DIRECTIVE: return "The request represents a legally binding instruction authored by a Patient or RelatedPerson.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -525,6 +536,7 @@ public class CarePlan extends DomainResource {
             case ORDER: return "Order";
             case OPTION: return "Option";
             case DIRECTIVE: return "Directive";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -605,7 +617,7 @@ public class CarePlan extends DomainResource {
         /**
          * The details of the proposed activity represented in a specific resource.
          */
-        @Child(name = "plannedActivityReference", type = {Appointment.class, CommunicationRequest.class, DeviceRequest.class, MedicationRequest.class, NutritionOrder.class, Task.class, ServiceRequest.class, VisionPrescription.class, RequestGroup.class, ImmunizationRecommendation.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "plannedActivityReference", type = {Appointment.class, CommunicationRequest.class, DeviceRequest.class, MedicationRequest.class, NutritionOrder.class, Task.class, ServiceRequest.class, VisionPrescription.class, RequestOrchestration.class, ImmunizationRecommendation.class}, order=3, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Activity that is intended to be part of the care plan", formalDefinition="The details of the proposed activity represented in a specific resource." )
         protected Reference plannedActivityReference;
 
@@ -783,7 +795,7 @@ public class CarePlan extends DomainResource {
           super.listChildren(children);
           children.add(new Property("performedActivity", "CodeableReference(Any)", "Identifies the activity that was performed. For example, an activity could be patient education, exercise, or a medication administration. The reference to an \"event\" resource, such as Procedure or Encounter or Observation, represents the activity that was performed. The requested activity can be conveyed using CarePlan.activity.plannedActivityDetail OR using the CarePlan.activity.plannedActivityReference (a reference to a “request” resource).", 0, java.lang.Integer.MAX_VALUE, performedActivity));
           children.add(new Property("progress", "Annotation", "Notes about the adherence/status/progress of the activity.", 0, java.lang.Integer.MAX_VALUE, progress));
-          children.add(new Property("plannedActivityReference", "Reference(Appointment|CommunicationRequest|DeviceRequest|MedicationRequest|NutritionOrder|Task|ServiceRequest|VisionPrescription|RequestGroup|ImmunizationRecommendation)", "The details of the proposed activity represented in a specific resource.", 0, 1, plannedActivityReference));
+          children.add(new Property("plannedActivityReference", "Reference(Appointment|CommunicationRequest|DeviceRequest|MedicationRequest|NutritionOrder|Task|ServiceRequest|VisionPrescription|RequestOrchestration|ImmunizationRecommendation)", "The details of the proposed activity represented in a specific resource.", 0, 1, plannedActivityReference));
           children.add(new Property("plannedActivityDetail", "", "A simple summary of a planned activity suitable for a general care plan system (e.g. form driven) that doesn't know about specific resources such as procedure etc.", 0, 1, plannedActivityDetail));
         }
 
@@ -792,7 +804,7 @@ public class CarePlan extends DomainResource {
           switch (_hash) {
           case 1964521199: /*performedActivity*/  return new Property("performedActivity", "CodeableReference(Any)", "Identifies the activity that was performed. For example, an activity could be patient education, exercise, or a medication administration. The reference to an \"event\" resource, such as Procedure or Encounter or Observation, represents the activity that was performed. The requested activity can be conveyed using CarePlan.activity.plannedActivityDetail OR using the CarePlan.activity.plannedActivityReference (a reference to a “request” resource).", 0, java.lang.Integer.MAX_VALUE, performedActivity);
           case -1001078227: /*progress*/  return new Property("progress", "Annotation", "Notes about the adherence/status/progress of the activity.", 0, java.lang.Integer.MAX_VALUE, progress);
-          case -1114371176: /*plannedActivityReference*/  return new Property("plannedActivityReference", "Reference(Appointment|CommunicationRequest|DeviceRequest|MedicationRequest|NutritionOrder|Task|ServiceRequest|VisionPrescription|RequestGroup|ImmunizationRecommendation)", "The details of the proposed activity represented in a specific resource.", 0, 1, plannedActivityReference);
+          case -1114371176: /*plannedActivityReference*/  return new Property("plannedActivityReference", "Reference(Appointment|CommunicationRequest|DeviceRequest|MedicationRequest|NutritionOrder|Task|ServiceRequest|VisionPrescription|RequestOrchestration|ImmunizationRecommendation)", "The details of the proposed activity represented in a specific resource.", 0, 1, plannedActivityReference);
           case 2072803108: /*plannedActivityDetail*/  return new Property("plannedActivityDetail", "", "A simple summary of a planned activity suitable for a general care plan system (e.g. form driven) that doesn't know about specific resources such as procedure etc.", 0, 1, plannedActivityDetail);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -2365,17 +2377,17 @@ public class CarePlan extends DomainResource {
     protected DateTimeType created;
 
     /**
-     * When populated, the author is responsible for the care plan.  The care plan is attributed to the author.
+     * When populated, the custodian is responsible for the care plan. The care plan is attributed to the custodian.
      */
-    @Child(name = "author", type = {Patient.class, Practitioner.class, PractitionerRole.class, Device.class, RelatedPerson.class, Organization.class, CareTeam.class}, order=15, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Who is the designated responsible party", formalDefinition="When populated, the author is responsible for the care plan.  The care plan is attributed to the author." )
-    protected Reference author;
+    @Child(name = "custodian", type = {Patient.class, Practitioner.class, PractitionerRole.class, Device.class, RelatedPerson.class, Organization.class, CareTeam.class}, order=15, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Who is the designated responsible party", formalDefinition="When populated, the custodian is responsible for the care plan. The care plan is attributed to the custodian." )
+    protected Reference custodian;
 
     /**
-     * Identifies the individual(s) or organization who provided the contents of the care plan.
+     * Identifies the individual(s), organization or device who provided the contents of the care plan.
      */
     @Child(name = "contributor", type = {Patient.class, Practitioner.class, PractitionerRole.class, Device.class, RelatedPerson.class, Organization.class, CareTeam.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Who provided the content of the care plan", formalDefinition="Identifies the individual(s) or organization who provided the contents of the care plan." )
+    @Description(shortDefinition="Who provided the content of the care plan", formalDefinition="Identifies the individual(s), organization or device who provided the contents of the care plan." )
     protected List<Reference> contributor;
 
     /**
@@ -2421,7 +2433,7 @@ public class CarePlan extends DomainResource {
     @Description(shortDefinition="Comments about the plan", formalDefinition="General notes about the care plan not covered elsewhere." )
     protected List<Annotation> note;
 
-    private static final long serialVersionUID = 1467908871L;
+    private static final long serialVersionUID = -700769298L;
 
   /**
    * Constructor
@@ -3137,31 +3149,31 @@ public class CarePlan extends DomainResource {
     }
 
     /**
-     * @return {@link #author} (When populated, the author is responsible for the care plan.  The care plan is attributed to the author.)
+     * @return {@link #custodian} (When populated, the custodian is responsible for the care plan. The care plan is attributed to the custodian.)
      */
-    public Reference getAuthor() { 
-      if (this.author == null)
+    public Reference getCustodian() { 
+      if (this.custodian == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create CarePlan.author");
+          throw new Error("Attempt to auto-create CarePlan.custodian");
         else if (Configuration.doAutoCreate())
-          this.author = new Reference(); // cc
-      return this.author;
+          this.custodian = new Reference(); // cc
+      return this.custodian;
     }
 
-    public boolean hasAuthor() { 
-      return this.author != null && !this.author.isEmpty();
+    public boolean hasCustodian() { 
+      return this.custodian != null && !this.custodian.isEmpty();
     }
 
     /**
-     * @param value {@link #author} (When populated, the author is responsible for the care plan.  The care plan is attributed to the author.)
+     * @param value {@link #custodian} (When populated, the custodian is responsible for the care plan. The care plan is attributed to the custodian.)
      */
-    public CarePlan setAuthor(Reference value) { 
-      this.author = value;
+    public CarePlan setCustodian(Reference value) { 
+      this.custodian = value;
       return this;
     }
 
     /**
-     * @return {@link #contributor} (Identifies the individual(s) or organization who provided the contents of the care plan.)
+     * @return {@link #contributor} (Identifies the individual(s), organization or device who provided the contents of the care plan.)
      */
     public List<Reference> getContributor() { 
       if (this.contributor == null)
@@ -3548,8 +3560,8 @@ public class CarePlan extends DomainResource {
         children.add(new Property("encounter", "Reference(Encounter)", "The Encounter during which this CarePlan was created or to which the creation of this record is tightly associated.", 0, 1, encounter));
         children.add(new Property("period", "Period", "Indicates when the plan did (or is intended to) come into effect and end.", 0, 1, period));
         children.add(new Property("created", "dateTime", "Represents when this particular CarePlan record was created in the system, which is often a system-generated date.", 0, 1, created));
-        children.add(new Property("author", "Reference(Patient|Practitioner|PractitionerRole|Device|RelatedPerson|Organization|CareTeam)", "When populated, the author is responsible for the care plan.  The care plan is attributed to the author.", 0, 1, author));
-        children.add(new Property("contributor", "Reference(Patient|Practitioner|PractitionerRole|Device|RelatedPerson|Organization|CareTeam)", "Identifies the individual(s) or organization who provided the contents of the care plan.", 0, java.lang.Integer.MAX_VALUE, contributor));
+        children.add(new Property("custodian", "Reference(Patient|Practitioner|PractitionerRole|Device|RelatedPerson|Organization|CareTeam)", "When populated, the custodian is responsible for the care plan. The care plan is attributed to the custodian.", 0, 1, custodian));
+        children.add(new Property("contributor", "Reference(Patient|Practitioner|PractitionerRole|Device|RelatedPerson|Organization|CareTeam)", "Identifies the individual(s), organization or device who provided the contents of the care plan.", 0, java.lang.Integer.MAX_VALUE, contributor));
         children.add(new Property("careTeam", "Reference(CareTeam)", "Identifies all people and organizations who are expected to be involved in the care envisioned by this plan.", 0, java.lang.Integer.MAX_VALUE, careTeam));
         children.add(new Property("addresses", "CodeableReference(Condition)", "Identifies the conditions/problems/concerns/diagnoses/etc. whose management and/or mitigation are handled by this plan.", 0, java.lang.Integer.MAX_VALUE, addresses));
         children.add(new Property("supportingInfo", "Reference(Any)", "Identifies portions of the patient's record that specifically influenced the formation of the plan.  These might include comorbidities, recent procedures, limitations, recent assessments, etc.", 0, java.lang.Integer.MAX_VALUE, supportingInfo));
@@ -3576,8 +3588,8 @@ public class CarePlan extends DomainResource {
         case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "The Encounter during which this CarePlan was created or to which the creation of this record is tightly associated.", 0, 1, encounter);
         case -991726143: /*period*/  return new Property("period", "Period", "Indicates when the plan did (or is intended to) come into effect and end.", 0, 1, period);
         case 1028554472: /*created*/  return new Property("created", "dateTime", "Represents when this particular CarePlan record was created in the system, which is often a system-generated date.", 0, 1, created);
-        case -1406328437: /*author*/  return new Property("author", "Reference(Patient|Practitioner|PractitionerRole|Device|RelatedPerson|Organization|CareTeam)", "When populated, the author is responsible for the care plan.  The care plan is attributed to the author.", 0, 1, author);
-        case -1895276325: /*contributor*/  return new Property("contributor", "Reference(Patient|Practitioner|PractitionerRole|Device|RelatedPerson|Organization|CareTeam)", "Identifies the individual(s) or organization who provided the contents of the care plan.", 0, java.lang.Integer.MAX_VALUE, contributor);
+        case 1611297262: /*custodian*/  return new Property("custodian", "Reference(Patient|Practitioner|PractitionerRole|Device|RelatedPerson|Organization|CareTeam)", "When populated, the custodian is responsible for the care plan. The care plan is attributed to the custodian.", 0, 1, custodian);
+        case -1895276325: /*contributor*/  return new Property("contributor", "Reference(Patient|Practitioner|PractitionerRole|Device|RelatedPerson|Organization|CareTeam)", "Identifies the individual(s), organization or device who provided the contents of the care plan.", 0, java.lang.Integer.MAX_VALUE, contributor);
         case -7323378: /*careTeam*/  return new Property("careTeam", "Reference(CareTeam)", "Identifies all people and organizations who are expected to be involved in the care envisioned by this plan.", 0, java.lang.Integer.MAX_VALUE, careTeam);
         case 874544034: /*addresses*/  return new Property("addresses", "CodeableReference(Condition)", "Identifies the conditions/problems/concerns/diagnoses/etc. whose management and/or mitigation are handled by this plan.", 0, java.lang.Integer.MAX_VALUE, addresses);
         case 1922406657: /*supportingInfo*/  return new Property("supportingInfo", "Reference(Any)", "Identifies portions of the patient's record that specifically influenced the formation of the plan.  These might include comorbidities, recent procedures, limitations, recent assessments, etc.", 0, java.lang.Integer.MAX_VALUE, supportingInfo);
@@ -3607,7 +3619,7 @@ public class CarePlan extends DomainResource {
         case 1524132147: /*encounter*/ return this.encounter == null ? new Base[0] : new Base[] {this.encounter}; // Reference
         case -991726143: /*period*/ return this.period == null ? new Base[0] : new Base[] {this.period}; // Period
         case 1028554472: /*created*/ return this.created == null ? new Base[0] : new Base[] {this.created}; // DateTimeType
-        case -1406328437: /*author*/ return this.author == null ? new Base[0] : new Base[] {this.author}; // Reference
+        case 1611297262: /*custodian*/ return this.custodian == null ? new Base[0] : new Base[] {this.custodian}; // Reference
         case -1895276325: /*contributor*/ return this.contributor == null ? new Base[0] : this.contributor.toArray(new Base[this.contributor.size()]); // Reference
         case -7323378: /*careTeam*/ return this.careTeam == null ? new Base[0] : this.careTeam.toArray(new Base[this.careTeam.size()]); // Reference
         case 874544034: /*addresses*/ return this.addresses == null ? new Base[0] : this.addresses.toArray(new Base[this.addresses.size()]); // CodeableReference
@@ -3670,8 +3682,8 @@ public class CarePlan extends DomainResource {
         case 1028554472: // created
           this.created = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
-        case -1406328437: // author
-          this.author = TypeConvertor.castToReference(value); // Reference
+        case 1611297262: // custodian
+          this.custodian = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1895276325: // contributor
           this.getContributor().add(TypeConvertor.castToReference(value)); // Reference
@@ -3733,8 +3745,8 @@ public class CarePlan extends DomainResource {
           this.period = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("created")) {
           this.created = TypeConvertor.castToDateTime(value); // DateTimeType
-        } else if (name.equals("author")) {
-          this.author = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("custodian")) {
+          this.custodian = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("contributor")) {
           this.getContributor().add(TypeConvertor.castToReference(value));
         } else if (name.equals("careTeam")) {
@@ -3772,7 +3784,7 @@ public class CarePlan extends DomainResource {
         case 1524132147:  return getEncounter();
         case -991726143:  return getPeriod();
         case 1028554472:  return getCreatedElement();
-        case -1406328437:  return getAuthor();
+        case 1611297262:  return getCustodian();
         case -1895276325:  return addContributor(); 
         case -7323378:  return addCareTeam(); 
         case 874544034:  return addAddresses(); 
@@ -3803,7 +3815,7 @@ public class CarePlan extends DomainResource {
         case 1524132147: /*encounter*/ return new String[] {"Reference"};
         case -991726143: /*period*/ return new String[] {"Period"};
         case 1028554472: /*created*/ return new String[] {"dateTime"};
-        case -1406328437: /*author*/ return new String[] {"Reference"};
+        case 1611297262: /*custodian*/ return new String[] {"Reference"};
         case -1895276325: /*contributor*/ return new String[] {"Reference"};
         case -7323378: /*careTeam*/ return new String[] {"Reference"};
         case 874544034: /*addresses*/ return new String[] {"CodeableReference"};
@@ -3866,9 +3878,9 @@ public class CarePlan extends DomainResource {
         else if (name.equals("created")) {
           throw new FHIRException("Cannot call addChild on a primitive type CarePlan.created");
         }
-        else if (name.equals("author")) {
-          this.author = new Reference();
-          return this.author;
+        else if (name.equals("custodian")) {
+          this.custodian = new Reference();
+          return this.custodian;
         }
         else if (name.equals("contributor")) {
           return addContributor();
@@ -3951,7 +3963,7 @@ public class CarePlan extends DomainResource {
         dst.encounter = encounter == null ? null : encounter.copy();
         dst.period = period == null ? null : period.copy();
         dst.created = created == null ? null : created.copy();
-        dst.author = author == null ? null : author.copy();
+        dst.custodian = custodian == null ? null : custodian.copy();
         if (contributor != null) {
           dst.contributor = new ArrayList<Reference>();
           for (Reference i : contributor)
@@ -4005,7 +4017,7 @@ public class CarePlan extends DomainResource {
            && compareDeep(replaces, o.replaces, true) && compareDeep(partOf, o.partOf, true) && compareDeep(status, o.status, true)
            && compareDeep(intent, o.intent, true) && compareDeep(category, o.category, true) && compareDeep(title, o.title, true)
            && compareDeep(description, o.description, true) && compareDeep(subject, o.subject, true) && compareDeep(encounter, o.encounter, true)
-           && compareDeep(period, o.period, true) && compareDeep(created, o.created, true) && compareDeep(author, o.author, true)
+           && compareDeep(period, o.period, true) && compareDeep(created, o.created, true) && compareDeep(custodian, o.custodian, true)
            && compareDeep(contributor, o.contributor, true) && compareDeep(careTeam, o.careTeam, true) && compareDeep(addresses, o.addresses, true)
            && compareDeep(supportingInfo, o.supportingInfo, true) && compareDeep(goal, o.goal, true) && compareDeep(activity, o.activity, true)
            && compareDeep(note, o.note, true);
@@ -4026,7 +4038,7 @@ public class CarePlan extends DomainResource {
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, instantiatesCanonical
           , instantiatesUri, basedOn, replaces, partOf, status, intent, category, title
-          , description, subject, encounter, period, created, author, contributor, careTeam
+          , description, subject, encounter, period, created, custodian, contributor, careTeam
           , addresses, supportingInfo, goal, activity, note);
       }
 
@@ -4063,7 +4075,7 @@ public class CarePlan extends DomainResource {
    * Path: <b>CarePlan.activity.plannedActivityReference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="activity-reference", path="CarePlan.activity.plannedActivityReference", description="Activity that is intended to be part of the care plan", type="reference", target={Appointment.class, CommunicationRequest.class, DeviceRequest.class, ImmunizationRecommendation.class, MedicationRequest.class, NutritionOrder.class, RequestGroup.class, ServiceRequest.class, Task.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="activity-reference", path="CarePlan.activity.plannedActivityReference", description="Activity that is intended to be part of the care plan", type="reference", target={Appointment.class, CommunicationRequest.class, DeviceRequest.class, ImmunizationRecommendation.class, MedicationRequest.class, NutritionOrder.class, RequestOrchestration.class, ServiceRequest.class, Task.class, VisionPrescription.class } )
   public static final String SP_ACTIVITY_REFERENCE = "activity-reference";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>activity-reference</b>
@@ -4086,17 +4098,17 @@ public class CarePlan extends DomainResource {
    * <p>
    * Description: <b>Specified date occurs within period specified by CarePlan.activity.plannedActivityDetail.scheduled[x]</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>CarePlan.activity.plannedActivityDetail.scheduled.as(Timing) | CarePlan.activity.plannedActivityDetail.scheduled.as(Period)</b><br>
+   * Path: <b>CarePlan.activity.plannedActivityDetail.scheduled.ofType(Timing) | CarePlan.activity.plannedActivityDetail.scheduled.ofType(Period)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="activity-scheduled-date", path="CarePlan.activity.plannedActivityDetail.scheduled.as(Timing) | CarePlan.activity.plannedActivityDetail.scheduled.as(Period)", description="Specified date occurs within period specified by CarePlan.activity.plannedActivityDetail.scheduled[x]", type="date" )
+  @SearchParamDefinition(name="activity-scheduled-date", path="CarePlan.activity.plannedActivityDetail.scheduled.ofType(Timing) | CarePlan.activity.plannedActivityDetail.scheduled.ofType(Period)", description="Specified date occurs within period specified by CarePlan.activity.plannedActivityDetail.scheduled[x]", type="date" )
   public static final String SP_ACTIVITY_SCHEDULED_DATE = "activity-scheduled-date";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>activity-scheduled-date</b>
    * <p>
    * Description: <b>Specified date occurs within period specified by CarePlan.activity.plannedActivityDetail.scheduled[x]</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>CarePlan.activity.plannedActivityDetail.scheduled.as(Timing) | CarePlan.activity.plannedActivityDetail.scheduled.as(Period)</b><br>
+   * Path: <b>CarePlan.activity.plannedActivityDetail.scheduled.ofType(Timing) | CarePlan.activity.plannedActivityDetail.scheduled.ofType(Period)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam ACTIVITY_SCHEDULED_DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_ACTIVITY_SCHEDULED_DATE);
@@ -4106,17 +4118,17 @@ public class CarePlan extends DomainResource {
    * <p>
    * Description: <b>When activity is to occur</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>CarePlan.activity.plannedActivityDetail.scheduled.as(string)</b><br>
+   * Path: <b>CarePlan.activity.plannedActivityDetail.scheduled.ofType(string)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="activity-scheduled-string", path="CarePlan.activity.plannedActivityDetail.scheduled.as(string)", description="When activity is to occur", type="string" )
+  @SearchParamDefinition(name="activity-scheduled-string", path="CarePlan.activity.plannedActivityDetail.scheduled.ofType(string)", description="When activity is to occur", type="string" )
   public static final String SP_ACTIVITY_SCHEDULED_STRING = "activity-scheduled-string";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>activity-scheduled-string</b>
    * <p>
    * Description: <b>When activity is to occur</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>CarePlan.activity.plannedActivityDetail.scheduled.as(string)</b><br>
+   * Path: <b>CarePlan.activity.plannedActivityDetail.scheduled.ofType(string)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.StringClientParam ACTIVITY_SCHEDULED_STRING = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ACTIVITY_SCHEDULED_STRING);
@@ -4218,6 +4230,32 @@ public class CarePlan extends DomainResource {
    * the path value of "<b>CarePlan:condition</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_CONDITION = new ca.uhn.fhir.model.api.Include("CarePlan:condition").toLocked();
+
+ /**
+   * Search parameter: <b>custodian</b>
+   * <p>
+   * Description: <b>Who is the designated responsible party</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CarePlan.custodian</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="custodian", path="CarePlan.custodian", description="Who is the designated responsible party", type="reference", target={CareTeam.class, Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  public static final String SP_CUSTODIAN = "custodian";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>custodian</b>
+   * <p>
+   * Description: <b>Who is the designated responsible party</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>CarePlan.custodian</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam CUSTODIAN = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_CUSTODIAN);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>CarePlan:custodian</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_CUSTODIAN = new ca.uhn.fhir.model.api.Include("CarePlan:custodian").toLocked();
 
  /**
    * Search parameter: <b>encounter</b>
@@ -4556,10 +4594,10 @@ public class CarePlan extends DomainResource {
 * [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.content.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier</b><br>
+   * Path: <b>AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="identifier", path="AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.content.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): External ids for this item\r\n* [CarePlan](careplan.html): External Ids for this plan\r\n* [CareTeam](careteam.html): External Ids for this team\r\n* [Composition](composition.html): Version-independent identifier for the Composition\r\n* [Condition](condition.html): A unique identifier of the condition record\r\n* [Consent](consent.html): Identifier for this record (external references)\r\n* [DetectedIssue](detectedissue.html): Unique id for the detected issue\r\n* [DeviceRequest](devicerequest.html): Business identifier for request/order\r\n* [DiagnosticReport](diagnosticreport.html): An identifier for the report\r\n* [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents\r\n* [DocumentReference](documentreference.html): Identifier of the attachment binary\r\n* [Encounter](encounter.html): Identifier(s) by which this encounter is known\r\n* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier\r\n* [Goal](goal.html): External Ids for this goal\r\n* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID\r\n* [Immunization](immunization.html): Business identifier\r\n* [List](list.html): Business identifier\r\n* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier\r\n* [MedicationUsage](medicationusage.html): Return statements with this external identifier\r\n* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier\r\n* [Observation](observation.html): The unique id for a particular observation\r\n* [Procedure](procedure.html): A unique identifier for a procedure\r\n* [RiskAssessment](riskassessment.html): Unique identifier for the assessment\r\n* [ServiceRequest](servicerequest.html): Identifiers assigned to this order\r\n* [SupplyDelivery](supplydelivery.html): External identifier\r\n* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest\r\n* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier\r\n", type="token" )
+  @SearchParamDefinition(name="identifier", path="AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): External ids for this item\r\n* [CarePlan](careplan.html): External Ids for this plan\r\n* [CareTeam](careteam.html): External Ids for this team\r\n* [Composition](composition.html): Version-independent identifier for the Composition\r\n* [Condition](condition.html): A unique identifier of the condition record\r\n* [Consent](consent.html): Identifier for this record (external references)\r\n* [DetectedIssue](detectedissue.html): Unique id for the detected issue\r\n* [DeviceRequest](devicerequest.html): Business identifier for request/order\r\n* [DiagnosticReport](diagnosticreport.html): An identifier for the report\r\n* [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents\r\n* [DocumentReference](documentreference.html): Identifier of the attachment binary\r\n* [Encounter](encounter.html): Identifier(s) by which this encounter is known\r\n* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier\r\n* [Goal](goal.html): External Ids for this goal\r\n* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID\r\n* [Immunization](immunization.html): Business identifier\r\n* [List](list.html): Business identifier\r\n* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier\r\n* [MedicationUsage](medicationusage.html): Return statements with this external identifier\r\n* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier\r\n* [Observation](observation.html): The unique id for a particular observation\r\n* [Procedure](procedure.html): A unique identifier for a procedure\r\n* [RiskAssessment](riskassessment.html): Unique identifier for the assessment\r\n* [ServiceRequest](servicerequest.html): Identifiers assigned to this order\r\n* [SupplyDelivery](supplydelivery.html): External identifier\r\n* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest\r\n* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier\r\n", type="token" )
   public static final String SP_IDENTIFIER = "identifier";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
@@ -4598,7 +4636,7 @@ public class CarePlan extends DomainResource {
 * [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.content.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier</b><br>
+   * Path: <b>AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
@@ -4633,7 +4671,7 @@ public class CarePlan extends DomainResource {
 * [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
 * [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
 * [MedicationUsage](medicationusage.html): Returns statements for a specific patient.
-* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement
+* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement
 * [Observation](observation.html): The subject that the observation is about (if patient)
 * [Procedure](procedure.html): Search by subject - a patient
 * [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
@@ -4642,10 +4680,10 @@ public class CarePlan extends DomainResource {
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={BiologicallyDerivedProduct.class, Device.class, Group.class, Location.class, Medication.class, NutritionProduct.class, Organization.class, Patient.class, Practitioner.class, Procedure.class, Substance.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
@@ -4677,7 +4715,7 @@ public class CarePlan extends DomainResource {
 * [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
 * [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
 * [MedicationUsage](medicationusage.html): Returns statements for a specific patient.
-* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement
+* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement
 * [Observation](observation.html): The subject that the observation is about (if patient)
 * [Procedure](procedure.html): Search by subject - a patient
 * [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
@@ -4686,7 +4724,7 @@ public class CarePlan extends DomainResource {
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);

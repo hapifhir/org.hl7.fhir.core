@@ -143,7 +143,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     version = VersionUtilities.getMajMin(version);
     if (!ve.containsKey(version)) {
       if (version.startsWith("5.0"))
-        ve.put(version, TestUtilities.getValidationEngine("hl7.fhir.r5.core#4.5.0", ValidationEngineTests.DEF_TX, txLog, FhirPublication.R5, true, "4.5.0"));
+        ve.put(version, TestUtilities.getValidationEngine("hl7.fhir.r5.core#5.0.0", ValidationEngineTests.DEF_TX, txLog, FhirPublication.R5, true, "5.0.0"));
       else if (version.startsWith("4.3"))
         ve.put(version, TestUtilities.getValidationEngine("hl7.fhir.r4b.core#4.3.0", ValidationEngineTests.DEF_TX, txLog, FhirPublication.R4B, true, "4.3.0"));
       else if (version.startsWith("4.0"))
@@ -291,7 +291,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       } else {
         String contents = TestingUtilities.loadTestResource("validator", filename);
         System.out.println("Name: " + name + " - profile : " + profile.get("source").getAsString());
-        version = content.has("version") ? content.get("version").getAsString() : Constants.VERSION;
+        version = content.has("version") ? content.get("version").getAsString() : version;
         sd = loadProfile(filename, contents, messages, val.isDebug());
         val.getContext().cacheResource(sd);
       }

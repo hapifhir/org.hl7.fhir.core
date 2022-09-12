@@ -4,13 +4,17 @@ import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.Reference10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.ContactPoint10_50;
-import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.*;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Boolean10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Code10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.DateTime10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Integer10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.String10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Uri10_50;
 import org.hl7.fhir.dstu2.model.Reference;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Enumerations;
-import org.hl7.fhir.r5.model.Enumerations.FHIRAllTypes;
 import org.hl7.fhir.r5.model.Enumerations.SearchParamType;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -135,7 +139,7 @@ public class OperationDefinition10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.OperationDefinition.OperationDefinitionParameterBindingComponent tgt = new org.hl7.fhir.dstu2.model.OperationDefinition.OperationDefinitionParameterBindingComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasStrength())
       tgt.setStrengthElement(Enumerations10_50.convertBindingStrength(src.getStrengthElement()));
     if (src.hasValueSet()) {
@@ -152,7 +156,7 @@ public class OperationDefinition10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterBindingComponent tgt = new org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterBindingComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasStrength())
       tgt.setStrengthElement(Enumerations10_50.convertBindingStrength(src.getStrengthElement()));
     DataType t = ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getValueSet());
@@ -170,7 +174,7 @@ public class OperationDefinition10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterComponent tgt = new org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasNameElement())
       tgt.setNameElement(Code10_50.convertCode(src.getNameElement()));
     if (src.hasUse())
@@ -180,14 +184,14 @@ public class OperationDefinition10_50 {
     if (src.hasMaxElement())
       tgt.setMaxElement(String10_50.convertString(src.getMaxElement()));
     if (src.hasDocumentationElement())
-      tgt.setDocumentationElement(String10_50.convertString(src.getDocumentationElement()));
+      tgt.setDocumentationElement(String10_50.convertStringToMarkdown(src.getDocumentationElement()));
     if (Utilities.existsInList(src.getType(), "token", "reference", "composite", "number", "date", "quantity", "uri")) {
-      tgt.setType(FHIRAllTypes.STRING);
+      tgt.setType(Enumerations.FHIRTypes.STRING);
       if (src.hasType())
         tgt.setSearchType(SearchParamType.fromCode(src.getType()));
     } else {
       if (src.hasType())
-        tgt.setType(Enumerations.FHIRAllTypes.fromCode(src.getType()));
+        tgt.setType(Enumerations.FHIRTypes.fromCode(src.getType()));
     }
     tgt.addTargetProfile(src.getProfile().getReference());
     if (src.hasBinding())
@@ -201,7 +205,7 @@ public class OperationDefinition10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.OperationDefinition.OperationDefinitionParameterComponent tgt = new org.hl7.fhir.dstu2.model.OperationDefinition.OperationDefinitionParameterComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasNameElement())
       tgt.setNameElement(Code10_50.convertCode(src.getNameElement()));
     if (src.hasUse())

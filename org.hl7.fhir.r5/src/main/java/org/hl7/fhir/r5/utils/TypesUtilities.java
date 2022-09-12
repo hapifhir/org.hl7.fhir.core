@@ -46,7 +46,7 @@ public class TypesUtilities {
 
     public String toDisplay() {
       switch (this) {
-      case DATATYPE: return "Data Type";
+      case DATATYPE: return "Datatype";
       case METADATATYPE: return "MetaDataType";
       case PRIMITIVE: return "Primitive Type";
       case SPECIAL: return "Special Type";
@@ -153,13 +153,14 @@ public class TypesUtilities {
     
     // metadata types
     res.add(new WildcardInformation("ContactDetail", TypeClassification.METADATATYPE));
-    res.add(new WildcardInformation("Contributor", TypeClassification.METADATATYPE));
     res.add(new WildcardInformation("DataRequirement", TypeClassification.METADATATYPE));
     res.add(new WildcardInformation("Expression", TypeClassification.METADATATYPE));
     res.add(new WildcardInformation("ParameterDefinition", TypeClassification.METADATATYPE));
     res.add(new WildcardInformation("RelatedArtifact", TypeClassification.METADATATYPE));
     res.add(new WildcardInformation("TriggerDefinition", TypeClassification.METADATATYPE));
     res.add(new WildcardInformation("UsageContext", TypeClassification.METADATATYPE));
+    res.add(new WildcardInformation("Availability", TypeClassification.METADATATYPE));
+    res.add(new WildcardInformation("ExtendedContactDetail", TypeClassification.METADATATYPE));
     
     // special cases
     res.add(new WildcardInformation("Dosage", TypeClassification.SPECIAL));
@@ -170,6 +171,6 @@ public class TypesUtilities {
   }
 
   public static boolean isPrimitive(String code) {
-    return Utilities.existsInList(code, "boolean", "integer", "integer64", "string", "decimal", "uri", "url", "canonical", "base64Binary", "instant", "date", "dateTime", "time", "code", "oid", "id", "markdown", "unsignedInt", "positiveInt", "xhtml");
+    return Utilities.existsInList(code, "boolean", "integer", "integer64", "string", "decimal", "uri", "url", "canonical", "base64Binary", "instant", "date", "dateTime", "time", "code", "oid", "id", "uuid", "markdown", "unsignedInt", "positiveInt", "xhtml");
   }
 }

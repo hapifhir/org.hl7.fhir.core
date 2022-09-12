@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,7 +46,8 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * Base StructureDefinition for Address Type: An address expressed using postal conventions (as opposed to GPS or other location definition formats).  This data type may be used to convey addresses for use in delivering mail as well as for visiting locations which might not be valid for mail delivery.  There are a variety of postal address formats defined around the world.
+ * Address Type: An address expressed using postal conventions (as opposed to GPS or other location definition formats).  This data type may be used to convey addresses for use in delivering mail as well as for visiting locations which might not be valid for mail delivery.  There are a variety of postal address formats defined around the world.
+The ISO21090-codedString may be used to provide a coded representation of the contents of strings in an Address.
  */
 @DatatypeDef(name="Address")
 public class Address extends DataType implements ICompositeType {
@@ -87,6 +88,7 @@ public class Address extends DataType implements ICompositeType {
             case POSTAL: return "postal";
             case PHYSICAL: return "physical";
             case BOTH: return "both";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -95,6 +97,7 @@ public class Address extends DataType implements ICompositeType {
             case POSTAL: return "http://hl7.org/fhir/address-type";
             case PHYSICAL: return "http://hl7.org/fhir/address-type";
             case BOTH: return "http://hl7.org/fhir/address-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -103,6 +106,7 @@ public class Address extends DataType implements ICompositeType {
             case POSTAL: return "Mailing addresses - PO Boxes and care-of addresses.";
             case PHYSICAL: return "A physical address that can be visited.";
             case BOTH: return "An address that is both physical and postal.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -111,6 +115,7 @@ public class Address extends DataType implements ICompositeType {
             case POSTAL: return "Postal";
             case PHYSICAL: return "Physical";
             case BOTH: return "Postal & Physical";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -209,6 +214,7 @@ public class Address extends DataType implements ICompositeType {
             case TEMP: return "temp";
             case OLD: return "old";
             case BILLING: return "billing";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -219,6 +225,7 @@ public class Address extends DataType implements ICompositeType {
             case TEMP: return "http://hl7.org/fhir/address-use";
             case OLD: return "http://hl7.org/fhir/address-use";
             case BILLING: return "http://hl7.org/fhir/address-use";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -229,6 +236,7 @@ public class Address extends DataType implements ICompositeType {
             case TEMP: return "A temporary address. The period can provide more detailed information.";
             case OLD: return "This address is no longer in use (or was never correct but retained for records).";
             case BILLING: return "An address to be used to send bills, invoices, receipts etc.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -239,6 +247,7 @@ public class Address extends DataType implements ICompositeType {
             case TEMP: return "Temporary";
             case OLD: return "Old / Incorrect";
             case BILLING: return "Billing";
+            case NULL: return null;
             default: return "?";
           }
         }

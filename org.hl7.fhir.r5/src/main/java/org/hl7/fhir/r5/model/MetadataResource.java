@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,7 +47,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * Common Ancestor declaration for conformance and knowledge artifact resources.
+ * Common Interface declaration for conformance and knowledge artifact resources.
  */
 public abstract class MetadataResource extends CanonicalResource {
 
@@ -135,7 +135,7 @@ public abstract class MetadataResource extends CanonicalResource {
       return Integer.MAX_VALUE;
     }
     /**
-     * @return {@link #topic} (Descriptive topics related to the content of the library. Topics provide a high-level categorization of the library that can be useful for filtering and searching.)
+     * @return {@link #topic} (Descriptive topics related to the content of the metadata resource. Topics provide a high-level categorization as well as keywords for the metadata resource that can be useful for filtering and searching.)
      */
     public abstract List<CodeableConcept> getTopic(); 
     /**

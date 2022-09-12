@@ -1,6 +1,5 @@
 package org.hl7.fhir.r4.model;
 
-import ca.uhn.fhir.parser.DataFormatException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -96,8 +95,6 @@ public class BaseDateTimeTypeTest {
   public <K extends BaseDateTimeType> void testInvalidString(Class<K> clazz, String param) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
     InvocationTargetException exceptionWrapper =  Assertions.assertThrows(InvocationTargetException.class, () ->  clazz.getConstructor(String.class).newInstance(param));
     assertEquals(IllegalArgumentException.class, exceptionWrapper.getTargetException().getClass());
-    K srcInstance = clazz.getDeclaredConstructor().newInstance();
-    Assertions.assertThrows(IllegalArgumentException.class, () -> srcInstance.setValueAsString(param));
   }
 
   private static Stream<Arguments> getValidStringParams() {

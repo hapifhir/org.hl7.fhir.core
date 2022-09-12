@@ -11,7 +11,9 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.UnsignedInt40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.CodeableReference;
+import org.hl7.fhir.r5.model.Coding;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -53,7 +55,8 @@ public class ImagingStudy40_50 {
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
     if (src.hasStatus())
       tgt.setStatusElement(convertImagingStudyStatus(src.getStatusElement()));
-    for (org.hl7.fhir.r4.model.Coding t : src.getModality()) tgt.addModality(Coding40_50.convertCoding(t));
+    for (org.hl7.fhir.r4.model.Coding t : src.getModality())  
+      tgt.addModality(new CodeableConcept().addCoding(Coding40_50.convertCoding(t)));
     if (src.hasSubject())
       tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
     if (src.hasEncounter())
@@ -97,7 +100,9 @@ public class ImagingStudy40_50 {
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
     if (src.hasStatus())
       tgt.setStatusElement(convertImagingStudyStatus(src.getStatusElement()));
-    for (org.hl7.fhir.r5.model.Coding t : src.getModality()) tgt.addModality(Coding40_50.convertCoding(t));
+    for (CodeableConcept t : src.getModality())
+      for (Coding tt : t.getCoding())
+        tgt.addModality(Coding40_50.convertCoding(tt));
     if (src.hasSubject())
       tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
     if (src.hasEncounter())
@@ -197,22 +202,22 @@ public class ImagingStudy40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ImagingStudy.ImagingStudySeriesComponent tgt = new org.hl7.fhir.r5.model.ImagingStudy.ImagingStudySeriesComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasUid())
       tgt.setUidElement(Id40_50.convertId(src.getUidElement()));
     if (src.hasNumber())
       tgt.setNumberElement(UnsignedInt40_50.convertUnsignedInt(src.getNumberElement()));
     if (src.hasModality())
-      tgt.setModality(Coding40_50.convertCoding(src.getModality()));
+      tgt.setModality(new CodeableConcept().addCoding(Coding40_50.convertCoding(src.getModality())));
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
     if (src.hasNumberOfInstances())
       tgt.setNumberOfInstancesElement(UnsignedInt40_50.convertUnsignedInt(src.getNumberOfInstancesElement()));
     for (org.hl7.fhir.r4.model.Reference t : src.getEndpoint()) tgt.addEndpoint(Reference40_50.convertReference(t));
     if (src.hasBodySite())
-      tgt.setBodySite(Coding40_50.convertCoding(src.getBodySite()));
+      tgt.setBodySite(new CodeableReference(new CodeableConcept(Coding40_50.convertCoding(src.getBodySite()))));
     if (src.hasLaterality())
-      tgt.setLaterality(Coding40_50.convertCoding(src.getLaterality()));
+      tgt.setLaterality(new CodeableConcept(Coding40_50.convertCoding(src.getLaterality())));
     for (org.hl7.fhir.r4.model.Reference t : src.getSpecimen()) tgt.addSpecimen(Reference40_50.convertReference(t));
     if (src.hasStarted())
       tgt.setStartedElement(DateTime40_50.convertDateTime(src.getStartedElement()));
@@ -227,22 +232,22 @@ public class ImagingStudy40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ImagingStudy.ImagingStudySeriesComponent tgt = new org.hl7.fhir.r4.model.ImagingStudy.ImagingStudySeriesComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasUid())
       tgt.setUidElement(Id40_50.convertId(src.getUidElement()));
     if (src.hasNumber())
       tgt.setNumberElement(UnsignedInt40_50.convertUnsignedInt(src.getNumberElement()));
     if (src.hasModality())
-      tgt.setModality(Coding40_50.convertCoding(src.getModality()));
+      tgt.setModality(Coding40_50.convertCoding(src.getModality().getCodingFirstRep()));
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
     if (src.hasNumberOfInstances())
       tgt.setNumberOfInstancesElement(UnsignedInt40_50.convertUnsignedInt(src.getNumberOfInstancesElement()));
     for (org.hl7.fhir.r5.model.Reference t : src.getEndpoint()) tgt.addEndpoint(Reference40_50.convertReference(t));
-    if (src.hasBodySite())
-      tgt.setBodySite(Coding40_50.convertCoding(src.getBodySite()));
-    if (src.hasLaterality())
-      tgt.setLaterality(Coding40_50.convertCoding(src.getLaterality()));
+    if (src.getBodySite().getConcept().hasCoding())
+      tgt.setBodySite(Coding40_50.convertCoding(src.getBodySite().getConcept().getCodingFirstRep()));
+    if (src.getLaterality().hasCoding())
+      tgt.setLaterality(Coding40_50.convertCoding(src.getLaterality().getCodingFirstRep()));
     for (org.hl7.fhir.r5.model.Reference t : src.getSpecimen()) tgt.addSpecimen(Reference40_50.convertReference(t));
     if (src.hasStarted())
       tgt.setStartedElement(DateTime40_50.convertDateTime(src.getStartedElement()));
@@ -257,7 +262,7 @@ public class ImagingStudy40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ImagingStudy.ImagingStudySeriesPerformerComponent tgt = new org.hl7.fhir.r5.model.ImagingStudy.ImagingStudySeriesPerformerComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasFunction())
       tgt.setFunction(CodeableConcept40_50.convertCodeableConcept(src.getFunction()));
     if (src.hasActor())
@@ -269,7 +274,7 @@ public class ImagingStudy40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ImagingStudy.ImagingStudySeriesPerformerComponent tgt = new org.hl7.fhir.r4.model.ImagingStudy.ImagingStudySeriesPerformerComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasFunction())
       tgt.setFunction(CodeableConcept40_50.convertCodeableConcept(src.getFunction()));
     if (src.hasActor())
@@ -281,7 +286,7 @@ public class ImagingStudy40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ImagingStudy.ImagingStudySeriesInstanceComponent tgt = new org.hl7.fhir.r5.model.ImagingStudy.ImagingStudySeriesInstanceComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasUid())
       tgt.setUidElement(Id40_50.convertId(src.getUidElement()));
     if (src.hasSopClass())
@@ -297,7 +302,7 @@ public class ImagingStudy40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ImagingStudy.ImagingStudySeriesInstanceComponent tgt = new org.hl7.fhir.r4.model.ImagingStudy.ImagingStudySeriesInstanceComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasUid())
       tgt.setUidElement(Id40_50.convertId(src.getUidElement()));
     if (src.hasSopClass())

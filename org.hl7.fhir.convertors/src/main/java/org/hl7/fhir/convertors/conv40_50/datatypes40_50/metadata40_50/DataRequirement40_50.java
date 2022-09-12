@@ -13,7 +13,7 @@ public class DataRequirement40_50 {
     org.hl7.fhir.r5.model.DataRequirement tgt = new org.hl7.fhir.r5.model.DataRequirement();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasType())
-      tgt.setType(org.hl7.fhir.r5.model.Enumerations.FHIRAllTypes.fromCode(convertResourceName4to5(src.getType())));
+      tgt.setType(org.hl7.fhir.r5.model.Enumerations.FHIRTypes.fromCode(convertResourceName4to5(src.getType())));
     for (org.hl7.fhir.r4.model.CanonicalType t : src.getProfile())
       tgt.getProfile().add(Canonical40_50.convertCanonical(t));
     if (src.hasSubject())

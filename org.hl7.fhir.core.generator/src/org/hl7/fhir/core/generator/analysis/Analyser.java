@@ -14,8 +14,8 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations.AllResourceTypes;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
-import org.hl7.fhir.r5.model.Enumerations.ResourceTypeEnum;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -37,7 +37,7 @@ public class Analyser {
   public Analysis analyse(StructureDefinition sd) throws Exception {
     Analysis res = new Analysis(definitions, sd);
 
-    if (VersionUtilities.isR4BVer(version)) {
+          if (VersionUtilities.isR4BVer(version)) {
       res.setAncestor(definitions.getStructures().get(getR4bAncestor(sd)));
     } else {
       res.setAncestor(definitions.getStructures().get(sd.getBaseDefinition()));

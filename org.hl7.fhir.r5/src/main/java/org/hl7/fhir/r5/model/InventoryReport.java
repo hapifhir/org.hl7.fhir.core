@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -82,6 +82,7 @@ public class InventoryReport extends DomainResource {
           switch (this) {
             case SNAPSHOT: return "snapshot";
             case DIFFERENCE: return "difference";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -89,6 +90,7 @@ public class InventoryReport extends DomainResource {
           switch (this) {
             case SNAPSHOT: return "http://hl7.org/fhir/inventoryreport-counttype";
             case DIFFERENCE: return "http://hl7.org/fhir/inventoryreport-counttype";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -96,6 +98,7 @@ public class InventoryReport extends DomainResource {
           switch (this) {
             case SNAPSHOT: return "The inventory report is a current absolute snapshot, i.e. it represents the quantities at hand.";
             case DIFFERENCE: return "The inventory report is about the difference between a previous count and a current count, i.e. it represents the items that have been added/subtracted from inventory.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -103,6 +106,7 @@ public class InventoryReport extends DomainResource {
           switch (this) {
             case SNAPSHOT: return "Snapshot";
             case DIFFERENCE: return "Difference";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -188,6 +192,7 @@ public class InventoryReport extends DomainResource {
             case REQUESTED: return "requested";
             case ACTIVE: return "active";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -197,6 +202,7 @@ public class InventoryReport extends DomainResource {
             case REQUESTED: return "http://hl7.org/fhir/inventoryreport-status";
             case ACTIVE: return "http://hl7.org/fhir/inventoryreport-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/inventoryreport-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -206,6 +212,7 @@ public class InventoryReport extends DomainResource {
             case REQUESTED: return "The inventory report has been requested but there is no data available.";
             case ACTIVE: return "This report is submitted as current.";
             case ENTEREDINERROR: return "The report has been withdrawn following a previous final release.  This electronic record should never have existed, though it is possible that real-world decisions were based on it.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -215,6 +222,7 @@ public class InventoryReport extends DomainResource {
             case REQUESTED: return "Requested";
             case ACTIVE: return "Active";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
         }

@@ -82,7 +82,7 @@ public class Procedure10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Procedure.ProcedurePerformerComponent tgt = new org.hl7.fhir.r4.model.Procedure.ProcedurePerformerComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasActor())
       tgt.setActor(Reference10_40.convertReference(src.getActor()));
     if (src.hasRole())
@@ -94,7 +94,7 @@ public class Procedure10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Procedure.ProcedureFocalDeviceComponent tgt = new org.hl7.fhir.r4.model.Procedure.ProcedureFocalDeviceComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasAction())
       tgt.setAction(CodeableConcept10_40.convertCodeableConcept(src.getAction()));
     if (src.hasManipulated())

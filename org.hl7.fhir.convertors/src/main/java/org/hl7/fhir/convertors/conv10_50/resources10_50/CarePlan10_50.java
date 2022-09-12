@@ -2,7 +2,11 @@ package org.hl7.fhir.convertors.conv10_50.resources10_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.Reference10_50;
-import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.*;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Annotation10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.CodeableConcept10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Identifier10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Period10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.SimpleQuantity10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Boolean10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.String10_50;
 import org.hl7.fhir.dstu2.model.Reference;
@@ -27,8 +31,8 @@ public class CarePlan10_50 {
     if (src.hasPeriod())
       tgt.setPeriod(Period10_50.convertPeriod(src.getPeriod()));
     for (org.hl7.fhir.dstu2.model.Reference t : src.getAuthor())
-      if (!tgt.hasAuthor())
-        tgt.setAuthor(Reference10_50.convertReference(t));
+      if (!tgt.hasCustodian())
+        tgt.setCustodian(Reference10_50.convertReference(t));
       else
         tgt.addContributor(Reference10_50.convertReference(t));
     for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getCategory())
@@ -58,8 +62,8 @@ public class CarePlan10_50 {
       tgt.setContext(Reference10_50.convertReference(src.getEncounter()));
     if (src.hasPeriod())
       tgt.setPeriod(Period10_50.convertPeriod(src.getPeriod()));
-    if (src.hasAuthor())
-      tgt.addAuthor(Reference10_50.convertReference(src.getAuthor()));
+    if (src.hasCustodian())
+      tgt.addAuthor(Reference10_50.convertReference(src.getCustodian()));
     for (org.hl7.fhir.r5.model.Reference t : src.getContributor()) tgt.addAuthor(Reference10_50.convertReference(t));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory())
       tgt.addCategory(CodeableConcept10_50.convertCodeableConcept(t));
@@ -80,7 +84,7 @@ public class CarePlan10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.CarePlan.CarePlanActivityComponent tgt = new org.hl7.fhir.dstu2.model.CarePlan.CarePlanActivityComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.r5.model.Annotation t : src.getProgress()) tgt.addProgress(Annotation10_50.convertAnnotation(t));
     if (src.hasPlannedActivityReference())
       tgt.setReference(Reference10_50.convertReference(src.getPlannedActivityReference()));
@@ -93,7 +97,7 @@ public class CarePlan10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.CarePlan.CarePlanActivityComponent tgt = new org.hl7.fhir.r5.model.CarePlan.CarePlanActivityComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.dstu2.model.Annotation t : src.getProgress())
       tgt.addProgress(Annotation10_50.convertAnnotation(t));
     if (src.hasReference())
@@ -107,7 +111,7 @@ public class CarePlan10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.CarePlan.CarePlanActivityPlannedActivityDetailComponent tgt = new org.hl7.fhir.r5.model.CarePlan.CarePlanActivityPlannedActivityDetailComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept10_50.convertCodeableConcept(src.getCode()));
     for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getReasonCode())
@@ -140,7 +144,7 @@ public class CarePlan10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.CarePlan.CarePlanActivityDetailComponent tgt = new org.hl7.fhir.dstu2.model.CarePlan.CarePlanActivityDetailComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept10_50.convertCodeableConcept(src.getCode()));
     for (CodeableReference t : src.getReason())

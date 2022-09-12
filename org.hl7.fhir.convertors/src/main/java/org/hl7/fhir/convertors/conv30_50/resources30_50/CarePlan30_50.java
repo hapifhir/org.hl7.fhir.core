@@ -1,16 +1,20 @@
 package org.hl7.fhir.convertors.conv30_50.resources30_50;
 
+import java.util.List;
+
 import org.hl7.fhir.convertors.context.ConversionContext30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Reference30_50;
-import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.*;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Annotation30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Period30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.SimpleQuantity30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Boolean30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
 import org.hl7.fhir.dstu3.model.Reference;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.r5.model.Coding;
-
-import java.util.List;
 
 public class CarePlan30_50 {
 
@@ -65,7 +69,7 @@ public class CarePlan30_50 {
     }
     List<Reference> authors = src.getAuthor();
     if (authors.size() > 0) {
-      tgt.setAuthor(Reference30_50.convertReference(authors.get(0)));
+      tgt.setCustodian(Reference30_50.convertReference(authors.get(0)));
       if (authors.size() > 1) {
       }
     }
@@ -137,9 +141,8 @@ public class CarePlan30_50 {
       if (src.hasPeriod())
         tgt.setPeriod(Period30_50.convertPeriod(src.getPeriod()));
     }
-    if (src.hasAuthor()) {
-      if (src.hasAuthor())
-        tgt.addAuthor(Reference30_50.convertReference(src.getAuthor()));
+    if (src.hasCustodian()) {
+      tgt.addAuthor(Reference30_50.convertReference(src.getCustodian()));
     }
     for (org.hl7.fhir.r5.model.Reference t : src.getCareTeam()) {
       tgt.addCareTeam(Reference30_50.convertReference(t));
@@ -167,7 +170,7 @@ public class CarePlan30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.CarePlan.CarePlanActivityComponent tgt = new org.hl7.fhir.dstu3.model.CarePlan.CarePlanActivityComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     for (CodeableReference t : src.getPerformedActivity()) {
       if (t.hasConcept())
         tgt.addOutcomeCodeableConcept(CodeableConcept30_50.convertCodeableConcept(t.getConcept()));
@@ -194,7 +197,7 @@ public class CarePlan30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.CarePlan.CarePlanActivityComponent tgt = new org.hl7.fhir.r5.model.CarePlan.CarePlanActivityComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getOutcomeCodeableConcept()) {
       tgt.addPerformedActivity(Reference30_50.convertCodeableConceptToCodableReference(t));
     }
@@ -219,7 +222,7 @@ public class CarePlan30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.CarePlan.CarePlanActivityDetailComponent tgt = new org.hl7.fhir.dstu3.model.CarePlan.CarePlanActivityDetailComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasExtension()) {
       org.hl7.fhir.r5.model.Extension extension = src.getExtensionByUrl(CarePlanActivityDetailComponentExtension);
       if (extension != null) {
@@ -292,7 +295,7 @@ public class CarePlan30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.CarePlan.CarePlanActivityPlannedActivityDetailComponent tgt = new org.hl7.fhir.r5.model.CarePlan.CarePlanActivityPlannedActivityDetailComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasCategory()) {
       org.hl7.fhir.r5.model.Extension t = new org.hl7.fhir.r5.model.Extension();
       t.setUrl(CarePlanActivityDetailComponentExtension);

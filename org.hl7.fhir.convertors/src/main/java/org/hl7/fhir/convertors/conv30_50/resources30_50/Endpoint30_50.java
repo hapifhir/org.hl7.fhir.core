@@ -2,7 +2,11 @@ package org.hl7.fhir.convertors.conv30_50.resources30_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Reference30_50;
-import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.*;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Coding30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.ContactPoint30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Period30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
@@ -18,7 +22,7 @@ public class Endpoint30_50 {
     if (src.hasStatus())
       tgt.setStatusElement(convertEndpointStatus(src.getStatusElement()));
     if (src.hasConnectionType())
-      tgt.setConnectionType(Coding30_50.convertCoding(src.getConnectionType()));
+      tgt.setConnectionType(Coding30_50.convertCoding(src.getConnectionTypeFirstRep()));
     if (src.hasName())
       tgt.setNameElement(String30_50.convertString(src.getNameElement()));
     if (src.hasManagingOrganization())
@@ -46,7 +50,7 @@ public class Endpoint30_50 {
     if (src.hasStatus())
       tgt.setStatusElement(convertEndpointStatus(src.getStatusElement()));
     if (src.hasConnectionType())
-      tgt.setConnectionType(Coding30_50.convertCoding(src.getConnectionType()));
+      tgt.addConnectionType(Coding30_50.convertCodingToCodeableConcept(src.getConnectionType()));
     if (src.hasName())
       tgt.setNameElement(String30_50.convertString(src.getNameElement()));
     if (src.hasManagingOrganization())
@@ -85,9 +89,6 @@ public class Endpoint30_50 {
       case ENTEREDINERROR:
         tgt.setValue(org.hl7.fhir.r5.model.Endpoint.EndpointStatus.ENTEREDINERROR);
         break;
-      case TEST:
-        tgt.setValue(org.hl7.fhir.r5.model.Endpoint.EndpointStatus.TEST);
-        break;
       default:
         tgt.setValue(org.hl7.fhir.r5.model.Endpoint.EndpointStatus.NULL);
         break;
@@ -115,9 +116,6 @@ public class Endpoint30_50 {
         break;
       case ENTEREDINERROR:
         tgt.setValue(org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.ENTEREDINERROR);
-        break;
-      case TEST:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.TEST);
         break;
       default:
         tgt.setValue(org.hl7.fhir.dstu3.model.Endpoint.EndpointStatus.NULL);

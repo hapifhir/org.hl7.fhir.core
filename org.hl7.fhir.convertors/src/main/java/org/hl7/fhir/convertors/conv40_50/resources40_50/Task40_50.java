@@ -5,9 +5,14 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Annotation4
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Period40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Canonical40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.PositiveInt40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CodeableReference;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -58,7 +63,7 @@ public class Task40_50 {
     if (src.hasStatus())
       tgt.setStatusElement(convertTaskStatus(src.getStatusElement()));
     if (src.hasStatusReason())
-      tgt.setStatusReason(CodeableConcept40_50.convertCodeableConcept(src.getStatusReason()));
+      tgt.setStatusReason(CodeableConcept40_50.convertCodeableConceptToCodeableReference(src.getStatusReason()));
     if (src.hasBusinessStatus())
       tgt.setBusinessStatus(CodeableConcept40_50.convertCodeableConcept(src.getBusinessStatus()));
     if (src.hasIntent())
@@ -84,15 +89,15 @@ public class Task40_50 {
     if (src.hasRequester())
       tgt.setRequester(Reference40_50.convertReference(src.getRequester()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getPerformerType())
-      tgt.addPerformerType(CodeableConcept40_50.convertCodeableConcept(t));
+      tgt.addRequestedPerformer(CodeableConcept40_50.convertCodeableConceptToCodeableReference(t));
     if (src.hasOwner())
       tgt.setOwner(Reference40_50.convertReference(src.getOwner()));
     if (src.hasLocation())
       tgt.setLocation(Reference40_50.convertReference(src.getLocation()));
     if (src.hasReasonCode())
-      tgt.setReasonCode(CodeableConcept40_50.convertCodeableConcept(src.getReasonCode()));
+      tgt.addReason(CodeableConcept40_50.convertCodeableConceptToCodeableReference(src.getReasonCode()));
     if (src.hasReasonReference())
-      tgt.setReasonReference(Reference40_50.convertReference(src.getReasonReference()));
+      tgt.addReason(Reference40_50.convertReferenceToCodeableReference(src.getReasonReference()));
     for (org.hl7.fhir.r4.model.Reference t : src.getInsurance()) tgt.addInsurance(Reference40_50.convertReference(t));
     for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getRelevantHistory())
@@ -123,7 +128,7 @@ public class Task40_50 {
     if (src.hasStatus())
       tgt.setStatusElement(convertTaskStatus(src.getStatusElement()));
     if (src.hasStatusReason())
-      tgt.setStatusReason(CodeableConcept40_50.convertCodeableConcept(src.getStatusReason()));
+      tgt.setStatusReason(CodeableConcept40_50.convertCodeableReferenceToCodeableConcept(src.getStatusReason()));
     if (src.hasBusinessStatus())
       tgt.setBusinessStatus(CodeableConcept40_50.convertCodeableConcept(src.getBusinessStatus()));
     if (src.hasIntent())
@@ -148,23 +153,25 @@ public class Task40_50 {
       tgt.setLastModifiedElement(DateTime40_50.convertDateTime(src.getLastModifiedElement()));
     if (src.hasRequester())
       tgt.setRequester(Reference40_50.convertReference(src.getRequester()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getPerformerType())
-      tgt.addPerformerType(CodeableConcept40_50.convertCodeableConcept(t));
+    for (org.hl7.fhir.r5.model.CodeableReference t : src.getRequestedPerformer())
+      tgt.addPerformerType(CodeableConcept40_50.convertCodeableReferenceToCodeableConcept(t));
     if (src.hasOwner())
       tgt.setOwner(Reference40_50.convertReference(src.getOwner()));
     if (src.hasLocation())
       tgt.setLocation(Reference40_50.convertReference(src.getLocation()));
-    if (src.hasReasonCode())
-      tgt.setReasonCode(CodeableConcept40_50.convertCodeableConcept(src.getReasonCode()));
-    if (src.hasReasonReference())
-      tgt.setReasonReference(Reference40_50.convertReference(src.getReasonReference()));
+    for (CodeableReference t : src.getReason()) {
+      if (t.hasConcept())
+        tgt.setReasonCode(CodeableConcept40_50.convertCodeableConcept(t.getConcept()));
+      else if (t.hasReference())
+        tgt.setReasonReference(Reference40_50.convertReference(t.getReference()));
+    }
     for (org.hl7.fhir.r5.model.Reference t : src.getInsurance()) tgt.addInsurance(Reference40_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getRelevantHistory())
       tgt.addRelevantHistory(Reference40_50.convertReference(t));
     if (src.hasRestriction())
       tgt.setRestriction(convertTaskRestrictionComponent(src.getRestriction()));
-    for (org.hl7.fhir.r5.model.Task.ParameterComponent t : src.getInput()) tgt.addInput(convertParameterComponent(t));
+    for (org.hl7.fhir.r5.model.Task.TaskInputComponent t : src.getInput()) tgt.addInput(convertParameterComponent(t));
     for (org.hl7.fhir.r5.model.Task.TaskOutputComponent t : src.getOutput())
       tgt.addOutput(convertTaskOutputComponent(t));
     return tgt;
@@ -402,7 +409,7 @@ public class Task40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Task.TaskRestrictionComponent tgt = new org.hl7.fhir.r5.model.Task.TaskRestrictionComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasRepetitions())
       tgt.setRepetitionsElement(PositiveInt40_50.convertPositiveInt(src.getRepetitionsElement()));
     if (src.hasPeriod())
@@ -415,7 +422,7 @@ public class Task40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Task.TaskRestrictionComponent tgt = new org.hl7.fhir.r4.model.Task.TaskRestrictionComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasRepetitions())
       tgt.setRepetitionsElement(PositiveInt40_50.convertPositiveInt(src.getRepetitionsElement()));
     if (src.hasPeriod())
@@ -424,11 +431,11 @@ public class Task40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.Task.ParameterComponent convertParameterComponent(org.hl7.fhir.r4.model.Task.ParameterComponent src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Task.TaskInputComponent convertParameterComponent(org.hl7.fhir.r4.model.Task.ParameterComponent src) throws FHIRException {
     if (src == null)
       return null;
-    org.hl7.fhir.r5.model.Task.ParameterComponent tgt = new org.hl7.fhir.r5.model.Task.ParameterComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    org.hl7.fhir.r5.model.Task.TaskInputComponent tgt = new org.hl7.fhir.r5.model.Task.TaskInputComponent();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasValue())
@@ -436,11 +443,11 @@ public class Task40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r4.model.Task.ParameterComponent convertParameterComponent(org.hl7.fhir.r5.model.Task.ParameterComponent src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.Task.ParameterComponent convertParameterComponent(org.hl7.fhir.r5.model.Task.TaskInputComponent src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Task.ParameterComponent tgt = new org.hl7.fhir.r4.model.Task.ParameterComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasValue())
@@ -452,7 +459,7 @@ public class Task40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Task.TaskOutputComponent tgt = new org.hl7.fhir.r5.model.Task.TaskOutputComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasValue())
@@ -464,7 +471,7 @@ public class Task40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Task.TaskOutputComponent tgt = new org.hl7.fhir.r4.model.Task.TaskOutputComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasValue())

@@ -75,7 +75,7 @@ public class TestingUtilities extends BaseTestingUtilities {
 
   static public Map<String, IWorkerContext> fcontexts;
 
-  final static public String DEFAULT_CONTEXT_VERSION = "4.0.1";
+  final static public String DEFAULT_CONTEXT_VERSION = "5.0.0";
 
   /** Get an existing instantiation of a WorkerContext if available
    *
@@ -92,9 +92,7 @@ public class TestingUtilities extends BaseTestingUtilities {
    * @return
    */
   public static IWorkerContext getSharedWorkerContext(String version) {
-    if ("4.5.0".equals(version)) {
-      version = "4.4.0"; // temporary work around
-    }
+
     
     String v = VersionUtilities.getMajMin(version);
     if (fcontexts == null) {

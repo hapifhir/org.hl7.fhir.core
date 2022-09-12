@@ -9,6 +9,8 @@ import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Identi
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Decimal10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.String10_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.ContactPoint;
+import org.hl7.fhir.r5.model.ExtendedContactDetail;
 
 public class Location10_50 {
 
@@ -29,12 +31,13 @@ public class Location10_50 {
       tgt.setModeElement(convertLocationMode(src.getModeElement()));
     if (src.hasType())
       tgt.setType(CodeableConcept10_50.convertCodeableConcept(src.getTypeFirstRep()));
-    for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom())
-      tgt.addTelecom(ContactPoint10_50.convertContactPoint(t));
+    for (ExtendedContactDetail t1 : src.getContact())
+      for (ContactPoint t : t1.getTelecom())
+        tgt.addTelecom(ContactPoint10_50.convertContactPoint(t));
     if (src.hasAddress())
       tgt.setAddress(Address10_50.convertAddress(src.getAddress()));
-    if (src.hasPhysicalType())
-      tgt.setPhysicalType(CodeableConcept10_50.convertCodeableConcept(src.getPhysicalType()));
+    if (src.hasForm())
+      tgt.setPhysicalType(CodeableConcept10_50.convertCodeableConcept(src.getForm()));
     if (src.hasPosition())
       tgt.setPosition(convertLocationPositionComponent(src.getPosition()));
     if (src.hasManagingOrganization())
@@ -62,11 +65,11 @@ public class Location10_50 {
     if (src.hasType())
       tgt.addType(CodeableConcept10_50.convertCodeableConcept(src.getType()));
     for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom())
-      tgt.addTelecom(ContactPoint10_50.convertContactPoint(t));
+      tgt.getContactFirstRep().addTelecom(ContactPoint10_50.convertContactPoint(t));
     if (src.hasAddress())
       tgt.setAddress(Address10_50.convertAddress(src.getAddress()));
     if (src.hasPhysicalType())
-      tgt.setPhysicalType(CodeableConcept10_50.convertCodeableConcept(src.getPhysicalType()));
+      tgt.setForm(CodeableConcept10_50.convertCodeableConcept(src.getPhysicalType()));
     if (src.hasPosition())
       tgt.setPosition(convertLocationPositionComponent(src.getPosition()));
     if (src.hasManagingOrganization())
@@ -118,7 +121,7 @@ public class Location10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Location.LocationPositionComponent tgt = new org.hl7.fhir.r5.model.Location.LocationPositionComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasLongitudeElement())
       tgt.setLongitudeElement(Decimal10_50.convertDecimal(src.getLongitudeElement()));
     if (src.hasLatitudeElement())
@@ -132,7 +135,7 @@ public class Location10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Location.LocationPositionComponent tgt = new org.hl7.fhir.dstu2.model.Location.LocationPositionComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasLongitudeElement())
       tgt.setLongitudeElement(Decimal10_50.convertDecimal(src.getLongitudeElement()));
     if (src.hasLatitudeElement())

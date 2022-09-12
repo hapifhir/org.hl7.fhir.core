@@ -1,12 +1,7 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Period40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Decimal40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Integer40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
@@ -48,12 +43,12 @@ public class BiologicallyDerivedProduct40_50 {
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-    if (src.hasProductCategory())
-      tgt.setProductCategoryElement(convertBiologicallyDerivedProductCategory(src.getProductCategoryElement()));
-    if (src.hasProductCode())
-      tgt.setProductCode(CodeableConcept40_50.convertCodeableConcept(src.getProductCode()));
-    if (src.hasStatus())
-      tgt.setStatusElement(convertBiologicallyDerivedProductStatus(src.getStatusElement()));
+//    if (src.hasProductCategory())
+//      tgt.setProductCategoryElement(convertBiologicallyDerivedProductCategory(src.getProductCategoryElement()));
+//    if (src.hasProductCode())
+//      tgt.setProductCode(CodeableConcept40_50.convertCodeableConcept(src.getProductCode()));
+//    if (src.hasStatus())
+//      tgt.setStatusElement(convertBiologicallyDerivedProductStatus(src.getStatusElement()));
     for (org.hl7.fhir.r4.model.Reference t : src.getRequest()) tgt.addRequest(Reference40_50.convertReference(t));
 //    if (src.hasQuantity())
 //      tgt.setQuantityElement(Integer40_50.convertInteger(src.getQuantityElement()));
@@ -76,12 +71,12 @@ public class BiologicallyDerivedProduct40_50 {
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-    if (src.hasProductCategory())
-      tgt.setProductCategoryElement(convertBiologicallyDerivedProductCategory(src.getProductCategoryElement()));
-    if (src.hasProductCode())
-      tgt.setProductCode(CodeableConcept40_50.convertCodeableConcept(src.getProductCode()));
-    if (src.hasStatus())
-      tgt.setStatusElement(convertBiologicallyDerivedProductStatus(src.getStatusElement()));
+//    if (src.hasProductCategory())
+//      tgt.setProductCategoryElement(convertBiologicallyDerivedProductCategory(src.getProductCategoryElement()));
+//    if (src.hasProductCode())
+//      tgt.setProductCode(CodeableConcept40_50.convertCodeableConcept(src.getProductCode()));
+//    if (src.hasStatus())
+//      tgt.setStatusElement(convertBiologicallyDerivedProductStatus(src.getStatusElement()));
     for (org.hl7.fhir.r5.model.Reference t : src.getRequest()) tgt.addRequest(Reference40_50.convertReference(t));
 //    if (src.hasQuantity())
 //      tgt.setQuantityElement(Integer40_50.convertInteger(src.getQuantityElement()));
@@ -96,106 +91,106 @@ public class BiologicallyDerivedProduct40_50 {
 //      tgt.addStorage(convertBiologicallyDerivedProductStorageComponent(t));
     return tgt;
   }
-
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory> convertBiologicallyDerivedProductCategory(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategoryEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ORGAN:
-        tgt.setValue(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory.ORGAN);
-        break;
-      case TISSUE:
-        tgt.setValue(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory.TISSUE);
-        break;
-      case FLUID:
-        tgt.setValue(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory.FLUID);
-        break;
-      case CELLS:
-        tgt.setValue(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory.CELLS);
-        break;
-      case BIOLOGICALAGENT:
-        tgt.setValue(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory.BIOLOGICALAGENT);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory.NULL);
-        break;
-    }
-    return tgt;
-  }
-
-  static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory> convertBiologicallyDerivedProductCategory(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategoryEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ORGAN:
-        tgt.setValue(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory.ORGAN);
-        break;
-      case TISSUE:
-        tgt.setValue(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory.TISSUE);
-        break;
-      case FLUID:
-        tgt.setValue(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory.FLUID);
-        break;
-      case CELLS:
-        tgt.setValue(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory.CELLS);
-        break;
-      case BIOLOGICALAGENT:
-        tgt.setValue(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory.BIOLOGICALAGENT);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory.NULL);
-        break;
-    }
-    return tgt;
-  }
-
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStatus> convertBiologicallyDerivedProductStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStatusEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case AVAILABLE:
-        tgt.setValue(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStatus.AVAILABLE);
-        break;
-      case UNAVAILABLE:
-        tgt.setValue(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStatus.UNAVAILABLE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStatus.NULL);
-        break;
-    }
-    return tgt;
-  }
-
-  static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStatus> convertBiologicallyDerivedProductStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStatus> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStatusEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case AVAILABLE:
-        tgt.setValue(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStatus.AVAILABLE);
-        break;
-      case UNAVAILABLE:
-        tgt.setValue(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStatus.UNAVAILABLE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStatus.NULL);
-        break;
-    }
-    return tgt;
-  }
+//
+//  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory> convertBiologicallyDerivedProductCategory(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory> src) throws FHIRException {
+//    if (src == null || src.isEmpty())
+//      return null;
+//    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategoryEnumFactory());
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+//    switch (src.getValue()) {
+//      case ORGAN:
+//        tgt.setValue(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory.ORGAN);
+//        break;
+//      case TISSUE:
+//        tgt.setValue(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory.TISSUE);
+//        break;
+//      case FLUID:
+//        tgt.setValue(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory.FLUID);
+//        break;
+//      case CELLS:
+//        tgt.setValue(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory.CELLS);
+//        break;
+//      case BIOLOGICALAGENT:
+//        tgt.setValue(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory.BIOLOGICALAGENT);
+//        break;
+//      default:
+//        tgt.setValue(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory.NULL);
+//        break;
+//    }
+//    return tgt;
+//  }
+//
+//  static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory> convertBiologicallyDerivedProductCategory(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory> src) throws FHIRException {
+//    if (src == null || src.isEmpty())
+//      return null;
+//    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategoryEnumFactory());
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+//    switch (src.getValue()) {
+//      case ORGAN:
+//        tgt.setValue(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory.ORGAN);
+//        break;
+//      case TISSUE:
+//        tgt.setValue(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory.TISSUE);
+//        break;
+//      case FLUID:
+//        tgt.setValue(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory.FLUID);
+//        break;
+//      case CELLS:
+//        tgt.setValue(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory.CELLS);
+//        break;
+//      case BIOLOGICALAGENT:
+//        tgt.setValue(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory.BIOLOGICALAGENT);
+//        break;
+//      default:
+//        tgt.setValue(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCategory.NULL);
+//        break;
+//    }
+//    return tgt;
+//  }
+//
+//  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStatus> convertBiologicallyDerivedProductStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStatus> src) throws FHIRException {
+//    if (src == null || src.isEmpty())
+//      return null;
+//    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStatusEnumFactory());
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+//    switch (src.getValue()) {
+//      case AVAILABLE:
+//        tgt.setValue(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStatus.AVAILABLE);
+//        break;
+//      case UNAVAILABLE:
+//        tgt.setValue(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStatus.UNAVAILABLE);
+//        break;
+//      default:
+//        tgt.setValue(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStatus.NULL);
+//        break;
+//    }
+//    return tgt;
+//  }
+//
+//  static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStatus> convertBiologicallyDerivedProductStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStatus> src) throws FHIRException {
+//    if (src == null || src.isEmpty())
+//      return null;
+//    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStatusEnumFactory());
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+//    switch (src.getValue()) {
+//      case AVAILABLE:
+//        tgt.setValue(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStatus.AVAILABLE);
+//        break;
+//      case UNAVAILABLE:
+//        tgt.setValue(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStatus.UNAVAILABLE);
+//        break;
+//      default:
+//        tgt.setValue(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStatus.NULL);
+//        break;
+//    }
+//    return tgt;
+//  }
 
   public static org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCollectionComponent convertBiologicallyDerivedProductCollectionComponent(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCollectionComponent src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCollectionComponent tgt = new org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCollectionComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCollector())
       tgt.setCollector(Reference40_50.convertReference(src.getCollector()));
     if (src.hasSource())
@@ -209,7 +204,7 @@ public class BiologicallyDerivedProduct40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCollectionComponent tgt = new org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCollectionComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCollector())
       tgt.setCollector(Reference40_50.convertReference(src.getCollector()));
     if (src.hasSource())

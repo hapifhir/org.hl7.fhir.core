@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -96,6 +96,7 @@ public class EnrollmentResponse extends DomainResource {
             case COMPLETE: return "complete";
             case ERROR: return "error";
             case PARTIAL: return "partial";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +106,7 @@ public class EnrollmentResponse extends DomainResource {
             case COMPLETE: return "http://hl7.org/fhir/enrollment-outcome";
             case ERROR: return "http://hl7.org/fhir/enrollment-outcome";
             case PARTIAL: return "http://hl7.org/fhir/enrollment-outcome";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +116,7 @@ public class EnrollmentResponse extends DomainResource {
             case COMPLETE: return "The processing has completed without errors";
             case ERROR: return "One or more errors have been detected in the Claim";
             case PARTIAL: return "No errors have been detected in the Claim and some of the adjudication has been performed.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -123,6 +126,7 @@ public class EnrollmentResponse extends DomainResource {
             case COMPLETE: return "Processing Complete";
             case ERROR: return "Error";
             case PARTIAL: return "Partial Processing";
+            case NULL: return null;
             default: return "?";
           }
         }

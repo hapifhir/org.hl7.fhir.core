@@ -1,15 +1,17 @@
 package org.hl7.fhir.convertors.conv30_40;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_40;
 import org.hl7.fhir.convertors.context.ConversionContext30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.BackboneElement30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Element30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Type30_40;
 import org.hl7.fhir.convertors.conv30_40.resources30_40.Resource30_40;
 import org.hl7.fhir.exceptions.FHIRException;
-
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -66,12 +68,16 @@ public class VersionConvertor_30_40 {
 
   private final BaseAdvisor_30_40 advisor;
   private final Element30_40 elementConvertor;
+
+  private final BackboneElement30_40 backboneElementConvertor;
+
   private final Resource30_40 resourceConvertor;
   private final Type30_40 typeConvertor;
 
   public VersionConvertor_30_40(@Nonnull BaseAdvisor_30_40 advisor) {
     this.advisor = advisor;
     this.elementConvertor = new Element30_40(advisor);
+    this.backboneElementConvertor = new BackboneElement30_40();
     this.resourceConvertor = new Resource30_40(advisor);
     this.typeConvertor = new Type30_40(advisor);
   }
@@ -146,5 +152,17 @@ public class VersionConvertor_30_40 {
                           @Nonnull org.hl7.fhir.dstu3.model.Element tgt,
                           String... var) throws FHIRException {
     elementConvertor.copyElement(src, tgt, ConversionContext30_40.INSTANCE.path(), var);
+  }
+
+  public void copyBackboneElement(@Nonnull org.hl7.fhir.r4.model.BackboneElement src,
+                                  @Nonnull org.hl7.fhir.dstu3.model.BackboneElement tgt,
+                                  String... var) throws FHIRException {
+    backboneElementConvertor.copyBackboneElement(src, tgt, var);
+  }
+
+  public void copyBackboneElement(@Nonnull org.hl7.fhir.dstu3.model.BackboneElement src,
+                                  @Nonnull org.hl7.fhir.r4.model.BackboneElement tgt,
+                                  String... var) throws FHIRException {
+    backboneElementConvertor.copyBackboneElement(src, tgt, var);
   }
 }
