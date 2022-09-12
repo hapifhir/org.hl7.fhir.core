@@ -666,6 +666,9 @@ public class ValueSetRenderer extends TerminologyRenderer {
   }
 
   private  <T extends Resource> String getCsRef(T cs) {
+    if (cs == null) {
+      return "?cs-n?";
+    }
     String ref = (String) cs.getUserData("filename");
     if (ref == null)
       ref = (String) cs.getUserData("path");
