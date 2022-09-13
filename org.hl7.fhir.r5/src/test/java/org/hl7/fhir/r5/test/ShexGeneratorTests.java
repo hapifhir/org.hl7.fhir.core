@@ -22,7 +22,8 @@ public class ShexGeneratorTests {
     if (sd == null) {
       throw new FHIRException("StructuredDefinition for " + name + "was null");
     }
-    Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), name.toLowerCase() + ".shex");
+    //Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), name.toLowerCase() + ".shex");
+    Path outPath = FileSystems.getDefault().getPath(System.getProperty("user.home")+"/runtime_environments/ShExSchemas", name.toLowerCase() + ".shex");
     TextFile.stringToFile(new ShExGenerator(TestingUtilities.getSharedWorkerContext()).generate(HTMLLinkPolicy.NONE, sd), outPath.toString());
   }
 

@@ -13,6 +13,14 @@
 	<packaging>bundle</packaging>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>org.apache.jena</groupId>
+			<artifactId>apache-jena-libs</artifactId>
+			<type>pom</type>
+			<version>4.3.2</version>
+		</dependency>
+
 		<!-- HAPI Dependencies -->
 		<dependency>
 			<groupId>ca.uhn.hapi.fhir</groupId>
