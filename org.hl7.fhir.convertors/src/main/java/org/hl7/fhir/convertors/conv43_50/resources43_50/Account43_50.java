@@ -65,8 +65,8 @@ public class Account43_50 {
       tgt.setDescriptionElement(String43_50.convertString(src.getDescriptionElement()));
     for (org.hl7.fhir.r4b.model.Account.GuarantorComponent t : src.getGuarantor())
       tgt.addGuarantor(convertGuarantorComponent(t));
-    if (src.hasPartOf())
-      tgt.setPartOf(Reference43_50.convertReference(src.getPartOf()));
+//    if (src.hasPartOf())
+//      tgt.setPartOf(Reference43_50.convertReference(src.getPartOf()));
     return tgt;
   }
 
@@ -94,8 +94,8 @@ public class Account43_50 {
       tgt.setDescriptionElement(String43_50.convertString(src.getDescriptionElement()));
     for (org.hl7.fhir.r5.model.Account.GuarantorComponent t : src.getGuarantor())
       tgt.addGuarantor(convertGuarantorComponent(t));
-    if (src.hasPartOf())
-      tgt.setPartOf(Reference43_50.convertReference(src.getPartOf()));
+//    if (src.hasPartOf())
+//      tgt.setPartOf(Reference43_50.convertReference(src.getPartOf()));
     return tgt;
   }
 

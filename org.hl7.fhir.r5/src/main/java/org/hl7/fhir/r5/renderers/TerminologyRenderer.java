@@ -115,7 +115,11 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     for (UsedConceptMap m : maps) {
       XhtmlNode td = tr.td();
       XhtmlNode b = td.b();
-      XhtmlNode a = b.ah(getContext().getSpecificationLink()+m.getLink());
+      String link = m.getLink();
+      if (!Utilities.isAbsoluteUrl(link)) {
+        link = getContext().getSpecificationLink()+link;
+      }
+      XhtmlNode a = b.ah(link);
       a.addText(m.getDetails().getName());
       if (m.getDetails().isDoDescription() && m.getMap().hasDescription())
         addMarkdown(td, m.getMap().getDescription());
@@ -323,7 +327,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
   protected void clipboard(XhtmlNode x, String img, String title, String source) {
     XhtmlNode span = x.span("cursor: pointer", "Copy "+title+" Format to clipboard");
     span.attribute("onClick", "navigator.clipboard.writeText('"+Utilities.escapeJson(source)+"');");
-    span.img(img).setAttribute("width", "24px").setAttribute("height", "16px");
+    span.img(img, "btn").setAttribute("width", "24px").setAttribute("height", "16px");
   }
   
 

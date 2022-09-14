@@ -1,8 +1,8 @@
 package org.hl7.fhir.convertors.conv30_50.resources30_50;
 
-import org.hl7.fhir.convertors.context.ConversionContext10_50;
+import java.util.Collections;
+
 import org.hl7.fhir.convertors.context.ConversionContext30_50;
-import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Narrative30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Reference30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
@@ -13,8 +13,6 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Stri
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.RelatedArtifact;
 
-import java.util.Collections;
-
 public class Composition30_50 {
 
   public static org.hl7.fhir.r5.model.Composition convertComposition(org.hl7.fhir.dstu3.model.Composition src) throws FHIRException {
@@ -23,7 +21,7 @@ public class Composition30_50 {
     org.hl7.fhir.r5.model.Composition tgt = new org.hl7.fhir.r5.model.Composition();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyDomainResource(src, tgt);
     if (src.hasIdentifier())
-      tgt.setIdentifier(Identifier30_50.convertIdentifier(src.getIdentifier()));
+      tgt.addIdentifier(Identifier30_50.convertIdentifier(src.getIdentifier()));
     if (src.hasStatus())
       tgt.setStatusElement(convertCompositionStatus(src.getStatusElement()));
     if (src.hasType())
@@ -31,7 +29,7 @@ public class Composition30_50 {
     if (src.hasClass_())
       tgt.addCategory(CodeableConcept30_50.convertCodeableConcept(src.getClass_()));
     if (src.hasSubject())
-      tgt.setSubject(Reference30_50.convertReference(src.getSubject()));
+      tgt.addSubject(Reference30_50.convertReference(src.getSubject()));
     if (src.hasEncounter())
       tgt.setEncounter(Reference30_50.convertReference(src.getEncounter()));
     if (src.hasDate())
@@ -40,7 +38,7 @@ public class Composition30_50 {
     if (src.hasTitle())
       tgt.setTitleElement(String30_50.convertString(src.getTitleElement()));
     if (src.hasConfidentiality())
-      tgt.setConfidentialityElement(convertDocumentConfidentiality(src.getConfidentialityElement()));
+      tgt.getMeta().addSecurity(convertDocumentConfidentiality(src.getConfidentialityElement()));
     for (org.hl7.fhir.dstu3.model.Composition.CompositionAttesterComponent t : src.getAttester())
       tgt.addAttester(convertCompositionAttesterComponent(t));
     if (src.hasCustodian())
@@ -60,7 +58,7 @@ public class Composition30_50 {
     org.hl7.fhir.dstu3.model.Composition tgt = new org.hl7.fhir.dstu3.model.Composition();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyDomainResource(src, tgt);
     if (src.hasIdentifier())
-      tgt.setIdentifier(Identifier30_50.convertIdentifier(src.getIdentifier()));
+      tgt.setIdentifier(Identifier30_50.convertIdentifier(src.getIdentifierFirstRep()));
     if (src.hasStatus())
       tgt.setStatusElement(convertCompositionStatus(src.getStatusElement()));
     if (src.hasType())
@@ -68,7 +66,7 @@ public class Composition30_50 {
     if (src.hasCategory())
       tgt.setClass_(CodeableConcept30_50.convertCodeableConcept(src.getCategoryFirstRep()));
     if (src.hasSubject())
-      tgt.setSubject(Reference30_50.convertReference(src.getSubject()));
+      tgt.setSubject(Reference30_50.convertReference(src.getSubjectFirstRep()));
     if (src.hasEncounter())
       tgt.setEncounter(Reference30_50.convertReference(src.getEncounter()));
     if (src.hasDate())
@@ -76,8 +74,8 @@ public class Composition30_50 {
     for (org.hl7.fhir.r5.model.Reference t : src.getAuthor()) tgt.addAuthor(Reference30_50.convertReference(t));
     if (src.hasTitle())
       tgt.setTitleElement(String30_50.convertString(src.getTitleElement()));
-    if (src.hasConfidentiality())
-      tgt.setConfidentialityElement(convertDocumentConfidentiality(src.getConfidentialityElement()));
+    if (src.getMeta().hasSecurity())
+      tgt.setConfidentialityElement(convertDocumentConfidentiality(src.getMeta().getSecurityFirstRep()));
     for (org.hl7.fhir.r5.model.Composition.CompositionAttesterComponent t : src.getAttester())
       tgt.addAttester(convertCompositionAttesterComponent(t));
     if (src.hasCustodian())
@@ -319,21 +317,21 @@ public class Composition30_50 {
     return tgt;
   }
 
-  static public org.hl7.fhir.r5.model.CodeType convertDocumentConfidentiality(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Composition.DocumentConfidentiality> src) throws FHIRException {
+  static public org.hl7.fhir.r5.model.Coding convertDocumentConfidentiality(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Composition.DocumentConfidentiality> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.r5.model.CodeType tgt = new org.hl7.fhir.r5.model.CodeType();
+    org.hl7.fhir.r5.model.Coding tgt = new org.hl7.fhir.r5.model.Coding();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
-    tgt.setValue(src.getValue().toCode());
+    tgt.setCode(src.getValue().toCode());
     return tgt;
   }
 
-  static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Composition.DocumentConfidentiality> convertDocumentConfidentiality(org.hl7.fhir.r5.model.CodeType src) throws FHIRException {
+  static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Composition.DocumentConfidentiality> convertDocumentConfidentiality(org.hl7.fhir.r5.model.Coding src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Composition.DocumentConfidentiality> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Composition.DocumentConfidentialityEnumFactory());
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
-    switch (src.getValue()) {
+    switch (src.getCode()) {
       case "U":
         tgt.setValue(org.hl7.fhir.dstu3.model.Composition.DocumentConfidentiality.U);
         break;

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,7 +48,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * The details of a healthcare service available at a location.
+ * The details of a healthcare service available at a location or in a catalog.  In the case where there is a hierarchy of services (for example, Lab -> Pathology -> Wound Cultures), this can be represented using a set of linked HealthcareServices.
  */
 @ResourceDef(name="HealthcareService", profile="http://hl7.org/fhir/StructureDefinition/HealthcareService")
 public class HealthcareService extends DomainResource {
@@ -278,642 +278,6 @@ public class HealthcareService extends DomainResource {
 
   }
 
-    @Block()
-    public static class HealthcareServiceAvailableTimeComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * Indicates which days of the week are available between the start and end Times.
-         */
-        @Child(name = "daysOfWeek", type = {CodeType.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="mon | tue | wed | thu | fri | sat | sun", formalDefinition="Indicates which days of the week are available between the start and end Times." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/days-of-week")
-        protected List<Enumeration<DaysOfWeek>> daysOfWeek;
-
-        /**
-         * Is this always available? (hence times are irrelevant) i.e. 24 hour service.
-         */
-        @Child(name = "allDay", type = {BooleanType.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Always available? i.e. 24 hour service", formalDefinition="Is this always available? (hence times are irrelevant) i.e. 24 hour service." )
-        protected BooleanType allDay;
-
-        /**
-         * The opening time of day. Note: If the AllDay flag is set, then this time is ignored.
-         */
-        @Child(name = "availableStartTime", type = {TimeType.class}, order=3, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Opening time of day (ignored if allDay = true)", formalDefinition="The opening time of day. Note: If the AllDay flag is set, then this time is ignored." )
-        protected TimeType availableStartTime;
-
-        /**
-         * The closing time of day. Note: If the AllDay flag is set, then this time is ignored.
-         */
-        @Child(name = "availableEndTime", type = {TimeType.class}, order=4, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Closing time of day (ignored if allDay = true)", formalDefinition="The closing time of day. Note: If the AllDay flag is set, then this time is ignored." )
-        protected TimeType availableEndTime;
-
-        private static final long serialVersionUID = -2139510127L;
-
-    /**
-     * Constructor
-     */
-      public HealthcareServiceAvailableTimeComponent() {
-        super();
-      }
-
-        /**
-         * @return {@link #daysOfWeek} (Indicates which days of the week are available between the start and end Times.)
-         */
-        public List<Enumeration<DaysOfWeek>> getDaysOfWeek() { 
-          if (this.daysOfWeek == null)
-            this.daysOfWeek = new ArrayList<Enumeration<DaysOfWeek>>();
-          return this.daysOfWeek;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public HealthcareServiceAvailableTimeComponent setDaysOfWeek(List<Enumeration<DaysOfWeek>> theDaysOfWeek) { 
-          this.daysOfWeek = theDaysOfWeek;
-          return this;
-        }
-
-        public boolean hasDaysOfWeek() { 
-          if (this.daysOfWeek == null)
-            return false;
-          for (Enumeration<DaysOfWeek> item : this.daysOfWeek)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        /**
-         * @return {@link #daysOfWeek} (Indicates which days of the week are available between the start and end Times.)
-         */
-        public Enumeration<DaysOfWeek> addDaysOfWeekElement() {//2 
-          Enumeration<DaysOfWeek> t = new Enumeration<DaysOfWeek>(new DaysOfWeekEnumFactory());
-          if (this.daysOfWeek == null)
-            this.daysOfWeek = new ArrayList<Enumeration<DaysOfWeek>>();
-          this.daysOfWeek.add(t);
-          return t;
-        }
-
-        /**
-         * @param value {@link #daysOfWeek} (Indicates which days of the week are available between the start and end Times.)
-         */
-        public HealthcareServiceAvailableTimeComponent addDaysOfWeek(DaysOfWeek value) { //1
-          Enumeration<DaysOfWeek> t = new Enumeration<DaysOfWeek>(new DaysOfWeekEnumFactory());
-          t.setValue(value);
-          if (this.daysOfWeek == null)
-            this.daysOfWeek = new ArrayList<Enumeration<DaysOfWeek>>();
-          this.daysOfWeek.add(t);
-          return this;
-        }
-
-        /**
-         * @param value {@link #daysOfWeek} (Indicates which days of the week are available between the start and end Times.)
-         */
-        public boolean hasDaysOfWeek(DaysOfWeek value) { 
-          if (this.daysOfWeek == null)
-            return false;
-          for (Enumeration<DaysOfWeek> v : this.daysOfWeek)
-            if (v.getValue().equals(value)) // code
-              return true;
-          return false;
-        }
-
-        /**
-         * @return {@link #allDay} (Is this always available? (hence times are irrelevant) i.e. 24 hour service.). This is the underlying object with id, value and extensions. The accessor "getAllDay" gives direct access to the value
-         */
-        public BooleanType getAllDayElement() { 
-          if (this.allDay == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create HealthcareServiceAvailableTimeComponent.allDay");
-            else if (Configuration.doAutoCreate())
-              this.allDay = new BooleanType(); // bb
-          return this.allDay;
-        }
-
-        public boolean hasAllDayElement() { 
-          return this.allDay != null && !this.allDay.isEmpty();
-        }
-
-        public boolean hasAllDay() { 
-          return this.allDay != null && !this.allDay.isEmpty();
-        }
-
-        /**
-         * @param value {@link #allDay} (Is this always available? (hence times are irrelevant) i.e. 24 hour service.). This is the underlying object with id, value and extensions. The accessor "getAllDay" gives direct access to the value
-         */
-        public HealthcareServiceAvailableTimeComponent setAllDayElement(BooleanType value) { 
-          this.allDay = value;
-          return this;
-        }
-
-        /**
-         * @return Is this always available? (hence times are irrelevant) i.e. 24 hour service.
-         */
-        public boolean getAllDay() { 
-          return this.allDay == null || this.allDay.isEmpty() ? false : this.allDay.getValue();
-        }
-
-        /**
-         * @param value Is this always available? (hence times are irrelevant) i.e. 24 hour service.
-         */
-        public HealthcareServiceAvailableTimeComponent setAllDay(boolean value) { 
-            if (this.allDay == null)
-              this.allDay = new BooleanType();
-            this.allDay.setValue(value);
-          return this;
-        }
-
-        /**
-         * @return {@link #availableStartTime} (The opening time of day. Note: If the AllDay flag is set, then this time is ignored.). This is the underlying object with id, value and extensions. The accessor "getAvailableStartTime" gives direct access to the value
-         */
-        public TimeType getAvailableStartTimeElement() { 
-          if (this.availableStartTime == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create HealthcareServiceAvailableTimeComponent.availableStartTime");
-            else if (Configuration.doAutoCreate())
-              this.availableStartTime = new TimeType(); // bb
-          return this.availableStartTime;
-        }
-
-        public boolean hasAvailableStartTimeElement() { 
-          return this.availableStartTime != null && !this.availableStartTime.isEmpty();
-        }
-
-        public boolean hasAvailableStartTime() { 
-          return this.availableStartTime != null && !this.availableStartTime.isEmpty();
-        }
-
-        /**
-         * @param value {@link #availableStartTime} (The opening time of day. Note: If the AllDay flag is set, then this time is ignored.). This is the underlying object with id, value and extensions. The accessor "getAvailableStartTime" gives direct access to the value
-         */
-        public HealthcareServiceAvailableTimeComponent setAvailableStartTimeElement(TimeType value) { 
-          this.availableStartTime = value;
-          return this;
-        }
-
-        /**
-         * @return The opening time of day. Note: If the AllDay flag is set, then this time is ignored.
-         */
-        public String getAvailableStartTime() { 
-          return this.availableStartTime == null ? null : this.availableStartTime.getValue();
-        }
-
-        /**
-         * @param value The opening time of day. Note: If the AllDay flag is set, then this time is ignored.
-         */
-        public HealthcareServiceAvailableTimeComponent setAvailableStartTime(String value) { 
-          if (value == null)
-            this.availableStartTime = null;
-          else {
-            if (this.availableStartTime == null)
-              this.availableStartTime = new TimeType();
-            this.availableStartTime.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #availableEndTime} (The closing time of day. Note: If the AllDay flag is set, then this time is ignored.). This is the underlying object with id, value and extensions. The accessor "getAvailableEndTime" gives direct access to the value
-         */
-        public TimeType getAvailableEndTimeElement() { 
-          if (this.availableEndTime == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create HealthcareServiceAvailableTimeComponent.availableEndTime");
-            else if (Configuration.doAutoCreate())
-              this.availableEndTime = new TimeType(); // bb
-          return this.availableEndTime;
-        }
-
-        public boolean hasAvailableEndTimeElement() { 
-          return this.availableEndTime != null && !this.availableEndTime.isEmpty();
-        }
-
-        public boolean hasAvailableEndTime() { 
-          return this.availableEndTime != null && !this.availableEndTime.isEmpty();
-        }
-
-        /**
-         * @param value {@link #availableEndTime} (The closing time of day. Note: If the AllDay flag is set, then this time is ignored.). This is the underlying object with id, value and extensions. The accessor "getAvailableEndTime" gives direct access to the value
-         */
-        public HealthcareServiceAvailableTimeComponent setAvailableEndTimeElement(TimeType value) { 
-          this.availableEndTime = value;
-          return this;
-        }
-
-        /**
-         * @return The closing time of day. Note: If the AllDay flag is set, then this time is ignored.
-         */
-        public String getAvailableEndTime() { 
-          return this.availableEndTime == null ? null : this.availableEndTime.getValue();
-        }
-
-        /**
-         * @param value The closing time of day. Note: If the AllDay flag is set, then this time is ignored.
-         */
-        public HealthcareServiceAvailableTimeComponent setAvailableEndTime(String value) { 
-          if (value == null)
-            this.availableEndTime = null;
-          else {
-            if (this.availableEndTime == null)
-              this.availableEndTime = new TimeType();
-            this.availableEndTime.setValue(value);
-          }
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("daysOfWeek", "code", "Indicates which days of the week are available between the start and end Times.", 0, java.lang.Integer.MAX_VALUE, daysOfWeek));
-          children.add(new Property("allDay", "boolean", "Is this always available? (hence times are irrelevant) i.e. 24 hour service.", 0, 1, allDay));
-          children.add(new Property("availableStartTime", "time", "The opening time of day. Note: If the AllDay flag is set, then this time is ignored.", 0, 1, availableStartTime));
-          children.add(new Property("availableEndTime", "time", "The closing time of day. Note: If the AllDay flag is set, then this time is ignored.", 0, 1, availableEndTime));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case 68050338: /*daysOfWeek*/  return new Property("daysOfWeek", "code", "Indicates which days of the week are available between the start and end Times.", 0, java.lang.Integer.MAX_VALUE, daysOfWeek);
-          case -1414913477: /*allDay*/  return new Property("allDay", "boolean", "Is this always available? (hence times are irrelevant) i.e. 24 hour service.", 0, 1, allDay);
-          case -1039453818: /*availableStartTime*/  return new Property("availableStartTime", "time", "The opening time of day. Note: If the AllDay flag is set, then this time is ignored.", 0, 1, availableStartTime);
-          case 101151551: /*availableEndTime*/  return new Property("availableEndTime", "time", "The closing time of day. Note: If the AllDay flag is set, then this time is ignored.", 0, 1, availableEndTime);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case 68050338: /*daysOfWeek*/ return this.daysOfWeek == null ? new Base[0] : this.daysOfWeek.toArray(new Base[this.daysOfWeek.size()]); // Enumeration<DaysOfWeek>
-        case -1414913477: /*allDay*/ return this.allDay == null ? new Base[0] : new Base[] {this.allDay}; // BooleanType
-        case -1039453818: /*availableStartTime*/ return this.availableStartTime == null ? new Base[0] : new Base[] {this.availableStartTime}; // TimeType
-        case 101151551: /*availableEndTime*/ return this.availableEndTime == null ? new Base[0] : new Base[] {this.availableEndTime}; // TimeType
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case 68050338: // daysOfWeek
-          value = new DaysOfWeekEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getDaysOfWeek().add((Enumeration) value); // Enumeration<DaysOfWeek>
-          return value;
-        case -1414913477: // allDay
-          this.allDay = TypeConvertor.castToBoolean(value); // BooleanType
-          return value;
-        case -1039453818: // availableStartTime
-          this.availableStartTime = TypeConvertor.castToTime(value); // TimeType
-          return value;
-        case 101151551: // availableEndTime
-          this.availableEndTime = TypeConvertor.castToTime(value); // TimeType
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("daysOfWeek")) {
-          value = new DaysOfWeekEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getDaysOfWeek().add((Enumeration) value);
-        } else if (name.equals("allDay")) {
-          this.allDay = TypeConvertor.castToBoolean(value); // BooleanType
-        } else if (name.equals("availableStartTime")) {
-          this.availableStartTime = TypeConvertor.castToTime(value); // TimeType
-        } else if (name.equals("availableEndTime")) {
-          this.availableEndTime = TypeConvertor.castToTime(value); // TimeType
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 68050338:  return addDaysOfWeekElement();
-        case -1414913477:  return getAllDayElement();
-        case -1039453818:  return getAvailableStartTimeElement();
-        case 101151551:  return getAvailableEndTimeElement();
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 68050338: /*daysOfWeek*/ return new String[] {"code"};
-        case -1414913477: /*allDay*/ return new String[] {"boolean"};
-        case -1039453818: /*availableStartTime*/ return new String[] {"time"};
-        case 101151551: /*availableEndTime*/ return new String[] {"time"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("daysOfWeek")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.availableTime.daysOfWeek");
-        }
-        else if (name.equals("allDay")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.availableTime.allDay");
-        }
-        else if (name.equals("availableStartTime")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.availableTime.availableStartTime");
-        }
-        else if (name.equals("availableEndTime")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.availableTime.availableEndTime");
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public HealthcareServiceAvailableTimeComponent copy() {
-        HealthcareServiceAvailableTimeComponent dst = new HealthcareServiceAvailableTimeComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(HealthcareServiceAvailableTimeComponent dst) {
-        super.copyValues(dst);
-        if (daysOfWeek != null) {
-          dst.daysOfWeek = new ArrayList<Enumeration<DaysOfWeek>>();
-          for (Enumeration<DaysOfWeek> i : daysOfWeek)
-            dst.daysOfWeek.add(i.copy());
-        };
-        dst.allDay = allDay == null ? null : allDay.copy();
-        dst.availableStartTime = availableStartTime == null ? null : availableStartTime.copy();
-        dst.availableEndTime = availableEndTime == null ? null : availableEndTime.copy();
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof HealthcareServiceAvailableTimeComponent))
-          return false;
-        HealthcareServiceAvailableTimeComponent o = (HealthcareServiceAvailableTimeComponent) other_;
-        return compareDeep(daysOfWeek, o.daysOfWeek, true) && compareDeep(allDay, o.allDay, true) && compareDeep(availableStartTime, o.availableStartTime, true)
-           && compareDeep(availableEndTime, o.availableEndTime, true);
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof HealthcareServiceAvailableTimeComponent))
-          return false;
-        HealthcareServiceAvailableTimeComponent o = (HealthcareServiceAvailableTimeComponent) other_;
-        return compareValues(daysOfWeek, o.daysOfWeek, true) && compareValues(allDay, o.allDay, true) && compareValues(availableStartTime, o.availableStartTime, true)
-           && compareValues(availableEndTime, o.availableEndTime, true);
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(daysOfWeek, allDay, availableStartTime
-          , availableEndTime);
-      }
-
-  public String fhirType() {
-    return "HealthcareService.availableTime";
-
-  }
-
-  }
-
-    @Block()
-    public static class HealthcareServiceNotAvailableComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * The reason that can be presented to the user as to why this time is not available.
-         */
-        @Child(name = "description", type = {StringType.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Reason presented to the user explaining why time not available", formalDefinition="The reason that can be presented to the user as to why this time is not available." )
-        protected StringType description;
-
-        /**
-         * Service is not available (seasonally or for a public holiday) from this date.
-         */
-        @Child(name = "during", type = {Period.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Service not available from this date", formalDefinition="Service is not available (seasonally or for a public holiday) from this date." )
-        protected Period during;
-
-        private static final long serialVersionUID = 310849929L;
-
-    /**
-     * Constructor
-     */
-      public HealthcareServiceNotAvailableComponent() {
-        super();
-      }
-
-    /**
-     * Constructor
-     */
-      public HealthcareServiceNotAvailableComponent(String description) {
-        super();
-        this.setDescription(description);
-      }
-
-        /**
-         * @return {@link #description} (The reason that can be presented to the user as to why this time is not available.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
-         */
-        public StringType getDescriptionElement() { 
-          if (this.description == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create HealthcareServiceNotAvailableComponent.description");
-            else if (Configuration.doAutoCreate())
-              this.description = new StringType(); // bb
-          return this.description;
-        }
-
-        public boolean hasDescriptionElement() { 
-          return this.description != null && !this.description.isEmpty();
-        }
-
-        public boolean hasDescription() { 
-          return this.description != null && !this.description.isEmpty();
-        }
-
-        /**
-         * @param value {@link #description} (The reason that can be presented to the user as to why this time is not available.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
-         */
-        public HealthcareServiceNotAvailableComponent setDescriptionElement(StringType value) { 
-          this.description = value;
-          return this;
-        }
-
-        /**
-         * @return The reason that can be presented to the user as to why this time is not available.
-         */
-        public String getDescription() { 
-          return this.description == null ? null : this.description.getValue();
-        }
-
-        /**
-         * @param value The reason that can be presented to the user as to why this time is not available.
-         */
-        public HealthcareServiceNotAvailableComponent setDescription(String value) { 
-            if (this.description == null)
-              this.description = new StringType();
-            this.description.setValue(value);
-          return this;
-        }
-
-        /**
-         * @return {@link #during} (Service is not available (seasonally or for a public holiday) from this date.)
-         */
-        public Period getDuring() { 
-          if (this.during == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create HealthcareServiceNotAvailableComponent.during");
-            else if (Configuration.doAutoCreate())
-              this.during = new Period(); // cc
-          return this.during;
-        }
-
-        public boolean hasDuring() { 
-          return this.during != null && !this.during.isEmpty();
-        }
-
-        /**
-         * @param value {@link #during} (Service is not available (seasonally or for a public holiday) from this date.)
-         */
-        public HealthcareServiceNotAvailableComponent setDuring(Period value) { 
-          this.during = value;
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("description", "string", "The reason that can be presented to the user as to why this time is not available.", 0, 1, description));
-          children.add(new Property("during", "Period", "Service is not available (seasonally or for a public holiday) from this date.", 0, 1, during));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case -1724546052: /*description*/  return new Property("description", "string", "The reason that can be presented to the user as to why this time is not available.", 0, 1, description);
-          case -1320499647: /*during*/  return new Property("during", "Period", "Service is not available (seasonally or for a public holiday) from this date.", 0, 1, during);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
-        case -1320499647: /*during*/ return this.during == null ? new Base[0] : new Base[] {this.during}; // Period
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case -1724546052: // description
-          this.description = TypeConvertor.castToString(value); // StringType
-          return value;
-        case -1320499647: // during
-          this.during = TypeConvertor.castToPeriod(value); // Period
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("description")) {
-          this.description = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("during")) {
-          this.during = TypeConvertor.castToPeriod(value); // Period
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1724546052:  return getDescriptionElement();
-        case -1320499647:  return getDuring();
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1724546052: /*description*/ return new String[] {"string"};
-        case -1320499647: /*during*/ return new String[] {"Period"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.notAvailable.description");
-        }
-        else if (name.equals("during")) {
-          this.during = new Period();
-          return this.during;
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public HealthcareServiceNotAvailableComponent copy() {
-        HealthcareServiceNotAvailableComponent dst = new HealthcareServiceNotAvailableComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(HealthcareServiceNotAvailableComponent dst) {
-        super.copyValues(dst);
-        dst.description = description == null ? null : description.copy();
-        dst.during = during == null ? null : during.copy();
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof HealthcareServiceNotAvailableComponent))
-          return false;
-        HealthcareServiceNotAvailableComponent o = (HealthcareServiceNotAvailableComponent) other_;
-        return compareDeep(description, o.description, true) && compareDeep(during, o.during, true);
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof HealthcareServiceNotAvailableComponent))
-          return false;
-        HealthcareServiceNotAvailableComponent o = (HealthcareServiceNotAvailableComponent) other_;
-        return compareValues(description, o.description, true);
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(description, during);
-      }
-
-  public String fhirType() {
-    return "HealthcareService.notAvailable";
-
-  }
-
-  }
-
     /**
      * External identifiers for this item.
      */
@@ -936,9 +300,16 @@ public class HealthcareService extends DomainResource {
     protected Reference providedBy;
 
     /**
+     * When the HealthcareService is representing a specific, schedulable service, the availableIn property can refer to a generic service.
+     */
+    @Child(name = "offeredIn", type = {HealthcareService.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="The service within which this service is offered", formalDefinition="When the HealthcareService is representing a specific, schedulable service, the availableIn property can refer to a generic service." )
+    protected List<Reference> offeredIn;
+
+    /**
      * Identifies the broad category of service being performed or delivered.
      */
-    @Child(name = "category", type = {CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "category", type = {CodeableConcept.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Broad category of service being performed or delivered", formalDefinition="Identifies the broad category of service being performed or delivered." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-category")
     protected List<CodeableConcept> category;
@@ -946,67 +317,60 @@ public class HealthcareService extends DomainResource {
     /**
      * The specific type of service that may be delivered or performed.
      */
-    @Child(name = "type", type = {CodeableConcept.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "type", type = {CodeableConcept.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Type of service that may be delivered or performed", formalDefinition="The specific type of service that may be delivered or performed." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-type")
     protected List<CodeableConcept> type;
 
     /**
-     * Collection of specialties handled by the service site. This is more of a medical term.
+     * Collection of specialties handled by the Healthcare service. This is more of a medical term.
      */
-    @Child(name = "specialty", type = {CodeableConcept.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Specialties handled by the HealthcareService", formalDefinition="Collection of specialties handled by the service site. This is more of a medical term." )
+    @Child(name = "specialty", type = {CodeableConcept.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Specialties handled by the HealthcareService", formalDefinition="Collection of specialties handled by the Healthcare service. This is more of a medical term." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/c80-practice-codes")
     protected List<CodeableConcept> specialty;
 
     /**
      * The location(s) where this healthcare service may be provided.
      */
-    @Child(name = "location", type = {Location.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "location", type = {Location.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Location(s) where service may be provided", formalDefinition="The location(s) where this healthcare service may be provided." )
     protected List<Reference> location;
 
     /**
      * Further description of the service as it would be presented to a consumer while searching.
      */
-    @Child(name = "name", type = {StringType.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "name", type = {StringType.class}, order=8, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Description of service as presented to a consumer while searching", formalDefinition="Further description of the service as it would be presented to a consumer while searching." )
     protected StringType name;
 
     /**
      * Any additional description of the service and/or any specific issues not covered by the other attributes, which can be displayed as further detail under the serviceName.
      */
-    @Child(name = "comment", type = {StringType.class}, order=8, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "comment", type = {StringType.class}, order=9, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Additional description and/or any specific issues not covered elsewhere", formalDefinition="Any additional description of the service and/or any specific issues not covered by the other attributes, which can be displayed as further detail under the serviceName." )
     protected StringType comment;
 
     /**
      * Extra details about the service that can't be placed in the other fields.
      */
-    @Child(name = "extraDetails", type = {MarkdownType.class}, order=9, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "extraDetails", type = {MarkdownType.class}, order=10, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Extra details about the service that can't be placed in the other fields", formalDefinition="Extra details about the service that can't be placed in the other fields." )
     protected MarkdownType extraDetails;
 
     /**
      * If there is a photo/symbol associated with this HealthcareService, it may be included here to facilitate quick identification of the service in a list.
      */
-    @Child(name = "photo", type = {Attachment.class}, order=10, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "photo", type = {Attachment.class}, order=11, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Facilitates quick identification of the service", formalDefinition="If there is a photo/symbol associated with this HealthcareService, it may be included here to facilitate quick identification of the service in a list." )
     protected Attachment photo;
 
     /**
      * The contact details of communication devices available relevant to the specific HealthcareService. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites.
      */
-    @Child(name = "contact", type = {ExtendedContactDetail.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "contact", type = {ExtendedContactDetail.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Official contact details for the HealthcareService", formalDefinition="The contact details of communication devices available relevant to the specific HealthcareService. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites." )
     protected List<ExtendedContactDetail> contact;
-
-    /**
-     * List of contacts related to this specific healthcare service.
-     */
-    @Child(name = "telecom", type = {ContactPoint.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Deprecated - use contact.telecom", formalDefinition="List of contacts related to this specific healthcare service." )
-    protected List<ContactPoint> telecom;
 
     /**
      * The location(s) that this service is available to (not where the service is provided).
@@ -1069,34 +433,20 @@ public class HealthcareService extends DomainResource {
     protected BooleanType appointmentRequired;
 
     /**
-     * A collection of times that the Service Site is available.
+     * A collection of times that the healthcare service is available.
      */
-    @Child(name = "availableTime", type = {}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Times the Service Site is available", formalDefinition="A collection of times that the Service Site is available." )
-    protected List<HealthcareServiceAvailableTimeComponent> availableTime;
-
-    /**
-     * The HealthcareService is not available during this period of time due to the provided reason.
-     */
-    @Child(name = "notAvailable", type = {}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Not available during this time due to provided reason", formalDefinition="The HealthcareService is not available during this period of time due to the provided reason." )
-    protected List<HealthcareServiceNotAvailableComponent> notAvailable;
-
-    /**
-     * A description of site availability exceptions, e.g. public holiday availability. Succinctly describing all possible exceptions to normal site availability as details in the available Times and not available Times.
-     */
-    @Child(name = "availabilityExceptions", type = {StringType.class}, order=23, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Description of availability exceptions", formalDefinition="A description of site availability exceptions, e.g. public holiday availability. Succinctly describing all possible exceptions to normal site availability as details in the available Times and not available Times." )
-    protected StringType availabilityExceptions;
+    @Child(name = "availability", type = {Availability.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Times the healthcare service is available (including exceptions)", formalDefinition="A collection of times that the healthcare service is available." )
+    protected List<Availability> availability;
 
     /**
      * Technical endpoints providing access to services operated for the specific healthcare services defined at this resource.
      */
-    @Child(name = "endpoint", type = {Endpoint.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "endpoint", type = {Endpoint.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Technical endpoints providing access to electronic services operated for the healthcare service", formalDefinition="Technical endpoints providing access to services operated for the specific healthcare services defined at this resource." )
     protected List<Reference> endpoint;
 
-    private static final long serialVersionUID = 1153384657L;
+    private static final long serialVersionUID = -1321795105L;
 
   /**
    * Constructor
@@ -1228,6 +578,59 @@ public class HealthcareService extends DomainResource {
     }
 
     /**
+     * @return {@link #offeredIn} (When the HealthcareService is representing a specific, schedulable service, the availableIn property can refer to a generic service.)
+     */
+    public List<Reference> getOfferedIn() { 
+      if (this.offeredIn == null)
+        this.offeredIn = new ArrayList<Reference>();
+      return this.offeredIn;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public HealthcareService setOfferedIn(List<Reference> theOfferedIn) { 
+      this.offeredIn = theOfferedIn;
+      return this;
+    }
+
+    public boolean hasOfferedIn() { 
+      if (this.offeredIn == null)
+        return false;
+      for (Reference item : this.offeredIn)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public Reference addOfferedIn() { //3
+      Reference t = new Reference();
+      if (this.offeredIn == null)
+        this.offeredIn = new ArrayList<Reference>();
+      this.offeredIn.add(t);
+      return t;
+    }
+
+    public HealthcareService addOfferedIn(Reference t) { //3
+      if (t == null)
+        return this;
+      if (this.offeredIn == null)
+        this.offeredIn = new ArrayList<Reference>();
+      this.offeredIn.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #offeredIn}, creating it if it does not already exist {3}
+     */
+    public Reference getOfferedInFirstRep() { 
+      if (getOfferedIn().isEmpty()) {
+        addOfferedIn();
+      }
+      return getOfferedIn().get(0);
+    }
+
+    /**
      * @return {@link #category} (Identifies the broad category of service being performed or delivered.)
      */
     public List<CodeableConcept> getCategory() { 
@@ -1334,7 +737,7 @@ public class HealthcareService extends DomainResource {
     }
 
     /**
-     * @return {@link #specialty} (Collection of specialties handled by the service site. This is more of a medical term.)
+     * @return {@link #specialty} (Collection of specialties handled by the Healthcare service. This is more of a medical term.)
      */
     public List<CodeableConcept> getSpecialty() { 
       if (this.specialty == null)
@@ -1661,59 +1064,6 @@ public class HealthcareService extends DomainResource {
         addContact();
       }
       return getContact().get(0);
-    }
-
-    /**
-     * @return {@link #telecom} (List of contacts related to this specific healthcare service.)
-     */
-    public List<ContactPoint> getTelecom() { 
-      if (this.telecom == null)
-        this.telecom = new ArrayList<ContactPoint>();
-      return this.telecom;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public HealthcareService setTelecom(List<ContactPoint> theTelecom) { 
-      this.telecom = theTelecom;
-      return this;
-    }
-
-    public boolean hasTelecom() { 
-      if (this.telecom == null)
-        return false;
-      for (ContactPoint item : this.telecom)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public ContactPoint addTelecom() { //3
-      ContactPoint t = new ContactPoint();
-      if (this.telecom == null)
-        this.telecom = new ArrayList<ContactPoint>();
-      this.telecom.add(t);
-      return t;
-    }
-
-    public HealthcareService addTelecom(ContactPoint t) { //3
-      if (t == null)
-        return this;
-      if (this.telecom == null)
-        this.telecom = new ArrayList<ContactPoint>();
-      this.telecom.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #telecom}, creating it if it does not already exist {3}
-     */
-    public ContactPoint getTelecomFirstRep() { 
-      if (getTelecom().isEmpty()) {
-        addTelecom();
-      }
-      return getTelecom().get(0);
     }
 
     /**
@@ -2133,158 +1483,56 @@ public class HealthcareService extends DomainResource {
     }
 
     /**
-     * @return {@link #availableTime} (A collection of times that the Service Site is available.)
+     * @return {@link #availability} (A collection of times that the healthcare service is available.)
      */
-    public List<HealthcareServiceAvailableTimeComponent> getAvailableTime() { 
-      if (this.availableTime == null)
-        this.availableTime = new ArrayList<HealthcareServiceAvailableTimeComponent>();
-      return this.availableTime;
+    public List<Availability> getAvailability() { 
+      if (this.availability == null)
+        this.availability = new ArrayList<Availability>();
+      return this.availability;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public HealthcareService setAvailableTime(List<HealthcareServiceAvailableTimeComponent> theAvailableTime) { 
-      this.availableTime = theAvailableTime;
+    public HealthcareService setAvailability(List<Availability> theAvailability) { 
+      this.availability = theAvailability;
       return this;
     }
 
-    public boolean hasAvailableTime() { 
-      if (this.availableTime == null)
+    public boolean hasAvailability() { 
+      if (this.availability == null)
         return false;
-      for (HealthcareServiceAvailableTimeComponent item : this.availableTime)
+      for (Availability item : this.availability)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public HealthcareServiceAvailableTimeComponent addAvailableTime() { //3
-      HealthcareServiceAvailableTimeComponent t = new HealthcareServiceAvailableTimeComponent();
-      if (this.availableTime == null)
-        this.availableTime = new ArrayList<HealthcareServiceAvailableTimeComponent>();
-      this.availableTime.add(t);
+    public Availability addAvailability() { //3
+      Availability t = new Availability();
+      if (this.availability == null)
+        this.availability = new ArrayList<Availability>();
+      this.availability.add(t);
       return t;
     }
 
-    public HealthcareService addAvailableTime(HealthcareServiceAvailableTimeComponent t) { //3
+    public HealthcareService addAvailability(Availability t) { //3
       if (t == null)
         return this;
-      if (this.availableTime == null)
-        this.availableTime = new ArrayList<HealthcareServiceAvailableTimeComponent>();
-      this.availableTime.add(t);
+      if (this.availability == null)
+        this.availability = new ArrayList<Availability>();
+      this.availability.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #availableTime}, creating it if it does not already exist {3}
+     * @return The first repetition of repeating field {@link #availability}, creating it if it does not already exist {3}
      */
-    public HealthcareServiceAvailableTimeComponent getAvailableTimeFirstRep() { 
-      if (getAvailableTime().isEmpty()) {
-        addAvailableTime();
+    public Availability getAvailabilityFirstRep() { 
+      if (getAvailability().isEmpty()) {
+        addAvailability();
       }
-      return getAvailableTime().get(0);
-    }
-
-    /**
-     * @return {@link #notAvailable} (The HealthcareService is not available during this period of time due to the provided reason.)
-     */
-    public List<HealthcareServiceNotAvailableComponent> getNotAvailable() { 
-      if (this.notAvailable == null)
-        this.notAvailable = new ArrayList<HealthcareServiceNotAvailableComponent>();
-      return this.notAvailable;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public HealthcareService setNotAvailable(List<HealthcareServiceNotAvailableComponent> theNotAvailable) { 
-      this.notAvailable = theNotAvailable;
-      return this;
-    }
-
-    public boolean hasNotAvailable() { 
-      if (this.notAvailable == null)
-        return false;
-      for (HealthcareServiceNotAvailableComponent item : this.notAvailable)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public HealthcareServiceNotAvailableComponent addNotAvailable() { //3
-      HealthcareServiceNotAvailableComponent t = new HealthcareServiceNotAvailableComponent();
-      if (this.notAvailable == null)
-        this.notAvailable = new ArrayList<HealthcareServiceNotAvailableComponent>();
-      this.notAvailable.add(t);
-      return t;
-    }
-
-    public HealthcareService addNotAvailable(HealthcareServiceNotAvailableComponent t) { //3
-      if (t == null)
-        return this;
-      if (this.notAvailable == null)
-        this.notAvailable = new ArrayList<HealthcareServiceNotAvailableComponent>();
-      this.notAvailable.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #notAvailable}, creating it if it does not already exist {3}
-     */
-    public HealthcareServiceNotAvailableComponent getNotAvailableFirstRep() { 
-      if (getNotAvailable().isEmpty()) {
-        addNotAvailable();
-      }
-      return getNotAvailable().get(0);
-    }
-
-    /**
-     * @return {@link #availabilityExceptions} (A description of site availability exceptions, e.g. public holiday availability. Succinctly describing all possible exceptions to normal site availability as details in the available Times and not available Times.). This is the underlying object with id, value and extensions. The accessor "getAvailabilityExceptions" gives direct access to the value
-     */
-    public StringType getAvailabilityExceptionsElement() { 
-      if (this.availabilityExceptions == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create HealthcareService.availabilityExceptions");
-        else if (Configuration.doAutoCreate())
-          this.availabilityExceptions = new StringType(); // bb
-      return this.availabilityExceptions;
-    }
-
-    public boolean hasAvailabilityExceptionsElement() { 
-      return this.availabilityExceptions != null && !this.availabilityExceptions.isEmpty();
-    }
-
-    public boolean hasAvailabilityExceptions() { 
-      return this.availabilityExceptions != null && !this.availabilityExceptions.isEmpty();
-    }
-
-    /**
-     * @param value {@link #availabilityExceptions} (A description of site availability exceptions, e.g. public holiday availability. Succinctly describing all possible exceptions to normal site availability as details in the available Times and not available Times.). This is the underlying object with id, value and extensions. The accessor "getAvailabilityExceptions" gives direct access to the value
-     */
-    public HealthcareService setAvailabilityExceptionsElement(StringType value) { 
-      this.availabilityExceptions = value;
-      return this;
-    }
-
-    /**
-     * @return A description of site availability exceptions, e.g. public holiday availability. Succinctly describing all possible exceptions to normal site availability as details in the available Times and not available Times.
-     */
-    public String getAvailabilityExceptions() { 
-      return this.availabilityExceptions == null ? null : this.availabilityExceptions.getValue();
-    }
-
-    /**
-     * @param value A description of site availability exceptions, e.g. public holiday availability. Succinctly describing all possible exceptions to normal site availability as details in the available Times and not available Times.
-     */
-    public HealthcareService setAvailabilityExceptions(String value) { 
-      if (Utilities.noString(value))
-        this.availabilityExceptions = null;
-      else {
-        if (this.availabilityExceptions == null)
-          this.availabilityExceptions = new StringType();
-        this.availabilityExceptions.setValue(value);
-      }
-      return this;
+      return getAvailability().get(0);
     }
 
     /**
@@ -2345,16 +1593,16 @@ public class HealthcareService extends DomainResource {
         children.add(new Property("identifier", "Identifier", "External identifiers for this item.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("active", "boolean", "This flag is used to mark the record to not be used. This is not used when a center is closed for maintenance, or for holidays, the notAvailable period is to be used for this.", 0, 1, active));
         children.add(new Property("providedBy", "Reference(Organization)", "The organization that provides this healthcare service.", 0, 1, providedBy));
+        children.add(new Property("offeredIn", "Reference(HealthcareService)", "When the HealthcareService is representing a specific, schedulable service, the availableIn property can refer to a generic service.", 0, java.lang.Integer.MAX_VALUE, offeredIn));
         children.add(new Property("category", "CodeableConcept", "Identifies the broad category of service being performed or delivered.", 0, java.lang.Integer.MAX_VALUE, category));
         children.add(new Property("type", "CodeableConcept", "The specific type of service that may be delivered or performed.", 0, java.lang.Integer.MAX_VALUE, type));
-        children.add(new Property("specialty", "CodeableConcept", "Collection of specialties handled by the service site. This is more of a medical term.", 0, java.lang.Integer.MAX_VALUE, specialty));
+        children.add(new Property("specialty", "CodeableConcept", "Collection of specialties handled by the Healthcare service. This is more of a medical term.", 0, java.lang.Integer.MAX_VALUE, specialty));
         children.add(new Property("location", "Reference(Location)", "The location(s) where this healthcare service may be provided.", 0, java.lang.Integer.MAX_VALUE, location));
         children.add(new Property("name", "string", "Further description of the service as it would be presented to a consumer while searching.", 0, 1, name));
         children.add(new Property("comment", "string", "Any additional description of the service and/or any specific issues not covered by the other attributes, which can be displayed as further detail under the serviceName.", 0, 1, comment));
         children.add(new Property("extraDetails", "markdown", "Extra details about the service that can't be placed in the other fields.", 0, 1, extraDetails));
         children.add(new Property("photo", "Attachment", "If there is a photo/symbol associated with this HealthcareService, it may be included here to facilitate quick identification of the service in a list.", 0, 1, photo));
         children.add(new Property("contact", "ExtendedContactDetail", "The contact details of communication devices available relevant to the specific HealthcareService. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites.", 0, java.lang.Integer.MAX_VALUE, contact));
-        children.add(new Property("telecom", "ContactPoint", "List of contacts related to this specific healthcare service.", 0, java.lang.Integer.MAX_VALUE, telecom));
         children.add(new Property("coverageArea", "Reference(Location)", "The location(s) that this service is available to (not where the service is provided).", 0, java.lang.Integer.MAX_VALUE, coverageArea));
         children.add(new Property("serviceProvisionCode", "CodeableConcept", "The code(s) that detail the conditions under which the healthcare service is available/offered.", 0, java.lang.Integer.MAX_VALUE, serviceProvisionCode));
         children.add(new Property("eligibility", "", "Does this service have specific eligibility requirements that need to be met in order to use the service?", 0, java.lang.Integer.MAX_VALUE, eligibility));
@@ -2363,9 +1611,7 @@ public class HealthcareService extends DomainResource {
         children.add(new Property("communication", "CodeableConcept", "Some services are specifically made available in multiple languages, this property permits a directory to declare the languages this is offered in. Typically this is only provided where a service operates in communities with mixed languages used.", 0, java.lang.Integer.MAX_VALUE, communication));
         children.add(new Property("referralMethod", "CodeableConcept", "Ways that the service accepts referrals, if this is not provided then it is implied that no referral is required.", 0, java.lang.Integer.MAX_VALUE, referralMethod));
         children.add(new Property("appointmentRequired", "boolean", "Indicates whether or not a prospective consumer will require an appointment for a particular service at a site to be provided by the Organization. Indicates if an appointment is required for access to this service.", 0, 1, appointmentRequired));
-        children.add(new Property("availableTime", "", "A collection of times that the Service Site is available.", 0, java.lang.Integer.MAX_VALUE, availableTime));
-        children.add(new Property("notAvailable", "", "The HealthcareService is not available during this period of time due to the provided reason.", 0, java.lang.Integer.MAX_VALUE, notAvailable));
-        children.add(new Property("availabilityExceptions", "string", "A description of site availability exceptions, e.g. public holiday availability. Succinctly describing all possible exceptions to normal site availability as details in the available Times and not available Times.", 0, 1, availabilityExceptions));
+        children.add(new Property("availability", "Availability", "A collection of times that the healthcare service is available.", 0, java.lang.Integer.MAX_VALUE, availability));
         children.add(new Property("endpoint", "Reference(Endpoint)", "Technical endpoints providing access to services operated for the specific healthcare services defined at this resource.", 0, java.lang.Integer.MAX_VALUE, endpoint));
       }
 
@@ -2375,16 +1621,16 @@ public class HealthcareService extends DomainResource {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "External identifiers for this item.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case -1422950650: /*active*/  return new Property("active", "boolean", "This flag is used to mark the record to not be used. This is not used when a center is closed for maintenance, or for holidays, the notAvailable period is to be used for this.", 0, 1, active);
         case 205136282: /*providedBy*/  return new Property("providedBy", "Reference(Organization)", "The organization that provides this healthcare service.", 0, 1, providedBy);
+        case 1945040512: /*offeredIn*/  return new Property("offeredIn", "Reference(HealthcareService)", "When the HealthcareService is representing a specific, schedulable service, the availableIn property can refer to a generic service.", 0, java.lang.Integer.MAX_VALUE, offeredIn);
         case 50511102: /*category*/  return new Property("category", "CodeableConcept", "Identifies the broad category of service being performed or delivered.", 0, java.lang.Integer.MAX_VALUE, category);
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The specific type of service that may be delivered or performed.", 0, java.lang.Integer.MAX_VALUE, type);
-        case -1694759682: /*specialty*/  return new Property("specialty", "CodeableConcept", "Collection of specialties handled by the service site. This is more of a medical term.", 0, java.lang.Integer.MAX_VALUE, specialty);
+        case -1694759682: /*specialty*/  return new Property("specialty", "CodeableConcept", "Collection of specialties handled by the Healthcare service. This is more of a medical term.", 0, java.lang.Integer.MAX_VALUE, specialty);
         case 1901043637: /*location*/  return new Property("location", "Reference(Location)", "The location(s) where this healthcare service may be provided.", 0, java.lang.Integer.MAX_VALUE, location);
         case 3373707: /*name*/  return new Property("name", "string", "Further description of the service as it would be presented to a consumer while searching.", 0, 1, name);
         case 950398559: /*comment*/  return new Property("comment", "string", "Any additional description of the service and/or any specific issues not covered by the other attributes, which can be displayed as further detail under the serviceName.", 0, 1, comment);
         case -1469168622: /*extraDetails*/  return new Property("extraDetails", "markdown", "Extra details about the service that can't be placed in the other fields.", 0, 1, extraDetails);
         case 106642994: /*photo*/  return new Property("photo", "Attachment", "If there is a photo/symbol associated with this HealthcareService, it may be included here to facilitate quick identification of the service in a list.", 0, 1, photo);
         case 951526432: /*contact*/  return new Property("contact", "ExtendedContactDetail", "The contact details of communication devices available relevant to the specific HealthcareService. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites.", 0, java.lang.Integer.MAX_VALUE, contact);
-        case -1429363305: /*telecom*/  return new Property("telecom", "ContactPoint", "List of contacts related to this specific healthcare service.", 0, java.lang.Integer.MAX_VALUE, telecom);
         case -1532328299: /*coverageArea*/  return new Property("coverageArea", "Reference(Location)", "The location(s) that this service is available to (not where the service is provided).", 0, java.lang.Integer.MAX_VALUE, coverageArea);
         case 1504575405: /*serviceProvisionCode*/  return new Property("serviceProvisionCode", "CodeableConcept", "The code(s) that detail the conditions under which the healthcare service is available/offered.", 0, java.lang.Integer.MAX_VALUE, serviceProvisionCode);
         case -930847859: /*eligibility*/  return new Property("eligibility", "", "Does this service have specific eligibility requirements that need to be met in order to use the service?", 0, java.lang.Integer.MAX_VALUE, eligibility);
@@ -2393,9 +1639,7 @@ public class HealthcareService extends DomainResource {
         case -1035284522: /*communication*/  return new Property("communication", "CodeableConcept", "Some services are specifically made available in multiple languages, this property permits a directory to declare the languages this is offered in. Typically this is only provided where a service operates in communities with mixed languages used.", 0, java.lang.Integer.MAX_VALUE, communication);
         case -2092740898: /*referralMethod*/  return new Property("referralMethod", "CodeableConcept", "Ways that the service accepts referrals, if this is not provided then it is implied that no referral is required.", 0, java.lang.Integer.MAX_VALUE, referralMethod);
         case 427220062: /*appointmentRequired*/  return new Property("appointmentRequired", "boolean", "Indicates whether or not a prospective consumer will require an appointment for a particular service at a site to be provided by the Organization. Indicates if an appointment is required for access to this service.", 0, 1, appointmentRequired);
-        case 1873069366: /*availableTime*/  return new Property("availableTime", "", "A collection of times that the Service Site is available.", 0, java.lang.Integer.MAX_VALUE, availableTime);
-        case -629572298: /*notAvailable*/  return new Property("notAvailable", "", "The HealthcareService is not available during this period of time due to the provided reason.", 0, java.lang.Integer.MAX_VALUE, notAvailable);
-        case -1149143617: /*availabilityExceptions*/  return new Property("availabilityExceptions", "string", "A description of site availability exceptions, e.g. public holiday availability. Succinctly describing all possible exceptions to normal site availability as details in the available Times and not available Times.", 0, 1, availabilityExceptions);
+        case 1997542747: /*availability*/  return new Property("availability", "Availability", "A collection of times that the healthcare service is available.", 0, java.lang.Integer.MAX_VALUE, availability);
         case 1741102485: /*endpoint*/  return new Property("endpoint", "Reference(Endpoint)", "Technical endpoints providing access to services operated for the specific healthcare services defined at this resource.", 0, java.lang.Integer.MAX_VALUE, endpoint);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -2408,6 +1652,7 @@ public class HealthcareService extends DomainResource {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case -1422950650: /*active*/ return this.active == null ? new Base[0] : new Base[] {this.active}; // BooleanType
         case 205136282: /*providedBy*/ return this.providedBy == null ? new Base[0] : new Base[] {this.providedBy}; // Reference
+        case 1945040512: /*offeredIn*/ return this.offeredIn == null ? new Base[0] : this.offeredIn.toArray(new Base[this.offeredIn.size()]); // Reference
         case 50511102: /*category*/ return this.category == null ? new Base[0] : this.category.toArray(new Base[this.category.size()]); // CodeableConcept
         case 3575610: /*type*/ return this.type == null ? new Base[0] : this.type.toArray(new Base[this.type.size()]); // CodeableConcept
         case -1694759682: /*specialty*/ return this.specialty == null ? new Base[0] : this.specialty.toArray(new Base[this.specialty.size()]); // CodeableConcept
@@ -2417,7 +1662,6 @@ public class HealthcareService extends DomainResource {
         case -1469168622: /*extraDetails*/ return this.extraDetails == null ? new Base[0] : new Base[] {this.extraDetails}; // MarkdownType
         case 106642994: /*photo*/ return this.photo == null ? new Base[0] : new Base[] {this.photo}; // Attachment
         case 951526432: /*contact*/ return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // ExtendedContactDetail
-        case -1429363305: /*telecom*/ return this.telecom == null ? new Base[0] : this.telecom.toArray(new Base[this.telecom.size()]); // ContactPoint
         case -1532328299: /*coverageArea*/ return this.coverageArea == null ? new Base[0] : this.coverageArea.toArray(new Base[this.coverageArea.size()]); // Reference
         case 1504575405: /*serviceProvisionCode*/ return this.serviceProvisionCode == null ? new Base[0] : this.serviceProvisionCode.toArray(new Base[this.serviceProvisionCode.size()]); // CodeableConcept
         case -930847859: /*eligibility*/ return this.eligibility == null ? new Base[0] : this.eligibility.toArray(new Base[this.eligibility.size()]); // HealthcareServiceEligibilityComponent
@@ -2426,9 +1670,7 @@ public class HealthcareService extends DomainResource {
         case -1035284522: /*communication*/ return this.communication == null ? new Base[0] : this.communication.toArray(new Base[this.communication.size()]); // CodeableConcept
         case -2092740898: /*referralMethod*/ return this.referralMethod == null ? new Base[0] : this.referralMethod.toArray(new Base[this.referralMethod.size()]); // CodeableConcept
         case 427220062: /*appointmentRequired*/ return this.appointmentRequired == null ? new Base[0] : new Base[] {this.appointmentRequired}; // BooleanType
-        case 1873069366: /*availableTime*/ return this.availableTime == null ? new Base[0] : this.availableTime.toArray(new Base[this.availableTime.size()]); // HealthcareServiceAvailableTimeComponent
-        case -629572298: /*notAvailable*/ return this.notAvailable == null ? new Base[0] : this.notAvailable.toArray(new Base[this.notAvailable.size()]); // HealthcareServiceNotAvailableComponent
-        case -1149143617: /*availabilityExceptions*/ return this.availabilityExceptions == null ? new Base[0] : new Base[] {this.availabilityExceptions}; // StringType
+        case 1997542747: /*availability*/ return this.availability == null ? new Base[0] : this.availability.toArray(new Base[this.availability.size()]); // Availability
         case 1741102485: /*endpoint*/ return this.endpoint == null ? new Base[0] : this.endpoint.toArray(new Base[this.endpoint.size()]); // Reference
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -2446,6 +1688,9 @@ public class HealthcareService extends DomainResource {
           return value;
         case 205136282: // providedBy
           this.providedBy = TypeConvertor.castToReference(value); // Reference
+          return value;
+        case 1945040512: // offeredIn
+          this.getOfferedIn().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 50511102: // category
           this.getCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
@@ -2474,9 +1719,6 @@ public class HealthcareService extends DomainResource {
         case 951526432: // contact
           this.getContact().add(TypeConvertor.castToExtendedContactDetail(value)); // ExtendedContactDetail
           return value;
-        case -1429363305: // telecom
-          this.getTelecom().add(TypeConvertor.castToContactPoint(value)); // ContactPoint
-          return value;
         case -1532328299: // coverageArea
           this.getCoverageArea().add(TypeConvertor.castToReference(value)); // Reference
           return value;
@@ -2501,14 +1743,8 @@ public class HealthcareService extends DomainResource {
         case 427220062: // appointmentRequired
           this.appointmentRequired = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
-        case 1873069366: // availableTime
-          this.getAvailableTime().add((HealthcareServiceAvailableTimeComponent) value); // HealthcareServiceAvailableTimeComponent
-          return value;
-        case -629572298: // notAvailable
-          this.getNotAvailable().add((HealthcareServiceNotAvailableComponent) value); // HealthcareServiceNotAvailableComponent
-          return value;
-        case -1149143617: // availabilityExceptions
-          this.availabilityExceptions = TypeConvertor.castToString(value); // StringType
+        case 1997542747: // availability
+          this.getAvailability().add(TypeConvertor.castToAvailability(value)); // Availability
           return value;
         case 1741102485: // endpoint
           this.getEndpoint().add(TypeConvertor.castToReference(value)); // Reference
@@ -2526,6 +1762,8 @@ public class HealthcareService extends DomainResource {
           this.active = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("providedBy")) {
           this.providedBy = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("offeredIn")) {
+          this.getOfferedIn().add(TypeConvertor.castToReference(value));
         } else if (name.equals("category")) {
           this.getCategory().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("type")) {
@@ -2544,8 +1782,6 @@ public class HealthcareService extends DomainResource {
           this.photo = TypeConvertor.castToAttachment(value); // Attachment
         } else if (name.equals("contact")) {
           this.getContact().add(TypeConvertor.castToExtendedContactDetail(value));
-        } else if (name.equals("telecom")) {
-          this.getTelecom().add(TypeConvertor.castToContactPoint(value));
         } else if (name.equals("coverageArea")) {
           this.getCoverageArea().add(TypeConvertor.castToReference(value));
         } else if (name.equals("serviceProvisionCode")) {
@@ -2562,12 +1798,8 @@ public class HealthcareService extends DomainResource {
           this.getReferralMethod().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("appointmentRequired")) {
           this.appointmentRequired = TypeConvertor.castToBoolean(value); // BooleanType
-        } else if (name.equals("availableTime")) {
-          this.getAvailableTime().add((HealthcareServiceAvailableTimeComponent) value);
-        } else if (name.equals("notAvailable")) {
-          this.getNotAvailable().add((HealthcareServiceNotAvailableComponent) value);
-        } else if (name.equals("availabilityExceptions")) {
-          this.availabilityExceptions = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("availability")) {
+          this.getAvailability().add(TypeConvertor.castToAvailability(value));
         } else if (name.equals("endpoint")) {
           this.getEndpoint().add(TypeConvertor.castToReference(value));
         } else
@@ -2581,6 +1813,7 @@ public class HealthcareService extends DomainResource {
         case -1618432855:  return addIdentifier(); 
         case -1422950650:  return getActiveElement();
         case 205136282:  return getProvidedBy();
+        case 1945040512:  return addOfferedIn(); 
         case 50511102:  return addCategory(); 
         case 3575610:  return addType(); 
         case -1694759682:  return addSpecialty(); 
@@ -2590,7 +1823,6 @@ public class HealthcareService extends DomainResource {
         case -1469168622:  return getExtraDetailsElement();
         case 106642994:  return getPhoto();
         case 951526432:  return addContact(); 
-        case -1429363305:  return addTelecom(); 
         case -1532328299:  return addCoverageArea(); 
         case 1504575405:  return addServiceProvisionCode(); 
         case -930847859:  return addEligibility(); 
@@ -2599,9 +1831,7 @@ public class HealthcareService extends DomainResource {
         case -1035284522:  return addCommunication(); 
         case -2092740898:  return addReferralMethod(); 
         case 427220062:  return getAppointmentRequiredElement();
-        case 1873069366:  return addAvailableTime(); 
-        case -629572298:  return addNotAvailable(); 
-        case -1149143617:  return getAvailabilityExceptionsElement();
+        case 1997542747:  return addAvailability(); 
         case 1741102485:  return addEndpoint(); 
         default: return super.makeProperty(hash, name);
         }
@@ -2614,6 +1844,7 @@ public class HealthcareService extends DomainResource {
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case -1422950650: /*active*/ return new String[] {"boolean"};
         case 205136282: /*providedBy*/ return new String[] {"Reference"};
+        case 1945040512: /*offeredIn*/ return new String[] {"Reference"};
         case 50511102: /*category*/ return new String[] {"CodeableConcept"};
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
         case -1694759682: /*specialty*/ return new String[] {"CodeableConcept"};
@@ -2623,7 +1854,6 @@ public class HealthcareService extends DomainResource {
         case -1469168622: /*extraDetails*/ return new String[] {"markdown"};
         case 106642994: /*photo*/ return new String[] {"Attachment"};
         case 951526432: /*contact*/ return new String[] {"ExtendedContactDetail"};
-        case -1429363305: /*telecom*/ return new String[] {"ContactPoint"};
         case -1532328299: /*coverageArea*/ return new String[] {"Reference"};
         case 1504575405: /*serviceProvisionCode*/ return new String[] {"CodeableConcept"};
         case -930847859: /*eligibility*/ return new String[] {};
@@ -2632,9 +1862,7 @@ public class HealthcareService extends DomainResource {
         case -1035284522: /*communication*/ return new String[] {"CodeableConcept"};
         case -2092740898: /*referralMethod*/ return new String[] {"CodeableConcept"};
         case 427220062: /*appointmentRequired*/ return new String[] {"boolean"};
-        case 1873069366: /*availableTime*/ return new String[] {};
-        case -629572298: /*notAvailable*/ return new String[] {};
-        case -1149143617: /*availabilityExceptions*/ return new String[] {"string"};
+        case 1997542747: /*availability*/ return new String[] {"Availability"};
         case 1741102485: /*endpoint*/ return new String[] {"Reference"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -2652,6 +1880,9 @@ public class HealthcareService extends DomainResource {
         else if (name.equals("providedBy")) {
           this.providedBy = new Reference();
           return this.providedBy;
+        }
+        else if (name.equals("offeredIn")) {
+          return addOfferedIn();
         }
         else if (name.equals("category")) {
           return addCategory();
@@ -2681,9 +1912,6 @@ public class HealthcareService extends DomainResource {
         else if (name.equals("contact")) {
           return addContact();
         }
-        else if (name.equals("telecom")) {
-          return addTelecom();
-        }
         else if (name.equals("coverageArea")) {
           return addCoverageArea();
         }
@@ -2708,14 +1936,8 @@ public class HealthcareService extends DomainResource {
         else if (name.equals("appointmentRequired")) {
           throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.appointmentRequired");
         }
-        else if (name.equals("availableTime")) {
-          return addAvailableTime();
-        }
-        else if (name.equals("notAvailable")) {
-          return addNotAvailable();
-        }
-        else if (name.equals("availabilityExceptions")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.availabilityExceptions");
+        else if (name.equals("availability")) {
+          return addAvailability();
         }
         else if (name.equals("endpoint")) {
           return addEndpoint();
@@ -2744,6 +1966,11 @@ public class HealthcareService extends DomainResource {
         };
         dst.active = active == null ? null : active.copy();
         dst.providedBy = providedBy == null ? null : providedBy.copy();
+        if (offeredIn != null) {
+          dst.offeredIn = new ArrayList<Reference>();
+          for (Reference i : offeredIn)
+            dst.offeredIn.add(i.copy());
+        };
         if (category != null) {
           dst.category = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : category)
@@ -2772,11 +1999,6 @@ public class HealthcareService extends DomainResource {
           dst.contact = new ArrayList<ExtendedContactDetail>();
           for (ExtendedContactDetail i : contact)
             dst.contact.add(i.copy());
-        };
-        if (telecom != null) {
-          dst.telecom = new ArrayList<ContactPoint>();
-          for (ContactPoint i : telecom)
-            dst.telecom.add(i.copy());
         };
         if (coverageArea != null) {
           dst.coverageArea = new ArrayList<Reference>();
@@ -2814,17 +2036,11 @@ public class HealthcareService extends DomainResource {
             dst.referralMethod.add(i.copy());
         };
         dst.appointmentRequired = appointmentRequired == null ? null : appointmentRequired.copy();
-        if (availableTime != null) {
-          dst.availableTime = new ArrayList<HealthcareServiceAvailableTimeComponent>();
-          for (HealthcareServiceAvailableTimeComponent i : availableTime)
-            dst.availableTime.add(i.copy());
+        if (availability != null) {
+          dst.availability = new ArrayList<Availability>();
+          for (Availability i : availability)
+            dst.availability.add(i.copy());
         };
-        if (notAvailable != null) {
-          dst.notAvailable = new ArrayList<HealthcareServiceNotAvailableComponent>();
-          for (HealthcareServiceNotAvailableComponent i : notAvailable)
-            dst.notAvailable.add(i.copy());
-        };
-        dst.availabilityExceptions = availabilityExceptions == null ? null : availabilityExceptions.copy();
         if (endpoint != null) {
           dst.endpoint = new ArrayList<Reference>();
           for (Reference i : endpoint)
@@ -2844,14 +2060,13 @@ public class HealthcareService extends DomainResource {
           return false;
         HealthcareService o = (HealthcareService) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(active, o.active, true) && compareDeep(providedBy, o.providedBy, true)
-           && compareDeep(category, o.category, true) && compareDeep(type, o.type, true) && compareDeep(specialty, o.specialty, true)
-           && compareDeep(location, o.location, true) && compareDeep(name, o.name, true) && compareDeep(comment, o.comment, true)
-           && compareDeep(extraDetails, o.extraDetails, true) && compareDeep(photo, o.photo, true) && compareDeep(contact, o.contact, true)
-           && compareDeep(telecom, o.telecom, true) && compareDeep(coverageArea, o.coverageArea, true) && compareDeep(serviceProvisionCode, o.serviceProvisionCode, true)
+           && compareDeep(offeredIn, o.offeredIn, true) && compareDeep(category, o.category, true) && compareDeep(type, o.type, true)
+           && compareDeep(specialty, o.specialty, true) && compareDeep(location, o.location, true) && compareDeep(name, o.name, true)
+           && compareDeep(comment, o.comment, true) && compareDeep(extraDetails, o.extraDetails, true) && compareDeep(photo, o.photo, true)
+           && compareDeep(contact, o.contact, true) && compareDeep(coverageArea, o.coverageArea, true) && compareDeep(serviceProvisionCode, o.serviceProvisionCode, true)
            && compareDeep(eligibility, o.eligibility, true) && compareDeep(program, o.program, true) && compareDeep(characteristic, o.characteristic, true)
            && compareDeep(communication, o.communication, true) && compareDeep(referralMethod, o.referralMethod, true)
-           && compareDeep(appointmentRequired, o.appointmentRequired, true) && compareDeep(availableTime, o.availableTime, true)
-           && compareDeep(notAvailable, o.notAvailable, true) && compareDeep(availabilityExceptions, o.availabilityExceptions, true)
+           && compareDeep(appointmentRequired, o.appointmentRequired, true) && compareDeep(availability, o.availability, true)
            && compareDeep(endpoint, o.endpoint, true);
       }
 
@@ -2864,15 +2079,14 @@ public class HealthcareService extends DomainResource {
         HealthcareService o = (HealthcareService) other_;
         return compareValues(active, o.active, true) && compareValues(name, o.name, true) && compareValues(comment, o.comment, true)
            && compareValues(extraDetails, o.extraDetails, true) && compareValues(appointmentRequired, o.appointmentRequired, true)
-           && compareValues(availabilityExceptions, o.availabilityExceptions, true);
+          ;
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, active, providedBy
-          , category, type, specialty, location, name, comment, extraDetails, photo, contact
-          , telecom, coverageArea, serviceProvisionCode, eligibility, program, characteristic
-          , communication, referralMethod, appointmentRequired, availableTime, notAvailable
-          , availabilityExceptions, endpoint);
+          , offeredIn, category, type, specialty, location, name, comment, extraDetails
+          , photo, contact, coverageArea, serviceProvisionCode, eligibility, program, characteristic
+          , communication, referralMethod, appointmentRequired, availability, endpoint);
       }
 
   @Override
@@ -3037,6 +2251,32 @@ public class HealthcareService extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
+
+ /**
+   * Search parameter: <b>offered-in</b>
+   * <p>
+   * Description: <b>The service within which this service is offered</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>HealthcareService.offeredIn</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="offered-in", path="HealthcareService.offeredIn", description="The service within which this service is offered", type="reference", target={HealthcareService.class } )
+  public static final String SP_OFFERED_IN = "offered-in";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>offered-in</b>
+   * <p>
+   * Description: <b>The service within which this service is offered</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>HealthcareService.offeredIn</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam OFFERED_IN = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_OFFERED_IN);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>HealthcareService:offered-in</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_OFFERED_IN = new ca.uhn.fhir.model.api.Include("HealthcareService:offered-in").toLocked();
 
  /**
    * Search parameter: <b>organization</b>

@@ -1,9 +1,9 @@
 package org.hl7.fhir.convertors.misc.iso21090;
 
-import lombok.Data;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import lombok.Data;
 
 @Data
 class DataType {

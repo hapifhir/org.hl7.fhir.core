@@ -15,7 +15,7 @@ public class QuestionnaireBuilderTester {
 //	private static final String TEST_DEST = Utilities.path("[tmp]", "questionnaires\\");
 
 	public static void main(String[] args) {
-		QuestionnaireBuilder b = new QuestionnaireBuilder(null);
+		QuestionnaireBuilder b = new QuestionnaireBuilder(null, "http://hl7.org/fhir/test");
 		for (String f : new File(TEST_PROFILE_DIR).list()) {
 			if (f.endsWith(".profile.xml") && !f.contains("type-")) {
 				System.out.println("process "+f);

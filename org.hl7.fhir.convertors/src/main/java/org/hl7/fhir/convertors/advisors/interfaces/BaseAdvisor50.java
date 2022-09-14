@@ -1,13 +1,18 @@
 package org.hl7.fhir.convertors.advisors.interfaces;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseExtension;
-import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.utilities.FhirPublication;
-
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.IBaseExtension;
+import org.hl7.fhir.r5.model.Bundle;
+import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.DataType;
+import org.hl7.fhir.r5.model.Extension;
+import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.utilities.FhirPublication;
 
 public abstract class BaseAdvisor50<T extends IBaseExtension> extends BaseAdvisor {
   private final List<CodeSystem> cslist = new ArrayList<>();

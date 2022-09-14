@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -439,6 +439,1990 @@ public class Bundle extends Resource implements IBaseBundle {
       }
     }
 
+    public enum LinkRelationTypes {
+        /**
+         * Refers to a resource that is the subject of the link's context.
+         */
+        ABOUT, 
+        /**
+         * Asserts that the link target provides an access control description for the link context.
+         */
+        ACL, 
+        /**
+         * Refers to a substitute for this context
+         */
+        ALTERNATE, 
+        /**
+         * Used to reference alternative content that uses the AMP profile of the HTML format.
+         */
+        AMPHTML, 
+        /**
+         * Refers to an appendix.
+         */
+        APPENDIX, 
+        /**
+         * Refers to an icon for the context. Synonym for icon.
+         */
+        APPLETOUCHICON, 
+        /**
+         * Refers to a launch screen for the context.
+         */
+        APPLETOUCHSTARTUPIMAGE, 
+        /**
+         * Refers to a collection of records, documents, or other\n      materials of historical interest.
+         */
+        ARCHIVES, 
+        /**
+         * Refers to the context's author.
+         */
+        AUTHOR, 
+        /**
+         * Identifies the entity that blocks access to a resource\n      following receipt of a legal demand.
+         */
+        BLOCKEDBY, 
+        /**
+         * Gives a permanent link to use for bookmarking purposes.
+         */
+        BOOKMARK, 
+        /**
+         * Designates the preferred version of a resource (the IRI and its contents).
+         */
+        CANONICAL, 
+        /**
+         * Refers to a chapter in a collection of resources.
+         */
+        CHAPTER, 
+        /**
+         * Indicates that the link target is preferred over the link context for the purpose of permanent citation.
+         */
+        CITEAS, 
+        /**
+         * The target IRI points to a resource which represents the collection resource for the context IRI.
+         */
+        COLLECTION, 
+        /**
+         * Refers to a table of contents.
+         */
+        CONTENTS, 
+        /**
+         * The document linked to was later converted to the\n      document that contains this link relation.  For example, an RFC can\n      have a link to the Internet-Draft that became the RFC; in that case,\n      the link relation would be \"convertedFrom\".
+         */
+        CONVERTEDFROM, 
+        /**
+         * Refers to a copyright statement that applies to the\n    link's context.
+         */
+        COPYRIGHT, 
+        /**
+         * The target IRI points to a resource where a submission form can be obtained.
+         */
+        CREATEFORM, 
+        /**
+         * Refers to a resource containing the most recent\n      item(s) in a collection of resources.
+         */
+        CURRENT, 
+        /**
+         * Refers to a resource providing information about the\n      link's context.
+         */
+        DESCRIBEDBY, 
+        /**
+         * The relationship A 'describes' B asserts that\n      resource A provides a description of resource B. There are no\n      constraints on the format or representation of either A or B,\n      neither are there any further constraints on either resource.
+         */
+        DESCRIBES, 
+        /**
+         * Refers to a list of patent disclosures made with respect to \n      material for which 'disclosure' relation is specified.
+         */
+        DISCLOSURE, 
+        /**
+         * Used to indicate an origin that will be used to fetch required \n      resources for the link context, and that the user agent ought to resolve \n      as early as possible.
+         */
+        DNSPREFETCH, 
+        /**
+         * Refers to a resource whose available representations\n      are byte-for-byte identical with the corresponding representations of\n      the context IRI.
+         */
+        DUPLICATE, 
+        /**
+         * Refers to a resource that can be used to edit the\n      link's context.
+         */
+        EDIT, 
+        /**
+         * The target IRI points to a resource where a submission form for\n      editing associated resource can be obtained.
+         */
+        EDITFORM, 
+        /**
+         * Refers to a resource that can be used to edit media\n      associated with the link's context.
+         */
+        EDITMEDIA, 
+        /**
+         * Identifies a related resource that is potentially\n      large and might require special handling.
+         */
+        ENCLOSURE, 
+        /**
+         * Refers to a resource that is not part of the same site as the current context.
+         */
+        EXTERNAL, 
+        /**
+         * An IRI that refers to the furthest preceding resource\n    in a series of resources.
+         */
+        FIRST, 
+        /**
+         * Refers to a glossary of terms.
+         */
+        GLOSSARY, 
+        /**
+         * Refers to context-sensitive help.
+         */
+        HELP, 
+        /**
+         * Refers to a resource hosted by the server indicated by\n      the link context.
+         */
+        HOSTS, 
+        /**
+         * Refers to a hub that enables registration for\n    notification of updates to the context.
+         */
+        HUB, 
+        /**
+         * Refers to an icon representing the link's context.
+         */
+        ICON, 
+        /**
+         * Refers to an index.
+         */
+        INDEX, 
+        /**
+         * refers to a resource associated with a time interval that ends before the beginning of the time interval associated with the context resource
+         */
+        INTERVALAFTER, 
+        /**
+         * refers to a resource associated with a time interval that begins after the end of the time interval associated with the context resource
+         */
+        INTERVALBEFORE, 
+        /**
+         * refers to a resource associated with a time interval that begins after the beginning of the time interval associated with the context resource, and ends before the end of the time interval associated with the context resource
+         */
+        INTERVALCONTAINS, 
+        /**
+         * refers to a resource associated with a time interval that begins after the end of the time interval associated with the context resource, or ends before the beginning of the time interval associated with the context resource
+         */
+        INTERVALDISJOINT, 
+        /**
+         * refers to a resource associated with a time interval that begins before the beginning of the time interval associated with the context resource, and ends after the end of the time interval associated with the context resource
+         */
+        INTERVALDURING, 
+        /**
+         * refers to a resource associated with a time interval whose beginning coincides with the beginning of the time interval associated with the context resource, and whose end coincides with the end of the time interval associated with the context resource
+         */
+        INTERVALEQUALS, 
+        /**
+         * refers to a resource associated with a time interval that begins after the beginning of the time interval associated with the context resource, and whose end coincides with the end of the time interval associated with the context resource
+         */
+        INTERVALFINISHEDBY, 
+        /**
+         * refers to a resource associated with a time interval that begins before the beginning of the time interval associated with the context resource, and whose end coincides with the end of the time interval associated with the context resource
+         */
+        INTERVALFINISHES, 
+        /**
+         * refers to a resource associated with a time interval that begins before or is coincident with the beginning of the time interval associated with the context resource, and ends after or is coincident with the end of the time interval associated with the context resource
+         */
+        INTERVALIN, 
+        /**
+         * refers to a resource associated with a time interval whose beginning coincides with the end of the time interval associated with the context resource
+         */
+        INTERVALMEETS, 
+        /**
+         * refers to a resource associated with a time interval whose end coincides with the beginning of the time interval associated with the context resource
+         */
+        INTERVALMETBY, 
+        /**
+         * refers to a resource associated with a time interval that begins before the beginning of the time interval associated with the context resource, and ends after the beginning of the time interval associated with the context resource
+         */
+        INTERVALOVERLAPPEDBY, 
+        /**
+         * refers to a resource associated with a time interval that begins before the end of the time interval associated with the context resource, and ends after the end of the time interval associated with the context resource
+         */
+        INTERVALOVERLAPS, 
+        /**
+         * refers to a resource associated with a time interval whose beginning coincides with the beginning of the time interval associated with the context resource, and ends before the end of the time interval associated with the context resource
+         */
+        INTERVALSTARTEDBY, 
+        /**
+         * refers to a resource associated with a time interval whose beginning coincides with the beginning of the time interval associated with the context resource, and ends after the end of the time interval associated with the context resource
+         */
+        INTERVALSTARTS, 
+        /**
+         * The target IRI points to a resource that is a member of the collection represented by the context IRI.
+         */
+        ITEM, 
+        /**
+         * An IRI that refers to the furthest following resource\n      in a series of resources.
+         */
+        LAST, 
+        /**
+         * Points to a resource containing the latest (e.g.,\n      current) version of the context.
+         */
+        LATESTVERSION, 
+        /**
+         * Refers to a license associated with this context.
+         */
+        LICENSE, 
+        /**
+         * The link target of a link with the \"linkset\" relation\n      type provides a set of links, including links in which the link\n      context of the link participates.\n    
+         */
+        LINKSET, 
+        /**
+         * Refers to further information about the link's context,\n      expressed as a LRDD (\"Link-based Resource Descriptor Document\")\n      resource.  See  for information about\n      processing this relation type in host-meta documents. When used\n      elsewhere, it refers to additional links and other metadata.\n      Multiple instances indicate additional LRDD resources. LRDD\n      resources MUST have an \"application/xrd+xml\" representation, and\n      MAY have others.
+         */
+        LRDD, 
+        /**
+         * Links to a manifest file for the context.
+         */
+        MANIFEST, 
+        /**
+         * Refers to a mask that can be applied to the icon for the context.
+         */
+        MASKICON, 
+        /**
+         * Refers to a feed of personalised media recommendations relevant to the link context.
+         */
+        MEDIAFEED, 
+        /**
+         * The Target IRI points to a Memento, a fixed resource that will not change state anymore.
+         */
+        MEMENTO, 
+        /**
+         * Links to the context's Micropub endpoint.
+         */
+        MICROPUB, 
+        /**
+         * Refers to a module that the user agent is to preemptively fetch and store for use in the current context.
+         */
+        MODULEPRELOAD, 
+        /**
+         * Refers to a resource that can be used to monitor changes in an HTTP resource.\n    
+         */
+        MONITOR, 
+        /**
+         * Refers to a resource that can be used to monitor changes in a specified group of HTTP resources.\n    
+         */
+        MONITORGROUP, 
+        /**
+         * Indicates that the link's context is a part of a series, and\n      that the next in the series is the link target.\n    
+         */
+        NEXT, 
+        /**
+         * Refers to the immediately following archive resource.
+         */
+        NEXTARCHIVE, 
+        /**
+         * Indicates that the context’s original author or publisher does not endorse the link target.
+         */
+        NOFOLLOW, 
+        /**
+         * Indicates that any newly created top-level browsing context which results from following the link will not be an auxiliary browsing context.
+         */
+        NOOPENER, 
+        /**
+         * Indicates that no referrer information is to be leaked when following the link.
+         */
+        NOREFERRER, 
+        /**
+         * Indicates that any newly created top-level browsing context which results from following the link will be an auxiliary browsing context.
+         */
+        OPENER, 
+        /**
+         * Refers to an OpenID Authentication server on which the context relies for an assertion that the end user controls an Identifier.
+         */
+        OPENID2_LOCALID, 
+        /**
+         * Refers to a resource which accepts OpenID Authentication protocol messages for the context.
+         */
+        OPENID2_PROVIDER, 
+        /**
+         * The Target IRI points to an Original Resource.
+         */
+        ORIGINAL, 
+        /**
+         * Refers to a P3P privacy policy for the context.
+         */
+        P3PV1, 
+        /**
+         * Indicates a resource where payment is accepted.
+         */
+        PAYMENT, 
+        /**
+         * Gives the address of the pingback resource for the link context.
+         */
+        PINGBACK, 
+        /**
+         * Used to indicate an origin that will be used to fetch required \n      resources for the link context. Initiating an early connection, which \n      includes the DNS lookup, TCP handshake, and optional TLS negotiation, \n      allows the user agent to mask the high latency costs of establishing a \n      connection.
+         */
+        PRECONNECT, 
+        /**
+         * Points to a resource containing the predecessor\n      version in the version history.\n    
+         */
+        PREDECESSORVERSION, 
+        /**
+         * The prefetch link relation type is used to identify a resource \n      that might be required by the next navigation from the link context, and \n      that the user agent ought to fetch, such that the user agent can deliver a \n      faster response once the resource is requested in the future.
+         */
+        PREFETCH, 
+        /**
+         * Refers to a resource that should be loaded early in the \n      processing of the link's context, without blocking rendering.
+         */
+        PRELOAD, 
+        /**
+         * Used to identify a resource that might be required by the next \n      navigation from the link context, and that the user agent ought to fetch \n      and execute, such that the user agent can deliver a faster response once \n      the resource is requested in the future.
+         */
+        PRERENDER, 
+        /**
+         * Indicates that the link's context is a part of a series, and\n      that the previous in the series is the link target.\n    
+         */
+        PREV, 
+        /**
+         * Refers to a resource that provides a preview of the link's context.
+         */
+        PREVIEW, 
+        /**
+         * Refers to the previous resource in an ordered series\n      of resources.  Synonym for \"prev\".
+         */
+        PREVIOUS, 
+        /**
+         * Refers to the immediately preceding archive resource.
+         */
+        PREVARCHIVE, 
+        /**
+         * Refers to a privacy policy associated with the link's context.
+         */
+        PRIVACYPOLICY, 
+        /**
+         * Identifying that a resource representation conforms\nto a certain profile, without affecting the non-profile semantics\nof the resource representation.
+         */
+        PROFILE, 
+        /**
+         * Links to a publication manifest. A manifest represents \n      structured information about a publication, such as informative metadata, \n      a list of resources, and a default reading order.
+         */
+        PUBLICATION, 
+        /**
+         * Identifies a related resource.
+         */
+        RELATED, 
+        /**
+         * Identifies the root of RESTCONF API as configured on this HTTP server.\n      The \"restconf\" relation defines the root of the API defined in RFC8040.\n      Subsequent revisions of RESTCONF will use alternate relation values to support \n      protocol versioning.
+         */
+        RESTCONF, 
+        /**
+         * Identifies a resource that is a reply to the context\n      of the link.\n    
+         */
+        REPLIES, 
+        /**
+         * The resource identified by the link target provides an input value to an \n    instance of a rule, where the resource which represents the rule instance is \n    identified by the link context.\n    
+         */
+        RULEINPUT, 
+        /**
+         * Refers to a resource that can be used to search through\n      the link's context and related resources.
+         */
+        SEARCH, 
+        /**
+         * Refers to a section in a collection of resources.
+         */
+        SECTION, 
+        /**
+         * Conveys an identifier for the link's context.\n    
+         */
+        SELF, 
+        /**
+         * Indicates a URI that can be used to retrieve a\n      service document.
+         */
+        SERVICE, 
+        /**
+         * Identifies service description for the context that\n      is primarily intended for consumption by machines.
+         */
+        SERVICEDESC, 
+        /**
+         * Identifies service documentation for the context that\n      is primarily intended for human consumption.
+         */
+        SERVICEDOC, 
+        /**
+         * Identifies general metadata for the context that is\n      primarily intended for consumption by machines.
+         */
+        SERVICEMETA, 
+        /**
+         * Refers to a resource that is within a context that is \n		sponsored (such as advertising or another compensation agreement).
+         */
+        SPONSORED, 
+        /**
+         * Refers to the first resource in a collection of\n      resources.
+         */
+        START, 
+        /**
+         * Identifies a resource that represents the context's\n      status.
+         */
+        STATUS, 
+        /**
+         * Refers to a stylesheet.
+         */
+        STYLESHEET, 
+        /**
+         * Refers to a resource serving as a subsection in a\n      collection of resources.
+         */
+        SUBSECTION, 
+        /**
+         * Points to a resource containing the successor version\n      in the version history.\n    
+         */
+        SUCCESSORVERSION, 
+        /**
+         * Identifies a resource that provides information about\n      the context's retirement policy.\n    
+         */
+        SUNSET, 
+        /**
+         * Gives a tag (identified by the given address) that applies to\n      the current document.\n    
+         */
+        TAG, 
+        /**
+         * Refers to the terms of service associated with the link's context.
+         */
+        TERMSOFSERVICE, 
+        /**
+         * The Target IRI points to a TimeGate for an Original Resource.
+         */
+        TIMEGATE, 
+        /**
+         * The Target IRI points to a TimeMap for an Original Resource.
+         */
+        TIMEMAP, 
+        /**
+         * Refers to a resource identifying the abstract semantic type of which the link's context is considered to be an instance.
+         */
+        TYPE, 
+        /**
+         * Refers to a resource that is within a context that is User Generated Content.\n    
+         */
+        UGC, 
+        /**
+         * Refers to a parent document in a hierarchy of\n      documents.\n    
+         */
+        UP, 
+        /**
+         * Points to a resource containing the version history\n      for the context.\n    
+         */
+        VERSIONHISTORY, 
+        /**
+         * Identifies a resource that is the source of the\n      information in the link's context.\n    
+         */
+        VIA, 
+        /**
+         * Identifies a target URI that supports the Webmention protocol.\n    This allows clients that mention a resource in some form of publishing process\n    to contact that endpoint and inform it that this resource has been mentioned.
+         */
+        WEBMENTION, 
+        /**
+         * Points to a working copy for this resource.
+         */
+        WORKINGCOPY, 
+        /**
+         * Points to the versioned resource from which this\n      working copy was obtained.\n    
+         */
+        WORKINGCOPYOF, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static LinkRelationTypes fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("about".equals(codeString))
+          return ABOUT;
+        if ("acl".equals(codeString))
+          return ACL;
+        if ("alternate".equals(codeString))
+          return ALTERNATE;
+        if ("amphtml".equals(codeString))
+          return AMPHTML;
+        if ("appendix".equals(codeString))
+          return APPENDIX;
+        if ("apple-touch-icon".equals(codeString))
+          return APPLETOUCHICON;
+        if ("apple-touch-startup-image".equals(codeString))
+          return APPLETOUCHSTARTUPIMAGE;
+        if ("archives".equals(codeString))
+          return ARCHIVES;
+        if ("author".equals(codeString))
+          return AUTHOR;
+        if ("blocked-by".equals(codeString))
+          return BLOCKEDBY;
+        if ("bookmark".equals(codeString))
+          return BOOKMARK;
+        if ("canonical".equals(codeString))
+          return CANONICAL;
+        if ("chapter".equals(codeString))
+          return CHAPTER;
+        if ("cite-as".equals(codeString))
+          return CITEAS;
+        if ("collection".equals(codeString))
+          return COLLECTION;
+        if ("contents".equals(codeString))
+          return CONTENTS;
+        if ("convertedFrom".equals(codeString))
+          return CONVERTEDFROM;
+        if ("copyright".equals(codeString))
+          return COPYRIGHT;
+        if ("create-form".equals(codeString))
+          return CREATEFORM;
+        if ("current".equals(codeString))
+          return CURRENT;
+        if ("describedby".equals(codeString))
+          return DESCRIBEDBY;
+        if ("describes".equals(codeString))
+          return DESCRIBES;
+        if ("disclosure".equals(codeString))
+          return DISCLOSURE;
+        if ("dns-prefetch".equals(codeString))
+          return DNSPREFETCH;
+        if ("duplicate".equals(codeString))
+          return DUPLICATE;
+        if ("edit".equals(codeString))
+          return EDIT;
+        if ("edit-form".equals(codeString))
+          return EDITFORM;
+        if ("edit-media".equals(codeString))
+          return EDITMEDIA;
+        if ("enclosure".equals(codeString))
+          return ENCLOSURE;
+        if ("external".equals(codeString))
+          return EXTERNAL;
+        if ("first".equals(codeString))
+          return FIRST;
+        if ("glossary".equals(codeString))
+          return GLOSSARY;
+        if ("help".equals(codeString))
+          return HELP;
+        if ("hosts".equals(codeString))
+          return HOSTS;
+        if ("hub".equals(codeString))
+          return HUB;
+        if ("icon".equals(codeString))
+          return ICON;
+        if ("index".equals(codeString))
+          return INDEX;
+        if ("intervalAfter".equals(codeString))
+          return INTERVALAFTER;
+        if ("intervalBefore".equals(codeString))
+          return INTERVALBEFORE;
+        if ("intervalContains".equals(codeString))
+          return INTERVALCONTAINS;
+        if ("intervalDisjoint".equals(codeString))
+          return INTERVALDISJOINT;
+        if ("intervalDuring".equals(codeString))
+          return INTERVALDURING;
+        if ("intervalEquals".equals(codeString))
+          return INTERVALEQUALS;
+        if ("intervalFinishedBy".equals(codeString))
+          return INTERVALFINISHEDBY;
+        if ("intervalFinishes".equals(codeString))
+          return INTERVALFINISHES;
+        if ("intervalIn".equals(codeString))
+          return INTERVALIN;
+        if ("intervalMeets".equals(codeString))
+          return INTERVALMEETS;
+        if ("intervalMetBy".equals(codeString))
+          return INTERVALMETBY;
+        if ("intervalOverlappedBy".equals(codeString))
+          return INTERVALOVERLAPPEDBY;
+        if ("intervalOverlaps".equals(codeString))
+          return INTERVALOVERLAPS;
+        if ("intervalStartedBy".equals(codeString))
+          return INTERVALSTARTEDBY;
+        if ("intervalStarts".equals(codeString))
+          return INTERVALSTARTS;
+        if ("item".equals(codeString))
+          return ITEM;
+        if ("last".equals(codeString))
+          return LAST;
+        if ("latest-version".equals(codeString))
+          return LATESTVERSION;
+        if ("license".equals(codeString))
+          return LICENSE;
+        if ("linkset".equals(codeString))
+          return LINKSET;
+        if ("lrdd".equals(codeString))
+          return LRDD;
+        if ("manifest".equals(codeString))
+          return MANIFEST;
+        if ("mask-icon".equals(codeString))
+          return MASKICON;
+        if ("media-feed".equals(codeString))
+          return MEDIAFEED;
+        if ("memento".equals(codeString))
+          return MEMENTO;
+        if ("micropub".equals(codeString))
+          return MICROPUB;
+        if ("modulepreload".equals(codeString))
+          return MODULEPRELOAD;
+        if ("monitor".equals(codeString))
+          return MONITOR;
+        if ("monitor-group".equals(codeString))
+          return MONITORGROUP;
+        if ("next".equals(codeString))
+          return NEXT;
+        if ("next-archive".equals(codeString))
+          return NEXTARCHIVE;
+        if ("nofollow".equals(codeString))
+          return NOFOLLOW;
+        if ("noopener".equals(codeString))
+          return NOOPENER;
+        if ("noreferrer".equals(codeString))
+          return NOREFERRER;
+        if ("opener".equals(codeString))
+          return OPENER;
+        if ("openid2.local_id".equals(codeString))
+          return OPENID2_LOCALID;
+        if ("openid2.provider".equals(codeString))
+          return OPENID2_PROVIDER;
+        if ("original".equals(codeString))
+          return ORIGINAL;
+        if ("P3Pv1".equals(codeString))
+          return P3PV1;
+        if ("payment".equals(codeString))
+          return PAYMENT;
+        if ("pingback".equals(codeString))
+          return PINGBACK;
+        if ("preconnect".equals(codeString))
+          return PRECONNECT;
+        if ("predecessor-version".equals(codeString))
+          return PREDECESSORVERSION;
+        if ("prefetch".equals(codeString))
+          return PREFETCH;
+        if ("preload".equals(codeString))
+          return PRELOAD;
+        if ("prerender".equals(codeString))
+          return PRERENDER;
+        if ("prev".equals(codeString))
+          return PREV;
+        if ("preview".equals(codeString))
+          return PREVIEW;
+        if ("previous".equals(codeString))
+          return PREVIOUS;
+        if ("prev-archive".equals(codeString))
+          return PREVARCHIVE;
+        if ("privacy-policy".equals(codeString))
+          return PRIVACYPOLICY;
+        if ("profile".equals(codeString))
+          return PROFILE;
+        if ("publication".equals(codeString))
+          return PUBLICATION;
+        if ("related".equals(codeString))
+          return RELATED;
+        if ("restconf".equals(codeString))
+          return RESTCONF;
+        if ("replies".equals(codeString))
+          return REPLIES;
+        if ("ruleinput".equals(codeString))
+          return RULEINPUT;
+        if ("search".equals(codeString))
+          return SEARCH;
+        if ("section".equals(codeString))
+          return SECTION;
+        if ("self".equals(codeString))
+          return SELF;
+        if ("service".equals(codeString))
+          return SERVICE;
+        if ("service-desc".equals(codeString))
+          return SERVICEDESC;
+        if ("service-doc".equals(codeString))
+          return SERVICEDOC;
+        if ("service-meta".equals(codeString))
+          return SERVICEMETA;
+        if ("sponsored".equals(codeString))
+          return SPONSORED;
+        if ("start".equals(codeString))
+          return START;
+        if ("status".equals(codeString))
+          return STATUS;
+        if ("stylesheet".equals(codeString))
+          return STYLESHEET;
+        if ("subsection".equals(codeString))
+          return SUBSECTION;
+        if ("successor-version".equals(codeString))
+          return SUCCESSORVERSION;
+        if ("sunset".equals(codeString))
+          return SUNSET;
+        if ("tag".equals(codeString))
+          return TAG;
+        if ("terms-of-service".equals(codeString))
+          return TERMSOFSERVICE;
+        if ("timegate".equals(codeString))
+          return TIMEGATE;
+        if ("timemap".equals(codeString))
+          return TIMEMAP;
+        if ("type".equals(codeString))
+          return TYPE;
+        if ("ugc".equals(codeString))
+          return UGC;
+        if ("up".equals(codeString))
+          return UP;
+        if ("version-history".equals(codeString))
+          return VERSIONHISTORY;
+        if ("via".equals(codeString))
+          return VIA;
+        if ("webmention".equals(codeString))
+          return WEBMENTION;
+        if ("working-copy".equals(codeString))
+          return WORKINGCOPY;
+        if ("working-copy-of".equals(codeString))
+          return WORKINGCOPYOF;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown LinkRelationTypes code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case ABOUT: return "about";
+            case ACL: return "acl";
+            case ALTERNATE: return "alternate";
+            case AMPHTML: return "amphtml";
+            case APPENDIX: return "appendix";
+            case APPLETOUCHICON: return "apple-touch-icon";
+            case APPLETOUCHSTARTUPIMAGE: return "apple-touch-startup-image";
+            case ARCHIVES: return "archives";
+            case AUTHOR: return "author";
+            case BLOCKEDBY: return "blocked-by";
+            case BOOKMARK: return "bookmark";
+            case CANONICAL: return "canonical";
+            case CHAPTER: return "chapter";
+            case CITEAS: return "cite-as";
+            case COLLECTION: return "collection";
+            case CONTENTS: return "contents";
+            case CONVERTEDFROM: return "convertedFrom";
+            case COPYRIGHT: return "copyright";
+            case CREATEFORM: return "create-form";
+            case CURRENT: return "current";
+            case DESCRIBEDBY: return "describedby";
+            case DESCRIBES: return "describes";
+            case DISCLOSURE: return "disclosure";
+            case DNSPREFETCH: return "dns-prefetch";
+            case DUPLICATE: return "duplicate";
+            case EDIT: return "edit";
+            case EDITFORM: return "edit-form";
+            case EDITMEDIA: return "edit-media";
+            case ENCLOSURE: return "enclosure";
+            case EXTERNAL: return "external";
+            case FIRST: return "first";
+            case GLOSSARY: return "glossary";
+            case HELP: return "help";
+            case HOSTS: return "hosts";
+            case HUB: return "hub";
+            case ICON: return "icon";
+            case INDEX: return "index";
+            case INTERVALAFTER: return "intervalAfter";
+            case INTERVALBEFORE: return "intervalBefore";
+            case INTERVALCONTAINS: return "intervalContains";
+            case INTERVALDISJOINT: return "intervalDisjoint";
+            case INTERVALDURING: return "intervalDuring";
+            case INTERVALEQUALS: return "intervalEquals";
+            case INTERVALFINISHEDBY: return "intervalFinishedBy";
+            case INTERVALFINISHES: return "intervalFinishes";
+            case INTERVALIN: return "intervalIn";
+            case INTERVALMEETS: return "intervalMeets";
+            case INTERVALMETBY: return "intervalMetBy";
+            case INTERVALOVERLAPPEDBY: return "intervalOverlappedBy";
+            case INTERVALOVERLAPS: return "intervalOverlaps";
+            case INTERVALSTARTEDBY: return "intervalStartedBy";
+            case INTERVALSTARTS: return "intervalStarts";
+            case ITEM: return "item";
+            case LAST: return "last";
+            case LATESTVERSION: return "latest-version";
+            case LICENSE: return "license";
+            case LINKSET: return "linkset";
+            case LRDD: return "lrdd";
+            case MANIFEST: return "manifest";
+            case MASKICON: return "mask-icon";
+            case MEDIAFEED: return "media-feed";
+            case MEMENTO: return "memento";
+            case MICROPUB: return "micropub";
+            case MODULEPRELOAD: return "modulepreload";
+            case MONITOR: return "monitor";
+            case MONITORGROUP: return "monitor-group";
+            case NEXT: return "next";
+            case NEXTARCHIVE: return "next-archive";
+            case NOFOLLOW: return "nofollow";
+            case NOOPENER: return "noopener";
+            case NOREFERRER: return "noreferrer";
+            case OPENER: return "opener";
+            case OPENID2_LOCALID: return "openid2.local_id";
+            case OPENID2_PROVIDER: return "openid2.provider";
+            case ORIGINAL: return "original";
+            case P3PV1: return "P3Pv1";
+            case PAYMENT: return "payment";
+            case PINGBACK: return "pingback";
+            case PRECONNECT: return "preconnect";
+            case PREDECESSORVERSION: return "predecessor-version";
+            case PREFETCH: return "prefetch";
+            case PRELOAD: return "preload";
+            case PRERENDER: return "prerender";
+            case PREV: return "prev";
+            case PREVIEW: return "preview";
+            case PREVIOUS: return "previous";
+            case PREVARCHIVE: return "prev-archive";
+            case PRIVACYPOLICY: return "privacy-policy";
+            case PROFILE: return "profile";
+            case PUBLICATION: return "publication";
+            case RELATED: return "related";
+            case RESTCONF: return "restconf";
+            case REPLIES: return "replies";
+            case RULEINPUT: return "ruleinput";
+            case SEARCH: return "search";
+            case SECTION: return "section";
+            case SELF: return "self";
+            case SERVICE: return "service";
+            case SERVICEDESC: return "service-desc";
+            case SERVICEDOC: return "service-doc";
+            case SERVICEMETA: return "service-meta";
+            case SPONSORED: return "sponsored";
+            case START: return "start";
+            case STATUS: return "status";
+            case STYLESHEET: return "stylesheet";
+            case SUBSECTION: return "subsection";
+            case SUCCESSORVERSION: return "successor-version";
+            case SUNSET: return "sunset";
+            case TAG: return "tag";
+            case TERMSOFSERVICE: return "terms-of-service";
+            case TIMEGATE: return "timegate";
+            case TIMEMAP: return "timemap";
+            case TYPE: return "type";
+            case UGC: return "ugc";
+            case UP: return "up";
+            case VERSIONHISTORY: return "version-history";
+            case VIA: return "via";
+            case WEBMENTION: return "webmention";
+            case WORKINGCOPY: return "working-copy";
+            case WORKINGCOPYOF: return "working-copy-of";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case ABOUT: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case ACL: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case ALTERNATE: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case AMPHTML: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case APPENDIX: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case APPLETOUCHICON: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case APPLETOUCHSTARTUPIMAGE: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case ARCHIVES: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case AUTHOR: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case BLOCKEDBY: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case BOOKMARK: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case CANONICAL: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case CHAPTER: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case CITEAS: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case COLLECTION: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case CONTENTS: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case CONVERTEDFROM: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case COPYRIGHT: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case CREATEFORM: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case CURRENT: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case DESCRIBEDBY: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case DESCRIBES: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case DISCLOSURE: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case DNSPREFETCH: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case DUPLICATE: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case EDIT: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case EDITFORM: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case EDITMEDIA: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case ENCLOSURE: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case EXTERNAL: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case FIRST: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case GLOSSARY: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case HELP: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case HOSTS: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case HUB: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case ICON: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case INDEX: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case INTERVALAFTER: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case INTERVALBEFORE: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case INTERVALCONTAINS: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case INTERVALDISJOINT: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case INTERVALDURING: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case INTERVALEQUALS: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case INTERVALFINISHEDBY: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case INTERVALFINISHES: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case INTERVALIN: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case INTERVALMEETS: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case INTERVALMETBY: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case INTERVALOVERLAPPEDBY: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case INTERVALOVERLAPS: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case INTERVALSTARTEDBY: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case INTERVALSTARTS: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case ITEM: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case LAST: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case LATESTVERSION: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case LICENSE: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case LINKSET: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case LRDD: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case MANIFEST: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case MASKICON: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case MEDIAFEED: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case MEMENTO: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case MICROPUB: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case MODULEPRELOAD: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case MONITOR: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case MONITORGROUP: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case NEXT: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case NEXTARCHIVE: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case NOFOLLOW: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case NOOPENER: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case NOREFERRER: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case OPENER: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case OPENID2_LOCALID: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case OPENID2_PROVIDER: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case ORIGINAL: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case P3PV1: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case PAYMENT: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case PINGBACK: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case PRECONNECT: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case PREDECESSORVERSION: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case PREFETCH: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case PRELOAD: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case PRERENDER: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case PREV: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case PREVIEW: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case PREVIOUS: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case PREVARCHIVE: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case PRIVACYPOLICY: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case PROFILE: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case PUBLICATION: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case RELATED: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case RESTCONF: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case REPLIES: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case RULEINPUT: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case SEARCH: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case SECTION: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case SELF: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case SERVICE: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case SERVICEDESC: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case SERVICEDOC: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case SERVICEMETA: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case SPONSORED: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case START: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case STATUS: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case STYLESHEET: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case SUBSECTION: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case SUCCESSORVERSION: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case SUNSET: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case TAG: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case TERMSOFSERVICE: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case TIMEGATE: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case TIMEMAP: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case TYPE: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case UGC: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case UP: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case VERSIONHISTORY: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case VIA: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case WEBMENTION: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case WORKINGCOPY: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case WORKINGCOPYOF: return "http://hl7.org/fhir/CodeSystem/iana-link-relations";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case ABOUT: return "Refers to a resource that is the subject of the link's context.";
+            case ACL: return "Asserts that the link target provides an access control description for the link context.";
+            case ALTERNATE: return "Refers to a substitute for this context";
+            case AMPHTML: return "Used to reference alternative content that uses the AMP profile of the HTML format.";
+            case APPENDIX: return "Refers to an appendix.";
+            case APPLETOUCHICON: return "Refers to an icon for the context. Synonym for icon.";
+            case APPLETOUCHSTARTUPIMAGE: return "Refers to a launch screen for the context.";
+            case ARCHIVES: return "Refers to a collection of records, documents, or other\n      materials of historical interest.";
+            case AUTHOR: return "Refers to the context's author.";
+            case BLOCKEDBY: return "Identifies the entity that blocks access to a resource\n      following receipt of a legal demand.";
+            case BOOKMARK: return "Gives a permanent link to use for bookmarking purposes.";
+            case CANONICAL: return "Designates the preferred version of a resource (the IRI and its contents).";
+            case CHAPTER: return "Refers to a chapter in a collection of resources.";
+            case CITEAS: return "Indicates that the link target is preferred over the link context for the purpose of permanent citation.";
+            case COLLECTION: return "The target IRI points to a resource which represents the collection resource for the context IRI.";
+            case CONTENTS: return "Refers to a table of contents.";
+            case CONVERTEDFROM: return "The document linked to was later converted to the\n      document that contains this link relation.  For example, an RFC can\n      have a link to the Internet-Draft that became the RFC; in that case,\n      the link relation would be \"convertedFrom\".";
+            case COPYRIGHT: return "Refers to a copyright statement that applies to the\n    link's context.";
+            case CREATEFORM: return "The target IRI points to a resource where a submission form can be obtained.";
+            case CURRENT: return "Refers to a resource containing the most recent\n      item(s) in a collection of resources.";
+            case DESCRIBEDBY: return "Refers to a resource providing information about the\n      link's context.";
+            case DESCRIBES: return "The relationship A 'describes' B asserts that\n      resource A provides a description of resource B. There are no\n      constraints on the format or representation of either A or B,\n      neither are there any further constraints on either resource.";
+            case DISCLOSURE: return "Refers to a list of patent disclosures made with respect to \n      material for which 'disclosure' relation is specified.";
+            case DNSPREFETCH: return "Used to indicate an origin that will be used to fetch required \n      resources for the link context, and that the user agent ought to resolve \n      as early as possible.";
+            case DUPLICATE: return "Refers to a resource whose available representations\n      are byte-for-byte identical with the corresponding representations of\n      the context IRI.";
+            case EDIT: return "Refers to a resource that can be used to edit the\n      link's context.";
+            case EDITFORM: return "The target IRI points to a resource where a submission form for\n      editing associated resource can be obtained.";
+            case EDITMEDIA: return "Refers to a resource that can be used to edit media\n      associated with the link's context.";
+            case ENCLOSURE: return "Identifies a related resource that is potentially\n      large and might require special handling.";
+            case EXTERNAL: return "Refers to a resource that is not part of the same site as the current context.";
+            case FIRST: return "An IRI that refers to the furthest preceding resource\n    in a series of resources.";
+            case GLOSSARY: return "Refers to a glossary of terms.";
+            case HELP: return "Refers to context-sensitive help.";
+            case HOSTS: return "Refers to a resource hosted by the server indicated by\n      the link context.";
+            case HUB: return "Refers to a hub that enables registration for\n    notification of updates to the context.";
+            case ICON: return "Refers to an icon representing the link's context.";
+            case INDEX: return "Refers to an index.";
+            case INTERVALAFTER: return "refers to a resource associated with a time interval that ends before the beginning of the time interval associated with the context resource";
+            case INTERVALBEFORE: return "refers to a resource associated with a time interval that begins after the end of the time interval associated with the context resource";
+            case INTERVALCONTAINS: return "refers to a resource associated with a time interval that begins after the beginning of the time interval associated with the context resource, and ends before the end of the time interval associated with the context resource";
+            case INTERVALDISJOINT: return "refers to a resource associated with a time interval that begins after the end of the time interval associated with the context resource, or ends before the beginning of the time interval associated with the context resource";
+            case INTERVALDURING: return "refers to a resource associated with a time interval that begins before the beginning of the time interval associated with the context resource, and ends after the end of the time interval associated with the context resource";
+            case INTERVALEQUALS: return "refers to a resource associated with a time interval whose beginning coincides with the beginning of the time interval associated with the context resource, and whose end coincides with the end of the time interval associated with the context resource";
+            case INTERVALFINISHEDBY: return "refers to a resource associated with a time interval that begins after the beginning of the time interval associated with the context resource, and whose end coincides with the end of the time interval associated with the context resource";
+            case INTERVALFINISHES: return "refers to a resource associated with a time interval that begins before the beginning of the time interval associated with the context resource, and whose end coincides with the end of the time interval associated with the context resource";
+            case INTERVALIN: return "refers to a resource associated with a time interval that begins before or is coincident with the beginning of the time interval associated with the context resource, and ends after or is coincident with the end of the time interval associated with the context resource";
+            case INTERVALMEETS: return "refers to a resource associated with a time interval whose beginning coincides with the end of the time interval associated with the context resource";
+            case INTERVALMETBY: return "refers to a resource associated with a time interval whose end coincides with the beginning of the time interval associated with the context resource";
+            case INTERVALOVERLAPPEDBY: return "refers to a resource associated with a time interval that begins before the beginning of the time interval associated with the context resource, and ends after the beginning of the time interval associated with the context resource";
+            case INTERVALOVERLAPS: return "refers to a resource associated with a time interval that begins before the end of the time interval associated with the context resource, and ends after the end of the time interval associated with the context resource";
+            case INTERVALSTARTEDBY: return "refers to a resource associated with a time interval whose beginning coincides with the beginning of the time interval associated with the context resource, and ends before the end of the time interval associated with the context resource";
+            case INTERVALSTARTS: return "refers to a resource associated with a time interval whose beginning coincides with the beginning of the time interval associated with the context resource, and ends after the end of the time interval associated with the context resource";
+            case ITEM: return "The target IRI points to a resource that is a member of the collection represented by the context IRI.";
+            case LAST: return "An IRI that refers to the furthest following resource\n      in a series of resources.";
+            case LATESTVERSION: return "Points to a resource containing the latest (e.g.,\n      current) version of the context.";
+            case LICENSE: return "Refers to a license associated with this context.";
+            case LINKSET: return "The link target of a link with the \"linkset\" relation\n      type provides a set of links, including links in which the link\n      context of the link participates.\n    ";
+            case LRDD: return "Refers to further information about the link's context,\n      expressed as a LRDD (\"Link-based Resource Descriptor Document\")\n      resource.  See  for information about\n      processing this relation type in host-meta documents. When used\n      elsewhere, it refers to additional links and other metadata.\n      Multiple instances indicate additional LRDD resources. LRDD\n      resources MUST have an \"application/xrd+xml\" representation, and\n      MAY have others.";
+            case MANIFEST: return "Links to a manifest file for the context.";
+            case MASKICON: return "Refers to a mask that can be applied to the icon for the context.";
+            case MEDIAFEED: return "Refers to a feed of personalised media recommendations relevant to the link context.";
+            case MEMENTO: return "The Target IRI points to a Memento, a fixed resource that will not change state anymore.";
+            case MICROPUB: return "Links to the context's Micropub endpoint.";
+            case MODULEPRELOAD: return "Refers to a module that the user agent is to preemptively fetch and store for use in the current context.";
+            case MONITOR: return "Refers to a resource that can be used to monitor changes in an HTTP resource.\n    ";
+            case MONITORGROUP: return "Refers to a resource that can be used to monitor changes in a specified group of HTTP resources.\n    ";
+            case NEXT: return "Indicates that the link's context is a part of a series, and\n      that the next in the series is the link target.\n    ";
+            case NEXTARCHIVE: return "Refers to the immediately following archive resource.";
+            case NOFOLLOW: return "Indicates that the context’s original author or publisher does not endorse the link target.";
+            case NOOPENER: return "Indicates that any newly created top-level browsing context which results from following the link will not be an auxiliary browsing context.";
+            case NOREFERRER: return "Indicates that no referrer information is to be leaked when following the link.";
+            case OPENER: return "Indicates that any newly created top-level browsing context which results from following the link will be an auxiliary browsing context.";
+            case OPENID2_LOCALID: return "Refers to an OpenID Authentication server on which the context relies for an assertion that the end user controls an Identifier.";
+            case OPENID2_PROVIDER: return "Refers to a resource which accepts OpenID Authentication protocol messages for the context.";
+            case ORIGINAL: return "The Target IRI points to an Original Resource.";
+            case P3PV1: return "Refers to a P3P privacy policy for the context.";
+            case PAYMENT: return "Indicates a resource where payment is accepted.";
+            case PINGBACK: return "Gives the address of the pingback resource for the link context.";
+            case PRECONNECT: return "Used to indicate an origin that will be used to fetch required \n      resources for the link context. Initiating an early connection, which \n      includes the DNS lookup, TCP handshake, and optional TLS negotiation, \n      allows the user agent to mask the high latency costs of establishing a \n      connection.";
+            case PREDECESSORVERSION: return "Points to a resource containing the predecessor\n      version in the version history.\n    ";
+            case PREFETCH: return "The prefetch link relation type is used to identify a resource \n      that might be required by the next navigation from the link context, and \n      that the user agent ought to fetch, such that the user agent can deliver a \n      faster response once the resource is requested in the future.";
+            case PRELOAD: return "Refers to a resource that should be loaded early in the \n      processing of the link's context, without blocking rendering.";
+            case PRERENDER: return "Used to identify a resource that might be required by the next \n      navigation from the link context, and that the user agent ought to fetch \n      and execute, such that the user agent can deliver a faster response once \n      the resource is requested in the future.";
+            case PREV: return "Indicates that the link's context is a part of a series, and\n      that the previous in the series is the link target.\n    ";
+            case PREVIEW: return "Refers to a resource that provides a preview of the link's context.";
+            case PREVIOUS: return "Refers to the previous resource in an ordered series\n      of resources.  Synonym for \"prev\".";
+            case PREVARCHIVE: return "Refers to the immediately preceding archive resource.";
+            case PRIVACYPOLICY: return "Refers to a privacy policy associated with the link's context.";
+            case PROFILE: return "Identifying that a resource representation conforms\nto a certain profile, without affecting the non-profile semantics\nof the resource representation.";
+            case PUBLICATION: return "Links to a publication manifest. A manifest represents \n      structured information about a publication, such as informative metadata, \n      a list of resources, and a default reading order.";
+            case RELATED: return "Identifies a related resource.";
+            case RESTCONF: return "Identifies the root of RESTCONF API as configured on this HTTP server.\n      The \"restconf\" relation defines the root of the API defined in RFC8040.\n      Subsequent revisions of RESTCONF will use alternate relation values to support \n      protocol versioning.";
+            case REPLIES: return "Identifies a resource that is a reply to the context\n      of the link.\n    ";
+            case RULEINPUT: return "The resource identified by the link target provides an input value to an \n    instance of a rule, where the resource which represents the rule instance is \n    identified by the link context.\n    ";
+            case SEARCH: return "Refers to a resource that can be used to search through\n      the link's context and related resources.";
+            case SECTION: return "Refers to a section in a collection of resources.";
+            case SELF: return "Conveys an identifier for the link's context.\n    ";
+            case SERVICE: return "Indicates a URI that can be used to retrieve a\n      service document.";
+            case SERVICEDESC: return "Identifies service description for the context that\n      is primarily intended for consumption by machines.";
+            case SERVICEDOC: return "Identifies service documentation for the context that\n      is primarily intended for human consumption.";
+            case SERVICEMETA: return "Identifies general metadata for the context that is\n      primarily intended for consumption by machines.";
+            case SPONSORED: return "Refers to a resource that is within a context that is \n		sponsored (such as advertising or another compensation agreement).";
+            case START: return "Refers to the first resource in a collection of\n      resources.";
+            case STATUS: return "Identifies a resource that represents the context's\n      status.";
+            case STYLESHEET: return "Refers to a stylesheet.";
+            case SUBSECTION: return "Refers to a resource serving as a subsection in a\n      collection of resources.";
+            case SUCCESSORVERSION: return "Points to a resource containing the successor version\n      in the version history.\n    ";
+            case SUNSET: return "Identifies a resource that provides information about\n      the context's retirement policy.\n    ";
+            case TAG: return "Gives a tag (identified by the given address) that applies to\n      the current document.\n    ";
+            case TERMSOFSERVICE: return "Refers to the terms of service associated with the link's context.";
+            case TIMEGATE: return "The Target IRI points to a TimeGate for an Original Resource.";
+            case TIMEMAP: return "The Target IRI points to a TimeMap for an Original Resource.";
+            case TYPE: return "Refers to a resource identifying the abstract semantic type of which the link's context is considered to be an instance.";
+            case UGC: return "Refers to a resource that is within a context that is User Generated Content.\n    ";
+            case UP: return "Refers to a parent document in a hierarchy of\n      documents.\n    ";
+            case VERSIONHISTORY: return "Points to a resource containing the version history\n      for the context.\n    ";
+            case VIA: return "Identifies a resource that is the source of the\n      information in the link's context.\n    ";
+            case WEBMENTION: return "Identifies a target URI that supports the Webmention protocol.\n    This allows clients that mention a resource in some form of publishing process\n    to contact that endpoint and inform it that this resource has been mentioned.";
+            case WORKINGCOPY: return "Points to a working copy for this resource.";
+            case WORKINGCOPYOF: return "Points to the versioned resource from which this\n      working copy was obtained.\n    ";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case ABOUT: return "Refers to a resource that is the subject of the link's context.";
+            case ACL: return "Asserts that the link target provides an access control description for the link context.";
+            case ALTERNATE: return "Refers to a substitute for this context";
+            case AMPHTML: return "Used to reference alternative content that uses the AMP profile of the HTML format.";
+            case APPENDIX: return "Refers to an appendix.";
+            case APPLETOUCHICON: return "Refers to an icon for the context. Synonym for icon.";
+            case APPLETOUCHSTARTUPIMAGE: return "Refers to a launch screen for the context.";
+            case ARCHIVES: return "Refers to a collection of records, documents, or other\n      materials of historical interest.";
+            case AUTHOR: return "Refers to the context's author.";
+            case BLOCKEDBY: return "Identifies the entity that blocks access to a resource\n      following receipt of a legal demand.";
+            case BOOKMARK: return "Gives a permanent link to use for bookmarking purposes.";
+            case CANONICAL: return "Designates the preferred version of a resource (the IRI and its contents).";
+            case CHAPTER: return "Refers to a chapter in a collection of resources.";
+            case CITEAS: return "Indicates that the link target is preferred over the link context for the purpose of permanent citation.";
+            case COLLECTION: return "The target IRI points to a resource which represents the collection resource for the context IRI.";
+            case CONTENTS: return "Refers to a table of contents.";
+            case CONVERTEDFROM: return "The document linked to was later converted to the\n      document that contains this link relation.  For example, an RFC can\n      have a link to the Internet-Draft that became the RFC; in that case,\n      the link relation would be \"convertedFrom\".";
+            case COPYRIGHT: return "Refers to a copyright statement that applies to the\n    link's context.";
+            case CREATEFORM: return "The target IRI points to a resource where a submission form can be obtained.";
+            case CURRENT: return "Refers to a resource containing the most recent\n      item(s) in a collection of resources.";
+            case DESCRIBEDBY: return "Refers to a resource providing information about the\n      link's context.";
+            case DESCRIBES: return "The relationship A 'describes' B asserts that\n      resource A provides a description of resource B. There are no\n      constraints on the format or representation of either A or B,\n      neither are there any further constraints on either resource.";
+            case DISCLOSURE: return "Refers to a list of patent disclosures made with respect to \n      material for which 'disclosure' relation is specified.";
+            case DNSPREFETCH: return "Used to indicate an origin that will be used to fetch required \n      resources for the link context, and that the user agent ought to resolve \n      as early as possible.";
+            case DUPLICATE: return "Refers to a resource whose available representations\n      are byte-for-byte identical with the corresponding representations of\n      the context IRI.";
+            case EDIT: return "Refers to a resource that can be used to edit the\n      link's context.";
+            case EDITFORM: return "The target IRI points to a resource where a submission form for\n      editing associated resource can be obtained.";
+            case EDITMEDIA: return "Refers to a resource that can be used to edit media\n      associated with the link's context.";
+            case ENCLOSURE: return "Identifies a related resource that is potentially\n      large and might require special handling.";
+            case EXTERNAL: return "Refers to a resource that is not part of the same site as the current context.";
+            case FIRST: return "An IRI that refers to the furthest preceding resource\n    in a series of resources.";
+            case GLOSSARY: return "Refers to a glossary of terms.";
+            case HELP: return "Refers to context-sensitive help.";
+            case HOSTS: return "Refers to a resource hosted by the server indicated by\n      the link context.";
+            case HUB: return "Refers to a hub that enables registration for\n    notification of updates to the context.";
+            case ICON: return "Refers to an icon representing the link's context.";
+            case INDEX: return "Refers to an index.";
+            case INTERVALAFTER: return "refers to a resource associated with a time interval that ends before the beginning of the time interval associated with the context resource";
+            case INTERVALBEFORE: return "refers to a resource associated with a time interval that begins after the end of the time interval associated with the context resource";
+            case INTERVALCONTAINS: return "refers to a resource associated with a time interval that begins after the beginning of the time interval associated with the context resource, and ends before the end of the time interval associated with the context resource";
+            case INTERVALDISJOINT: return "refers to a resource associated with a time interval that begins after the end of the time interval associated with the context resource, or ends before the beginning of the time interval associated with the context resource";
+            case INTERVALDURING: return "refers to a resource associated with a time interval that begins before the beginning of the time interval associated with the context resource, and ends after the end of the time interval associated with the context resource";
+            case INTERVALEQUALS: return "refers to a resource associated with a time interval whose beginning coincides with the beginning of the time interval associated with the context resource, and whose end coincides with the end of the time interval associated with the context resource";
+            case INTERVALFINISHEDBY: return "refers to a resource associated with a time interval that begins after the beginning of the time interval associated with the context resource, and whose end coincides with the end of the time interval associated with the context resource";
+            case INTERVALFINISHES: return "refers to a resource associated with a time interval that begins before the beginning of the time interval associated with the context resource, and whose end coincides with the end of the time interval associated with the context resource";
+            case INTERVALIN: return "refers to a resource associated with a time interval that begins before or is coincident with the beginning of the time interval associated with the context resource, and ends after or is coincident with the end of the time interval associated with the context resource";
+            case INTERVALMEETS: return "refers to a resource associated with a time interval whose beginning coincides with the end of the time interval associated with the context resource";
+            case INTERVALMETBY: return "refers to a resource associated with a time interval whose end coincides with the beginning of the time interval associated with the context resource";
+            case INTERVALOVERLAPPEDBY: return "refers to a resource associated with a time interval that begins before the beginning of the time interval associated with the context resource, and ends after the beginning of the time interval associated with the context resource";
+            case INTERVALOVERLAPS: return "refers to a resource associated with a time interval that begins before the end of the time interval associated with the context resource, and ends after the end of the time interval associated with the context resource";
+            case INTERVALSTARTEDBY: return "refers to a resource associated with a time interval whose beginning coincides with the beginning of the time interval associated with the context resource, and ends before the end of the time interval associated with the context resource";
+            case INTERVALSTARTS: return "refers to a resource associated with a time interval whose beginning coincides with the beginning of the time interval associated with the context resource, and ends after the end of the time interval associated with the context resource";
+            case ITEM: return "The target IRI points to a resource that is a member of the collection represented by the context IRI.";
+            case LAST: return "An IRI that refers to the furthest following resource\n      in a series of resources.";
+            case LATESTVERSION: return "Points to a resource containing the latest (e.g.,\n      current) version of the context.";
+            case LICENSE: return "Refers to a license associated with this context.";
+            case LINKSET: return "The link target of a link with the \"linkset\" relation\n      type provides a set of links, including links in which the link\n      context of the link participates.\n    ";
+            case LRDD: return "Refers to further information about the link's context,\n      expressed as a LRDD (\"Link-based Resource Descriptor Document\")\n      resource.  See  for information about\n      processing this relation type in host-meta documents. When used\n      elsewhere, it refers to additional links and other metadata.\n      Multiple instances indicate additional LRDD resources. LRDD\n      resources MUST have an \"application/xrd+xml\" representation, and\n      MAY have others.";
+            case MANIFEST: return "Links to a manifest file for the context.";
+            case MASKICON: return "Refers to a mask that can be applied to the icon for the context.";
+            case MEDIAFEED: return "Refers to a feed of personalised media recommendations relevant to the link context.";
+            case MEMENTO: return "The Target IRI points to a Memento, a fixed resource that will not change state anymore.";
+            case MICROPUB: return "Links to the context's Micropub endpoint.";
+            case MODULEPRELOAD: return "Refers to a module that the user agent is to preemptively fetch and store for use in the current context.";
+            case MONITOR: return "Refers to a resource that can be used to monitor changes in an HTTP resource.\n    ";
+            case MONITORGROUP: return "Refers to a resource that can be used to monitor changes in a specified group of HTTP resources.\n    ";
+            case NEXT: return "Indicates that the link's context is a part of a series, and\n      that the next in the series is the link target.\n    ";
+            case NEXTARCHIVE: return "Refers to the immediately following archive resource.";
+            case NOFOLLOW: return "Indicates that the context’s original author or publisher does not endorse the link target.";
+            case NOOPENER: return "Indicates that any newly created top-level browsing context which results from following the link will not be an auxiliary browsing context.";
+            case NOREFERRER: return "Indicates that no referrer information is to be leaked when following the link.";
+            case OPENER: return "Indicates that any newly created top-level browsing context which results from following the link will be an auxiliary browsing context.";
+            case OPENID2_LOCALID: return "Refers to an OpenID Authentication server on which the context relies for an assertion that the end user controls an Identifier.";
+            case OPENID2_PROVIDER: return "Refers to a resource which accepts OpenID Authentication protocol messages for the context.";
+            case ORIGINAL: return "The Target IRI points to an Original Resource.";
+            case P3PV1: return "Refers to a P3P privacy policy for the context.";
+            case PAYMENT: return "Indicates a resource where payment is accepted.";
+            case PINGBACK: return "Gives the address of the pingback resource for the link context.";
+            case PRECONNECT: return "Used to indicate an origin that will be used to fetch required \n      resources for the link context. Initiating an early connection, which \n      includes the DNS lookup, TCP handshake, and optional TLS negotiation, \n      allows the user agent to mask the high latency costs of establishing a \n      connection.";
+            case PREDECESSORVERSION: return "Points to a resource containing the predecessor\n      version in the version history.\n    ";
+            case PREFETCH: return "The prefetch link relation type is used to identify a resource \n      that might be required by the next navigation from the link context, and \n      that the user agent ought to fetch, such that the user agent can deliver a \n      faster response once the resource is requested in the future.";
+            case PRELOAD: return "Refers to a resource that should be loaded early in the \n      processing of the link's context, without blocking rendering.";
+            case PRERENDER: return "Used to identify a resource that might be required by the next \n      navigation from the link context, and that the user agent ought to fetch \n      and execute, such that the user agent can deliver a faster response once \n      the resource is requested in the future.";
+            case PREV: return "Indicates that the link's context is a part of a series, and\n      that the previous in the series is the link target.\n    ";
+            case PREVIEW: return "Refers to a resource that provides a preview of the link's context.";
+            case PREVIOUS: return "Refers to the previous resource in an ordered series\n      of resources.  Synonym for \"prev\".";
+            case PREVARCHIVE: return "Refers to the immediately preceding archive resource.";
+            case PRIVACYPOLICY: return "Refers to a privacy policy associated with the link's context.";
+            case PROFILE: return "Identifying that a resource representation conforms\nto a certain profile, without affecting the non-profile semantics\nof the resource representation.";
+            case PUBLICATION: return "Links to a publication manifest. A manifest represents \n      structured information about a publication, such as informative metadata, \n      a list of resources, and a default reading order.";
+            case RELATED: return "Identifies a related resource.";
+            case RESTCONF: return "Identifies the root of RESTCONF API as configured on this HTTP server.\n      The \"restconf\" relation defines the root of the API defined in RFC8040.\n      Subsequent revisions of RESTCONF will use alternate relation values to support \n      protocol versioning.";
+            case REPLIES: return "Identifies a resource that is a reply to the context\n      of the link.\n    ";
+            case RULEINPUT: return "The resource identified by the link target provides an input value to an \n    instance of a rule, where the resource which represents the rule instance is \n    identified by the link context.\n    ";
+            case SEARCH: return "Refers to a resource that can be used to search through\n      the link's context and related resources.";
+            case SECTION: return "Refers to a section in a collection of resources.";
+            case SELF: return "Conveys an identifier for the link's context.\n    ";
+            case SERVICE: return "Indicates a URI that can be used to retrieve a\n      service document.";
+            case SERVICEDESC: return "Identifies service description for the context that\n      is primarily intended for consumption by machines.";
+            case SERVICEDOC: return "Identifies service documentation for the context that\n      is primarily intended for human consumption.";
+            case SERVICEMETA: return "Identifies general metadata for the context that is\n      primarily intended for consumption by machines.";
+            case SPONSORED: return "Refers to a resource that is within a context that is \n		sponsored (such as advertising or another compensation agreement).";
+            case START: return "Refers to the first resource in a collection of\n      resources.";
+            case STATUS: return "Identifies a resource that represents the context's\n      status.";
+            case STYLESHEET: return "Refers to a stylesheet.";
+            case SUBSECTION: return "Refers to a resource serving as a subsection in a\n      collection of resources.";
+            case SUCCESSORVERSION: return "Points to a resource containing the successor version\n      in the version history.\n    ";
+            case SUNSET: return "Identifies a resource that provides information about\n      the context's retirement policy.\n    ";
+            case TAG: return "Gives a tag (identified by the given address) that applies to\n      the current document.\n    ";
+            case TERMSOFSERVICE: return "Refers to the terms of service associated with the link's context.";
+            case TIMEGATE: return "The Target IRI points to a TimeGate for an Original Resource.";
+            case TIMEMAP: return "The Target IRI points to a TimeMap for an Original Resource.";
+            case TYPE: return "Refers to a resource identifying the abstract semantic type of which the link's context is considered to be an instance.";
+            case UGC: return "Refers to a resource that is within a context that is User Generated Content.\n    ";
+            case UP: return "Refers to a parent document in a hierarchy of\n      documents.\n    ";
+            case VERSIONHISTORY: return "Points to a resource containing the version history\n      for the context.\n    ";
+            case VIA: return "Identifies a resource that is the source of the\n      information in the link's context.\n    ";
+            case WEBMENTION: return "Identifies a target URI that supports the Webmention protocol.\n    This allows clients that mention a resource in some form of publishing process\n    to contact that endpoint and inform it that this resource has been mentioned.";
+            case WORKINGCOPY: return "Points to a working copy for this resource.";
+            case WORKINGCOPYOF: return "Points to the versioned resource from which this\n      working copy was obtained.\n    ";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+    }
+
+  public static class LinkRelationTypesEnumFactory implements EnumFactory<LinkRelationTypes> {
+    public LinkRelationTypes fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("about".equals(codeString))
+          return LinkRelationTypes.ABOUT;
+        if ("acl".equals(codeString))
+          return LinkRelationTypes.ACL;
+        if ("alternate".equals(codeString))
+          return LinkRelationTypes.ALTERNATE;
+        if ("amphtml".equals(codeString))
+          return LinkRelationTypes.AMPHTML;
+        if ("appendix".equals(codeString))
+          return LinkRelationTypes.APPENDIX;
+        if ("apple-touch-icon".equals(codeString))
+          return LinkRelationTypes.APPLETOUCHICON;
+        if ("apple-touch-startup-image".equals(codeString))
+          return LinkRelationTypes.APPLETOUCHSTARTUPIMAGE;
+        if ("archives".equals(codeString))
+          return LinkRelationTypes.ARCHIVES;
+        if ("author".equals(codeString))
+          return LinkRelationTypes.AUTHOR;
+        if ("blocked-by".equals(codeString))
+          return LinkRelationTypes.BLOCKEDBY;
+        if ("bookmark".equals(codeString))
+          return LinkRelationTypes.BOOKMARK;
+        if ("canonical".equals(codeString))
+          return LinkRelationTypes.CANONICAL;
+        if ("chapter".equals(codeString))
+          return LinkRelationTypes.CHAPTER;
+        if ("cite-as".equals(codeString))
+          return LinkRelationTypes.CITEAS;
+        if ("collection".equals(codeString))
+          return LinkRelationTypes.COLLECTION;
+        if ("contents".equals(codeString))
+          return LinkRelationTypes.CONTENTS;
+        if ("convertedFrom".equals(codeString))
+          return LinkRelationTypes.CONVERTEDFROM;
+        if ("copyright".equals(codeString))
+          return LinkRelationTypes.COPYRIGHT;
+        if ("create-form".equals(codeString))
+          return LinkRelationTypes.CREATEFORM;
+        if ("current".equals(codeString))
+          return LinkRelationTypes.CURRENT;
+        if ("describedby".equals(codeString))
+          return LinkRelationTypes.DESCRIBEDBY;
+        if ("describes".equals(codeString))
+          return LinkRelationTypes.DESCRIBES;
+        if ("disclosure".equals(codeString))
+          return LinkRelationTypes.DISCLOSURE;
+        if ("dns-prefetch".equals(codeString))
+          return LinkRelationTypes.DNSPREFETCH;
+        if ("duplicate".equals(codeString))
+          return LinkRelationTypes.DUPLICATE;
+        if ("edit".equals(codeString))
+          return LinkRelationTypes.EDIT;
+        if ("edit-form".equals(codeString))
+          return LinkRelationTypes.EDITFORM;
+        if ("edit-media".equals(codeString))
+          return LinkRelationTypes.EDITMEDIA;
+        if ("enclosure".equals(codeString))
+          return LinkRelationTypes.ENCLOSURE;
+        if ("external".equals(codeString))
+          return LinkRelationTypes.EXTERNAL;
+        if ("first".equals(codeString))
+          return LinkRelationTypes.FIRST;
+        if ("glossary".equals(codeString))
+          return LinkRelationTypes.GLOSSARY;
+        if ("help".equals(codeString))
+          return LinkRelationTypes.HELP;
+        if ("hosts".equals(codeString))
+          return LinkRelationTypes.HOSTS;
+        if ("hub".equals(codeString))
+          return LinkRelationTypes.HUB;
+        if ("icon".equals(codeString))
+          return LinkRelationTypes.ICON;
+        if ("index".equals(codeString))
+          return LinkRelationTypes.INDEX;
+        if ("intervalAfter".equals(codeString))
+          return LinkRelationTypes.INTERVALAFTER;
+        if ("intervalBefore".equals(codeString))
+          return LinkRelationTypes.INTERVALBEFORE;
+        if ("intervalContains".equals(codeString))
+          return LinkRelationTypes.INTERVALCONTAINS;
+        if ("intervalDisjoint".equals(codeString))
+          return LinkRelationTypes.INTERVALDISJOINT;
+        if ("intervalDuring".equals(codeString))
+          return LinkRelationTypes.INTERVALDURING;
+        if ("intervalEquals".equals(codeString))
+          return LinkRelationTypes.INTERVALEQUALS;
+        if ("intervalFinishedBy".equals(codeString))
+          return LinkRelationTypes.INTERVALFINISHEDBY;
+        if ("intervalFinishes".equals(codeString))
+          return LinkRelationTypes.INTERVALFINISHES;
+        if ("intervalIn".equals(codeString))
+          return LinkRelationTypes.INTERVALIN;
+        if ("intervalMeets".equals(codeString))
+          return LinkRelationTypes.INTERVALMEETS;
+        if ("intervalMetBy".equals(codeString))
+          return LinkRelationTypes.INTERVALMETBY;
+        if ("intervalOverlappedBy".equals(codeString))
+          return LinkRelationTypes.INTERVALOVERLAPPEDBY;
+        if ("intervalOverlaps".equals(codeString))
+          return LinkRelationTypes.INTERVALOVERLAPS;
+        if ("intervalStartedBy".equals(codeString))
+          return LinkRelationTypes.INTERVALSTARTEDBY;
+        if ("intervalStarts".equals(codeString))
+          return LinkRelationTypes.INTERVALSTARTS;
+        if ("item".equals(codeString))
+          return LinkRelationTypes.ITEM;
+        if ("last".equals(codeString))
+          return LinkRelationTypes.LAST;
+        if ("latest-version".equals(codeString))
+          return LinkRelationTypes.LATESTVERSION;
+        if ("license".equals(codeString))
+          return LinkRelationTypes.LICENSE;
+        if ("linkset".equals(codeString))
+          return LinkRelationTypes.LINKSET;
+        if ("lrdd".equals(codeString))
+          return LinkRelationTypes.LRDD;
+        if ("manifest".equals(codeString))
+          return LinkRelationTypes.MANIFEST;
+        if ("mask-icon".equals(codeString))
+          return LinkRelationTypes.MASKICON;
+        if ("media-feed".equals(codeString))
+          return LinkRelationTypes.MEDIAFEED;
+        if ("memento".equals(codeString))
+          return LinkRelationTypes.MEMENTO;
+        if ("micropub".equals(codeString))
+          return LinkRelationTypes.MICROPUB;
+        if ("modulepreload".equals(codeString))
+          return LinkRelationTypes.MODULEPRELOAD;
+        if ("monitor".equals(codeString))
+          return LinkRelationTypes.MONITOR;
+        if ("monitor-group".equals(codeString))
+          return LinkRelationTypes.MONITORGROUP;
+        if ("next".equals(codeString))
+          return LinkRelationTypes.NEXT;
+        if ("next-archive".equals(codeString))
+          return LinkRelationTypes.NEXTARCHIVE;
+        if ("nofollow".equals(codeString))
+          return LinkRelationTypes.NOFOLLOW;
+        if ("noopener".equals(codeString))
+          return LinkRelationTypes.NOOPENER;
+        if ("noreferrer".equals(codeString))
+          return LinkRelationTypes.NOREFERRER;
+        if ("opener".equals(codeString))
+          return LinkRelationTypes.OPENER;
+        if ("openid2.local_id".equals(codeString))
+          return LinkRelationTypes.OPENID2_LOCALID;
+        if ("openid2.provider".equals(codeString))
+          return LinkRelationTypes.OPENID2_PROVIDER;
+        if ("original".equals(codeString))
+          return LinkRelationTypes.ORIGINAL;
+        if ("P3Pv1".equals(codeString))
+          return LinkRelationTypes.P3PV1;
+        if ("payment".equals(codeString))
+          return LinkRelationTypes.PAYMENT;
+        if ("pingback".equals(codeString))
+          return LinkRelationTypes.PINGBACK;
+        if ("preconnect".equals(codeString))
+          return LinkRelationTypes.PRECONNECT;
+        if ("predecessor-version".equals(codeString))
+          return LinkRelationTypes.PREDECESSORVERSION;
+        if ("prefetch".equals(codeString))
+          return LinkRelationTypes.PREFETCH;
+        if ("preload".equals(codeString))
+          return LinkRelationTypes.PRELOAD;
+        if ("prerender".equals(codeString))
+          return LinkRelationTypes.PRERENDER;
+        if ("prev".equals(codeString))
+          return LinkRelationTypes.PREV;
+        if ("preview".equals(codeString))
+          return LinkRelationTypes.PREVIEW;
+        if ("previous".equals(codeString))
+          return LinkRelationTypes.PREVIOUS;
+        if ("prev-archive".equals(codeString))
+          return LinkRelationTypes.PREVARCHIVE;
+        if ("privacy-policy".equals(codeString))
+          return LinkRelationTypes.PRIVACYPOLICY;
+        if ("profile".equals(codeString))
+          return LinkRelationTypes.PROFILE;
+        if ("publication".equals(codeString))
+          return LinkRelationTypes.PUBLICATION;
+        if ("related".equals(codeString))
+          return LinkRelationTypes.RELATED;
+        if ("restconf".equals(codeString))
+          return LinkRelationTypes.RESTCONF;
+        if ("replies".equals(codeString))
+          return LinkRelationTypes.REPLIES;
+        if ("ruleinput".equals(codeString))
+          return LinkRelationTypes.RULEINPUT;
+        if ("search".equals(codeString))
+          return LinkRelationTypes.SEARCH;
+        if ("section".equals(codeString))
+          return LinkRelationTypes.SECTION;
+        if ("self".equals(codeString))
+          return LinkRelationTypes.SELF;
+        if ("service".equals(codeString))
+          return LinkRelationTypes.SERVICE;
+        if ("service-desc".equals(codeString))
+          return LinkRelationTypes.SERVICEDESC;
+        if ("service-doc".equals(codeString))
+          return LinkRelationTypes.SERVICEDOC;
+        if ("service-meta".equals(codeString))
+          return LinkRelationTypes.SERVICEMETA;
+        if ("sponsored".equals(codeString))
+          return LinkRelationTypes.SPONSORED;
+        if ("start".equals(codeString))
+          return LinkRelationTypes.START;
+        if ("status".equals(codeString))
+          return LinkRelationTypes.STATUS;
+        if ("stylesheet".equals(codeString))
+          return LinkRelationTypes.STYLESHEET;
+        if ("subsection".equals(codeString))
+          return LinkRelationTypes.SUBSECTION;
+        if ("successor-version".equals(codeString))
+          return LinkRelationTypes.SUCCESSORVERSION;
+        if ("sunset".equals(codeString))
+          return LinkRelationTypes.SUNSET;
+        if ("tag".equals(codeString))
+          return LinkRelationTypes.TAG;
+        if ("terms-of-service".equals(codeString))
+          return LinkRelationTypes.TERMSOFSERVICE;
+        if ("timegate".equals(codeString))
+          return LinkRelationTypes.TIMEGATE;
+        if ("timemap".equals(codeString))
+          return LinkRelationTypes.TIMEMAP;
+        if ("type".equals(codeString))
+          return LinkRelationTypes.TYPE;
+        if ("ugc".equals(codeString))
+          return LinkRelationTypes.UGC;
+        if ("up".equals(codeString))
+          return LinkRelationTypes.UP;
+        if ("version-history".equals(codeString))
+          return LinkRelationTypes.VERSIONHISTORY;
+        if ("via".equals(codeString))
+          return LinkRelationTypes.VIA;
+        if ("webmention".equals(codeString))
+          return LinkRelationTypes.WEBMENTION;
+        if ("working-copy".equals(codeString))
+          return LinkRelationTypes.WORKINGCOPY;
+        if ("working-copy-of".equals(codeString))
+          return LinkRelationTypes.WORKINGCOPYOF;
+        throw new IllegalArgumentException("Unknown LinkRelationTypes code '"+codeString+"'");
+        }
+        public Enumeration<LinkRelationTypes> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<LinkRelationTypes>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("about".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.ABOUT);
+        if ("acl".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.ACL);
+        if ("alternate".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.ALTERNATE);
+        if ("amphtml".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.AMPHTML);
+        if ("appendix".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.APPENDIX);
+        if ("apple-touch-icon".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.APPLETOUCHICON);
+        if ("apple-touch-startup-image".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.APPLETOUCHSTARTUPIMAGE);
+        if ("archives".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.ARCHIVES);
+        if ("author".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.AUTHOR);
+        if ("blocked-by".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.BLOCKEDBY);
+        if ("bookmark".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.BOOKMARK);
+        if ("canonical".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.CANONICAL);
+        if ("chapter".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.CHAPTER);
+        if ("cite-as".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.CITEAS);
+        if ("collection".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.COLLECTION);
+        if ("contents".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.CONTENTS);
+        if ("convertedFrom".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.CONVERTEDFROM);
+        if ("copyright".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.COPYRIGHT);
+        if ("create-form".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.CREATEFORM);
+        if ("current".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.CURRENT);
+        if ("describedby".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.DESCRIBEDBY);
+        if ("describes".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.DESCRIBES);
+        if ("disclosure".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.DISCLOSURE);
+        if ("dns-prefetch".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.DNSPREFETCH);
+        if ("duplicate".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.DUPLICATE);
+        if ("edit".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.EDIT);
+        if ("edit-form".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.EDITFORM);
+        if ("edit-media".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.EDITMEDIA);
+        if ("enclosure".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.ENCLOSURE);
+        if ("external".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.EXTERNAL);
+        if ("first".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.FIRST);
+        if ("glossary".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.GLOSSARY);
+        if ("help".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.HELP);
+        if ("hosts".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.HOSTS);
+        if ("hub".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.HUB);
+        if ("icon".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.ICON);
+        if ("index".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INDEX);
+        if ("intervalAfter".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALAFTER);
+        if ("intervalBefore".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALBEFORE);
+        if ("intervalContains".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALCONTAINS);
+        if ("intervalDisjoint".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALDISJOINT);
+        if ("intervalDuring".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALDURING);
+        if ("intervalEquals".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALEQUALS);
+        if ("intervalFinishedBy".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALFINISHEDBY);
+        if ("intervalFinishes".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALFINISHES);
+        if ("intervalIn".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALIN);
+        if ("intervalMeets".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALMEETS);
+        if ("intervalMetBy".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALMETBY);
+        if ("intervalOverlappedBy".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALOVERLAPPEDBY);
+        if ("intervalOverlaps".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALOVERLAPS);
+        if ("intervalStartedBy".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALSTARTEDBY);
+        if ("intervalStarts".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALSTARTS);
+        if ("item".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.ITEM);
+        if ("last".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.LAST);
+        if ("latest-version".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.LATESTVERSION);
+        if ("license".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.LICENSE);
+        if ("linkset".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.LINKSET);
+        if ("lrdd".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.LRDD);
+        if ("manifest".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.MANIFEST);
+        if ("mask-icon".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.MASKICON);
+        if ("media-feed".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.MEDIAFEED);
+        if ("memento".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.MEMENTO);
+        if ("micropub".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.MICROPUB);
+        if ("modulepreload".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.MODULEPRELOAD);
+        if ("monitor".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.MONITOR);
+        if ("monitor-group".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.MONITORGROUP);
+        if ("next".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.NEXT);
+        if ("next-archive".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.NEXTARCHIVE);
+        if ("nofollow".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.NOFOLLOW);
+        if ("noopener".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.NOOPENER);
+        if ("noreferrer".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.NOREFERRER);
+        if ("opener".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.OPENER);
+        if ("openid2.local_id".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.OPENID2_LOCALID);
+        if ("openid2.provider".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.OPENID2_PROVIDER);
+        if ("original".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.ORIGINAL);
+        if ("P3Pv1".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.P3PV1);
+        if ("payment".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PAYMENT);
+        if ("pingback".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PINGBACK);
+        if ("preconnect".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PRECONNECT);
+        if ("predecessor-version".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PREDECESSORVERSION);
+        if ("prefetch".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PREFETCH);
+        if ("preload".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PRELOAD);
+        if ("prerender".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PRERENDER);
+        if ("prev".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PREV);
+        if ("preview".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PREVIEW);
+        if ("previous".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PREVIOUS);
+        if ("prev-archive".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PREVARCHIVE);
+        if ("privacy-policy".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PRIVACYPOLICY);
+        if ("profile".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PROFILE);
+        if ("publication".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PUBLICATION);
+        if ("related".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.RELATED);
+        if ("restconf".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.RESTCONF);
+        if ("replies".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.REPLIES);
+        if ("ruleinput".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.RULEINPUT);
+        if ("search".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SEARCH);
+        if ("section".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SECTION);
+        if ("self".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SELF);
+        if ("service".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SERVICE);
+        if ("service-desc".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SERVICEDESC);
+        if ("service-doc".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SERVICEDOC);
+        if ("service-meta".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SERVICEMETA);
+        if ("sponsored".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SPONSORED);
+        if ("start".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.START);
+        if ("status".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.STATUS);
+        if ("stylesheet".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.STYLESHEET);
+        if ("subsection".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SUBSECTION);
+        if ("successor-version".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SUCCESSORVERSION);
+        if ("sunset".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SUNSET);
+        if ("tag".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.TAG);
+        if ("terms-of-service".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.TERMSOFSERVICE);
+        if ("timegate".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.TIMEGATE);
+        if ("timemap".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.TIMEMAP);
+        if ("type".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.TYPE);
+        if ("ugc".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.UGC);
+        if ("up".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.UP);
+        if ("version-history".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.VERSIONHISTORY);
+        if ("via".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.VIA);
+        if ("webmention".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.WEBMENTION);
+        if ("working-copy".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.WORKINGCOPY);
+        if ("working-copy-of".equals(codeString))
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.WORKINGCOPYOF);
+        throw new FHIRException("Unknown LinkRelationTypes code '"+codeString+"'");
+        }
+    public String toCode(LinkRelationTypes code) {
+      if (code == LinkRelationTypes.ABOUT)
+        return "about";
+      if (code == LinkRelationTypes.ACL)
+        return "acl";
+      if (code == LinkRelationTypes.ALTERNATE)
+        return "alternate";
+      if (code == LinkRelationTypes.AMPHTML)
+        return "amphtml";
+      if (code == LinkRelationTypes.APPENDIX)
+        return "appendix";
+      if (code == LinkRelationTypes.APPLETOUCHICON)
+        return "apple-touch-icon";
+      if (code == LinkRelationTypes.APPLETOUCHSTARTUPIMAGE)
+        return "apple-touch-startup-image";
+      if (code == LinkRelationTypes.ARCHIVES)
+        return "archives";
+      if (code == LinkRelationTypes.AUTHOR)
+        return "author";
+      if (code == LinkRelationTypes.BLOCKEDBY)
+        return "blocked-by";
+      if (code == LinkRelationTypes.BOOKMARK)
+        return "bookmark";
+      if (code == LinkRelationTypes.CANONICAL)
+        return "canonical";
+      if (code == LinkRelationTypes.CHAPTER)
+        return "chapter";
+      if (code == LinkRelationTypes.CITEAS)
+        return "cite-as";
+      if (code == LinkRelationTypes.COLLECTION)
+        return "collection";
+      if (code == LinkRelationTypes.CONTENTS)
+        return "contents";
+      if (code == LinkRelationTypes.CONVERTEDFROM)
+        return "convertedFrom";
+      if (code == LinkRelationTypes.COPYRIGHT)
+        return "copyright";
+      if (code == LinkRelationTypes.CREATEFORM)
+        return "create-form";
+      if (code == LinkRelationTypes.CURRENT)
+        return "current";
+      if (code == LinkRelationTypes.DESCRIBEDBY)
+        return "describedby";
+      if (code == LinkRelationTypes.DESCRIBES)
+        return "describes";
+      if (code == LinkRelationTypes.DISCLOSURE)
+        return "disclosure";
+      if (code == LinkRelationTypes.DNSPREFETCH)
+        return "dns-prefetch";
+      if (code == LinkRelationTypes.DUPLICATE)
+        return "duplicate";
+      if (code == LinkRelationTypes.EDIT)
+        return "edit";
+      if (code == LinkRelationTypes.EDITFORM)
+        return "edit-form";
+      if (code == LinkRelationTypes.EDITMEDIA)
+        return "edit-media";
+      if (code == LinkRelationTypes.ENCLOSURE)
+        return "enclosure";
+      if (code == LinkRelationTypes.EXTERNAL)
+        return "external";
+      if (code == LinkRelationTypes.FIRST)
+        return "first";
+      if (code == LinkRelationTypes.GLOSSARY)
+        return "glossary";
+      if (code == LinkRelationTypes.HELP)
+        return "help";
+      if (code == LinkRelationTypes.HOSTS)
+        return "hosts";
+      if (code == LinkRelationTypes.HUB)
+        return "hub";
+      if (code == LinkRelationTypes.ICON)
+        return "icon";
+      if (code == LinkRelationTypes.INDEX)
+        return "index";
+      if (code == LinkRelationTypes.INTERVALAFTER)
+        return "intervalAfter";
+      if (code == LinkRelationTypes.INTERVALBEFORE)
+        return "intervalBefore";
+      if (code == LinkRelationTypes.INTERVALCONTAINS)
+        return "intervalContains";
+      if (code == LinkRelationTypes.INTERVALDISJOINT)
+        return "intervalDisjoint";
+      if (code == LinkRelationTypes.INTERVALDURING)
+        return "intervalDuring";
+      if (code == LinkRelationTypes.INTERVALEQUALS)
+        return "intervalEquals";
+      if (code == LinkRelationTypes.INTERVALFINISHEDBY)
+        return "intervalFinishedBy";
+      if (code == LinkRelationTypes.INTERVALFINISHES)
+        return "intervalFinishes";
+      if (code == LinkRelationTypes.INTERVALIN)
+        return "intervalIn";
+      if (code == LinkRelationTypes.INTERVALMEETS)
+        return "intervalMeets";
+      if (code == LinkRelationTypes.INTERVALMETBY)
+        return "intervalMetBy";
+      if (code == LinkRelationTypes.INTERVALOVERLAPPEDBY)
+        return "intervalOverlappedBy";
+      if (code == LinkRelationTypes.INTERVALOVERLAPS)
+        return "intervalOverlaps";
+      if (code == LinkRelationTypes.INTERVALSTARTEDBY)
+        return "intervalStartedBy";
+      if (code == LinkRelationTypes.INTERVALSTARTS)
+        return "intervalStarts";
+      if (code == LinkRelationTypes.ITEM)
+        return "item";
+      if (code == LinkRelationTypes.LAST)
+        return "last";
+      if (code == LinkRelationTypes.LATESTVERSION)
+        return "latest-version";
+      if (code == LinkRelationTypes.LICENSE)
+        return "license";
+      if (code == LinkRelationTypes.LINKSET)
+        return "linkset";
+      if (code == LinkRelationTypes.LRDD)
+        return "lrdd";
+      if (code == LinkRelationTypes.MANIFEST)
+        return "manifest";
+      if (code == LinkRelationTypes.MASKICON)
+        return "mask-icon";
+      if (code == LinkRelationTypes.MEDIAFEED)
+        return "media-feed";
+      if (code == LinkRelationTypes.MEMENTO)
+        return "memento";
+      if (code == LinkRelationTypes.MICROPUB)
+        return "micropub";
+      if (code == LinkRelationTypes.MODULEPRELOAD)
+        return "modulepreload";
+      if (code == LinkRelationTypes.MONITOR)
+        return "monitor";
+      if (code == LinkRelationTypes.MONITORGROUP)
+        return "monitor-group";
+      if (code == LinkRelationTypes.NEXT)
+        return "next";
+      if (code == LinkRelationTypes.NEXTARCHIVE)
+        return "next-archive";
+      if (code == LinkRelationTypes.NOFOLLOW)
+        return "nofollow";
+      if (code == LinkRelationTypes.NOOPENER)
+        return "noopener";
+      if (code == LinkRelationTypes.NOREFERRER)
+        return "noreferrer";
+      if (code == LinkRelationTypes.OPENER)
+        return "opener";
+      if (code == LinkRelationTypes.OPENID2_LOCALID)
+        return "openid2.local_id";
+      if (code == LinkRelationTypes.OPENID2_PROVIDER)
+        return "openid2.provider";
+      if (code == LinkRelationTypes.ORIGINAL)
+        return "original";
+      if (code == LinkRelationTypes.P3PV1)
+        return "P3Pv1";
+      if (code == LinkRelationTypes.PAYMENT)
+        return "payment";
+      if (code == LinkRelationTypes.PINGBACK)
+        return "pingback";
+      if (code == LinkRelationTypes.PRECONNECT)
+        return "preconnect";
+      if (code == LinkRelationTypes.PREDECESSORVERSION)
+        return "predecessor-version";
+      if (code == LinkRelationTypes.PREFETCH)
+        return "prefetch";
+      if (code == LinkRelationTypes.PRELOAD)
+        return "preload";
+      if (code == LinkRelationTypes.PRERENDER)
+        return "prerender";
+      if (code == LinkRelationTypes.PREV)
+        return "prev";
+      if (code == LinkRelationTypes.PREVIEW)
+        return "preview";
+      if (code == LinkRelationTypes.PREVIOUS)
+        return "previous";
+      if (code == LinkRelationTypes.PREVARCHIVE)
+        return "prev-archive";
+      if (code == LinkRelationTypes.PRIVACYPOLICY)
+        return "privacy-policy";
+      if (code == LinkRelationTypes.PROFILE)
+        return "profile";
+      if (code == LinkRelationTypes.PUBLICATION)
+        return "publication";
+      if (code == LinkRelationTypes.RELATED)
+        return "related";
+      if (code == LinkRelationTypes.RESTCONF)
+        return "restconf";
+      if (code == LinkRelationTypes.REPLIES)
+        return "replies";
+      if (code == LinkRelationTypes.RULEINPUT)
+        return "ruleinput";
+      if (code == LinkRelationTypes.SEARCH)
+        return "search";
+      if (code == LinkRelationTypes.SECTION)
+        return "section";
+      if (code == LinkRelationTypes.SELF)
+        return "self";
+      if (code == LinkRelationTypes.SERVICE)
+        return "service";
+      if (code == LinkRelationTypes.SERVICEDESC)
+        return "service-desc";
+      if (code == LinkRelationTypes.SERVICEDOC)
+        return "service-doc";
+      if (code == LinkRelationTypes.SERVICEMETA)
+        return "service-meta";
+      if (code == LinkRelationTypes.SPONSORED)
+        return "sponsored";
+      if (code == LinkRelationTypes.START)
+        return "start";
+      if (code == LinkRelationTypes.STATUS)
+        return "status";
+      if (code == LinkRelationTypes.STYLESHEET)
+        return "stylesheet";
+      if (code == LinkRelationTypes.SUBSECTION)
+        return "subsection";
+      if (code == LinkRelationTypes.SUCCESSORVERSION)
+        return "successor-version";
+      if (code == LinkRelationTypes.SUNSET)
+        return "sunset";
+      if (code == LinkRelationTypes.TAG)
+        return "tag";
+      if (code == LinkRelationTypes.TERMSOFSERVICE)
+        return "terms-of-service";
+      if (code == LinkRelationTypes.TIMEGATE)
+        return "timegate";
+      if (code == LinkRelationTypes.TIMEMAP)
+        return "timemap";
+      if (code == LinkRelationTypes.TYPE)
+        return "type";
+      if (code == LinkRelationTypes.UGC)
+        return "ugc";
+      if (code == LinkRelationTypes.UP)
+        return "up";
+      if (code == LinkRelationTypes.VERSIONHISTORY)
+        return "version-history";
+      if (code == LinkRelationTypes.VIA)
+        return "via";
+      if (code == LinkRelationTypes.WEBMENTION)
+        return "webmention";
+      if (code == LinkRelationTypes.WORKINGCOPY)
+        return "working-copy";
+      if (code == LinkRelationTypes.WORKINGCOPYOF)
+        return "working-copy-of";
+      return "?";
+      }
+    public String toSystem(LinkRelationTypes code) {
+      return code.getSystem();
+      }
+    }
+
     public enum SearchEntryMode {
         /**
          * This resource matched the search specification.
@@ -556,9 +2540,10 @@ public class Bundle extends Resource implements IBaseBundle {
         /**
          * A name which details the functional use for this link - see [http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relations-1](http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relations-1).
          */
-        @Child(name = "relation", type = {StringType.class}, order=1, min=1, max=1, modifier=false, summary=true)
+        @Child(name = "relation", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="See http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relations-1", formalDefinition="A name which details the functional use for this link - see [http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relations-1](http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relations-1)." )
-        protected StringType relation;
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/iana-link-relations")
+        protected Enumeration<LinkRelationTypes> relation;
 
         /**
          * The reference details for the link.
@@ -567,7 +2552,7 @@ public class Bundle extends Resource implements IBaseBundle {
         @Description(shortDefinition="Reference details for the link", formalDefinition="The reference details for the link." )
         protected UriType url;
 
-        private static final long serialVersionUID = -1010386066L;
+        private static final long serialVersionUID = -878418349L;
 
     /**
      * Constructor
@@ -579,7 +2564,7 @@ public class Bundle extends Resource implements IBaseBundle {
     /**
      * Constructor
      */
-      public BundleLinkComponent(String relation, String url) {
+      public BundleLinkComponent(LinkRelationTypes relation, String url) {
         super();
         this.setRelation(relation);
         this.setUrl(url);
@@ -588,12 +2573,12 @@ public class Bundle extends Resource implements IBaseBundle {
         /**
          * @return {@link #relation} (A name which details the functional use for this link - see [http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relations-1](http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relations-1).). This is the underlying object with id, value and extensions. The accessor "getRelation" gives direct access to the value
          */
-        public StringType getRelationElement() { 
+        public Enumeration<LinkRelationTypes> getRelationElement() { 
           if (this.relation == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create BundleLinkComponent.relation");
             else if (Configuration.doAutoCreate())
-              this.relation = new StringType(); // bb
+              this.relation = new Enumeration<LinkRelationTypes>(new LinkRelationTypesEnumFactory()); // bb
           return this.relation;
         }
 
@@ -608,7 +2593,7 @@ public class Bundle extends Resource implements IBaseBundle {
         /**
          * @param value {@link #relation} (A name which details the functional use for this link - see [http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relations-1](http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relations-1).). This is the underlying object with id, value and extensions. The accessor "getRelation" gives direct access to the value
          */
-        public BundleLinkComponent setRelationElement(StringType value) { 
+        public BundleLinkComponent setRelationElement(Enumeration<LinkRelationTypes> value) { 
           this.relation = value;
           return this;
         }
@@ -616,16 +2601,16 @@ public class Bundle extends Resource implements IBaseBundle {
         /**
          * @return A name which details the functional use for this link - see [http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relations-1](http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relations-1).
          */
-        public String getRelation() { 
+        public LinkRelationTypes getRelation() { 
           return this.relation == null ? null : this.relation.getValue();
         }
 
         /**
          * @param value A name which details the functional use for this link - see [http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relations-1](http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relations-1).
          */
-        public BundleLinkComponent setRelation(String value) { 
+        public BundleLinkComponent setRelation(LinkRelationTypes value) { 
             if (this.relation == null)
-              this.relation = new StringType();
+              this.relation = new Enumeration<LinkRelationTypes>(new LinkRelationTypesEnumFactory());
             this.relation.setValue(value);
           return this;
         }
@@ -677,14 +2662,14 @@ public class Bundle extends Resource implements IBaseBundle {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("relation", "string", "A name which details the functional use for this link - see [http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relations-1](http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relations-1).", 0, 1, relation));
+          children.add(new Property("relation", "code", "A name which details the functional use for this link - see [http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relations-1](http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relations-1).", 0, 1, relation));
           children.add(new Property("url", "uri", "The reference details for the link.", 0, 1, url));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -554436100: /*relation*/  return new Property("relation", "string", "A name which details the functional use for this link - see [http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relations-1](http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relations-1).", 0, 1, relation);
+          case -554436100: /*relation*/  return new Property("relation", "code", "A name which details the functional use for this link - see [http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relations-1](http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relations-1).", 0, 1, relation);
           case 116079: /*url*/  return new Property("url", "uri", "The reference details for the link.", 0, 1, url);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -694,7 +2679,7 @@ public class Bundle extends Resource implements IBaseBundle {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -554436100: /*relation*/ return this.relation == null ? new Base[0] : new Base[] {this.relation}; // StringType
+        case -554436100: /*relation*/ return this.relation == null ? new Base[0] : new Base[] {this.relation}; // Enumeration<LinkRelationTypes>
         case 116079: /*url*/ return this.url == null ? new Base[0] : new Base[] {this.url}; // UriType
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -705,7 +2690,8 @@ public class Bundle extends Resource implements IBaseBundle {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -554436100: // relation
-          this.relation = TypeConvertor.castToString(value); // StringType
+          value = new LinkRelationTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.relation = (Enumeration) value; // Enumeration<LinkRelationTypes>
           return value;
         case 116079: // url
           this.url = TypeConvertor.castToUri(value); // UriType
@@ -718,7 +2704,8 @@ public class Bundle extends Resource implements IBaseBundle {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("relation")) {
-          this.relation = TypeConvertor.castToString(value); // StringType
+          value = new LinkRelationTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.relation = (Enumeration) value; // Enumeration<LinkRelationTypes>
         } else if (name.equals("url")) {
           this.url = TypeConvertor.castToUri(value); // UriType
         } else
@@ -739,7 +2726,7 @@ public class Bundle extends Resource implements IBaseBundle {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -554436100: /*relation*/ return new String[] {"string"};
+        case -554436100: /*relation*/ return new String[] {"code"};
         case 116079: /*url*/ return new String[] {"uri"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -811,19 +2798,20 @@ public class Bundle extends Resource implements IBaseBundle {
         protected List<BundleLinkComponent> link;
 
         /**
-         * The Absolute URL for the resource.  The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. The fullUrl element SHALL have a value except that: 
-* fullUrl can be empty on a POST (although it does not need to when specifying a temporary id for reference in the bundle)
-* Results from operations might involve resources that are not identified.
+         * The Absolute URL for the resource.  The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. Even when not required, fullUrl MAY be set to a urn:uuid to allow referencing entries in a transaction. The fullUrl can be an arbitrary URI and is not limited to urn:uuid, urn:oid, http, and https. The fullUrl element SHALL have a value except when: 
+* invoking a create
+* invoking or responding to an operation where the body is not a single identified resource
+* invoking or returning the results of a search or history operation.
          */
         @Child(name = "fullUrl", type = {UriType.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="URI for resource (Absolute URL server address or URI for UUID/OID)", formalDefinition="The Absolute URL for the resource.  The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. The fullUrl element SHALL have a value except that: \n* fullUrl can be empty on a POST (although it does not need to when specifying a temporary id for reference in the bundle)\n* Results from operations might involve resources that are not identified." )
+        @Description(shortDefinition="URI for resource (e.g. the absolute URL server address, URI for UUID/OID, etc.)", formalDefinition="The Absolute URL for the resource.  The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. Even when not required, fullUrl MAY be set to a urn:uuid to allow referencing entries in a transaction. The fullUrl can be an arbitrary URI and is not limited to urn:uuid, urn:oid, http, and https. The fullUrl element SHALL have a value except when: \n* invoking a create\n* invoking or responding to an operation where the body is not a single identified resource\n* invoking or returning the results of a search or history operation." )
         protected UriType fullUrl;
 
         /**
-         * The Resource for the entry. The purpose/meaning of the resource is determined by the Bundle.type.
+         * The Resource for the entry. The purpose/meaning of the resource is determined by the Bundle.type. This is allowed to be a Parameters resource if and only if it is referenced by something else within the Bundle that provides context/meaning.
          */
         @Child(name = "resource", type = {Resource.class}, order=3, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="A resource in the bundle", formalDefinition="The Resource for the entry. The purpose/meaning of the resource is determined by the Bundle.type." )
+        @Description(shortDefinition="A resource in the bundle", formalDefinition="The Resource for the entry. The purpose/meaning of the resource is determined by the Bundle.type. This is allowed to be a Parameters resource if and only if it is referenced by something else within the Bundle that provides context/meaning." )
         protected Resource resource;
 
         /**
@@ -910,9 +2898,10 @@ public class Bundle extends Resource implements IBaseBundle {
         }
 
         /**
-         * @return {@link #fullUrl} (The Absolute URL for the resource.  The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. The fullUrl element SHALL have a value except that: 
-* fullUrl can be empty on a POST (although it does not need to when specifying a temporary id for reference in the bundle)
-* Results from operations might involve resources that are not identified.). This is the underlying object with id, value and extensions. The accessor "getFullUrl" gives direct access to the value
+         * @return {@link #fullUrl} (The Absolute URL for the resource.  The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. Even when not required, fullUrl MAY be set to a urn:uuid to allow referencing entries in a transaction. The fullUrl can be an arbitrary URI and is not limited to urn:uuid, urn:oid, http, and https. The fullUrl element SHALL have a value except when: 
+* invoking a create
+* invoking or responding to an operation where the body is not a single identified resource
+* invoking or returning the results of a search or history operation.). This is the underlying object with id, value and extensions. The accessor "getFullUrl" gives direct access to the value
          */
         public UriType getFullUrlElement() { 
           if (this.fullUrl == null)
@@ -932,9 +2921,10 @@ public class Bundle extends Resource implements IBaseBundle {
         }
 
         /**
-         * @param value {@link #fullUrl} (The Absolute URL for the resource.  The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. The fullUrl element SHALL have a value except that: 
-* fullUrl can be empty on a POST (although it does not need to when specifying a temporary id for reference in the bundle)
-* Results from operations might involve resources that are not identified.). This is the underlying object with id, value and extensions. The accessor "getFullUrl" gives direct access to the value
+         * @param value {@link #fullUrl} (The Absolute URL for the resource.  The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. Even when not required, fullUrl MAY be set to a urn:uuid to allow referencing entries in a transaction. The fullUrl can be an arbitrary URI and is not limited to urn:uuid, urn:oid, http, and https. The fullUrl element SHALL have a value except when: 
+* invoking a create
+* invoking or responding to an operation where the body is not a single identified resource
+* invoking or returning the results of a search or history operation.). This is the underlying object with id, value and extensions. The accessor "getFullUrl" gives direct access to the value
          */
         public BundleEntryComponent setFullUrlElement(UriType value) { 
           this.fullUrl = value;
@@ -942,18 +2932,20 @@ public class Bundle extends Resource implements IBaseBundle {
         }
 
         /**
-         * @return The Absolute URL for the resource.  The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. The fullUrl element SHALL have a value except that: 
-* fullUrl can be empty on a POST (although it does not need to when specifying a temporary id for reference in the bundle)
-* Results from operations might involve resources that are not identified.
+         * @return The Absolute URL for the resource.  The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. Even when not required, fullUrl MAY be set to a urn:uuid to allow referencing entries in a transaction. The fullUrl can be an arbitrary URI and is not limited to urn:uuid, urn:oid, http, and https. The fullUrl element SHALL have a value except when: 
+* invoking a create
+* invoking or responding to an operation where the body is not a single identified resource
+* invoking or returning the results of a search or history operation.
          */
         public String getFullUrl() { 
           return this.fullUrl == null ? null : this.fullUrl.getValue();
         }
 
         /**
-         * @param value The Absolute URL for the resource.  The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. The fullUrl element SHALL have a value except that: 
-* fullUrl can be empty on a POST (although it does not need to when specifying a temporary id for reference in the bundle)
-* Results from operations might involve resources that are not identified.
+         * @param value The Absolute URL for the resource.  The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. Even when not required, fullUrl MAY be set to a urn:uuid to allow referencing entries in a transaction. The fullUrl can be an arbitrary URI and is not limited to urn:uuid, urn:oid, http, and https. The fullUrl element SHALL have a value except when: 
+* invoking a create
+* invoking or responding to an operation where the body is not a single identified resource
+* invoking or returning the results of a search or history operation.
          */
         public BundleEntryComponent setFullUrl(String value) { 
           if (Utilities.noString(value))
@@ -967,7 +2959,7 @@ public class Bundle extends Resource implements IBaseBundle {
         }
 
         /**
-         * @return {@link #resource} (The Resource for the entry. The purpose/meaning of the resource is determined by the Bundle.type.)
+         * @return {@link #resource} (The Resource for the entry. The purpose/meaning of the resource is determined by the Bundle.type. This is allowed to be a Parameters resource if and only if it is referenced by something else within the Bundle that provides context/meaning.)
          */
         public Resource getResource() { 
           return this.resource;
@@ -978,7 +2970,7 @@ public class Bundle extends Resource implements IBaseBundle {
         }
 
         /**
-         * @param value {@link #resource} (The Resource for the entry. The purpose/meaning of the resource is determined by the Bundle.type.)
+         * @param value {@link #resource} (The Resource for the entry. The purpose/meaning of the resource is determined by the Bundle.type. This is allowed to be a Parameters resource if and only if it is referenced by something else within the Bundle that provides context/meaning.)
          */
         public BundleEntryComponent setResource(Resource value) { 
           this.resource = value;
@@ -1060,8 +3052,8 @@ public class Bundle extends Resource implements IBaseBundle {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("link", "@Bundle.link", "A series of links that provide context to this entry.", 0, java.lang.Integer.MAX_VALUE, link));
-          children.add(new Property("fullUrl", "uri", "The Absolute URL for the resource.  The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. The fullUrl element SHALL have a value except that: \n* fullUrl can be empty on a POST (although it does not need to when specifying a temporary id for reference in the bundle)\n* Results from operations might involve resources that are not identified.", 0, 1, fullUrl));
-          children.add(new Property("resource", "Resource", "The Resource for the entry. The purpose/meaning of the resource is determined by the Bundle.type.", 0, 1, resource));
+          children.add(new Property("fullUrl", "uri", "The Absolute URL for the resource.  The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. Even when not required, fullUrl MAY be set to a urn:uuid to allow referencing entries in a transaction. The fullUrl can be an arbitrary URI and is not limited to urn:uuid, urn:oid, http, and https. The fullUrl element SHALL have a value except when: \n* invoking a create\n* invoking or responding to an operation where the body is not a single identified resource\n* invoking or returning the results of a search or history operation.", 0, 1, fullUrl));
+          children.add(new Property("resource", "Resource", "The Resource for the entry. The purpose/meaning of the resource is determined by the Bundle.type. This is allowed to be a Parameters resource if and only if it is referenced by something else within the Bundle that provides context/meaning.", 0, 1, resource));
           children.add(new Property("search", "", "Information about the search process that lead to the creation of this entry.", 0, 1, search));
           children.add(new Property("request", "", "Additional information about how this entry should be processed as part of a transaction or batch.  For history, it shows how the entry was processed to create the version contained in the entry.", 0, 1, request));
           children.add(new Property("response", "", "Indicates the results of processing the corresponding 'request' entry in the batch or transaction being responded to or what the results of an operation where when returning history.", 0, 1, response));
@@ -1071,8 +3063,8 @@ public class Bundle extends Resource implements IBaseBundle {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3321850: /*link*/  return new Property("link", "@Bundle.link", "A series of links that provide context to this entry.", 0, java.lang.Integer.MAX_VALUE, link);
-          case -511251360: /*fullUrl*/  return new Property("fullUrl", "uri", "The Absolute URL for the resource.  The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. The fullUrl element SHALL have a value except that: \n* fullUrl can be empty on a POST (although it does not need to when specifying a temporary id for reference in the bundle)\n* Results from operations might involve resources that are not identified.", 0, 1, fullUrl);
-          case -341064690: /*resource*/  return new Property("resource", "Resource", "The Resource for the entry. The purpose/meaning of the resource is determined by the Bundle.type.", 0, 1, resource);
+          case -511251360: /*fullUrl*/  return new Property("fullUrl", "uri", "The Absolute URL for the resource.  The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. Even when not required, fullUrl MAY be set to a urn:uuid to allow referencing entries in a transaction. The fullUrl can be an arbitrary URI and is not limited to urn:uuid, urn:oid, http, and https. The fullUrl element SHALL have a value except when: \n* invoking a create\n* invoking or responding to an operation where the body is not a single identified resource\n* invoking or returning the results of a search or history operation.", 0, 1, fullUrl);
+          case -341064690: /*resource*/  return new Property("resource", "Resource", "The Resource for the entry. The purpose/meaning of the resource is determined by the Bundle.type. This is allowed to be a Parameters resource if and only if it is referenced by something else within the Bundle that provides context/meaning.", 0, 1, resource);
           case -906336856: /*search*/  return new Property("search", "", "Information about the search process that lead to the creation of this entry.", 0, 1, search);
           case 1095692943: /*request*/  return new Property("request", "", "Additional information about how this entry should be processed as part of a transaction or batch.  For history, it shows how the entry was processed to create the version contained in the entry.", 0, 1, request);
           case -340323263: /*response*/  return new Property("response", "", "Indicates the results of processing the corresponding 'request' entry in the batch or transaction being responded to or what the results of an operation where when returning history.", 0, 1, response);
@@ -1291,7 +3283,7 @@ public class Bundle extends Resource implements IBaseBundle {
       } 
     } 
     BundleLinkComponent retVal = new BundleLinkComponent(); 
-    retVal.setRelation(theRelation); 
+    retVal.setRelation(Bundle.LinkRelationTypes.fromCode(theRelation)); 
     getLink().add(retVal); 
     return retVal; 
   }
@@ -1589,7 +3581,7 @@ public class Bundle extends Resource implements IBaseBundle {
          * If the ETag values match, return a 304 Not Modified status. See the API documentation for ["Conditional Read"](http.html#cread).
          */
         @Child(name = "ifNoneMatch", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="For managing cache currency", formalDefinition="If the ETag values match, return a 304 Not Modified status. See the API documentation for [\"Conditional Read\"](http.html#cread)." )
+        @Description(shortDefinition="For managing cache validation", formalDefinition="If the ETag values match, return a 304 Not Modified status. See the API documentation for [\"Conditional Read\"](http.html#cread)." )
         protected StringType ifNoneMatch;
 
         /**
@@ -2565,10 +4557,10 @@ public class Bundle extends Resource implements IBaseBundle {
     protected InstantType timestamp;
 
     /**
-     * If a set of search matches, this is the total number of entries of type 'match' across all pages in the search.  It does not include search.mode = 'include' or 'outcome' entries and it does not provide a count of the number of entries in the Bundle.
+     * If a set of search matches, this is the (potentially estimated) total number of entries of type 'match' across all pages in the search.  It does not include search.mode = 'include' or 'outcome' entries and it does not provide a count of the number of entries in the Bundle.
      */
     @Child(name = "total", type = {UnsignedIntType.class}, order=3, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="If search, the total number of matches", formalDefinition="If a set of search matches, this is the total number of entries of type 'match' across all pages in the search.  It does not include search.mode = 'include' or 'outcome' entries and it does not provide a count of the number of entries in the Bundle." )
+    @Description(shortDefinition="If search, the total number of matches", formalDefinition="If a set of search matches, this is the (potentially estimated) total number of entries of type 'match' across all pages in the search.  It does not include search.mode = 'include' or 'outcome' entries and it does not provide a count of the number of entries in the Bundle." )
     protected UnsignedIntType total;
 
     /**
@@ -2592,7 +4584,14 @@ public class Bundle extends Resource implements IBaseBundle {
     @Description(shortDefinition="Digital Signature", formalDefinition="Digital Signature - base64 encoded. XML-DSig or a JWS." )
     protected Signature signature;
 
-    private static final long serialVersionUID = 1740470158L;
+    /**
+     * Captures issues and warnings that relate to the construction of the Bundle and the content within it.
+     */
+    @Child(name = "issues", type = {Resource.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Issues with the Bundle", formalDefinition="Captures issues and warnings that relate to the construction of the Bundle and the content within it." )
+    protected Resource issues;
+
+    private static final long serialVersionUID = -843739668L;
 
   /**
    * Constructor
@@ -2728,7 +4727,7 @@ public class Bundle extends Resource implements IBaseBundle {
     }
 
     /**
-     * @return {@link #total} (If a set of search matches, this is the total number of entries of type 'match' across all pages in the search.  It does not include search.mode = 'include' or 'outcome' entries and it does not provide a count of the number of entries in the Bundle.). This is the underlying object with id, value and extensions. The accessor "getTotal" gives direct access to the value
+     * @return {@link #total} (If a set of search matches, this is the (potentially estimated) total number of entries of type 'match' across all pages in the search.  It does not include search.mode = 'include' or 'outcome' entries and it does not provide a count of the number of entries in the Bundle.). This is the underlying object with id, value and extensions. The accessor "getTotal" gives direct access to the value
      */
     public UnsignedIntType getTotalElement() { 
       if (this.total == null)
@@ -2748,7 +4747,7 @@ public class Bundle extends Resource implements IBaseBundle {
     }
 
     /**
-     * @param value {@link #total} (If a set of search matches, this is the total number of entries of type 'match' across all pages in the search.  It does not include search.mode = 'include' or 'outcome' entries and it does not provide a count of the number of entries in the Bundle.). This is the underlying object with id, value and extensions. The accessor "getTotal" gives direct access to the value
+     * @param value {@link #total} (If a set of search matches, this is the (potentially estimated) total number of entries of type 'match' across all pages in the search.  It does not include search.mode = 'include' or 'outcome' entries and it does not provide a count of the number of entries in the Bundle.). This is the underlying object with id, value and extensions. The accessor "getTotal" gives direct access to the value
      */
     public Bundle setTotalElement(UnsignedIntType value) { 
       this.total = value;
@@ -2756,14 +4755,14 @@ public class Bundle extends Resource implements IBaseBundle {
     }
 
     /**
-     * @return If a set of search matches, this is the total number of entries of type 'match' across all pages in the search.  It does not include search.mode = 'include' or 'outcome' entries and it does not provide a count of the number of entries in the Bundle.
+     * @return If a set of search matches, this is the (potentially estimated) total number of entries of type 'match' across all pages in the search.  It does not include search.mode = 'include' or 'outcome' entries and it does not provide a count of the number of entries in the Bundle.
      */
     public int getTotal() { 
       return this.total == null || this.total.isEmpty() ? 0 : this.total.getValue();
     }
 
     /**
-     * @param value If a set of search matches, this is the total number of entries of type 'match' across all pages in the search.  It does not include search.mode = 'include' or 'outcome' entries and it does not provide a count of the number of entries in the Bundle.
+     * @param value If a set of search matches, this is the (potentially estimated) total number of entries of type 'match' across all pages in the search.  It does not include search.mode = 'include' or 'outcome' entries and it does not provide a count of the number of entries in the Bundle.
      */
     public Bundle setTotal(int value) { 
         if (this.total == null)
@@ -2902,15 +4901,35 @@ public class Bundle extends Resource implements IBaseBundle {
       return this;
     }
 
+    /**
+     * @return {@link #issues} (Captures issues and warnings that relate to the construction of the Bundle and the content within it.)
+     */
+    public Resource getIssues() { 
+      return this.issues;
+    }
+
+    public boolean hasIssues() { 
+      return this.issues != null && !this.issues.isEmpty();
+    }
+
+    /**
+     * @param value {@link #issues} (Captures issues and warnings that relate to the construction of the Bundle and the content within it.)
+     */
+    public Bundle setIssues(Resource value) { 
+      this.issues = value;
+      return this;
+    }
+
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "A persistent identifier for the bundle that won't change as a bundle is copied from server to server.", 0, 1, identifier));
         children.add(new Property("type", "code", "Indicates the purpose of this bundle - how it is intended to be used.", 0, 1, type));
         children.add(new Property("timestamp", "instant", "The date/time that the bundle was assembled - i.e. when the resources were placed in the bundle.", 0, 1, timestamp));
-        children.add(new Property("total", "unsignedInt", "If a set of search matches, this is the total number of entries of type 'match' across all pages in the search.  It does not include search.mode = 'include' or 'outcome' entries and it does not provide a count of the number of entries in the Bundle.", 0, 1, total));
+        children.add(new Property("total", "unsignedInt", "If a set of search matches, this is the (potentially estimated) total number of entries of type 'match' across all pages in the search.  It does not include search.mode = 'include' or 'outcome' entries and it does not provide a count of the number of entries in the Bundle.", 0, 1, total));
         children.add(new Property("link", "", "A series of links that provide context to this bundle.", 0, java.lang.Integer.MAX_VALUE, link));
         children.add(new Property("entry", "", "An entry in a bundle resource - will either contain a resource or information about a resource (transactions and history only).", 0, java.lang.Integer.MAX_VALUE, entry));
         children.add(new Property("signature", "Signature", "Digital Signature - base64 encoded. XML-DSig or a JWS.", 0, 1, signature));
+        children.add(new Property("issues", "Resource", "Captures issues and warnings that relate to the construction of the Bundle and the content within it.", 0, 1, issues));
       }
 
       @Override
@@ -2919,10 +4938,11 @@ public class Bundle extends Resource implements IBaseBundle {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "A persistent identifier for the bundle that won't change as a bundle is copied from server to server.", 0, 1, identifier);
         case 3575610: /*type*/  return new Property("type", "code", "Indicates the purpose of this bundle - how it is intended to be used.", 0, 1, type);
         case 55126294: /*timestamp*/  return new Property("timestamp", "instant", "The date/time that the bundle was assembled - i.e. when the resources were placed in the bundle.", 0, 1, timestamp);
-        case 110549828: /*total*/  return new Property("total", "unsignedInt", "If a set of search matches, this is the total number of entries of type 'match' across all pages in the search.  It does not include search.mode = 'include' or 'outcome' entries and it does not provide a count of the number of entries in the Bundle.", 0, 1, total);
+        case 110549828: /*total*/  return new Property("total", "unsignedInt", "If a set of search matches, this is the (potentially estimated) total number of entries of type 'match' across all pages in the search.  It does not include search.mode = 'include' or 'outcome' entries and it does not provide a count of the number of entries in the Bundle.", 0, 1, total);
         case 3321850: /*link*/  return new Property("link", "", "A series of links that provide context to this bundle.", 0, java.lang.Integer.MAX_VALUE, link);
         case 96667762: /*entry*/  return new Property("entry", "", "An entry in a bundle resource - will either contain a resource or information about a resource (transactions and history only).", 0, java.lang.Integer.MAX_VALUE, entry);
         case 1073584312: /*signature*/  return new Property("signature", "Signature", "Digital Signature - base64 encoded. XML-DSig or a JWS.", 0, 1, signature);
+        case -1179159878: /*issues*/  return new Property("issues", "Resource", "Captures issues and warnings that relate to the construction of the Bundle and the content within it.", 0, 1, issues);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -2938,6 +4958,7 @@ public class Bundle extends Resource implements IBaseBundle {
         case 3321850: /*link*/ return this.link == null ? new Base[0] : this.link.toArray(new Base[this.link.size()]); // BundleLinkComponent
         case 96667762: /*entry*/ return this.entry == null ? new Base[0] : this.entry.toArray(new Base[this.entry.size()]); // BundleEntryComponent
         case 1073584312: /*signature*/ return this.signature == null ? new Base[0] : new Base[] {this.signature}; // Signature
+        case -1179159878: /*issues*/ return this.issues == null ? new Base[0] : new Base[] {this.issues}; // Resource
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -2968,6 +4989,9 @@ public class Bundle extends Resource implements IBaseBundle {
         case 1073584312: // signature
           this.signature = TypeConvertor.castToSignature(value); // Signature
           return value;
+        case -1179159878: // issues
+          this.issues = TypeConvertor.castToResource(value); // Resource
+          return value;
         default: return super.setProperty(hash, name, value);
         }
 
@@ -2990,6 +5014,8 @@ public class Bundle extends Resource implements IBaseBundle {
           this.getEntry().add((BundleEntryComponent) value);
         } else if (name.equals("signature")) {
           this.signature = TypeConvertor.castToSignature(value); // Signature
+        } else if (name.equals("issues")) {
+          this.issues = TypeConvertor.castToResource(value); // Resource
         } else
           return super.setProperty(name, value);
         return value;
@@ -3005,6 +5031,7 @@ public class Bundle extends Resource implements IBaseBundle {
         case 3321850:  return addLink(); 
         case 96667762:  return addEntry(); 
         case 1073584312:  return getSignature();
+        case -1179159878: throw new FHIRException("Cannot make property issues as it is not a complex type"); // Resource
         default: return super.makeProperty(hash, name);
         }
 
@@ -3020,6 +5047,7 @@ public class Bundle extends Resource implements IBaseBundle {
         case 3321850: /*link*/ return new String[] {};
         case 96667762: /*entry*/ return new String[] {};
         case 1073584312: /*signature*/ return new String[] {"Signature"};
+        case -1179159878: /*issues*/ return new String[] {"Resource"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -3049,6 +5077,9 @@ public class Bundle extends Resource implements IBaseBundle {
         else if (name.equals("signature")) {
           this.signature = new Signature();
           return this.signature;
+        }
+        else if (name.equals("issues")) {
+          throw new FHIRException("Cannot call addChild on an abstract type Bundle.issues");
         }
         else
           return super.addChild(name);
@@ -3082,6 +5113,7 @@ public class Bundle extends Resource implements IBaseBundle {
             dst.entry.add(i.copy());
         };
         dst.signature = signature == null ? null : signature.copy();
+        dst.issues = issues == null ? null : issues.copy();
       }
 
       protected Bundle typedCopy() {
@@ -3097,7 +5129,7 @@ public class Bundle extends Resource implements IBaseBundle {
         Bundle o = (Bundle) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(type, o.type, true) && compareDeep(timestamp, o.timestamp, true)
            && compareDeep(total, o.total, true) && compareDeep(link, o.link, true) && compareDeep(entry, o.entry, true)
-           && compareDeep(signature, o.signature, true);
+           && compareDeep(signature, o.signature, true) && compareDeep(issues, o.issues, true);
       }
 
       @Override
@@ -3113,7 +5145,7 @@ public class Bundle extends Resource implements IBaseBundle {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, type, timestamp
-          , total, link, entry, signature);
+          , total, link, entry, signature, issues);
       }
 
   @Override
@@ -3126,17 +5158,17 @@ public class Bundle extends Resource implements IBaseBundle {
    * <p>
    * Description: <b>The first resource in the bundle, if the bundle type is "document" - this is a composition, and this parameter provides access to search its contents</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Bundle.entry[0].resource</b><br>
+   * Path: <b>Bundle.entry[0].resource as Composition</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="composition", path="Bundle.entry[0].resource", description="The first resource in the bundle, if the bundle type is \"document\" - this is a composition, and this parameter provides access to search its contents", type="reference" )
+  @SearchParamDefinition(name="composition", path="Bundle.entry[0].resource as Composition", description="The first resource in the bundle, if the bundle type is \"document\" - this is a composition, and this parameter provides access to search its contents", type="reference" )
   public static final String SP_COMPOSITION = "composition";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>composition</b>
    * <p>
    * Description: <b>The first resource in the bundle, if the bundle type is "document" - this is a composition, and this parameter provides access to search its contents</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Bundle.entry[0].resource</b><br>
+   * Path: <b>Bundle.entry[0].resource as Composition</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam COMPOSITION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_COMPOSITION);
@@ -3172,17 +5204,17 @@ public class Bundle extends Resource implements IBaseBundle {
    * <p>
    * Description: <b>The first resource in the bundle, if the bundle type is "message" - this is a message header, and this parameter provides access to search its contents</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Bundle.entry[0].resource</b><br>
+   * Path: <b>Bundle.entry[0].resource as MessageHeader</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="message", path="Bundle.entry[0].resource", description="The first resource in the bundle, if the bundle type is \"message\" - this is a message header, and this parameter provides access to search its contents", type="reference" )
+  @SearchParamDefinition(name="message", path="Bundle.entry[0].resource as MessageHeader", description="The first resource in the bundle, if the bundle type is \"message\" - this is a message header, and this parameter provides access to search its contents", type="reference" )
   public static final String SP_MESSAGE = "message";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>message</b>
    * <p>
    * Description: <b>The first resource in the bundle, if the bundle type is "message" - this is a message header, and this parameter provides access to search its contents</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Bundle.entry[0].resource</b><br>
+   * Path: <b>Bundle.entry[0].resource as MessageHeader</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam MESSAGE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_MESSAGE);
@@ -3233,6 +5265,32 @@ public class Bundle extends Resource implements IBaseBundle {
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
 
+ /**
+   * Search parameter: <b>example-constraint</b>
+   * <p>
+   * Description: <b>Search Composition Bundle</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Bundle.entry[0].resource</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="example-constraint", path="Bundle.entry[0].resource", description="Search Composition Bundle", type="reference", target={Composition.class } )
+  public static final String SP_EXAMPLE_CONSTRAINT = "example-constraint";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>example-constraint</b>
+   * <p>
+   * Description: <b>Search Composition Bundle</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Bundle.entry[0].resource</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam EXAMPLE_CONSTRAINT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_EXAMPLE_CONSTRAINT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Bundle:example-constraint</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_EXAMPLE_CONSTRAINT = new ca.uhn.fhir.model.api.Include("Bundle:example-constraint").toLocked();
+
 // Manual code (from Configuration.txt):
 /** 
    * Returns the {@link #getLink() link} which matches a given {@link BundleLinkComponent#getRelation() relation}.  
@@ -3277,7 +5335,7 @@ public class Bundle extends Resource implements IBaseBundle {
       } 
     } 
     BundleLinkComponent retVal = new BundleLinkComponent(); 
-    retVal.setRelation(theRelation); 
+    retVal.setRelation(Bundle.LinkRelationTypes.fromCode(theRelation)); 
     getLink().add(retVal); 
     return retVal; 
   }

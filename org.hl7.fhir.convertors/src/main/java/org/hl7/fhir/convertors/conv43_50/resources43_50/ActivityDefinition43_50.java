@@ -9,7 +9,13 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.ContactDet
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.Expression43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.RelatedArtifact43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.UsageContext43_50;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.*;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Boolean43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Canonical43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Date43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.DateTime43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.MarkDown43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Dosage43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -133,11 +139,11 @@ public class ActivityDefinition43_50 {
     for (org.hl7.fhir.r4b.model.CodeableConcept t : src.getBodySite())
       tgt.addBodySite(CodeableConcept43_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r4b.model.Reference t : src.getSpecimenRequirement())
-      tgt.addSpecimenRequirement(Reference43_50.convertReference(t));
+      tgt.getSpecimenRequirement().add(Reference43_50.convertReferenceToCanonical(t));
     for (org.hl7.fhir.r4b.model.Reference t : src.getObservationRequirement())
-      tgt.addObservationRequirement(Reference43_50.convertReference(t));
+      tgt.getObservationRequirement().add(Reference43_50.convertReferenceToCanonical(t));
     for (org.hl7.fhir.r4b.model.Reference t : src.getObservationResultRequirement())
-      tgt.addObservationResultRequirement(Reference43_50.convertReference(t));
+      tgt.getObservationResultRequirement().add(Reference43_50.convertReferenceToCanonical(t));
     if (src.hasTransform())
       tgt.setTransformElement(Canonical43_50.convertCanonical(src.getTransformElement()));
     for (org.hl7.fhir.r4b.model.ActivityDefinition.ActivityDefinitionDynamicValueComponent t : src.getDynamicValue())
@@ -231,12 +237,12 @@ public class ActivityDefinition43_50 {
     for (org.hl7.fhir.r5.model.Dosage t : src.getDosage()) tgt.addDosage(Dosage43_50.convertDosage(t));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getBodySite())
       tgt.addBodySite(CodeableConcept43_50.convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getSpecimenRequirement())
-      tgt.addSpecimenRequirement(Reference43_50.convertReference(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getObservationRequirement())
-      tgt.addObservationRequirement(Reference43_50.convertReference(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getObservationResultRequirement())
-      tgt.addObservationResultRequirement(Reference43_50.convertReference(t));
+    for (org.hl7.fhir.r5.model.CanonicalType t : src.getSpecimenRequirement())
+      tgt.addSpecimenRequirement(Reference43_50.convertReferenceToCanonical(t));
+    for (org.hl7.fhir.r5.model.CanonicalType t : src.getObservationRequirement())
+      tgt.addObservationRequirement(Reference43_50.convertReferenceToCanonical(t));
+    for (org.hl7.fhir.r5.model.CanonicalType t : src.getObservationResultRequirement())
+      tgt.addObservationResultRequirement(Reference43_50.convertReferenceToCanonical(t));
     if (src.hasTransform())
       tgt.setTransformElement(Canonical43_50.convertCanonical(src.getTransformElement()));
     for (org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionDynamicValueComponent t : src.getDynamicValue())
@@ -244,65 +250,62 @@ public class ActivityDefinition43_50 {
     return tgt;
   }
 
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType> convertActivityDefinitionKind(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.ActivityDefinition.RequestResourceType> src) throws FHIRException {
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes> convertActivityDefinitionKind(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.ActivityDefinition.RequestResourceType> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypeEnumFactory());
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypesEnumFactory());
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case APPOINTMENT:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.APPOINTMENT);
+        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.APPOINTMENT);
         break;
       case APPOINTMENTRESPONSE:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.APPOINTMENTRESPONSE);
+        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.APPOINTMENTRESPONSE);
         break;
       case CAREPLAN:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.CAREPLAN);
+        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.CAREPLAN);
         break;
       case CLAIM:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.CLAIM);
+        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.CLAIM);
         break;
       case COMMUNICATIONREQUEST:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.COMMUNICATIONREQUEST);
+        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.COMMUNICATIONREQUEST);
         break;
       case CONTRACT:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.CONTRACT);
+        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.CONTRACT);
         break;
       case DEVICEREQUEST:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.DEVICEREQUEST);
+        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.DEVICEREQUEST);
         break;
       case ENROLLMENTREQUEST:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.ENROLLMENTREQUEST);
+        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.ENROLLMENTREQUEST);
         break;
       case IMMUNIZATIONRECOMMENDATION:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.IMMUNIZATIONRECOMMENDATION);
+        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.IMMUNIZATIONRECOMMENDATION);
         break;
       case MEDICATIONREQUEST:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.MEDICATIONREQUEST);
+        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.MEDICATIONREQUEST);
         break;
       case NUTRITIONORDER:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.NUTRITIONORDER);
+        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.NUTRITIONORDER);
         break;
       case SERVICEREQUEST:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.SERVICEREQUEST);
+        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.SERVICEREQUEST);
         break;
       case SUPPLYREQUEST:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.SUPPLYREQUEST);
-        break;
-      case TASK:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.TASK);
+        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.SUPPLYREQUEST);
         break;
       case VISIONPRESCRIPTION:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.VISIONPRESCRIPTION);
+        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.VISIONPRESCRIPTION);
         break;
       default:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType.NULL);
+        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.NULL);
         break;
     }
     return tgt;
   }
 
-  static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.ActivityDefinition.RequestResourceType> convertActivityDefinitionKind(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceType> src) throws FHIRException {
+  static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.ActivityDefinition.RequestResourceType> convertActivityDefinitionKind(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.ActivityDefinition.RequestResourceType> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.ActivityDefinition.RequestResourceTypeEnumFactory());
@@ -346,9 +349,6 @@ public class ActivityDefinition43_50 {
         break;
       case SUPPLYREQUEST:
         tgt.setValue(org.hl7.fhir.r4b.model.ActivityDefinition.RequestResourceType.SUPPLYREQUEST);
-        break;
-      case TASK:
-        tgt.setValue(org.hl7.fhir.r4b.model.ActivityDefinition.RequestResourceType.TASK);
         break;
       case VISIONPRESCRIPTION:
         tgt.setValue(org.hl7.fhir.r4b.model.ActivityDefinition.RequestResourceType.VISIONPRESCRIPTION);

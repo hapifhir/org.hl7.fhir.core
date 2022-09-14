@@ -220,7 +220,7 @@ public class GraphDefinitionEngine {
     List<IBaseResource> list = new ArrayList<>();
     List<Argument> params = new ArrayList<>();
     parseParams(params, link.getTarget().get(0).getParams(), focus);
-    services.listResources(appInfo, link.getTarget().get(0).getType(), params, list);
+    services.listResources(appInfo, link.getTarget().get(0).getType().toCode(), params, list);
     check(!validating || (list.size() >= (link.hasMin() ? link.getMin() : 0)), "Link at path "+path+" requires at least "+link.getMin()+" matches, but only found "+list.size());
     check(!validating || (list.size() <= (link.hasMax() && !link.getMax().equals("*") ? Integer.parseInt(link.getMax()) : Integer.MAX_VALUE)), "Link at path "+path+" requires at most "+link.getMax()+" matches, but found "+list.size());
     for (IBaseResource res : list) {

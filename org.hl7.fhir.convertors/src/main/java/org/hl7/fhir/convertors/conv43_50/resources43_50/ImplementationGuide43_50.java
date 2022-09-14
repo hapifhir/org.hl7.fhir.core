@@ -1,15 +1,23 @@
 package org.hl7.fhir.convertors.conv43_50.resources43_50;
 
+import java.util.stream.Collectors;
+
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableConcept43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.ContactDetail43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.UsageContext43_50;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.*;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Boolean43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Canonical43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Code43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.DateTime43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Id43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.MarkDown43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Url43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
-
-import java.util.stream.Collectors;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -2278,7 +2286,7 @@ public class ImplementationGuide43_50 {
     org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideGlobalComponent tgt = new org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideGlobalComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasType())
-      tgt.setTypeElement(Code43_50.convertResourceEnum(src.getTypeElement()));
+      tgt.setTypeElement(Code43_50.convertCode(src.getTypeElement()));
     if (src.hasProfile())
       tgt.setProfileElement(Canonical43_50.convertCanonical(src.getProfileElement()));
     return tgt;
@@ -2290,7 +2298,7 @@ public class ImplementationGuide43_50 {
     org.hl7.fhir.r4b.model.ImplementationGuide.ImplementationGuideGlobalComponent tgt = new org.hl7.fhir.r4b.model.ImplementationGuide.ImplementationGuideGlobalComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasType())
-      tgt.setTypeElement(Code43_50.convertResourceEnum(src.getTypeElement()));
+      tgt.setTypeElement(Code43_50.convertCode(src.getTypeElement()));
     if (src.hasProfile())
       tgt.setProfileElement(Canonical43_50.convertCanonical(src.getProfileElement()));
     return tgt;
@@ -2311,7 +2319,7 @@ public class ImplementationGuide43_50 {
       tgt.addParameter(convertImplementationGuideDefinitionParameterComponent(t));
     for (org.hl7.fhir.r4b.model.Extension e : org.hl7.fhir.r4b.utils.ToolingExtensions.getExtensions(src, EXT_IG_DEFINITION_PARAMETER)) {
       org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent p = new org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent();
-      p.setCode(org.hl7.fhir.r4b.utils.ToolingExtensions.readStringExtension(e, "code"));
+      p.getCode().setCode(org.hl7.fhir.r4b.utils.ToolingExtensions.readStringExtension(e, "code"));
       p.setValue(org.hl7.fhir.r4b.utils.ToolingExtensions.readStringExtension(e, "Value"));
       tgt.addParameter(p);
     }
@@ -2332,11 +2340,11 @@ public class ImplementationGuide43_50 {
     if (src.hasPage())
       tgt.setPage(convertImplementationGuideDefinitionPageComponent(src.getPage()));
     for (org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent t : src.getParameter()) {
-      if (Utilities.existsInList(t.getCode(), "apply", "path-resource", "path-pages", "path-tx-cache", "expansion-parameter", "rule-broken-links", "generate-xml", "generate-json", "generate-turtle", "html-template"))
+      if (Utilities.existsInList(t.getCode().getCode(), "apply", "path-resource", "path-pages", "path-tx-cache", "expansion-parameter", "rule-broken-links", "generate-xml", "generate-json", "generate-turtle", "html-template"))
         tgt.addParameter(convertImplementationGuideDefinitionParameterComponent(t));
       else {
         org.hl7.fhir.r4b.model.Extension e = new org.hl7.fhir.r4b.model.Extension(EXT_IG_DEFINITION_PARAMETER);
-        org.hl7.fhir.r4b.model.Extension eCode = new org.hl7.fhir.r4b.model.Extension("code", new org.hl7.fhir.r4b.model.StringType(t.getCode()));
+        org.hl7.fhir.r4b.model.Extension eCode = new org.hl7.fhir.r4b.model.Extension("code", new org.hl7.fhir.r4b.model.StringType(t.getCode().getCode()));
         org.hl7.fhir.r4b.model.Extension eValue = new org.hl7.fhir.r4b.model.Extension("value", new org.hl7.fhir.r4b.model.StringType(t.getValue()));
         e.addExtension(eCode);
         e.addExtension(eValue);
@@ -2386,8 +2394,10 @@ public class ImplementationGuide43_50 {
       tgt.setNameElement(String43_50.convertString(src.getNameElement()));
     if (src.hasDescription())
       tgt.setDescriptionElement(String43_50.convertStringToMarkdown(src.getDescriptionElement()));
-    if (src.hasExample())
-      tgt.setExample(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getExample()));
+    if (src.hasExampleBooleanType())
+      tgt.setIsExampleElement(Boolean43_50.convertBoolean(src.getExampleBooleanType()));
+    if (src.hasExampleCanonicalType())
+      tgt.getProfile().add(Canonical43_50.convertCanonical(src.getExampleCanonicalType()));
     if (src.hasGroupingId())
       tgt.setGroupingIdElement(Id43_50.convertId(src.getGroupingIdElement()));
     return tgt;
@@ -2407,8 +2417,10 @@ public class ImplementationGuide43_50 {
       tgt.setNameElement(String43_50.convertString(src.getNameElement()));
     if (src.hasDescription())
       tgt.setDescriptionElement(String43_50.convertString(src.getDescriptionElement()));
-    if (src.hasExample())
-      tgt.setExample(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getExample()));
+    if (src.hasIsExample())
+      tgt.setExample(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getIsExampleElement()));
+    if (src.hasProfile())
+      tgt.setExample(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getProfile().get(0)));
     if (src.hasGroupingId())
       tgt.setGroupingIdElement(Id43_50.convertId(src.getGroupingIdElement()));
     return tgt;
@@ -2419,8 +2431,10 @@ public class ImplementationGuide43_50 {
       return null;
     org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionPageComponent tgt = new org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionPageComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
-    if (src.hasName())
-      tgt.setName(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getName()));
+    if (src.hasNameReference())
+      tgt.setName(src.getNameReference().getReference());
+    else if (src.hasNameUrlType())
+      tgt.setName(src.getNameUrlType().getValue());
     if (src.hasTitle())
       tgt.setTitleElement(String43_50.convertString(src.getTitleElement()));
     if (src.hasGeneration())
@@ -2436,7 +2450,7 @@ public class ImplementationGuide43_50 {
     org.hl7.fhir.r4b.model.ImplementationGuide.ImplementationGuideDefinitionPageComponent tgt = new org.hl7.fhir.r4b.model.ImplementationGuide.ImplementationGuideDefinitionPageComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasName())
-      tgt.setName(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getName()));
+      tgt.setName(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getNameElement()));
     if (src.hasTitle())
       tgt.setTitleElement(String43_50.convertString(src.getTitleElement()));
     if (src.hasGeneration())
@@ -2502,7 +2516,7 @@ public class ImplementationGuide43_50 {
     org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent tgt = new org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasCode())
-      tgt.getCodeElement().setValueAsString(src.getCode().toCode());
+      tgt.getCode().setCode(src.getCode().toCode());
     if (src.hasValue())
       tgt.setValueElement(String43_50.convertString(src.getValueElement()));
     return tgt;
@@ -2514,7 +2528,7 @@ public class ImplementationGuide43_50 {
     org.hl7.fhir.r4b.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent tgt = new org.hl7.fhir.r4b.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasCode())
-      tgt.getCodeElement().setValueAsString(src.getCode());
+      tgt.getCodeElement().setValueAsString(src.getCode().getCode());
     if (src.hasValue())
       tgt.setValueElement(String43_50.convertString(src.getValueElement()));
     return tgt;
@@ -2645,8 +2659,10 @@ public class ImplementationGuide43_50 {
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasReference())
       tgt.setReference(Reference43_50.convertReference(src.getReference()));
-    if (src.hasExample())
-      tgt.setExample(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getExample()));
+    if (src.hasExampleBooleanType())
+      tgt.setIsExampleElement(Boolean43_50.convertBoolean(src.getExampleBooleanType()));
+    if (src.hasExampleCanonicalType())
+      tgt.getProfile().add((Canonical43_50.convertCanonical(src.getExampleCanonicalType())));
     if (src.hasRelativePath())
       tgt.setRelativePathElement(Url43_50.convertUrl(src.getRelativePathElement()));
     return tgt;
@@ -2659,8 +2675,10 @@ public class ImplementationGuide43_50 {
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasReference())
       tgt.setReference(Reference43_50.convertReference(src.getReference()));
-    if (src.hasExample())
-      tgt.setExample(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getExample()));
+    if (src.hasIsExample())
+      tgt.setExample(Boolean43_50.convertBoolean(src.getIsExampleElement()));
+    if (src.hasProfile())
+      tgt.setExample(Canonical43_50.convertCanonical(src.getProfile().get(0)));
     if (src.hasRelativePath())
       tgt.setRelativePathElement(Url43_50.convertUrl(src.getRelativePathElement()));
     return tgt;

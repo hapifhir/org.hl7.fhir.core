@@ -3,7 +3,12 @@ package org.hl7.fhir.convertors.conv43_50.resources43_50;
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.ContactDetail43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.UsageContext43_50;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.*;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Boolean43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Code43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.DateTime43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.MarkDown43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -171,7 +176,7 @@ public class CompartmentDefinition43_50 {
     org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentDefinitionResourceComponent tgt = new org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentDefinitionResourceComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasCode())
-      tgt.setCodeElement(Code43_50.convertResourceEnum(src.getCodeElement()));
+      tgt.setCodeElement(Code43_50.convertCode(src.getCodeElement()));
     for (org.hl7.fhir.r4b.model.StringType t : src.getParam()) tgt.getParam().add(String43_50.convertString(t));
     if (src.hasDocumentation())
       tgt.setDocumentationElement(String43_50.convertString(src.getDocumentationElement()));
@@ -184,7 +189,7 @@ public class CompartmentDefinition43_50 {
     org.hl7.fhir.r4b.model.CompartmentDefinition.CompartmentDefinitionResourceComponent tgt = new org.hl7.fhir.r4b.model.CompartmentDefinition.CompartmentDefinitionResourceComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasCode())
-      tgt.setCodeElement(Code43_50.convertResourceEnum(src.getCodeElement()));
+      tgt.setCodeElement(Code43_50.convertCode(src.getCodeElement()));
     for (org.hl7.fhir.r5.model.StringType t : src.getParam()) tgt.getParam().add(String43_50.convertString(t));
     if (src.hasDocumentation())
       tgt.setDocumentationElement(String43_50.convertString(src.getDocumentationElement()));

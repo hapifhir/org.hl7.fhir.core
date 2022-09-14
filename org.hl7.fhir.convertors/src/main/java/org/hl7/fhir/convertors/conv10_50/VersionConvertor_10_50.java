@@ -1,18 +1,18 @@
 package org.hl7.fhir.convertors.conv10_50;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_50;
 import org.hl7.fhir.convertors.context.ConversionContext10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.BackboneElement10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.Element10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.Type10_50;
 import org.hl7.fhir.convertors.conv10_50.resources10_50.Resource10_50;
-import org.hl7.fhir.convertors.conv14_40.datatypes14_40.BackboneElement14_40;
 import org.hl7.fhir.dstu2.model.CodeableConcept;
 import org.hl7.fhir.exceptions.FHIRException;
-
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

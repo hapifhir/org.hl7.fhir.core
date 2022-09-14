@@ -17,6 +17,7 @@ import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleLinkComponent;
+import org.hl7.fhir.r5.model.Bundle.LinkRelationTypes;
 import org.hl7.fhir.r5.model.Bundle.SearchEntryMode;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Resource;
@@ -175,10 +176,10 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
     try {
       Bundle bnd = new Bundle();
       BundleLinkComponent bl = bnd.addLink();
-      bl.setRelation("next");
+      bl.setRelation(LinkRelationTypes.fromCode("next"));
       bl.setUrl("http://test.fhir.org/r4/Patient?_format=text/xhtml&search-id=77c97e03-8a6c-415f-a63d-11c80cf73f&&active=true&_sort=_id&search-offset=50&_count=50");
       bl = bnd.addLink();
-      bl.setRelation("self");
+      bl.setRelation(LinkRelationTypes.fromCode("self"));
       bl.setUrl("http://test.fhir.org/r4/Patient?_format=text/xhtml&search-id=77c97e03-8a6c-415f-a63d-11c80cf73f&&active=true&_sort=_id&search-offset=0&_count=50");
       BundleEntryComponent be = bnd.addEntry();
       be.setFullUrl("http://hl7.org/fhir/Patient/example");

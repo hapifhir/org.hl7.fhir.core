@@ -1,10 +1,17 @@
 package org.hl7.fhir.convertors.conv43_50.resources43_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.*;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.*;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Annotation43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableConcept43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Identifier43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Quantity43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Canonical43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.DateTime43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CodeableReference;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -55,7 +62,7 @@ public class ChargeItem43_50 {
     if (src.hasSubject())
       tgt.setSubject(Reference43_50.convertReference(src.getSubject()));
     if (src.hasContext())
-      tgt.setContext(Reference43_50.convertReference(src.getContext()));
+      tgt.setEncounter(Reference43_50.convertReference(src.getContext()));
     if (src.hasOccurrence())
       tgt.setOccurrence(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getOccurrence()));
     for (org.hl7.fhir.r4b.model.ChargeItem.ChargeItemPerformerComponent t : src.getPerformer())
@@ -70,19 +77,19 @@ public class ChargeItem43_50 {
       tgt.setQuantity(Quantity43_50.convertQuantity(src.getQuantity()));
     for (org.hl7.fhir.r4b.model.CodeableConcept t : src.getBodysite())
       tgt.addBodysite(CodeableConcept43_50.convertCodeableConcept(t));
-    if (src.hasFactorOverride())
-      tgt.setFactorOverrideElement(Decimal43_50.convertDecimal(src.getFactorOverrideElement()));
-    if (src.hasPriceOverride())
-      tgt.setPriceOverride(Money43_50.convertMoney(src.getPriceOverride()));
+//    if (src.hasFactorOverride())
+//      tgt.setFactorOverrideElement(Decimal43_50.convertDecimal(src.getFactorOverrideElement()));
+//    if (src.hasPriceOverride())
+//      tgt.setPriceOverride(Money43_50.convertMoney(src.getPriceOverride()));
     if (src.hasOverrideReason())
-      tgt.setOverrideReasonElement(String43_50.convertString(src.getOverrideReasonElement()));
+      tgt.getOverrideReason().setTextElement(String43_50.convertString(src.getOverrideReasonElement()));
     if (src.hasEnterer())
       tgt.setEnterer(Reference43_50.convertReference(src.getEnterer()));
     if (src.hasEnteredDate())
       tgt.setEnteredDateElement(DateTime43_50.convertDateTime(src.getEnteredDateElement()));
     for (org.hl7.fhir.r4b.model.CodeableConcept t : src.getReason())
       tgt.addReason(CodeableConcept43_50.convertCodeableConcept(t));
-    for (org.hl7.fhir.r4b.model.Reference t : src.getService()) tgt.addService(Reference43_50.convertReference(t));
+    for (org.hl7.fhir.r4b.model.Reference t : src.getService()) tgt.addService(Reference43_50.convertReferenceToCodeableReference(t));
     if (src.hasProductCodeableConcept())
       tgt.addProduct().setConcept(CodeableConcept43_50.convertCodeableConcept(src.getProductCodeableConcept()));
     else if (src.hasProductReference())
@@ -111,8 +118,8 @@ public class ChargeItem43_50 {
       tgt.setCode(CodeableConcept43_50.convertCodeableConcept(src.getCode()));
     if (src.hasSubject())
       tgt.setSubject(Reference43_50.convertReference(src.getSubject()));
-    if (src.hasContext())
-      tgt.setContext(Reference43_50.convertReference(src.getContext()));
+    if (src.hasEncounter())
+      tgt.setContext(Reference43_50.convertReference(src.getEncounter()));
     if (src.hasOccurrence())
       tgt.setOccurrence(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getOccurrence()));
     for (org.hl7.fhir.r5.model.ChargeItem.ChargeItemPerformerComponent t : src.getPerformer())
@@ -127,19 +134,19 @@ public class ChargeItem43_50 {
       tgt.setQuantity(Quantity43_50.convertQuantity(src.getQuantity()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getBodysite())
       tgt.addBodysite(CodeableConcept43_50.convertCodeableConcept(t));
-    if (src.hasFactorOverride())
-      tgt.setFactorOverrideElement(Decimal43_50.convertDecimal(src.getFactorOverrideElement()));
-    if (src.hasPriceOverride())
-      tgt.setPriceOverride(Money43_50.convertMoney(src.getPriceOverride()));
-    if (src.hasOverrideReason())
-      tgt.setOverrideReasonElement(String43_50.convertString(src.getOverrideReasonElement()));
+//    if (src.hasFactorOverride())
+//      tgt.setFactorOverrideElement(Decimal43_50.convertDecimal(src.getFactorOverrideElement()));
+//    if (src.hasPriceOverride())
+//      tgt.setPriceOverride(Money43_50.convertMoney(src.getPriceOverride()));
+    if (src.getOverrideReason().hasText())
+      tgt.setOverrideReasonElement(String43_50.convertString(src.getOverrideReason().getTextElement()));
     if (src.hasEnterer())
       tgt.setEnterer(Reference43_50.convertReference(src.getEnterer()));
     if (src.hasEnteredDate())
       tgt.setEnteredDateElement(DateTime43_50.convertDateTime(src.getEnteredDateElement()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReason())
       tgt.addReason(CodeableConcept43_50.convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getService()) tgt.addService(Reference43_50.convertReference(t));
+    for (CodeableReference t : src.getService()) tgt.addService(Reference43_50.convertCodeableReferenceToReference(t));
     if (src.getProductFirstRep().hasConcept())
       tgt.setProduct(CodeableConcept43_50.convertCodeableConcept(src.getProductFirstRep().getConcept()));
     if (src.getProductFirstRep().hasReference())

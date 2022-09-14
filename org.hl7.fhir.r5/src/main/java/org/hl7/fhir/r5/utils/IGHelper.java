@@ -45,7 +45,7 @@ public class IGHelper {
 
   public static String readStringParameter(ImplementationGuideDefinitionComponent ig, String name) {
     for (ImplementationGuideDefinitionParameterComponent p : ig.getParameter()) {
-      if (name == p.getCode()) {
+      if (name == p.getCode().getCode()) {
         return p.getValue();
       }
     }
@@ -59,19 +59,19 @@ public class IGHelper {
 
   public static void setParameter(ImplementationGuideDefinitionComponent ig, String name, String value) {
     for (ImplementationGuideDefinitionParameterComponent p : ig.getParameter()) {
-      if (name == p.getCode()) {
+      if (name == p.getCode().getCode()) {
         p.setValue(value);
         return;
       }
     }
     ImplementationGuideDefinitionParameterComponent p = ig.addParameter();
-    p.setCode(name);
+    p.getCode().setCode(name);
     p.setValue(value);
   }
   
   public static void addParameter(ImplementationGuideDefinitionComponent ig, String name, String value) {
     ImplementationGuideDefinitionParameterComponent p = ig.addParameter();
-    p.setCode(name);
+    p.getCode().setCode(name);
     p.setValue(value);
   }
   

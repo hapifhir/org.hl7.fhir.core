@@ -11,14 +11,21 @@ import org.hl7.fhir.exceptions.FHIRException;
 public class BaseAdvisor_40_50 extends BaseAdvisor50<org.hl7.fhir.r4.model.Extension> {
 
   private static final List<String> TestScriptIgnoredUrls = Arrays.asList("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestScript.scope");
+  private boolean produceIllegalParameters = false;
 
   public BaseAdvisor_40_50() {
+
   }
 
   public BaseAdvisor_40_50(Boolean failFast) {
     this.failFast = failFast;
   }
-  
+
+  public BaseAdvisor_40_50(Boolean failFast, Boolean produceIllegalParameters) {
+    this.failFast = failFast;
+    this.produceIllegalParameters = produceIllegalParameters;
+  }
+
 
   @Override
   public boolean ignoreExtension(@Nonnull String path,
@@ -30,4 +37,7 @@ public class BaseAdvisor_40_50 extends BaseAdvisor50<org.hl7.fhir.r4.model.Exten
       return false;
   }
 
+  public boolean produceIllegalParameters() {
+    return produceIllegalParameters;
+  }
 }

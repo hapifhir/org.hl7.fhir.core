@@ -46,7 +46,7 @@ public class TypesUtilities {
 
     public String toDisplay() {
       switch (this) {
-      case DATATYPE: return "Data Type";
+      case DATATYPE: return "Datatype";
       case METADATATYPE: return "MetaDataType";
       case PRIMITIVE: return "Primitive Type";
       case SPECIAL: return "Special Type";
@@ -153,7 +153,6 @@ public class TypesUtilities {
     
     // metadata types
     res.add(new WildcardInformation("ContactDetail", TypeClassification.METADATATYPE));
-    res.add(new WildcardInformation("Contributor", TypeClassification.METADATATYPE));
     res.add(new WildcardInformation("DataRequirement", TypeClassification.METADATATYPE));
     res.add(new WildcardInformation("Expression", TypeClassification.METADATATYPE));
     res.add(new WildcardInformation("ParameterDefinition", TypeClassification.METADATATYPE));

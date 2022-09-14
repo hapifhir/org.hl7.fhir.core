@@ -64,7 +64,7 @@ public class OrganizationAffiliation40_50 {
     for (org.hl7.fhir.r4.model.Reference t : src.getHealthcareService())
       tgt.addHealthcareService(Reference40_50.convertReference(t));
     for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom())
-      tgt.addTelecom(ContactPoint40_50.convertContactPoint(t));
+      tgt.getContactFirstRep().addTelecom(ContactPoint40_50.convertContactPoint(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getEndpoint()) tgt.addEndpoint(Reference40_50.convertReference(t));
     return tgt;
   }
@@ -92,8 +92,9 @@ public class OrganizationAffiliation40_50 {
     for (org.hl7.fhir.r5.model.Reference t : src.getLocation()) tgt.addLocation(Reference40_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getHealthcareService())
       tgt.addHealthcareService(Reference40_50.convertReference(t));
-    for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom())
-      tgt.addTelecom(ContactPoint40_50.convertContactPoint(t));
+    for (org.hl7.fhir.r5.model.ExtendedContactDetail t1 : src.getContact())
+      for (org.hl7.fhir.r5.model.ContactPoint t : t1.getTelecom())
+        tgt.addTelecom(ContactPoint40_50.convertContactPoint(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getEndpoint()) tgt.addEndpoint(Reference40_50.convertReference(t));
     return tgt;
   }

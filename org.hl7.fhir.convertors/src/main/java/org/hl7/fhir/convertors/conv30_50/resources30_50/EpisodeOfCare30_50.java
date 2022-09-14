@@ -35,7 +35,7 @@ public class EpisodeOfCare30_50 {
       tgt.addReferralRequest(Reference30_50.convertReference(t));
     if (src.hasCareManager())
       tgt.setCareManager(Reference30_50.convertReference(src.getCareManager()));
-    for (org.hl7.fhir.r5.model.Reference t : src.getTeam()) tgt.addTeam(Reference30_50.convertReference(t));
+    for (org.hl7.fhir.r5.model.Reference t : src.getCareTeam()) tgt.addTeam(Reference30_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getAccount()) tgt.addAccount(Reference30_50.convertReference(t));
     return tgt;
   }
@@ -65,7 +65,7 @@ public class EpisodeOfCare30_50 {
       tgt.addReferralRequest(Reference30_50.convertReference(t));
     if (src.hasCareManager())
       tgt.setCareManager(Reference30_50.convertReference(src.getCareManager()));
-    for (org.hl7.fhir.dstu3.model.Reference t : src.getTeam()) tgt.addTeam(Reference30_50.convertReference(t));
+    for (org.hl7.fhir.dstu3.model.Reference t : src.getTeam()) tgt.addCareTeam(Reference30_50.convertReference(t));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getAccount()) tgt.addAccount(Reference30_50.convertReference(t));
     return tgt;
   }
@@ -166,7 +166,7 @@ public class EpisodeOfCare30_50 {
     if (src == null) return null;
     org.hl7.fhir.r5.model.EpisodeOfCare.DiagnosisComponent tgt = new org.hl7.fhir.r5.model.EpisodeOfCare.DiagnosisComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
-    if (src.hasCondition()) tgt.setCondition(Reference30_50.convertReference(src.getCondition()));
+    if (src.hasCondition()) tgt.setCondition(Reference30_50.convertReferenceToCodableReference(src.getCondition()));
     if (src.hasRole()) tgt.setRole(CodeableConcept30_50.convertCodeableConcept(src.getRole()));
     if (src.hasRank()) tgt.setRankElement(PositiveInt30_50.convertPositiveInt(src.getRankElement()));
     return tgt;
@@ -176,7 +176,7 @@ public class EpisodeOfCare30_50 {
     if (src == null) return null;
     org.hl7.fhir.dstu3.model.EpisodeOfCare.DiagnosisComponent tgt = new org.hl7.fhir.dstu3.model.EpisodeOfCare.DiagnosisComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
-    if (src.hasCondition()) tgt.setCondition(Reference30_50.convertReference(src.getCondition()));
+    if (src.hasCondition()) tgt.setCondition(Reference30_50.convertCodeableReferenceToReference(src.getCondition()));
     if (src.hasRole()) tgt.setRole(CodeableConcept30_50.convertCodeableConcept(src.getRole()));
     if (src.hasRank()) tgt.setRankElement(PositiveInt30_50.convertPositiveInt(src.getRankElement()));
     return tgt;

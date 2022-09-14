@@ -565,6 +565,28 @@ public class TypeConvertor {
     } else
       throw new FHIRException("Unable to convert a "+b.getClass().getName()+" to XHtml string");
   }
-  
 
+
+  public static VirtualServiceDetail castToVirtualServiceDetail(Base b) throws FHIRException {
+    if (b instanceof VirtualServiceDetail)
+      return (VirtualServiceDetail) b;
+    else
+      throw new FHIRException("Unable to convert a "+b.getClass().getName()+" to a VirtualServiceDetail");
+  }
+
+
+  public static Availability castToAvailability(Base b) throws FHIRException {
+    if (b instanceof Availability)
+      return (Availability) b;
+    else
+      throw new FHIRException("Unable to convert a "+b.getClass().getName()+" to a Availability");
+  }
+
+
+  public static MonetaryComponent castToMonetaryComponent(Base b) throws FHIRException {
+    if (b instanceof MonetaryComponent)
+      return (MonetaryComponent) b;
+    else
+      throw new FHIRException("Unable to convert a "+b.getClass().getName()+" to a MonetaryComponent");
+  }
 }

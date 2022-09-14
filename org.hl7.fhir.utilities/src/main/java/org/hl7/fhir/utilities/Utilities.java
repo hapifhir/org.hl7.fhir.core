@@ -1745,4 +1745,13 @@ public class Utilities {
     return Utilities.padLeft(Long.toString(i), ' ', len);
   }
 
+  public static Object makeSingleLine(String text) {
+    text = text.replace("\r", " ");
+    text = text.replace("\n", " ");
+    while (text.contains("  ")) {
+      text = text.replace("  ", " ");
+    }
+    return text;
+  }
+
 }

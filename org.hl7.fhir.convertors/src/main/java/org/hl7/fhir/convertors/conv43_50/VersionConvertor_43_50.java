@@ -1,5 +1,7 @@
 package org.hl7.fhir.convertors.conv43_50;
 
+import javax.annotation.Nonnull;
+
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_43_50;
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.BackboneElement43_50;
@@ -7,8 +9,6 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.Element43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.Type43_50;
 import org.hl7.fhir.convertors.conv43_50.resources43_50.Resource43_50;
 import org.hl7.fhir.exceptions.FHIRException;
-
-import javax.annotation.Nonnull;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

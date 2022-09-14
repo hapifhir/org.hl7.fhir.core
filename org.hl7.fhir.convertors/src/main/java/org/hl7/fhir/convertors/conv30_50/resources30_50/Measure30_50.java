@@ -8,11 +8,17 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.UsageContext30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Period30_50;
-import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.*;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Boolean30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Date30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.DateTime30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.MarkDown30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Uri30_50;
 import org.hl7.fhir.dstu3.model.ContactDetail;
 import org.hl7.fhir.dstu3.model.Contributor;
 import org.hl7.fhir.dstu3.model.Contributor.ContributorType;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Measure.MeasureTermComponent;
 
 public class Measure30_50 {
 
@@ -112,7 +118,7 @@ public class Measure30_50 {
       else
         tgt.setImprovementNotation(new org.hl7.fhir.r5.model.CodeableConcept().setText(src.getImprovementNotation()));
     }
-    for (org.hl7.fhir.dstu3.model.MarkdownType m : src.getDefinition()) tgt.addDefinition(m.getValue());
+    for (org.hl7.fhir.dstu3.model.MarkdownType m : src.getDefinition()) tgt.addTerm().setDefinition(m.getValue());
     if (src.hasGuidance())
       tgt.setGuidanceElement(MarkDown30_50.convertMarkdown(src.getGuidanceElement()));
     for (org.hl7.fhir.dstu3.model.Measure.MeasureGroupComponent g : src.getGroup())
@@ -223,7 +229,8 @@ public class Measure30_50 {
         else if (cc.hasCode() && cc.getCode().equals("decrease"))
           tgt.setImprovementNotation(cc.getCode());
       }
-    for (org.hl7.fhir.r5.model.MarkdownType m : src.getDefinition()) tgt.addDefinition(m.getValue());
+    for (MeasureTermComponent t : src.getTerm())
+      tgt.getDefinition().add(MarkDown30_50.convertMarkdown(t.getDefinitionElement()));
     if (src.hasGuidance())
       tgt.setGuidanceElement(MarkDown30_50.convertMarkdown(src.getGuidanceElement()));
     for (org.hl7.fhir.r5.model.Measure.MeasureGroupComponent g : src.getGroup()) tgt.addGroup(convertMeasureGroup(g));

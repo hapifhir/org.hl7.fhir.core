@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -467,9 +467,10 @@ public class EpisodeOfCare extends DomainResource {
         /**
          * A list of conditions/problems/diagnoses that this episode of care is intended to be providing care for.
          */
-        @Child(name = "condition", type = {Condition.class}, order=1, min=1, max=1, modifier=false, summary=true)
+        @Child(name = "condition", type = {CodeableReference.class}, order=1, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Conditions/problems/diagnoses this episode of care is for", formalDefinition="A list of conditions/problems/diagnoses that this episode of care is intended to be providing care for." )
-        protected Reference condition;
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/condition-code")
+        protected CodeableReference condition;
 
         /**
          * Role that this diagnosis has within the episode of care (e.g. admission, billing, discharge …).
@@ -486,7 +487,7 @@ public class EpisodeOfCare extends DomainResource {
         @Description(shortDefinition="Ranking of the diagnosis (for each role type)", formalDefinition="Ranking of the diagnosis (for each role type)." )
         protected PositiveIntType rank;
 
-        private static final long serialVersionUID = -294944963L;
+        private static final long serialVersionUID = 1545153316L;
 
     /**
      * Constructor
@@ -498,7 +499,7 @@ public class EpisodeOfCare extends DomainResource {
     /**
      * Constructor
      */
-      public DiagnosisComponent(Reference condition) {
+      public DiagnosisComponent(CodeableReference condition) {
         super();
         this.setCondition(condition);
       }
@@ -506,12 +507,12 @@ public class EpisodeOfCare extends DomainResource {
         /**
          * @return {@link #condition} (A list of conditions/problems/diagnoses that this episode of care is intended to be providing care for.)
          */
-        public Reference getCondition() { 
+        public CodeableReference getCondition() { 
           if (this.condition == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create DiagnosisComponent.condition");
             else if (Configuration.doAutoCreate())
-              this.condition = new Reference(); // cc
+              this.condition = new CodeableReference(); // cc
           return this.condition;
         }
 
@@ -522,7 +523,7 @@ public class EpisodeOfCare extends DomainResource {
         /**
          * @param value {@link #condition} (A list of conditions/problems/diagnoses that this episode of care is intended to be providing care for.)
          */
-        public DiagnosisComponent setCondition(Reference value) { 
+        public DiagnosisComponent setCondition(CodeableReference value) { 
           this.condition = value;
           return this;
         }
@@ -598,7 +599,7 @@ public class EpisodeOfCare extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("condition", "Reference(Condition)", "A list of conditions/problems/diagnoses that this episode of care is intended to be providing care for.", 0, 1, condition));
+          children.add(new Property("condition", "CodeableReference(Condition)", "A list of conditions/problems/diagnoses that this episode of care is intended to be providing care for.", 0, 1, condition));
           children.add(new Property("role", "CodeableConcept", "Role that this diagnosis has within the episode of care (e.g. admission, billing, discharge …).", 0, 1, role));
           children.add(new Property("rank", "positiveInt", "Ranking of the diagnosis (for each role type).", 0, 1, rank));
         }
@@ -606,7 +607,7 @@ public class EpisodeOfCare extends DomainResource {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -861311717: /*condition*/  return new Property("condition", "Reference(Condition)", "A list of conditions/problems/diagnoses that this episode of care is intended to be providing care for.", 0, 1, condition);
+          case -861311717: /*condition*/  return new Property("condition", "CodeableReference(Condition)", "A list of conditions/problems/diagnoses that this episode of care is intended to be providing care for.", 0, 1, condition);
           case 3506294: /*role*/  return new Property("role", "CodeableConcept", "Role that this diagnosis has within the episode of care (e.g. admission, billing, discharge …).", 0, 1, role);
           case 3492908: /*rank*/  return new Property("rank", "positiveInt", "Ranking of the diagnosis (for each role type).", 0, 1, rank);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -617,7 +618,7 @@ public class EpisodeOfCare extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -861311717: /*condition*/ return this.condition == null ? new Base[0] : new Base[] {this.condition}; // Reference
+        case -861311717: /*condition*/ return this.condition == null ? new Base[0] : new Base[] {this.condition}; // CodeableReference
         case 3506294: /*role*/ return this.role == null ? new Base[0] : new Base[] {this.role}; // CodeableConcept
         case 3492908: /*rank*/ return this.rank == null ? new Base[0] : new Base[] {this.rank}; // PositiveIntType
         default: return super.getProperty(hash, name, checkValid);
@@ -629,7 +630,7 @@ public class EpisodeOfCare extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -861311717: // condition
-          this.condition = TypeConvertor.castToReference(value); // Reference
+          this.condition = TypeConvertor.castToCodeableReference(value); // CodeableReference
           return value;
         case 3506294: // role
           this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -645,7 +646,7 @@ public class EpisodeOfCare extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("condition")) {
-          this.condition = TypeConvertor.castToReference(value); // Reference
+          this.condition = TypeConvertor.castToCodeableReference(value); // CodeableReference
         } else if (name.equals("role")) {
           this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("rank")) {
@@ -669,7 +670,7 @@ public class EpisodeOfCare extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -861311717: /*condition*/ return new String[] {"Reference"};
+        case -861311717: /*condition*/ return new String[] {"CodeableReference"};
         case 3506294: /*role*/ return new String[] {"CodeableConcept"};
         case 3492908: /*rank*/ return new String[] {"positiveInt"};
         default: return super.getTypesForProperty(hash, name);
@@ -680,7 +681,7 @@ public class EpisodeOfCare extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("condition")) {
-          this.condition = new Reference();
+          this.condition = new CodeableReference();
           return this.condition;
         }
         else if (name.equals("role")) {
@@ -784,10 +785,10 @@ public class EpisodeOfCare extends DomainResource {
     protected Reference patient;
 
     /**
-     * The organization that has assumed the specific responsibilities for the specified duration.
+     * The organization that has assumed the specific responsibilities for care coordination, care delivery, or other services for the specified duration.
      */
     @Child(name = "managingOrganization", type = {Organization.class}, order=6, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Organization that assumes care", formalDefinition="The organization that has assumed the specific responsibilities for the specified duration." )
+    @Description(shortDefinition="Organization that assumes responsibility for care coordination", formalDefinition="The organization that has assumed the specific responsibilities for care coordination, care delivery, or other services for the specified duration." )
     protected Reference managingOrganization;
 
     /**
@@ -814,9 +815,9 @@ public class EpisodeOfCare extends DomainResource {
     /**
      * The list of practitioners that may be facilitating this episode of care for specific purposes.
      */
-    @Child(name = "team", type = {CareTeam.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "careTeam", type = {CareTeam.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Other practitioners facilitating this episode of care", formalDefinition="The list of practitioners that may be facilitating this episode of care for specific purposes." )
-    protected List<Reference> team;
+    protected List<Reference> careTeam;
 
     /**
      * The set of accounts that may be used for billing for this EpisodeOfCare.
@@ -825,7 +826,7 @@ public class EpisodeOfCare extends DomainResource {
     @Description(shortDefinition="The set of accounts that may be used for billing for this EpisodeOfCare", formalDefinition="The set of accounts that may be used for billing for this EpisodeOfCare." )
     protected List<Reference> account;
 
-    private static final long serialVersionUID = 202200834L;
+    private static final long serialVersionUID = -542167503L;
 
   /**
    * Constructor
@@ -1125,7 +1126,7 @@ public class EpisodeOfCare extends DomainResource {
     }
 
     /**
-     * @return {@link #managingOrganization} (The organization that has assumed the specific responsibilities for the specified duration.)
+     * @return {@link #managingOrganization} (The organization that has assumed the specific responsibilities for care coordination, care delivery, or other services for the specified duration.)
      */
     public Reference getManagingOrganization() { 
       if (this.managingOrganization == null)
@@ -1141,7 +1142,7 @@ public class EpisodeOfCare extends DomainResource {
     }
 
     /**
-     * @param value {@link #managingOrganization} (The organization that has assumed the specific responsibilities for the specified duration.)
+     * @param value {@link #managingOrganization} (The organization that has assumed the specific responsibilities for care coordination, care delivery, or other services for the specified duration.)
      */
     public EpisodeOfCare setManagingOrganization(Reference value) { 
       this.managingOrganization = value;
@@ -1250,56 +1251,56 @@ public class EpisodeOfCare extends DomainResource {
     }
 
     /**
-     * @return {@link #team} (The list of practitioners that may be facilitating this episode of care for specific purposes.)
+     * @return {@link #careTeam} (The list of practitioners that may be facilitating this episode of care for specific purposes.)
      */
-    public List<Reference> getTeam() { 
-      if (this.team == null)
-        this.team = new ArrayList<Reference>();
-      return this.team;
+    public List<Reference> getCareTeam() { 
+      if (this.careTeam == null)
+        this.careTeam = new ArrayList<Reference>();
+      return this.careTeam;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public EpisodeOfCare setTeam(List<Reference> theTeam) { 
-      this.team = theTeam;
+    public EpisodeOfCare setCareTeam(List<Reference> theCareTeam) { 
+      this.careTeam = theCareTeam;
       return this;
     }
 
-    public boolean hasTeam() { 
-      if (this.team == null)
+    public boolean hasCareTeam() { 
+      if (this.careTeam == null)
         return false;
-      for (Reference item : this.team)
+      for (Reference item : this.careTeam)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public Reference addTeam() { //3
+    public Reference addCareTeam() { //3
       Reference t = new Reference();
-      if (this.team == null)
-        this.team = new ArrayList<Reference>();
-      this.team.add(t);
+      if (this.careTeam == null)
+        this.careTeam = new ArrayList<Reference>();
+      this.careTeam.add(t);
       return t;
     }
 
-    public EpisodeOfCare addTeam(Reference t) { //3
+    public EpisodeOfCare addCareTeam(Reference t) { //3
       if (t == null)
         return this;
-      if (this.team == null)
-        this.team = new ArrayList<Reference>();
-      this.team.add(t);
+      if (this.careTeam == null)
+        this.careTeam = new ArrayList<Reference>();
+      this.careTeam.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #team}, creating it if it does not already exist {3}
+     * @return The first repetition of repeating field {@link #careTeam}, creating it if it does not already exist {3}
      */
-    public Reference getTeamFirstRep() { 
-      if (getTeam().isEmpty()) {
-        addTeam();
+    public Reference getCareTeamFirstRep() { 
+      if (getCareTeam().isEmpty()) {
+        addCareTeam();
       }
-      return getTeam().get(0);
+      return getCareTeam().get(0);
     }
 
     /**
@@ -1363,11 +1364,11 @@ public class EpisodeOfCare extends DomainResource {
         children.add(new Property("type", "CodeableConcept", "A classification of the type of episode of care; e.g. specialist referral, disease management, type of funded care.", 0, java.lang.Integer.MAX_VALUE, type));
         children.add(new Property("diagnosis", "", "The list of diagnosis relevant to this episode of care.", 0, java.lang.Integer.MAX_VALUE, diagnosis));
         children.add(new Property("patient", "Reference(Patient)", "The patient who is the focus of this episode of care.", 0, 1, patient));
-        children.add(new Property("managingOrganization", "Reference(Organization)", "The organization that has assumed the specific responsibilities for the specified duration.", 0, 1, managingOrganization));
+        children.add(new Property("managingOrganization", "Reference(Organization)", "The organization that has assumed the specific responsibilities for care coordination, care delivery, or other services for the specified duration.", 0, 1, managingOrganization));
         children.add(new Property("period", "Period", "The interval during which the managing organization assumes the defined responsibility.", 0, 1, period));
         children.add(new Property("referralRequest", "Reference(ServiceRequest)", "Referral Request(s) that are fulfilled by this EpisodeOfCare, incoming referrals.", 0, java.lang.Integer.MAX_VALUE, referralRequest));
         children.add(new Property("careManager", "Reference(Practitioner|PractitionerRole)", "The practitioner that is the care manager/care coordinator for this patient.", 0, 1, careManager));
-        children.add(new Property("team", "Reference(CareTeam)", "The list of practitioners that may be facilitating this episode of care for specific purposes.", 0, java.lang.Integer.MAX_VALUE, team));
+        children.add(new Property("careTeam", "Reference(CareTeam)", "The list of practitioners that may be facilitating this episode of care for specific purposes.", 0, java.lang.Integer.MAX_VALUE, careTeam));
         children.add(new Property("account", "Reference(Account)", "The set of accounts that may be used for billing for this EpisodeOfCare.", 0, java.lang.Integer.MAX_VALUE, account));
       }
 
@@ -1380,11 +1381,11 @@ public class EpisodeOfCare extends DomainResource {
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "A classification of the type of episode of care; e.g. specialist referral, disease management, type of funded care.", 0, java.lang.Integer.MAX_VALUE, type);
         case 1196993265: /*diagnosis*/  return new Property("diagnosis", "", "The list of diagnosis relevant to this episode of care.", 0, java.lang.Integer.MAX_VALUE, diagnosis);
         case -791418107: /*patient*/  return new Property("patient", "Reference(Patient)", "The patient who is the focus of this episode of care.", 0, 1, patient);
-        case -2058947787: /*managingOrganization*/  return new Property("managingOrganization", "Reference(Organization)", "The organization that has assumed the specific responsibilities for the specified duration.", 0, 1, managingOrganization);
+        case -2058947787: /*managingOrganization*/  return new Property("managingOrganization", "Reference(Organization)", "The organization that has assumed the specific responsibilities for care coordination, care delivery, or other services for the specified duration.", 0, 1, managingOrganization);
         case -991726143: /*period*/  return new Property("period", "Period", "The interval during which the managing organization assumes the defined responsibility.", 0, 1, period);
         case -310299598: /*referralRequest*/  return new Property("referralRequest", "Reference(ServiceRequest)", "Referral Request(s) that are fulfilled by this EpisodeOfCare, incoming referrals.", 0, java.lang.Integer.MAX_VALUE, referralRequest);
         case -1147746468: /*careManager*/  return new Property("careManager", "Reference(Practitioner|PractitionerRole)", "The practitioner that is the care manager/care coordinator for this patient.", 0, 1, careManager);
-        case 3555933: /*team*/  return new Property("team", "Reference(CareTeam)", "The list of practitioners that may be facilitating this episode of care for specific purposes.", 0, java.lang.Integer.MAX_VALUE, team);
+        case -7323378: /*careTeam*/  return new Property("careTeam", "Reference(CareTeam)", "The list of practitioners that may be facilitating this episode of care for specific purposes.", 0, java.lang.Integer.MAX_VALUE, careTeam);
         case -1177318867: /*account*/  return new Property("account", "Reference(Account)", "The set of accounts that may be used for billing for this EpisodeOfCare.", 0, java.lang.Integer.MAX_VALUE, account);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -1404,7 +1405,7 @@ public class EpisodeOfCare extends DomainResource {
         case -991726143: /*period*/ return this.period == null ? new Base[0] : new Base[] {this.period}; // Period
         case -310299598: /*referralRequest*/ return this.referralRequest == null ? new Base[0] : this.referralRequest.toArray(new Base[this.referralRequest.size()]); // Reference
         case -1147746468: /*careManager*/ return this.careManager == null ? new Base[0] : new Base[] {this.careManager}; // Reference
-        case 3555933: /*team*/ return this.team == null ? new Base[0] : this.team.toArray(new Base[this.team.size()]); // Reference
+        case -7323378: /*careTeam*/ return this.careTeam == null ? new Base[0] : this.careTeam.toArray(new Base[this.careTeam.size()]); // Reference
         case -1177318867: /*account*/ return this.account == null ? new Base[0] : this.account.toArray(new Base[this.account.size()]); // Reference
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -1445,8 +1446,8 @@ public class EpisodeOfCare extends DomainResource {
         case -1147746468: // careManager
           this.careManager = TypeConvertor.castToReference(value); // Reference
           return value;
-        case 3555933: // team
-          this.getTeam().add(TypeConvertor.castToReference(value)); // Reference
+        case -7323378: // careTeam
+          this.getCareTeam().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1177318867: // account
           this.getAccount().add(TypeConvertor.castToReference(value)); // Reference
@@ -1479,8 +1480,8 @@ public class EpisodeOfCare extends DomainResource {
           this.getReferralRequest().add(TypeConvertor.castToReference(value));
         } else if (name.equals("careManager")) {
           this.careManager = TypeConvertor.castToReference(value); // Reference
-        } else if (name.equals("team")) {
-          this.getTeam().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("careTeam")) {
+          this.getCareTeam().add(TypeConvertor.castToReference(value));
         } else if (name.equals("account")) {
           this.getAccount().add(TypeConvertor.castToReference(value));
         } else
@@ -1501,7 +1502,7 @@ public class EpisodeOfCare extends DomainResource {
         case -991726143:  return getPeriod();
         case -310299598:  return addReferralRequest(); 
         case -1147746468:  return getCareManager();
-        case 3555933:  return addTeam(); 
+        case -7323378:  return addCareTeam(); 
         case -1177318867:  return addAccount(); 
         default: return super.makeProperty(hash, name);
         }
@@ -1521,7 +1522,7 @@ public class EpisodeOfCare extends DomainResource {
         case -991726143: /*period*/ return new String[] {"Period"};
         case -310299598: /*referralRequest*/ return new String[] {"Reference"};
         case -1147746468: /*careManager*/ return new String[] {"Reference"};
-        case 3555933: /*team*/ return new String[] {"Reference"};
+        case -7323378: /*careTeam*/ return new String[] {"Reference"};
         case -1177318867: /*account*/ return new String[] {"Reference"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -1564,8 +1565,8 @@ public class EpisodeOfCare extends DomainResource {
           this.careManager = new Reference();
           return this.careManager;
         }
-        else if (name.equals("team")) {
-          return addTeam();
+        else if (name.equals("careTeam")) {
+          return addCareTeam();
         }
         else if (name.equals("account")) {
           return addAccount();
@@ -1617,10 +1618,10 @@ public class EpisodeOfCare extends DomainResource {
             dst.referralRequest.add(i.copy());
         };
         dst.careManager = careManager == null ? null : careManager.copy();
-        if (team != null) {
-          dst.team = new ArrayList<Reference>();
-          for (Reference i : team)
-            dst.team.add(i.copy());
+        if (careTeam != null) {
+          dst.careTeam = new ArrayList<Reference>();
+          for (Reference i : careTeam)
+            dst.careTeam.add(i.copy());
         };
         if (account != null) {
           dst.account = new ArrayList<Reference>();
@@ -1644,7 +1645,7 @@ public class EpisodeOfCare extends DomainResource {
            && compareDeep(type, o.type, true) && compareDeep(diagnosis, o.diagnosis, true) && compareDeep(patient, o.patient, true)
            && compareDeep(managingOrganization, o.managingOrganization, true) && compareDeep(period, o.period, true)
            && compareDeep(referralRequest, o.referralRequest, true) && compareDeep(careManager, o.careManager, true)
-           && compareDeep(team, o.team, true) && compareDeep(account, o.account, true);
+           && compareDeep(careTeam, o.careTeam, true) && compareDeep(account, o.account, true);
       }
 
       @Override
@@ -1660,7 +1661,7 @@ public class EpisodeOfCare extends DomainResource {
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, statusHistory
           , type, diagnosis, patient, managingOrganization, period, referralRequest, careManager
-          , team, account);
+          , careTeam, account);
       }
 
   @Override
@@ -1695,21 +1696,67 @@ public class EpisodeOfCare extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_CARE_MANAGER = new ca.uhn.fhir.model.api.Include("EpisodeOfCare:care-manager").toLocked();
 
  /**
-   * Search parameter: <b>condition</b>
+   * Search parameter: <b>condition-concept</b>
    * <p>
-   * Description: <b>Conditions/problems/diagnoses this episode of care is for</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>EpisodeOfCare.diagnosis.condition</b><br>
+   * Description: <b>Conditions/problems/diagnoses this episode of care is for (coded)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>EpisodeOfCare.diagnosis.condition.concept</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="condition", path="EpisodeOfCare.diagnosis.condition", description="Conditions/problems/diagnoses this episode of care is for", type="reference", target={Condition.class } )
+  @SearchParamDefinition(name="condition-concept", path="EpisodeOfCare.diagnosis.condition.concept", description="Conditions/problems/diagnoses this episode of care is for (coded)", type="token" )
+  public static final String SP_CONDITION_CONCEPT = "condition-concept";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>condition-concept</b>
+   * <p>
+   * Description: <b>Conditions/problems/diagnoses this episode of care is for (coded)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>EpisodeOfCare.diagnosis.condition.concept</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONDITION_CONCEPT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONDITION_CONCEPT);
+
+ /**
+   * Search parameter: <b>condition-reference</b>
+   * <p>
+   * Description: <b>Conditions/problems/diagnoses this episode of care is for (resource reference)</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>EpisodeOfCare.diagnosis.condition.reference</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="condition-reference", path="EpisodeOfCare.diagnosis.condition.reference", description="Conditions/problems/diagnoses this episode of care is for (resource reference)", type="reference" )
+  public static final String SP_CONDITION_REFERENCE = "condition-reference";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>condition-reference</b>
+   * <p>
+   * Description: <b>Conditions/problems/diagnoses this episode of care is for (resource reference)</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>EpisodeOfCare.diagnosis.condition.reference</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam CONDITION_REFERENCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_CONDITION_REFERENCE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>EpisodeOfCare:condition-reference</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_CONDITION_REFERENCE = new ca.uhn.fhir.model.api.Include("EpisodeOfCare:condition-reference").toLocked();
+
+ /**
+   * Search parameter: <b>condition</b>
+   * <p>
+   * Description: <b>Conditions/problems/diagnoses this episode of care is for (legacy)</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>EpisodeOfCare.diagnosis.condition.reference</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="condition", path="EpisodeOfCare.diagnosis.condition.reference", description="Conditions/problems/diagnoses this episode of care is for (legacy)", type="reference" )
   public static final String SP_CONDITION = "condition";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>condition</b>
    * <p>
-   * Description: <b>Conditions/problems/diagnoses this episode of care is for</b><br>
+   * Description: <b>Conditions/problems/diagnoses this episode of care is for (legacy)</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>EpisodeOfCare.diagnosis.condition</b><br>
+   * Path: <b>EpisodeOfCare.diagnosis.condition.reference</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam CONDITION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_CONDITION);
@@ -1964,7 +2011,7 @@ public class EpisodeOfCare extends DomainResource {
 * [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
 * [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
 * [MedicationUsage](medicationusage.html): Returns statements for a specific patient.
-* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement
+* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement
 * [Observation](observation.html): The subject that the observation is about (if patient)
 * [Procedure](procedure.html): Search by subject - a patient
 * [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
@@ -1973,10 +2020,10 @@ public class EpisodeOfCare extends DomainResource {
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
+  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={BiologicallyDerivedProduct.class, Device.class, Group.class, Location.class, Medication.class, NutritionProduct.class, Organization.class, Patient.class, Practitioner.class, Procedure.class, Substance.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
@@ -2008,7 +2055,7 @@ public class EpisodeOfCare extends DomainResource {
 * [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
 * [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
 * [MedicationUsage](medicationusage.html): Returns statements for a specific patient.
-* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement
+* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement
 * [Observation](observation.html): The subject that the observation is about (if patient)
 * [Procedure](procedure.html): Search by subject - a patient
 * [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
@@ -2017,7 +2064,7 @@ public class EpisodeOfCare extends DomainResource {
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);

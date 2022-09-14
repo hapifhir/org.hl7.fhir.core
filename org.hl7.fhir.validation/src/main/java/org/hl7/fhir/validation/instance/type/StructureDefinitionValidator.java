@@ -149,7 +149,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       addCharacteristics(tcharacteristics, tc);
       characteristics.addAll(tcharacteristics);
       if (type.hasChildren("targetProfile")) {
-        rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), tcharacteristics.contains("has-target") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "targetProfile");
+        rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), tcharacteristics.contains("has-target") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "targetProfile", tc);
       }
       // check the stated profile - must be a constraint on the type 
       if (snapshot || sd != null) {
@@ -165,7 +165,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     }
     if (element.hasChild("binding")) {
       if (!typeCodes.isEmpty()) {
-        rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("can-bind") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "Binding");
+        rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("can-bind") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "Binding", typeCodes);
       }
       Element binding = element.getNamedChild("binding");
       validateBinding(errors, binding, stack.push(binding, -1, null, null), typeCodes, snapshot, element.getNamedChildValue("path"));
@@ -176,22 +176,22 @@ public class StructureDefinitionValidator extends BaseValidator {
     }
     if (!typeCodes.isEmpty()) {
       if (element.hasChild("maxLength")) {
-        rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-length") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "MaxLength");      
+        rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-length") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "MaxLength", typeCodes);      
       }
       if (element.hasExtension(ToolingExtensions.EXT_MIN_LENGTH)) {
-        rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-length") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "MinLength Extension");      
+        rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-length") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "MinLength Extension", typeCodes);      
       }
       if (element.hasChild("minValue")) {
-        rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-range") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "MinValue");      
+        rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-range") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "MinValue", typeCodes);      
       }
       if (element.hasChild("maxValue")) {
-        rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-range") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "MaxValue");      
+        rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-range") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "MaxValue", typeCodes);      
       }
       if (element.hasExtension(ToolingExtensions.EXT_MAX_DECIMALS)) {
-        rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("is-continuous") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "Max Decimal Places Extension");      
+        rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("is-continuous") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "Max Decimal Places Extension", typeCodes);      
       }
       if (element.hasExtension(ToolingExtensions.EXT_MAX_SIZE)) {
-        rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-size") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "Max Size");      
+        rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-size") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "Max Size", typeCodes);      
       }
     }
     // in a snapshot, we validate that fixedValue, pattern, and defaultValue, if present, are all of the right type
@@ -224,10 +224,8 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
       }
       // if we see fixed[x] or pattern[x] applied to a repeating element, we'll give the user a hint
-      
     }
   }
-  
   
   private boolean addCharacteristics(Set<String> set, String tc) {
     switch (tc) {
@@ -237,7 +235,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     case "decimal" :return  addCharacteristicsForType(set, "has-range", "is-continuous", "has-length");
     case "base64Binary" : return addCharacteristicsForType(set, "has-size");
     case "instant" : return addCharacteristicsForType(set, "has-range", "is-continuous", "has-length");
-    case "string" : return addCharacteristicsForType(set, "has-length", "do-translations");
+    case "string" : return addCharacteristicsForType(set, "has-length", "do-translations", "can-bind");
     case "uri" : return addCharacteristicsForType(set, "has-length", "can-bind");
     case "date" :return  addCharacteristicsForType(set, "has-range", "has-length");
     case "dateTime" : return addCharacteristicsForType(set, "has-range", "is-continuous", "has-length");
@@ -245,12 +243,13 @@ public class StructureDefinitionValidator extends BaseValidator {
     case "canonical" :return  addCharacteristicsForType(set, "has-target", "has-length");
     case "code" :return  addCharacteristicsForType(set, "has-length", "can-bind");
     case "id" :return  addCharacteristicsForType(set, "has-length");
-    case "markdown" :return  addCharacteristicsForType(set, "do-translations");
+    case "markdown" :return  addCharacteristicsForType(set, "do-translations", "has-length");
     case "oid" :return  addCharacteristicsForType(set, "has-length", "can-bind");
     case "positiveInt" :return  addCharacteristicsForType(set, "has-range", "has-length");
     case "unsignedInt" :return  addCharacteristicsForType(set, "has-range", "has-length");
     case "url" :return  addCharacteristicsForType(set, "has-length", "can-bind");
     case "uuid" :return  addCharacteristicsForType(set, "has-length", "can-bind");
+    case "xhtml" :return  addCharacteristicsForType(set);
     case "Address" :return  addCharacteristicsForType(set, "do-translations");
     case "Age" : return addCharacteristicsForType(set, "has-range", "is-continuous");
     case "Annotation" :return  addCharacteristicsForType(set);
@@ -285,12 +284,24 @@ public class StructureDefinitionValidator extends BaseValidator {
     case "Dosage" : return addCharacteristicsForType(set);
     case "Meta" :return  addCharacteristicsForType(set);
     case "Resource" :return  addCharacteristicsForType(set);
-    case "Extension" :return  addCharacteristicsForType(set);
+    case "Extension" :return  addCharacteristicsForType(set, "can-bind");
     case "Narrative" :return  addCharacteristicsForType(set);
     case "Element" :return  addCharacteristicsForType(set);
+    case "MoneyQuantity" :return  addCharacteristicsForType(set);
+    case "SimpleQuantity" :return  addCharacteristicsForType(set);
+    case "MarketingStatus" :return  addCharacteristicsForType(set);
+    case "ExtendedContactDetail" :return  addCharacteristicsForType(set);
+    case "VirtualServiceDetail" :return  addCharacteristicsForType(set);
+    case "Availability" :return  addCharacteristicsForType(set);
+    case "MonetaryComponent" :return  addCharacteristicsForType(set);
+    case "ElementDefinition" :return  addCharacteristicsForType(set);
+
     case "BackboneElement" :return  addCharacteristicsForType(set);
     default:
-      throw new Error("Unhandled data type in addCharacterstics: "+tc);
+      if (!context.getResourceNames().contains(tc)) {
+        System.out.println("Unhandled data type in addCharacteristics: "+tc);        
+      }
+      return addCharacteristicsForType(set);
     }
   }
 
