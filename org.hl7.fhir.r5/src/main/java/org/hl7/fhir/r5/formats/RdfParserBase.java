@@ -122,10 +122,10 @@ public abstract class RdfParserBase extends ParserBase implements IParser  {
 			return;
 		if ("http://snomed.info/sct".equals(element.getSystem())) {
 			t.prefix("sct", "http://snomed.info/sct/");
-			t.predicate("a", "sct:"+element.getCode());
+			t.predicate("a", "sct:"+element.getCode(), false);
 		} else if ("http://snomed.info/sct".equals(element.getSystem())) {
 			t.prefix("loinc", "http://loinc.org/rdf#");
-			t.predicate("a", "loinc:"+element.getCode());
+			t.predicate("a", "loinc:"+element.getCode(), false);
 		}  
 	}
 
