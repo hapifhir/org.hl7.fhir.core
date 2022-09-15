@@ -134,7 +134,7 @@ public class DataRenderer extends Renderer {
       }
   
       // 2. markdown
-      String s = getContext().getMarkdown().process(Utilities.escapeXml(text), "narrative generator");
+      String s = getContext().getMarkdown().process(text, "narrative generator");
       XhtmlParser p = new XhtmlParser();
       XhtmlNode m;
       try {
