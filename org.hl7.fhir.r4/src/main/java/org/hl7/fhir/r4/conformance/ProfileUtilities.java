@@ -103,6 +103,7 @@ import org.hl7.fhir.r4.utils.formats.XLSXWriter;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
@@ -776,7 +777,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           if (typeList.get(0).type != null) {
             // this is the short cut method, we've just dived in and specified a type slice. 
             // in R3 (and unpatched R4, as a workaround right now...
-            if (!FHIRVersion.isR4Plus(context.getVersion()) || !newSlicingProcessing) { // newSlicingProcessing is a work around for editorial loop dependency
+            if (!VersionUtilities.isR4Plus(context.getVersion()) || !newSlicingProcessing) { // newSlicingProcessing is a work around for editorial loop dependency
               // we insert a cloned element with the right types at the start of the diffMatches
               ElementDefinition ed = new ElementDefinition();
               ed.setPath(determineTypeSlicePath(diffMatches.get(0).getPath(), cpath));
