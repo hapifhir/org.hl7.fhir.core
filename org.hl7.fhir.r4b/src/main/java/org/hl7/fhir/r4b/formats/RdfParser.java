@@ -242,7 +242,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDataType(Complex t, String parentType, String name, DataType element, int index) {
-    composeDataType(t, parentType, name, element, index);
+    composeElement(t, parentType, name, element, index);
   }
 
 
