@@ -803,8 +803,10 @@ public class XhtmlParser {
           readChar();
           if (peekChar() == '>') {
             done = true;
-          } else
-            s.append("--");
+          } else {
+            pushChar('-');
+            s.append("-");
+          }
         } else 
           s.append('-');
       } else if (doctypeEntities && c == ']') {
