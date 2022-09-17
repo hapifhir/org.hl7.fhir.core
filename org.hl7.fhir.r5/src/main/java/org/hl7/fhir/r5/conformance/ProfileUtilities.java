@@ -5218,8 +5218,8 @@ public class ProfileUtilities extends TranslatingUtilities {
           for (ElementDefinitionConstraintComponent inv : definition.getConstraint()) {
             if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
             c.getPieces().add(checkForNoChange(inv, gen.new Piece(null, inv.getKey()+": ", null).addStyle("font-weight:bold")));
-            if (inv.getHumanElement().hasExtension("http://hl7.org/fhir/StructureDefinition/rendering-markdown")) {
-              c.addMarkdown(inv.getHumanElement().getExtensionString("http://hl7.org/fhir/StructureDefinition/rendering-markdown"));
+            if (inv.getHumanElement().hasExtension(ToolingExtensions.EXT_REND_MD)) {
+              c.addMarkdown(inv.getHumanElement().getExtensionString(ToolingExtensions.EXT_REND_MD));
             } else {
               c.getPieces().add(checkForNoChange(inv, gen.new Piece(null, inv.getHuman(), null)));
             }
