@@ -80,7 +80,7 @@ public class RdfParser extends RdfParserBase {
   protected void composeInteger64(Complex parent, String parentType, String name, Integer64Type value, int index) {
     if (value == null)
       return;
-    Complex t = parent.predicate("fhir:"+name), index > -1;
+    Complex t = parent.predicate("fhir:"+name, index > -1);
     t.predicate("fhir:v", ttlLiteral(value.asStringValue()), false);
     composeElement(t, parentType, name, value, index);
   }
