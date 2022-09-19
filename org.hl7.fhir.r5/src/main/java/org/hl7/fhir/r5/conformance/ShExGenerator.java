@@ -96,6 +96,9 @@ public class ShExGenerator {
                   "\n    $elements$" +
                   "\n    fhir:index xsd:integer?                 # Relative position in a list\n}\n";
 
+  // Base DataTypes
+  private List<String> baseDataTypes = Arrays.asList("DataType", "PrimitiveType");
+
   // Resource Definition
   //      an open shape of type Resource.  Used when completeModel = false.
   private static String RESOURCE_SHAPE_TEMPLATE =
@@ -347,7 +350,16 @@ public class ShExGenerator {
       shape_defn = tmplt(RESOURCE_SHAPE_TEMPLATE);
       known_resources.add(sd.getName());
     } else {
-      shape_defn = tmplt(SHAPE_DEFINITION_TEMPLATE).add("id", sd.getId());
+        String sId = sd.getId();
+        if (sd.hasBaseDefinition()){
+          String bd = sd.getBaseDefinition();
+          String[] els = bd.split("/");
+          bd = els[els.length - 1];
+          if (bd != null && !bd.isEmpty() && !baseDataTypes.contains(bd))
+            sId += "> extends @<" + bd;
+      }
+
+      shape_defn = tmplt(SHAPE_DEFINITION_TEMPLATE).add("id", sId);
       if (sd.getKind().equals(StructureDefinition.StructureDefinitionKind.RESOURCE)) {
 //              || sd.getKind().equals(StructureDefinition.StructureDefinitionKind.COMPLEXTYPE)) {
         known_resources.add(sd.getName());
@@ -379,10 +391,12 @@ public class ShExGenerator {
     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
       if(!ed.getPath().contains("."))
         root_comment = ed.getShort();
-      else if (StringUtils.countMatches(ed.getPath(), ".") == 1 && !"0".equals(ed.getMax())) {
+      else if ((StringUtils.countMatches(ed.getPath(), ".") == 1 && !"0".equals(ed.getMax())) &&
+              (ed.hasBase() && ed.getBase().getPath().startsWith(sdn))){
         elements.add(genElementDefinition(sd, ed));
       }
     }
+
     shape_defn.add("elements", StringUtils.join(elements, "\n"));
     shape_defn.add("comment", root_comment == null? " " : "# " + root_comment);
     return shape_defn.render();
@@ -397,8 +411,9 @@ public class ShExGenerator {
     StringBuilder itDefs = new StringBuilder();
     while(emittedInnerTypes.size() < innerTypes.size()) {
       for (Pair<StructureDefinition, ElementDefinition> it : new HashSet<Pair<StructureDefinition, ElementDefinition>>(innerTypes)) {
-        if (!emittedInnerTypes.contains(it)) {
-          itDefs.append("\n").append(genInnerTypeDef(it.getLeft(), it.getRight()));
+        if ((!emittedInnerTypes.contains(it)) &&
+          (it.getRight().hasBase() && it.getRight().getBase().getPath().startsWith(it.getLeft().getName()))){
+            itDefs.append("\n").append(genInnerTypeDef(it.getLeft(), it.getRight()));
           emittedInnerTypes.add(it);
         }
       }
@@ -483,7 +498,15 @@ public class ShExGenerator {
    */
   private String genElementDefinition(StructureDefinition sd, ElementDefinition ed) {
     String id = ed.hasBase() ? ed.getBase().getPath() : ed.getPath();
+
     String shortId = id.substring(id.lastIndexOf(".") + 1);
+
+    if ((ed.getType().size() > 0) &&
+      (ed.getType().get(0).getCode().startsWith(Constants.NS_SYSTEM_TYPE))) {
+      //id = id.substring(0, id.lastIndexOf(".")) + "v";
+      shortId = "v";
+    }
+
     String defn;
     ST element_def;
     String card = ("*".equals(ed.getMax()) ? (ed.getMin() == 0 ? "*" : "+") : (ed.getMin() == 0 ? "?" : "")) + ";";
@@ -493,7 +516,8 @@ public class ShExGenerator {
       element_def.add("id", "");
     } else {
       element_def = tmplt(ELEMENT_TEMPLATE);
-      element_def.add("id", "fhir:" + (id.charAt(0) == id.toLowerCase().charAt(0)? shortId : id) + " ");
+      //element_def.add("id", "fhir:" + (id.charAt(0) == id.toLowerCase().charAt(0)? shortId : id) + " ");
+      element_def.add("id", "fhir:" + shortId + " ");
     }
 
     List<ElementDefinition> children = profileUtilities.getChildList(sd, ed);
@@ -501,7 +525,7 @@ public class ShExGenerator {
       innerTypes.add(new ImmutablePair<StructureDefinition, ElementDefinition>(sd, ed));
       defn = simpleElement(sd, ed, id);
     } else if(id.endsWith("[x]")) {
-      defn = genChoiceTypes(sd, ed, id);
+      defn = genChoiceTypes(sd, ed, shortId);
     }
     else if (ed.getType().size() == 1) {
       // Single entry
@@ -523,7 +547,7 @@ public class ShExGenerator {
       // String typ = id.substring(0, id.indexOf(".") + 1) + ed.getContentReference().substring(1);
       defn = simpleElement(sd, ed, refPath);
     } else if(id.endsWith("[x]")) {
-      defn = genChoiceTypes(sd, ed, id);
+      defn = genChoiceTypes(sd, ed, shortId);
     } else {
       // TODO: Refactoring required here
       element_def = genAlternativeTypes(ed, id, shortId);
@@ -640,7 +664,7 @@ public class ShExGenerator {
     case "integer64" : 
       return "xsd:long";
     case "decimal" : 
-      return "xsd:decimal, xsd:double";
+      return "xsd:decimal OR xsd:double";
     case "base64Binary" : 
       return "xsd:base64Binary";
     case "instant" : 
@@ -650,9 +674,9 @@ public class ShExGenerator {
     case "uri" : 
       return "xsd:anyURI";
     case "date" : 
-      return "xsd:gYear, xsd:gYearMonth, xsd:date";
+      return "xsd:gYear OR xsd:gYearMonth OR xsd:date";
     case "dateTime" : 
-      return "xsd:gYear, xsd:gYearMonth, xsd:date, xsd:dateTime";
+      return "xsd:gYear OR xsd:gYearMonth OR xsd:date OR xsd:dateTime";
     case "time" : 
       return "xsd:time";
     case "code" : 
@@ -693,7 +717,7 @@ public class ShExGenerator {
     for(ElementDefinition.TypeRefComponent typ : ed.getType())  {
       altEntries.add(genAltEntry(id, typ));
     }
-    shex_alt.add("altEntries", StringUtils.join(altEntries, " OR\n    "));
+    shex_alt.add("altEntries", StringUtils.join(altEntries, " OR \n    "));
     return shex_alt;
   }
 
@@ -726,7 +750,8 @@ public class ShExGenerator {
     for(ElementDefinition.TypeRefComponent typ : ed.getType())
       choiceEntries.add(genChoiceEntry(sd, ed, id, base, typ));
 
-    return StringUtils.join(choiceEntries, " |\n");
+    //return StringUtils.join(choiceEntries, " |\n");
+    return StringUtils.join(choiceEntries, " OR \n");
   }
 
   /**
@@ -762,7 +787,8 @@ public class ShExGenerator {
 
     List<String> elements = new ArrayList<String>();
     for (ElementDefinition child: profileUtilities.getChildList(sd, path, null))
-      elements.add(genElementDefinition(sd, child));
+      if (child.hasBase() && child.getBase().getPath().startsWith(sd.getName()))
+          elements.add(genElementDefinition(sd, child));
 
     element_reference.add("elements", StringUtils.join(elements, "\n"));
     return element_reference.render();
