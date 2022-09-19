@@ -71,6 +71,10 @@ public class Turtle {
 	public class Complex extends Triple {
 		protected List<Predicate> predicates = new ArrayList<Predicate>();
 
+		public Complex predicate(String predicate, String object) {
+			return predicate(predicate, object, false);
+		}
+		
 		public Complex predicate(String predicate, String object, boolean asList) {
 			predicateSet.add(predicate);
 			objectSet.add(object);
@@ -82,8 +86,12 @@ public class Turtle {
       objectSet.add(object);
       return linkedPredicate(predicate, new StringType(object), link);
     }
+    
+    public Complex predicate(String predicate, Triple object) {
+    	return predicate(predicate, object, false);
+    }
 
-		public Complex predicate(String predicate, Triple object, boolean asList) {
+	public Complex predicate(String predicate, Triple object, boolean asList) {
       Predicate p = getPredicate(predicate);
       if (p == null) {
         p = new Predicate();
@@ -96,7 +104,7 @@ public class Turtle {
 				objectSet.add(((StringType) object).value);
       p.objects.add(object);
 			return this;
-		}
+	}
 
     protected Predicate getPredicate(String predicate) {
       for (Predicate p : predicates)
@@ -119,13 +127,17 @@ public class Turtle {
       p.objects.add(object);
       return this;
     }
+    
+    public Complex predicate(String predicate) {
+		return predicate(predicate, false);
+	}
 
-		public Complex predicate(String predicate, boolean asList) {
-			predicateSet.add(predicate);
-			Complex c = complex();
-			predicate(predicate, c, asList);
-			return c;
-		}
+	public Complex predicate(String predicate, boolean asList) {
+		predicateSet.add(predicate);
+		Complex c = complex();
+		predicate(predicate, c, asList);
+		return c;
+	}
 
     public Complex linkedPredicate(String predicate, String link) {
       predicateSet.add(predicate);
