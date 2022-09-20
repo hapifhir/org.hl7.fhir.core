@@ -97,6 +97,9 @@ public class CliContext {
   @JsonProperty("crumbTrails")
   private boolean crumbTrails = false;
   
+  @JsonProperty("forPublication")
+  private boolean forPublication = false;
+  
   @JsonProperty("allowExampleUrls")
   private boolean allowExampleUrls = false;
   
@@ -548,6 +551,14 @@ public class CliContext {
     this.crumbTrails = crumbTrails;
   }
 
+  public boolean isForPublication() {
+    return forPublication;
+  }
+
+  public void setForPublication(boolean forPublication) {
+    this.forPublication = forPublication;
+  }
+
   public boolean isAllowExampleUrls() {
     return allowExampleUrls;
   }
@@ -623,6 +634,7 @@ public class CliContext {
       Objects.equals(profiles, that.profiles) &&
       Objects.equals(sources, that.sources) &&
       Objects.equals(crumbTrails, that.crumbTrails) &&
+      Objects.equals(forPublication, that.forPublication) &&
       Objects.equals(allowExampleUrls, that.allowExampleUrls) &&
       Objects.equals(showTimes, that.showTimes) &&
       mode == that.mode &&
@@ -636,7 +648,7 @@ public class CliContext {
   public int hashCode() {
     return Objects.hash(doNative, extensions, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, 
             noExtensibleBindingMessages, noInvariants, wantInvariantsInMessages, map, output, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, fhirpath, snomedCT,
-            targetVer, igs, questionnaireMode, level, profiles, sources, mode, locale, locations, crumbTrails, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars);
+            targetVer, igs, questionnaireMode, level, profiles, sources, mode, locale, locations, crumbTrails, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars);
   }
 
   @Override
@@ -674,6 +686,7 @@ public class CliContext {
       ", mode=" + mode +
       ", securityChecks=" + securityChecks +
       ", crumbTrails=" + crumbTrails +
+      ", forPublication=" + forPublication +
       ", outputStyle=" + outputStyle +
       ", jurisdiction=" + jurisdiction +
       ", allowExampleUrls=" + allowExampleUrls +
