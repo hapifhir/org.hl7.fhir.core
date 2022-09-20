@@ -118,7 +118,8 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     if (spd.hasModifier()) {
       tr = tbl.tr();
       tr.td().tx("Modifiers");
-      td = tr.td().tx("Allowed: ");
+      td = tr.td();
+      td.tx("Allowed: ");
       for (Enumeration<SearchModifierCode> t : spd.getModifier()) {
         td.sep(", ");
         td.tx(t.asStringValue());
@@ -127,7 +128,8 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     if (spd.hasChain()) {
       tr = tbl.tr();
       tr.td().tx("Chains");
-      td = tr.td().tx("Allowed: ");
+      td = tr.td();
+      td.tx("Allowed: ");
       for (StringType t : spd.getChain()) {
         td.sep(", ");
         td.tx(t.asStringValue());
