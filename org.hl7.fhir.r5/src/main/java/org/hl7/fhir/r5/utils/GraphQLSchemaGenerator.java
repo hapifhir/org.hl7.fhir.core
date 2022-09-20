@@ -491,9 +491,8 @@ public class GraphQLSchemaGenerator {
 
   private String getJsonFormat(StructureDefinition sd) throws FHIRException {
     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
-      throw new Error("What is this code doing?");
-//      if (!ed.getType().isEmpty() && ed.getType().get(0).getCodeElement().hasExtension(" http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type"))
-//        return ed.getType().get(0).getCodeElement().getExtensionString(" http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type");
+      if (!ed.getType().isEmpty() && ed.getType().get(0).getCodeElement().hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type"))
+        return ed.getType().get(0).getCodeElement().getExtensionString(" http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type");
     }
     // all primitives but JSON_NUMBER_TYPES are represented as JSON strings
     if (JSON_NUMBER_TYPES.contains(sd.getName())) {

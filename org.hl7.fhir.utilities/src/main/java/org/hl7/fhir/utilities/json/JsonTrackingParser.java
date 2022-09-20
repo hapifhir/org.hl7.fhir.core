@@ -1,5 +1,7 @@
 package org.hl7.fhir.utilities.json;
 
+import static org.junit.jupiter.api.DynamicContainer.dynamicContainer;
+
 import java.io.File;
 
 /*
@@ -375,6 +377,10 @@ public class JsonTrackingParser {
     return parse(TextFile.bytesToString(stream), null);
   }
   
+  public static JsonArray parseJsonArray(byte[] stream) throws IOException {
+    return parseArray(TextFile.bytesToString(stream), null);
+  }
+  
   public static JsonObject parseJson(byte[] stream, boolean allowDuplicates) throws IOException {
     return parse(TextFile.bytesToString(stream), null, allowDuplicates);
   }
@@ -391,17 +397,34 @@ public class JsonTrackingParser {
     return parse(source, map, false);
   }
     
+  public static JsonArray parseArray(String source, Map<JsonElement, LocationData> map) throws IOException {
+    return parseArray(source, map, false);
+  }
+    
+    
   public static JsonObject parse(String source, Map<JsonElement, LocationData> map, boolean allowDuplicates) throws IOException {
     return parse(source, map, allowDuplicates, false);
   }
   
+  public static JsonArray parseArray(String source, Map<JsonElement, LocationData> map, boolean allowDuplicates) throws IOException {
+    return parseArray(source, map, allowDuplicates, false);
+  }
+  
   public static JsonObject parse(String source, Map<JsonElement, LocationData> map, boolean allowDuplicates, boolean allowComments) throws IOException {
-		JsonTrackingParser self = new JsonTrackingParser();
-		self.map = map;
-		self.setErrorOnDuplicates(!allowDuplicates);
-		self.setAllowComments(allowComments);
+    JsonTrackingParser self = new JsonTrackingParser();
+    self.map = map;
+    self.setErrorOnDuplicates(!allowDuplicates);
+    self.setAllowComments(allowComments);
     return self.parse(Utilities.stripBOM(source));
-	}
+  }
+
+  public static JsonArray parseArray(String source, Map<JsonElement, LocationData> map, boolean allowDuplicates, boolean allowComments) throws IOException {
+    JsonTrackingParser self = new JsonTrackingParser();
+    self.map = map;
+    self.setErrorOnDuplicates(!allowDuplicates);
+    self.setAllowComments(allowComments);
+    return self.parseArray(Utilities.stripBOM(source));
+  }
 
 	private JsonObject parse(String source) throws IOException {
 		lexer = new Lexer(source);
@@ -420,6 +443,10 @@ public class JsonTrackingParser {
 		  map.put(result, loc);
     return result;
 	}
+
+  private JsonArray parseArray(String source) throws IOException {
+    return new Gson().fromJson(source, JsonArray.class);
+  }
 
 	private void readObject(JsonObject obj, boolean root) throws IOException {
 	  if (map != null)
@@ -703,5 +730,11 @@ public class JsonTrackingParser {
     return parseJson(res.getContent());
   }
   
+  public static JsonArray fetchJsonArray(String source) throws IOException {
+    SimpleHTTPClient fetcher = new SimpleHTTPClient();
+    HTTPResult res = fetcher.get(source+"?nocache=" + System.currentTimeMillis());
+    res.checkThrowException();
+    return parseJsonArray(res.getContent());
+  }
 	
 }
