@@ -5,7 +5,11 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableCon
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Identifier43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.ContactDetail43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.UsageContext43_50;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.*;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Boolean43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.DateTime43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.MarkDown43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -76,8 +80,8 @@ public class ExampleScenario43_50 {
       tgt.addInstance(convertExampleScenarioInstanceComponent(t));
     for (org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioProcessComponent t : src.getProcess())
       tgt.addProcess(convertExampleScenarioProcessComponent(t));
-    for (org.hl7.fhir.r4b.model.CanonicalType t : src.getWorkflow())
-      tgt.getWorkflow().add(Canonical43_50.convertCanonical(t));
+//    for (org.hl7.fhir.r4b.model.CanonicalType t : src.getWorkflow())
+//      tgt.getWorkflow().add(Canonical43_50.convertCanonical(t));
     return tgt;
   }
 
@@ -118,8 +122,8 @@ public class ExampleScenario43_50 {
       tgt.addInstance(convertExampleScenarioInstanceComponent(t));
     for (org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioProcessComponent t : src.getProcess())
       tgt.addProcess(convertExampleScenarioProcessComponent(t));
-    for (org.hl7.fhir.r5.model.CanonicalType t : src.getWorkflow())
-      tgt.getWorkflow().add(Canonical43_50.convertCanonical(t));
+//    for (org.hl7.fhir.r5.model.CanonicalType t : src.getWorkflow())
+//      tgt.getWorkflow().add(Canonical43_50.convertCanonical(t));
     return tgt;
   }
 
@@ -129,11 +133,11 @@ public class ExampleScenario43_50 {
     org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioActorComponent tgt = new org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioActorComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasActorId())
-      tgt.setActorIdElement(String43_50.convertString(src.getActorIdElement()));
+      tgt.setKeyElement(String43_50.convertString(src.getActorIdElement()));
     if (src.hasType())
       tgt.setTypeElement(convertExampleScenarioActorType(src.getTypeElement()));
     if (src.hasName())
-      tgt.setNameElement(String43_50.convertString(src.getNameElement()));
+      tgt.setTitleElement(String43_50.convertString(src.getNameElement()));
     if (src.hasDescription())
       tgt.setDescriptionElement(MarkDown43_50.convertMarkdown(src.getDescriptionElement()));
     return tgt;
@@ -144,37 +148,37 @@ public class ExampleScenario43_50 {
       return null;
     org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioActorComponent tgt = new org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioActorComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
-    if (src.hasActorId())
-      tgt.setActorIdElement(String43_50.convertString(src.getActorIdElement()));
+    if (src.hasKey())
+      tgt.setActorIdElement(String43_50.convertString(src.getKeyElement()));
     if (src.hasType())
       tgt.setTypeElement(convertExampleScenarioActorType(src.getTypeElement()));
-    if (src.hasName())
-      tgt.setNameElement(String43_50.convertString(src.getNameElement()));
+    if (src.hasTitle())
+      tgt.setNameElement(String43_50.convertString(src.getTitleElement()));
     if (src.hasDescription())
       tgt.setDescriptionElement(MarkDown43_50.convertMarkdown(src.getDescriptionElement()));
     return tgt;
   }
 
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioActorType> convertExampleScenarioActorType(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioActorType> src) throws FHIRException {
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ExampleScenarioActorType> convertExampleScenarioActorType(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioActorType> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioActorType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioActorTypeEnumFactory());
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ExampleScenarioActorType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.ExampleScenarioActorTypeEnumFactory());
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case PERSON:
-        tgt.setValue(org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioActorType.PERSON);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ExampleScenarioActorType.PERSON);
         break;
       case ENTITY:
-        tgt.setValue(org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioActorType.ENTITY);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ExampleScenarioActorType.SYSTEM);
         break;
       default:
-        tgt.setValue(org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioActorType.NULL);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ExampleScenarioActorType.NULL);
         break;
     }
     return tgt;
   }
 
-  static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioActorType> convertExampleScenarioActorType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioActorType> src) throws FHIRException {
+  static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioActorType> convertExampleScenarioActorType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ExampleScenarioActorType> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioActorType> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioActorTypeEnumFactory());
@@ -183,7 +187,7 @@ public class ExampleScenario43_50 {
       case PERSON:
         tgt.setValue(org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioActorType.PERSON);
         break;
-      case ENTITY:
+      case SYSTEM:
         tgt.setValue(org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioActorType.ENTITY);
         break;
       default:
@@ -199,11 +203,11 @@ public class ExampleScenario43_50 {
     org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioInstanceComponent tgt = new org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioInstanceComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasResourceId())
-      tgt.setResourceIdElement(String43_50.convertString(src.getResourceIdElement()));
+      tgt.setKeyElement(String43_50.convertString(src.getResourceIdElement()));
     if (src.hasResourceType())
-      tgt.setTypeElement(Code43_50.convertCode(src.getResourceTypeElement()));
+      tgt.getStructureType().setCode(src.getResourceType());
     if (src.hasName())
-      tgt.setNameElement(String43_50.convertString(src.getNameElement()));
+      tgt.setTitleElement(String43_50.convertString(src.getNameElement()));
     if (src.hasDescription())
       tgt.setDescriptionElement(MarkDown43_50.convertMarkdown(src.getDescriptionElement()));
     for (org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioInstanceVersionComponent t : src.getVersion())
@@ -218,12 +222,12 @@ public class ExampleScenario43_50 {
       return null;
     org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioInstanceComponent tgt = new org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioInstanceComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
-    if (src.hasResourceId())
-      tgt.setResourceIdElement(String43_50.convertString(src.getResourceIdElement()));
+    if (src.hasKey())
+      tgt.setResourceIdElement(String43_50.convertString(src.getKeyElement()));
     if (src.hasType())
-      tgt.setResourceTypeElement(Code43_50.convertCode(src.getTypeElement()));
-    if (src.hasName())
-      tgt.setNameElement(String43_50.convertString(src.getNameElement()));
+      tgt.setResourceType(src.getStructureType().getCode());
+    if (src.hasTitle())
+      tgt.setNameElement(String43_50.convertString(src.getTitleElement()));
     if (src.hasDescription())
       tgt.setDescriptionElement(MarkDown43_50.convertMarkdown(src.getDescriptionElement()));
     for (org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioInstanceVersionComponent t : src.getVersion())
@@ -240,7 +244,7 @@ public class ExampleScenario43_50 {
     org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioInstanceVersionComponent tgt = new org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioInstanceVersionComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasVersionId())
-      tgt.setVersionIdElement(String43_50.convertString(src.getVersionIdElement()));
+      tgt.setKeyElement(String43_50.convertString(src.getVersionIdElement()));
     if (src.hasDescription())
       tgt.setDescriptionElement(MarkDown43_50.convertMarkdown(src.getDescriptionElement()));
     return tgt;
@@ -251,8 +255,8 @@ public class ExampleScenario43_50 {
       return null;
     org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioInstanceVersionComponent tgt = new org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioInstanceVersionComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
-    if (src.hasVersionId())
-      tgt.setVersionIdElement(String43_50.convertString(src.getVersionIdElement()));
+    if (src.hasKey())
+      tgt.setVersionIdElement(String43_50.convertString(src.getKeyElement()));
     if (src.hasDescription())
       tgt.setDescriptionElement(MarkDown43_50.convertMarkdown(src.getDescriptionElement()));
     return tgt;
@@ -264,9 +268,9 @@ public class ExampleScenario43_50 {
     org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioInstanceContainedInstanceComponent tgt = new org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioInstanceContainedInstanceComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasResourceId())
-      tgt.setResourceIdElement(String43_50.convertString(src.getResourceIdElement()));
+      tgt.setInstanceReferenceElement(String43_50.convertString(src.getResourceIdElement()));
     if (src.hasVersionId())
-      tgt.setVersionIdElement(String43_50.convertString(src.getVersionIdElement()));
+      tgt.setVersionReferenceElement(String43_50.convertString(src.getVersionIdElement()));
     return tgt;
   }
 
@@ -275,10 +279,10 @@ public class ExampleScenario43_50 {
       return null;
     org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioInstanceContainedInstanceComponent tgt = new org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioInstanceContainedInstanceComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
-    if (src.hasResourceId())
-      tgt.setResourceIdElement(String43_50.convertString(src.getResourceIdElement()));
-    if (src.hasVersionId())
-      tgt.setVersionIdElement(String43_50.convertString(src.getVersionIdElement()));
+    if (src.hasInstanceReference())
+      tgt.setResourceIdElement(String43_50.convertString(src.getInstanceReferenceElement()));
+    if (src.hasVersionReference())
+      tgt.setVersionIdElement(String43_50.convertString(src.getVersionReferenceElement()));
     return tgt;
   }
 
@@ -324,7 +328,7 @@ public class ExampleScenario43_50 {
     org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioProcessStepComponent tgt = new org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioProcessStepComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioProcessComponent t : src.getProcess())
-      tgt.addProcess(convertExampleScenarioProcessComponent(t));
+      tgt.setProcess(convertExampleScenarioProcessComponent(t));
     if (src.hasPause())
       tgt.setPauseElement(Boolean43_50.convertBoolean(src.getPauseElement()));
     if (src.hasOperation())
@@ -339,8 +343,7 @@ public class ExampleScenario43_50 {
       return null;
     org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioProcessStepComponent tgt = new org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioProcessStepComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
-    for (org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioProcessComponent t : src.getProcess())
-      tgt.addProcess(convertExampleScenarioProcessComponent(t));
+    tgt.addProcess(convertExampleScenarioProcessComponent(src.getProcess()));
     if (src.hasPause())
       tgt.setPauseElement(Boolean43_50.convertBoolean(src.getPauseElement()));
     if (src.hasOperation())
@@ -356,11 +359,11 @@ public class ExampleScenario43_50 {
     org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioProcessStepOperationComponent tgt = new org.hl7.fhir.r5.model.ExampleScenario.ExampleScenarioProcessStepOperationComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasNumber())
-      tgt.setNumberElement(String43_50.convertString(src.getNumberElement()));
-    if (src.hasType())
-      tgt.setTypeElement(String43_50.convertString(src.getTypeElement()));
+//      tgt.setNumberElement(String43_50.convertString(src.getNumberElement()));
+//    if (src.hasType())
+      tgt.getType().setCode(src.getType());
     if (src.hasName())
-      tgt.setNameElement(String43_50.convertString(src.getNameElement()));
+      tgt.setTitleElement(String43_50.convertString(src.getNameElement()));
     if (src.hasInitiator())
       tgt.setInitiatorElement(String43_50.convertString(src.getInitiatorElement()));
     if (src.hasReceiver())
@@ -383,12 +386,12 @@ public class ExampleScenario43_50 {
       return null;
     org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioProcessStepOperationComponent tgt = new org.hl7.fhir.r4b.model.ExampleScenario.ExampleScenarioProcessStepOperationComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
-    if (src.hasNumber())
-      tgt.setNumberElement(String43_50.convertString(src.getNumberElement()));
+//    if (src.hasNumber())
+//      tgt.setNumberElement(String43_50.convertString(src.getNumberElement()));
     if (src.hasType())
-      tgt.setTypeElement(String43_50.convertString(src.getTypeElement()));
-    if (src.hasName())
-      tgt.setNameElement(String43_50.convertString(src.getNameElement()));
+      tgt.setType(src.getType().getCode());
+    if (src.hasTitle())
+      tgt.setNameElement(String43_50.convertString(src.getTitleElement()));
     if (src.hasInitiator())
       tgt.setInitiatorElement(String43_50.convertString(src.getInitiatorElement()));
     if (src.hasReceiver())

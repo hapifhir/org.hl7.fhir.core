@@ -1,11 +1,11 @@
 package org.hl7.fhir.convertors.context;
 
+import java.util.ArrayList;
+import java.util.Stack;
+
 import org.hl7.fhir.exceptions.FHIRException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.Stack;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

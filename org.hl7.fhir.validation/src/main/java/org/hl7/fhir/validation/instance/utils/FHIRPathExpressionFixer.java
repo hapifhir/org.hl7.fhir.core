@@ -19,7 +19,9 @@ public class FHIRPathExpressionFixer {
     if ("txt-2".equals(key)) {
       return "htmlChecks2()";
     }
-
+    if ("generated='generated' implies source.empty()".equals(expr)) {
+      return "generation='generated' implies source.empty()";
+    }
     // fixes to string functions in FHIRPath
     // ref-1
     if (expr.equals("reference.startsWith('#').not() or (reference.substring(1).trace('url') in %rootResource.contained.id.trace('ids')) or (reference='#' and %rootResource!=%resource)")) { // R5

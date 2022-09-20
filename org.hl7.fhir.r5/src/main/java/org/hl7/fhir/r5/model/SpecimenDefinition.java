@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -2091,7 +2091,7 @@ public class SpecimenDefinition extends DomainResource {
     /**
      * A flag to indicate that this SpecimenDefinition is not authored for  genuine usage.
      */
-    @Child(name = "experimental", type = {BooleanType.class}, order=7, min=0, max=1, modifier=true, summary=true)
+    @Child(name = "experimental", type = {BooleanType.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="If this SpecimenDefinition is not for real usage", formalDefinition="A flag to indicate that this SpecimenDefinition is not authored for  genuine usage." )
     protected BooleanType experimental;
 
@@ -2284,28 +2284,62 @@ public class SpecimenDefinition extends DomainResource {
       return this;
     }
 
+
     /**
      * @return {@link #identifier} (A business identifier assigned to this SpecimenDefinition.)
      */
-    public Identifier getIdentifier() { 
-      if (this.identifier == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create SpecimenDefinition.identifier");
-        else if (Configuration.doAutoCreate())
-          this.identifier = new Identifier(); // cc
-      return this.identifier;
+    public List<Identifier> getIdentifier() { 
+      List<Identifier> list = new ArrayList<Identifier>();
+      if (this.identifier == null) {
+        list.add(identifier);
+      }
+      return list;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public SpecimenDefinition setIdentifier(List<Identifier> theIdentifier) { 
+      if (theIdentifier.size() == 0) {
+        this.identifier = null;
+      } else if (theIdentifier.size() == 1) {
+        this.identifier = theIdentifier.get(0);
+      } else {
+        throw new Error("Cannot have more than one SpecimenDefinition.identifier");
+      }
+      return this;
     }
 
     public boolean hasIdentifier() { 
       return this.identifier != null && !this.identifier.isEmpty();
     }
 
-    /**
-     * @param value {@link #identifier} (A business identifier assigned to this SpecimenDefinition.)
-     */
-    public SpecimenDefinition setIdentifier(Identifier value) { 
-      this.identifier = value;
+    public Identifier addIdentifier() { //3
+      if (this.identifier == null) {
+        this.identifier = new Identifier();
+      } else {
+        throw new Error("Cannot have more than one SpecimenDefinition.identifier");
+      }
+      return this.identifier;
+    }
+
+    public SpecimenDefinition addIdentifier(Identifier t) { //3
+      if (this.identifier == null) {
+        this.identifier = t;
+      } else {
+        throw new Error("Cannot have more than one SpecimenDefinition.identifier");
+      }
       return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
+     */
+    public Identifier getIdentifierFirstRep() { 
+      if (identifier == null) {
+        addIdentifier();
+      }
+      return identifier;
     }
 
     /**
@@ -3402,6 +3436,281 @@ public class SpecimenDefinition extends DomainResource {
       return getTypeTested().get(0);
     }
 
+
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public DataType getVersionAlgorithm() { 
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public StringType getVersionAlgorithmStringType() { 
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    public boolean hasVersionAlgorithmStringType() { 
+      return false;////K 
+    }
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public Coding getVersionAlgorithmCoding() { 
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    public boolean hasVersionAlgorithmCoding() { 
+      return false;////K 
+    }
+    public boolean hasVersionAlgorithm() { 
+      return false;
+    }
+    /**
+     * @param value {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public SpecimenDefinition setVersionAlgorithm(DataType value) { 
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+
+    
+    /**
+     * @return {@link #name} (A natural language name identifying the specimen definition. This name should be usable as an identifier for the module by machine processing applications such as code generation.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+     */
+    public StringType getNameElement() { 
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"name\"");
+    }
+
+    public boolean hasNameElement() { 
+      return false;
+    }
+    public boolean hasName() {
+      return false;
+    }
+
+    /**
+     * @param value {@link #name} (A natural language name identifying the specimen definition. This name should be usable as an identifier for the module by machine processing applications such as code generation.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+     */
+    public SpecimenDefinition setNameElement(StringType value) { 
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"name\""); 
+    }
+    public String getName() { 
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"name\""); 
+    }
+    /**
+     * @param value A natural language name identifying the specimen definition. This name should be usable as an identifier for the module by machine processing applications such as code generation.
+     */
+    public SpecimenDefinition setName(String value) { 
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"name\""); 
+    }
+
+
+    /**
+     * @return {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public StringType getCopyrightLabelElement() { 
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"copyrightLabel\"");
+    }
+
+    public boolean hasCopyrightLabelElement() { 
+      return false;
+    }
+    public boolean hasCopyrightLabel() {
+      return false;
+    }
+
+    /**
+     * @param value {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public SpecimenDefinition setCopyrightLabelElement(StringType value) { 
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"copyrightLabel\""); 
+    }
+    public String getCopyrightLabel() { 
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"copyrightLabel\""); 
+    }
+    /**
+     * @param value A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    public SpecimenDefinition setCopyrightLabel(String value) { 
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"copyrightLabel\""); 
+    }
+   
+    /**
+     * @return {@link #topic} (Descriptive topics related to the content of the specimen definition. Topics provide a high-level categorization as well as keywords for the specimen definition that can be useful for filtering and searching.)
+     */
+    public List<CodeableConcept> getTopic() { 
+      return new ArrayList<>();
+    }
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public SpecimenDefinition setTopic(List<CodeableConcept> theTopic) { 
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"topic\""); 
+    }
+    public boolean hasTopic() { 
+      return false;
+    }
+
+    public CodeableConcept addTopic() { //3
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"topic\""); 
+    }
+    public SpecimenDefinition addTopic(CodeableConcept t) { //3
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"topic\""); 
+    }
+    /**
+     * @return The first repetition of repeating field {@link #topic}, creating it if it does not already exist {2}
+     */
+    public CodeableConcept getTopicFirstRep() { 
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"topic\""); 
+    }
+
+
+    /**
+     * @return {@link #author} (An individiual or organization primarily involved in the creation and maintenance of the specimen definition.)
+     */
+    public List<ContactDetail> getAuthor() { 
+      return new ArrayList<>();
+    }
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public SpecimenDefinition setAuthor(List<ContactDetail> theAuthor) { 
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"author\""); 
+    }
+    public boolean hasAuthor() { 
+      return false;
+    }
+
+    public ContactDetail addAuthor() { //3
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"author\""); 
+    }
+    public SpecimenDefinition addAuthor(ContactDetail t) { //3
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"author\""); 
+    }
+    /**
+     * @return The first repetition of repeating field {@link #author}, creating it if it does not already exist {2}
+     */
+    public ContactDetail getAuthorFirstRep() { 
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"author\""); 
+    }
+
+
+    /**
+     * @return {@link #editor} (An individual or organization primarily responsible for internal coherence of the specimen definition.)
+     */
+    public List<ContactDetail> getEditor() { 
+      return new ArrayList<>();
+    }
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public SpecimenDefinition setEditor(List<ContactDetail> theEditor) { 
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"editor\""); 
+    }
+    public boolean hasEditor() { 
+      return false;
+    }
+
+    public ContactDetail addEditor() { //3
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"editor\""); 
+    }
+    public SpecimenDefinition addEditor(ContactDetail t) { //3
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"editor\""); 
+    }
+    /**
+     * @return The first repetition of repeating field {@link #editor}, creating it if it does not already exist {2}
+     */
+    public ContactDetail getEditorFirstRep() { 
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"editor\""); 
+    }
+
+
+    /**
+     * @return {@link #reviewer} (An individual or organization primarily responsible for review of some aspect of the specimen definition.)
+     */
+    public List<ContactDetail> getReviewer() { 
+      return new ArrayList<>();
+    }
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public SpecimenDefinition setReviewer(List<ContactDetail> theReviewer) { 
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"reviewer\""); 
+    }
+    public boolean hasReviewer() { 
+      return false;
+    }
+
+    public ContactDetail addReviewer() { //3
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"reviewer\""); 
+    }
+    public SpecimenDefinition addReviewer(ContactDetail t) { //3
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"reviewer\""); 
+    }
+    /**
+     * @return The first repetition of repeating field {@link #reviewer}, creating it if it does not already exist {2}
+     */
+    public ContactDetail getReviewerFirstRep() { 
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"reviewer\""); 
+    }
+
+
+    /**
+     * @return {@link #endorser} (An individual or organization responsible for officially endorsing the specimen definition for use in some setting.)
+     */
+    public List<ContactDetail> getEndorser() { 
+      return new ArrayList<>();
+    }
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public SpecimenDefinition setEndorser(List<ContactDetail> theEndorser) { 
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"endorser\""); 
+    }
+    public boolean hasEndorser() { 
+      return false;
+    }
+
+    public ContactDetail addEndorser() { //3
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"endorser\""); 
+    }
+    public SpecimenDefinition addEndorser(ContactDetail t) { //3
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"endorser\""); 
+    }
+    /**
+     * @return The first repetition of repeating field {@link #endorser}, creating it if it does not already exist {2}
+     */
+    public ContactDetail getEndorserFirstRep() { 
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"endorser\""); 
+    }
+
+
+    /**
+     * @return {@link #relatedArtifact} (Related artifacts such as additional documentation, justification, dependencies, bibliographic references, and predecessor and successor artifacts.)
+     */
+    public List<RelatedArtifact> getRelatedArtifact() { 
+      return new ArrayList<>();
+    }
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public SpecimenDefinition setRelatedArtifact(List<RelatedArtifact> theRelatedArtifact) { 
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"relatedArtifact\""); 
+    }
+    public boolean hasRelatedArtifact() { 
+      return false;
+    }
+
+    public RelatedArtifact addRelatedArtifact() { //3
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"relatedArtifact\""); 
+    }
+    public SpecimenDefinition addRelatedArtifact(RelatedArtifact t) { //3
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"relatedArtifact\""); 
+    }
+    /**
+     * @return The first repetition of repeating field {@link #relatedArtifact}, creating it if it does not already exist {2}
+     */
+    public RelatedArtifact getRelatedArtifactFirstRep() { 
+      throw new Error("The resource type \"SpecimenDefinition\" does not implement the property \"relatedArtifact\""); 
+    }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("url", "uri", "An absolute URL that is used to identify this SpecimenDefinition when it is referenced in a specification, model, design or an instance. This SHALL be a URL, SHOULD be globally unique, and SHOULD be an address at which this SpecimenDefinition is (or will be) published. The URL SHOULD include the major version of the SpecimenDefinition. For more information see Technical and Business Versions.", 0, 1, url));
@@ -3646,7 +3955,7 @@ public class SpecimenDefinition extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 116079:  return getUrlElement();
-        case -1618432855:  return getIdentifier();
+        case -1618432855:  return getIdentifierFirstRep();
         case 351608024:  return getVersionElement();
         case 110371416:  return getTitleElement();
         case -978133683:  return addDerivedFromCanonicalElement();

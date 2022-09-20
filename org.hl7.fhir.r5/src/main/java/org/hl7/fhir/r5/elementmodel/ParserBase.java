@@ -120,6 +120,9 @@ public abstract class ParserBase {
   
   public Element parseSingle(InputStream stream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
     List<NamedElement> res = parse(stream);
+    if (res.size() == 0) {
+      throw new FHIRException("Parsing FHIR content returned no elements in a context where one element is required");
+    }
     if (res.size() != 1) {
       throw new FHIRException("Parsing FHIR content returned multiple elements in a context where only one element is allowed");
     }

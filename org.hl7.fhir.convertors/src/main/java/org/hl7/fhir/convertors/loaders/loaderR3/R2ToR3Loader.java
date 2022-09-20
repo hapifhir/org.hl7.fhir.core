@@ -1,5 +1,11 @@
 package org.hl7.fhir.convertors.loaders.loaderR3;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -43,12 +49,6 @@ import org.hl7.fhir.dstu3.model.StructureDefinition;
 import org.hl7.fhir.dstu3.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.dstu3.model.UriType;
 import org.hl7.fhir.exceptions.FHIRException;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 public class R2ToR3Loader extends BaseLoaderR3 {
 

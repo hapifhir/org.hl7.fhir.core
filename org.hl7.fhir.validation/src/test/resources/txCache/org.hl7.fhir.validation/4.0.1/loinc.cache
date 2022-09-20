@@ -1477,3 +1477,60 @@ v: {
   "system" : "http://loinc.org"
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "56445-0"
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes--0", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Medication summary Document",
+  "code" : "56445-0",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "version" : "current",
+  "code" : "56445-0",
+  "display" : "Medication summary Doc"
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "Version 'current' of the code system 'http://loinc.org' is not known (encountered paired with code = '56445-0'). ValidVersions = [2.73]; The code provided (http://loinc.org#56445-0) is not valid in the value set 'FHIRDocumentTypeCodes' (from http://tx.fhir.org/r4)",
+  "class" : "CODESYSTEM_UNSUPPORTED"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "version" : "current",
+  "code" : "56445-0"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "Version 'current' of the code system 'http://loinc.org' is not known (encountered paired with code = '56445-0'). ValidVersions = [2.73]; The code provided (http://loinc.org#56445-0) is not valid in the value set 'All codes known to the system' (from http://tx.fhir.org/r4)",
+  "class" : "CODESYSTEM_UNSUPPORTED"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "version" : "current",
+  "code" : "48765-2",
+  "display" : "Allergies and adverse reactions"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "Version 'current' of the code system 'http://loinc.org' is not known (encountered paired with code = '48765-2'). ValidVersions = [2.73]; The code provided (http://loinc.org#48765-2) is not valid in the value set 'All codes known to the system' (from http://tx.fhir.org/r4)",
+  "class" : "CODESYSTEM_UNSUPPORTED"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "version" : "2.73",
+  "code" : "57852-6",
+  "display" : "Problem list Narrative - Reported"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Problem list Narrative - Reported",
+  "code" : "57852-6",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------

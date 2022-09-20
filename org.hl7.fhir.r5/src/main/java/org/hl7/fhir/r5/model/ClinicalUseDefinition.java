@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -651,12 +651,12 @@ public class ClinicalUseDefinition extends DomainResource {
         /**
          * Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.
          */
-        @Child(name = "therapy", type = {CodeableReference.class}, order=2, min=1, max=1, modifier=false, summary=true)
+        @Child(name = "treatment", type = {CodeableReference.class}, order=2, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Reference to a specific medication as part of an indication or contraindication", formalDefinition="Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/therapy")
-        protected CodeableReference therapy;
+        protected CodeableReference treatment;
 
-        private static final long serialVersionUID = -363440718L;
+        private static final long serialVersionUID = -1638121853L;
 
     /**
      * Constructor
@@ -668,10 +668,10 @@ public class ClinicalUseDefinition extends DomainResource {
     /**
      * Constructor
      */
-      public ClinicalUseDefinitionContraindicationOtherTherapyComponent(CodeableConcept relationshipType, CodeableReference therapy) {
+      public ClinicalUseDefinitionContraindicationOtherTherapyComponent(CodeableConcept relationshipType, CodeableReference treatment) {
         super();
         this.setRelationshipType(relationshipType);
-        this.setTherapy(therapy);
+        this.setTreatment(treatment);
       }
 
         /**
@@ -699,40 +699,40 @@ public class ClinicalUseDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #therapy} (Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.)
+         * @return {@link #treatment} (Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.)
          */
-        public CodeableReference getTherapy() { 
-          if (this.therapy == null)
+        public CodeableReference getTreatment() { 
+          if (this.treatment == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ClinicalUseDefinitionContraindicationOtherTherapyComponent.therapy");
+              throw new Error("Attempt to auto-create ClinicalUseDefinitionContraindicationOtherTherapyComponent.treatment");
             else if (Configuration.doAutoCreate())
-              this.therapy = new CodeableReference(); // cc
-          return this.therapy;
+              this.treatment = new CodeableReference(); // cc
+          return this.treatment;
         }
 
-        public boolean hasTherapy() { 
-          return this.therapy != null && !this.therapy.isEmpty();
+        public boolean hasTreatment() { 
+          return this.treatment != null && !this.treatment.isEmpty();
         }
 
         /**
-         * @param value {@link #therapy} (Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.)
+         * @param value {@link #treatment} (Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.)
          */
-        public ClinicalUseDefinitionContraindicationOtherTherapyComponent setTherapy(CodeableReference value) { 
-          this.therapy = value;
+        public ClinicalUseDefinitionContraindicationOtherTherapyComponent setTreatment(CodeableReference value) { 
+          this.treatment = value;
           return this;
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("relationshipType", "CodeableConcept", "The type of relationship between the medicinal product indication or contraindication and another therapy.", 0, 1, relationshipType));
-          children.add(new Property("therapy", "CodeableReference(MedicinalProductDefinition|Medication|Substance|SubstanceDefinition|ActivityDefinition)", "Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.", 0, 1, therapy));
+          children.add(new Property("treatment", "CodeableReference(MedicinalProductDefinition|Medication|Substance|SubstanceDefinition|ActivityDefinition)", "Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.", 0, 1, treatment));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case -1602839150: /*relationshipType*/  return new Property("relationshipType", "CodeableConcept", "The type of relationship between the medicinal product indication or contraindication and another therapy.", 0, 1, relationshipType);
-          case -1349555095: /*therapy*/  return new Property("therapy", "CodeableReference(MedicinalProductDefinition|Medication|Substance|SubstanceDefinition|ActivityDefinition)", "Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.", 0, 1, therapy);
+          case -63342472: /*treatment*/  return new Property("treatment", "CodeableReference(MedicinalProductDefinition|Medication|Substance|SubstanceDefinition|ActivityDefinition)", "Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.", 0, 1, treatment);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -742,7 +742,7 @@ public class ClinicalUseDefinition extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -1602839150: /*relationshipType*/ return this.relationshipType == null ? new Base[0] : new Base[] {this.relationshipType}; // CodeableConcept
-        case -1349555095: /*therapy*/ return this.therapy == null ? new Base[0] : new Base[] {this.therapy}; // CodeableReference
+        case -63342472: /*treatment*/ return this.treatment == null ? new Base[0] : new Base[] {this.treatment}; // CodeableReference
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -754,8 +754,8 @@ public class ClinicalUseDefinition extends DomainResource {
         case -1602839150: // relationshipType
           this.relationshipType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
-        case -1349555095: // therapy
-          this.therapy = TypeConvertor.castToCodeableReference(value); // CodeableReference
+        case -63342472: // treatment
+          this.treatment = TypeConvertor.castToCodeableReference(value); // CodeableReference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -766,8 +766,8 @@ public class ClinicalUseDefinition extends DomainResource {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("relationshipType")) {
           this.relationshipType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("therapy")) {
-          this.therapy = TypeConvertor.castToCodeableReference(value); // CodeableReference
+        } else if (name.equals("treatment")) {
+          this.treatment = TypeConvertor.castToCodeableReference(value); // CodeableReference
         } else
           return super.setProperty(name, value);
         return value;
@@ -777,7 +777,7 @@ public class ClinicalUseDefinition extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1602839150:  return getRelationshipType();
-        case -1349555095:  return getTherapy();
+        case -63342472:  return getTreatment();
         default: return super.makeProperty(hash, name);
         }
 
@@ -787,7 +787,7 @@ public class ClinicalUseDefinition extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1602839150: /*relationshipType*/ return new String[] {"CodeableConcept"};
-        case -1349555095: /*therapy*/ return new String[] {"CodeableReference"};
+        case -63342472: /*treatment*/ return new String[] {"CodeableReference"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -799,9 +799,9 @@ public class ClinicalUseDefinition extends DomainResource {
           this.relationshipType = new CodeableConcept();
           return this.relationshipType;
         }
-        else if (name.equals("therapy")) {
-          this.therapy = new CodeableReference();
-          return this.therapy;
+        else if (name.equals("treatment")) {
+          this.treatment = new CodeableReference();
+          return this.treatment;
         }
         else
           return super.addChild(name);
@@ -816,7 +816,7 @@ public class ClinicalUseDefinition extends DomainResource {
       public void copyValues(ClinicalUseDefinitionContraindicationOtherTherapyComponent dst) {
         super.copyValues(dst);
         dst.relationshipType = relationshipType == null ? null : relationshipType.copy();
-        dst.therapy = therapy == null ? null : therapy.copy();
+        dst.treatment = treatment == null ? null : treatment.copy();
       }
 
       @Override
@@ -826,7 +826,7 @@ public class ClinicalUseDefinition extends DomainResource {
         if (!(other_ instanceof ClinicalUseDefinitionContraindicationOtherTherapyComponent))
           return false;
         ClinicalUseDefinitionContraindicationOtherTherapyComponent o = (ClinicalUseDefinitionContraindicationOtherTherapyComponent) other_;
-        return compareDeep(relationshipType, o.relationshipType, true) && compareDeep(therapy, o.therapy, true)
+        return compareDeep(relationshipType, o.relationshipType, true) && compareDeep(treatment, o.treatment, true)
           ;
       }
 
@@ -841,7 +841,7 @@ public class ClinicalUseDefinition extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(relationshipType, therapy
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(relationshipType, treatment
           );
       }
 
@@ -3498,6 +3498,26 @@ public class ClinicalUseDefinition extends DomainResource {
    * the path value of "<b>ClinicalUseDefinition:product</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_PRODUCT = new ca.uhn.fhir.model.api.Include("ClinicalUseDefinition:product").toLocked();
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>Whether this is a current issue or one that has been retired etc</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ClinicalUseDefinition.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="ClinicalUseDefinition.status", description="Whether this is a current issue or one that has been retired etc", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>Whether this is a current issue or one that has been retired etc</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ClinicalUseDefinition.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
  /**
    * Search parameter: <b>subject</b>

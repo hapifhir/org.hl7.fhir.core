@@ -75,7 +75,7 @@ public class TestingUtilities extends BaseTestingUtilities {
 
   static public Map<String, IWorkerContext> fcontexts;
 
-  final static public String DEFAULT_CONTEXT_VERSION = "4.0.1";
+  final static public String DEFAULT_CONTEXT_VERSION = "5.0.0";
 
   /** Get an existing instantiation of a WorkerContext if available
    *
@@ -112,8 +112,8 @@ public class TestingUtilities extends BaseTestingUtilities {
       IWorkerContext fcontext = getWorkerContext(pcm.loadPackage(VersionUtilities.packageForVersion(version), version));
       fcontext.setUcumService(new UcumEssenceService(TestingUtilities.loadTestResourceStream("ucum", "ucum-essence.xml")));
       fcontext.setExpansionProfile(new Parameters());
-      if (!fcontext.hasPackage("hl7.terminology", null)) {
-        NpmPackage utg = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION).loadPackage("hl7.terminology");
+      if (!fcontext.hasPackage("hl7.terminology.r5", null)) {
+        NpmPackage utg = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION).loadPackage("hl7.terminology.r5");
         System.out.println("Loading THO: "+utg.name()+"#"+utg.version());
         fcontext.loadFromPackage(utg, new TestPackageLoader(new String[]{"CodeSystem", "ValueSet"}));
       }

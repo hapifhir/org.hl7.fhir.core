@@ -310,12 +310,13 @@ public class XmlParser extends ParserBase {
             while (n.getNextSibling() != null && n.getNodeType() != Node.ELEMENT_NODE) {
               n = n.getNextSibling();
             }
-            while (n.getPreviousSibling() != null && n.getNodeType() != Node.ELEMENT_NODE) {
-              n = n.getPreviousSibling();
+            Node nt = n;
+            while (nt.getPreviousSibling() != null && nt.getNodeType() != Node.ELEMENT_NODE) {
+              nt = nt.getPreviousSibling();
             }
-            line = line(n);
-            col = col(n);
-            logError(line, col, path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.TEXT_SHOULD_NOT_BE_PRESENT, text), IssueSeverity.ERROR);
+            line = line(nt);
+            col = col(nt);
+            logError(line, col, path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.TEXT_SHOULD_NOT_BE_PRESENT, Utilities.makeSingleLine(text)), IssueSeverity.ERROR);
           }
           n = n.getNextSibling();
         }

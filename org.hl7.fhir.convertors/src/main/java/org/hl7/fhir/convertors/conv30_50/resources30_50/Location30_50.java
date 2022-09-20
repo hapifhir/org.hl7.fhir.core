@@ -2,10 +2,16 @@ package org.hl7.fhir.convertors.conv30_50.resources30_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Reference30_50;
-import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.*;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Address30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Coding30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.ContactPoint30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Decimal30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.ContactPoint;
+import org.hl7.fhir.r5.model.ExtendedContactDetail;
 
 public class Location30_50 {
 
@@ -30,11 +36,11 @@ public class Location30_50 {
     if (src.hasType())
       tgt.addType(CodeableConcept30_50.convertCodeableConcept(src.getType()));
     for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getTelecom())
-      tgt.addTelecom(ContactPoint30_50.convertContactPoint(t));
+      tgt.getContactFirstRep().addTelecom(ContactPoint30_50.convertContactPoint(t));
     if (src.hasAddress())
       tgt.setAddress(Address30_50.convertAddress(src.getAddress()));
     if (src.hasPhysicalType())
-      tgt.setPhysicalType(CodeableConcept30_50.convertCodeableConcept(src.getPhysicalType()));
+      tgt.setForm(CodeableConcept30_50.convertCodeableConcept(src.getPhysicalType()));
     if (src.hasPosition())
       tgt.setPosition(convertLocationPositionComponent(src.getPosition()));
     if (src.hasManagingOrganization())
@@ -65,12 +71,13 @@ public class Location30_50 {
       tgt.setModeElement(convertLocationMode(src.getModeElement()));
     if (src.hasType())
       tgt.setType(CodeableConcept30_50.convertCodeableConcept(src.getTypeFirstRep()));
-    for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom())
-      tgt.addTelecom(ContactPoint30_50.convertContactPoint(t));
+    for (ExtendedContactDetail t1 : src.getContact())
+      for (ContactPoint t : t1.getTelecom())
+        tgt.addTelecom(ContactPoint30_50.convertContactPoint(t));
     if (src.hasAddress())
       tgt.setAddress(Address30_50.convertAddress(src.getAddress()));
-    if (src.hasPhysicalType())
-      tgt.setPhysicalType(CodeableConcept30_50.convertCodeableConcept(src.getPhysicalType()));
+    if (src.hasForm())
+      tgt.setPhysicalType(CodeableConcept30_50.convertCodeableConcept(src.getForm()));
     if (src.hasPosition())
       tgt.setPosition(convertLocationPositionComponent(src.getPosition()));
     if (src.hasManagingOrganization())

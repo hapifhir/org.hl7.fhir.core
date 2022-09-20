@@ -73,7 +73,7 @@ public class MarkDownProcessor {
     Set<Extension> extensions = Collections.singleton(TablesExtension.create());
     Parser parser = Parser.builder().extensions(extensions).build();
     Node document = parser.parse(source);
-    HtmlRenderer renderer = HtmlRenderer.builder().extensions(extensions).build();
+    HtmlRenderer renderer = HtmlRenderer.builder().escapeHtml(true).extensions(extensions).build();
     String html = renderer.render(document);
     html = html.replace("<table>", "<table class=\"grid\">");
     return html;  

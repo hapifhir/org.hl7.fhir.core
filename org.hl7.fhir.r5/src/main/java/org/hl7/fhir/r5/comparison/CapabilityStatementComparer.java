@@ -35,6 +35,7 @@ import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -263,8 +264,8 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
   }
 
   private void compareExpectations(StructuralMatch<Element> combined, Element left, Element right, String path, CapabilityStatementComparison res, Element union, Element intersection) {
-    Extension l = left.getExtensionByUrl("http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation");
-    Extension r = right.getExtensionByUrl("http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation");
+    Extension l = left.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT);
+    Extension r = right.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT);
     if (l != null || r != null) {
       if (l == null) {
         union.addExtension(r.copy());
@@ -284,8 +285,8 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
           sm.getMessages().add(new ValidationMessage(Source.ProfileComparer, IssueType.INFORMATIONAL, path+".extension('http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation')", "Changed value for expectation: '"+ls+"' vs '"+rs+"'", IssueSeverity.WARNING));
           String lowest = lower(ls, rs) ? ls : rs;
           String highest = lower(ls, rs) ? rs : ls;
-          union.addExtension("http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation", new CodeType(lowest));
-          intersection.addExtension("http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation", new CodeType(highest));
+          union.addExtension(ToolingExtensions.EXT_CAP_STMT_EXPECT, new CodeType(lowest));
+          intersection.addExtension(ToolingExtensions.EXT_CAP_STMT_EXPECT, new CodeType(highest));
         }
       }
     }

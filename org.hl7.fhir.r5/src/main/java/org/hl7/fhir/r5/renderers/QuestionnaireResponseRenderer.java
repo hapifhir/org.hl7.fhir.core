@@ -429,9 +429,9 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 //      }
 //    }
 //    
-////  if (i.hasExtension("http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-choiceOrientation")) {
+////  if (i.hasExtension(" http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-choiceOrientation")) {
 ////  String code = ToolingExtensions.readStringExtension(i,  "http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-choiceOrientation");
-////  flags.addPiece(gen.new Piece("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-observationLinkPeriod", null, "Orientation: "+code).addHtml(new XhtmlNode(NodeType.Element, "img").attribute("src", Utilities.path(context.getLocalPrefix(), "icon-qi-"+code+".png"))));
+////  flags.addPiece(gen.new Piece("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-observationLinkPeriod", null, "Orientation: "+code).addHtml(new XhtmlNode(NodeType.Element, "img").attribute("alt", "icon").attribute("src", Utilities.path(context.getLocalPrefix(), "icon-qi-"+code+".png"))));
 ////}
 //
 //    
@@ -457,7 +457,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 //      hasFlag = true;
 //      flags.ah("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-QuestionnaireResponse-observationLinkPeriod", "Is linked to an observation").img(Utilities.path(context.getLocalPrefix(), "icon-qi-observation.png"));
 //    }
-//    if (i.hasExtension("http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-displayCategory")) {
+//    if (i.hasExtension(" http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-displayCategory")) {
 //      CodeableConcept cc = i.getExtensionByUrl("http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-displayCategory").getValueCodeableConcept();
 //      String code = cc.getCode("http://hl7.org/fhir/QuestionnaireResponse-display-category");
 //      hasFlag = true;
@@ -727,7 +727,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 //    }
 //
 //    // appearance 
-//    if (qi.hasExtension("http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-displayCategory")) {
+//    if (qi.hasExtension(" http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-displayCategory")) {
 //      XhtmlNode tr = tbl.tr();
 //      tr.td().ah("http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-displayCategory").tx("Display Category");
 //      render(tr.td(), qi.getExtensionByUrl("http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse-displayCategory").getValue());

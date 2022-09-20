@@ -21,6 +21,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
 
   private final String[] INVALID_TERMINOLOGY_URLS = {
     "http://snomed.info/sct",
+    "http://dicom.nema.org/resources/ontology/DCM",
     "http://nucc.org/provider-taxonomy"
   };
 
@@ -86,6 +87,13 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     @Override
     public String toString() {
       return type+"/"+id+": "+url+"|"+version;
+    }
+
+    public void hack(String url, String version) {
+      this.url = url;
+      this.version = version;
+      getResource().setUrl(url).setVersion(version);
+
     }      
   }
 

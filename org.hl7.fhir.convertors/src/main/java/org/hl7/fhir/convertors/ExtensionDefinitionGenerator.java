@@ -1,37 +1,17 @@
 package org.hl7.fhir.convertors;
 
-/*
-  Copyright (c) 2011+, HL7, Inc.
-  All rights reserved.
-  
-  Redistribution and use in source and binary forms, with or without modification, 
-  are permitted provided that the following conditions are met:
-    
-   * Redistributions of source code must retain the above copyright notice, this 
-     list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
-     and/or other materials provided with the distribution.
-   * Neither the name of HL7 nor the names of its contributors may be used to 
-     endorse or promote products derived from this software without specific 
-     prior written permission.
-  
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
-  POSSIBILITY OF SUCH DAMAGE.
-  
- */
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+import java.util.TimeZone;
 
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_40;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_40;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_40;
@@ -64,10 +44,38 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.*;
+/*
+  Copyright (c) 2011+, HL7, Inc.
+  All rights reserved.
+  
+  Redistribution and use in source and binary forms, with or without modification, 
+  are permitted provided that the following conditions are met:
+    
+   * Redistributions of source code must retain the above copyright notice, this 
+     list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright notice, 
+     this list of conditions and the following disclaimer in the documentation 
+     and/or other materials provided with the distribution.
+   * Neither the name of HL7 nor the names of its contributors may be used to 
+     endorse or promote products derived from this software without specific 
+     prior written permission.
+  
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  POSSIBILITY OF SUCH DAMAGE.
+  
+ */
+
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 public class ExtensionDefinitionGenerator {
 
@@ -175,12 +183,12 @@ public class ExtensionDefinitionGenerator {
   private StructureDefinition generateExtension(StructureDefinition type, ElementDefinition ed) throws FHIRException {
     StructureDefinition ext = new StructureDefinition();
     ext.setId("extension-" + ed.getPath().replace("[x]", ""));
-    ext.setUrl("http://hl7.org/fhir/" + sourceVersion.toCode(3) + "/StructureDefinition/" + ext.getId());
+    ext.setUrl("http://hl7.org/fhir/" + sourceVersion.toCode().substring(0, 3) + "/StructureDefinition/" + ext.getId());
     if (ext.getId().length() > 64)
       ext.setId(contract(ext.getId()));
     ext.setVersion(sourceVersion.toCode());
-    ext.setName("ExtensionR" + sourceVersion.toCode(1) + ed.getPath().replace(".", ""));
-    ext.setTitle("Extension definition for R" + sourceVersion.toCode(1) + " element " + ed.getPath());
+    ext.setName("ExtensionR" + sourceVersion.toCode().substring(0, 1) + ed.getPath().replace(".", ""));
+    ext.setTitle("Extension definition for R" + sourceVersion.toCode().substring(0, 1) + " element " + ed.getPath());
     ext.setStatus(PublicationStatus.ACTIVE);
     ext.setDate(type.getDate());
     ext.setFhirVersion(type.getFhirVersion());
@@ -204,7 +212,7 @@ public class ExtensionDefinitionGenerator {
           v.setSliceName(n);
           v.getType().clear();
           v.setIsSummaryElement(null);
-          v.addType().setCode("Extension").addProfile("http://hl7.org/fhir/" + sourceVersion.toCode(3) + "/StructureDefinition/extension-" + child.getPath().replace("[x]", ""));
+          v.addType().setCode("Extension").addProfile("http://hl7.org/fhir/" + sourceVersion.toCode().substring(0, 3) + "/StructureDefinition/extension-" + child.getPath().replace("[x]", ""));
           ext.getDifferential().addElement(v);
         }
       }
@@ -229,7 +237,7 @@ public class ExtensionDefinitionGenerator {
           v.setSliceName(n);
           v.getType().clear();
           v.setIsSummaryElement(null);
-          v.addType().setCode("Extension").addProfile("http://hl7.org/fhir/" + sourceVersion.toCode(3) + "/StructureDefinition/extension-" + child.getPath().replace("[x]", ""));
+          v.addType().setCode("Extension").addProfile("http://hl7.org/fhir/" + sourceVersion.toCode().substring(0, 3) + "/StructureDefinition/extension-" + child.getPath().replace("[x]", ""));
           ext.getDifferential().addElement(v);
         }
       }
@@ -349,13 +357,13 @@ public class ExtensionDefinitionGenerator {
 
   private void savePackage(List<StructureDefinition> extensions) throws FHIRException, IOException {
     JsonObject npm = new JsonObject();
-    npm.addProperty("name", "hl7.fhir.extensions.r" + sourceVersion.toCode(1));
-    npm.addProperty("version", targetVersion.toCode(3));
+    npm.addProperty("name", "hl7.fhir.extensions.r" + sourceVersion.toCode().substring(0, 1));
+    npm.addProperty("version", targetVersion.toCode().substring(0, 3));
     npm.addProperty("tools-version", ToolsVersion.TOOLS_VERSION);
     npm.addProperty("type", PackageType.IG.getCode());
     npm.addProperty("license", SPDXLicense.CC01_0.toCode());
-    npm.addProperty("canonical", "http://hl7.org/fhir/" + sourceVersion.toCode(3) + "/extensions/" + targetVersion.toCode(3));
-    npm.addProperty("url", "http://hl7.org/fhir/" + sourceVersion.toCode(3) + "/extensions/" + targetVersion.toCode(3));
+    npm.addProperty("canonical", "http://hl7.org/fhir/" + sourceVersion.toCode().substring(0, 3) + "/extensions/" + targetVersion.toCode().substring(0, 3));
+    npm.addProperty("url", "http://hl7.org/fhir/" + sourceVersion.toCode().substring(0, 3) + "/extensions/" + targetVersion.toCode().substring(0, 3));
     npm.addProperty("title", "Extension Definitions for representing elements from " + sourceVersion.toCode() + " in " + targetVersion.toCode());
     npm.addProperty("description", "Extension Definitions for representing elements from " + sourceVersion.toCode() + " in " + targetVersion.toCode() + " built " + new SimpleDateFormat("EEE, MMM d, yyyy HH:mmZ", new Locale("en", "US")).format(Calendar.getInstance().getTime()) + timezone() + ")");
     JsonObject dep = new JsonObject();

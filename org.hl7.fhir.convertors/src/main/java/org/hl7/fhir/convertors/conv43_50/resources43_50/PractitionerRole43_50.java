@@ -6,12 +6,8 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.ContactPoin
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Identifier43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Period43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Boolean43_50;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Time43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
-
-import java.util.stream.Collectors;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -67,13 +63,13 @@ public class PractitionerRole43_50 {
     for (org.hl7.fhir.r4b.model.Reference t : src.getHealthcareService())
       tgt.addHealthcareService(Reference43_50.convertReference(t));
     for (org.hl7.fhir.r4b.model.ContactPoint t : src.getTelecom())
-      tgt.addTelecom(ContactPoint43_50.convertContactPoint(t));
-    for (org.hl7.fhir.r4b.model.PractitionerRole.PractitionerRoleAvailableTimeComponent t : src.getAvailableTime())
-      tgt.addAvailableTime(convertPractitionerRoleAvailableTimeComponent(t));
-    for (org.hl7.fhir.r4b.model.PractitionerRole.PractitionerRoleNotAvailableComponent t : src.getNotAvailable())
-      tgt.addNotAvailable(convertPractitionerRoleNotAvailableComponent(t));
-    if (src.hasAvailabilityExceptions())
-      tgt.setAvailabilityExceptionsElement(String43_50.convertString(src.getAvailabilityExceptionsElement()));
+      tgt.getContactFirstRep().addTelecom(ContactPoint43_50.convertContactPoint(t));
+//    for (org.hl7.fhir.r4b.model.PractitionerRole.PractitionerRoleAvailableTimeComponent t : src.getAvailableTime())
+//      tgt.addAvailableTime(convertPractitionerRoleAvailableTimeComponent(t));
+//    for (org.hl7.fhir.r4b.model.PractitionerRole.PractitionerRoleNotAvailableComponent t : src.getNotAvailable())
+//      tgt.addNotAvailable(convertPractitionerRoleNotAvailableComponent(t));
+//    if (src.hasAvailabilityExceptions())
+//      tgt.setAvailabilityExceptionsElement(String43_50.convertString(src.getAvailabilityExceptionsElement()));
     for (org.hl7.fhir.r4b.model.Reference t : src.getEndpoint()) tgt.addEndpoint(Reference43_50.convertReference(t));
     return tgt;
   }
@@ -100,141 +96,142 @@ public class PractitionerRole43_50 {
     for (org.hl7.fhir.r5.model.Reference t : src.getLocation()) tgt.addLocation(Reference43_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getHealthcareService())
       tgt.addHealthcareService(Reference43_50.convertReference(t));
-    for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom())
-      tgt.addTelecom(ContactPoint43_50.convertContactPoint(t));
-    for (org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleAvailableTimeComponent t : src.getAvailableTime())
-      tgt.addAvailableTime(convertPractitionerRoleAvailableTimeComponent(t));
-    for (org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleNotAvailableComponent t : src.getNotAvailable())
-      tgt.addNotAvailable(convertPractitionerRoleNotAvailableComponent(t));
-    if (src.hasAvailabilityExceptions())
-      tgt.setAvailabilityExceptionsElement(String43_50.convertString(src.getAvailabilityExceptionsElement()));
+    for (org.hl7.fhir.r5.model.ExtendedContactDetail t1 : src.getContact())
+      for (org.hl7.fhir.r5.model.ContactPoint t : t1.getTelecom())
+        tgt.addTelecom(ContactPoint43_50.convertContactPoint(t));
+//    for (org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleAvailableTimeComponent t : src.getAvailableTime())
+//      tgt.addAvailableTime(convertPractitionerRoleAvailableTimeComponent(t));
+//    for (org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleNotAvailableComponent t : src.getNotAvailable())
+//      tgt.addNotAvailable(convertPractitionerRoleNotAvailableComponent(t));
+//    if (src.hasAvailabilityExceptions())
+//      tgt.setAvailabilityExceptionsElement(String43_50.convertString(src.getAvailabilityExceptionsElement()));
     for (org.hl7.fhir.r5.model.Reference t : src.getEndpoint()) tgt.addEndpoint(Reference43_50.convertReference(t));
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleAvailableTimeComponent convertPractitionerRoleAvailableTimeComponent(org.hl7.fhir.r4b.model.PractitionerRole.PractitionerRoleAvailableTimeComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleAvailableTimeComponent tgt = new org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleAvailableTimeComponent();
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
-    tgt.setDaysOfWeek(src.getDaysOfWeek().stream()
-      .map(PractitionerRole43_50::convertDaysOfWeek)
-      .collect(Collectors.toList()));
-    if (src.hasAllDay())
-      tgt.setAllDayElement(Boolean43_50.convertBoolean(src.getAllDayElement()));
-    if (src.hasAvailableStartTime())
-      tgt.setAvailableStartTimeElement(Time43_50.convertTime(src.getAvailableStartTimeElement()));
-    if (src.hasAvailableEndTime())
-      tgt.setAvailableEndTimeElement(Time43_50.convertTime(src.getAvailableEndTimeElement()));
-    return tgt;
-  }
-
-  public static org.hl7.fhir.r4b.model.PractitionerRole.PractitionerRoleAvailableTimeComponent convertPractitionerRoleAvailableTimeComponent(org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleAvailableTimeComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4b.model.PractitionerRole.PractitionerRoleAvailableTimeComponent tgt = new org.hl7.fhir.r4b.model.PractitionerRole.PractitionerRoleAvailableTimeComponent();
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
-    tgt.setDaysOfWeek(src.getDaysOfWeek().stream()
-      .map(PractitionerRole43_50::convertDaysOfWeek)
-      .collect(Collectors.toList()));
-    if (src.hasAllDay())
-      tgt.setAllDayElement(Boolean43_50.convertBoolean(src.getAllDayElement()));
-    if (src.hasAvailableStartTime())
-      tgt.setAvailableStartTimeElement(Time43_50.convertTime(src.getAvailableStartTimeElement()));
-    if (src.hasAvailableEndTime())
-      tgt.setAvailableEndTimeElement(Time43_50.convertTime(src.getAvailableEndTimeElement()));
-    return tgt;
-  }
-
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DaysOfWeek> convertDaysOfWeek(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.DaysOfWeek> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DaysOfWeek> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.DaysOfWeekEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case MON:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.MON);
-        break;
-      case TUE:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.TUE);
-        break;
-      case WED:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.WED);
-        break;
-      case THU:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.THU);
-        break;
-      case FRI:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.FRI);
-        break;
-      case SAT:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.SAT);
-        break;
-      case SUN:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.SUN);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.NULL);
-        break;
-    }
-    return tgt;
-  }
-
-  static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.DaysOfWeek> convertDaysOfWeek(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DaysOfWeek> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.DaysOfWeek> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Enumerations.DaysOfWeekEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case MON:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DaysOfWeek.MON);
-        break;
-      case TUE:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DaysOfWeek.TUE);
-        break;
-      case WED:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DaysOfWeek.WED);
-        break;
-      case THU:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DaysOfWeek.THU);
-        break;
-      case FRI:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DaysOfWeek.FRI);
-        break;
-      case SAT:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DaysOfWeek.SAT);
-        break;
-      case SUN:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DaysOfWeek.SUN);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DaysOfWeek.NULL);
-        break;
-    }
-    return tgt;
-  }
-
-  public static org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleNotAvailableComponent convertPractitionerRoleNotAvailableComponent(org.hl7.fhir.r4b.model.PractitionerRole.PractitionerRoleNotAvailableComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleNotAvailableComponent tgt = new org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleNotAvailableComponent();
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
-    if (src.hasDescription())
-      tgt.setDescriptionElement(String43_50.convertString(src.getDescriptionElement()));
-    if (src.hasDuring())
-      tgt.setDuring(Period43_50.convertPeriod(src.getDuring()));
-    return tgt;
-  }
-
-  public static org.hl7.fhir.r4b.model.PractitionerRole.PractitionerRoleNotAvailableComponent convertPractitionerRoleNotAvailableComponent(org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleNotAvailableComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4b.model.PractitionerRole.PractitionerRoleNotAvailableComponent tgt = new org.hl7.fhir.r4b.model.PractitionerRole.PractitionerRoleNotAvailableComponent();
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
-    if (src.hasDescription())
-      tgt.setDescriptionElement(String43_50.convertString(src.getDescriptionElement()));
-    if (src.hasDuring())
-      tgt.setDuring(Period43_50.convertPeriod(src.getDuring()));
-    return tgt;
-  }
+//  public static org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleAvailableTimeComponent convertPractitionerRoleAvailableTimeComponent(org.hl7.fhir.r4b.model.PractitionerRole.PractitionerRoleAvailableTimeComponent src) throws FHIRException {
+//    if (src == null)
+//      return null;
+//    org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleAvailableTimeComponent tgt = new org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleAvailableTimeComponent();
+//    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
+//    tgt.setDaysOfWeek(src.getDaysOfWeek().stream()
+//      .map(PractitionerRole43_50::convertDaysOfWeek)
+//      .collect(Collectors.toList()));
+//    if (src.hasAllDay())
+//      tgt.setAllDayElement(Boolean43_50.convertBoolean(src.getAllDayElement()));
+//    if (src.hasAvailableStartTime())
+//      tgt.setAvailableStartTimeElement(Time43_50.convertTime(src.getAvailableStartTimeElement()));
+//    if (src.hasAvailableEndTime())
+//      tgt.setAvailableEndTimeElement(Time43_50.convertTime(src.getAvailableEndTimeElement()));
+//    return tgt;
+//  }
+//
+//  public static org.hl7.fhir.r4b.model.PractitionerRole.PractitionerRoleAvailableTimeComponent convertPractitionerRoleAvailableTimeComponent(org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleAvailableTimeComponent src) throws FHIRException {
+//    if (src == null)
+//      return null;
+//    org.hl7.fhir.r4b.model.PractitionerRole.PractitionerRoleAvailableTimeComponent tgt = new org.hl7.fhir.r4b.model.PractitionerRole.PractitionerRoleAvailableTimeComponent();
+//    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
+//    tgt.setDaysOfWeek(src.getDaysOfWeek().stream()
+//      .map(PractitionerRole43_50::convertDaysOfWeek)
+//      .collect(Collectors.toList()));
+//    if (src.hasAllDay())
+//      tgt.setAllDayElement(Boolean43_50.convertBoolean(src.getAllDayElement()));
+//    if (src.hasAvailableStartTime())
+//      tgt.setAvailableStartTimeElement(Time43_50.convertTime(src.getAvailableStartTimeElement()));
+//    if (src.hasAvailableEndTime())
+//      tgt.setAvailableEndTimeElement(Time43_50.convertTime(src.getAvailableEndTimeElement()));
+//    return tgt;
+//  }
+//
+//  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DaysOfWeek> convertDaysOfWeek(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.DaysOfWeek> src) throws FHIRException {
+//    if (src == null || src.isEmpty())
+//      return null;
+//    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DaysOfWeek> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.DaysOfWeekEnumFactory());
+//    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+//    switch (src.getValue()) {
+//      case MON:
+//        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.MON);
+//        break;
+//      case TUE:
+//        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.TUE);
+//        break;
+//      case WED:
+//        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.WED);
+//        break;
+//      case THU:
+//        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.THU);
+//        break;
+//      case FRI:
+//        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.FRI);
+//        break;
+//      case SAT:
+//        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.SAT);
+//        break;
+//      case SUN:
+//        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.SUN);
+//        break;
+//      default:
+//        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.NULL);
+//        break;
+//    }
+//    return tgt;
+//  }
+//
+//  static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.DaysOfWeek> convertDaysOfWeek(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DaysOfWeek> src) throws FHIRException {
+//    if (src == null || src.isEmpty())
+//      return null;
+//    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.DaysOfWeek> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Enumerations.DaysOfWeekEnumFactory());
+//    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+//    switch (src.getValue()) {
+//      case MON:
+//        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DaysOfWeek.MON);
+//        break;
+//      case TUE:
+//        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DaysOfWeek.TUE);
+//        break;
+//      case WED:
+//        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DaysOfWeek.WED);
+//        break;
+//      case THU:
+//        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DaysOfWeek.THU);
+//        break;
+//      case FRI:
+//        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DaysOfWeek.FRI);
+//        break;
+//      case SAT:
+//        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DaysOfWeek.SAT);
+//        break;
+//      case SUN:
+//        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DaysOfWeek.SUN);
+//        break;
+//      default:
+//        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.DaysOfWeek.NULL);
+//        break;
+//    }
+//    return tgt;
+//  }
+//
+//  public static org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleNotAvailableComponent convertPractitionerRoleNotAvailableComponent(org.hl7.fhir.r4b.model.PractitionerRole.PractitionerRoleNotAvailableComponent src) throws FHIRException {
+//    if (src == null)
+//      return null;
+//    org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleNotAvailableComponent tgt = new org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleNotAvailableComponent();
+//    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
+//    if (src.hasDescription())
+//      tgt.setDescriptionElement(String43_50.convertString(src.getDescriptionElement()));
+//    if (src.hasDuring())
+//      tgt.setDuring(Period43_50.convertPeriod(src.getDuring()));
+//    return tgt;
+//  }
+//
+//  public static org.hl7.fhir.r4b.model.PractitionerRole.PractitionerRoleNotAvailableComponent convertPractitionerRoleNotAvailableComponent(org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleNotAvailableComponent src) throws FHIRException {
+//    if (src == null)
+//      return null;
+//    org.hl7.fhir.r4b.model.PractitionerRole.PractitionerRoleNotAvailableComponent tgt = new org.hl7.fhir.r4b.model.PractitionerRole.PractitionerRoleNotAvailableComponent();
+//    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
+//    if (src.hasDescription())
+//      tgt.setDescriptionElement(String43_50.convertString(src.getDescriptionElement()));
+//    if (src.hasDuring())
+//      tgt.setDuring(Period43_50.convertPeriod(src.getDuring()));
+//    return tgt;
+//  }
 }

@@ -71,8 +71,8 @@ public class PackageHacker {
   }
 
   private void change(JsonObject npm) throws FileNotFoundException, IOException {
-    fixVersions(npm);
-//    npm.remove("notForPublication");
+//    fixVersions(npm);
+    npm.remove("notForPublication");
 //    npm.addProperty("url", "http://hl7.org/fhir/us/carin-rtpbc/STU1");
 //    npm.remove("name");
 //    npm.addProperty("name", "hl7.fhir.uv.smart-app-launch");
@@ -80,10 +80,10 @@ public class PackageHacker {
 //    npm.addProperty("canonical", "http://hl7.org/fhir/us/davinci-drug-formulary");
 ////    npm.remove("description");
 ////    npm.addProperty("description", "Group Wrapper that includes all the R4 packages");
-    npm.remove("url");
-    npm.addProperty("url", "http://hl7.org/fhir/R4B");
-    npm.remove("homepage");
-    npm.addProperty("homepage", "http://hl7.org/fhir/R4B");
+//    npm.remove("url");
+//    npm.addProperty("url", "http://hl7.org/fhir/R4B");
+//    npm.remove("homepage");
+//    npm.addProperty("homepage", "http://hl7.org/fhir/R4B");
 //    npm.remove("dependencies");
 //    JsonObject dep = new JsonObject();
 //    npm.add("dependencies", dep);

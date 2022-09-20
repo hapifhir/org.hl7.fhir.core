@@ -255,7 +255,7 @@ public class ValidatorCli {
     System.out.println("Loading");
     // Comment this out because definitions filename doesn't necessarily contain version (and many not even be 14 characters long).
     // Version gets spit out a couple of lines later after we've loaded the context
-    String definitions = VersionUtilities.packageForVersion(cliContext.getSv()) + "#" + VersionUtilities.getCurrentVersion(cliContext.getSv());
+    String definitions = "dev".equals(cliContext.getSv()) ? "hl7.fhir.r5.core#current" : VersionUtilities.packageForVersion(cliContext.getSv()) + "#" + VersionUtilities.getCurrentVersion(cliContext.getSv());
     ValidationEngine validator = validationService.initializeValidator(cliContext, definitions, tt);
     tts.end();
     switch (cliContext.getMode()) {

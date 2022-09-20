@@ -2,9 +2,9 @@ package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Coding40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.ContactPoint40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Canonical40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Id40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Url40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
@@ -46,8 +46,11 @@ public class MessageHeader40_50 {
       return null;
     org.hl7.fhir.r5.model.MessageHeader tgt = new org.hl7.fhir.r5.model.MessageHeader();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
-    if (src.hasEvent())
-      tgt.setEvent(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getEvent()));
+    if (src.hasEventUriType())
+      tgt.setEvent(Canonical40_50.convertUriToCanonical(src.getEventUriType()));
+    if (src.hasEventCoding())
+      tgt.setEvent(Coding40_50.convertCoding(src.getEventCoding()));
+    
     for (org.hl7.fhir.r4.model.MessageHeader.MessageDestinationComponent t : src.getDestination())
       tgt.addDestination(convertMessageDestinationComponent(t));
     if (src.hasSender())
@@ -75,8 +78,10 @@ public class MessageHeader40_50 {
       return null;
     org.hl7.fhir.r4.model.MessageHeader tgt = new org.hl7.fhir.r4.model.MessageHeader();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
-    if (src.hasEvent())
-      tgt.setEvent(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getEvent()));
+    if (src.hasEventCanonicalType())
+      tgt.setEvent(Canonical40_50.convertCanonicalToUri(src.getEventCanonicalType()));
+    if (src.hasEventCoding())
+      tgt.setEvent(Coding40_50.convertCoding(src.getEventCoding()));
     for (org.hl7.fhir.r5.model.MessageHeader.MessageDestinationComponent t : src.getDestination())
       tgt.addDestination(convertMessageDestinationComponent(t));
     if (src.hasSender())

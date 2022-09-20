@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -283,18 +283,18 @@ public class MedicinalProductDefinition extends DomainResource {
         /**
          * Coding words or phrases of the name.
          */
-        @Child(name = "namePart", type = {}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Child(name = "part", type = {}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="Coding words or phrases of the name", formalDefinition="Coding words or phrases of the name." )
-        protected List<MedicinalProductDefinitionNameNamePartComponent> namePart;
+        protected List<MedicinalProductDefinitionNamePartComponent> part;
 
         /**
          * Country and jurisdiction where the name applies, and associated language.
          */
-        @Child(name = "countryLanguage", type = {}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Child(name = "usage", type = {}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="Country and jurisdiction where the name applies", formalDefinition="Country and jurisdiction where the name applies, and associated language." )
-        protected List<MedicinalProductDefinitionNameCountryLanguageComponent> countryLanguage;
+        protected List<MedicinalProductDefinitionNameUsageComponent> usage;
 
-        private static final long serialVersionUID = 829861294L;
+        private static final long serialVersionUID = 890277480L;
 
     /**
      * Constructor
@@ -381,117 +381,117 @@ public class MedicinalProductDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #namePart} (Coding words or phrases of the name.)
+         * @return {@link #part} (Coding words or phrases of the name.)
          */
-        public List<MedicinalProductDefinitionNameNamePartComponent> getNamePart() { 
-          if (this.namePart == null)
-            this.namePart = new ArrayList<MedicinalProductDefinitionNameNamePartComponent>();
-          return this.namePart;
+        public List<MedicinalProductDefinitionNamePartComponent> getPart() { 
+          if (this.part == null)
+            this.part = new ArrayList<MedicinalProductDefinitionNamePartComponent>();
+          return this.part;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public MedicinalProductDefinitionNameComponent setNamePart(List<MedicinalProductDefinitionNameNamePartComponent> theNamePart) { 
-          this.namePart = theNamePart;
+        public MedicinalProductDefinitionNameComponent setPart(List<MedicinalProductDefinitionNamePartComponent> thePart) { 
+          this.part = thePart;
           return this;
         }
 
-        public boolean hasNamePart() { 
-          if (this.namePart == null)
+        public boolean hasPart() { 
+          if (this.part == null)
             return false;
-          for (MedicinalProductDefinitionNameNamePartComponent item : this.namePart)
+          for (MedicinalProductDefinitionNamePartComponent item : this.part)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public MedicinalProductDefinitionNameNamePartComponent addNamePart() { //3
-          MedicinalProductDefinitionNameNamePartComponent t = new MedicinalProductDefinitionNameNamePartComponent();
-          if (this.namePart == null)
-            this.namePart = new ArrayList<MedicinalProductDefinitionNameNamePartComponent>();
-          this.namePart.add(t);
+        public MedicinalProductDefinitionNamePartComponent addPart() { //3
+          MedicinalProductDefinitionNamePartComponent t = new MedicinalProductDefinitionNamePartComponent();
+          if (this.part == null)
+            this.part = new ArrayList<MedicinalProductDefinitionNamePartComponent>();
+          this.part.add(t);
           return t;
         }
 
-        public MedicinalProductDefinitionNameComponent addNamePart(MedicinalProductDefinitionNameNamePartComponent t) { //3
+        public MedicinalProductDefinitionNameComponent addPart(MedicinalProductDefinitionNamePartComponent t) { //3
           if (t == null)
             return this;
-          if (this.namePart == null)
-            this.namePart = new ArrayList<MedicinalProductDefinitionNameNamePartComponent>();
-          this.namePart.add(t);
+          if (this.part == null)
+            this.part = new ArrayList<MedicinalProductDefinitionNamePartComponent>();
+          this.part.add(t);
           return this;
         }
 
         /**
-         * @return The first repetition of repeating field {@link #namePart}, creating it if it does not already exist {3}
+         * @return The first repetition of repeating field {@link #part}, creating it if it does not already exist {3}
          */
-        public MedicinalProductDefinitionNameNamePartComponent getNamePartFirstRep() { 
-          if (getNamePart().isEmpty()) {
-            addNamePart();
+        public MedicinalProductDefinitionNamePartComponent getPartFirstRep() { 
+          if (getPart().isEmpty()) {
+            addPart();
           }
-          return getNamePart().get(0);
+          return getPart().get(0);
         }
 
         /**
-         * @return {@link #countryLanguage} (Country and jurisdiction where the name applies, and associated language.)
+         * @return {@link #usage} (Country and jurisdiction where the name applies, and associated language.)
          */
-        public List<MedicinalProductDefinitionNameCountryLanguageComponent> getCountryLanguage() { 
-          if (this.countryLanguage == null)
-            this.countryLanguage = new ArrayList<MedicinalProductDefinitionNameCountryLanguageComponent>();
-          return this.countryLanguage;
+        public List<MedicinalProductDefinitionNameUsageComponent> getUsage() { 
+          if (this.usage == null)
+            this.usage = new ArrayList<MedicinalProductDefinitionNameUsageComponent>();
+          return this.usage;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public MedicinalProductDefinitionNameComponent setCountryLanguage(List<MedicinalProductDefinitionNameCountryLanguageComponent> theCountryLanguage) { 
-          this.countryLanguage = theCountryLanguage;
+        public MedicinalProductDefinitionNameComponent setUsage(List<MedicinalProductDefinitionNameUsageComponent> theUsage) { 
+          this.usage = theUsage;
           return this;
         }
 
-        public boolean hasCountryLanguage() { 
-          if (this.countryLanguage == null)
+        public boolean hasUsage() { 
+          if (this.usage == null)
             return false;
-          for (MedicinalProductDefinitionNameCountryLanguageComponent item : this.countryLanguage)
+          for (MedicinalProductDefinitionNameUsageComponent item : this.usage)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public MedicinalProductDefinitionNameCountryLanguageComponent addCountryLanguage() { //3
-          MedicinalProductDefinitionNameCountryLanguageComponent t = new MedicinalProductDefinitionNameCountryLanguageComponent();
-          if (this.countryLanguage == null)
-            this.countryLanguage = new ArrayList<MedicinalProductDefinitionNameCountryLanguageComponent>();
-          this.countryLanguage.add(t);
+        public MedicinalProductDefinitionNameUsageComponent addUsage() { //3
+          MedicinalProductDefinitionNameUsageComponent t = new MedicinalProductDefinitionNameUsageComponent();
+          if (this.usage == null)
+            this.usage = new ArrayList<MedicinalProductDefinitionNameUsageComponent>();
+          this.usage.add(t);
           return t;
         }
 
-        public MedicinalProductDefinitionNameComponent addCountryLanguage(MedicinalProductDefinitionNameCountryLanguageComponent t) { //3
+        public MedicinalProductDefinitionNameComponent addUsage(MedicinalProductDefinitionNameUsageComponent t) { //3
           if (t == null)
             return this;
-          if (this.countryLanguage == null)
-            this.countryLanguage = new ArrayList<MedicinalProductDefinitionNameCountryLanguageComponent>();
-          this.countryLanguage.add(t);
+          if (this.usage == null)
+            this.usage = new ArrayList<MedicinalProductDefinitionNameUsageComponent>();
+          this.usage.add(t);
           return this;
         }
 
         /**
-         * @return The first repetition of repeating field {@link #countryLanguage}, creating it if it does not already exist {3}
+         * @return The first repetition of repeating field {@link #usage}, creating it if it does not already exist {3}
          */
-        public MedicinalProductDefinitionNameCountryLanguageComponent getCountryLanguageFirstRep() { 
-          if (getCountryLanguage().isEmpty()) {
-            addCountryLanguage();
+        public MedicinalProductDefinitionNameUsageComponent getUsageFirstRep() { 
+          if (getUsage().isEmpty()) {
+            addUsage();
           }
-          return getCountryLanguage().get(0);
+          return getUsage().get(0);
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("productName", "string", "The full product name.", 0, 1, productName));
           children.add(new Property("type", "CodeableConcept", "Type of product name, such as rINN, BAN, Proprietary, Non-Proprietary.", 0, 1, type));
-          children.add(new Property("namePart", "", "Coding words or phrases of the name.", 0, java.lang.Integer.MAX_VALUE, namePart));
-          children.add(new Property("countryLanguage", "", "Country and jurisdiction where the name applies, and associated language.", 0, java.lang.Integer.MAX_VALUE, countryLanguage));
+          children.add(new Property("part", "", "Coding words or phrases of the name.", 0, java.lang.Integer.MAX_VALUE, part));
+          children.add(new Property("usage", "", "Country and jurisdiction where the name applies, and associated language.", 0, java.lang.Integer.MAX_VALUE, usage));
         }
 
         @Override
@@ -499,8 +499,8 @@ public class MedicinalProductDefinition extends DomainResource {
           switch (_hash) {
           case -1491817446: /*productName*/  return new Property("productName", "string", "The full product name.", 0, 1, productName);
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Type of product name, such as rINN, BAN, Proprietary, Non-Proprietary.", 0, 1, type);
-          case 1840452894: /*namePart*/  return new Property("namePart", "", "Coding words or phrases of the name.", 0, java.lang.Integer.MAX_VALUE, namePart);
-          case -141141746: /*countryLanguage*/  return new Property("countryLanguage", "", "Country and jurisdiction where the name applies, and associated language.", 0, java.lang.Integer.MAX_VALUE, countryLanguage);
+          case 3433459: /*part*/  return new Property("part", "", "Coding words or phrases of the name.", 0, java.lang.Integer.MAX_VALUE, part);
+          case 111574433: /*usage*/  return new Property("usage", "", "Country and jurisdiction where the name applies, and associated language.", 0, java.lang.Integer.MAX_VALUE, usage);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -511,8 +511,8 @@ public class MedicinalProductDefinition extends DomainResource {
         switch (hash) {
         case -1491817446: /*productName*/ return this.productName == null ? new Base[0] : new Base[] {this.productName}; // StringType
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
-        case 1840452894: /*namePart*/ return this.namePart == null ? new Base[0] : this.namePart.toArray(new Base[this.namePart.size()]); // MedicinalProductDefinitionNameNamePartComponent
-        case -141141746: /*countryLanguage*/ return this.countryLanguage == null ? new Base[0] : this.countryLanguage.toArray(new Base[this.countryLanguage.size()]); // MedicinalProductDefinitionNameCountryLanguageComponent
+        case 3433459: /*part*/ return this.part == null ? new Base[0] : this.part.toArray(new Base[this.part.size()]); // MedicinalProductDefinitionNamePartComponent
+        case 111574433: /*usage*/ return this.usage == null ? new Base[0] : this.usage.toArray(new Base[this.usage.size()]); // MedicinalProductDefinitionNameUsageComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -527,11 +527,11 @@ public class MedicinalProductDefinition extends DomainResource {
         case 3575610: // type
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
-        case 1840452894: // namePart
-          this.getNamePart().add((MedicinalProductDefinitionNameNamePartComponent) value); // MedicinalProductDefinitionNameNamePartComponent
+        case 3433459: // part
+          this.getPart().add((MedicinalProductDefinitionNamePartComponent) value); // MedicinalProductDefinitionNamePartComponent
           return value;
-        case -141141746: // countryLanguage
-          this.getCountryLanguage().add((MedicinalProductDefinitionNameCountryLanguageComponent) value); // MedicinalProductDefinitionNameCountryLanguageComponent
+        case 111574433: // usage
+          this.getUsage().add((MedicinalProductDefinitionNameUsageComponent) value); // MedicinalProductDefinitionNameUsageComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -544,10 +544,10 @@ public class MedicinalProductDefinition extends DomainResource {
           this.productName = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("type")) {
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("namePart")) {
-          this.getNamePart().add((MedicinalProductDefinitionNameNamePartComponent) value);
-        } else if (name.equals("countryLanguage")) {
-          this.getCountryLanguage().add((MedicinalProductDefinitionNameCountryLanguageComponent) value);
+        } else if (name.equals("part")) {
+          this.getPart().add((MedicinalProductDefinitionNamePartComponent) value);
+        } else if (name.equals("usage")) {
+          this.getUsage().add((MedicinalProductDefinitionNameUsageComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -558,8 +558,8 @@ public class MedicinalProductDefinition extends DomainResource {
         switch (hash) {
         case -1491817446:  return getProductNameElement();
         case 3575610:  return getType();
-        case 1840452894:  return addNamePart(); 
-        case -141141746:  return addCountryLanguage(); 
+        case 3433459:  return addPart(); 
+        case 111574433:  return addUsage(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -570,8 +570,8 @@ public class MedicinalProductDefinition extends DomainResource {
         switch (hash) {
         case -1491817446: /*productName*/ return new String[] {"string"};
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
-        case 1840452894: /*namePart*/ return new String[] {};
-        case -141141746: /*countryLanguage*/ return new String[] {};
+        case 3433459: /*part*/ return new String[] {};
+        case 111574433: /*usage*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -586,11 +586,11 @@ public class MedicinalProductDefinition extends DomainResource {
           this.type = new CodeableConcept();
           return this.type;
         }
-        else if (name.equals("namePart")) {
-          return addNamePart();
+        else if (name.equals("part")) {
+          return addPart();
         }
-        else if (name.equals("countryLanguage")) {
-          return addCountryLanguage();
+        else if (name.equals("usage")) {
+          return addUsage();
         }
         else
           return super.addChild(name);
@@ -606,15 +606,15 @@ public class MedicinalProductDefinition extends DomainResource {
         super.copyValues(dst);
         dst.productName = productName == null ? null : productName.copy();
         dst.type = type == null ? null : type.copy();
-        if (namePart != null) {
-          dst.namePart = new ArrayList<MedicinalProductDefinitionNameNamePartComponent>();
-          for (MedicinalProductDefinitionNameNamePartComponent i : namePart)
-            dst.namePart.add(i.copy());
+        if (part != null) {
+          dst.part = new ArrayList<MedicinalProductDefinitionNamePartComponent>();
+          for (MedicinalProductDefinitionNamePartComponent i : part)
+            dst.part.add(i.copy());
         };
-        if (countryLanguage != null) {
-          dst.countryLanguage = new ArrayList<MedicinalProductDefinitionNameCountryLanguageComponent>();
-          for (MedicinalProductDefinitionNameCountryLanguageComponent i : countryLanguage)
-            dst.countryLanguage.add(i.copy());
+        if (usage != null) {
+          dst.usage = new ArrayList<MedicinalProductDefinitionNameUsageComponent>();
+          for (MedicinalProductDefinitionNameUsageComponent i : usage)
+            dst.usage.add(i.copy());
         };
       }
 
@@ -625,8 +625,8 @@ public class MedicinalProductDefinition extends DomainResource {
         if (!(other_ instanceof MedicinalProductDefinitionNameComponent))
           return false;
         MedicinalProductDefinitionNameComponent o = (MedicinalProductDefinitionNameComponent) other_;
-        return compareDeep(productName, o.productName, true) && compareDeep(type, o.type, true) && compareDeep(namePart, o.namePart, true)
-           && compareDeep(countryLanguage, o.countryLanguage, true);
+        return compareDeep(productName, o.productName, true) && compareDeep(type, o.type, true) && compareDeep(part, o.part, true)
+           && compareDeep(usage, o.usage, true);
       }
 
       @Override
@@ -640,8 +640,8 @@ public class MedicinalProductDefinition extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(productName, type, namePart
-          , countryLanguage);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(productName, type, part
+          , usage);
       }
 
   public String fhirType() {
@@ -652,7 +652,7 @@ public class MedicinalProductDefinition extends DomainResource {
   }
 
     @Block()
-    public static class MedicinalProductDefinitionNameNamePartComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class MedicinalProductDefinitionNamePartComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * A fragment of a product name.
          */
@@ -673,14 +673,14 @@ public class MedicinalProductDefinition extends DomainResource {
     /**
      * Constructor
      */
-      public MedicinalProductDefinitionNameNamePartComponent() {
+      public MedicinalProductDefinitionNamePartComponent() {
         super();
       }
 
     /**
      * Constructor
      */
-      public MedicinalProductDefinitionNameNamePartComponent(String part, CodeableConcept type) {
+      public MedicinalProductDefinitionNamePartComponent(String part, CodeableConcept type) {
         super();
         this.setPart(part);
         this.setType(type);
@@ -692,7 +692,7 @@ public class MedicinalProductDefinition extends DomainResource {
         public StringType getPartElement() { 
           if (this.part == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicinalProductDefinitionNameNamePartComponent.part");
+              throw new Error("Attempt to auto-create MedicinalProductDefinitionNamePartComponent.part");
             else if (Configuration.doAutoCreate())
               this.part = new StringType(); // bb
           return this.part;
@@ -709,7 +709,7 @@ public class MedicinalProductDefinition extends DomainResource {
         /**
          * @param value {@link #part} (A fragment of a product name.). This is the underlying object with id, value and extensions. The accessor "getPart" gives direct access to the value
          */
-        public MedicinalProductDefinitionNameNamePartComponent setPartElement(StringType value) { 
+        public MedicinalProductDefinitionNamePartComponent setPartElement(StringType value) { 
           this.part = value;
           return this;
         }
@@ -724,7 +724,7 @@ public class MedicinalProductDefinition extends DomainResource {
         /**
          * @param value A fragment of a product name.
          */
-        public MedicinalProductDefinitionNameNamePartComponent setPart(String value) { 
+        public MedicinalProductDefinitionNamePartComponent setPart(String value) { 
             if (this.part == null)
               this.part = new StringType();
             this.part.setValue(value);
@@ -737,7 +737,7 @@ public class MedicinalProductDefinition extends DomainResource {
         public CodeableConcept getType() { 
           if (this.type == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicinalProductDefinitionNameNamePartComponent.type");
+              throw new Error("Attempt to auto-create MedicinalProductDefinitionNamePartComponent.type");
             else if (Configuration.doAutoCreate())
               this.type = new CodeableConcept(); // cc
           return this.type;
@@ -750,7 +750,7 @@ public class MedicinalProductDefinition extends DomainResource {
         /**
          * @param value {@link #type} (Identifying type for this part of the name (e.g. strength part).)
          */
-        public MedicinalProductDefinitionNameNamePartComponent setType(CodeableConcept value) { 
+        public MedicinalProductDefinitionNamePartComponent setType(CodeableConcept value) { 
           this.type = value;
           return this;
         }
@@ -829,7 +829,7 @@ public class MedicinalProductDefinition extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("part")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MedicinalProductDefinition.name.namePart.part");
+          throw new FHIRException("Cannot call addChild on a primitive type MedicinalProductDefinition.name.part.part");
         }
         else if (name.equals("type")) {
           this.type = new CodeableConcept();
@@ -839,13 +839,13 @@ public class MedicinalProductDefinition extends DomainResource {
           return super.addChild(name);
       }
 
-      public MedicinalProductDefinitionNameNamePartComponent copy() {
-        MedicinalProductDefinitionNameNamePartComponent dst = new MedicinalProductDefinitionNameNamePartComponent();
+      public MedicinalProductDefinitionNamePartComponent copy() {
+        MedicinalProductDefinitionNamePartComponent dst = new MedicinalProductDefinitionNamePartComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(MedicinalProductDefinitionNameNamePartComponent dst) {
+      public void copyValues(MedicinalProductDefinitionNamePartComponent dst) {
         super.copyValues(dst);
         dst.part = part == null ? null : part.copy();
         dst.type = type == null ? null : type.copy();
@@ -855,9 +855,9 @@ public class MedicinalProductDefinition extends DomainResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof MedicinalProductDefinitionNameNamePartComponent))
+        if (!(other_ instanceof MedicinalProductDefinitionNamePartComponent))
           return false;
-        MedicinalProductDefinitionNameNamePartComponent o = (MedicinalProductDefinitionNameNamePartComponent) other_;
+        MedicinalProductDefinitionNamePartComponent o = (MedicinalProductDefinitionNamePartComponent) other_;
         return compareDeep(part, o.part, true) && compareDeep(type, o.type, true);
       }
 
@@ -865,9 +865,9 @@ public class MedicinalProductDefinition extends DomainResource {
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof MedicinalProductDefinitionNameNamePartComponent))
+        if (!(other_ instanceof MedicinalProductDefinitionNamePartComponent))
           return false;
-        MedicinalProductDefinitionNameNamePartComponent o = (MedicinalProductDefinitionNameNamePartComponent) other_;
+        MedicinalProductDefinitionNamePartComponent o = (MedicinalProductDefinitionNamePartComponent) other_;
         return compareValues(part, o.part, true);
       }
 
@@ -876,14 +876,14 @@ public class MedicinalProductDefinition extends DomainResource {
       }
 
   public String fhirType() {
-    return "MedicinalProductDefinition.name.namePart";
+    return "MedicinalProductDefinition.name.part";
 
   }
 
   }
 
     @Block()
-    public static class MedicinalProductDefinitionNameCountryLanguageComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class MedicinalProductDefinitionNameUsageComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * Country code for where this name applies.
          */
@@ -913,14 +913,14 @@ public class MedicinalProductDefinition extends DomainResource {
     /**
      * Constructor
      */
-      public MedicinalProductDefinitionNameCountryLanguageComponent() {
+      public MedicinalProductDefinitionNameUsageComponent() {
         super();
       }
 
     /**
      * Constructor
      */
-      public MedicinalProductDefinitionNameCountryLanguageComponent(CodeableConcept country, CodeableConcept language) {
+      public MedicinalProductDefinitionNameUsageComponent(CodeableConcept country, CodeableConcept language) {
         super();
         this.setCountry(country);
         this.setLanguage(language);
@@ -932,7 +932,7 @@ public class MedicinalProductDefinition extends DomainResource {
         public CodeableConcept getCountry() { 
           if (this.country == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicinalProductDefinitionNameCountryLanguageComponent.country");
+              throw new Error("Attempt to auto-create MedicinalProductDefinitionNameUsageComponent.country");
             else if (Configuration.doAutoCreate())
               this.country = new CodeableConcept(); // cc
           return this.country;
@@ -945,7 +945,7 @@ public class MedicinalProductDefinition extends DomainResource {
         /**
          * @param value {@link #country} (Country code for where this name applies.)
          */
-        public MedicinalProductDefinitionNameCountryLanguageComponent setCountry(CodeableConcept value) { 
+        public MedicinalProductDefinitionNameUsageComponent setCountry(CodeableConcept value) { 
           this.country = value;
           return this;
         }
@@ -956,7 +956,7 @@ public class MedicinalProductDefinition extends DomainResource {
         public CodeableConcept getJurisdiction() { 
           if (this.jurisdiction == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicinalProductDefinitionNameCountryLanguageComponent.jurisdiction");
+              throw new Error("Attempt to auto-create MedicinalProductDefinitionNameUsageComponent.jurisdiction");
             else if (Configuration.doAutoCreate())
               this.jurisdiction = new CodeableConcept(); // cc
           return this.jurisdiction;
@@ -969,7 +969,7 @@ public class MedicinalProductDefinition extends DomainResource {
         /**
          * @param value {@link #jurisdiction} (Jurisdiction code for where this name applies. A jurisdiction may be a sub- or supra-national entity (e.g. a state or a geographic region).)
          */
-        public MedicinalProductDefinitionNameCountryLanguageComponent setJurisdiction(CodeableConcept value) { 
+        public MedicinalProductDefinitionNameUsageComponent setJurisdiction(CodeableConcept value) { 
           this.jurisdiction = value;
           return this;
         }
@@ -980,7 +980,7 @@ public class MedicinalProductDefinition extends DomainResource {
         public CodeableConcept getLanguage() { 
           if (this.language == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicinalProductDefinitionNameCountryLanguageComponent.language");
+              throw new Error("Attempt to auto-create MedicinalProductDefinitionNameUsageComponent.language");
             else if (Configuration.doAutoCreate())
               this.language = new CodeableConcept(); // cc
           return this.language;
@@ -993,7 +993,7 @@ public class MedicinalProductDefinition extends DomainResource {
         /**
          * @param value {@link #language} (Language code for this name.)
          */
-        public MedicinalProductDefinitionNameCountryLanguageComponent setLanguage(CodeableConcept value) { 
+        public MedicinalProductDefinitionNameUsageComponent setLanguage(CodeableConcept value) { 
           this.language = value;
           return this;
         }
@@ -1097,13 +1097,13 @@ public class MedicinalProductDefinition extends DomainResource {
           return super.addChild(name);
       }
 
-      public MedicinalProductDefinitionNameCountryLanguageComponent copy() {
-        MedicinalProductDefinitionNameCountryLanguageComponent dst = new MedicinalProductDefinitionNameCountryLanguageComponent();
+      public MedicinalProductDefinitionNameUsageComponent copy() {
+        MedicinalProductDefinitionNameUsageComponent dst = new MedicinalProductDefinitionNameUsageComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(MedicinalProductDefinitionNameCountryLanguageComponent dst) {
+      public void copyValues(MedicinalProductDefinitionNameUsageComponent dst) {
         super.copyValues(dst);
         dst.country = country == null ? null : country.copy();
         dst.jurisdiction = jurisdiction == null ? null : jurisdiction.copy();
@@ -1114,9 +1114,9 @@ public class MedicinalProductDefinition extends DomainResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof MedicinalProductDefinitionNameCountryLanguageComponent))
+        if (!(other_ instanceof MedicinalProductDefinitionNameUsageComponent))
           return false;
-        MedicinalProductDefinitionNameCountryLanguageComponent o = (MedicinalProductDefinitionNameCountryLanguageComponent) other_;
+        MedicinalProductDefinitionNameUsageComponent o = (MedicinalProductDefinitionNameUsageComponent) other_;
         return compareDeep(country, o.country, true) && compareDeep(jurisdiction, o.jurisdiction, true)
            && compareDeep(language, o.language, true);
       }
@@ -1125,9 +1125,9 @@ public class MedicinalProductDefinition extends DomainResource {
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof MedicinalProductDefinitionNameCountryLanguageComponent))
+        if (!(other_ instanceof MedicinalProductDefinitionNameUsageComponent))
           return false;
-        MedicinalProductDefinitionNameCountryLanguageComponent o = (MedicinalProductDefinitionNameCountryLanguageComponent) other_;
+        MedicinalProductDefinitionNameUsageComponent o = (MedicinalProductDefinitionNameUsageComponent) other_;
         return true;
       }
 
@@ -1137,7 +1137,7 @@ public class MedicinalProductDefinition extends DomainResource {
       }
 
   public String fhirType() {
-    return "MedicinalProductDefinition.name.countryLanguage";
+    return "MedicinalProductDefinition.name.usage";
 
   }
 
@@ -2138,7 +2138,7 @@ public class MedicinalProductDefinition extends DomainResource {
      */
     @Child(name = "classification", type = {CodeableConcept.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Allows the product to be classified by various systems", formalDefinition="Allows the product to be classified by various systems, commonly WHO ATC." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/product-classification-codes")
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/medicinal-product-classification")
     protected List<CodeableConcept> classification;
 
     /**
@@ -2157,10 +2157,10 @@ public class MedicinalProductDefinition extends DomainResource {
     protected List<CodeableConcept> packagedMedicinalProduct;
 
     /**
-     * A medicinal manufactured item that this product consists of, such as a tablet or capsule. Used as a direct link when the item's packaging is not being recorded (see also PackagedProductDefinition.package.containedItem.item).
+     * Types of medicinal manufactured items and/or devices that this product consists of, such as tablets, capsule, or syringes. Used as a direct link when the item's packaging is not being recorded (see also PackagedProductDefinition.package.containedItem.item).
      */
-    @Child(name = "comprisedOf", type = {ManufacturedItemDefinition.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="A medicinal manufactured item that this product consists of, such as a tablet or capsule", formalDefinition="A medicinal manufactured item that this product consists of, such as a tablet or capsule. Used as a direct link when the item's packaging is not being recorded (see also PackagedProductDefinition.package.containedItem.item)." )
+    @Child(name = "comprisedOf", type = {ManufacturedItemDefinition.class, DeviceDefinition.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Types of medicinal manufactured items and/or devices that this product consists of, such as tablets, capsule, or syringes", formalDefinition="Types of medicinal manufactured items and/or devices that this product consists of, such as tablets, capsule, or syringes. Used as a direct link when the item's packaging is not being recorded (see also PackagedProductDefinition.package.containedItem.item)." )
     protected List<Reference> comprisedOf;
 
     /**
@@ -2943,7 +2943,7 @@ public class MedicinalProductDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #comprisedOf} (A medicinal manufactured item that this product consists of, such as a tablet or capsule. Used as a direct link when the item's packaging is not being recorded (see also PackagedProductDefinition.package.containedItem.item).)
+     * @return {@link #comprisedOf} (Types of medicinal manufactured items and/or devices that this product consists of, such as tablets, capsule, or syringes. Used as a direct link when the item's packaging is not being recorded (see also PackagedProductDefinition.package.containedItem.item).)
      */
     public List<Reference> getComprisedOf() { 
       if (this.comprisedOf == null)
@@ -3597,7 +3597,7 @@ public class MedicinalProductDefinition extends DomainResource {
         children.add(new Property("classification", "CodeableConcept", "Allows the product to be classified by various systems, commonly WHO ATC.", 0, java.lang.Integer.MAX_VALUE, classification));
         children.add(new Property("marketingStatus", "MarketingStatus", "Marketing status of the medicinal product, in contrast to marketing authorization. This refers to the product being actually 'on the market' as opposed to being allowed to be on the market (which is an authorization).", 0, java.lang.Integer.MAX_VALUE, marketingStatus));
         children.add(new Property("packagedMedicinalProduct", "CodeableConcept", "Package type for the product. See also the PackagedProductDefinition resource.", 0, java.lang.Integer.MAX_VALUE, packagedMedicinalProduct));
-        children.add(new Property("comprisedOf", "Reference(ManufacturedItemDefinition)", "A medicinal manufactured item that this product consists of, such as a tablet or capsule. Used as a direct link when the item's packaging is not being recorded (see also PackagedProductDefinition.package.containedItem.item).", 0, java.lang.Integer.MAX_VALUE, comprisedOf));
+        children.add(new Property("comprisedOf", "Reference(ManufacturedItemDefinition|DeviceDefinition)", "Types of medicinal manufactured items and/or devices that this product consists of, such as tablets, capsule, or syringes. Used as a direct link when the item's packaging is not being recorded (see also PackagedProductDefinition.package.containedItem.item).", 0, java.lang.Integer.MAX_VALUE, comprisedOf));
         children.add(new Property("ingredient", "CodeableConcept", "The ingredients of this medicinal product - when not detailed in other resources. This is only needed if the ingredients are not specified by incoming references from the Ingredient resource, or indirectly via incoming AdministrableProductDefinition, PackagedProductDefinition or ManufacturedItemDefinition references. In cases where those levels of detail are not used, the ingredients may be specified directly here as codes.", 0, java.lang.Integer.MAX_VALUE, ingredient));
         children.add(new Property("impurity", "CodeableReference(SubstanceDefinition)", "Any component of the drug product which is not the chemical entity defined as the drug substance, or an excipient in the drug product. This includes process-related impurities and contaminants, product-related impurities including degradation products.", 0, java.lang.Integer.MAX_VALUE, impurity));
         children.add(new Property("attachedDocument", "Reference(DocumentReference)", "Additional information or supporting documentation about the medicinal product.", 0, java.lang.Integer.MAX_VALUE, attachedDocument));
@@ -3631,7 +3631,7 @@ public class MedicinalProductDefinition extends DomainResource {
         case 382350310: /*classification*/  return new Property("classification", "CodeableConcept", "Allows the product to be classified by various systems, commonly WHO ATC.", 0, java.lang.Integer.MAX_VALUE, classification);
         case 70767032: /*marketingStatus*/  return new Property("marketingStatus", "MarketingStatus", "Marketing status of the medicinal product, in contrast to marketing authorization. This refers to the product being actually 'on the market' as opposed to being allowed to be on the market (which is an authorization).", 0, java.lang.Integer.MAX_VALUE, marketingStatus);
         case -361025513: /*packagedMedicinalProduct*/  return new Property("packagedMedicinalProduct", "CodeableConcept", "Package type for the product. See also the PackagedProductDefinition resource.", 0, java.lang.Integer.MAX_VALUE, packagedMedicinalProduct);
-        case 1546078211: /*comprisedOf*/  return new Property("comprisedOf", "Reference(ManufacturedItemDefinition)", "A medicinal manufactured item that this product consists of, such as a tablet or capsule. Used as a direct link when the item's packaging is not being recorded (see also PackagedProductDefinition.package.containedItem.item).", 0, java.lang.Integer.MAX_VALUE, comprisedOf);
+        case 1546078211: /*comprisedOf*/  return new Property("comprisedOf", "Reference(ManufacturedItemDefinition|DeviceDefinition)", "Types of medicinal manufactured items and/or devices that this product consists of, such as tablets, capsule, or syringes. Used as a direct link when the item's packaging is not being recorded (see also PackagedProductDefinition.package.containedItem.item).", 0, java.lang.Integer.MAX_VALUE, comprisedOf);
         case -206409263: /*ingredient*/  return new Property("ingredient", "CodeableConcept", "The ingredients of this medicinal product - when not detailed in other resources. This is only needed if the ingredients are not specified by incoming references from the Ingredient resource, or indirectly via incoming AdministrableProductDefinition, PackagedProductDefinition or ManufacturedItemDefinition references. In cases where those levels of detail are not used, the ingredients may be specified directly here as codes.", 0, java.lang.Integer.MAX_VALUE, ingredient);
         case -416837467: /*impurity*/  return new Property("impurity", "CodeableReference(SubstanceDefinition)", "Any component of the drug product which is not the chemical entity defined as the drug substance, or an excipient in the drug product. This includes process-related impurities and contaminants, product-related impurities including degradation products.", 0, java.lang.Integer.MAX_VALUE, impurity);
         case -513945889: /*attachedDocument*/  return new Property("attachedDocument", "Reference(DocumentReference)", "Additional information or supporting documentation about the medicinal product.", 0, java.lang.Integer.MAX_VALUE, attachedDocument);
@@ -4343,17 +4343,17 @@ public class MedicinalProductDefinition extends DomainResource {
    * <p>
    * Description: <b>Language code for this name</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>MedicinalProductDefinition.name.countryLanguage.language</b><br>
+   * Path: <b>MedicinalProductDefinition.name.usage.language</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="name-language", path="MedicinalProductDefinition.name.countryLanguage.language", description="Language code for this name", type="token" )
+  @SearchParamDefinition(name="name-language", path="MedicinalProductDefinition.name.usage.language", description="Language code for this name", type="token" )
   public static final String SP_NAME_LANGUAGE = "name-language";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>name-language</b>
    * <p>
    * Description: <b>Language code for this name</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>MedicinalProductDefinition.name.countryLanguage.language</b><br>
+   * Path: <b>MedicinalProductDefinition.name.usage.language</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam NAME_LANGUAGE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_NAME_LANGUAGE);

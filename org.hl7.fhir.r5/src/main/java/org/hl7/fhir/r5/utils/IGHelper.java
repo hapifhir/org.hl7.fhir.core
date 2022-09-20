@@ -36,16 +36,16 @@ import org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionPa
 public class IGHelper {
 
   
-  public static final String EXT_SPREADSHEET = ToolingExtensions.EXT_IGP_SPREADSHEET;
-  public static final String EXT_MAPPING_CSV = ToolingExtensions.EXT_IGP_MAPPING_CSV;
-  public static final String EXT_BUNDLE = ToolingExtensions.EXT_IGP_BUNDLE;
-  public static final String EXT_RESOURCE_INFO = ToolingExtensions.EXT_IGP_RESOURCE_INFO;
-  public static final String EXT_CONTAINED_RESOURCE_INFO = ToolingExtensions.EXT_IGP_CONTAINED_RESOURCE_INFO;
-  public static final String EXT_PRIVATE_BASE = ToolingExtensions.EXT_PRIVATE_BASE;
+//  public static final String EXT_SPREADSHEET = ToolingExtensions.EXT_IGP_SPREADSHEET;
+//  public static final String EXT_MAPPING_CSV = ToolingExtensions.EXT_IGP_MAPPING_CSV;
+//  public static final String EXT_BUNDLE = ToolingExtensions.EXT_IGP_BUNDLE;
+//  public static final String EXT_RESOURCE_INFO = ToolingExtensions.EXT_IGP_RESOURCE_INFO;
+//  public static final String EXT_CONTAINED_RESOURCE_INFO = ToolingExtensions.EXT_IGP_CONTAINED_RESOURCE_INFO;
+//  public static final String EXT_PRIVATE_BASE = ToolingExtensions.EXT_PRIVATE_BASE;
 
   public static String readStringParameter(ImplementationGuideDefinitionComponent ig, String name) {
     for (ImplementationGuideDefinitionParameterComponent p : ig.getParameter()) {
-      if (name == p.getCode()) {
+      if (name == p.getCode().getCode()) {
         return p.getValue();
       }
     }
@@ -59,19 +59,19 @@ public class IGHelper {
 
   public static void setParameter(ImplementationGuideDefinitionComponent ig, String name, String value) {
     for (ImplementationGuideDefinitionParameterComponent p : ig.getParameter()) {
-      if (name == p.getCode()) {
+      if (name == p.getCode().getCode()) {
         p.setValue(value);
         return;
       }
     }
     ImplementationGuideDefinitionParameterComponent p = ig.addParameter();
-    p.setCode(name);
+    p.getCode().setCode(name);
     p.setValue(value);
   }
   
   public static void addParameter(ImplementationGuideDefinitionComponent ig, String name, String value) {
     ImplementationGuideDefinitionParameterComponent p = ig.addParameter();
-    p.setCode(name);
+    p.getCode().setCode(name);
     p.setValue(value);
   }
   

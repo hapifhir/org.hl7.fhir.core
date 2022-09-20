@@ -28,7 +28,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 
 
@@ -37,6 +37,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 public enum ResourceType {
 Account,
     ActivityDefinition,
+    ActorDefinition,
     AdministrableProductDefinition,
     AdverseEvent,
     AllergyIntolerance,
@@ -50,7 +51,6 @@ Account,
     BodyStructure,
     Bundle,
     CapabilityStatement,
-    CapabilityStatement2,
     CarePlan,
     CareTeam,
     ChargeItem,
@@ -97,6 +97,7 @@ Account,
     FamilyMemberHistory,
     Flag,
     FormularyItem,
+    GenomicStudy,
     Goal,
     GraphDefinition,
     Group,
@@ -156,6 +157,8 @@ Account,
     RegulatedAuthorization,
     RelatedPerson,
     RequestGroup,
+    RequestOrchestration,
+    Requirements,
     ResearchStudy,
     ResearchSubject,
     RiskAssessment,
@@ -195,6 +198,8 @@ Account,
       return "account";
     case ActivityDefinition:
       return "activitydefinition";
+    case ActorDefinition:
+      return "actordefinition";
     case AdministrableProductDefinition:
       return "administrableproductdefinition";
     case AdverseEvent:
@@ -221,8 +226,6 @@ Account,
       return "bundle";
     case CapabilityStatement:
       return "capabilitystatement";
-    case CapabilityStatement2:
-      return "capabilitystatement2";
     case CarePlan:
       return "careplan";
     case CareTeam:
@@ -315,6 +318,8 @@ Account,
       return "flag";
     case FormularyItem:
       return "formularyitem";
+    case GenomicStudy:
+      return "genomicstudy";
     case Goal:
       return "goal";
     case GraphDefinition:
@@ -433,6 +438,10 @@ Account,
       return "relatedperson";
     case RequestGroup:
       return "requestgroup";
+    case RequestOrchestration:
+      return "requestorchestration";
+    case Requirements:
+      return "requirements";
     case ResearchStudy:
       return "researchstudy";
     case ResearchSubject:
@@ -506,6 +515,8 @@ Account,
       return Account;
     if ("ActivityDefinition".equals(code))
       return ActivityDefinition;
+    if ("ActorDefinition".equals(code))
+      return ActorDefinition;
     if ("AdministrableProductDefinition".equals(code))
       return AdministrableProductDefinition;
     if ("AdverseEvent".equals(code))
@@ -532,8 +543,6 @@ Account,
       return Bundle;
     if ("CapabilityStatement".equals(code))
       return CapabilityStatement;
-    if ("CapabilityStatement2".equals(code))
-      return CapabilityStatement2;
     if ("CarePlan".equals(code))
       return CarePlan;
     if ("CareTeam".equals(code))
@@ -626,6 +635,8 @@ Account,
       return Flag;
     if ("FormularyItem".equals(code))
       return FormularyItem;
+    if ("GenomicStudy".equals(code))
+      return GenomicStudy;
     if ("Goal".equals(code))
       return Goal;
     if ("GraphDefinition".equals(code))
@@ -744,6 +755,10 @@ Account,
       return RelatedPerson;
     if ("RequestGroup".equals(code))
       return RequestGroup;
+    if ("RequestOrchestration".equals(code))
+      return RequestOrchestration;
+    if ("Requirements".equals(code))
+      return Requirements;
     if ("ResearchStudy".equals(code))
       return ResearchStudy;
     if ("ResearchSubject".equals(code))

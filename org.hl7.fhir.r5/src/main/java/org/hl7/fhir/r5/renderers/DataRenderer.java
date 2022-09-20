@@ -134,7 +134,7 @@ public class DataRenderer extends Renderer {
       }
   
       // 2. markdown
-      String s = getContext().getMarkdown().process(Utilities.escapeXml(text), "narrative generator");
+      String s = getContext().getMarkdown().process(text, "narrative generator");
       XhtmlParser p = new XhtmlParser();
       XhtmlNode m;
       try {
@@ -346,7 +346,7 @@ public class DataRenderer extends Renderer {
         "ExampleScenario", "GraphDefinition", "ImplementationGuide", "Library", "Measure", "MessageDefinition", "NamingSystem", "PlanDefinition"
         ))
       return true;
-    return sd.getBaseDefinitionElement().hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-codegen-super");
+    return false;
   }
 
   // -- 4. Language support ------------------------------------------------------
@@ -679,6 +679,13 @@ public class DataRenderer extends Renderer {
       renderSampledData(x, (SampledData) type);
     } else if (type instanceof Reference) {
       renderReference(x, (Reference) type);
+    } else if (type instanceof CodeableReference) {
+      CodeableReference cr = (CodeableReference) type;
+      if (cr.hasConcept()) {
+        renderCodeableConcept(x, cr.getConcept());
+      } else { 
+        renderReference(x, cr.getReference());
+      }
     } else if (type instanceof MarkdownType) {
       addMarkdown(x, ((MarkdownType) type).asStringValue());
     } else if (type.isPrimitive()) {
@@ -1607,8 +1614,12 @@ public class DataRenderer extends Renderer {
     if (s.hasOrigin())
       b.append("Origin: "+displayQuantity(s.getOrigin()));
 
-    if (s.hasPeriod())
-      b.append("Period: "+s.getPeriod().toString());
+    if (s.hasInterval()) {
+      b.append("Interval: "+s.getInterval().toString());
+
+      if (s.hasIntervalUnit())
+        b.append(s.getIntervalUnit().toString());
+    }
 
     if (s.hasFactor())
       b.append("Factor: "+s.getFactor().toString());

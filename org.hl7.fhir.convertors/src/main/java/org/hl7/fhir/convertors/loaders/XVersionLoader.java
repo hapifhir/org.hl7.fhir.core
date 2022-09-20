@@ -1,5 +1,8 @@
 package org.hl7.fhir.convertors.loaders;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
@@ -9,9 +12,6 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 public class XVersionLoader {
 
