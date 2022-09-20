@@ -89,9 +89,9 @@ public class DocumentReference30_50 {
       tgt.addSecurityLabel(CodeableConcept30_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r5.model.DocumentReference.DocumentReferenceContentComponent t : src.getContent())
       tgt.addContent(convertDocumentReferenceContentComponent(t));
+    convertDocumentReferenceContextComponent(src, tgt.getContext());
     for (org.hl7.fhir.r5.model.Reference t : src.getAuthor())
       tgt.addAuthor(Reference30_50.convertReference(t));
-    convertDocumentReferenceContextComponent(src, tgt.getContext());
     return tgt;
   }
 
