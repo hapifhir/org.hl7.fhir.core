@@ -49,6 +49,8 @@ public class DocumentReference30_50 {
       tgt.addContent(convertDocumentReferenceContentComponent(t));
     if (src.hasContext())
       convertDocumentReferenceContextComponent(src.getContext(), tgt);
+    for (org.hl7.fhir.dstu3.model.Reference t : src.getAuthor())
+      tgt.addAuthor(Reference30_50.convertReference(t));
     return tgt;
   }
 
@@ -87,6 +89,8 @@ public class DocumentReference30_50 {
       tgt.addSecurityLabel(CodeableConcept30_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r5.model.DocumentReference.DocumentReferenceContentComponent t : src.getContent())
       tgt.addContent(convertDocumentReferenceContentComponent(t));
+    for (org.hl7.fhir.r5.model.Reference t : src.getAuthor())
+      tgt.addAuthor(Reference30_50.convertReference(t));
     convertDocumentReferenceContextComponent(src, tgt.getContext());
     return tgt;
   }
