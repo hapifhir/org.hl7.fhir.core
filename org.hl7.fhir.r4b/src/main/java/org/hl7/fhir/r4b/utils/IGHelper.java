@@ -40,7 +40,7 @@ public class IGHelper {
   public static final String EXT_MAPPING_CSV = ToolingExtensions.EXT_IGP_MAPPING_CSV;
   public static final String EXT_BUNDLE = ToolingExtensions.EXT_IGP_BUNDLE;
   public static final String EXT_RESOURCE_INFO = ToolingExtensions.EXT_IGP_RESOURCE_INFO;
-  public static final String EXT_CONTAINED_RESOURCE_INFO = ToolingExtensions.EXT_IGP_CONTAINED_RESOURCE_INFO;
+//  public static final String EXT_CONTAINED_RESOURCE_INFO = ToolingExtensions.EXT_IGP_CONTAINED_RESOURCE_INFO;
   public static final String EXT_PRIVATE_BASE = ToolingExtensions.EXT_PRIVATE_BASE;
 
   public static String readStringParameter(ImplementationGuideDefinitionComponent ig, String name) {

@@ -140,9 +140,10 @@ public class StructureDefinitionValidator extends BaseValidator {
         tc = type.getExtensionValue(ToolingExtensions.EXT_FHIR_TYPE).primitiveValue();
       }
       if (Utilities.noString(tc) && type.hasChild("code")) {
-        if (type.getNamedChild("code").hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type")) {
-          tc = "*";
-        }
+        throw new Error("WTF?");
+//        if (type.getNamedChild("code").hasExtension(" http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type")) {
+//          tc = "*";
+//        }
       }
       typeCodes.add(tc);
       Set<String> tcharacteristics = new HashSet<>();
@@ -338,7 +339,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
       StructureDefinition sd = context.fetchTypeDefinition(tc);
       if (sd != null) {
-        if (sd.hasExtension(ToolingExtensions.EXT_BINDING_METHOD)) {
+        if (sd.hasExtension(ToolingExtensions.EXT_BINDING_STYLE)) {
           return tc;          
         }
       }
