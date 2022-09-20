@@ -61,7 +61,7 @@ public class CapabilityStatement30_50 {
     if (src.hasImplementation())
       tgt.setImplementation(convertCapabilityStatementImplementationComponent(src.getImplementation()));
     if (src.hasFhirVersion())
-      tgt.setFhirVersion(org.hl7.fhir.r5.model.Enumerations.FHIRVersion.fromCode(src.getFhirVersion()));
+      tgt.setFhirVersion(org.hl7.fhir.r5.model.Enumerations.FHIRVersion.fromCode(fixCode(src.getFhirVersion())));
     if (src.hasAcceptUnknown())
       tgt.addExtension().setUrl("http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown").setValue(new org.hl7.fhir.r5.model.CodeType(src.getAcceptUnknownElement().asStringValue()));
     for (org.hl7.fhir.dstu3.model.CodeType t : src.getFormat()) tgt.addFormat(t.getValue());
@@ -76,6 +76,14 @@ public class CapabilityStatement30_50 {
     for (org.hl7.fhir.dstu3.model.CapabilityStatement.CapabilityStatementDocumentComponent t : src.getDocument())
       tgt.addDocument(convertCapabilityStatementDocumentComponent(t));
     return tgt;
+  }
+
+  private static String fixCode(String v) {
+    if ("STU3".equals(v)) {
+      return "3.0.2";
+    } else {
+      return v;
+    }
   }
 
   public static org.hl7.fhir.dstu3.model.CapabilityStatement convertCapabilityStatement(org.hl7.fhir.r5.model.CapabilityStatement src) throws FHIRException {
