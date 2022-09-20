@@ -224,7 +224,7 @@ public class OperationDefinition14_50 {
     if (src.hasDocumentation())
       tgt.setDocumentationElement(String14_50.convertStringToMarkdown(src.getDocumentationElement()));
     if (src.hasType())
-      tgt.setType(Enumerations.FHIRTypes.fromCode(src.getType()));
+      tgt.setType(Enumerations.FHIRTypes.fromCode(fixTypeCode(src.getType())));
     if (src.hasSearchType())
       tgt.setSearchTypeElement(Enumerations14_50.convertSearchParamType(src.getSearchTypeElement()));
     tgt.addTargetProfile(src.getProfile().getReference());
@@ -233,6 +233,14 @@ public class OperationDefinition14_50 {
     for (org.hl7.fhir.dstu2016may.model.OperationDefinition.OperationDefinitionParameterComponent t : src.getPart())
       tgt.addPart(convertOperationDefinitionParameterComponent(t));
     return tgt;
+  }
+
+  private static String fixTypeCode(String type) {
+    if ("Type".equals(type)) {
+      return "DataType";
+    } else {
+      return type;
+    }
   }
 
   static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.OperationDefinition.OperationKind> convertOperationKind(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.OperationDefinition.OperationKind> src) throws FHIRException {
