@@ -134,6 +134,7 @@ public class RenderingContext {
   private DateTimeFormatter dateYearFormat;
   private DateTimeFormatter dateYearMonthFormat;
   private boolean copyButton;
+  private ProfileKnowledgeProvider pkp;
   
   /**
    * 
@@ -194,6 +195,7 @@ public class RenderingContext {
     res.locale = locale;
     res.showComments = showComments;
     res.copyButton = copyButton;
+    res.pkp = pkp;
 
     res.terminologyServiceOptions = terminologyServiceOptions.copy();
     return res;
@@ -210,7 +212,7 @@ public class RenderingContext {
 
   public ProfileUtilities getProfileUtilities() {
     if (profileUtilitiesR == null) {
-      profileUtilitiesR = new ProfileUtilities(worker, null, null);
+      profileUtilitiesR = new ProfileUtilities(worker, null, pkp);
     }
     return profileUtilitiesR;
   }
@@ -606,6 +608,13 @@ public class RenderingContext {
   public RenderingContext setCopyButton(boolean copyButton) {
     this.copyButton = copyButton;
     return this;
+  }
+  
+  public void setPkp(ProfileKnowledgeProvider pkp) {
+    this.pkp = pkp;
+  }
+  public ProfileKnowledgeProvider getPkp() {
+    return pkp;
   }
   
   
