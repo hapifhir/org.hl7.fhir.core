@@ -61,7 +61,7 @@ private Map<String, Object> userData;
     if (userData == null)
       return false;
     else
-      return userData.containsKey(name);
+      return userData.containsKey(name) && (userData.get(name) != null);
   }
 
 	public String getUserString(String name) {

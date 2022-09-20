@@ -346,7 +346,7 @@ public class DataRenderer extends Renderer {
         "ExampleScenario", "GraphDefinition", "ImplementationGuide", "Library", "Measure", "MessageDefinition", "NamingSystem", "PlanDefinition"
         ))
       return true;
-    return sd.getBaseDefinitionElement().hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-codegen-super");
+    return false;
   }
 
   // -- 4. Language support ------------------------------------------------------

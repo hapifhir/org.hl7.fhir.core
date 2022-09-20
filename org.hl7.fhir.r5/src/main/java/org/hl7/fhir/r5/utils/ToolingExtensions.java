@@ -6,19 +6,19 @@ import java.lang.reflect.Modifier;
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
-  
+
   Redistribution and use in source and binary forms, with or without modification, 
   are permitted provided that the following conditions are met:
-    
-   * Redistributions of source code must retain the above copyright notice, this 
+
+ * Redistributions of source code must retain the above copyright notice, this 
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
+ * Redistributions in binary form must reproduce the above copyright notice, 
      this list of conditions and the following disclaimer in the documentation 
      and/or other materials provided with the distribution.
-   * Neither the name of HL7 nor the names of its contributors may be used to 
+ * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
-  
+
   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
@@ -29,7 +29,7 @@ import java.lang.reflect.Modifier;
   WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
   POSSIBILITY OF SUCH DAMAGE.
-  
+
  */
 
 
@@ -112,105 +112,115 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 
 public class ToolingExtensions {
 
-  // validated
-//  private static final String EXT_OID = "http://hl7.org/fhir/StructureDefinition/valueset-oid";
-//  public static final String EXT_DEPRECATED = "http://hl7.org/fhir/StructureDefinition/codesystem-deprecated";
-  public static final String EXT_DEFINITION = "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition";
-  public static final String EXT_CS_COMMENT = "http://hl7.org/fhir/StructureDefinition/codesystem-concept-comments";
-  public static final String EXT_VS_COMMENT = "http://hl7.org/fhir/StructureDefinition/valueset-concept-comments";
-  public static final String EXT_CS_KEYWORD = "http://hl7.org/fhir/StructureDefinition/codesystem-keyWord";
-  public static final String EXT_VS_KEYWORD = "http://hl7.org/fhir/StructureDefinition/valueset-keyWord";
-  private static final String EXT_IDENTIFIER = "http://hl7.org/fhir/StructureDefinition/identifier";
-  public static final String EXT_TRANSLATION = "http://hl7.org/fhir/StructureDefinition/translation";
-  public static final String EXT_ISSUE_SOURCE = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source";
   public static final String EXT_ISSUE_MSG_ID = "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id";
   public static final String EXT_ISSUE_LINE = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line";
   public static final String EXT_ISSUE_COL = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col";
-  public static final String EXT_DISPLAY_HINT = "http://hl7.org/fhir/StructureDefinition/structuredefinition-display-hint"; 
-  public static final String EXT_REPLACED_BY = "http://hl7.org/fhir/StructureDefinition/valueset-replacedby";
-  public static final String EXT_REGEX = "http://hl7.org/fhir/StructureDefinition/regex"; 
-  public static final String EXT_CONTROL = "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl"; 
-  public static final String EXT_MINOCCURS = "http://hl7.org/fhir/StructureDefinition/questionnaire-minOccurs"; 
-  public static final String EXT_MAXOCCURS = "http://hl7.org/fhir/StructureDefinition/questionnaire-maxOccurs";
-  public static final String EXT_ALLOWEDRESOURCE = "http://hl7.org/fhir/StructureDefinition/questionnaire-allowedResource";
-  public static final String EXT_REFERENCEFILTER = "http://hl7.org/fhir/StructureDefinition/questionnaire-referenceFilter";
-  public static final String EXT_CODE_GENERATION_PARENT = "http://hl7.org/fhir/StructureDefinition/structuredefinition-codegen-super";
-  public static final String EXT_HIERARCHY = "http://hl7.org/fhir/StructureDefinition/structuredefinition-hierarchy";
-  public static final String EXT_BEST_PRACTICE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-bestpractice";
-  public static final String EXT_BEST_PRACTICE_EXPLANATION = "http://hl7.org/fhir/StructureDefinition/elementdefinition-bestpractice-explanation";
-  // unregistered?
-  public static final String EXT_MAPPING_PREFIX = "http://hl7.org/fhir/tools/StructureDefinition/logical-mapping-prefix";
-  public static final String EXT_MAPPING_SUFFIX = "http://hl7.org/fhir/tools/StructureDefinition/logical-mapping-suffix";
-
-//  public static final String EXT_FLYOVER = "http://hl7.org/fhir/Profile/questionnaire-extensions#flyover";
-  public static final String EXT_QTYPE = "http://hl7.org/fhir/StructureDefinition/questionnnaire-baseType";
-//  private static final String EXT_QREF = "http://www.healthintersections.com.au/fhir/Profile/metadata#reference";
-//  private static final String EXTENSION_FILTER_ONLY = "http://www.healthintersections.com.au/fhir/Profile/metadata#expandNeedsFilter";
-//  private static final String EXT_TYPE = "http://www.healthintersections.com.au/fhir/Profile/metadata#type";
-//  private static final String EXT_REFERENCE = "http://www.healthintersections.com.au/fhir/Profile/metadata#reference";
-  private static final String EXT_FHIRTYPE = "http://hl7.org/fhir/StructureDefinition/questionnaire-fhirType";
-  private static final String EXT_ALLOWABLE_UNITS = "http://hl7.org/fhir/StructureDefinition/elementdefinition-allowedUnits";
-  public static final String EXT_CIMI_REFERENCE = "http://hl7.org/fhir/StructureDefinition/cimi-reference";
-  public static final String EXT_UNCLOSED = "http://hl7.org/fhir/StructureDefinition/valueset-unclosed";
-  public static final String EXT_FMM_LEVEL = "http://hl7.org/fhir/StructureDefinition/structuredefinition-fmm";
-  public static final String EXT_FMM_SUPPORT = "http://hl7.org/fhir/StructureDefinition/structuredefinition-fmm-support";
-  public static final String EXT_FMM_DERIVED = "http://hl7.org/fhir/StructureDefinition/structuredefinition-conformance-derivedFrom";
-  public static final String EXT_SEC_CAT = "http://hl7.org/fhir/StructureDefinition/structuredefinition-security-category";
-  public static final String EXT_RESOURCE_CATEGORY = "http://hl7.org/fhir/StructureDefinition/structuredefinition-category";
-  public static final String EXT_RESOURCE_INTERFACE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-interface";
   public static final String EXT_RESOURCE_IMPLEMENTS = "http://hl7.org/fhir/StructureDefinition/structuredefinition-implements";
-  public static final String EXT_TABLE_NAME = "http://hl7.org/fhir/StructureDefinition/structuredefinition-table-name";
-  public static final String EXT_OO_FILE = "http://hl7.org/fhir/StructureDefinition/operationoutcome-file";
-  public static final String EXT_WORKGROUP = "http://hl7.org/fhir/StructureDefinition/structuredefinition-wg";
-  public static final String EXT_STANDARDS_STATUS = "http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status";
-  public static final String EXT_NORMATIVE_VERSION = "http://hl7.org/fhir/StructureDefinition/structuredefinition-normative-version";
+  public static final String EXT_ALLOWEDRESOURCE = "http://hl7.org/fhir/StructureDefinition/questionnaire-allowedResource";
+  public static final String EXT_OO_FILE = "http://hl7.org/fhir/StructureDefinition/operationoutcome-file";  
+  public static final String EXT_XML_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-xml-type";
+  public static final String EXT_PATTERN = "http://hl7.org/fhir/StructureDefinition/elementdefinition-pattern";
+  public static final String EXT_XML_NAME = "http://hl7.org/fhir/StructureDefinition/elementdefinition-xml-name";  
+  public static final String EXT_BINDING_STYLE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-binding-style";
+  public static final String EXT_EXPLICIT_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-explicit-type-name";
+  public static final String EXT_TIME_FORMAT = "http://hl7.org/fhir/StructureDefinition/elementdefinition-timeformat";
+
+  public static final String EXT_IGP_RESOURCES = "http://hl7.org/fhir/StructureDefinition/igpublisher-folder-resource";
+  public static final String EXT_IGP_PAGES = "http://hl7.org/fhir/StructureDefinition/igpublisher-folder-pages"; 
+  public static final String EXT_IGP_SPREADSHEET = "http://hl7.org/fhir/StructureDefinition/igpublisher-spreadsheet";
+  public static final String EXT_IGP_MAPPING_CSV = "http://hl7.org/fhir/StructureDefinition/igpublisher-mapping-csv";
+  public static final String EXT_IGP_BUNDLE = "http://hl7.org/fhir/StructureDefinition/igpublisher-bundle";
   public static final String EXT_IGP_BASE = "http://hl7.org/fhir/StructureDefinition/igpublisher-res-base";
   public static final String EXT_IGP_DEFNS = "http://hl7.org/fhir/StructureDefinition/igpublisher-res-defns";
   public static final String EXT_IGP_FORMAT = "http://hl7.org/fhir/StructureDefinition/igpublisher-res-format";
   public static final String EXT_IGP_SOURCE = "http://hl7.org/fhir/StructureDefinition/igpublisher-res-source";
-  public static final String EXT_IGP_VERSION = "http://hl7.org/fhir/StructureDefinition/igpublisher-res-version";
-  public static final String EXT_IGP_RESOURCES = "http://hl7.org/fhir/StructureDefinition/igpublisher-folder-resource";
-  public static final String EXT_IGP_PAGES = "http://hl7.org/fhir/StructureDefinition/igpublisher-folder-pages";
-  public static final String EXT_IGP_SPREADSHEET = "http://hl7.org/fhir/StructureDefinition/igpublisher-spreadsheet";
-  public static final String EXT_IGP_MAPPING_CSV = "http://hl7.org/fhir/StructureDefinition/igpublisher-mapping-csv";
-  public static final String EXT_IGP_BUNDLE = "http://hl7.org/fhir/StructureDefinition/igpublisher-bundle";
-  public static final String EXT_IGP_RESOURCE_INFO = "http://hl7.org/fhir/tools/StructureDefinition/resource-information";
   public static final String EXT_IGP_CONTAINED_RESOURCE_INFO = "http://hl7.org/fhir/tools/StructureDefinition/contained-resource-information";
+  public static final String EXT_PRIVATE_BASE = "http://hl7.org/fhir/tools/";
+  public static final String EXT_BINARY_FORMAT = "http://hl7.org/fhir/StructureDefinition/implementationguide-resource-format";
+  public static final String EXT_IGP_RESOURCE_INFO = "http://hl7.org/fhir/tools/StructureDefinition/resource-information";
   public static final String EXT_IGP_LOADVERSION = "http://hl7.org/fhir/StructureDefinition/igpublisher-loadversion";
-  public static final String EXT_MAX_VALUESET = "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet";
-  public static final String EXT_MIN_VALUESET = "http://hl7.org/fhir/StructureDefinition/elementdefinition-minValueSet";
-  public static final String EXT_PROFILE_ELEMENT = "http://hl7.org/fhir/StructureDefinition/elementdefinition-profile-element";
   public static final String EXT_LIST_PACKAGE = "http://hl7.org/fhir/StructureDefinition/list-packageId";
+
+  // validated
+  //  private static final String EXT_OID = "http://hl7.org/fhir/StructureDefinition/valueset-oid";
+  //  public static final String EXT_DEPRECATED = "http://hl7.org/fhir/StructureDefinition/codesystem-deprecated";
+
+  private static final String EXT_ALLOWABLE_UNITS = "http://hl7.org/fhir/StructureDefinition/elementdefinition-allowedUnits";
+  private static final String EXT_FHIRTYPE = "http://hl7.org/fhir/StructureDefinition/questionnaire-fhirType";
+  public static final String EXT_ALLOWED_TYPE =  "http://hl7.org/fhir/StructureDefinition/operationdefinition-allowed-type";
+  public static final String EXT_BEST_PRACTICE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-bestpractice"; // Y
+  public static final String EXT_BEST_PRACTICE_EXPLANATION = "http://hl7.org/fhir/StructureDefinition/elementdefinition-bestpractice-explanation"; // Y
+  public static final String EXT_BINDING_NAME = "http://hl7.org/fhir/StructureDefinition/elementdefinition-bindingName";
+  public static final String EXT_CONTROL = "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl"; // Y 
+  public static final String EXT_CS_COMMENT = "http://hl7.org/fhir/StructureDefinition/codesystem-concept-comments"; // Y
+  public static final String EXT_CS_KEYWORD = "http://hl7.org/fhir/StructureDefinition/codesystem-keyWord"; // Y
+  public static final String EXT_DEFINITION = "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition"; // Y
+  public static final String EXT_DISPLAY_HINT = "http://hl7.org/fhir/StructureDefinition/structuredefinition-display-hint"; // Y 
+  public static final String EXT_EXPAND_GROUP = "http://hl7.org/fhir/StructureDefinition/valueset-expand-group";
+  public static final String EXT_EXPAND_RULES = "http://hl7.org/fhir/StructureDefinition/valueset-expand-rules";
+  public static final String EXT_EXP_TOOCOSTLY = "http://hl7.org/fhir/StructureDefinition/valueset-toocostly";
+  public static final String EXT_FHIR_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type";
+  public static final String EXT_FMM_DERIVED = "http://hl7.org/fhir/StructureDefinition/structuredefinition-conformance-derivedFrom";
+  public static final String EXT_FMM_LEVEL = "http://hl7.org/fhir/StructureDefinition/structuredefinition-fmm";
+  public static final String EXT_FMM_SUPPORT = "http://hl7.org/fhir/StructureDefinition/structuredefinition-fmm-support";
+  public static final String EXT_HIERARCHY = "http://hl7.org/fhir/StructureDefinition/structuredefinition-hierarchy"; // Y
+  public static final String EXT_ISSUE_SOURCE = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source";  // Y
+  public static final String EXT_MAXOCCURS = "http://hl7.org/fhir/StructureDefinition/questionnaire-maxOccurs"; // Y
+  public static final String EXT_MAX_DECIMALS = "http://hl7.org/fhir/StructureDefinition/maxDecimalPlaces";
+  public static final String EXT_MAX_SIZE = "http://hl7.org/fhir/StructureDefinition/maxSize";
+  public static final String EXT_MAX_VALUESET = "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet";
+  public static final String EXT_MINOCCURS = "http://hl7.org/fhir/StructureDefinition/questionnaire-minOccurs";  // Y
+  public static final String EXT_MIN_LENGTH = "http://hl7.org/fhir/StructureDefinition/minLength";
+  public static final String EXT_MIN_VALUESET = "http://hl7.org/fhir/StructureDefinition/elementdefinition-minValueSet";
+  public static final String EXT_MUST_SUPPORT = "http://hl7.org/fhir/StructureDefinition/elementdefinition-type-must-support";
+  public static final String EXT_NORMATIVE_VERSION = "http://hl7.org/fhir/StructureDefinition/structuredefinition-normative-version";
+  public static final String EXT_PROFILE_ELEMENT = "http://hl7.org/fhir/StructureDefinition/elementdefinition-profile-element";
+  public static final String EXT_QTYPE = "http://hl7.org/fhir/StructureDefinition/questionnnaire-baseType";
+  public static final String EXT_Q_UNIT = "http://hl7.org/fhir/StructureDefinition/questionnaire-unit";
+  public static final String EXT_REFERENCEFILTER = "http://hl7.org/fhir/StructureDefinition/questionnaire-referenceFilter"; // Y
+  public static final String EXT_REGEX = "http://hl7.org/fhir/StructureDefinition/regex";  // Y
+  public static final String EXT_RENDERED_VALUE = "http://hl7.org/fhir/StructureDefinition/rendered-value";
+  public static final String EXT_REPLACED_BY = "http://hl7.org/fhir/StructureDefinition/codesystem-replacedby";
+  public static final String EXT_RESOURCE_CATEGORY = "http://hl7.org/fhir/StructureDefinition/structuredefinition-category";
+  public static final String EXT_RESOURCE_INTERFACE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-interface";
+  public static final String EXT_SEC_CAT = "http://hl7.org/fhir/StructureDefinition/structuredefinition-security-category";
+  public static final String EXT_STANDARDS_STATUS = "http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status";
+  public static final String EXT_TABLE_NAME = "http://hl7.org/fhir/StructureDefinition/structuredefinition-table-name";
+  public static final String EXT_TARGET_ID = "http://hl7.org/fhir/StructureDefinition/targetElement";
+  public static final String EXT_TARGET_PATH = "http://hl7.org/fhir/StructureDefinition/targetPath";
+  public static final String EXT_TRANSLATABLE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-translatable";
+  public static final String EXT_TRANSLATION = "http://hl7.org/fhir/StructureDefinition/translation"; // Y
+  public static final String EXT_UNCLOSED = "http://hl7.org/fhir/StructureDefinition/valueset-unclosed";
+  public static final String EXT_VALUESET_SYSTEM = "http://hl7.org/fhir/StructureDefinition/valueset-system";
+  public static final String EXT_VS_COMMENT = "http://hl7.org/fhir/StructureDefinition/valueset-concept-comments"; // Y
+  public static final String EXT_VS_KEYWORD = "http://hl7.org/fhir/StructureDefinition/valueset-keyWord";  // Y
+  public static final String EXT_WORKGROUP = "http://hl7.org/fhir/StructureDefinition/structuredefinition-wg";
+  public static final String EXT_XML_NAMESPACE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace";
+  public static final String EXT_OLD_CONCEPTMAP_EQUIVALENCE = "http://hl7.org/fhir/1.0/StructureDefinition/extension-ConceptMap.element.target.equivalence";
+  public static final String EXT_Q_IS_SUBJ = "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-isSubject"; 
+  public static final String EXT_Q_HIDDEN = "http://hl7.org/fhir/StructureDefinition/questionnaire-hidden";
+  public static final String EXT_Q_OTP_DISP = "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-optionalDisplay"; 
+  public static final String EXT_O_LINK_PERIOD = "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-observationLinkPeriod"; 
+  public static final String EXT_Q_CHOICE_ORIENT = "http://hl7.org/fhir/StructureDefinition/questionnaire-choiceOrientation";
+  public static final String EXT_Q_DISPLAY_CAT = "http://hl7.org/fhir/StructureDefinition/questionnaire-displayCategory";
+  public static final String EXT_REND_MD = "http://hl7.org/fhir/StructureDefinition/rendering-markdown";
+  public static final String EXT_CAP_STMT_EXPECT = "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation";
+  public static final String EXT_ED_HEIRARCHY = "http://hl7.org/fhir/StructureDefinition/elementdefinition-heirarchy";
+
+  // in the tooling IG
+  public static final String EXT_BINDING_ADDITIONAL = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding";
+
+  // unregistered? - don't know what these are used for 
+  public static final String EXT_MAPPING_PREFIX = "http://hl7.org/fhir/tools/StructureDefinition/logical-mapping-prefix";
+  public static final String EXT_MAPPING_SUFFIX = "http://hl7.org/fhir/tools/StructureDefinition/logical-mapping-suffix";
+
+  // for the v2 mapping project 
   public static final String EXT_MAPPING_NAME = "http://hl7.org/fhir/tools/StructureDefinition/conceptmap-source-name";
   public static final String EXT_MAPPING_TYPE = "http://hl7.org/fhir/tools/StructureDefinition/conceptmap-source-type";
   public static final String EXT_MAPPING_CARD = "http://hl7.org/fhir/tools/StructureDefinition/conceptmap-source-cardinality";
   public static final String EXT_MAPPING_TGTTYPE = "http://hl7.org/fhir/tools/StructureDefinition/conceptmap-target-type";
   public static final String EXT_MAPPING_TGTCARD = "http://hl7.org/fhir/tools/StructureDefinition/conceptmap-target-cardinality";
-  public static final String EXT_PRIVATE_BASE = "http://hl7.org/fhir/tools/";
-  public static final String EXT_ALLOWED_TYPE =  "http://hl7.org/fhir/StructureDefinition/operationdefinition-allowed-type";
-  public static final String EXT_FHIR_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type";
-  public static final String EXT_XML_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-xml-type";
-  public static final String EXT_RENDERED_VALUE = "http://hl7.org/fhir/StructureDefinition/rendered-value";
-  public static final String EXT_OLD_CONCEPTMAP_EQUIVALENCE = "http://hl7.org/fhir/1.0/StructureDefinition/extension-ConceptMap.element.target.equivalence";
-  public static final String EXT_EXP_TOOCOSTLY = "http://hl7.org/fhir/StructureDefinition/valueset-toocostly";
-  public static final String EXT_MUST_SUPPORT = "http://hl7.org/fhir/StructureDefinition/elementdefinition-type-must-support";
-  public static final String EXT_TRANSLATABLE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-translatable";
-  public static final String EXT_PATTERN = "http://hl7.org/fhir/StructureDefinition/elementdefinition-pattern";
-  public static final String EXT_BINDING_METHOD = "http://hl7.org/fhir/StructureDefinition/elementdefinition-binding-method";
-  public static final String EXT_XML_NAMESPACE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace";
-  public static final String EXT_XML_NAME = "http://hl7.org/fhir/StructureDefinition/elementdefinition-xml-name";
-  public static final String EXT_BINDING_STYLE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-binding-style";
-  public static final String EXT_BINARY_FORMAT = "http://hl7.org/fhir/StructureDefinition/implementationguide-resource-format";
-  public static final String EXT_TARGET_ID = "http://hl7.org/fhir/StructureDefinition/targetElement";
-  public static final String EXT_TARGET_PATH = "http://hl7.org/fhir/StructureDefinition/targetPath";
-  public static final String EXT_VALUESET_SYSTEM = "http://hl7.org/fhir/StructureDefinition/valueset-system";
-  public static final String EXT_EXPAND_RULES = "http://hl7.org/fhir/StructureDefinition/valueset-expand-rules";
-  public static final String EXT_EXPAND_GROUP = "http://hl7.org/fhir/StructureDefinition/valueset-expand-group";
-  public static final String EXT_BINDING_ADDITIONAL = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding";
-  public static final String EXT_MIN_LENGTH = "http://hl7.org/fhir/StructureDefinition/minLength";
-  public static final String EXT_MAX_DECIMALS = "http://hl7.org/fhir/StructureDefinition/maxDecimalPlaces";
-  public static final String EXT_MAX_SIZE = "http://hl7.org/fhir/StructureDefinition/maxSize";
-  
+
   // specific extension helpers
 
   public static Extension makeIssueSource(Source source) {
@@ -241,15 +251,15 @@ public class ToolingExtensions {
     return getExtension(e, url) != null;
   }
 
-//  public static void addStringExtension(DomainResource dr, String url, String content) {
-//    if (!StringUtils.isBlank(content)) {
-//      Extension ex = getExtension(dr, url);
-//      if (ex != null)
-//        ex.setValue(new StringType(content));
-//      else
-//        dr.getExtension().add(Factory.newExtension(url, new StringType(content), true));   
-//    }
-//  }
+  //  public static void addStringExtension(DomainResource dr, String url, String content) {
+  //    if (!StringUtils.isBlank(content)) {
+  //      Extension ex = getExtension(dr, url);
+  //      if (ex != null)
+  //        ex.setValue(new StringType(content));
+  //      else
+  //        dr.getExtension().add(Factory.newExtension(url, new StringType(content), true));   
+  //    }
+  //  }
 
   public static void addMarkdownExtension(DomainResource dr, String url, String content) {
     if (!StringUtils.isBlank(content)) {
@@ -338,10 +348,10 @@ public class ToolingExtensions {
       nc.getExtension().add(Factory.newExtension(EXT_CS_COMMENT, Factory.newString_(comment), true));   
   }
 
-//  public static void markDeprecated(Element nc) {
-//    setDeprecated(nc);   
-//  }
-//
+  //  public static void markDeprecated(Element nc) {
+  //    setDeprecated(nc);   
+  //  }
+  //
 
   public static void addDefinition(Element nc, String definition) {
     if (!StringUtils.isBlank(definition))
@@ -477,37 +487,37 @@ public class ToolingExtensions {
   public static String getCSComment(ConceptDefinitionComponent c) {
     return readStringExtension(c, EXT_CS_COMMENT);    
   }
-//
-//  public static Boolean getDeprecated(Element c) {
-//    return readBooleanExtension(c, EXT_DEPRECATED);    
-//  }
+  //
+  //  public static Boolean getDeprecated(Element c) {
+  //    return readBooleanExtension(c, EXT_DEPRECATED);    
+  //  }
 
   public static boolean hasCSComment(ConceptDefinitionComponent c) {
     return findStringExtension(c, EXT_CS_COMMENT);    
   }
 
-//  public static boolean hasDeprecated(Element c) {
-//    return findBooleanExtension(c, EXT_DEPRECATED);    
-//  }
+  //  public static boolean hasDeprecated(Element c) {
+  //    return findBooleanExtension(c, EXT_DEPRECATED);    
+  //  }
 
   public static void addFlyOver(QuestionnaireItemComponent item, String text, String linkId){
     if (!StringUtils.isBlank(text)) {
-    	QuestionnaireItemComponent display = item.addItem();
-    	display.setType(QuestionnaireItemType.DISPLAY);
-    	display.setText(text);
-    	display.setLinkId(linkId);
-    	display.getExtension().add(Factory.newExtension(EXT_CONTROL, Factory.newCodeableConcept("flyover", "http://hl7.org/fhir/questionnaire-item-control", "Fly-over"), true));
+      QuestionnaireItemComponent display = item.addItem();
+      display.setType(QuestionnaireItemType.DISPLAY);
+      display.setText(text);
+      display.setLinkId(linkId);
+      display.getExtension().add(Factory.newExtension(EXT_CONTROL, Factory.newCodeableConcept("flyover", "http://hl7.org/fhir/questionnaire-item-control", "Fly-over"), true));
     }
   }
 
   public static void addMin(QuestionnaireItemComponent item, int min) {
     item.getExtension().add(Factory.newExtension(EXT_MINOCCURS, Factory.newInteger(min), true));
   }
-  
+
   public static void addMax(QuestionnaireItemComponent item, int max) {
     item.getExtension().add(Factory.newExtension(EXT_MAXOCCURS, Factory.newInteger(max), true));
   }
-  
+
   public static void addFhirType(QuestionnaireItemComponent group, String value) {
     group.getExtension().add(Factory.newExtension(EXT_FHIRTYPE, Factory.newString_(value), true));       
   }
@@ -524,9 +534,9 @@ public class ToolingExtensions {
     group.getExtension().add(Factory.newExtension(EXT_REFERENCEFILTER, Factory.newString_(value), true));       
   }
 
-  public static void addIdentifier(Element element, Identifier value) {
-    element.getExtension().add(Factory.newExtension(EXT_IDENTIFIER, value, true));       
-  }
+  //  public static void addIdentifier(Element element, Identifier value) {
+  //    element.getExtension().add(Factory.newExtension(EXT_IDENTIFIER, value, true));       
+  //  }
 
   /**
    * @param name the identity of the extension of interest
@@ -559,7 +569,7 @@ public class ToolingExtensions {
   public static void setStringExtension(DomainResource resource, String uri, String value) {
     if (Utilities.noString(value))
       return;
-        Extension ext = getExtension(resource, uri);
+    Extension ext = getExtension(resource, uri);
     if (ext != null)
       ext.setValue(new StringType(value));
     else
@@ -569,7 +579,7 @@ public class ToolingExtensions {
   public static void setStringExtension(Element resource, String uri, String value) {
     if (Utilities.noString(value))
       return;
-        Extension ext = getExtension(resource, uri);
+    Extension ext = getExtension(resource, uri);
     if (ext != null)
       ext.setValue(new StringType(value));
     else
@@ -579,7 +589,7 @@ public class ToolingExtensions {
   public static void setCodeExtension(DomainResource resource, String uri, String value) {
     if (Utilities.noString(value))
       return;
-    
+
     Extension ext = getExtension(resource, uri);
     if (ext != null)
       ext.setValue(new CodeType(value));
@@ -590,7 +600,7 @@ public class ToolingExtensions {
   public static void setCodeExtension(Element element, String uri, String value) {
     if (Utilities.noString(value))
       return;
-    
+
     Extension ext = getExtension(element, uri);
     if (ext != null)
       ext.setValue(new CodeType(value));
@@ -606,34 +616,34 @@ public class ToolingExtensions {
       resource.getExtension().add(new Extension(uri).setValue(new IntegerType(value)));
   }
 
-//  public static String getOID(CodeSystem define) {
-//    return readStringExtension(define, EXT_OID);    
-//  }
-//
-//  public static String getOID(ValueSet vs) {
-//    return readStringExtension(vs, EXT_OID);    
-//  }
-//
-//  public static void setOID(CodeSystem define, String oid) throws FHIRFormatError, URISyntaxException {
-//    if (!oid.startsWith("urn:oid:"))
-//      throw new FHIRFormatError("Error in OID format");
-//    if (oid.startsWith("urn:oid:urn:oid:"))
-//      throw new FHIRFormatError("Error in OID format");
-//    if (!hasExtension(define, EXT_OID))
-//    define.getExtension().add(Factory.newExtension(EXT_OID, Factory.newUri(oid), false));       
-//    else if (!oid.equals(readStringExtension(define, EXT_OID)))
-//      throw new Error("Attempt to assign multiple OIDs to a code system");
-//  }
-//  public static void setOID(ValueSet vs, String oid) throws FHIRFormatError, URISyntaxException {
-//    if (!oid.startsWith("urn:oid:"))
-//      throw new FHIRFormatError("Error in OID format");
-//    if (oid.startsWith("urn:oid:urn:oid:"))
-//      throw new FHIRFormatError("Error in OID format");
-//    if (!hasExtension(vs, EXT_OID))
-//    vs.getExtension().add(Factory.newExtension(EXT_OID, Factory.newUri(oid), false));       
-//    else if (!oid.equals(readStringExtension(vs, EXT_OID)))
-//      throw new Error("Attempt to assign multiple OIDs to value set "+vs.getName()+" ("+vs.getUrl()+"). Has "+readStringExtension(vs, EXT_OID)+", trying to add "+oid);
-//  }
+  //  public static String getOID(CodeSystem define) {
+  //    return readStringExtension(define, EXT_OID);    
+  //  }
+  //
+  //  public static String getOID(ValueSet vs) {
+  //    return readStringExtension(vs, EXT_OID);    
+  //  }
+  //
+  //  public static void setOID(CodeSystem define, String oid) throws FHIRFormatError, URISyntaxException {
+  //    if (!oid.startsWith("urn:oid:"))
+  //      throw new FHIRFormatError("Error in OID format");
+  //    if (oid.startsWith("urn:oid:urn:oid:"))
+  //      throw new FHIRFormatError("Error in OID format");
+  //    if (!hasExtension(define, EXT_OID))
+  //    define.getExtension().add(Factory.newExtension(EXT_OID, Factory.newUri(oid), false));       
+  //    else if (!oid.equals(readStringExtension(define, EXT_OID)))
+  //      throw new Error("Attempt to assign multiple OIDs to a code system");
+  //  }
+  //  public static void setOID(ValueSet vs, String oid) throws FHIRFormatError, URISyntaxException {
+  //    if (!oid.startsWith("urn:oid:"))
+  //      throw new FHIRFormatError("Error in OID format");
+  //    if (oid.startsWith("urn:oid:urn:oid:"))
+  //      throw new FHIRFormatError("Error in OID format");
+  //    if (!hasExtension(vs, EXT_OID))
+  //    vs.getExtension().add(Factory.newExtension(EXT_OID, Factory.newUri(oid), false));       
+  //    else if (!oid.equals(readStringExtension(vs, EXT_OID)))
+  //      throw new Error("Attempt to assign multiple OIDs to value set "+vs.getName()+" ("+vs.getUrl()+"). Has "+readStringExtension(vs, EXT_OID)+", trying to add "+oid);
+  //  }
 
   public static boolean hasLanguageTranslation(Element element, String lang) {
     for (Extension e : element.getExtension()) {
@@ -664,7 +674,7 @@ public class ToolingExtensions {
   public static void addLanguageTranslation(Element element, String lang, String value) {
     if (Utilities.noString(lang) || Utilities.noString(value))
       return;
-    
+
     Extension extension = new Extension().setUrl(EXT_TRANSLATION);
     extension.addExtension().setUrl("lang").setValue(new CodeType(lang));
     extension.addExtension().setUrl("content").setValue(new StringType(value));
@@ -703,23 +713,23 @@ public class ToolingExtensions {
     return results;
   }
 
-//  public static void addDEReference(DataElement de, String value) {
-//    for (Extension e : de.getExtension()) 
-//      if (e.getUrl().equals(EXT_CIMI_REFERENCE)) {
-//        e.setValue(new UriType(value));
-//        return;
-//      }
-//    de.getExtension().add(new Extension().setUrl(EXT_CIMI_REFERENCE).setValue(new UriType(value)));
-//  }
+  //  public static void addDEReference(DataElement de, String value) {
+  //    for (Extension e : de.getExtension()) 
+  //      if (e.getUrl().equals(EXT_CIMI_REFERENCE)) {
+  //        e.setValue(new UriType(value));
+  //        return;
+  //      }
+  //    de.getExtension().add(new Extension().setUrl(EXT_CIMI_REFERENCE).setValue(new UriType(value)));
+  //  }
 
-//  public static void setDeprecated(Element nc) {
-//    for (Extension e : nc.getExtension()) 
-//      if (e.getUrl().equals(EXT_DEPRECATED)) {
-//        e.setValue(new BooleanType(true));
-//        return;
-//      }
-//    nc.getExtension().add(new Extension().setUrl(EXT_DEPRECATED).setValue(new BooleanType(true)));    
-//  }
+  //  public static void setDeprecated(Element nc) {
+  //    for (Extension e : nc.getExtension()) 
+  //      if (e.getUrl().equals(EXT_DEPRECATED)) {
+  //        e.setValue(new BooleanType(true));
+  //        return;
+  //      }
+  //    nc.getExtension().add(new Extension().setUrl(EXT_DEPRECATED).setValue(new BooleanType(true)));    
+  //  }
 
   public static void setExtension(Element focus, String url, Coding c) {
     for (Extension e : focus.getExtension()) 
@@ -739,7 +749,7 @@ public class ToolingExtensions {
       }
     }
   }
-  
+
   public static void removeExtension(Element focus, String url) {
     Iterator<Extension> i = focus.getExtension().iterator();
     while (i.hasNext()) {
@@ -876,7 +886,7 @@ public class ToolingExtensions {
       return readStringExtension(type, EXT_RENDERED_VALUE);
     return type.primitiveValue();
   }
-  
+
   public static String getPresentation(Element holder, PrimitiveType<?> type) {
     if (holder.hasExtension(EXT_RENDERED_VALUE))
       return readStringExtension(holder, EXT_RENDERED_VALUE);
@@ -884,15 +894,15 @@ public class ToolingExtensions {
       return readStringExtension(type, EXT_RENDERED_VALUE);
     return type.primitiveValue();
   }
-  
-//  public static boolean hasOID(ValueSet vs) {
-//    return hasExtension(vs, EXT_OID);
-//  }
-//  
-//  public static boolean hasOID(CodeSystem cs) {
-//    return hasExtension(cs, EXT_OID);
-//  }
-//  
+
+  //  public static boolean hasOID(ValueSet vs) {
+  //    return hasExtension(vs, EXT_OID);
+  //  }
+  //  
+  //  public static boolean hasOID(CodeSystem cs) {
+  //    return hasExtension(cs, EXT_OID);
+  //  }
+  //  
   public static void addUrlExtension(Element e, String url, String content) {
     if (!StringUtils.isBlank(content)) {
       Extension ex = getExtension(e, url);
@@ -938,7 +948,7 @@ public class ToolingExtensions {
         }
       }
     }
-    
+
     for (Property p : base.children() ) {
       for (Base v : p.getValues()) {
         if (usesExtension(url, v)) {
@@ -965,5 +975,5 @@ public class ToolingExtensions {
 
   }
 
-  
+
 }

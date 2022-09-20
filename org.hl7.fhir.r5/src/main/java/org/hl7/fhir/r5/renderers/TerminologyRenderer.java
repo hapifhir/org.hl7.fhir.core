@@ -34,6 +34,9 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public abstract class TerminologyRenderer extends ResourceRenderer {
   
+  private static final boolean DEBUG = false;
+
+
   public TerminologyRenderer(RenderingContext context) {
     super(context);
   }
@@ -309,8 +312,11 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
         a.tx("SNOMED-CT");
       }
       else {
-        if (value.startsWith("http://hl7.org") && !Utilities.existsInList(value, "http://hl7.org/fhir/sid/icd-10-us"))
-          System.out.println("Unable to resolve value set "+value);
+        if (value.startsWith("http://hl7.org") && !Utilities.existsInList(value, "http://hl7.org/fhir/sid/icd-10-us")) {
+          if (DEBUG) {
+            System.out.println("Unable to resolve value set "+value);
+          }
+        }
         li.addText(value);
       }
     }
