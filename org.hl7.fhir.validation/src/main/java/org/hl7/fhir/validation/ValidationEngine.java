@@ -156,6 +156,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private boolean noUnicodeBiDiControlChars;
   @Getter @Setter private boolean securityChecks;
   @Getter @Setter private boolean crumbTrails;
+  @Getter @Setter private boolean forPublication;
   @Getter @Setter private boolean allowExampleUrls;
   @Getter @Setter private boolean showMessagesFromReferences;
   @Getter @Setter private boolean doImplicitFHIRPathStringConversion;
@@ -614,6 +615,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     validator.setNoExtensibleWarnings(noExtensibleBindingMessages);
     validator.setSecurityChecks(securityChecks);
     validator.setCrumbTrails(crumbTrails);
+    validator.setForPublication(forPublication);
     validator.setAllowExamples(allowExampleUrls);
     validator.setShowMessagesFromReferences(showMessagesFromReferences);
     validator.getContext().setLocale(locale);
