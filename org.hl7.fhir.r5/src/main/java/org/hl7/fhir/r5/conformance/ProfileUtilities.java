@@ -408,6 +408,13 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   public interface ProfileKnowledgeProvider {
     class BindingResolution {
+      public BindingResolution(String display, String url) {
+        this.display = display;
+        this.url = url;
+      }
+      public BindingResolution() {
+        // TODO Auto-generated constructor stub
+      }
       public String display;
       public String url;
     }
@@ -735,14 +742,16 @@ public class ProfileUtilities extends TranslatingUtilities {
         }
         if (!Utilities.noString(b.toString())) {
           String msg = "The profile "+derived.getUrl()+" has "+ce+" "+Utilities.pluralize("element", ce)+" in the differential ("+b.toString()+") that don't have a matching element in the snapshot: check that the path and definitions are legal in the differential (including order)";
-          System.out.println("Error in snapshot generation: "+msg);
-          if (!debug) {
-            System.out.println("Differential: ");
-            for (ElementDefinition ed : derived.getDifferential().getElement())
-              System.out.println("  "+ed.getId()+" = "+ed.getPath()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  "+constraintSummary(ed));
-            System.out.println("Snapshot: ");
-            for (ElementDefinition ed : derived.getSnapshot().getElement())
-              System.out.println("  "+ed.getId()+" = "+ed.getPath()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  "+constraintSummary(ed));
+          if (debug) {
+            System.out.println("Error in snapshot generation: "+msg);
+            if (!debug) {
+              System.out.println("Differential: ");
+              for (ElementDefinition ed : derived.getDifferential().getElement())
+                System.out.println("  "+ed.getId()+" = "+ed.getPath()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  "+constraintSummary(ed));
+              System.out.println("Snapshot: ");
+              for (ElementDefinition ed : derived.getSnapshot().getElement())
+                System.out.println("  "+ed.getId()+" = "+ed.getPath()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  "+constraintSummary(ed));
+            }
           }
           if (exception)
             throw new DefinitionException(msg);
@@ -2507,8 +2516,12 @@ public class ProfileUtilities extends TranslatingUtilities {
           generateSnapshot(context.fetchTypeDefinition("Extension"), sd, sd.getUrl(), webUrl, sd.getName());
         }
       }
-      if (sd == null)
-        System.out.println("Failed to find referenced profile: " + type.getProfile());
+      if (sd == null) {
+        if (debug) {
+          System.out.println("Failed to find referenced profile: " + type.getProfile());
+        }
+      }
+        
     }
     if (sd == null)
       sd = context.fetchTypeDefinition(type.getWorkingCode());
@@ -6694,8 +6707,9 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  public void setNewSlicingProcessing(boolean newSlicingProcessing) {
+  public ProfileUtilities setNewSlicingProcessing(boolean newSlicingProcessing) {
     this.newSlicingProcessing = newSlicingProcessing;
+    return this;
   }
 
 
