@@ -94,7 +94,8 @@ public class ShExGenerator {
   private static String SHAPE_DEFINITION_TEMPLATE =
           "$comment$\n<$id$> CLOSED {\n    $resourceDecl$" +
                   "\n    $elements$" +
-                  "\n    fhir:index xsd:integer?                 # Relative position in a list\n}\n";
+                  //"\n    fhir:index xsd:integer?                 # Relative position in a list"
+                  "\n}\n";
 
   // Base DataTypes
   private List<String> baseDataTypes = Arrays.asList("DataType", "PrimitiveType");
@@ -104,7 +105,7 @@ public class ShExGenerator {
   private static String RESOURCE_SHAPE_TEMPLATE =
           "$comment$\n<Resource> {a .+;" +
                   "\n    $elements$" +
-                  "\n    fhir:index xsd:integer?" +
+                  //"\n    fhir:index xsd:integer?" +
                   "\n}\n";
 
   // If we have knowledge of all of the possible resources available to us (completeModel = true), we can build
@@ -183,7 +184,7 @@ public class ShExGenerator {
           "\n    fhir:link @<$refType$> OR CLOSED {a [fhir:$refType$]}?;" +
           "\n    fhir:Reference.reference @<string>?;" +
           "\n    fhir:Reference.display @<string>?;" +
-          "\n    fhir:index xsd:integer?" +
+          // "\n    fhir:index xsd:integer?" +
           "\n}";
 
   private static String TARGET_REFERENCE_TEMPLATE = "\n<$refType$> {" +
