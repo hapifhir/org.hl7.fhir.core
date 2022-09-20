@@ -286,7 +286,7 @@ public class SnapShotGenerationTests {
 
     // FHIRPath methods
     @Override
-    public Base resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
+    public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
       throw new Error("Not implemented yet");
     }
 

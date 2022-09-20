@@ -9,6 +9,7 @@ import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Bool
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.String10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.UnsignedInt10_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Group.GroupMembershipBasis;
 
 public class Group10_50 {
 
@@ -21,8 +22,8 @@ public class Group10_50 {
       tgt.addIdentifier(Identifier10_50.convertIdentifier(t));
     if (src.hasType())
       tgt.setTypeElement(convertGroupType(src.getTypeElement()));
-    if (src.hasActualElement())
-      tgt.setActualElement(Boolean10_50.convertBoolean(src.getActualElement()));
+    if (src.hasMembership())
+      tgt.setActual(src.getMembership() == GroupMembershipBasis.ENUMERATED);
     if (src.hasCode())
       tgt.setCode(CodeableConcept10_50.convertCodeableConcept(src.getCode()));
     if (src.hasNameElement())
@@ -46,7 +47,7 @@ public class Group10_50 {
     if (src.hasType())
       tgt.setTypeElement(convertGroupType(src.getTypeElement()));
     if (src.hasActualElement())
-      tgt.setActualElement(Boolean10_50.convertBoolean(src.getActualElement()));
+      tgt.setMembership(src.getActual() ? GroupMembershipBasis.ENUMERATED : GroupMembershipBasis.DEFINITIONAL);
     if (src.hasCode())
       tgt.setCode(CodeableConcept10_50.convertCodeableConcept(src.getCode()));
     if (src.hasNameElement())
@@ -138,12 +139,6 @@ public class Group10_50 {
       case DEVICE:
         tgt.setValue(org.hl7.fhir.r5.model.Group.GroupType.DEVICE);
         break;
-      case MEDICATION:
-        tgt.setValue(org.hl7.fhir.r5.model.Group.GroupType.MEDICATION);
-        break;
-      case SUBSTANCE:
-        tgt.setValue(org.hl7.fhir.r5.model.Group.GroupType.SUBSTANCE);
-        break;
       default:
         tgt.setValue(org.hl7.fhir.r5.model.Group.GroupType.NULL);
         break;
@@ -168,12 +163,6 @@ public class Group10_50 {
         break;
       case DEVICE:
         tgt.setValue(org.hl7.fhir.dstu2.model.Group.GroupType.DEVICE);
-        break;
-      case MEDICATION:
-        tgt.setValue(org.hl7.fhir.dstu2.model.Group.GroupType.MEDICATION);
-        break;
-      case SUBSTANCE:
-        tgt.setValue(org.hl7.fhir.dstu2.model.Group.GroupType.SUBSTANCE);
         break;
       default:
         tgt.setValue(org.hl7.fhir.dstu2.model.Group.GroupType.NULL);

@@ -5,7 +5,10 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Annotation4
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.SimpleQuantity40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Boolean40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Date40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
@@ -69,7 +72,7 @@ public class Immunization40_50 {
     if (src.hasLocation())
       tgt.setLocation(Reference40_50.convertReference(src.getLocation()));
     if (src.hasManufacturer())
-      tgt.setManufacturer(Reference40_50.convertReference(src.getManufacturer()));
+      tgt.setManufacturer(Reference40_50.convertReferenceToCodeableReference(src.getManufacturer()));
     if (src.hasLotNumber())
       tgt.setLotNumberElement(String40_50.convertString(src.getLotNumberElement()));
     if (src.hasExpirationDate())
@@ -92,10 +95,10 @@ public class Immunization40_50 {
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSubpotentReason())
       tgt.addSubpotentReason(CodeableConcept40_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r4.model.Immunization.ImmunizationEducationComponent t : src.getEducation())
-      tgt.addEducation(convertImmunizationEducationComponent(t));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProgramEligibility())
-      tgt.addProgramEligibility(CodeableConcept40_50.convertCodeableConcept(t));
-    if (src.hasFundingSource())
+//      tgt.addEducation(convertImmunizationEducationComponent(t));
+//    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProgramEligibility())
+//      tgt.addProgramEligibility(CodeableConcept40_50.convertCodeableConcept(t));
+//    if (src.hasFundingSource())
       tgt.setFundingSource(CodeableConcept40_50.convertCodeableConcept(src.getFundingSource()));
     for (org.hl7.fhir.r4.model.Immunization.ImmunizationReactionComponent t : src.getReaction())
       tgt.addReaction(convertImmunizationReactionComponent(t));
@@ -132,7 +135,7 @@ public class Immunization40_50 {
     if (src.hasLocation())
       tgt.setLocation(Reference40_50.convertReference(src.getLocation()));
     if (src.hasManufacturer())
-      tgt.setManufacturer(Reference40_50.convertReference(src.getManufacturer()));
+      tgt.setManufacturer(Reference40_50.convertCodeableReferenceToReference(src.getManufacturer()));
     if (src.hasLotNumber())
       tgt.setLotNumberElement(String40_50.convertString(src.getLotNumberElement()));
     if (src.hasExpirationDate())
@@ -156,10 +159,10 @@ public class Immunization40_50 {
       tgt.setIsSubpotentElement(Boolean40_50.convertBoolean(src.getIsSubpotentElement()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSubpotentReason())
       tgt.addSubpotentReason(CodeableConcept40_50.convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.Immunization.ImmunizationEducationComponent t : src.getEducation())
-      tgt.addEducation(convertImmunizationEducationComponent(t));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getProgramEligibility())
-      tgt.addProgramEligibility(CodeableConcept40_50.convertCodeableConcept(t));
+//    for (org.hl7.fhir.r5.model.Immunization.ImmunizationEducationComponent t : src.getEducation())
+//      tgt.addEducation(convertImmunizationEducationComponent(t));
+//    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getProgramEligibility())
+//      tgt.addProgramEligibility(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasFundingSource())
       tgt.setFundingSource(CodeableConcept40_50.convertCodeableConcept(src.getFundingSource()));
     for (org.hl7.fhir.r5.model.Immunization.ImmunizationReactionComponent t : src.getReaction())
@@ -237,37 +240,37 @@ public class Immunization40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.Immunization.ImmunizationEducationComponent convertImmunizationEducationComponent(org.hl7.fhir.r4.model.Immunization.ImmunizationEducationComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.Immunization.ImmunizationEducationComponent tgt = new org.hl7.fhir.r5.model.Immunization.ImmunizationEducationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
-    if (src.hasDocumentType())
-      tgt.setDocumentTypeElement(String40_50.convertString(src.getDocumentTypeElement()));
-    if (src.hasReference())
-      tgt.setReferenceElement(Uri40_50.convertUri(src.getReferenceElement()));
-    if (src.hasPublicationDate())
-      tgt.setPublicationDateElement(DateTime40_50.convertDateTime(src.getPublicationDateElement()));
-    if (src.hasPresentationDate())
-      tgt.setPresentationDateElement(DateTime40_50.convertDateTime(src.getPresentationDateElement()));
-    return tgt;
-  }
-
-  public static org.hl7.fhir.r4.model.Immunization.ImmunizationEducationComponent convertImmunizationEducationComponent(org.hl7.fhir.r5.model.Immunization.ImmunizationEducationComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.Immunization.ImmunizationEducationComponent tgt = new org.hl7.fhir.r4.model.Immunization.ImmunizationEducationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
-    if (src.hasDocumentType())
-      tgt.setDocumentTypeElement(String40_50.convertString(src.getDocumentTypeElement()));
-    if (src.hasReference())
-      tgt.setReferenceElement(Uri40_50.convertUri(src.getReferenceElement()));
-    if (src.hasPublicationDate())
-      tgt.setPublicationDateElement(DateTime40_50.convertDateTime(src.getPublicationDateElement()));
-    if (src.hasPresentationDate())
-      tgt.setPresentationDateElement(DateTime40_50.convertDateTime(src.getPresentationDateElement()));
-    return tgt;
-  }
+//  public static org.hl7.fhir.r5.model.Immunization.ImmunizationEducationComponent convertImmunizationEducationComponent(org.hl7.fhir.r4.model.Immunization.ImmunizationEducationComponent src) throws FHIRException {
+//    if (src == null)
+//      return null;
+//    org.hl7.fhir.r5.model.Immunization.ImmunizationEducationComponent tgt = new org.hl7.fhir.r5.model.Immunization.ImmunizationEducationComponent();
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
+//    if (src.hasDocumentType())
+//      tgt.setDocumentTypeElement(String40_50.convertString(src.getDocumentTypeElement()));
+//    if (src.hasReference())
+//      tgt.setReferenceElement(Uri40_50.convertUri(src.getReferenceElement()));
+//    if (src.hasPublicationDate())
+//      tgt.setPublicationDateElement(DateTime40_50.convertDateTime(src.getPublicationDateElement()));
+//    if (src.hasPresentationDate())
+//      tgt.setPresentationDateElement(DateTime40_50.convertDateTime(src.getPresentationDateElement()));
+//    return tgt;
+//  }
+//
+//  public static org.hl7.fhir.r4.model.Immunization.ImmunizationEducationComponent convertImmunizationEducationComponent(org.hl7.fhir.r5.model.Immunization.ImmunizationEducationComponent src) throws FHIRException {
+//    if (src == null)
+//      return null;
+//    org.hl7.fhir.r4.model.Immunization.ImmunizationEducationComponent tgt = new org.hl7.fhir.r4.model.Immunization.ImmunizationEducationComponent();
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
+//    if (src.hasDocumentType())
+//      tgt.setDocumentTypeElement(String40_50.convertString(src.getDocumentTypeElement()));
+//    if (src.hasReference())
+//      tgt.setReferenceElement(Uri40_50.convertUri(src.getReferenceElement()));
+//    if (src.hasPublicationDate())
+//      tgt.setPublicationDateElement(DateTime40_50.convertDateTime(src.getPublicationDateElement()));
+//    if (src.hasPresentationDate())
+//      tgt.setPresentationDateElement(DateTime40_50.convertDateTime(src.getPresentationDateElement()));
+//    return tgt;
+//  }
 
   public static org.hl7.fhir.r5.model.Immunization.ImmunizationReactionComponent convertImmunizationReactionComponent(org.hl7.fhir.r4.model.Immunization.ImmunizationReactionComponent src) throws FHIRException {
     if (src == null)

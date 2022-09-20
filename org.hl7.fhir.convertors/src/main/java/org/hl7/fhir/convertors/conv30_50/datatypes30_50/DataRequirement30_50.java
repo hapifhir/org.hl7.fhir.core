@@ -16,11 +16,11 @@ public class DataRequirement30_50 {
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt, VersionConvertorConstants.EXT_ACTUAL_RESOURCE_NAME);
     if (src.hasType()) {
       if (src.hasExtension(VersionConvertorConstants.EXT_ACTUAL_RESOURCE_NAME)) {
-        tgt.setType(Enumerations.FHIRAllTypes.fromCode(src.getExtensionString(VersionConvertorConstants.EXT_ACTUAL_RESOURCE_NAME)));
+        tgt.setType(Enumerations.FHIRTypes.fromCode(src.getExtensionString(VersionConvertorConstants.EXT_ACTUAL_RESOURCE_NAME)));
       } else {
         String n = VersionConvertorResourceNameMapper.mapName3to5(src.getType());
         if (n != null) {
-          tgt.setType(Enumerations.FHIRAllTypes.fromCode(n));
+          tgt.setType(Enumerations.FHIRTypes.fromCode(n));
         }
         tgt.addExtension(VersionConvertorConstants.EXT_ACTUAL_RESOURCE_NAME, new org.hl7.fhir.r5.model.CodeType(src.getType()));
       }

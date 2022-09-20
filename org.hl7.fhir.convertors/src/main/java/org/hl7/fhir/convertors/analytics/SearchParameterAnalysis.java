@@ -12,12 +12,11 @@ import java.util.Set;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.hl7.fhir.convertors.analytics.PackageVisitor.IPackageVisitorProcessor;
-import org.hl7.fhir.dstu2.model.SearchParameter;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.xml.sax.SAXException;
 
 public class SearchParameterAnalysis implements IPackageVisitorProcessor {
@@ -99,7 +98,7 @@ public class SearchParameterAnalysis implements IPackageVisitorProcessor {
   private Map<String, SearchParameterVersionAnalysis> versions = new HashMap<String, SearchParameterAnalysis.SearchParameterVersionAnalysis>();
   
   @Override
-  public void processResource(String pid, String version, String type, byte[] content) throws FHIRException {
+  public void processResource(String pid, NpmPackage npm, String version, String type, String id, byte[] content) throws FHIRException {
 //    System.out.println("v"+version+" "+type+" from "+pid);    
     boolean core = pid.startsWith("hl7.fhir.r") && (pid.contains(".core") || pid.contains(".examples"));
     version = VersionUtilities.getMajMin(version);
@@ -130,12 +129,12 @@ public class SearchParameterAnalysis implements IPackageVisitorProcessor {
       for (org.hl7.fhir.r5.model.Bundle.BundleEntryComponent bnd : ((org.hl7.fhir.r5.model.Bundle) res).getEntry()) {
         if (bnd.getResource() != null && bnd.getResource() instanceof org.hl7.fhir.r5.model.SearchParameter) {
           org.hl7.fhir.r5.model.SearchParameter sp = (org.hl7.fhir.r5.model.SearchParameter) bnd.getResource();
-          analysis.seeUsage(core, sp.getTypeElement().primitiveValue(), sp.getXpathUsageElement().primitiveValue(), sp.getUrl());          
+          analysis.seeUsage(core, sp.getTypeElement().primitiveValue(), sp.getProcessingModeElement().primitiveValue(), sp.getUrl());          
         }
       }
     } else {
       org.hl7.fhir.r5.model.SearchParameter sp = (org.hl7.fhir.r5.model.SearchParameter) res;
-      analysis.seeUsage(core, sp.getTypeElement().primitiveValue(), sp.getXpathUsageElement().primitiveValue(), sp.getUrl());
+      analysis.seeUsage(core, sp.getTypeElement().primitiveValue(), sp.getProcessingModeElement().primitiveValue(), sp.getUrl());
     }
   }
 

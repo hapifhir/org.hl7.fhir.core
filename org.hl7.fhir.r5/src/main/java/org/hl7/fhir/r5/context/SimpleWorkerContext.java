@@ -29,8 +29,6 @@ package org.hl7.fhir.r5.context;
   
  */
 
-
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -146,6 +144,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   private final List<String> loadedPackages = new ArrayList<>();
   private boolean canNoTS;
   private XVerExtensionManager xverManager;
+  private boolean allowLazyLoading = true;
+  private boolean suppressDebugMessages;
 
   private SimpleWorkerContext() throws IOException, FHIRException {
     super();
@@ -476,7 +476,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     if ((types == null || types.length == 0) &&  loader != null) {
       types = loader.getTypes();
     }
-    if (VersionUtilities.isR2Ver(pi.fhirVersion()) || !pi.canLazyLoad()) {
+    if (VersionUtilities.isR2Ver(pi.fhirVersion()) || !pi.canLazyLoad() || !allowLazyLoading) {
       // can't lazy load R2 because of valueset/codesystem implementation
       if (types.length == 0) {
         types = new String[] { "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem" };
@@ -680,9 +680,11 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
           generateSnapshot(sd);
           // new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "snapshot", tail(sd.getUrl())+".xml")), sd);
         } catch (Exception e) {
-          System.out.println("Unable to generate snapshot for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
-          if (true) {
-            e.printStackTrace();
+          if (!suppressDebugMessages) {
+            System.out.println("Unable to generate snapshot for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
+            if (true) {
+              e.printStackTrace();
+            }
           }
         }
         result.add(sd);
@@ -780,7 +782,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
         generateSnapshot(p);
       } catch (Exception e) {
         // not sure what to do in this case?
-        System.out.println("Unable to generate snapshot for "+uri+": "+e.getMessage());
+        if (!suppressDebugMessages) {
+          System.out.println("Unable to generate snapshot for "+uri+": "+e.getMessage());
+        }
       }
     }
     return r;
@@ -911,5 +915,22 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     return null;
   }
 
+  public boolean isAllowLazyLoading() {
+    return allowLazyLoading;
+  }
+
+  public void setAllowLazyLoading(boolean allowLazyLoading) {
+    this.allowLazyLoading = allowLazyLoading;
+  }
+
+  public boolean isSuppressDebugMessages() {
+    return suppressDebugMessages;
+  }
+
+  public void setSuppressDebugMessages(boolean suppressDebugMessages) {
+    this.suppressDebugMessages = suppressDebugMessages;
+  }
+
+  
 }
 

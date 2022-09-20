@@ -14,6 +14,7 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.model.Address;
 import org.hl7.fhir.r5.model.Annotation;
@@ -66,6 +67,7 @@ import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.DOMWrappers.BaseWrapperElement;
 import org.hl7.fhir.r5.renderers.utils.DOMWrappers.ResourceWrapperElement;
 import org.hl7.fhir.r5.renderers.utils.DirectWrappers;
+import org.hl7.fhir.r5.renderers.utils.ElementWrappers;
 import org.hl7.fhir.r5.renderers.utils.DirectWrappers.BaseWrapperDirect;
 import org.hl7.fhir.r5.renderers.utils.DirectWrappers.PropertyWrapperDirect;
 import org.hl7.fhir.r5.renderers.utils.DirectWrappers.ResourceWrapperDirect;
@@ -76,6 +78,7 @@ import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
@@ -103,11 +106,21 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
 
   @Override
   public boolean render(XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException {
+    boolean idDone = false;
+    XhtmlNode p = x.para();
     if (context.isAddGeneratedNarrativeHeader()) {
-      x.para().b().tx("Generated Narrative: "+r.fhirType());
+      p.b().tx("Generated Narrative: "+r.fhirType());
+      if (!Utilities.noString(r.getId())) {
+        p.an(r.getId());
+      }
+      idDone = true;      
     }
-    if (context.isTechnicalMode()) {
-      renderResourceHeader(r, x);
+    if (context.isTechnicalMode() && !context.isContained()) {
+      renderResourceHeader(r, x, !idDone);
+      idDone = true;
+    }
+    if (!Utilities.noString(r.getId()) && !idDone) {
+      x.para().an(r.getId());
     }
     try {
       StructureDefinition sd = r.getDefinition();
@@ -295,6 +308,9 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       return;
 
     Base e = ew.getBase();
+    if (context.isShowComments()) {
+      x = renderCommentsSpan(x, e);
+    }
 
     if (e instanceof StringType)
       x.addText(((StringType) e).getValue());
@@ -384,7 +400,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       if (r.getReference() != null && r.getReference().contains("#")) {
         if (containedIds.contains(r.getReference().substring(1))) {
           x.ah(r.getReference()).tx("See "+r.getReference());
-        } else {
+        } else {          
           // in this case, we render the resource in line
           ResourceWrapper rw = null;
           for (ResourceWrapper t : res.getContained()) {
@@ -395,9 +411,17 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
           if (rw == null) {
             renderReference(res, x, r);
           } else {
-            x.an(rw.getId());
-            ResourceRenderer rr = RendererFactory.factory(rw, context.copy().setAddGeneratedNarrativeHeader(false));
-            rr.render(parent.blockquote(), rw);
+            String ref = context.getResolver().urlForContained(context, res.fhirType(), res.getId(), rw.fhirType(), rw.getId());
+            if (ref == null) {
+              x.an(rw.getId());
+              RenderingContext ctxtc = context.copy();
+              ctxtc.setAddGeneratedNarrativeHeader(false);
+              ctxtc.setContained(true);
+              ResourceRenderer rr = RendererFactory.factory(rw, ctxtc);
+              rr.render(parent.blockquote(), rw);
+            } else {
+              x.ah(ref).tx("See "+rw.fhirType());              
+            }
           }
         }
       } else {
@@ -414,6 +438,14 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       x.tx("todo-bundle");
     } else if (e != null && !(e instanceof Attachment) && !(e instanceof Narrative) && !(e instanceof Meta)) {
       throw new NotImplementedException("type "+e.getClass().getName()+" not handled - should not be here");
+    }
+  }
+
+  private XhtmlNode renderCommentsSpan(XhtmlNode x, Base e) {
+    if (e.hasFormatComment()) {      
+      return x.span(null, CommaSeparatedStringBuilder.join("&#10;", e.getFormatCommentsPre()));
+    } else {
+      return x;
     }
   }
 
@@ -617,7 +649,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     return code.equals("Element") || code.equals("BackboneElement");
   }
   
-  private List<ElementDefinition> getChildrenForPath(List<ElementDefinition> elements, String path) throws DefinitionException {
+  private List<ElementDefinition> getChildrenForPath(StructureDefinition profile, List<ElementDefinition> elements, String path) throws DefinitionException {
     // do we need to do a name reference substitution?
     for (ElementDefinition e : elements) {
       if (e.getPath().equals(path) && e.hasContentReference()) {
@@ -635,10 +667,18 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       }
     }
 
+    ElementDefinition t = null;
     List<ElementDefinition> results = new ArrayList<ElementDefinition>();
     for (ElementDefinition e : elements) {
+      if (e.getPath().equals(path)) {
+        t = e; 
+      }
       if (e.getPath().startsWith(path+".") && !e.getPath().substring(path.length()+1).contains("."))
         results.add(e);
+    }
+    if (results.isEmpty() && t != null && t.getType().size() == 1) {
+       StructureDefinition tsd = context.getWorker().fetchTypeDefinition(t.getTypeFirstRep().getWorkingCode());
+       return getChildrenForPath(tsd, tsd.getSnapshot().getElement(), tsd.getType());
     }
     return results;
   }
@@ -650,7 +690,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       x.para().b().tx("Generated Narrative: "+profile.present()+(showCodeDetails ? " with Details" : ""));
     }
     try {
-      generateByProfile(rcontext.getResourceResource(), profile, rcontext.getResourceResource(), profile.getSnapshot().getElement(), profile.getSnapshot().getElement().get(0), getChildrenForPath(profile.getSnapshot().getElement(), rcontext.getResourceResource().getResourceType().toString()), x, rcontext.getResourceResource().getResourceType().toString(), showCodeDetails);
+      generateByProfile(rcontext.getResourceResource(), profile, rcontext.getResourceResource(), profile.getSnapshot().getElement(), profile.getSnapshot().getElement().get(0), getChildrenForPath(profile, profile.getSnapshot().getElement(), rcontext.getResourceResource().getResourceType().toString()), x, rcontext.getResourceResource().getResourceType().toString(), showCodeDetails);
     } catch (Exception e) {
       e.printStackTrace();
       x.para().b().style("color: maroon").tx("Exception generating Narrative: "+e.getMessage());
@@ -687,16 +727,19 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       boolean showCodeDetails, int indent, PropertyWrapper p, ElementDefinition child) throws UnsupportedEncodingException, IOException, EOperationOutcome {
     Map<String, String> displayHints = readDisplayHints(child);
     if ("DomainResource.contained".equals(child.getBase().getPath())) {
-//              if (p.getValues().size() > 0 && child != null) {
-//                for (BaseWrapper v : p.getValues()) {
-//                  x.an(v.get("id").primitiveValue());
-//                }
-//              }
+//      for (BaseWrapper v : p.getValues()) {
+//        x.hr();
+//        RenderingContext ctxt = context.clone();
+//        ctxt.setContained(true);
+//        ResourceRenderer rnd = RendererFactory.factory(v.fhirType(), ctxt);
+//        ResourceWrapper rw = new ElementWrappers.ResourceWrapperMetaElement(ctxt, (org.hl7.fhir.r5.elementmodel.Element) v.getBase());
+//        rnd.render(x.blockquote(), rw);
+//      }
     } else if (!exemptFromRendering(child)) {
       if (isExtension(p)) {
         hasExtensions = true;
       }
-      List<ElementDefinition> grandChildren = getChildrenForPath(allElements, path+"."+p.getName());
+      List<ElementDefinition> grandChildren = getChildrenForPath(profile, allElements, path+"."+p.getName());
       filterGrandChildren(grandChildren, path+"."+p.getName(), p);
       if (p.getValues().size() > 0) {
          if (isPrimitive(child)) {
@@ -758,7 +801,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
                 bq.para().b().addText(isExtension(p) ? p.getStructure().present() : p.getName());
                 for (BaseWrapper vv : ev.getValues()) {
                   StructureDefinition ex = context.getWorker().fetchTypeDefinition("Extension");
-                  List<ElementDefinition> children = getChildrenForPath(ex.getSnapshot().getElement(), "Extension");
+                  List<ElementDefinition> children = getChildrenForPath(profile, ex.getSnapshot().getElement(), "Extension");
                   generateByProfile(res, ex, vv, allElements, child, children, bq, "Extension", showCodeDetails, indent+1);
                 }
               }
@@ -979,6 +1022,10 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
 
   public boolean canRender(Resource resource) {
     return context.getWorker().getResourceNames().contains(resource.fhirType());
+  }
+
+  public RendererType getRendererType() {
+    return RendererType.PROFILE;
   }
 
 }

@@ -8,7 +8,15 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Identifier4
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Period43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.ContactDetail43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.UsageContext43_50;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.*;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Boolean43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Canonical43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Code43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Date43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.DateTime43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Integer43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.MarkDown43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4b.model.Questionnaire.QuestionnaireItemType;
 import org.hl7.fhir.r5.model.CodeType;
@@ -67,7 +75,7 @@ public class Questionnaire43_50 {
     if (src.hasExperimental())
       tgt.setExperimentalElement(Boolean43_50.convertBoolean(src.getExperimentalElement()));
     for (org.hl7.fhir.r4b.model.CodeType t : src.getSubjectType())
-      tgt.getSubjectType().add(Code43_50.convertResourceEnum(t));
+      tgt.getSubjectType().add(Code43_50.convertCode(t));
     if (src.hasDate())
       tgt.setDateElement(DateTime43_50.convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
@@ -117,7 +125,7 @@ public class Questionnaire43_50 {
       tgt.setStatusElement(Enumerations43_50.convertPublicationStatus(src.getStatusElement()));
     if (src.hasExperimental())
       tgt.setExperimentalElement(Boolean43_50.convertBoolean(src.getExperimentalElement()));
-    for (CodeType t : src.getSubjectType()) tgt.getSubjectType().add(Code43_50.convertResourceEnum(t));
+    for (CodeType t : src.getSubjectType()) tgt.getSubjectType().add(Code43_50.convertCode(t));
     if (src.hasDate())
       tgt.setDateElement(DateTime43_50.convertDateTime(src.getDateElement()));
     if (src.hasPublisher())

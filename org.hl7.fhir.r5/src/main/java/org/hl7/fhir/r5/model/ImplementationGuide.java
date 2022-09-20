@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -5804,7 +5804,14 @@ public class ImplementationGuide extends CanonicalResource {
         @Description(shortDefinition="Version of the IG", formalDefinition="The version of the IG that is depended on, when the correct version is required to understand the IG correctly." )
         protected StringType version;
 
-        private static final long serialVersionUID = -215808797L;
+        /**
+         * A description explaining the nature of the dependency on the listed IG.
+         */
+        @Child(name = "reason", type = {MarkdownType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Why dependency exists", formalDefinition="A description explaining the nature of the dependency on the listed IG." )
+        protected MarkdownType reason;
+
+        private static final long serialVersionUID = 487374450L;
 
     /**
      * Constructor
@@ -5964,11 +5971,61 @@ public class ImplementationGuide extends CanonicalResource {
           return this;
         }
 
+        /**
+         * @return {@link #reason} (A description explaining the nature of the dependency on the listed IG.). This is the underlying object with id, value and extensions. The accessor "getReason" gives direct access to the value
+         */
+        public MarkdownType getReasonElement() { 
+          if (this.reason == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ImplementationGuideDependsOnComponent.reason");
+            else if (Configuration.doAutoCreate())
+              this.reason = new MarkdownType(); // bb
+          return this.reason;
+        }
+
+        public boolean hasReasonElement() { 
+          return this.reason != null && !this.reason.isEmpty();
+        }
+
+        public boolean hasReason() { 
+          return this.reason != null && !this.reason.isEmpty();
+        }
+
+        /**
+         * @param value {@link #reason} (A description explaining the nature of the dependency on the listed IG.). This is the underlying object with id, value and extensions. The accessor "getReason" gives direct access to the value
+         */
+        public ImplementationGuideDependsOnComponent setReasonElement(MarkdownType value) { 
+          this.reason = value;
+          return this;
+        }
+
+        /**
+         * @return A description explaining the nature of the dependency on the listed IG.
+         */
+        public String getReason() { 
+          return this.reason == null ? null : this.reason.getValue();
+        }
+
+        /**
+         * @param value A description explaining the nature of the dependency on the listed IG.
+         */
+        public ImplementationGuideDependsOnComponent setReason(String value) { 
+          if (value == null)
+            this.reason = null;
+          else {
+            if (this.reason == null)
+              this.reason = new MarkdownType();
+            this.reason.setValue(value);
+          }
+          return this;
+        }
+
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("uri", "canonical(ImplementationGuide)", "A canonical reference to the Implementation guide for the dependency.", 0, 1, uri));
           children.add(new Property("packageId", "id", "The NPM package name for the Implementation Guide that this IG depends on.", 0, 1, packageId));
           children.add(new Property("version", "string", "The version of the IG that is depended on, when the correct version is required to understand the IG correctly.", 0, 1, version));
+          children.add(new Property("reason", "markdown", "A description explaining the nature of the dependency on the listed IG.", 0, 1, reason));
         }
 
         @Override
@@ -5977,6 +6034,7 @@ public class ImplementationGuide extends CanonicalResource {
           case 116076: /*uri*/  return new Property("uri", "canonical(ImplementationGuide)", "A canonical reference to the Implementation guide for the dependency.", 0, 1, uri);
           case 1802060801: /*packageId*/  return new Property("packageId", "id", "The NPM package name for the Implementation Guide that this IG depends on.", 0, 1, packageId);
           case 351608024: /*version*/  return new Property("version", "string", "The version of the IG that is depended on, when the correct version is required to understand the IG correctly.", 0, 1, version);
+          case -934964668: /*reason*/  return new Property("reason", "markdown", "A description explaining the nature of the dependency on the listed IG.", 0, 1, reason);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -5988,6 +6046,7 @@ public class ImplementationGuide extends CanonicalResource {
         case 116076: /*uri*/ return this.uri == null ? new Base[0] : new Base[] {this.uri}; // CanonicalType
         case 1802060801: /*packageId*/ return this.packageId == null ? new Base[0] : new Base[] {this.packageId}; // IdType
         case 351608024: /*version*/ return this.version == null ? new Base[0] : new Base[] {this.version}; // StringType
+        case -934964668: /*reason*/ return this.reason == null ? new Base[0] : new Base[] {this.reason}; // MarkdownType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -6005,6 +6064,9 @@ public class ImplementationGuide extends CanonicalResource {
         case 351608024: // version
           this.version = TypeConvertor.castToString(value); // StringType
           return value;
+        case -934964668: // reason
+          this.reason = TypeConvertor.castToMarkdown(value); // MarkdownType
+          return value;
         default: return super.setProperty(hash, name, value);
         }
 
@@ -6018,6 +6080,8 @@ public class ImplementationGuide extends CanonicalResource {
           this.packageId = TypeConvertor.castToId(value); // IdType
         } else if (name.equals("version")) {
           this.version = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("reason")) {
+          this.reason = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else
           return super.setProperty(name, value);
         return value;
@@ -6029,6 +6093,7 @@ public class ImplementationGuide extends CanonicalResource {
         case 116076:  return getUriElement();
         case 1802060801:  return getPackageIdElement();
         case 351608024:  return getVersionElement();
+        case -934964668:  return getReasonElement();
         default: return super.makeProperty(hash, name);
         }
 
@@ -6040,6 +6105,7 @@ public class ImplementationGuide extends CanonicalResource {
         case 116076: /*uri*/ return new String[] {"canonical"};
         case 1802060801: /*packageId*/ return new String[] {"id"};
         case 351608024: /*version*/ return new String[] {"string"};
+        case -934964668: /*reason*/ return new String[] {"markdown"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -6056,6 +6122,9 @@ public class ImplementationGuide extends CanonicalResource {
         else if (name.equals("version")) {
           throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.dependsOn.version");
         }
+        else if (name.equals("reason")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.dependsOn.reason");
+        }
         else
           return super.addChild(name);
       }
@@ -6071,6 +6140,7 @@ public class ImplementationGuide extends CanonicalResource {
         dst.uri = uri == null ? null : uri.copy();
         dst.packageId = packageId == null ? null : packageId.copy();
         dst.version = version == null ? null : version.copy();
+        dst.reason = reason == null ? null : reason.copy();
       }
 
       @Override
@@ -6081,7 +6151,7 @@ public class ImplementationGuide extends CanonicalResource {
           return false;
         ImplementationGuideDependsOnComponent o = (ImplementationGuideDependsOnComponent) other_;
         return compareDeep(uri, o.uri, true) && compareDeep(packageId, o.packageId, true) && compareDeep(version, o.version, true)
-          ;
+           && compareDeep(reason, o.reason, true);
       }
 
       @Override
@@ -6092,12 +6162,12 @@ public class ImplementationGuide extends CanonicalResource {
           return false;
         ImplementationGuideDependsOnComponent o = (ImplementationGuideDependsOnComponent) other_;
         return compareValues(uri, o.uri, true) && compareValues(packageId, o.packageId, true) && compareValues(version, o.version, true)
-          ;
+           && compareValues(reason, o.reason, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(uri, packageId, version
-          );
+          , reason);
       }
 
   public String fhirType() {
@@ -7112,20 +7182,27 @@ public class ImplementationGuide extends CanonicalResource {
         protected MarkdownType description;
 
         /**
-         * If true or a reference, indicates the resource is an example instance.  If a reference is present, indicates that the example is an example of the specified profile.
+         * If true, indicates the resource is an example instance.
          */
-        @Child(name = "example", type = {BooleanType.class, CanonicalType.class}, order=5, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Is an example/What is this an example of?", formalDefinition="If true or a reference, indicates the resource is an example instance.  If a reference is present, indicates that the example is an example of the specified profile." )
-        protected DataType example;
+        @Child(name = "isExample", type = {BooleanType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Is this an example", formalDefinition="If true, indicates the resource is an example instance." )
+        protected BooleanType isExample;
+
+        /**
+         * If present, indicates profile(s) the instance is valid against.
+         */
+        @Child(name = "profile", type = {CanonicalType.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Profile(s) this is an example of", formalDefinition="If present, indicates profile(s) the instance is valid against." )
+        protected List<CanonicalType> profile;
 
         /**
          * Reference to the id of the grouping this resource appears in.
          */
-        @Child(name = "groupingId", type = {IdType.class}, order=6, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "groupingId", type = {IdType.class}, order=7, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Grouping this is part of", formalDefinition="Reference to the id of the grouping this resource appears in." )
         protected IdType groupingId;
 
-        private static final long serialVersionUID = -954310515L;
+        private static final long serialVersionUID = 804050536L;
 
     /**
      * Constructor
@@ -7326,54 +7403,109 @@ public class ImplementationGuide extends CanonicalResource {
         }
 
         /**
-         * @return {@link #example} (If true or a reference, indicates the resource is an example instance.  If a reference is present, indicates that the example is an example of the specified profile.)
+         * @return {@link #isExample} (If true, indicates the resource is an example instance.). This is the underlying object with id, value and extensions. The accessor "getIsExample" gives direct access to the value
          */
-        public DataType getExample() { 
-          return this.example;
+        public BooleanType getIsExampleElement() { 
+          if (this.isExample == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ImplementationGuideDefinitionResourceComponent.isExample");
+            else if (Configuration.doAutoCreate())
+              this.isExample = new BooleanType(); // bb
+          return this.isExample;
+        }
+
+        public boolean hasIsExampleElement() { 
+          return this.isExample != null && !this.isExample.isEmpty();
+        }
+
+        public boolean hasIsExample() { 
+          return this.isExample != null && !this.isExample.isEmpty();
         }
 
         /**
-         * @return {@link #example} (If true or a reference, indicates the resource is an example instance.  If a reference is present, indicates that the example is an example of the specified profile.)
+         * @param value {@link #isExample} (If true, indicates the resource is an example instance.). This is the underlying object with id, value and extensions. The accessor "getIsExample" gives direct access to the value
          */
-        public BooleanType getExampleBooleanType() throws FHIRException { 
-          if (this.example == null)
-            this.example = new BooleanType();
-          if (!(this.example instanceof BooleanType))
-            throw new FHIRException("Type mismatch: the type BooleanType was expected, but "+this.example.getClass().getName()+" was encountered");
-          return (BooleanType) this.example;
-        }
-
-        public boolean hasExampleBooleanType() { 
-          return this != null && this.example instanceof BooleanType;
-        }
-
-        /**
-         * @return {@link #example} (If true or a reference, indicates the resource is an example instance.  If a reference is present, indicates that the example is an example of the specified profile.)
-         */
-        public CanonicalType getExampleCanonicalType() throws FHIRException { 
-          if (this.example == null)
-            this.example = new CanonicalType();
-          if (!(this.example instanceof CanonicalType))
-            throw new FHIRException("Type mismatch: the type CanonicalType was expected, but "+this.example.getClass().getName()+" was encountered");
-          return (CanonicalType) this.example;
-        }
-
-        public boolean hasExampleCanonicalType() { 
-          return this != null && this.example instanceof CanonicalType;
-        }
-
-        public boolean hasExample() { 
-          return this.example != null && !this.example.isEmpty();
-        }
-
-        /**
-         * @param value {@link #example} (If true or a reference, indicates the resource is an example instance.  If a reference is present, indicates that the example is an example of the specified profile.)
-         */
-        public ImplementationGuideDefinitionResourceComponent setExample(DataType value) { 
-          if (value != null && !(value instanceof BooleanType || value instanceof CanonicalType))
-            throw new Error("Not the right type for ImplementationGuide.definition.resource.example[x]: "+value.fhirType());
-          this.example = value;
+        public ImplementationGuideDefinitionResourceComponent setIsExampleElement(BooleanType value) { 
+          this.isExample = value;
           return this;
+        }
+
+        /**
+         * @return If true, indicates the resource is an example instance.
+         */
+        public boolean getIsExample() { 
+          return this.isExample == null || this.isExample.isEmpty() ? false : this.isExample.getValue();
+        }
+
+        /**
+         * @param value If true, indicates the resource is an example instance.
+         */
+        public ImplementationGuideDefinitionResourceComponent setIsExample(boolean value) { 
+            if (this.isExample == null)
+              this.isExample = new BooleanType();
+            this.isExample.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #profile} (If present, indicates profile(s) the instance is valid against.)
+         */
+        public List<CanonicalType> getProfile() { 
+          if (this.profile == null)
+            this.profile = new ArrayList<CanonicalType>();
+          return this.profile;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public ImplementationGuideDefinitionResourceComponent setProfile(List<CanonicalType> theProfile) { 
+          this.profile = theProfile;
+          return this;
+        }
+
+        public boolean hasProfile() { 
+          if (this.profile == null)
+            return false;
+          for (CanonicalType item : this.profile)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        /**
+         * @return {@link #profile} (If present, indicates profile(s) the instance is valid against.)
+         */
+        public CanonicalType addProfileElement() {//2 
+          CanonicalType t = new CanonicalType();
+          if (this.profile == null)
+            this.profile = new ArrayList<CanonicalType>();
+          this.profile.add(t);
+          return t;
+        }
+
+        /**
+         * @param value {@link #profile} (If present, indicates profile(s) the instance is valid against.)
+         */
+        public ImplementationGuideDefinitionResourceComponent addProfile(String value) { //1
+          CanonicalType t = new CanonicalType();
+          t.setValue(value);
+          if (this.profile == null)
+            this.profile = new ArrayList<CanonicalType>();
+          this.profile.add(t);
+          return this;
+        }
+
+        /**
+         * @param value {@link #profile} (If present, indicates profile(s) the instance is valid against.)
+         */
+        public boolean hasProfile(String value) { 
+          if (this.profile == null)
+            return false;
+          for (CanonicalType v : this.profile)
+            if (v.getValue().equals(value)) // canonical
+              return true;
+          return false;
         }
 
         /**
@@ -7431,7 +7563,8 @@ public class ImplementationGuide extends CanonicalResource {
           children.add(new Property("fhirVersion", "code", "Indicates the FHIR Version(s) this artifact is intended to apply to. If no versions are specified, the resource is assumed to apply to all the versions stated in ImplementationGuide.fhirVersion.", 0, java.lang.Integer.MAX_VALUE, fhirVersion));
           children.add(new Property("name", "string", "A human assigned name for the resource. All resources SHOULD have a name, but the name may be extracted from the resource (e.g. ValueSet.name).", 0, 1, name));
           children.add(new Property("description", "markdown", "A description of the reason that a resource has been included in the implementation guide.", 0, 1, description));
-          children.add(new Property("example[x]", "boolean|canonical(StructureDefinition)", "If true or a reference, indicates the resource is an example instance.  If a reference is present, indicates that the example is an example of the specified profile.", 0, 1, example));
+          children.add(new Property("isExample", "boolean", "If true, indicates the resource is an example instance.", 0, 1, isExample));
+          children.add(new Property("profile", "canonical(StructureDefinition)", "If present, indicates profile(s) the instance is valid against.", 0, java.lang.Integer.MAX_VALUE, profile));
           children.add(new Property("groupingId", "id", "Reference to the id of the grouping this resource appears in.", 0, 1, groupingId));
         }
 
@@ -7442,10 +7575,8 @@ public class ImplementationGuide extends CanonicalResource {
           case 461006061: /*fhirVersion*/  return new Property("fhirVersion", "code", "Indicates the FHIR Version(s) this artifact is intended to apply to. If no versions are specified, the resource is assumed to apply to all the versions stated in ImplementationGuide.fhirVersion.", 0, java.lang.Integer.MAX_VALUE, fhirVersion);
           case 3373707: /*name*/  return new Property("name", "string", "A human assigned name for the resource. All resources SHOULD have a name, but the name may be extracted from the resource (e.g. ValueSet.name).", 0, 1, name);
           case -1724546052: /*description*/  return new Property("description", "markdown", "A description of the reason that a resource has been included in the implementation guide.", 0, 1, description);
-          case -2002328874: /*example[x]*/  return new Property("example[x]", "boolean|canonical(StructureDefinition)", "If true or a reference, indicates the resource is an example instance.  If a reference is present, indicates that the example is an example of the specified profile.", 0, 1, example);
-          case -1322970774: /*example*/  return new Property("example[x]", "boolean|canonical(StructureDefinition)", "If true or a reference, indicates the resource is an example instance.  If a reference is present, indicates that the example is an example of the specified profile.", 0, 1, example);
-          case 159803230: /*exampleBoolean*/  return new Property("example[x]", "boolean", "If true or a reference, indicates the resource is an example instance.  If a reference is present, indicates that the example is an example of the specified profile.", 0, 1, example);
-          case 2016979626: /*exampleCanonical*/  return new Property("example[x]", "canonical(StructureDefinition)", "If true or a reference, indicates the resource is an example instance.  If a reference is present, indicates that the example is an example of the specified profile.", 0, 1, example);
+          case -1902749472: /*isExample*/  return new Property("isExample", "boolean", "If true, indicates the resource is an example instance.", 0, 1, isExample);
+          case -309425751: /*profile*/  return new Property("profile", "canonical(StructureDefinition)", "If present, indicates profile(s) the instance is valid against.", 0, java.lang.Integer.MAX_VALUE, profile);
           case 1291547006: /*groupingId*/  return new Property("groupingId", "id", "Reference to the id of the grouping this resource appears in.", 0, 1, groupingId);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -7459,7 +7590,8 @@ public class ImplementationGuide extends CanonicalResource {
         case 461006061: /*fhirVersion*/ return this.fhirVersion == null ? new Base[0] : this.fhirVersion.toArray(new Base[this.fhirVersion.size()]); // Enumeration<FHIRVersion>
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // MarkdownType
-        case -1322970774: /*example*/ return this.example == null ? new Base[0] : new Base[] {this.example}; // DataType
+        case -1902749472: /*isExample*/ return this.isExample == null ? new Base[0] : new Base[] {this.isExample}; // BooleanType
+        case -309425751: /*profile*/ return this.profile == null ? new Base[0] : this.profile.toArray(new Base[this.profile.size()]); // CanonicalType
         case 1291547006: /*groupingId*/ return this.groupingId == null ? new Base[0] : new Base[] {this.groupingId}; // IdType
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -7482,8 +7614,11 @@ public class ImplementationGuide extends CanonicalResource {
         case -1724546052: // description
           this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
-        case -1322970774: // example
-          this.example = TypeConvertor.castToType(value); // DataType
+        case -1902749472: // isExample
+          this.isExample = TypeConvertor.castToBoolean(value); // BooleanType
+          return value;
+        case -309425751: // profile
+          this.getProfile().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         case 1291547006: // groupingId
           this.groupingId = TypeConvertor.castToId(value); // IdType
@@ -7504,8 +7639,10 @@ public class ImplementationGuide extends CanonicalResource {
           this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("description")) {
           this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
-        } else if (name.equals("example[x]")) {
-          this.example = TypeConvertor.castToType(value); // DataType
+        } else if (name.equals("isExample")) {
+          this.isExample = TypeConvertor.castToBoolean(value); // BooleanType
+        } else if (name.equals("profile")) {
+          this.getProfile().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("groupingId")) {
           this.groupingId = TypeConvertor.castToId(value); // IdType
         } else
@@ -7520,8 +7657,8 @@ public class ImplementationGuide extends CanonicalResource {
         case 461006061:  return addFhirVersionElement();
         case 3373707:  return getNameElement();
         case -1724546052:  return getDescriptionElement();
-        case -2002328874:  return getExample();
-        case -1322970774:  return getExample();
+        case -1902749472:  return getIsExampleElement();
+        case -309425751:  return addProfileElement();
         case 1291547006:  return getGroupingIdElement();
         default: return super.makeProperty(hash, name);
         }
@@ -7535,7 +7672,8 @@ public class ImplementationGuide extends CanonicalResource {
         case 461006061: /*fhirVersion*/ return new String[] {"code"};
         case 3373707: /*name*/ return new String[] {"string"};
         case -1724546052: /*description*/ return new String[] {"markdown"};
-        case -1322970774: /*example*/ return new String[] {"boolean", "canonical"};
+        case -1902749472: /*isExample*/ return new String[] {"boolean"};
+        case -309425751: /*profile*/ return new String[] {"canonical"};
         case 1291547006: /*groupingId*/ return new String[] {"id"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -7557,13 +7695,11 @@ public class ImplementationGuide extends CanonicalResource {
         else if (name.equals("description")) {
           throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.definition.resource.description");
         }
-        else if (name.equals("exampleBoolean")) {
-          this.example = new BooleanType();
-          return this.example;
+        else if (name.equals("isExample")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.definition.resource.isExample");
         }
-        else if (name.equals("exampleCanonical")) {
-          this.example = new CanonicalType();
-          return this.example;
+        else if (name.equals("profile")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.definition.resource.profile");
         }
         else if (name.equals("groupingId")) {
           throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.definition.resource.groupingId");
@@ -7588,7 +7724,12 @@ public class ImplementationGuide extends CanonicalResource {
         };
         dst.name = name == null ? null : name.copy();
         dst.description = description == null ? null : description.copy();
-        dst.example = example == null ? null : example.copy();
+        dst.isExample = isExample == null ? null : isExample.copy();
+        if (profile != null) {
+          dst.profile = new ArrayList<CanonicalType>();
+          for (CanonicalType i : profile)
+            dst.profile.add(i.copy());
+        };
         dst.groupingId = groupingId == null ? null : groupingId.copy();
       }
 
@@ -7600,8 +7741,8 @@ public class ImplementationGuide extends CanonicalResource {
           return false;
         ImplementationGuideDefinitionResourceComponent o = (ImplementationGuideDefinitionResourceComponent) other_;
         return compareDeep(reference, o.reference, true) && compareDeep(fhirVersion, o.fhirVersion, true)
-           && compareDeep(name, o.name, true) && compareDeep(description, o.description, true) && compareDeep(example, o.example, true)
-           && compareDeep(groupingId, o.groupingId, true);
+           && compareDeep(name, o.name, true) && compareDeep(description, o.description, true) && compareDeep(isExample, o.isExample, true)
+           && compareDeep(profile, o.profile, true) && compareDeep(groupingId, o.groupingId, true);
       }
 
       @Override
@@ -7612,12 +7753,13 @@ public class ImplementationGuide extends CanonicalResource {
           return false;
         ImplementationGuideDefinitionResourceComponent o = (ImplementationGuideDefinitionResourceComponent) other_;
         return compareValues(fhirVersion, o.fhirVersion, true) && compareValues(name, o.name, true) && compareValues(description, o.description, true)
-           && compareValues(groupingId, o.groupingId, true);
+           && compareValues(isExample, o.isExample, true) && compareValues(profile, o.profile, true) && compareValues(groupingId, o.groupingId, true)
+          ;
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(reference, fhirVersion, name
-          , description, example, groupingId);
+          , description, isExample, profile, groupingId);
       }
 
   public String fhirType() {
@@ -7633,23 +7775,30 @@ public class ImplementationGuide extends CanonicalResource {
     @Block()
     public static class ImplementationGuideDefinitionPageComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * The source address for the page.
+         * Indicates the URL or the actual content to provide for the page.
          */
-        @Child(name = "name", type = {UrlType.class, Binary.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Where to find that page", formalDefinition="The source address for the page." )
-        protected DataType name;
+        @Child(name = "source", type = {UrlType.class, StringType.class, MarkdownType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Source for page", formalDefinition="Indicates the URL or the actual content to provide for the page." )
+        protected DataType source;
+
+        /**
+         * The url by which the page should be known when published.
+         */
+        @Child(name = "name", type = {UrlType.class}, order=2, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Name of the page when published", formalDefinition="The url by which the page should be known when published." )
+        protected UrlType name;
 
         /**
          * A short title used to represent this page in navigational structures such as table of contents, bread crumbs, etc.
          */
-        @Child(name = "title", type = {StringType.class}, order=2, min=1, max=1, modifier=false, summary=false)
+        @Child(name = "title", type = {StringType.class}, order=3, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Short title shown for navigational assistance", formalDefinition="A short title used to represent this page in navigational structures such as table of contents, bread crumbs, etc." )
         protected StringType title;
 
         /**
          * A code that indicates how the page is generated.
          */
-        @Child(name = "generation", type = {CodeType.class}, order=3, min=1, max=1, modifier=false, summary=false)
+        @Child(name = "generation", type = {CodeType.class}, order=4, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="html | markdown | xml | generated", formalDefinition="A code that indicates how the page is generated." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/guide-page-generation")
         protected Enumeration<GuidePageGeneration> generation;
@@ -7657,11 +7806,11 @@ public class ImplementationGuide extends CanonicalResource {
         /**
          * Nested Pages/Sections under this page.
          */
-        @Child(name = "page", type = {ImplementationGuideDefinitionPageComponent.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "page", type = {ImplementationGuideDefinitionPageComponent.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Nested Pages / Sections", formalDefinition="Nested Pages/Sections under this page." )
         protected List<ImplementationGuideDefinitionPageComponent> page;
 
-        private static final long serialVersionUID = -2100991860L;
+        private static final long serialVersionUID = 57473246L;
 
     /**
      * Constructor
@@ -7673,7 +7822,7 @@ public class ImplementationGuide extends CanonicalResource {
     /**
      * Constructor
      */
-      public ImplementationGuideDefinitionPageComponent(DataType name, String title, GuidePageGeneration generation) {
+      public ImplementationGuideDefinitionPageComponent(String name, String title, GuidePageGeneration generation) {
         super();
         this.setName(name);
         this.setTitle(title);
@@ -7681,40 +7830,85 @@ public class ImplementationGuide extends CanonicalResource {
       }
 
         /**
-         * @return {@link #name} (The source address for the page.)
+         * @return {@link #source} (Indicates the URL or the actual content to provide for the page.)
          */
-        public DataType getName() { 
+        public DataType getSource() { 
+          return this.source;
+        }
+
+        /**
+         * @return {@link #source} (Indicates the URL or the actual content to provide for the page.)
+         */
+        public UrlType getSourceUrlType() throws FHIRException { 
+          if (this.source == null)
+            this.source = new UrlType();
+          if (!(this.source instanceof UrlType))
+            throw new FHIRException("Type mismatch: the type UrlType was expected, but "+this.source.getClass().getName()+" was encountered");
+          return (UrlType) this.source;
+        }
+
+        public boolean hasSourceUrlType() { 
+          return this != null && this.source instanceof UrlType;
+        }
+
+        /**
+         * @return {@link #source} (Indicates the URL or the actual content to provide for the page.)
+         */
+        public StringType getSourceStringType() throws FHIRException { 
+          if (this.source == null)
+            this.source = new StringType();
+          if (!(this.source instanceof StringType))
+            throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.source.getClass().getName()+" was encountered");
+          return (StringType) this.source;
+        }
+
+        public boolean hasSourceStringType() { 
+          return this != null && this.source instanceof StringType;
+        }
+
+        /**
+         * @return {@link #source} (Indicates the URL or the actual content to provide for the page.)
+         */
+        public MarkdownType getSourceMarkdownType() throws FHIRException { 
+          if (this.source == null)
+            this.source = new MarkdownType();
+          if (!(this.source instanceof MarkdownType))
+            throw new FHIRException("Type mismatch: the type MarkdownType was expected, but "+this.source.getClass().getName()+" was encountered");
+          return (MarkdownType) this.source;
+        }
+
+        public boolean hasSourceMarkdownType() { 
+          return this != null && this.source instanceof MarkdownType;
+        }
+
+        public boolean hasSource() { 
+          return this.source != null && !this.source.isEmpty();
+        }
+
+        /**
+         * @param value {@link #source} (Indicates the URL or the actual content to provide for the page.)
+         */
+        public ImplementationGuideDefinitionPageComponent setSource(DataType value) { 
+          if (value != null && !(value instanceof UrlType || value instanceof StringType || value instanceof MarkdownType))
+            throw new Error("Not the right type for ImplementationGuide.definition.page.source[x]: "+value.fhirType());
+          this.source = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #name} (The url by which the page should be known when published.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+         */
+        public UrlType getNameElement() { 
+          if (this.name == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ImplementationGuideDefinitionPageComponent.name");
+            else if (Configuration.doAutoCreate())
+              this.name = new UrlType(); // bb
           return this.name;
         }
 
-        /**
-         * @return {@link #name} (The source address for the page.)
-         */
-        public UrlType getNameUrlType() throws FHIRException { 
-          if (this.name == null)
-            this.name = new UrlType();
-          if (!(this.name instanceof UrlType))
-            throw new FHIRException("Type mismatch: the type UrlType was expected, but "+this.name.getClass().getName()+" was encountered");
-          return (UrlType) this.name;
-        }
-
-        public boolean hasNameUrlType() { 
-          return this != null && this.name instanceof UrlType;
-        }
-
-        /**
-         * @return {@link #name} (The source address for the page.)
-         */
-        public Reference getNameReference() throws FHIRException { 
-          if (this.name == null)
-            this.name = new Reference();
-          if (!(this.name instanceof Reference))
-            throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.name.getClass().getName()+" was encountered");
-          return (Reference) this.name;
-        }
-
-        public boolean hasNameReference() { 
-          return this != null && this.name instanceof Reference;
+        public boolean hasNameElement() { 
+          return this.name != null && !this.name.isEmpty();
         }
 
         public boolean hasName() { 
@@ -7722,12 +7916,27 @@ public class ImplementationGuide extends CanonicalResource {
         }
 
         /**
-         * @param value {@link #name} (The source address for the page.)
+         * @param value {@link #name} (The url by which the page should be known when published.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
          */
-        public ImplementationGuideDefinitionPageComponent setName(DataType value) { 
-          if (value != null && !(value instanceof UrlType || value instanceof Reference))
-            throw new Error("Not the right type for ImplementationGuide.definition.page.name[x]: "+value.fhirType());
+        public ImplementationGuideDefinitionPageComponent setNameElement(UrlType value) { 
           this.name = value;
+          return this;
+        }
+
+        /**
+         * @return The url by which the page should be known when published.
+         */
+        public String getName() { 
+          return this.name == null ? null : this.name.getValue();
+        }
+
+        /**
+         * @param value The url by which the page should be known when published.
+         */
+        public ImplementationGuideDefinitionPageComponent setName(String value) { 
+            if (this.name == null)
+              this.name = new UrlType();
+            this.name.setValue(value);
           return this;
         }
 
@@ -7876,7 +8085,8 @@ public class ImplementationGuide extends CanonicalResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("name[x]", "url|Reference(Binary)", "The source address for the page.", 0, 1, name));
+          children.add(new Property("source[x]", "url|string|markdown", "Indicates the URL or the actual content to provide for the page.", 0, 1, source));
+          children.add(new Property("name", "url", "The url by which the page should be known when published.", 0, 1, name));
           children.add(new Property("title", "string", "A short title used to represent this page in navigational structures such as table of contents, bread crumbs, etc.", 0, 1, title));
           children.add(new Property("generation", "code", "A code that indicates how the page is generated.", 0, 1, generation));
           children.add(new Property("page", "@ImplementationGuide.definition.page", "Nested Pages/Sections under this page.", 0, java.lang.Integer.MAX_VALUE, page));
@@ -7885,10 +8095,12 @@ public class ImplementationGuide extends CanonicalResource {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 1721948693: /*name[x]*/  return new Property("name[x]", "url|Reference(Binary)", "The source address for the page.", 0, 1, name);
-          case 3373707: /*name*/  return new Property("name[x]", "url|Reference(Binary)", "The source address for the page.", 0, 1, name);
-          case 1721942756: /*nameUrl*/  return new Property("name[x]", "url", "The source address for the page.", 0, 1, name);
-          case 1833144576: /*nameReference*/  return new Property("name[x]", "Reference(Binary)", "The source address for the page.", 0, 1, name);
+          case -1698413947: /*source[x]*/  return new Property("source[x]", "url|string|markdown", "Indicates the URL or the actual content to provide for the page.", 0, 1, source);
+          case -896505829: /*source*/  return new Property("source[x]", "url|string|markdown", "Indicates the URL or the actual content to provide for the page.", 0, 1, source);
+          case -1698419884: /*sourceUrl*/  return new Property("source[x]", "url", "Indicates the URL or the actual content to provide for the page.", 0, 1, source);
+          case 1327821836: /*sourceString*/  return new Property("source[x]", "string", "Indicates the URL or the actual content to provide for the page.", 0, 1, source);
+          case -1116570070: /*sourceMarkdown*/  return new Property("source[x]", "markdown", "Indicates the URL or the actual content to provide for the page.", 0, 1, source);
+          case 3373707: /*name*/  return new Property("name", "url", "The url by which the page should be known when published.", 0, 1, name);
           case 110371416: /*title*/  return new Property("title", "string", "A short title used to represent this page in navigational structures such as table of contents, bread crumbs, etc.", 0, 1, title);
           case 305703192: /*generation*/  return new Property("generation", "code", "A code that indicates how the page is generated.", 0, 1, generation);
           case 3433103: /*page*/  return new Property("page", "@ImplementationGuide.definition.page", "Nested Pages/Sections under this page.", 0, java.lang.Integer.MAX_VALUE, page);
@@ -7900,7 +8112,8 @@ public class ImplementationGuide extends CanonicalResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // DataType
+        case -896505829: /*source*/ return this.source == null ? new Base[0] : new Base[] {this.source}; // DataType
+        case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // UrlType
         case 110371416: /*title*/ return this.title == null ? new Base[0] : new Base[] {this.title}; // StringType
         case 305703192: /*generation*/ return this.generation == null ? new Base[0] : new Base[] {this.generation}; // Enumeration<GuidePageGeneration>
         case 3433103: /*page*/ return this.page == null ? new Base[0] : this.page.toArray(new Base[this.page.size()]); // ImplementationGuideDefinitionPageComponent
@@ -7912,8 +8125,11 @@ public class ImplementationGuide extends CanonicalResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
+        case -896505829: // source
+          this.source = TypeConvertor.castToType(value); // DataType
+          return value;
         case 3373707: // name
-          this.name = TypeConvertor.castToType(value); // DataType
+          this.name = TypeConvertor.castToUrl(value); // UrlType
           return value;
         case 110371416: // title
           this.title = TypeConvertor.castToString(value); // StringType
@@ -7932,8 +8148,10 @@ public class ImplementationGuide extends CanonicalResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("name[x]")) {
-          this.name = TypeConvertor.castToType(value); // DataType
+        if (name.equals("source[x]")) {
+          this.source = TypeConvertor.castToType(value); // DataType
+        } else if (name.equals("name")) {
+          this.name = TypeConvertor.castToUrl(value); // UrlType
         } else if (name.equals("title")) {
           this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("generation")) {
@@ -7949,8 +8167,9 @@ public class ImplementationGuide extends CanonicalResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 1721948693:  return getName();
-        case 3373707:  return getName();
+        case -1698413947:  return getSource();
+        case -896505829:  return getSource();
+        case 3373707:  return getNameElement();
         case 110371416:  return getTitleElement();
         case 305703192:  return getGenerationElement();
         case 3433103:  return addPage(); 
@@ -7962,7 +8181,8 @@ public class ImplementationGuide extends CanonicalResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3373707: /*name*/ return new String[] {"url", "Reference"};
+        case -896505829: /*source*/ return new String[] {"url", "string", "markdown"};
+        case 3373707: /*name*/ return new String[] {"url"};
         case 110371416: /*title*/ return new String[] {"string"};
         case 305703192: /*generation*/ return new String[] {"code"};
         case 3433103: /*page*/ return new String[] {"@ImplementationGuide.definition.page"};
@@ -7973,13 +8193,20 @@ public class ImplementationGuide extends CanonicalResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("nameUrl")) {
-          this.name = new UrlType();
-          return this.name;
+        if (name.equals("sourceUrl")) {
+          this.source = new UrlType();
+          return this.source;
         }
-        else if (name.equals("nameReference")) {
-          this.name = new Reference();
-          return this.name;
+        else if (name.equals("sourceString")) {
+          this.source = new StringType();
+          return this.source;
+        }
+        else if (name.equals("sourceMarkdown")) {
+          this.source = new MarkdownType();
+          return this.source;
+        }
+        else if (name.equals("name")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.definition.page.name");
         }
         else if (name.equals("title")) {
           throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.definition.page.title");
@@ -8002,6 +8229,7 @@ public class ImplementationGuide extends CanonicalResource {
 
       public void copyValues(ImplementationGuideDefinitionPageComponent dst) {
         super.copyValues(dst);
+        dst.source = source == null ? null : source.copy();
         dst.name = name == null ? null : name.copy();
         dst.title = title == null ? null : title.copy();
         dst.generation = generation == null ? null : generation.copy();
@@ -8019,8 +8247,8 @@ public class ImplementationGuide extends CanonicalResource {
         if (!(other_ instanceof ImplementationGuideDefinitionPageComponent))
           return false;
         ImplementationGuideDefinitionPageComponent o = (ImplementationGuideDefinitionPageComponent) other_;
-        return compareDeep(name, o.name, true) && compareDeep(title, o.title, true) && compareDeep(generation, o.generation, true)
-           && compareDeep(page, o.page, true);
+        return compareDeep(source, o.source, true) && compareDeep(name, o.name, true) && compareDeep(title, o.title, true)
+           && compareDeep(generation, o.generation, true) && compareDeep(page, o.page, true);
       }
 
       @Override
@@ -8030,11 +8258,12 @@ public class ImplementationGuide extends CanonicalResource {
         if (!(other_ instanceof ImplementationGuideDefinitionPageComponent))
           return false;
         ImplementationGuideDefinitionPageComponent o = (ImplementationGuideDefinitionPageComponent) other_;
-        return compareValues(title, o.title, true) && compareValues(generation, o.generation, true);
+        return compareValues(name, o.name, true) && compareValues(title, o.title, true) && compareValues(generation, o.generation, true)
+          ;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, title, generation
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(source, name, title, generation
           , page);
       }
 
@@ -8048,11 +8277,12 @@ public class ImplementationGuide extends CanonicalResource {
     @Block()
     public static class ImplementationGuideDefinitionParameterComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Code that identifies parameter.
+         * A tool-specific code that defines the parameter.
          */
-        @Child(name = "code", type = {StringType.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Code that identifies parameter", formalDefinition="Code that identifies parameter." )
-        protected StringType code;
+        @Child(name = "code", type = {Coding.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Code that identifies parameter", formalDefinition="A tool-specific code that defines the parameter." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/guide-parameter-code")
+        protected Coding code;
 
         /**
          * Value for named type.
@@ -8061,7 +8291,7 @@ public class ImplementationGuide extends CanonicalResource {
         @Description(shortDefinition="Value for named type", formalDefinition="Value for named type." )
         protected StringType value;
 
-        private static final long serialVersionUID = -26486942L;
+        private static final long serialVersionUID = -1728909245L;
 
     /**
      * Constructor
@@ -8073,26 +8303,22 @@ public class ImplementationGuide extends CanonicalResource {
     /**
      * Constructor
      */
-      public ImplementationGuideDefinitionParameterComponent(String code, String value) {
+      public ImplementationGuideDefinitionParameterComponent(Coding code, String value) {
         super();
         this.setCode(code);
         this.setValue(value);
       }
 
         /**
-         * @return {@link #code} (Code that identifies parameter.). This is the underlying object with id, value and extensions. The accessor "getCode" gives direct access to the value
+         * @return {@link #code} (A tool-specific code that defines the parameter.)
          */
-        public StringType getCodeElement() { 
+        public Coding getCode() { 
           if (this.code == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create ImplementationGuideDefinitionParameterComponent.code");
             else if (Configuration.doAutoCreate())
-              this.code = new StringType(); // bb
+              this.code = new Coding(); // cc
           return this.code;
-        }
-
-        public boolean hasCodeElement() { 
-          return this.code != null && !this.code.isEmpty();
         }
 
         public boolean hasCode() { 
@@ -8100,27 +8326,10 @@ public class ImplementationGuide extends CanonicalResource {
         }
 
         /**
-         * @param value {@link #code} (Code that identifies parameter.). This is the underlying object with id, value and extensions. The accessor "getCode" gives direct access to the value
+         * @param value {@link #code} (A tool-specific code that defines the parameter.)
          */
-        public ImplementationGuideDefinitionParameterComponent setCodeElement(StringType value) { 
+        public ImplementationGuideDefinitionParameterComponent setCode(Coding value) { 
           this.code = value;
-          return this;
-        }
-
-        /**
-         * @return Code that identifies parameter.
-         */
-        public String getCode() { 
-          return this.code == null ? null : this.code.getValue();
-        }
-
-        /**
-         * @param value Code that identifies parameter.
-         */
-        public ImplementationGuideDefinitionParameterComponent setCode(String value) { 
-            if (this.code == null)
-              this.code = new StringType();
-            this.code.setValue(value);
           return this;
         }
 
@@ -8171,14 +8380,14 @@ public class ImplementationGuide extends CanonicalResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("code", "string", "Code that identifies parameter.", 0, 1, code));
+          children.add(new Property("code", "Coding", "A tool-specific code that defines the parameter.", 0, 1, code));
           children.add(new Property("value", "string", "Value for named type.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3059181: /*code*/  return new Property("code", "string", "Code that identifies parameter.", 0, 1, code);
+          case 3059181: /*code*/  return new Property("code", "Coding", "A tool-specific code that defines the parameter.", 0, 1, code);
           case 111972721: /*value*/  return new Property("value", "string", "Value for named type.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -8188,7 +8397,7 @@ public class ImplementationGuide extends CanonicalResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // StringType
+        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // Coding
         case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // StringType
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -8199,7 +8408,7 @@ public class ImplementationGuide extends CanonicalResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3059181: // code
-          this.code = TypeConvertor.castToString(value); // StringType
+          this.code = TypeConvertor.castToCoding(value); // Coding
           return value;
         case 111972721: // value
           this.value = TypeConvertor.castToString(value); // StringType
@@ -8212,7 +8421,7 @@ public class ImplementationGuide extends CanonicalResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
-          this.code = TypeConvertor.castToString(value); // StringType
+          this.code = TypeConvertor.castToCoding(value); // Coding
         } else if (name.equals("value")) {
           this.value = TypeConvertor.castToString(value); // StringType
         } else
@@ -8223,7 +8432,7 @@ public class ImplementationGuide extends CanonicalResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3059181:  return getCodeElement();
+        case 3059181:  return getCode();
         case 111972721:  return getValueElement();
         default: return super.makeProperty(hash, name);
         }
@@ -8233,7 +8442,7 @@ public class ImplementationGuide extends CanonicalResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3059181: /*code*/ return new String[] {"string"};
+        case 3059181: /*code*/ return new String[] {"Coding"};
         case 111972721: /*value*/ return new String[] {"string"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -8243,7 +8452,8 @@ public class ImplementationGuide extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("code")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.definition.parameter.code");
+          this.code = new Coding();
+          return this.code;
         }
         else if (name.equals("value")) {
           throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.definition.parameter.value");
@@ -8281,7 +8491,7 @@ public class ImplementationGuide extends CanonicalResource {
         if (!(other_ instanceof ImplementationGuideDefinitionParameterComponent))
           return false;
         ImplementationGuideDefinitionParameterComponent o = (ImplementationGuideDefinitionParameterComponent) other_;
-        return compareValues(code, o.code, true) && compareValues(value, o.value, true);
+        return compareValues(value, o.value, true);
       }
 
       public boolean isEmpty() {
@@ -9145,20 +9355,27 @@ public class ImplementationGuide extends CanonicalResource {
         protected Reference reference;
 
         /**
-         * If true or a reference, indicates the resource is an example instance.  If a reference is present, indicates that the example is an example of the specified profile.
+         * If true, indicates the resource is an example instance.
          */
-        @Child(name = "example", type = {BooleanType.class, CanonicalType.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Is an example/What is this an example of?", formalDefinition="If true or a reference, indicates the resource is an example instance.  If a reference is present, indicates that the example is an example of the specified profile." )
-        protected DataType example;
+        @Child(name = "isExample", type = {BooleanType.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Is this an example", formalDefinition="If true, indicates the resource is an example instance." )
+        protected BooleanType isExample;
+
+        /**
+         * If present, indicates profile(s) the instance is valid against.
+         */
+        @Child(name = "profile", type = {CanonicalType.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Profile(s) this is an example of", formalDefinition="If present, indicates profile(s) the instance is valid against." )
+        protected List<CanonicalType> profile;
 
         /**
          * The relative path for primary page for this resource within the IG.
          */
-        @Child(name = "relativePath", type = {UrlType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "relativePath", type = {UrlType.class}, order=4, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Relative path for page in IG", formalDefinition="The relative path for primary page for this resource within the IG." )
         protected UrlType relativePath;
 
-        private static final long serialVersionUID = 956753658L;
+        private static final long serialVersionUID = 66726063L;
 
     /**
      * Constructor
@@ -9200,54 +9417,109 @@ public class ImplementationGuide extends CanonicalResource {
         }
 
         /**
-         * @return {@link #example} (If true or a reference, indicates the resource is an example instance.  If a reference is present, indicates that the example is an example of the specified profile.)
+         * @return {@link #isExample} (If true, indicates the resource is an example instance.). This is the underlying object with id, value and extensions. The accessor "getIsExample" gives direct access to the value
          */
-        public DataType getExample() { 
-          return this.example;
+        public BooleanType getIsExampleElement() { 
+          if (this.isExample == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ManifestResourceComponent.isExample");
+            else if (Configuration.doAutoCreate())
+              this.isExample = new BooleanType(); // bb
+          return this.isExample;
+        }
+
+        public boolean hasIsExampleElement() { 
+          return this.isExample != null && !this.isExample.isEmpty();
+        }
+
+        public boolean hasIsExample() { 
+          return this.isExample != null && !this.isExample.isEmpty();
         }
 
         /**
-         * @return {@link #example} (If true or a reference, indicates the resource is an example instance.  If a reference is present, indicates that the example is an example of the specified profile.)
+         * @param value {@link #isExample} (If true, indicates the resource is an example instance.). This is the underlying object with id, value and extensions. The accessor "getIsExample" gives direct access to the value
          */
-        public BooleanType getExampleBooleanType() throws FHIRException { 
-          if (this.example == null)
-            this.example = new BooleanType();
-          if (!(this.example instanceof BooleanType))
-            throw new FHIRException("Type mismatch: the type BooleanType was expected, but "+this.example.getClass().getName()+" was encountered");
-          return (BooleanType) this.example;
-        }
-
-        public boolean hasExampleBooleanType() { 
-          return this != null && this.example instanceof BooleanType;
-        }
-
-        /**
-         * @return {@link #example} (If true or a reference, indicates the resource is an example instance.  If a reference is present, indicates that the example is an example of the specified profile.)
-         */
-        public CanonicalType getExampleCanonicalType() throws FHIRException { 
-          if (this.example == null)
-            this.example = new CanonicalType();
-          if (!(this.example instanceof CanonicalType))
-            throw new FHIRException("Type mismatch: the type CanonicalType was expected, but "+this.example.getClass().getName()+" was encountered");
-          return (CanonicalType) this.example;
-        }
-
-        public boolean hasExampleCanonicalType() { 
-          return this != null && this.example instanceof CanonicalType;
-        }
-
-        public boolean hasExample() { 
-          return this.example != null && !this.example.isEmpty();
-        }
-
-        /**
-         * @param value {@link #example} (If true or a reference, indicates the resource is an example instance.  If a reference is present, indicates that the example is an example of the specified profile.)
-         */
-        public ManifestResourceComponent setExample(DataType value) { 
-          if (value != null && !(value instanceof BooleanType || value instanceof CanonicalType))
-            throw new Error("Not the right type for ImplementationGuide.manifest.resource.example[x]: "+value.fhirType());
-          this.example = value;
+        public ManifestResourceComponent setIsExampleElement(BooleanType value) { 
+          this.isExample = value;
           return this;
+        }
+
+        /**
+         * @return If true, indicates the resource is an example instance.
+         */
+        public boolean getIsExample() { 
+          return this.isExample == null || this.isExample.isEmpty() ? false : this.isExample.getValue();
+        }
+
+        /**
+         * @param value If true, indicates the resource is an example instance.
+         */
+        public ManifestResourceComponent setIsExample(boolean value) { 
+            if (this.isExample == null)
+              this.isExample = new BooleanType();
+            this.isExample.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #profile} (If present, indicates profile(s) the instance is valid against.)
+         */
+        public List<CanonicalType> getProfile() { 
+          if (this.profile == null)
+            this.profile = new ArrayList<CanonicalType>();
+          return this.profile;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public ManifestResourceComponent setProfile(List<CanonicalType> theProfile) { 
+          this.profile = theProfile;
+          return this;
+        }
+
+        public boolean hasProfile() { 
+          if (this.profile == null)
+            return false;
+          for (CanonicalType item : this.profile)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        /**
+         * @return {@link #profile} (If present, indicates profile(s) the instance is valid against.)
+         */
+        public CanonicalType addProfileElement() {//2 
+          CanonicalType t = new CanonicalType();
+          if (this.profile == null)
+            this.profile = new ArrayList<CanonicalType>();
+          this.profile.add(t);
+          return t;
+        }
+
+        /**
+         * @param value {@link #profile} (If present, indicates profile(s) the instance is valid against.)
+         */
+        public ManifestResourceComponent addProfile(String value) { //1
+          CanonicalType t = new CanonicalType();
+          t.setValue(value);
+          if (this.profile == null)
+            this.profile = new ArrayList<CanonicalType>();
+          this.profile.add(t);
+          return this;
+        }
+
+        /**
+         * @param value {@link #profile} (If present, indicates profile(s) the instance is valid against.)
+         */
+        public boolean hasProfile(String value) { 
+          if (this.profile == null)
+            return false;
+          for (CanonicalType v : this.profile)
+            if (v.getValue().equals(value)) // canonical
+              return true;
+          return false;
         }
 
         /**
@@ -9302,7 +9574,8 @@ public class ImplementationGuide extends CanonicalResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("reference", "Reference(Any)", "Where this resource is found.", 0, 1, reference));
-          children.add(new Property("example[x]", "boolean|canonical(StructureDefinition)", "If true or a reference, indicates the resource is an example instance.  If a reference is present, indicates that the example is an example of the specified profile.", 0, 1, example));
+          children.add(new Property("isExample", "boolean", "If true, indicates the resource is an example instance.", 0, 1, isExample));
+          children.add(new Property("profile", "canonical(StructureDefinition)", "If present, indicates profile(s) the instance is valid against.", 0, java.lang.Integer.MAX_VALUE, profile));
           children.add(new Property("relativePath", "url", "The relative path for primary page for this resource within the IG.", 0, 1, relativePath));
         }
 
@@ -9310,10 +9583,8 @@ public class ImplementationGuide extends CanonicalResource {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case -925155509: /*reference*/  return new Property("reference", "Reference(Any)", "Where this resource is found.", 0, 1, reference);
-          case -2002328874: /*example[x]*/  return new Property("example[x]", "boolean|canonical(StructureDefinition)", "If true or a reference, indicates the resource is an example instance.  If a reference is present, indicates that the example is an example of the specified profile.", 0, 1, example);
-          case -1322970774: /*example*/  return new Property("example[x]", "boolean|canonical(StructureDefinition)", "If true or a reference, indicates the resource is an example instance.  If a reference is present, indicates that the example is an example of the specified profile.", 0, 1, example);
-          case 159803230: /*exampleBoolean*/  return new Property("example[x]", "boolean", "If true or a reference, indicates the resource is an example instance.  If a reference is present, indicates that the example is an example of the specified profile.", 0, 1, example);
-          case 2016979626: /*exampleCanonical*/  return new Property("example[x]", "canonical(StructureDefinition)", "If true or a reference, indicates the resource is an example instance.  If a reference is present, indicates that the example is an example of the specified profile.", 0, 1, example);
+          case -1902749472: /*isExample*/  return new Property("isExample", "boolean", "If true, indicates the resource is an example instance.", 0, 1, isExample);
+          case -309425751: /*profile*/  return new Property("profile", "canonical(StructureDefinition)", "If present, indicates profile(s) the instance is valid against.", 0, java.lang.Integer.MAX_VALUE, profile);
           case -70808303: /*relativePath*/  return new Property("relativePath", "url", "The relative path for primary page for this resource within the IG.", 0, 1, relativePath);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -9324,7 +9595,8 @@ public class ImplementationGuide extends CanonicalResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -925155509: /*reference*/ return this.reference == null ? new Base[0] : new Base[] {this.reference}; // Reference
-        case -1322970774: /*example*/ return this.example == null ? new Base[0] : new Base[] {this.example}; // DataType
+        case -1902749472: /*isExample*/ return this.isExample == null ? new Base[0] : new Base[] {this.isExample}; // BooleanType
+        case -309425751: /*profile*/ return this.profile == null ? new Base[0] : this.profile.toArray(new Base[this.profile.size()]); // CanonicalType
         case -70808303: /*relativePath*/ return this.relativePath == null ? new Base[0] : new Base[] {this.relativePath}; // UrlType
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -9337,8 +9609,11 @@ public class ImplementationGuide extends CanonicalResource {
         case -925155509: // reference
           this.reference = TypeConvertor.castToReference(value); // Reference
           return value;
-        case -1322970774: // example
-          this.example = TypeConvertor.castToType(value); // DataType
+        case -1902749472: // isExample
+          this.isExample = TypeConvertor.castToBoolean(value); // BooleanType
+          return value;
+        case -309425751: // profile
+          this.getProfile().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         case -70808303: // relativePath
           this.relativePath = TypeConvertor.castToUrl(value); // UrlType
@@ -9352,8 +9627,10 @@ public class ImplementationGuide extends CanonicalResource {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("reference")) {
           this.reference = TypeConvertor.castToReference(value); // Reference
-        } else if (name.equals("example[x]")) {
-          this.example = TypeConvertor.castToType(value); // DataType
+        } else if (name.equals("isExample")) {
+          this.isExample = TypeConvertor.castToBoolean(value); // BooleanType
+        } else if (name.equals("profile")) {
+          this.getProfile().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("relativePath")) {
           this.relativePath = TypeConvertor.castToUrl(value); // UrlType
         } else
@@ -9365,8 +9642,8 @@ public class ImplementationGuide extends CanonicalResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -925155509:  return getReference();
-        case -2002328874:  return getExample();
-        case -1322970774:  return getExample();
+        case -1902749472:  return getIsExampleElement();
+        case -309425751:  return addProfileElement();
         case -70808303:  return getRelativePathElement();
         default: return super.makeProperty(hash, name);
         }
@@ -9377,7 +9654,8 @@ public class ImplementationGuide extends CanonicalResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -925155509: /*reference*/ return new String[] {"Reference"};
-        case -1322970774: /*example*/ return new String[] {"boolean", "canonical"};
+        case -1902749472: /*isExample*/ return new String[] {"boolean"};
+        case -309425751: /*profile*/ return new String[] {"canonical"};
         case -70808303: /*relativePath*/ return new String[] {"url"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -9390,13 +9668,11 @@ public class ImplementationGuide extends CanonicalResource {
           this.reference = new Reference();
           return this.reference;
         }
-        else if (name.equals("exampleBoolean")) {
-          this.example = new BooleanType();
-          return this.example;
+        else if (name.equals("isExample")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.manifest.resource.isExample");
         }
-        else if (name.equals("exampleCanonical")) {
-          this.example = new CanonicalType();
-          return this.example;
+        else if (name.equals("profile")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.manifest.resource.profile");
         }
         else if (name.equals("relativePath")) {
           throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.manifest.resource.relativePath");
@@ -9414,7 +9690,12 @@ public class ImplementationGuide extends CanonicalResource {
       public void copyValues(ManifestResourceComponent dst) {
         super.copyValues(dst);
         dst.reference = reference == null ? null : reference.copy();
-        dst.example = example == null ? null : example.copy();
+        dst.isExample = isExample == null ? null : isExample.copy();
+        if (profile != null) {
+          dst.profile = new ArrayList<CanonicalType>();
+          for (CanonicalType i : profile)
+            dst.profile.add(i.copy());
+        };
         dst.relativePath = relativePath == null ? null : relativePath.copy();
       }
 
@@ -9425,8 +9706,8 @@ public class ImplementationGuide extends CanonicalResource {
         if (!(other_ instanceof ManifestResourceComponent))
           return false;
         ManifestResourceComponent o = (ManifestResourceComponent) other_;
-        return compareDeep(reference, o.reference, true) && compareDeep(example, o.example, true) && compareDeep(relativePath, o.relativePath, true)
-          ;
+        return compareDeep(reference, o.reference, true) && compareDeep(isExample, o.isExample, true) && compareDeep(profile, o.profile, true)
+           && compareDeep(relativePath, o.relativePath, true);
       }
 
       @Override
@@ -9436,12 +9717,13 @@ public class ImplementationGuide extends CanonicalResource {
         if (!(other_ instanceof ManifestResourceComponent))
           return false;
         ManifestResourceComponent o = (ManifestResourceComponent) other_;
-        return compareValues(relativePath, o.relativePath, true);
+        return compareValues(isExample, o.isExample, true) && compareValues(profile, o.profile, true) && compareValues(relativePath, o.relativePath, true)
+          ;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(reference, example, relativePath
-          );
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(reference, isExample, profile
+          , relativePath);
       }
 
   public String fhirType() {
@@ -9796,10 +10078,10 @@ public class ImplementationGuide extends CanonicalResource {
   }
 
     /**
-     * An absolute URI that is used to identify this implementation guide when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this implementation guide is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the implementation guide is stored on different servers.
+     * An absolute URI that is used to identify this implementation guide when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this implementation guide is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the implementation guide is stored on different servers.
      */
     @Child(name = "url", type = {UriType.class}, order=0, min=1, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Canonical identifier for this implementation guide, represented as a URI (globally unique)", formalDefinition="An absolute URI that is used to identify this implementation guide when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this implementation guide is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the implementation guide is stored on different servers." )
+    @Description(shortDefinition="Canonical identifier for this implementation guide, represented as a URI (globally unique)", formalDefinition="An absolute URI that is used to identify this implementation guide when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this implementation guide is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the implementation guide is stored on different servers." )
     protected UriType url;
 
     /**
@@ -9810,23 +10092,31 @@ public class ImplementationGuide extends CanonicalResource {
     protected StringType version;
 
     /**
+     * Indicates the mechanism used to compare versions to determine which is more current.
+     */
+    @Child(name = "versionAlgorithm", type = {StringType.class, Coding.class}, order=2, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="How to compare versions", formalDefinition="Indicates the mechanism used to compare versions to determine which is more current." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/version-algorithm")
+    protected DataType versionAlgorithm;
+
+    /**
      * A natural language name identifying the implementation guide. This name should be usable as an identifier for the module by machine processing applications such as code generation.
      */
-    @Child(name = "name", type = {StringType.class}, order=2, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "name", type = {StringType.class}, order=3, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Name for this implementation guide (computer friendly)", formalDefinition="A natural language name identifying the implementation guide. This name should be usable as an identifier for the module by machine processing applications such as code generation." )
     protected StringType name;
 
     /**
      * A short, descriptive, user-friendly title for the implementation guide.
      */
-    @Child(name = "title", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "title", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Name for this implementation guide (human friendly)", formalDefinition="A short, descriptive, user-friendly title for the implementation guide." )
     protected StringType title;
 
     /**
      * The status of this implementation guide. Enables tracking the life-cycle of the content.
      */
-    @Child(name = "status", type = {CodeType.class}, order=4, min=1, max=1, modifier=true, summary=true)
+    @Child(name = "status", type = {CodeType.class}, order=5, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The status of this implementation guide. Enables tracking the life-cycle of the content." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
     protected Enumeration<PublicationStatus> status;
@@ -9834,49 +10124,49 @@ public class ImplementationGuide extends CanonicalResource {
     /**
      * A Boolean value to indicate that this implementation guide is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
      */
-    @Child(name = "experimental", type = {BooleanType.class}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "experimental", type = {BooleanType.class}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="For testing purposes, not real usage", formalDefinition="A Boolean value to indicate that this implementation guide is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage." )
     protected BooleanType experimental;
 
     /**
      * The date  (and optionally time) when the implementation guide was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the implementation guide changes.
      */
-    @Child(name = "date", type = {DateTimeType.class}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "date", type = {DateTimeType.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Date last changed", formalDefinition="The date  (and optionally time) when the implementation guide was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the implementation guide changes." )
     protected DateTimeType date;
 
     /**
-     * The name of the organization or individual that published the implementation guide.
+     * The name of the organization or individual responsible for the release and ongoing maintenance of the implementation guide.
      */
-    @Child(name = "publisher", type = {StringType.class}, order=7, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Name of the publisher (organization or individual)", formalDefinition="The name of the organization or individual that published the implementation guide." )
+    @Child(name = "publisher", type = {StringType.class}, order=8, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Name of the publisher/steward (organization or individual)", formalDefinition="The name of the organization or individual responsible for the release and ongoing maintenance of the implementation guide." )
     protected StringType publisher;
 
     /**
      * Contact details to assist a user in finding and communicating with the publisher.
      */
-    @Child(name = "contact", type = {ContactDetail.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "contact", type = {ContactDetail.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Contact details for the publisher", formalDefinition="Contact details to assist a user in finding and communicating with the publisher." )
     protected List<ContactDetail> contact;
 
     /**
      * A free text natural language description of the implementation guide from a consumer's perspective.
      */
-    @Child(name = "description", type = {MarkdownType.class}, order=9, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "description", type = {MarkdownType.class}, order=10, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Natural language description of the implementation guide", formalDefinition="A free text natural language description of the implementation guide from a consumer's perspective." )
     protected MarkdownType description;
 
     /**
      * The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate implementation guide instances.
      */
-    @Child(name = "useContext", type = {UsageContext.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "useContext", type = {UsageContext.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The context that the content is intended to support", formalDefinition="The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate implementation guide instances." )
     protected List<UsageContext> useContext;
 
     /**
      * A legal or geographic region in which the implementation guide is intended to be used.
      */
-    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Intended jurisdiction for implementation guide (if applicable)", formalDefinition="A legal or geographic region in which the implementation guide is intended to be used." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/jurisdiction")
     protected List<CodeableConcept> jurisdiction;
@@ -9884,21 +10174,28 @@ public class ImplementationGuide extends CanonicalResource {
     /**
      * A copyright statement relating to the implementation guide and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the implementation guide.
      */
-    @Child(name = "copyright", type = {MarkdownType.class}, order=12, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "copyright", type = {MarkdownType.class}, order=13, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Use and/or publishing restrictions", formalDefinition="A copyright statement relating to the implementation guide and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the implementation guide." )
     protected MarkdownType copyright;
 
     /**
+     * A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    @Child(name = "copyrightLabel", type = {StringType.class}, order=14, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Copyright holder and year(s)", formalDefinition="A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved')." )
+    protected StringType copyrightLabel;
+
+    /**
      * The NPM package name for this Implementation Guide, used in the NPM package distribution, which is the primary mechanism by which FHIR based tooling manages IG dependencies. This value must be globally unique, and should be assigned with care.
      */
-    @Child(name = "packageId", type = {IdType.class}, order=13, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "packageId", type = {IdType.class}, order=15, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="NPM Package name for IG", formalDefinition="The NPM package name for this Implementation Guide, used in the NPM package distribution, which is the primary mechanism by which FHIR based tooling manages IG dependencies. This value must be globally unique, and should be assigned with care." )
     protected IdType packageId;
 
     /**
      * The license that applies to this Implementation Guide, using an SPDX license code, or 'not-open-source'.
      */
-    @Child(name = "license", type = {CodeType.class}, order=14, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "license", type = {CodeType.class}, order=16, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="SPDX license code for this IG (or not-open-source)", formalDefinition="The license that applies to this Implementation Guide, using an SPDX license code, or 'not-open-source'." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/spdx-license")
     protected Enumeration<SPDXLicense> license;
@@ -9906,7 +10203,7 @@ public class ImplementationGuide extends CanonicalResource {
     /**
      * The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.6.0. for this version.
      */
-    @Child(name = "fhirVersion", type = {CodeType.class}, order=15, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "fhirVersion", type = {CodeType.class}, order=17, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="FHIR Version(s) this Implementation Guide targets", formalDefinition="The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.6.0. for this version." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/FHIR-version")
     protected List<Enumeration<FHIRVersion>> fhirVersion;
@@ -9914,32 +10211,32 @@ public class ImplementationGuide extends CanonicalResource {
     /**
      * Another implementation guide that this implementation depends on. Typically, an implementation guide uses value sets, profiles etc.defined in other implementation guides.
      */
-    @Child(name = "dependsOn", type = {}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "dependsOn", type = {}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Another Implementation guide this depends on", formalDefinition="Another implementation guide that this implementation depends on. Typically, an implementation guide uses value sets, profiles etc.defined in other implementation guides." )
     protected List<ImplementationGuideDependsOnComponent> dependsOn;
 
     /**
      * A set of profiles that all resources covered by this implementation guide must conform to.
      */
-    @Child(name = "global", type = {}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "global", type = {}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Profiles that apply globally", formalDefinition="A set of profiles that all resources covered by this implementation guide must conform to." )
     protected List<ImplementationGuideGlobalComponent> global;
 
     /**
      * The information needed by an IG publisher tool to publish the whole implementation guide.
      */
-    @Child(name = "definition", type = {}, order=18, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "definition", type = {}, order=20, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Information needed to build the IG", formalDefinition="The information needed by an IG publisher tool to publish the whole implementation guide." )
     protected ImplementationGuideDefinitionComponent definition;
 
     /**
      * Information about an assembled implementation guide, created by the publication tooling.
      */
-    @Child(name = "manifest", type = {}, order=19, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "manifest", type = {}, order=21, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Information about an assembled IG", formalDefinition="Information about an assembled implementation guide, created by the publication tooling." )
     protected ImplementationGuideManifestComponent manifest;
 
-    private static final long serialVersionUID = -362658755L;
+    private static final long serialVersionUID = 1147801790L;
 
   /**
    * Constructor
@@ -9961,7 +10258,7 @@ public class ImplementationGuide extends CanonicalResource {
     }
 
     /**
-     * @return {@link #url} (An absolute URI that is used to identify this implementation guide when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this implementation guide is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the implementation guide is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @return {@link #url} (An absolute URI that is used to identify this implementation guide when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this implementation guide is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the implementation guide is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public UriType getUrlElement() { 
       if (this.url == null)
@@ -9981,7 +10278,7 @@ public class ImplementationGuide extends CanonicalResource {
     }
 
     /**
-     * @param value {@link #url} (An absolute URI that is used to identify this implementation guide when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this implementation guide is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the implementation guide is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @param value {@link #url} (An absolute URI that is used to identify this implementation guide when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this implementation guide is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the implementation guide is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public ImplementationGuide setUrlElement(UriType value) { 
       this.url = value;
@@ -9989,14 +10286,14 @@ public class ImplementationGuide extends CanonicalResource {
     }
 
     /**
-     * @return An absolute URI that is used to identify this implementation guide when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this implementation guide is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the implementation guide is stored on different servers.
+     * @return An absolute URI that is used to identify this implementation guide when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this implementation guide is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the implementation guide is stored on different servers.
      */
     public String getUrl() { 
       return this.url == null ? null : this.url.getValue();
     }
 
     /**
-     * @param value An absolute URI that is used to identify this implementation guide when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this implementation guide is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the implementation guide is stored on different servers.
+     * @param value An absolute URI that is used to identify this implementation guide when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this implementation guide is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the implementation guide is stored on different servers.
      */
     public ImplementationGuide setUrl(String value) { 
         if (this.url == null)
@@ -10051,6 +10348,57 @@ public class ImplementationGuide extends CanonicalResource {
           this.version = new StringType();
         this.version.setValue(value);
       }
+      return this;
+    }
+
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public DataType getVersionAlgorithm() { 
+      return this.versionAlgorithm;
+    }
+
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public StringType getVersionAlgorithmStringType() throws FHIRException { 
+      if (this.versionAlgorithm == null)
+        this.versionAlgorithm = new StringType();
+      if (!(this.versionAlgorithm instanceof StringType))
+        throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.versionAlgorithm.getClass().getName()+" was encountered");
+      return (StringType) this.versionAlgorithm;
+    }
+
+    public boolean hasVersionAlgorithmStringType() { 
+      return this != null && this.versionAlgorithm instanceof StringType;
+    }
+
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public Coding getVersionAlgorithmCoding() throws FHIRException { 
+      if (this.versionAlgorithm == null)
+        this.versionAlgorithm = new Coding();
+      if (!(this.versionAlgorithm instanceof Coding))
+        throw new FHIRException("Type mismatch: the type Coding was expected, but "+this.versionAlgorithm.getClass().getName()+" was encountered");
+      return (Coding) this.versionAlgorithm;
+    }
+
+    public boolean hasVersionAlgorithmCoding() { 
+      return this != null && this.versionAlgorithm instanceof Coding;
+    }
+
+    public boolean hasVersionAlgorithm() { 
+      return this.versionAlgorithm != null && !this.versionAlgorithm.isEmpty();
+    }
+
+    /**
+     * @param value {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public ImplementationGuide setVersionAlgorithm(DataType value) { 
+      if (value != null && !(value instanceof StringType || value instanceof Coding))
+        throw new Error("Not the right type for ImplementationGuide.versionAlgorithm[x]: "+value.fhirType());
+      this.versionAlgorithm = value;
       return this;
     }
 
@@ -10288,7 +10636,7 @@ public class ImplementationGuide extends CanonicalResource {
     }
 
     /**
-     * @return {@link #publisher} (The name of the organization or individual that published the implementation guide.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     * @return {@link #publisher} (The name of the organization or individual responsible for the release and ongoing maintenance of the implementation guide.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
     public StringType getPublisherElement() { 
       if (this.publisher == null)
@@ -10308,7 +10656,7 @@ public class ImplementationGuide extends CanonicalResource {
     }
 
     /**
-     * @param value {@link #publisher} (The name of the organization or individual that published the implementation guide.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     * @param value {@link #publisher} (The name of the organization or individual responsible for the release and ongoing maintenance of the implementation guide.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
     public ImplementationGuide setPublisherElement(StringType value) { 
       this.publisher = value;
@@ -10316,14 +10664,14 @@ public class ImplementationGuide extends CanonicalResource {
     }
 
     /**
-     * @return The name of the organization or individual that published the implementation guide.
+     * @return The name of the organization or individual responsible for the release and ongoing maintenance of the implementation guide.
      */
     public String getPublisher() { 
       return this.publisher == null ? null : this.publisher.getValue();
     }
 
     /**
-     * @param value The name of the organization or individual that published the implementation guide.
+     * @param value The name of the organization or individual responsible for the release and ongoing maintenance of the implementation guide.
      */
     public ImplementationGuide setPublisher(String value) { 
       if (Utilities.noString(value))
@@ -10589,6 +10937,55 @@ public class ImplementationGuide extends CanonicalResource {
         if (this.copyright == null)
           this.copyright = new MarkdownType();
         this.copyright.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public StringType getCopyrightLabelElement() { 
+      if (this.copyrightLabel == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create ImplementationGuide.copyrightLabel");
+        else if (Configuration.doAutoCreate())
+          this.copyrightLabel = new StringType(); // bb
+      return this.copyrightLabel;
+    }
+
+    public boolean hasCopyrightLabelElement() { 
+      return this.copyrightLabel != null && !this.copyrightLabel.isEmpty();
+    }
+
+    public boolean hasCopyrightLabel() { 
+      return this.copyrightLabel != null && !this.copyrightLabel.isEmpty();
+    }
+
+    /**
+     * @param value {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public ImplementationGuide setCopyrightLabelElement(StringType value) { 
+      this.copyrightLabel = value;
+      return this;
+    }
+
+    /**
+     * @return A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    public String getCopyrightLabel() { 
+      return this.copyrightLabel == null ? null : this.copyrightLabel.getValue();
+    }
+
+    /**
+     * @param value A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    public ImplementationGuide setCopyrightLabel(String value) { 
+      if (Utilities.noString(value))
+        this.copyrightLabel = null;
+      else {
+        if (this.copyrightLabel == null)
+          this.copyrightLabel = new StringType();
+        this.copyrightLabel.setValue(value);
       }
       return this;
     }
@@ -10919,23 +11316,23 @@ public class ImplementationGuide extends CanonicalResource {
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
     public ImplementationGuide setIdentifier(List<Identifier> theIdentifier) { 
-      throw new Error("The resource type \"ImplementationGuide\" does not implement the property \"identifier\"");
+      throw new Error("The resource type \"ImplementationGuide\" does not implement the property \"identifier\""); 
     }
     public boolean hasIdentifier() { 
       return false;
     }
 
     public Identifier addIdentifier() { //3
-      throw new Error("The resource type \"ImplementationGuide\" does not implement the property \"identifier\"");
+      throw new Error("The resource type \"ImplementationGuide\" does not implement the property \"identifier\""); 
     }
     public ImplementationGuide addIdentifier(Identifier t) { //3
-      throw new Error("The resource type \"ImplementationGuide\" does not implement the property \"identifier\"");
+      throw new Error("The resource type \"ImplementationGuide\" does not implement the property \"identifier\""); 
     }
     /**
      * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {2}
      */
     public Identifier getIdentifierFirstRep() { 
-      throw new Error("The resource type \"ImplementationGuide\" does not implement the property \"identifier\"");
+      throw new Error("The resource type \"ImplementationGuide\" does not implement the property \"identifier\""); 
     }
     /**
      * not supported on this implementation
@@ -10962,32 +11359,34 @@ public class ImplementationGuide extends CanonicalResource {
      * @param value {@link #purpose} (Explanation of why this implementation guide is needed and why it has been designed as it has.). This is the underlying object with id, value and extensions. The accessor "getPurpose" gives direct access to the value
      */
     public ImplementationGuide setPurposeElement(MarkdownType value) { 
-      throw new Error("The resource type \"ImplementationGuide\" does not implement the property \"purpose\"");
+      throw new Error("The resource type \"ImplementationGuide\" does not implement the property \"purpose\""); 
     }
     public String getPurpose() { 
-      throw new Error("The resource type \"ImplementationGuide\" does not implement the property \"purpose\"");
+      throw new Error("The resource type \"ImplementationGuide\" does not implement the property \"purpose\""); 
     }
     /**
      * @param value Explanation of why this implementation guide is needed and why it has been designed as it has.
      */
     public ImplementationGuide setPurpose(String value) { 
-      throw new Error("The resource type \"ImplementationGuide\" does not implement the property \"purpose\"");
+      throw new Error("The resource type \"ImplementationGuide\" does not implement the property \"purpose\""); 
     }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("url", "uri", "An absolute URI that is used to identify this implementation guide when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this implementation guide is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the implementation guide is stored on different servers.", 0, 1, url));
+        children.add(new Property("url", "uri", "An absolute URI that is used to identify this implementation guide when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this implementation guide is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the implementation guide is stored on different servers.", 0, 1, url));
         children.add(new Property("version", "string", "The identifier that is used to identify this version of the implementation guide when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the implementation guide author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version));
+        children.add(new Property("versionAlgorithm[x]", "string|Coding", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm));
         children.add(new Property("name", "string", "A natural language name identifying the implementation guide. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name));
         children.add(new Property("title", "string", "A short, descriptive, user-friendly title for the implementation guide.", 0, 1, title));
         children.add(new Property("status", "code", "The status of this implementation guide. Enables tracking the life-cycle of the content.", 0, 1, status));
         children.add(new Property("experimental", "boolean", "A Boolean value to indicate that this implementation guide is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.", 0, 1, experimental));
         children.add(new Property("date", "dateTime", "The date  (and optionally time) when the implementation guide was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the implementation guide changes.", 0, 1, date));
-        children.add(new Property("publisher", "string", "The name of the organization or individual that published the implementation guide.", 0, 1, publisher));
+        children.add(new Property("publisher", "string", "The name of the organization or individual responsible for the release and ongoing maintenance of the implementation guide.", 0, 1, publisher));
         children.add(new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact));
         children.add(new Property("description", "markdown", "A free text natural language description of the implementation guide from a consumer's perspective.", 0, 1, description));
         children.add(new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate implementation guide instances.", 0, java.lang.Integer.MAX_VALUE, useContext));
         children.add(new Property("jurisdiction", "CodeableConcept", "A legal or geographic region in which the implementation guide is intended to be used.", 0, java.lang.Integer.MAX_VALUE, jurisdiction));
         children.add(new Property("copyright", "markdown", "A copyright statement relating to the implementation guide and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the implementation guide.", 0, 1, copyright));
+        children.add(new Property("copyrightLabel", "string", "A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').", 0, 1, copyrightLabel));
         children.add(new Property("packageId", "id", "The NPM package name for this Implementation Guide, used in the NPM package distribution, which is the primary mechanism by which FHIR based tooling manages IG dependencies. This value must be globally unique, and should be assigned with care.", 0, 1, packageId));
         children.add(new Property("license", "code", "The license that applies to this Implementation Guide, using an SPDX license code, or 'not-open-source'.", 0, 1, license));
         children.add(new Property("fhirVersion", "code", "The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.6.0. for this version.", 0, java.lang.Integer.MAX_VALUE, fhirVersion));
@@ -11000,19 +11399,24 @@ public class ImplementationGuide extends CanonicalResource {
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this implementation guide when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this implementation guide is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the implementation guide is stored on different servers.", 0, 1, url);
+        case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this implementation guide when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this implementation guide is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the implementation guide is stored on different servers.", 0, 1, url);
         case 351608024: /*version*/  return new Property("version", "string", "The identifier that is used to identify this version of the implementation guide when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the implementation guide author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version);
+        case -115699031: /*versionAlgorithm[x]*/  return new Property("versionAlgorithm[x]", "string|Coding", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm);
+        case 1508158071: /*versionAlgorithm*/  return new Property("versionAlgorithm[x]", "string|Coding", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm);
+        case 1836908904: /*versionAlgorithmString*/  return new Property("versionAlgorithm[x]", "string", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm);
+        case 1373807809: /*versionAlgorithmCoding*/  return new Property("versionAlgorithm[x]", "Coding", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm);
         case 3373707: /*name*/  return new Property("name", "string", "A natural language name identifying the implementation guide. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name);
         case 110371416: /*title*/  return new Property("title", "string", "A short, descriptive, user-friendly title for the implementation guide.", 0, 1, title);
         case -892481550: /*status*/  return new Property("status", "code", "The status of this implementation guide. Enables tracking the life-cycle of the content.", 0, 1, status);
         case -404562712: /*experimental*/  return new Property("experimental", "boolean", "A Boolean value to indicate that this implementation guide is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.", 0, 1, experimental);
         case 3076014: /*date*/  return new Property("date", "dateTime", "The date  (and optionally time) when the implementation guide was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the implementation guide changes.", 0, 1, date);
-        case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual that published the implementation guide.", 0, 1, publisher);
+        case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual responsible for the release and ongoing maintenance of the implementation guide.", 0, 1, publisher);
         case 951526432: /*contact*/  return new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact);
         case -1724546052: /*description*/  return new Property("description", "markdown", "A free text natural language description of the implementation guide from a consumer's perspective.", 0, 1, description);
         case -669707736: /*useContext*/  return new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate implementation guide instances.", 0, java.lang.Integer.MAX_VALUE, useContext);
         case -507075711: /*jurisdiction*/  return new Property("jurisdiction", "CodeableConcept", "A legal or geographic region in which the implementation guide is intended to be used.", 0, java.lang.Integer.MAX_VALUE, jurisdiction);
         case 1522889671: /*copyright*/  return new Property("copyright", "markdown", "A copyright statement relating to the implementation guide and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the implementation guide.", 0, 1, copyright);
+        case 765157229: /*copyrightLabel*/  return new Property("copyrightLabel", "string", "A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').", 0, 1, copyrightLabel);
         case 1802060801: /*packageId*/  return new Property("packageId", "id", "The NPM package name for this Implementation Guide, used in the NPM package distribution, which is the primary mechanism by which FHIR based tooling manages IG dependencies. This value must be globally unique, and should be assigned with care.", 0, 1, packageId);
         case 166757441: /*license*/  return new Property("license", "code", "The license that applies to this Implementation Guide, using an SPDX license code, or 'not-open-source'.", 0, 1, license);
         case 461006061: /*fhirVersion*/  return new Property("fhirVersion", "code", "The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.6.0. for this version.", 0, java.lang.Integer.MAX_VALUE, fhirVersion);
@@ -11030,6 +11434,7 @@ public class ImplementationGuide extends CanonicalResource {
         switch (hash) {
         case 116079: /*url*/ return this.url == null ? new Base[0] : new Base[] {this.url}; // UriType
         case 351608024: /*version*/ return this.version == null ? new Base[0] : new Base[] {this.version}; // StringType
+        case 1508158071: /*versionAlgorithm*/ return this.versionAlgorithm == null ? new Base[0] : new Base[] {this.versionAlgorithm}; // DataType
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
         case 110371416: /*title*/ return this.title == null ? new Base[0] : new Base[] {this.title}; // StringType
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<PublicationStatus>
@@ -11041,6 +11446,7 @@ public class ImplementationGuide extends CanonicalResource {
         case -669707736: /*useContext*/ return this.useContext == null ? new Base[0] : this.useContext.toArray(new Base[this.useContext.size()]); // UsageContext
         case -507075711: /*jurisdiction*/ return this.jurisdiction == null ? new Base[0] : this.jurisdiction.toArray(new Base[this.jurisdiction.size()]); // CodeableConcept
         case 1522889671: /*copyright*/ return this.copyright == null ? new Base[0] : new Base[] {this.copyright}; // MarkdownType
+        case 765157229: /*copyrightLabel*/ return this.copyrightLabel == null ? new Base[0] : new Base[] {this.copyrightLabel}; // StringType
         case 1802060801: /*packageId*/ return this.packageId == null ? new Base[0] : new Base[] {this.packageId}; // IdType
         case 166757441: /*license*/ return this.license == null ? new Base[0] : new Base[] {this.license}; // Enumeration<SPDXLicense>
         case 461006061: /*fhirVersion*/ return this.fhirVersion == null ? new Base[0] : this.fhirVersion.toArray(new Base[this.fhirVersion.size()]); // Enumeration<FHIRVersion>
@@ -11061,6 +11467,9 @@ public class ImplementationGuide extends CanonicalResource {
           return value;
         case 351608024: // version
           this.version = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 1508158071: // versionAlgorithm
+          this.versionAlgorithm = TypeConvertor.castToType(value); // DataType
           return value;
         case 3373707: // name
           this.name = TypeConvertor.castToString(value); // StringType
@@ -11096,6 +11505,9 @@ public class ImplementationGuide extends CanonicalResource {
         case 1522889671: // copyright
           this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
+        case 765157229: // copyrightLabel
+          this.copyrightLabel = TypeConvertor.castToString(value); // StringType
+          return value;
         case 1802060801: // packageId
           this.packageId = TypeConvertor.castToId(value); // IdType
           return value;
@@ -11130,6 +11542,8 @@ public class ImplementationGuide extends CanonicalResource {
           this.url = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("version")) {
           this.version = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("versionAlgorithm[x]")) {
+          this.versionAlgorithm = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("name")) {
           this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
@@ -11153,6 +11567,8 @@ public class ImplementationGuide extends CanonicalResource {
           this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("copyright")) {
           this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
+        } else if (name.equals("copyrightLabel")) {
+          this.copyrightLabel = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("packageId")) {
           this.packageId = TypeConvertor.castToId(value); // IdType
         } else if (name.equals("license")) {
@@ -11179,6 +11595,8 @@ public class ImplementationGuide extends CanonicalResource {
         switch (hash) {
         case 116079:  return getUrlElement();
         case 351608024:  return getVersionElement();
+        case -115699031:  return getVersionAlgorithm();
+        case 1508158071:  return getVersionAlgorithm();
         case 3373707:  return getNameElement();
         case 110371416:  return getTitleElement();
         case -892481550:  return getStatusElement();
@@ -11190,6 +11608,7 @@ public class ImplementationGuide extends CanonicalResource {
         case -669707736:  return addUseContext(); 
         case -507075711:  return addJurisdiction(); 
         case 1522889671:  return getCopyrightElement();
+        case 765157229:  return getCopyrightLabelElement();
         case 1802060801:  return getPackageIdElement();
         case 166757441:  return getLicenseElement();
         case 461006061:  return addFhirVersionElement();
@@ -11207,6 +11626,7 @@ public class ImplementationGuide extends CanonicalResource {
         switch (hash) {
         case 116079: /*url*/ return new String[] {"uri"};
         case 351608024: /*version*/ return new String[] {"string"};
+        case 1508158071: /*versionAlgorithm*/ return new String[] {"string", "Coding"};
         case 3373707: /*name*/ return new String[] {"string"};
         case 110371416: /*title*/ return new String[] {"string"};
         case -892481550: /*status*/ return new String[] {"code"};
@@ -11218,6 +11638,7 @@ public class ImplementationGuide extends CanonicalResource {
         case -669707736: /*useContext*/ return new String[] {"UsageContext"};
         case -507075711: /*jurisdiction*/ return new String[] {"CodeableConcept"};
         case 1522889671: /*copyright*/ return new String[] {"markdown"};
+        case 765157229: /*copyrightLabel*/ return new String[] {"string"};
         case 1802060801: /*packageId*/ return new String[] {"id"};
         case 166757441: /*license*/ return new String[] {"code"};
         case 461006061: /*fhirVersion*/ return new String[] {"code"};
@@ -11237,6 +11658,14 @@ public class ImplementationGuide extends CanonicalResource {
         }
         else if (name.equals("version")) {
           throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.version");
+        }
+        else if (name.equals("versionAlgorithmString")) {
+          this.versionAlgorithm = new StringType();
+          return this.versionAlgorithm;
+        }
+        else if (name.equals("versionAlgorithmCoding")) {
+          this.versionAlgorithm = new Coding();
+          return this.versionAlgorithm;
         }
         else if (name.equals("name")) {
           throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.name");
@@ -11270,6 +11699,9 @@ public class ImplementationGuide extends CanonicalResource {
         }
         else if (name.equals("copyright")) {
           throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.copyright");
+        }
+        else if (name.equals("copyrightLabel")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.copyrightLabel");
         }
         else if (name.equals("packageId")) {
           throw new FHIRException("Cannot call addChild on a primitive type ImplementationGuide.packageId");
@@ -11313,6 +11745,7 @@ public class ImplementationGuide extends CanonicalResource {
         super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         dst.version = version == null ? null : version.copy();
+        dst.versionAlgorithm = versionAlgorithm == null ? null : versionAlgorithm.copy();
         dst.name = name == null ? null : name.copy();
         dst.title = title == null ? null : title.copy();
         dst.status = status == null ? null : status.copy();
@@ -11336,6 +11769,7 @@ public class ImplementationGuide extends CanonicalResource {
             dst.jurisdiction.add(i.copy());
         };
         dst.copyright = copyright == null ? null : copyright.copy();
+        dst.copyrightLabel = copyrightLabel == null ? null : copyrightLabel.copy();
         dst.packageId = packageId == null ? null : packageId.copy();
         dst.license = license == null ? null : license.copy();
         if (fhirVersion != null) {
@@ -11368,14 +11802,15 @@ public class ImplementationGuide extends CanonicalResource {
         if (!(other_ instanceof ImplementationGuide))
           return false;
         ImplementationGuide o = (ImplementationGuide) other_;
-        return compareDeep(url, o.url, true) && compareDeep(version, o.version, true) && compareDeep(name, o.name, true)
-           && compareDeep(title, o.title, true) && compareDeep(status, o.status, true) && compareDeep(experimental, o.experimental, true)
-           && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true) && compareDeep(contact, o.contact, true)
-           && compareDeep(description, o.description, true) && compareDeep(useContext, o.useContext, true)
+        return compareDeep(url, o.url, true) && compareDeep(version, o.version, true) && compareDeep(versionAlgorithm, o.versionAlgorithm, true)
+           && compareDeep(name, o.name, true) && compareDeep(title, o.title, true) && compareDeep(status, o.status, true)
+           && compareDeep(experimental, o.experimental, true) && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true)
+           && compareDeep(contact, o.contact, true) && compareDeep(description, o.description, true) && compareDeep(useContext, o.useContext, true)
            && compareDeep(jurisdiction, o.jurisdiction, true) && compareDeep(copyright, o.copyright, true)
-           && compareDeep(packageId, o.packageId, true) && compareDeep(license, o.license, true) && compareDeep(fhirVersion, o.fhirVersion, true)
-           && compareDeep(dependsOn, o.dependsOn, true) && compareDeep(global, o.global, true) && compareDeep(definition, o.definition, true)
-           && compareDeep(manifest, o.manifest, true);
+           && compareDeep(copyrightLabel, o.copyrightLabel, true) && compareDeep(packageId, o.packageId, true)
+           && compareDeep(license, o.license, true) && compareDeep(fhirVersion, o.fhirVersion, true) && compareDeep(dependsOn, o.dependsOn, true)
+           && compareDeep(global, o.global, true) && compareDeep(definition, o.definition, true) && compareDeep(manifest, o.manifest, true)
+          ;
       }
 
       @Override
@@ -11388,15 +11823,16 @@ public class ImplementationGuide extends CanonicalResource {
         return compareValues(url, o.url, true) && compareValues(version, o.version, true) && compareValues(name, o.name, true)
            && compareValues(title, o.title, true) && compareValues(status, o.status, true) && compareValues(experimental, o.experimental, true)
            && compareValues(date, o.date, true) && compareValues(publisher, o.publisher, true) && compareValues(description, o.description, true)
-           && compareValues(copyright, o.copyright, true) && compareValues(packageId, o.packageId, true) && compareValues(license, o.license, true)
-           && compareValues(fhirVersion, o.fhirVersion, true);
+           && compareValues(copyright, o.copyright, true) && compareValues(copyrightLabel, o.copyrightLabel, true)
+           && compareValues(packageId, o.packageId, true) && compareValues(license, o.license, true) && compareValues(fhirVersion, o.fhirVersion, true)
+          ;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, version, name, title
-          , status, experimental, date, publisher, contact, description, useContext, jurisdiction
-          , copyright, packageId, license, fhirVersion, dependsOn, global, definition, manifest
-          );
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, version, versionAlgorithm
+          , name, title, status, experimental, date, publisher, contact, description, useContext
+          , jurisdiction, copyright, copyrightLabel, packageId, license, fhirVersion, dependsOn
+          , global, definition, manifest);
       }
 
   @Override
@@ -11484,7 +11920,7 @@ public class ImplementationGuide extends CanonicalResource {
    * Path: <b>ImplementationGuide.definition.resource.reference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="resource", path="ImplementationGuide.definition.resource.reference", description="Location of the resource", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="resource", path="ImplementationGuide.definition.resource.reference", description="Location of the resource", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_RESOURCE = "resource";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>resource</b>
@@ -12124,7 +12560,7 @@ public class ImplementationGuide extends CanonicalResource {
 * [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement
 * [CodeSystem](codesystem.html): The uri that identifies the code system
 * [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition
-* [ConceptMap](conceptmap.html): The uri that identifies the concept map
+* [ConceptMap](conceptmap.html): The URI that identifies the concept map
 * [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition
 * [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide
 * [MessageDefinition](messagedefinition.html): The uri that identifies the message definition
@@ -12140,7 +12576,7 @@ public class ImplementationGuide extends CanonicalResource {
    * Path: <b>CapabilityStatement.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | GraphDefinition.url | ImplementationGuide.url | MessageDefinition.url | NamingSystem.url | OperationDefinition.url | SearchParameter.url | StructureDefinition.url | StructureMap.url | TerminologyCapabilities.url | ValueSet.url</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="url", path="CapabilityStatement.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | GraphDefinition.url | ImplementationGuide.url | MessageDefinition.url | NamingSystem.url | OperationDefinition.url | SearchParameter.url | StructureDefinition.url | StructureMap.url | TerminologyCapabilities.url | ValueSet.url", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement\r\n* [CodeSystem](codesystem.html): The uri that identifies the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition\r\n* [ConceptMap](conceptmap.html): The uri that identifies the concept map\r\n* [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition\r\n* [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide\r\n* [MessageDefinition](messagedefinition.html): The uri that identifies the message definition\r\n* [NamingSystem](namingsystem.html): The uri that identifies the naming system\r\n* [OperationDefinition](operationdefinition.html): The uri that identifies the operation definition\r\n* [SearchParameter](searchparameter.html): The uri that identifies the search parameter\r\n* [StructureDefinition](structuredefinition.html): The uri that identifies the structure definition\r\n* [StructureMap](structuremap.html): The uri that identifies the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): The uri that identifies the terminology capabilities\r\n* [ValueSet](valueset.html): The uri that identifies the value set\r\n", type="uri" )
+  @SearchParamDefinition(name="url", path="CapabilityStatement.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | GraphDefinition.url | ImplementationGuide.url | MessageDefinition.url | NamingSystem.url | OperationDefinition.url | SearchParameter.url | StructureDefinition.url | StructureMap.url | TerminologyCapabilities.url | ValueSet.url", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement\r\n* [CodeSystem](codesystem.html): The uri that identifies the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition\r\n* [ConceptMap](conceptmap.html): The URI that identifies the concept map\r\n* [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition\r\n* [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide\r\n* [MessageDefinition](messagedefinition.html): The uri that identifies the message definition\r\n* [NamingSystem](namingsystem.html): The uri that identifies the naming system\r\n* [OperationDefinition](operationdefinition.html): The uri that identifies the operation definition\r\n* [SearchParameter](searchparameter.html): The uri that identifies the search parameter\r\n* [StructureDefinition](structuredefinition.html): The uri that identifies the structure definition\r\n* [StructureMap](structuremap.html): The uri that identifies the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): The uri that identifies the terminology capabilities\r\n* [ValueSet](valueset.html): The uri that identifies the value set\r\n", type="uri" )
   public static final String SP_URL = "url";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>url</b>
@@ -12150,7 +12586,7 @@ public class ImplementationGuide extends CanonicalResource {
 * [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement
 * [CodeSystem](codesystem.html): The uri that identifies the code system
 * [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition
-* [ConceptMap](conceptmap.html): The uri that identifies the concept map
+* [ConceptMap](conceptmap.html): The URI that identifies the concept map
 * [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition
 * [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide
 * [MessageDefinition](messagedefinition.html): The uri that identifies the message definition

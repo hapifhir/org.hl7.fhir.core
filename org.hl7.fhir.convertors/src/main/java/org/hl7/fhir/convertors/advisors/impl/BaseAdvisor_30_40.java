@@ -1,12 +1,13 @@
 package org.hl7.fhir.convertors.advisors.impl;
 
-import org.hl7.fhir.convertors.advisors.interfaces.BaseAdvisor40;
-import org.hl7.fhir.exceptions.FHIRException;
-
-import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.hl7.fhir.convertors.advisors.interfaces.BaseAdvisor40;
+import org.hl7.fhir.exceptions.FHIRException;
 
 public class BaseAdvisor_30_40 extends BaseAdvisor40<org.hl7.fhir.dstu3.model.Extension> {
 

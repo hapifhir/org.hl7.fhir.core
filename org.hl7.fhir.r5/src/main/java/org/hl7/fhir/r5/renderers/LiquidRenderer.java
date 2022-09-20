@@ -6,19 +6,42 @@ import java.io.UnsupportedEncodingException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DomainResource;
+import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
+import org.hl7.fhir.r5.renderers.LiquidRenderer.LiquidRendererContxt;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.LiquidEngine;
+import org.hl7.fhir.r5.utils.LiquidEngine.ILiquidRenderingSupport;
 import org.hl7.fhir.r5.utils.LiquidEngine.LiquidDocument;
 import org.hl7.fhir.utilities.xhtml.NodeType;
+import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
-public class LiquidRenderer extends ResourceRenderer {
+public class LiquidRenderer extends ResourceRenderer implements ILiquidRenderingSupport {
+
+  public class LiquidRendererContxt {
+
+    private ResourceContext rcontext;
+    private ResourceWrapper resource;
+
+    public LiquidRendererContxt(ResourceContext rcontext, ResourceWrapper r) {
+      this.rcontext = rcontext;
+      this.resource = r;
+    }
+
+    public ResourceWrapper getResource() {
+      return resource;
+    }
+
+  }
 
   private String liquidTemplate;
 
@@ -56,6 +79,7 @@ public class LiquidRenderer extends ResourceRenderer {
     XhtmlNode xn;
     try {
       engine.setIncludeResolver(new LiquidRendererIncludeResolver(context));
+      engine.setRenderingSupport(this);
       LiquidDocument doc = engine.parse(liquidTemplate, "template");
       String html = engine.evaluate(doc, r, rcontext);
       xn = new XhtmlParser().parseFragment(html);
@@ -90,7 +114,8 @@ public class LiquidRenderer extends ResourceRenderer {
     XhtmlNode xn;
     try {
       LiquidDocument doc = engine.parse(liquidTemplate, "template");
-      String html = engine.evaluate(doc, r.getBase(), rcontext);
+      engine.setRenderingSupport(this);
+      String html = engine.evaluate(doc, r.getBase(), new LiquidRendererContxt(rcontext, r));
       xn = new XhtmlParser().parseFragment(html);
       if (!x.getName().equals("div"))
         throw new FHIRException("Error in template: Root element is not 'div'");
@@ -100,6 +125,33 @@ public class LiquidRenderer extends ResourceRenderer {
     }
     x.getChildNodes().addAll(xn.getChildNodes());
     return true;
+  }
+
+  public RendererType getRendererType() {
+    return RendererType.LIQUID;
+  }
+
+  @Override
+  public String renderForLiquid(Object appContext, Base base) throws FHIRException {
+    try {
+      if (base instanceof Element) {
+        base = context.getParser().parseType((Element) base);
+      }
+      XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+      if (base instanceof Reference) {
+        renderReference(((LiquidRendererContxt) appContext).getResource(), x, (Reference) base);        
+      } else if (base instanceof DataType) {
+        render(x, (DataType) base);
+      } else {
+        x.tx(base.toString());
+      }
+      String res = new XhtmlComposer(true).compose(x).substring(5);
+      return res.substring(0, res.length()-6);
+    } catch (FHIRFormatError e) {
+      throw new FHIRException(e);
+    } catch (IOException e) {
+      throw new FHIRException(e);
+    }
   }
 
 }

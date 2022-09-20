@@ -1,5 +1,7 @@
 package org.hl7.fhir.convertors;
 
+import java.io.IOException;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -28,15 +30,15 @@ package org.hl7.fhir.convertors;
   POSSIBILITY OF SUCH DAMAGE.
   
  */
-
-
-import org.hl7.fhir.convertors.factory.*;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_30;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_40;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_30;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_40;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r4.formats.IParser.OutputStyle;
 import org.hl7.fhir.r4.model.FhirPublication;
-
-import java.io.IOException;
 
 public class VersionConversionService {
   /**

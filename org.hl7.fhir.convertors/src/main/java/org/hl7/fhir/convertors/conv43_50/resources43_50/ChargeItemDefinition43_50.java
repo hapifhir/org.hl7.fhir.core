@@ -3,11 +3,16 @@ package org.hl7.fhir.convertors.conv43_50.resources43_50;
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableConcept43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Identifier43_50;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Money43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Period43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.ContactDetail43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.UsageContext43_50;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.*;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Boolean43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Canonical43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Date43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.DateTime43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.MarkDown43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
@@ -152,11 +157,11 @@ public class ChargeItemDefinition43_50 {
     org.hl7.fhir.r5.model.ChargeItemDefinition.ChargeItemDefinitionApplicabilityComponent tgt = new org.hl7.fhir.r5.model.ChargeItemDefinition.ChargeItemDefinitionApplicabilityComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasDescription())
-      tgt.setDescriptionElement(String43_50.convertString(src.getDescriptionElement()));
+      tgt.getCondition().setDescriptionElement(String43_50.convertString(src.getDescriptionElement()));
     if (src.hasLanguage())
-      tgt.setLanguageElement(String43_50.convertString(src.getLanguageElement()));
+      tgt.getCondition().setLanguage(src.getLanguage());
     if (src.hasExpression())
-      tgt.setExpressionElement(String43_50.convertString(src.getExpressionElement()));
+      tgt.getCondition().setExpressionElement(String43_50.convertString(src.getExpressionElement()));
     return tgt;
   }
 
@@ -165,12 +170,12 @@ public class ChargeItemDefinition43_50 {
       return null;
     org.hl7.fhir.r4b.model.ChargeItemDefinition.ChargeItemDefinitionApplicabilityComponent tgt = new org.hl7.fhir.r4b.model.ChargeItemDefinition.ChargeItemDefinitionApplicabilityComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
-    if (src.hasDescription())
-      tgt.setDescriptionElement(String43_50.convertString(src.getDescriptionElement()));
-    if (src.hasLanguage())
-      tgt.setLanguageElement(String43_50.convertString(src.getLanguageElement()));
-    if (src.hasExpression())
-      tgt.setExpressionElement(String43_50.convertString(src.getExpressionElement()));
+    if (src.getCondition().hasDescription())
+      tgt.setDescriptionElement(String43_50.convertString(src.getCondition().getDescriptionElement()));
+    if (src.getCondition().hasLanguage())
+      tgt.setLanguageElement(String43_50.convertString(src.getCondition().getLanguageElement()));
+    if (src.getCondition().hasExpression())
+      tgt.setExpressionElement(String43_50.convertString(src.getCondition().getExpressionElement()));
     return tgt;
   }
 
@@ -181,8 +186,8 @@ public class ChargeItemDefinition43_50 {
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r4b.model.ChargeItemDefinition.ChargeItemDefinitionApplicabilityComponent t : src.getApplicability())
       tgt.addApplicability(convertChargeItemDefinitionApplicabilityComponent(t));
-    for (org.hl7.fhir.r4b.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupPriceComponentComponent t : src.getPriceComponent())
-      tgt.addPriceComponent(convertChargeItemDefinitionPropertyGroupPriceComponentComponent(t));
+//    for (org.hl7.fhir.r4b.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupPriceComponentComponent t : src.getPriceComponent())
+//      tgt.addPriceComponent(convertChargeItemDefinitionPropertyGroupPriceComponentComponent(t));
     return tgt;
   }
 
@@ -193,102 +198,102 @@ public class ChargeItemDefinition43_50 {
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r5.model.ChargeItemDefinition.ChargeItemDefinitionApplicabilityComponent t : src.getApplicability())
       tgt.addApplicability(convertChargeItemDefinitionApplicabilityComponent(t));
-    for (org.hl7.fhir.r5.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupPriceComponentComponent t : src.getPriceComponent())
-      tgt.addPriceComponent(convertChargeItemDefinitionPropertyGroupPriceComponentComponent(t));
+//    for (org.hl7.fhir.r5.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupPriceComponentComponent t : src.getPriceComponent())
+//      tgt.addPriceComponent(convertChargeItemDefinitionPropertyGroupPriceComponentComponent(t));
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupPriceComponentComponent convertChargeItemDefinitionPropertyGroupPriceComponentComponent(org.hl7.fhir.r4b.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupPriceComponentComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupPriceComponentComponent tgt = new org.hl7.fhir.r5.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupPriceComponentComponent();
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
-    if (src.hasType())
-      tgt.setTypeElement(convertChargeItemDefinitionPriceComponentType(src.getTypeElement()));
-    if (src.hasCode())
-      tgt.setCode(CodeableConcept43_50.convertCodeableConcept(src.getCode()));
-    if (src.hasFactor())
-      tgt.setFactorElement(Decimal43_50.convertDecimal(src.getFactorElement()));
-    if (src.hasAmount())
-      tgt.setAmount(Money43_50.convertMoney(src.getAmount()));
-    return tgt;
-  }
-
-  public static org.hl7.fhir.r4b.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupPriceComponentComponent convertChargeItemDefinitionPropertyGroupPriceComponentComponent(org.hl7.fhir.r5.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupPriceComponentComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4b.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupPriceComponentComponent tgt = new org.hl7.fhir.r4b.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupPriceComponentComponent();
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
-    if (src.hasType())
-      tgt.setTypeElement(convertChargeItemDefinitionPriceComponentType(src.getTypeElement()));
-    if (src.hasCode())
-      tgt.setCode(CodeableConcept43_50.convertCodeableConcept(src.getCode()));
-    if (src.hasFactor())
-      tgt.setFactorElement(Decimal43_50.convertDecimal(src.getFactorElement()));
-    if (src.hasAmount())
-      tgt.setAmount(Money43_50.convertMoney(src.getAmount()));
-    return tgt;
-  }
-
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType> convertChargeItemDefinitionPriceComponentType(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.InvoicePriceComponentType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentTypeEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case BASE:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.BASE);
-        break;
-      case SURCHARGE:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.SURCHARGE);
-        break;
-      case DEDUCTION:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.DEDUCTION);
-        break;
-      case DISCOUNT:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.DISCOUNT);
-        break;
-      case TAX:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.TAX);
-        break;
-      case INFORMATIONAL:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.INFORMATIONAL);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.NULL);
-        break;
-    }
-    return tgt;
-  }
-
-  static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.InvoicePriceComponentType> convertChargeItemDefinitionPriceComponentType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.InvoicePriceComponentType> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Enumerations.InvoicePriceComponentTypeEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case BASE:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.InvoicePriceComponentType.BASE);
-        break;
-      case SURCHARGE:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.InvoicePriceComponentType.SURCHARGE);
-        break;
-      case DEDUCTION:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.InvoicePriceComponentType.DEDUCTION);
-        break;
-      case DISCOUNT:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.InvoicePriceComponentType.DISCOUNT);
-        break;
-      case TAX:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.InvoicePriceComponentType.TAX);
-        break;
-      case INFORMATIONAL:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.InvoicePriceComponentType.INFORMATIONAL);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.InvoicePriceComponentType.NULL);
-        break;
-    }
-    return tgt;
-  }
+//  public static org.hl7.fhir.r5.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupPriceComponentComponent convertChargeItemDefinitionPropertyGroupPriceComponentComponent(org.hl7.fhir.r4b.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupPriceComponentComponent src) throws FHIRException {
+//    if (src == null)
+//      return null;
+//    org.hl7.fhir.r5.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupPriceComponentComponent tgt = new org.hl7.fhir.r5.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupPriceComponentComponent();
+//    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
+//    if (src.hasType())
+//      tgt.setTypeElement(convertChargeItemDefinitionPriceComponentType(src.getTypeElement()));
+//    if (src.hasCode())
+//      tgt.setCode(CodeableConcept43_50.convertCodeableConcept(src.getCode()));
+//    if (src.hasFactor())
+//      tgt.setFactorElement(Decimal43_50.convertDecimal(src.getFactorElement()));
+//    if (src.hasAmount())
+//      tgt.setAmount(Money43_50.convertMoney(src.getAmount()));
+//    return tgt;
+//  }
+//
+//  public static org.hl7.fhir.r4b.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupPriceComponentComponent convertChargeItemDefinitionPropertyGroupPriceComponentComponent(org.hl7.fhir.r5.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupPriceComponentComponent src) throws FHIRException {
+//    if (src == null)
+//      return null;
+//    org.hl7.fhir.r4b.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupPriceComponentComponent tgt = new org.hl7.fhir.r4b.model.ChargeItemDefinition.ChargeItemDefinitionPropertyGroupPriceComponentComponent();
+//    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
+//    if (src.hasType())
+//      tgt.setTypeElement(convertChargeItemDefinitionPriceComponentType(src.getTypeElement()));
+//    if (src.hasCode())
+//      tgt.setCode(CodeableConcept43_50.convertCodeableConcept(src.getCode()));
+//    if (src.hasFactor())
+//      tgt.setFactorElement(Decimal43_50.convertDecimal(src.getFactorElement()));
+//    if (src.hasAmount())
+//      tgt.setAmount(Money43_50.convertMoney(src.getAmount()));
+//    return tgt;
+//  }
+//
+//  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType> convertChargeItemDefinitionPriceComponentType(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.InvoicePriceComponentType> src) throws FHIRException {
+//    if (src == null || src.isEmpty())
+//      return null;
+//    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentTypeEnumFactory());
+//    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+//    switch (src.getValue()) {
+//      case BASE:
+//        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.BASE);
+//        break;
+//      case SURCHARGE:
+//        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.SURCHARGE);
+//        break;
+//      case DEDUCTION:
+//        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.DEDUCTION);
+//        break;
+//      case DISCOUNT:
+//        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.DISCOUNT);
+//        break;
+//      case TAX:
+//        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.TAX);
+//        break;
+//      case INFORMATIONAL:
+//        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.INFORMATIONAL);
+//        break;
+//      default:
+//        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType.NULL);
+//        break;
+//    }
+//    return tgt;
+//  }
+//
+//  static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.InvoicePriceComponentType> convertChargeItemDefinitionPriceComponentType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.InvoicePriceComponentType> src) throws FHIRException {
+//    if (src == null || src.isEmpty())
+//      return null;
+//    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.InvoicePriceComponentType> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Enumerations.InvoicePriceComponentTypeEnumFactory());
+//    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+//    switch (src.getValue()) {
+//      case BASE:
+//        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.InvoicePriceComponentType.BASE);
+//        break;
+//      case SURCHARGE:
+//        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.InvoicePriceComponentType.SURCHARGE);
+//        break;
+//      case DEDUCTION:
+//        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.InvoicePriceComponentType.DEDUCTION);
+//        break;
+//      case DISCOUNT:
+//        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.InvoicePriceComponentType.DISCOUNT);
+//        break;
+//      case TAX:
+//        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.InvoicePriceComponentType.TAX);
+//        break;
+//      case INFORMATIONAL:
+//        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.InvoicePriceComponentType.INFORMATIONAL);
+//        break;
+//      default:
+//        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.InvoicePriceComponentType.NULL);
+//        break;
+//    }
+//    return tgt;
+//  }
 }

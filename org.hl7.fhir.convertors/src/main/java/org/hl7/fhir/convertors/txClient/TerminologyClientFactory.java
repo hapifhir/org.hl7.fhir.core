@@ -1,11 +1,11 @@
 package org.hl7.fhir.convertors.txClient;
 
+import java.net.URISyntaxException;
+
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-
-import java.net.URISyntaxException;
 
 public class TerminologyClientFactory {
 

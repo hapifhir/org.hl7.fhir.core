@@ -11,7 +11,6 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Date
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.DateTime30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4.model.codesystems.CoverageeligibilityresponseExAuthSupportEnumFactory;
 import org.hl7.fhir.r5.model.CodeableReference;
 
 public class Immunization30_50 {
@@ -40,7 +39,7 @@ public class Immunization30_50 {
     if (src.hasLocation())
       tgt.setLocation(Reference30_50.convertReference(src.getLocation()));
     if (src.hasManufacturer())
-      tgt.setManufacturer(Reference30_50.convertReference(src.getManufacturer()));
+      tgt.setManufacturer(Reference30_50.convertReferenceToCodableReference(src.getManufacturer()));
     if (src.hasLotNumber())
       tgt.setLotNumberElement(String30_50.convertString(src.getLotNumberElement()));
     if (src.hasExpirationDate())
@@ -83,7 +82,7 @@ public class Immunization30_50 {
     if (src.hasLocation())
       tgt.setLocation(Reference30_50.convertReference(src.getLocation()));
     if (src.hasManufacturer())
-      tgt.setManufacturer(Reference30_50.convertReference(src.getManufacturer()));
+      tgt.setManufacturer(Reference30_50.convertCodeableReferenceToReference(src.getManufacturer()));
     if (src.hasLotNumber())
       tgt.setLotNumberElement(String30_50.convertString(src.getLotNumberElement()));
     if (src.hasExpirationDate())

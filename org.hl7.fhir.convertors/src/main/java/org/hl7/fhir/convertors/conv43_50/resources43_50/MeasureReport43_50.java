@@ -162,7 +162,7 @@ public class MeasureReport43_50 {
         tgt.setValue(org.hl7.fhir.r5.model.MeasureReport.MeasureReportType.SUMMARY);
         break;
       case DATACOLLECTION:
-        tgt.setValue(org.hl7.fhir.r5.model.MeasureReport.MeasureReportType.DATACOLLECTION);
+        tgt.setValue(org.hl7.fhir.r5.model.MeasureReport.MeasureReportType.DATAEXCHANGE);
         break;
       default:
         tgt.setValue(org.hl7.fhir.r5.model.MeasureReport.MeasureReportType.NULL);
@@ -186,7 +186,7 @@ public class MeasureReport43_50 {
       case SUMMARY:
         tgt.setValue(org.hl7.fhir.r4b.model.MeasureReport.MeasureReportType.SUMMARY);
         break;
-      case DATACOLLECTION:
+      case DATAEXCHANGE:
         tgt.setValue(org.hl7.fhir.r4b.model.MeasureReport.MeasureReportType.DATACOLLECTION);
         break;
       default:
@@ -262,7 +262,7 @@ public class MeasureReport43_50 {
     org.hl7.fhir.r5.model.MeasureReport.MeasureReportGroupStratifierComponent tgt = new org.hl7.fhir.r5.model.MeasureReport.MeasureReportGroupStratifierComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r4b.model.CodeableConcept t : src.getCode())
-      tgt.addCode(CodeableConcept43_50.convertCodeableConcept(t));
+      tgt.setCode(CodeableConcept43_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r4b.model.MeasureReport.StratifierGroupComponent t : src.getStratum())
       tgt.addStratum(convertStratifierGroupComponent(t));
     return tgt;
@@ -273,8 +273,7 @@ public class MeasureReport43_50 {
       return null;
     org.hl7.fhir.r4b.model.MeasureReport.MeasureReportGroupStratifierComponent tgt = new org.hl7.fhir.r4b.model.MeasureReport.MeasureReportGroupStratifierComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCode())
-      tgt.addCode(CodeableConcept43_50.convertCodeableConcept(t));
+    tgt.addCode(CodeableConcept43_50.convertCodeableConcept(src.getCode()));
     for (org.hl7.fhir.r5.model.MeasureReport.StratifierGroupComponent t : src.getStratum())
       tgt.addStratum(convertStratifierGroupComponent(t));
     return tgt;

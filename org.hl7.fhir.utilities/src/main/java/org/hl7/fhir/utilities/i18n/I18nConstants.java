@@ -82,6 +82,7 @@ public class I18nConstants {
   public static final String DOES_NOT_MATCH_SLICE_ = "Does_not_match_slice_";
   public static final String DUPLICATE_ID = "DUPLICATE_ID";
   public static final String DUPLICATE_RESOURCE_ = "Duplicate_Resource_";
+  public static final String DUPLICATE_RESOURCE_VERSION = "DUPLICATE_RESOURCE_VERSION";
   public static final String ELEMENT_ID__NULL__ON_ = "element_id__null__on_";
   public static final String ELEMENT_MUST_HAVE_SOME_CONTENT = "Element_must_have_some_content";
   public static final String ELEMENT__NULL_ = "element__null_";
@@ -380,8 +381,10 @@ public class I18nConstants {
   public static final String SD_ED_BIND_MULTIPLE_TYPES = "SD_ED_BIND_MULTIPLE_TYPES";
   public static final String SD_VALUE_TYPE_IILEGAL = "SD_VALUE_TYPE_IILEGAL";
   public static final String SD_VALUE_TYPE_REPEAT_HINT = "SD_VALUE_TYPE_REPEAT_HINT";
+  public static final String SD_VALUE_COMPLEX_FIXED = "SD_VALUE_COMPLEX_FIXED";
   public static final String SD_VALUE_TYPE_REPEAT_WARNING_DOTNET = "SD_VALUE_TYPE_REPEAT_WARNING_DOTNET";
   public static final String SD_NO_TYPES_OR_CONTENTREF = "SD_NO_TYPES_OR_CONTENTREF";
+  public static final String SD_ILLEGAL_CHARACTERISTICS = "SD_ILLEGAL_CHARACTERISTICS";
   public static final String SEARCHPARAMETER_BASE_WRONG = "SEARCHPARAMETER_BASE_WRONG";
   public static final String SEARCHPARAMETER_EXP_WRONG = "SEARCHPARAMETER_EXP_WRONG";
   public static final String SEARCHPARAMETER_NOTFOUND = "SEARCHPARAMETER_NOTFOUND";
@@ -624,6 +627,10 @@ public class I18nConstants {
   public static final String VALUESET_NO_SYSTEM_WARNING = "VALUESET_NO_SYSTEM_WARNING";
   public static final String VALUESET_REFERENCE_INVALID_TYPE = "VALUESET_REFERENCE_INVALID_TYPE";
   public static final String VALUESET_REFERENCE_UNKNOWN = "VALUESET_REFERENCE_UNKNOWN";
+  public static final String VALUESET_SHAREABLE_MISSING = "VALUESET_SHAREABLE_MISSING";
+  public static final String VALUESET_SHAREABLE_MISSING_HL7 = "VALUESET_SHAREABLE_MISSING_HL7";
+  public static final String VALUESET_SHAREABLE_EXTRA_MISSING_HL7 = "VALUESET_SHAREABLE_EXTRA_MISSING_HL7";
+  public static final String VALUESET_SHAREABLE_EXTRA_MISSING = "VALUESET_SHAREABLE_EXTRA_MISSING";
   public static final String VALUESET_UNC_SYSTEM_WARNING = "VALUESET_UNC_SYSTEM_WARNING";
   public static final String VALUESET_UNC_SYSTEM_WARNING_VER = "VALUESET_UNC_SYSTEM_WARNING_VER";
   public static final String VALUESET_IMPORT_UNION_INTERSECTION = "VALUESET_IMPORT_UNION_INTERSECTION";

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -68,23 +68,30 @@ public class AppointmentResponse extends DomainResource {
     protected Reference appointment;
 
     /**
+     * Indicates that the response is proposing a different time that was initially requested.  The new proposed time will be indicated in the start and end properties.
+     */
+    @Child(name = "proposedNewTime", type = {BooleanType.class}, order=2, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Indicator for a counter proposal", formalDefinition="Indicates that the response is proposing a different time that was initially requested.  The new proposed time will be indicated in the start and end properties." )
+    protected BooleanType proposedNewTime;
+
+    /**
      * Date/Time that the appointment is to take place, or requested new start time.
      */
-    @Child(name = "start", type = {InstantType.class}, order=2, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "start", type = {InstantType.class}, order=3, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Time from appointment, or requested new start time", formalDefinition="Date/Time that the appointment is to take place, or requested new start time." )
     protected InstantType start;
 
     /**
      * This may be either the same as the appointment request to confirm the details of the appointment, or alternately a new time to request a re-negotiation of the end time.
      */
-    @Child(name = "end", type = {InstantType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "end", type = {InstantType.class}, order=4, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Time from appointment, or requested new end time", formalDefinition="This may be either the same as the appointment request to confirm the details of the appointment, or alternately a new time to request a re-negotiation of the end time." )
     protected InstantType end;
 
     /**
      * Role of participant in the appointment.
      */
-    @Child(name = "participantType", type = {CodeableConcept.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "participantType", type = {CodeableConcept.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Role of participant in the appointment", formalDefinition="Role of participant in the appointment." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/encounter-participant-type")
     protected List<CodeableConcept> participantType;
@@ -92,14 +99,14 @@ public class AppointmentResponse extends DomainResource {
     /**
      * A Person, Location, HealthcareService, or Device that is participating in the appointment.
      */
-    @Child(name = "actor", type = {Patient.class, Group.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class, Device.class, HealthcareService.class, Location.class}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "actor", type = {Patient.class, Group.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class, Device.class, HealthcareService.class, Location.class}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Person(s), Location, HealthcareService, or Device", formalDefinition="A Person, Location, HealthcareService, or Device that is participating in the appointment." )
     protected Reference actor;
 
     /**
      * Participation status of the participant. When the status is declined or tentative if the start/end times are different to the appointment, then these times should be interpreted as a requested time change. When the status is accepted, the times can either be the time of the appointment (as a confirmation of the time) or can be empty.
      */
-    @Child(name = "participantStatus", type = {CodeType.class}, order=6, min=1, max=1, modifier=true, summary=true)
+    @Child(name = "participantStatus", type = {CodeType.class}, order=7, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="accepted | declined | tentative | needs-action", formalDefinition="Participation status of the participant. When the status is declined or tentative if the start/end times are different to the appointment, then these times should be interpreted as a requested time change. When the status is accepted, the times can either be the time of the appointment (as a confirmation of the time) or can be empty." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/participationstatus")
     protected Enumeration<ParticipationStatus> participantStatus;
@@ -107,11 +114,32 @@ public class AppointmentResponse extends DomainResource {
     /**
      * Additional comments about the appointment.
      */
-    @Child(name = "comment", type = {StringType.class}, order=7, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "comment", type = {StringType.class}, order=8, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Additional comments", formalDefinition="Additional comments about the appointment." )
     protected StringType comment;
 
-    private static final long serialVersionUID = -1779591264L;
+    /**
+     * Indicates that this AppointmentResponse applies to all occurrences in a recurring request.
+     */
+    @Child(name = "recurring", type = {BooleanType.class}, order=9, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="This response is for all occurrences in a recurring request", formalDefinition="Indicates that this AppointmentResponse applies to all occurrences in a recurring request." )
+    protected BooleanType recurring;
+
+    /**
+     * The original date within a recurring request. This could be used in place of the recurrenceId to be more direct (or where the template is provided through the simple list of dates in `Appointment.occurrenceDate`).
+     */
+    @Child(name = "occurrenceDate", type = {DateType.class}, order=10, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Original date within a recurring request", formalDefinition="The original date within a recurring request. This could be used in place of the recurrenceId to be more direct (or where the template is provided through the simple list of dates in `Appointment.occurrenceDate`)." )
+    protected DateType occurrenceDate;
+
+    /**
+     * The recurrence ID (sequence number) of the specific appointment when responding to a recurring request.
+     */
+    @Child(name = "recurrenceId", type = {PositiveIntType.class}, order=11, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="The recurrence ID of the specific recurring request", formalDefinition="The recurrence ID (sequence number) of the specific appointment when responding to a recurring request." )
+    protected PositiveIntType recurrenceId;
+
+    private static final long serialVersionUID = 1970686636L;
 
   /**
    * Constructor
@@ -203,6 +231,51 @@ public class AppointmentResponse extends DomainResource {
      */
     public AppointmentResponse setAppointment(Reference value) { 
       this.appointment = value;
+      return this;
+    }
+
+    /**
+     * @return {@link #proposedNewTime} (Indicates that the response is proposing a different time that was initially requested.  The new proposed time will be indicated in the start and end properties.). This is the underlying object with id, value and extensions. The accessor "getProposedNewTime" gives direct access to the value
+     */
+    public BooleanType getProposedNewTimeElement() { 
+      if (this.proposedNewTime == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create AppointmentResponse.proposedNewTime");
+        else if (Configuration.doAutoCreate())
+          this.proposedNewTime = new BooleanType(); // bb
+      return this.proposedNewTime;
+    }
+
+    public boolean hasProposedNewTimeElement() { 
+      return this.proposedNewTime != null && !this.proposedNewTime.isEmpty();
+    }
+
+    public boolean hasProposedNewTime() { 
+      return this.proposedNewTime != null && !this.proposedNewTime.isEmpty();
+    }
+
+    /**
+     * @param value {@link #proposedNewTime} (Indicates that the response is proposing a different time that was initially requested.  The new proposed time will be indicated in the start and end properties.). This is the underlying object with id, value and extensions. The accessor "getProposedNewTime" gives direct access to the value
+     */
+    public AppointmentResponse setProposedNewTimeElement(BooleanType value) { 
+      this.proposedNewTime = value;
+      return this;
+    }
+
+    /**
+     * @return Indicates that the response is proposing a different time that was initially requested.  The new proposed time will be indicated in the start and end properties.
+     */
+    public boolean getProposedNewTime() { 
+      return this.proposedNewTime == null || this.proposedNewTime.isEmpty() ? false : this.proposedNewTime.getValue();
+    }
+
+    /**
+     * @param value Indicates that the response is proposing a different time that was initially requested.  The new proposed time will be indicated in the start and end properties.
+     */
+    public AppointmentResponse setProposedNewTime(boolean value) { 
+        if (this.proposedNewTime == null)
+          this.proposedNewTime = new BooleanType();
+        this.proposedNewTime.setValue(value);
       return this;
     }
 
@@ -475,16 +548,159 @@ public class AppointmentResponse extends DomainResource {
       return this;
     }
 
+    /**
+     * @return {@link #recurring} (Indicates that this AppointmentResponse applies to all occurrences in a recurring request.). This is the underlying object with id, value and extensions. The accessor "getRecurring" gives direct access to the value
+     */
+    public BooleanType getRecurringElement() { 
+      if (this.recurring == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create AppointmentResponse.recurring");
+        else if (Configuration.doAutoCreate())
+          this.recurring = new BooleanType(); // bb
+      return this.recurring;
+    }
+
+    public boolean hasRecurringElement() { 
+      return this.recurring != null && !this.recurring.isEmpty();
+    }
+
+    public boolean hasRecurring() { 
+      return this.recurring != null && !this.recurring.isEmpty();
+    }
+
+    /**
+     * @param value {@link #recurring} (Indicates that this AppointmentResponse applies to all occurrences in a recurring request.). This is the underlying object with id, value and extensions. The accessor "getRecurring" gives direct access to the value
+     */
+    public AppointmentResponse setRecurringElement(BooleanType value) { 
+      this.recurring = value;
+      return this;
+    }
+
+    /**
+     * @return Indicates that this AppointmentResponse applies to all occurrences in a recurring request.
+     */
+    public boolean getRecurring() { 
+      return this.recurring == null || this.recurring.isEmpty() ? false : this.recurring.getValue();
+    }
+
+    /**
+     * @param value Indicates that this AppointmentResponse applies to all occurrences in a recurring request.
+     */
+    public AppointmentResponse setRecurring(boolean value) { 
+        if (this.recurring == null)
+          this.recurring = new BooleanType();
+        this.recurring.setValue(value);
+      return this;
+    }
+
+    /**
+     * @return {@link #occurrenceDate} (The original date within a recurring request. This could be used in place of the recurrenceId to be more direct (or where the template is provided through the simple list of dates in `Appointment.occurrenceDate`).). This is the underlying object with id, value and extensions. The accessor "getOccurrenceDate" gives direct access to the value
+     */
+    public DateType getOccurrenceDateElement() { 
+      if (this.occurrenceDate == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create AppointmentResponse.occurrenceDate");
+        else if (Configuration.doAutoCreate())
+          this.occurrenceDate = new DateType(); // bb
+      return this.occurrenceDate;
+    }
+
+    public boolean hasOccurrenceDateElement() { 
+      return this.occurrenceDate != null && !this.occurrenceDate.isEmpty();
+    }
+
+    public boolean hasOccurrenceDate() { 
+      return this.occurrenceDate != null && !this.occurrenceDate.isEmpty();
+    }
+
+    /**
+     * @param value {@link #occurrenceDate} (The original date within a recurring request. This could be used in place of the recurrenceId to be more direct (or where the template is provided through the simple list of dates in `Appointment.occurrenceDate`).). This is the underlying object with id, value and extensions. The accessor "getOccurrenceDate" gives direct access to the value
+     */
+    public AppointmentResponse setOccurrenceDateElement(DateType value) { 
+      this.occurrenceDate = value;
+      return this;
+    }
+
+    /**
+     * @return The original date within a recurring request. This could be used in place of the recurrenceId to be more direct (or where the template is provided through the simple list of dates in `Appointment.occurrenceDate`).
+     */
+    public Date getOccurrenceDate() { 
+      return this.occurrenceDate == null ? null : this.occurrenceDate.getValue();
+    }
+
+    /**
+     * @param value The original date within a recurring request. This could be used in place of the recurrenceId to be more direct (or where the template is provided through the simple list of dates in `Appointment.occurrenceDate`).
+     */
+    public AppointmentResponse setOccurrenceDate(Date value) { 
+      if (value == null)
+        this.occurrenceDate = null;
+      else {
+        if (this.occurrenceDate == null)
+          this.occurrenceDate = new DateType();
+        this.occurrenceDate.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #recurrenceId} (The recurrence ID (sequence number) of the specific appointment when responding to a recurring request.). This is the underlying object with id, value and extensions. The accessor "getRecurrenceId" gives direct access to the value
+     */
+    public PositiveIntType getRecurrenceIdElement() { 
+      if (this.recurrenceId == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create AppointmentResponse.recurrenceId");
+        else if (Configuration.doAutoCreate())
+          this.recurrenceId = new PositiveIntType(); // bb
+      return this.recurrenceId;
+    }
+
+    public boolean hasRecurrenceIdElement() { 
+      return this.recurrenceId != null && !this.recurrenceId.isEmpty();
+    }
+
+    public boolean hasRecurrenceId() { 
+      return this.recurrenceId != null && !this.recurrenceId.isEmpty();
+    }
+
+    /**
+     * @param value {@link #recurrenceId} (The recurrence ID (sequence number) of the specific appointment when responding to a recurring request.). This is the underlying object with id, value and extensions. The accessor "getRecurrenceId" gives direct access to the value
+     */
+    public AppointmentResponse setRecurrenceIdElement(PositiveIntType value) { 
+      this.recurrenceId = value;
+      return this;
+    }
+
+    /**
+     * @return The recurrence ID (sequence number) of the specific appointment when responding to a recurring request.
+     */
+    public int getRecurrenceId() { 
+      return this.recurrenceId == null || this.recurrenceId.isEmpty() ? 0 : this.recurrenceId.getValue();
+    }
+
+    /**
+     * @param value The recurrence ID (sequence number) of the specific appointment when responding to a recurring request.
+     */
+    public AppointmentResponse setRecurrenceId(int value) { 
+        if (this.recurrenceId == null)
+          this.recurrenceId = new PositiveIntType();
+        this.recurrenceId.setValue(value);
+      return this;
+    }
+
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "This records identifiers associated with this appointment response concern that are defined by business processes and/ or used to refer to it when a direct URL reference to the resource itself is not appropriate.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("appointment", "Reference(Appointment)", "Appointment that this response is replying to.", 0, 1, appointment));
+        children.add(new Property("proposedNewTime", "boolean", "Indicates that the response is proposing a different time that was initially requested.  The new proposed time will be indicated in the start and end properties.", 0, 1, proposedNewTime));
         children.add(new Property("start", "instant", "Date/Time that the appointment is to take place, or requested new start time.", 0, 1, start));
         children.add(new Property("end", "instant", "This may be either the same as the appointment request to confirm the details of the appointment, or alternately a new time to request a re-negotiation of the end time.", 0, 1, end));
         children.add(new Property("participantType", "CodeableConcept", "Role of participant in the appointment.", 0, java.lang.Integer.MAX_VALUE, participantType));
         children.add(new Property("actor", "Reference(Patient|Group|Practitioner|PractitionerRole|RelatedPerson|Device|HealthcareService|Location)", "A Person, Location, HealthcareService, or Device that is participating in the appointment.", 0, 1, actor));
         children.add(new Property("participantStatus", "code", "Participation status of the participant. When the status is declined or tentative if the start/end times are different to the appointment, then these times should be interpreted as a requested time change. When the status is accepted, the times can either be the time of the appointment (as a confirmation of the time) or can be empty.", 0, 1, participantStatus));
         children.add(new Property("comment", "string", "Additional comments about the appointment.", 0, 1, comment));
+        children.add(new Property("recurring", "boolean", "Indicates that this AppointmentResponse applies to all occurrences in a recurring request.", 0, 1, recurring));
+        children.add(new Property("occurrenceDate", "date", "The original date within a recurring request. This could be used in place of the recurrenceId to be more direct (or where the template is provided through the simple list of dates in `Appointment.occurrenceDate`).", 0, 1, occurrenceDate));
+        children.add(new Property("recurrenceId", "positiveInt", "The recurrence ID (sequence number) of the specific appointment when responding to a recurring request.", 0, 1, recurrenceId));
       }
 
       @Override
@@ -492,12 +708,16 @@ public class AppointmentResponse extends DomainResource {
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "This records identifiers associated with this appointment response concern that are defined by business processes and/ or used to refer to it when a direct URL reference to the resource itself is not appropriate.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case -1474995297: /*appointment*/  return new Property("appointment", "Reference(Appointment)", "Appointment that this response is replying to.", 0, 1, appointment);
+        case -577024441: /*proposedNewTime*/  return new Property("proposedNewTime", "boolean", "Indicates that the response is proposing a different time that was initially requested.  The new proposed time will be indicated in the start and end properties.", 0, 1, proposedNewTime);
         case 109757538: /*start*/  return new Property("start", "instant", "Date/Time that the appointment is to take place, or requested new start time.", 0, 1, start);
         case 100571: /*end*/  return new Property("end", "instant", "This may be either the same as the appointment request to confirm the details of the appointment, or alternately a new time to request a re-negotiation of the end time.", 0, 1, end);
         case 841294093: /*participantType*/  return new Property("participantType", "CodeableConcept", "Role of participant in the appointment.", 0, java.lang.Integer.MAX_VALUE, participantType);
         case 92645877: /*actor*/  return new Property("actor", "Reference(Patient|Group|Practitioner|PractitionerRole|RelatedPerson|Device|HealthcareService|Location)", "A Person, Location, HealthcareService, or Device that is participating in the appointment.", 0, 1, actor);
         case 996096261: /*participantStatus*/  return new Property("participantStatus", "code", "Participation status of the participant. When the status is declined or tentative if the start/end times are different to the appointment, then these times should be interpreted as a requested time change. When the status is accepted, the times can either be the time of the appointment (as a confirmation of the time) or can be empty.", 0, 1, participantStatus);
         case 950398559: /*comment*/  return new Property("comment", "string", "Additional comments about the appointment.", 0, 1, comment);
+        case 1165749981: /*recurring*/  return new Property("recurring", "boolean", "Indicates that this AppointmentResponse applies to all occurrences in a recurring request.", 0, 1, recurring);
+        case 1721761055: /*occurrenceDate*/  return new Property("occurrenceDate", "date", "The original date within a recurring request. This could be used in place of the recurrenceId to be more direct (or where the template is provided through the simple list of dates in `Appointment.occurrenceDate`).", 0, 1, occurrenceDate);
+        case -362407829: /*recurrenceId*/  return new Property("recurrenceId", "positiveInt", "The recurrence ID (sequence number) of the specific appointment when responding to a recurring request.", 0, 1, recurrenceId);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -508,12 +728,16 @@ public class AppointmentResponse extends DomainResource {
         switch (hash) {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case -1474995297: /*appointment*/ return this.appointment == null ? new Base[0] : new Base[] {this.appointment}; // Reference
+        case -577024441: /*proposedNewTime*/ return this.proposedNewTime == null ? new Base[0] : new Base[] {this.proposedNewTime}; // BooleanType
         case 109757538: /*start*/ return this.start == null ? new Base[0] : new Base[] {this.start}; // InstantType
         case 100571: /*end*/ return this.end == null ? new Base[0] : new Base[] {this.end}; // InstantType
         case 841294093: /*participantType*/ return this.participantType == null ? new Base[0] : this.participantType.toArray(new Base[this.participantType.size()]); // CodeableConcept
         case 92645877: /*actor*/ return this.actor == null ? new Base[0] : new Base[] {this.actor}; // Reference
         case 996096261: /*participantStatus*/ return this.participantStatus == null ? new Base[0] : new Base[] {this.participantStatus}; // Enumeration<ParticipationStatus>
         case 950398559: /*comment*/ return this.comment == null ? new Base[0] : new Base[] {this.comment}; // StringType
+        case 1165749981: /*recurring*/ return this.recurring == null ? new Base[0] : new Base[] {this.recurring}; // BooleanType
+        case 1721761055: /*occurrenceDate*/ return this.occurrenceDate == null ? new Base[0] : new Base[] {this.occurrenceDate}; // DateType
+        case -362407829: /*recurrenceId*/ return this.recurrenceId == null ? new Base[0] : new Base[] {this.recurrenceId}; // PositiveIntType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -527,6 +751,9 @@ public class AppointmentResponse extends DomainResource {
           return value;
         case -1474995297: // appointment
           this.appointment = TypeConvertor.castToReference(value); // Reference
+          return value;
+        case -577024441: // proposedNewTime
+          this.proposedNewTime = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 109757538: // start
           this.start = TypeConvertor.castToInstant(value); // InstantType
@@ -547,6 +774,15 @@ public class AppointmentResponse extends DomainResource {
         case 950398559: // comment
           this.comment = TypeConvertor.castToString(value); // StringType
           return value;
+        case 1165749981: // recurring
+          this.recurring = TypeConvertor.castToBoolean(value); // BooleanType
+          return value;
+        case 1721761055: // occurrenceDate
+          this.occurrenceDate = TypeConvertor.castToDate(value); // DateType
+          return value;
+        case -362407829: // recurrenceId
+          this.recurrenceId = TypeConvertor.castToPositiveInt(value); // PositiveIntType
+          return value;
         default: return super.setProperty(hash, name, value);
         }
 
@@ -558,6 +794,8 @@ public class AppointmentResponse extends DomainResource {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("appointment")) {
           this.appointment = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("proposedNewTime")) {
+          this.proposedNewTime = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("start")) {
           this.start = TypeConvertor.castToInstant(value); // InstantType
         } else if (name.equals("end")) {
@@ -571,6 +809,12 @@ public class AppointmentResponse extends DomainResource {
           this.participantStatus = (Enumeration) value; // Enumeration<ParticipationStatus>
         } else if (name.equals("comment")) {
           this.comment = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("recurring")) {
+          this.recurring = TypeConvertor.castToBoolean(value); // BooleanType
+        } else if (name.equals("occurrenceDate")) {
+          this.occurrenceDate = TypeConvertor.castToDate(value); // DateType
+        } else if (name.equals("recurrenceId")) {
+          this.recurrenceId = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else
           return super.setProperty(name, value);
         return value;
@@ -581,12 +825,16 @@ public class AppointmentResponse extends DomainResource {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case -1474995297:  return getAppointment();
+        case -577024441:  return getProposedNewTimeElement();
         case 109757538:  return getStartElement();
         case 100571:  return getEndElement();
         case 841294093:  return addParticipantType(); 
         case 92645877:  return getActor();
         case 996096261:  return getParticipantStatusElement();
         case 950398559:  return getCommentElement();
+        case 1165749981:  return getRecurringElement();
+        case 1721761055:  return getOccurrenceDateElement();
+        case -362407829:  return getRecurrenceIdElement();
         default: return super.makeProperty(hash, name);
         }
 
@@ -597,12 +845,16 @@ public class AppointmentResponse extends DomainResource {
         switch (hash) {
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case -1474995297: /*appointment*/ return new String[] {"Reference"};
+        case -577024441: /*proposedNewTime*/ return new String[] {"boolean"};
         case 109757538: /*start*/ return new String[] {"instant"};
         case 100571: /*end*/ return new String[] {"instant"};
         case 841294093: /*participantType*/ return new String[] {"CodeableConcept"};
         case 92645877: /*actor*/ return new String[] {"Reference"};
         case 996096261: /*participantStatus*/ return new String[] {"code"};
         case 950398559: /*comment*/ return new String[] {"string"};
+        case 1165749981: /*recurring*/ return new String[] {"boolean"};
+        case 1721761055: /*occurrenceDate*/ return new String[] {"date"};
+        case -362407829: /*recurrenceId*/ return new String[] {"positiveInt"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -616,6 +868,9 @@ public class AppointmentResponse extends DomainResource {
         else if (name.equals("appointment")) {
           this.appointment = new Reference();
           return this.appointment;
+        }
+        else if (name.equals("proposedNewTime")) {
+          throw new FHIRException("Cannot call addChild on a primitive type AppointmentResponse.proposedNewTime");
         }
         else if (name.equals("start")) {
           throw new FHIRException("Cannot call addChild on a primitive type AppointmentResponse.start");
@@ -635,6 +890,15 @@ public class AppointmentResponse extends DomainResource {
         }
         else if (name.equals("comment")) {
           throw new FHIRException("Cannot call addChild on a primitive type AppointmentResponse.comment");
+        }
+        else if (name.equals("recurring")) {
+          throw new FHIRException("Cannot call addChild on a primitive type AppointmentResponse.recurring");
+        }
+        else if (name.equals("occurrenceDate")) {
+          throw new FHIRException("Cannot call addChild on a primitive type AppointmentResponse.occurrenceDate");
+        }
+        else if (name.equals("recurrenceId")) {
+          throw new FHIRException("Cannot call addChild on a primitive type AppointmentResponse.recurrenceId");
         }
         else
           return super.addChild(name);
@@ -659,6 +923,7 @@ public class AppointmentResponse extends DomainResource {
             dst.identifier.add(i.copy());
         };
         dst.appointment = appointment == null ? null : appointment.copy();
+        dst.proposedNewTime = proposedNewTime == null ? null : proposedNewTime.copy();
         dst.start = start == null ? null : start.copy();
         dst.end = end == null ? null : end.copy();
         if (participantType != null) {
@@ -669,6 +934,9 @@ public class AppointmentResponse extends DomainResource {
         dst.actor = actor == null ? null : actor.copy();
         dst.participantStatus = participantStatus == null ? null : participantStatus.copy();
         dst.comment = comment == null ? null : comment.copy();
+        dst.recurring = recurring == null ? null : recurring.copy();
+        dst.occurrenceDate = occurrenceDate == null ? null : occurrenceDate.copy();
+        dst.recurrenceId = recurrenceId == null ? null : recurrenceId.copy();
       }
 
       protected AppointmentResponse typedCopy() {
@@ -683,9 +951,10 @@ public class AppointmentResponse extends DomainResource {
           return false;
         AppointmentResponse o = (AppointmentResponse) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(appointment, o.appointment, true)
-           && compareDeep(start, o.start, true) && compareDeep(end, o.end, true) && compareDeep(participantType, o.participantType, true)
-           && compareDeep(actor, o.actor, true) && compareDeep(participantStatus, o.participantStatus, true)
-           && compareDeep(comment, o.comment, true);
+           && compareDeep(proposedNewTime, o.proposedNewTime, true) && compareDeep(start, o.start, true) && compareDeep(end, o.end, true)
+           && compareDeep(participantType, o.participantType, true) && compareDeep(actor, o.actor, true) && compareDeep(participantStatus, o.participantStatus, true)
+           && compareDeep(comment, o.comment, true) && compareDeep(recurring, o.recurring, true) && compareDeep(occurrenceDate, o.occurrenceDate, true)
+           && compareDeep(recurrenceId, o.recurrenceId, true);
       }
 
       @Override
@@ -695,13 +964,16 @@ public class AppointmentResponse extends DomainResource {
         if (!(other_ instanceof AppointmentResponse))
           return false;
         AppointmentResponse o = (AppointmentResponse) other_;
-        return compareValues(start, o.start, true) && compareValues(end, o.end, true) && compareValues(participantStatus, o.participantStatus, true)
-           && compareValues(comment, o.comment, true);
+        return compareValues(proposedNewTime, o.proposedNewTime, true) && compareValues(start, o.start, true)
+           && compareValues(end, o.end, true) && compareValues(participantStatus, o.participantStatus, true) && compareValues(comment, o.comment, true)
+           && compareValues(recurring, o.recurring, true) && compareValues(occurrenceDate, o.occurrenceDate, true)
+           && compareValues(recurrenceId, o.recurrenceId, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, appointment, start
-          , end, participantType, actor, participantStatus, comment);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, appointment, proposedNewTime
+          , start, end, participantType, actor, participantStatus, comment, recurring, occurrenceDate
+          , recurrenceId);
       }
 
   @Override

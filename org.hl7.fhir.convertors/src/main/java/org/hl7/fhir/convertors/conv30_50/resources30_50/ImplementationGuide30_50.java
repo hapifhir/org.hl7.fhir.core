@@ -1,17 +1,22 @@
 package org.hl7.fhir.convertors.conv30_50.resources30_50;
 
+import java.util.List;
+
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.ContactDetail30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Reference30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.UsageContext30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
-import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.*;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Boolean30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Code30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.DateTime30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.MarkDown30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Uri30_50;
 import org.hl7.fhir.dstu3.model.ImplementationGuide;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Enumeration;
-
-import java.util.List;
 
 public class ImplementationGuide30_50 {
 
@@ -196,12 +201,11 @@ public class ImplementationGuide30_50 {
       return null;
     org.hl7.fhir.dstu3.model.ImplementationGuide.ImplementationGuidePackageResourceComponent tgt = new org.hl7.fhir.dstu3.model.ImplementationGuide.ImplementationGuidePackageResourceComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
-    if (src.hasExampleCanonicalType()) {
-      if (src.hasExampleCanonicalType())
-        tgt.setExampleFor(Reference30_50.convertCanonicalToReference(src.getExampleCanonicalType()));
+    if (src.hasProfile()) {
+      tgt.setExampleFor(Reference30_50.convertCanonicalToReference(src.getProfile().get(0)));
       tgt.setExample(true);
-    } else if (src.hasExampleBooleanType())
-      tgt.setExample(src.getExampleBooleanType().getValue());
+    } else if (src.hasIsExample())
+      tgt.setExample(src.getIsExample());
     else
       tgt.setExample(false);
     if (src.hasName())
@@ -219,10 +223,9 @@ public class ImplementationGuide30_50 {
     org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionResourceComponent tgt = new org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionResourceComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasExampleFor()) {
-      org.hl7.fhir.r5.model.DataType t = ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getExampleFor());
-      tgt.setExample(t instanceof org.hl7.fhir.r5.model.Reference ? new org.hl7.fhir.r5.model.CanonicalType(((org.hl7.fhir.r5.model.Reference) t).getReference()) : t);
+      tgt.getProfile().add(Reference30_50.convertReferenceToCanonical(src.getExampleFor()));
     } else if (src.hasExample())
-      tgt.setExample(new org.hl7.fhir.r5.model.BooleanType(src.getExample()));
+      tgt.setIsExampleElement(new org.hl7.fhir.r5.model.BooleanType(src.getExample()));
     if (src.hasName())
       tgt.setNameElement(String30_50.convertString(src.getNameElement()));
     if (src.hasDescription())
@@ -239,8 +242,8 @@ public class ImplementationGuide30_50 {
       return null;
     org.hl7.fhir.dstu3.model.ImplementationGuide.ImplementationGuidePageComponent tgt = new org.hl7.fhir.dstu3.model.ImplementationGuide.ImplementationGuidePageComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
-    if (src.hasNameUrlType())
-      tgt.setSource(src.getNameUrlType().getValue());
+    if (src.hasName())
+      tgt.setSource(src.getName());
     if (src.hasTitle())
       tgt.setTitleElement(String30_50.convertString(src.getTitleElement()));
     if (src.hasGeneration())
@@ -256,7 +259,7 @@ public class ImplementationGuide30_50 {
     org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionPageComponent tgt = new org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionPageComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasSource())
-      tgt.setName(convertUriToUrl(src.getSourceElement()));
+      tgt.setNameElement(convertUriToUrl(src.getSourceElement()));
     if (src.hasTitle())
       tgt.setTitleElement(String30_50.convertString(src.getTitleElement()));
     if (src.hasKind())

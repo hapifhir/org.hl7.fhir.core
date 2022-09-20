@@ -2,11 +2,7 @@ package org.hl7.fhir.r5.test;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.stream.Stream;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -17,14 +13,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.BooleanType;
-import org.hl7.fhir.r5.model.ExpressionNode;
-import org.hl7.fhir.r5.model.PrimitiveType;
-import org.hl7.fhir.r5.model.Quantity;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.TypeDetails;
-import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
@@ -32,6 +21,8 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -39,6 +30,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class FHIRPathTests {
 
@@ -229,7 +224,7 @@ public class FHIRPathTests {
 
       List<Element> expected = new ArrayList<Element>();
       XMLUtil.getNamedChildren(test, "output", expected);
-      Assertions.assertEquals(outcome.size(), expected.size(), String.format("Expected %d objects but found %d for expression %s", expected.size(), outcome.size(), expression));
+      assertEquals(outcome.size(), expected.size(), String.format("Expected %d objects but found %d for expression %s", expected.size(), outcome.size(), expression));
       if ("false".equals(test.getAttribute("ordered"))) {
         for (int i = 0; i < Math.min(outcome.size(), expected.size()); i++) {
           String tn = outcome.get(i).fhirType();
@@ -252,7 +247,7 @@ public class FHIRPathTests {
         for (int i = 0; i < Math.min(outcome.size(), expected.size()); i++) {
           String tn = expected.get(i).getAttribute("type");
           if (!Utilities.noString(tn)) {
-            Assertions.assertEquals(tn, outcome.get(i).fhirType(), String.format("Outcome %d: Type should be %s but was %s", i, tn, outcome.get(i).fhirType()));
+            assertEquals(tn, outcome.get(i).fhirType(), String.format("Outcome %d: Type should be %s but was %s", i, tn, outcome.get(i).fhirType()));
           }
           String v = expected.get(i).getTextContent();
           if (!Utilities.noString(v)) {
@@ -265,11 +260,34 @@ public class FHIRPathTests {
                 System.out.println(name);
                 System.out.println(String.format("Outcome %d: Value should be %s but was %s for expression %s", i, v, ((PrimitiveType) outcome.get(i)).fpValue(), expression));
               }
-              Assertions.assertEquals(v, ((PrimitiveType) outcome.get(i)).fpValue(), String.format("Outcome %d: Value should be %s but was %s for expression %s", i, v, ((PrimitiveType) outcome.get(i)).fpValue(), expression));
+              assertEquals(v, ((PrimitiveType) outcome.get(i)).fpValue(), String.format("Outcome %d: Value should be %s but was %s for expression %s", i, v, ((PrimitiveType) outcome.get(i)).fpValue(), expression));
             }
           }
         }
       }
     }
+  }
+
+  @Test
+  @DisplayName("resolveConstant returns a list of Base")
+  public void resolveConstantReturnsList() {
+    final String DUMMY_CONSTANT_1 = "dummyConstant1";
+    final String DUMMY_CONSTANT_2 = "dummyConstant2";
+    fp.setHostServices(new FHIRPathTestEvaluationServices() {
+      @Override
+      public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
+
+        return Arrays.asList(
+          new StringType(DUMMY_CONSTANT_1).noExtensions(),
+          new StringType(DUMMY_CONSTANT_2).noExtensions());
+      }
+    });
+
+    ExpressionNode expressionNode = fp.parse("%dummyConstant");
+
+    List<Base> result = fp.evaluate(null, expressionNode);
+    assertEquals(2, result.size());
+    assertEquals(DUMMY_CONSTANT_1, result.get(0).primitiveValue());
+    assertEquals(DUMMY_CONSTANT_2, result.get(1).primitiveValue());
   }
 }

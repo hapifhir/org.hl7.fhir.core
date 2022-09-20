@@ -38,8 +38,6 @@ public class BuildExtensions extends ToolingExtensions {
   public static final String EXT_WEBSITE = "http://hl7.org/fhir/build/StructureDefinition/website";
   public static final String EXT_EMAIL = "http://hl7.org/fhir/build/StructureDefinition/email";
   public static final String EXT_COPYRIGHT = "http://hl7.org/fhir/build/StructureDefinition/copyright";
-  public static final String EXT_CS_OID = "http://hl7.org/fhir/build/StructureDefinition/cs-oid";
-  public static final String EXT_VS_OID = "http://hl7.org/fhir/build/StructureDefinition/vs-oid";
   public static final String EXT_STATUS = "http://hl7.org/fhir/build/StructureDefinition/status";
   public static final String EXT_INTRODUCTION = "http://hl7.org/fhir/build/StructureDefinition/introduction";
   public static final String EXT_NOTES = "http://hl7.org/fhir/build/StructureDefinition/notes";

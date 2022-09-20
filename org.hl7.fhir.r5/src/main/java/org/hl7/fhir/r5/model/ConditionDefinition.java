@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1426,10 +1426,10 @@ public class ConditionDefinition extends MetadataResource {
   }
 
     /**
-     * An absolute URI that is used to identify this condition definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this condition definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the condition definition is stored on different servers.
+     * An absolute URI that is used to identify this condition definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this condition definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the condition definition is stored on different servers.
      */
     @Child(name = "url", type = {UriType.class}, order=0, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Canonical identifier for this condition definition, represented as a URI (globally unique)", formalDefinition="An absolute URI that is used to identify this condition definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this condition definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the condition definition is stored on different servers." )
+    @Description(shortDefinition="Canonical identifier for this condition definition, represented as a URI (globally unique)", formalDefinition="An absolute URI that is used to identify this condition definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this condition definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the condition definition is stored on different servers." )
     protected UriType url;
 
     /**
@@ -1490,10 +1490,10 @@ public class ConditionDefinition extends MetadataResource {
     protected DateTimeType date;
 
     /**
-     * The name of the organization or individual that published the condition definition.
+     * The name of the organization or individual responsible for the release and ongoing maintenance of the condition definition.
      */
     @Child(name = "publisher", type = {StringType.class}, order=9, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Name of the publisher (organization or individual)", formalDefinition="The name of the organization or individual that published the condition definition." )
+    @Description(shortDefinition="Name of the publisher/steward (organization or individual)", formalDefinition="The name of the organization or individual responsible for the release and ongoing maintenance of the condition definition." )
     protected StringType publisher;
 
     /**
@@ -1646,7 +1646,7 @@ public class ConditionDefinition extends MetadataResource {
     }
 
     /**
-     * @return {@link #url} (An absolute URI that is used to identify this condition definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this condition definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the condition definition is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @return {@link #url} (An absolute URI that is used to identify this condition definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this condition definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the condition definition is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public UriType getUrlElement() { 
       if (this.url == null)
@@ -1666,7 +1666,7 @@ public class ConditionDefinition extends MetadataResource {
     }
 
     /**
-     * @param value {@link #url} (An absolute URI that is used to identify this condition definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this condition definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the condition definition is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @param value {@link #url} (An absolute URI that is used to identify this condition definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this condition definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the condition definition is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public ConditionDefinition setUrlElement(UriType value) { 
       this.url = value;
@@ -1674,14 +1674,14 @@ public class ConditionDefinition extends MetadataResource {
     }
 
     /**
-     * @return An absolute URI that is used to identify this condition definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this condition definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the condition definition is stored on different servers.
+     * @return An absolute URI that is used to identify this condition definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this condition definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the condition definition is stored on different servers.
      */
     public String getUrl() { 
       return this.url == null ? null : this.url.getValue();
     }
 
     /**
-     * @param value An absolute URI that is used to identify this condition definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this condition definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the condition definition is stored on different servers.
+     * @param value An absolute URI that is used to identify this condition definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this condition definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the condition definition is stored on different servers.
      */
     public ConditionDefinition setUrl(String value) { 
       if (Utilities.noString(value))
@@ -2083,7 +2083,7 @@ public class ConditionDefinition extends MetadataResource {
     }
 
     /**
-     * @return {@link #publisher} (The name of the organization or individual that published the condition definition.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     * @return {@link #publisher} (The name of the organization or individual responsible for the release and ongoing maintenance of the condition definition.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
     public StringType getPublisherElement() { 
       if (this.publisher == null)
@@ -2103,7 +2103,7 @@ public class ConditionDefinition extends MetadataResource {
     }
 
     /**
-     * @param value {@link #publisher} (The name of the organization or individual that published the condition definition.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     * @param value {@link #publisher} (The name of the organization or individual responsible for the release and ongoing maintenance of the condition definition.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
     public ConditionDefinition setPublisherElement(StringType value) { 
       this.publisher = value;
@@ -2111,14 +2111,14 @@ public class ConditionDefinition extends MetadataResource {
     }
 
     /**
-     * @return The name of the organization or individual that published the condition definition.
+     * @return The name of the organization or individual responsible for the release and ongoing maintenance of the condition definition.
      */
     public String getPublisher() { 
       return this.publisher == null ? null : this.publisher.getValue();
     }
 
     /**
-     * @param value The name of the organization or individual that published the condition definition.
+     * @param value The name of the organization or individual responsible for the release and ongoing maintenance of the condition definition.
      */
     public ConditionDefinition setPublisher(String value) { 
       if (Utilities.noString(value))
@@ -2953,6 +2953,47 @@ public class ConditionDefinition extends MetadataResource {
      * not supported on this implementation
      */
     @Override
+    public int getVersionAlgorithmMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public DataType getVersionAlgorithm() { 
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public StringType getVersionAlgorithmStringType() { 
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    public boolean hasVersionAlgorithmStringType() { 
+      return false;////K 
+    }
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public Coding getVersionAlgorithmCoding() { 
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    public boolean hasVersionAlgorithmCoding() { 
+      return false;////K 
+    }
+    public boolean hasVersionAlgorithm() { 
+      return false;
+    }
+    /**
+     * @param value {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public ConditionDefinition setVersionAlgorithm(DataType value) { 
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+
+    /**
+     * not supported on this implementation
+     */
+    @Override
     public int getPurposeMax() { 
       return 0;
     }
@@ -2974,16 +3015,16 @@ public class ConditionDefinition extends MetadataResource {
      * @param value {@link #purpose} (Explanation of why this condition definition is needed and why it has been designed as it has.). This is the underlying object with id, value and extensions. The accessor "getPurpose" gives direct access to the value
      */
     public ConditionDefinition setPurposeElement(MarkdownType value) { 
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"purpose\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"purpose\""); 
     }
     public String getPurpose() { 
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"purpose\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"purpose\""); 
     }
     /**
      * @param value Explanation of why this condition definition is needed and why it has been designed as it has.
      */
     public ConditionDefinition setPurpose(String value) { 
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"purpose\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"purpose\""); 
     }
     /**
      * not supported on this implementation
@@ -3010,16 +3051,52 @@ public class ConditionDefinition extends MetadataResource {
      * @param value {@link #copyright} (A copyright statement relating to the condition definition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the condition definition.). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value
      */
     public ConditionDefinition setCopyrightElement(MarkdownType value) { 
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"copyright\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"copyright\""); 
     }
     public String getCopyright() { 
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"copyright\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"copyright\""); 
     }
     /**
      * @param value A copyright statement relating to the condition definition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the condition definition.
      */
     public ConditionDefinition setCopyright(String value) { 
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"copyright\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"copyright\""); 
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getCopyrightLabelMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public StringType getCopyrightLabelElement() { 
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"copyrightLabel\"");
+    }
+
+    public boolean hasCopyrightLabelElement() { 
+      return false;
+    }
+    public boolean hasCopyrightLabel() {
+      return false;
+    }
+
+    /**
+     * @param value {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public ConditionDefinition setCopyrightLabelElement(StringType value) { 
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"copyrightLabel\""); 
+    }
+    public String getCopyrightLabel() { 
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"copyrightLabel\""); 
+    }
+    /**
+     * @param value A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    public ConditionDefinition setCopyrightLabel(String value) { 
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"copyrightLabel\""); 
     }
     /**
      * not supported on this implementation
@@ -3046,16 +3123,16 @@ public class ConditionDefinition extends MetadataResource {
      * @param value {@link #approvalDate} (The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.). This is the underlying object with id, value and extensions. The accessor "getApprovalDate" gives direct access to the value
      */
     public ConditionDefinition setApprovalDateElement(DateType value) { 
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"approvalDate\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"approvalDate\""); 
     }
     public Date getApprovalDate() { 
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"approvalDate\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"approvalDate\""); 
     }
     /**
      * @param value The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
     public ConditionDefinition setApprovalDate(Date value) { 
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"approvalDate\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"approvalDate\""); 
     }
     /**
      * not supported on this implementation
@@ -3082,16 +3159,16 @@ public class ConditionDefinition extends MetadataResource {
      * @param value {@link #lastReviewDate} (The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.). This is the underlying object with id, value and extensions. The accessor "getLastReviewDate" gives direct access to the value
      */
     public ConditionDefinition setLastReviewDateElement(DateType value) { 
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"lastReviewDate\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"lastReviewDate\""); 
     }
     public Date getLastReviewDate() { 
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"lastReviewDate\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"lastReviewDate\""); 
     }
     /**
      * @param value The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
      */
     public ConditionDefinition setLastReviewDate(Date value) { 
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"lastReviewDate\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"lastReviewDate\""); 
     }
     /**
      * not supported on this implementation
@@ -3104,7 +3181,7 @@ public class ConditionDefinition extends MetadataResource {
      * @return {@link #effectivePeriod} (The period during which the condition definition content was or is planned to be in active use.)
      */
     public Period getEffectivePeriod() { 
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"effectivePeriod\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"effectivePeriod\""); 
     }
     public boolean hasEffectivePeriod() { 
       return false;
@@ -3113,7 +3190,7 @@ public class ConditionDefinition extends MetadataResource {
      * @param value {@link #effectivePeriod} (The period during which the condition definition content was or is planned to be in active use.)
      */
     public ConditionDefinition setEffectivePeriod(Period value) { 
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"effectivePeriod\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"effectivePeriod\""); 
     }
 
     /**
@@ -3124,7 +3201,7 @@ public class ConditionDefinition extends MetadataResource {
       return 0;
     }
     /**
-     * @return {@link #topic} (Descriptive topics related to the content of the condition definition. Topics provide a high-level categorization of the condition definition that can be useful for filtering and searching.)
+     * @return {@link #topic} (Descriptive topics related to the content of the condition definition. Topics provide a high-level categorization as well as keywords for the condition definition that can be useful for filtering and searching.)
      */
     public List<CodeableConcept> getTopic() { 
       return new ArrayList<>();
@@ -3133,23 +3210,23 @@ public class ConditionDefinition extends MetadataResource {
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
     public ConditionDefinition setTopic(List<CodeableConcept> theTopic) { 
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"topic\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"topic\""); 
     }
     public boolean hasTopic() { 
       return false;
     }
 
     public CodeableConcept addTopic() { //3
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"topic\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"topic\""); 
     }
     public ConditionDefinition addTopic(CodeableConcept t) { //3
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"topic\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"topic\""); 
     }
     /**
      * @return The first repetition of repeating field {@link #topic}, creating it if it does not already exist {2}
      */
     public CodeableConcept getTopicFirstRep() { 
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"topic\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"topic\""); 
     }
     /**
      * not supported on this implementation
@@ -3168,23 +3245,23 @@ public class ConditionDefinition extends MetadataResource {
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
     public ConditionDefinition setAuthor(List<ContactDetail> theAuthor) { 
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"author\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"author\""); 
     }
     public boolean hasAuthor() { 
       return false;
     }
 
     public ContactDetail addAuthor() { //3
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"author\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"author\""); 
     }
     public ConditionDefinition addAuthor(ContactDetail t) { //3
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"author\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"author\""); 
     }
     /**
      * @return The first repetition of repeating field {@link #author}, creating it if it does not already exist {2}
      */
     public ContactDetail getAuthorFirstRep() { 
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"author\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"author\""); 
     }
     /**
      * not supported on this implementation
@@ -3203,23 +3280,23 @@ public class ConditionDefinition extends MetadataResource {
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
     public ConditionDefinition setEditor(List<ContactDetail> theEditor) { 
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"editor\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"editor\""); 
     }
     public boolean hasEditor() { 
       return false;
     }
 
     public ContactDetail addEditor() { //3
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"editor\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"editor\""); 
     }
     public ConditionDefinition addEditor(ContactDetail t) { //3
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"editor\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"editor\""); 
     }
     /**
      * @return The first repetition of repeating field {@link #editor}, creating it if it does not already exist {2}
      */
     public ContactDetail getEditorFirstRep() { 
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"editor\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"editor\""); 
     }
     /**
      * not supported on this implementation
@@ -3238,23 +3315,23 @@ public class ConditionDefinition extends MetadataResource {
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
     public ConditionDefinition setReviewer(List<ContactDetail> theReviewer) { 
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"reviewer\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"reviewer\""); 
     }
     public boolean hasReviewer() { 
       return false;
     }
 
     public ContactDetail addReviewer() { //3
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"reviewer\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"reviewer\""); 
     }
     public ConditionDefinition addReviewer(ContactDetail t) { //3
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"reviewer\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"reviewer\""); 
     }
     /**
      * @return The first repetition of repeating field {@link #reviewer}, creating it if it does not already exist {2}
      */
     public ContactDetail getReviewerFirstRep() { 
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"reviewer\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"reviewer\""); 
     }
     /**
      * not supported on this implementation
@@ -3273,23 +3350,23 @@ public class ConditionDefinition extends MetadataResource {
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
     public ConditionDefinition setEndorser(List<ContactDetail> theEndorser) { 
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"endorser\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"endorser\""); 
     }
     public boolean hasEndorser() { 
       return false;
     }
 
     public ContactDetail addEndorser() { //3
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"endorser\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"endorser\""); 
     }
     public ConditionDefinition addEndorser(ContactDetail t) { //3
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"endorser\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"endorser\""); 
     }
     /**
      * @return The first repetition of repeating field {@link #endorser}, creating it if it does not already exist {2}
      */
     public ContactDetail getEndorserFirstRep() { 
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"endorser\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"endorser\""); 
     }
     /**
      * not supported on this implementation
@@ -3308,27 +3385,27 @@ public class ConditionDefinition extends MetadataResource {
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
     public ConditionDefinition setRelatedArtifact(List<RelatedArtifact> theRelatedArtifact) { 
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"relatedArtifact\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"relatedArtifact\""); 
     }
     public boolean hasRelatedArtifact() { 
       return false;
     }
 
     public RelatedArtifact addRelatedArtifact() { //3
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"relatedArtifact\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"relatedArtifact\""); 
     }
     public ConditionDefinition addRelatedArtifact(RelatedArtifact t) { //3
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"relatedArtifact\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"relatedArtifact\""); 
     }
     /**
      * @return The first repetition of repeating field {@link #relatedArtifact}, creating it if it does not already exist {2}
      */
     public RelatedArtifact getRelatedArtifactFirstRep() { 
-      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"relatedArtifact\"");
+      throw new Error("The resource type \"ConditionDefinition\" does not implement the property \"relatedArtifact\""); 
     }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("url", "uri", "An absolute URI that is used to identify this condition definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this condition definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the condition definition is stored on different servers.", 0, 1, url));
+        children.add(new Property("url", "uri", "An absolute URI that is used to identify this condition definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this condition definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the condition definition is stored on different servers.", 0, 1, url));
         children.add(new Property("identifier", "Identifier", "A formal identifier that is used to identify this condition definition when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("version", "string", "The identifier that is used to identify this version of the condition definition when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the condition definition author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version));
         children.add(new Property("name", "string", "A natural language name identifying the condition definition. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name));
@@ -3337,7 +3414,7 @@ public class ConditionDefinition extends MetadataResource {
         children.add(new Property("status", "code", "The status of this condition definition. Enables tracking the life-cycle of the content.", 0, 1, status));
         children.add(new Property("experimental", "boolean", "A Boolean value to indicate that this condition definition is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.", 0, 1, experimental));
         children.add(new Property("date", "dateTime", "The date  (and optionally time) when the condition definition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the condition definition changes.", 0, 1, date));
-        children.add(new Property("publisher", "string", "The name of the organization or individual that published the condition definition.", 0, 1, publisher));
+        children.add(new Property("publisher", "string", "The name of the organization or individual responsible for the release and ongoing maintenance of the condition definition.", 0, 1, publisher));
         children.add(new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact));
         children.add(new Property("description", "markdown", "A free text natural language description of the condition definition from a consumer's perspective.", 0, 1, description));
         children.add(new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate condition definition instances.", 0, java.lang.Integer.MAX_VALUE, useContext));
@@ -3361,7 +3438,7 @@ public class ConditionDefinition extends MetadataResource {
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this condition definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this condition definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the condition definition is stored on different servers.", 0, 1, url);
+        case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this condition definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this condition definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the condition definition is stored on different servers.", 0, 1, url);
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "A formal identifier that is used to identify this condition definition when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case 351608024: /*version*/  return new Property("version", "string", "The identifier that is used to identify this version of the condition definition when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the condition definition author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version);
         case 3373707: /*name*/  return new Property("name", "string", "A natural language name identifying the condition definition. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name);
@@ -3370,7 +3447,7 @@ public class ConditionDefinition extends MetadataResource {
         case -892481550: /*status*/  return new Property("status", "code", "The status of this condition definition. Enables tracking the life-cycle of the content.", 0, 1, status);
         case -404562712: /*experimental*/  return new Property("experimental", "boolean", "A Boolean value to indicate that this condition definition is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.", 0, 1, experimental);
         case 3076014: /*date*/  return new Property("date", "dateTime", "The date  (and optionally time) when the condition definition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the condition definition changes.", 0, 1, date);
-        case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual that published the condition definition.", 0, 1, publisher);
+        case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual responsible for the release and ongoing maintenance of the condition definition.", 0, 1, publisher);
         case 951526432: /*contact*/  return new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact);
         case -1724546052: /*description*/  return new Property("description", "markdown", "A free text natural language description of the condition definition from a consumer's perspective.", 0, 1, description);
         case -669707736: /*useContext*/  return new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate condition definition instances.", 0, java.lang.Integer.MAX_VALUE, useContext);

@@ -383,10 +383,10 @@ public class LibraryRenderer extends ResourceRenderer {
           p.code().tx(att.getContentType()+lang(att));
         }
         if (att.getData().length < LibraryRenderer.DATA_IMG_SIZE_CUTOFF) {
-          x.img("data: "+att.getContentType()+">;base64,"+b64(att.getData()));
+          x.img("data: "+att.getContentType()+">;base64,"+b64(att.getData()), "data");
         } else {
           String filename = "Library-"+baseId+(counter == 0 ? "" : "-"+Integer.toString(counter))+"."+imgExtension(att.getContentType()); 
-          x.img(filename);
+          x.img(filename, "data");
         }        
       } else if (txt != null && !noShowData) {
         XhtmlNode p = x.para();

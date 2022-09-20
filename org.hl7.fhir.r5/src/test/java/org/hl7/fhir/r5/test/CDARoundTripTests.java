@@ -120,9 +120,9 @@ public class CDARoundTripTests {
 //
 //      assertEquals("Skin Exam", fp.evaluateToString(e, "component.structuredBody.component.section.component.section.where(code.code='8709-8' and code.codeSystem='2.16.840.1.113883.6.1').title.dataString"));
 //      // <div>Erythematous rash, palmar surface, left index finger.
-//      // <img src="MM1"/></div>
+//      // <img src="MM1" alt=\"img\"/></div>
 //      String text = fp.evaluateToString(e, "component.structuredBody.component.section.component.section.where(code.code='8709-8' and code.codeSystem='2.16.840.1.113883.6.1').text");
-//      assertTrue(text.contains("<img src=\"MM1\"/>"));
+//      assertTrue(text.contains("<img src=\"MM1\" alt=\"img\"/>"));
 //    } catch (Exception e) {
 //      System.out.println(e.getMessage());
 //      e.printStackTrace();
