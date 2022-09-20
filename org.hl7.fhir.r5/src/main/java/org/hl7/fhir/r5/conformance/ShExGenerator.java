@@ -296,6 +296,8 @@ public class ShExGenerator {
 
     for (StructureDefinition sd : uniq_structures) {
       shapeDefinitions.append(genShapeDefinition(sd, true));
+      //StructureDefinition sdprof = sd.getgetProfile(sd, null);
+      //System.out.println("SdProf:" + sdprof.getName());
     }
 
     shapeDefinitions.append(emitInnerTypes());
@@ -330,8 +332,31 @@ public class ShExGenerator {
     for(ValueSet vs: required_value_sets)
       shapeDefinitions.append("\n").append(genValueSet(vs));
     return shex_def.render();
+
   }
 
+  private String getExtendedType(StructureDefinition sd){
+    if (sd == null)
+      return null;
+    String sId = sd.getId();
+    if (sd.hasBaseDefinition()){
+      String bd = sd.getBaseDefinition();
+      String[] els = bd.split("/");
+      bd = els[els.length - 1];
+      if (bd != null && !bd.isEmpty() && !baseDataTypes.contains(bd))
+        sId += "> EXTENDS @<" + bd;
+    }
+    return sId;
+  }
+
+  private String getExtendedType(ElementDefinition ed){
+    if (ed == null)
+      return "";
+    String bd = (ed.getType().size() > 0)? (ed.getType().get(0).getCode()) : "";
+    if (bd != null && !bd.isEmpty() && !baseDataTypes.contains(bd))
+        bd = "> EXTENDS @<" + bd;
+    return bd;
+  }
 
   /**
    * Emit a ShEx definition for the supplied StructureDefinition
@@ -350,16 +375,9 @@ public class ShExGenerator {
       shape_defn = tmplt(RESOURCE_SHAPE_TEMPLATE);
       known_resources.add(sd.getName());
     } else {
-        String sId = sd.getId();
-        if (sd.hasBaseDefinition()){
-          String bd = sd.getBaseDefinition();
-          String[] els = bd.split("/");
-          bd = els[els.length - 1];
-          if (bd != null && !bd.isEmpty() && !baseDataTypes.contains(bd))
-            sId += "> extends @<" + bd;
-      }
 
-      shape_defn = tmplt(SHAPE_DEFINITION_TEMPLATE).add("id", sId);
+
+      shape_defn = tmplt(SHAPE_DEFINITION_TEMPLATE).add("id", getExtendedType(sd));
       if (sd.getKind().equals(StructureDefinition.StructureDefinitionKind.RESOURCE)) {
 //              || sd.getKind().equals(StructureDefinition.StructureDefinitionKind.COMPLEXTYPE)) {
         known_resources.add(sd.getName());
@@ -388,6 +406,7 @@ public class ShExGenerator {
 //      return tmplt(EXTENSION_TEMPLATE).render();
 
     String root_comment = null;
+
     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
       if(!ed.getPath().contains("."))
         root_comment = ed.getShort();
@@ -781,14 +800,20 @@ public class ShExGenerator {
     String path = ed.hasBase() ? ed.getBase().getPath() : ed.getPath();;
     ST element_reference = tmplt(SHAPE_DEFINITION_TEMPLATE);
     element_reference.add("resourceDecl", "");  // Not a resource
-    element_reference.add("id", path);
+    element_reference.add("id", path + getExtendedType(ed));
     String comment = ed.getShort();
     element_reference.add("comment", comment == null? " " : "# " + comment);
 
     List<String> elements = new ArrayList<String>();
     for (ElementDefinition child: profileUtilities.getChildList(sd, path, null))
-      if (child.hasBase() && child.getBase().getPath().startsWith(sd.getName()))
-          elements.add(genElementDefinition(sd, child));
+      if (child.hasBase() && child.getBase().getPath().startsWith(sd.getName())) {
+        elements.add(genElementDefinition(sd, child));
+
+        List<ElementDefinition.ElementDefinitionConstraintComponent> constraints = ed.getConstraint();
+
+        for (ElementDefinition.ElementDefinitionConstraintComponent constraint : ed.getConstraint())
+              System.out.println("   **** Constraint on " + ed.getName() + ": " + constraint.getExpression());
+      }
 
     element_reference.add("elements", StringUtils.join(elements, "\n"));
     return element_reference.render();
