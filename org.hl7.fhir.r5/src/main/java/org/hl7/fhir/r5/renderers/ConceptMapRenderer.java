@@ -246,7 +246,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
               td.addText(ccl.getCode());
             else
               td.addText(grp.getSource()+" / "+ccl.getCode());
-            display = getDisplayForConcept(systemFromCanonical(grp.getSource()), versionFromCanonical(grp.getSource()), ccl.getCode());
+            display = ccl.hasDisplay() ? ccl.getDisplay() : getDisplayForConcept(systemFromCanonical(grp.getSource()), versionFromCanonical(grp.getSource()), ccl.getCode());
             tr.td().style("border-left-width: 0px").tx(display == null ? "" : display);
             tr.td().colspan("4").style("background-color: #efefef").tx("(not mapped)");
 
