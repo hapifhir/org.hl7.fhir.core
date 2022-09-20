@@ -426,6 +426,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private ValidationOptions baseOptions = new ValidationOptions();
   private Map<String, CanonicalResourceLookupResult> crLookups = new HashMap<>();
   private boolean logProgress;
+  private boolean forPublication;
 
   public InstanceValidator(IWorkerContext theContext, IEvaluationContext hostServices, XVerExtensionManager xverManager) {
     super(theContext, xverManager);
@@ -4643,7 +4644,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else if (element.getType().equals("CapabilityStatement")) {
       validateCapabilityStatement(errors, element, stack);
     } else if (element.getType().equals("CodeSystem")) {
-      new CodeSystemValidator(context, timeTracker, xverManager, jurisdiction).validateCodeSystem(errors, element, stack, baseOptions.setLanguage(stack.getWorkingLang()));
+      new CodeSystemValidator(context, timeTracker, this, xverManager, jurisdiction).validateCodeSystem(errors, element, stack, baseOptions.setLanguage(stack.getWorkingLang()));
     } else if (element.getType().equals("SearchParameter")) {
       new SearchParameterValidator(context, timeTracker, fpe, xverManager, jurisdiction).validateSearchParameter(errors, element, stack);
     } else if (element.getType().equals("StructureDefinition")) {
@@ -6041,4 +6042,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     this.logProgress = logProgress;
   }
 
+  public boolean isForPublication() {
+    return forPublication;
+  }
+  
+  public void setForPublication(boolean forPublication) {
+    this.forPublication = forPublication;
+  }
+
+  
 }
