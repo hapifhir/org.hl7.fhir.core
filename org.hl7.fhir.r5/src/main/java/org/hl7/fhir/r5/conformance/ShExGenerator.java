@@ -100,6 +100,13 @@ public class ShExGenerator {
   // Base DataTypes
   private List<String> baseDataTypes = Arrays.asList("DataType", "PrimitiveType");
 
+  private static String ONE_OR_MORE_PREFIX = "OneOrMore_";
+  private static String ONE_OR_MORE_TEMPLATE =
+    "\n$comment$\n<$oomType$> CLOSED {" +
+      "\n    rdf:first @<$origType$> ;" +
+      "\n    rdf:rest [rdf:nil] OR @<$oomType$> " +
+      "\n}\n";
+
   // Resource Definition
   //      an open shape of type Resource.  Used when completeModel = false.
   private static String RESOURCE_SHAPE_TEMPLATE =
@@ -211,6 +218,9 @@ public class ShExGenerator {
    * doDataTypes -- whether or not to emit the data types.
    */
   private HashSet<Pair<StructureDefinition, ElementDefinition>> innerTypes, emittedInnerTypes;
+
+  private List<String> oneOrMoreTypes;
+
   private HashSet<String> datatypes, emittedDatatypes;
   private HashSet<String> references;
   private LinkedList<StructureDefinition> uniq_structures;
@@ -223,6 +233,7 @@ public class ShExGenerator {
     this.context = context;
     profileUtilities = new ProfileUtilities(context, null, null);
     innerTypes = new HashSet<Pair<StructureDefinition, ElementDefinition>>();
+    oneOrMoreTypes = new ArrayList<String>();
     emittedInnerTypes = new HashSet<Pair<StructureDefinition, ElementDefinition>>();
     datatypes = new HashSet<String>();
     emittedDatatypes = new HashSet<String>();
@@ -235,6 +246,7 @@ public class ShExGenerator {
     List<StructureDefinition> list = new ArrayList<StructureDefinition>();
     list.add(structure);
     innerTypes.clear();
+    oneOrMoreTypes.clear();
     emittedInnerTypes.clear();
     datatypes.clear();
     emittedDatatypes.clear();
@@ -311,6 +323,11 @@ public class ShExGenerator {
       }
     }
 
+    shapeDefinitions.append("\n#---------------------- Cardinality Types (OneOrMore) -------------------\n");
+    oneOrMoreTypes.forEach((String oomType) -> {
+      shapeDefinitions.append(getOneOrMoreType(oomType));
+    });
+    
     shapeDefinitions.append("\n#---------------------- Reference Types -------------------\n");
     for(String r: references) {
       shapeDefinitions.append("\n").append(tmplt(TYPED_REFERENCE_TEMPLATE).add("refType", r).render()).append("\n");
@@ -328,7 +345,7 @@ public class ShExGenerator {
       shapeDefinitions.append("\n").append(tmplt(ALL_TEMPLATE)
               .add("all_entries", StringUtils.join(all_entries, " OR\n\t")).render());
     }
-
+    
     shapeDefinitions.append("\n#---------------------- Value Sets ------------------------\n");
     for(ValueSet vs: required_value_sets)
       shapeDefinitions.append("\n").append(genValueSet(vs));
@@ -413,7 +430,8 @@ public class ShExGenerator {
         root_comment = ed.getShort();
       else if ((StringUtils.countMatches(ed.getPath(), ".") == 1 && !"0".equals(ed.getMax())) &&
               (ed.hasBase() && ed.getBase().getPath().startsWith(sdn))){
-        elements.add(genElementDefinition(sd, ed));
+        String elementDefinition = genElementDefinition(sd, ed);
+        elements.add(elementDefinition);
       }
     }
 
@@ -576,6 +594,17 @@ public class ShExGenerator {
       addComment(element_def, ed);
       return element_def.render();
     }
+    // Adding OneOrMore as prefix to the reference type if cardinality is 1..* or 0..*
+    if (card.startsWith("*") || card.startsWith("+")) {
+      card = card.replace("+", "");
+      card = card.replace("*", "?");
+      defn = defn.replace("<", "<" + ONE_OR_MORE_PREFIX);
+
+      String defnToStore = StringUtils.substringBetween(defn, "<", ">");
+      if (!oneOrMoreTypes.contains(defnToStore))
+        oneOrMoreTypes.add(defnToStore);
+    }
+
     element_def.add("defn", defn);
     element_def.add("card", card);
     addComment(element_def, ed);
@@ -791,6 +820,17 @@ public class ShExGenerator {
     return shex_choice_entry.render();
   }
 
+  private String getOneOrMoreType(String oneOrMoreType) {
+    if ((oneOrMoreType == null)||(oneOrMoreTypes.isEmpty()))
+      return "";
+
+    ST one_or_more_type = tmplt(ONE_OR_MORE_TEMPLATE);
+    one_or_more_type.add("oomType", oneOrMoreType);
+    one_or_more_type.add("origType", oneOrMoreType.replaceAll(ONE_OR_MORE_PREFIX, ""));
+    one_or_more_type.add("comment", "");
+    return one_or_more_type.render();
+  }
+
   /**
    * Generate a definition for a referenced element
    * @param sd Containing structure definition
@@ -808,7 +848,8 @@ public class ShExGenerator {
     List<String> elements = new ArrayList<String>();
     for (ElementDefinition child: profileUtilities.getChildList(sd, path, null))
       if (child.hasBase() && child.getBase().getPath().startsWith(sd.getName())) {
-        elements.add(genElementDefinition(sd, child));
+        String elementDefinition = genElementDefinition(sd, child);
+        elements.add(elementDefinition);
 
         List<ElementDefinition.ElementDefinitionConstraintComponent> constraints = ed.getConstraint();
 
