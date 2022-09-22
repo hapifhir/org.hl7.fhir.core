@@ -43,13 +43,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.model.Constants;
-import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.r5.model.DomainResource;
-import org.hl7.fhir.r5.model.ElementDefinition;
-import org.hl7.fhir.r5.model.Enumerations;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander;
 import org.stringtemplate.v4.ST;
 
@@ -545,7 +539,7 @@ public class ShExGenerator {
       shortId = "v";
     }
 
-    String defn;
+    String defn = "";
     ST element_def;
     String card = ("*".equals(ed.getMax()) ? (ed.getMin() == 0 ? "*" : "+") : (ed.getMin() == 0 ? "?" : "")) + ";";
 
@@ -560,12 +554,18 @@ public class ShExGenerator {
 
     List<ElementDefinition> children = profileUtilities.getChildList(sd, ed);
     if (children.size() > 0) {
-      innerTypes.add(new ImmutablePair<StructureDefinition, ElementDefinition>(sd, ed));
-      defn = simpleElement(sd, ed, id);
-    } else if(id.endsWith("[x]")) {
-      defn = genChoiceTypes(sd, ed, shortId);
+      String parentPath = sd.getName();
+      if ((ed.hasContentReference() && (!ed.hasType())) || (!id.equals(sd.getName() + "." + shortId))){
+        System.out.println("Not Adding innerType:" + id + " to " + sd.getName());
+      }
+      else
+          innerTypes.add(new ImmutablePair<StructureDefinition, ElementDefinition>(sd, ed));
+      //defn = simpleElement(sd, ed, id);
     }
-    else if (ed.getType().size() == 1) {
+
+    if(id.endsWith("[x]")) {
+      defn = genChoiceTypes(sd, ed, shortId);
+    } else if (ed.getType().size() == 1) {
       // Single entry
       defn = genTypeRef(sd, ed, id, ed.getType().get(0));
     } else if (ed.getContentReference() != null) {
@@ -584,16 +584,25 @@ public class ShExGenerator {
         throw new AssertionError("Reference path not found: " + ref);
       // String typ = id.substring(0, id.indexOf(".") + 1) + ed.getContentReference().substring(1);
       defn = simpleElement(sd, ed, refPath);
-    } else if(id.endsWith("[x]")) {
-      defn = genChoiceTypes(sd, ed, shortId);
-    } else {
-      // TODO: Refactoring required here
-      element_def = genAlternativeTypes(ed, id, shortId);
-      element_def.add("id", id.charAt(0) == id.toLowerCase().charAt(0)? shortId : id);
-      element_def.add("card", card);
-      addComment(element_def, ed);
-      return element_def.render();
     }
+
+    List<String> refValues = new ArrayList<String>();
+    if (ed.hasType() && (ed.getType().get(0).getWorkingCode().equals("Reference"))) {
+      if (ed.getType().get(0).hasTargetProfile()) {
+
+          ed.getType().get(0).getTargetProfile().forEach((CanonicalType tps) -> {
+            String els[] = tps.getValue().split("/");
+            refValues.add("@<" + els[els.length - 1] + ">");
+          });
+        }
+      }
+
+    String refChoices = "";
+    if (!refValues.isEmpty()) {
+      String indnt = " \n\t\t\t\t\t";
+      refChoices = " AND " + indnt + " {fhir:value [ " + StringUtils.join(refValues, indnt) + " ]} ";
+    }
+
     // Adding OneOrMore as prefix to the reference type if cardinality is 1..* or 0..*
     if (card.startsWith("*") || card.startsWith("+")) {
       card = card.replace("+", "");
@@ -605,7 +614,7 @@ public class ShExGenerator {
         oneOrMoreTypes.add(defnToStore);
     }
 
-    element_def.add("defn", defn);
+    element_def.add("defn", defn + refChoices);
     element_def.add("card", card);
     addComment(element_def, ed);
     return element_def.render();
