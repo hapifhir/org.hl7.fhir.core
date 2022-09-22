@@ -5,7 +5,7 @@
   "version" : "1.0.0",
   "name" : "FHIR Reference Server Teminology Capability Statement",
   "status" : "active",
-  "date" : "2022-06-17T22:07:43.413Z",
+  "date" : "2022-09-12T07:14:02.176Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
@@ -866,6 +866,9 @@
     "uri" : "http://nucc.org/provider-taxonomy"
   },
   {
+    "uri" : "http://radlex.org"
+  },
+  {
     "uri" : "http://snomed.info/sct"
   },
   {
@@ -1266,6 +1269,9 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/hl7-work-group"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/icd-o-3"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/immunization-evaluation-dose-status"

@@ -10,7 +10,7 @@ jobs:
   - template: pull-request-pipeline-parameterized.yml
     parameters:
       images:
-        # This image is here so that at least one job specifically sets Cp1252 encodings, which are normally set by the JDK (which Azure can change on each latest image)
+        # This image is here so that at least one job specifically sets Cp1252 file encodings, which are normally set by the JDK (which Azure can change on each latest image)
         - displayName: ubuntu-latest-java-17-cp1252
           vmImage: ubuntu-latest
           jdkVersion: 1.17
