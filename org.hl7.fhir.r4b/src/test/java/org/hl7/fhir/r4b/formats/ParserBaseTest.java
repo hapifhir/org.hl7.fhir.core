@@ -1,14 +1,11 @@
-package org.hl7.fhir.r5.formats;
+package org.hl7.fhir.r4b.formats;
 
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.r5.model.HumanName;
-import org.hl7.fhir.r5.model.Patient;
-import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r4b.model.DataType;
+import org.hl7.fhir.r4b.model.Resource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;

@@ -1,19 +1,17 @@
-package org.hl7.fhir.r5.formats;
+package org.hl7.fhir.r4.formats;
 
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.r5.model.HumanName;
-import org.hl7.fhir.r5.model.Patient;
-import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r4.model.Type;
+import org.hl7.fhir.r4.model.Resource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import static org.junit.Assert.assertEquals;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
 public class ParserBaseTest {
@@ -35,12 +33,12 @@ public class ParserBaseTest {
       }
 
       @Override
-      public DataType parseType(InputStream input, String knownType) throws IOException, FHIRFormatError {
+      public Type parseType(InputStream input, String knownType) throws IOException, FHIRFormatError {
         return null;
       }
 
       @Override
-      public DataType parseAnyType(InputStream input, String knownType) throws IOException, FHIRFormatError {
+      public Type parseAnyType(InputStream input, String knownType) throws IOException, FHIRFormatError {
         return null;
       }
 
@@ -50,7 +48,7 @@ public class ParserBaseTest {
       }
 
       @Override
-      public void compose(OutputStream stream, DataType type, String rootName) throws IOException {
+      public void compose(OutputStream stream, Type type, String rootName) throws IOException {
         stream.write(SLASHED_O.getBytes("UTF-8"));
       }
     };
@@ -64,7 +62,7 @@ public class ParserBaseTest {
 
     @Test
     public void composeString_forDataType_worksForCurrentEncoding() throws IOException {
-      String actualString = parserBase.composeString(mock(DataType.class), "dummyName");
+      String actualString = parserBase.composeString(mock(Type.class), "dummyName");
       assertEquals(SLASHED_O, actualString);
     }
 }

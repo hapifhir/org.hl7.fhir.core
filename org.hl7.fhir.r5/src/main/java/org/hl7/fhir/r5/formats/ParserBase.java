@@ -40,6 +40,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
@@ -56,7 +57,7 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
   // -- implementation of variant type methods from the interface --------------------------------
   
   public Resource parse(String input) throws FHIRFormatError, IOException {
-  	return parse(input.getBytes("UTF-8"));
+  	return parse(input.getBytes(StandardCharsets.UTF_8));
   }
   
   public Resource parse(byte[] bytes) throws FHIRFormatError, IOException {
@@ -65,11 +66,11 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
   }
 
   public DataType parseType(String input, String typeName) throws FHIRFormatError, IOException {
-    return parseType(input.getBytes("UTF-8"), typeName);
+    return parseType(input.getBytes(StandardCharsets.UTF_8), typeName);
   }
   
   public DataType parseAnyType(String input, String typeName) throws FHIRFormatError, IOException {
-    return parseAnyType(input.getBytes("UTF-8"), typeName);
+    return parseAnyType(input.getBytes(StandardCharsets.UTF_8), typeName);
   }
   
   public DataType parseType(byte[] bytes, String typeName) throws FHIRFormatError, IOException {
@@ -83,7 +84,7 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
   }
 
   public String composeString(Resource resource) throws IOException {
-    return new String(composeBytes(resource), "UTF-8");
+    return new String(composeBytes(resource), StandardCharsets.UTF_8);
   }
 
   public byte[] composeBytes(Resource resource) throws IOException {
@@ -94,7 +95,7 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
   }
 
   public String composeString(DataType type, String typeName) throws IOException {
-    return new String(composeBytes(type, typeName), "UTF-8");
+    return new String(composeBytes(type, typeName), StandardCharsets.UTF_8);
   }
 
   public byte[] composeBytes(DataType type, String typeName) throws IOException {
