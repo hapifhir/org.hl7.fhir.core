@@ -10,9 +10,32 @@ jobs:
   - template: pull-request-pipeline-parameterized.yml
     parameters:
       images:
-        - name: ubuntu-latest
-          jdkVersions:  [ '1.11', '1.17']
-        - name: macos-latest
-          jdkVersions: [ '1.11', '1.17']
-        - name: windows-latest
-          jdkVersions: [ '1.11', '1.17']
+        # This image is here so that at least one job specifically sets Cp1252 encodings, which are normally set by the JDK (which Azure can change on each latest image)
+        - displayName: ubuntu-latest-java-17-cp1232
+          vmImage: ubuntu-latest
+          jdkVersion: 1.17
+          javaToolOptions: -Dfile.encoding=Cp1242
+        - displayName: ubuntu-latest-java-11
+          vmImage: ubuntu-latest
+          jdkVersion: 1.11
+          javaToolOptions:
+        - displayName: ubuntu-latest-java-17
+          vmImage: ubuntu-latest
+          jdkVersion: 1.17
+          javaToolOptions:
+        - displayName: macos-latest-java-11
+          vmImage: macos-latest
+          jdkVersion: 1.11
+          javaToolOptions:
+        - displayName: macos-latest-java-17
+          vmImage: macos-latest
+          jdkVersion: 1.17
+          javaToolOptions:
+        - displayName: windows-latest-java-11
+          vmImage: windows-latest
+          jdkVersion: 1.11
+          javaToolOptions:
+        - displayName: windows-latest-java-17
+          vmImage: windows-latest
+          jdkVersion: 1.17
+          javaToolOptions:
