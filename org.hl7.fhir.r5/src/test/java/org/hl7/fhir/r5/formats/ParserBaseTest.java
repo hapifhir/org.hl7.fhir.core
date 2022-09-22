@@ -51,7 +51,7 @@ public class ParserBaseTest {
 
       @Override
       public void compose(OutputStream stream, DataType type, String rootName) throws IOException {
-        stream.write("ø".getBytes("UTF-8"));
+        stream.write(SLASHED_O.getBytes("UTF-8"));
       }
     };
     }

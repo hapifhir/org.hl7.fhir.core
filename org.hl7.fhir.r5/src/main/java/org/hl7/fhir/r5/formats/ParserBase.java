@@ -94,7 +94,7 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
   }
 
   public String composeString(DataType type, String typeName) throws IOException {
-    return new String(composeBytes(type, typeName));
+    return new String(composeBytes(type, typeName), "UTF-8");
   }
 
   public byte[] composeBytes(DataType type, String typeName) throws IOException {
