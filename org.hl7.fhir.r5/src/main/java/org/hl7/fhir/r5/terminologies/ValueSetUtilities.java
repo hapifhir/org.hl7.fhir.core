@@ -51,6 +51,7 @@ import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
+import org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionPropertyComponent;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.ConceptDefinitionComponentSorter;
@@ -270,6 +271,19 @@ public class ValueSetUtilities {
 
   public static void sortInclude(ConceptSetComponent inc) {
     Collections.sort(inc.getConcept(), new ConceptReferenceComponentSorter());
+  }
+
+  public static String getAllCodesSystem(ValueSet vs) {
+    if (vs.hasCompose()) {
+      ValueSetComposeComponent c = vs.getCompose();
+      if (c.getExclude().isEmpty() && c.getInclude().size() == 1) {
+        ConceptSetComponent i = c.getIncludeFirstRep();
+        if (i.hasSystem() && !i.hasValueSet() && !i.hasConcept() && !i.hasFilter()) {
+          return i.getSystem();
+        }
+      }
+    }
+    return null;
   }
 
 

@@ -41,6 +41,7 @@ import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -66,6 +67,35 @@ import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 
 public class CodeSystemUtilities {
+
+  public static class SystemReference {
+    private String link;
+    private String text;
+    private boolean local;
+    
+    public SystemReference(String text, String link) {
+      super();
+      this.link = link;
+      this.text = text;
+    }
+    public SystemReference(String text, String link, boolean local) {
+      super();
+      this.link = link;
+      this.text = text;
+      this.local = local;
+    }
+    
+    public String getLink() {
+      return link;
+    }
+    public String getText() {
+      return text;
+    }
+    public boolean isLocal() {
+      return local;
+    }
+    
+  }
 
   public static class ConceptDefinitionComponentSorter implements Comparator<ConceptDefinitionComponent> {
 
@@ -619,5 +649,26 @@ public class CodeSystemUtilities {
     return jurisdiction == null || !jurisdiction.contains("#") ?  null : new Coding().setCode(jurisdiction.substring(jurisdiction.indexOf("#")+1)).setSystem(jurisdiction.substring(0, jurisdiction.indexOf("#")));
   }
 
-
+  public static SystemReference getSystemReference(String system, IWorkerContext ctxt) {
+    if (system == null) {
+      return null;
+    } if ("http://snomed.info/sct".equals(system)) {
+      return new SystemReference("SNOMED CT", "https://browser.ihtsdotools.org/");      
+    } else if ("http://loinc.org".equals(system)) {
+      return new SystemReference("LOINC", "https://loinc.org/");            
+    } else if ("http://unitsofmeasure.org".equals(system)) {
+      return new SystemReference("UCUM", "http://ucum.org");            
+    } else if (system.equals("http://www.nlm.nih.gov/research/umls/rxnorm")) {
+      return new SystemReference("RxNorm", "http://www.nlm.nih.gov/research/umls/rxnorm");
+    } else if (ctxt != null) {
+      CodeSystem cs = ctxt.fetchCodeSystem(system);
+      if (cs != null && cs.hasUserData("path")) {
+        return new SystemReference(cs.present(), cs.getUserString("path"), Utilities.isAbsoluteUrl(cs.getUserString("path")));
+      } else if (cs != null) {
+        return new SystemReference(cs.present(), null);
+      }
+    }
+    return null;
+  }
 }
+
