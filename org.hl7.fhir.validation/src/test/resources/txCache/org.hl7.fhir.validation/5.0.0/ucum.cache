@@ -12,20 +12,10 @@ v: {
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "mm[Hg]"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-vitals-common--0", "version": "5.0.0-snapshot1", "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-vitals-common--0", "version": "5.0.0-ballot", "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "millimeter of mercury",
   "code" : "mm[Hg]",
-  "system" : "http://unitsofmeasure.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://unitsofmeasure.org",
-  "code" : "/min"
-}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "/min",
-  "code" : "/min",
   "system" : "http://unitsofmeasure.org"
 }
 -------------------------------------------------------------------------------------
@@ -36,26 +26,6 @@ v: {
 v: {
   "display" : "mmol/L",
   "code" : "mmol/L",
-  "system" : "http://unitsofmeasure.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://unitsofmeasure.org",
-  "code" : "mm[Hg]"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-vitals-common--0", "version": "4.6.0", "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "millimeter of mercury",
-  "code" : "mm[Hg]",
-  "system" : "http://unitsofmeasure.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://unitsofmeasure.org",
-  "code" : "mm[Hg]"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-vitals-common--0", "version": "5.0.0-ballot", "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "millimeter of mercury",
-  "code" : "mm[Hg]",
   "system" : "http://unitsofmeasure.org"
 }
 -------------------------------------------------------------------------------------
