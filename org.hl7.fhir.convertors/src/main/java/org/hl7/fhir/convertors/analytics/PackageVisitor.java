@@ -116,28 +116,53 @@ public class PackageVisitor {
     Map<String, String> cpidMap = getAllCIPackages();
     Set<String> cpidSet = new HashSet<>();
     System.out.println("Go: "+cpidMap.size()+" current packages");
+    int i = 0;
     for (String s : cpidMap.keySet()) {
-      processCurrentPackage(s, cpidMap.get(s), cpidSet); 
+      processCurrentPackage(s, cpidMap.get(s), cpidSet, i, cpidMap.size()); 
+      i++;
     }
     Set<String> pidList = getAllPackages();
     System.out.println("Go: "+pidList.size()+" published packages");
+    i = 0;
     for (String pid : pidList) {    
       if (!cpidSet.contains(pid)) {
+        cpidSet.add(pid);
         List<String> vList = listVersions(pid);
         if (oldVersions) {
           for (String v : vList) {
-            processPackage(pid, v);          
+            processPackage(pid, v, i, pidList.size());          
           }
         } else if (vList.isEmpty()) {
           System.out.println("No Packages for "+pid);
         } else {
-          processPackage(pid, vList.get(vList.size() - 1));
+          processPackage(pid, vList.get(vList.size() - 1), i, pidList.size());
         }
       }
-    }      
+      i++;
+    }    
+    JsonObject json = JsonTrackingParser.fetchJson("https://raw.githubusercontent.com/FHIR/ig-registry/master/fhir-ig-list.json");
+    i = 0;
+    List<JsonObject> objects = JsonUtilities.objects(json, "guides");
+    for (JsonObject o : objects) {
+      String pid = JsonUtilities.str(o, "npm-name");
+      if (pid != null && !cpidSet.contains(pid)) {
+        cpidSet.add(pid);
+        List<String> vList = listVersions(pid);
+        if (oldVersions) {
+          for (String v : vList) {
+            processPackage(pid, v, i, objects.size());          
+          }
+        } else if (vList.isEmpty()) {
+          System.out.println("No Packages for "+pid);
+        } else {
+          processPackage(pid, vList.get(vList.size() - 1), i, objects.size());
+        }
+      }
+      i++;
+    }
   }
 
-  private void processCurrentPackage(String url, String pid, Set<String> cpidSet) {
+  private void processCurrentPackage(String url, String pid, Set<String> cpidSet, int i, int t) {
     try {
       String[] p = url.split("\\/");
       String repo = "https://build.fhir.org/ig/"+p[0]+"/"+p[1];
@@ -160,7 +185,7 @@ public class PackageVisitor {
             }
           }
         }    
-        System.out.println("Processed: "+pid+"#current: "+c+" resources");  
+        System.out.println("Processed: "+pid+"#current: "+c+" resources ("+i+" of "+t+")");  
       }
     } catch (Exception e) {      
       System.out.println("Unable to process: "+pid+"#current: "+e.getMessage());      
@@ -228,7 +253,7 @@ public class PackageVisitor {
   }
 
 
-  private void processPackage(String pid, String v) throws IOException {
+  private void processPackage(String pid, String v, int i, int t) throws IOException {
     NpmPackage npm = null;
     String fv = null;
     try {
@@ -252,7 +277,7 @@ public class PackageVisitor {
           }
         }
       }    
-      System.out.println("Processed: "+pid+"#"+v+": "+c+" resources");  
+      System.out.println("Processed: "+pid+"#"+v+": "+c+" resources ("+i+" of "+t+")");  
     }
   }
 
