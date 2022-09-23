@@ -1,8 +1,7 @@
 ## Validator Changes
 
-* fix error with code system validation messages
+* no changes
 
 ## Other code changes
 
-* Enhanced testing for character encoding issues
-* XIG publisher improvements
+* no changes
