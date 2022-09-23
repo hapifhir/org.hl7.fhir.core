@@ -1,18 +1,17 @@
 jobs:
   - ${{ each image in parameters.images }}:
-    - ${{ each jdkVersion in image.jdkVersions }}:
       - job:
 
-        displayName: ${{image.name}}_${{jdkVersion}}
+        displayName: ${{image.displayName}}
         
         pool:
-          vmImage: ${{image.name}}
+          vmImage: ${{image.vmImage}}
         
         variables:
-          currentImage: ${{image.name}}
+          currentImage: ${{image.vmImage}}
           codecov: $(CODECOV_TOKEN)
           VERSION:
-          JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF8
+          JAVA_TOOL_OPTIONS: ${{image.javaToolOptions}}
 
         steps:
           # Runs 'mvn clean install'
@@ -21,7 +20,7 @@ jobs:
               mavenPomFile: 'pom.xml'
               mavenOptions: '-Xmx3072m'
               javaHomeOption: 'JDKVersion'
-              jdkVersionOption: '${{jdkVersion}}'
+              jdkVersionOption: '${{image.jdkVersion}}'
               jdkArchitectureOption: 'x64'
               publishJUnitResults: true
               testResultsFiles: '**/surefire-reports/TEST-*.xml'
@@ -32,7 +31,7 @@ jobs:
               mavenPomFile: 'pom.xml'
               mavenOptions: '-Xmx3072m'
               javaHomeOption: 'JDKVersion'
-              jdkVersionOption: '${{jdkVersion}}'
+              jdkVersionOption: '${{image.jdkVersion}}'
               jdkArchitectureOption: 'x64'
               options: '-pl org.hl7.fhir.validation.cli'
               publishJUnitResults: false
