@@ -115,11 +115,9 @@ public class ToolingExtensions {
   public static final String EXT_ISSUE_MSG_ID = "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id";
   public static final String EXT_ISSUE_LINE = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line";
   public static final String EXT_ISSUE_COL = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col";
-  public static final String EXT_RESOURCE_IMPLEMENTS = "http://hl7.org/fhir/StructureDefinition/structuredefinition-implements";
-  public static final String EXT_ALLOWEDRESOURCE = "http://hl7.org/fhir/StructureDefinition/questionnaire-allowedResource";
   public static final String EXT_OO_FILE = "http://hl7.org/fhir/StructureDefinition/operationoutcome-file";  
+  public static final String EXT_RESOURCE_IMPLEMENTS = "http://hl7.org/fhir/StructureDefinition/structuredefinition-implements";
   public static final String EXT_XML_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-xml-type";
-  public static final String EXT_PATTERN = "http://hl7.org/fhir/StructureDefinition/elementdefinition-pattern";
   public static final String EXT_XML_NAME = "http://hl7.org/fhir/StructureDefinition/elementdefinition-xml-name";  
   public static final String EXT_BINDING_STYLE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-binding-style";
   public static final String EXT_EXPLICIT_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-explicit-type-name";
@@ -144,7 +142,8 @@ public class ToolingExtensions {
   // validated
   //  private static final String EXT_OID = "http://hl7.org/fhir/StructureDefinition/valueset-oid";
   //  public static final String EXT_DEPRECATED = "http://hl7.org/fhir/StructureDefinition/codesystem-deprecated";
-
+  public static final String EXT_PATTERN = "http://hl7.org/fhir/StructureDefinition/elementdefinition-pattern";
+  public static final String EXT_ALLOWEDRESOURCE = "http://hl7.org/fhir/StructureDefinition/questionnaire-referenceResource";
   private static final String EXT_ALLOWABLE_UNITS = "http://hl7.org/fhir/StructureDefinition/elementdefinition-allowedUnits";
   private static final String EXT_FHIRTYPE = "http://hl7.org/fhir/StructureDefinition/questionnaire-fhirType";
   public static final String EXT_ALLOWED_TYPE =  "http://hl7.org/fhir/StructureDefinition/operationdefinition-allowed-type";
