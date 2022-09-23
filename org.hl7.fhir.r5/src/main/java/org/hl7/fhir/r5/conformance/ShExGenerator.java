@@ -95,9 +95,10 @@ public class ShExGenerator {
   private List<String> baseDataTypes = Arrays.asList("DataType", "PrimitiveType");
 
   private static String ONE_OR_MORE_PREFIX = "OneOrMore_";
+  private static String ONE_OR_MORE_CHOICES = "_One-Or-More-Choices_";
   private static String ONE_OR_MORE_TEMPLATE =
     "\n$comment$\n<$oomType$> CLOSED {" +
-      "\n    rdf:first @<$origType$> ;" +
+      "\n    rdf:first @<$origType$> $restriction$ ;" +
       "\n    rdf:rest [rdf:nil] OR @<$oomType$> " +
       "\n}\n";
 
@@ -215,6 +216,8 @@ public class ShExGenerator {
 
   private List<String> oneOrMoreTypes;
 
+  private List<String> constraintsList;
+
   private HashSet<String> datatypes, emittedDatatypes;
   private HashSet<String> references;
   private LinkedList<StructureDefinition> uniq_structures;
@@ -228,6 +231,7 @@ public class ShExGenerator {
     profileUtilities = new ProfileUtilities(context, null, null);
     innerTypes = new HashSet<Pair<StructureDefinition, ElementDefinition>>();
     oneOrMoreTypes = new ArrayList<String>();
+    constraintsList = new ArrayList<String>();
     emittedInnerTypes = new HashSet<Pair<StructureDefinition, ElementDefinition>>();
     datatypes = new HashSet<String>();
     emittedDatatypes = new HashSet<String>();
@@ -241,6 +245,7 @@ public class ShExGenerator {
     list.add(structure);
     innerTypes.clear();
     oneOrMoreTypes.clear();
+    constraintsList.clear();
     emittedInnerTypes.clear();
     datatypes.clear();
     emittedDatatypes.clear();
@@ -543,11 +548,12 @@ public class ShExGenerator {
     ST element_def;
     String card = ("*".equals(ed.getMax()) ? (ed.getMin() == 0 ? "*" : "+") : (ed.getMin() == 0 ? "?" : "")) + ";";
 
+    element_def = tmplt(ELEMENT_TEMPLATE);
     if(id.endsWith("[x]")) {
-      element_def = ed.getType().size() > 1? tmplt(INNER_SHAPE_TEMPLATE) : tmplt(ELEMENT_TEMPLATE);
-      element_def.add("id", "");
+      //element_def = ed.getType().size() > 1? tmplt(INNER_SHAPE_TEMPLATE) : tmplt(ELEMENT_TEMPLATE);
+      element_def.add("id", "fhir:" + shortId.replace("[x]", ""));
     } else {
-      element_def = tmplt(ELEMENT_TEMPLATE);
+      //element_def = tmplt(ELEMENT_TEMPLATE);
       //element_def.add("id", "fhir:" + (id.charAt(0) == id.toLowerCase().charAt(0)? shortId : id) + " ");
       element_def.add("id", "fhir:" + shortId + " ");
     }
@@ -556,18 +562,30 @@ public class ShExGenerator {
     if (children.size() > 0) {
       String parentPath = sd.getName();
       if ((ed.hasContentReference() && (!ed.hasType())) || (!id.equals(sd.getName() + "." + shortId))){
-        System.out.println("Not Adding innerType:" + id + " to " + sd.getName());
+        //System.out.println("Not Adding innerType:" + id + " to " + sd.getName());
       }
       else
           innerTypes.add(new ImmutablePair<StructureDefinition, ElementDefinition>(sd, ed));
-      //defn = simpleElement(sd, ed, id);
+      defn = simpleElement(sd, ed, id);
     }
 
     if(id.endsWith("[x]")) {
-      defn = genChoiceTypes(sd, ed, shortId);
+      defn = " (" + genChoiceTypes(sd, ed, shortId) + ") ";
+
+      List<String> refValues = new ArrayList<String>();
+      if (ed.getType().get(0).hasTargetProfile()) {
+        ed.getType().get(0).getTargetProfile().forEach((CanonicalType tps) -> {
+          String els[] = tps.getValue().split("/");
+          refValues.add("@<" + els[els.length - 1] + ">");
+        });
+        defn += " AND {fhir:link " + StringUtils.join(refValues, " OR \n\t\t\t ") + " } ";
+      }
+
+      defn +=  " AND { rdf:type IRI } ";
     } else if (ed.getType().size() == 1) {
       // Single entry
-      defn = genTypeRef(sd, ed, id, ed.getType().get(0));
+      if (defn.isEmpty())
+        defn = genTypeRef(sd, ed, id, ed.getType().get(0));
     } else if (ed.getContentReference() != null) {
       // Reference to another element
       String ref = ed.getContentReference();
@@ -592,15 +610,15 @@ public class ShExGenerator {
 
           ed.getType().get(0).getTargetProfile().forEach((CanonicalType tps) -> {
             String els[] = tps.getValue().split("/");
-            refValues.add("@<" + els[els.length - 1] + ">");
+            refValues.add(els[els.length - 1]);
           });
         }
       }
 
     String refChoices = "";
     if (!refValues.isEmpty()) {
-      String indnt = " \n\t\t\t\t\t";
-      refChoices = " AND " + indnt + " {fhir:value [ " + StringUtils.join(refValues, indnt) + " ]} ";
+      Collections.sort(refValues);
+      refChoices = StringUtils.join(refValues, "_OR_");
     }
 
     // Adding OneOrMore as prefix to the reference type if cardinality is 1..* or 0..*
@@ -609,14 +627,36 @@ public class ShExGenerator {
       card = card.replace("*", "?");
       defn = defn.replace("<", "<" + ONE_OR_MORE_PREFIX);
 
-      String defnToStore = StringUtils.substringBetween(defn, "<", ">");
+      String defnToStore = defn;
+      if (!refChoices.isEmpty()) {
+        defnToStore = defn.replace(">", ONE_OR_MORE_CHOICES + refChoices + ">");
+        defn = defn.replace(">", "_" + refChoices + ">");
+      }
+
+      defnToStore = StringUtils.substringBetween(defnToStore, "<", ">");
       if (!oneOrMoreTypes.contains(defnToStore))
         oneOrMoreTypes.add(defnToStore);
     }
+    else{
+          if (!refChoices.isEmpty()) {
+          defn += " AND {fhir:link \n\t\t\t@<" +
+              refChoices.replaceAll("_OR_", "> OR \n\t\t\t@<") + "> }";
+        }
+    }
 
-    element_def.add("defn", defn + refChoices);
+    element_def.add("defn", defn);
     element_def.add("card", card);
     addComment(element_def, ed);
+
+    List<ElementDefinition.ElementDefinitionConstraintComponent> constraints = ed.getConstraint();
+    for (ElementDefinition.ElementDefinitionConstraintComponent constraint : ed.getConstraint()) {
+      String constItem  = "Source:" + constraint.getSource() + " Expression: " + constraint.getExpression();
+      if (!constraintsList.contains(constItem)){
+        constraintsList.add(constItem);
+        System.out.println("   **** Constraint found when processing SD: " + sd.getName() + " Element: " + ed.getName() + " [" + constItem + "]");
+      }
+    }
+
     return element_def.render();
   }
 
@@ -806,10 +846,11 @@ public class ShExGenerator {
     String base = id.replace("[x]", "");
 
     for(ElementDefinition.TypeRefComponent typ : ed.getType())
-      choiceEntries.add(genChoiceEntry(sd, ed, id, base, typ));
+      choiceEntries.add(genChoiceEntry(sd, ed, "", "", typ));
+      //choiceEntries.add(genChoiceEntry(sd, ed, id, base, typ));
 
     //return StringUtils.join(choiceEntries, " |\n");
-    return StringUtils.join(choiceEntries, " OR \n");
+    return StringUtils.join(choiceEntries, " OR \n\t\t\t");
   }
 
   /**
@@ -822,7 +863,8 @@ public class ShExGenerator {
     ST shex_choice_entry = tmplt(ELEMENT_TEMPLATE);
 
     String ext = typ.getWorkingCode();
-    shex_choice_entry.add("id", "fhir:" + base+Character.toUpperCase(ext.charAt(0)) + ext.substring(1) + " ");
+    // shex_choice_entry.add("id", "fhir:" + base+Character.toUpperCase(ext.charAt(0)) + ext.substring(1) + " ");
+    shex_choice_entry.add("id", "");
     shex_choice_entry.add("card", "");
     shex_choice_entry.add("defn", genTypeRef(sd, ed, id, typ));
     shex_choice_entry.add("comment", " ");
@@ -834,8 +876,23 @@ public class ShExGenerator {
       return "";
 
     ST one_or_more_type = tmplt(ONE_OR_MORE_TEMPLATE);
-    one_or_more_type.add("oomType", oneOrMoreType);
-    one_or_more_type.add("origType", oneOrMoreType.replaceAll(ONE_OR_MORE_PREFIX, ""));
+    String oomType = oneOrMoreType;
+    String origType = oneOrMoreType;
+    String restriction = "";
+    if (oneOrMoreType.indexOf(ONE_OR_MORE_CHOICES) != -1) {
+      oomType = oneOrMoreType.replaceAll(ONE_OR_MORE_CHOICES, "_");
+      origType = oneOrMoreType.split(ONE_OR_MORE_CHOICES)[0];
+      restriction = "AND {fhir:link \n\t\t\t@<";
+
+      String choices = oneOrMoreType.split(ONE_OR_MORE_CHOICES)[1];
+      restriction += choices.replaceAll("_OR_", "> OR \n\t\t\t@<") + "> }";
+    }
+
+    origType = origType.replaceAll(ONE_OR_MORE_PREFIX, "");
+
+    one_or_more_type.add("oomType", oomType);
+    one_or_more_type.add("origType", origType);
+    one_or_more_type.add("restriction", restriction);
     one_or_more_type.add("comment", "");
     return one_or_more_type.render();
   }
@@ -859,11 +916,6 @@ public class ShExGenerator {
       if (child.hasBase() && child.getBase().getPath().startsWith(sd.getName())) {
         String elementDefinition = genElementDefinition(sd, child);
         elements.add(elementDefinition);
-
-        List<ElementDefinition.ElementDefinitionConstraintComponent> constraints = ed.getConstraint();
-
-        for (ElementDefinition.ElementDefinitionConstraintComponent constraint : ed.getConstraint())
-              System.out.println("   **** Constraint on " + ed.getName() + ": " + constraint.getExpression());
       }
 
     element_reference.add("elements", StringUtils.join(elements, "\n"));
