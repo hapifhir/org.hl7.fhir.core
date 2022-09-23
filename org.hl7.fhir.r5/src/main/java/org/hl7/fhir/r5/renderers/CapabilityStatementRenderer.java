@@ -41,7 +41,9 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     if (conf.getRest().size() > 0) {
       CapabilityStatementRestComponent rest = conf.getRest().get(0);
       XhtmlNode t = x.table(null);
-      addTableRow(t, "Mode", rest.getMode().toString());
+      if (rest.hasMode()) {
+        addTableRow(t, "Mode", rest.getMode().toString());
+      }
       addMarkdown(addTableRow(t, "Description"), rest.getDocumentation());
 
       addTableRow(t, "Transaction", showOp(rest, SystemRestfulInteraction.TRANSACTION));
