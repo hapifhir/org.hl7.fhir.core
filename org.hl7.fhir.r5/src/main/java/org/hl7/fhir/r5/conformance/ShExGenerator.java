@@ -86,7 +86,8 @@ public class ShExGenerator {
   //      the list of element declarations
   //      an optional index element (for appearances inside ordered lists)
   private static String SHAPE_DEFINITION_TEMPLATE =
-          "$comment$\n<$id$> CLOSED {\n    $resourceDecl$" +
+          "$comment$\n<$id$> CLOSED { $fhirType$ " +
+                  "\n    $resourceDecl$" +
                   "\n    $elements$" +
                   //"\n    fhir:index xsd:integer?                 # Relative position in a list"
                   "\n}\n";
@@ -405,6 +406,16 @@ public class ShExGenerator {
         shape_defn.add("resourceDecl", resource_decl.render());
       } else {
         shape_defn.add("resourceDecl", "");
+      }
+
+      if (sd.hasBaseDefinition()){
+        String bd = sd.getBaseDefinition();
+        String[] els = bd.split("/");
+        bd = els[els.length - 1];
+        if (bd != null && !bd.isEmpty() && baseDataTypes.contains(bd))
+          shape_defn.add("fhirType", "\n a [fhir:" + sd.getId() + "];");
+        else
+          shape_defn.add("fhirType", " ");
       }
     }
 
@@ -908,6 +919,7 @@ public class ShExGenerator {
     ST element_reference = tmplt(SHAPE_DEFINITION_TEMPLATE);
     element_reference.add("resourceDecl", "");  // Not a resource
     element_reference.add("id", path + getExtendedType(ed));
+    element_reference.add("fhirType", " ");
     String comment = ed.getShort();
     element_reference.add("comment", comment == null? " " : "# " + comment);
 
