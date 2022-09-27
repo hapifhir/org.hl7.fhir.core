@@ -325,7 +325,8 @@ public class ProfileUtilities extends TranslatingUtilities {
   public static final int STATUS_ERROR = 3;
   public static final int STATUS_FATAL = 4;
 
-
+  public static final String BASE_MODEL = "base.model";
+  public static final String BASE_PATH = "base.path";
   public static final String DERIVATION_EQUALS = "derivation.equals";
   public static final String DERIVATION_POINTER = "derived.pointer";
   public static final String IS_DERIVED = "derived.fact";
@@ -354,6 +355,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private boolean wantFixDifferentialFirstElementType;
   private Set<String> masterSourceFileNames;
   private Map<ElementDefinition, List<ElementDefinition>> childMapCache = new HashMap<>();
+  private Map<String, Map<String, ElementDefinition>> sdMapCache = new HashMap<>();
 
   public ProfileUtilities(IWorkerContext context, List<ValidationMessage> messages, ProfileKnowledgeProvider pkp, FHIRPathEngine fpe) {
     super();
@@ -423,7 +425,21 @@ public class ProfileUtilities extends TranslatingUtilities {
     String getLinkForUrl(String corePath, String s);
   }
 
+  public ElementDefinition getElementById(String structureCanonical, String id) {
+    Map<String, ElementDefinition> sdCache = sdMapCache.get(structureCanonical);
 
+    if (sdCache == null) {
+      StructureDefinition sd = (StructureDefinition) context.fetchResource(StructureDefinition.class, structureCanonical);
+      if (sd==null)
+        throw new FHIRException("Unable to retrieve StructureDefinition with URL " + structureCanonical);
+      sdCache = new HashMap<String, ElementDefinition>();
+      sdMapCache.put(structureCanonical, sdCache);
+      for (ElementDefinition e : sd.getSnapshot().getElement()) {
+        sdCache.put(e.getId(), e);
+      }
+    }
+    return sdCache.get(id);
+  }
 
   public List<ElementDefinition> getChildMap(StructureDefinition profile, ElementDefinition element) throws DefinitionException {
     if (childMapCache .containsKey(element)) {
@@ -497,7 +513,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   /**
    * Given a Structure, navigate to the element given by the path and return the direct children of that element
    *
-   * @param structure The structure to navigate into
+   * @param profile The structure to navigate into
    * @param path The path of the element within the structure to get the children for
    * @return A List containing the element children (all of them are Elements)
    */
@@ -608,10 +624,9 @@ public class ProfileUtilities extends TranslatingUtilities {
    * Given a base (snapshot) profile structure, and a differential profile, generate a new snapshot profile
    *
    * @param base - the base structure on which the differential will be applied
-   * @param differential - the differential to apply to the base
+   * @param derived - the differential to apply to the base
    * @param url - where the base has relative urls for profile references, these need to be converted to absolutes by prepending this URL (e.g. the canonical URL)
    * @param webUrl - where the base has relative urls in markdown, these need to be converted to absolutes by prepending this URL (this is not the same as the canonical URL)
-   * @param trimDifferential - if this is true, then the snap short generator will remove any material in the element definitions that is not different to the base
    * @return
    * @throws FHIRException 
    * @throws DefinitionException 
@@ -1133,7 +1148,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           // so we just copy it in
           ElementDefinition outcome = updateURLs(url, webUrl, currentBase.copy());
           outcome.setPath(fixedPathDest(contextPathDst, outcome.getPath(), redirector, contextPathSrc));
-          updateFromBase(outcome, currentBase);
+          updateFromBase(outcome, currentBase, srcSD.getUrl());
           updateConstraintSources(outcome, srcSD.getUrl());
           markDerived(outcome);
           if (resultPathBase == null)
@@ -1280,7 +1295,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           outcome.setPath(fixedPathDest(contextPathDst, outcome.getPath(), redirector, contextPathSrc));
           if (res == null)
             res = outcome;
-          updateFromBase(outcome, currentBase);
+          updateFromBase(outcome, currentBase, srcSD.getUrl());
           if (diffMatches.get(0).hasSliceName()) {
             outcome.setSliceName(diffMatches.get(0).getSliceName());
             if (!diffMatches.get(0).hasMin() && (diffMatches.size() > 1 || slicer == null || slicer.getSlicing().getRules() != SlicingRules.CLOSED)  && !currentBase.hasSliceName()) {
@@ -1543,7 +1558,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             // we're just going to accept the differential slicing at face value
             ElementDefinition outcome = updateURLs(url, webUrl, currentBase.copy());
             outcome.setPath(fixedPathDest(contextPathDst, outcome.getPath(), redirector, contextPathSrc));
-            updateFromBase(outcome, currentBase);
+            updateFromBase(outcome, currentBase, srcSD.getUrl());
 
             if (!diffMatches.get(0).hasSlicing())
               outcome.setSlicing(makeExtensionSlicing());
@@ -1618,7 +1633,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             // so we just copy it in
             ElementDefinition outcome = updateURLs(url, webUrl, currentBase.copy());
             outcome.setPath(fixedPathDest(contextPathDst, outcome.getPath(), redirector, contextPathSrc));
-            updateFromBase(outcome, currentBase);
+            updateFromBase(outcome, currentBase, srcSD.getUrl());
             markDerived(outcome);
             if (resultPathBase == null)
               resultPathBase = outcome.getPath();
@@ -1655,6 +1670,8 @@ public class ProfileUtilities extends TranslatingUtilities {
               if (!outcome.getPath().startsWith(resultPathBase))
                 throw new DefinitionException(context.formatMessage(I18nConstants.ADDING_WRONG_PATH_IN_PROFILE___VS_, profileName, outcome.getPath(), resultPathBase));
               result.getElement().add(outcome); // so we just copy it in
+              outcome.setUserData(BASE_MODEL, srcSD.getUrl());
+              outcome.setUserData(BASE_PATH, resultPathBase);
               baseCursor++;
             }
           }
@@ -1815,7 +1832,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           }
           ElementDefinition outcome = updateURLs(url, webUrl, currentBase.copy());
           outcome.setPath(fixedPathDest(contextPathDst, outcome.getPath(), redirector, contextPathSrc));
-          updateFromBase(outcome, currentBase);
+          updateFromBase(outcome, currentBase, srcSD.getUrl());
           if (diffMatches.get(0).hasSlicing() || !diffMatches.get(0).hasSliceName()) {
             updateFromSlicing(outcome.getSlicing(), diffMatches.get(0).getSlicing());
             updateFromDefinition(outcome, diffMatches.get(0), profileName, closed, url, srcSD); // if there's no slice, we don't want to update the unsliced description
@@ -1867,7 +1884,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           for (ElementDefinition baseItem : baseMatches) {
             baseCursor = base.getElement().indexOf(baseItem);
             outcome = updateURLs(url, webUrl, baseItem.copy());
-            updateFromBase(outcome, currentBase);
+            updateFromBase(outcome, currentBase, srcSD.getUrl());
             outcome.setPath(fixedPathDest(contextPathDst, outcome.getPath(), redirector, contextPathSrc));
             outcome.setSlicing(null);
             if (!outcome.getPath().startsWith(resultPathBase))
@@ -1894,6 +1911,8 @@ public class ProfileUtilities extends TranslatingUtilities {
                 outcome.setPath(fixedPathDest(contextPathDst, outcome.getPath(), redirector, contextPathSrc));
                 if (!outcome.getPath().startsWith(resultPathBase))
                   throw new DefinitionException(context.formatMessage(I18nConstants.ADDING_WRONG_PATH));
+                outcome.setUserData(BASE_PATH, outcome.getPath());
+                outcome.setUserData(BASE_MODEL, srcSD.getUrl());
                 result.getElement().add(outcome);
                 baseCursor++;
               }
@@ -1923,7 +1942,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               outcome = updateURLs(url, webUrl, currentBase.copy());
               //            outcome = updateURLs(url, diffItem.copy());
               outcome.setPath(fixedPathDest(contextPathDst, outcome.getPath(), redirector, contextPathSrc));
-              updateFromBase(outcome, currentBase);
+              updateFromBase(outcome, currentBase, srcSD.getUrl());
               outcome.setSlicing(null);
               outcome.setMin(0); // we're in a slice, so it's only a mandatory if it's explicitly marked so
               if (!outcome.getPath().startsWith(resultPathBase))
@@ -2430,7 +2449,9 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private void updateFromBase(ElementDefinition derived, ElementDefinition base) {
+  private void updateFromBase(ElementDefinition derived, ElementDefinition base, String baseProfileUrl) {
+    derived.setUserData(BASE_MODEL, baseProfileUrl);
+    derived.setUserData(BASE_PATH, base.getPath());
     if (base.hasBase()) {
       if (!derived.hasBase())
         derived.setBase(new ElementDefinitionBaseComponent());
@@ -3522,7 +3543,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         if (!child.getPath().endsWith(".id")) {
           List<StructureDefinition> sdl = new ArrayList<>();
           sdl.add(ed);
-          genElement(defFile == null ? "" : defFile+"-definitions.html#extension.", gen, r.getSubRows(), child, ed.getSnapshot().getElement(), sdl, true, defFile, true, full, corePath, imagePath, true, false, false, false, null, false, rc);
+          genElement(defFile == null ? "" : defFile+"-definitions.html#extension.", gen, r.getSubRows(), child, ed.getSnapshot().getElement(), sdl, true, defFile, true, full, corePath, imagePath, true, false, false, false, null, false, rc, "");
         }
     } else if (deep) {
       List<ElementDefinition> children = new ArrayList<ElementDefinition>();
@@ -4003,8 +4024,13 @@ public class ProfileUtilities extends TranslatingUtilities {
     return piece;
   }
 
-  public XhtmlNode generateTable(String defFile, StructureDefinition profile, boolean diff, String imageFolder, boolean inlineGraphics, String profileBaseFileName, boolean snapshot, String corePath, String imagePath, 
-      boolean logicalModel, boolean allInvariants, Set<String> outputTracker, boolean active, boolean mustSupport, RenderingContext rc) throws IOException, FHIRException {
+  public XhtmlNode generateTable(String defFile, StructureDefinition profile, boolean diff, String imageFolder, boolean inlineGraphics, String profileBaseFileName, boolean snapshot, String corePath, String imagePath,
+                                 boolean logicalModel, boolean allInvariants, Set<String> outputTracker, boolean active, boolean mustSupport, RenderingContext rc) throws IOException, FHIRException {
+    return generateTable(defFile, profile, diff, imageFolder, inlineGraphics, profileBaseFileName, snapshot, corePath, imagePath, logicalModel, allInvariants, outputTracker, active, mustSupport, rc, "");
+  }
+
+  public XhtmlNode generateTable(String defFile, StructureDefinition profile, boolean diff, String imageFolder, boolean inlineGraphics, String profileBaseFileName, boolean snapshot, String corePath, String imagePath,
+      boolean logicalModel, boolean allInvariants, Set<String> outputTracker, boolean active, boolean mustSupport, RenderingContext rc, String anchorPrefix) throws IOException, FHIRException {
     assert(diff != snapshot);// check it's ok to get rid of one of these
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(imageFolder, inlineGraphics, true);
     gen.setTranslator(getTranslator());
@@ -4030,7 +4056,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     if (diff) {
       insertMissingSparseElements(list);
     }
-    genElement(defFile == null ? null : defFile+"#", gen, model.getRows(), list.get(0), list, profiles, diff, profileBaseFileName, null, snapshot, corePath, imagePath, true, logicalModel, profile.getDerivation() == TypeDerivationRule.CONSTRAINT && usesMustSupport(list), allInvariants, null, mustSupport, rc);
+    genElement(defFile == null ? null : defFile+"#", gen, model.getRows(), list.get(0), list, profiles, diff, profileBaseFileName, null, snapshot, corePath, imagePath, true, logicalModel, profile.getDerivation() == TypeDerivationRule.CONSTRAINT && usesMustSupport(list), allInvariants, null, mustSupport, rc, anchorPrefix);
     try {
       return gen.generate(model, imagePath, 0, outputTracker);
   	} catch (org.hl7.fhir.exceptions.FHIRException e) {
@@ -4126,7 +4152,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
 
   private Row genElement(String defPath, HierarchicalTableGenerator gen, List<Row> rows, ElementDefinition element, List<ElementDefinition> all, List<StructureDefinition> profiles, boolean showMissing, String profileBaseFileName, Boolean extensions, 
-      boolean snapshot, String corePath, String imagePath, boolean root, boolean logicalModel, boolean isConstraintMode, boolean allInvariants, Row slicingRow, boolean mustSupport, RenderingContext rc) throws IOException, FHIRException {
+      boolean snapshot, String corePath, String imagePath, boolean root, boolean logicalModel, boolean isConstraintMode, boolean allInvariants, Row slicingRow, boolean mustSupport, RenderingContext rc, String anchorPrefix) throws IOException, FHIRException {
     Row originalRow = slicingRow;
     StructureDefinition profile = profiles == null ? null : profiles.get(profiles.size()-1);
     Row typesRow = null;
@@ -4188,7 +4214,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         row.setOpacity("0.5");
       }
       UnusedTracker used = new UnusedTracker();
-      String ref = defPath == null ? null : defPath + element.getId();
+      String ref = defPath == null ? null : defPath + anchorPrefix + element.getId();
       String sName = tail(element.getPath());
       if (element.hasSliceName())
         sName = sName +":"+element.getSliceName();
@@ -4263,7 +4289,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             Row childRow = chooseChildRowByGroup(gen, currRow, groups, child, element, isConstraintMode);
 
             if (logicalModel || !child.getPath().endsWith(".id") || (child.getPath().endsWith(".id") && (profile != null) && (profile.getDerivation() == TypeDerivationRule.CONSTRAINT))) {  
-              currRow = genElement(defPath, gen, childRow.getSubRows(), child, all, profiles, showMissing, profileBaseFileName, isExtension, snapshot, corePath, imagePath, false, logicalModel, isConstraintMode, allInvariants, currRow, mustSupport, rc);
+              currRow = genElement(defPath, gen, childRow.getSubRows(), child, all, profiles, showMissing, profileBaseFileName, isExtension, snapshot, corePath, imagePath, false, logicalModel, isConstraintMode, allInvariants, currRow, mustSupport, rc, anchorPrefix);
             }
           }
         }
