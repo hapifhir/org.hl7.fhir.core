@@ -731,6 +731,9 @@ public class BaseValidator implements IValidationContextResourceLoader {
 
   protected ValueSet resolveBindingReference(DomainResource ctxt, String reference, String uri) {
     if (reference != null) {
+      if (reference.equals("http://www.rfc-editor.org/bcp/bcp13.txt")) {
+        reference = "http://hl7.org/fhir/ValueSet/mimetypes";
+      }
       if (reference.startsWith("#")) {
         for (Resource c : ctxt.getContained()) {
           if (c.getId().equals(reference.substring(1)) && (c instanceof ValueSet))
