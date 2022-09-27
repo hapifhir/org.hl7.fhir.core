@@ -560,7 +560,7 @@ public class ShExGenerator {
     String card = ("*".equals(ed.getMax()) ? (ed.getMin() == 0 ? "*" : "+") : (ed.getMin() == 0 ? "?" : "")) + ";";
 
     element_def = tmplt(ELEMENT_TEMPLATE);
-    if(id.endsWith("[x]")) {
+    if (id.endsWith("[x]")) {
       //element_def = ed.getType().size() > 1? tmplt(INNER_SHAPE_TEMPLATE) : tmplt(ELEMENT_TEMPLATE);
       element_def.add("id", "fhir:" + shortId.replace("[x]", ""));
     } else {
@@ -572,52 +572,45 @@ public class ShExGenerator {
     List<ElementDefinition> children = profileUtilities.getChildList(sd, ed);
     if (children.size() > 0) {
       String parentPath = sd.getName();
-      if ((ed.hasContentReference() && (!ed.hasType())) || (!id.equals(sd.getName() + "." + shortId))){
+      if ((ed.hasContentReference() && (!ed.hasType())) || (!id.equals(sd.getName() + "." + shortId))) {
         //System.out.println("Not Adding innerType:" + id + " to " + sd.getName());
-      }
-      else
-          innerTypes.add(new ImmutablePair<StructureDefinition, ElementDefinition>(sd, ed));
+      } else
+        innerTypes.add(new ImmutablePair<StructureDefinition, ElementDefinition>(sd, ed));
       defn = simpleElement(sd, ed, id);
     }
 
-    if(id.endsWith("[x]")) {
+    String refChoices = "";
+
+    if (id.endsWith("[x]")) {
       defn = " (" + genChoiceTypes(sd, ed, shortId) + ") ";
+      defn += " AND { rdf:type IRI } ";
+    } else {
+      if (ed.getType().size() == 1) {
+        // Single entry
+        if (defn.isEmpty())
+          defn = genTypeRef(sd, ed, id, ed.getType().get(0));
+      } else if (ed.getContentReference() != null) {
+        // Reference to another element
+        String ref = ed.getContentReference();
+        if (!ref.startsWith("#"))
+          throw new AssertionError("Not equipped to deal with absolute path references: " + ref);
+        String refPath = null;
+        for (ElementDefinition ed1 : sd.getSnapshot().getElement()) {
+          if (ed1.getId() != null && ed1.getId().equals(ref.substring(1))) {
+            refPath = ed1.getPath();
+            break;
+          }
+        }
+        if (refPath == null)
+          throw new AssertionError("Reference path not found: " + ref);
+        // String typ = id.substring(0, id.indexOf(".") + 1) + ed.getContentReference().substring(1);
+        defn = simpleElement(sd, ed, refPath);
+      }
+
 
       List<String> refValues = new ArrayList<String>();
-      if (ed.getType().get(0).hasTargetProfile()) {
-        ed.getType().get(0).getTargetProfile().forEach((CanonicalType tps) -> {
-          String els[] = tps.getValue().split("/");
-          refValues.add("@<" + els[els.length - 1] + ">");
-        });
-        defn += " AND {fhir:link " + StringUtils.join(refValues, " OR \n\t\t\t ") + " } ";
-      }
-
-      defn +=  " AND { rdf:type IRI } ";
-    } else if (ed.getType().size() == 1) {
-      // Single entry
-      if (defn.isEmpty())
-        defn = genTypeRef(sd, ed, id, ed.getType().get(0));
-    } else if (ed.getContentReference() != null) {
-      // Reference to another element
-      String ref = ed.getContentReference();
-      if(!ref.startsWith("#"))
-        throw new AssertionError("Not equipped to deal with absolute path references: " + ref);
-      String refPath = null;
-      for(ElementDefinition ed1: sd.getSnapshot().getElement()) {
-        if(ed1.getId() != null && ed1.getId().equals(ref.substring(1))) {
-          refPath = ed1.getPath();
-          break;
-        }
-      }
-      if(refPath == null)
-        throw new AssertionError("Reference path not found: " + ref);
-      // String typ = id.substring(0, id.indexOf(".") + 1) + ed.getContentReference().substring(1);
-      defn = simpleElement(sd, ed, refPath);
-    }
-
-    List<String> refValues = new ArrayList<String>();
-    if (ed.hasType() && (ed.getType().get(0).getWorkingCode().equals("Reference"))) {
-      if (ed.getType().get(0).hasTargetProfile()) {
+      if (ed.hasType() && (ed.getType().get(0).getWorkingCode().equals("Reference"))) {
+        if (ed.getType().get(0).hasTargetProfile()) {
 
           ed.getType().get(0).getTargetProfile().forEach((CanonicalType tps) -> {
             String els[] = tps.getValue().split("/");
@@ -626,10 +619,10 @@ public class ShExGenerator {
         }
       }
 
-    String refChoices = "";
-    if (!refValues.isEmpty()) {
-      Collections.sort(refValues);
-      refChoices = StringUtils.join(refValues, "_OR_");
+      if (!refValues.isEmpty()) {
+        Collections.sort(refValues);
+        refChoices = StringUtils.join(refValues, "_OR_");
+      }
     }
 
     // Adding OneOrMore as prefix to the reference type if cardinality is 1..* or 0..*
@@ -659,16 +652,39 @@ public class ShExGenerator {
     element_def.add("card", card);
     addComment(element_def, ed);
 
+    List<ProfileUtilities.ElementChoiceGroup>  ecg = profileUtilities.readChoices(ed, getChildren(sd, ed));
+
     List<ElementDefinition.ElementDefinitionConstraintComponent> constraints = ed.getConstraint();
     for (ElementDefinition.ElementDefinitionConstraintComponent constraint : ed.getConstraint()) {
       String constItem  = "Source:" + constraint.getSource() + " Expression: " + constraint.getExpression();
       if (!constraintsList.contains(constItem)){
+
         constraintsList.add(constItem);
         System.out.println("   **** Constraint found when processing SD: " + sd.getName() + " Element: " + ed.getName() + " [" + constItem + "]");
       }
     }
 
     return element_def.render();
+  }
+
+  private List<ElementDefinition> getChildren(StructureDefinition derived, ElementDefinition element) {
+    List<ElementDefinition> elements = derived.getSnapshot().getElement();
+    int index = elements.indexOf(element) + 1;
+    String path = element.getPath()+".";
+    List<ElementDefinition> list = new ArrayList<>();
+    while (index < elements.size()) {
+      ElementDefinition e = elements.get(index);
+      String p = e.getPath();
+      if (p.startsWith(path) && !e.hasSliceName()) {
+        if (!p.substring(path.length()).contains(".")) {
+          list.add(e);
+        }
+        index++;
+      } else  {
+        break;
+      }
+    }
+    return list;
   }
 
   /**
@@ -854,13 +870,24 @@ public class ShExGenerator {
    */
   private String genChoiceTypes(StructureDefinition sd, ElementDefinition ed, String id) {
     List<String> choiceEntries = new ArrayList<String>();
+    List<String> refValues = new ArrayList<String>();
     String base = id.replace("[x]", "");
 
-    for(ElementDefinition.TypeRefComponent typ : ed.getType())
-      choiceEntries.add(genChoiceEntry(sd, ed, "", "", typ));
-      //choiceEntries.add(genChoiceEntry(sd, ed, id, base, typ));
+    for(ElementDefinition.TypeRefComponent typ : ed.getType()) {
+      String entry = genChoiceEntry(sd, ed, "", "", typ);
+      refValues.clear();
+      if (typ.hasTargetProfile()) {
+        typ.getTargetProfile().forEach((CanonicalType tps) -> {
+          String els[] = tps.getValue().split("/");
+          refValues.add("@<" + els[els.length - 1] + ">");
+        });
+      }
 
-    //return StringUtils.join(choiceEntries, " |\n");
+      if (!refValues.isEmpty())
+        choiceEntries.add("(" + entry + " AND {fhir:link " + StringUtils.join(refValues, " OR \n\t\t\t ") + " }) ");
+      else
+        choiceEntries.add(entry);
+    }
     return StringUtils.join(choiceEntries, " OR \n\t\t\t");
   }
 

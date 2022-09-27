@@ -118,6 +118,11 @@ public class ShexGeneratorTests {
   }
 
   @Test
+  public void testActivityDefinition() throws FHIRException, IOException, UcumException {
+    doTest("ActivityDefinition");
+  }
+
+  @Test
   public void testId() throws FHIRException, IOException, UcumException {
     doTest("id");
   }
