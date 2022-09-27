@@ -169,7 +169,7 @@ public class ValueSetValidator extends BaseValidator {
         }
         cf++;
       }    
-      warning(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), systemOk, version == null ? I18nConstants.VALUESET_UNC_SYSTEM_WARNING :  I18nConstants.VALUESET_UNC_SYSTEM_WARNING_VER);            
+      warning(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), systemOk, version == null ? I18nConstants.VALUESET_UNC_SYSTEM_WARNING :  I18nConstants.VALUESET_UNC_SYSTEM_WARNING_VER, system);            
     } else {
       warning(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), filters.size() == 0 && concepts.size() == 0, I18nConstants.VALUESET_NO_SYSTEM_WARNING);      
     }
