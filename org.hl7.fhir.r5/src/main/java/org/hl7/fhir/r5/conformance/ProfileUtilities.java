@@ -4042,19 +4042,9 @@ public class ProfileUtilities extends TranslatingUtilities {
     return generateTable(defFile, profile, diff, imageFolder, inlineGraphics, profileBaseFileName, snapshot, corePath, imagePath, logicalModel, allInvariants, outputTracker, active, mustSupport, rc, "");
   }
 
-  public XhtmlNode generateTable(String defFile, StructureDefinition profile, boolean diff, String imageFolder, boolean inlineGraphics, String profileBaseFileName, boolean snapshot, String corePath, String imagePath,
-      boolean logicalModel, boolean allInvariants, Set<String> outputTracker, boolean active, boolean mustSupport, RenderingContext rc, String anchorPrefix) throws IOException, FHIRException {
-    assert(diff != snapshot);// check it's ok to get rid of one of these
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(imageFolder, inlineGraphics, true);
-    gen.setTranslator(getTranslator());
-    TableModel model = gen.initNormalTable(corePath, false, true, profile.getId()+(diff ? "d" : "s"), active);
+  public List<ElementDefinition> supplementMissingDiffElements(StructureDefinition profile) {
     List<ElementDefinition> list = new ArrayList<>();
-    if (diff)
-      list.addAll(profile.getDifferential().getElement());
-    else
-      list.addAll(profile.getSnapshot().getElement());
-    List<StructureDefinition> profiles = new ArrayList<StructureDefinition>();
-    profiles.add(profile);
+    list.addAll(profile.getDifferential().getElement());
     if (list.isEmpty()) {
       ElementDefinition root = new ElementDefinition().setPath(profile.getType());
       root.setId(profile.getType());
@@ -4066,9 +4056,26 @@ public class ProfileUtilities extends TranslatingUtilities {
         list.add(0, root);
       }
     }
-    if (diff) {
-      insertMissingSparseElements(list);
+    insertMissingSparseElements(list);
+    return list;
+  }
+
+  public XhtmlNode generateTable(String defFile, StructureDefinition profile, boolean diff, String imageFolder, boolean inlineGraphics, String profileBaseFileName, boolean snapshot, String corePath, String imagePath,
+      boolean logicalModel, boolean allInvariants, Set<String> outputTracker, boolean active, boolean mustSupport, RenderingContext rc, String anchorPrefix) throws IOException, FHIRException {
+    assert(diff != snapshot);// check it's ok to get rid of one of these
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(imageFolder, inlineGraphics, true);
+    gen.setTranslator(getTranslator());
+    TableModel model = gen.initNormalTable(corePath, false, true, profile.getId()+(diff ? "d" : "s"), active);
+    List<ElementDefinition> list;
+    if (diff)
+      list = supplementMissingDiffElements(profile);
+    else {
+      list = new ArrayList<>();
+      list.addAll(profile.getSnapshot().getElement());
     }
+    List<StructureDefinition> profiles = new ArrayList<StructureDefinition>();
+    profiles.add(profile);
+
     genElement(defFile == null ? null : defFile+"#", gen, model.getRows(), list.get(0), list, profiles, diff, profileBaseFileName, null, snapshot, corePath, imagePath, true, logicalModel, profile.getDerivation() == TypeDerivationRule.CONSTRAINT && usesMustSupport(list), allInvariants, null, mustSupport, rc, anchorPrefix);
     try {
       return gen.generate(model, imagePath, 0, outputTracker);
