@@ -4439,7 +4439,13 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
   private boolean isBaseConstraint(ElementDefinitionConstraintComponent con) {
+    if (con == null) {
+      return false;
+    }
     String key = con.getKey();
+    if (key == null) {
+      return false;
+    }
     return key != null && key.startsWith("ele-") || key.startsWith("res-") || key.startsWith("ext-") || key.startsWith("dom-") || key.startsWith("dr-");
   }
 

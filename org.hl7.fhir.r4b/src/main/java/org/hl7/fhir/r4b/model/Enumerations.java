@@ -6028,6 +6028,10 @@ The primary difference between a medication statement and a medication administr
          */
         _0_11, 
         /**
+         * DSTU 1 version.
+         */
+        _0_0, 
+        /**
          * DSTU 1 Official version.
          */
         _0_0_80, 
@@ -6040,13 +6044,25 @@ The primary difference between a medication statement and a medication administr
          */
         _0_0_82, 
         /**
+         * January 2015 Ballot.
+         */
+        _0_4, 
+        /**
          * Draft For Comment (January 2015 Ballot).
          */
         _0_4_0, 
         /**
+         * May 2015 Ballot.
+         */
+        _0_5, 
+        /**
          * DSTU 2 Ballot version (May 2015 Ballot).
          */
         _0_5_0, 
+        /**
+         * DSTU 2 version.
+         */
+        _1_0, 
         /**
          * DSTU 2 QA Preview + CQIF Ballot (Sep 2015).
          */
@@ -6060,21 +6076,41 @@ The primary difference between a medication statement and a medication administr
          */
         _1_0_2, 
         /**
+         * GAO Ballot version.
+         */
+        _1_1, 
+        /**
          * GAO Ballot + draft changes to main FHIR standard.
          */
         _1_1_0, 
+        /**
+         * Connectathon 12 (Montreal) version.
+         */
+        _1_4, 
         /**
          * CQF on FHIR Ballot + Connectathon 12 (Montreal).
          */
         _1_4_0, 
         /**
+         * Connectathon 13 (Baltimore) version.
+         */
+        _1_6, 
+        /**
          * FHIR STU3 Ballot + Connectathon 13 (Baltimore).
          */
         _1_6_0, 
         /**
+         * Connectathon 14 (San Antonio) version.
+         */
+        _1_8, 
+        /**
          * FHIR STU3 Candidate + Connectathon 14 (San Antonio).
          */
         _1_8_0, 
+        /**
+         * STU3 version.
+         */
+        _3_0, 
         /**
          * FHIR Release 3 (STU).
          */
@@ -6083,40 +6119,112 @@ The primary difference between a medication statement and a medication administr
          * FHIR Release 3 (STU) with 1 technical errata.
          */
         _3_0_1, 
+        /**
+         * FHIR Release 3 (STU) with 2 technical errata.
+         */
         _3_0_2, 
         /**
-         * R4 Ballot #1.
+         * R4 Ballot #1 version.
+         */
+        _3_3, 
+        /**
+         * R4 Ballot #1 + Connectaton 18 (Cologne).
          */
         _3_3_0, 
         /**
-         * R4 Ballot #2.
+         * R4 Ballot #2 version.
+         */
+        _3_5, 
+        /**
+         * R4 Ballot #2 + Connectathon 19 (Baltimore).
          */
         _3_5_0, 
+        /**
+         * R4 version.
+         */
+        _4_0, 
         /**
          * FHIR Release 4 (Normative + STU).
          */
         _4_0_0, 
         /**
-         * FHIR Release 4 Technical Correction.
+         * FHIR Release 4 (Normative + STU) with 1 technical errata.
          */
         _4_0_1, 
         /**
-         * FHIR Release 4B Ballot #1.
+         * R4B Ballot #1 version.
+         */
+        _4_1, 
+        /**
+         * R4B Ballot #1 + Connectathon 27 (Virtual).
          */
         _4_1_0, 
+        _4_3_0_SNAPSHOT1,
+        _4_3_0_CIBUILD,
+        /**
+         * R5 Preview #1 version.
+         */
+        _4_2, 
+        /**
+         * R5 Preview #1 + Connectathon 23 (Sydney).
+         */
         _4_2_0, 
         /**
-         * FHIR Release 4B Snapshot #1.
+         * R4B version.
          */
-        _4_3_0SNAPSHOT1, 
+        _4_3, 
         /**
-         * FHIR Release 4B CI-Build.
-         */
-        _4_3_0CIBUILD, 
-        /**
-         * FHIR Release 4B
+         * FHIR Release 4B (Normative + STU).
          */
         _4_3_0, 
+        /**
+         * R5 Preview #2 version.
+         */
+        _4_4, 
+        /**
+         * R5 Preview #2 + Connectathon 24 (Virtual).
+         */
+        _4_4_0, 
+        /**
+         * R5 Preview #3 version.
+         */
+        _4_5, 
+        /**
+         * R5 Preview #3 + Connectathon 25 (Virtual).
+         */
+        _4_5_0, 
+        /**
+         * R5 Draft Ballot version.
+         */
+        _4_6, 
+        /**
+         * R5 Draft Ballot + Connectathon 27 (Virtual).
+         */
+        _4_6_0, 
+        /**
+         * R5 Versions.
+         */
+        _5_0, 
+        /**
+         * R5 Final Version.
+         */
+        _5_0_0, 
+        /**
+         * R5 Rolling ci-build.
+         */
+        _5_0_0CIBUILD, 
+        /**
+         * R5 Preview #2.
+         */
+        _5_0_0SNAPSHOT1, 
+        /**
+         * R5 Interim tooling stage.
+         */
+        _5_0_0SNAPSHOT2, 
+        /**
+         * R5 Ballot.
+         */
+        _5_0_0BALLOT, 
         /**
          * added to help the parsers
          */
@@ -6132,86 +6240,279 @@ The primary difference between a medication statement and a medication administr
           return _0_06;
         if ("0.11".equals(codeString))
           return _0_11;
+        if ("0.0".equals(codeString))
+          return _0_0;
         if ("0.0.80".equals(codeString))
           return _0_0_80;
         if ("0.0.81".equals(codeString))
           return _0_0_81;
         if ("0.0.82".equals(codeString))
           return _0_0_82;
+        if ("0.4".equals(codeString))
+          return _0_4;
         if ("0.4.0".equals(codeString))
           return _0_4_0;
+        if ("0.5".equals(codeString))
+          return _0_5;
         if ("0.5.0".equals(codeString))
           return _0_5_0;
+        if ("1.0".equals(codeString))
+          return _1_0;
         if ("1.0.0".equals(codeString))
           return _1_0_0;
         if ("1.0.1".equals(codeString))
           return _1_0_1;
         if ("1.0.2".equals(codeString))
           return _1_0_2;
+        if ("1.1".equals(codeString))
+          return _1_1;
         if ("1.1.0".equals(codeString))
           return _1_1_0;
+        if ("1.4".equals(codeString))
+          return _1_4;
         if ("1.4.0".equals(codeString))
           return _1_4_0;
+        if ("1.6".equals(codeString))
+          return _1_6;
         if ("1.6.0".equals(codeString))
           return _1_6_0;
+        if ("1.8".equals(codeString))
+          return _1_8;
         if ("1.8.0".equals(codeString))
           return _1_8_0;
+        if ("3.0".equals(codeString))
+          return _3_0;
         if ("3.0.0".equals(codeString))
           return _3_0_0;
         if ("3.0.1".equals(codeString))
           return _3_0_1;
         if ("3.0.2".equals(codeString))
           return _3_0_2;
+        if ("3.3".equals(codeString))
+          return _3_3;
         if ("3.3.0".equals(codeString))
           return _3_3_0;
+        if ("3.5".equals(codeString))
+          return _3_5;
         if ("3.5.0".equals(codeString))
           return _3_5_0;
+        if ("4.0".equals(codeString))
+          return _4_0;
         if ("4.0.0".equals(codeString))
           return _4_0_0;
         if ("4.0.1".equals(codeString))
           return _4_0_1;
+        if ("4.1".equals(codeString))
+          return _4_1;
         if ("4.1.0".equals(codeString))
           return _4_1_0;
+        if ("4.3.0-snapshot1".equals(codeString))
+          return _4_3_0_SNAPSHOT1;
+        if ("4.3.0-cibuild".equals(codeString))
+          return _4_3_0_CIBUILD;
+        if ("4.2".equals(codeString))
+          return _4_2;
         if ("4.2.0".equals(codeString))
           return _4_2_0;
-        if ("4.3.0-snapshot1".equalsIgnoreCase(codeString))
-          return _4_3_0SNAPSHOT1;
-        if ("4.3.0-cibuild".equalsIgnoreCase(codeString))
-          return _4_3_0CIBUILD;
-        if ("4.3.0".equalsIgnoreCase(codeString))
+        if ("4.3".equals(codeString))
+          return _4_3;
+        if ("4.3.0".equals(codeString))
           return _4_3_0;
+        if ("4.4".equals(codeString))
+          return _4_4;
+        if ("4.4.0".equals(codeString))
+          return _4_4_0;
+        if ("4.5".equals(codeString))
+          return _4_5;
+        if ("4.5.0".equals(codeString))
+          return _4_5_0;
+        if ("4.6".equals(codeString))
+          return _4_6;
+        if ("4.6.0".equals(codeString))
+          return _4_6_0;
+        if ("5.0".equals(codeString))
+          return _5_0;
+        if ("5.0.0".equals(codeString))
+          return _5_0_0;
+        if ("5.0.0-cibuild".equals(codeString))
+          return _5_0_0CIBUILD;
+        if ("5.0.0-snapshot1".equals(codeString))
+          return _5_0_0SNAPSHOT1;
+        if ("5.0.0-snapshot2".equals(codeString))
+          return _5_0_0SNAPSHOT2;
+        if ("5.0.0-ballot".equals(codeString))
+          return _5_0_0BALLOT;
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
+        public static boolean isValidCode(String codeString) {
+          if (codeString == null || "".equals(codeString))
+              return false;
+      if ("0.01".equals(codeString))
+        return true;
+      if ("0.05".equals(codeString))
+        return true;
+      if ("0.06".equals(codeString))
+        return true;
+      if ("0.11".equals(codeString))
+        return true;
+      if ("0.0".equals(codeString))
+        return true;
+      if ("0.0.80".equals(codeString))
+        return true;
+      if ("0.0.81".equals(codeString))
+        return true;
+      if ("0.0.82".equals(codeString))
+        return true;
+      if ("0.4".equals(codeString))
+        return true;
+      if ("0.4.0".equals(codeString))
+        return true;
+      if ("0.5".equals(codeString))
+        return true;
+      if ("0.5.0".equals(codeString))
+        return true;
+      if ("1.0".equals(codeString))
+        return true;
+      if ("1.0.0".equals(codeString))
+        return true;
+      if ("1.0.1".equals(codeString))
+        return true;
+      if ("1.0.2".equals(codeString))
+        return true;
+      if ("1.1".equals(codeString))
+        return true;
+      if ("1.1.0".equals(codeString))
+        return true;
+      if ("1.4".equals(codeString))
+        return true;
+      if ("1.4.0".equals(codeString))
+        return true;
+      if ("1.6".equals(codeString))
+        return true;
+      if ("1.6.0".equals(codeString))
+        return true;
+      if ("1.8".equals(codeString))
+        return true;
+      if ("1.8.0".equals(codeString))
+        return true;
+      if ("3.0".equals(codeString))
+        return true;
+      if ("3.0.0".equals(codeString))
+        return true;
+      if ("3.0.1".equals(codeString))
+        return true;
+      if ("3.0.2".equals(codeString))
+        return true;
+      if ("3.3".equals(codeString))
+        return true;
+      if ("3.3.0".equals(codeString))
+        return true;
+      if ("3.5".equals(codeString))
+        return true;
+      if ("3.5.0".equals(codeString))
+        return true;
+      if ("4.0".equals(codeString))
+        return true;
+      if ("4.0.0".equals(codeString))
+        return true;
+      if ("4.0.1".equals(codeString))
+        return true;
+      if ("4.1".equals(codeString))
+        return true;
+      if ("4.1.0".equals(codeString))
+        return true;
+      if ("4.2".equals(codeString))
+        return true;
+      if ("4.2.0".equals(codeString))
+        return true;
+      if ("4.3".equals(codeString))
+        return true;
+      if ("4.3.0".equals(codeString))
+        return true;
+      if ("4.4".equals(codeString))
+        return true;
+      if ("4.4.0".equals(codeString))
+        return true;
+      if ("4.5".equals(codeString))
+        return true;
+      if ("4.5.0".equals(codeString))
+        return true;
+      if ("4.6".equals(codeString))
+        return true;
+      if ("4.6.0".equals(codeString))
+        return true;
+      if ("5.0".equals(codeString))
+        return true;
+      if ("5.0.0".equals(codeString))
+        return true;
+      if ("5.0.0-cibuild".equals(codeString))
+        return true;
+      if ("5.0.0-snapshot1".equals(codeString))
+        return true;
+      if ("5.0.0-snapshot2".equals(codeString))
+        return true;
+      if ("5.0.0-ballot".equals(codeString))
+        return true;
+      return false;
+      }
+
         public String toCode() {
           switch (this) {
             case _0_01: return "0.01";
             case _0_05: return "0.05";
             case _0_06: return "0.06";
             case _0_11: return "0.11";
+            case _0_0: return "0.0";
             case _0_0_80: return "0.0.80";
             case _0_0_81: return "0.0.81";
             case _0_0_82: return "0.0.82";
+            case _0_4: return "0.4";
             case _0_4_0: return "0.4.0";
+            case _0_5: return "0.5";
             case _0_5_0: return "0.5.0";
+            case _1_0: return "1.0";
             case _1_0_0: return "1.0.0";
             case _1_0_1: return "1.0.1";
             case _1_0_2: return "1.0.2";
+            case _1_1: return "1.1";
             case _1_1_0: return "1.1.0";
+            case _1_4: return "1.4";
             case _1_4_0: return "1.4.0";
+            case _1_6: return "1.6";
             case _1_6_0: return "1.6.0";
+            case _1_8: return "1.8";
             case _1_8_0: return "1.8.0";
+            case _3_0: return "3.0";
             case _3_0_0: return "3.0.0";
             case _3_0_1: return "3.0.1";
             case _3_0_2: return "3.0.2";
+            case _3_3: return "3.3";
             case _3_3_0: return "3.3.0";
+            case _3_5: return "3.5";
             case _3_5_0: return "3.5.0";
+            case _4_0: return "4.0";
             case _4_0_0: return "4.0.0";
             case _4_0_1: return "4.0.1";
+            case _4_1: return "4.1";
             case _4_1_0: return "4.1.0";
+            case _4_3_0_SNAPSHOT1: return "4.3.0-snapshot1";
+            case _4_3_0_CIBUILD: return "4.3.0-cibuild";
+            case _4_2: return "4.2";
             case _4_2_0: return "4.2.0";
-            case _4_3_0SNAPSHOT1: return "4.3.0-snapshot1";
-            case _4_3_0CIBUILD: return "4.3.0-cibuild";
+            case _4_3: return "4.3";
             case _4_3_0: return "4.3.0";
+            case _4_4: return "4.4";
+            case _4_4_0: return "4.4.0";
+            case _4_5: return "4.5";
+            case _4_5_0: return "4.5.0";
+            case _4_6: return "4.6";
+            case _4_6_0: return "4.6.0";
+            case _5_0: return "5.0";
+            case _5_0_0: return "5.0.0";
+            case _5_0_0CIBUILD: return "5.0.0-cibuild";
+            case _5_0_0SNAPSHOT1: return "5.0.0-snapshot1";
+            case _5_0_0SNAPSHOT2: return "5.0.0-snapshot2";
+            case _5_0_0BALLOT: return "5.0.0-ballot";
             case NULL: return null;
             default: return "?";
           }
@@ -6222,30 +6523,57 @@ The primary difference between a medication statement and a medication administr
             case _0_05: return "http://hl7.org/fhir/FHIR-version";
             case _0_06: return "http://hl7.org/fhir/FHIR-version";
             case _0_11: return "http://hl7.org/fhir/FHIR-version";
+            case _0_0: return "http://hl7.org/fhir/FHIR-version";
             case _0_0_80: return "http://hl7.org/fhir/FHIR-version";
             case _0_0_81: return "http://hl7.org/fhir/FHIR-version";
             case _0_0_82: return "http://hl7.org/fhir/FHIR-version";
+            case _0_4: return "http://hl7.org/fhir/FHIR-version";
             case _0_4_0: return "http://hl7.org/fhir/FHIR-version";
+            case _0_5: return "http://hl7.org/fhir/FHIR-version";
             case _0_5_0: return "http://hl7.org/fhir/FHIR-version";
+            case _1_0: return "http://hl7.org/fhir/FHIR-version";
             case _1_0_0: return "http://hl7.org/fhir/FHIR-version";
             case _1_0_1: return "http://hl7.org/fhir/FHIR-version";
             case _1_0_2: return "http://hl7.org/fhir/FHIR-version";
+            case _1_1: return "http://hl7.org/fhir/FHIR-version";
             case _1_1_0: return "http://hl7.org/fhir/FHIR-version";
+            case _1_4: return "http://hl7.org/fhir/FHIR-version";
             case _1_4_0: return "http://hl7.org/fhir/FHIR-version";
+            case _1_6: return "http://hl7.org/fhir/FHIR-version";
             case _1_6_0: return "http://hl7.org/fhir/FHIR-version";
+            case _1_8: return "http://hl7.org/fhir/FHIR-version";
             case _1_8_0: return "http://hl7.org/fhir/FHIR-version";
+            case _3_0: return "http://hl7.org/fhir/FHIR-version";
             case _3_0_0: return "http://hl7.org/fhir/FHIR-version";
             case _3_0_1: return "http://hl7.org/fhir/FHIR-version";
             case _3_0_2: return "http://hl7.org/fhir/FHIR-version";
+            case _3_3: return "http://hl7.org/fhir/FHIR-version";
             case _3_3_0: return "http://hl7.org/fhir/FHIR-version";
+            case _3_5: return "http://hl7.org/fhir/FHIR-version";
             case _3_5_0: return "http://hl7.org/fhir/FHIR-version";
+            case _4_0: return "http://hl7.org/fhir/FHIR-version";
             case _4_0_0: return "http://hl7.org/fhir/FHIR-version";
             case _4_0_1: return "http://hl7.org/fhir/FHIR-version";
+            case _4_1: return "http://hl7.org/fhir/FHIR-version";
             case _4_1_0: return "http://hl7.org/fhir/FHIR-version";
+            case _4_3_0_SNAPSHOT1: return "http://hl7.org/fhir/FHIR-version";
+            case _4_3_0_CIBUILD: return "http://hl7.org/fhir/FHIR-version";
+            case _4_2: return "http://hl7.org/fhir/FHIR-version";
             case _4_2_0: return "http://hl7.org/fhir/FHIR-version";
-            case _4_3_0SNAPSHOT1: return "http://hl7.org/fhir/FHIR-version";
-            case _4_3_0CIBUILD: return "http://hl7.org/fhir/FHIR-version";
+            case _4_3: return "http://hl7.org/fhir/FHIR-version";
             case _4_3_0: return "http://hl7.org/fhir/FHIR-version";
+            case _4_4: return "http://hl7.org/fhir/FHIR-version";
+            case _4_4_0: return "http://hl7.org/fhir/FHIR-version";
+            case _4_5: return "http://hl7.org/fhir/FHIR-version";
+            case _4_5_0: return "http://hl7.org/fhir/FHIR-version";
+            case _4_6: return "http://hl7.org/fhir/FHIR-version";
+            case _4_6_0: return "http://hl7.org/fhir/FHIR-version";
+            case _5_0: return "http://hl7.org/fhir/FHIR-version";
+            case _5_0_0: return "http://hl7.org/fhir/FHIR-version";
+            case _5_0_0CIBUILD: return "http://hl7.org/fhir/FHIR-version";
+            case _5_0_0SNAPSHOT1: return "http://hl7.org/fhir/FHIR-version";
+            case _5_0_0SNAPSHOT2: return "http://hl7.org/fhir/FHIR-version";
+            case _5_0_0BALLOT: return "http://hl7.org/fhir/FHIR-version";
             case NULL: return null;
             default: return "?";
           }
@@ -6256,30 +6584,57 @@ The primary difference between a medication statement and a medication administr
             case _0_05: return "1st Draft for Comment (Sept 2012 Ballot).";
             case _0_06: return "2nd Draft for Comment (January 2013 Ballot).";
             case _0_11: return "DSTU 1 Ballot version.";
+            case _0_0: return "DSTU 1 version.";
             case _0_0_80: return "DSTU 1 Official version.";
             case _0_0_81: return "DSTU 1 Official version Technical Errata #1.";
             case _0_0_82: return "DSTU 1 Official version Technical Errata #2.";
+            case _0_4: return "January 2015 Ballot.";
             case _0_4_0: return "Draft For Comment (January 2015 Ballot).";
+            case _0_5: return "May 2015 Ballot.";
             case _0_5_0: return "DSTU 2 Ballot version (May 2015 Ballot).";
+            case _1_0: return "DSTU 2 version.";
             case _1_0_0: return "DSTU 2 QA Preview + CQIF Ballot (Sep 2015).";
             case _1_0_1: return "DSTU 2 (Official version).";
             case _1_0_2: return "DSTU 2 (Official version) with 1 technical errata.";
+            case _1_1: return "GAO Ballot version.";
             case _1_1_0: return "GAO Ballot + draft changes to main FHIR standard.";
+            case _1_4: return "Connectathon 12 (Montreal) version.";
             case _1_4_0: return "CQF on FHIR Ballot + Connectathon 12 (Montreal).";
+            case _1_6: return "Connectathon 13 (Baltimore) version.";
             case _1_6_0: return "FHIR STU3 Ballot + Connectathon 13 (Baltimore).";
+            case _1_8: return "Connectathon 14 (San Antonio) version.";
             case _1_8_0: return "FHIR STU3 Candidate + Connectathon 14 (San Antonio).";
+            case _3_0: return "STU3 version.";
             case _3_0_0: return "FHIR Release 3 (STU).";
             case _3_0_1: return "FHIR Release 3 (STU) with 1 technical errata.";
             case _3_0_2: return "FHIR Release 3 (STU) with 2 technical errata.";
-            case _3_3_0: return "R4 Ballot #1.";
-            case _3_5_0: return "R4 Ballot #2.";
+            case _3_3: return "R4 Ballot #1 version.";
+            case _3_3_0: return "R4 Ballot #1 + Connectaton 18 (Cologne).";
+            case _3_5: return "R4 Ballot #2 version.";
+            case _3_5_0: return "R4 Ballot #2 + Connectathon 19 (Baltimore).";
+            case _4_0: return "R4 version.";
             case _4_0_0: return "FHIR Release 4 (Normative + STU).";
-            case _4_0_1: return "FHIR Release 4 Technical Correction.";
-            case _4_1_0: return "FHIR Release 4B Ballot #1.";
-            case _4_2_0: return "FHIR Release 5 Draft #1.";
-            case _4_3_0SNAPSHOT1: return "FHIR Release 4B Snapshot #1.";
-            case _4_3_0CIBUILD: return "FHIR Release 4B CI-Build.";
-            case _4_3_0: return "FHIR Release 4B";
+            case _4_0_1: return "FHIR Release 4 (Normative + STU) with 1 technical errata.";
+            case _4_1: return "R4B Ballot #1 version.";
+            case _4_1_0: return "R4B Ballot #1 + Connectathon 27 (Virtual).";
+            case _4_2: return "R5 Preview #1 version.";
+            case _4_2_0: return "R5 Preview #1 + Connectathon 23 (Sydney).";
+            case _4_3_0_SNAPSHOT1: return "FHIR Release 4B Snapshot #1";
+            case _4_3_0_CIBUILD: return "FHIR Release 4B CI-Builld";
+            case _4_3: return "R4B version.";
+            case _4_3_0: return "FHIR Release 4B (Normative + STU).";
+            case _4_4: return "R5 Preview #2 version.";
+            case _4_4_0: return "R5 Preview #2 + Connectathon 24 (Virtual).";
+            case _4_5: return "R5 Preview #3 version.";
+            case _4_5_0: return "R5 Preview #3 + Connectathon 25 (Virtual).";
+            case _4_6: return "R5 Draft Ballot version.";
+            case _4_6_0: return "R5 Draft Ballot + Connectathon 27 (Virtual).";
+            case _5_0: return "R5 Versions.";
+            case _5_0_0: return "R5 Final Version.";
+            case _5_0_0CIBUILD: return "R5 Rolling ci-build.";
+            case _5_0_0SNAPSHOT1: return "R5 Preview #2.";
+            case _5_0_0SNAPSHOT2: return "R5 Interim tooling stage.";
+            case _5_0_0BALLOT: return "R5 Ballot.";
             case NULL: return null;
             default: return "?";
           }
@@ -6290,60 +6645,61 @@ The primary difference between a medication statement and a medication administr
             case _0_05: return "0.05";
             case _0_06: return "0.06";
             case _0_11: return "0.11";
+            case _0_0: return "0.0";
             case _0_0_80: return "0.0.80";
             case _0_0_81: return "0.0.81";
             case _0_0_82: return "0.0.82";
+            case _0_4: return "0.4";
             case _0_4_0: return "0.4.0";
+            case _0_5: return "0.5";
             case _0_5_0: return "0.5.0";
+            case _1_0: return "1.0";
             case _1_0_0: return "1.0.0";
             case _1_0_1: return "1.0.1";
             case _1_0_2: return "1.0.2";
+            case _1_1: return "1.1";
             case _1_1_0: return "1.1.0";
+            case _1_4: return "1.4";
             case _1_4_0: return "1.4.0";
+            case _1_6: return "1.6";
             case _1_6_0: return "1.6.0";
+            case _1_8: return "1.8";
             case _1_8_0: return "1.8.0";
+            case _3_0: return "3.0";
             case _3_0_0: return "3.0.0";
             case _3_0_1: return "3.0.1";
             case _3_0_2: return "3.0.2";
+            case _3_3: return "3.3";
             case _3_3_0: return "3.3.0";
+            case _3_5: return "3.5";
             case _3_5_0: return "3.5.0";
+            case _4_0: return "4.0";
             case _4_0_0: return "4.0.0";
             case _4_0_1: return "4.0.1";
+            case _4_1: return "4.1";
             case _4_1_0: return "4.1.0";
+            case _4_2: return "4.2";
             case _4_2_0: return "4.2.0";
-            case _4_3_0SNAPSHOT1: return "4.3.0-snapshot1";
-            case _4_3_0CIBUILD: return "4.3.0-cibuild";
+            case _4_3: return "4.3";
+            case _4_3_0_SNAPSHOT1: return "4.3.0-snapshot";
+            case _4_3_0_CIBUILD: return "4.3.0-cibuild";
             case _4_3_0: return "4.3.0";
+            case _4_4: return "4.4";
+            case _4_4_0: return "4.4.0";
+            case _4_5: return "4.5";
+            case _4_5_0: return "4.5.0";
+            case _4_6: return "4.6";
+            case _4_6_0: return "4.6.0";
+            case _5_0: return "5.0";
+            case _5_0_0: return "5.0.0";
+            case _5_0_0CIBUILD: return "5.0.0-cibuild";
+            case _5_0_0SNAPSHOT1: return "5.0.0-snapshot1";
+            case _5_0_0SNAPSHOT2: return "5.0.0-snapshot2";
+            case _5_0_0BALLOT: return "5.0.0-ballot";
             case NULL: return null;
             default: return "?";
           }
         }
-// manual code from configuration.txt:
-//public String toCode(int len) {
-//          return toCode().substring(0, len);
-//        }
-
-//        public static boolean isR4Plus(String version) {
-//           return version != null && (version.startsWith("4.") || version.startsWith("5.") || "current".equals(version));
-//        }
-//        
-        public static boolean isValidCode(String codeString) {
-          return Utilities.existsInList(codeString, "0.01", "0.05", "0.06", "0.11", "0.0.80", "0.0.81" ,"0.0.82", "0.4.0", "0.5.0",
-              "1.0.0", "1.0.1", "1.0.2", "1.1.0", "1.4.0", "1.6.0", "1.8.0", "3.0.0", "3.0.1", "3.0.2", "3.3.0", "3.5.0", 
-              "4.0.0", "4.0.1", "4.1.0" ,"4.2.0" ,"4.3.0-snapshot1" ,"4.3.0-cibuild" ,"4.3.0");
-        }
-
-        @Override
-        public String toString() {
-          return toCode();
-        }
-        
-//        
-//        public boolean isR4B() {
-//          return toCode().startsWith("4.1");
-//        }
-        
-// end addition
     }
 
   public static class FHIRVersionEnumFactory implements EnumFactory<FHIRVersion> {
@@ -6359,54 +6715,108 @@ The primary difference between a medication statement and a medication administr
           return FHIRVersion._0_06;
         if ("0.11".equals(codeString))
           return FHIRVersion._0_11;
+        if ("0.0".equals(codeString))
+          return FHIRVersion._0_0;
         if ("0.0.80".equals(codeString))
           return FHIRVersion._0_0_80;
         if ("0.0.81".equals(codeString))
           return FHIRVersion._0_0_81;
         if ("0.0.82".equals(codeString))
           return FHIRVersion._0_0_82;
+        if ("0.4".equals(codeString))
+          return FHIRVersion._0_4;
         if ("0.4.0".equals(codeString))
           return FHIRVersion._0_4_0;
+        if ("0.5".equals(codeString))
+          return FHIRVersion._0_5;
         if ("0.5.0".equals(codeString))
           return FHIRVersion._0_5_0;
+        if ("1.0".equals(codeString))
+          return FHIRVersion._1_0;
         if ("1.0.0".equals(codeString))
           return FHIRVersion._1_0_0;
         if ("1.0.1".equals(codeString))
           return FHIRVersion._1_0_1;
         if ("1.0.2".equals(codeString))
           return FHIRVersion._1_0_2;
+        if ("1.1".equals(codeString))
+          return FHIRVersion._1_1;
         if ("1.1.0".equals(codeString))
           return FHIRVersion._1_1_0;
+        if ("1.4".equals(codeString))
+          return FHIRVersion._1_4;
         if ("1.4.0".equals(codeString))
           return FHIRVersion._1_4_0;
+        if ("1.6".equals(codeString))
+          return FHIRVersion._1_6;
         if ("1.6.0".equals(codeString))
           return FHIRVersion._1_6_0;
+        if ("1.8".equals(codeString))
+          return FHIRVersion._1_8;
         if ("1.8.0".equals(codeString))
           return FHIRVersion._1_8_0;
+        if ("3.0".equals(codeString))
+          return FHIRVersion._3_0;
         if ("3.0.0".equals(codeString))
           return FHIRVersion._3_0_0;
         if ("3.0.1".equals(codeString))
           return FHIRVersion._3_0_1;
         if ("3.0.2".equals(codeString))
           return FHIRVersion._3_0_2;
+        if ("3.3".equals(codeString))
+          return FHIRVersion._3_3;
         if ("3.3.0".equals(codeString))
           return FHIRVersion._3_3_0;
+        if ("3.5".equals(codeString))
+          return FHIRVersion._3_5;
         if ("3.5.0".equals(codeString))
           return FHIRVersion._3_5_0;
+        if ("4.0".equals(codeString))
+          return FHIRVersion._4_0;
         if ("4.0.0".equals(codeString))
           return FHIRVersion._4_0_0;
         if ("4.0.1".equals(codeString))
           return FHIRVersion._4_0_1;
+        if ("4.1".equals(codeString))
+          return FHIRVersion._4_1;
         if ("4.1.0".equals(codeString))
           return FHIRVersion._4_1_0;
+        if ("4.2".equals(codeString))
+          return FHIRVersion._4_2;
         if ("4.2.0".equals(codeString))
           return FHIRVersion._4_2_0;
         if ("4.3.0-snapshot1".equalsIgnoreCase(codeString))
-          return FHIRVersion._4_3_0SNAPSHOT1;
+          return FHIRVersion._4_3_0_SNAPSHOT1;
         if ("4.3.0-cibuild".equalsIgnoreCase(codeString))
-          return FHIRVersion._4_3_0CIBUILD;
-        if ("4.3.0".equalsIgnoreCase(codeString))
+          return FHIRVersion._4_3_0_CIBUILD;
+        if ("4.3".equals(codeString))
+          return FHIRVersion._4_3;
+        if ("4.3.0".equals(codeString))
           return FHIRVersion._4_3_0;
+        if ("4.4".equals(codeString))
+          return FHIRVersion._4_4;
+        if ("4.4.0".equals(codeString))
+          return FHIRVersion._4_4_0;
+        if ("4.5".equals(codeString))
+          return FHIRVersion._4_5;
+        if ("4.5.0".equals(codeString))
+          return FHIRVersion._4_5_0;
+        if ("4.6".equals(codeString))
+          return FHIRVersion._4_6;
+        if ("4.6.0".equals(codeString))
+          return FHIRVersion._4_6_0;
+        if ("5.0".equals(codeString))
+          return FHIRVersion._5_0;
+        if ("5.0.0".equals(codeString))
+          return FHIRVersion._5_0_0;
+        if ("5.0.0-cibuild".equals(codeString))
+          return FHIRVersion._5_0_0CIBUILD;
+        if ("5.0.0-snapshot1".equals(codeString))
+          return FHIRVersion._5_0_0SNAPSHOT1;
+        if ("5.0.0-snapshot2".equals(codeString))
+          return FHIRVersion._5_0_0SNAPSHOT2;
+        if ("5.0.0-ballot".equals(codeString))
+          return FHIRVersion._5_0_0BALLOT;
         throw new IllegalArgumentException("Unknown FHIRVersion code '"+codeString+"'");
         }
         public Enumeration<FHIRVersion> fromType(Base code) throws FHIRException {
@@ -6425,54 +6835,108 @@ The primary difference between a medication statement and a medication administr
           return new Enumeration<FHIRVersion>(this, FHIRVersion._0_06);
         if ("0.11".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._0_11);
+        if ("0.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_0);
         if ("0.0.80".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._0_0_80);
         if ("0.0.81".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._0_0_81);
         if ("0.0.82".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._0_0_82);
+        if ("0.4".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_4);
         if ("0.4.0".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._0_4_0);
+        if ("0.5".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_5);
         if ("0.5.0".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._0_5_0);
+        if ("1.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_0);
         if ("1.0.0".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._1_0_0);
         if ("1.0.1".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._1_0_1);
         if ("1.0.2".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._1_0_2);
+        if ("1.1".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_1);
         if ("1.1.0".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._1_1_0);
+        if ("1.4".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_4);
         if ("1.4.0".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._1_4_0);
+        if ("1.6".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_6);
         if ("1.6.0".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._1_6_0);
+        if ("1.8".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_8);
         if ("1.8.0".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._1_8_0);
+        if ("3.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0);
         if ("3.0.0".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0_0);
         if ("3.0.1".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0_1);
         if ("3.0.2".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0_2);
+        if ("3.3".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_3);
         if ("3.3.0".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._3_3_0);
+        if ("3.5".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_5);
         if ("3.5.0".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._3_5_0);
+        if ("4.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_0);
         if ("4.0.0".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._4_0_0);
         if ("4.0.1".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._4_0_1);
+        if ("4.1".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_1);
         if ("4.1.0".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._4_1_0);
+        if ("4.2".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_2);
         if ("4.2.0".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._4_2_0);
-        if ("4.3.0-snapshot1".equalsIgnoreCase(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0SNAPSHOT1);
-        if ("4.3.0-cibuild".equalsIgnoreCase(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0CIBUILD);
-        if ("4.3.0".equalsIgnoreCase(codeString))
+        if ("4.3.0-snapshot1".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0_SNAPSHOT1);
+        if ("4.3.0-cibuild".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0_CIBUILD);
+        if ("4.3".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3);
+        if ("4.3.0".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0);
+        if ("4.4".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_4);
+        if ("4.4.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_4_0);
+        if ("4.5".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_5);
+        if ("4.5.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_5_0);
+        if ("4.6".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_6);
+        if ("4.6.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_6_0);
+        if ("5.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0);
+        if ("5.0.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0);
+        if ("5.0.0-cibuild".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0CIBUILD);
+        if ("5.0.0-snapshot1".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0SNAPSHOT1);
+        if ("5.0.0-snapshot2".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0SNAPSHOT2);
+        if ("5.0.0-ballot".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0BALLOT);
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
     public String toCode(FHIRVersion code) {
@@ -6484,54 +6948,108 @@ The primary difference between a medication statement and a medication administr
         return "0.06";
       if (code == FHIRVersion._0_11)
         return "0.11";
+      if (code == FHIRVersion._0_0)
+        return "0.0";
       if (code == FHIRVersion._0_0_80)
         return "0.0.80";
       if (code == FHIRVersion._0_0_81)
         return "0.0.81";
       if (code == FHIRVersion._0_0_82)
         return "0.0.82";
+      if (code == FHIRVersion._0_4)
+        return "0.4";
       if (code == FHIRVersion._0_4_0)
         return "0.4.0";
+      if (code == FHIRVersion._0_5)
+        return "0.5";
       if (code == FHIRVersion._0_5_0)
         return "0.5.0";
+      if (code == FHIRVersion._1_0)
+        return "1.0";
       if (code == FHIRVersion._1_0_0)
         return "1.0.0";
       if (code == FHIRVersion._1_0_1)
         return "1.0.1";
       if (code == FHIRVersion._1_0_2)
         return "1.0.2";
+      if (code == FHIRVersion._1_1)
+        return "1.1";
       if (code == FHIRVersion._1_1_0)
         return "1.1.0";
+      if (code == FHIRVersion._1_4)
+        return "1.4";
       if (code == FHIRVersion._1_4_0)
         return "1.4.0";
+      if (code == FHIRVersion._1_6)
+        return "1.6";
       if (code == FHIRVersion._1_6_0)
         return "1.6.0";
+      if (code == FHIRVersion._1_8)
+        return "1.8";
       if (code == FHIRVersion._1_8_0)
         return "1.8.0";
+      if (code == FHIRVersion._3_0)
+        return "3.0";
       if (code == FHIRVersion._3_0_0)
         return "3.0.0";
       if (code == FHIRVersion._3_0_1)
         return "3.0.1";
       if (code == FHIRVersion._3_0_2)
         return "3.0.2";
+      if (code == FHIRVersion._3_3)
+        return "3.3";
       if (code == FHIRVersion._3_3_0)
         return "3.3.0";
+      if (code == FHIRVersion._3_5)
+        return "3.5";
       if (code == FHIRVersion._3_5_0)
         return "3.5.0";
+      if (code == FHIRVersion._4_0)
+        return "4.0";
       if (code == FHIRVersion._4_0_0)
         return "4.0.0";
       if (code == FHIRVersion._4_0_1)
         return "4.0.1";
+      if (code == FHIRVersion._4_1)
+        return "4.1";
       if (code == FHIRVersion._4_1_0)
         return "4.1.0";
+      if (code == FHIRVersion._4_2)
+        return "4.2";
       if (code == FHIRVersion._4_2_0)
         return "4.2.0";
-      if (code == FHIRVersion._4_3_0SNAPSHOT1)
+      if (code == FHIRVersion._4_3)
+        return "4.3";
+      if (code == FHIRVersion._4_3_0_SNAPSHOT1)
         return "4.3.0-snapshot1";
-      if (code == FHIRVersion._4_3_0CIBUILD)
+      if (code == FHIRVersion._4_3_0_CIBUILD)
         return "4.3.0-cibuild";
       if (code == FHIRVersion._4_3_0)
         return "4.3.0";
+      if (code == FHIRVersion._4_4)
+        return "4.4";
+      if (code == FHIRVersion._4_4_0)
+        return "4.4.0";
+      if (code == FHIRVersion._4_5)
+        return "4.5";
+      if (code == FHIRVersion._4_5_0)
+        return "4.5.0";
+      if (code == FHIRVersion._4_6)
+        return "4.6";
+      if (code == FHIRVersion._4_6_0)
+        return "4.6.0";
+      if (code == FHIRVersion._5_0)
+        return "5.0";
+      if (code == FHIRVersion._5_0_0)
+        return "5.0.0";
+      if (code == FHIRVersion._5_0_0CIBUILD)
+        return "5.0.0-cibuild";
+      if (code == FHIRVersion._5_0_0SNAPSHOT1)
+        return "5.0.0-snapshot1";
+      if (code == FHIRVersion._5_0_0SNAPSHOT2)
+        return "5.0.0-snapshot2";
+      if (code == FHIRVersion._5_0_0BALLOT)
+        return "5.0.0-ballot";
       return "?";
       }
     public String toSystem(FHIRVersion code) {

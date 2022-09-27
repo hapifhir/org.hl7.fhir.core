@@ -78,6 +78,7 @@ public class StructureDefinitionValidator extends BaseValidator {
             List<ValidationMessage> msgs = new ArrayList<>();
             ProfileUtilities pu = new ProfileUtilities(context, msgs, null);
             pu.setXver(xverManager);
+            pu.setNewSlicingProcessing(!sd.hasFhirVersion() || VersionUtilities.isR4Plus(sd.getFhirVersion().toCode()));
             pu.generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/fhir/R4/", sd.getName());
             if (msgs.size() > 0) {
               for (ValidationMessage msg : msgs) {
@@ -140,9 +141,10 @@ public class StructureDefinitionValidator extends BaseValidator {
         tc = type.getExtensionValue(ToolingExtensions.EXT_FHIR_TYPE).primitiveValue();
       }
       if (Utilities.noString(tc) && type.hasChild("code")) {
-        if (type.getNamedChild("code").hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type")) {
-          tc = "*";
-        }
+        throw new Error("WTF?");
+//        if (type.getNamedChild("code").hasExtension(" http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type")) {
+//          tc = "*";
+//        }
       }
       typeCodes.add(tc);
       Set<String> tcharacteristics = new HashSet<>();
@@ -224,7 +226,6 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
       }
       // if we see fixed[x] or pattern[x] applied to a repeating element, we'll give the user a hint
-      
     }
   }
   
@@ -236,7 +237,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     case "decimal" :return  addCharacteristicsForType(set, "has-range", "is-continuous", "has-length");
     case "base64Binary" : return addCharacteristicsForType(set, "has-size");
     case "instant" : return addCharacteristicsForType(set, "has-range", "is-continuous", "has-length");
-    case "string" : return addCharacteristicsForType(set, "has-length", "do-translations");
+    case "string" : return addCharacteristicsForType(set, "has-length", "do-translations", "can-bind");
     case "uri" : return addCharacteristicsForType(set, "has-length", "can-bind");
     case "date" :return  addCharacteristicsForType(set, "has-range", "has-length");
     case "dateTime" : return addCharacteristicsForType(set, "has-range", "is-continuous", "has-length");
@@ -244,7 +245,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     case "canonical" :return  addCharacteristicsForType(set, "has-target", "has-length");
     case "code" :return  addCharacteristicsForType(set, "has-length", "can-bind");
     case "id" :return  addCharacteristicsForType(set, "has-length");
-    case "markdown" :return  addCharacteristicsForType(set, "do-translations");
+    case "markdown" :return  addCharacteristicsForType(set, "do-translations", "has-length");
     case "oid" :return  addCharacteristicsForType(set, "has-length", "can-bind");
     case "positiveInt" :return  addCharacteristicsForType(set, "has-range", "has-length");
     case "unsignedInt" :return  addCharacteristicsForType(set, "has-range", "has-length");
@@ -299,10 +300,10 @@ public class StructureDefinitionValidator extends BaseValidator {
 
     case "BackboneElement" :return  addCharacteristicsForType(set);
     default:
-      if (context.getResourceNames().contains(tc)) 
-        return addCharacteristicsForType(set);
-      else
-        throw new Error("Unhandled data type in addCharacterstics: "+tc);
+      if (!context.getResourceNames().contains(tc)) {
+        System.out.println("Unhandled data type in addCharacteristics: "+tc);        
+      }
+      return addCharacteristicsForType(set);
     }
   }
 
@@ -339,7 +340,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
       StructureDefinition sd = context.fetchTypeDefinition(tc);
       if (sd != null) {
-        if (sd.hasExtension(ToolingExtensions.EXT_BINDING_METHOD)) {
+        if (sd.hasExtension(ToolingExtensions.EXT_BINDING_STYLE)) {
           return tc;          
         }
       }

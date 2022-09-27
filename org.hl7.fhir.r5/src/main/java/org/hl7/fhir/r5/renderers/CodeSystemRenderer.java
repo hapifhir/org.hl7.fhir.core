@@ -284,7 +284,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
   }
 
   private boolean conceptsHaveDisplay(ConceptDefinitionComponent c) {
-    if (c.hasDisplay())
+    if (c.hasDisplay() && !c.getDisplay().equals(c.getCode()))
       return true;
     for (ConceptDefinitionComponent g : c.getConcept())
       if (conceptsHaveDisplay(g))

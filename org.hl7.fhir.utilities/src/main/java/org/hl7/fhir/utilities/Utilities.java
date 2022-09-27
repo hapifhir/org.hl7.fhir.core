@@ -252,6 +252,10 @@ public class Utilities {
     return new Inflector().camelCase(value.trim().replace(" ", "_"), false);
   }
 
+  public static String upperCamelCase(String value) {
+    return new Inflector().upperCamelCase(value.trim().replace(" ", "_"));
+  }
+
   public static String escapeXml(String doco) {
     if (doco == null)
       return "";
