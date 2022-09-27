@@ -26,6 +26,7 @@ import org.hl7.fhir.r5.model.Measure.MeasureGroupPopulationComponent;
 import org.hl7.fhir.r5.model.Measure.MeasureGroupStratifierComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.DataRenderer;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
@@ -338,7 +339,7 @@ public class MeasureValidator extends BaseValidator {
           //  ratio -  score is a number with no value constraints, and maybe with a unit (perhaps constrained by extension)
           if (rule(errors, IssueType.REQUIRED, ms.line(), ms.col(), ns.getLiteralPath(), v != null, I18nConstants.MEASURE_MR_SCORE_VALUE_REQUIRED, "ratio")) {
             Element unit = ms.getNamedChild("code");
-            Coding c = m.measure().hasExtension("http://hl7.org/fhir/StructureDefinition/questionnaire-unit") ? (Coding) m.measure().getExtensionByUrl("http://hl7.org/fhir/StructureDefinition/questionnaire-unit").getValue() : null;
+            Coding c = m.measure().hasExtension(ToolingExtensions.EXT_Q_UNIT) ? (Coding) m.measure().getExtensionByUrl(ToolingExtensions.EXT_Q_UNIT).getValue() : null;
             if (unit != null) {
               if (c != null) {
                 NodeStack nsc = ns.push(unit, -1, unit.getProperty().getDefinition(), unit.getProperty().getDefinition());
@@ -361,7 +362,7 @@ public class MeasureValidator extends BaseValidator {
           // continuous-variable - score is a quantity with a unit per the extension
           if (rule(errors, IssueType.REQUIRED, ms.line(), ms.col(), ns.getLiteralPath(), v != null, I18nConstants.MEASURE_MR_SCORE_VALUE_REQUIRED, "continuous-variable")) {
             Element unit = ms.getNamedChild("code");
-            Coding c = m.measure().hasExtension("http://hl7.org/fhir/StructureDefinition/questionnaire-unit") ? (Coding) m.measure().getExtensionByUrl("http://hl7.org/fhir/StructureDefinition/questionnaire-unit").getValue() : null;
+            Coding c = m.measure().hasExtension(ToolingExtensions.EXT_Q_UNIT) ? (Coding) m.measure().getExtensionByUrl(ToolingExtensions.EXT_Q_UNIT).getValue() : null;
             if (unit != null) {
               if (c != null) {
                 NodeStack nsc = ns.push(unit, -1, unit.getProperty().getDefinition(), unit.getProperty().getDefinition());

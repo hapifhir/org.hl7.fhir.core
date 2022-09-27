@@ -12,12 +12,7 @@ e: {
   "error" : "java.lang.NullPointerException"
 }
 -------------------------------------------------------------------------------------
-{"hierarchical" : false, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1"}####
-e: {
-  "error" : "java.lang.NullPointerException"
-}
--------------------------------------------------------------------------------------
-{"hierarchical" : false, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.6.0"}####
+{"hierarchical" : false, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "5.0.0-ballot"}####
 e: {
   "error" : "java.lang.NullPointerException"
 }

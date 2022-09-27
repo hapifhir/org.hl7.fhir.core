@@ -666,6 +666,9 @@ public class ValueSetRenderer extends TerminologyRenderer {
   }
 
   private  <T extends Resource> String getCsRef(T cs) {
+    if (cs == null) {
+      return "?cs-n?";
+    }
     String ref = (String) cs.getUserData("filename");
     if (ref == null)
       ref = (String) cs.getUserData("path");
@@ -1289,7 +1292,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     for (ConceptReferenceComponent cc : inc.getConcept()) {
       String code = cc.getCode();
       ConceptDefinitionComponent v = null;
-      if (e != null) {
+      if (e != null && code != null) {
         v = getConceptForCode(e.getConcept(), code);
       }
       if (v == null && vse != null) {

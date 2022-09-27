@@ -378,6 +378,7 @@ public class ValidationService {
       validator.setWantInvariantInMessage(cliContext.isWantInvariantsInMessages());
       validator.setSecurityChecks(cliContext.isSecurityChecks());
       validator.setCrumbTrails(cliContext.isCrumbTrails());
+      validator.setForPublication(cliContext.isForPublication());
       validator.setShowTimes(cliContext.isShowTimes());
       validator.setAllowExampleUrls(cliContext.isAllowExampleUrls());
       StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(validator.getPcm(), validator.getContext(), validator);    

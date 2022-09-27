@@ -227,7 +227,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   public String getLatestVersion(String id) throws IOException {
     for (String nextPackageServer : getPackageServers()) {
       // special case:
-      if (!(CommonPackages.ID_PUBPACK.equals(id) && PackageClient.PRIMARY_SERVER.equals(nextPackageServer))) {
+      if (!(Utilities.existsInList(id,CommonPackages.ID_PUBPACK, "hl7.terminology.r5") && PackageClient.PRIMARY_SERVER.equals(nextPackageServer))) {
         CachingPackageClient pc = new CachingPackageClient(nextPackageServer);
         try {
           return pc.getLatestVersion(id);

@@ -183,12 +183,12 @@ public class ExtensionDefinitionGenerator {
   private StructureDefinition generateExtension(StructureDefinition type, ElementDefinition ed) throws FHIRException {
     StructureDefinition ext = new StructureDefinition();
     ext.setId("extension-" + ed.getPath().replace("[x]", ""));
-    ext.setUrl("http://hl7.org/fhir/" + sourceVersion.toCode(3) + "/StructureDefinition/" + ext.getId());
+    ext.setUrl("http://hl7.org/fhir/" + sourceVersion.toCode().substring(0, 3) + "/StructureDefinition/" + ext.getId());
     if (ext.getId().length() > 64)
       ext.setId(contract(ext.getId()));
     ext.setVersion(sourceVersion.toCode());
-    ext.setName("ExtensionR" + sourceVersion.toCode(1) + ed.getPath().replace(".", ""));
-    ext.setTitle("Extension definition for R" + sourceVersion.toCode(1) + " element " + ed.getPath());
+    ext.setName("ExtensionR" + sourceVersion.toCode().substring(0, 1) + ed.getPath().replace(".", ""));
+    ext.setTitle("Extension definition for R" + sourceVersion.toCode().substring(0, 1) + " element " + ed.getPath());
     ext.setStatus(PublicationStatus.ACTIVE);
     ext.setDate(type.getDate());
     ext.setFhirVersion(type.getFhirVersion());
@@ -212,7 +212,7 @@ public class ExtensionDefinitionGenerator {
           v.setSliceName(n);
           v.getType().clear();
           v.setIsSummaryElement(null);
-          v.addType().setCode("Extension").addProfile("http://hl7.org/fhir/" + sourceVersion.toCode(3) + "/StructureDefinition/extension-" + child.getPath().replace("[x]", ""));
+          v.addType().setCode("Extension").addProfile("http://hl7.org/fhir/" + sourceVersion.toCode().substring(0, 3) + "/StructureDefinition/extension-" + child.getPath().replace("[x]", ""));
           ext.getDifferential().addElement(v);
         }
       }
@@ -237,7 +237,7 @@ public class ExtensionDefinitionGenerator {
           v.setSliceName(n);
           v.getType().clear();
           v.setIsSummaryElement(null);
-          v.addType().setCode("Extension").addProfile("http://hl7.org/fhir/" + sourceVersion.toCode(3) + "/StructureDefinition/extension-" + child.getPath().replace("[x]", ""));
+          v.addType().setCode("Extension").addProfile("http://hl7.org/fhir/" + sourceVersion.toCode().substring(0, 3) + "/StructureDefinition/extension-" + child.getPath().replace("[x]", ""));
           ext.getDifferential().addElement(v);
         }
       }
@@ -357,13 +357,13 @@ public class ExtensionDefinitionGenerator {
 
   private void savePackage(List<StructureDefinition> extensions) throws FHIRException, IOException {
     JsonObject npm = new JsonObject();
-    npm.addProperty("name", "hl7.fhir.extensions.r" + sourceVersion.toCode(1));
-    npm.addProperty("version", targetVersion.toCode(3));
+    npm.addProperty("name", "hl7.fhir.extensions.r" + sourceVersion.toCode().substring(0, 1));
+    npm.addProperty("version", targetVersion.toCode().substring(0, 3));
     npm.addProperty("tools-version", ToolsVersion.TOOLS_VERSION);
     npm.addProperty("type", PackageType.IG.getCode());
     npm.addProperty("license", SPDXLicense.CC01_0.toCode());
-    npm.addProperty("canonical", "http://hl7.org/fhir/" + sourceVersion.toCode(3) + "/extensions/" + targetVersion.toCode(3));
-    npm.addProperty("url", "http://hl7.org/fhir/" + sourceVersion.toCode(3) + "/extensions/" + targetVersion.toCode(3));
+    npm.addProperty("canonical", "http://hl7.org/fhir/" + sourceVersion.toCode().substring(0, 3) + "/extensions/" + targetVersion.toCode().substring(0, 3));
+    npm.addProperty("url", "http://hl7.org/fhir/" + sourceVersion.toCode().substring(0, 3) + "/extensions/" + targetVersion.toCode().substring(0, 3));
     npm.addProperty("title", "Extension Definitions for representing elements from " + sourceVersion.toCode() + " in " + targetVersion.toCode());
     npm.addProperty("description", "Extension Definitions for representing elements from " + sourceVersion.toCode() + " in " + targetVersion.toCode() + " built " + new SimpleDateFormat("EEE, MMM d, yyyy HH:mmZ", new Locale("en", "US")).format(Calendar.getInstance().getTime()) + timezone() + ")");
     JsonObject dep = new JsonObject();
