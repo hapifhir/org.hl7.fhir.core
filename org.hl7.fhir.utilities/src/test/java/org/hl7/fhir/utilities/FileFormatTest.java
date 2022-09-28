@@ -22,11 +22,13 @@ public class FileFormatTest {
     bo.flush();
     String allWrittenLines = new String(bo.toByteArray());
 
+    assertAWarningIsGivenWhenNotUTF8(allWrittenLines);
+  }
+
+  private static void assertAWarningIsGivenWhenNotUTF8(String allWrittenLines) {
     if (Charset.defaultCharset().equals(StandardCharsets.UTF_8)) {
       assertEquals(0, allWrittenLines.length());
-    }
-    else
-    {
+    } else {
       assertThat(allWrittenLines, containsString("WARNING"));
     }
   }
