@@ -61,6 +61,7 @@ POSSIBILITY OF SUCH DAMAGE.
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
+import org.hl7.fhir.utilities.FileFormat;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -153,6 +154,8 @@ public class ValidatorCli {
     }
 
     CliContext cliContext = Params.loadCliContext(args);
+
+    FileFormat.checkCharsetAndWarnIfNotUTF8(System.out);
 
     if (shouldDisplayHelpToUser(args)) {
       Display.displayHelpDetails();
