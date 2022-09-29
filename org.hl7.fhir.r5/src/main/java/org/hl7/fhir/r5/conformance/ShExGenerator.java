@@ -31,13 +31,7 @@ package org.hl7.fhir.r5.conformance;
 
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -45,6 +39,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander;
+import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.stringtemplate.v4.ST;
 
 public class ShExGenerator {
@@ -90,10 +85,13 @@ public class ShExGenerator {
                   "\n    $resourceDecl$" +
                   "\n    $elements$" +
                   //"\n    fhir:index xsd:integer?                 # Relative position in a list"
-                  "\n}\n";
+                  "\n} $constraints$ \n";
 
   // Base DataTypes
-  private List<String> baseDataTypes = Arrays.asList("DataType", "PrimitiveType");
+  private List<String> baseDataTypes = Arrays.asList(
+                                            "DataType",
+                                            "PrimitiveType"
+                                            );
 
   private static String ONE_OR_MORE_PREFIX = "OneOrMore_";
   private static String ONE_OR_MORE_CHOICES = "_One-Or-More-Choices_";
@@ -109,7 +107,7 @@ public class ShExGenerator {
           "$comment$\n<Resource> {a .+;" +
                   "\n    $elements$" +
                   //"\n    fhir:index xsd:integer?" +
-                  "\n}\n";
+                  "\n} $constraints$ \n";
 
   // If we have knowledge of all of the possible resources available to us (completeModel = true), we can build
   // a model of all possible resources.
@@ -226,6 +224,8 @@ public class ShExGenerator {
   private HashSet<ValueSet> required_value_sets;
   private HashSet<String> known_resources;          // Used when generating a full definition
 
+  private FHIRPathEngine fpe;
+
   public ShExGenerator(IWorkerContext context) {
     super();
     this.context = context;
@@ -239,6 +239,7 @@ public class ShExGenerator {
     references = new HashSet<String>();
     required_value_sets = new HashSet<ValueSet>();
     known_resources = new HashSet<String>();
+    fpe = new FHIRPathEngine(context);
   }
 
   public String generate(HTMLLinkPolicy links, StructureDefinition structure) {
@@ -387,14 +388,16 @@ public class ShExGenerator {
     if("xhtml".equals(sd.getName()) || (completeModel && "Resource".equals(sd.getName())))
       return "";
 
+    String bd = null;
     ST shape_defn;
     // Resources are either incomplete items or consist of everything that is defined as a resource (completeModel)
+    if (sd.getName().equals("Identifier")){
+      System.out.println("Identifier found");
+    }
     if("Resource".equals(sd.getName())) {
       shape_defn = tmplt(RESOURCE_SHAPE_TEMPLATE);
       known_resources.add(sd.getName());
     } else {
-
-
       shape_defn = tmplt(SHAPE_DEFINITION_TEMPLATE).add("id", getExtendedType(sd));
       if (sd.getKind().equals(StructureDefinition.StructureDefinitionKind.RESOURCE)) {
 //              || sd.getKind().equals(StructureDefinition.StructureDefinitionKind.COMPLEXTYPE)) {
@@ -409,7 +412,7 @@ public class ShExGenerator {
       }
 
       if (sd.hasBaseDefinition()){
-        String bd = sd.getBaseDefinition();
+        bd = sd.getBaseDefinition();
         String[] els = bd.split("/");
         bd = els[els.length - 1];
         if (bd != null && !bd.isEmpty() && baseDataTypes.contains(bd))
@@ -435,21 +438,150 @@ public class ShExGenerator {
 
     String root_comment = null;
 
+    constraintsList.clear();
     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
       if(!ed.getPath().contains("."))
         root_comment = ed.getShort();
       else if ((StringUtils.countMatches(ed.getPath(), ".") == 1 && !"0".equals(ed.getMax())) &&
               (ed.hasBase() && ed.getBase().getPath().startsWith(sdn))){
         String elementDefinition = genElementDefinition(sd, ed);
+
+        boolean isInnerType = false;
+        if (isInInnerTypes(ed)){
+          System.out.println("This element is already in innerTypes:" + ed.getPath());
+          isInnerType = true;
+        }
+
+
+        // Process constraints
+        for (ElementDefinition.ElementDefinitionConstraintComponent constraint : ed.getConstraint()) {
+          String sdType = sd.getType();
+          String cstype = constraint.getSource();
+          if ((!cstype.isEmpty()) && (cstype.indexOf("/") != -1)) {
+            String[] els = cstype.split("/");
+            cstype = els[els.length - 1];
+          }
+          // Implement here if SD type == constraint source OR SD type is Primitive or DataType then add constraint to SD otherwise skip it.
+            //if ((sdType.equals(cstype)) || baseDataTypes.contains(sdType) || baseDataTypes.contains(bd)) {
+          //if ((sdType.equals(cstype)) || baseDataTypes.contains(sdType)) {
+          String id = ed.hasBase() ? ed.getBase().getPath() : ed.getPath();
+          String shortId = id.substring(id.lastIndexOf(".") + 1);
+          if ((ed.hasContentReference() && (!ed.hasType())) || (id.equals(sd.getName() + "." + shortId))) {
+              if ((sdType.equals(cstype)) || baseDataTypes.contains(sdType)) {
+                if (!isInnerType) {
+                  System.out.println("\nKey: " + constraint.getKey() + " SD type: " + sd.getType() + " Element: " + ed.getPath() + " Constraint Source: " + constraint.getSource() + " Constraint:" + constraint.getExpression());
+                  String transl = translateConstraint(ed, constraint);
+                  if (transl.isEmpty() || constraintsList.contains(transl))
+                    continue;
+                  constraintsList.add(transl);
+                }
+              }
+            }
+          }
         elements.add(elementDefinition);
       }
     }
 
     shape_defn.add("elements", StringUtils.join(elements, "\n"));
     shape_defn.add("comment", root_comment == null? " " : "# " + root_comment);
+
+    String constraintStr = "";
+
+    if (!constraintsList.isEmpty()) {
+      constraintStr = "AND {\n\t\t\t" + StringUtils.join(constraintsList, "\n} AND {\n\t\t\t") + "\n}";
+    }
+
+    shape_defn.add("constraints", constraintStr);
     return shape_defn.render();
   }
 
+  private String translateConstraint(ElementDefinition ed, ElementDefinition.ElementDefinitionConstraintComponent constraint){
+    String translated = "";
+
+    if (constraint != null) {
+      String ce = constraint.getExpression();
+      String constItem = "Element:" + ed.getPath() + " Expression: " + ce;
+      try {
+        translated = ed.getPath() + "\n\t\t\t# " + constraint.getHuman() + "\n\t\t\t# " + constraint.getXpath() + "\n\t\t\t" + constraint.getExpression();
+        ExpressionNode expr = fpe.parse(ce);
+        String shexConstraint = processExpressionNode(expr, false);
+        System.out.print("Parsed to ShEx Constraint:" + shexConstraint);
+        if (!shexConstraint.isEmpty())
+            translated += "\n\t\t\t" + shexConstraint;
+      } catch (Exception e) {
+        System.out.println("FAILED to parse the constraint: " + constItem);
+      }
+    }
+    return translated;
+  }
+
+  private String processExpressionNode(ExpressionNode node, boolean quote) {
+    if (node == null)
+      return "";
+
+    boolean toQuote  = quote;
+
+    String ops = "";
+    String endOps = "";
+    if (node.getOperation() != null) {
+      switch (node.getOperation().name()) {
+        case "Or":
+          ops = " | ";
+          break;
+        case "Union":
+          ops = " | ";
+          break;
+        case "In":
+          ops = " [ ";
+          endOps = " ] ";
+          toQuote = true;
+          break;
+        case "And":
+          ops = " ; ";
+          break;
+        default:
+          ops = TBD(node.getOperation().name());
+      }
+    }
+
+    ExpressionNode.Kind kind = node.getKind();
+    if (kind == ExpressionNode.Kind.Name) {
+      return "(fhir:" + node.getName() + processExpressionNode(node.getInner(), toQuote)  + ops + processExpressionNode(node.getOpNext(), toQuote) + endOps + ")";
+    } else if (kind == ExpressionNode.Kind.Function) {
+      switch (node.getName()) {
+        case "empty":
+          return " . ?";
+        case "not":
+          return " NOT ";
+        case "exists":
+          return " .";
+        default:
+          return TBD(node.getFunction().toCode());
+      }
+    } else if (kind == ExpressionNode.Kind.Group) {
+          String returnStr = processExpressionNode(node.getInner(), toQuote) + processExpressionNode(node.getGroup(), toQuote);
+          toQuote = false;
+          return returnStr;
+      } else if (kind == ExpressionNode.Kind.Constant) {
+          return quoteThis(node.getConstant().primitiveValue(), toQuote) + ops + processExpressionNode(node.getOpNext(), toQuote) + endOps ;
+      } else if (kind == ExpressionNode.Kind.Unary) {
+      return node.getName();
+    }
+
+    return node.toString();
+  }
+
+  private String TBD(String str){
+    return " <TBD " + str + " TBD> ";
+  }
+
+  private String quoteThis(String str, boolean quote){
+
+    if (quote)
+      return "'" + str + "'";
+
+    return str;
+  }
 
   /**
    * Generate a flattened definition for the inner types
@@ -467,6 +599,18 @@ public class ShExGenerator {
       }
     }
     return itDefs.toString();
+  }
+
+  private boolean  isInInnerTypes(ElementDefinition ed) {
+
+    if (this.innerTypes.isEmpty())
+      return false;
+
+    for (Iterator<Pair<StructureDefinition, ElementDefinition>> itr = this.innerTypes.iterator(); itr.hasNext(); )
+      if (itr.next().getRight() == ed)
+        return true;
+
+    return false;
   }
 
   /**
@@ -576,6 +720,7 @@ public class ShExGenerator {
         //System.out.println("Not Adding innerType:" + id + " to " + sd.getName());
       } else
         innerTypes.add(new ImmutablePair<StructureDefinition, ElementDefinition>(sd, ed));
+
       defn = simpleElement(sd, ed, id);
     }
 
@@ -651,18 +796,6 @@ public class ShExGenerator {
     element_def.add("defn", defn);
     element_def.add("card", card);
     addComment(element_def, ed);
-
-    List<ProfileUtilities.ElementChoiceGroup>  ecg = profileUtilities.readChoices(ed, getChildren(sd, ed));
-
-    List<ElementDefinition.ElementDefinitionConstraintComponent> constraints = ed.getConstraint();
-    for (ElementDefinition.ElementDefinitionConstraintComponent constraint : ed.getConstraint()) {
-      String constItem  = "Source:" + constraint.getSource() + " Expression: " + constraint.getExpression();
-      if (!constraintsList.contains(constItem)){
-
-        constraintsList.add(constItem);
-        System.out.println("   **** Constraint found when processing SD: " + sd.getName() + " Element: " + ed.getName() + " [" + constItem + "]");
-      }
-    }
 
     return element_def.render();
   }
@@ -949,6 +1082,7 @@ public class ShExGenerator {
     element_reference.add("fhirType", " ");
     String comment = ed.getShort();
     element_reference.add("comment", comment == null? " " : "# " + comment);
+    //element_reference.add("constraints", "");
 
     List<String> elements = new ArrayList<String>();
     for (ElementDefinition child: profileUtilities.getChildList(sd, path, null))
@@ -958,6 +1092,38 @@ public class ShExGenerator {
       }
 
     element_reference.add("elements", StringUtils.join(elements, "\n"));
+
+    List<String> innerConstraintsList = new ArrayList<String>();
+    // Process constraints
+    for (ElementDefinition.ElementDefinitionConstraintComponent constraint : ed.getConstraint()) {
+      String sdType = sd.getType();
+      String cstype = constraint.getSource();
+      if ((!cstype.isEmpty()) && (cstype.indexOf("/") != -1)) {
+        String[] els = cstype.split("/");
+        cstype = els[els.length - 1];
+      }
+
+      String id = ed.hasBase() ? ed.getBase().getPath() : ed.getPath();
+      String shortId = id.substring(id.lastIndexOf(".") + 1);
+      if ((ed.hasContentReference() && (!ed.hasType())) || (id.equals(sd.getName() + "." + shortId))) {
+        if ((sdType.equals(cstype)) || baseDataTypes.contains(sdType)) {
+            System.out.println("\n(INNER ED) Key: " + constraint.getKey() + " SD type: " + sd.getType() + " Element: " + ed.getPath() + " Constraint Source: " + constraint.getSource() + " Constraint:" + constraint.getExpression());
+            String transl = translateConstraint(ed, constraint);
+            if (transl.isEmpty() || innerConstraintsList.contains(transl))
+              continue;
+          innerConstraintsList.add(transl);
+        }
+      }
+    }
+
+    String constraintStr = "";
+
+    if (!innerConstraintsList.isEmpty()) {
+      constraintStr = "AND {\n\t\t\t" + StringUtils.join(innerConstraintsList, "\n} AND {\n\t\t\t") + "\n}";
+    }
+
+    element_reference.add("constraints", constraintStr);
+
     return element_reference.render();
   }
 

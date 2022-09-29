@@ -104,7 +104,7 @@ public class ShexGeneratorTests {
     //printList("Profiles", otherNamesPrint);
 
     processList("StructureDefinitions", sdNames);
-    //processList("Extensions", extNames);
+    processList("Extensions", extNames);
     //processList("Logical", logicalNames);
     //processList("Profiles", otherNames);
 
