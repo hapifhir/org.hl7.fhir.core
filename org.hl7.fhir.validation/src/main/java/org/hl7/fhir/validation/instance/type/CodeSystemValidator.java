@@ -84,7 +84,9 @@ public class CodeSystemValidator  extends BaseValidator {
       }
     }
 
-    checkShareableCodeSystem(errors, cs, stack);
+    if (!stack.isContained()) {
+      checkShareableCodeSystem(errors, cs, stack);
+    }
   }
 
 

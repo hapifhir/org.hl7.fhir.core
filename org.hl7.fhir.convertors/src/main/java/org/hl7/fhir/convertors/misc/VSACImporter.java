@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.misc;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -28,10 +29,10 @@ public class VSACImporter extends OIDBasedValueSetImporter {
 
   public static void main(String[] args) throws FHIRException, IOException, ParseException, URISyntaxException {
     VSACImporter self = new VSACImporter();
-    self.process(args[0], args[1], args[2]);
+    self.process(args[0], args[1], args[2], "true".equals(args[3]));
   }
 
-  private void process(String source, String dest, String apiKey) throws FHIRException, IOException, URISyntaxException {
+  private void process(String source, String dest, String apiKey, boolean onlyNew) throws FHIRException, IOException, URISyntaxException {
     CSVReader csv = new CSVReader(new FileInputStream(source));
     csv.readHeaders();
     Map<String, String> errs = new HashMap<>();
@@ -39,23 +40,25 @@ public class VSACImporter extends OIDBasedValueSetImporter {
     FHIRToolingClient fhirToolingClient = new FHIRToolingClient("https://cts.nlm.nih.gov/fhir", "fhir/vsac");
     fhirToolingClient.setUsername("apikey");
     fhirToolingClient.setPassword(apiKey);
-    fhirToolingClient.setTimeout(30000);
+    fhirToolingClient.setTimeout(120000);
 
     int i = 0;
     int j = 0;
     while (csv.line()) {
       String oid = csv.cell("OID");
       try {
-        ValueSet vs = fhirToolingClient.read(ValueSet.class, oid);
-        try {
-          ValueSet vse = fhirToolingClient.expandValueset(vs.getUrl(), null);
-          vs.setExpansion(vse.getExpansion());
-          j++;
-        } catch (Exception e) {
-          errs.put(oid, "Expansion: " +e.getMessage());
-          System.out.println(e.getMessage());
+        if (!onlyNew || !(new File(Utilities.path(dest, "ValueSet-" + oid + ".json")).exists())) {
+          ValueSet vs = fhirToolingClient.read(ValueSet.class, oid);
+          try {
+            ValueSet vse = fhirToolingClient.expandValueset(vs.getUrl(), null);
+            vs.setExpansion(vse.getExpansion());
+            j++;
+          } catch (Exception e) {
+            errs.put(oid, "Expansion: " +e.getMessage());
+            System.out.println(e.getMessage());
+          }
+          new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "ValueSet-" + oid + ".json")), vs);
         }
-        new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "ValueSet-" + oid + ".json")), vs);
         i++;
         if (i % 100 == 0) {
           System.out.println(":"+i+" ("+j+")");

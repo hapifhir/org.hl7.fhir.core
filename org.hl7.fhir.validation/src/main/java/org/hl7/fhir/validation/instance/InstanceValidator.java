@@ -4638,9 +4638,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else if (element.getType().equals("QuestionnaireResponse")) {
       new QuestionnaireValidator(context, myEnableWhenEvaluator, fpe, timeTracker, questionnaireMode, xverManager, jurisdiction).validateQuestionannaireResponse(hostContext, errors, element, stack);
     } else if (element.getType().equals("Measure")) {
-      new MeasureValidator(context, timeTracker, xverManager, jurisdiction).validateMeasure(hostContext, errors, element, stack);      
+      new MeasureValidator(context, timeTracker, xverManager, jurisdiction, this).validateMeasure(hostContext, errors, element, stack);      
     } else if (element.getType().equals("MeasureReport")) {
-      new MeasureValidator(context, timeTracker, xverManager, jurisdiction).validateMeasureReport(hostContext, errors, element, stack);
+      new MeasureValidator(context, timeTracker, xverManager, jurisdiction, this).validateMeasureReport(hostContext, errors, element, stack);
     } else if (element.getType().equals("CapabilityStatement")) {
       validateCapabilityStatement(errors, element, stack);
     } else if (element.getType().equals("CodeSystem")) {
