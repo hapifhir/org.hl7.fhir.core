@@ -546,7 +546,7 @@ public class SnapShotGenerationTests {
     }
     if (!fail) {
       test.output = output;
-      TestingUtilities.getSharedWorkerContext().cacheResource(output);
+
       File dst = new File(TestingUtilities.tempFile("snapshot", test.getId() + "-expected.xml"));
       if (dst.exists())
         dst.delete();
