@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* Remove CapabilityStatement2 from canonical resources
