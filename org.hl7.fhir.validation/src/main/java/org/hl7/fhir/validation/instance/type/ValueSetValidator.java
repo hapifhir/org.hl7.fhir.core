@@ -61,7 +61,9 @@ public class ValueSetValidator extends BaseValidator {
         cc++;
       }
     }
-    checkShareableValueSet(errors, vs, stack);
+    if (!stack.isContained()) {
+      checkShareableValueSet(errors, vs, stack);
+    }
   }
 
   private void checkShareableValueSet(List<ValidationMessage> errors, Element vs, NodeStack stack) {
