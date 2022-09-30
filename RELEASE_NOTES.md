@@ -1,6 +1,6 @@
 ## Validator Changes
 
-* no changes
+* Warning in Validator CLI when character encoding is not UTF-8
 
 ## Other code changes
 
