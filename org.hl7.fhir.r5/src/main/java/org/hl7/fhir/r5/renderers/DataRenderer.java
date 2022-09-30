@@ -341,7 +341,7 @@ public class DataRenderer extends Renderer {
       return true;
     }
     if (Utilities.existsInList(t, 
-        "ActivityDefinition", "CapabilityStatement", "CapabilityStatement2", "ChargeItemDefinition", "Citation", "CodeSystem",
+        "ActivityDefinition", "CapabilityStatement", "ChargeItemDefinition", "Citation", "CodeSystem",
         "CompartmentDefinition", "ConceptMap", "ConditionDefinition", "EventDefinition", "Evidence", "EvidenceReport", "EvidenceVariable",
         "ExampleScenario", "GraphDefinition", "ImplementationGuide", "Library", "Measure", "MessageDefinition", "NamingSystem", "PlanDefinition"
         ))
