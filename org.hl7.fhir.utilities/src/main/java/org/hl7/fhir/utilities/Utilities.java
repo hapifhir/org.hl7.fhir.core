@@ -1758,4 +1758,12 @@ public class Utilities {
     return text;
   }
 
+  public static int parseInt(String value, int def) {
+    if (isInteger(value)) {
+      return Integer.parseInt(value);
+    } else {
+      return def;
+    }
+  }
+
 }
