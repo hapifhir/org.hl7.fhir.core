@@ -583,7 +583,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
             return false;
           }
           CodeSystem cs = resolveCodeSystem(vsi.getSystem());
-          if (cs != null) {
+          if (cs != null && cs.getContent() == CodeSystemContentMode.COMPLETE) {
 
             if (vsi.hasConcept()) {
               for (ConceptReferenceComponent cc : vsi.getConcept()) {
@@ -598,15 +598,15 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
                 sys.add(vsi.getSystem());
               }
             }
-          } else {
-            if (vsi.hasConcept()) {
-              for (ConceptReferenceComponent cc : vsi.getConcept()) {
-                boolean match = cc.getCode().equals(code);
-                if (match) {
-                  sys.add(vsi.getSystem());
-                }
+          } else if (vsi.hasConcept()) {
+            for (ConceptReferenceComponent cc : vsi.getConcept()) {
+              boolean match = cc.getCode().equals(code);
+              if (match) {
+                sys.add(vsi.getSystem());
               }
             }
+          } else {
+            return false;
           }
         }
       }

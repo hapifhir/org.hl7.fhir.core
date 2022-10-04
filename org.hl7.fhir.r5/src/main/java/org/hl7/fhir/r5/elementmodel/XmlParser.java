@@ -155,7 +155,13 @@ public class XmlParser extends ParserBase {
   			doc = builder.parse(stream);
   		}
   	} catch (Exception e) {
-      logError(0, 0, "(syntax)", IssueType.INVALID, e.getMessage(), IssueSeverity.FATAL);
+  	  if (e.getMessage().contains("lineNumber:") && e.getMessage().contains("columnNumber:")) {
+        int line = Utilities.parseInt(extractVal(e.getMessage(), "lineNumber"), 0); 
+        int col = Utilities.parseInt(extractVal(e.getMessage(), "columnNumber"), 0); 
+        logError(line, col, "(xml)", IssueType.INVALID, e.getMessage().substring(e.getMessage().lastIndexOf(";")+1).trim(), IssueSeverity.FATAL);
+  	  } else {
+        logError(0, 0, "(syntax)", IssueType.INVALID, e.getMessage(), IssueSeverity.FATAL);
+  	  }
       doc = null;
   	}
   	if (doc != null) {
@@ -168,6 +174,11 @@ public class XmlParser extends ParserBase {
   }
 
 
+  private String extractVal(String src, String name) {
+    src = src.substring(src.indexOf(name)+name.length()+1);
+    src = src.substring(0, src.indexOf(";")).trim();
+    return src;
+  }
   private void checkForProcessingInstruction(Document document) throws FHIRFormatError {
     if (policy == ValidationPolicy.EVERYTHING && FormatUtilities.FHIR_NS.equals(document.getDocumentElement().getNamespaceURI())) {
       Node node = document.getFirstChild();
