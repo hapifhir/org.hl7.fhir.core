@@ -140,7 +140,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     long setup = System.nanoTime();
 
     this.name = name;
-    System.out.println("---- " + name + " ----------------------------------------------------------------");
+    System.out.println("---- " + name + " ---------------------------------------------------------------- ("+System.getProperty("java.vm.name")+")");
     System.out.println("** Core: ");
     String txLog = null;
     if (content.has("txLog")) {
@@ -529,11 +529,25 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   private OperationOutcomeIssueComponent findMatchingIssue(OperationOutcome oo, OperationOutcomeIssueComponent iss) {
     for (OperationOutcomeIssueComponent t : oo.getIssue()) {
       if (t.getExpression().get(0).getValue().equals(iss.getExpression().get(0).getValue()) && t.getCode() == iss.getCode() && t.getSeverity() == iss.getSeverity()
-          && (t.hasDiagnostics() ? t.getDiagnostics().equals(iss.getDiagnostics()) : !iss.hasDiagnostics()) && t.getDetails().getText().trim().equals(iss.getDetails().getText().trim())) {
+          && (t.hasDiagnostics() ? t.getDiagnostics().equals(iss.getDiagnostics()) : !iss.hasDiagnostics()) && textMatches(t.getDetails().getText(), iss.getDetails().getText())) {
         return t;
       }
     }
     return null;
+  }
+
+  private boolean textMatches(String t1, String t2) {
+    if (t1.endsWith("...")) {
+      t2 = t2.substring(0, t1.length()-3);
+      t1 = t1.substring(0, t1.length()-3);
+    }
+    if (t2.endsWith("...")) {
+      t1 = t1.substring(0, t2.length()-3);
+      t2 = t2.substring(0, t2.length()-3);
+    }
+    t1 = t1.trim();
+    t2 = t2.trim();
+    return t1.equals(t2);
   }
 
   private org.hl7.fhir.r4.model.Parameters makeExpProfile() {
