@@ -160,7 +160,7 @@ public class XmlParser extends ParserBase {
         int col = Utilities.parseInt(extractVal(e.getMessage(), "columnNumber"), 0); 
         logError(line, col, "(xml)", IssueType.INVALID, e.getMessage().substring(e.getMessage().lastIndexOf(";")+1).trim(), IssueSeverity.FATAL);
   	  } else {
-        logError(0, 0, "(syntax)", IssueType.INVALID, e.getMessage(), IssueSeverity.FATAL);
+        logError(0, 0, "(xml)", IssueType.INVALID, e.getMessage(), IssueSeverity.FATAL);
   	  }
       doc = null;
   	}
