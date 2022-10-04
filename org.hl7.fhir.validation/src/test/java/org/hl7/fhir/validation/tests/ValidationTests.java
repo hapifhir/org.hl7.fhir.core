@@ -93,7 +93,7 @@ import com.google.gson.JsonObject;
 public class ValidationTests implements IEvaluationContext, IValidatorResourceFetcher, IValidationPolicyAdvisor {
 
   public final static boolean PRINT_OUTPUT_TO_CONSOLE = true;
-  private static final boolean BUILD_NEW = true;
+  private static final boolean BUILD_NEW = false;
 
   @Parameters(name = "{index}: id {0}")
   public static Iterable<Object[]> data() throws IOException {
