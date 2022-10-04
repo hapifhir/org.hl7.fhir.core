@@ -42,6 +42,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -142,6 +144,7 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.validation.constants.*;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.SIDUtilities;
 import org.hl7.fhir.utilities.SimpleTimeTracker;
 import org.hl7.fhir.utilities.TimeTracker;
@@ -159,9 +162,12 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.validation.BaseValidator;
+import org.hl7.fhir.validation.cli.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.cli.utils.ValidationLevel;
 import org.hl7.fhir.validation.instance.InstanceValidator.CanonicalResourceLookupResult;
+import org.hl7.fhir.validation.instance.InstanceValidator.CanonicalTypeSorter;
+import org.hl7.fhir.validation.instance.InstanceValidator.StructureDefinitionSorterByUrl;
 import org.hl7.fhir.validation.instance.type.BundleValidator;
 import org.hl7.fhir.validation.instance.type.CodeSystemValidator;
 import org.hl7.fhir.validation.instance.type.MeasureValidator;
@@ -199,6 +205,25 @@ import com.google.gson.JsonObject;
  */
 
 public class InstanceValidator extends BaseValidator implements IResourceValidator {
+  
+  public class StructureDefinitionSorterByUrl implements Comparator<StructureDefinition> {
+
+    @Override
+    public int compare(StructureDefinition o1, StructureDefinition o2) {
+      return o1.getUrl().compareTo(o2.getUrl());
+    }
+
+  }
+
+  public class CanonicalTypeSorter implements Comparator<CanonicalType> {
+
+    @Override
+    public int compare(CanonicalType o1, CanonicalType o2) {
+      return o1.getValue().compareTo(o2.getValue());
+    }
+
+  }
+
   public class CanonicalResourceLookupResult {
 
     private CanonicalResource resource;
@@ -387,6 +412,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean noCheckAggregation;
   private boolean wantCheckSnapshotUnchanged;
   private boolean noUnicodeBiDiControlChars;
+  private HtmlInMarkdownCheck htmlInMarkdownCheck;
  
   private List<ImplementationGuide> igs = new ArrayList<>();
   private List<String> extensionDomains = new ArrayList<String>();
@@ -2134,7 +2160,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (!"xhtml".equals(type)) {
       if (securityChecks) {
         rule(errors, IssueType.INVALID, e.line(), e.col(), path, !containsHtmlTags(e.primitiveValue()), I18nConstants.SECURITY_STRING_CONTENT_ERROR);
-      } else {
+      } else if (!"markdown".equals(type)){
         hint(errors, IssueType.INVALID, e.line(), e.col(), path, !containsHtmlTags(e.primitiveValue()), I18nConstants.SECURITY_STRING_CONTENT_WARNING);
       }
     }
@@ -2318,6 +2344,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       checkPrimitiveBinding(hostContext, errors, path, type, context, e, profile, node);
     }
 
+    if (type.equals("markdown") && htmlInMarkdownCheck != HtmlInMarkdownCheck.NONE) {
+      String raw = e.primitiveValue();
+      String processed = MarkDownProcessor.preProcess(raw);
+      if (!raw.equals(processed)) {
+        int i = 0;
+        while (i < raw.length() && raw.charAt(1) == processed.charAt(i)) {
+          i++;
+        }
+        warningOrError(htmlInMarkdownCheck == HtmlInMarkdownCheck.ERROR, errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_MARKDOWN_HTML, raw.subSequence(i, 2));        
+      }
+    }
     if (type.equals("xhtml")) {
       XhtmlNode xhtml = e.getXhtml();
       if (xhtml != null) { // if it is null, this is an error already noted in the parsers
@@ -3226,7 +3263,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return true;
   }
 
-  private String asListByUrl(Collection<StructureDefinition> list) {
+  private String asListByUrl(Collection<StructureDefinition> coll) {
+    List<StructureDefinition> list = new ArrayList<>();
+    list.addAll(coll);
+    Collections.sort(list, new StructureDefinitionSorterByUrl());
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     for (StructureDefinition sd : list) {
       b.append(sd.getUrl());
@@ -3234,7 +3274,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return b.toString();
   }
 
-  private String asList(Collection<CanonicalType> list) {
+  private String asList(Collection<CanonicalType> coll) {
+    List<CanonicalType> list = new ArrayList<>();
+    list.addAll(coll);
+    Collections.sort(list, new CanonicalTypeSorter());
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     for (CanonicalType c : list) {
       b.append(c.getValue());
@@ -6023,6 +6066,16 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   public void setNoUnicodeBiDiControlChars(boolean noUnicodeBiDiControlChars) {
     this.noUnicodeBiDiControlChars = noUnicodeBiDiControlChars;
+  }
+
+
+
+  public HtmlInMarkdownCheck getHtmlInMarkdownCheck() {
+    return htmlInMarkdownCheck;
+  }
+
+  public void setHtmlInMarkdownCheck(HtmlInMarkdownCheck htmlInMarkdownCheck) {
+    this.htmlInMarkdownCheck = htmlInMarkdownCheck;
   }
 
   public Coding getJurisdiction() {

@@ -48,6 +48,8 @@ public class CliContext {
   private boolean wantInvariantsInMessages = false;
   @JsonProperty("doImplicitFHIRPathStringConversion")
   private boolean doImplicitFHIRPathStringConversion = false;
+  @JsonProperty("htmlInMarkdownCheck")
+  private HtmlInMarkdownCheck htmlInMarkdownCheck = HtmlInMarkdownCheck.WARNING;
 
   @JsonProperty("map")
   private String map = null;
@@ -246,6 +248,16 @@ public class CliContext {
   @JsonProperty("doImplicitFHIRPathStringConversion")
   public void setDoImplicitFHIRPathStringConversion(boolean doImplicitFHIRPathStringConversion) {
     this.doImplicitFHIRPathStringConversion = doImplicitFHIRPathStringConversion;
+  }
+
+  @JsonProperty("htmlInMarkdownCheck")
+  public HtmlInMarkdownCheck getHtmlInMarkdownCheck() {
+    return htmlInMarkdownCheck;
+  }
+
+  @JsonProperty("htmlInMarkdownCheck")
+  public void setHtmlInMarkdownCheck(HtmlInMarkdownCheck htmlInMarkdownCheck) {
+    this.htmlInMarkdownCheck = htmlInMarkdownCheck;
   }
 
   @JsonProperty("locale")
