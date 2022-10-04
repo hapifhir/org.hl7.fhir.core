@@ -488,6 +488,7 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_BASE64_VALID = "Type_Specific_Checks_DT_Base64_Valid";
   public static final String TYPE_SPECIFIC_CHECKS_DT_BOOLEAN_VALUE = "Type_Specific_Checks_DT_Boolean_Value";
   public static final String TYPE_SPECIFIC_CHECKS_DT_CODE_WS = "Type_Specific_Checks_DT_Code_WS";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_MARKDOWN_HTML = "TYPE_SPECIFIC_CHECKS_DT_MARKDOWN_HTML";
   public static final String TYPE_SPECIFIC_CHECKS_DT_DATETIME_REASONABLE = "Type_Specific_Checks_DT_DateTime_Reasonable";
   public static final String TYPE_SPECIFIC_CHECKS_DT_DATETIME_REGEX = "Type_Specific_Checks_DT_DateTime_Regex";
   public static final String TYPE_SPECIFIC_CHECKS_DT_DATETIME_TZ = "Type_Specific_Checks_DT_DateTime_TZ";
