@@ -81,6 +81,7 @@ import org.hl7.fhir.r4.model.ExpressionNode;
 import org.hl7.fhir.r4.model.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r4.model.IdType;
 import org.hl7.fhir.r4.model.IntegerType;
+import org.hl7.fhir.r4.model.Narrative;
 import org.hl7.fhir.r4.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r4.model.PrimitiveType;
 import org.hl7.fhir.r4.model.Reference;
@@ -742,6 +743,12 @@ public class StructureMapUtilities {
 		while (!lexer.done()) {
 			parseGroup(result, lexer);    
 		}
+
+		Narrative textNode = result.getText();
+		textNode.setStatus(Narrative.NarrativeStatus.ADDITIONAL);
+		XhtmlNode node = new XhtmlNode(NodeType.Element, "div");
+		textNode.setDiv(node);
+		node.pre().tx(text);
 
 		return result;
 	}
