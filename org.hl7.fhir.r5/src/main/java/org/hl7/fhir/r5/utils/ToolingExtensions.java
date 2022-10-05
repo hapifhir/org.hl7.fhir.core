@@ -205,6 +205,7 @@ public class ToolingExtensions {
   public static final String EXT_REND_MD = "http://hl7.org/fhir/StructureDefinition/rendering-markdown";
   public static final String EXT_CAP_STMT_EXPECT = "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation";
   public static final String EXT_ED_HEIRARCHY = "http://hl7.org/fhir/StructureDefinition/elementdefinition-heirarchy";
+  public static final String EXT_SD_DEPENDENCY = "http://hl7.org/fhir/StructureDefinition/structuredefinition-dependencies";
 
   // in the tooling IG
   public static final String EXT_BINDING_ADDITIONAL = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding";
