@@ -103,6 +103,9 @@ public class GraphQLSchemaGenerator {
       if (sd.getKind() == StructureDefinitionKind.COMPLEXTYPE && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
         tl.put(sd.getName(), sd);
       }
+      if (sd.getKind() == StructureDefinitionKind.RESOURCE && sd.getDerivation() != TypeDerivationRule.CONSTRAINT && sd.getAbstract()) {
+        tl.put(sd.getName(), sd);
+      }
     }
     writer.write("# FHIR GraphQL Schema. Version " + version + "\r\n\r\n");
     writer.write("# FHIR Defined Primitive types\r\n");
@@ -290,16 +293,17 @@ public class GraphQLSchemaGenerator {
   }
 
   private void generateType(Map<String, String> existingTypeNames, Writer writer, StructureDefinition sd, EnumSet<FHIROperationType> operations) throws IOException {
-    if (sd.getAbstract()) {
-      return;
-    }
-
     if (operations.contains(FHIROperationType.READ) || operations.contains(FHIROperationType.SEARCH)) {
       List<StringBuilder> list = new ArrayList<>();
       StringBuilder b = new StringBuilder();
       list.add(b);
       b.append("type ");
       b.append(sd.getName());
+      StructureDefinition sdp = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+      if (sdp != null) {
+        b.append(" implements ");
+        b.append(sdp.getType());
+      }
       b.append(" {\r\n");
       ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
       generateProperties(existingTypeNames, list, b, sd.getName(), sd, ed, "type", "");
@@ -370,7 +374,13 @@ public class GraphQLSchemaGenerator {
       if (suffix)
         b.append(Utilities.capitalize(typeDetails.getWorkingCode()));
       b.append(": ");
-      b.append(n);
+      if (!child.getMax().equals("1")) {
+        b.append("[");
+        b.append(n);
+        b.append("]");
+      } else {
+        b.append(n);
+      }
       if (!child.getPath().endsWith(".id")) {
         b.append("  _");
         b.append(tail(child.getPath(), suffix));
