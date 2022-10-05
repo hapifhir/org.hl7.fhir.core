@@ -419,7 +419,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
   private void checkOutcomes(List<ValidationMessage> errors, JsonObject focus, String profile, String name) throws IOException {
     JsonObject java = focus.getAsJsonObject("java");
-    OperationOutcome goal = (OperationOutcome) new JsonParser().parse(java.getAsJsonObject("outcome"));
+    OperationOutcome goal = java.has("outcome") ? (OperationOutcome) new JsonParser().parse(java.getAsJsonObject("outcome")) : new OperationOutcome();
     OperationOutcome actual = OperationOutcomeUtilities.createOutcomeSimple(errors);
     actual.setText(null);
     String json = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(actual);
@@ -521,8 +521,10 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       if (java.has("outcome")) {
         java.remove("outcome");
       }
-      JsonObject oj = JsonTrackingParser.parse(json, null);
-      java.add("outcome", oj);
+      if (actual.hasIssue()) {
+        JsonObject oj = JsonTrackingParser.parse(json, null);
+        java.add("outcome", oj);
+      }
     }
   }
 

@@ -404,6 +404,11 @@ public boolean hasCoding(String system, String code) {
   public void addCoding(String system, String code, String display) {
     getCoding().add(new Coding(system, code, display));
   }
+
+  @Override
+  public String toString() {
+    return hasCoding() ? getCoding().toString() : "["+getText()+"]";
+  }
   
 // end addition
 

@@ -818,15 +818,31 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     setParents(element);
 
     long t = System.nanoTime();
+    NodeStack stack = new NodeStack(context, path, element, validationLanguage);
     if (profiles == null || profiles.isEmpty()) {
-      validateResource(new ValidatorHostContext(appContext, element), errors, element, element, null, resourceIdRule, new NodeStack(context, path, element, validationLanguage).resetIds(), null);
+      validateResource(new ValidatorHostContext(appContext, element), errors, element, element, null, resourceIdRule, stack.resetIds(), null);
     } else {
+      int i = 0;
+      while (i < profiles.size()) {
+        StructureDefinition sd = profiles.get(i);
+        if (sd.hasExtension(ToolingExtensions.EXT_SD_DEPENDENCY)) {
+          for (Extension ext : sd.getExtensionsByUrl(ToolingExtensions.EXT_SD_DEPENDENCY)) {
+            StructureDefinition dep = context.fetchResource( StructureDefinition.class, ext.getValue().primitiveValue());
+            if (dep == null) {
+              warning(errors, IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_DEPENDS_NOT_RESOLVED, ext.getValue().primitiveValue(), sd.getUrl());                
+            } else if (!profiles.contains(dep)) {
+              profiles.add(dep);
+            }
+          }
+        }
+        i++;
+      }
       for (StructureDefinition defn : profiles) {
-        validateResource(new ValidatorHostContext(appContext, element), errors, element, element, defn, resourceIdRule, new NodeStack(context, path, element, validationLanguage).resetIds(), null);
+        validateResource(new ValidatorHostContext(appContext, element), errors, element, element, defn, resourceIdRule, stack.resetIds(), null);
       }
     }
     if (hintAboutNonMustSupport) {
-      checkElementUsage(errors, element, new NodeStack(context, path, element, validationLanguage));
+      checkElementUsage(errors, element, stack);
     }
     errors.removeAll(messagesToRemove);
     timeTracker.overall(t);
@@ -1217,7 +1233,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                       checkBindings(errors, path, element, stack, valueset, nextCoding);
                     }
                   }
-                  timeTracker.tx(t, "vc "+DataRenderer.display(context, cc));
+                  timeTracker.tx(t, "vc "+cc.toString());
                 }
               }
             } catch (Exception e) {
@@ -1692,6 +1708,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                           txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_14, describeReference(binding.getValueSet(), valueset), getErrorMessage(vr.getMessage()), theSystem+"#"+theCode);
                         }
                       }
+                    } else if (vr != null && vr.getMessage() != null) {
+                      txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
                     }
                   } catch (Exception e) {
                     if (STACK_TRACE) e.printStackTrace();
@@ -3713,7 +3731,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private String getErrorMessage(String message) {
-    return message != null ? " (error message = " + message + ")" : "";
+     return message != null ? " (error message = " + message + ")" : "";
   }
 
   public boolean isSuppressLoincSnomedMessages() {
@@ -4517,28 +4535,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               } else if (!fetcher.fetchesCanonicalResource(this, profile.primitiveValue())) {
                 warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_NOT_POLICY, profile.primitiveValue());                
               } else {
-                sd = null;
-                String url = profile.primitiveValue();
-                CanonicalResourceLookupResult cr = crLookups.get(url);
-                if (cr != null) {
-                  if (cr.error != null) {
-                    warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_ERROR, url, cr.error);                
-                  } else {
-                    sd = (StructureDefinition) cr.resource;
-                  }
-                } else {
-                  try {
-                    sd = (StructureDefinition) fetcher.fetchCanonicalResource(this, url);
-                    crLookups.put(url, new CanonicalResourceLookupResult(sd));
-                  } catch (Exception e) {
-                    if (STACK_TRACE) { e.printStackTrace(); }
-                    crLookups.put(url, new CanonicalResourceLookupResult(e.getMessage()));
-                    warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_ERROR, profile.primitiveValue(), e.getMessage());                
-                  }
-                  if (sd != null) {
-                    context.cacheResource(sd);
-                  }
-                }
+                sd = lookupProfileReference(errors, element, stack, i, profile, sd);
               }
             }
             if (sd != null) {
@@ -4552,6 +4549,27 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               startInner(hostContext, errors, resource, element, sd, stack, false, pct);
               if (pctOwned) {
                 pct.done();
+              }
+              if (sd.hasExtension(ToolingExtensions.EXT_SD_DEPENDENCY)) {
+                for (Extension ext : sd.getExtensionsByUrl(ToolingExtensions.EXT_SD_DEPENDENCY)) {
+                  StructureDefinition sdi = context.fetchResource(StructureDefinition.class, ext.getValue().primitiveValue());
+                  if (sdi == null) {
+                    warning(errors, IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_DEPENDS_NOT_RESOLVED, ext.getValue().primitiveValue(), sd.getUrl());                
+                  } else {
+                    if (crumbTrails) {
+                      element.addMessage(signpost(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_DEP, sdi.getUrl(), sd.getUrl()));
+                    }
+                    stack.resetIds();
+                    if (pctOwned) {
+                      pct = new PercentageTracker(resource.countDescendents(), resource.fhirType(), sdi.getUrl(), logProgress);
+                    }
+                    startInner(hostContext, errors, resource, element, sdi, stack, false, pct);
+                    if (pctOwned) {
+                      pct.done();
+                    }
+                    
+                  }
+                }
               }
             }
           }
@@ -4581,6 +4599,32 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
 //    System.out.println("start: "+(System.currentTimeMillis()-st)+" ("+resource.fhirType()+")");
+  }
+
+  private StructureDefinition lookupProfileReference(List<ValidationMessage> errors, Element element, NodeStack stack,
+      int i, Element profile, StructureDefinition sd) {
+    String url = profile.primitiveValue();
+    CanonicalResourceLookupResult cr = crLookups.get(url);
+    if (cr != null) {
+      if (cr.error != null) {
+        warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_ERROR, url, cr.error);                
+      } else {
+        sd = (StructureDefinition) cr.resource;
+      }
+    } else {
+      try {
+        sd = (StructureDefinition) fetcher.fetchCanonicalResource(this, url);
+        crLookups.put(url, new CanonicalResourceLookupResult(sd));
+      } catch (Exception e) {
+        if (STACK_TRACE) { e.printStackTrace(); }
+        crLookups.put(url, new CanonicalResourceLookupResult(e.getMessage()));
+        warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_ERROR, profile.primitiveValue(), e.getMessage());                
+      }
+      if (sd != null) {
+        context.cacheResource(sd);
+      }
+    }
+    return sd;
   }
 
 //  private void plog(String msg) {
@@ -5720,7 +5764,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     boolean ok;
     try {
       long t = System.nanoTime();
-      ok = fpe.evaluateToBoolean(hostContext, resource, hostContext.getRootResource(), element, n);
+       ok = fpe.evaluateToBoolean(hostContext, resource, hostContext.getRootResource(), element, n);
       timeTracker.fpe(t);
       msg = fpe.forLog();
     } catch (Exception ex) {
