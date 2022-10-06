@@ -381,7 +381,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
         renderContactPoint(x, c);
       }
     } else if (e instanceof UriType) {
-      renderUri(x, (UriType) e, defn.getPath(), rcontext != null && rcontext.getResourceResource() != null ? rcontext.getResourceResource().getId() : null);
+      renderUri(x, (UriType) e, defn.getPath(), rcontext != null && rcontext.getResource() != null ? rcontext.getResource().getId() : null);
     } else if (e instanceof Timing) {
       renderTiming(x, (Timing) e);
     } else if (e instanceof Range) {
@@ -418,6 +418,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
               ctxtc.setAddGeneratedNarrativeHeader(false);
               ctxtc.setContained(true);
               ResourceRenderer rr = RendererFactory.factory(rw, ctxtc);
+              rr.setRcontext(new ResourceContext(rcontext, rw));
               rr.render(parent.blockquote(), rw);
             } else {
               x.ah(ref).tx("See "+rw.fhirType());              
@@ -690,12 +691,12 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       x.para().b().tx("Generated Narrative: "+profile.present()+(showCodeDetails ? " with Details" : ""));
     }
     try {
-      generateByProfile(rcontext.getResourceResource(), profile, rcontext.getResourceResource(), profile.getSnapshot().getElement(), profile.getSnapshot().getElement().get(0), getChildrenForPath(profile, profile.getSnapshot().getElement(), rcontext.getResourceResource().getResourceType().toString()), x, rcontext.getResourceResource().getResourceType().toString(), showCodeDetails);
+      generateByProfile(rcontext.getResource(), profile, rcontext.getResource(), profile.getSnapshot().getElement(), profile.getSnapshot().getElement().get(0), getChildrenForPath(profile, profile.getSnapshot().getElement(), rcontext.getResource().getResourceType().toString()), x, rcontext.getResource().getResourceType().toString(), showCodeDetails);
     } catch (Exception e) {
       e.printStackTrace();
       x.para().b().style("color: maroon").tx("Exception generating Narrative: "+e.getMessage());
     }
-    inject(rcontext.getResourceResource(), x,  NarrativeStatus.GENERATED);
+    inject((DomainResource) rcontext.getResource(), x,  NarrativeStatus.GENERATED);
     return true;
   }
 
