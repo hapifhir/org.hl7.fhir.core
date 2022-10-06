@@ -32,14 +32,15 @@ public class AdditionalBindingsRenderer {
     private String valueSet;
     private String doco;
     private UsageContext usage;
-    private boolean any;
-    private boolean unchanged;
-    private boolean matched;
+    private boolean any = false;
+    private boolean isUnchanged = false;
+    private boolean matched = false;
+    private boolean removed = false;
     private AdditionalBindingDetail compare;
     private int count = 1;
     private String getKey() {
       // Todo: Consider extending this with content from usageContext if purpose isn't sufficiently differentiating
-      return purpose;
+      return purpose + Integer.toString(count);
     }
     private void incrementCount() {
       count++;
@@ -51,9 +52,21 @@ public class AdditionalBindingsRenderer {
     private boolean alreadyMatched() {
       return matched;
     }
+    public boolean unchanged() {
+      if (!isUnchanged)
+        return false;
+      if (compare==null)
+        return true;
+      isUnchanged = true;
+      isUnchanged = isUnchanged && ((purpose==null && compare.purpose==null) || purpose.equals(compare.purpose));
+      isUnchanged = isUnchanged && ((valueSet==null && compare.valueSet==null) || valueSet.equals(compare.valueSet));
+      isUnchanged = isUnchanged && ((doco==null && compare.doco==null) || doco.equals(compare.doco));
+      isUnchanged = isUnchanged && ((usage==null && compare.usage==null) || usage.equals(compare.usage));
+      return isUnchanged;
+    }
   }
 
-  private static String STYLE_UNCHANGED = "font-color: darkgray;";
+  private static String STYLE_UNCHANGED = "opacity: 0.5;";
   private static String STYLE_REMOVED = STYLE_UNCHANGED + "text-decoration: line-through;";
 
   private List<AdditionalBindingDetail> bindings = new ArrayList<>();
@@ -86,12 +99,12 @@ public class AdditionalBindingsRenderer {
     abr.purpose =  label;
     abr.valueSet =  ext.getValue().primitiveValue();
     if (compare) {
-      abr.unchanged = compExt!=null && ext.getValue().primitiveValue().equals(compExt.getValue().primitiveValue());
+      abr.isUnchanged = compExt!=null && ext.getValue().primitiveValue().equals(compExt.getValue().primitiveValue());
 
       abr.compare = new AdditionalBindingDetail();
       abr.compare.valueSet = compExt==null ? null : compExt.getValue().primitiveValue();
     } else {
-      abr.unchanged = ext.hasUserData(ProfileUtilities.DERIVATION_EQUALS);
+      abr.isUnchanged = ext.hasUserData(ProfileUtilities.DERIVATION_EQUALS);
     }
     bindings.add(abr);
   }
@@ -113,8 +126,9 @@ public class AdditionalBindingsRenderer {
     if (compare && compList!=null) {
       for (Extension ext : compList) {
         AdditionalBindingDetail abr = additionalBinding(ext);
-        while (compBindings.containsKey(abr.getKey()))
+        if (compBindings.containsKey(abr.getKey())) {
           abr.incrementCount();
+        }
         compBindings.put(abr.getKey(), abr);
       }
     }
@@ -127,11 +141,18 @@ public class AdditionalBindingsRenderer {
           match = compBindings.get(abr.getKey());
           if (abr.alreadyMatched())
             abr.incrementCount();
-        } while (match!=null && !match.alreadyMatched());
+        } while (match!=null && abr.alreadyMatched());
         if (match!=null)
           abr.setCompare(match);
+        bindings.add(abr);
+        if (abr.compare!=null)
+          compBindings.remove(abr.compare.getKey());
       } else
         bindings.add(abr);
+    }
+    for (AdditionalBindingDetail b: compBindings.values()) {
+      b.removed = true;
+      bindings.add(b);
     }
   }
 
@@ -142,7 +163,7 @@ public class AdditionalBindingsRenderer {
     abr.doco =  ext.getExtensionString("documentation");
     abr.usage =  (ext.hasExtension("usage")) && ext.getExtensionByUrl("usage").hasValueUsageContext() ? ext.getExtensionByUrl("usage").getValueUsageContext() : null;
     abr.any = "any".equals(ext.getExtensionString("scope"));
-    abr.unchanged = ext.hasUserData(ProfileUtilities.DERIVATION_EQUALS);
+    abr.isUnchanged = ext.hasUserData(ProfileUtilities.DERIVATION_EQUALS);
     return abr;
   }
 
@@ -192,8 +213,10 @@ public class AdditionalBindingsRenderer {
     }
     for (AdditionalBindingDetail binding : bindings) {
       tr =  new XhtmlNode(NodeType.Element, "tr");
-      if (binding.unchanged) {
-        tr.style("opacity: 0.5");
+      if (binding.unchanged()) {
+        tr.style(STYLE_REMOVED);
+      } else if (binding.removed) {
+        tr.style(STYLE_REMOVED);
       }
       children.add(tr);
       BindingResolution br = pkp == null ? makeNullBr(binding) : pkp.resolveBinding(profile, binding.valueSet, path);
