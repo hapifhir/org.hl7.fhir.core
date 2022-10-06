@@ -355,7 +355,6 @@ public class ProfileUtilities extends TranslatingUtilities {
   private boolean wantFixDifferentialFirstElementType;
   private Set<String> masterSourceFileNames;
   private Map<ElementDefinition, List<ElementDefinition>> childMapCache = new HashMap<>();
-  private Map<String, Map<String, ElementDefinition>> sdMapCache = new HashMap<>();
 
   public ProfileUtilities(IWorkerContext context, List<ValidationMessage> messages, ProfileKnowledgeProvider pkp, FHIRPathEngine fpe) {
     super();
@@ -430,22 +429,6 @@ public class ProfileUtilities extends TranslatingUtilities {
     String getLinkForProfile(StructureDefinition profile, String url);
     boolean prependLinks();
     String getLinkForUrl(String corePath, String s);
-  }
-
-  public ElementDefinition getElementById(String structureCanonical, String id) {
-    Map<String, ElementDefinition> sdCache = sdMapCache.get(structureCanonical);
-
-    if (sdCache == null) {
-      StructureDefinition sd = (StructureDefinition) context.fetchResource(StructureDefinition.class, structureCanonical);
-      if (sd==null)
-        throw new FHIRException("Unable to retrieve StructureDefinition with URL " + structureCanonical);
-      sdCache = new HashMap<String, ElementDefinition>();
-      sdMapCache.put(structureCanonical, sdCache);
-      for (ElementDefinition e : sd.getSnapshot().getElement()) {
-        sdCache.put(e.getId(), e);
-      }
-    }
-    return sdCache.get(id);
   }
 
   public List<ElementDefinition> getChildMap(StructureDefinition profile, ElementDefinition element) throws DefinitionException {
