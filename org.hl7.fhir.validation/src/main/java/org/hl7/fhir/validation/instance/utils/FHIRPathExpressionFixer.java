@@ -45,6 +45,13 @@ public class FHIRPathExpressionFixer {
       return ("name.exists() implies name.matches('[A-Z]([A-Za-z0-9_]){0,254}')");
     }
     
+    // R5 ballot
+    if (expr.equals("url.matches('([^|#])*')")) {
+      return ("$this.matches('([^|#])*')");
+    }
+    
+    
+    
     
     // clarification in FHIRPath spec
     if ("eld-19".equals(key)) {

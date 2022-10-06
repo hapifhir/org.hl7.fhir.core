@@ -487,7 +487,6 @@ public class VersionUtilities {
 
       res.add("ActivityDefinition");
       res.add("CapabilityStatement");
-      res.add("CapabilityStatement2");
       res.add("ChargeItemDefinition");
       res.add("Citation");
       res.add("CodeSystem");

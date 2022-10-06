@@ -14,12 +14,12 @@
     HAPI FHIR
     -->
     <artifactId>org.hl7.fhir.core</artifactId>
-    <version>5.6.68-SNAPSHOT</version>
+    <version>5.6.69-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
         <hapi_fhir_version>5.4.0</hapi_fhir_version>
-        <validator_test_case_version>1.1.113</validator_test_case_version>
+        <validator_test_case_version>1.1.114-SNAPSHOT</validator_test_case_version>
         <junit_jupiter_version>5.7.1</junit_jupiter_version>
         <junit_platform_launcher_version>1.8.2</junit_platform_launcher_version>
         <maven_surefire_version>3.0.0-M5</maven_surefire_version>

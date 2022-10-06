@@ -64,10 +64,40 @@ public class MarkDownProcessor {
     }
     switch (dialect) {
     case DARING_FIREBALL : return Processor.process(source); 
-    case COMMON_MARK : return processCommonMark(source); 
+    case COMMON_MARK : return processCommonMark(preProcess(source)); 
     default: throw new Error("Unknown Markdown Dialect: "+dialect.toString()+" at "+context); 
     }
   }
+
+  /**
+   * This deals with a painful problem created by the intersection of previous publishing processes 
+   * and the way commonmark specifies that < is handled in content. For control reasons, the FHIR specification does 
+   * not allow raw html tags in the markdown 
+   * 
+   * This check finds any raw <[x] where [x] is any alpha character, and prepends \ to it so that it 
+   * renders as a < (e.g. gets escaped in the output HTML)
+   * 
+   * This is public to enable testing (not for direct use otherwise)
+   * 
+   * @param source
+   * @return
+   */
+  public static String preProcess(String source) {
+    StringBuilder b = new StringBuilder();
+    for (int i = 0; i < source.length(); i++) {
+      char last = i > 0 ? source.charAt(i-1) : 0;
+      char current = source.charAt(i);
+      char next = i < source.length() -1 ? source.charAt(i+1) : 0;
+      if (current == '<' && Character.isAlphabetic(next) && last != '\\') {
+        b.append('\\');
+        b.append(current);        
+      } else {
+        b.append(current);
+      }
+    }
+    return b.toString();
+  }
+
 
   private String processCommonMark(String source) {
     Set<Extension> extensions = Collections.singleton(TablesExtension.create());

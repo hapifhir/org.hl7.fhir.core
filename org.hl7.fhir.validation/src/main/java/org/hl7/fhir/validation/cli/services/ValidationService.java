@@ -372,6 +372,7 @@ public class ValidationService {
       validator.setAssumeValidRestReferences(cliContext.isAssumeValidRestReferences());
       validator.setShowMessagesFromReferences(cliContext.isShowMessagesFromReferences());
       validator.setDoImplicitFHIRPathStringConversion(cliContext.isDoImplicitFHIRPathStringConversion());
+      validator.setHtmlInMarkdownCheck(cliContext.getHtmlInMarkdownCheck());
       validator.setNoExtensibleBindingMessages(cliContext.isNoExtensibleBindingMessages());
       validator.setNoUnicodeBiDiControlChars(cliContext.isNoUnicodeBiDiControlChars());
       validator.setNoInvariantChecks(cliContext.isNoInvariants());
