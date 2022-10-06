@@ -79,8 +79,13 @@ public class BundleRenderer extends ResourceRenderer {
         if (be.has("fullUrl")) {
           root.an(makeInternalBundleLink(be.get("fullUrl").primitiveValue()));
         }
-        if (be.has("resource") && be.getChildByName("resource").getValues().get(0).has("id")) {
-          root.an(be.get("resource").fhirType() + "_" + be.getChildByName("resource").getValues().get(0).get("id").primitiveValue());
+        if (be.has("resource")) {
+          if (be.getChildByName("resource").getValues().get(0).has("id")) {
+            root.an(be.get("resource").fhirType() + "_" + be.getChildByName("resource").getValues().get(0).get("id").primitiveValue());
+          } else {
+            String id = makeIdFromBundleEntry(be.get("fullUrl").primitiveValue());
+            root.an(be.get("resource").fhirType() + "_" + id);
+          }
         }
         root.hr();
         if (be.has("fullUrl")) {
@@ -101,6 +106,7 @@ public class BundleRenderer extends ResourceRenderer {
           if (xn == null || xn.isEmpty()) {
             ResourceRenderer rr = RendererFactory.factory(rw, context);
             try {
+              rr.setRcontext(new ResourceContext(rcontext, rw));
               xn = rr.render(rw);
             } catch (Exception e) {
               xn = new XhtmlNode();
@@ -128,7 +134,7 @@ public class BundleRenderer extends ResourceRenderer {
       if (subject.hasNarrative()) {
         x.addChildren(subject.getNarrative());        
       } else {
-        RendererFactory.factory(subject, context).render(x, subject);
+        RendererFactory.factory(subject, context, new ResourceContext(rcontext, subject)).render(x, subject);
       }
     }
     x.hr();
@@ -204,12 +210,14 @@ public class BundleRenderer extends ResourceRenderer {
       if (nx != null && !nx.isEmpty()) {
         x.addChildren(nx);        
       } else {
-        RendererFactory.factory(subject, context).render(x, subject);
+        RendererFactory.factory(subject, context).setRcontext(new ResourceContext(rcontext, subject)).render(x, subject);
       }
     }
     x.hr();
     if (!comp.getText().hasDiv()) {
-      ResourceRenderer rr = RendererFactory.factory(comp, getContext());      rr.render(comp);
+      ResourceRenderer rr = RendererFactory.factory(comp, getContext());     
+      rr.setRcontext(new ResourceContext(rcontext, comp));
+      rr.render(comp);
     }
     if (comp.getText().hasDiv()) {
       x.addChildren(comp.getText().getDiv());
@@ -292,8 +300,14 @@ public class BundleRenderer extends ResourceRenderer {
         if (i > start) {
           if (be.hasFullUrl())
             x.an(makeInternalBundleLink(be.getFullUrl()));
-          if (be.hasResource() && be.getResource().hasId())
-            x.an(be.getResource().getResourceType().name() + "_" + be.getResource().getId());
+          if (be.hasResource()) {
+            if (be.getResource().hasId()) {
+              x.an(be.getResource().getResourceType().name() + "_" + be.getResource().getId());
+            } else {
+              String id = makeIdFromBundleEntry(be.getFullUrl());
+              x.an(be.getResource().getResourceType().name() + "_" + id);
+            }
+          }
           x.hr();
           if (docMode) {
             if (be.hasFullUrl() && be.hasResource()) {
@@ -329,6 +343,7 @@ public class BundleRenderer extends ResourceRenderer {
               if (xn == null || xn.isEmpty()) {
                 ResourceRenderer rr = RendererFactory.factory(be.getResource(), context);
                 try {
+                  rr.setRcontext(new ResourceContext(rcontext, be.getResource()));
                   xn = rr.build(be.getResource());
                 } catch (Exception e) {
                   xn = makeExceptionXhtml(e, "generating narrative");
