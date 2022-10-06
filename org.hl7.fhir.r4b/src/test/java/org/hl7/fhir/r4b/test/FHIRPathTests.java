@@ -175,19 +175,22 @@ public class FHIRPathTests {
     }
     
     if (node != null) {
+      if (!Utilities.noString(input)) {
+        res = resources.get(input);
+        if (res == null) {
+          if (input.endsWith(".json")) {
+            res = new JsonParser().parse(TestingUtilities.loadTestResourceStream("r4b", input));              
+          } else {
+            res = new XmlParser().parse(TestingUtilities.loadTestResourceStream("r4b", input));
+          }
+          resources.put(input, res);
+        }        
+      }
+      
       try {
         if (Utilities.noString(input)) {
           fp.check(null, null, node);
         } else {
-          res = resources.get(input);
-          if (res == null) {
-            if (input.endsWith(".json")) {
-              res = new JsonParser().parse(TestingUtilities.loadTestResourceStream("r4b", input));              
-            } else {
-              res = new XmlParser().parse(TestingUtilities.loadTestResourceStream("r4b", input));
-            }
-            resources.put(input, res);
-          }
           fp.check(res, res.getResourceType().toString(), res.getResourceType().toString(), node);
         }
         Assertions.assertTrue(fail != TestResultType.SEMANTICS, String.format("Expected exception didn't occur checking %s", expression));
