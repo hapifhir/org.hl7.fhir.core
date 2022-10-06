@@ -4982,6 +4982,8 @@ public class ProfileUtilities extends TranslatingUtilities {
       b.setDescription(o.getDescription());
       b.getDescriptionElement().setUserData(DERIVATION_EQUALS, o.getDescriptionElement());
     }
+    // todo: derivation?
+    b.getExtension().addAll(binding.getExtension());
     return b;
   }
 
