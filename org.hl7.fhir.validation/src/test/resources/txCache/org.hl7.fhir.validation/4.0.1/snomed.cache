@@ -1843,3 +1843,24 @@ v: {
   "error" : "Unable to find code 2 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); The code \"2\" is not valid in the system http://snomed.info/sct; The code provided (http://snomed.info/sct#2) is not valid in the value set 'All codes known to the system' (from http://tx.fhir.org/r4)"
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "56248011000036107",
+  "display" : "Panadol 500 mg tablet, 50"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "Unable to find code 56248011000036107 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); The code \"56248011000036107\" is not valid in the system http://snomed.info/sct; The code provided (http://snomed.info/sct#56248011000036107) is not valid in the value set 'All codes known to the system' (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "361055000",
+  "display" : "Misuses drugs (finding)"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Misuses drugs",
+  "code" : "361055000",
+  "system" : "http://snomed.info/sct"
+}
+-------------------------------------------------------------------------------------

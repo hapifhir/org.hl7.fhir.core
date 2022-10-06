@@ -686,7 +686,7 @@ public class JsonTrackingParser {
   }
 
   public static void write(JsonObject json, File file) throws IOException {
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     String jcnt = gson.toJson(json);
     TextFile.stringToFile(jcnt, file);    
   }

@@ -31,6 +31,7 @@ public class AdditionalBindingsRenderer {
     private String purpose;
     private String valueSet;
     private String doco;
+    private String docoShort;
     private UsageContext usage;
     private boolean any = false;
     private boolean isUnchanged = false;
@@ -51,6 +52,9 @@ public class AdditionalBindingsRenderer {
     }
     private boolean alreadyMatched() {
       return matched;
+    }
+    public String getDoco(boolean full) {
+      return full ? doco : docoShort;
     }
     public boolean unchanged() {
       if (!isUnchanged)
@@ -161,6 +165,7 @@ public class AdditionalBindingsRenderer {
     abr.purpose =  ext.getExtensionString("purpose");
     abr.valueSet =  ext.getExtensionString("valueSet");
     abr.doco =  ext.getExtensionString("documentation");
+      abr.docoShort =  ext.getExtensionString("shortDoco");
     abr.usage =  (ext.hasExtension("usage")) && ext.getExtensionByUrl("usage").hasValueUsageContext() ? ext.getExtensionByUrl("usage").getValueUsageContext() : null;
     abr.any = "any".equals(ext.getExtensionString("scope"));
     abr.isUnchanged = ext.hasUserData(ProfileUtilities.DERIVATION_EQUALS);
@@ -188,12 +193,12 @@ public class AdditionalBindingsRenderer {
     }
   }
   
-  private void render(List<XhtmlNode> children, boolean doDoco) throws FHIRFormatError, DefinitionException, IOException {
+  public void render(List<XhtmlNode> children, boolean fullDoco) throws FHIRFormatError, DefinitionException, IOException {
     boolean doco = false;
     boolean usage = false;
     boolean any = false;
     for (AdditionalBindingDetail binding : bindings) {
-      doco = doco || (doDoco && (binding.doco != null || (binding.compare!=null && binding.compare.doco!=null)));
+      doco = doco || binding.getDoco(fullDoco)!=null  || (binding.compare!=null && binding.compare.getDoco(fullDoco)!=null);
       usage = usage || binding.usage != null || (binding.compare!=null && binding.compare.usage!=null);
       any = any || binding.any || (binding.compare!=null && binding.compare.any);
     }
@@ -266,8 +271,8 @@ public class AdditionalBindingsRenderer {
       }
       if (doco) {
         if (binding.doco != null) {
-          String d = md.processMarkdown("Binding.description", binding.doco);
-          String oldD = binding.compare==null ? null : md.processMarkdown("Binding.description.compare", binding.compare.doco);
+          String d = md.processMarkdown("Binding.description", fullDoco ? binding.doco : binding.docoShort);
+          String oldD = binding.compare==null ? null : md.processMarkdown("Binding.description.compare", fullDoco ? binding.compare.doco : binding.compare.docoShort);
           tr.td().style("font-size: 11px").innerHTML(compareHtml(d, oldD));
         } else {
           tr.td().style("font-size: 11px");
@@ -307,7 +312,10 @@ public class AdditionalBindingsRenderer {
       td.ah(corePath+"extension-elementdefinition-minvalueset.html", "The minimum allowable value set - any conformant system SHALL support all these codes").tx("Min Binding");
       break;
     case "conformance" :
-      td.ah(corePath+"terminologies.html#strength", "Validators will check this binding (strength = required)").tx("Validation Criteria");
+      td.ah(corePath+"terminologies.html#strength", "Validators will check this binding (strength = required)").tx("Validation Binding");
+      break;
+    case "candidate" :
+      td.ah(corePath+"terminologies.html#strength", "This is a candidate binding that constraints on this profile may consider (see doco)").tx("Candidate Validation Binding");
       break;
     case "current" :
       td.span(null, "New records are required to use this value set, but legacy records may use other codes").tx("Required");
@@ -334,6 +342,10 @@ public class AdditionalBindingsRenderer {
     br.url = "http://none.none/none";
     br.display = "todo";
     return br;
+  }
+
+  public boolean hasBindings() {
+    return !bindings.isEmpty();
   }
 
 

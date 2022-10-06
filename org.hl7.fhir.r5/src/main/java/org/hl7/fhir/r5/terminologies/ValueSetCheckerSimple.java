@@ -61,6 +61,7 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.r5.terminologies.ValueSetChecker.ValidationProcessInfo;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
@@ -129,11 +130,11 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
   public ValidationResult validateCode(CodeableConcept code) throws FHIRException {
     // first, we validate the codings themselves
     List<String> errors = new ArrayList<String>();
-    List<String> warnings = new ArrayList<String>();
+    ValidationProcessInfo info = new ValidationProcessInfo();
     if (options.getValueSetMode() != ValueSetMode.CHECK_MEMERSHIP_ONLY) {
       for (Coding c : code.getCoding()) {
         if (!c.hasSystem()) {
-          warnings.add(context.formatMessage(I18nConstants.CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE));
+          info.getWarnings().add(context.formatMessage(I18nConstants.CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE));
         }
         CodeSystem cs = resolveCodeSystem(c.getSystem());
         ValidationResult res = null;
@@ -145,7 +146,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         if (!res.isOk()) {
           errors.add(res.getMessage());
         } else if (res.getMessage() != null) {
-          warnings.add(res.getMessage());
+          info.getWarnings().add(res.getMessage());
         }
       }
     }
@@ -153,7 +154,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     if (valueset != null && options.getValueSetMode() != ValueSetMode.NO_MEMBERSHIP_CHECK) {
       Boolean result = false;
       for (Coding c : code.getCoding()) {
-        Boolean ok = codeInValueSet(c.getSystem(), c.getCode(), warnings);
+        Boolean ok = codeInValueSet(c.getSystem(), c.getCode(), info);
         if (ok == null && result == false) {
           result = null;
         } else if (ok) {
@@ -162,15 +163,15 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         }
       }
       if (result == null) {
-        warnings.add(0, context.formatMessage(I18nConstants.UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl()));        
+        info.getWarnings().add(0, context.formatMessage(I18nConstants.UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl()));        
       } else if (!result) {
         errors.add(0, context.formatMessage(I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl()));
       }
     }
     if (errors.size() > 0) {
       return new ValidationResult(IssueSeverity.ERROR, errors.toString());
-    } else if (warnings.size() > 0) {
-      return new ValidationResult(IssueSeverity.WARNING, warnings.toString());
+    } else if (info.getWarnings().size() > 0) {
+      return new ValidationResult(IssueSeverity.WARNING, info.getWarnings().toString());
     } else {
       ConceptDefinitionComponent cd = new ConceptDefinitionComponent(foundCoding.getCode());
       cd.setDisplay(foundCoding.getDisplay());
@@ -251,19 +252,24 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       inInclude = checkInclude(code);
     }
 
-    List<String> warnings = new ArrayList<>();
+    ValidationProcessInfo info = new ValidationProcessInfo();
     
     // then, if we have a value set, we check it's in the value set
     if (valueset != null && options.getValueSetMode() != ValueSetMode.NO_MEMBERSHIP_CHECK) {
       if ((res==null || res.isOk())) { 
-        Boolean ok = codeInValueSet(system, code.getCode(), warnings);
+        Boolean ok = codeInValueSet(system, code.getCode(), info);
         if (ok == null || !ok) {
           if (res == null) {
             res = new ValidationResult((IssueSeverity) null, null);
           }
-          if (!inExpansion && !inInclude) {
-            if (warnings != null) {
-              res.setMessage("Not in value set "+valueset.getUrl()+" ("+warnings+")").setSeverity(IssueSeverity.ERROR);              
+          if (info.getErr() != null) {
+            res.setErrorClass(info.getErr());
+          }
+          if (ok == null) {
+            res.setMessage("Unable to check whether code is in value set "+valueset.getUrl()+": "+info.getWarnings()).setSeverity(IssueSeverity.WARNING);
+          } else if (!inExpansion && !inInclude) {
+            if (!info.getWarnings().isEmpty()) {
+              res.setMessage("Not in value set "+valueset.getUrl()+": "+info.getWarnings()).setSeverity(IssueSeverity.ERROR);              
             } else {
               res.setMessage("Not in value set "+valueset.getUrl()).setSeverity(IssueSeverity.ERROR);
             }
@@ -583,7 +589,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
             return false;
           }
           CodeSystem cs = resolveCodeSystem(vsi.getSystem());
-          if (cs != null) {
+          if (cs != null && cs.getContent() == CodeSystemContentMode.COMPLETE) {
 
             if (vsi.hasConcept()) {
               for (ConceptReferenceComponent cc : vsi.getConcept()) {
@@ -598,15 +604,15 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
                 sys.add(vsi.getSystem());
               }
             }
-          } else {
-            if (vsi.hasConcept()) {
-              for (ConceptReferenceComponent cc : vsi.getConcept()) {
-                boolean match = cc.getCode().equals(code);
-                if (match) {
-                  sys.add(vsi.getSystem());
-                }
+          } else if (vsi.hasConcept()) {
+            for (ConceptReferenceComponent cc : vsi.getConcept()) {
+              boolean match = cc.getCode().equals(code);
+              if (match) {
+                sys.add(vsi.getSystem());
               }
             }
+          } else {
+            return false;
           }
         }
       }
@@ -640,7 +646,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
   }
   
   @Override
-  public Boolean codeInValueSet(String system, String code, List<String> warnings) throws FHIRException {
+  public Boolean codeInValueSet(String system, String code, ValidationProcessInfo info) throws FHIRException {
     if (valueset == null) {
       return false;
     }
@@ -651,7 +657,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     } else if (valueset.hasCompose()) {
       int i = 0;
       for (ConceptSetComponent vsi : valueset.getCompose().getInclude()) {
-        Boolean ok = inComponent(vsi, i, system, code, valueset.getCompose().getInclude().size() == 1, warnings);
+        Boolean ok = inComponent(vsi, i, system, code, valueset.getCompose().getInclude().size() == 1, info);
         i++;
         if (ok == null && result == false) {
           result = null;
@@ -662,7 +668,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       }
       i = valueset.getCompose().getInclude().size();
       for (ConceptSetComponent vsi : valueset.getCompose().getExclude()) {
-        Boolean nok = inComponent(vsi, i, system, code, valueset.getCompose().getInclude().size() == 1, warnings);
+        Boolean nok = inComponent(vsi, i, system, code, valueset.getCompose().getInclude().size() == 1, info);
         i++;
         if (nok == null && result == false) {
           result = null;
@@ -675,7 +681,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     return result;
   }
 
-  private Boolean inComponent(ConceptSetComponent vsi, int vsiIndex, String system, String code, boolean only, List<String> warnings) throws FHIRException {
+  private Boolean inComponent(ConceptSetComponent vsi, int vsiIndex, String system, String code, boolean only, ValidationProcessInfo info) throws FHIRException {
     boolean ok = true;
     
     if (vsi.hasValueSet()) {
@@ -721,8 +727,9 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       vs.getCompose().addInclude(vsi);
       ValidationResult res = context.validateCode(options.noClient(), new Coding(system, code, null), vs);
       if (res.getErrorClass() == TerminologyServiceErrorClass.UNKNOWN || res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED || res.getErrorClass() == TerminologyServiceErrorClass.VALUESET_UNSUPPORTED) {
-        if (warnings != null && res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
-          warnings.add(context.formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, system));
+        if (info != null && res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
+          info.getWarnings().add(context.formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, system));
+          info.setErr(TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED);
         }
         return null;
       }

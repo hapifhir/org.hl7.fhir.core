@@ -5,7 +5,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>org.hl7.fhir.core</artifactId>
-        <version>5.6.68-SNAPSHOT</version>
+        <version>5.6.69-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -197,7 +197,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.12.6.1</version>
+            <version>2.14.0-rc1</version>
         </dependency>
         <dependency>
             <groupId>org.thymeleaf</groupId>

@@ -4503,7 +4503,18 @@ public class FHIRPathEngine {
         return makeBoolean(false);
       }
     } else if (ns.equals("FHIR")) {
-      return makeBoolean(n.equals(focus.get(0).fhirType()));
+      if (n.equals(focus.get(0).fhirType())) {
+        return makeBoolean(true);
+      } else {
+        StructureDefinition sd = worker.fetchTypeDefinition(focus.get(0).fhirType());
+        while (sd != null) {
+          if (n.equals(sd.getType())) {
+            return makeBoolean(true);
+          }
+          sd = worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+        }
+        return makeBoolean(false);
+      }
     } else { 
       return makeBoolean(false);
     }

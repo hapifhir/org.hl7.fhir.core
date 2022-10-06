@@ -299,6 +299,10 @@ public class DirectWrappers {
         return new PropertyWrapperDirect(context, p);
     }
 
+    public Resource getResource() {
+      return wrapped;
+    }
+
   }
 
 }

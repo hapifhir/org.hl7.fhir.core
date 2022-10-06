@@ -1,6 +1,10 @@
 package org.hl7.fhir.validation.tests;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,6 +26,8 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
+import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -31,6 +37,7 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
+import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Base;
@@ -46,6 +53,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
@@ -56,17 +64,20 @@ import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
 import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
+import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.cli.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.cli.services.StandAloneValidatorFetcher;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
@@ -82,6 +93,7 @@ import com.google.gson.JsonObject;
 public class ValidationTests implements IEvaluationContext, IValidatorResourceFetcher, IValidationPolicyAdvisor {
 
   public final static boolean PRINT_OUTPUT_TO_CONSOLE = true;
+  private static final boolean BUILD_NEW = false;
 
   @Parameters(name = "{index}: id {0}")
   public static Iterable<Object[]> data() throws IOException {
@@ -128,7 +140,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     long setup = System.nanoTime();
 
     this.name = name;
-    System.out.println("---- " + name + " ----------------------------------------------------------------");
+    System.out.println("---- " + name + " ---------------------------------------------------------------- ("+System.getProperty("java.vm.name")+")");
     System.out.println("** Core: ");
     String txLog = null;
     if (content.has("txLog")) {
@@ -254,7 +266,9 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (content.has("security-checks")) {
       val.setSecurityChecks(content.get("security-checks").getAsBoolean());
     }
-    
+    if (content.has("noHtmlInMarkdown")) {
+      val.setHtmlInMarkdownCheck(HtmlInMarkdownCheck.ERROR);
+    }
     if (content.has("logical")==false) {
       val.setAssumeValidRestReferences(content.has("assumeValidRestReferences") ? content.get("assumeValidRestReferences").getAsBoolean() : false);
       System.out.println(String.format("Start Validating (%d to set up)", (System.nanoTime() - setup) / 1000000));
@@ -333,6 +347,9 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       checkOutcomes(errorsLogical, logical, "logical", name);
     }
     logger.verifyHasNoRequests();
+    if (BUILD_NEW) {
+      JsonTrackingParser.write(manifest, new File(Utilities.path("[tmp]", "validator", "manifest.new.json")));
+    }
   }
 
 
@@ -400,57 +417,139 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     }
   }
 
-  private void checkOutcomes(List<ValidationMessage> errors, JsonObject focus, String profile, String name) {
+  private void checkOutcomes(List<ValidationMessage> errors, JsonObject focus, String profile, String name) throws IOException {
     JsonObject java = focus.getAsJsonObject("java");
-    int ec = 0;
-    int wc = 0;
-    int hc = 0;
-    List<String> errLocs = new ArrayList<>();
-    for (ValidationMessage vm : errors) {
-      if (vm.getLevel() == IssueSeverity.FATAL || vm.getLevel() == IssueSeverity.ERROR) {
-        ec++;
-        if (PRINT_OUTPUT_TO_CONSOLE) {
-          System.out.println(vm.getDisplay());
-        }
-        errLocs.add(vm.getLocation());
-      }
-      if (vm.getLevel() == IssueSeverity.WARNING) {
-        wc++;
-        if (PRINT_OUTPUT_TO_CONSOLE) {
-          System.out.println(vm.getDisplay());
-        }
-      }
-      if (vm.getLevel() == IssueSeverity.INFORMATION) {
-        hc++;
-        if (PRINT_OUTPUT_TO_CONSOLE) {
-          System.out.println(vm.getDisplay());
-        }
+    OperationOutcome goal = java.has("outcome") ? (OperationOutcome) new JsonParser().parse(java.getAsJsonObject("outcome")) : new OperationOutcome();
+    OperationOutcome actual = OperationOutcomeUtilities.createOutcomeSimple(errors);
+    actual.setText(null);
+    String json = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(actual);
+
+    List<String> fails = new ArrayList<>();
+    
+    Map<OperationOutcomeIssueComponent, OperationOutcomeIssueComponent> map = new HashMap<>();
+    for (OperationOutcomeIssueComponent issGoal : goal.getIssue()) {
+      OperationOutcomeIssueComponent issActual = findMatchingIssue(actual, issGoal);
+      if (issActual == null) {
+        fails.add("Expected Issue not found: "+issGoal.toString());
+      } else {
+        map.put(issActual, issGoal);
       }
     }
-    if (!TestingUtilities.getSharedWorkerContext(version).isNoTerminologyServer() || !focus.has("tx-dependent")) {
-      Assert.assertEquals("Test " + name + (profile == null ? "" : " profile: "+ profile) + ": Expected " + Integer.toString(java.get("errorCount").getAsInt()) + " errors, but found " + Integer.toString(ec) + ".", java.get("errorCount").getAsInt(), ec);
+    for (OperationOutcomeIssueComponent issActual : actual.getIssue()) {
+      if (PRINT_OUTPUT_TO_CONSOLE) {
+        System.out.println(issActual.toString());
+      }
+      OperationOutcomeIssueComponent issGoal = map.get(issActual);
+      if (issGoal == null) {
+        fails.add("Unexpected Issue found: "+issActual.toString());
+      }
+    }
+    if (goal.getIssue().size() != actual.getIssue().size() && fails.isEmpty()) {
+      fails.add("Issue count mismatch (check for duplicate error messages)");
+    }
+
+    if (fails.size() > 0) {
+      for (String s : fails) {
+        System.out.println(s);
+      }
+      System.out.println("");
+      System.out.println("========================================================");
+      System.out.println("");
+      System.out.println(json);
+      System.out.println("");
+      System.out.println("========================================================");
+      System.out.println("");      
+      Assertions.fail(fails.toString());
+    }
+//    int ec = 0;
+//    int wc = 0;
+//    int hc = 0;
+//    List<String> errLocs = new ArrayList<>();
+//    for (ValidationMessage vm : errors) {
+//      if (vm.getLevel() == IssueSeverity.FATAL || vm.getLevel() == IssueSeverity.ERROR) {
+//        ec++;
+//        if (PRINT_OUTPUT_TO_CONSOLE) {
+//          System.out.println(vm.getDisplay());
+//        }
+//        errLocs.add(vm.getLocation());
+//      }
+//      if (vm.getLevel() == IssueSeverity.WARNING) {
+//        wc++;
+//        if (PRINT_OUTPUT_TO_CONSOLE) {
+//          System.out.println(vm.getDisplay());
+//        }
+//      }
+//      if (vm.getLevel() == IssueSeverity.INFORMATION) {
+//        hc++;
+//        if (PRINT_OUTPUT_TO_CONSOLE) {
+//          System.out.println(vm.getDisplay());
+//        }
+//      }
+//    }
+//    if (!TestingUtilities.getSharedWorkerContext(version).isNoTerminologyServer() || !focus.has("tx-dependent")) {
+//      Assert.assertEquals("Test " + name + (profile == null ? "" : " profile: "+ profile) + ": Expected " + Integer.toString(java.get("errorCount").getAsInt()) + " errors, but found " + Integer.toString(ec) + ".", java.get("errorCount").getAsInt(), ec);
+//      if (java.has("warningCount")) {
+//        Assert.assertEquals( "Test " + name + (profile == null ? "" : " profile: "+ profile) + ": Expected " + Integer.toString(java.get("warningCount").getAsInt()) + " warnings, but found " + Integer.toString(wc) + ".", java.get("warningCount").getAsInt(), wc);
+//      }
+//      if (java.has("infoCount")) {
+//        Assert.assertEquals( "Test " + name + (profile == null ? "" : " profile: "+ profile) + ": Expected " + Integer.toString(java.get("infoCount").getAsInt()) + " hints, but found " + Integer.toString(hc) + ".", java.get("infoCount").getAsInt(), hc);
+//      }
+//    }
+//    if (java.has("error-locations")) {
+//      JsonArray el = java.getAsJsonArray("error-locations");
+//      Assert.assertEquals( "locations count is not correct", errLocs.size(), el.size());
+//      for (int i = 0; i < errLocs.size(); i++) {
+//        Assert.assertEquals("Location should be " + el.get(i).getAsString() + ", but was " + errLocs.get(i), errLocs.get(i), el.get(i).getAsString());
+//      }
+//    }
+    if (BUILD_NEW) {
+      if (java.has("output")) {
+        java.remove("output");
+      }
+      if (java.has("error-locations")) {
+        java.remove("error-locations");
+      }
       if (java.has("warningCount")) {
-        Assert.assertEquals( "Test " + name + (profile == null ? "" : " profile: "+ profile) + ": Expected " + Integer.toString(java.get("warningCount").getAsInt()) + " warnings, but found " + Integer.toString(wc) + ".", java.get("warningCount").getAsInt(), wc);
+        java.remove("warningCount");
       }
       if (java.has("infoCount")) {
-        Assert.assertEquals( "Test " + name + (profile == null ? "" : " profile: "+ profile) + ": Expected " + Integer.toString(java.get("infoCount").getAsInt()) + " hints, but found " + Integer.toString(hc) + ".", java.get("infoCount").getAsInt(), hc);
+        java.remove("infoCount");
+      }
+      if (java.has("errorCount")) {
+        java.remove("errorCount");
+      }
+      if (java.has("outcome")) {
+        java.remove("outcome");
+      }
+      if (actual.hasIssue()) {
+        JsonObject oj = JsonTrackingParser.parse(json, null);
+        java.add("outcome", oj);
       }
     }
-    if (java.has("error-locations")) {
-      JsonArray el = java.getAsJsonArray("error-locations");
-      Assert.assertEquals( "locations count is not correct", errLocs.size(), el.size());
-      for (int i = 0; i < errLocs.size(); i++) {
-        Assert.assertEquals("Location should be " + el.get(i).getAsString() + ", but was " + errLocs.get(i), errLocs.get(i), el.get(i).getAsString());
+  }
+
+  private OperationOutcomeIssueComponent findMatchingIssue(OperationOutcome oo, OperationOutcomeIssueComponent iss) {
+    for (OperationOutcomeIssueComponent t : oo.getIssue()) {
+      if (t.getExpression().get(0).getValue().equals(iss.getExpression().get(0).getValue()) && t.getCode() == iss.getCode() && t.getSeverity() == iss.getSeverity()
+          && (t.hasDiagnostics() ? t.getDiagnostics().equals(iss.getDiagnostics()) : !iss.hasDiagnostics()) && textMatches(t.getDetails().getText(), iss.getDetails().getText())) {
+        return t;
       }
     }
-    if (focus.has("output")) {
-      focus.remove("output");
+    return null;
+  }
+
+  private boolean textMatches(String t1, String t2) {
+    if (t1.endsWith("...")) {
+      t2 = t2.substring(0, t1.length()-3);
+      t1 = t1.substring(0, t1.length()-3);
     }
-    JsonArray vr = new JsonArray();
-    java.add("output", vr);
-    for (ValidationMessage vm : errors) {
-      vr.add(vm.getDisplay());
+    if (t2.endsWith("...")) {
+      t1 = t1.substring(0, t2.length()-3);
+      t2 = t2.substring(0, t2.length()-3);
     }
+    t1 = t1.trim();
+    t2 = t2.trim();
+    return t1.equals(t2);
   }
 
   private org.hl7.fhir.r4.model.Parameters makeExpProfile() {

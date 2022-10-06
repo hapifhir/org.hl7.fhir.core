@@ -115,8 +115,9 @@ public class StructureDefinitionValidator extends BaseValidator {
     for (Element snapshot : snapshots) {
       validateElementList(errors, snapshot, stack.push(snapshot, -1, null, null), true, true, sd);
     }
+  
   }
-
+  
   private void validateElementList(List<ValidationMessage> errors, Element elementList, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd) {
     List<Element> elements = elementList.getChildrenByName("element");
     int cc = 0;

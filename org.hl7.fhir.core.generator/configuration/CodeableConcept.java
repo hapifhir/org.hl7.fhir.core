@@ -94,3 +94,8 @@ public boolean hasCoding(String system, String code) {
     getCoding().add(new Coding(system, code, display));
   }
   
+  @Override 
+  public String toString() { 
+    return hasCoding() ? getCoding().toString() : "["+getText()+"]"; 
+  } 
+   

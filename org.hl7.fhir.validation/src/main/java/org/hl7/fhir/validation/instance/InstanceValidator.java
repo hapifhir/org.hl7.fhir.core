@@ -42,6 +42,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -142,6 +144,7 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.validation.constants.*;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.SIDUtilities;
 import org.hl7.fhir.utilities.SimpleTimeTracker;
 import org.hl7.fhir.utilities.TimeTracker;
@@ -159,9 +162,12 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.validation.BaseValidator;
+import org.hl7.fhir.validation.cli.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.cli.utils.ValidationLevel;
 import org.hl7.fhir.validation.instance.InstanceValidator.CanonicalResourceLookupResult;
+import org.hl7.fhir.validation.instance.InstanceValidator.CanonicalTypeSorter;
+import org.hl7.fhir.validation.instance.InstanceValidator.StructureDefinitionSorterByUrl;
 import org.hl7.fhir.validation.instance.type.BundleValidator;
 import org.hl7.fhir.validation.instance.type.CodeSystemValidator;
 import org.hl7.fhir.validation.instance.type.MeasureValidator;
@@ -199,6 +205,25 @@ import com.google.gson.JsonObject;
  */
 
 public class InstanceValidator extends BaseValidator implements IResourceValidator {
+  
+  public class StructureDefinitionSorterByUrl implements Comparator<StructureDefinition> {
+
+    @Override
+    public int compare(StructureDefinition o1, StructureDefinition o2) {
+      return o1.getUrl().compareTo(o2.getUrl());
+    }
+
+  }
+
+  public class CanonicalTypeSorter implements Comparator<CanonicalType> {
+
+    @Override
+    public int compare(CanonicalType o1, CanonicalType o2) {
+      return o1.getValue().compareTo(o2.getValue());
+    }
+
+  }
+
   public class CanonicalResourceLookupResult {
 
     private CanonicalResource resource;
@@ -387,6 +412,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean noCheckAggregation;
   private boolean wantCheckSnapshotUnchanged;
   private boolean noUnicodeBiDiControlChars;
+  private HtmlInMarkdownCheck htmlInMarkdownCheck;
  
   private List<ImplementationGuide> igs = new ArrayList<>();
   private List<String> extensionDomains = new ArrayList<String>();
@@ -792,15 +818,31 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     setParents(element);
 
     long t = System.nanoTime();
+    NodeStack stack = new NodeStack(context, path, element, validationLanguage);
     if (profiles == null || profiles.isEmpty()) {
-      validateResource(new ValidatorHostContext(appContext, element), errors, element, element, null, resourceIdRule, new NodeStack(context, path, element, validationLanguage).resetIds(), null);
+      validateResource(new ValidatorHostContext(appContext, element), errors, element, element, null, resourceIdRule, stack.resetIds(), null);
     } else {
+      int i = 0;
+      while (i < profiles.size()) {
+        StructureDefinition sd = profiles.get(i);
+        if (sd.hasExtension(ToolingExtensions.EXT_SD_DEPENDENCY)) {
+          for (Extension ext : sd.getExtensionsByUrl(ToolingExtensions.EXT_SD_DEPENDENCY)) {
+            StructureDefinition dep = context.fetchResource( StructureDefinition.class, ext.getValue().primitiveValue());
+            if (dep == null) {
+              warning(errors, IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_DEPENDS_NOT_RESOLVED, ext.getValue().primitiveValue(), sd.getUrl());                
+            } else if (!profiles.contains(dep)) {
+              profiles.add(dep);
+            }
+          }
+        }
+        i++;
+      }
       for (StructureDefinition defn : profiles) {
-        validateResource(new ValidatorHostContext(appContext, element), errors, element, element, defn, resourceIdRule, new NodeStack(context, path, element, validationLanguage).resetIds(), null);
+        validateResource(new ValidatorHostContext(appContext, element), errors, element, element, defn, resourceIdRule, stack.resetIds(), null);
       }
     }
     if (hintAboutNonMustSupport) {
-      checkElementUsage(errors, element, new NodeStack(context, path, element, validationLanguage));
+      checkElementUsage(errors, element, stack);
     }
     errors.removeAll(messagesToRemove);
     timeTracker.overall(t);
@@ -1191,7 +1233,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                       checkBindings(errors, path, element, stack, valueset, nextCoding);
                     }
                   }
-                  timeTracker.tx(t, "vc "+DataRenderer.display(context, cc));
+                  timeTracker.tx(t, "vc "+cc.toString());
                 }
               }
             } catch (Exception e) {
@@ -1666,6 +1708,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                           txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_14, describeReference(binding.getValueSet(), valueset), getErrorMessage(vr.getMessage()), theSystem+"#"+theCode);
                         }
                       }
+                    } else if (vr != null && vr.getMessage() != null) {
+                      txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
                     }
                   } catch (Exception e) {
                     if (STACK_TRACE) e.printStackTrace();
@@ -2134,7 +2178,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (!"xhtml".equals(type)) {
       if (securityChecks) {
         rule(errors, IssueType.INVALID, e.line(), e.col(), path, !containsHtmlTags(e.primitiveValue()), I18nConstants.SECURITY_STRING_CONTENT_ERROR);
-      } else {
+      } else if (!"markdown".equals(type)){
         hint(errors, IssueType.INVALID, e.line(), e.col(), path, !containsHtmlTags(e.primitiveValue()), I18nConstants.SECURITY_STRING_CONTENT_WARNING);
       }
     }
@@ -2318,6 +2362,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       checkPrimitiveBinding(hostContext, errors, path, type, context, e, profile, node);
     }
 
+    if (type.equals("markdown") && htmlInMarkdownCheck != HtmlInMarkdownCheck.NONE) {
+      String raw = e.primitiveValue();
+      String processed = MarkDownProcessor.preProcess(raw);
+      if (!raw.equals(processed)) {
+        int i = 0;
+        while (i < raw.length() && raw.charAt(1) == processed.charAt(i)) {
+          i++;
+        }
+        warningOrError(htmlInMarkdownCheck == HtmlInMarkdownCheck.ERROR, errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_MARKDOWN_HTML, raw.subSequence(i, 2));        
+      }
+    }
     if (type.equals("xhtml")) {
       XhtmlNode xhtml = e.getXhtml();
       if (xhtml != null) { // if it is null, this is an error already noted in the parsers
@@ -3226,7 +3281,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return true;
   }
 
-  private String asListByUrl(Collection<StructureDefinition> list) {
+  private String asListByUrl(Collection<StructureDefinition> coll) {
+    List<StructureDefinition> list = new ArrayList<>();
+    list.addAll(coll);
+    Collections.sort(list, new StructureDefinitionSorterByUrl());
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     for (StructureDefinition sd : list) {
       b.append(sd.getUrl());
@@ -3234,7 +3292,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return b.toString();
   }
 
-  private String asList(Collection<CanonicalType> list) {
+  private String asList(Collection<CanonicalType> coll) {
+    List<CanonicalType> list = new ArrayList<>();
+    list.addAll(coll);
+    Collections.sort(list, new CanonicalTypeSorter());
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     for (CanonicalType c : list) {
       b.append(c.getValue());
@@ -3670,7 +3731,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private String getErrorMessage(String message) {
-    return message != null ? " (error message = " + message + ")" : "";
+     return message != null ? " (error message = " + message + ")" : "";
   }
 
   public boolean isSuppressLoincSnomedMessages() {
@@ -4474,28 +4535,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               } else if (!fetcher.fetchesCanonicalResource(this, profile.primitiveValue())) {
                 warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_NOT_POLICY, profile.primitiveValue());                
               } else {
-                sd = null;
-                String url = profile.primitiveValue();
-                CanonicalResourceLookupResult cr = crLookups.get(url);
-                if (cr != null) {
-                  if (cr.error != null) {
-                    warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_ERROR, url, cr.error);                
-                  } else {
-                    sd = (StructureDefinition) cr.resource;
-                  }
-                } else {
-                  try {
-                    sd = (StructureDefinition) fetcher.fetchCanonicalResource(this, url);
-                    crLookups.put(url, new CanonicalResourceLookupResult(sd));
-                  } catch (Exception e) {
-                    if (STACK_TRACE) { e.printStackTrace(); }
-                    crLookups.put(url, new CanonicalResourceLookupResult(e.getMessage()));
-                    warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_ERROR, profile.primitiveValue(), e.getMessage());                
-                  }
-                  if (sd != null) {
-                    context.cacheResource(sd);
-                  }
-                }
+                sd = lookupProfileReference(errors, element, stack, i, profile, sd);
               }
             }
             if (sd != null) {
@@ -4509,6 +4549,27 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               startInner(hostContext, errors, resource, element, sd, stack, false, pct);
               if (pctOwned) {
                 pct.done();
+              }
+              if (sd.hasExtension(ToolingExtensions.EXT_SD_DEPENDENCY)) {
+                for (Extension ext : sd.getExtensionsByUrl(ToolingExtensions.EXT_SD_DEPENDENCY)) {
+                  StructureDefinition sdi = context.fetchResource(StructureDefinition.class, ext.getValue().primitiveValue());
+                  if (sdi == null) {
+                    warning(errors, IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_DEPENDS_NOT_RESOLVED, ext.getValue().primitiveValue(), sd.getUrl());                
+                  } else {
+                    if (crumbTrails) {
+                      element.addMessage(signpost(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_DEP, sdi.getUrl(), sd.getUrl()));
+                    }
+                    stack.resetIds();
+                    if (pctOwned) {
+                      pct = new PercentageTracker(resource.countDescendents(), resource.fhirType(), sdi.getUrl(), logProgress);
+                    }
+                    startInner(hostContext, errors, resource, element, sdi, stack, false, pct);
+                    if (pctOwned) {
+                      pct.done();
+                    }
+                    
+                  }
+                }
               }
             }
           }
@@ -4538,6 +4599,32 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
 //    System.out.println("start: "+(System.currentTimeMillis()-st)+" ("+resource.fhirType()+")");
+  }
+
+  private StructureDefinition lookupProfileReference(List<ValidationMessage> errors, Element element, NodeStack stack,
+      int i, Element profile, StructureDefinition sd) {
+    String url = profile.primitiveValue();
+    CanonicalResourceLookupResult cr = crLookups.get(url);
+    if (cr != null) {
+      if (cr.error != null) {
+        warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_ERROR, url, cr.error);                
+      } else {
+        sd = (StructureDefinition) cr.resource;
+      }
+    } else {
+      try {
+        sd = (StructureDefinition) fetcher.fetchCanonicalResource(this, url);
+        crLookups.put(url, new CanonicalResourceLookupResult(sd));
+      } catch (Exception e) {
+        if (STACK_TRACE) { e.printStackTrace(); }
+        crLookups.put(url, new CanonicalResourceLookupResult(e.getMessage()));
+        warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_ERROR, profile.primitiveValue(), e.getMessage());                
+      }
+      if (sd != null) {
+        context.cacheResource(sd);
+      }
+    }
+    return sd;
   }
 
 //  private void plog(String msg) {
@@ -4638,9 +4725,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else if (element.getType().equals("QuestionnaireResponse")) {
       new QuestionnaireValidator(context, myEnableWhenEvaluator, fpe, timeTracker, questionnaireMode, xverManager, jurisdiction).validateQuestionannaireResponse(hostContext, errors, element, stack);
     } else if (element.getType().equals("Measure")) {
-      new MeasureValidator(context, timeTracker, xverManager, jurisdiction).validateMeasure(hostContext, errors, element, stack);      
+      new MeasureValidator(context, timeTracker, xverManager, jurisdiction, this).validateMeasure(hostContext, errors, element, stack);      
     } else if (element.getType().equals("MeasureReport")) {
-      new MeasureValidator(context, timeTracker, xverManager, jurisdiction).validateMeasureReport(hostContext, errors, element, stack);
+      new MeasureValidator(context, timeTracker, xverManager, jurisdiction, this).validateMeasureReport(hostContext, errors, element, stack);
     } else if (element.getType().equals("CapabilityStatement")) {
       validateCapabilityStatement(errors, element, stack);
     } else if (element.getType().equals("CodeSystem")) {
@@ -5677,7 +5764,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     boolean ok;
     try {
       long t = System.nanoTime();
-      ok = fpe.evaluateToBoolean(hostContext, resource, hostContext.getRootResource(), element, n);
+       ok = fpe.evaluateToBoolean(hostContext, resource, hostContext.getRootResource(), element, n);
       timeTracker.fpe(t);
       msg = fpe.forLog();
     } catch (Exception ex) {
@@ -6023,6 +6110,16 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   public void setNoUnicodeBiDiControlChars(boolean noUnicodeBiDiControlChars) {
     this.noUnicodeBiDiControlChars = noUnicodeBiDiControlChars;
+  }
+
+
+
+  public HtmlInMarkdownCheck getHtmlInMarkdownCheck() {
+    return htmlInMarkdownCheck;
+  }
+
+  public void setHtmlInMarkdownCheck(HtmlInMarkdownCheck htmlInMarkdownCheck) {
+    this.htmlInMarkdownCheck = htmlInMarkdownCheck;
   }
 
   public Coding getJurisdiction() {
