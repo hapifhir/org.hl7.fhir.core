@@ -78,6 +78,7 @@ public class StructureDefinitionValidator extends BaseValidator {
             List<ValidationMessage> msgs = new ArrayList<>();
             ProfileUtilities pu = new ProfileUtilities(context, msgs, null);
             pu.setXver(xverManager);
+            pu.setNewSlicingProcessing(!sd.hasFhirVersion() || VersionUtilities.isR4Plus(sd.getFhirVersion().toCode()));
             pu.generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/fhir/R4/", sd.getName());
             if (msgs.size() > 0) {
               for (ValidationMessage msg : msgs) {
@@ -114,8 +115,9 @@ public class StructureDefinitionValidator extends BaseValidator {
     for (Element snapshot : snapshots) {
       validateElementList(errors, snapshot, stack.push(snapshot, -1, null, null), true, true, sd);
     }
+  
   }
-
+  
   private void validateElementList(List<ValidationMessage> errors, Element elementList, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd) {
     List<Element> elements = elementList.getChildrenByName("element");
     int cc = 0;
@@ -140,9 +142,10 @@ public class StructureDefinitionValidator extends BaseValidator {
         tc = type.getExtensionValue(ToolingExtensions.EXT_FHIR_TYPE).primitiveValue();
       }
       if (Utilities.noString(tc) && type.hasChild("code")) {
-        if (type.getNamedChild("code").hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type")) {
-          tc = "*";
-        }
+        throw new Error("WTF?");
+//        if (type.getNamedChild("code").hasExtension(" http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type")) {
+//          tc = "*";
+//        }
       }
       typeCodes.add(tc);
       Set<String> tcharacteristics = new HashSet<>();
@@ -338,7 +341,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
       StructureDefinition sd = context.fetchTypeDefinition(tc);
       if (sd != null) {
-        if (sd.hasExtension(ToolingExtensions.EXT_BINDING_METHOD)) {
+        if (sd.hasExtension(ToolingExtensions.EXT_BINDING_STYLE)) {
           return tc;          
         }
       }

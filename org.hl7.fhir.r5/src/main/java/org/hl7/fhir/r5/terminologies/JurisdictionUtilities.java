@@ -11,7 +11,7 @@ public class JurisdictionUtilities {
   }
 
   public static String getJurisdictionFromLocale(String s) {
-    if (Utilities.existsInList(s, 
+    if (Utilities.existsInList(s.toUpperCase(), 
         "AD", "AE", "AF", "AG", "AI", "AL", "AM", "AO", "AQ",
         "AR", "AS", "AT", "AU", "AW", "AX", "AZ", "BA", "BB",
         "BD", "BE", "BF", "BG", "BH", "BI", "BJ", "BL", "BM",
@@ -41,7 +41,7 @@ public class JurisdictionUtilities {
         "UZ", "VA", "VC", "VE", "VG", "VI", "VN", "VU", "WF",
         "WS", "YE", "YT", "ZA", "ZM", "ZW"
         )) {
-      return "urn:iso:std:iso:3166#"+s; 
+      return "urn:iso:std:iso:3166#"+s.toUpperCase(); 
     } else {
       switch (s) {
       case "uv" : return "http://unstats.un.org/unsd/methods/m49/m49.htm#001";
@@ -54,7 +54,7 @@ public class JurisdictionUtilities {
   }
 
   public static String displayJurisdiction(String s) {
-    return displayJurisdiction(CodeSystemUtilities.readCoding(s));
+    return displayJurisdiction(CodeSystemUtilities.readCoding(getJurisdictionFromLocale(s)));
   }
   
   public static String displayJurisdiction(Coding c) {

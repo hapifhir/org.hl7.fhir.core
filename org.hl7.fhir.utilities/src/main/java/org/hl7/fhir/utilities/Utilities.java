@@ -252,6 +252,10 @@ public class Utilities {
     return new Inflector().camelCase(value.trim().replace(" ", "_"), false);
   }
 
+  public static String upperCamelCase(String value) {
+    return new Inflector().upperCamelCase(value.trim().replace(" ", "_"));
+  }
+
   public static String escapeXml(String doco) {
     if (doco == null)
       return "";
@@ -1752,6 +1756,14 @@ public class Utilities {
       text = text.replace("  ", " ");
     }
     return text;
+  }
+
+  public static int parseInt(String value, int def) {
+    if (isInteger(value)) {
+      return Integer.parseInt(value);
+    } else {
+      return def;
+    }
   }
 
 }

@@ -1,5 +1,6 @@
 package org.hl7.fhir.r5.terminologies;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -34,10 +35,24 @@ import java.util.List;
 
 
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ETooCostly;
+import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 
 public interface ValueSetChecker {
 
-  Boolean codeInValueSet(String system, String code, List<String> warnings) throws ETooCostly, EOperationOutcome, Exception;
+  public static class ValidationProcessInfo {
+    private TerminologyServiceErrorClass err;
+    private List<String> warnings = new ArrayList<>();
+    public TerminologyServiceErrorClass getErr() {
+      return err;
+    }
+    public void setErr(TerminologyServiceErrorClass err) {
+      this.err = err;
+    }
+    public List<String> getWarnings() {
+      return warnings;
+    }
+  }
+  Boolean codeInValueSet(String system, String code, ValidationProcessInfo info) throws ETooCostly, EOperationOutcome, Exception;
 
 }

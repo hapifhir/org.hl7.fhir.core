@@ -1292,7 +1292,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     for (ConceptReferenceComponent cc : inc.getConcept()) {
       String code = cc.getCode();
       ConceptDefinitionComponent v = null;
-      if (e != null) {
+      if (e != null && code != null) {
         v = getConceptForCode(e.getConcept(), code);
       }
       if (v == null && vse != null) {

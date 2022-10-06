@@ -12628,6 +12628,8 @@ The primary difference between a medicationusage and a medicationadministration 
          * R4B Ballot #1 + Connectathon 27 (Virtual).
          */
         _4_1_0, 
+        _4_3_0_SNAPSHOT1,
+        _4_3_0_CIBUILD,
         /**
          * R5 Preview #1 version.
          */
@@ -12773,6 +12775,10 @@ The primary difference between a medicationusage and a medicationadministration 
           return _4_1;
         if ("4.1.0".equals(codeString))
           return _4_1_0;
+        if ("4.3.0-snapshot1".equals(codeString))
+          return _4_3_0_SNAPSHOT1;
+        if ("4.3.0-cibuild".equals(codeString))
+          return _4_3_0_CIBUILD;
         if ("4.2".equals(codeString))
           return _4_2;
         if ("4.2.0".equals(codeString))
@@ -12958,6 +12964,8 @@ The primary difference between a medicationusage and a medicationadministration 
             case _4_0_1: return "4.0.1";
             case _4_1: return "4.1";
             case _4_1_0: return "4.1.0";
+            case _4_3_0_SNAPSHOT1: return "4.3.0-snapshot1";
+            case _4_3_0_CIBUILD: return "4.3.0-cibuild";
             case _4_2: return "4.2";
             case _4_2_0: return "4.2.0";
             case _4_3: return "4.3";
@@ -13017,6 +13025,8 @@ The primary difference between a medicationusage and a medicationadministration 
             case _4_0_1: return "http://hl7.org/fhir/FHIR-version";
             case _4_1: return "http://hl7.org/fhir/FHIR-version";
             case _4_1_0: return "http://hl7.org/fhir/FHIR-version";
+            case _4_3_0_SNAPSHOT1: return "http://hl7.org/fhir/FHIR-version";
+            case _4_3_0_CIBUILD: return "http://hl7.org/fhir/FHIR-version";
             case _4_2: return "http://hl7.org/fhir/FHIR-version";
             case _4_2_0: return "http://hl7.org/fhir/FHIR-version";
             case _4_3: return "http://hl7.org/fhir/FHIR-version";
@@ -13078,6 +13088,8 @@ The primary difference between a medicationusage and a medicationadministration 
             case _4_1_0: return "R4B Ballot #1 + Connectathon 27 (Virtual).";
             case _4_2: return "R5 Preview #1 version.";
             case _4_2_0: return "R5 Preview #1 + Connectathon 23 (Sydney).";
+            case _4_3_0_SNAPSHOT1: return "FHIR Release 4B Snapshot #1";
+            case _4_3_0_CIBUILD: return "FHIR Release 4B CI-Builld";
             case _4_3: return "R4B version.";
             case _4_3_0: return "FHIR Release 4B (Normative + STU).";
             case _4_4: return "R5 Preview #2 version.";
@@ -13138,6 +13150,8 @@ The primary difference between a medicationusage and a medicationadministration 
             case _4_2: return "4.2";
             case _4_2_0: return "4.2.0";
             case _4_3: return "4.3";
+            case _4_3_0_SNAPSHOT1: return "4.3.0-snapshot";
+            case _4_3_0_CIBUILD: return "4.3.0-cibuild";
             case _4_3_0: return "4.3.0";
             case _4_4: return "4.4";
             case _4_4_0: return "4.4.0";
@@ -13155,23 +13169,6 @@ The primary difference between a medicationusage and a medicationadministration 
             default: return "?";
           }
         }
-// manual code from configuration.txt:
-//public String toCode(int len) {
-//          return toCode().substring(0, len);
-//        }
-//
-//     
-//        @Override
-//        public String toString() {
-//          return toCode();
-//        }
-//        
-//        
-//        public boolean isR4B() {
-//          return toCode().startsWith("4.1");
-//        }
-//        
-// end addition
     }
 
   public static class FHIRVersionEnumFactory implements EnumFactory<FHIRVersion> {
@@ -13257,6 +13254,10 @@ The primary difference between a medicationusage and a medicationadministration 
           return FHIRVersion._4_2;
         if ("4.2.0".equals(codeString))
           return FHIRVersion._4_2_0;
+        if ("4.3.0-snapshot1".equalsIgnoreCase(codeString))
+          return FHIRVersion._4_3_0_SNAPSHOT1;
+        if ("4.3.0-cibuild".equalsIgnoreCase(codeString))
+          return FHIRVersion._4_3_0_CIBUILD;
         if ("4.3".equals(codeString))
           return FHIRVersion._4_3;
         if ("4.3.0".equals(codeString))
@@ -13373,6 +13374,10 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<FHIRVersion>(this, FHIRVersion._4_2);
         if ("4.2.0".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._4_2_0);
+        if ("4.3.0-snapshot1".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0_SNAPSHOT1);
+        if ("4.3.0-cibuild".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0_CIBUILD);
         if ("4.3".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3);
         if ("4.3.0".equals(codeString))
@@ -13484,6 +13489,10 @@ The primary difference between a medicationusage and a medicationadministration 
         return "4.2.0";
       if (code == FHIRVersion._4_3)
         return "4.3";
+      if (code == FHIRVersion._4_3_0_SNAPSHOT1)
+        return "4.3.0-snapshot1";      
+      if (code == FHIRVersion._4_3_0_CIBUILD)
+        return "4.3.0-cibuild";      
       if (code == FHIRVersion._4_3_0)
         return "4.3.0";
       if (code == FHIRVersion._4_4)

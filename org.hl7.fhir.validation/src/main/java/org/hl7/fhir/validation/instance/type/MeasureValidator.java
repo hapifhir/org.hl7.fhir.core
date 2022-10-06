@@ -26,6 +26,7 @@ import org.hl7.fhir.r5.model.Measure.MeasureGroupPopulationComponent;
 import org.hl7.fhir.r5.model.Measure.MeasureGroupStratifierComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.DataRenderer;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
@@ -36,17 +37,20 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.TimeTracker;
+import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidatorHostContext;
 import org.w3c.dom.Document;
 
 public class MeasureValidator extends BaseValidator {
 
-  public MeasureValidator(IWorkerContext context, TimeTracker timeTracker, XVerExtensionManager xverManager, Coding jurisdiction) {
+  private InstanceValidator parent;
+  public MeasureValidator(IWorkerContext context, TimeTracker timeTracker, XVerExtensionManager xverManager, Coding jurisdiction, InstanceValidator parent) {
     super(context, xverManager);
     source = Source.InstanceValidator;
     this.timeTracker = timeTracker;
     this.jurisdiction = jurisdiction;
+    this.parent = parent;
 
   }
 
@@ -104,8 +108,41 @@ public class MeasureValidator extends BaseValidator {
         c++;
       }            
     }
+    if (!stack.isContained()) {
+      checkShareableMeasure(errors, element, stack);
+    }
   }
   
+
+  private void checkShareableMeasure(List<ValidationMessage> errors, Element cs, NodeStack stack) {
+    if (parent.isForPublication()) { 
+      if (isHL7(cs)) {
+        rule(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("url"), I18nConstants.MEASURE_SHAREABLE_MISSING_HL7, "url");                      
+        rule(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("version"), I18nConstants.MEASURE_SHAREABLE_MISSING_HL7, "version");                      
+        rule(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("title"), I18nConstants.MEASURE_SHAREABLE_MISSING_HL7, "title");                      
+        warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("name"), I18nConstants.MEASURE_SHAREABLE_EXTRA_MISSING_HL7, "name");                      
+        rule(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("status"), I18nConstants.MEASURE_SHAREABLE_MISSING_HL7, "status");                      
+        rule(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("experimental"), I18nConstants.MEASURE_SHAREABLE_MISSING_HL7, "experimental");                      
+        rule(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("description"), I18nConstants.MEASURE_SHAREABLE_MISSING_HL7, "description"); 
+        rule(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("content"), I18nConstants.MEASURE_SHAREABLE_MISSING_HL7, "content"); 
+        if (!"supplement".equals(cs.getChildValue("content"))) {
+          rule(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("caseSensitive"), I18nConstants.MEASURE_SHAREABLE_MISSING_HL7, "caseSensitive");
+        }
+      } else {
+        warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("url"), I18nConstants.MEASURE_SHAREABLE_MISSING, "url");                      
+        warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("version"), I18nConstants.MEASURE_SHAREABLE_MISSING, "version");                      
+        warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("title"), I18nConstants.MEASURE_SHAREABLE_MISSING, "title");                      
+        warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("name"), I18nConstants.MEASURE_SHAREABLE_EXTRA_MISSING, "name");                      
+        warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("status"), I18nConstants.MEASURE_SHAREABLE_MISSING, "status");                      
+        warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("experimental"), I18nConstants.MEASURE_SHAREABLE_MISSING, "experimental");                      
+        warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("description"), I18nConstants.MEASURE_SHAREABLE_MISSING, "description"); 
+        warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("content"), I18nConstants.MEASURE_SHAREABLE_MISSING, "content"); 
+        if (!"supplement".equals(cs.getChildValue("content"))) {
+          warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("caseSensitive"), I18nConstants.MEASURE_SHAREABLE_MISSING, "caseSensitive");
+        }
+      }
+    }
+  }
   private void validateMeasureCriteria(ValidatorHostContext hostContext, List<ValidationMessage> errors, MeasureContext mctxt, Element crit, NodeStack nsc) {
     String mimeType = crit.getChildValue("language");
     if (!Utilities.noString(mimeType)) { // that would be an error elsewhere 
@@ -338,7 +375,7 @@ public class MeasureValidator extends BaseValidator {
           //  ratio -  score is a number with no value constraints, and maybe with a unit (perhaps constrained by extension)
           if (rule(errors, IssueType.REQUIRED, ms.line(), ms.col(), ns.getLiteralPath(), v != null, I18nConstants.MEASURE_MR_SCORE_VALUE_REQUIRED, "ratio")) {
             Element unit = ms.getNamedChild("code");
-            Coding c = m.measure().hasExtension("http://hl7.org/fhir/StructureDefinition/questionnaire-unit") ? (Coding) m.measure().getExtensionByUrl("http://hl7.org/fhir/StructureDefinition/questionnaire-unit").getValue() : null;
+            Coding c = m.measure().hasExtension(ToolingExtensions.EXT_Q_UNIT) ? (Coding) m.measure().getExtensionByUrl(ToolingExtensions.EXT_Q_UNIT).getValue() : null;
             if (unit != null) {
               if (c != null) {
                 NodeStack nsc = ns.push(unit, -1, unit.getProperty().getDefinition(), unit.getProperty().getDefinition());
@@ -361,7 +398,7 @@ public class MeasureValidator extends BaseValidator {
           // continuous-variable - score is a quantity with a unit per the extension
           if (rule(errors, IssueType.REQUIRED, ms.line(), ms.col(), ns.getLiteralPath(), v != null, I18nConstants.MEASURE_MR_SCORE_VALUE_REQUIRED, "continuous-variable")) {
             Element unit = ms.getNamedChild("code");
-            Coding c = m.measure().hasExtension("http://hl7.org/fhir/StructureDefinition/questionnaire-unit") ? (Coding) m.measure().getExtensionByUrl("http://hl7.org/fhir/StructureDefinition/questionnaire-unit").getValue() : null;
+            Coding c = m.measure().hasExtension(ToolingExtensions.EXT_Q_UNIT) ? (Coding) m.measure().getExtensionByUrl(ToolingExtensions.EXT_Q_UNIT).getValue() : null;
             if (unit != null) {
               if (c != null) {
                 NodeStack nsc = ns.push(unit, -1, unit.getProperty().getDefinition(), unit.getProperty().getDefinition());

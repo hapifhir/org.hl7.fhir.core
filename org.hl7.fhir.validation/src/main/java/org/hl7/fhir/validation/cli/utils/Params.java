@@ -5,6 +5,7 @@ import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.cli.model.CliContext;
+import org.hl7.fhir.validation.cli.model.HtmlInMarkdownCheck;
 
 import java.io.File;
 import java.util.Arrays;
@@ -63,12 +64,14 @@ public class Params {
   public static final String WANT_INVARIANTS_IN_MESSAGES = "-want-invariants-in-messages";
   public static final String SECURITY_CHECKS = "-security-checks";
   public static final String CRUMB_TRAIL = "-crumb-trails";
+  public static final String FOR_PUBLICATION = "-forPublication";
   public static final String VERBOSE = "-verbose";
   public static final String SHOW_TIMES = "-show-times";
   public static final String ALLOW_EXAMPLE_URLS = "-allow-example-urls";
   public static final String OUTPUT_STYLE = "-output-style";
   public static final String DO_IMPLICIT_FHIRPATH_STRING_CONVERSION = "-implicit-fhirpath-string-conversions";
-  private static final Object JURISDICTION = "-jurisdiction";
+  public static final String JURISDICTION = "-jurisdiction";
+  public static final String HTML_IN_MARKDOWN = "-html-in-markdown";
 
   public static final String RUN_TESTS = "-run-tests";
 
@@ -175,6 +178,17 @@ public class Params {
         cliContext.setShowMessagesFromReferences(true);
       } else if (args[i].equals(DO_IMPLICIT_FHIRPATH_STRING_CONVERSION)) {
         cliContext.setDoImplicitFHIRPathStringConversion(true);
+      } else if (args[i].equals(HTML_IN_MARKDOWN)) {
+        if (i + 1 == args.length)
+          throw new Error("Specified "+HTML_IN_MARKDOWN+" without indicating mode");
+        else {
+          String q = args[++i];
+          if (!HtmlInMarkdownCheck.isValidCode(q)) {
+            throw new Error("Specified "+HTML_IN_MARKDOWN+" with na invalid code - must be ignore, warning, or error");            
+          } else {
+            cliContext.setHtmlInMarkdownCheck(HtmlInMarkdownCheck.fromCode(q));
+          }
+        }
       } else if (args[i].equals(LOCALE)) {
         if (i + 1 == args.length) {
           throw new Error("Specified -locale without indicating locale");
@@ -221,6 +235,8 @@ public class Params {
         cliContext.setSecurityChecks(true);
       } else if (args[i].equals(CRUMB_TRAIL)) {
         cliContext.setCrumbTrails(true);
+      } else if (args[i].equals(FOR_PUBLICATION)) {
+        cliContext.setForPublication(true);
       } else if (args[i].equals(VERBOSE)) {
         cliContext.setCrumbTrails(true);
       } else if (args[i].equals(ALLOW_EXAMPLE_URLS)) {

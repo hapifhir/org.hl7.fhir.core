@@ -372,12 +372,14 @@ public class ValidationService {
       validator.setAssumeValidRestReferences(cliContext.isAssumeValidRestReferences());
       validator.setShowMessagesFromReferences(cliContext.isShowMessagesFromReferences());
       validator.setDoImplicitFHIRPathStringConversion(cliContext.isDoImplicitFHIRPathStringConversion());
+      validator.setHtmlInMarkdownCheck(cliContext.getHtmlInMarkdownCheck());
       validator.setNoExtensibleBindingMessages(cliContext.isNoExtensibleBindingMessages());
       validator.setNoUnicodeBiDiControlChars(cliContext.isNoUnicodeBiDiControlChars());
       validator.setNoInvariantChecks(cliContext.isNoInvariants());
       validator.setWantInvariantInMessage(cliContext.isWantInvariantsInMessages());
       validator.setSecurityChecks(cliContext.isSecurityChecks());
       validator.setCrumbTrails(cliContext.isCrumbTrails());
+      validator.setForPublication(cliContext.isForPublication());
       validator.setShowTimes(cliContext.isShowTimes());
       validator.setAllowExampleUrls(cliContext.isAllowExampleUrls());
       StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(validator.getPcm(), validator.getContext(), validator);    

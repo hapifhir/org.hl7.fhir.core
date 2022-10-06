@@ -286,6 +286,10 @@ public class ElementWrappers {
       return null;
     }
 
+    public Element getElement() {
+      return wrapped;
+    }
+
 }
 
   public static class PropertyWrapperMetaElement extends RendererWrapperImpl implements PropertyWrapper {

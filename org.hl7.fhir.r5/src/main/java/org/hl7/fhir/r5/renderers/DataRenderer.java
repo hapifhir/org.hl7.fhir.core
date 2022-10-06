@@ -134,7 +134,7 @@ public class DataRenderer extends Renderer {
       }
   
       // 2. markdown
-      String s = getContext().getMarkdown().process(Utilities.escapeXml(text), "narrative generator");
+      String s = getContext().getMarkdown().process(text, "narrative generator");
       XhtmlParser p = new XhtmlParser();
       XhtmlNode m;
       try {
@@ -341,12 +341,12 @@ public class DataRenderer extends Renderer {
       return true;
     }
     if (Utilities.existsInList(t, 
-        "ActivityDefinition", "CapabilityStatement", "CapabilityStatement2", "ChargeItemDefinition", "Citation", "CodeSystem",
+        "ActivityDefinition", "CapabilityStatement", "ChargeItemDefinition", "Citation", "CodeSystem",
         "CompartmentDefinition", "ConceptMap", "ConditionDefinition", "EventDefinition", "Evidence", "EvidenceReport", "EvidenceVariable",
         "ExampleScenario", "GraphDefinition", "ImplementationGuide", "Library", "Measure", "MessageDefinition", "NamingSystem", "PlanDefinition"
         ))
       return true;
-    return sd.getBaseDefinitionElement().hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-codegen-super");
+    return false;
   }
 
   // -- 4. Language support ------------------------------------------------------
