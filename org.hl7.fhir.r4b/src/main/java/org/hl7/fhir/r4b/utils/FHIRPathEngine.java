@@ -45,6 +45,7 @@ import org.hl7.fhir.r4b.model.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r4b.model.ExpressionNode.Function;
 import org.hl7.fhir.r4b.model.ExpressionNode.Kind;
 import org.hl7.fhir.r4b.model.ExpressionNode.Operation;
+import org.hl7.fhir.r4b.model.InstantType;
 import org.hl7.fhir.r4b.model.Property.PropertyMatcher;
 import org.hl7.fhir.r4b.model.IntegerType;
 import org.hl7.fhir.r4b.model.Property;
@@ -80,19 +81,19 @@ import ca.uhn.fhir.util.ElementUtil;
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
-  
+
   Redistribution and use in source and binary forms, with or without modification, 
   are permitted provided that the following conditions are met:
-    
-   * Redistributions of source code must retain the above copyright notice, this 
+
+ * Redistributions of source code must retain the above copyright notice, this 
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
+ * Redistributions in binary form must reproduce the above copyright notice, 
      this list of conditions and the following disclaimer in the documentation 
      and/or other materials provided with the distribution.
-   * Neither the name of HL7 nor the names of its contributors may be used to 
+ * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
-  
+
   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
@@ -103,7 +104,7 @@ import ca.uhn.fhir.util.ElementUtil;
   WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
   POSSIBILITY OF SUCH DAMAGE.
-  
+
  */
 
 
@@ -113,7 +114,7 @@ import ca.uhn.fhir.util.ElementUtil;
  *
  */
 public class FHIRPathEngine {
-  
+
   private enum Equality { Null, True, False }
 
   private class FHIRConstant extends Base {
@@ -125,7 +126,7 @@ public class FHIRPathEngine {
       this.value = value;
     }
 
-    @Override
+    @Override    
     public String fhirType() {
       return "%constant";
     }
@@ -146,13 +147,13 @@ public class FHIRPathEngine {
     public String getValue() {
       return value;
     }
-    
+
     @Override
     public String primitiveValue() {
       return value;
     }
   }
-  
+
   private class ClassTypeInfo extends Base {
     private static final long serialVersionUID = 4909223114071029317L;
     private Base instance;
@@ -179,7 +180,7 @@ public class FHIRPathEngine {
     @Override
     public void setIdBase(String value) {
     }
-    
+
     public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
       if (name.equals("name")) {
         return new Base[]{new StringType(getName())};
@@ -301,7 +302,7 @@ public class FHIRPathEngine {
      */
     public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext)  throws PathEngineException;
     public TypeDetails resolveConstantType(Object appContext, String name) throws PathEngineException;
-    
+
     /**
      * when the .log() function is called
      * 
@@ -318,7 +319,7 @@ public class FHIRPathEngine {
      * @return null if the function is not known
      */
     public FunctionDetails resolveFunction(String functionName);
-    
+
     /**
      * Check the function parameters, and throw an error if they are incorrect, or return the type for the function
      * @param functionName
@@ -326,7 +327,7 @@ public class FHIRPathEngine {
      * @return
      */
     public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters) throws PathEngineException;
-    
+
     /**
      * @param appContext
      * @param functionName
@@ -334,7 +335,7 @@ public class FHIRPathEngine {
      * @return
      */
     public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters);
-    
+
     /**
      * Implementation of resolve() function. Passed a string, return matching resource, if one is known - else null
      * @appContext - passed in by the host to the FHIRPathEngine
@@ -343,9 +344,9 @@ public class FHIRPathEngine {
      * @throws FHIRException 
      */
     public Base resolveReference(Object appContext, String url, Base refContext) throws FHIRException;
-    
+
     public boolean conformsToProfile(Object appContext, Base item, String url) throws FHIRException;
-    
+
     /* 
      * return the value set referenced by the url, which has been used in memberOf()
      */
@@ -409,8 +410,8 @@ public class FHIRPathEngine {
    * @param item
    * @param name
    * @param result
-	 * @throws FHIRException 
-	 */
+   * @throws FHIRException 
+   */
   protected void getChildrenByName(Base item, String name, List<Base> result) throws FHIRException {
     String tn = null;
     if (isAllowPolymorphicNames()) {
@@ -436,7 +437,7 @@ public class FHIRPathEngine {
     }
   }
 
-  
+
   public boolean isLegacyMode() {
     return legacyMode;
   }
@@ -467,7 +468,7 @@ public class FHIRPathEngine {
   public ExpressionNode parse(String path) throws FHIRLexerException {
     return parse(path, null);
   }
-  
+
   public ExpressionNode parse(String path, String name) throws FHIRLexerException {
     FHIRLexer lexer = new FHIRLexer(path, name);
     if (lexer.done()) {
@@ -495,7 +496,7 @@ public class FHIRPathEngine {
     public ExpressionNode getNode() {
       return node;
     }
-    
+
   }
   /**
    * Parse a path for later use using execute
@@ -582,7 +583,7 @@ public class FHIRPathEngine {
       fmt = fmt + " "+worker.formatMessage(I18nConstants.FHIRPATH_LOCATION, location);
     }
     if (holder != null) {      
-      return new PathEngineException(fmt, holder.getStart(), holder.toString());
+       return new PathEngineException(fmt, holder.getStart(), holder.toString());
     } else {
       return new PathEngineException(fmt);
     }
@@ -649,10 +650,10 @@ public class FHIRPathEngine {
     } else if (left.getHour() > right.getHour()) {
       return 1;
       // hour is not a valid precision 
-//    } else if (dateLeft.getPrecision() == TemporalPrecisionEnum.YEAR && dateRight.getPrecision() == TemporalPrecisionEnum.YEAR) {
-//      return 0;
-//    } else if (dateLeft.getPrecision() == TemporalPrecisionEnum.HOUR || dateRight.getPrecision() == TemporalPrecisionEnum.HOUR) {
-//      return null;
+      //    } else if (dateLeft.getPrecision() == TemporalPrecisionEnum.YEAR && dateRight.getPrecision() == TemporalPrecisionEnum.YEAR) {
+      //      return 0;
+      //    } else if (dateLeft.getPrecision() == TemporalPrecisionEnum.HOUR || dateRight.getPrecision() == TemporalPrecisionEnum.HOUR) {
+      //      return null;
     }
 
     if (left.getMinute() < right.getMinute()) {
@@ -685,7 +686,7 @@ public class FHIRPathEngine {
    * @throws FHIRException 
    * @
    */
-	public List<Base> evaluate(Base base, ExpressionNode ExpressionNode) throws FHIRException {
+  public List<Base> evaluate(Base base, ExpressionNode ExpressionNode) throws FHIRException {
     List<Base> list = new ArrayList<Base>();
     if (base != null) {
       list.add(base);
@@ -700,10 +701,10 @@ public class FHIRPathEngine {
    * @param base - the object against which the path is being evaluated
    * @param path - the FHIR Path statement to use
    * @return
-	 * @throws FHIRException 
+   * @throws FHIRException 
    * @
    */
-	public List<Base> evaluate(Base base, String path) throws FHIRException {
+  public List<Base> evaluate(Base base, String path) throws FHIRException {
     ExpressionNode exp = parse(path);
     List<Base> list = new ArrayList<Base>();
     if (base != null) {
@@ -719,10 +720,10 @@ public class FHIRPathEngine {
    * @param base - the object against which the path is being evaluated
    * @param ExpressionNode - the parsed ExpressionNode statement to use
    * @return
-	 * @throws FHIRException 
+   * @throws FHIRException 
    * @
    */
-	public List<Base> evaluate(Object appContext, Resource focusResource, Resource rootResource, Base base, ExpressionNode ExpressionNode) throws FHIRException {
+  public List<Base> evaluate(Object appContext, Resource focusResource, Resource rootResource, Base base, ExpressionNode ExpressionNode) throws FHIRException {
     List<Base> list = new ArrayList<Base>();
     if (base != null) {
       list.add(base);
@@ -755,10 +756,10 @@ public class FHIRPathEngine {
    * @param base - the object against which the path is being evaluated
    * @param path - the FHIR Path statement to use
    * @return
-	 * @throws FHIRException 
+   * @throws FHIRException 
    * @
    */
-	public List<Base> evaluate(Object appContext, Resource focusResource, Resource rootResource, Base base, String path) throws FHIRException {
+  public List<Base> evaluate(Object appContext, Resource focusResource, Resource rootResource, Base base, String path) throws FHIRException {
     ExpressionNode exp = parse(path);
     List<Base> list = new ArrayList<Base>();
     if (base != null) {
@@ -774,10 +775,10 @@ public class FHIRPathEngine {
    * @param base - the object against which the path is being evaluated
    * @param path - the FHIR Path statement to use
    * @return
-	 * @throws FHIRException 
+   * @throws FHIRException 
    * @
    */
-	public boolean evaluateToBoolean(Resource focusResource, Resource rootResource, Base base, String path) throws FHIRException {
+  public boolean evaluateToBoolean(Resource focusResource, Resource rootResource, Base base, String path) throws FHIRException {
     return convertToBoolean(evaluate(null, focusResource, rootResource, base, path));
   }
 
@@ -824,7 +825,7 @@ public class FHIRPathEngine {
    * @param base - the object against which the path is being evaluated
    * @param path - the FHIR Path statement to use
    * @return
-	 * @throws FHIRException 
+   * @throws FHIRException 
    * @
    */
   public String evaluateToString(Base base, String path) throws FHIRException {
@@ -930,7 +931,7 @@ public class FHIRPathEngine {
     private List<Base> total;
     private Map<String, Base> aliases;
     private int index;
-    
+
     public ExecutionContext(Object appInfo, Base resource, Base rootResource, Base context, Map<String, Base> aliases, Base thisItem) {
       this.appInfo = appInfo;
       this.context = context;
@@ -944,7 +945,7 @@ public class FHIRPathEngine {
       return focusResource;
     }
     public Base getRootResource() {
-        return rootResource;
+      return rootResource;
     }
     public Base getThisItem() {
       return thisItem;
@@ -952,14 +953,14 @@ public class FHIRPathEngine {
     public List<Base> getTotal() {
       return total;
     }
-    
+
     public void next() {
       index++;
     }
     public Base getIndex() {
       return new IntegerType(index);
     }
-    
+
     public void addAlias(String name, List<Base> focus) throws FHIRException {
       if (aliases == null) {
         aliases = new HashMap<String, Base>();
@@ -994,7 +995,7 @@ public class FHIRPathEngine {
       this.resource = resource;
       this.context = context;
       this.thisItem = thisItem;
-      
+
     }
     public String getResource() {
       return resource;
@@ -1003,7 +1004,7 @@ public class FHIRPathEngine {
       return thisItem;
     }
 
-    
+
   }
 
   private ExpressionNode parseExpression(FHIRLexer lexer, boolean proximal) throws FHIRLexerException {
@@ -1013,7 +1014,7 @@ public class FHIRPathEngine {
     result.setStart(lexer.getCurrentLocation());
     // special: +/- represents a unary operation at this point, but cannot be a feature of the lexer, since that's not always true.
     // so we back correct for both +/- and as part of a numeric constant below.
-    
+
     // special: +/- represents a unary operation at this point, but cannot be a feature of the lexer, since that's not always true.
     // so we back correct for both +/- and as part of a numeric constant below.
     if (Utilities.existsInList(lexer.getCurrent(), "-", "+")) {
@@ -1399,8 +1400,8 @@ public class FHIRPathEngine {
     return false;
   }
 
-	private List<Base> execute(ExecutionContext context, List<Base> focus, ExpressionNode exp, boolean atEntry) throws FHIRException {
-//    System.out.println("Evaluate {'"+exp.toString()+"'} on "+focus.toString());
+  private List<Base> execute(ExecutionContext context, List<Base> focus, ExpressionNode exp, boolean atEntry) throws FHIRException {
+    //    System.out.println("Evaluate {'"+exp.toString()+"'} on "+focus.toString());
     List<Base> work = new ArrayList<Base>();
     switch (exp.getKind()) {
     case Unary:
@@ -1454,13 +1455,13 @@ public class FHIRPathEngine {
         } else {
           work2 = execute(context, focus, next, true);
           work = operate(context, work, last.getOperation(), work2, last);
-//          System.out.println("Result of {'"+last.toString()+" "+last.getOperation().toCode()+" "+next.toString()+"'}: "+focus.toString());
+          //          System.out.println("Result of {'"+last.toString()+" "+last.getOperation().toCode()+" "+next.toString()+"'}: "+focus.toString());
         }
         last = next;
         next = next.getOpNext();
       }
     }
-//    System.out.println("Result of {'"+exp.toString()+"'}: "+work.toString());
+    //    System.out.println("Result of {'"+exp.toString()+"'}: "+work.toString());
     return work;
   }
 
@@ -1602,7 +1603,7 @@ public class FHIRPathEngine {
         time = p[1];
       }
     }
-    
+
     if (time != null) {
       int i = time.indexOf("-");
       if (i == -1) {
@@ -1615,7 +1616,7 @@ public class FHIRPathEngine {
         tz = time.substring(i);
         time = time.substring(0, i);
       }
-      
+
       if (time.length() == 2) {
         time = time+":00:00";
         temp = TemporalPrecisionEnum.MINUTE;
@@ -1628,8 +1629,8 @@ public class FHIRPathEngine {
         temp = TemporalPrecisionEnum.SECOND;
       }
     }
-    
-    
+
+
     if (date == null) {
       if (tz != null) {
         throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONTEXT, value);
@@ -1797,7 +1798,18 @@ public class FHIRPathEngine {
       } else if ((left.get(0) instanceof Element) && ((Element) left.get(0)).isDisallowExtensions()) {
         result.add(new BooleanType(Utilities.capitalize(left.get(0).fhirType()).equals(tn) || ("System."+Utilities.capitalize(left.get(0).fhirType())).equals(tn)).noExtensions());
       } else {
-        result.add(new BooleanType(left.get(0).hasType(tn)).noExtensions());
+        if (left.get(0).fhirType().equals(tn)) {
+          result.add(new BooleanType(true).noExtensions());
+        } else {
+          StructureDefinition sd = worker.fetchTypeDefinition(left.get(0).fhirType());
+          while (sd != null) {
+            if (tn.equals(sd.getType())) {
+              return makeBoolean(true);
+            }
+            sd = worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+          }
+          return makeBoolean(false);
+        }      
       }
     }
     return result;
@@ -1972,11 +1984,11 @@ public class FHIRPathEngine {
     right = removeTrailingZeros(right);
     return left.equals(right);
   }
-  
+
   private Boolean datesEqual(BaseDateTimeType left, BaseDateTimeType right) {
     return left.equalsUsingFhirPathRules(right);
   }
-  
+
   private Boolean doEquals(Base left, Base right) {
     if (left instanceof Quantity && right instanceof Quantity) {
       return qtyEqual((Quantity) left, (Quantity) right);
@@ -1985,7 +1997,7 @@ public class FHIRPathEngine {
     } else if (left instanceof DecimalType || right instanceof DecimalType) { 
       return decEqual(left.primitiveValue(), right.primitiveValue());
     } else if (left.isPrimitive() && right.isPrimitive()) {
-			return Base.equals(left.primitiveValue(), right.primitiveValue());
+      return Base.equals(left.primitiveValue(), right.primitiveValue());
     } else {
       return Base.compareDeep(left, right, false);
     }
@@ -2196,10 +2208,10 @@ public class FHIRPathEngine {
 
   private final static String[] FHIR_TYPES_STRING = new String[] {"string", "uri", "code", "oid", "id", "uuid", "sid", "markdown", "base64Binary", "canonical", "url"};
 
-	private List<Base> opLessThan(List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
+  private List<Base> opLessThan(List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
     if (left.size() == 0 || right.size() == 0) 
       return new ArrayList<Base>();
-    
+
     if (left.size() == 1 && right.size() == 1 && left.get(0).isPrimitive() && right.get(0).isPrimitive()) {
       Base l = left.get(0);
       Base r = right.get(0);
@@ -2244,7 +2256,7 @@ public class FHIRPathEngine {
     return new ArrayList<Base>();
   }
 
-	private List<Base> opGreater(List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
+  private List<Base> opGreater(List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
     if (left.size() == 0 || right.size() == 0) 
       return new ArrayList<Base>();
     if (left.size() == 1 && right.size() == 1 && left.get(0).isPrimitive() && right.get(0).isPrimitive()) {
@@ -2291,7 +2303,7 @@ public class FHIRPathEngine {
     return new ArrayList<Base>();
   }
 
-	private List<Base> opLessOrEqual(List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
+  private List<Base> opLessOrEqual(List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
     if (left.size() == 0 || right.size() == 0) { 
       return new ArrayList<Base>();
     }
@@ -2341,7 +2353,7 @@ public class FHIRPathEngine {
     return new ArrayList<Base>();
   }
 
-	private List<Base> opGreaterOrEqual(List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
+  private List<Base> opGreaterOrEqual(List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
     if (left.size() == 0 || right.size() == 0) { 
       return new ArrayList<Base>();
     }
@@ -2389,34 +2401,34 @@ public class FHIRPathEngine {
     return new ArrayList<Base>();
   }
 
-	private List<Base> opMemberOf(ExecutionContext context, List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
-	  boolean ans = false;
-	  String url = right.get(0).primitiveValue();
-	  ValueSet vs = hostServices != null ? hostServices.resolveValueSet(context.appInfo, url) : worker.fetchResource(ValueSet.class, url);
-	  if (vs != null) {
-	    for (Base l : left) {
-	      if (Utilities.existsInList(l.fhirType(), "code", "string", "uri")) {
+  private List<Base> opMemberOf(ExecutionContext context, List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
+    boolean ans = false;
+    String url = right.get(0).primitiveValue();
+    ValueSet vs = hostServices != null ? hostServices.resolveValueSet(context.appInfo, url) : worker.fetchResource(ValueSet.class, url);
+    if (vs != null) {
+      for (Base l : left) {
+        if (Utilities.existsInList(l.fhirType(), "code", "string", "uri")) {
           if (worker.validateCode(terminologyServiceOptions.guessSystem() , TypeConvertor.castToCoding(l), vs).isOk()) {
             ans = true;
           }
-	      } else if (l.fhirType().equals("Coding")) {
-	        if (worker.validateCode(terminologyServiceOptions, TypeConvertor.castToCoding(l), vs).isOk()) {
-	          ans = true;
-	        }
-	      } else if (l.fhirType().equals("CodeableConcept")) {
-	        CodeableConcept cc = TypeConvertor.castToCodeableConcept(l);
-            ValidationResult vr = worker.validateCode(terminologyServiceOptions, cc, vs);
-            // System.out.println("~~~ "+DataRenderer.display(worker, cc)+ " memberOf "+url+": "+vr.toString());
-            if (vr.isOk()) {
-	          ans = true;
-	        }
-	      } else {
-//	        System.out.println("unknown type in opMemberOf: "+l.fhirType());
-	      }
-	    }
-	  }
-	  return makeBoolean(ans);
-	}
+        } else if (l.fhirType().equals("Coding")) {
+          if (worker.validateCode(terminologyServiceOptions, TypeConvertor.castToCoding(l), vs).isOk()) {
+            ans = true;
+          }
+        } else if (l.fhirType().equals("CodeableConcept")) {
+          CodeableConcept cc = TypeConvertor.castToCodeableConcept(l);
+          ValidationResult vr = worker.validateCode(terminologyServiceOptions, cc, vs);
+          // System.out.println("~~~ "+DataRenderer.display(worker, cc)+ " memberOf "+url+": "+vr.toString());
+          if (vr.isOk()) {
+            ans = true;
+          }
+        } else {
+          //	        System.out.println("unknown type in opMemberOf: "+l.fhirType());
+        }
+      }
+    }
+    return makeBoolean(ans);
+  }
 
   private List<Base> opIn(List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
     if (left.size() == 0) { 
@@ -2445,7 +2457,7 @@ public class FHIRPathEngine {
 
   private List<Base> opContains(List<Base> left, List<Base> right, ExpressionNode expr) {
     if (left.size() == 0 || right.size() == 0) { 
-     return new ArrayList<Base>();
+      return new ArrayList<Base>();
     }
     boolean ans = true;
     for (Base r : right) {
@@ -2501,7 +2513,7 @@ public class FHIRPathEngine {
 
   private BaseDateTimeType dateAdd(BaseDateTimeType d, Quantity q, boolean negate, ExpressionNode holder) {
     BaseDateTimeType result = (BaseDateTimeType) d.copy();
-    
+
     int value = negate ? 0 - q.getValue().intValue() : q.getValue().intValue();
     switch (q.hasCode() ? q.getCode() : q.getUnit()) {
     case "years": 
@@ -2951,7 +2963,7 @@ public class FHIRPathEngine {
     }
   }
 
-	private List<Base> execute(ExecutionContext context, Base item, ExpressionNode exp, boolean atEntry) throws FHIRException {
+  private List<Base> execute(ExecutionContext context, Base item, ExpressionNode exp, boolean atEntry) throws FHIRException {
     List<Base> result = new ArrayList<Base>(); 
     if (atEntry && context.appInfo != null && hostServices != null) {
       // we'll see if the name matches a constant known by the context.
@@ -2999,7 +3011,7 @@ public class FHIRPathEngine {
     }
     return hostServices.resolveConstantType(context.appInfo, name);
   }
-  
+
   private TypeDetails executeType(String type, ExpressionNode exp, boolean atEntry) throws PathEngineException, DefinitionException {
     if (atEntry && Character.isUpperCase(exp.getName().charAt(0)) && hashTail(type).equals(exp.getName())) { // special case for start up
       return new TypeDetails(CollectionStatus.SINGLETON, type);
@@ -3326,7 +3338,7 @@ public class FHIRPathEngine {
       checkContextDecimal(focus, exp.getFunction().toCode(), exp);
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer);       
     }  
-      
+
     case Round :{
       checkContextDecimal(focus, "round", exp);
       if (paramTypes.size() > 0) {
@@ -3334,7 +3346,7 @@ public class FHIRPathEngine {
       }
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Decimal);       
     } 
-    
+
     case Exp : 
     case Ln : 
     case Sqrt : {
@@ -3351,7 +3363,7 @@ public class FHIRPathEngine {
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_NUMBERS));
       return new TypeDetails(CollectionStatus.SINGLETON, focus.getTypes());       
     }
-      
+
     case LowBoundary:
     case HighBoundary: {
       checkContextContinuous(focus, exp.getFunction().toCode(), exp);      
@@ -3437,16 +3449,16 @@ public class FHIRPathEngine {
 
   private void checkContextPrimitive(TypeDetails focus, String name, boolean canQty, ExpressionNode expr) throws PathEngineException {
     if (!focus.hasNoTypes()) {
-    if (canQty) {
-       if (!focus.hasType(primitiveTypes) && !focus.hasType("Quantity")) {
-         throw makeException(expr, I18nConstants.FHIRPATH_PRIMITIVE_ONLY, name, focus.describe(), "Quantity, "+primitiveTypes.toString());
-       }
-    } else if (!focus.hasType(primitiveTypes)) {
-      throw makeException(expr, I18nConstants.FHIRPATH_PRIMITIVE_ONLY, name, focus.describe(), primitiveTypes.toString());
+      if (canQty) {
+        if (!focus.hasType(primitiveTypes) && !focus.hasType("Quantity")) {
+          throw makeException(expr, I18nConstants.FHIRPATH_PRIMITIVE_ONLY, name, focus.describe(), "Quantity, "+primitiveTypes.toString());
+        }
+      } else if (!focus.hasType(primitiveTypes)) {
+        throw makeException(expr, I18nConstants.FHIRPATH_PRIMITIVE_ONLY, name, focus.describe(), primitiveTypes.toString());
+      }
     }
   }
-  }
-  
+
   private void checkContextNumerical(TypeDetails focus, String name, ExpressionNode expr) throws PathEngineException {
     if (!focus.hasNoTypes() && !focus.hasType("integer")  && !focus.hasType("decimal") && !focus.hasType("Quantity")) {
       throw makeException(expr, I18nConstants.FHIRPATH_NUMERICAL_ONLY, name, focus.describe());
@@ -3481,7 +3493,7 @@ public class FHIRPathEngine {
   //		return s.equals("boolean") || s.equals("integer") || s.equals("decimal") || s.equals("base64Binary") || s.equals("instant") || s.equals("string") || s.equals("uri") || s.equals("date") || s.equals("dateTime") || s.equals("time") || s.equals("code") || s.equals("oid") || s.equals("id") || s.equals("unsignedInt") || s.equals("positiveInt") || s.equals("markdown");
   //	}
 
-	private List<Base> evaluateFunction(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
+  private List<Base> evaluateFunction(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     switch (exp.getFunction()) {
     case Empty : return funcEmpty(context, focus, exp);
     case Not : return funcNot(context, focus, exp);
@@ -3580,7 +3592,7 @@ public class FHIRPathEngine {
     case HighBoundary : return funcHighBoundary(context, focus, exp);
     case Precision : return funcPrecision(context, focus, exp);
     
-    
+
     case Custom: { 
       List<List<Base>> params = new ArrayList<List<Base>>();
       for (ExpressionNode p : exp.getParameters()) {
@@ -3592,25 +3604,25 @@ public class FHIRPathEngine {
       throw new Error("not Implemented yet");
     }
   }
-	
-	private List<Base> funcSqrt(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+
+  private List<Base> funcSqrt(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
     if (focus.size() != 1) {
       throw makeException(expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "sqrt", focus.size());
     }
     Base base = focus.get(0);
     List<Base> result = new ArrayList<Base>();
     if (base.hasType("integer", "decimal", "unsignedInt", "positiveInt")) {
-        Double d = Double.parseDouble(base.primitiveValue());
-        try {
-          result.add(new DecimalType(Math.sqrt(d)));
-        } catch (Exception e) {
-          // just return nothing
-        }
+      Double d = Double.parseDouble(base.primitiveValue());
+      try {
+        result.add(new DecimalType(Math.sqrt(d)));
+      } catch (Exception e) {
+        // just return nothing
+      }
     } else {
       makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "sqrt", "(focus)", base.fhirType(), "integer or decimal");
     }
     return result;
-	}
+  }
 
 
   private List<Base> funcAbs(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
@@ -3620,12 +3632,12 @@ public class FHIRPathEngine {
     Base base = focus.get(0);
     List<Base> result = new ArrayList<Base>();
     if (base.hasType("integer", "decimal", "unsignedInt", "positiveInt")) {
-        Double d = Double.parseDouble(base.primitiveValue());
-        try {
-          result.add(new DecimalType(Math.abs(d)));
-        } catch (Exception e) {
-          // just return nothing
-        }
+      Double d = Double.parseDouble(base.primitiveValue());
+      try {
+        result.add(new DecimalType(Math.abs(d)));
+      } catch (Exception e) {
+        // just return nothing
+      }
     } else if (base.hasType("Quantity")) {
       Quantity qty = (Quantity) base;
       result.add(qty.copy().setValue(qty.getValue().abs()));
@@ -3643,11 +3655,11 @@ public class FHIRPathEngine {
     Base base = focus.get(0);
     List<Base> result = new ArrayList<Base>();
     if (base.hasType("integer", "decimal", "unsignedInt", "positiveInt")) {
-        Double d = Double.parseDouble(base.primitiveValue());
-        try {result.add(new IntegerType((int) Math.ceil(d)));
-        } catch (Exception e) {
-          // just return nothing
-        }
+      Double d = Double.parseDouble(base.primitiveValue());
+      try {result.add(new IntegerType((int) Math.ceil(d)));
+      } catch (Exception e) {
+        // just return nothing
+      }
     } else {
       makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "ceiling", "(focus)", base.fhirType(), "integer or decimal");
     }
@@ -3661,12 +3673,12 @@ public class FHIRPathEngine {
     Base base = focus.get(0);
     List<Base> result = new ArrayList<Base>();
     if (base.hasType("integer", "decimal", "unsignedInt", "positiveInt")) {
-        Double d = Double.parseDouble(base.primitiveValue());
-        try {
-          result.add(new IntegerType((int) Math.floor(d)));
-        } catch (Exception e) {
-          // just return nothing
-        }
+      Double d = Double.parseDouble(base.primitiveValue());
+      try {
+        result.add(new IntegerType((int) Math.floor(d)));
+      } catch (Exception e) {
+        // just return nothing
+      }
     } else {
       makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "floor", "(focus)", base.fhirType(), "integer or decimal");
     }
@@ -3684,12 +3696,12 @@ public class FHIRPathEngine {
     Base base = focus.get(0);
     List<Base> result = new ArrayList<Base>();
     if (base.hasType("integer", "decimal", "unsignedInt", "positiveInt")) {
-        Double d = Double.parseDouble(base.primitiveValue());
-        try {
-          result.add(new DecimalType(Math.exp(d)));
-        } catch (Exception e) {
-          // just return nothing
-        }
+      Double d = Double.parseDouble(base.primitiveValue());
+      try {
+        result.add(new DecimalType(Math.exp(d)));
+      } catch (Exception e) {
+        // just return nothing
+      }
 
     } else {
       makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "exp", "(focus)", base.fhirType(), "integer or decimal");
@@ -3705,12 +3717,12 @@ public class FHIRPathEngine {
     Base base = focus.get(0);
     List<Base> result = new ArrayList<Base>();
     if (base.hasType("integer", "decimal", "unsignedInt", "positiveInt")) {
-        Double d = Double.parseDouble(base.primitiveValue());
-        try {
-          result.add(new DecimalType(Math.log(d)));
-        } catch (Exception e) {
-          // just return nothing
-        }        
+      Double d = Double.parseDouble(base.primitiveValue());
+      try {
+        result.add(new DecimalType(Math.log(d)));
+      } catch (Exception e) {
+        // just return nothing
+      }        
     } else {
       makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "ln", "(focus)", base.fhirType(), "integer or decimal");
     }
@@ -3741,7 +3753,7 @@ public class FHIRPathEngine {
     }
     return result;
   }
-  
+
   private static double customLog(double base, double logNumber) {
     return Math.log(logNumber) / Math.log(base);
   }
@@ -3758,12 +3770,12 @@ public class FHIRPathEngine {
         throw makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "power", "0", "Multiple Values", "integer or decimal");
       }
       Double e = Double.parseDouble(n1.get(0).primitiveValue());
-        Double d = Double.parseDouble(base.primitiveValue());
-        try {
-          result.add(new DecimalType(Math.pow(d, e)));
-        } catch (Exception ex) {
-          // just return nothing
-        }
+      Double d = Double.parseDouble(base.primitiveValue());
+      try {
+        result.add(new DecimalType(Math.pow(d, e)));
+      } catch (Exception ex) {
+        // just return nothing
+      }
     } else {
       makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "power", "(focus)", base.fhirType(), "integer or decimal");
     }
@@ -3777,11 +3789,11 @@ public class FHIRPathEngine {
     Base base = focus.get(0);
     List<Base> result = new ArrayList<Base>();
     if (base.hasType("integer", "decimal", "unsignedInt", "positiveInt")) {
-        String s = base.primitiveValue();
-        if (s.contains(".")) {
-          s = s.substring(0, s.indexOf("."));
-        }
-        result.add(new IntegerType(s));
+      String s = base.primitiveValue();
+      if (s.contains(".")) {
+        s = s.substring(0, s.indexOf("."));
+      }
+      result.add(new IntegerType(s));
     } else {
       makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "sqrt", "(focus)", base.fhirType(), "integer or decimal");
     }
@@ -3890,26 +3902,26 @@ public class FHIRPathEngine {
   }
 
   private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
-	public static String bytesToHex(byte[] bytes) {
-	  char[] hexChars = new char[bytes.length * 2];
-	  for (int j = 0; j < bytes.length; j++) {
-	    int v = bytes[j] & 0xFF;
-	    hexChars[j * 2] = HEX_ARRAY[v >>> 4];
-	    hexChars[j * 2 + 1] = HEX_ARRAY[v & 0x0F];
-	  }
-	  return new String(hexChars);
-	}
-	
-	public static byte[] hexStringToByteArray(String s) {
-	  int len = s.length();
-	  byte[] data = new byte[len / 2];
-	  for (int i = 0; i < len; i += 2) {
-	    data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4) + Character.digit(s.charAt(i+1), 16));
-	  }
-	  return data;
-	}
+  public static String bytesToHex(byte[] bytes) {
+    char[] hexChars = new char[bytes.length * 2];
+    for (int j = 0; j < bytes.length; j++) {
+      int v = bytes[j] & 0xFF;
+      hexChars[j * 2] = HEX_ARRAY[v >>> 4];
+      hexChars[j * 2 + 1] = HEX_ARRAY[v & 0x0F];
+    }
+    return new String(hexChars);
+  }
 
-	private List<Base> funcEncode(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
+  public static byte[] hexStringToByteArray(String s) {
+    int len = s.length();
+    byte[] data = new byte[len / 2];
+    for (int i = 0; i < len; i += 2) {
+      data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4) + Character.digit(s.charAt(i+1), 16));
+    }
+    return data;
+  }
+
+  private List<Base> funcEncode(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
     String param = nl.get(0).primitiveValue();
 
@@ -3928,7 +3940,7 @@ public class FHIRPathEngine {
       }
     }
     return result;	
-	}
+  }
 
   private List<Base> funcDecode(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
@@ -4021,7 +4033,7 @@ public class FHIRPathEngine {
     result.add(new StringType(b.toString()));
     return result;  
   }
-	
+
   private List<Base> funcAliasAs(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
     String name = nl.get(0).primitiveValue();
@@ -4114,7 +4126,7 @@ public class FHIRPathEngine {
     }
     return true;
   }
-  
+
   private List<Base> funcAll(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
     if (exp.getParameters().size() == 1) {
@@ -4173,7 +4185,7 @@ public class FHIRPathEngine {
     if (nl.size() != 1 || focus.size() != 1) {
       return new ArrayList<Base>();
     }
-    
+
     String url = nl.get(0).primitiveValue();
     ValueSet vs = hostServices != null ? hostServices.resolveValueSet(context.appInfo, url) : worker.fetchResource(ValueSet.class, url);
     if (vs == null) {
@@ -4187,7 +4199,7 @@ public class FHIRPathEngine {
     } else if (l.fhirType().equals("CodeableConcept")) {
       return makeBoolean(worker.validateCode(terminologyServiceOptions, TypeConvertor.castToCodeableConcept(l), vs).isOk());
     } else {
-//      System.out.println("unknown type in funcMemberOf: "+l.fhirType());
+      //      System.out.println("unknown type in funcMemberOf: "+l.fhirType());
       return new ArrayList<Base>();
     }
   }
@@ -4233,13 +4245,13 @@ public class FHIRPathEngine {
       //
     } else if (focus.size() == 1) {
       if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
-      String f = convertToString(focus.get(0));
-      if (Utilities.noString(f)) {
-        result.add(new StringType(""));
-      } else {
-        String n = f.replace(t, r);
-        result.add(new StringType(n));
-      }
+        String f = convertToString(focus.get(0));
+        if (Utilities.noString(f)) {
+          result.add(new StringType(""));
+        } else {
+          String n = f.replace(t, r);
+          result.add(new StringType(n));
+        }
       }
     } else {
       throw makeException(expr, I18nConstants.FHIRPATH_NO_COLLECTION, "replace", focus.size());
@@ -4259,7 +4271,7 @@ public class FHIRPathEngine {
       //
     } else if (focus.size() == 1 && !Utilities.noString(regex)) {
       if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
-      result.add(new StringType(convertToString(focus.get(0)).replaceAll(regex, repl)).noExtensions());
+        result.add(new StringType(convertToString(focus.get(0)).replaceAll(regex, repl)).noExtensions());
       }
     } else {
       result.add(new StringType(convertToString(focus.get(0))).noExtensions());
@@ -4345,18 +4357,18 @@ public class FHIRPathEngine {
   }
 
   private List<Base> funcToDateTime(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
-//  List<Base> result = new ArrayList<Base>();
-//  result.add(new BooleanType(convertToBoolean(focus)));
-//  return result;
-  throw makeException(expr, I18nConstants.FHIRPATH_NOT_IMPLEMENTED, "toDateTime");
-}
+    //  List<Base> result = new ArrayList<Base>();
+    //  result.add(new BooleanType(convertToBoolean(focus)));
+    //  return result;
+    throw makeException(expr, I18nConstants.FHIRPATH_NOT_IMPLEMENTED, "toDateTime");
+  }
 
   private List<Base> funcToTime(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
-//  List<Base> result = new ArrayList<Base>();
-//  result.add(new BooleanType(convertToBoolean(focus)));
-//  return result;
+    //  List<Base> result = new ArrayList<Base>();
+    //  result.add(new BooleanType(convertToBoolean(focus)));
+    //  return result;
     throw makeException(expr, I18nConstants.FHIRPATH_NOT_IMPLEMENTED, "toTime");
-}
+  }
 
 
   private List<Base> funcToDecimal(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
@@ -4430,7 +4442,7 @@ public class FHIRPathEngine {
   private List<Base> funcIntersect(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
     List<Base> other = execute(context, focus, exp.getParameters().get(0), true);
-    
+
     for (Base item : focus) {
       if (!doContains(result, item) && doContains(other, item)) {
         result.add(item);
@@ -4442,7 +4454,7 @@ public class FHIRPathEngine {
   private List<Base> funcExclude(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
     List<Base> other = execute(context, focus, exp.getParameters().get(0), true);
-    
+
     for (Base item : focus) {
       if (!doContains(other, item)) {
         result.add(item);
@@ -4466,7 +4478,7 @@ public class FHIRPathEngine {
     }
     String ns = null;
     String n = null;
-    
+
     ExpressionNode texp = expr.getParameters().get(0);
     if (texp.getKind() != Kind.Name) {
       throw makeException(expr, I18nConstants.FHIRPATH_PARAM_WRONG, texp.getKind(), "0", "is");
@@ -4502,7 +4514,18 @@ public class FHIRPathEngine {
         return makeBoolean(false);
       }
     } else if (ns.equals("FHIR")) {
-      return makeBoolean(n.equals(focus.get(0).fhirType()));
+      if (n.equals(focus.get(0).fhirType())) {
+        return makeBoolean(true);
+      } else {
+        StructureDefinition sd = worker.fetchTypeDefinition(focus.get(0).fhirType());
+        while (sd != null) {
+          if (n.equals(sd.getType())) {
+            return makeBoolean(true);
+          }
+          sd = worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+        }
+        return makeBoolean(false);
+      }
     } else { 
       return makeBoolean(false);
     }
@@ -4526,8 +4549,18 @@ public class FHIRPathEngine {
         }
 
       } else if (tn.startsWith("FHIR.")) {
-        if (b.hasType(tn.substring(5))) { 
-          result.add(b);
+        String tnp = tn.substring(5);
+        if (b.fhirType().equals(tnp)) {
+          result.add(b);          
+        } else {
+          StructureDefinition sd = worker.fetchTypeDefinition(b.fhirType());
+          while (sd != null) {
+            if (tnp.equals(sd.getType())) {
+              result.add(b);
+              break;
+            }
+            sd = worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+          }
         }
       }
     }
@@ -4759,125 +4792,125 @@ public class FHIRPathEngine {
     return result;
   }
 
-	private List<Base> funcAllFalse(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
-	  List<Base> result = new ArrayList<Base>();
-	  if (exp.getParameters().size() == 1) {
-	    boolean all = true;
-	    List<Base> pc = new ArrayList<Base>();
-	    for (Base item : focus) {
-	      pc.clear();
-	      pc.add(item);
-	      List<Base> res = execute(context, pc, exp.getParameters().get(0), true);
-	      Equality v = asBool(res, exp);
-	      if (v != Equality.False) {
-	        all = false;
-	        break;
-	      }
-	    }
-	    result.add(new BooleanType(all).noExtensions());
-	  } else { 
-	    boolean all = true;
-	    for (Base item : focus) {
-	       if (!canConvertToBoolean(item)) {
-	          throw new FHIRException("Unable to convert '"+convertToString(item)+"' to a boolean");
-	        }
-
-	      Equality v = asBool(item, true);
+  private List<Base> funcAllFalse(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
+    List<Base> result = new ArrayList<Base>();
+    if (exp.getParameters().size() == 1) {
+      boolean all = true;
+      List<Base> pc = new ArrayList<Base>();
+      for (Base item : focus) {
+        pc.clear();
+        pc.add(item);
+        List<Base> res = execute(context, pc, exp.getParameters().get(0), true);
+        Equality v = asBool(res, exp);
         if (v != Equality.False) {
-	        all = false;
-	        break;
-	      }
-	    }
-	    result.add(new BooleanType(all).noExtensions());
-	  }
-	  return result;
-	}
-  
-	private List<Base> funcAnyFalse(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
-	  List<Base> result = new ArrayList<Base>();
-	  if (exp.getParameters().size() == 1) {
-	    boolean any = false;
-	    List<Base> pc = new ArrayList<Base>();
-	    for (Base item : focus) {
-	      pc.clear();
-	      pc.add(item);
-	      List<Base> res = execute(context, pc, exp.getParameters().get(0), true);
-	      Equality v = asBool(res, exp);
-        if (v == Equality.False) {
-	        any = true;
-	        break;
-	      }
-	    }
-	    result.add(new BooleanType(any).noExtensions());
-	  } else {
-	    boolean any = false;
-	    for (Base item : focus) {
-	       if (!canConvertToBoolean(item)) {
-	          throw new FHIRException("Unable to convert '"+convertToString(item)+"' to a boolean");
-	        }
+          all = false;
+          break;
+        }
+      }
+      result.add(new BooleanType(all).noExtensions());
+    } else { 
+      boolean all = true;
+      for (Base item : focus) {
+        if (!canConvertToBoolean(item)) {
+          throw new FHIRException("Unable to convert '"+convertToString(item)+"' to a boolean");
+        }
 
-	      Equality v = asBool(item, true);
+        Equality v = asBool(item, true);
+        if (v != Equality.False) {
+          all = false;
+          break;
+        }
+      }
+      result.add(new BooleanType(all).noExtensions());
+    }
+    return result;
+  }
+
+  private List<Base> funcAnyFalse(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
+    List<Base> result = new ArrayList<Base>();
+    if (exp.getParameters().size() == 1) {
+      boolean any = false;
+      List<Base> pc = new ArrayList<Base>();
+      for (Base item : focus) {
+        pc.clear();
+        pc.add(item);
+        List<Base> res = execute(context, pc, exp.getParameters().get(0), true);
+        Equality v = asBool(res, exp);
         if (v == Equality.False) {
-	        any = true;
-	        break;
-	      }
-	    }
-	    result.add(new BooleanType(any).noExtensions());
-	  }
-	  return result;
-	}
-  
-	private List<Base> funcAllTrue(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
-	  List<Base> result = new ArrayList<Base>();
-	  if (exp.getParameters().size() == 1) {
-	    boolean all = true;
-	    List<Base> pc = new ArrayList<Base>();
-	    for (Base item : focus) {
-	      pc.clear();
-	      pc.add(item);
-	      List<Base> res = execute(context, pc, exp.getParameters().get(0), true);
-	      Equality v = asBool(res, exp);
+          any = true;
+          break;
+        }
+      }
+      result.add(new BooleanType(any).noExtensions());
+    } else {
+      boolean any = false;
+      for (Base item : focus) {
+        if (!canConvertToBoolean(item)) {
+          throw new FHIRException("Unable to convert '"+convertToString(item)+"' to a boolean");
+        }
+
+        Equality v = asBool(item, true);
+        if (v == Equality.False) {
+          any = true;
+          break;
+        }
+      }
+      result.add(new BooleanType(any).noExtensions());
+    }
+    return result;
+  }
+
+  private List<Base> funcAllTrue(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
+    List<Base> result = new ArrayList<Base>();
+    if (exp.getParameters().size() == 1) {
+      boolean all = true;
+      List<Base> pc = new ArrayList<Base>();
+      for (Base item : focus) {
+        pc.clear();
+        pc.add(item);
+        List<Base> res = execute(context, pc, exp.getParameters().get(0), true);
+        Equality v = asBool(res, exp);
         if (v != Equality.True) {
-	        all = false;
-	        break;
-	      }
-	    }
-	    result.add(new BooleanType(all).noExtensions());
-	  } else { 
-	    boolean all = true;
-	    for (Base item : focus) {
-	      if (!canConvertToBoolean(item)) {
-	        throw new FHIRException("Unable to convert '"+convertToString(item)+"' to a boolean");
-	      }
-	      Equality v = asBool(item, true);
-	      if (v != Equality.True) {
-	        all = false;
-	        break;
-	      }
-	    }
-	    result.add(new BooleanType(all).noExtensions());
-	  }
-	  return result;
-	}
+          all = false;
+          break;
+        }
+      }
+      result.add(new BooleanType(all).noExtensions());
+    } else { 
+      boolean all = true;
+      for (Base item : focus) {
+        if (!canConvertToBoolean(item)) {
+          throw new FHIRException("Unable to convert '"+convertToString(item)+"' to a boolean");
+        }
+        Equality v = asBool(item, true);
+        if (v != Equality.True) {
+          all = false;
+          break;
+        }
+      }
+      result.add(new BooleanType(all).noExtensions());
+    }
+    return result;
+  }
 
-	private List<Base> funcAnyTrue(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
-	  List<Base> result = new ArrayList<Base>();
-	  if (exp.getParameters().size() == 1) {
-	    boolean any = false;
-	    List<Base> pc = new ArrayList<Base>();
-	    for (Base item : focus) {
-	      pc.clear();
-	      pc.add(item);
-	      List<Base> res = execute(context, pc, exp.getParameters().get(0), true);
-	      Equality v = asBool(res, exp);
+  private List<Base> funcAnyTrue(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
+    List<Base> result = new ArrayList<Base>();
+    if (exp.getParameters().size() == 1) {
+      boolean any = false;
+      List<Base> pc = new ArrayList<Base>();
+      for (Base item : focus) {
+        pc.clear();
+        pc.add(item);
+        List<Base> res = execute(context, pc, exp.getParameters().get(0), true);
+        Equality v = asBool(res, exp);
         if (v == Equality.True) {
-	        any = true;
-	        break;
-	      }
-	    }
-	    result.add(new BooleanType(any).noExtensions());
-	  } else {
-	    boolean any = false;
+          any = true;
+          break;
+        }
+      }
+      result.add(new BooleanType(any).noExtensions());
+    } else {
+      boolean any = false;
       for (Base item : focus) {
         if (!canConvertToBoolean(item)) {
           throw new FHIRException("Unable to convert '"+convertToString(item)+"' to a boolean");
@@ -4885,16 +4918,16 @@ public class FHIRPathEngine {
 
         Equality v = asBool(item, true);
         if (v == Equality.True) {
-	          any = true;
-	          break;
-	        }
+          any = true;
+          break;
+        }
       }
       result.add(new BooleanType(any).noExtensions());
-	  }
-	  return result;
-	}
+    }
+    return result;
+  }
 
-	private boolean canConvertToBoolean(Base item) {
+  private boolean canConvertToBoolean(Base item) {
     return (item.isBooleanPrimitive());
   }
 
@@ -4944,7 +4977,7 @@ public class FHIRPathEngine {
     return result;
   }
 
-	private List<Base> funcMatches(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
+  private List<Base> funcMatches(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
     List<Base> swb = execute(context, focus, exp.getParameters().get(0), true);
     String sw = convertToString(swb);
@@ -4953,15 +4986,15 @@ public class FHIRPathEngine {
       //
     } else if (focus.size() == 1 && !Utilities.noString(sw)) {
       if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
-      String st = convertToString(focus.get(0));
-      if (Utilities.noString(st)) {
-        result.add(new BooleanType(false).noExtensions());
-      } else {
-        Pattern p = Pattern.compile("(?s)" + sw);
-        Matcher m = p.matcher(st);
-        boolean ok = m.find();
-        result.add(new BooleanType(ok).noExtensions());
-      }
+        String st = convertToString(focus.get(0));
+        if (Utilities.noString(st)) {
+          result.add(new BooleanType(false).noExtensions());
+        } else {
+          Pattern p = Pattern.compile("(?s)" + sw);
+          Matcher m = p.matcher(st);
+          boolean ok = m.find();
+          result.add(new BooleanType(ok).noExtensions());
+        }
       }
     } else {
       result.add(new BooleanType(false).noExtensions());
@@ -4975,15 +5008,15 @@ public class FHIRPathEngine {
 
     if (focus.size() == 1 && !Utilities.noString(sw)) {
       if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
-      String st = convertToString(focus.get(0));
-      if (Utilities.noString(st)) {
-        result.add(new BooleanType(false).noExtensions());
-      } else {
-        Pattern p = Pattern.compile("(?s)" + sw);
-        Matcher m = p.matcher(st);
-        boolean ok = m.matches();
-        result.add(new BooleanType(ok).noExtensions());
-      }
+        String st = convertToString(focus.get(0));
+        if (Utilities.noString(st)) {
+          result.add(new BooleanType(false).noExtensions());
+        } else {
+          Pattern p = Pattern.compile("(?s)" + sw);
+          Matcher m = p.matcher(st);
+          boolean ok = m.matches();
+          result.add(new BooleanType(ok).noExtensions());
+        }
       }
     } else {
       result.add(new BooleanType(false).noExtensions());
@@ -4991,7 +5024,7 @@ public class FHIRPathEngine {
     return result;
   }
 
-	private List<Base> funcContains(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
+  private List<Base> funcContains(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
     List<Base> swb = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String sw = convertToString(swb);
@@ -5039,7 +5072,7 @@ public class FHIRPathEngine {
     return result;
   }
 
-	private List<Base> funcStartsWith(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
+  private List<Base> funcStartsWith(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
     List<Base> swb = execute(context, focus, exp.getParameters().get(0), true);
     String sw = convertToString(swb);
@@ -5093,10 +5126,10 @@ public class FHIRPathEngine {
     }
     return result;
   }
-  
+
   private List<Base> funcIndexOf(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    
+
     List<Base> swb = execute(context, focus, exp.getParameters().get(0), true);
     String sw = convertToString(swb);
     if (focus.size() == 0) {
@@ -5116,7 +5149,7 @@ public class FHIRPathEngine {
     return result;
   }
 
-	private List<Base> funcSubstring(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
+  private List<Base> funcSubstring(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
     List<Base> n1 = execute(context, focus, exp.getParameters().get(0), true);
     int i1 = Integer.parseInt(n1.get(0).primitiveValue());
@@ -5389,7 +5422,7 @@ public class FHIRPathEngine {
   }
 
 
-	private List<Base> funcWhere(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
+  private List<Base> funcWhere(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
     List<Base> pc = new ArrayList<Base>();
     for (Base item : focus) {
@@ -5417,7 +5450,7 @@ public class FHIRPathEngine {
   }
 
 
-	private List<Base> funcItem(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
+  private List<Base> funcItem(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
     String s = convertToString(execute(context, focus, exp.getParameters().get(0), true));
     if (Utilities.isInteger(s) && Integer.parseInt(s) < focus.size()) {
@@ -5428,7 +5461,7 @@ public class FHIRPathEngine {
 
   private List<Base> funcEmpty(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     List<Base> result = new ArrayList<Base>();
-		result.add(new BooleanType(ElementUtil.isEmpty(focus)).noExtensions());
+    result.add(new BooleanType(ElementUtil.isEmpty(focus)).noExtensions());
     return result;
   }
 
@@ -5502,10 +5535,11 @@ public class FHIRPathEngine {
             if (dt == null) {
               throw makeException(expr, I18nConstants.FHIRPATH_NO_TYPE, ProfileUtilities.sdNs(t.getCode(), worker.getOverrideVersionNs()), "getChildTypesByName");
             }
-            sdl.add(dt);
+            addTypeAndDescendents(sdl, dt, worker.allStructures());
+            // also add any descendant types
           }
       } else {
-        sdl.add(sd);
+        addTypeAndDescendents(sdl, sd, worker.allStructures());
         if (type.contains("#")) {
           tail = type.substring(type.indexOf("#")+1);
           tail = tail.substring(tail.indexOf("."));
@@ -5595,6 +5629,15 @@ public class FHIRPathEngine {
     }
   }
 
+  private void addTypeAndDescendents(List<StructureDefinition> sdl, StructureDefinition dt, List<StructureDefinition> types) {
+    sdl.add(dt);
+    for (StructureDefinition sd : types) {
+      if (sd.hasBaseDefinition() && sd.getBaseDefinition().equals(dt.getUrl()) && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+        addTypeAndDescendents(sdl, sd, types);
+      }
+    }  
+  }
+
   private void getClassInfoChildTypesByName(String name, TypeDetails result) {
     if (name.equals("namespace")) {
       result.addType(TypeDetails.FP_String);
@@ -5657,7 +5700,6 @@ public class FHIRPathEngine {
   private boolean isAbstractType(List<TypeRefComponent> list) {
     return list.size() != 1 ? true : Utilities.existsInList(list.get(0).getCode(), "Element", "BackboneElement", "Resource", "DomainResource");
   }
-
 
   private boolean hasType(ElementDefinition ed, String s) {
     for (TypeRefComponent t : ed.getType()) {
@@ -5768,7 +5810,7 @@ public class FHIRPathEngine {
           if (t.getPath().endsWith(".extension") && t.hasSliceName()) {
             System.out.println("t: "+t.getId());
             StructureDefinition exsd = (t.getType() == null || t.getType().isEmpty() || t.getType().get(0).getProfile().isEmpty()) ?
-              null : worker.fetchResource(StructureDefinition.class, t.getType().get(0).getProfile().get(0).getValue());
+                null : worker.fetchResource(StructureDefinition.class, t.getType().get(0).getProfile().get(0).getValue());
             while (exsd != null && !exsd.getBaseDefinition().equals("http://hl7.org/fhir/StructureDefinition/Extension")) {
               exsd = worker.fetchResource(StructureDefinition.class, exsd.getBaseDefinition());
             }
@@ -5828,8 +5870,8 @@ public class FHIRPathEngine {
         next = next.getInner();
       }
       if (next == null) {
-      return focus;
-    } else {
+        return focus;
+      } else {
         return evaluateDefinition(next, sd, focus, profile, dontWalkIntoReferences);
       }
     }
@@ -5893,7 +5935,7 @@ public class FHIRPathEngine {
       throw makeException(expr, I18nConstants.FHIRPATH_UNABLE_BOOLEAN, convertToString(items));
     }
   }
-  
+
   private Equality asBoolFromInt(String s) {
     try {
       int i = Integer.parseInt(s);
@@ -5954,7 +5996,7 @@ public class FHIRPathEngine {
     } 
     return Equality.Null;
   }
-          
+
   private Equality boolToTriState(boolean b) {
     return b ? Equality.True : Equality.False;
   }
@@ -5976,6 +6018,6 @@ public class FHIRPathEngine {
   public void setAllowPolymorphicNames(boolean allowPolymorphicNames) {
     this.allowPolymorphicNames = allowPolymorphicNames;
   }
-  
-  
+
+
 }
