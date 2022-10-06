@@ -7,14 +7,9 @@ import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContextType;
 import org.w3c.dom.Element;
 
 public class Resolver {
-
-  public enum ResourceContextType {
-    PARAMETERS, BUNDLE
-  }
 
   public interface IReferenceResolver {
     ResourceWithReference resolve(RenderingContext context, String url);
@@ -24,27 +19,24 @@ public class Resolver {
   }
 
   public static class ResourceContext {
-    private ResourceContextType type;
-    private Resource containerResource;
-    private org.hl7.fhir.r5.elementmodel.Element containerElement;
+    private ResourceContext container;
 
-    DomainResource resourceResource;
-    org.hl7.fhir.r5.elementmodel.Element resourceElement;
+    Resource resource;
+    org.hl7.fhir.r5.elementmodel.Element element;
 
-    public ResourceContext(ResourceContextType type, Resource bundle, DomainResource dr) {
+    public ResourceContext(ResourceContext container, Resource dr) {
       super();
-      this.type = type;
-      this.containerResource = bundle;
-      this.resourceResource = dr;
+      this.container = container;
+      this.resource = dr;
     }
 
-    public ResourceContext(ResourceContextType type, org.hl7.fhir.r5.elementmodel.Element bundle, org.hl7.fhir.r5.elementmodel.Element dr) {
+    public ResourceContext(ResourceContext container, org.hl7.fhir.r5.elementmodel.Element dr) {
       super();
-      this.type = type;
-      this.containerElement = bundle;
-      this.resourceElement = dr;
+      this.container = container;
+      this.element = dr;
     }
 
+    
 //    public ResourceContext(Object bundle, Element doc) {
 //      // TODO Auto-generated constructor stub
 //    }
@@ -54,22 +46,45 @@ public class Resolver {
 //    }
 
 
+    public ResourceContext(ResourceContext container, ResourceWrapper rw) {
+      super();
+      this.container = container;
+      // todo: howto do this better?
+      
+      if (rw instanceof DirectWrappers.ResourceWrapperDirect) {
+        this.resource = ((DirectWrappers.ResourceWrapperDirect) rw).getResource();
+      } else if (rw instanceof ElementWrappers.ResourceWrapperMetaElement) {
+        this.element = ((ElementWrappers.ResourceWrapperMetaElement) rw).getElement();
+      } else {
+        throw new Error("Not supported yet");
+      }
+    }
+
+    public ResourceContext getContainer() {
+      return container;
+    }
+
+    public void setContainer(ResourceContext container) {
+      this.container = container;
+    }
+
     //    public org.hl7.fhir.r5.elementmodel.Element getBundleElement() {
 //      return containerElement;
 //    }
 //
-    public DomainResource getResourceResource() {
-      return resourceResource;
+    public Resource getResource() {
+      return resource;
     }
 
-    public org.hl7.fhir.r5.elementmodel.Element getResourceElement() {
-      return resourceElement;
+    public org.hl7.fhir.r5.elementmodel.Element getElement() {
+      return element;
     }
 
     public BundleEntryComponent resolve(String value) {
       if (value.startsWith("#")) {
-        if (resourceResource != null) {
-          for (Resource r : resourceResource.getContained()) {
+        if (resource instanceof DomainResource) {
+          DomainResource dr = (DomainResource) resource;
+          for (Resource r : dr.getContained()) {
             if (r.getId().equals(value.substring(1))) {
               BundleEntryComponent be = new BundleEntryComponent();
               be.setResource(r);
@@ -79,44 +94,45 @@ public class Resolver {
         }
         return null;
       }
-      if (type == ResourceContextType.BUNDLE) {
-        if (containerResource != null) {
-          for (BundleEntryComponent be : ((Bundle) containerResource).getEntry()) {
-            if (be.getFullUrl().equals(value))
-              return be;
-            if (value.equals(be.getResource().fhirType()+"/"+be.getResource().getId()))
-              return be;
+      
+      if (resource instanceof Bundle) {
+        Bundle b = (Bundle) resource;
+        for (BundleEntryComponent be : b.getEntry()) {
+          if (be.getFullUrl().equals(value))
+            return be;
+          if (value.equals(be.getResource().fhirType()+"/"+be.getResource().getId()))
+            return be;
+        }
+      } 
+
+      if (resource instanceof Parameters) {
+        Parameters pp = (Parameters) resource;
+        for (ParametersParameterComponent p : pp.getParameter()) {
+          if (p.getResource() != null && value.equals(p.getResource().fhirType()+"/"+p.getResource().getId())) {
+            BundleEntryComponent be = new BundleEntryComponent();
+            be.setResource(p.getResource());
+            return be;
+
           }
-        } 
-      }
-      if (type == ResourceContextType.PARAMETERS) {
-        if (containerResource != null) {
-          for (ParametersParameterComponent p : ((Parameters) containerResource).getParameter()) {
-            if (p.getResource() != null && value.equals(p.getResource().fhirType()+"/"+p.getResource().getId())) {
-              BundleEntryComponent be = new BundleEntryComponent();
-              be.setResource(p.getResource());
-              return be;
-              
-            }
-          }
-        } 
-      }
-      return null;
+        }
+      } 
+
+      return container != null ? container.resolve(value) : null;
     }
 
     public org.hl7.fhir.r5.elementmodel.Element resolveElement(String value, String version) {
       if (value.startsWith("#")) {
-        if (resourceElement != null) {
-          for (org.hl7.fhir.r5.elementmodel.Element r : resourceElement.getChildrenByName("contained")) {
+        if (element != null) {
+          for (org.hl7.fhir.r5.elementmodel.Element r : element.getChildrenByName("contained")) {
             if (r.getChildValue("id").equals(value.substring(1)))
               return r;
           }          
         }
         return null;
       }
-      if (type == ResourceContextType.BUNDLE) {
-        if (containerElement != null) {
-          for (org.hl7.fhir.r5.elementmodel.Element be : containerElement.getChildren("entry")) {
+      if (element != null) {
+        if (element.fhirType().equals("Bundle")) {
+          for (org.hl7.fhir.r5.elementmodel.Element be : element.getChildren("entry")) {
             org.hl7.fhir.r5.elementmodel.Element res = be.getNamedChild("resource");
             if (res != null) { 
               if (value.equals(be.getChildValue("fullUrl"))) {
@@ -132,10 +148,8 @@ public class Resolver {
             }
           }
         }
-      }
-      if (type == ResourceContextType.PARAMETERS) {
-        if (containerElement != null) {
-          for (org.hl7.fhir.r5.elementmodel.Element p : containerElement.getChildren("parameter")) {
+        if (element.fhirType().equals("Parameters")) {
+          for (org.hl7.fhir.r5.elementmodel.Element p : element.getChildren("parameter")) {
             org.hl7.fhir.r5.elementmodel.Element res = p.getNamedChild("resource");
             if (res != null && value.equals(res.fhirType()+"/"+res.getChildValue("id"))) {
               if (checkVersion(version, res)) {
@@ -145,7 +159,7 @@ public class Resolver {
           }
         }
       }
-      return null;
+      return container != null ? container.resolveElement(value, version) : null;
     }
 
     private boolean checkVersion(String version, org.hl7.fhir.r5.elementmodel.Element res) {
