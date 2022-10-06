@@ -61,6 +61,15 @@ public abstract class ResourceRenderer extends DataRenderer {
     this.rcontext = rcontext;
   }
 
+  public ResourceContext getRcontext() {
+    return rcontext;
+  }
+
+  public ResourceRenderer setRcontext(ResourceContext rcontext) {
+    this.rcontext = rcontext;
+    return this;
+  }
+
   public XhtmlNode build(Resource dr) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
     render(x, dr);
@@ -324,7 +333,11 @@ public abstract class ResourceRenderer extends DataRenderer {
     if (rcontext != null) {
       BundleEntryComponent bundleResource = rcontext.resolve(url);
       if (bundleResource != null) {
-        String bundleUrl = "#" + bundleResource.getResource().getResourceType().name() + "_" + bundleResource.getResource().getId(); 
+        String id = bundleResource.getResource().getId();
+        if (id == null) {
+          id = makeIdFromBundleEntry(bundleResource.getFullUrl());
+        }
+        String bundleUrl = "#" + bundleResource.getResource().getResourceType().name() + "_" + id; 
         return new ResourceWithReference(bundleUrl, new ResourceWrapperDirect(this.context, bundleResource.getResource()));
       }
       org.hl7.fhir.r5.elementmodel.Element bundleElement = rcontext.resolveElement(url, version);
@@ -350,6 +363,16 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
   
   
+  protected String makeIdFromBundleEntry(String url) {
+    if (url == null) {
+      return null;
+    }
+    if (url.startsWith("urn:uuid:")) {
+      return url.substring(9).toLowerCase();
+    }
+    return fullUrlToAnchor(url);    
+  }
+
   private String fullUrlToAnchor(String url) {
     return url.replace(":", "").replace("/", "_");
   }
