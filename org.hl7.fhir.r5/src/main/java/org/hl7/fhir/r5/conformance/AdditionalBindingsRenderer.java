@@ -271,8 +271,8 @@ public class AdditionalBindingsRenderer {
       }
       if (doco) {
         if (binding.doco != null) {
-          String d = md.processMarkdown("Binding.description", fullDoco ? binding.doco : binding.docoShort);
-          String oldD = binding.compare==null ? null : md.processMarkdown("Binding.description.compare", fullDoco ? binding.compare.doco : binding.compare.docoShort);
+          String d = fullDoco ? md.processMarkdown("Binding.description", binding.doco) : binding.docoShort;
+          String oldD = binding.compare==null ? null : fullDoco ? md.processMarkdown("Binding.description.compare", binding.compare.doco) : binding.compare.docoShort;
           tr.td().style("font-size: 11px").innerHTML(compareHtml(d, oldD));
         } else {
           tr.td().style("font-size: 11px");
