@@ -2,6 +2,7 @@ package org.hl7.fhir.validation;
 
 import lombok.Getter;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.ImplementationGuide;
@@ -62,7 +63,7 @@ public class Scanner {
     List<String> refs = new ArrayList<>();
     ValidatorUtils.parseSources(sources, refs, getContext());
 
-    List<ScanOutputItem> res = new ArrayList();
+    List<ScanOutputItem> res = new ArrayList<>();
 
     for (String ref : refs) {
       Content cnt = getIgLoader().loadContent(ref, "validate", false);
@@ -94,7 +95,7 @@ public class Scanner {
             }
           }
           Set<String> done = new HashSet<>();
-          for (StructureDefinition sd : getContext().allStructures()) {
+          for (StructureDefinition sd : new ContextUtilities(getContext()).allStructures()) {
             if (!done.contains(sd.getUrl())) {
               done.add(sd.getUrl());
               if (sd.getUrl().startsWith(canonical) && rt.equals(sd.getType())) {

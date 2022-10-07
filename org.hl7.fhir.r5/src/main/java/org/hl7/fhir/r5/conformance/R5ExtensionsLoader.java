@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.formats.JsonParser;
@@ -56,7 +57,7 @@ public class R5ExtensionsLoader {
     } 
     PackageVersion pd = new PackageVersion(pck.name(), pck.version(), pck.dateAsDate());
     count = 0;
-    List<String> typeNames = context.getTypeNames();
+    List<String> typeNames = new ContextUtilities(context).getTypeNames();
     for (StructureDefinition sd : extensions) {    
       if (sd.getType().equals("Extension") && sd.getDerivation() == TypeDerivationRule.CONSTRAINT &&
           !context.hasResource(StructureDefinition.class, sd.getUrl())) {

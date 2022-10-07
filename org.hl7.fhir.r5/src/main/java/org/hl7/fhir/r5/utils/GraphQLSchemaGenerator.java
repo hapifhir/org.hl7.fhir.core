@@ -36,6 +36,7 @@ package org.hl7.fhir.r5.utils;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
@@ -96,7 +97,7 @@ public class GraphQLSchemaGenerator {
     Map<String, StructureDefinition> pl = new HashMap<>();
     Map<String, StructureDefinition> tl = new HashMap<>();
     Map<String, String> existingTypeNames = new HashMap<>();
-    for (StructureDefinition sd : context.allStructures()) {
+    for (StructureDefinition sd : new ContextUtilities(context).allStructures()) {
       if (sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
         pl.put(sd.getName(), sd);
       }

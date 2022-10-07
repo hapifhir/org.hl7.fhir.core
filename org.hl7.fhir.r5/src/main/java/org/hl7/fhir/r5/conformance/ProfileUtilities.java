@@ -3309,7 +3309,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           String url = u.getValue();
           boolean tgtOk = !td.hasTargetProfile() || td.hasTargetProfile(url);
           while (url != null && !tgtOk) {
-            StructureDefinition sd = context.fetchRawProfile(url);
+            StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
             if (sd == null) {
               if (messages != null) {
                 messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, purl+"#"+derived.getPath(), "Cannot check whether the target profile "+url+" is valid constraint on the base because it is not known", IssueSeverity.WARNING));
@@ -4396,7 +4396,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       Piece p = gc.addText(ProfileUtilities.CONSTRAINT_CHAR);
       p.setHint(translate("sd.table", "This element has or is affected by some invariants ("+listConstraintsAndConditions(element)+")"));
       p.addStyle(CONSTRAINT_STYLE);
-      p.setReference(context.getSpecUrl()+"conformance-rules.html#constraints");
+      p.setReference(VersionUtilities.getSpecUrl(context.getVersion())+"conformance-rules.html#constraints");
     }
 
     ExtensionContext extDefn = null;
@@ -5321,7 +5321,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     if (value instanceof PrimitiveType)
       return ((PrimitiveType) value).asStringValue();
 
-    IParser json = context.newJsonParser();
+    IParser json = new JsonParser();
     return json.composeString(value, null);
   }
 
