@@ -39,6 +39,7 @@ import java.util.List;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
@@ -156,7 +157,7 @@ public abstract class ParserBase {
       logError(line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS_CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAME), IssueSeverity.FATAL);
       return null;
   	}
-	  for (StructureDefinition sd : context.allStructures()) {
+	  for (StructureDefinition sd : new ContextUtilities(context).allStructures()) {
 	    if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/de-")) {
 	      if(name.equals(sd.getType()) && (ns == null || ns.equals(FormatUtilities.FHIR_NS)) && !ToolingExtensions.hasExtension(sd, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace"))
 	        return sd;
@@ -175,15 +176,15 @@ public abstract class ParserBase {
       return null;
   	}
     // first pass: only look at base definitions
-	  for (StructureDefinition sd : context.getStructures()) {
+	  for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
 	    if (sd.getUrl().equals("http://hl7.org/fhir/StructureDefinition/"+name)) {
-	      context.generateSnapshot(sd); 
+	      new ContextUtilities(context).generateSnapshot(sd); 
 	      return sd;
 	    }
 	  }
-    for (StructureDefinition sd : context.getStructures()) {
+    for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
       if (name.equals(sd.getType()) && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
-        context.generateSnapshot(sd); 
+        new ContextUtilities(context).generateSnapshot(sd); 
         return sd;
       }
     }

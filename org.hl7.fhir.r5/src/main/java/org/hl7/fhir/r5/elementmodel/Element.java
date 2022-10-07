@@ -42,6 +42,7 @@ import java.util.Set;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ElementDefinition;
@@ -486,7 +487,7 @@ public class Element extends Base {
   }
 
   private boolean isDataType(Base v) {
-    return v instanceof DataType &&  property.getContext().getTypeNames().contains(v.fhirType());
+    return v instanceof DataType && new ContextUtilities(property.getContext()).getTypeNames().contains(v.fhirType());
   }
 
   @Override
@@ -845,7 +846,7 @@ public class Element extends Base {
     private List<ElementDefinition> children;
     public ElementSortComparator(Element e, Property property) {
       String tn = e.getType();
-      StructureDefinition sd = property.getContext().fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(tn, property.getContext().getOverrideVersionNs()));
+      StructureDefinition sd = property.getContext().fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(tn, null));
       if (sd != null && !sd.getAbstract())
         children = sd.getSnapshot().getElement();
       else

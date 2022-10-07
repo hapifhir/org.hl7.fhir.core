@@ -6,6 +6,7 @@ import org.hl7.fhir.r5.context.SystemOutLoggingService;
 import org.hl7.fhir.r5.context.TerminologyCache;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.R5ExtensionsLoader;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.context.SimpleWorkerContext.PackageResourceLoader;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -242,13 +243,14 @@ public class ValidationService {
     if (cliContext.getMap() == null)
       throw new Exception("Must provide a map when doing a transform");
     try {
-      List<StructureDefinition> structures = validator.getContext().allStructures();
+      ContextUtilities cu = new ContextUtilities(validator.getContext());
+      List<StructureDefinition> structures =  cu.allStructures();
       for (StructureDefinition sd : structures) {
         if (!sd.hasSnapshot()) {
           if (sd.getKind() != null && sd.getKind() == StructureDefinitionKind.LOGICAL) {
-            validator.getContext().generateSnapshot(sd, true);
+            cu.generateSnapshot(sd, true);
           } else {
-            validator.getContext().generateSnapshot(sd, false);
+            cu.generateSnapshot(sd, false);
           }
         }
       }
@@ -277,13 +279,14 @@ public class ValidationService {
     if (cliContext.getOutput() == null)
       throw new Exception("Must provide an output name when compiling a transform");
     try {
-      List<StructureDefinition> structures = validator.getContext().allStructures();
+      ContextUtilities cu = new ContextUtilities(validator.getContext());
+      List<StructureDefinition> structures = cu.allStructures();
       for (StructureDefinition sd : structures) {
         if (!sd.hasSnapshot()) {
           if (sd.getKind() != null && sd.getKind() == StructureDefinitionKind.LOGICAL) {
-            validator.getContext().generateSnapshot(sd, true);
+            cu.generateSnapshot(sd, true);
           } else {
-            validator.getContext().generateSnapshot(sd, false);
+            cu.generateSnapshot(sd, false);
           }
         }
       }

@@ -56,7 +56,7 @@ public class Resolver {
       } else if (rw instanceof ElementWrappers.ResourceWrapperMetaElement) {
         this.element = ((ElementWrappers.ResourceWrapperMetaElement) rw).getElement();
       } else {
-        throw new Error("Not supported yet");
+        // this is not supported for now... throw new Error("Not supported yet");
       }
     }
 

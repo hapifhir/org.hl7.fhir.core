@@ -15,6 +15,7 @@ import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.ProfileUtilities.UnusedTracker;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser;
+import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.DataType;
@@ -362,7 +363,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
     if (val instanceof PrimitiveType) 
       return "'" + ((PrimitiveType) val).getValueAsString()+"'";
     
-    IParser jp = left ? session.getContextLeft().newJsonParser() : session.getContextRight().newJsonParser();
+    IParser jp = new JsonParser();
     return jp.composeString(val, "value");
   }
   

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.CodeableConcept;
@@ -133,7 +134,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
           li.tx(opt.getValue().primitiveValue());
         } else if (opt.getValue() instanceof Coding) {
           Coding c = (Coding) opt.getValue(); 
-          String link = c.hasSystem() ? context.getWorker().getLinkForUrl(context.getSpecificationLink(), c.getSystem()) : null;
+          String link = c.hasSystem() ? new ContextUtilities(context.getWorker()).getLinkForUrl(context.getSpecificationLink(), c.getSystem()) : null;
           if (link == null) {
             li.tx(c.getSystem()+"#"+c.getCode());
           } else {
