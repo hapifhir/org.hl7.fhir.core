@@ -749,7 +749,7 @@ public class IgLoader {
       else
         throw new FHIRException("Unsupported format for " + fn);
       r = VersionConvertorFactory_30_50.convertResource(res);
-    } else if (fhirVersion.startsWith("4.0") || fhirVersion.startsWith("4.3")) {
+    } else if (fhirVersion.startsWith("4.0")) {
       org.hl7.fhir.r4.model.Resource res;
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
         res = new org.hl7.fhir.r4.formats.XmlParser().parse(new ByteArrayInputStream(content));

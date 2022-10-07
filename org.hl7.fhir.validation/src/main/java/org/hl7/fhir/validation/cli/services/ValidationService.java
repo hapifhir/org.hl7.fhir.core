@@ -219,10 +219,22 @@ public class ValidationService {
   }
 
   public void generateSnapshot(CliContext cliContext, ValidationEngine validator) throws Exception {
-    StructureDefinition r = validator.snapshot(cliContext.getSources().get(0), cliContext.getSv());
-    System.out.println(" ...generated snapshot successfully");
-    if (cliContext.getOutput() != null) {
-      validator.handleOutput(r, cliContext.getOutput(), cliContext.getSv());
+    List<String> sources = cliContext.getSources();
+    if (sources.size() == 1) {
+      StructureDefinition r = validator.snapshot(sources.get(0), cliContext.getSv());
+      System.out.println(" ...generated snapshot successfully");
+      if (cliContext.getOutput() != null) {
+        validator.handleOutput(r, cliContext.getOutput(), cliContext.getSv());
+      }
+    } else {
+      for (int i = 0; i < sources.size(); i++) {
+        StructureDefinition r = validator.snapshot(sources.get(i), cliContext.getSv());
+        System.out.println(" ...generated snapshot [" + i +  "] successfully");
+        if (cliContext.getOutput() != null) {
+          String output = "[" + i.toString() + "]" + cliContext.getOutput();
+          validator.handleOutput(r, output, cliContext.getSv());
+        }
+      }
     }
   }
 
