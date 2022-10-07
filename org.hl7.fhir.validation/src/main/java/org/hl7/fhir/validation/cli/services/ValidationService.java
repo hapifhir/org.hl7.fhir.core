@@ -210,16 +210,16 @@ public class ValidationService {
   }
 
   public void convertSources(CliContext cliContext, ValidationEngine validator) throws Exception {
-    List<String> sources = cliContext.getSources();
-    if (sources.size() == 1) {
-      System.out.println(" ...convert");
-      validator.convert(sources.get(0), cliContext.getOutput());
-    } else {
-      for (int i = 0; i < sources.size(); i++) {
-        if (cliContext.getOutput() != null) {
-          System.out.println(" ...convert [" + i +  "]");
-          String output = "[" + String.valueOf(i) + "]" + cliContext.getOutput();
-          validator.convert(sources.get(i), output);
+    if (cliContext.getOutput() != null) {
+      List<String> sources = cliContext.getSources();
+      if (sources.size() == 1) {
+        System.out.println(" ...convert");
+        validator.convert(sources.get(0), cliContext.getOutput());
+      } else {
+        for (int i = 0; i < sources.size(); i++) {
+            System.out.println(" ...convert [" + i +  "]");
+            String output = "[" + String.valueOf(i) + "]" + cliContext.getOutput();
+            validator.convert(sources.get(i), output);
         }
       }
     }
@@ -231,18 +231,16 @@ public class ValidationService {
   }
 
   public void generateSnapshot(CliContext cliContext, ValidationEngine validator) throws Exception {
-    List<String> sources = cliContext.getSources();
-    if (sources.size() == 1) {
-      StructureDefinition r = validator.snapshot(sources.get(0), cliContext.getSv());
-      System.out.println(" ...generated snapshot successfully");
-      if (cliContext.getOutput() != null) {
+    if (cliContext.getOutput() != null) {
+      List<String> sources = cliContext.getSources();
+      if (sources.size() == 1) {
+        StructureDefinition r = validator.snapshot(sources.get(0), cliContext.getSv());
+        System.out.println(" ...generated snapshot successfully");
         validator.handleOutput(r, cliContext.getOutput(), cliContext.getSv());
-      }
-    } else {
-      for (int i = 0; i < sources.size(); i++) {
-        StructureDefinition r = validator.snapshot(sources.get(i), cliContext.getSv());
-        System.out.println(" ...generated snapshot [" + i +  "] successfully");
-        if (cliContext.getOutput() != null) {
+      } else {
+        for (int i = 0; i < sources.size(); i++) {
+          StructureDefinition r = validator.snapshot(sources.get(i), cliContext.getSv());
+          System.out.println(" ...generated snapshot [" + i +  "] successfully");
           String output = "[" + String.valueOf(i) + "]" + cliContext.getOutput();
           validator.handleOutput(r, output, cliContext.getSv());
         }
