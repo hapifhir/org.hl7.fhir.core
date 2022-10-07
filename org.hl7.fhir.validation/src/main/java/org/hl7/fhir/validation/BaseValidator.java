@@ -36,6 +36,7 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.JsonParser;
@@ -1035,7 +1036,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
           return null;
         case Valid:
           StructureDefinition defn = xverDefn(url);
-          context.generateSnapshot(defn);
+          new ContextUtilities(context).generateSnapshot(defn);
           context.cacheResource(defn);
           return defn;
         default:
@@ -1061,7 +1062,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
         break;
       case Valid:
         StructureDefinition ex = xverDefn(url);
-        context.generateSnapshot(ex);
+        new ContextUtilities(context).generateSnapshot(ex);
         context.cacheResource(ex);
         return ex;
       default:

@@ -12,10 +12,12 @@ import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.IWorkerContext.ICanonicalResourceLocator;
-import org.hl7.fhir.r5.context.IWorkerContext.IPackageLoadingTracker;
 import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
+import org.hl7.fhir.r5.context.IWorkerContextManager;
+import org.hl7.fhir.r5.context.IWorkerContextManager.ICanonicalResourceLocator;
+import org.hl7.fhir.r5.context.IWorkerContextManager.IPackageLoadingTracker;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.context.SystemOutLoggingService;
 import org.hl7.fhir.r5.elementmodel.Element;
@@ -135,7 +137,7 @@ POSSIBILITY OF SUCH DAMAGE.
  * @author Grahame Grieve
  */
 @Accessors(chain = true)
-public class ValidationEngine implements IValidatorResourceFetcher, IValidationPolicyAdvisor, IPackageInstaller, IPackageLoadingTracker {
+public class ValidationEngine implements IValidatorResourceFetcher, IValidationPolicyAdvisor, IPackageInstaller, IWorkerContextManager.IPackageLoadingTracker {
 
   @Getter @Setter private SimpleWorkerContext context;
   @Getter @Setter private Map<String, byte[]> binaries = new HashMap<>();
@@ -151,7 +153,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private boolean debug = false;
   @Getter @Setter private IValidatorResourceFetcher fetcher;
   @Getter @Setter private IValidationPolicyAdvisor policyAdvisor;
-  @Getter @Setter private ICanonicalResourceLocator locator;
+  @Getter @Setter private IWorkerContextManager.ICanonicalResourceLocator locator;
   @Getter @Setter private boolean assumeValidRestReferences;
   @Getter @Setter private boolean noExtensibleBindingMessages;
   @Getter @Setter private boolean noUnicodeBiDiControlChars;
@@ -497,7 +499,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   public StructureMap compile(String mapUri) throws FHIRException, IOException {
-    StructureMap map = context.getTransform(mapUri);
+    StructureMap map = context.fetchResource(StructureMap.class, mapUri);
     return map;
   }
 
@@ -505,7 +507,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     List<Base> outputs = new ArrayList<>();
     StructureMapUtilities scu = new StructureMapUtilities(context, new TransformSupportServices(outputs, mapLog, context));
     org.hl7.fhir.r5.elementmodel.Element src = Manager.parseSingle(context, new ByteArrayInputStream(source), cntType);
-    StructureMap map = context.getTransform(mapUri);
+    StructureMap map = context.fetchResource(StructureMap.class, mapUri);
     if (map == null) throw new Error("Unable to find map " + mapUri + " (Known Maps = " + context.listMapUrls() + ")");
     org.hl7.fhir.r5.elementmodel.Element resource = getTargetResourceFromStructureMap(map);
     scu.transform(null, src, map, resource);
@@ -524,7 +526,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     if (targetTypeUrl == null) throw new FHIRException("Unable to determine resource URL for target type");
 
     StructureDefinition structureDefinition = null;
-    for (StructureDefinition sd : this.context.getStructures()) {
+    for (StructureDefinition sd : this.context.fetchResourcesByType(StructureDefinition.class)) {
       if (sd.getUrl().equalsIgnoreCase(targetTypeUrl)) {
         structureDefinition = sd;
         break;
@@ -639,7 +641,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   public void prepare() {
-    for (StructureDefinition sd : context.allStructures()) {
+    for (StructureDefinition sd : new ContextUtilities(context).allStructures()) {
       try {
         makeSnapshot(sd);
       } catch (Exception e) {
@@ -757,7 +759,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     String url = getMapId(type, targetVer);
     List<Base> outputs = new ArrayList<Base>();
     StructureMapUtilities scu = new StructureMapUtilities(context, new TransformSupportServices(outputs, mapLog, context));
-    StructureMap map = context.getTransform(url);
+    StructureMap map = context.fetchResource(StructureMap.class, url);
     if (map == null)
       throw new Error("Unable to find map " + url + " (Known Maps = " + context.listMapUrls() + ")");
     org.hl7.fhir.r5.elementmodel.Element resource = getTargetResourceFromStructureMap(map);

@@ -4,7 +4,8 @@ import com.google.gson.JsonObject;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.IWorkerContext.ICanonicalResourceLocator;
+import org.hl7.fhir.r5.context.IWorkerContextManager;
+import org.hl7.fhir.r5.context.IWorkerContextManager.ICanonicalResourceLocator;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.ElementDefinition;
@@ -36,7 +37,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IValidationPolicyAdvisor, ICanonicalResourceLocator {
+public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IValidationPolicyAdvisor, IWorkerContextManager.ICanonicalResourceLocator {
 
   List<String> mappingsUris = new ArrayList<>();
   private FilesystemPackageCacheManager pcm;

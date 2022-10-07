@@ -265,7 +265,7 @@ public class Property {
   		return false;
   	StructureDefinition sd = context.fetchResource(StructureDefinition.class, structure.getUrl().substring(0, structure.getUrl().lastIndexOf("/")+1)+getType(name));
   	if (sd == null)
-  	  sd = context.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(getType(name), context.getOverrideVersionNs()));
+  	  sd = context.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(getType(name), null));
     if (sd != null && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE)
       return true;
   	if (sd == null || sd.getKind() != StructureDefinitionKind.LOGICAL)
@@ -348,7 +348,7 @@ public class Property {
               assert aType.getProfile().size() == 1; 
               url = aType.getProfile().get(0).getValue();
             } else {
-              url = ProfileUtilities.sdNs(t, context.getOverrideVersionNs());
+              url = ProfileUtilities.sdNs(t, null);
             }
             break;
           }

@@ -15,6 +15,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.model.Address;
 import org.hl7.fhir.r5.model.Annotation;
@@ -946,7 +947,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
               }
               if (xverManager.matchingUrl(url) && xverManager.status(url) == XVerExtensionStatus.Valid) {
                 ed = xverManager.makeDefinition(url);
-                getContext().getWorker().generateSnapshot(ed);
+                new ContextUtilities(getContext().getWorker()).generateSnapshot(ed);
                 getContext().getWorker().cacheResource(ed);
               }
             }
