@@ -231,7 +231,7 @@ public class ValidationService {
         StructureDefinition r = validator.snapshot(sources.get(i), cliContext.getSv());
         System.out.println(" ...generated snapshot [" + i +  "] successfully");
         if (cliContext.getOutput() != null) {
-          String output = "[" + i.toString() + "]" + cliContext.getOutput();
+          String output = "[" + String.valueOf(i) + "]" + cliContext.getOutput();
           validator.handleOutput(r, output, cliContext.getSv());
         }
       }
