@@ -54,8 +54,8 @@ import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
-import org.hl7.fhir.r5.context.IWorkerContext.IPackageLoadingTracker;
 import org.hl7.fhir.r5.context.IWorkerContext.ILoggingService.LogCategory;
+import org.hl7.fhir.r5.context.IWorkerContextManager.IPackageLoadingTracker;
 import org.hl7.fhir.r5.context.TerminologyCache.CacheToken;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.Bundle;
@@ -70,6 +70,7 @@ import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.Constants;
+import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
@@ -246,7 +247,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   protected TerminologyCache txCache;
   protected TimeTracker clock;
   private boolean tlogging = true;
-  private ICanonicalResourceLocator locator;
+  private IWorkerContextManager.ICanonicalResourceLocator locator;
   protected String userAgent;
 
   protected BaseWorkerContext() throws FileNotFoundException, IOException, FHIRException {
@@ -1297,20 +1298,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     txCache.clear();
   }
 
-  
-  @Override
-  public List<ConceptMap> findMapsForSource(String url) throws FHIRException {
-    synchronized (lock) {
-      List<ConceptMap> res = new ArrayList<ConceptMap>();
-      for (ConceptMap map : maps.getList()) {
-        if (((Reference) map.getSourceScope()).getReference().equals(url)) { 
-          res.add(map);
-        } 
-      } 
-      return res;
-    }
-  }
-
   public boolean isCanRunWithoutTerminology() {
     return canRunWithoutTerminology;
   }
@@ -1383,7 +1370,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
    
     if (class_ == StructureDefinition.class) {
-      uri = ProfileUtilities.sdNs(uri, getOverrideVersionNs());
+      uri = ProfileUtilities.sdNs(uri, null);
     }
     synchronized (lock) {
 
@@ -1509,7 +1496,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (uri == null) {
       return null;
     }
-    uri = ProfileUtilities.sdNs(uri, getOverrideVersionNs());
+    uri = ProfileUtilities.sdNs(uri, null);
 
     synchronized (lock) {
 
@@ -1571,7 +1558,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
    
     if ("StructureDefinition".equals(cls)) {
-      uri = ProfileUtilities.sdNs(uri, getOverrideVersionNs());
+      uri = ProfileUtilities.sdNs(uri, null);
     }
     synchronized (lock) {
 
@@ -1693,11 +1680,65 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       throw new FHIRException(formatMessage(I18nConstants.NOT_DONE_YET_CANT_FETCH_, uri));
     }
   }
+  
+  @SuppressWarnings("unchecked")
+  public <T extends Resource> List<T> fetchResourcesByType(Class<T> class_) {
+
+    List<T> res = new ArrayList<>();
+
+    synchronized (lock) {
+
+      if (class_ == Resource.class || class_ == DomainResource.class || class_ == CanonicalResource.class || class_ == null) {
+        res.addAll((List<T>) structures.getList());
+        res.addAll((List<T>) guides.getList());
+        res.addAll((List<T>) capstmts.getList());
+        res.addAll((List<T>) measures.getList());
+        res.addAll((List<T>) libraries.getList());
+        res.addAll((List<T>) valueSets.getList());
+        res.addAll((List<T>) codeSystems.getList());
+        res.addAll((List<T>) operations.getList());
+        res.addAll((List<T>) searchParameters.getList());
+        res.addAll((List<T>) plans.getList());
+        res.addAll((List<T>) maps.getList());
+        res.addAll((List<T>) transforms.getList());
+        res.addAll((List<T>) questionnaires.getList());
+        res.addAll((List<T>) systems.getList());
+      } else if (class_ == ImplementationGuide.class) {
+        res.addAll((List<T>) guides.getList());
+      } else if (class_ == CapabilityStatement.class) {
+        res.addAll((List<T>) capstmts.getList());
+      } else if (class_ == Measure.class) {
+        res.addAll((List<T>) measures.getList());
+      } else if (class_ == Library.class) {
+        res.addAll((List<T>) libraries.getList());
+      } else if (class_ == StructureDefinition.class) {
+        res.addAll((List<T>) structures.getList());
+      } else if (class_ == StructureMap.class) {
+        res.addAll((List<T>) transforms.getList());
+      } else if (class_ == ValueSet.class) {
+        res.addAll((List<T>) valueSets.getList());
+      } else if (class_ == CodeSystem.class) {
+        res.addAll((List<T>) codeSystems.getList());
+      } else if (class_ == NamingSystem.class) {
+        res.addAll((List<T>) systems.getList());
+      } else if (class_ == ConceptMap.class) {
+        res.addAll((List<T>) maps.getList());
+      } else if (class_ == PlanDefinition.class) {
+        res.addAll((List<T>) plans.getList());
+      } else if (class_ == OperationDefinition.class) {
+        res.addAll((List<T>) operations.getList());
+      } else if (class_ == Questionnaire.class) {
+        res.addAll((List<T>) questionnaires.getList());
+      } else if (class_ == SearchParameter.class) {
+        res.addAll((List<T>) searchParameters.getList());
+      }
+    }
+    return res;
+  }
 
   private Set<String> notCanonical = new HashSet<String>();
 
-  private String overrideVersionNs;
-  protected IPackageLoadingTracker packageTracker;
+  protected IWorkerContextManager.IPackageLoadingTracker packageTracker;
 
   @Override
   public Resource fetchResourceById(String type, String uri) {
@@ -1905,25 +1946,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
-  @Override
-  public List<CanonicalResource> allConformanceResources() {
-    synchronized (lock) {
-      List<CanonicalResource> result = new ArrayList<CanonicalResource>();
-      structures.listAllM(result);
-      guides.listAllM(result);
-      capstmts.listAllM(result);
-      measures.listAllM(result);
-      libraries.listAllM(result);
-      codeSystems.listAllM(result);
-      valueSets.listAllM(result);
-      maps.listAllM(result);
-      transforms.listAllM(result);
-      plans.listAllM(result);
-      questionnaires.listAllM(result);
-      systems.listAllM(result);
-      return result;
-    }
-  }
   
   public String listSupportedSystems() {
     synchronized (lock) {
@@ -1950,20 +1972,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return m;
   }
   
-  public List<StructureMap> listTransforms() {
-    List<StructureMap> m = new ArrayList<StructureMap>();
-    synchronized (lock) {
-      transforms.listAll(m);    
-    }
-    return m;
-  }
-  
-  public StructureMap getTransform(String code) {
-    synchronized (lock) {
-      return transforms.get(code);
-    }
-  }
-
   public List<StructureDefinition> listStructures() {
     List<StructureDefinition> m = new ArrayList<StructureDefinition>();
     synchronized (lock) {
@@ -1977,63 +1985,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return structures.get(code);
     }
   }
-
-  @Override
-  public String oid2Uri(String oid) {
-    synchronized (lock) {
-      if (oid != null && oid.startsWith("urn:oid:")) {
-        oid = oid.substring(8);
-      }
-      if (oidCache.containsKey(oid)) {
-        return oidCache.get(oid);
-      }
-
-      String uri = OIDUtils.getUriForOid(oid);
-      if (uri != null) {
-        oidCache.put(oid, uri);
-        return uri;
-      }
-      CodeSystem cs = fetchCodeSystem("http://terminology.hl7.org/CodeSystem/v2-tables");
-      if (cs != null) {
-        for (ConceptDefinitionComponent cc : cs.getConcept()) {
-          for (ConceptPropertyComponent cp : cc.getProperty()) {
-            if (Utilities.existsInList(cp.getCode(), "v2-table-oid", "v2-cs-oid") && oid.equals(cp.getValue().primitiveValue())) {
-              for (ConceptPropertyComponent cp2 : cc.getProperty()) {
-                if ("v2-cs-uri".equals(cp2.getCode())) {
-                  oidCache.put(oid, cp2.getValue().primitiveValue());
-                  return cp2.getValue().primitiveValue();                  
-                }
-              }              
-            }
-          }
-        }
-      }
-      for (CodeSystem css : codeSystems.getList()) {
-        if (("urn:oid:"+oid).equals(css.getUrl())) {
-          oidCache.put(oid, css.getUrl());
-          return css.getUrl();
-        }
-        for (Identifier id : css.getIdentifier()) {
-          if ("urn:ietf:rfc:3986".equals(id.getSystem()) && ("urn:oid:"+oid).equals(id.getValue())) {
-            oidCache.put(oid, css.getUrl());
-            return css.getUrl();
-          }
-        }
-      }
-      for (NamingSystem ns : systems.getList()) {
-        if (hasOid(ns, oid)) {
-          uri = getUri(ns);
-          if (uri != null) {
-            oidCache.put(oid, null);
-            return null;
-          }
-        }
-      }
-    }
-    oidCache.put(oid, null);
-    return null;
-  }
-  
 
   private String getUri(NamingSystem ns) {
     for (NamingSystemUniqueIdComponent id : ns.getUniqueId()) {
@@ -2066,16 +2017,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   @Override
-  public String getOverrideVersionNs() {
-    return overrideVersionNs;
-  }
-
-  @Override
-  public void setOverrideVersionNs(String value) {
-    overrideVersionNs = value;
-  }
-
-  @Override
   public ILoggingService getLogger() {
     return logger;
   }
@@ -2105,15 +2046,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     this.ucumService = ucumService;
   }
 
-  @Override
-  public List<StructureDefinition> getStructures() {
-    List<StructureDefinition> res = new ArrayList<>();
-    synchronized (lock) { // tricky, because you need to lock this as well, but it's really not in use yet
-      structures.listAll(res);
-    }
-    return res;
-  }
-  
   public String getLinkForUrl(String corePath, String url) {
     if (url == null) {
       return null;
@@ -2206,11 +2138,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     for (StructureDefinition sd : listStructures()) {
       try {
         if (sd.getSnapshot().isEmpty()) { 
-          generateSnapshot(sd);
+          new ContextUtilities(this).generateSnapshot(sd);
 //          new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "snapshot", tail(sd.getUrl())+".xml")), sd);
         }
       } catch (Exception e) {
-//        System.out.println("Unable to generate snapshot for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
+        System.out.println("Unable to generate snapshot for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
       }
     }  
   }
@@ -2280,25 +2212,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return codeSystemsUsed ;
   }
  
-  public String getSpecUrl() {
-    String v = getVersion();
-    switch (VersionUtilities.getMajMin(v)) {
-    case "1.0" : return "http://hl7.org/fhir/DSTU1";
-    case "1.4" : return "http://hl7.org/fhir/DSTU2";
-    case "3.0" : return "http://hl7.org/fhir/STU3";
-    case "4.0" : return "http://hl7.org/fhir/R4";
-    case "4.5" : return "http://build.fhir.org";
-    case "5.0" : return "http://build.fhir.org";
-    default:
-      return "http://hl7.org/fhir";
-    }
-  }
-
-  public ICanonicalResourceLocator getLocator() {
+  public IWorkerContextManager.ICanonicalResourceLocator getLocator() {
     return locator;
   }
 
-  public void setLocator(ICanonicalResourceLocator locator) {
+  public void setLocator(IWorkerContextManager.ICanonicalResourceLocator locator) {
     this.locator = locator;
   }
 
@@ -2312,31 +2230,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       txClient.setUserAgent(userAgent);
   }
 
-  public List<String> getCanonicalResourceNames() {
-    List<String> names = new ArrayList<>();
-    for (StructureDefinition sd : allStructures()) {
-      if (sd.getKind() == StructureDefinitionKind.RESOURCE && !sd.getAbstract() && hasUrlProperty(sd)) {
-        names.add(sd.getType());
-      }
-    }
-    return names;
-  }
 
-  private boolean hasUrlProperty(StructureDefinition sd) {
-    for (ElementDefinition ed : sd.getSnapshot().getElement()) {
-      if (ed.getPath().equals(sd.getType()+".url")) {
-        return true;
-      }
-    }
-    return false;
-  }
-  
-  public IPackageLoadingTracker getPackageTracker() {
+  public IWorkerContextManager.IPackageLoadingTracker getPackageTracker() {
     return packageTracker;
   }
   
-  public IWorkerContext setPackageTracker(IPackageLoadingTracker packageTracker) {
+  public IWorkerContext setPackageTracker(IWorkerContextManager.IPackageLoadingTracker packageTracker) {
     this.packageTracker = packageTracker;
     return this;
   }
+  
 }
