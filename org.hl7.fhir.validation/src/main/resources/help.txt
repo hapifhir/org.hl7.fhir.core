@@ -173,7 +173,11 @@ must provide a specific parameter:
  -snapshot
 
 -snapshot requires the parameters -defn, -txserver, -source, and -output. ig may
-be used to provide necessary base profiles
+be used to provide necessary base profiles. If the -source maps to more than 1 
+StructureDefinition, e.g. when using a wildcard, multiple -output files with an 
+[<index>] prefix will be created. 
+Example: `-source *.xml -convert -snapshot -output test.json` may output: 
+`[0]test.json`, `[1]test.json`, etc. .
 
 Tests
 =====
