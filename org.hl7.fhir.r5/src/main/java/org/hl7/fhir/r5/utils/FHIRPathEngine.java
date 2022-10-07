@@ -1798,7 +1798,18 @@ public class FHIRPathEngine {
       } else if ((left.get(0) instanceof Element) && ((Element) left.get(0)).isDisallowExtensions()) {
         result.add(new BooleanType(Utilities.capitalize(left.get(0).fhirType()).equals(tn) || ("System."+Utilities.capitalize(left.get(0).fhirType())).equals(tn)).noExtensions());
       } else {
-        result.add(new BooleanType(left.get(0).hasType(tn)).noExtensions());
+        if (left.get(0).fhirType().equals(tn)) {
+          result.add(new BooleanType(true).noExtensions());
+        } else {
+          StructureDefinition sd = worker.fetchTypeDefinition(left.get(0).fhirType());
+          while (sd != null) {
+            if (tn.equals(sd.getType())) {
+              return makeBoolean(true);
+            }
+            sd = worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+          }
+          return makeBoolean(false);
+        }      
       }
     }
     return result;
@@ -4538,8 +4549,18 @@ public class FHIRPathEngine {
         }
 
       } else if (tn.startsWith("FHIR.")) {
-        if (b.hasType(tn.substring(5))) { 
-          result.add(b);
+        String tnp = tn.substring(5);
+        if (b.fhirType().equals(tnp)) {
+          result.add(b);          
+        } else {
+          StructureDefinition sd = worker.fetchTypeDefinition(b.fhirType());
+          while (sd != null) {
+            if (tnp.equals(sd.getType())) {
+              result.add(b);
+              break;
+            }
+            sd = worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+          }
         }
       }
     }
