@@ -209,8 +209,19 @@ public class ValidationService {
   }
 
   public void convertSources(CliContext cliContext, ValidationEngine validator) throws Exception {
-    System.out.println(" ...convert");
-    validator.convert(cliContext.getSources().get(0), cliContext.getOutput());
+    List<String> sources = cliContext.getSources();
+    if (sources.size() == 1) {
+      System.out.println(" ...convert");
+      validator.convert(sources.get(0), cliContext.getOutput());
+    } else {
+      for (int i = 0; i < sources.size(); i++) {
+        if (cliContext.getOutput() != null) {
+          System.out.println(" ...convert [" + i +  "]");
+          String output = "[" + String.valueOf(i) + "]" + cliContext.getOutput();
+          validator.convert(sources.get(i), output);
+        }
+      }
+    }
   }
 
   public void evaluateFhirpath(CliContext cliContext, ValidationEngine validator) throws Exception {
