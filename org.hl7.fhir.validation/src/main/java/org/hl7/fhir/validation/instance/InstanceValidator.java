@@ -60,6 +60,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.elementmodel.Element;
@@ -1483,7 +1484,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               res.getCodingFirstRep().setCode(list.get(0).primitiveValue());
             } else if ("Coding.system[fmt:OID]".equals(m)) {
               String oid = list.get(0).primitiveValue();
-              String url = context.oid2Uri(oid);
+              String url = new ContextUtilities(context).oid2Uri(oid);
               if (url != null) {
                 res.getCodingFirstRep().setSystem(url);
               } else {
@@ -1522,7 +1523,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               res.setCode(list.get(0).primitiveValue());
             } else if ("Coding.system[fmt:OID]".equals(m)) {
               String oid = list.get(0).primitiveValue();
-              String url = context.oid2Uri(oid);
+              String url = new ContextUtilities(context).oid2Uri(oid);
               if (url != null) {
                 res.setSystem(url);
               } else {
@@ -5939,7 +5940,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   public void checkAllInvariants() {
-    for (StructureDefinition sd : context.allStructures()) {
+    for (StructureDefinition sd : new ContextUtilities(context).allStructures()) {
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
         for (ElementDefinition ed : sd.getSnapshot().getElement()) {
           for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {

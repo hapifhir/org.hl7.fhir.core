@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
@@ -84,7 +85,7 @@ public class PhinVadsImporter extends OIDBasedValueSetImporter {
       String display = rdr.cell("Preferred Concept Name");
       String csoid = rdr.cell("Code System OID");
       String csver = rdr.cell("Code System Version");
-      String url = context.oid2Uri(csoid);
+      String url = new ContextUtilities(context).oid2Uri(csoid);
       if (url == null) {
         url = "urn:oid:" + csoid;
       }

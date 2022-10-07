@@ -33,6 +33,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
@@ -325,7 +326,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
           String contents = TestingUtilities.loadTestResource("validator", filename);
           CanonicalResource mr = (CanonicalResource) loadResource(filename, contents);
           if (mr instanceof StructureDefinition) {
-            val.getContext().generateSnapshot((StructureDefinition) mr, true);
+            new ContextUtilities(val.getContext()).generateSnapshot((StructureDefinition) mr, true);
           }
           val.getContext().cacheResource(mr);
         }

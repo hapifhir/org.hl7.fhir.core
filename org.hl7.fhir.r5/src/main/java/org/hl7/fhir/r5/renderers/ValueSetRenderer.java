@@ -27,6 +27,7 @@ import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.ExtensionHelper;
 import org.hl7.fhir.r5.model.PrimitiveType;
+import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -97,22 +98,33 @@ public class ValueSetRenderer extends TerminologyRenderer {
   
   private List<UsedConceptMap> findReleventMaps(ValueSet vs) throws FHIRException {
     List<UsedConceptMap> res = new ArrayList<UsedConceptMap>();
-    for (CanonicalResource md : getContext().getWorker().allConformanceResources()) {
-      if (md instanceof ConceptMap) {
-        ConceptMap cm = (ConceptMap) md;
-        if (isSource(vs, cm.getSourceScope())) {
-          ConceptMapRenderInstructions re = findByTarget(cm.getTargetScope());
-          if (re == null) {
-            re = new ConceptMapRenderInstructions(cm.present(), cm.getUrl(), false);
-          }
-          if (re != null) {
-            ValueSet vst = cm.hasTargetScope() ? getContext().getWorker().fetchResource(ValueSet.class, cm.hasTargetScopeCanonicalType() ? cm.getTargetScopeCanonicalType().getValue() : cm.getTargetScopeUriType().asStringValue()) : null;
-            res.add(new UsedConceptMap(re, vst == null ? cm.getUserString("path") : vst.getUserString("path"), cm));
-          }
+    for (ConceptMap cm : getContext().getWorker().fetchResourcesByType(ConceptMap.class)) {
+      if (isSource(vs, cm.getSourceScope())) {
+        ConceptMapRenderInstructions re = findByTarget(cm.getTargetScope());
+        if (re == null) {
+          re = new ConceptMapRenderInstructions(cm.present(), cm.getUrl(), false);
+        }
+        if (re != null) {
+          ValueSet vst = cm.hasTargetScope() ? getContext().getWorker().fetchResource(ValueSet.class, cm.hasTargetScopeCanonicalType() ? cm.getTargetScopeCanonicalType().getValue() : cm.getTargetScopeUriType().asStringValue()) : null;
+          res.add(new UsedConceptMap(re, vst == null ? cm.getUserString("path") : vst.getUserString("path"), cm));
         }
       }
     }
     return res;
+
+//    @Override
+//    public List<ConceptMap> findMapsForSource(String url) throws FHIRException {
+//      synchronized (lock) {
+//        List<ConceptMap> res = new ArrayList<ConceptMap>();
+//        for (ConceptMap map : maps.getList()) {
+//          if (((Reference) map.getSourceScope()).getReference().equals(url)) { 
+//            res.add(map);
+//          } 
+//        } 
+//        return res;
+//      }
+//    }
+
 //    Map<ConceptMap, String> mymaps = new HashMap<ConceptMap, String>();
 //  for (ConceptMap a : context.getWorker().findMapsForSource(vs.getUrl())) {
 //    String url = "";
@@ -1272,7 +1284,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }
     
     ValueSetExpansionComponent vse = null;
-    if (!context.isNoSlowLookup() && !getContext().getWorker().hasCache()) {
+    if (!context.isNoSlowLookup()) { // && !getContext().getWorker().hasCache()) { removed GG 20220107 like what is this trying to do?
       try {
         ValueSetExpansionOutcome vso = getContext().getWorker().expandVS(inc, false, false);   
         ValueSet valueset = vso.getValueset();

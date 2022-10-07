@@ -27,6 +27,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.model.Base;
@@ -364,7 +365,7 @@ public class FHIRPathEngine {
     super();
     this.worker = worker;
     profileUtilities = utilities; 
-    for (StructureDefinition sd : worker.getStructures()) {
+    for (StructureDefinition sd : worker.fetchResourcesByType(StructureDefinition.class)) {
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() != StructureDefinitionKind.LOGICAL) {
         allTypes.put(sd.getName(), sd);
       }
@@ -5524,22 +5525,22 @@ public class FHIRPathEngine {
         m = getElementDefinition(sd, type.substring(type.indexOf("#")+1), false, expr);
       if (m != null && hasDataType(m.definition)) {
         if (m.fixedType != null)  {
-          StructureDefinition dt = worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(m.fixedType, worker.getOverrideVersionNs()));
+          StructureDefinition dt = worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(m.fixedType, null));
           if (dt == null) {
-            throw makeException(expr, I18nConstants.FHIRPATH_NO_TYPE, ProfileUtilities.sdNs(m.fixedType, worker.getOverrideVersionNs()), "getChildTypesByName");
+            throw makeException(expr, I18nConstants.FHIRPATH_NO_TYPE, ProfileUtilities.sdNs(m.fixedType, null), "getChildTypesByName");
           }
           sdl.add(dt);
         } else
           for (TypeRefComponent t : m.definition.getType()) {
-            StructureDefinition dt = worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(t.getCode(), worker.getOverrideVersionNs()));
+            StructureDefinition dt = worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(t.getCode(), null));
             if (dt == null) {
-              throw makeException(expr, I18nConstants.FHIRPATH_NO_TYPE, ProfileUtilities.sdNs(t.getCode(), worker.getOverrideVersionNs()), "getChildTypesByName");
+              throw makeException(expr, I18nConstants.FHIRPATH_NO_TYPE, ProfileUtilities.sdNs(t.getCode(), null), "getChildTypesByName");
             }
-            addTypeAndDescendents(sdl, dt, worker.allStructures());
+            addTypeAndDescendents(sdl, dt, new ContextUtilities(worker).allStructures());
             // also add any descendant types
           }
       } else {
-        addTypeAndDescendents(sdl, sd, worker.allStructures());
+        addTypeAndDescendents(sdl, sd, new ContextUtilities(worker).allStructures());
         if (type.contains("#")) {
           tail = type.substring(type.indexOf("#")+1);
           tail = tail.substring(tail.indexOf("."));
@@ -5683,7 +5684,7 @@ public class FHIRPathEngine {
         if (ed.getType().size() > 1) { // if there's more than one type, the test above would fail this
           throw new Error("Internal typing issue....");
         }
-        StructureDefinition nsd = worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(ed.getType().get(0).getCode(), worker.getOverrideVersionNs()));
+        StructureDefinition nsd = worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(ed.getType().get(0).getCode(), null));
         if (nsd == null) { 
           throw makeException(expr, I18nConstants.FHIRPATH_NO_TYPE, ed.getType().get(0).getCode(), "getElementDefinition");
         }
@@ -5901,7 +5902,7 @@ public class FHIRPathEngine {
     if (ed.getTypes().get(0).hasProfile()) { 
       return worker.fetchResource(StructureDefinition.class, ed.getTypes().get(0).getProfile().get(0).getValue());
     } else {
-      return worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(ed.getTypes().get(0).getCode(), worker.getOverrideVersionNs()));
+      return worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(ed.getTypes().get(0).getCode(), null));
     }
   }
 
