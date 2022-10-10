@@ -355,6 +355,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private boolean wantFixDifferentialFirstElementType;
   private Set<String> masterSourceFileNames;
   private Map<ElementDefinition, List<ElementDefinition>> childMapCache = new HashMap<>();
+  private List<String> keyRows = new ArrayList<>();
 
   public ProfileUtilities(IWorkerContext context, List<ValidationMessage> messages, ProfileKnowledgeProvider pkp, FHIRPathEngine fpe) {
     super();
@@ -1222,7 +1223,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           String lid = tail(id);          
           if (lid.contains("/")) {
             // the template comes from the snapshot of the base
-            generateIds(result.getElement(), url, srcSD.getType());
+            generateIds(result.getElement(), url, srcSD.getType(), srcSD.getUrl());
             String baseId = id.substring(0, id.length()-lid.length()) + lid.substring(0, lid.indexOf("/")); // this is wrong if there's more than one reslice (todo: one thing at a time)
             template = getById(result.getElement(), baseId);
             
@@ -3976,12 +3977,23 @@ public class ProfileUtilities extends TranslatingUtilities {
     if (!max.isEmpty())
       tracker.used = !max.getValue().equals("0");
 
+    String hint = null;
+    if ("*".equals(max.getValue()) && 0 == min.getValue()) {
+      if (definition.hasExtension(ToolingExtensions.EXT_JSON_EMPTY)) {
+        String code = ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_JSON_EMPTY);
+        if ("present".equals(code)) {
+          hint = "This element is present as a JSON Array even when there are no items in the instance";
+        } else {
+          hint = "This element may be present as a JSON Array even when there are no items in the instance";          
+        }
+      }
+    }
     Cell cell = gen.new Cell(null, null, null, null, null);
     row.getCells().add(cell);
     if (!min.isEmpty() || !max.isEmpty()) {
-      cell.addPiece(checkForNoChange(min, gen.new Piece(null, !min.hasValue() ? "" : Integer.toString(min.getValue()), null)));
-      cell.addPiece(checkForNoChange(min, max, gen.new Piece(null, "..", null)));
-      cell.addPiece(checkForNoChange(max, gen.new Piece(null, !max.hasValue() ? "" : max.getValue(), null)));
+      cell.addPiece(checkForNoChange(min, gen.new Piece(null, !min.hasValue() ? "" : Integer.toString(min.getValue()), hint)));
+      cell.addPiece(checkForNoChange(min, max, gen.new Piece(null, "..", hint)));
+      cell.addPiece(checkForNoChange(max, gen.new Piece(null, !max.hasValue() ? "" : max.getValue(), hint)));
     }
     return cell;
   }
@@ -4058,6 +4070,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     }
     List<StructureDefinition> profiles = new ArrayList<StructureDefinition>();
     profiles.add(profile);
+    keyRows.clear();
 
     genElement(defFile == null ? null : defFile+"#", gen, model.getRows(), list.get(0), list, profiles, diff, profileBaseFileName, null, snapshot, corePath, imagePath, true, logicalModel, profile.getDerivation() == TypeDerivationRule.CONSTRAINT && usesMustSupport(list), allInvariants, null, mustSupport, rc, anchorPrefix);
     try {
@@ -4190,6 +4203,9 @@ public class ProfileUtilities extends TranslatingUtilities {
       } else if (!hasDef || element.getType().size() == 0) {
         if (root && context.getResourceNames().contains(profile.getType())) {
           row.setIcon("icon_resource.png", HierarchicalTableGenerator.TEXT_ICON_RESOURCE);
+        } else if (hasDef && element.hasExtension(ToolingExtensions.EXT_JSON_PROP_KEY)) {
+          row.setIcon("icon-object-box.png", HierarchicalTableGenerator.TEXT_ICON_OBJECT_BOX);
+          keyRows.add(element.getId()+"."+ToolingExtensions.readStringExtension(element, ToolingExtensions.EXT_JSON_PROP_KEY));
         } else {
           row.setIcon("icon_element.gif", HierarchicalTableGenerator.TEXT_ICON_ELEMENT);
         }
@@ -4203,7 +4219,11 @@ public class ProfileUtilities extends TranslatingUtilities {
       } else if (hasDef && element.getType().get(0).getWorkingCode() != null && element.getType().get(0).getWorkingCode().startsWith("@")) {
         row.setIcon("icon_reuse.png", HierarchicalTableGenerator.TEXT_ICON_REUSE);
       } else if (hasDef && isPrimitive(element.getType().get(0).getWorkingCode())) {
-        row.setIcon("icon_primitive.png", HierarchicalTableGenerator.TEXT_ICON_PRIMITIVE);
+        if (keyRows.contains(element.getId())) {
+          row.setIcon("icon-key.png", HierarchicalTableGenerator.TEXT_ICON_KEY);
+        } else {
+          row.setIcon("icon_primitive.png", HierarchicalTableGenerator.TEXT_ICON_PRIMITIVE);
+        }
       } else if (hasDef && element.getType().get(0).hasTarget()) {
         row.setIcon("icon_reference.png", HierarchicalTableGenerator.TEXT_ICON_REFERENCE);
       } else if (hasDef && isDataType(element.getType().get(0).getWorkingCode())) {
@@ -4764,7 +4784,22 @@ public class ProfileUtilities extends TranslatingUtilities {
       if (root) {
         if (profile != null && profile.getAbstract()) {
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
-          c.addPiece(gen.new Piece(null, "This is an abstract profile", null));          
+          c.addPiece(gen.new Piece(null, "This is an abstract "+(profile.getDerivation() == TypeDerivationRule.CONSTRAINT ? "profile" : "type")+". ", null));
+          
+          List<StructureDefinition> children = new ArrayList<>();
+          for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
+            if (sd.hasBaseDefinition() && sd.getBaseDefinition().equals(profile.getUrl())) {
+              children.add(sd);
+            }
+          }
+          if (!children.isEmpty()) {
+            c.addPiece(gen.new Piece(null, "Child "+(profile.getDerivation() == TypeDerivationRule.CONSTRAINT ? "profiles" : "types")+": ", null));
+            boolean first = true;
+            for (StructureDefinition sd : children) {
+              if (first) first = false; else c.addPiece(gen.new Piece(null, ", ", null));
+              c.addPiece(gen.new Piece(sd.getUserString("path"), sd.getType(), null));
+            }
+          }
         }
       }
       if (definition.getPath().endsWith("url") && definition.hasFixed()) {
@@ -5979,12 +6014,12 @@ public class ProfileUtilities extends TranslatingUtilities {
     if (!checkFirst || !sd.hasDifferential() || hasMissingIds(sd.getDifferential().getElement())) {
       if (!sd.hasDifferential())
         sd.setDifferential(new StructureDefinitionDifferentialComponent());
-      generateIds(sd.getDifferential().getElement(), sd.getUrl(), sd.getType());
+      generateIds(sd.getDifferential().getElement(), sd.getUrl(), sd.getType(), sd.getUrl());
     }
     if (!checkFirst || !sd.hasSnapshot() || hasMissingIds(sd.getSnapshot().getElement())) {
       if (!sd.hasSnapshot())
         sd.setSnapshot(new StructureDefinitionSnapshotComponent());
-      generateIds(sd.getSnapshot().getElement(), sd.getUrl(), sd.getType());
+      generateIds(sd.getSnapshot().getElement(), sd.getUrl(), sd.getType(), sd.getUrl());
     }
   }
 
@@ -6029,7 +6064,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   }
 
-  private void generateIds(List<ElementDefinition> list, String name, String type) throws DefinitionException  {
+  private void generateIds(List<ElementDefinition> list, String name, String type, String url) throws DefinitionException  {
     if (list.isEmpty())
       return;
     
@@ -6075,9 +6110,9 @@ public class ProfileUtilities extends TranslatingUtilities {
       if (ed.hasContentReference() && ed.getContentReference().startsWith("#")) {
         String s = ed.getContentReference();
         if (replacedIds.containsKey(s.substring(1))) {
-          ed.setContentReference("http://hl7.org/fhir/StructureDefinition/"+type+"#"+replacedIds.get(s.substring(1)));
+          ed.setContentReference(url+"#"+replacedIds.get(s.substring(1)));
         } else {
-          ed.setContentReference("http://hl7.org/fhir/StructureDefinition/"+type+s);
+          ed.setContentReference(url+s);
         }
       }
     }  
