@@ -133,7 +133,6 @@ public class ToolingExtensions {
   public static final String EXT_IGP_FORMAT = "http://hl7.org/fhir/StructureDefinition/igpublisher-res-format";
   public static final String EXT_IGP_SOURCE = "http://hl7.org/fhir/StructureDefinition/igpublisher-res-source";
   public static final String EXT_IGP_CONTAINED_RESOURCE_INFO = "http://hl7.org/fhir/tools/StructureDefinition/contained-resource-information";
-  public static final String EXT_PRIVATE_BASE = "http://hl7.org/fhir/tools/";
   public static final String EXT_BINARY_FORMAT = "http://hl7.org/fhir/StructureDefinition/implementationguide-resource-format";
   public static final String EXT_IGP_RESOURCE_INFO = "http://hl7.org/fhir/tools/StructureDefinition/resource-information";
   public static final String EXT_IGP_LOADVERSION = "http://hl7.org/fhir/StructureDefinition/igpublisher-loadversion";
@@ -208,7 +207,11 @@ public class ToolingExtensions {
   public static final String EXT_SD_DEPENDENCY = "http://hl7.org/fhir/StructureDefinition/structuredefinition-dependencies";
 
   // in the tooling IG
+  public static final String EXT_PRIVATE_BASE = "http://hl7.org/fhir/tools/";
   public static final String EXT_BINDING_ADDITIONAL = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding";
+  public static final String EXT_JSON_PROP_KEY = "http://hl7.org/fhir/tools/StructureDefinition/json-property-key";
+  public static final String EXT_JSON_EMPTY = "http://hl7.org/fhir/tools/StructureDefinition/json-empty-behavior";
+    
 
   // unregistered? - don't know what these are used for 
   public static final String EXT_MAPPING_PREFIX = "http://hl7.org/fhir/tools/StructureDefinition/logical-mapping-prefix";

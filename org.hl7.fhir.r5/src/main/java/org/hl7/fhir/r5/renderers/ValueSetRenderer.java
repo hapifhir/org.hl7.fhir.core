@@ -1115,13 +1115,14 @@ public class ValueSetRenderer extends TerminologyRenderer {
 
           // for performance reasons, we do all the fetching in one batch
           definitions = getConceptsForCodes(e, inc);
+
           
           XhtmlNode t = li.table("none");
           boolean hasComments = false;
           boolean hasDefinition = false;
           for (ConceptReferenceComponent c : inc.getConcept()) {
             hasComments = hasComments || ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_VS_COMMENT);
-            ConceptDefinitionComponent cc = definitions.get(c.getCode()); 
+            ConceptDefinitionComponent cc = definitions == null ? null : definitions.get(c.getCode()); 
             hasDefinition = hasDefinition || ((cc != null && cc.hasDefinition()) || ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_DEFINITION));
           }
           if (hasComments || hasDefinition)
@@ -1130,7 +1131,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           for (ConceptReferenceComponent c : inc.getConcept()) {
             XhtmlNode tr = t.tr();
             XhtmlNode td = tr.td();
-            ConceptDefinitionComponent cc = definitions.get(c.getCode()); 
+            ConceptDefinitionComponent cc = definitions == null ? null : definitions.get(c.getCode()); 
             addCodeToTable(false, inc.getSystem(), c.getCode(), c.hasDisplay()? c.getDisplay() : cc != null ? cc.getDisplay() : "", td);
 
             td = tr.td();
