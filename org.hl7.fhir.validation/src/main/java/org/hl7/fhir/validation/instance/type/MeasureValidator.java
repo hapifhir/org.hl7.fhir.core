@@ -119,27 +119,21 @@ public class MeasureValidator extends BaseValidator {
       if (isHL7(cs)) {
         rule(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("url"), I18nConstants.MEASURE_SHAREABLE_MISSING_HL7, "url");                      
         rule(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("version"), I18nConstants.MEASURE_SHAREABLE_MISSING_HL7, "version");                      
-        rule(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("title"), I18nConstants.MEASURE_SHAREABLE_MISSING_HL7, "title");                      
-        warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("name"), I18nConstants.MEASURE_SHAREABLE_EXTRA_MISSING_HL7, "name");                      
+        rule(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("name"), I18nConstants.MEASURE_SHAREABLE_EXTRA_MISSING_HL7, "name");                      
+        warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("title"), I18nConstants.MEASURE_SHAREABLE_MISSING_HL7, "title");                      
         rule(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("status"), I18nConstants.MEASURE_SHAREABLE_MISSING_HL7, "status");                      
         rule(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("experimental"), I18nConstants.MEASURE_SHAREABLE_MISSING_HL7, "experimental");                      
+        rule(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("publisher"), I18nConstants.MEASURE_SHAREABLE_MISSING_HL7, "publisher"); 
         rule(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("description"), I18nConstants.MEASURE_SHAREABLE_MISSING_HL7, "description"); 
-        rule(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("content"), I18nConstants.MEASURE_SHAREABLE_MISSING_HL7, "content"); 
-        if (!"supplement".equals(cs.getChildValue("content"))) {
-          rule(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("caseSensitive"), I18nConstants.MEASURE_SHAREABLE_MISSING_HL7, "caseSensitive");
-        }
       } else {
         warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("url"), I18nConstants.MEASURE_SHAREABLE_MISSING, "url");                      
         warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("version"), I18nConstants.MEASURE_SHAREABLE_MISSING, "version");                      
-        warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("title"), I18nConstants.MEASURE_SHAREABLE_MISSING, "title");                      
         warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("name"), I18nConstants.MEASURE_SHAREABLE_EXTRA_MISSING, "name");                      
+        warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("title"), I18nConstants.MEASURE_SHAREABLE_MISSING, "title");                      
         warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("status"), I18nConstants.MEASURE_SHAREABLE_MISSING, "status");                      
         warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("experimental"), I18nConstants.MEASURE_SHAREABLE_MISSING, "experimental");                      
         warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("description"), I18nConstants.MEASURE_SHAREABLE_MISSING, "description"); 
-        warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("content"), I18nConstants.MEASURE_SHAREABLE_MISSING, "content"); 
-        if (!"supplement".equals(cs.getChildValue("content"))) {
-          warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("caseSensitive"), I18nConstants.MEASURE_SHAREABLE_MISSING, "caseSensitive");
-        }
+        warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("publisher"), I18nConstants.MEASURE_SHAREABLE_MISSING, "publisher"); 
       }
     }
   }
