@@ -1223,7 +1223,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           String lid = tail(id);          
           if (lid.contains("/")) {
             // the template comes from the snapshot of the base
-            generateIds(result.getElement(), url, srcSD.getType(), srcSD.getUrl());
+            generateIds(result.getElement(), url, srcSD.getType(), srcSD);
             String baseId = id.substring(0, id.length()-lid.length()) + lid.substring(0, lid.indexOf("/")); // this is wrong if there's more than one reslice (todo: one thing at a time)
             template = getById(result.getElement(), baseId);
             
@@ -6014,12 +6014,12 @@ public class ProfileUtilities extends TranslatingUtilities {
     if (!checkFirst || !sd.hasDifferential() || hasMissingIds(sd.getDifferential().getElement())) {
       if (!sd.hasDifferential())
         sd.setDifferential(new StructureDefinitionDifferentialComponent());
-      generateIds(sd.getDifferential().getElement(), sd.getUrl(), sd.getType(), sd.getUrl());
+      generateIds(sd.getDifferential().getElement(), sd.getUrl(), sd.getType(), sd);
     }
     if (!checkFirst || !sd.hasSnapshot() || hasMissingIds(sd.getSnapshot().getElement())) {
       if (!sd.hasSnapshot())
         sd.setSnapshot(new StructureDefinitionSnapshotComponent());
-      generateIds(sd.getSnapshot().getElement(), sd.getUrl(), sd.getType(), sd.getUrl());
+      generateIds(sd.getSnapshot().getElement(), sd.getUrl(), sd.getType(), sd);
     }
   }
 
@@ -6064,7 +6064,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   }
 
-  private void generateIds(List<ElementDefinition> list, String name, String type, String url) throws DefinitionException  {
+  private void generateIds(List<ElementDefinition> list, String name, String type, StructureDefinition srcSD) throws DefinitionException  {
     if (list.isEmpty())
       return;
     
@@ -6109,10 +6109,11 @@ public class ProfileUtilities extends TranslatingUtilities {
       idList.put(bs, ed.getPath());
       if (ed.hasContentReference() && ed.getContentReference().startsWith("#")) {
         String s = ed.getContentReference();
+        String typeURL = getUrlForSource(type, srcSD);
         if (replacedIds.containsKey(s.substring(1))) {
-          ed.setContentReference(url+"#"+replacedIds.get(s.substring(1)));
+          ed.setContentReference(typeURL+"#"+replacedIds.get(s.substring(1)));
         } else {
-          ed.setContentReference(url+s);
+          ed.setContentReference(typeURL+s);
         }
       }
     }  
@@ -6120,6 +6121,14 @@ public class ProfileUtilities extends TranslatingUtilities {
     
   }
 
+
+  private String getUrlForSource(String type, StructureDefinition srcSD) {
+    if (srcSD.getKind() == StructureDefinitionKind.LOGICAL) {
+      return srcSD.getUrl();
+    } else {
+      return "http://hl7.org/fhir/StructureDefinition/"+type;
+    }
+  }
 
   private Object fixChars(String s) {
     return s.replace("_", "-");
