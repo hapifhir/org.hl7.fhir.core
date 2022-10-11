@@ -102,7 +102,14 @@ public class TestingUtilities extends BaseTestingUtilities {
         IWorkerContext fcontext = getWorkerContext(version);
         fcontexts.put(v, fcontext);
     }
-    return fcontexts.get(v);
+    try {
+      SimpleWorkerContext copyOfContext = ((SimpleWorkerContext) fcontexts.get(v)).copy();
+      return copyOfContext;
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw new Error(e);
+    }
+    //return fcontexts.get(v);
   }
 
   public static IWorkerContext getWorkerContext(String version) {

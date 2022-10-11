@@ -301,10 +301,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       canRunWithoutTerminology = other.canRunWithoutTerminology;
       noTerminologyServer = other.noTerminologyServer;
       if (other.txCache != null)
-        txCache = other.txCache.copy();
+        txCache = other.txCache;
       expandCodesLimit = other.expandCodesLimit;
       logger = other.logger;
       expParameters = other.expParameters;
+      ucumService = other.ucumService;
     }
   }
   
