@@ -85,6 +85,16 @@ public class TestingUtilities extends BaseTestingUtilities {
     return getSharedWorkerContext(DEFAULT_CONTEXT_VERSION);
   }
 
+  private static String getWorkerContextKey(String version) {
+
+    if (version.endsWith("ballot"))
+      return version;
+
+    return VersionUtilities.getMajMin(version);
+  }
+
+
+
   /**
    * Get an existing instantiation of a WorkerContext if available
    *
@@ -94,15 +104,16 @@ public class TestingUtilities extends BaseTestingUtilities {
   public static IWorkerContext getSharedWorkerContext(String version) {
 
     
-    String v = VersionUtilities.getMajMin(version);
+    String workerContextKey = getWorkerContextKey(version);
     if (fcontexts == null) {
       fcontexts = new HashMap<>();
     }
-    if (!fcontexts.containsKey(v)) {
+    if (!fcontexts.containsKey(workerContextKey)) {
         IWorkerContext fcontext = getWorkerContext(version);
-        fcontexts.put(v, fcontext);
+        fcontexts.put(workerContextKey, fcontext);
     }
-    return fcontexts.get(v);
+    return fcontexts.get(workerContextKey);
+
   }
 
   public static IWorkerContext getWorkerContext(String version) {
