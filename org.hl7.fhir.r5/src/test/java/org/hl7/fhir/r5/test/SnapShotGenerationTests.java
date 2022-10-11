@@ -18,7 +18,6 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider;
-import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.test.utils.TestPackageLoader;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
@@ -212,13 +211,13 @@ public class SnapShotGenerationTests {
 
     @Override
     public boolean isDatatype(String name) {
-      StructureDefinition sd = sharedWorkerContext.fetchTypeDefinition(name);
+      StructureDefinition sd = TestingUtilities.getSharedWorkerContext().fetchTypeDefinition(name);
       return (sd != null) && (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) && (sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE || sd.getKind() == StructureDefinitionKind.COMPLEXTYPE);
     }
 
     @Override
     public boolean isResource(String typeSimple) {
-      StructureDefinition sd = sharedWorkerContext.fetchTypeDefinition(typeSimple);
+      StructureDefinition sd = TestingUtilities.getSharedWorkerContext().fetchTypeDefinition(typeSimple);
       return (sd != null) && (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) && (sd.getKind() == StructureDefinitionKind.RESOURCE);
     }
 
@@ -250,7 +249,7 @@ public class SnapShotGenerationTests {
 
     @Override
     public String getLinkForProfile(StructureDefinition profile, String url) {
-      StructureDefinition sd = sharedWorkerContext.fetchResource(StructureDefinition.class, url);
+      StructureDefinition sd = TestingUtilities.getSharedWorkerContext().fetchResource(StructureDefinition.class, url);
       if (sd == null)
         return url + "|" + url;
       else
@@ -276,15 +275,15 @@ public class SnapShotGenerationTests {
     public Resource fetchFixture(String id) {
       TestFetchMode mode = TestFetchMode.INPUT;
       if (id.equals("patient"))
-        return sharedWorkerContext.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient");
+        return TestingUtilities.getSharedWorkerContext().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient");
       if (id.equals("valueset"))
-        return sharedWorkerContext.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/ValueSet");
+        return TestingUtilities.getSharedWorkerContext().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/ValueSet");
       if (id.equals("organization"))
-        return sharedWorkerContext.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Organization");
+        return TestingUtilities.getSharedWorkerContext().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Organization");
       if (id.equals("operationoutcome"))
-        return sharedWorkerContext.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/OperationOutcome");
+        return TestingUtilities.getSharedWorkerContext().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/OperationOutcome");
       if (id.equals("parameters"))
-        return sharedWorkerContext.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Parameters");
+        return TestingUtilities.getSharedWorkerContext().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Parameters");
 
       if (id.contains("-")) {
         String[] p = id.split("\\-");
@@ -340,7 +339,7 @@ public class SnapShotGenerationTests {
     @Override
     public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters) throws PathEngineException {
       if ("fixture".equals(functionName))
-        return new TypeDetails(CollectionStatus.SINGLETON, sharedWorkerContext.getResourceNamesAsSet());
+        return new TypeDetails(CollectionStatus.SINGLETON, TestingUtilities.getSharedWorkerContext().getResourceNamesAsSet());
       return null;
     }
 
@@ -367,7 +366,7 @@ public class SnapShotGenerationTests {
 
     @Override
     public boolean conformsToProfile(Object appContext, Base item, String url) throws FHIRException {
-      IResourceValidator val = sharedWorkerContext.newValidator();
+      IResourceValidator val = TestingUtilities.getSharedWorkerContext().newValidator();
       List<ValidationMessage> valerrors = new ArrayList<ValidationMessage>();
       if (item instanceof Resource) {
         val.validate(appContext, valerrors, (Resource) item, url);
@@ -400,14 +399,12 @@ public class SnapShotGenerationTests {
 
   }
 
-  private static IWorkerContext sharedWorkerContext;
   private static FHIRPathEngine fp;
   private List<ValidationMessage> messages;
 
   @BeforeAll
   public static void setUp() {
-    sharedWorkerContext = TestingUtilities.getSharedWorkerContext();
-    fp = new FHIRPathEngine(sharedWorkerContext);
+    fp = new FHIRPathEngine(TestingUtilities.getSharedWorkerContext());
   }
 
   public static Stream<Arguments> data() throws ParserConfigurationException, IOException, FHIRFormatError, SAXException {
@@ -465,7 +462,7 @@ public class SnapShotGenerationTests {
   private void testSort(TestDetails test, SnapShotGenerationTestsContext context) throws DefinitionException, FHIRException, IOException {
     StructureDefinition base = getSD(test.getSource().getBaseDefinition(), context);
     test.setOutput(test.getSource().copy());
-    ProfileUtilities pu = new ProfileUtilities(sharedWorkerContext, null, null);
+    ProfileUtilities pu = new ProfileUtilities(TestingUtilities.getSharedWorkerContext(), null, null);
     pu.setIds(test.getSource(), false);
     List<String> errors = new ArrayList<String>();
     pu.sortDifferential(base, test.getOutput(), test.getOutput().getUrl(), errors, false);
@@ -479,17 +476,17 @@ public class SnapShotGenerationTests {
   private void testGen(boolean fail, TestDetails test, SnapShotGenerationTestsContext context) throws Exception {
     if (!Utilities.noString(test.register)) {
       List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-      ProfileUtilities pu = new ProfileUtilities(sharedWorkerContext, messages, null);
+      ProfileUtilities pu = new ProfileUtilities(TestingUtilities.getSharedWorkerContext(), messages, null);
       pu.setNewSlicingProcessing(true);
       for (StructureDefinition sd : test.included) {
         pu.setIds(sd, false);
       }
       for (StructureDefinition sd : test.included) {
-        if (!sharedWorkerContext.hasResource(StructureDefinition.class, sd.getUrl())) {
-          sharedWorkerContext.cacheResource(sd);
+        if (!TestingUtilities.getSharedWorkerContext().hasResource(StructureDefinition.class, sd.getUrl())) {
+          TestingUtilities.getSharedWorkerContext().cacheResource(sd);
         }
       }
-      StructureDefinition base = sharedWorkerContext.fetchResource(StructureDefinition.class, test.included.get(0).getBaseDefinition());
+      StructureDefinition base = TestingUtilities.getSharedWorkerContext().fetchResource(StructureDefinition.class, test.included.get(0).getBaseDefinition());
       if (base != null) {
         pu.generateSnapshot(base, test.included.get(0), test.included.get(0).getUrl(), "http://test.org/profile", test.included.get(0).getName());
       }
@@ -508,16 +505,16 @@ public class SnapShotGenerationTests {
       throw new Exception("URL mismatch on base: " + base.getUrl() + " wanting " + test.getSource().getBaseDefinition());
 
     StructureDefinition output = test.getSource().copy();
-    ProfileUtilities pu = new ProfileUtilities(sharedWorkerContext, messages, new TestPKP());
+    ProfileUtilities pu = new ProfileUtilities(TestingUtilities.getSharedWorkerContext(), messages, new TestPKP());
     pu.setNewSlicingProcessing(test.isNewSliceProcessing());
     pu.setThrowException(false);
     pu.setDebug(test.isDebug());
     pu.setIds(test.getSource(), false);
-    if (!sharedWorkerContext.hasPackage(CommonPackages.ID_XVER, CommonPackages.VER_XVER)) {
+    if (!TestingUtilities.getSharedWorkerContext().hasPackage(CommonPackages.ID_XVER, CommonPackages.VER_XVER)) {
       NpmPackage npm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION).loadPackage(CommonPackages.ID_XVER, CommonPackages.VER_XVER);
-      sharedWorkerContext.loadFromPackage(npm, new TestPackageLoader(new String[]{"StructureDefinition"}), new String[]{"StructureDefinition"});
+      TestingUtilities.getSharedWorkerContext().loadFromPackage(npm, new TestPackageLoader(new String[]{"StructureDefinition"}), new String[]{"StructureDefinition"});
     }
-    pu.setXver(new XVerExtensionManager(sharedWorkerContext));
+    pu.setXver(new XVerExtensionManager(TestingUtilities.getSharedWorkerContext()));
     if (test.isSort()) {
       List<String> errors = new ArrayList<String>();
       int lastCount = output.getDifferential().getElement().size();
@@ -542,14 +539,14 @@ public class SnapShotGenerationTests {
       throw e;
     }
     if (output.getDifferential().hasElement()) {
-      RenderingContext rc = new RenderingContext(sharedWorkerContext, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER);
+      RenderingContext rc = new RenderingContext(TestingUtilities.getSharedWorkerContext(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER);
       rc.setDestDir(Utilities.path("[tmp]", "snapshot"));
-      rc.setProfileUtilities(new ProfileUtilities(sharedWorkerContext, null, new TestPKP()));
+      rc.setProfileUtilities(new ProfileUtilities(TestingUtilities.getSharedWorkerContext(), null, new TestPKP()));
       RendererFactory.factory(output, rc).render(output);
     }
     if (!fail) {
       test.output = output;
-      sharedWorkerContext.cacheResource(output);
+      TestingUtilities.getSharedWorkerContext().cacheResource(output);
       File dst = new File(TestingUtilities.tempFile("snapshot", test.getId() + "-expected.xml"));
       if (dst.exists())
         dst.delete();
@@ -566,14 +563,14 @@ public class SnapShotGenerationTests {
   private StructureDefinition getSD(String url, SnapShotGenerationTestsContext context) throws DefinitionException, FHIRException, IOException {
     StructureDefinition sd = context.getByUrl(url);
     if (sd == null) {
-      sd = sharedWorkerContext.fetchResource(StructureDefinition.class, url);
+      sd = TestingUtilities.getSharedWorkerContext().fetchResource(StructureDefinition.class, url);
     } 
     if (sd == null) {
       throw new DefinitionException("Unable to find profile "+url);
     }
     if (!sd.hasSnapshot()) {
       StructureDefinition base = getSD(sd.getBaseDefinition(), context);
-      ProfileUtilities pu = new ProfileUtilities(sharedWorkerContext, messages, new TestPKP());
+      ProfileUtilities pu = new ProfileUtilities(TestingUtilities.getSharedWorkerContext(), messages, new TestPKP());
       pu.setNewSlicingProcessing(true);
       List<String> errors = new ArrayList<String>();
       pu.sortDifferential(base, sd, url, errors, false);

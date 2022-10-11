@@ -11,7 +11,6 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
-import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.*;
@@ -89,19 +88,17 @@ public class FHIRPathTests {
 
     @Override
     public ValueSet resolveValueSet(Object appContext, String url) {
-      return sharedWorkerContext.fetchResource(ValueSet.class, url);
+      return TestingUtilities.getSharedWorkerContext().fetchResource(ValueSet.class, url);
     }
 
   }
 
-  private static IWorkerContext sharedWorkerContext;
   private static FHIRPathEngine fp;
   private final Map<String, Resource> resources = new HashMap<String, Resource>();
 
   @BeforeAll
   public static void setUp() {
-    sharedWorkerContext = TestingUtilities.getSharedWorkerContext();
-    fp = new FHIRPathEngine(sharedWorkerContext);
+    fp = new FHIRPathEngine(TestingUtilities.getSharedWorkerContext());
   }
 
   public static Stream<Arguments> data() throws ParserConfigurationException, SAXException, IOException {

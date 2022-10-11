@@ -165,9 +165,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   
   protected void copy(SimpleWorkerContext other) {
     super.copy(other);
-    loadedPackages.clear();
-    loadedPackages.addAll(other.loadedPackages);
-    userAgent = other.userAgent;
     questionnaire = other.questionnaire;
     binaries.putAll(other.binaries);
     version = other.version;
@@ -176,9 +173,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     validatorFactory = other.validatorFactory;
   }
 
-  public SimpleWorkerContext copy() throws IOException {
-    return new SimpleWorkerContext(this);
-  }
 
   public List<String> getLoadedPackages() {
     return loadedPackages;
