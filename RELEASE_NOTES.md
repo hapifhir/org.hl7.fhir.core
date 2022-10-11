@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* Fix for logical model issues for cds-hooks logical models
