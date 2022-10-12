@@ -217,9 +217,10 @@ public class ValidationService {
         validator.convert(sources.get(0), cliContext.getOutput());
       } else {
         for (int i = 0; i < sources.size(); i++) {
-            System.out.println(" ...convert [" + i +  "]");
-            String output = "[" + String.valueOf(i) + "]" + cliContext.getOutput();
+//            String output = "[" + String.valueOf(i) + "]" + cliContext.getOutput();
+            String output = sources.get(i) + "." + cliContext.getOutput();
             validator.convert(sources.get(i), output);
+            System.out.println(" ...convert [" + i +  "] (" + sources.get(i) + " to " + output + ")");
         }
       }
     }
@@ -240,9 +241,10 @@ public class ValidationService {
       } else {
         for (int i = 0; i < sources.size(); i++) {
           StructureDefinition r = validator.snapshot(sources.get(i), cliContext.getSv());
-          System.out.println(" ...generated snapshot [" + i +  "] successfully");
-          String output = "[" + String.valueOf(i) + "]" + cliContext.getOutput();
+//          String output = "[" + String.valueOf(i) + "]" + cliContext.getOutput();
+            String output = sources.get(i) + "." + cliContext.getOutput();
           validator.handleOutput(r, output, cliContext.getSv());
+          System.out.println(" ...generated snapshot [" + i +  "] successfully (" + sources.get(i) + " to " + output + ")");
         }
       }
     }
