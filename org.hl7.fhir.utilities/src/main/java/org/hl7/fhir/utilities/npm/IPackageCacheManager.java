@@ -1,9 +1,9 @@
 package org.hl7.fhir.utilities.npm;
 
-import org.hl7.fhir.exceptions.FHIRException;
-
 import java.io.IOException;
 import java.io.InputStream;
+
+import org.hl7.fhir.exceptions.FHIRException;
 
 public interface IPackageCacheManager {
 
