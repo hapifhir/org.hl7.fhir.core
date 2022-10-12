@@ -1,5 +1,43 @@
 package org.hl7.fhir.utilities.npm;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.RandomAccessFile;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.apache.commons.io.FileUtils;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.IniFile;
+import org.hl7.fhir.utilities.SimpleHTTPClient;
+import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
+import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.json.JsonTrackingParser;
+import org.hl7.fhir.utilities.json.JsonUtilities;
+import org.hl7.fhir.utilities.npm.NpmPackage.NpmPackageFolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,38 +72,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import org.apache.commons.io.FileUtils;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.SimpleHTTPClient;
-import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
-import org.hl7.fhir.utilities.IniFile;
-import org.hl7.fhir.utilities.TextFile;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.json.JsonUtilities;
-import org.hl7.fhir.utilities.json.JsonTrackingParser;
-import org.hl7.fhir.utilities.npm.NpmPackage.NpmPackageFolder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.net.ssl.*;
-
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.RandomAccessFile;
-import java.net.URL;
-import java.nio.channels.FileChannel;
-import java.nio.channels.FileLock;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.util.*;
-import java.util.Map.Entry;
 
 /**
  * This is a package cache manager implementation that uses a local disk cache
@@ -321,7 +327,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         if (f.equals(id + "#" + version) || (Utilities.noString(version) && f.startsWith(id + "#"))) {
           return loadPackageInfo(Utilities.path(cacheFolder, f));
         }
-        if (version != null && version.endsWith(".x") && f.contains("#")) {
+        if (version != null && (version.endsWith(".x") || Utilities.charCount(version, '.') < 2) && f.contains("#")) {
           String[] parts = f.split("#");
           if (parts[0].equals(id) && VersionUtilities.isMajMinOrLaterPatch((foundVersion!=null ? foundVersion : version),parts[1])) {
             foundVersion = parts[1];
@@ -522,7 +528,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     if (source == null) {
       throw new FHIRException("Unable to find package "+id+"#"+version);
     }
-    return addPackageToCache(id, version == null ? source.version : version, source.stream, source.url);
+    return addPackageToCache(id, source.version, source.stream, source.url);
   }
 
   private InputStream fetchFromUrlSpecific(String source, boolean optional) throws FHIRException {
