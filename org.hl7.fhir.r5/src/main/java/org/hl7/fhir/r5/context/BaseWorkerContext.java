@@ -2135,6 +2135,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   public void finishLoading() {
+    if (!hasResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Base")) {
+      cacheResource(ProfileUtilities.makeBaseDefinition(version));
+    }
     for (StructureDefinition sd : listStructures()) {
       try {
         if (sd.getSnapshot().isEmpty()) { 

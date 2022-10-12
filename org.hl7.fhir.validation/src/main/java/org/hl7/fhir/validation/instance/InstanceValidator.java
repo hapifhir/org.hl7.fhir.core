@@ -274,7 +274,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     @Override
     public FunctionDetails resolveFunction(String functionName) {
-      throw new Error(context.formatMessage(I18nConstants.NOT_DONE_YET_VALIDATORHOSTSERVICESRESOLVEFUNCTION_, functionName));
+      throw new FHIRException(context.formatMessage(I18nConstants.NOT_DONE_YET_VALIDATORHOSTSERVICESRESOLVEFUNCTION_, functionName));
     }
 
     @Override
@@ -646,6 +646,16 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   @Override
   public org.hl7.fhir.r5.elementmodel.Element validate(Object appContext, List<ValidationMessage> errors, InputStream stream, FhirFormat format, List<StructureDefinition> profiles) throws FHIRException {
     ParserBase parser = Manager.makeParser(context, format);
+    for (StructureDefinition sd : profiles) {
+      if (sd.getKind() == StructureDefinitionKind.LOGICAL) {
+        if (parser.hasLogical()) {
+          rule(errors, IssueType.BUSINESSRULE, "Configuration", false, "Multiple Logical Models found in supplied profiles: "+sd.getUrl()+" & "+parser.getLogical().getUrl());          
+          return null;
+        } else {
+          parser.setLogical(sd);
+        }
+      }
+    }
     if (parser instanceof XmlParser)
       ((XmlParser) parser).setAllowXsiLocation(allowXsiLocation);
     parser.setupValidation(ValidationPolicy.EVERYTHING, errors);
@@ -2371,7 +2381,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         while (i < raw.length() && raw.charAt(1) == processed.charAt(i)) {
           i++;
         }
-        warningOrError(htmlInMarkdownCheck == HtmlInMarkdownCheck.ERROR, errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_MARKDOWN_HTML, raw.subSequence(i, 2));        
+        if (i < raw.length()-1 ) {
+          warningOrError(htmlInMarkdownCheck == HtmlInMarkdownCheck.ERROR, errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_MARKDOWN_HTML, raw.subSequence(i, i+2));
+        } else {
+          warningOrError(htmlInMarkdownCheck == HtmlInMarkdownCheck.ERROR, errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_MARKDOWN_HTML, raw);
+        }
       }
     }
     if (type.equals("xhtml")) {
@@ -5753,7 +5767,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       try {
         String expr = FHIRPathExpressionFixer.fixExpr(inv.getExpression(), inv.getKey());
         n = fpe.parse(expr);
-      } catch (FHIRLexerException e) {
+      } catch (FHIRException e) {
         rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, false, I18nConstants.PROBLEM_PROCESSING_EXPRESSION__IN_PROFILE__PATH__, inv.getExpression(), profile.getUrl(), path, e.getMessage());
         return;
       }

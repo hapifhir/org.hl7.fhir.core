@@ -346,6 +346,31 @@ public class NPMPackageGenerator {
     }
   }
 
+  public void addFile(String folder, String name, byte[] content) throws IOException {
+    if (!folder.equals("package")) {
+      folder = "package/"+folder;
+    }
+    String path = folder+"/"+name;
+    if (path.length() > 100) {
+      name = name.substring(0, name.indexOf("-"))+"-"+UUID.randomUUID().toString()+".json";
+      path = folder+"/"+name;      
+    }
+      
+    if (created.contains(path)) {
+      System.out.println("Duplicate package file "+path);
+    } else {
+      created.add(path);
+      TarArchiveEntry entry = new TarArchiveEntry(path);
+      entry.setSize(content.length);
+      tar.putArchiveEntry(entry);
+      tar.write(content);
+      tar.closeArchiveEntry();
+      if(folder == "package") {
+        indexer.seeFile(name, content);
+      }
+    }
+  }
+
   public void finish() throws IOException {
     buildIndexJson();
     tar.finish();

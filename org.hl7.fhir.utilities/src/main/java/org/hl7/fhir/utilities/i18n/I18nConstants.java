@@ -468,6 +468,11 @@ public class I18nConstants {
   public static final String THIS_PROPERTY_MUST_BE_A_LITERAL_NOT_ = "This_property_must_be_a_Literal_not_";
   public static final String THIS_PROPERTY_MUST_BE_A_URI_OR_BNODE_NOT_ = "This_property_must_be_a_URI_or_bnode_not_";
   public static final String THIS_PROPERTY_MUST_BE__NOT_ = "This_property_must_be__not_";
+  public static final String OBJECT_CANNOT_BE_KEYED_ARRAY_CHILD_COUNT = "OBJECT_CANNOT_BE_KEYED_ARRAY_CHILD_COUNT";           
+  public static final String OBJECT_CANNOT_BE_KEYED_ARRAY_PROP_NAME = "OBJECT_CANNOT_BE_KEYED_ARRAY_PROP_NAME";                     
+  public static final String OBJECT_CANNOT_BE_KEYED_ARRAY_PROP_TYPE = "OBJECT_CANNOT_BE_KEYED_ARRAY_PROP_TYPE";
+  public static final String OBJECT_CANNOT_BE_KEYED_ARRAY_NO_CHOICE = "OBJECT_CANNOT_BE_KEYED_ARRAY_NO_CHOICE";
+  public static final String OBJECT_CANNOT_BE_KEYED_ARRAY_NO_LIST = "OBJECT_CANNOT_BE_KEYED_ARRAY_NO_LIST";
   public static final String THIS__CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAMESPACE = "This__cannot_be_parsed_as_a_FHIR_object_no_namespace";
   public static final String TYPE_CHECKS_FIXED_CC = "TYPE_CHECKS_FIXED_CC";
   public static final String TYPE_CHECKS_FIXED_CC_US = "TYPE_CHECKS_FIXED_CC_US";
@@ -723,6 +728,10 @@ public class I18nConstants {
   public static final String BUNDLE_POSSSIBLE_MATCHES = "BUNDLE_POSSSIBLE_MATCHES";
   public static final String BUNDLE_BUNDLE_POSSIBLE_MATCH_NO_FU = "BUNDLE_BUNDLE_POSSIBLE_MATCH_NO_FU";
   public static final String BUNDLE_BUNDLE_POSSIBLE_MATCH_WRONG_FU = "BUNDLE_BUNDLE_POSSIBLE_MATCH_WRONG_FU";
+  public static final String TYPE_SPECIFIER_ILLEGAL_TYPE = "TYPE_SPECIFIER_ILLEGAL_TYPE";
+  public static final String TYPE_SPECIFIER_ABSTRACT_TYPE = "TYPE_SPECIFIER_ABSTRACT_TYPE";
+  public static final String TYPE_SPECIFIER_NM_ILLEGAL_TYPE = "TYPE_SPECIFIER_NM_ILLEGAL_TYPE";
+  public static final String TYPE_SPECIFIER_NM_ABSTRACT_TYPE = "TYPE_SPECIFIER_NM_ABSTRACT_TYPE";
 }
 
 

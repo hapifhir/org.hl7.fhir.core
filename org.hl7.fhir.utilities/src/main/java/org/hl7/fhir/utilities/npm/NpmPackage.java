@@ -1098,6 +1098,10 @@ public class NpmPackage {
     return Utilities.existsInList(JsonUtilities.str(npm, "type"), "fhir.core", "Core");
   }
 
+  public boolean isTx() {
+    return JsonUtilities.str(npm, "name").startsWith("hl7.terminology");
+  }
+
   public boolean hasCanonical(String url) {
     if (url == null) {
       return false;
