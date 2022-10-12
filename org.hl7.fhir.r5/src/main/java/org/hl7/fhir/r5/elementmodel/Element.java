@@ -51,6 +51,7 @@ import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
 import org.hl7.fhir.r5.model.ICoding;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.TypeConvertor;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
@@ -84,6 +85,8 @@ public class Element extends Base {
       if (property.getStructure().getType().equals("Bundle") && property.getName().equals("outcome"))
         return BUNDLE_OUTCOME;
       if (property.getName().equals("contained")) 
+        return CONTAINED;
+      if (property.getStructure().getKind() == StructureDefinitionKind.LOGICAL)
         return CONTAINED;
       throw new FHIRException("Unknown resource containing a native resource: "+property.getDefinition().getId());
     }

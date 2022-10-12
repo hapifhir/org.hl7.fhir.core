@@ -289,7 +289,6 @@ public class StructureDefinitionValidator extends BaseValidator {
     case "Resource" :return  addCharacteristicsForType(set);
     case "Extension" :return  addCharacteristicsForType(set, "can-bind");
     case "Narrative" :return  addCharacteristicsForType(set);
-    case "Element" :return  addCharacteristicsForType(set);
     case "MoneyQuantity" :return  addCharacteristicsForType(set);
     case "SimpleQuantity" :return  addCharacteristicsForType(set);
     case "MarketingStatus" :return  addCharacteristicsForType(set);
@@ -300,6 +299,8 @@ public class StructureDefinitionValidator extends BaseValidator {
     case "ElementDefinition" :return  addCharacteristicsForType(set);
 
     case "BackboneElement" :return  addCharacteristicsForType(set);
+    case "Element" :return  addCharacteristicsForType(set);
+    case "Base" :return  addCharacteristicsForType(set);
     default:
       if (!context.getResourceNames().contains(tc)) {
         System.out.println("Unhandled data type in addCharacteristics: "+tc);        
