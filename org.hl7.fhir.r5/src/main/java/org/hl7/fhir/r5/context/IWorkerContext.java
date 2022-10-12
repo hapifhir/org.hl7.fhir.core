@@ -418,7 +418,7 @@ public interface IWorkerContext {
    * Also, the narrative generator uses this, and may access any kind of resource
    * 
    * The URI is called speculatively for things that might exist, so not finding 
-   * a matching resouce, return null, not an error
+   * a matching resource, return null, not an error
    * 
    * The URI can have one of 3 formats:
    *  - a full URL e.g. http://acme.org/fhir/ValueSet/[id]
