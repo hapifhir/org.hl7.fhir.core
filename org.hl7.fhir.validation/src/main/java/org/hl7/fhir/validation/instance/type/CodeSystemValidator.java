@@ -132,7 +132,7 @@ public class CodeSystemValidator  extends BaseValidator {
       }
       if (!Utilities.noString(hierarchyMeaning)) {
         NodeStack s = stack.push(cs.getNamedChild("hierarchyMeaning"), -1, null, null);
-        rule(errors, IssueType.BUSINESSRULE, s.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL, "caseSensitive");
+        rule(errors, IssueType.BUSINESSRULE, s.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL, "hierarchyMeaning");
       }
 
     } else {
