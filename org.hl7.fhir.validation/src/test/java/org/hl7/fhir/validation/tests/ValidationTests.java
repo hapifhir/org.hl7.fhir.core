@@ -336,8 +336,17 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
           igLoader.loadIg(vCurr.getIgs(), vCurr.getBinaries(), e.getAsString(), true);
         }
       }
+      List<StructureDefinition> profiles = new ArrayList<>();
+      if (logical.has("format")) {
+        StructureDefinition sd = val.getContext().fetchResource(StructureDefinition.class, JsonUtilities.str(logical, "format"));
+        if (sd != null) {
+          profiles.add(sd);
+        } else {
+          throw new Error("Logical Model '"+JsonUtilities.str(logical, "format")+"' not found");
+        }
+      }
       List<ValidationMessage> errorsLogical = new ArrayList<ValidationMessage>();
-      Element le = val.validate(null, errorsLogical, new ByteArrayInputStream(testCaseContent), fmt);
+      Element le = val.validate(null, errorsLogical, new ByteArrayInputStream(testCaseContent), fmt, profiles);
       if (logical.has("expressions")) {
         FHIRPathEngine fp = new FHIRPathEngine(val.getContext());
         for (JsonElement e : logical.getAsJsonArray("expressions")) {
@@ -431,7 +440,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     for (OperationOutcomeIssueComponent issGoal : goal.getIssue()) {
       OperationOutcomeIssueComponent issActual = findMatchingIssue(actual, issGoal);
       if (issActual == null) {
-        fails.add("Expected Issue not found: "+issGoal.toString());
+        fails.add("Expected Issue missing: "+issGoal.toString());
       } else {
         map.put(issActual, issGoal);
       }
