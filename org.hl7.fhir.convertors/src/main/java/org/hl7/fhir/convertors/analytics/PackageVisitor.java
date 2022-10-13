@@ -284,6 +284,7 @@ public class PackageVisitor {
   private boolean corePackage(NpmPackage npm) {
     return npm != null && !Utilities.noString(npm.name()) && (
         npm.name().startsWith("hl7.terminology") || 
+        npm.name().startsWith("hl7.fhir.core") || 
         npm.name().startsWith("hl7.fhir.r2.") || 
         npm.name().startsWith("hl7.fhir.r2b.") || 
         npm.name().startsWith("hl7.fhir.r3.") || 
