@@ -3979,7 +3979,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       tracker.used = !max.getValue().equals("0");
 
     String hint = null;
-    if ("*".equals(max.getValue()) && 0 == min.getValue()) {
+    if (max.hasValue() && min.hasValue() && "*".equals(max.getValue()) && 0 == min.getValue()) {
       if (definition.hasExtension(ToolingExtensions.EXT_JSON_EMPTY)) {
         String code = ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_JSON_EMPTY);
         if ("present".equals(code)) {
