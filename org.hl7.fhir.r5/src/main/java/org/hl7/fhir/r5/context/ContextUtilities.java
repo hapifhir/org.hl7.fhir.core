@@ -152,15 +152,6 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
       CanonicalResource  cr = context.fetchResource(CanonicalResource.class, url);
       return cr.getUserString("path");
     }
-    if (url.equals("http://loinc.org")) {
-      return corePath+"loinc.html";
-    }
-    if (url.equals("http://unitsofmeasure.org")) {
-      return corePath+"ucum.html";
-    } 
-    if (url.equals("http://snomed.info/sct")) {
-      return corePath+"snomed.html";
-    } 
     return null;
   }
   
