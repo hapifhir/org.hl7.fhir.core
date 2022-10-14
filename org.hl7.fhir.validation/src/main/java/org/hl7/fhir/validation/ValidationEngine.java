@@ -260,6 +260,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       engine.setContext(contextBuilder.build());
       engine.initContext(timeTracker);
       engine.setIgLoader(new IgLoader(engine.getPcm(), engine.getContext(), engine.getVersion(), engine.isDebug()));
+      loadTx(engine);
       return engine;
     }
 
@@ -273,7 +274,24 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       }
       engine.setVersion(version);
       engine.setIgLoader(new IgLoader(engine.getPcm(), engine.getContext(), engine.getVersion(), engine.isDebug()));
+      loadTx(engine);
       return engine;
+    }
+
+    private void loadTx(ValidationEngine engine) throws FHIRException, IOException {
+      String pid = null;
+      if (VersionUtilities.isR3Ver(version)) {
+        pid =  "hl7.terminology.r3";
+      }
+      if (VersionUtilities.isR4Ver(version)) {
+        pid =  "hl7.terminology.r4";
+      }
+      if (VersionUtilities.isR5Ver(version)) {
+        pid =  "hl7.terminology.r5";
+      }
+      if (pid != null) {
+        engine.loadPackage(pid, null);
+      }
     }
   }
 

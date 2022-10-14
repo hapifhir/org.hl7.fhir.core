@@ -1568,3 +1568,303 @@ v: {
   "system" : "urn:ietf:bcp:13"
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "min"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "min",
+  "code" : "min",
+  "system" : "http://unitsofmeasure.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "mmol/L"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "mmol/L",
+  "code" : "mmol/L",
+  "system" : "http://unitsofmeasure.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "%"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "%",
+  "code" : "%",
+  "system" : "http://unitsofmeasure.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "kg"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "kg",
+  "code" : "kg",
+  "system" : "http://unitsofmeasure.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "cm"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "The code provided (http://unitsofmeasure.org#cm) is not valid in the value set 'BodyWeightUnits' (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "cm"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "cm",
+  "code" : "cm",
+  "system" : "http://unitsofmeasure.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "kg/m2"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "The code provided (http://unitsofmeasure.org#kg/m2) is not valid in the value set 'BodyWeightUnits' (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "112144000",
+  "display" : "Blood group A (finding)"
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-bloodGroup", "version": "0.5.0", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+v: {
+  "display" : "Blood group A",
+  "code" : "112144000",
+  "system" : "http://snomed.info/sct"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "kg"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "The code provided (http://unitsofmeasure.org#kg) is not valid in the value set 'BodyLengthUnits' (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "kg/m2"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "The code provided (http://unitsofmeasure.org#kg/m2) is not valid in the value set 'BodyLengthUnits' (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "wk"
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "wk",
+  "code" : "wk",
+  "system" : "http://unitsofmeasure.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "722446000",
+  "display" : "Allergy record (record artifact)"
+}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.typeCode", "version": "2.0.4", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+v: {
+  "display" : "Allergy record (record artifact)",
+  "code" : "722446000",
+  "system" : "http://snomed.info/sct"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "371531000",
+  "display" : "Report of clinical encounter (record artifact)"
+}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.classCode", "version": "2.0.4", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+v: {
+  "display" : "Encounter report",
+  "code" : "371531000",
+  "system" : "http://snomed.info/sct"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "4241000179101",
+  "display" : "Laboratory report (record artifact)"
+}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.typeCode", "version": "2.0.4", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+v: {
+  "display" : "Laboratory report (record artifact)",
+  "code" : "4241000179101",
+  "system" : "http://snomed.info/sct"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "422735006",
+  "display" : "Summary clinical document (record artifact)"
+}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.classCode", "version": "2.0.4", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+v: {
+  "display" : "Summary clinical document (record artifact)",
+  "code" : "422735006",
+  "system" : "http://snomed.info/sct"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "min"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "The code provided (http://unitsofmeasure.org#min) is not valid in the value set 'BodyWeightUnits' (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "min"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "The code provided (http://unitsofmeasure.org#min) is not valid in the value set 'BodyLengthUnits' (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "min"
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "The code provided (http://unitsofmeasure.org#min) is not valid in the value set 'MNITimeOfGestation' (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "mmol/L"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "The code provided (http://unitsofmeasure.org#mmol/L) is not valid in the value set 'BodyWeightUnits' (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "mmol/L"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "The code provided (http://unitsofmeasure.org#mmol/L) is not valid in the value set 'BodyLengthUnits' (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "mmol/L"
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "The code provided (http://unitsofmeasure.org#mmol/L) is not valid in the value set 'MNITimeOfGestation' (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "%"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "The code provided (http://unitsofmeasure.org#%) is not valid in the value set 'BodyWeightUnits' (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "%"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "The code provided (http://unitsofmeasure.org#%) is not valid in the value set 'BodyLengthUnits' (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "%"
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "The code provided (http://unitsofmeasure.org#%) is not valid in the value set 'MNITimeOfGestation' (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "wk"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "The code provided (http://unitsofmeasure.org#wk) is not valid in the value set 'BodyWeightUnits' (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "wk"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "The code provided (http://unitsofmeasure.org#wk) is not valid in the value set 'BodyLengthUnits' (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "kg"
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "The code provided (http://unitsofmeasure.org#kg) is not valid in the value set 'MNITimeOfGestation' (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "kg"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "kg",
+  "code" : "kg",
+  "system" : "http://unitsofmeasure.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "cm"
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "The code provided (http://unitsofmeasure.org#cm) is not valid in the value set 'MNITimeOfGestation' (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "cm"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "cm",
+  "code" : "cm",
+  "system" : "http://unitsofmeasure.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "kg/m2"
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "The code provided (http://unitsofmeasure.org#kg/m2) is not valid in the value set 'MNITimeOfGestation' (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "kg/m2"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "kg/m2",
+  "code" : "kg/m2",
+  "system" : "http://unitsofmeasure.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "wk"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "wk",
+  "code" : "wk",
+  "system" : "http://unitsofmeasure.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "371525003",
+  "display" : "Clinical procedure report"
+}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.classCode", "version": "2.0.4", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+v: {
+  "display" : "Clinical procedure report",
+  "code" : "371525003",
+  "system" : "http://snomed.info/sct"
+}
+-------------------------------------------------------------------------------------

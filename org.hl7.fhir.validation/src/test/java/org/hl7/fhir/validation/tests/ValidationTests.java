@@ -34,6 +34,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
+import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
@@ -218,7 +219,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
         String n = e.getAsString();
         InputStream cnt = n.endsWith(".tgz") ? TestingUtilities.loadTestResourceStream("validator", n) : null;
         if (cnt != null) {
-          igLoader.loadPackage(NpmPackage.fromPackage(cnt));
+          igLoader.loadPackage(NpmPackage.fromPackage(cnt), true);
         } else {
           igLoader.loadIg(vCurr.getIgs(), vCurr.getBinaries(), n, true);
         }
@@ -459,6 +460,9 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     }
 
     if (fails.size() > 0) {
+      System.out.println("");
+      System.out.println("========================================================");
+      System.out.println("");
       for (String s : fails) {
         System.out.println(s);
       }
@@ -469,7 +473,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       System.out.println("");
       System.out.println("========================================================");
       System.out.println("");      
-      Assertions.fail(fails.toString());
+      Assertions.fail("\r\n"+String.join("\r\n", fails));
     }
 //    int ec = 0;
 //    int wc = 0;
