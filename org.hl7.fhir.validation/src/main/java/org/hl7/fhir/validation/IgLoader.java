@@ -219,27 +219,56 @@ public class IgLoader {
       }
       String pid = explore ? getPackageCacheManager().getPackageId(src) : null;
       if (!Utilities.noString(pid))
-        return fetchByPackage(pid + (v == null ? "" : "#" + v));
+        return fetchByPackage(pid + (v == null ? "" : "#" + v), false);
       else
         return fetchFromUrl(src + (v == null ? "" : "|" + v), explore);
     }
 
     File f = new File(Utilities.path(src));
     if (f.exists()) {
-      if (f.isDirectory() && new File(Utilities.path(src, "package.tgz")).exists())
-        return loadPackage(new FileInputStream(Utilities.path(src, "package.tgz")), Utilities.path(src, "package.tgz"));
-      if (f.isDirectory() && new File(Utilities.path(src, "igpack.zip")).exists())
-        return readZip(new FileInputStream(Utilities.path(src, "igpack.zip")));
-      if (f.isDirectory() && new File(Utilities.path(src, "validator.pack")).exists())
-        return readZip(new FileInputStream(Utilities.path(src, "validator.pack")));
-      if (f.isDirectory())
+      if (f.isDirectory() && new File(Utilities.path(src, "package.tgz")).exists()) {
+        FileInputStream stream = new FileInputStream(Utilities.path(src, "package.tgz"));
+        try {
+          return loadPackage(stream, Utilities.path(src, "package.tgz"), false);
+        } finally {
+          stream.close();
+        }
+      }
+      if (f.isDirectory() && new File(Utilities.path(src, "igpack.zip")).exists()) {
+        FileInputStream stream = new FileInputStream(Utilities.path(src, "igpack.zip"));
+        try {
+          return readZip(stream);
+        } finally {
+          stream.close();
+        }
+      }
+      if (f.isDirectory() && new File(Utilities.path(src, "validator.pack")).exists()) {
+        FileInputStream stream = new FileInputStream(Utilities.path(src, "validator.pack"));
+        try {
+          return readZip(stream);
+        } finally {
+          stream.close();
+        }
+      }
+      if (f.isDirectory()) {
         return scanDirectory(f, recursive);
-      if (src.endsWith(".tgz"))
-        return loadPackage(new FileInputStream(src), src);
-      if (src.endsWith(".pack"))
-        return readZip(new FileInputStream(src));
-      if (src.endsWith("igpack.zip"))
-        return readZip(new FileInputStream(src));
+      }
+      FileInputStream stream = new FileInputStream(src);
+      try {
+        if (src.endsWith(".tgz")) {
+          Map<String, byte[]> res = loadPackage(stream, src, false);
+          return res;
+        }
+        if (src.endsWith(".pack")) {
+          return readZip(stream);
+        }
+        if (src.endsWith("igpack.zip")) {
+          return readZip(stream);
+        }
+      } finally {
+        stream.close();
+      }
+
       Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), TextFile.fileToBytes(f), src, true);
       if (fmt != null) {
         Map<String, byte[]> res = new HashMap<String, byte[]>();
@@ -247,7 +276,7 @@ public class IgLoader {
         return res;
       }
     } else if ((src.matches(FilesystemPackageCacheManager.PACKAGE_REGEX) || src.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX)) && !src.endsWith(".zip") && !src.endsWith(".tgz")) {
-      return fetchByPackage(src);
+      return fetchByPackage(src, false);
     }
     throw new FHIRException("Unable to find/resolve/read " + (explore ? "-ig " : "") + src);
   }
@@ -429,7 +458,7 @@ public class IgLoader {
   }
 
 
-  private Map<String, byte[]> fetchByPackage(String src) throws FHIRException, IOException {
+  private Map<String, byte[]> fetchByPackage(String src, boolean loadInContext) throws FHIRException, IOException {
     String id = src;
     String version = null;
     if (src.contains("#")) {
@@ -447,17 +476,16 @@ public class IgLoader {
     } else
       pi = getPackageCacheManager().loadPackageFromCacheOnly(id, version);
     if (pi == null) {
-      return resolvePackage(id, version);
+      return resolvePackage(id, version, loadInContext);
     } else
-      return loadPackage(pi);
+      return loadPackage(pi, loadInContext);
   }
 
-  private Map<String, byte[]> loadPackage(InputStream stream, String name) throws FHIRException, IOException {
-    return loadPackage(NpmPackage.fromPackage(stream));
+  private Map<String, byte[]> loadPackage(InputStream stream, String name, boolean loadInContext) throws FHIRException, IOException {
+    return loadPackage(NpmPackage.fromPackage(stream), loadInContext);
   }
 
-  public Map<String, byte[]> loadPackage(NpmPackage pi) throws FHIRException, IOException {
-    getContext().getLoadedPackages().add(pi.name() + "#" + pi.version());
+  public Map<String, byte[]> loadPackage(NpmPackage pi, boolean loadInContext) throws FHIRException, IOException {
     Map<String, byte[]> res = new HashMap<String, byte[]>();
     for (String s : pi.dependencies()) {
       if (s.endsWith(".x") && s.length() > 2) {
@@ -475,11 +503,15 @@ public class IgLoader {
       if (!getContext().getLoadedPackages().contains(s)) {
         if (!VersionUtilities.isCorePackage(s)) {
           System.out.println("+  .. load IG from " + s);
-          res.putAll(fetchByPackage(s));
+          res.putAll(fetchByPackage(s, loadInContext));
         }
       }
     }
 
+    if (loadInContext) {
+//      getContext().getLoadedPackages().add(pi.name() + "#" + pi.version());
+      getContext().loadFromPackage(pi, ValidatorUtils.loaderForVersion(pi.fhirVersion()));
+    }
     for (String s : pi.listResources("CodeSystem", "ConceptMap", "ImplementationGuide", "CapabilityStatement", "SearchParameter", "Conformance", "StructureMap", "ValueSet", "StructureDefinition")) {
       res.put(s, TextFile.streamToBytes(pi.load("package", s)));
     }
@@ -488,11 +520,11 @@ public class IgLoader {
     return res;
   }
 
-  private Map<String, byte[]> resolvePackage(String id, String v) throws FHIRException, IOException {
+  private Map<String, byte[]> resolvePackage(String id, String v, boolean loadInContext) throws FHIRException, IOException {
     NpmPackage pi = getPackageCacheManager().loadPackage(id, v);
     if (pi != null && v == null)
       System.out.println("   ... Using version " + pi.version());
-    return loadPackage(pi);
+    return loadPackage(pi,  loadInContext);
   }
 
   private String readInfoVersion(byte[] bs) throws IOException {
@@ -603,7 +635,7 @@ public class IgLoader {
 
   private Map<String, byte[]> fetchFromUrl(String src, boolean explore) throws FHIRException, IOException {
     if (src.endsWith(".tgz"))
-      return loadPackage(fetchFromUrlSpecific(src, false), src);
+      return loadPackage(fetchFromUrlSpecific(src, false), src, false);
     if (src.endsWith(".pack"))
       return readZip(fetchFromUrlSpecific(src, false));
     if (src.endsWith("igpack.zip"))
@@ -613,7 +645,7 @@ public class IgLoader {
     if (explore) {
       stream = fetchFromUrlSpecific(Utilities.pathURL(src, "package.tgz"), true);
       if (stream != null)
-        return loadPackage(stream, Utilities.pathURL(src, "package.tgz"));
+        return loadPackage(stream, Utilities.pathURL(src, "package.tgz"), false);
       // todo: these options are deprecated - remove once all IGs have been rebuilt post R4 technical correction
       stream = fetchFromUrlSpecific(Utilities.pathURL(src, "igpack.zip"), true);
       if (stream != null)

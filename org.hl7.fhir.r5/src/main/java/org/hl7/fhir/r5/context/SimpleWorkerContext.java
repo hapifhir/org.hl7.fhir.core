@@ -466,6 +466,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     if (loadedPackages.contains(pi.id()+"#"+pi.version())) {
       return 0;
     }
+    
     loadedPackages.add(pi.id()+"#"+pi.version());
     if (packageTracker != null) {
       packageTracker.packageLoaded(pi.id(), pi.version());
@@ -734,6 +735,10 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   public void setAllowLazyLoading(boolean allowLazyLoading) {
     this.allowLazyLoading = allowLazyLoading;
+  }
+
+  public String loadedPackageSummary() {
+     return loadedPackages.toString();
   }
 
   
