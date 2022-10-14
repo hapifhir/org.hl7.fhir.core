@@ -210,20 +210,24 @@ public class ValidationService {
   }
 
   public void convertSources(CliContext cliContext, ValidationEngine validator) throws Exception {
-    if (cliContext.getOutput() != null) {
+
       List<String> sources = cliContext.getSources();
       if (sources.size() == 1) {
+        if (cliContext.getOutput() == null) {
+          throw new Exception("Converting a single source requires a -output parameter to be set");
+        }
         System.out.println(" ...convert");
         validator.convert(sources.get(0), cliContext.getOutput());
       } else {
+        if (cliContext.getOutputSuffix() == null) {
+          throw new Exception("Converting multiple sources requires a -outputSuffix parameter to be set");
+        }
         for (int i = 0; i < sources.size(); i++) {
-//            String output = "[" + String.valueOf(i) + "]" + cliContext.getOutput();
-            String output = sources.get(i) + "." + cliContext.getOutput();
+            String output = sources.get(i) + "." + cliContext.getOutputSuffix();
             validator.convert(sources.get(i), output);
             System.out.println(" ...convert [" + i +  "] (" + sources.get(i) + " to " + output + ")");
         }
       }
-    }
   }
 
   public void evaluateFhirpath(CliContext cliContext, ValidationEngine validator) throws Exception {
@@ -232,22 +236,27 @@ public class ValidationService {
   }
 
   public void generateSnapshot(CliContext cliContext, ValidationEngine validator) throws Exception {
-    if (cliContext.getOutput() != null) {
+
       List<String> sources = cliContext.getSources();
       if (sources.size() == 1) {
+        if (cliContext.getOutput() == null) {
+          throw new Exception("Snapshot generation for a single source requires a -output parameter to be set");
+        }
         StructureDefinition r = validator.snapshot(sources.get(0), cliContext.getSv());
         System.out.println(" ...generated snapshot successfully");
         validator.handleOutput(r, cliContext.getOutput(), cliContext.getSv());
       } else {
+        if (cliContext.getOutputSuffix() == null) {
+          throw new Exception("Snapshot generation for multiple sources requires a -outputSuffix parameter to be set");
+        }
         for (int i = 0; i < sources.size(); i++) {
           StructureDefinition r = validator.snapshot(sources.get(i), cliContext.getSv());
-//          String output = "[" + String.valueOf(i) + "]" + cliContext.getOutput();
-            String output = sources.get(i) + "." + cliContext.getOutput();
+          String output = sources.get(i) + "." + cliContext.getOutputSuffix();
           validator.handleOutput(r, output, cliContext.getSv());
           System.out.println(" ...generated snapshot [" + i +  "] successfully (" + sources.get(i) + " to " + output + ")");
         }
       }
-    }
+
   }
 
   public void generateNarrative(CliContext cliContext, ValidationEngine validator) throws Exception {
