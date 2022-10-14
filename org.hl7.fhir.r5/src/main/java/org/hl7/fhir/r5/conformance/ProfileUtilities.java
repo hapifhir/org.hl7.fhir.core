@@ -142,6 +142,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
+import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
@@ -3978,7 +3979,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       tracker.used = !max.getValue().equals("0");
 
     String hint = null;
-    if ("*".equals(max.getValue()) && 0 == min.getValue()) {
+    if (max.hasValue() && min.hasValue() && "*".equals(max.getValue()) && 0 == min.getValue()) {
       if (definition.hasExtension(ToolingExtensions.EXT_JSON_EMPTY)) {
         String code = ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_JSON_EMPTY);
         if ("present".equals(code)) {
@@ -4868,6 +4869,14 @@ public class ProfileUtilities extends TranslatingUtilities {
           c.getPieces().add(gen.new Piece(null, " binding style", null));            
           
         }
+        if (definition.hasExtension(ToolingExtensions.EXT_IMPLIED_PREFIX)) {
+          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+          c.getPieces().add(gen.new Piece(null, "When this element is read ", null));          
+          Piece piece = gen.new Piece("code");
+          piece.addHtml(new XhtmlNode(NodeType.Text).setContent(ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_IMPLIED_PREFIX)));
+          c.getPieces().add(piece);          
+          c.getPieces().add(gen.new Piece(null, " is prefixed to the value before validation", null));          
+        }
         if (definition.hasExtension(ToolingExtensions.EXT_XML_NAME)) {
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
           if (definition.hasExtension(ToolingExtensions.EXT_XML_NAMESPACE)) {
@@ -4884,6 +4893,26 @@ public class ProfileUtilities extends TranslatingUtilities {
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
           c.getPieces().add(gen.new Piece(null, translate("sd.table", "XML Namespace")+": ", null).addStyle("font-weight:bold"));
           c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ToolingExtensions.EXT_XML_NAMESPACE), null));          
+        }
+        if (definition.hasExtension(ToolingExtensions.EXT_TYPE_SPEC)) {
+          for (Extension e : definition.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_SPEC)) {
+            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+            String cond = ToolingExtensions.readStringExtension(e, "condition");
+            String type = ToolingExtensions.readStringExtension(e, "type");
+            c.getPieces().add(gen.new Piece(null, "If ", null));          
+            Piece piece = gen.new Piece("code");
+            piece.addHtml(new XhtmlNode(NodeType.Text).setContent(cond));
+            c.getPieces().add(piece);          
+            c.getPieces().add(gen.new Piece(null, "then the type is ", null));          
+            StructureDefinition sd = context.fetchTypeDefinition(type);
+            if (sd == null) {
+              c.getPieces().add(gen.new Piece("<code>"));          
+              c.getPieces().add(gen.new Piece(null, type, null));          
+              c.getPieces().add(gen.new Piece("</code>"));          
+            } else {
+              c.getPieces().add(gen.new Piece(sd.getUserString("path"), sd.getType(), null));          
+            }
+          }
         }
         if (definition != null) {
           ElementDefinitionBindingComponent binding = null;
@@ -6798,17 +6827,21 @@ public class ProfileUtilities extends TranslatingUtilities {
 
 
   public static StructureDefinition makeBaseDefinition(FHIRVersion fhirVersion) {
+    return makeBaseDefinition(fhirVersion.toCode());
+  }
+  public static StructureDefinition makeBaseDefinition(String fhirVersion) {
     StructureDefinition base = new StructureDefinition();
     base.setId("Base");
     base.setUrl("http://hl7.org/fhir/StructureDefinition/Base");
-    base.setVersion(fhirVersion.toCode());
+    base.setVersion(fhirVersion);
     base.setName("Base"); 
     base.setStatus(PublicationStatus.ACTIVE);
     base.setDate(new Date());
-    base.setFhirVersion(fhirVersion);
+    base.setFhirVersion(FHIRVersion.fromCode(fhirVersion));
     base.setKind(StructureDefinitionKind.COMPLEXTYPE); 
     base.setAbstract(true); 
     base.setType("Base");
+    base.setUserData("path", "http://build.fhir.org/types.html#Base");
     ElementDefinition e = base.getSnapshot().getElementFirstRep();
     e.setId("Base");
     e.setPath("Base"); 
@@ -6967,6 +7000,32 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
     }
     return null;
+  }
+
+  public static String formatTypeSpecifiers(IWorkerContext context, ElementDefinition d) {
+    StringBuilder b = new StringBuilder();
+    boolean first = true;
+    for (Extension e : d.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_SPEC)) {
+      if (first) first = false; else b.append("<br/>");
+      String cond = ToolingExtensions.readStringExtension(e, "condition");
+      String type = ToolingExtensions.readStringExtension(e, "type");
+      b.append("If <code>");
+      b.append(Utilities.escapeXml(cond));
+      b.append("</code> then the type is ");
+      StructureDefinition sd = context.fetchTypeDefinition(type);
+      if (sd == null) {
+        b.append("<code>");
+        b.append(Utilities.escapeXml(type));
+        b.append("</code>");
+      } else {
+        b.append("<a href=\"");
+        b.append(sd.getUserString("path"));
+        b.append("\">");
+        b.append(Utilities.escapeXml(sd.getType()));        
+        b.append("</a>");
+      }
+    }
+    return b.toString();
   }
 
 

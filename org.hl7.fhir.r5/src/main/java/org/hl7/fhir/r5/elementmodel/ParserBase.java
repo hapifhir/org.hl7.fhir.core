@@ -109,6 +109,7 @@ public abstract class ParserBase {
   protected ILinkResolver linkResolver;
   protected boolean showDecorations;
   protected IdRenderingPolicy idPolicy = IdRenderingPolicy.All;
+  protected StructureDefinition logical;
   
 	public ParserBase(IWorkerContext context) {
 		super();
@@ -231,6 +232,18 @@ public abstract class ParserBase {
     } else {
       return idPolicy.forRoot();
     }
+  }
+
+  public boolean hasLogical() {
+    return logical != null;
+  }
+
+  public StructureDefinition getLogical() {
+    return logical;
+  }
+
+  public void setLogical(StructureDefinition logical) {
+    this.logical = logical;
   }
 
 }

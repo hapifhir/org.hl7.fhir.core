@@ -32,7 +32,9 @@ package org.hl7.fhir.r5.elementmodel;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -42,11 +44,13 @@ import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.TypesUtilities;
+import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.Utilities;
 
 public class Property {
@@ -217,6 +221,9 @@ public class Property {
 //      return sd != null && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;
 	}
 
+	public boolean isPrimitive() {
+	  return isPrimitive(getType());
+	}
 	private String lowFirst(String t) {
 		return t.substring(0, 1).toLowerCase()+t.substring(1);
 	}
@@ -458,6 +465,48 @@ public class Property {
   @Override
   public String toString() {
     return definition.getPath();
+  }
+
+
+  public boolean isJsonKeyArray() {
+    return definition.hasExtension(ToolingExtensions.EXT_JSON_PROP_KEY);
+  }
+
+
+  public String getJsonKeyProperty() {
+    return ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_JSON_PROP_KEY);
+  }
+
+
+  public boolean hasTypeSpecifier() {
+    return definition.hasExtension(ToolingExtensions.EXT_TYPE_SPEC);
+  }
+
+
+  public List<StringPair> getTypeSpecifiers() {
+    List<StringPair> res = new ArrayList<>();
+    for (Extension e : definition.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_SPEC)) {
+      res.add(new StringPair(ToolingExtensions.readStringExtension(e,  "condition"), ToolingExtensions.readStringExtension(e,  "type")));
+    }
+    return res;
+  }
+
+
+  public Property cloneToType(StructureDefinition sd) {
+    Property res = new Property(context, definition.copy(), sd);
+    res.definition.getType().clear();
+    res.definition.getType().add(new TypeRefComponent(sd.getUrl()));
+    return res;
+  }
+
+
+  public boolean hasImpliedPrefix() {
+    return definition.hasExtension(ToolingExtensions.EXT_IMPLIED_PREFIX);
+  }
+
+
+  public String getImpliedPrefix() {
+    return ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_IMPLIED_PREFIX);
   }
 
 

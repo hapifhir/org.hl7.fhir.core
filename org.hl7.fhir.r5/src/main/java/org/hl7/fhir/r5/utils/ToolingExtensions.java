@@ -133,7 +133,8 @@ public class ToolingExtensions {
   public static final String EXT_IGP_FORMAT = "http://hl7.org/fhir/StructureDefinition/igpublisher-res-format";
   public static final String EXT_IGP_SOURCE = "http://hl7.org/fhir/StructureDefinition/igpublisher-res-source";
   public static final String EXT_IGP_CONTAINED_RESOURCE_INFO = "http://hl7.org/fhir/tools/StructureDefinition/contained-resource-information";
-  public static final String EXT_BINARY_FORMAT = "http://hl7.org/fhir/StructureDefinition/implementationguide-resource-format";
+  public static final String EXT_BINARY_FORMAT_OLD = "http://hl7.org/fhir/StructureDefinition/implementationguide-resource-format";
+  public static final String EXT_BINARY_FORMAT_NEW = "http://hl7.org/fhir/tools/StructureDefinition/implementationguide-resource-format";
   public static final String EXT_IGP_RESOURCE_INFO = "http://hl7.org/fhir/tools/StructureDefinition/resource-information";
   public static final String EXT_IGP_LOADVERSION = "http://hl7.org/fhir/StructureDefinition/igpublisher-loadversion";
   public static final String EXT_LIST_PACKAGE = "http://hl7.org/fhir/StructureDefinition/list-packageId";
@@ -207,12 +208,14 @@ public class ToolingExtensions {
   public static final String EXT_SD_DEPENDENCY = "http://hl7.org/fhir/StructureDefinition/structuredefinition-dependencies";
   public static final String EXT_XML_NO_ORDER = "http://hl7.org/fhir/StructureDefinition/structuredefinition-xml-no-order";
   public static final String EXT_DEF_TYPE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-defaulttype";
+  public static final String EXT_TYPE_SPEC = "http://hl7.org/fhir/tools/StructureDefinition/type-specifier";
   
   // in the tooling IG
   public static final String EXT_PRIVATE_BASE = "http://hl7.org/fhir/tools/";
   public static final String EXT_BINDING_ADDITIONAL = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding";
   public static final String EXT_JSON_PROP_KEY = "http://hl7.org/fhir/tools/StructureDefinition/json-property-key";
   public static final String EXT_JSON_EMPTY = "http://hl7.org/fhir/tools/StructureDefinition/json-empty-behavior";
+  public static final String EXT_IMPLIED_PREFIX = "http://hl7.org/fhir/tools/StructureDefinition/implied-string-prefix";
     
 
   // unregistered? - don't know what these are used for 

@@ -412,7 +412,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
           if (rw == null) {
             renderReference(res, x, r);
           } else {
-            String ref = context.getResolver().urlForContained(context, res.fhirType(), res.getId(), rw.fhirType(), rw.getId());
+            String ref = context.getResolver() != null ?context.getResolver().urlForContained(context, res.fhirType(), res.getId(), rw.fhirType(), rw.getId()) : null;
             if (ref == null) {
               x.an(rw.getId());
               RenderingContext ctxtc = context.copy();

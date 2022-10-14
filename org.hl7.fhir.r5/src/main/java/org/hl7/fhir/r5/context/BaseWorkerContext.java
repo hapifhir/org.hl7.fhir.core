@@ -2135,6 +2135,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   public void finishLoading() {
+    if (!hasResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Base")) {
+      cacheResource(ProfileUtilities.makeBaseDefinition(version));
+    }
     for (StructureDefinition sd : listStructures()) {
       try {
         if (sd.getSnapshot().isEmpty()) { 
@@ -2145,6 +2148,20 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         System.out.println("Unable to generate snapshot for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
       }
     }  
+    codeSystems.setVersion(version);
+    valueSets.setVersion(version);
+    maps.setVersion(version);
+    transforms.setVersion(version);
+    structures.setVersion(version);
+    measures.setVersion(version);
+    libraries.setVersion(version);
+    guides.setVersion(version);
+    capstmts.setVersion(version);
+    searchParameters.setVersion(version);
+    questionnaires.setVersion(version);
+    operations.setVersion(version);
+    plans.setVersion(version);
+    systems.setVersion(version);
   }
 
   protected String tail(String url) {

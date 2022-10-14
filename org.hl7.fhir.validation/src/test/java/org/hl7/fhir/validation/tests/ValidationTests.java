@@ -34,6 +34,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
+import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
@@ -218,7 +219,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
         String n = e.getAsString();
         InputStream cnt = n.endsWith(".tgz") ? TestingUtilities.loadTestResourceStream("validator", n) : null;
         if (cnt != null) {
-          igLoader.loadPackage(NpmPackage.fromPackage(cnt));
+          igLoader.loadPackage(NpmPackage.fromPackage(cnt), true);
         } else {
           igLoader.loadIg(vCurr.getIgs(), vCurr.getBinaries(), n, true);
         }
@@ -336,8 +337,17 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
           igLoader.loadIg(vCurr.getIgs(), vCurr.getBinaries(), e.getAsString(), true);
         }
       }
+      List<StructureDefinition> profiles = new ArrayList<>();
+      if (logical.has("format")) {
+        StructureDefinition sd = val.getContext().fetchResource(StructureDefinition.class, JsonUtilities.str(logical, "format"));
+        if (sd != null) {
+          profiles.add(sd);
+        } else {
+          throw new Error("Logical Model '"+JsonUtilities.str(logical, "format")+"' not found");
+        }
+      }
       List<ValidationMessage> errorsLogical = new ArrayList<ValidationMessage>();
-      Element le = val.validate(null, errorsLogical, new ByteArrayInputStream(testCaseContent), fmt);
+      Element le = val.validate(null, errorsLogical, new ByteArrayInputStream(testCaseContent), fmt, profiles);
       if (logical.has("expressions")) {
         FHIRPathEngine fp = new FHIRPathEngine(val.getContext());
         for (JsonElement e : logical.getAsJsonArray("expressions")) {
@@ -431,7 +441,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     for (OperationOutcomeIssueComponent issGoal : goal.getIssue()) {
       OperationOutcomeIssueComponent issActual = findMatchingIssue(actual, issGoal);
       if (issActual == null) {
-        fails.add("Expected Issue not found: "+issGoal.toString());
+        fails.add("Expected Issue missing: "+issGoal.toString());
       } else {
         map.put(issActual, issGoal);
       }
@@ -450,6 +460,9 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     }
 
     if (fails.size() > 0) {
+      System.out.println("");
+      System.out.println("========================================================");
+      System.out.println("");
       for (String s : fails) {
         System.out.println(s);
       }
@@ -460,7 +473,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       System.out.println("");
       System.out.println("========================================================");
       System.out.println("");      
-      Assertions.fail(fails.toString());
+      Assertions.fail("\r\n"+String.join("\r\n", fails));
     }
 //    int ec = 0;
 //    int wc = 0;
