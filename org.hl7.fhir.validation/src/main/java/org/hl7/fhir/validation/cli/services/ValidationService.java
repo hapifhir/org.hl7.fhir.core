@@ -211,16 +211,18 @@ public class ValidationService {
 
   public void convertSources(CliContext cliContext, ValidationEngine validator) throws Exception {
 
+      if ((cliContext.getOutput() == null) ^ (cliContext.getOutputSuffix() == null)) {
+        throw new Exception("Convert requires one of {-output, -outputSuffix} parameter to be set");
+      }
+
       List<String> sources = cliContext.getSources();
-      if (sources.size() == 1) {
-        if (cliContext.getOutput() == null) {
-          throw new Exception("Converting a single source requires a -output parameter to be set");
-        }
+      if ((sources.size() == 1) && (cliContext.getOutput() != null)) {
+        if 
         System.out.println(" ...convert");
         validator.convert(sources.get(0), cliContext.getOutput());
       } else {
         if (cliContext.getOutputSuffix() == null) {
-          throw new Exception("Converting multiple sources requires a -outputSuffix parameter to be set");
+          throw new Exception("Converting multiple/wildcard sources requires a -outputSuffix parameter to be set");
         }
         for (int i = 0; i < sources.size(); i++) {
             String output = sources.get(i) + "." + cliContext.getOutputSuffix();
@@ -237,17 +239,18 @@ public class ValidationService {
 
   public void generateSnapshot(CliContext cliContext, ValidationEngine validator) throws Exception {
 
+      if ((cliContext.getOutput() == null) ^ (cliContext.getOutputSuffix() == null)) {
+        throw new Exception("Snapshot generation requires one of {-output, -outputSuffix} parameter to be set");
+      }
+
       List<String> sources = cliContext.getSources();
-      if (sources.size() == 1) {
-        if (cliContext.getOutput() == null) {
-          throw new Exception("Snapshot generation for a single source requires a -output parameter to be set");
-        }
+      if ((sources.size() == 1) && (cliContext.getOutput() != null)) {
         StructureDefinition r = validator.snapshot(sources.get(0), cliContext.getSv());
         System.out.println(" ...generated snapshot successfully");
         validator.handleOutput(r, cliContext.getOutput(), cliContext.getSv());
       } else {
         if (cliContext.getOutputSuffix() == null) {
-          throw new Exception("Snapshot generation for multiple sources requires a -outputSuffix parameter to be set");
+          throw new Exception("Snapshot generation for multiple/wildcard sources requires a -outputSuffix parameter to be set");
         }
         for (int i = 0; i < sources.size(); i++) {
           StructureDefinition r = validator.snapshot(sources.get(i), cliContext.getSv());
