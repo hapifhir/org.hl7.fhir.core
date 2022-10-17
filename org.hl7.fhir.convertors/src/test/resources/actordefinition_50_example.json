@@ -1,0 +1,20 @@
+{
+  "resourceType": "ActorDefinition",
+  "id": "server",
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative: ActorDefinition</b><a name=\"server\"> </a></p><div style=\"display: inline-block; background-color: #d9e0e7; padding: 6px; margin: 4px; border: 1px solid #8da1b4; border-radius: 5px; line-height: 60%\"><p style=\"margin-bottom: 0px\">Resource ActorDefinition &quot;server&quot; </p></div><p><b>url</b>: <a href=\"http://hl7.org/fhir/ActorDefinition/server\">http://hl7.org/fhir/ActorDefinition/server</a></p><p><b>identifier</b>: id: urn:oid:2.16.840.1.113883.4.642.27.1</p><p><b>name</b>: ServerActor</p><p><b>title</b>: Server Actor</p><p><b>status</b>: active</p><p><b>date</b>: 2021-11-02T14:31:30.239Z</p><p><b>type</b>: system</p></div>"
+  },
+  "url": "http://hl7.org/fhir/ActorDefinition/server",
+  "identifier": [
+    {
+      "system": "urn:ietf:rfc:3986",
+      "value": "urn:oid:2.16.840.1.113883.4.642.27.1"
+    }
+  ],
+  "name": "ServerActor",
+  "title": "Server Actor",
+  "status": "active",
+  "date": "2021-11-02T14:31:30.239Z",
+  "type": "system"
+}

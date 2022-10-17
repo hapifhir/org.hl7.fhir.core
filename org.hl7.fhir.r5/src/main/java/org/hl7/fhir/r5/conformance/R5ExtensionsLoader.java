@@ -31,18 +31,28 @@ public class R5ExtensionsLoader {
   private int count;
   private byte[] map;
   private NpmPackage pck;
+  private Map<String, ValueSet> valueSets;
+  private Map<String, CodeSystem> codeSystems;
+  private List<StructureDefinition> structures;
+  private IWorkerContext context;
+  private PackageVersion pd;
   
-  public R5ExtensionsLoader(BasePackageCacheManager pcm) {
+  public R5ExtensionsLoader(BasePackageCacheManager pcm, IWorkerContext context) {
     super();
     this.pcm = pcm;
+    this.context = context;
+
+    valueSets = new HashMap<>();
+    codeSystems = new HashMap<>();
+    structures = new ArrayList<>();
   }
 
-  public void loadR5Extensions(IWorkerContext context) throws FHIRException, IOException {
+  public void load() throws FHIRException, IOException {
     pck = pcm.loadPackage("hl7.fhir.r5.core", "current");
+    pd = new PackageVersion(pck.name(), pck.version(), pck.dateAsDate());    
+    map = pck.hasFile("other", "spec.internals") ?  TextFile.streamToBytes(pck.load("other", "spec.internals")) : null;
+
     String[] types = new String[] { "StructureDefinition", "ValueSet", "CodeSystem" };
-    Map<String, ValueSet> valueSets = new HashMap<>();
-    Map<String, CodeSystem> codeSystems = new HashMap<>();
-    List<StructureDefinition> extensions = new ArrayList<>();
     JsonParser json = new JsonParser();
     for (PackageResourceInformation pri : pck.listIndexedResources(types)) {
       CanonicalResource r = (CanonicalResource) json.parse(pck.load(pri));
@@ -52,28 +62,40 @@ public class R5ExtensionsLoader {
       } else if (r instanceof ValueSet) {
         valueSets.put(r.getUrl(), (ValueSet) r);
       } else if (r instanceof StructureDefinition)  {
-        extensions.add((StructureDefinition) r);
+        structures.add((StructureDefinition) r);
       }
     } 
-    PackageVersion pd = new PackageVersion(pck.name(), pck.version(), pck.dateAsDate());
+  }
+  
+  public void loadR5Extensions() throws FHIRException, IOException {
     count = 0;
     List<String> typeNames = new ContextUtilities(context).getTypeNames();
-    for (StructureDefinition sd : extensions) {    
+    for (StructureDefinition sd : structures) {    
       if (sd.getType().equals("Extension") && sd.getDerivation() == TypeDerivationRule.CONSTRAINT &&
           !context.hasResource(StructureDefinition.class, sd.getUrl())) {
         if (survivesStrippingTypes(sd, context, typeNames)) {
           count++;
           sd.setUserData("path", Utilities.pathURL(pck.getWebLocation(), "extension-"+sd.getId().toLowerCase()+".html"));
           context.cacheResourceFromPackage(sd, pd);
-          registerTerminologies(sd, context, valueSets, codeSystems, pd);
+          registerTerminologies(sd);
         }
       }
     }
     
-    map = pck.hasFile("other", "spec.internals") ?  TextFile.streamToBytes(pck.load("other", "spec.internals")) : null;
   }
 
-  private void registerTerminologies(StructureDefinition sd, IWorkerContext context, Map<String, ValueSet> valueSets, Map<String, CodeSystem> codeSystems, PackageVersion pd) {
+  public void loadR5SpecialTypes(List<String> types) throws FHIRException, IOException {
+    for (StructureDefinition sd : structures) {    
+      if (Utilities.existsInList(sd.getType(), types)) {
+        count++;
+        sd.setUserData("path", Utilities.pathURL(pck.getWebLocation(), sd.getId().toLowerCase()+".html"));
+        context.cacheResourceFromPackage(sd, pd);
+        registerTerminologies(sd);
+      }
+    }    
+  }
+
+  private void registerTerminologies(StructureDefinition sd) {
     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
       if (ed.hasBinding() && ed.getBinding().hasValueSet()) {
         String vs = ed.getBinding().getValueSet();
