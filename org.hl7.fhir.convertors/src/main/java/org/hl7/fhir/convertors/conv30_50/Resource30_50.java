@@ -8,6 +8,7 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Narrative30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Code30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Id30_50;
 import org.hl7.fhir.convertors.conv30_50.resources30_50.ActivityDefinition30_50;
+import org.hl7.fhir.convertors.conv30_50.resources30_50.ActorDefinition30_50;
 import org.hl7.fhir.convertors.conv30_50.resources30_50.AllergyIntolerance30_50;
 import org.hl7.fhir.convertors.conv30_50.resources30_50.Appointment30_50;
 import org.hl7.fhir.convertors.conv30_50.resources30_50.AppointmentResponse30_50;
@@ -86,7 +87,10 @@ import org.hl7.fhir.convertors.conv30_50.resources30_50.SupplyDelivery30_50;
 import org.hl7.fhir.convertors.conv30_50.resources30_50.TestReport30_50;
 import org.hl7.fhir.convertors.conv30_50.resources30_50.TestScript30_50;
 import org.hl7.fhir.convertors.conv30_50.resources30_50.ValueSet30_50;
+import org.hl7.fhir.convertors.conv40_50.resources40_50.ActorDefinition40_50;
+import org.hl7.fhir.convertors.conv40_50.resources40_50.Basic40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.dstu3.model.Basic;
 
 public class Resource30_50 {
 
@@ -124,8 +128,14 @@ public class Resource30_50 {
       return AppointmentResponse30_50.convertAppointmentResponse((org.hl7.fhir.dstu3.model.AppointmentResponse) src);
     if (src instanceof org.hl7.fhir.dstu3.model.AuditEvent)
       return AuditEvent30_50.convertAuditEvent((org.hl7.fhir.dstu3.model.AuditEvent) src);
-    if (src instanceof org.hl7.fhir.dstu3.model.Basic)
-      return Basic30_50.convertBasic((org.hl7.fhir.dstu3.model.Basic) src);
+    if (src instanceof org.hl7.fhir.dstu3.model.Basic) {
+      org.hl7.fhir.dstu3.model.Basic basic = (Basic) src;
+      if (basic.getCode().hasCoding("http://hl7.org/fhir/fhir-types", "ActorDefinition")) {
+        return ActorDefinition30_50.convertActorDefinition((org.hl7.fhir.dstu3.model.Basic) src);
+      } else {
+        return Basic30_50.convertBasic((org.hl7.fhir.dstu3.model.Basic) src);
+      }
+    }
     if (src instanceof org.hl7.fhir.dstu3.model.Binary)
       return Binary30_50.convertBinary((org.hl7.fhir.dstu3.model.Binary) src);
     if (src instanceof org.hl7.fhir.dstu3.model.BodySite)
@@ -280,6 +290,8 @@ public class Resource30_50 {
     }
     if (src instanceof org.hl7.fhir.r5.model.ActivityDefinition)
       return ActivityDefinition30_50.convertActivityDefinition((org.hl7.fhir.r5.model.ActivityDefinition) src);
+    if (src instanceof org.hl7.fhir.r5.model.ActorDefinition)
+      return ActorDefinition30_50.convertActorDefinition((org.hl7.fhir.r5.model.ActorDefinition) src);
     if (src instanceof org.hl7.fhir.r5.model.AllergyIntolerance)
       return AllergyIntolerance30_50.convertAllergyIntolerance((org.hl7.fhir.r5.model.AllergyIntolerance) src);
     if (src instanceof org.hl7.fhir.r5.model.Appointment)
@@ -288,7 +300,8 @@ public class Resource30_50 {
       return AppointmentResponse30_50.convertAppointmentResponse((org.hl7.fhir.r5.model.AppointmentResponse) src);
     if (src instanceof org.hl7.fhir.r5.model.AuditEvent)
       return AuditEvent30_50.convertAuditEvent((org.hl7.fhir.r5.model.AuditEvent) src);
-    if (src instanceof org.hl7.fhir.r5.model.Basic) return Basic30_50.convertBasic((org.hl7.fhir.r5.model.Basic) src);
+    if (src instanceof org.hl7.fhir.r5.model.Basic)
+      return Basic30_50.convertBasic((org.hl7.fhir.r5.model.Basic) src);
     if (src instanceof org.hl7.fhir.r5.model.Binary)
       return Binary30_50.convertBinary((org.hl7.fhir.r5.model.Binary) src);
     if (src instanceof org.hl7.fhir.r5.model.BodyStructure)

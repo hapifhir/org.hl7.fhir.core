@@ -378,8 +378,9 @@ public class ValidationService {
       System.out.println(" - " + validator.getContext().countAllCaches() + " resources (" + tt.milestone() + ")");
       igLoader.loadIg(validator.getIgs(), validator.getBinaries(), "hl7.terminology", false);
       System.out.print("  Load R5 Extensions");
-      R5ExtensionsLoader r5e = new R5ExtensionsLoader(validator.getPcm());
-      r5e.loadR5Extensions(validator.getContext());
+      R5ExtensionsLoader r5e = new R5ExtensionsLoader(validator.getPcm(), validator.getContext());
+      r5e.load();
+      r5e.loadR5Extensions();
       System.out.println(" - " + r5e.getCount() + " resources (" + tt.milestone() + ")");
       System.out.print("  Terminology server " + cliContext.getTxServer());
       String txver = validator.setTerminologyServer(cliContext.getTxServer(), cliContext.getTxLog(), ver);

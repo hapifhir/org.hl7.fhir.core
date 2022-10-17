@@ -571,8 +571,6 @@ public class StructureMapUtilities {
         b.append(rtp.getValueDecimalType().asStringValue());
       else if (rtp.hasValueIdType())
         b.append(rtp.getValueIdType().asStringValue());
-      else if (rtp.hasValueDecimalType())
-        b.append(rtp.getValueDecimalType().asStringValue());
       else if (rtp.hasValueIntegerType())
         b.append(rtp.getValueIntegerType().asStringValue());
       else
