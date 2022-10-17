@@ -55,6 +55,8 @@ public class CliContext {
   private String map = null;
   @JsonProperty("output")
   private String output = null;
+  @JsonProperty("outputSuffix")
+  private String outputSuffix;
   @JsonProperty("htmlOutput")
   private String htmlOutput = null;
   @JsonProperty("txServer")
@@ -122,7 +124,8 @@ public class CliContext {
 
   @JsonProperty("jurisdiction")
   private String jurisdiction = JurisdictionUtilities.getJurisdictionFromLocale(Locale.getDefault().getCountry());
-  
+
+
   @JsonProperty("map")
   public String getMap() {
     return map;
@@ -318,6 +321,17 @@ public class CliContext {
   @JsonProperty("output")
   public CliContext setOutput(String output) {
     this.output = output;
+    return this;
+  }
+
+  @JsonProperty("outputSuffix")
+  public String getOutputSuffix() {
+    return outputSuffix;
+  }
+
+  @JsonProperty("outputSuffix")
+  public CliContext setOutputSuffix(String outputSuffix) {
+    this.outputSuffix = outputSuffix;
     return this;
   }
 
@@ -630,6 +644,7 @@ public class CliContext {
       Objects.equals(extensions, that.extensions) &&
       Objects.equals(map, that.map) &&
       Objects.equals(output, that.output) &&
+      Objects.equals(outputSuffix, that.outputSuffix) &&
       Objects.equals(htmlOutput, that.htmlOutput) &&
       Objects.equals(txServer, that.txServer) &&
       Objects.equals(sv, that.sv) &&
@@ -659,7 +674,7 @@ public class CliContext {
   @Override
   public int hashCode() {
     return Objects.hash(doNative, extensions, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, 
-            noExtensibleBindingMessages, noInvariants, wantInvariantsInMessages, map, output, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, fhirpath, snomedCT,
+            noExtensibleBindingMessages, noInvariants, wantInvariantsInMessages, map, output, outputSuffix, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, fhirpath, snomedCT,
             targetVer, igs, questionnaireMode, level, profiles, sources, mode, locale, locations, crumbTrails, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars);
   }
 
@@ -680,6 +695,7 @@ public class CliContext {
       ", wantInvariantsInMessages=" + wantInvariantsInMessages +
       ", map='" + map + '\'' +
       ", output='" + output + '\'' +
+      ", outputSuffix='" + output + '\'' +
       ", htmlOutput='" + htmlOutput + '\'' +
       ", txServer='" + txServer + '\'' +
       ", sv='" + sv + '\'' +
