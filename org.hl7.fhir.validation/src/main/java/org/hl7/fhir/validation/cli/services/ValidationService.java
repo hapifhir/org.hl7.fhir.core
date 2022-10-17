@@ -211,7 +211,7 @@ public class ValidationService {
 
   public void convertSources(CliContext cliContext, ValidationEngine validator) throws Exception {
 
-      if ((cliContext.getOutput() == null) ^ (cliContext.getOutputSuffix() == null)) {
+      if (!((cliContext.getOutput() == null) ^ (cliContext.getOutputSuffix() == null))) {
         throw new Exception("Convert requires one of {-output, -outputSuffix} parameter to be set");
       }
 
@@ -238,7 +238,7 @@ public class ValidationService {
 
   public void generateSnapshot(CliContext cliContext, ValidationEngine validator) throws Exception {
 
-      if ((cliContext.getOutput() == null) ^ (cliContext.getOutputSuffix() == null)) {
+      if (!((cliContext.getOutput() == null) ^ (cliContext.getOutputSuffix() == null))) {
         throw new Exception("Snapshot generation requires one of {-output, -outputSuffix} parameter to be set");
       }
 
