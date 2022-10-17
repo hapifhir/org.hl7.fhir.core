@@ -73,6 +73,8 @@ The following parameters are supported:
      number of times
 -output [file]: a filename for the results (OperationOutcome)
         Default: results are sent to the std out.
+-outputSuffix [string]: used in -convert and -snapshot to deal with
+        one or more result files (where -output can only have one)
 -debug
         Produce additional information about the loading/validation process
 -recurse
@@ -148,11 +150,13 @@ you must provide a specific parameter:
 
  -convert
 
--convert requires the parameters -source and -output. ig may be used to provide
-a logical model. 
-If the -source maps to more than one source resource, e.g. when using a wildcard, 
-multiple -output files with a `<sourcefilename>.` prefix will be created.
-Example: `-source *.xml -convert -output convert.json` outputs: 
+-convert requires the parameters -source and one of {-output, -outputSuffix}. 
+-ig may be used to provide a logical model. 
+
+If the -source maps to one or more resources, e.g. when using a wildcard, 
+use -outputSuffix <suffix>, to obtain multiple result files with a 
+`<sourcefilename>.<suffix>` filename.
+Example: `-source *.xml -convert -outputSuffix convert.json` outputs: 
 `source1.xml.convert.json`, `source2.xml.convert.json`, etc. .
 
 FHIRPath
@@ -176,12 +180,16 @@ must provide a specific parameter:
 
  -snapshot
 
--snapshot requires the parameters -defn, -txserver, -source, and -output. ig may
-be used to provide necessary base profiles. 
-The -output filetype (xml, json) may imply a conversion.
-If the -source maps to more than one source profile, e.g. when using a wildcard, 
-multiple -output files with a `<sourcefilename>.` prefix will be created. 
-Example: `-source *.xml -snapshot -output snapshot.json` outputs: 
+-snapshot requires the parameters -defn, -txserver, -source, and 
+one of {-output, -outputSuffix}. 
+-ig may be used to provide necessary base profiles. 
+
+The -output/-outputSuffic filetype (xml, json) may imply a conversion.
+
+If the -source maps to one or more profiles, e.g. when using a wildcard, 
+use -outputSuffix <suffix>, to obtain multiple result files with a 
+`<sourcefilename>.<suffix>` filename.
+Example: `-source *.xml -snapshot -outputSuffix snapshot.json` outputs: 
 `source1.xml.snapshot.json`, `source2.xml.snapshot.json`, etc. .
 
 Tests
