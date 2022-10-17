@@ -9,6 +9,7 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Extension40
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Meta40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Narrative40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.Basic;
 
 public class Resource40_50 {
 
@@ -48,7 +49,14 @@ public class Resource40_50 {
       return AppointmentResponse40_50.convertAppointmentResponse((org.hl7.fhir.r4.model.AppointmentResponse) src);
     if (src instanceof org.hl7.fhir.r4.model.AuditEvent)
       return AuditEvent40_50.convertAuditEvent((org.hl7.fhir.r4.model.AuditEvent) src);
-    if (src instanceof org.hl7.fhir.r4.model.Basic) return Basic40_50.convertBasic((org.hl7.fhir.r4.model.Basic) src);
+    if (src instanceof org.hl7.fhir.r4.model.Basic) {
+      org.hl7.fhir.r4.model.Basic basic = (Basic) src;
+      if (basic.getCode().hasCoding("http://hl7.org/fhir/fhir-types", "ActorDefinition")) {
+        return ActorDefinition40_50.convertActorDefinition((org.hl7.fhir.r4.model.Basic) src);
+      } else {
+        return Basic40_50.convertBasic((org.hl7.fhir.r4.model.Basic) src);
+      }
+    }
     if (src instanceof org.hl7.fhir.r4.model.Binary)
       return Binary40_50.convertBinary((org.hl7.fhir.r4.model.Binary) src);
     if (src instanceof org.hl7.fhir.r4.model.BiologicallyDerivedProduct)
@@ -281,6 +289,8 @@ public class Resource40_50 {
       return ActivityDefinition40_50.convertActivityDefinition((org.hl7.fhir.r5.model.ActivityDefinition) src);
     if (src instanceof org.hl7.fhir.r5.model.AllergyIntolerance)
       return AllergyIntolerance40_50.convertAllergyIntolerance((org.hl7.fhir.r5.model.AllergyIntolerance) src);
+    if (src instanceof org.hl7.fhir.r5.model.ActorDefinition)
+      return ActorDefinition40_50.convertActorDefinition((org.hl7.fhir.r5.model.ActorDefinition) src);
     if (src instanceof org.hl7.fhir.r5.model.Appointment)
       return Appointment40_50.convertAppointment((org.hl7.fhir.r5.model.Appointment) src);
     if (src instanceof org.hl7.fhir.r5.model.AppointmentResponse)
