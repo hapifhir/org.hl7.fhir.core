@@ -217,7 +217,6 @@ public class ValidationService {
 
       List<String> sources = cliContext.getSources();
       if ((sources.size() == 1) && (cliContext.getOutput() != null)) {
-        if 
         System.out.println(" ...convert");
         validator.convert(sources.get(0), cliContext.getOutput());
       } else {
