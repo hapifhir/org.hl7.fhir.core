@@ -224,7 +224,7 @@ public class DirectWrappers {
           return s;
         } else {
           // it might be a human name?
-          throw new Error("What to do?");
+          throw new Error("What to do? Type is "+b.fhirType());
         }
       }
       return null;
