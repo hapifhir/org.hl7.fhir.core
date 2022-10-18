@@ -282,9 +282,9 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   }
 
   @Override
-  public boolean isDatatype(String typeSimple) {
-    // TODO Auto-generated method stub
-    return false;
+  public boolean isDatatype(String type) {
+    StructureDefinition sd = context.fetchTypeDefinition(type);
+    return sd != null && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;
   }
 
   @Override
@@ -329,6 +329,11 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   @Override
   public boolean prependLinks() {
     return false;
+  }
+
+  public boolean isPrimitiveDatatype(String type) {
+    StructureDefinition sd = context.fetchTypeDefinition(type);
+    return sd != null && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;
   }
 
 }
