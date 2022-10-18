@@ -53,6 +53,6 @@ public interface ValueSetChecker {
       return warnings;
     }
   }
-  Boolean codeInValueSet(String system, String code, ValidationProcessInfo info) throws ETooCostly, EOperationOutcome, Exception;
+  Boolean codeInValueSet(String system, String version, String code, ValidationProcessInfo info) throws ETooCostly, EOperationOutcome, Exception;
 
 }

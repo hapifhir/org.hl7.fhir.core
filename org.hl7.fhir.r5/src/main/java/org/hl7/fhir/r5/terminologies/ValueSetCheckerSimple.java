@@ -68,6 +68,7 @@ import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.ValidationContextResourceProxy;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.npm.PackageInfo;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -136,7 +137,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         if (!c.hasSystem()) {
           info.getWarnings().add(context.formatMessage(I18nConstants.CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE));
         }
-        CodeSystem cs = resolveCodeSystem(c.getSystem());
+        CodeSystem cs = resolveCodeSystem(c.getSystem(), c.getVersion());
         ValidationResult res = null;
         if (cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) {
           res = context.validateCode(options.noClient(), c, null);
@@ -154,7 +155,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     if (valueset != null && options.getValueSetMode() != ValueSetMode.NO_MEMBERSHIP_CHECK) {
       Boolean result = false;
       for (Coding c : code.getCoding()) {
-        Boolean ok = codeInValueSet(c.getSystem(), c.getCode(), info);
+        Boolean ok = codeInValueSet(c.getSystem(), c.getVersion(), c.getCode(), info);
         if (ok == null && result == false) {
           result = null;
         } else if (ok) {
@@ -179,17 +180,21 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     }
   }
 
-  public CodeSystem resolveCodeSystem(String system) {
+  public CodeSystem resolveCodeSystem(String system, String version) {
     for (CodeSystem t : localSystems) {
-      if (t.getUrl().equals(system)) {
+      if (t.getUrl().equals(system) && versionsMatch(version, t.getVersion())) {
         return t;
       }
     }
-    CodeSystem cs = context.fetchCodeSystem(system);
+    CodeSystem cs = context.fetchCodeSystem(system, version);
     if (cs == null) {
-      cs = findSpecialCodeSystem(system);
+      cs = findSpecialCodeSystem(system, version);
     }
     return cs;
+  }
+
+  private boolean versionsMatch(String versionTest, String versionActual) {
+    return versionTest == null && VersionUtilities.versionsMatch(versionTest, versionActual);
   }
 
   public ValidationResult validateCode(Coding code) throws FHIRException {
@@ -212,7 +217,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       }
       inExpansion = checkExpansion(code);
       inInclude = checkInclude(code);
-      CodeSystem cs = resolveCodeSystem(system);
+      CodeSystem cs = resolveCodeSystem(system, code.getVersion());
       if (cs == null) {
         warningMessage = "Unable to resolve system "+system;
         if (!inExpansion) {
@@ -257,7 +262,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     // then, if we have a value set, we check it's in the value set
     if (valueset != null && options.getValueSetMode() != ValueSetMode.NO_MEMBERSHIP_CHECK) {
       if ((res==null || res.isOk())) { 
-        Boolean ok = codeInValueSet(system, code.getCode(), info);
+        Boolean ok = codeInValueSet(system, code.getVersion(), code.getCode(), info);
         if (ok == null || !ok) {
           if (res == null) {
             res = new ValidationResult((IssueSeverity) null, null);
@@ -311,7 +316,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     return false;
   }
 
-  private CodeSystem findSpecialCodeSystem(String system) {
+  private CodeSystem findSpecialCodeSystem(String system, String version) {
     if ("urn:ietf:rfc:3986".equals(system)) {
       CodeSystem cs = new CodeSystem();
       cs.setUrl(system);
@@ -588,7 +593,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
           if (vsi.hasFilter()) {
             return false;
           }
-          CodeSystem cs = resolveCodeSystem(vsi.getSystem());
+          CodeSystem cs = resolveCodeSystem(vsi.getSystem(), vsi.getVersion());
           if (cs != null && cs.getContent() == CodeSystemContentMode.COMPLETE) {
 
             if (vsi.hasConcept()) {
@@ -646,7 +651,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
   }
   
   @Override
-  public Boolean codeInValueSet(String system, String code, ValidationProcessInfo info) throws FHIRException {
+  public Boolean codeInValueSet(String system, String version, String code, ValidationProcessInfo info) throws FHIRException {
     if (valueset == null) {
       return false;
     }
@@ -657,7 +662,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     } else if (valueset.hasCompose()) {
       int i = 0;
       for (ConceptSetComponent vsi : valueset.getCompose().getInclude()) {
-        Boolean ok = inComponent(vsi, i, system, code, valueset.getCompose().getInclude().size() == 1, info);
+        Boolean ok = inComponent(vsi, i, system, version, code, valueset.getCompose().getInclude().size() == 1, info);
         i++;
         if (ok == null && result == false) {
           result = null;
@@ -668,7 +673,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       }
       i = valueset.getCompose().getInclude().size();
       for (ConceptSetComponent vsi : valueset.getCompose().getExclude()) {
-        Boolean nok = inComponent(vsi, i, system, code, valueset.getCompose().getInclude().size() == 1, info);
+        Boolean nok = inComponent(vsi, i, system, version, code, valueset.getCompose().getInclude().size() == 1, info);
         i++;
         if (nok == null && result == false) {
           result = null;
@@ -681,22 +686,22 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     return result;
   }
 
-  private Boolean inComponent(ConceptSetComponent vsi, int vsiIndex, String system, String code, boolean only, ValidationProcessInfo info) throws FHIRException {
+  private Boolean inComponent(ConceptSetComponent vsi, int vsiIndex, String system, String version, String code, boolean only, ValidationProcessInfo info) throws FHIRException {
     boolean ok = true;
     
     if (vsi.hasValueSet()) {
       if (isValueSetUnionImports()) {
         ok = false;
         for (UriType uri : vsi.getValueSet()) {
-          if (inImport(uri.getValue(), system, code)) {
+          if (inImport(uri.getValue(), system, version, code)) {
             return true;
           }
         }
       } else {
-        ok = inImport(vsi.getValueSet().get(0).getValue(), system, code);
+        ok = inImport(vsi.getValueSet().get(0).getValue(), system, version, code);
         for (int i = 1; i < vsi.getValueSet().size(); i++) {
           UriType uri = vsi.getValueSet().get(i);
-          ok = ok && inImport(uri.getValue(), system, code); 
+          ok = ok && inImport(uri.getValue(), system, version, code); 
         }
       }
     }
@@ -717,7 +722,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     if (!system.equals(vsi.getSystem()))
       return false;
     // ok, we need the code system
-    CodeSystem cs = resolveCodeSystem(system);
+    CodeSystem cs = resolveCodeSystem(system, version);
     if (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT)) {
       // make up a transient value set with
       ValueSet vs = new ValueSet();
@@ -836,12 +841,12 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     return vsc;
   }
 
-  private boolean inImport(String uri, String system, String code) throws FHIRException {
+  private boolean inImport(String uri, String system, String version, String code) throws FHIRException {
     ValueSetCheckerSimple vs = getVs(uri);
     if (vs == null) {
       return false;
     } else {
-      Boolean ok = vs.codeInValueSet(system, code, null);
+      Boolean ok = vs.codeInValueSet(system, version, code, null);
       return ok != null && ok;
     }
   }
