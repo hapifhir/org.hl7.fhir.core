@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 
 public class ResourceLanguageFileBuilderTests {
   
-  @Test
+//  @Test
   public void testXLIFFGeneration() throws FHIRFormatError, IOException {
     Resource res = new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "structuredefinition-language.json"));
     res.setUserData("path", "test.resource.xml");
