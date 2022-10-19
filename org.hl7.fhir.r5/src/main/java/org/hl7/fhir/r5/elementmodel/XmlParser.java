@@ -347,8 +347,8 @@ public class XmlParser extends ParserBase {
       	Property property = getAttrProp(properties, attr.getLocalName(), attr.getNamespaceURI());
       	if (property != null) {
 	    	  String av = attr.getNodeValue();
-	    	  if (ToolingExtensions.hasExtension(property.getDefinition(), "http://www.healthintersections.com.au/fhir/StructureDefinition/elementdefinition-dateformat"))
-	    	  	av = convertForDateFormatFromExternal(ToolingExtensions.readStringExtension(property.getDefinition(), "http://www.healthintersections.com.au/fhir/StructureDefinition/elementdefinition-dateformat"), av);
+	    	  if (ToolingExtensions.hasExtension(property.getDefinition(), ToolingExtensions.EXT_DATE_FORMAT))
+	    	  	av = convertForDateFormatFromExternal(ToolingExtensions.readStringExtension(property.getDefinition(), ToolingExtensions.EXT_DATE_FORMAT), av);
 	    		if (property.getName().equals("value") && element.isPrimitive())
 	    			element.setValue(av);
 	    		else {
@@ -512,14 +512,14 @@ public class XmlParser extends ParserBase {
 	}
 
 	private String convertForDateFormatFromExternal(String fmt, String av) throws FHIRException {
-  	if ("v3".equals(fmt)) {
+  	if ("v3".equals(fmt) || "YYYYMMDDHHMMSS.UUUU[+|-ZZzz]".equals(fmt)) {
   	  try {
     		DateTimeType d = DateTimeType.parseV3(av);
     		return d.asStringValue();
   	  } catch (Exception e) {
   	    return av; // not at all clear what to do in this case.
   	  }
-  	} else
+  	}
       throw new FHIRException(context.formatMessage(I18nConstants.UNKNOWN_DATA_FORMAT_, fmt));
 	}
 
@@ -721,8 +721,8 @@ public class XmlParser extends ParserBase {
           if (linkResolver != null)
             xml.link(linkResolver.resolveType(child.getType()));
           String av = child.getValue();
-          if (ToolingExtensions.hasExtension(child.getProperty().getDefinition(), "http://www.healthintersections.com.au/fhir/StructureDefinition/elementdefinition-dateformat"))
-            av = convertForDateFormatToExternal(ToolingExtensions.readStringExtension(child.getProperty().getDefinition(), "http://www.healthintersections.com.au/fhir/StructureDefinition/elementdefinition-dateformat"), av);
+          if (ToolingExtensions.hasExtension(child.getProperty().getDefinition(), ToolingExtensions.EXT_DATE_FORMAT))
+            av = convertForDateFormatToExternal(ToolingExtensions.readStringExtension(child.getProperty().getDefinition(), ToolingExtensions.EXT_DATE_FORMAT), av);
           xml.attribute(child.getProperty().getXmlNamespace(),child.getProperty().getXmlName(), av);
         }
       }
