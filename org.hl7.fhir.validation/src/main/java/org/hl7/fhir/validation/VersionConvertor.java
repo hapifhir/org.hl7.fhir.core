@@ -1,18 +1,17 @@
 package org.hl7.fhir.validation;
 
-import org.hl7.fhir.convertors.conv10_30.VersionConvertor_10_30;
-import org.hl7.fhir.convertors.conv10_40.VersionConvertor_10_40;
-import org.hl7.fhir.convertors.conv14_30.VersionConvertor_14_30;
-import org.hl7.fhir.convertors.conv14_40.VersionConvertor_14_40;
-import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
-import org.hl7.fhir.convertors.factory.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_30;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_40;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_30;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_40;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.dstu2016may.model.Resource;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.utilities.VersionUtilities;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 public class VersionConvertor {
 

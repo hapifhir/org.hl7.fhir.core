@@ -1,15 +1,13 @@
 package org.hl7.fhir.validation.cli.utils;
 
-import org.apache.commons.io.IOUtils;
+import java.io.File;
+import java.io.IOException;
+
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.SimpleHTTPClient;
 import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
 
 public class ProfileLoader {
   public static byte[] loadProfileSource(String src) throws FHIRException, IOException {

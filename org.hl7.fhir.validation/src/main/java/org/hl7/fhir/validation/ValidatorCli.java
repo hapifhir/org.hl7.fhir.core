@@ -1,5 +1,11 @@
 package org.hl7.fhir.validation;
 
+import java.io.File;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
+import java.util.ArrayList;
+import java.util.List;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -69,15 +75,11 @@ import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.services.ComparisonService;
 import org.hl7.fhir.validation.cli.services.ValidationService;
-import org.hl7.fhir.validation.cli.utils.*;
+import org.hl7.fhir.validation.cli.utils.Display;
+import org.hl7.fhir.validation.cli.utils.EngineMode;
+import org.hl7.fhir.validation.cli.utils.Params;
 import org.hl7.fhir.validation.testexecutor.TestExecutor;
 import org.hl7.fhir.validation.testexecutor.TestExecutorParams;
-
-import java.io.File;
-import java.net.Authenticator;
-import java.net.PasswordAuthentication;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A executable class that will validate one or more FHIR resources against
