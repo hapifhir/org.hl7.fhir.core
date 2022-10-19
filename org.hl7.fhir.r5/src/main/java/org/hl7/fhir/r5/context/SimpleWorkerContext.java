@@ -153,7 +153,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     super(locale);
   }
 
-  private SimpleWorkerContext(SimpleWorkerContext other) throws IOException, FHIRException {
+  public SimpleWorkerContext(SimpleWorkerContext other) throws IOException, FHIRException {
     super();
     copy(other);
   }
@@ -165,12 +165,16 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   
   protected void copy(SimpleWorkerContext other) {
     super.copy(other);
-    questionnaire = other.questionnaire;
     binaries.putAll(other.binaries);
     version = other.version;
     revision = other.revision;
     date = other.date;
     validatorFactory = other.validatorFactory;
+    progress = other.progress;
+    loadedPackages.addAll(other.loadedPackages);
+    canNoTS = other.canNoTS;
+    xverManager = other.xverManager;
+    allowLazyLoading = other.allowLazyLoading;
   }
 
 
