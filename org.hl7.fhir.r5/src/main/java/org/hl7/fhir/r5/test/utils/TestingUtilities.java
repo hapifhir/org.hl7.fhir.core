@@ -116,7 +116,7 @@ public class TestingUtilities extends BaseTestingUtilities {
         NpmPackage utg = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION).loadPackage("hl7.terminology.r5");
         System.out.println("Loading THO: "+utg.name()+"#"+utg.version());
         fcontext.loadFromPackage(utg, new TestPackageLoader(new String[]{"CodeSystem", "ValueSet"}));
-      }
+      }      
       return fcontext;
     } catch (Exception e) {
       e.printStackTrace();
@@ -129,13 +129,15 @@ public class TestingUtilities extends BaseTestingUtilities {
   }
 
   public static SimpleWorkerContext getWorkerContext(NpmPackage npmPackage) throws Exception {
-    SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).withUserAgent(TestConstants.USER_AGENT).withTerminologyCachePath(getTerminologyCacheDirectory()).fromPackage(npmPackage);
+    SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).withUserAgent(TestConstants.USER_AGENT)
+        .withTerminologyCachePath(getTerminologyCacheDirectory()).fromPackage(npmPackage);
     TerminologyCache.setCacheErrors(true);
     return swc;
   }
 
   public static SimpleWorkerContext getWorkerContext(NpmPackage npmPackage, IWorkerContext.IContextResourceLoader loader) throws Exception {
-    SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).withUserAgent(TestConstants.USER_AGENT).withTerminologyCachePath(getTerminologyCacheDirectory()).fromPackage(npmPackage, loader);
+    SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).withUserAgent(TestConstants.USER_AGENT)
+        .withTerminologyCachePath(getTerminologyCacheDirectory()).fromPackage(npmPackage, loader);
     TerminologyCache.setCacheErrors(true);
     return swc;
   }
