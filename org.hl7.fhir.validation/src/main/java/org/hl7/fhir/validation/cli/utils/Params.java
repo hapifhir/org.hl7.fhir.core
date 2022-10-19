@@ -1,15 +1,15 @@
 package org.hl7.fhir.validation.cli.utils;
 
+import java.io.File;
+import java.util.Arrays;
+import java.util.Locale;
+
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.model.HtmlInMarkdownCheck;
-
-import java.io.File;
-import java.util.Arrays;
-import java.util.Locale;
 
 public class Params {
 

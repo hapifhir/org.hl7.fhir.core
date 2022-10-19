@@ -1,8 +1,8 @@
 package org.hl7.fhir.validation;
 
-import org.hl7.fhir.utilities.validation.ValidationMessage;
-
 import java.util.List;
+
+import org.hl7.fhir.utilities.validation.ValidationMessage;
 
 public class ValidationRecord {
 

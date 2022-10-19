@@ -1,7 +1,5 @@
 package org.hl7.fhir.validation.instance.utils;
 
-import org.hl7.fhir.utilities.Utilities;
-
 public class FHIRPathExpressionFixer {
 
 

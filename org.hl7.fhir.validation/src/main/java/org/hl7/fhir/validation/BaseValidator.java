@@ -1,6 +1,15 @@
 package org.hl7.fhir.validation;
 
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -41,7 +50,12 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.JsonParser;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
-import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.DomainResource;
+import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
@@ -55,15 +69,6 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.validation.cli.utils.ValidationLevel;
 import org.hl7.fhir.validation.instance.utils.IndexedElement;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public class BaseValidator implements IValidationContextResourceLoader {
 

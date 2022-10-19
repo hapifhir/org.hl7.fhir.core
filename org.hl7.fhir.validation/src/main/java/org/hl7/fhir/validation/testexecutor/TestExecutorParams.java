@@ -1,10 +1,10 @@
 package org.hl7.fhir.validation.testexecutor;
 
+import static org.hl7.fhir.validation.testexecutor.TestModules.JUNIT5_MODULE_NAMES;
+
 import java.util.Arrays;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-
-import static org.hl7.fhir.validation.testexecutor.TestModules.JUNIT5_MODULE_NAMES;
 
 public class TestExecutorParams {
   private static final String MODULE_DELIMITER = ",";

@@ -1,10 +1,19 @@
 package org.hl7.fhir.validation;
 
-import com.google.gson.JsonObject;
-import lombok.Getter;
-import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
-import org.hl7.fhir.convertors.conv14_50.VersionConvertor_14_50;
-import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
@@ -18,31 +27,20 @@ import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
+import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.SimpleHTTPClient;
 import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
-import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.turtle.Turtle;
-import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.hl7.fhir.validation.cli.utils.Common;
 import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
-import org.w3c.dom.Document;
 
-import java.io.*;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
+import lombok.Getter;
 
 public class IgLoader {
 
