@@ -23,6 +23,7 @@ import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ExpressionNode;
+import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
@@ -149,7 +150,15 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
       typeCodes.add(tc);
       Set<String> tcharacteristics = new HashSet<>();
-      addCharacteristics(tcharacteristics, tc);
+      StructureDefinition tsd = context.fetchTypeDefinition(tc);
+      if (tsd != null && tsd.hasExtension(ToolingExtensions.EXT_TYPE_CHARACTERISTICS)) {
+        for (Extension ext : tsd.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_CHARACTERISTICS)) {
+          tcharacteristics.add(ext.getValue().primitiveValue());
+        }
+      } else {
+        // nothing specified, so infer from known types
+        addCharacteristics(tcharacteristics, tc);
+      }
       characteristics.addAll(tcharacteristics);
       if (type.hasChildren("targetProfile")) {
         rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), tcharacteristics.contains("has-target") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "targetProfile", tc);
@@ -344,6 +353,11 @@ public class StructureDefinitionValidator extends BaseValidator {
       if (sd != null) {
         if (sd.hasExtension(ToolingExtensions.EXT_BINDING_STYLE)) {
           return tc;          
+        }
+        for (Extension ext : sd.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_CHARACTERISTICS)) {
+          if ("can-bind".equals(ext.getValue().primitiveValue())) {
+            return tc;
+          }
         }
       }
     }

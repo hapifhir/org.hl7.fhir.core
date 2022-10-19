@@ -357,7 +357,8 @@ public class I18nConstants {
   public static final String REFERENCE_TO__CANNOT_BE_RESOLVED = "reference_to__cannot_be_resolved";
   public static final String REFERENCE__REFERS_TO_A__NOT_A_VALUESET = "Reference__refers_to_a__not_a_ValueSet";
   public static final String RESOURCE_RESOLUTION_SERVICES_NOT_PROVIDED = "Resource_resolution_services_not_provided";
-  public static final String RESOURCE_RES_ID_MALFORMED = "Resource_RES_ID_Malformed";
+  public static final String RESOURCE_RES_ID_MALFORMED_CHARS = "Resource_RES_ID_Malformed_Chars";
+  public static final String RESOURCE_RES_ID_MALFORMED_LENGTH = "Resource_RES_ID_Malformed_Length";
   public static final String RESOURCE_RES_ID_MISSING = "Resource_RES_ID_Missing";
   public static final String RESOURCE_RES_ID_PROHIBITED = "Resource_RES_ID_Prohibited";
   public static final String RESOURCE_TYPE_MISMATCH_FOR___ = "Resource_type_mismatch_for___";
