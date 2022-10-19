@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -96,6 +98,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
   public final static boolean PRINT_OUTPUT_TO_CONSOLE = true;
   private static final boolean BUILD_NEW = false;
+  private static final boolean CLONE = true;
 
   @Parameters(name = "{index}: id {0}")
   public static Iterable<Object[]> data() throws IOException {
@@ -123,6 +126,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   private JsonObject content;
   private String version;
   private String name;
+  private static StringBuilder logB = new StringBuilder();
 
   private static Map<String, ValidationEngine> ve = new HashMap<>();
 
@@ -141,9 +145,8 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     CacheVerificationLogger logger = new CacheVerificationLogger();
     long setup = System.nanoTime();
 
-    this.name = name;
-    System.out.println("---- " + name + " ---------------------------------------------------------------- ("+System.getProperty("java.vm.name")+")");
-    System.out.println("** Core: ");
+    logOutputToFile("---- " + name + " ---------------------------------------------------------------- ("+System.getProperty("java.vm.name")+")");
+    logOutput("** Core: ");
     String txLog = null;
     if (content.has("txLog")) {
       txLog = content.get("txLog").getAsString();
@@ -171,13 +174,13 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       else
         throw new Exception("unknown version " + version);
     }
-    vCurr = ve.get(version);
+    vCurr = CLONE ? new ValidationEngine(ve.get(version)) : ve.get(version);
     vCurr.getContext().getTxClient().setLogger(logger);
     igLoader = new IgLoader(vCurr.getPcm(), vCurr.getContext(), vCurr.getVersion(), true);
-    if (TestingUtilities.fcontexts == null) {
-      TestingUtilities.fcontexts = new HashMap<>();
-    }
-    TestingUtilities.fcontexts.put(version, vCurr.getContext());
+//    if (TestingUtilities.fcontexts == null) {
+//      TestingUtilities.fcontexts = new HashMap<>();
+//    }
+//    TestingUtilities.fcontexts.put(version, vCurr.getContext());
 
     if (content.has("use-test") && !content.get("use-test").getAsBoolean())
       return;
@@ -217,6 +220,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (content.has("packages")) {
       for (JsonElement e : content.getAsJsonArray("packages")) {
         String n = e.getAsString();
+        logOutputToFile("load package "+n);
         InputStream cnt = n.endsWith(".tgz") ? TestingUtilities.loadTestResourceStream("validator", n) : null;
         if (cnt != null) {
           igLoader.loadPackage(NpmPackage.fromPackage(cnt), true);
@@ -233,6 +237,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
         String filename = e.getAsString();
         String contents = TestingUtilities.loadTestResource("validator", filename);
         CanonicalResource mr = (CanonicalResource) loadResource(filename, contents);
+        logOutputToFile("load resource "+mr.getUrl());
         val.getContext().cacheResource(mr);
         if (mr instanceof ImplementationGuide) {
           val.getImplementationGuides().add((ImplementationGuide) mr);
@@ -247,7 +252,8 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       for (JsonElement je : content.getAsJsonArray("profiles")) {
         String filename = je.getAsString();    
         String contents = TestingUtilities.loadTestResource("validator", filename);
-        StructureDefinition sd = loadProfile(filename, contents, messages, val.isDebug());
+        StructureDefinition sd = loadProfile(filename, contents, messages, val.isDebug(), val.getContext());
+        logOutputToFile("load resource "+sd.getUrl());
         val.getContext().cacheResource(sd);
       }
    }
@@ -273,9 +279,9 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     }
     if (content.has("logical")==false) {
       val.setAssumeValidRestReferences(content.has("assumeValidRestReferences") ? content.get("assumeValidRestReferences").getAsBoolean() : false);
-      System.out.println(String.format("Start Validating (%d to set up)", (System.nanoTime() - setup) / 1000000));
+      logOutput(String.format("Start Validating (%d to set up)", (System.nanoTime() - setup) / 1000000));
       val.validate(null, errors, new ByteArrayInputStream(testCaseContent), fmt);
-      System.out.println(val.reportTimes());
+      logOutput(val.reportTimes());
       checkOutcomes(errors, content, null, name);
     }
     if (content.has("profile")) {
@@ -283,6 +289,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       JsonObject profile = content.getAsJsonObject("profile");
       if (profile.has("packages")) {
         for (JsonElement e : profile.getAsJsonArray("packages")) {
+          logOutputToFile("load package "+e.getAsString());
           igLoader.loadIg(vCurr.getIgs(), vCurr.getBinaries(), e.getAsString(), true);
         }
       }
@@ -294,6 +301,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
           String filename = e.getAsString();
           String contents = TestingUtilities.loadTestResource("validator", filename);
           CanonicalResource mr = (CanonicalResource) loadResource(filename, contents);
+          logOutputToFile("load resource "+mr.getUrl());
           val.getContext().cacheResource(mr);
           if (mr instanceof ImplementationGuide) {
             val.getImplementationGuides().add((ImplementationGuide) mr);
@@ -306,15 +314,16 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
         sd = val.getContext().fetchResource(StructureDefinition.class, filename);
       } else {
         String contents = TestingUtilities.loadTestResource("validator", filename);
-        System.out.println("Name: " + name + " - profile : " + profile.get("source").getAsString());
+        logOutput("Name: " + name + " - profile : " + profile.get("source").getAsString());
         version = content.has("version") ? content.get("version").getAsString() : version;
-        sd = loadProfile(filename, contents, messages, val.isDebug());
+        sd = loadProfile(filename, contents, messages, val.isDebug(), val.getContext());
+        logOutputToFile("load resource "+sd.getUrl());
         val.getContext().cacheResource(sd);
       }
       val.setAssumeValidRestReferences(profile.has("assumeValidRestReferences") ? profile.get("assumeValidRestReferences").getAsBoolean() : false);
       List<ValidationMessage> errorsProfile = new ArrayList<ValidationMessage>();
       val.validate(null, errorsProfile, new ByteArrayInputStream(testCaseContent), fmt, asSdList(sd));
-      System.out.println(val.reportTimes());
+      logOutput(val.reportTimes());
       checkOutcomes(errorsProfile, profile, filename, name);
     }
     if (content.has("logical")) {
@@ -329,11 +338,13 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
           if (mr instanceof StructureDefinition) {
             new ContextUtilities(val.getContext()).generateSnapshot((StructureDefinition) mr, true);
           }
+          logOutputToFile("load resource "+mr.getUrl());
           val.getContext().cacheResource(mr);
         }
       }
       if (logical.has("packages")) {
         for (JsonElement e : logical.getAsJsonArray("packages")) {
+          logOutputToFile("load package "+e.getAsString());
           igLoader.loadIg(vCurr.getIgs(), vCurr.getBinaries(), e.getAsString(), true);
         }
       }
@@ -375,12 +386,12 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     return res;
   }
 
-  public StructureDefinition loadProfile(String filename, String contents, List<ValidationMessage> messages, boolean debug) throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
+  public StructureDefinition loadProfile(String filename, String contents, List<ValidationMessage> messages, boolean debug, IWorkerContext context) throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
     StructureDefinition sd = (StructureDefinition) loadResource(filename, contents);
-    ProfileUtilities pu = new ProfileUtilities(TestingUtilities.getSharedWorkerContext(version), messages, null);
+    ProfileUtilities pu = new ProfileUtilities(context, messages, null);
     pu.setDebug(debug);
     if (!sd.hasSnapshot()) {
-      StructureDefinition base = TestingUtilities.getSharedWorkerContext(version).fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+      StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
       pu.generateSnapshot(base, sd, sd.getUrl(), null, sd.getTitle());
 // (debugging)      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", sd.getId()+".xml")), sd);
     }
@@ -388,7 +399,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       if (r instanceof StructureDefinition) {
         StructureDefinition childSd = (StructureDefinition) r;
         if (!childSd.hasSnapshot()) {
-          StructureDefinition base = TestingUtilities.getSharedWorkerContext(version).fetchResource(StructureDefinition.class, childSd.getBaseDefinition());
+          StructureDefinition base = context.fetchResource(StructureDefinition.class, childSd.getBaseDefinition());
           pu.generateSnapshot(base, childSd, childSd.getUrl(), null, childSd.getTitle());
         }
       }
@@ -448,7 +459,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     }
     for (OperationOutcomeIssueComponent issActual : actual.getIssue()) {
       if (PRINT_OUTPUT_TO_CONSOLE) {
-        System.out.println(issActual.toString());
+        logOutput(issActual.toString());
       }
       OperationOutcomeIssueComponent issGoal = map.get(issActual);
       if (issGoal == null) {
@@ -460,19 +471,19 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     }
 
     if (fails.size() > 0) {
-      System.out.println("");
-      System.out.println("========================================================");
-      System.out.println("");
+      logOutput("");
+      logOutput("========================================================");
+      logOutput("");
       for (String s : fails) {
-        System.out.println(s);
+        logOutput(s);
       }
-      System.out.println("");
-      System.out.println("========================================================");
-      System.out.println("");
-      System.out.println(json);
-      System.out.println("");
-      System.out.println("========================================================");
-      System.out.println("");      
+      logOutput("");
+      logOutput("========================================================");
+      logOutput("");
+      logOutput(json);
+      logOutput("");
+      logOutput("========================================================");
+      logOutput("");      
       Assertions.fail("\r\n"+String.join("\r\n", fails));
     }
 //    int ec = 0;
@@ -483,20 +494,20 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 //      if (vm.getLevel() == IssueSeverity.FATAL || vm.getLevel() == IssueSeverity.ERROR) {
 //        ec++;
 //        if (PRINT_OUTPUT_TO_CONSOLE) {
-//          System.out.println(vm.getDisplay());
+//          logOutput(vm.getDisplay());
 //        }
 //        errLocs.add(vm.getLocation());
 //      }
 //      if (vm.getLevel() == IssueSeverity.WARNING) {
 //        wc++;
 //        if (PRINT_OUTPUT_TO_CONSOLE) {
-//          System.out.println(vm.getDisplay());
+//          logOutput(vm.getDisplay());
 //        }
 //      }
 //      if (vm.getLevel() == IssueSeverity.INFORMATION) {
 //        hc++;
 //        if (PRINT_OUTPUT_TO_CONSOLE) {
-//          System.out.println(vm.getDisplay());
+//          logOutput(vm.getDisplay());
 //        }
 //      }
 //    }
@@ -540,6 +551,17 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
         java.add("outcome", oj);
       }
     }
+  }
+
+  private void logOutput(String msg) {
+    System.out.println(msg);    
+  }
+
+  private void logOutputToFile(String msg) throws IOException {
+    System.out.println(msg); 
+    logB .append(msg);
+    logB.append("\r\n");
+    TextFile.stringToFile(logB.toString(), Utilities.path("[tmp]", "validation-test-log.txt"));
   }
 
   private OperationOutcomeIssueComponent findMatchingIssue(OperationOutcome oo, OperationOutcomeIssueComponent iss) {
@@ -614,18 +636,18 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   public Element fetch(IResourceValidator validator, Object appContext, String url) throws FHIRFormatError, DefinitionException, IOException, FHIRException {
     Element res = null;
     if (url.equals("Patient/test")) {
-      res = new ObjectConverter(TestingUtilities.getSharedWorkerContext(version)).convert(new Patient());
+      res = new ObjectConverter(vCurr.getContext()).convert(new Patient());
     } else if (TestingUtilities.findTestResource("validator", url.replace("/", "-").toLowerCase() + ".json")) {
-      res = Manager.makeParser(TestingUtilities.getSharedWorkerContext(version), FhirFormat.JSON).parseSingle(TestingUtilities.loadTestResourceStream("validator", url.replace("/", "-").toLowerCase() + ".json"));
+      res = Manager.makeParser(vCurr.getContext(), FhirFormat.JSON).parseSingle(TestingUtilities.loadTestResourceStream("validator", url.replace("/", "-").toLowerCase() + ".json"));
     } else if (TestingUtilities.findTestResource("validator", url.replace("/", "-").toLowerCase() + ".xml")) {
-      res = Manager.makeParser(TestingUtilities.getSharedWorkerContext(version), FhirFormat.XML).parseSingle(TestingUtilities.loadTestResourceStream("validator", url.replace("/", "-").toLowerCase() + ".xml"));
+      res = Manager.makeParser(vCurr.getContext(), FhirFormat.XML).parseSingle(TestingUtilities.loadTestResourceStream("validator", url.replace("/", "-").toLowerCase() + ".xml"));
     }
     if (res == null && url.contains("/")) {
       String tail = url.substring(url.indexOf("/") + 1);
       if (TestingUtilities.findTestResource("validator", tail.replace("/", "-").toLowerCase() + ".json")) {
-        res = Manager.makeParser(TestingUtilities.getSharedWorkerContext(version), FhirFormat.JSON).parseSingle(TestingUtilities.loadTestResourceStream("validator", tail.replace("/", "-").toLowerCase() + ".json"));
+        res = Manager.makeParser(vCurr.getContext(), FhirFormat.JSON).parseSingle(TestingUtilities.loadTestResourceStream("validator", tail.replace("/", "-").toLowerCase() + ".json"));
       } else if (TestingUtilities.findTestResource("validator", tail.replace("/", "-").toLowerCase() + ".xml")) {
-        res = Manager.makeParser(TestingUtilities.getSharedWorkerContext(version), FhirFormat.XML).parseSingle(TestingUtilities.loadTestResourceStream("validator", tail.replace("/", "-").toLowerCase() + ".xml"));
+        res = Manager.makeParser(vCurr.getContext(), FhirFormat.XML).parseSingle(TestingUtilities.loadTestResourceStream("validator", tail.replace("/", "-").toLowerCase() + ".xml"));
       }
     }
     return res;
@@ -671,7 +693,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
   @Override
   public boolean conformsToProfile(Object appContext, Base item, String url) throws FHIRException {
-    IResourceValidator val = TestingUtilities.getSharedWorkerContext(version).newValidator();
+    IResourceValidator val = vCurr.getContext().newValidator();
     List<ValidationMessage> valerrors = new ArrayList<ValidationMessage>();
     if (item instanceof Resource) {
       val.validate(appContext, valerrors, (Resource) item, url);
