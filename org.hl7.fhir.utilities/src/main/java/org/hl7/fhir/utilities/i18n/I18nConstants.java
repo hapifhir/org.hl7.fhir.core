@@ -1,8 +1,5 @@
 package org.hl7.fhir.utilities.i18n;
 
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
-
 public class I18nConstants {
 
   
@@ -733,6 +730,7 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIER_ABSTRACT_TYPE = "TYPE_SPECIFIER_ABSTRACT_TYPE";
   public static final String TYPE_SPECIFIER_NM_ILLEGAL_TYPE = "TYPE_SPECIFIER_NM_ILLEGAL_TYPE";
   public static final String TYPE_SPECIFIER_NM_ABSTRACT_TYPE = "TYPE_SPECIFIER_NM_ABSTRACT_TYPE";
+  public static final String Bundle_BUNDLE_Entry_NO_LOGICAL_EXPL = "Bundle_BUNDLE_Entry_NO_LOGICAL_EXPL";
 }
 
 
