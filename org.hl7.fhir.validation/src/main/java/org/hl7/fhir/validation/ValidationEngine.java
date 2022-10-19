@@ -216,6 +216,55 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private IgLoader igLoader;
   @Getter @Setter private Coding jurisdiction;
 
+
+  /**
+   * Creating a validation engine is an expensive operation - takes seconds. 
+   * Once you have a validation engine created, you can quickly clone it to 
+   * get one that can load packages without affecting other uses
+   * 
+   * @param other
+   * @throws FHIRException
+   * @throws IOException
+   */
+  public ValidationEngine(ValidationEngine other) throws FHIRException, IOException {
+    super();
+    context = new SimpleWorkerContext(other.context);
+    binaries.putAll(other.binaries);
+    doNative = other.doNative;
+    noInvariantChecks = other.noInvariantChecks;
+    wantInvariantInMessage = other.wantInvariantInMessage;
+    hintAboutNonMustSupport = other.hintAboutNonMustSupport;
+    anyExtensionsAllowed = other.anyExtensionsAllowed;
+    version = other.version;
+    language = other.language;
+    pcm = other.pcm;
+    mapLog = other.mapLog;
+    debug = other.debug;
+    fetcher = other.fetcher;
+    policyAdvisor = other.policyAdvisor;
+    locator = other.locator;
+    assumeValidRestReferences = other.assumeValidRestReferences;
+    noExtensibleBindingMessages = other.noExtensibleBindingMessages;
+    noUnicodeBiDiControlChars = other.noUnicodeBiDiControlChars;
+    securityChecks = other.securityChecks;
+    crumbTrails = other.crumbTrails;
+    forPublication = other.forPublication;
+    allowExampleUrls = other.allowExampleUrls;
+    showMessagesFromReferences = other.showMessagesFromReferences;
+    doImplicitFHIRPathStringConversion = other.doImplicitFHIRPathStringConversion;
+    htmlInMarkdownCheck = other.htmlInMarkdownCheck;
+    locale = other.locale;
+    igs.addAll(other.igs);
+    extensionDomains.addAll(other.extensionDomains);
+    showTimes = other.showTimes;
+    bundleValidationRules.addAll(other.bundleValidationRules);
+    questionnaireMode = other.questionnaireMode;
+    level = other.level;
+    fhirPathEngine = other.fhirPathEngine;
+    igLoader = other.igLoader;
+    jurisdiction = other.jurisdiction;
+  }
+  
   /**
    * Systems that host the ValidationEngine can use this to control what validation the validator performs.
    * <p>
