@@ -21,7 +21,7 @@ public class ResourceLanguageFileBuilder {
   private String source;
   private String target;
   private IWorkerContext context;
-  StructureDefinition sd = null;
+  StructureDefinition profile = null;
 
   public void prepare(LanguageFileProducer file, IWorkerContext context, String source, String target) {
     this.file = file;
@@ -30,17 +30,30 @@ public class ResourceLanguageFileBuilder {
     this.context = context;
   }
   
+  
+  public StructureDefinition getProfile() {
+    return profile;
+  }
+
+  public void setProfile(StructureDefinition profile) {
+    this.profile = profile;
+  }
+  
   public void build(Resource res) throws IOException {
     String id = res.fhirType();
     String path = res.fhirType() +"-"+res.getIdBase();
     
     if (!source.equals(res.getLanguage())) {
-      throw new FHIRException("Language mismatch");
+      throw new FHIRException("Language mismatch: '"+source+"' => '"+target+"' but resource language is '"+res.getLanguage()+"'");
     }
-    sd = context.fetchTypeDefinition(res.fhirType());
-    if (sd == null) {
-      throw new FHIRException("profile");
+
+    if (profile == null) {
+      profile = context.fetchTypeDefinition(res.fhirType());
+      if (profile == null) {
+        throw new FHIRException("profile");
+      }
     }
+    
     file.start(path, path, res.getUserString("path"), source, target);
   
     for (Property p : res.children()) {
@@ -50,7 +63,6 @@ public class ResourceLanguageFileBuilder {
     file.finish();
   }
   
-
   private void process(Property p, String id, String path) throws IOException {
     if (p.hasValues()) {
       int i = 0;
@@ -58,7 +70,7 @@ public class ResourceLanguageFileBuilder {
         String pid = id+"."+p.getName();
         String ppath = path+"."+p.getName()+(p.isList() ? "["+i+"]" : "");
         i++;
-        if (isTranslatable(p, b, id)) {
+        if (isTranslatable(p, b, pid)) {
           file.makeEntry(ppath, null, null, b.primitiveValue(), getTranslation(b, target));
         }
         for (Property pp : b.children()) {
@@ -71,7 +83,7 @@ public class ResourceLanguageFileBuilder {
   private boolean isTranslatable(Property p, Base b, String id) {
     if (new ContextUtilities(context).isPrimitiveDatatype(b.fhirType())) { // never any translations for non-primitives
       ElementDefinition ed = null;
-      for (ElementDefinition t : sd.getSnapshot().getElement()) {
+      for (ElementDefinition t : profile.getSnapshot().getElement()) {
         if (t.getId().equals(id)) {
           ed = t;
         }
