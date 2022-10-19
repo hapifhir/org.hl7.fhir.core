@@ -38,6 +38,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -4637,7 +4639,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } catch (Exception e) {
         if (STACK_TRACE) { e.printStackTrace(); }
         crLookups.put(url, new CanonicalResourceLookupResult(e.getMessage()));
-        warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_ERROR, profile.primitiveValue(), e.getMessage());                
+        if (e.getMessage().startsWith("java.net.UnknownHostException:")) {
+          try {
+            warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_ERROR_NETWORK, profile.primitiveValue(), new URI(url).getHost());
+          } catch (URISyntaxException e1) {
+            warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_ERROR_NETWORK, profile.primitiveValue(), "??");
+          }
+        } else {
+          warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_ERROR, profile.primitiveValue(), e.getMessage());
+        }
       }
       if (sd != null) {
         context.cacheResource(sd);
