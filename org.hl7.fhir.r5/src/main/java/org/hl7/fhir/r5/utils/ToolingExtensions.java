@@ -121,7 +121,6 @@ public class ToolingExtensions {
   public static final String EXT_XML_NAME = "http://hl7.org/fhir/StructureDefinition/elementdefinition-xml-name";  
   public static final String EXT_BINDING_STYLE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-binding-style";
   public static final String EXT_EXPLICIT_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-explicit-type-name";
-  public static final String EXT_TIME_FORMAT = "http://hl7.org/fhir/StructureDefinition/elementdefinition-timeformat";
 
   public static final String EXT_IGP_RESOURCES = "http://hl7.org/fhir/StructureDefinition/igpublisher-folder-resource";
   public static final String EXT_IGP_PAGES = "http://hl7.org/fhir/StructureDefinition/igpublisher-folder-pages"; 
@@ -210,6 +209,7 @@ public class ToolingExtensions {
   public static final String EXT_XML_NO_ORDER = "http://hl7.org/fhir/StructureDefinition/structuredefinition-xml-no-order";
   public static final String EXT_DEF_TYPE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-defaulttype";
   public static final String EXT_TYPE_SPEC = "http://hl7.org/fhir/tools/StructureDefinition/type-specifier";
+  public static final String EXT_TYPE_CHARACTERISTICS = "http://hl7.org/fhir/StructureDefinition/structuredefinition-type-characteristics";
   
   // in the tooling IG
   public static final String EXT_PRIVATE_BASE = "http://hl7.org/fhir/tools/";
@@ -217,6 +217,7 @@ public class ToolingExtensions {
   public static final String EXT_JSON_PROP_KEY = "http://hl7.org/fhir/tools/StructureDefinition/json-property-key";
   public static final String EXT_JSON_EMPTY = "http://hl7.org/fhir/tools/StructureDefinition/json-empty-behavior";
   public static final String EXT_IMPLIED_PREFIX = "http://hl7.org/fhir/tools/StructureDefinition/implied-string-prefix";
+  public static final String EXT_DATE_FORMAT = "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-date-format";
     
 
   // unregistered? - don't know what these are used for 
