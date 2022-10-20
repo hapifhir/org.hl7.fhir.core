@@ -304,7 +304,7 @@ public class VersionUtilities {
   public static boolean isMajMinOrLaterPatch(String test, String current) {
     String t = getMajMin(test);
     String c = getMajMin(current);
-    if (c != null && c.compareTo(t) == 0) {
+    if (c != null && t != null && c.compareTo(t) == 0) {
       String pt = getPatch(test);
       String pc = getPatch(current);
       if (pt==null || "x".equals(pt)) {
