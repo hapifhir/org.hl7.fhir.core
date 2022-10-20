@@ -5030,7 +5030,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         return; // there'll be an error elsewhere in this case, and we're going to stop.
       List<ElementDefinition> typeChildDefinitions = getActualTypeChildren(hostContext, element, actualType);
       // what were going to do is merge them - the type is not allowed to constrain things that the child definitions already do (well, if it does, it'll be ignored)
-      mergeChildLists(childDefinitions, typeChildDefinitions, definition.getPath(), actualType);
+      childDefinitions = mergeChildLists(childDefinitions, typeChildDefinitions, definition.getPath(), actualType);
     }
 
     List<ElementInfo> children = listChildren(element, stack);
@@ -5045,21 +5045,22 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
-  private void mergeChildLists(List<ElementDefinition> master, List<ElementDefinition> additional, String masterPath, String typePath) {
+  private List<ElementDefinition> mergeChildLists(List<ElementDefinition> source, List<ElementDefinition> additional, String masterPath, String typePath) {
+    List<ElementDefinition> res = new ArrayList<>();
+    res.addAll(source);
     for (ElementDefinition ed : additional) {
       boolean inMaster = false;
-      for (ElementDefinition t : master) {
+      for (ElementDefinition t : source) {
         String tp = masterPath + ed.getPath().substring(typePath.length());
         if (t.getPath().equals(tp)) {
           inMaster = true;
         }
       }
       if (!inMaster) {
-        master.add(ed);
+        res.add(ed);
       }
     }
-
-
+    return res;
   }
 
   // todo: the element definition in context might assign a constrained profile for the type?
