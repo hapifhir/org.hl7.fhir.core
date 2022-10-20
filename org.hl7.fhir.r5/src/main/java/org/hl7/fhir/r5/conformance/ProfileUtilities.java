@@ -2577,7 +2577,7 @@ public class ProfileUtilities extends TranslatingUtilities {
    * @param element - the Element to update
    * @return - the updated Element
    */
-  private ElementDefinition updateURLs(String url, String webUrl, ElementDefinition element) {
+  public ElementDefinition updateURLs(String url, String webUrl, ElementDefinition element) {
     if (element != null) {
       ElementDefinition defn = element;
       if (defn.hasBinding() && defn.getBinding().hasValueSet() && defn.getBinding().getValueSet().startsWith("#"))
