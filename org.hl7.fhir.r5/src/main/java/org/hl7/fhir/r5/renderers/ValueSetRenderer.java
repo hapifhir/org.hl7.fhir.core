@@ -75,7 +75,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
   }
   
   public boolean render(XhtmlNode x, ValueSet vs, boolean header) throws FHIRFormatError, DefinitionException, IOException {
-   List<UsedConceptMap> maps = findReleventMaps(vs);
+    List<UsedConceptMap> maps = findReleventMaps(vs);
     
     boolean hasExtensions;
     if (vs.hasExpansion()) {
@@ -1157,6 +1157,21 @@ public class ValueSetRenderer extends TerminologyRenderer {
             if (doDesignations) {
               addDesignationsToRow(c, designations, tr);
               addLangaugesToRow(c, langs, tr);
+            }
+            for (UsedConceptMap m : maps) {
+              td = tr.td();
+              List<TargetElementComponentWrapper> mappings = findMappingsForCode(c.getCode(), m.getMap());
+              boolean first = true;
+              for (TargetElementComponentWrapper mapping : mappings) {
+                if (!first)
+                    td.br();
+                first = false;
+                XhtmlNode span = td.span(null, mapping.comp.getRelationship().toString());
+                span.addText(getCharForRelationship(mapping.comp));
+                addRefToCode(td, mapping.group.getTarget(), m.getLink(), mapping.comp.getCode()); 
+                if (!Utilities.noString(mapping.comp.getComment()))
+                  td.i().tx("("+mapping.comp.getComment()+")");
+              }
             }
           }
         }
