@@ -1109,8 +1109,19 @@ public class DataRenderer extends Renderer {
       s = "id: "+s;      
     }
 
-    if (ii.hasUse())
-      s = s + " ("+ii.getUse().toString()+")";
+    if (ii.hasUse() || ii.hasPeriod()) {
+      s = s + "(";
+      if (ii.hasUse()) {
+        s = s + "use: "+ii.getUse().toString();
+      }
+      if (ii.hasUse() && ii.hasPeriod()) {
+        s = s + ", ";
+      }
+      if (ii.hasPeriod()) {
+        s = s + "period: "+displayPeriod(ii.getPeriod());
+      }
+      s = s + ")";
+    }    
     return s;
   }
   
