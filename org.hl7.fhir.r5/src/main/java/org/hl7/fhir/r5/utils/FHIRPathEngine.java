@@ -27,6 +27,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.ProfileUtilities.SourcedChildDefinitions;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
@@ -5767,10 +5768,10 @@ public class FHIRPathEngine {
       if (expr.getName().equals("$this")) {
         focus = element;
       } else { 
-        List<ElementDefinition> childDefinitions;
+        SourcedChildDefinitions childDefinitions;
         childDefinitions = profileUtilities.getChildMap(sd, element.getElement());
         // if that's empty, get the children of the type
-        if (childDefinitions.isEmpty()) {
+        if (childDefinitions.getList().isEmpty()) {
 
           sd = fetchStructureByType(element, expr);
           if (sd == null) {
@@ -5778,7 +5779,7 @@ public class FHIRPathEngine {
           }
           childDefinitions = profileUtilities.getChildMap(sd, sd.getSnapshot().getElementFirstRep());
         }
-        for (ElementDefinition t : childDefinitions) {
+        for (ElementDefinition t : childDefinitions.getList()) {
           if (tailMatches(t, expr.getName()) && !t.hasSlicing()) { // GG: slicing is a problem here. This is for an exetnsion with a fixed value (type slicing) 
             focus = new TypedElementDefinition(t);
             break;
@@ -5806,8 +5807,8 @@ public class FHIRPathEngine {
         focus = new TypedElementDefinition(sd.getSnapshot().getElementFirstRep());
       } else if ("extension".equals(expr.getName())) {
         String targetUrl = expr.getParameters().get(0).getConstant().primitiveValue();
-        List<ElementDefinition> childDefinitions = profileUtilities.getChildMap(sd, element.getElement());
-        for (ElementDefinition t : childDefinitions) {
+        SourcedChildDefinitions childDefinitions = profileUtilities.getChildMap(sd, element.getElement());
+        for (ElementDefinition t : childDefinitions.getList()) {
           if (t.getPath().endsWith(".extension") && t.hasSliceName()) {
             System.out.println("t: "+t.getId());
             StructureDefinition exsd = (t.getType() == null || t.getType().isEmpty() || t.getType().get(0).getProfile().isEmpty()) ?
@@ -5816,7 +5817,7 @@ public class FHIRPathEngine {
               exsd = worker.fetchResource(StructureDefinition.class, exsd.getBaseDefinition());
             }
             if (exsd != null && exsd.getUrl().equals(targetUrl)) {
-              if (profileUtilities.getChildMap(sd, t).isEmpty()) {
+              if (profileUtilities.getChildMap(sd, t).getList().isEmpty()) {
                 sd = exsd;
               }
               focus = new TypedElementDefinition(t);

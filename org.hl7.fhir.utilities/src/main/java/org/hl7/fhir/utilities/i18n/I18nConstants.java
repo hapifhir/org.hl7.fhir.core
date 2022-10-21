@@ -80,6 +80,7 @@ public class I18nConstants {
   public static final String DUPLICATE_ID = "DUPLICATE_ID";
   public static final String DUPLICATE_RESOURCE_ = "Duplicate_Resource_";
   public static final String DUPLICATE_RESOURCE_VERSION = "DUPLICATE_RESOURCE_VERSION";
+  public static final String ELEMENT_CANNOT_BE_NULL = "ELEMENT_CANNOT_BE_NULL";
   public static final String ELEMENT_ID__NULL__ON_ = "element_id__null__on_";
   public static final String ELEMENT_MUST_HAVE_SOME_CONTENT = "Element_must_have_some_content";
   public static final String ELEMENT__NULL_ = "element__null_";
