@@ -1966,3 +1966,14 @@ v: {
   "system" : "http://loinc.org"
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "80764-4",
+  "display" : "Pain medicine Plan of care note"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Pain medicine Plan of care note",
+  "code" : "80764-4",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------

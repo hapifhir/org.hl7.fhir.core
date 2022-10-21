@@ -2002,3 +2002,57 @@ v: {
   "system" : "http://snomed.info/sct"
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "310627008",
+  "display" : "Urine drug screening (procedure)"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Urine drug screening",
+  "code" : "310627008",
+  "system" : "http://snomed.info/sct"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "1049502",
+  "display" : "12 HR Oxycodone Hydrochloride 10 MG Extended Release Oral Tablet"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "Unable to find code 1049502 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); The code \"1049502\" is not valid in the system http://snomed.info/sct; The code provided (http://snomed.info/sct#1049502) is not valid in the value set 'All codes known to the system' (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "82423001",
+  "display" : "Chronic pain"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Chronic pain",
+  "code" : "82423001",
+  "system" : "http://snomed.info/sct"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "454281000124100",
+  "display" : "Assessment of risk for opioid abuse (procedure)"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "Unable to find code 454281000124100 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20220731); The code \"454281000124100\" is not valid in the system http://snomed.info/sct; The code provided (http://snomed.info/sct#454281000124100) is not valid in the value set 'All codes known to the system' (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/731000124108",
+  "code" : "454281000124100",
+  "display" : "Assessment of risk for opioid abuse (procedure)"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Assessment of risk for opioid abuse (procedure)",
+  "code" : "454281000124100",
+  "system" : "http://snomed.info/sct"
+}
+-------------------------------------------------------------------------------------
