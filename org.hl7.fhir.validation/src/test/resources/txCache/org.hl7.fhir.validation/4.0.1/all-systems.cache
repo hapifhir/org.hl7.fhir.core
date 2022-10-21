@@ -2039,3 +2039,12 @@ v: {
   "error" : "The code \"[%payloadFormat%]\" is not valid in the system urn:ietf:bcp:13; The code provided (urn:ietf:bcp:13#[%payloadFormat%]) is not valid in the value set 'Mime Types' (from http://tx.fhir.org/r4)"
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "h"
+}, "url": "http://hl7.org/fhir/ValueSet/units-of-time", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "小时",
+  "code" : "h",
+  "system" : "http://unitsofmeasure.org"
+}
+-------------------------------------------------------------------------------------

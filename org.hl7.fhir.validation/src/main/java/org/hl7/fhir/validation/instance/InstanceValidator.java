@@ -62,6 +62,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.ProfileUtilities.SourcedChildDefinitions;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
@@ -249,6 +250,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private static final String EXECUTION_ID = "validator.execution.id";
   private static final String HTML_FRAGMENT_REGEX = "[a-zA-Z]\\w*(((\\s+)(\\S)*)*)";
   private static final boolean STACK_TRACE = false;
+  private static final boolean DEBUG_ELEMENT = false;
   
   private class ValidatorHostServices implements IEvaluationContext {
 
@@ -863,6 +865,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     errors.removeAll(messagesToRemove);
     timeTracker.overall(t);
+    if (DEBUG_ELEMENT) {
+      element.printToOutput();
+    }
   }
 
 
@@ -3622,8 +3627,20 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       long t = System.nanoTime();
       StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
       timeTracker.sd(t);
-      if (sd != null && (sd.getType().equals(type) || sd.getUrl().equals(type)) && sd.hasSnapshot())
+      if (sd != null && (sd.getType().equals(type) || sd.getUrl().equals(type)) && sd.hasSnapshot()) {
         return sd;
+      }
+      if (sd.getAbstract()) {
+        StructureDefinition sdt = context.fetchTypeDefinition(type);
+        StructureDefinition tt = sdt;
+        while (tt != null) {
+          if (tt.getBaseDefinition().equals(sd.getUrl())) {
+            return sdt;
+          }
+        }
+        
+        
+      }
     }
     return null;
   }
@@ -4854,49 +4871,56 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                                 ElementDefinition child, ElementDefinition context, Element resource,
                                 Element element, NodeStack stack, IdStatus idstatus, StructureDefinition parentProfile, PercentageTracker pct) throws FHIRException {
 
-    SpecialElement special = element.getSpecial();
-
-    ContainedReferenceValidationPolicy containedValidationPolicy = getPolicyAdvisor() == null ?
-      ContainedReferenceValidationPolicy.CHECK_VALID : getPolicyAdvisor().policyForContained(this,
-      hostContext, context.fhirType(), context.getId(), special, path, parentProfile.getUrl());
-
-    if (containedValidationPolicy.ignore()) {
-      return;
-    }
-
-    String resourceName = element.getType();
-    TypeRefComponent typeForResource = null;
-    CommaSeparatedStringBuilder bt = new CommaSeparatedStringBuilder();
-
-    // Iterate through all possible types
-    for (TypeRefComponent type : child.getType()) {
-      bt.append(type.getCode());
-      if (type.getCode().equals("Resource") || type.getCode().equals(resourceName) ) {
-        typeForResource = type;
-        break;
+    if (element.isNull()) {
+      if (rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), ToolingExtensions.readBooleanExtension(child, ToolingExtensions.EXT_JSON_NULLABLE),
+          I18nConstants.ELEMENT_CANNOT_BE_NULL)) {
+        // nothing else to validate?
       }
-    }
 
-    stack.qualifyPath(".ofType("+resourceName+")");
+    } else {
+      SpecialElement special = element.getSpecial();
 
-    if (typeForResource == null) {
-      rule(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(),
-        false, I18nConstants.BUNDLE_BUNDLE_ENTRY_TYPE, resourceName, bt.toString());
-    } else if (isValidResourceType(resourceName, typeForResource)) {
-      if (containedValidationPolicy.checkValid()) {
-        // special case: resource wrapper is reset if we're crossing a bundle boundary, but not otherwise
-        ValidatorHostContext hc = null;
-        if (special == SpecialElement.BUNDLE_ENTRY || special == SpecialElement.BUNDLE_OUTCOME || special == SpecialElement.PARAMETER) {
-          resource = element;
-          assert Utilities.existsInList(hostContext.getRootResource().fhirType(), "Bundle", "Parameters") : "Resource is "+hostContext.getRootResource().fhirType()+", expected Bundle or Parameters";
-          hc = hostContext.forEntry(element, hostContext.getRootResource()); // root becomes the grouping resource (should be either bundle or parameters)
-        } else {
-          hc = hostContext.forContained(element);
+      ContainedReferenceValidationPolicy containedValidationPolicy = getPolicyAdvisor() == null ?
+          ContainedReferenceValidationPolicy.CHECK_VALID : getPolicyAdvisor().policyForContained(this,
+              hostContext, context.fhirType(), context.getId(), special, path, parentProfile.getUrl());
+
+      if (containedValidationPolicy.ignore()) {
+        return;
+      }
+
+      String resourceName = element.getType();
+      TypeRefComponent typeForResource = null;
+      CommaSeparatedStringBuilder bt = new CommaSeparatedStringBuilder();
+
+      // Iterate through all possible types
+      for (TypeRefComponent type : child.getType()) {
+        bt.append(type.getCode());
+        if (type.getCode().equals("Resource") || type.getCode().equals(resourceName) ) {
+          typeForResource = type;
+          break;
         }
+      }
 
-        stack.resetIds();
-        if (special != null) {
-          switch (special) {
+      stack.qualifyPath(".ofType("+resourceName+")");
+
+      if (typeForResource == null) {
+        rule(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(),
+            false, I18nConstants.BUNDLE_BUNDLE_ENTRY_TYPE, resourceName, bt.toString());
+      } else if (isValidResourceType(resourceName, typeForResource)) {
+        if (containedValidationPolicy.checkValid()) {
+          // special case: resource wrapper is reset if we're crossing a bundle boundary, but not otherwise
+          ValidatorHostContext hc = null;
+          if (special == SpecialElement.BUNDLE_ENTRY || special == SpecialElement.BUNDLE_OUTCOME || special == SpecialElement.PARAMETER) {
+            resource = element;
+            assert Utilities.existsInList(hostContext.getResource().fhirType(), "Bundle", "Parameters") : "Containing Resource is "+hostContext.getResource().fhirType()+", expected Bundle or Parameters at "+stack.getLiteralPath();
+            hc = hostContext.forEntry(element, hostContext.getResource()); // root becomes the grouping resource (should be either bundle or parameters)
+          } else {
+            hc = hostContext.forContained(element);
+          }
+
+          stack.resetIds();
+          if (special != null) {
+            switch (special) {
             case BUNDLE_ENTRY:
             case BUNDLE_OUTCOME:
             case PARAMETER:
@@ -4908,51 +4932,52 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               break;
             default:
               break;
+            }
           }
-        }
 
-        if (typeForResource.getProfile().size() == 1) {
-          long t = System.nanoTime();
-          StructureDefinition profile = this.context.fetchResource(StructureDefinition.class, typeForResource.getProfile().get(0).asStringValue());
-          timeTracker.sd(t);
-          trackUsage(profile, hostContext, element);
-          if (rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(),
-            profile != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOPROFILE_EXPL, special.toHuman(), resourceName, typeForResource.getProfile().get(0).asStringValue())) {
-            validateResource(hc, errors, resource, element, profile, idstatus, stack, pct);
+          if (typeForResource.getProfile().size() == 1) {
+            long t = System.nanoTime();
+            StructureDefinition profile = this.context.fetchResource(StructureDefinition.class, typeForResource.getProfile().get(0).asStringValue());
+            timeTracker.sd(t);
+            trackUsage(profile, hostContext, element);
+            if (rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(),
+                profile != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOPROFILE_EXPL, special.toHuman(), resourceName, typeForResource.getProfile().get(0).asStringValue())) {
+              validateResource(hc, errors, resource, element, profile, idstatus, stack, pct);
+            }
+          } else if (typeForResource.getProfile().isEmpty()) {
+            long t = System.nanoTime();
+            StructureDefinition profile = this.context.fetchResource(StructureDefinition.class,
+                "http://hl7.org/fhir/StructureDefinition/" + resourceName);
+            timeTracker.sd(t);
+            trackUsage(profile, hostContext, element);
+            if (rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(),
+                profile != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOPROFILE_TYPE, special == null ? "??" : special.toHuman(), resourceName)) {
+              validateResource(hc, errors, resource, element, profile, idstatus, stack, pct);
+            }
+          } else {
+            CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+            for (CanonicalType u : typeForResource.getProfile()) {
+              b.append(u.asStringValue());
+            }
+            rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(),
+                false, I18nConstants.BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES, special.toHuman(), typeForResource.getCode(), b.toString());
           }
-        } else if (typeForResource.getProfile().isEmpty()) {
-          long t = System.nanoTime();
-          StructureDefinition profile = this.context.fetchResource(StructureDefinition.class,
-            "http://hl7.org/fhir/StructureDefinition/" + resourceName);
-          timeTracker.sd(t);
-          trackUsage(profile, hostContext, element);
-          if (rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(),
-            profile != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOPROFILE_TYPE, special == null ? "??" : special.toHuman(), resourceName)) {
-            validateResource(hc, errors, resource, element, profile, idstatus, stack, pct);
-          }
-        } else {
-          CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
-          for (CanonicalType u : typeForResource.getProfile()) {
-            b.append(u.asStringValue());
-          }
-          rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(),
-            false, I18nConstants.BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES, special.toHuman(), typeForResource.getCode(), b.toString());
         }
-      }
-    } else {
-      List<String> types = new ArrayList<>();
-      for (UriType u : typeForResource.getProfile()) {
-        StructureDefinition sd = this.context.fetchResource(StructureDefinition.class, u.getValue());
-        if (sd != null && !types.contains(sd.getType())) {
-          types.add(sd.getType());
-        }
-      }
-      if (types.size() == 1) {
-        rule(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(),
-          false, I18nConstants.BUNDLE_BUNDLE_ENTRY_TYPE2, resourceName, types.get(0));
       } else {
-        rule(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(),
-          false, I18nConstants.BUNDLE_BUNDLE_ENTRY_TYPE3, resourceName, types);
+        List<String> types = new ArrayList<>();
+        for (UriType u : typeForResource.getProfile()) {
+          StructureDefinition sd = this.context.fetchResource(StructureDefinition.class, u.getValue());
+          if (sd != null && !types.contains(sd.getType())) {
+            types.add(sd.getType());
+          }
+        }
+        if (types.size() == 1) {
+          rule(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(),
+              false, I18nConstants.BUNDLE_BUNDLE_ENTRY_TYPE2, resourceName, types.get(0));
+        } else {
+          rule(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(),
+              false, I18nConstants.BUNDLE_BUNDLE_ENTRY_TYPE3, resourceName, types);
+        }
       }
     }
   }
@@ -5019,8 +5044,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     
     // get the list of direct defined children, including slices
-    List<ElementDefinition> childDefinitions = profileUtilities.getChildMap(profile, definition);
-    if (childDefinitions.isEmpty()) {
+    SourcedChildDefinitions childDefinitions = profileUtilities.getChildMap(profile, definition);
+    if (childDefinitions.getList().isEmpty()) {
       if (actualType == null)
         return; // there'll be an error elsewhere in this case, and we're going to stop.
       childDefinitions = getActualTypeChildren(hostContext, element, actualType);
@@ -5028,7 +5053,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       // this only happens when the profile constrains the abstract children but leaves th choice open.
       if (actualType == null)
         return; // there'll be an error elsewhere in this case, and we're going to stop.
-      List<ElementDefinition> typeChildDefinitions = getActualTypeChildren(hostContext, element, actualType);
+      SourcedChildDefinitions typeChildDefinitions = getActualTypeChildren(hostContext, element, actualType);
       // what were going to do is merge them - the type is not allowed to constrain things that the child definitions already do (well, if it does, it'll be ignored)
       childDefinitions = mergeChildLists(childDefinitions, typeChildDefinitions, definition.getPath(), actualType);
     }
@@ -5045,27 +5070,27 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
-  private List<ElementDefinition> mergeChildLists(List<ElementDefinition> source, List<ElementDefinition> additional, String masterPath, String typePath) {
-    List<ElementDefinition> res = new ArrayList<>();
-    res.addAll(source);
-    for (ElementDefinition ed : additional) {
+  private SourcedChildDefinitions mergeChildLists(SourcedChildDefinitions source, SourcedChildDefinitions additional, String masterPath, String typePath) {
+    SourcedChildDefinitions res = new SourcedChildDefinitions(additional.getSource(), new ArrayList<>());
+    res.getList().addAll(source.getList());
+    for (ElementDefinition ed : additional.getList()) {
       boolean inMaster = false;
-      for (ElementDefinition t : source) {
+      for (ElementDefinition t : source.getList()) {
         String tp = masterPath + ed.getPath().substring(typePath.length());
         if (t.getPath().equals(tp)) {
           inMaster = true;
         }
       }
       if (!inMaster) {
-        res.add(ed);
+        res.getList().add(ed);
       }
     }
     return res;
   }
 
   // todo: the element definition in context might assign a constrained profile for the type?
-  public List<ElementDefinition> getActualTypeChildren(ValidatorHostContext hostContext, Element element, String actualType) {
-    List<ElementDefinition> childDefinitions;
+  public SourcedChildDefinitions getActualTypeChildren(ValidatorHostContext hostContext, Element element, String actualType) {
+    SourcedChildDefinitions childDefinitions;
     StructureDefinition dt = null;
     if (isAbsolute(actualType))
       dt = this.context.fetchResource(StructureDefinition.class, actualType);
@@ -5120,16 +5145,23 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       && !"BackboneElement".equals(checkDefn.getType().get(0).getWorkingCode())) {
       type = checkDefn.getType().get(0).getWorkingCode();
       String stype = ei.getElement().fhirType();
-      if (checkDefn.isChoice() && !stype.equals(type)) {
-        if (extensionUrl != null && !isAbsolute(extensionUrl)) {
-          rule(errors, IssueType.STRUCTURE, element.line(), element.col(), ei.getPath(), false, I18nConstants.EXTENSION_PROF_TYPE, profile.getUrl(), type, stype);
-        } else if (!isAbstractType(type) && !"Extension".equals(profile.getType())) {
-          rule(errors, IssueType.STRUCTURE, element.line(), element.col(), ei.getPath(), stype.equals(type), I18nConstants.EXTENSION_PROF_TYPE, profile.getUrl(), type, stype);                  
-        }
-      } else if (!isAbstractType(type)) {
-        rule(errors, IssueType.STRUCTURE, element.line(), element.col(), ei.getPath(), stype.equals(type) || 
+      if (!stype.equals(type)) {
+        if (checkDefn.isChoice()) {
+          if (extensionUrl != null && !isAbsolute(extensionUrl)) {
+            rule(errors, IssueType.STRUCTURE, element.line(), element.col(), ei.getPath(), false, I18nConstants.EXTENSION_PROF_TYPE, profile.getUrl(), type, stype);
+          } else if (!isAbstractType(type) && !"Extension".equals(profile.getType())) {
+            rule(errors, IssueType.STRUCTURE, element.line(), element.col(), ei.getPath(), stype.equals(type), I18nConstants.EXTENSION_PROF_TYPE, profile.getUrl(), type, stype);                  
+         }
+        } else if (!isAbstractType(type)) {
+          rule(errors, IssueType.STRUCTURE, element.line(), element.col(), ei.getPath(), stype.equals(type) || 
             (Utilities.existsInList(type, "string", "id") && Utilities.existsInList(stype, "string", "id")), // work around a r4 problem with id/string
-            I18nConstants.EXTENSION_PROF_TYPE, profile.getUrl(), type, stype);        
+            I18nConstants.EXTENSION_PROF_TYPE, profile.getUrl(), type, stype);
+        } else if (!isResource(type)) {
+//          System.out.println("update type "+type+" to "+stype+"?");
+          type = stype;
+        } else {
+          // this will be sorted out in contains ... System.out.println("update type "+type+" to "+stype+"?");
+        }
       }
 
       // Excluding reference is a kludge to get around versioning issues
@@ -5200,9 +5232,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     NodeStack localStack = stack.push(ei.getElement(), "*".equals(ei.getDefinition().getBase().getMax()) && ei.count == -1 ? 0 : ei.count, checkDefn, type == null ? typeDefn : resolveType(type, checkDefn.getType()));
-      if (debug) {
-        System.out.println("  check " + localStack.getLiteralPath()+" against "+ei.getDefinition().getId()+" in profile "+profile.getUrl()+time());
-      }
+    if (debug) {
+      System.out.println("  check " + localStack.getLiteralPath()+" against "+ei.getDefinition().getId()+" in profile "+profile.getUrl()+time());
+    }
     String localStackLiteralPath = localStack.getLiteralPath();
     String eiPath = ei.getPath();
     if (!eiPath.equals(localStackLiteralPath)) {
@@ -5450,9 +5482,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   public void checkCardinalities(List<ValidationMessage> errors, StructureDefinition profile, Element element, NodeStack stack,
-    List<ElementDefinition> childDefinitions, List<ElementInfo> children, List<String> problematicPaths) throws DefinitionException {
+      SourcedChildDefinitions childDefinitions, List<ElementInfo> children, List<String> problematicPaths) throws DefinitionException {
     // 3. report any definitions that have a cardinality problem
-    for (ElementDefinition ed : childDefinitions) {
+    for (ElementDefinition ed : childDefinitions.getList()) {
       if (ed.getRepresentation().isEmpty()) { // ignore xml attributes
         int count = 0;
         List<ElementDefinition> slices = null;
@@ -5490,7 +5522,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   public List<String> assignChildren(ValidatorHostContext hostContext, List<ValidationMessage> errors, StructureDefinition profile, Element resource,
-    NodeStack stack, List<ElementDefinition> childDefinitions, List<ElementInfo> children) throws DefinitionException {
+    NodeStack stack, SourcedChildDefinitions childDefinitions, List<ElementInfo> children) throws DefinitionException {
     // 2. assign children to a definition
     // for each definition, for each child, check whether it belongs in the slice
     ElementDefinition slicer = null;
@@ -5498,8 +5530,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     List<String> problematicPaths = new ArrayList<String>();
     String slicingPath = null;
     int sliceOffset = 0;
-    for (int i = 0; i < childDefinitions.size(); i++) {
-      ElementDefinition ed = childDefinitions.get(i);
+    for (int i = 0; i < childDefinitions.getList().size(); i++) {
+      ElementDefinition ed = childDefinitions.getList().get(i);
       boolean childUnsupportedSlicing = false;
       boolean process = true;
       if (ed.hasSlicing() && !ed.getSlicing().getOrdered()) {
@@ -5553,7 +5585,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           }
         } else {
           // Don't raise this if we're in an abstract profile, like Resource
-          if (!profile.getAbstract()) {
+          if (!childDefinitions.getSource().getAbstract()) {
             rule(errors, IssueType.NOTSUPPORTED, ei.line(), ei.col(), ei.getPath(), (ei.definition != null), I18nConstants.VALIDATION_VAL_PROFILE_NOTALLOWED, profile.getUrl());
           }
         }
@@ -5674,7 +5706,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private IdStatus idStatusForEntry(Element ep, ElementInfo ei) {
-    if (isBundleEntry(ei.getPath())) {
+    if (ei.getDefinition().hasExtension(ToolingExtensions.EXT_ID_EXPECTATION)) {
+      return IdStatus.fromCode(ToolingExtensions.readStringExtension(ei.getDefinition(),ToolingExtensions.EXT_ID_EXPECTATION));
+    } else if (isBundleEntry(ei.getPath())) {
       Element req = ep.getNamedChild("request");
       Element resp = ep.getNamedChild("response");
       Element fullUrl = ep.getNamedChild(FULL_URL);
