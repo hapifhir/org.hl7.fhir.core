@@ -437,8 +437,10 @@ public class JsonTrackingParser {
     else
       throw lexer.error("Unexpected content at start of JSON: "+lexer.getType().toString());
 
-    parseProperty();
-    readObject(result, true);
+    if (lexer.getType() != TokenType.Close) {
+      parseProperty();
+      readObject(result, true);
+    }
     if (map != null)
 		  map.put(result, loc);
     return result;

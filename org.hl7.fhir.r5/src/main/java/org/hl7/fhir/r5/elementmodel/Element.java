@@ -1,5 +1,7 @@
 package org.hl7.fhir.r5.elementmodel;
 
+import java.io.PrintStream;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -75,7 +77,7 @@ public class Element extends Base {
 
 
   public enum SpecialElement {
-		CONTAINED, BUNDLE_ENTRY, BUNDLE_OUTCOME, PARAMETER;
+		CONTAINED, BUNDLE_ENTRY, BUNDLE_OUTCOME, PARAMETER, LOGICAL;
 
     public static SpecialElement fromProperty(Property property) {
       if (property.getStructure().getType().equals("Parameters"))
@@ -87,7 +89,7 @@ public class Element extends Base {
       if (property.getName().equals("contained")) 
         return CONTAINED;
       if (property.getStructure().getKind() == StructureDefinitionKind.LOGICAL)
-        return CONTAINED;
+        return LOGICAL;
       throw new FHIRException("Unknown resource containing a native resource: "+property.getDefinition().getId());
     }
 
@@ -97,6 +99,7 @@ public class Element extends Base {
       case BUNDLE_OUTCOME: return "outcome";
       case CONTAINED: return "contained";
       case PARAMETER: return "parameter";
+      case LOGICAL: return "logical";
       default: return "??";        
       }
     }
@@ -124,6 +127,7 @@ public class Element extends Base {
   private Map<String, List<Element>> childMap;
   private int descendentCount;
   private int instanceId;
+  private boolean isNull;
 
 	public Element(String name) {
 		super();
@@ -211,7 +215,15 @@ public class Element extends Base {
 
 	}
 
-	public boolean hasValue() {
+	public boolean isNull() {
+    return isNull;
+  }
+
+  public void setNull(boolean isNull) {
+    this.isNull = isNull;
+  }
+
+  public boolean hasValue() {
 		return value != null;
 	}
 
@@ -1127,6 +1139,65 @@ public class Element extends Base {
   public void setInstanceId(int instanceId) {
     this.instanceId = instanceId;
   }
-  
+
+  public void printToOutput() {
+    printToOutput(System.out, "");
+    
+  }
+
+  private void printToOutput(PrintStream out, String indent) {
+    String s = indent+name +(index == -1 ? "" : "["+index+"]") +(special != null ? "$"+special.toHuman(): "")+ (type!= null || explicitType != null ? " : "+type+(explicitType != null ? "/'"+explicitType+"'" : "") : "");
+    if (isNull) {
+      s = s + " = (null)";
+    } else if (value != null) {
+      s = s + " = '"+value+"'";      
+    } else if (xhtml != null) {
+      s = s + " = (xhtml)";
+    }
+    if (property != null) {
+      s = s +" {"+property.summary();
+      if (elementProperty != null) {
+        s = s +" -> "+elementProperty.summary();
+      }
+      s = s + "}";
+    }
+    if (line > 0) {
+      s = s + " (l"+line+":c"+col+")";
+    }
+    out.println(s);
+    if (children != null) {
+      for (Element child : children) {
+        child.printToOutput(out, indent+"  ");
+      }
+    }
+    
+  }
+
+  private String msgCounts() {
+    int e = 0;
+    int w = 0;
+    int h = 0;
+    for (ValidationMessage msg : messages) {
+      switch (msg.getLevel()) {
+      case ERROR:
+        e++;
+        break;
+      case FATAL:
+        e++;
+        break;
+      case INFORMATION:
+        h++;
+        break;
+      case NULL:
+        break;
+      case WARNING:
+        w++;
+        break;
+      default:
+        break;      
+      }
+    }
+    return "e:"+e+",w:"+w+",h:"+h;
+  }
   
 }

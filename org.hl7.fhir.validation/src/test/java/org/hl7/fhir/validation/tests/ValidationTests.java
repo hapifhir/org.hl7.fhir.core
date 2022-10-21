@@ -126,8 +126,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   private JsonObject content;
   private String version;
   private String name;
-  private static StringBuilder logB = new StringBuilder();
-
+  
   private static Map<String, ValidationEngine> ve = new HashMap<>();
 
 
@@ -145,7 +144,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     CacheVerificationLogger logger = new CacheVerificationLogger();
     long setup = System.nanoTime();
 
-    logOutputToFile("---- " + name + " ---------------------------------------------------------------- ("+System.getProperty("java.vm.name")+")");
+    logOutput("---- " + name + " ---------------------------------------------------------------- ("+System.getProperty("java.vm.name")+")");
     logOutput("** Core: ");
     String txLog = null;
     if (content.has("txLog")) {
@@ -220,7 +219,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (content.has("packages")) {
       for (JsonElement e : content.getAsJsonArray("packages")) {
         String n = e.getAsString();
-        logOutputToFile("load package "+n);
+        logOutput("load package "+n);
         InputStream cnt = n.endsWith(".tgz") ? TestingUtilities.loadTestResourceStream("validator", n) : null;
         if (cnt != null) {
           igLoader.loadPackage(NpmPackage.fromPackage(cnt), true);
@@ -237,7 +236,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
         String filename = e.getAsString();
         String contents = TestingUtilities.loadTestResource("validator", filename);
         CanonicalResource mr = (CanonicalResource) loadResource(filename, contents);
-        logOutputToFile("load resource "+mr.getUrl());
+        logOutput("load resource "+mr.getUrl());
         val.getContext().cacheResource(mr);
         if (mr instanceof ImplementationGuide) {
           val.getImplementationGuides().add((ImplementationGuide) mr);
@@ -253,7 +252,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
         String filename = je.getAsString();    
         String contents = TestingUtilities.loadTestResource("validator", filename);
         StructureDefinition sd = loadProfile(filename, contents, messages, val.isDebug(), val.getContext());
-        logOutputToFile("load resource "+sd.getUrl());
+        logOutput("load resource "+sd.getUrl());
         val.getContext().cacheResource(sd);
       }
    }
@@ -289,7 +288,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       JsonObject profile = content.getAsJsonObject("profile");
       if (profile.has("packages")) {
         for (JsonElement e : profile.getAsJsonArray("packages")) {
-          logOutputToFile("load package "+e.getAsString());
+          logOutput("load package "+e.getAsString());
           igLoader.loadIg(vCurr.getIgs(), vCurr.getBinaries(), e.getAsString(), true);
         }
       }
@@ -301,7 +300,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
           String filename = e.getAsString();
           String contents = TestingUtilities.loadTestResource("validator", filename);
           CanonicalResource mr = (CanonicalResource) loadResource(filename, contents);
-          logOutputToFile("load resource "+mr.getUrl());
+          logOutput("load resource "+mr.getUrl());
           val.getContext().cacheResource(mr);
           if (mr instanceof ImplementationGuide) {
             val.getImplementationGuides().add((ImplementationGuide) mr);
@@ -317,7 +316,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
         logOutput("Name: " + name + " - profile : " + profile.get("source").getAsString());
         version = content.has("version") ? content.get("version").getAsString() : version;
         sd = loadProfile(filename, contents, messages, val.isDebug(), val.getContext());
-        logOutputToFile("load resource "+sd.getUrl());
+        logOutput("load resource "+sd.getUrl());
         val.getContext().cacheResource(sd);
       }
       val.setAssumeValidRestReferences(profile.has("assumeValidRestReferences") ? profile.get("assumeValidRestReferences").getAsBoolean() : false);
@@ -338,13 +337,13 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
           if (mr instanceof StructureDefinition) {
             new ContextUtilities(val.getContext()).generateSnapshot((StructureDefinition) mr, true);
           }
-          logOutputToFile("load resource "+mr.getUrl());
+          logOutput("load resource "+mr.getUrl());
           val.getContext().cacheResource(mr);
         }
       }
       if (logical.has("packages")) {
         for (JsonElement e : logical.getAsJsonArray("packages")) {
-          logOutputToFile("load package "+e.getAsString());
+          logOutput("load package "+e.getAsString());
           igLoader.loadIg(vCurr.getIgs(), vCurr.getBinaries(), e.getAsString(), true);
         }
       }
@@ -555,13 +554,6 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
   private void logOutput(String msg) {
     System.out.println(msg);    
-  }
-
-  private void logOutputToFile(String msg) throws IOException {
-    System.out.println(msg); 
-    logB .append(msg);
-    logB.append("\r\n");
-    TextFile.stringToFile(logB.toString(), Utilities.path("[tmp]", "validation-test-log.txt"));
   }
 
   private OperationOutcomeIssueComponent findMatchingIssue(OperationOutcome oo, OperationOutcomeIssueComponent iss) {

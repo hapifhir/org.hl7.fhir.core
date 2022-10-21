@@ -57,6 +57,7 @@ import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -240,7 +241,11 @@ public class JsonParser extends ParserBase {
     if (property.isList() && !property.isJsonKeyArray() && (e instanceof JsonArray)) {
       JsonArray arr = (JsonArray) e;
       if (arr.size() == 0) {
-        logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.ARRAY_CANNOT_BE_EMPTY), IssueSeverity.ERROR);			  
+        if (property.canBeEmpty()) {
+          // nothing
+        } else {
+          logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.ARRAY_CANNOT_BE_EMPTY), IssueSeverity.ERROR);
+        }
       }
       int c = 0;
       for (JsonElement am : arr) {
@@ -288,7 +293,7 @@ public class JsonParser extends ParserBase {
             String fpathV = fpathArr+"."+propV.getName();
             if (propV.isPrimitive(propV.getType(null))) {
               parseChildPrimitiveInstance(n, propV, propV.getName(), npathV, fpathV, pv.getValue(), null);
-            } else if (pv.getValue() instanceof JsonObject) {
+            } else if (pv.getValue() instanceof JsonObject || pv.getValue() instanceof JsonNull) {
               parseChildComplexInstance(npathV, fpathV, n, propV, propV.getName(), pv.getValue());
             } else {
               logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_OBJECT_NOT_, describe(pv.getValue())), IssueSeverity.ERROR);                       
@@ -354,12 +359,22 @@ public class JsonParser extends ParserBase {
       n.setPath(fpath);
       checkObject(child, npath);
       element.getChildren().add(n);
-      if (property.isResource())
+      if (property.isResource()) {
         parseResource(npath, child, n, property);
-      else
+      } else {
         parseChildren(npath, child, n, false);
-    } else
+      }
+    } else if (property.isNullable() && e instanceof JsonNull) {
+      // we create an element marked as a null element so we know something was present
+      JsonNull child = (JsonNull) e;
+      Element n = new Element(name, property).markLocation(line(child), col(child));
+      n.setPath(fpath);
+      element.getChildren().add(n);
+      n.setNull(true);
+      // nothing to do, it's ok, but we treat it like it doesn't exist
+    } else {
       logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE__NOT_, (property.isList() ? "an Array" : "an Object"), describe(e), name, npath), IssueSeverity.ERROR);
+    }
   }
 
   private String describe(JsonElement e) {

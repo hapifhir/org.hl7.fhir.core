@@ -216,9 +216,11 @@ public class ToolingExtensions {
   public static final String EXT_BINDING_ADDITIONAL = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding";
   public static final String EXT_JSON_PROP_KEY = "http://hl7.org/fhir/tools/StructureDefinition/json-property-key";
   public static final String EXT_JSON_EMPTY = "http://hl7.org/fhir/tools/StructureDefinition/json-empty-behavior";
+  public static final String EXT_JSON_NULLABLE = "http://hl7.org/fhir/tools/StructureDefinition/json-nullable";
   public static final String EXT_IMPLIED_PREFIX = "http://hl7.org/fhir/tools/StructureDefinition/implied-string-prefix";
   public static final String EXT_DATE_FORMAT = "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-date-format";
-    
+  public static final String EXT_ID_EXPECTATION = "http://hl7.org/fhir/tools/StructureDefinition/id-expectation";
+  
 
   // unregistered? - don't know what these are used for 
   public static final String EXT_MAPPING_PREFIX = "http://hl7.org/fhir/tools/StructureDefinition/logical-mapping-prefix";
@@ -230,7 +232,7 @@ public class ToolingExtensions {
   public static final String EXT_MAPPING_CARD = "http://hl7.org/fhir/tools/StructureDefinition/conceptmap-source-cardinality";
   public static final String EXT_MAPPING_TGTTYPE = "http://hl7.org/fhir/tools/StructureDefinition/conceptmap-target-type";
   public static final String EXT_MAPPING_TGTCARD = "http://hl7.org/fhir/tools/StructureDefinition/conceptmap-target-cardinality";
-
+  
   // specific extension helpers
 
   public static Extension makeIssueSource(Source source) {
@@ -481,6 +483,8 @@ public class ToolingExtensions {
     if (ex == null)
       return false;
     if (!(ex.getValue() instanceof BooleanType))
+      return false;
+    if (!(ex.getValue().hasPrimitiveValue()))
       return false;
     return ((BooleanType) ex.getValue()).getValue();
   }

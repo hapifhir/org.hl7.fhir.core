@@ -39,6 +39,7 @@ import java.util.Map;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.ProfileUtilities.SourcedChildDefinitions;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.model.ElementDefinition;
@@ -229,8 +230,10 @@ public class Property {
 	}
 
 	public boolean isResource() {
-	  if (definition.getType().size() > 0)
-	    return definition.getType().size() == 1 && ("Resource".equals(definition.getType().get(0).getCode()) || "DomainResource".equals(definition.getType().get(0).getCode()));
+	  if (definition.getType().size() > 0) {
+      String tc = definition.getType().get(0).getCode();
+      return definition.getType().size() == 1 && (("Resource".equals(tc) || "DomainResource".equals(tc)) ||  Utilities.existsInList(tc, context.getResourceNames()));
+    }
 	  else
 	    return !definition.getPath().contains(".") && (structure.getKind() == StructureDefinitionKind.RESOURCE);
 	}
@@ -300,9 +303,9 @@ public class Property {
   protected List<Property> getChildProperties(String elementName, String statedType) throws FHIRException {
     ElementDefinition ed = definition;
     StructureDefinition sd = structure;
-    List<ElementDefinition> children = profileUtilities.getChildMap(sd, ed);
+    SourcedChildDefinitions children = profileUtilities.getChildMap(sd, ed);
     String url = null;
-    if (children.isEmpty() || isElementWithOnlyExtension(ed, children)) {
+    if (children.getList().isEmpty() || isElementWithOnlyExtension(ed, children.getList())) {
       // ok, find the right definitions
       String t = null;
       if (ed.getType().size() == 1)
@@ -369,7 +372,7 @@ public class Property {
       }
     }
     List<Property> properties = new ArrayList<Property>();
-    for (ElementDefinition child : children) {
+    for (ElementDefinition child : children.getList()) {
       properties.add(new Property(context, child, sd, this.profileUtilities));
     }
     return properties;
@@ -378,8 +381,8 @@ public class Property {
   protected List<Property> getChildProperties(TypeDetails type) throws DefinitionException {
     ElementDefinition ed = definition;
     StructureDefinition sd = structure;
-    List<ElementDefinition> children = profileUtilities.getChildMap(sd, ed);
-    if (children.isEmpty()) {
+    SourcedChildDefinitions children = profileUtilities.getChildMap(sd, ed);
+    if (children.getList().isEmpty()) {
       // ok, find the right definitions
       String t = null;
       if (ed.getType().size() == 1)
@@ -408,7 +411,7 @@ public class Property {
       }
     }
     List<Property> properties = new ArrayList<Property>();
-    for (ElementDefinition child : children) {
+    for (ElementDefinition child : children.getList()) {
       properties.add(new Property(context, child, sd, this.profileUtilities));
     }
     return properties;
@@ -507,6 +510,25 @@ public class Property {
 
   public String getImpliedPrefix() {
     return ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_IMPLIED_PREFIX);
+  }
+
+
+  public boolean isNullable() {    
+    return ToolingExtensions.readBoolExtension(definition, ToolingExtensions.EXT_JSON_NULLABLE);
+  }
+
+
+  public String summary() {
+    return structure.getUrl()+"#"+definition.getId();
+  }
+
+
+  public boolean canBeEmpty() {
+    if (definition.hasExtension(ToolingExtensions.EXT_JSON_EMPTY)) {
+      return !"absent".equals(ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_JSON_EMPTY));
+    } else {
+      return false;
+    }
   }
 
 

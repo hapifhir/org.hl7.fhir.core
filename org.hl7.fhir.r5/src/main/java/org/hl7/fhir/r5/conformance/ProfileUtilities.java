@@ -54,6 +54,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.conformance.ProfileUtilities.SourcedChildDefinitions;
 import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider.BindingResolution;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
@@ -171,6 +172,22 @@ import org.hl7.fhir.utilities.xml.SchematronWriter.Section;
  *
  */
 public class ProfileUtilities extends TranslatingUtilities {
+
+  public static class SourcedChildDefinitions {
+    private StructureDefinition source;
+    private List<ElementDefinition> list;
+    public SourcedChildDefinitions(StructureDefinition source, List<ElementDefinition> list) {
+      super();
+      this.source = source;
+      this.list = list;
+    }
+    public StructureDefinition getSource() {
+      return source;
+    }
+    public List<ElementDefinition> getList() {
+      return list;
+    }
+  }
 
   public class ElementDefinitionResolution {
 
@@ -355,7 +372,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private XVerExtensionManager xver;
   private boolean wantFixDifferentialFirstElementType;
   private Set<String> masterSourceFileNames;
-  private Map<ElementDefinition, List<ElementDefinition>> childMapCache = new HashMap<>();
+  private Map<ElementDefinition, SourcedChildDefinitions> childMapCache = new HashMap<>();
   private List<String> keyRows = new ArrayList<>();
 
   public ProfileUtilities(IWorkerContext context, List<ValidationMessage> messages, ProfileKnowledgeProvider pkp, FHIRPathEngine fpe) {
@@ -433,10 +450,11 @@ public class ProfileUtilities extends TranslatingUtilities {
     String getLinkForUrl(String corePath, String s);
   }
 
-  public List<ElementDefinition> getChildMap(StructureDefinition profile, ElementDefinition element) throws DefinitionException {
-    if (childMapCache .containsKey(element)) {
+  public SourcedChildDefinitions getChildMap(StructureDefinition profile, ElementDefinition element) throws DefinitionException {
+    if (childMapCache.containsKey(element)) {
       return childMapCache.get(element);
     }
+    StructureDefinition src = profile;
     if (element.getContentReference() != null) {
       List<ElementDefinition> list = null;
       String id = null;
@@ -451,6 +469,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         if (sd == null) {
           throw new DefinitionException("unable to process contentReference '"+element.getContentReference()+"' on element '"+element.getId()+"'");
         }
+        src = sd;
         list = sd.getSnapshot().getElement();
         id = ref.substring(ref.indexOf("#")+1);        
       } else {
@@ -476,8 +495,9 @@ public class ProfileUtilities extends TranslatingUtilities {
         } else
           break;
       }
-      childMapCache.put(element, res);
-      return res;
+      SourcedChildDefinitions result  = new SourcedChildDefinitions(src, res);
+      childMapCache.put(element, result);
+      return result;
     }
   }
 
@@ -4229,7 +4249,10 @@ public class ProfileUtilities extends TranslatingUtilities {
         row.setIcon("icon_reference.png", HierarchicalTableGenerator.TEXT_ICON_REFERENCE);
       } else if (hasDef && isDataType(element.getType().get(0).getWorkingCode())) {
         row.setIcon("icon_datatype.gif", HierarchicalTableGenerator.TEXT_ICON_DATATYPE);
-      } else if (hasDef && Utilities.existsInList(element.getType().get(0).getWorkingCode(), "Element", "BackboneElement")) {
+      } else if (hasDef && element.hasExtension(ToolingExtensions.EXT_JSON_PROP_KEY)) {
+        row.setIcon("icon-object-box.png", HierarchicalTableGenerator.TEXT_ICON_OBJECT_BOX);
+        keyRows.add(element.getId()+"."+ToolingExtensions.readStringExtension(element, ToolingExtensions.EXT_JSON_PROP_KEY));
+      } else if (hasDef && Utilities.existsInList(element.getType().get(0).getWorkingCode(), "Base", "Element", "BackboneElement")) {
         row.setIcon("icon_element.gif", HierarchicalTableGenerator.TEXT_ICON_ELEMENT);
       } else {
         row.setIcon("icon_resource.png", HierarchicalTableGenerator.TEXT_ICON_RESOURCE);
@@ -4877,6 +4900,19 @@ public class ProfileUtilities extends TranslatingUtilities {
           c.getPieces().add(piece);          
           c.getPieces().add(gen.new Piece(null, " is prefixed to the value before validation", null));          
         }
+        if (definition.hasExtension(ToolingExtensions.EXT_ID_EXPECTATION)) {
+          String ide = ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_ID_EXPECTATION);
+          if (ide.equals("optional")) {
+            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+            c.getPieces().add(gen.new Piece(null, "Id may or not be present (this is the default for elements but not resources)", null));     
+          } else if (ide.equals("required")) {
+            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+            c.getPieces().add(gen.new Piece(null, "Id is required to be present (this is the default for resources but not elements)", null));     
+          } else if (ide.equals("required")) {
+            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+            c.getPieces().add(gen.new Piece(null, "An ID is not allowed in this context", null));     
+          }
+        }
         if (definition.hasExtension(ToolingExtensions.EXT_XML_NAME)) {
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
           if (definition.hasExtension(ToolingExtensions.EXT_XML_NAMESPACE)) {
@@ -4894,6 +4930,24 @@ public class ProfileUtilities extends TranslatingUtilities {
           c.getPieces().add(gen.new Piece(null, translate("sd.table", "XML Namespace")+": ", null).addStyle("font-weight:bold"));
           c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ToolingExtensions.EXT_XML_NAMESPACE), null));          
         }
+        if (definition.hasExtension(ToolingExtensions.EXT_JSON_EMPTY)) {
+          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+          String code = ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_JSON_EMPTY);
+          if ("present".equals(code)) {
+            c.getPieces().add(gen.new Piece(null, "This element is present as a JSON Array even when there are no items in the instance", null));     
+          } else {
+            c.getPieces().add(gen.new Piece(null, "This element may be present as a JSON Array even when there are no items in the instance", null));     
+          }
+        }
+        if (ToolingExtensions.readBoolExtension(definition, ToolingExtensions.EXT_JSON_NULLABLE)) {
+          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+          c.getPieces().add(gen.new Piece(null, "This object can be represented as null in the JSON structure (which counts as 'present' for cardinality purposes)", null));     
+        }
+        if (definition.hasExtension(ToolingExtensions.EXT_JSON_PROP_KEY)) {
+          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+          String code = ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_JSON_EMPTY);
+          c.getPieces().add(gen.new Piece(null, "Represented as a single JSON Object with named properties using the value of the "+code+" child as the key", null));     
+        }      
         if (definition.hasExtension(ToolingExtensions.EXT_TYPE_SPEC)) {
           for (Extension e : definition.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_SPEC)) {
             if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
@@ -6268,8 +6322,8 @@ public class ProfileUtilities extends TranslatingUtilities {
   private org.hl7.fhir.r5.elementmodel.Element generateExample(StructureDefinition profile, ExampleValueAccessor accessor) throws FHIRException {
     ElementDefinition ed = profile.getSnapshot().getElementFirstRep();
     org.hl7.fhir.r5.elementmodel.Element r = new org.hl7.fhir.r5.elementmodel.Element(ed.getPath(), new Property(context, ed, profile));
-    List<ElementDefinition> children = getChildMap(profile, ed);
-    for (ElementDefinition child : children) {
+    SourcedChildDefinitions children = getChildMap(profile, ed);
+    for (ElementDefinition child : children.getList()) {
       if (child.getPath().endsWith(".id")) {
         org.hl7.fhir.r5.elementmodel.Element id = new org.hl7.fhir.r5.elementmodel.Element("id", new Property(context, child, profile));
         id.setValue(profile.getId()+accessor.getId());
@@ -6290,8 +6344,8 @@ public class ProfileUtilities extends TranslatingUtilities {
     } else {
       org.hl7.fhir.r5.elementmodel.Element res = new org.hl7.fhir.r5.elementmodel.Element(tail(ed.getPath()), new Property(context, ed, profile));
       boolean hasValue = false;
-      List<ElementDefinition> children = getChildMap(profile, ed);
-      for (ElementDefinition child : children) {
+      SourcedChildDefinitions children = getChildMap(profile, ed);
+      for (ElementDefinition child : children.getList()) {
         if (!child.hasContentReference()) {
         org.hl7.fhir.r5.elementmodel.Element e = createExampleElement(profile, child, accessor);
         if (e != null) {
