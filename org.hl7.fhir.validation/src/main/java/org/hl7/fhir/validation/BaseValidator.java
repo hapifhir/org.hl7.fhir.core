@@ -72,6 +72,28 @@ import org.hl7.fhir.validation.instance.utils.IndexedElement;
 
 public class BaseValidator implements IValidationContextResourceLoader {
 
+  public class BooleanValue {
+
+    private boolean value;
+
+    public BooleanValue(boolean value) {
+      super();
+      this.value = value;
+    }
+
+    public boolean isValue() {
+      return value;
+    }
+
+    public void setValue(boolean value) {
+      this.value = value;
+    }
+
+    public void see(boolean ok) {
+      value = value && ok;
+    }
+  }
+
   public class TrackedLocationRelatedMessage {
     private Object location;
     private ValidationMessage vmsg;

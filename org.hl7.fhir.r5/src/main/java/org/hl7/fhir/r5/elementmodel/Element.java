@@ -55,6 +55,7 @@ import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.TypeConvertor;
+import org.hl7.fhir.r5.model.Base.ValidationInfo;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.utilities.ElementDecoration;
@@ -74,7 +75,6 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  *
  */
 public class Element extends Base {
-
 
   public enum SpecialElement {
 		CONTAINED, BUNDLE_ENTRY, BUNDLE_OUTCOME, PARAMETER, LOGICAL;
@@ -128,6 +128,7 @@ public class Element extends Base {
   private int descendentCount;
   private int instanceId;
   private boolean isNull;
+  private Base source;
 
 	public Element(String name) {
 		super();
@@ -1140,8 +1141,46 @@ public class Element extends Base {
     this.instanceId = instanceId;
   }
 
+
+  @Override
+  public boolean hasDefinitions() {
+    return hasSource() ? source.hasDefinitions() : super.hasDefinitions();
+  }
+
+  @Override
+  public List<ValidationInfo> getDefinitions() {
+    return hasSource() ? source.getDefinitions() : super.getDefinitions();
+  }
+
+  @Override
+  public ValidationInfo addDefinition(StructureDefinition source, ElementDefinition defn, ValidationMode mode) {
+    if (this.source != null) {
+      return this.source.addDefinition(source, defn, mode);
+    } else {
+      return super.addDefinition(source, defn, mode);
+    }
+  }
+
+  public boolean hasSource() {
+    return source != null;
+  }
+
+  
+  public Base getSource() {
+    return source;
+  }
+
+  public void setSource(Base source) {
+    this.source = source;
+  }
+
   public void printToOutput() {
     printToOutput(System.out, "");
+    
+  }
+
+  public void printToOutput(PrintStream stream) {
+    printToOutput(stream, "");
     
   }
 
