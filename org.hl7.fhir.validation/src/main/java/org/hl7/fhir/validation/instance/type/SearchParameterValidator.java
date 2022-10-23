@@ -44,7 +44,8 @@ public class SearchParameterValidator extends BaseValidator {
     this.jurisdiction = jurisdiction;
   }
   
-  public void validateSearchParameter(List<ValidationMessage> errors, Element cs, NodeStack stack) {
+  public boolean validateSearchParameter(List<ValidationMessage> errors, Element cs, NodeStack stack) {
+    boolean ok = true;
     String url = cs.getNamedChildValue("url");
     String master = cs.getNamedChildValue("derivedFrom");
     
@@ -54,9 +55,9 @@ public class SearchParameterValidator extends BaseValidator {
         // base must be in the master list of base
         List<Element> bl = cs.getChildren("base");
         for (Element b : bl) {
-          rule(errors, IssueType.BUSINESSRULE,stack.getLiteralPath(), sp.hasBase(b.primitiveValue()) || sp.hasBase("Resource"), I18nConstants.SEARCHPARAMETER_BASE_WRONG, master, b.primitiveValue());
+          ok = rule(errors, IssueType.BUSINESSRULE,stack.getLiteralPath(), sp.hasBase(b.primitiveValue()) || sp.hasBase("Resource"), I18nConstants.SEARCHPARAMETER_BASE_WRONG, master, b.primitiveValue()) && ok;
         }
-        rule(errors, IssueType.BUSINESSRULE,stack.getLiteralPath(), !cs.hasChild("type") || sp.getType().toCode().equals(cs.getNamedChildValue("type")), I18nConstants.SEARCHPARAMETER_TYPE_WRONG, master, sp.getType().toCode(), cs.getNamedChildValue("type"));
+        ok = rule(errors, IssueType.BUSINESSRULE,stack.getLiteralPath(), !cs.hasChild("type") || sp.getType().toCode().equals(cs.getNamedChildValue("type")), I18nConstants.SEARCHPARAMETER_TYPE_WRONG, master, sp.getType().toCode(), cs.getNamedChildValue("type")) && ok;
         if (sp.hasExpression() && cs.hasChild("expression") && !sp.getExpression().equals(cs.getNamedChildValue("expression"))) {
           List<String> bases = new ArrayList<>();
           for (Element b : cs.getChildren("base")) {
@@ -69,6 +70,7 @@ public class SearchParameterValidator extends BaseValidator {
         // todo: check compositions
       }
     }
+    return ok;
   }
 
   private String canonicalise(String path, List<String> bases) {   
