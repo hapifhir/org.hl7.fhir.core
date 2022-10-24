@@ -53,6 +53,8 @@ public class Resource40_50 {
       org.hl7.fhir.r4.model.Basic basic = (Basic) src;
       if (basic.getCode().hasCoding("http://hl7.org/fhir/fhir-types", "ActorDefinition")) {
         return ActorDefinition40_50.convertActorDefinition((org.hl7.fhir.r4.model.Basic) src);
+      } else if (basic.getCode().hasCoding("http://hl7.org/fhir/fhir-types", "Requirements")) {
+        return Requirements40_50.convertRequirements((org.hl7.fhir.r4.model.Basic) src);
       } else {
         return Basic40_50.convertBasic((org.hl7.fhir.r4.model.Basic) src);
       }
@@ -468,6 +470,8 @@ public class Resource40_50 {
       return QuestionnaireResponse40_50.convertQuestionnaireResponse((org.hl7.fhir.r5.model.QuestionnaireResponse) src);
     if (src instanceof org.hl7.fhir.r5.model.RelatedPerson)
       return RelatedPerson40_50.convertRelatedPerson((org.hl7.fhir.r5.model.RelatedPerson) src);
+    if (src instanceof org.hl7.fhir.r5.model.Requirements)
+      return Requirements40_50.convertRequirements((org.hl7.fhir.r5.model.Requirements) src);
     if (src instanceof org.hl7.fhir.r5.model.RiskAssessment)
       return RiskAssessment40_50.convertRiskAssessment((org.hl7.fhir.r5.model.RiskAssessment) src);
     if (src instanceof org.hl7.fhir.r5.model.Schedule)

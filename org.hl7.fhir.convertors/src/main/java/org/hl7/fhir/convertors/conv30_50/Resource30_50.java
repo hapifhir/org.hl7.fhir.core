@@ -75,6 +75,7 @@ import org.hl7.fhir.convertors.conv30_50.resources30_50.Provenance30_50;
 import org.hl7.fhir.convertors.conv30_50.resources30_50.Questionnaire30_50;
 import org.hl7.fhir.convertors.conv30_50.resources30_50.QuestionnaireResponse30_50;
 import org.hl7.fhir.convertors.conv30_50.resources30_50.RelatedPerson30_50;
+import org.hl7.fhir.convertors.conv30_50.resources30_50.Requirements30_50;
 import org.hl7.fhir.convertors.conv30_50.resources30_50.RiskAssessment30_50;
 import org.hl7.fhir.convertors.conv30_50.resources30_50.Schedule30_50;
 import org.hl7.fhir.convertors.conv30_50.resources30_50.SearchParameter30_50;
@@ -89,6 +90,7 @@ import org.hl7.fhir.convertors.conv30_50.resources30_50.TestScript30_50;
 import org.hl7.fhir.convertors.conv30_50.resources30_50.ValueSet30_50;
 import org.hl7.fhir.convertors.conv40_50.resources40_50.ActorDefinition40_50;
 import org.hl7.fhir.convertors.conv40_50.resources40_50.Basic40_50;
+import org.hl7.fhir.convertors.conv43_50.resources43_50.Requirements43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.dstu3.model.Basic;
 
@@ -132,6 +134,8 @@ public class Resource30_50 {
       org.hl7.fhir.dstu3.model.Basic basic = (Basic) src;
       if (basic.getCode().hasCoding("http://hl7.org/fhir/fhir-types", "ActorDefinition")) {
         return ActorDefinition30_50.convertActorDefinition((org.hl7.fhir.dstu3.model.Basic) src);
+      } else if (basic.getCode().hasCoding("http://hl7.org/fhir/fhir-types", "Requirements")) {
+        return Requirements30_50.convertRequirements((org.hl7.fhir.dstu3.model.Basic) src);
       } else {
         return Basic30_50.convertBasic((org.hl7.fhir.dstu3.model.Basic) src);
       }
@@ -415,6 +419,8 @@ public class Resource30_50 {
       return QuestionnaireResponse30_50.convertQuestionnaireResponse((org.hl7.fhir.r5.model.QuestionnaireResponse) src);
     if (src instanceof org.hl7.fhir.r5.model.RelatedPerson)
       return RelatedPerson30_50.convertRelatedPerson((org.hl7.fhir.r5.model.RelatedPerson) src);
+    if (src instanceof org.hl7.fhir.r5.model.Requirements)
+      return Requirements30_50.convertRequirements((org.hl7.fhir.r5.model.Requirements) src);
     if (src instanceof org.hl7.fhir.r5.model.RiskAssessment)
       return RiskAssessment30_50.convertRiskAssessment((org.hl7.fhir.r5.model.RiskAssessment) src);
     if (src instanceof org.hl7.fhir.r5.model.Schedule)

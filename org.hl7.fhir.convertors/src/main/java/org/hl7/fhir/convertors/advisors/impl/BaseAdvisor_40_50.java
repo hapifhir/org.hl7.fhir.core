@@ -35,6 +35,8 @@ public class BaseAdvisor_40_50 extends BaseAdvisor50<org.hl7.fhir.r4.model.Exten
       return true;
     } else if (paths.get(paths.size() - 1).equals("Basic") && url.startsWith("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.")) {
       return true;
+    } else if (paths.get(paths.size() - 1).equals("Basic") && url.startsWith("http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.")) {
+      return true;
     } else
       return false;
   }

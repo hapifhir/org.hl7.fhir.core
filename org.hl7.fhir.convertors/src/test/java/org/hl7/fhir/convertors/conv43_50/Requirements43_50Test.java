@@ -15,14 +15,15 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ActorDefinition43_50Test {
+public class Requirements43_50Test {
+
 
   @Test
-  @DisplayName("Test r5 -> r4 ActorDefinition conversion.")
+  @DisplayName("Test r5 -> r4 Requirements conversion.")
   public void testR5_R4() throws IOException {
-    InputStream r5_input = this.getClass().getResourceAsStream("/actordefinition_50_example.json");
+    InputStream r5_input = this.getClass().getResourceAsStream("/requirements_50_example.json");
 
-    org.hl7.fhir.r5.model.ActorDefinition r5_actual = (org.hl7.fhir.r5.model.ActorDefinition) new org.hl7.fhir.r5.formats.JsonParser().parse(r5_input);
+    org.hl7.fhir.r5.model.Requirements r5_actual = (org.hl7.fhir.r5.model.Requirements) new org.hl7.fhir.r5.formats.JsonParser().parse(r5_input);
     org.hl7.fhir.r4b.model.Resource r4_conv = VersionConvertorFactory_43_50.convertResource(r5_actual);
 
     org.hl7.fhir.r4b.formats.XmlParser r4_parser = new org.hl7.fhir.r4b.formats.XmlParser();
