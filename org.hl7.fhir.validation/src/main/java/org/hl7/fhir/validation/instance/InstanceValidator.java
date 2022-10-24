@@ -198,7 +198,6 @@ import org.hl7.fhir.validation.instance.utils.ResourceValidationTracker;
 import org.hl7.fhir.validation.instance.utils.ValidatorHostContext;
 import org.w3c.dom.Document;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 
@@ -4617,11 +4616,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else {
       expression.append(" and (");
       if (fixed instanceof StringType) {
-        Gson gson = new Gson();
-        String json = gson.toJson((StringType) fixed);
-        String escapedString = json.substring(json.indexOf(":") + 2);
-        escapedString = escapedString.substring(0, escapedString.indexOf(",\"myStringValue") - 1);
-        expression.append("'" + escapedString + "'");
+        String es = Utilities.escapeJson(fixed.primitiveValue());
+        expression.append("'" + es + "'");
       } else if (fixed instanceof UriType) {
         expression.append("'" + ((UriType) fixed).asStringValue() + "'");
       } else if (fixed instanceof IntegerType) {
