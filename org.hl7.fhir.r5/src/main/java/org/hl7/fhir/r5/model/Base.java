@@ -90,12 +90,12 @@ public abstract class Base implements Serializable, IBase, IElement {
   /**
    * User appended data items - allow users to add extra information to the class
    */
-  private Map<String, Object> userData; 
+  private transient Map<String, Object> userData; 
 
   /**
    * Post Validation Definition information
    */
-  private List<ValidationInfo> definitions;
+  private transient List<ValidationInfo> validationInfo;
 
   /**
    * Round tracking xml comments for testing convenience
@@ -429,8 +429,8 @@ public abstract class Base implements Serializable, IBase, IElement {
   }
 
 
-  public boolean hasDefinitions() {
-    return definitions != null;
+  public boolean hasValidationInfo() {
+    return validationInfo != null;
   }
 
   /**
@@ -440,21 +440,21 @@ public abstract class Base implements Serializable, IBase, IElement {
    * 
    * @return
    */
-  public List<ValidationInfo> getDefinitions() {
-    return definitions;
+  public List<ValidationInfo> getValidationInfo() {
+    return validationInfo;
   }
 
   public ValidationInfo addDefinition(StructureDefinition structure, ElementDefinition defn, ValidationMode mode) {
-    if (definitions == null) {
-      definitions = new ArrayList<>();
+    if (validationInfo == null) {
+      validationInfo = new ArrayList<>();
     }
-    for (ValidationInfo t : definitions) {
+    for (ValidationInfo t : validationInfo) {
       if (t.structure == structure && t.definition == defn && t.reason == mode.reason && t.source == mode.source) {
         return t;
       }
     }
     ValidationInfo vi = new ValidationInfo(structure, defn, mode);
-    this.definitions.add(vi);
+    this.validationInfo.add(vi);
     return vi;
   }
 }

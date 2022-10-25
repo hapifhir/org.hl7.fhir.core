@@ -2842,6 +2842,15 @@ public class Requirements extends CanonicalResource {
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
+  public RequirementsStatementComponent findStatement(String key) {
+    for (RequirementsStatementComponent t : getStatement()) {
+      if (key.equals(t.getKey())) {
+        return t;
+      }
+    }
+    return null;
+  }
+
 
 }
 
