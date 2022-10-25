@@ -14,9 +14,7 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
-import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.model.Address;
 import org.hl7.fhir.r5.model.Annotation;
 import org.hl7.fhir.r5.model.Attachment;
@@ -30,6 +28,7 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ContactDetail;
 import org.hl7.fhir.r5.model.ContactPoint;
 import org.hl7.fhir.r5.model.DataRequirement;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Dosage;
@@ -45,7 +44,6 @@ import org.hl7.fhir.r5.model.Meta;
 import org.hl7.fhir.r5.model.Money;
 import org.hl7.fhir.r5.model.Narrative;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
-import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.Period;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Property;
@@ -59,16 +57,14 @@ import org.hl7.fhir.r5.model.SampledData;
 import org.hl7.fhir.r5.model.Signature;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.Timing;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.PropertyWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
-import org.hl7.fhir.r5.renderers.utils.DOMWrappers.BaseWrapperElement;
-import org.hl7.fhir.r5.renderers.utils.DOMWrappers.ResourceWrapperElement;
 import org.hl7.fhir.r5.renderers.utils.DirectWrappers;
-import org.hl7.fhir.r5.renderers.utils.ElementWrappers;
 import org.hl7.fhir.r5.renderers.utils.DirectWrappers.BaseWrapperDirect;
 import org.hl7.fhir.r5.renderers.utils.DirectWrappers.PropertyWrapperDirect;
 import org.hl7.fhir.r5.renderers.utils.DirectWrappers.ResourceWrapperDirect;
@@ -82,10 +78,7 @@ import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
-import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
-import org.hl7.fhir.utilities.xml.XMLUtil;
-import org.w3c.dom.Element;
 
 public class ProfileDrivenRenderer extends ResourceRenderer {
 
@@ -148,8 +141,62 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
   }
   
   @Override
-  public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
-    return "Not done yet";
+  public String display(ResourceWrapper res) throws UnsupportedEncodingException, IOException {
+    StructureDefinition profile = getContext().getWorker().fetchTypeDefinition(res.fhirType());
+    if (profile == null)
+      return "unknown resource type " +res.fhirType();
+    else {
+      boolean firstElement = true;
+      boolean last = false;
+      List<PropertyWrapper> children = res.children();
+      ContextUtilities cu = new ContextUtilities(context.getWorker());
+      for (PropertyWrapper p : children) {
+        if (p.getName().equals("title") && cu.isDatatype(p.fhirType()) && p.hasValues()) {
+          return res.fhirType()+" "+ display((DataType) p.getValues().get(0).getBase());
+        }
+      }
+      for (PropertyWrapper p : children) {
+        if (p.getName().equals("name") && cu.isDatatype(p.fhirType()) && p.hasValues()) {
+          CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+          for (BaseWrapper v : p.getValues()) {
+            b.append((display((DataType) v.getBase())));
+          }
+          return res.fhirType()+" "+ b.toString();
+        }
+      }
+      for (PropertyWrapper p : children) {
+        if (p.getName().equals("code") && cu.isDatatype(p.fhirType()) && p.hasValues()) {
+          CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+          for (BaseWrapper v : p.getValues()) {
+            b.append((display((DataType) v.getBase())));
+          }
+          return res.fhirType()+" "+ b.toString();
+        }
+      }
+      for (PropertyWrapper p : children) {
+        StringBuilder b = new StringBuilder();
+        if (!ignoreProperty(p) && !p.getElementDefinition().getBase().getPath().startsWith("Resource.")) {
+          ElementDefinition child = getElementDefinition(profile.getSnapshot().getElement(), res.fhirType()+"."+p.getName(), p);
+          if (p.getValues().size() > 0 && p.getValues().get(0) != null && child != null && isSimple(child) && includeInSummary(child, p.getValues())) {
+            if (firstElement)
+              firstElement = false;
+            else if (last)
+              b.append("; ");
+            boolean first = true;
+            last = false;
+            for (BaseWrapper v : p.getValues()) {
+              if (first)
+                first = false;
+              else if (last)
+                b.append(", ");
+              b.append((display((DataType) v.getBase())));
+            }
+          }
+        }
+        return res.fhirType()+" "+ b.toString();
+      }
+      return res.fhirType()+" ???";
+    }
   }
 
 //
@@ -254,7 +301,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       for (PropertyWrapper p : res.children()) {
         if (!ignoreProperty(p) && !p.getElementDefinition().getBase().getPath().startsWith("Resource.")) {
           ElementDefinition child = getElementDefinition(profile.getSnapshot().getElement(), path+"."+p.getName(), p);
-          if (p.getValues().size() > 0 && p.getValues().get(0) != null && child != null && isPrimitive(child) && includeInSummary(child, p.getValues())) {
+          if (p.getValues().size() > 0 && p.getValues().get(0) != null && child != null && isSimple(child) && includeInSummary(child, p.getValues())) {
             if (firstElement)
               firstElement = false;
             else if (last)
@@ -621,7 +668,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
 
 
 
-  private boolean isPrimitive(ElementDefinition e) {
+  private boolean isSimple(ElementDefinition e) {
     //we can tell if e is a primitive because it has types
     if (e.getType().isEmpty()) {
       return false;
@@ -744,7 +791,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       List<ElementDefinition> grandChildren = getChildrenForPath(profile, allElements, path+"."+p.getName());
       filterGrandChildren(grandChildren, path+"."+p.getName(), p);
       if (p.getValues().size() > 0) {
-         if (isPrimitive(child)) {
+         if (isSimple(child)) {
            XhtmlNode para = x.isPara() ? para = x : x.para();
            String name = p.getName();
            if (name.endsWith("[x]"))
@@ -853,7 +900,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
 
     for (ElementDefinition e : grandChildren) {
       List<PropertyWrapper> values = getValues(path, p, e);
-      if (values.size() > 1 || !isPrimitive(e) || !canCollapse(e))
+      if (values.size() > 1 || !isSimple(e) || !canCollapse(e))
         return false;
     }
     return true;
