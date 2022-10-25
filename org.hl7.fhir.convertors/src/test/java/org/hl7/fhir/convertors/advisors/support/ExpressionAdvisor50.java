@@ -1,12 +1,12 @@
 package org.hl7.fhir.convertors.advisors.support;
 
+import javax.annotation.Nonnull;
+
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Uri10_50;
 import org.hl7.fhir.dstu2.model.StringType;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Expression;
-
-import javax.annotation.Nonnull;
 
 public class ExpressionAdvisor50 extends BaseAdvisor_10_50 {
 

@@ -88,11 +88,8 @@ import org.hl7.fhir.convertors.conv30_50.resources30_50.SupplyDelivery30_50;
 import org.hl7.fhir.convertors.conv30_50.resources30_50.TestReport30_50;
 import org.hl7.fhir.convertors.conv30_50.resources30_50.TestScript30_50;
 import org.hl7.fhir.convertors.conv30_50.resources30_50.ValueSet30_50;
-import org.hl7.fhir.convertors.conv40_50.resources40_50.ActorDefinition40_50;
-import org.hl7.fhir.convertors.conv40_50.resources40_50.Basic40_50;
-import org.hl7.fhir.convertors.conv43_50.resources43_50.Requirements43_50;
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.dstu3.model.Basic;
+import org.hl7.fhir.exceptions.FHIRException;
 
 public class Resource30_50 {
 

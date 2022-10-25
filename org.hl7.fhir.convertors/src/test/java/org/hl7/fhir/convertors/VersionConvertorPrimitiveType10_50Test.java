@@ -1,8 +1,8 @@
 package org.hl7.fhir.convertors;
 
-import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Type10_40;
-import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
-import org.hl7.fhir.convertors.conv10_50.datatypes10_50.Type10_50;
+import java.io.IOException;
+import java.util.stream.Stream;
+
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_40;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.dstu2.model.Base64BinaryType;
@@ -28,9 +28,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import java.io.IOException;
-import java.util.stream.Stream;
 
 public class VersionConvertorPrimitiveType10_50Test {
 
