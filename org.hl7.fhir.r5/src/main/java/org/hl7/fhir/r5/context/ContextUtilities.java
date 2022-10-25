@@ -282,9 +282,15 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   }
 
   @Override
-  public boolean isDatatype(String type) {
+  public boolean isPrimitiveType(String type) {
     StructureDefinition sd = context.fetchTypeDefinition(type);
     return sd != null && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;
+  }
+
+  @Override
+  public boolean isDatatype(String type) {
+    StructureDefinition sd = context.fetchTypeDefinition(type);
+    return sd != null && (sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE || sd.getKind() == StructureDefinitionKind.COMPLEXTYPE) && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION;
   }
 
   @Override

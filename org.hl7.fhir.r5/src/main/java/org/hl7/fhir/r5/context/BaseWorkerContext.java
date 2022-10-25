@@ -57,6 +57,7 @@ import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
 import org.hl7.fhir.r5.context.IWorkerContext.ILoggingService.LogCategory;
 import org.hl7.fhir.r5.context.IWorkerContextManager.IPackageLoadingTracker;
 import org.hl7.fhir.r5.context.TerminologyCache.CacheToken;
+import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.CanonicalResource;
@@ -88,6 +89,7 @@ import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.PlanDefinition;
 import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.Reference;
+import org.hl7.fhir.r5.model.Requirements;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.model.StringType;
@@ -150,6 +152,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     
     public Resource getResource() {
       return resource != null ? resource : proxy.getResource();
+    }
+      
+    public CanonicalResourceProxy getProxy() {
+      return proxy;
     }
     
     public String getUrl() {
@@ -219,6 +225,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private final CanonicalResourceManager<Questionnaire> questionnaires = new CanonicalResourceManager<Questionnaire>(false);
   private final CanonicalResourceManager<OperationDefinition> operations = new CanonicalResourceManager<OperationDefinition>(false);
   private final CanonicalResourceManager<PlanDefinition> plans = new CanonicalResourceManager<PlanDefinition>(false);
+  private final CanonicalResourceManager<ActorDefinition> actors = new CanonicalResourceManager<ActorDefinition>(false);
+  private final CanonicalResourceManager<Requirements> requirements = new CanonicalResourceManager<Requirements>(false);
   private final CanonicalResourceManager<NamingSystem> systems = new CanonicalResourceManager<NamingSystem>(false);
   private Map<String, NamingSystem> systemUrlMap;
 
@@ -400,6 +408,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       case "NamingSystem":
         systems.register(r, packageInfo);
         break;
+      case "Requirements":
+        requirements.register(r, packageInfo);
+        break;
+      case "ActorDefinition":
+        actors.register(r, packageInfo);
+        break;
       }
     }
   }
@@ -469,6 +483,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           transforms.see((StructureMap) m, packageInfo);
         } else if (r instanceof NamingSystem) {
           systems.see((NamingSystem) m, packageInfo);
+          systemUrlMap = null;
+        } else if (r instanceof Requirements) {
+          requirements.see((Requirements) m, packageInfo);
+        } else if (r instanceof ActorDefinition) {
+          actors.see((ActorDefinition) m, packageInfo);
           systemUrlMap = null;
         }
       }
@@ -1436,20 +1455,16 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (transforms.has(uri)) {
           return (T) transforms.get(uri, version);
         } 
+        if (actors.has(uri)) {
+          return (T) transforms.get(uri, version);
+        } 
+        if (requirements.has(uri)) {
+          return (T) transforms.get(uri, version);
+        } 
         if (questionnaires.has(uri)) {
           return (T) questionnaires.get(uri, version);
         } 
-        if (uri.matches(Constants.URI_REGEX) && !uri.contains("ValueSet")) {
-          return null;
-        }
 
-        // it might be a special URL.
-        if (Utilities.isAbsoluteUrl(uri) || uri.startsWith("ValueSet/")) {
-          Resource res = null; // findTxValueSet(uri);
-          if (res != null) {
-            return (T) res;
-          }
-        }
         for (Map<String, ResourceProxy> rt : allResourcesById.values()) {
           for (ResourceProxy r : rt.values()) {
             if (uri.equals(r.getUrl())) {
@@ -1459,6 +1474,17 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
             }
           }            
         }
+        if (uri.matches(Constants.URI_REGEX) && !uri.contains("ValueSet")) {
+          return null;
+        }
+
+        // it might be a special URL.
+//        if (Utilities.isAbsoluteUrl(uri) || uri.startsWith("ValueSet/")) {
+//          Resource res = null; // findTxValueSet(uri);
+//          if (res != null) {
+//            return (T) res;
+//          }
+//        }
         return null;      
       } else if (class_ == ImplementationGuide.class) {
         return (T) guides.get(uri, version);
@@ -1478,6 +1504,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         return (T) codeSystems.get(uri, version);
       } else if (class_ == ConceptMap.class) {
         return (T) maps.get(uri, version);
+      } else if (class_ == ActorDefinition.class) {
+        return (T) actors.get(uri, version);
+      } else if (class_ == Requirements.class) {
+        return (T) requirements.get(uri, version);
       } else if (class_ == PlanDefinition.class) {
         return (T) plans.get(uri, version);
       } else if (class_ == OperationDefinition.class) {
@@ -1558,6 +1588,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (transforms.has(uri)) {
         return transforms.getPackageInfo(uri, version);
       } 
+      if (actors.has(uri)) {
+        return actors.getPackageInfo(uri, version);
+      } 
+      if (requirements.has(uri)) {
+        return requirements.getPackageInfo(uri, version);
+      } 
       if (questionnaires.has(uri)) {
         return questionnaires.getPackageInfo(uri, version);
       }         
@@ -1625,6 +1661,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (transforms.has(uri)) {
           return (T) transforms.get(uri, version);
         } 
+        if (actors.has(uri)) {
+          return (T) actors.get(uri, version);
+        } 
+        if (requirements.has(uri)) {
+          return (T) requirements.get(uri, version);
+        } 
         if (questionnaires.has(uri)) {
           return (T) questionnaires.get(uri, version);
         } 
@@ -1647,6 +1689,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         return (T) structures.get(uri, version);
       } else if ("StructureMap".equals(cls)) {
         return (T) transforms.get(uri, version);
+      } else if ("Requirements".equals(cls)) {
+        return (T) requirements.get(uri, version);
+      } else if ("ActorDefinition".equals(cls)) {
+        return (T) actors.get(uri, version);
       } else if ("ValueSet".equals(cls)) {
         return (T) valueSets.get(uri, version);
       } else if ("CodeSystem".equals(cls)) {
@@ -1717,6 +1763,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         res.addAll((List<T>) transforms.getList());
         res.addAll((List<T>) questionnaires.getList());
         res.addAll((List<T>) systems.getList());
+        res.addAll((List<T>) actors.getList());
+        res.addAll((List<T>) requirements.getList());
       } else if (class_ == ImplementationGuide.class) {
         res.addAll((List<T>) guides.getList());
       } else if (class_ == CapabilityStatement.class) {
@@ -1735,6 +1783,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         res.addAll((List<T>) codeSystems.getList());
       } else if (class_ == NamingSystem.class) {
         res.addAll((List<T>) systems.getList());
+      } else if (class_ == ActorDefinition.class) {
+        res.addAll((List<T>) actors.getList());
+      } else if (class_ == Requirements.class) {
+        res.addAll((List<T>) requirements.getList());
       } else if (class_ == ConceptMap.class) {
         res.addAll((List<T>) maps.getList());
       } else if (class_ == PlanDefinition.class) {
@@ -1941,6 +1993,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       } else if (fhirType.equals("NamingSystem")) {
         systems.drop(id);
         systemUrlMap = null;
+      } else if (fhirType.equals("ActorDefinition")) {
+        actors.drop(id);
+      } else if (fhirType.equals("Requirements")) {
+        requirements.drop(id);
       }
     }
   }
@@ -2081,6 +2137,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return transforms.get(url).getUserString("path");
     }
     
+    if (actors.has(url)) {
+      return actors.get(url).getUserString("path");
+    }
+    
+    if (requirements.has(url)) {
+      return requirements.get(url).getUserString("path");
+    }
+    
     if (structures.has(url)) {
       return structures.get(url).getUserString("path");
     }
@@ -2176,6 +2240,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     operations.setVersion(version);
     plans.setVersion(version);
     systems.setVersion(version);
+    actors.setVersion(version);
+    requirements.setVersion(version);
   }
 
   protected String tail(String url) {
@@ -2236,7 +2302,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public int countAllCaches() {
     return codeSystems.size() + valueSets.size() + maps.size() + transforms.size() + structures.size() + measures.size() + libraries.size() + 
-        guides.size() + capstmts.size() + searchParameters.size() + questionnaires.size() + operations.size() + plans.size() + systems.size();
+        guides.size() + capstmts.size() + searchParameters.size() + questionnaires.size() + operations.size() + plans.size() + 
+        systems.size()+ actors.size()+ requirements.size();
   }
 
   public Set<String> getCodeSystemsUsed() {

@@ -15,10 +15,87 @@ import ca.uhn.fhir.model.api.IElement;
 
 public abstract class Base implements Serializable, IBase, IElement {
 
+  public enum ValidationReason {
+    Validation, MatchingSlice, Expression    
+  }
+  
+  public enum ProfileSource {
+    BaseDefinition, ConfigProfile, MetaProfile, ProfileDependency, FromExpression,  GlobalProfile
+  }
+  
+  public static class ValidationMode {
+    private ValidationReason reason;
+    private ProfileSource source;
+    public ValidationMode(ValidationReason reason, ProfileSource source) {
+      super();
+      this.reason = reason;
+      this.source = source;
+    }
+    public ValidationReason getReason() {
+      return reason;
+    }
+    public ProfileSource getSource() {
+      return source;
+    }
+    public ValidationMode withSource(ProfileSource source) {
+      ValidationMode res = new ValidationMode(reason, source);
+      return res;
+    }
+    public ValidationMode withReason(ValidationReason reason) {
+      ValidationMode res = new ValidationMode(reason, source);
+      return res;
+    }
+  }
+  
+  public class ValidationInfo {
+    private StructureDefinition structure;
+    private ElementDefinition definition;
+    private ValidationReason reason;
+    private ProfileSource source;
+    private boolean valid;
+    
+    public ValidationInfo(StructureDefinition structure, ElementDefinition definition, ValidationMode mode) {
+      super();
+      this.structure = structure;
+      this.definition = definition;
+      this.reason = mode.reason;
+      this.source = mode.source;
+    }
+    
+    public StructureDefinition getStructure() {
+      return structure;
+    }
+    
+    public ElementDefinition getDefinition() {
+      return definition;
+    }
+    
+    public ValidationReason getReason() {
+      return reason;
+    }
+
+    public ProfileSource getSource() {
+      return source;
+    }
+
+    public boolean isValid() {
+      return valid;
+    }
+    public void setValid(boolean valid) {
+      this.valid = valid;
+    }
+
+  }
+
   /**
    * User appended data items - allow users to add extra information to the class
    */
-private Map<String, Object> userData; 
+  private transient Map<String, Object> userData; 
+
+  /**
+   * Post Validation Definition information
+   */
+  private transient List<ValidationInfo> validationInfo;
 
   /**
    * Round tracking xml comments for testing convenience
@@ -351,4 +428,33 @@ private Map<String, Object> userData;
     return null;
   }
 
+
+  public boolean hasValidationInfo() {
+    return validationInfo != null;
+  }
+
+  /**
+   * A list of definitions that the validator matched this element to.
+   * Note that the element doesn't have to conform to these definitions - check whether they're valid 
+   * Some of the definitions will be noted because of slice matching
+   * 
+   * @return
+   */
+  public List<ValidationInfo> getValidationInfo() {
+    return validationInfo;
+  }
+
+  public ValidationInfo addDefinition(StructureDefinition structure, ElementDefinition defn, ValidationMode mode) {
+    if (validationInfo == null) {
+      validationInfo = new ArrayList<>();
+    }
+    for (ValidationInfo t : validationInfo) {
+      if (t.structure == structure && t.definition == defn && t.reason == mode.reason && t.source == mode.source) {
+        return t;
+      }
+    }
+    ValidationInfo vi = new ValidationInfo(structure, defn, mode);
+    this.validationInfo.add(vi);
+    return vi;
+  }
 }

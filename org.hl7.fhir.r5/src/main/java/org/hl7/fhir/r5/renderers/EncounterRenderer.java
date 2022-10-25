@@ -3,10 +3,9 @@ package org.hl7.fhir.r5.renderers;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class EncounterRenderer extends ResourceRenderer {

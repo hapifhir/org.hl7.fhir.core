@@ -300,7 +300,7 @@ public class Property {
   }
 
 
-  protected List<Property> getChildProperties(String elementName, String statedType) throws FHIRException {
+  public List<Property> getChildProperties(String elementName, String statedType) throws FHIRException {
     ElementDefinition ed = definition;
     StructureDefinition sd = structure;
     SourcedChildDefinitions children = profileUtilities.getChildMap(sd, ed);
