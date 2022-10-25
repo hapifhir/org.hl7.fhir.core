@@ -215,6 +215,13 @@ public class SnapShotGenerationTests {
       return (sd != null) && (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) && (sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE || sd.getKind() == StructureDefinitionKind.COMPLEXTYPE);
     }
 
+
+    @Override
+    public boolean isPrimitiveType(String name) {
+      StructureDefinition sd = TestingUtilities.getSharedWorkerContext().fetchTypeDefinition(name);
+      return (sd != null) && (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) && (sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE);
+    }
+
     @Override
     public boolean isResource(String typeSimple) {
       StructureDefinition sd = TestingUtilities.getSharedWorkerContext().fetchTypeDefinition(typeSimple);

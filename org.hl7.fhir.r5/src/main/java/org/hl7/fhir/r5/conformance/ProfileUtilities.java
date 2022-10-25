@@ -439,6 +439,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       public String url;
     }
     boolean isDatatype(String typeSimple);
+    boolean isPrimitiveType(String typeSimple);
     boolean isResource(String typeSimple);
     boolean hasLinkFor(String typeSimple);
     String getLinkFor(String corePath, String typeSimple);
@@ -3291,10 +3292,10 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
     }
     if (dest.hasFixed()) {
-      checkTypeOk(dest, dest.getFixed().fhirType(), srcSD);
+      checkTypeOk(dest, dest.getFixed().fhirType(), srcSD, "fixed");
     }
     if (dest.hasPattern()) {
-      checkTypeOk(dest, dest.getPattern().fhirType(), srcSD);
+      checkTypeOk(dest, dest.getPattern().fhirType(), srcSD, "pattern");
     }
   }
 
@@ -3359,7 +3360,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  public void checkTypeOk(ElementDefinition dest, String ft, StructureDefinition sd) {
+  public void checkTypeOk(ElementDefinition dest, String ft, StructureDefinition sd, String fieldName) {
     boolean ok = false;
     Set<String> types = new HashSet<>();
     if (dest.getPath().contains(".")) {
@@ -3375,7 +3376,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
     }
     if (!ok) {
-      messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.CONFLICT, dest.getId(), "The fixed value has type '"+ft+"' which is not valid (valid "+Utilities.pluralize("type", dest.getType().size())+": "+types.toString()+")", IssueSeverity.ERROR));
+      messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.CONFLICT, dest.getId(), "The "+fieldName+" value has type '"+ft+"' which is not valid (valid "+Utilities.pluralize("type", dest.getType().size())+": "+types.toString()+")", IssueSeverity.ERROR));
     }
   }
 

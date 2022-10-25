@@ -59,6 +59,10 @@ public class NarrativeGenerationTests {
     public boolean isDatatype(String typeSimple) {
       throw new NotImplementedException();      
     }
+    @Override
+    public boolean isPrimitiveType(String typeSimple) {
+      throw new NotImplementedException();      
+    }
 
     @Override
     public boolean isResource(String typeSimple) {
