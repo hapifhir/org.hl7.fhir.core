@@ -2,8 +2,6 @@ package org.hl7.fhir.convertors.conv43_50.resources43_50;
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_43_50;
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
-import org.hl7.fhir.convertors.conv40_50.resources40_50.ActorDefinition40_50;
-import org.hl7.fhir.convertors.conv40_50.resources40_50.Basic40_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Code43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Id43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
@@ -11,7 +9,6 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Extension43
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Meta43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Narrative43_50;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4.model.Basic;
 
 public class Resource43_50 {
 
