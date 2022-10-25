@@ -88,6 +88,9 @@ public class RendererFactory {
     if ("ActorDefinition".equals(resourceName)) {
       return new ActorDefinitionRenderer(context);
     }
+    if ("Requirements".equals(resourceName)) {
+      return new RequirementsRenderer(context);
+    }
     return new ProfileDrivenRenderer(context);    
   }
 
@@ -139,7 +142,8 @@ public class RendererFactory {
     
     return Utilities.existsInList(rt, 
         "CodeSystem", "ValueSet", "ConceptMap", 
-        "CapabilityStatement", "CompartmentDefinition", "ImplementationGuide", "Library", "NamingSystem", "OperationDefinition", "Questionnaire", "SearchParameter", "StructureDefinition", "ActorDefinition");
+        "CapabilityStatement", "CompartmentDefinition", "ImplementationGuide", "Library", "NamingSystem", "OperationDefinition", 
+        "Questionnaire", "SearchParameter", "StructureDefinition", "ActorDefinition", "Requirements");
   }
   
 }
