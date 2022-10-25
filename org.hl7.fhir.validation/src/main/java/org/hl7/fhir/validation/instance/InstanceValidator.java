@@ -1852,10 +1852,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       // check the type of the extension:
       Set<String> allowedTypes = listExtensionTypes(ex);
       String actualType = getExtensionType(element);
-      if (actualType == null)
-        rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, allowedTypes.isEmpty(), I18nConstants.EXTENSION_EXT_SIMPLE, url);
-      else
+      if (actualType != null)
         rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, allowedTypes.contains(actualType), I18nConstants.EXTENSION_EXT_TYPE, url, allowedTypes.toString(), actualType);
+      else if (element.hasChildren("extension"))
+        rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, allowedTypes.isEmpty(), I18nConstants.EXTENSION_EXT_SIMPLE_WRONG, url);
+      else
+        rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, allowedTypes.isEmpty(), I18nConstants.EXTENSION_EXT_SIMPLE_ABSENT, url);
 
       // 3. is the content of the extension valid?
       validateElement(hostContext, errors, ex, ex.getSnapshot().getElement().get(0), null, null, resource, element, "Extension", stack, false, true, url, pct, mode);
@@ -4215,7 +4217,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         boolean found = false;
         for (ElementDefinition criteriaElement : criteriaElements) {
           found = true;
-          if (s.getType() == DiscriminatorType.TYPE) {
+          if ("0".equals(criteriaElement.getMax())) {
+            expression.append(" and " + discriminator + ".empty()");            
+          } else if (s.getType() == DiscriminatorType.TYPE) {
             String type = null;
             if (!criteriaElement.getPath().contains("[") && discriminator.contains("[")) {
               discriminator = discriminator.substring(0, discriminator.indexOf('['));
