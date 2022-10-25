@@ -1143,13 +1143,13 @@ public class Element extends Base {
 
 
   @Override
-  public boolean hasDefinitions() {
-    return hasSource() ? source.hasDefinitions() : super.hasDefinitions();
+  public boolean hasValidationInfo() {
+    return hasSource() ? source.hasValidationInfo() : super.hasValidationInfo();
   }
 
   @Override
-  public List<ValidationInfo> getDefinitions() {
-    return hasSource() ? source.getDefinitions() : super.getDefinitions();
+  public List<ValidationInfo> getValidationInfo() {
+    return hasSource() ? source.getValidationInfo() : super.getValidationInfo();
   }
 
   @Override
