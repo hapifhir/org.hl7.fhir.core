@@ -118,7 +118,8 @@ public class I18nConstants {
   public static final String EXTENSION_EXT_MODIFIER_MISMATCHY = "Extension_EXT_Modifier_MismatchY";
   public static final String EXTENSION_EXT_MODIFIER_N = "Extension_EXT_Modifier_N";
   public static final String EXTENSION_EXT_MODIFIER_Y = "Extension_EXT_Modifier_Y";
-  public static final String EXTENSION_EXT_SIMPLE = "Extension_EXT_Simple";
+  public static final String EXTENSION_EXT_SIMPLE_ABSENT = "Extension_EXT_Simple_ABSENT";
+  public static final String EXTENSION_EXT_SIMPLE_WRONG = "Extension_EXT_Simple_WRONG";
   public static final String EXTENSION_EXT_SUBEXTENSION_INVALID = "Extension_EXT_SubExtension_Invalid";
   public static final String EXTENSION_EXT_TYPE = "Extension_EXT_Type";
   public static final String EXTENSION_EXT_UNKNOWN = "Extension_EXT_Unknown";

@@ -52,30 +52,34 @@ public class ValueSetValidator extends BaseValidator {
 
   }
   
-  public void validateValueSet(List<ValidationMessage> errors, Element vs, NodeStack stack) {
+  public boolean validateValueSet(List<ValidationMessage> errors, Element vs, NodeStack stack) {
+    boolean ok = true;
     if (!VersionUtilities.isR2Ver(context.getVersion())) {
       List<Element> composes = vs.getChildrenByName("compose");
       int cc = 0;
       for (Element compose : composes) {
-        validateValueSetCompose(errors, compose, stack.push(compose, cc, null, null), vs.getNamedChildValue("url"), "retired".equals(vs.getNamedChildValue("url")));
+        ok = validateValueSetCompose(errors, compose, stack.push(compose, cc, null, null), vs.getNamedChildValue("url"), "retired".equals(vs.getNamedChildValue("url"))) & ok;
         cc++;
       }
     }
     if (!stack.isContained()) {
-      checkShareableValueSet(errors, vs, stack);
+      ok = checkShareableValueSet(errors, vs, stack) && ok;
     }
+    return ok;
   }
 
-  private void checkShareableValueSet(List<ValidationMessage> errors, Element vs, NodeStack stack) {
+  private boolean checkShareableValueSet(List<ValidationMessage> errors, Element vs, NodeStack stack) {
     if (parent.isForPublication()) { 
       if (isHL7(vs)) {
-        rule(errors, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("url"), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "url");                      
-        rule(errors, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("version"), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "version");                      
-        rule(errors, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("title"), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "title");                      
+        boolean ok = true;
+        ok = rule(errors, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("url"), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "url") && ok;                      
+        ok = rule(errors, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("version"), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "version") && ok;                      
+        ok = rule(errors, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("title"), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "title") && ok;                      
         warning(errors, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("name"), I18nConstants.VALUESET_SHAREABLE_EXTRA_MISSING_HL7, "name");                      
-        rule(errors, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("status"), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "status");                      
-        rule(errors, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("experimental"), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "experimental");                      
-        rule(errors, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("description"), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "description"); 
+        ok = rule(errors, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("status"), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "status") && ok;                      
+        ok = rule(errors, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("experimental"), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "experimental") && ok;                      
+        ok = rule(errors, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("description"), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "description") && ok;
+        return ok;
       } else {
         warning(errors, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("url"), I18nConstants.VALUESET_SHAREABLE_MISSING, "url");                      
         warning(errors, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("version"), I18nConstants.VALUESET_SHAREABLE_MISSING, "version");                      
@@ -83,28 +87,32 @@ public class ValueSetValidator extends BaseValidator {
         warning(errors, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("name"), I18nConstants.VALUESET_SHAREABLE_EXTRA_MISSING, "name");                      
         warning(errors, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("status"), I18nConstants.VALUESET_SHAREABLE_MISSING, "status");                      
         warning(errors, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("experimental"), I18nConstants.VALUESET_SHAREABLE_MISSING, "experimental");                      
-        warning(errors, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("description"), I18nConstants.VALUESET_SHAREABLE_MISSING, "description"); 
+        warning(errors, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("description"), I18nConstants.VALUESET_SHAREABLE_MISSING, "description");
       }
     }
+    return true;
   }
 
 
-  private void validateValueSetCompose(List<ValidationMessage> errors, Element compose, NodeStack stack, String vsid, boolean retired) {
+  private boolean validateValueSetCompose(List<ValidationMessage> errors, Element compose, NodeStack stack, String vsid, boolean retired) {
+    boolean ok = true;
     List<Element> includes = compose.getChildrenByName("include");
     int ci = 0;
     for (Element include : includes) {
-      validateValueSetInclude(errors, include, stack.push(include, ci, null, null), vsid, retired);
+      ok = validateValueSetInclude(errors, include, stack.push(include, ci, null, null), vsid, retired) && ok;
       ci++;
     }    
     List<Element> excludes = compose.getChildrenByName("exclude");
     int ce = 0;
     for (Element exclude : excludes) {
-      validateValueSetInclude(errors, exclude, stack.push(exclude, ce, null, null), vsid, retired);
+      ok = validateValueSetInclude(errors, exclude, stack.push(exclude, ce, null, null), vsid, retired) && ok;
       ce++;
     }    
+    return ok;
   }
   
-  private void validateValueSetInclude(List<ValidationMessage> errors, Element include, NodeStack stack, String vsid, boolean retired) {
+  private boolean validateValueSetInclude(List<ValidationMessage> errors, Element include, NodeStack stack, String vsid, boolean retired) {
+    boolean ok = true;
     String system = include.getChildValue("system");
     String version = include.getChildValue("version");
     List<Element> valuesets = include.getChildrenByName("valueSet");
@@ -157,9 +165,9 @@ public class ValueSetValidator extends BaseValidator {
         }
         for (VSCodingValidationRequest cv : batch) {
           if (version == null) {
-            warningOrHint(errors, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), !retired, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE, system, cv.getCoding().getCode());
+            ok = warningOrHint(errors, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), !retired, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE, system, cv.getCoding().getCode()) && ok;
           } else {
-            warningOrHint(errors, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), !retired, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER, system, version, cv.getCoding().getCode());
+            ok = warningOrHint(errors, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), !retired, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER, system, version, cv.getCoding().getCode()) && ok;
           }
         }
       }
@@ -175,6 +183,7 @@ public class ValueSetValidator extends BaseValidator {
     } else {
       warning(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), filters.size() == 0 && concepts.size() == 0, I18nConstants.VALUESET_NO_SYSTEM_WARNING);      
     }
+    return ok;
   }
 
   private boolean validateValueSetIncludeConcept(List<ValidationMessage> errors, Element concept, NodeStack stack, String system, String version) {

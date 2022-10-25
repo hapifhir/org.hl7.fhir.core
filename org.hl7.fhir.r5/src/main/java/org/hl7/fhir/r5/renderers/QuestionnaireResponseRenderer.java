@@ -2,40 +2,26 @@ package org.hl7.fhir.r5.renderers;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.CodeType;
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Expression;
-import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.QuestionnaireResponse;
 import org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent;
 import org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemComponent;
-import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
-import org.hl7.fhir.r5.renderers.utils.ElementWrappers.ResourceWrapperMetaElement;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
-import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
+import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class QuestionnaireResponseRenderer extends ResourceRenderer {

@@ -1,27 +1,20 @@
 package org.hl7.fhir.r5.renderers;
 
-import static java.time.temporal.ChronoField.DAY_OF_MONTH;
 import static java.time.temporal.ChronoField.MONTH_OF_YEAR;
 import static java.time.temporal.ChronoField.YEAR;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.text.DateFormat;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
-import java.time.format.ResolverStyle;
 import java.time.format.SignStyle;
 import java.util.Currency;
 import java.util.List;
-import java.util.TimeZone;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -40,12 +33,12 @@ import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ContactPoint;
+import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.r5.model.DataRequirement;
 import org.hl7.fhir.r5.model.DataRequirement.DataRequirementCodeFilterComponent;
 import org.hl7.fhir.r5.model.DataRequirement.DataRequirementDateFilterComponent;
 import org.hl7.fhir.r5.model.DataRequirement.DataRequirementSortComponent;
 import org.hl7.fhir.r5.model.DataRequirement.SortDirection;
-import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.DateType;
@@ -79,21 +72,16 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MarkDownProcessor;
-import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.validation.ValidationOptions;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
-
-import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
-import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
 
 public class DataRenderer extends Renderer {
   
