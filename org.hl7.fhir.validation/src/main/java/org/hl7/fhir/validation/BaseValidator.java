@@ -320,6 +320,14 @@ public class BaseValidator implements IValidationContextResourceLoader {
     return thePass;
   }
 
+  protected boolean hintPL(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, int num, String theMessage, Object... theMessageArguments) {
+    if (!thePass && doingHints()) {
+      String message = context.formatMessagePL(num, theMessage, theMessageArguments);
+      addValidationMessage(errors, type, line, col, path, message, IssueSeverity.INFORMATION, theMessage);
+    }
+    return thePass;
+  }
+
   protected ValidationMessage signpost(List<ValidationMessage> errors, IssueType type, int line, int col, String path, String theMessage, Object... theMessageArguments) {
     String message = context.formatMessage(theMessage, theMessageArguments);
     return addValidationMessage(errors, type, line, col, path, message, IssueSeverity.INFORMATION, theMessage).setSignpost(true);
@@ -379,6 +387,14 @@ public class BaseValidator implements IValidationContextResourceLoader {
     return thePass;
   }
 
+  protected boolean rulePL(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, int num, String theMessage, Object... theMessageArguments) {
+    if (!thePass && doingErrors()) {
+      String message = context.formatMessagePL(num, theMessage, theMessageArguments);
+      addValidationMessage(errors, type, line, col, path, message, IssueSeverity.ERROR, theMessage);
+    }
+    return thePass;
+  }
+
   protected boolean txRule(List<ValidationMessage> errors, String txLink, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass && doingErrors()) {
       String message = context.formatMessage(theMessage, theMessageArguments);
@@ -433,6 +449,14 @@ public class BaseValidator implements IValidationContextResourceLoader {
   protected boolean rule(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass && doingErrors()) {
       String message = context.formatMessage(theMessage, theMessageArguments);
+      addValidationMessage(errors, type, -1, -1, path, message, IssueSeverity.ERROR, theMessage);
+    }
+    return thePass;
+  }
+
+  protected boolean rulePL(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, int num, String theMessage, Object... theMessageArguments) {
+    if (!thePass && doingErrors()) {
+      String message = context.formatMessagePL(num, theMessage, theMessageArguments);
       addValidationMessage(errors, type, -1, -1, path, message, IssueSeverity.ERROR, theMessage);
     }
     return thePass;
@@ -499,6 +523,16 @@ public class BaseValidator implements IValidationContextResourceLoader {
   protected boolean warning(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
     if (!thePass && doingWarnings()) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
+      IssueSeverity severity = IssueSeverity.WARNING;
+      addValidationMessage(errors, type, line, col, path, nmsg, severity, msg);
+    }
+    return thePass;
+
+  }
+
+  protected boolean warningPL(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, int num, String msg, Object... theMessageArguments) {
+    if (!thePass && doingWarnings()) {
+      String nmsg = context.formatMessagePL(num, msg, theMessageArguments);
       IssueSeverity severity = IssueSeverity.WARNING;
       addValidationMessage(errors, type, line, col, path, nmsg, severity, msg);
     }
