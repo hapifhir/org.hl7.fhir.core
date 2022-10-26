@@ -1225,7 +1225,7 @@ public class ProfileUtilities extends TranslatingUtilities {
                   throw new DefinitionException(context.formatMessage(I18nConstants.UNKNOWN_TYPE__AT_, outcome.getType().get(0), cpath));
                 }
                 contextName = dt.getUrl();
-                if (redirector.isEmpty()) {
+                if (redirector == null || redirector.isEmpty()) {
                   processPaths(indent+"  ", result, dt.getSnapshot(), differential, 1 /* starting again on the data type, but skip the root */, start, dt.getSnapshot().getElement().size()-1,
                       diffCursor-1, url, getWebUrl(dt, webUrl, indent), profileName, cpath, outcome.getPath(), trimDifferential, contextName, resultPathBase, false, null, null, redirector, srcSD);
                 } else {
@@ -2496,7 +2496,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     if (contextPath == null)
       return pathSimple;
 //    String ptail = pathSimple.substring(contextPath.length() + 1);
-    if (redirector.size() > 0) {
+    if (redirector != null && redirector.size() > 0) {
       String ptail = null;
       if (contextPath.length() >= pathSimple.length()) {
         ptail = pathSimple.substring(pathSimple.indexOf(".")+1);
@@ -2516,7 +2516,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     if (contextPath == null)
       s = pathSimple;
     else {
-      if (redirector.size() > 0) {
+      if (redirector != null && redirector.size() > 0) {
         String ptail = null;
         if (redirectSource.length() >= pathSimple.length()) {
           ptail = pathSimple.substring(pathSimple.indexOf(".")+1);
