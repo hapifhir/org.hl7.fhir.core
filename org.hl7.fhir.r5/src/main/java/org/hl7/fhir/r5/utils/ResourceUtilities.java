@@ -1,5 +1,7 @@
 package org.hl7.fhir.r5.utils;
 
+import java.util.ArrayList;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -33,6 +35,7 @@ package org.hl7.fhir.r5.utils;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
@@ -160,4 +163,21 @@ public class ResourceUtilities {
       return new Locale(l);
     }
  }
+
+  public static String listUrls(List<? extends CanonicalResource> list) {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+    for (CanonicalResource t : list) {
+      b.append(t.getVUrl());
+    }
+    return b.toString();
+  }
+
+  public static String listStrings(Set<String> set) {
+    List<String> list = Utilities.sorted(set);
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+    for (String s : list) {
+      b.append(s);
+    }
+    return b.toString();
+  }
 }

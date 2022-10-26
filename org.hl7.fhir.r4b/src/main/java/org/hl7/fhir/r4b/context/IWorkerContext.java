@@ -554,6 +554,7 @@ public interface IWorkerContext {
   void setLocale(Locale locale);
 
   String formatMessage(String theMessage, Object... theMessageArguments);
+  String formatMessagePL(Integer pl, String theMessage, Object... theMessageArguments);
 
   void setValidationMessageLanguage(Locale locale);
 
