@@ -578,7 +578,15 @@ public class FHIRPathEngine {
   }
 
   private FHIRException makeExceptionPL(Integer num, ExpressionNode holder, String constName, Object... args) {
-    return makeException(holder, constName, args);
+    String fmt = worker.formatMessagePL(num, constName, args);
+    if (location != null) {
+      fmt = fmt + " "+worker.formatMessage(I18nConstants.FHIRPATH_LOCATION, location);
+    }
+    if (holder != null) {      
+       return new PathEngineException(fmt, holder.getStart(), holder.toString());
+    } else {
+      return new PathEngineException(fmt);
+    }
   }
   
   private FHIRException makeException(ExpressionNode holder, String constName, Object... args) {
