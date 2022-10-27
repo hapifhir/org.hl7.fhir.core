@@ -50,7 +50,7 @@ class I18nBaseTest {
   @DisplayName("Test pluralization works without initializing Locale.")
   void testFormatMessagePluralWithoutInitLocale() {
     I18nTestClass testClass = new I18nTestClass();
-    
+
     //Answer value must be of the type {1}
     String resultOne = testClass.formatMessagePL(1, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE_PLURAL);
     assertThat(resultOne, containsString("be of the type"));
@@ -68,13 +68,13 @@ class I18nBaseTest {
     //ResourceBundle loadedBundle = ResourceBundle.getBundle("Messages", Locale.GERMAN);
 
     testClass.setLocale(Locale.GERMAN);
-    //Answer value muss einer der Typen {1} sein
+    //Answer value muss vom Typ {0} sein.
     String resultOne = testClass.formatMessagePL(1, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE_PLURAL);
-    assertThat(resultOne, containsString("Answer value muss einer der Typen {1} sein"));
+    assertThat(resultOne, containsString("muss vom Typ"));
 
-    //?
+    //Answer value muss einer der Typen {1} sein
     String resultMany = testClass.formatMessagePL(3, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE_PLURAL);
-    assertThat(resultMany, containsString("one of the 3 types "));
+    assertThat(resultMany, containsString("einer der Typen "));
 
   }
 
