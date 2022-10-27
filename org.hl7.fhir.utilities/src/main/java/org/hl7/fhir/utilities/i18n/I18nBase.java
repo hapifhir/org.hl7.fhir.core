@@ -1,5 +1,7 @@
 package org.hl7.fhir.utilities.i18n;
 
+import com.ibm.icu.text.PluralRules;
+
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.Objects;
@@ -14,6 +16,7 @@ public abstract class I18nBase {
 
   private Locale locale;
   private ResourceBundle i18nMessages;
+  private PluralRules pluralRules;
   private boolean warnAboutMissingMessages = true;
 
   public Locale getLocale() {
@@ -35,6 +38,12 @@ public abstract class I18nBase {
   private void checkResourceBundleIsLoaded() {
     if (i18nMessages == null) {
       setValidationMessageLanguage(getLocale());
+    }
+  }
+
+  private void checkPluralRulesAreLoaded() {
+    if (pluralRules == null) {
+      setPluralRules(getLocale());
     }
   }
 
@@ -68,7 +77,11 @@ public abstract class I18nBase {
     }
     return formatMessageP(theMessage, theMessageArguments);
   }
-  
+
+  protected String getPluralKey(Integer number, String baseKey) {
+    return baseKey + "_" + pluralRules.select(number);
+  }
+
   private String formatMessageP(String theMessage, Object... theMessageArguments) {
     String message = theMessage;
     if (messageExistsForLocale(theMessage, (theMessageArguments != null && theMessageArguments.length > 0))) {
@@ -89,7 +102,9 @@ public abstract class I18nBase {
     for (int i = 0; i < theMessageArguments.length; i++) {
       args[i+1] = theMessageArguments[i];
     }
-    return formatMessageP(theMessage, args);
+    checkPluralRulesAreLoaded();
+    String pluralKey = getPluralKey(plural, theMessage);
+    return formatMessageP(pluralKey, args);
   }
 
   /**
@@ -98,6 +113,10 @@ public abstract class I18nBase {
    */
   public void setValidationMessageLanguage(Locale locale) {
     i18nMessages = ResourceBundle.getBundle("Messages", locale);
+  }
+
+  public void setPluralRules(Locale locale) {
+    pluralRules = PluralRules.forLocale(locale);
   }
 
   public boolean isWarnAboutMissingMessages() {
