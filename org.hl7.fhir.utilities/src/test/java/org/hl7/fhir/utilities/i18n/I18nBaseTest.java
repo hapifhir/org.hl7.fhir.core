@@ -62,11 +62,10 @@ class I18nBaseTest {
   }
 
   @Test
-  @DisplayName("Test pluralization works without initializing Locale.")
+  @DisplayName("Test pluralization works with initializing Locale.")
   void testFormatMessagePluralWithInitLocale() {
     I18nTestClass testClass = new I18nTestClass();
-    //ResourceBundle loadedBundle = ResourceBundle.getBundle("Messages", Locale.GERMAN);
-
+    
     testClass.setLocale(Locale.GERMAN);
     //Answer value muss vom Typ {0} sein.
     String resultOne = testClass.formatMessagePL(1, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE_PLURAL);
