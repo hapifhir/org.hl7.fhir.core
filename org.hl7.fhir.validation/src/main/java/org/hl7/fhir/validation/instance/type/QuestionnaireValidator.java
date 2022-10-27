@@ -518,10 +518,8 @@ public class QuestionnaireValidator extends BaseValidator {
         if (values.get(0).getName().equals("value" + Utilities.capitalize(s)))
           return (s);
       }
-      if (types.length == 1)
-        ok.see(rule(errors, IssueType.STRUCTURE, values.get(0).line(), values.get(0).col(), ns.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE, types[0]));
-      else
-        ok.see(rulePL(errors, IssueType.STRUCTURE, values.get(0).line(), values.get(0).col(), ns.getLiteralPath(), false, types.length, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE_PLURAL, l.toString()));
+
+      ok.see(rulePL(errors, IssueType.STRUCTURE, values.get(0).line(), values.get(0).col(), ns.getLiteralPath(), false, types.length, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE_PLURAL, l.toString()));
     }
     return null;
   }
