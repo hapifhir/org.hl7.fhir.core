@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities.i18n;
 
+import com.ibm.icu.text.PluralRules;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,11 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.*;
+
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class I18nBaseTest {
 
@@ -41,6 +47,38 @@ class I18nBaseTest {
   }
 
   @Test
+  @DisplayName("Test pluralization works without initializing Locale.")
+  void testFormatMessagePluralWithoutInitLocale() {
+    I18nTestClass testClass = new I18nTestClass();
+    
+    //Answer value must be of the type {1}
+    String resultOne = testClass.formatMessagePL(1, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE_PLURAL);
+    assertThat(resultOne, containsString("be of the type"));
+
+    //Answer value must be one of the {0} types {1}
+    String resultMany = testClass.formatMessagePL(3, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE_PLURAL);
+    assertThat(resultMany, containsString("one of the 3 types "));
+
+  }
+
+  @Test
+  @DisplayName("Test pluralization works without initializing Locale.")
+  void testFormatMessagePluralWithInitLocale() {
+    I18nTestClass testClass = new I18nTestClass();
+    //ResourceBundle loadedBundle = ResourceBundle.getBundle("Messages", Locale.GERMAN);
+
+    testClass.setLocale(Locale.GERMAN);
+    //Answer value muss einer der Typen {1} sein
+    String resultOne = testClass.formatMessagePL(1, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE_PLURAL);
+    assertThat(resultOne, containsString("Answer value muss einer der Typen {1} sein"));
+
+    //?
+    String resultMany = testClass.formatMessagePL(3, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE_PLURAL);
+    assertThat(resultMany, containsString("one of the 3 types "));
+
+  }
+
+  @Test
   @DisplayName("Assert no string modification is done when no match is found.")
   void testFormatMessageForNonExistentMessage() {
     I18nTestClass testClass = new I18nTestClass();
@@ -68,7 +106,7 @@ class I18nBaseTest {
         String line;
         while ((line = reader.readLine()) != null) {
 //          System.out.println("Searching for umlauts -> " + line);
-          Assertions.assertFalse(stringContainsItemFromList(line, UMLAUTS));
+          assertFalse(stringContainsItemFromList(line, UMLAUTS));
         }
     } catch (IOException e) {
       e.printStackTrace();
@@ -80,4 +118,20 @@ class I18nBaseTest {
   public static boolean stringContainsItemFromList(String inputStr, String[] items) {
     return Arrays.stream(items).anyMatch(inputStr::contains);
   }
+
+  @Test
+  void pluralKeysCompleteAndValid() {
+    ResourceBundle loadedBundle = ResourceBundle.getBundle("Messages", Locale.GERMAN);
+    PluralRules pluralRules = PluralRules.forLocale(Locale.GERMANY);
+    for (String key : loadedBundle.keySet()) {
+       String[] keyComponent = key.split("_");
+
+       assertFalse(keyComponent[keyComponent.length - 1].equalsIgnoreCase("PLURAL"), "Invalid use of PLURAL keyword for key: " + key);
+       if (keyComponent.length > 2
+        && keyComponent[keyComponent.length - 2].equalsIgnoreCase("PLURAL")) {
+          assertTrue(pluralRules.getKeywords().contains(keyComponent[keyComponent.length - 1]));
+       }
+    }
+  }
+
 }
