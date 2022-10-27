@@ -579,6 +579,18 @@ public class FHIRPathEngine {
     return executeType(new ExecutionTypeContext(appContext, resourceType, types, types), types, expr, true);
   }
 
+  private FHIRException makeExceptionPL(Integer num, ExpressionNode holder, String constName, Object... args) {
+    String fmt = worker.formatMessagePL(num, constName, args);
+    if (location != null) {
+      fmt = fmt + " "+worker.formatMessagePL(num, I18nConstants.FHIRPATH_LOCATION, location);
+    }
+    if (holder != null) {      
+       return new PathEngineException(fmt, holder.getStart(), holder.toString());
+    } else {
+      return new PathEngineException(fmt);
+    }
+  }
+  
   private FHIRException makeException(ExpressionNode holder, String constName, Object... args) {
     String fmt = worker.formatMessage(constName, args);
     if (location != null) {
@@ -2484,13 +2496,13 @@ public class FHIRPathEngine {
       return new ArrayList<Base>();
     }
     if (left.size() > 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_LEFT_VALUE_PLURAL, "+");
+      throw makeExceptionPL(left.size(), expr, I18nConstants.FHIRPATH_LEFT_VALUE_PLURAL, "+");
     }
     if (!left.get(0).isPrimitive()) {
       throw makeException(expr, I18nConstants.FHIRPATH_LEFT_VALUE_WRONG_TYPE, "+", left.get(0).fhirType());
     }
     if (right.size() > 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_RIGHT_VALUE_PLURAL, "+");
+      throw makeExceptionPL(right.size(), expr, I18nConstants.FHIRPATH_RIGHT_VALUE_PLURAL, "+");
     }
     if (!right.get(0).isPrimitive() &&  !((left.get(0).isDateTime() || "0".equals(left.get(0).primitiveValue()) || left.get(0).hasType("Quantity")) && right.get(0).hasType("Quantity"))) {
       throw makeException(expr, I18nConstants.FHIRPATH_RIGHT_VALUE_WRONG_TYPE, "+", right.get(0).fhirType());
@@ -2571,13 +2583,13 @@ public class FHIRPathEngine {
       return new ArrayList<Base>();
     }
     if (left.size() > 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_LEFT_VALUE_PLURAL, "*");
+      throw makeExceptionPL(left.size(), expr, I18nConstants.FHIRPATH_LEFT_VALUE_PLURAL, "*");
     }
     if (!left.get(0).isPrimitive() && !(left.get(0) instanceof Quantity)) {
       throw makeException(expr, I18nConstants.FHIRPATH_LEFT_VALUE_WRONG_TYPE, "*", left.get(0).fhirType());
     }
     if (right.size() > 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_RIGHT_VALUE_PLURAL, "*");
+      throw makeExceptionPL(right.size(), expr, I18nConstants.FHIRPATH_RIGHT_VALUE_PLURAL, "*");
     }
     if (!right.get(0).isPrimitive() && !(right.get(0) instanceof Quantity)) {
       throw makeException(expr, I18nConstants.FHIRPATH_RIGHT_VALUE_WRONG_TYPE, "*", right.get(0).fhirType());
@@ -2610,13 +2622,13 @@ public class FHIRPathEngine {
 
   private List<Base> opConcatenate(List<Base> left, List<Base> right, ExpressionNode expr) throws PathEngineException {
     if (left.size() > 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_LEFT_VALUE_PLURAL, "&");
+      throw makeExceptionPL(left.size(), expr, I18nConstants.FHIRPATH_LEFT_VALUE_PLURAL, "&");
     }
     if (left.size() > 0 && !left.get(0).hasType(FHIR_TYPES_STRING)) {
       throw makeException(expr, I18nConstants.FHIRPATH_LEFT_VALUE_WRONG_TYPE, "&", left.get(0).fhirType());
     }
     if (right.size() > 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_RIGHT_VALUE_PLURAL, "&");
+      throw makeExceptionPL(right.size(), expr, I18nConstants.FHIRPATH_RIGHT_VALUE_PLURAL, "&");
     }
     if (right.size() > 0 && !right.get(0).hasType(FHIR_TYPES_STRING)) {
       throw makeException(expr, I18nConstants.FHIRPATH_RIGHT_VALUE_WRONG_TYPE, "&", right.get(0).fhirType());
@@ -2743,13 +2755,13 @@ public class FHIRPathEngine {
       return new ArrayList<Base>();
     }
     if (left.size() > 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_LEFT_VALUE_PLURAL, "-");
+      throw makeExceptionPL(left.size(), expr, I18nConstants.FHIRPATH_LEFT_VALUE_PLURAL, "-");
     }
     if (!left.get(0).isPrimitive() && !left.get(0).hasType("Quantity")) {
       throw makeException(expr, I18nConstants.FHIRPATH_LEFT_VALUE_WRONG_TYPE, "-", left.get(0).fhirType());
     }
     if (right.size() > 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_RIGHT_VALUE_PLURAL, "-");
+      throw makeExceptionPL(right.size(), expr, I18nConstants.FHIRPATH_RIGHT_VALUE_PLURAL, "-");
     }
     if (!right.get(0).isPrimitive() &&  !((left.get(0).isDateTime() || "0".equals(left.get(0).primitiveValue()) || left.get(0).hasType("Quantity")) && right.get(0).hasType("Quantity"))) {
       throw makeException(expr, I18nConstants.FHIRPATH_RIGHT_VALUE_WRONG_TYPE, "-", right.get(0).fhirType());
@@ -2782,13 +2794,13 @@ public class FHIRPathEngine {
       return new ArrayList<Base>();
     }
     if (left.size() > 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_LEFT_VALUE_PLURAL, "/");
+      throw makeExceptionPL(left.size(), expr, I18nConstants.FHIRPATH_LEFT_VALUE_PLURAL, "/");
     }
     if (!left.get(0).isPrimitive() && !(left.get(0) instanceof Quantity)) {
       throw makeException(expr, I18nConstants.FHIRPATH_LEFT_VALUE_WRONG_TYPE, "/", left.get(0).fhirType());
     }
     if (right.size() > 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_RIGHT_VALUE_PLURAL, "/");
+      throw makeExceptionPL(right.size(), expr, I18nConstants.FHIRPATH_RIGHT_VALUE_PLURAL, "/");
     }
     if (!right.get(0).isPrimitive() && !(right.get(0) instanceof Quantity)) {
       throw makeException(expr, I18nConstants.FHIRPATH_RIGHT_VALUE_WRONG_TYPE, "/", right.get(0).fhirType());
@@ -2828,13 +2840,13 @@ public class FHIRPathEngine {
       return new ArrayList<Base>();
     }
     if (left.size() > 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_LEFT_VALUE_PLURAL, "div");
+      throw makeExceptionPL(left.size(), expr, I18nConstants.FHIRPATH_LEFT_VALUE_PLURAL, "div");
     }
     if (!left.get(0).isPrimitive() && !(left.get(0) instanceof Quantity)) {
       throw makeException(expr, I18nConstants.FHIRPATH_LEFT_VALUE_WRONG_TYPE, "div", left.get(0).fhirType());
     }
     if (right.size() > 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_RIGHT_VALUE_PLURAL, "div");
+      throw makeExceptionPL(right.size(), expr, I18nConstants.FHIRPATH_RIGHT_VALUE_PLURAL, "div");
     }
     if (!right.get(0).isPrimitive() && !(right.get(0) instanceof Quantity)) {
       throw makeException(expr, I18nConstants.FHIRPATH_RIGHT_VALUE_WRONG_TYPE, "div", right.get(0).fhirType());
@@ -2868,13 +2880,13 @@ public class FHIRPathEngine {
     if (left.size() == 0 || right.size() == 0) {
       return new ArrayList<Base>();
     } if (left.size() > 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_LEFT_VALUE_PLURAL, "mod");
+      throw makeExceptionPL(left.size(), expr, I18nConstants.FHIRPATH_LEFT_VALUE_PLURAL, "mod");
     }
     if (!left.get(0).isPrimitive()) {
       throw makeException(expr, I18nConstants.FHIRPATH_LEFT_VALUE_WRONG_TYPE, "mod", left.get(0).fhirType());
     }
     if (right.size() > 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_RIGHT_VALUE_PLURAL, "mod");
+      throw makeExceptionPL(right.size(), expr, I18nConstants.FHIRPATH_RIGHT_VALUE_PLURAL, "mod");
     }
     if (!right.get(0).isPrimitive()) {
       throw makeException(expr, I18nConstants.FHIRPATH_RIGHT_VALUE_WRONG_TYPE, "mod", right.get(0).fhirType());
@@ -3609,7 +3621,7 @@ public class FHIRPathEngine {
 
   private List<Base> funcSqrt(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
     if (focus.size() != 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "sqrt", focus.size());
+      throw makeExceptionPL(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "sqrt", focus.size());
     }
     Base base = focus.get(0);
     List<Base> result = new ArrayList<Base>();
@@ -3629,7 +3641,7 @@ public class FHIRPathEngine {
 
   private List<Base> funcAbs(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
     if (focus.size() != 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "abs", focus.size());
+      throw makeExceptionPL(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "abs", focus.size());
     }
     Base base = focus.get(0);
     List<Base> result = new ArrayList<Base>();
@@ -3652,7 +3664,7 @@ public class FHIRPathEngine {
 
   private List<Base> funcCeiling(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
     if (focus.size() != 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "ceiling", focus.size());
+      throw makeExceptionPL(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "ceiling", focus.size());
     }
     Base base = focus.get(0);
     List<Base> result = new ArrayList<Base>();
@@ -3670,7 +3682,7 @@ public class FHIRPathEngine {
 
   private List<Base> funcFloor(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
     if (focus.size() != 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "floor", focus.size());
+      throw makeExceptionPL(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "floor", focus.size());
     }
     Base base = focus.get(0);
     List<Base> result = new ArrayList<Base>();
@@ -3693,7 +3705,7 @@ public class FHIRPathEngine {
       return new ArrayList<Base>();
     }
     if (focus.size() > 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "exp", focus.size());
+      throw makeExceptionPL(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "exp", focus.size());
     }
     Base base = focus.get(0);
     List<Base> result = new ArrayList<Base>();
@@ -3714,7 +3726,7 @@ public class FHIRPathEngine {
 
   private List<Base> funcLn(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
     if (focus.size() != 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "ln", focus.size());
+      throw makeExceptionPL(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "ln", focus.size());
     }
     Base base = focus.get(0);
     List<Base> result = new ArrayList<Base>();
@@ -3734,7 +3746,7 @@ public class FHIRPathEngine {
 
   private List<Base> funcLog(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
     if (focus.size() != 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "log", focus.size());
+      throw makeExceptionPL(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "log", focus.size());
     }
     Base base = focus.get(0);
     List<Base> result = new ArrayList<Base>();
@@ -3762,7 +3774,7 @@ public class FHIRPathEngine {
 
   private List<Base> funcPower(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
     if (focus.size() != 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "power", focus.size());
+      throw makeExceptionPL(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "power", focus.size());
     }
     Base base = focus.get(0);
     List<Base> result = new ArrayList<Base>();
@@ -3786,7 +3798,7 @@ public class FHIRPathEngine {
 
   private List<Base> funcTruncate(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
     if (focus.size() != 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "truncate", focus.size());
+      throw makeExceptionPL(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "truncate", focus.size());
     }
     Base base = focus.get(0);
     List<Base> result = new ArrayList<Base>();
@@ -3804,7 +3816,7 @@ public class FHIRPathEngine {
 
   private List<Base> funcLowBoundary(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
     if (focus.size() != 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "lowBoundary", focus.size());  
+      throw makeExceptionPL(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "lowBoundary", focus.size());  
     }
     int precision = 0;
     if (expr.getParameters().size() > 0) {
@@ -3834,7 +3846,7 @@ public class FHIRPathEngine {
   
   private List<Base> funcHighBoundary(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
     if (focus.size() != 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "highBoundary", focus.size());
+      throw makeExceptionPL(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "highBoundary", focus.size());
     }
     int precision = 0;
     if (expr.getParameters().size() > 0) {
@@ -3864,7 +3876,7 @@ public class FHIRPathEngine {
   
   private List<Base> funcPrecision(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
     if (focus.size() != 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "highBoundary", focus.size());
+      throw makeExceptionPL(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "highBoundary", focus.size());
     }
     Base base = focus.get(0);
     List<Base> result = new ArrayList<Base>();
@@ -3882,7 +3894,7 @@ public class FHIRPathEngine {
 
   private List<Base> funcRound(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
     if (focus.size() != 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "round", focus.size());
+      throw makeExceptionPL(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "round", focus.size());
     }
     Base base = focus.get(0);
     List<Base> result = new ArrayList<Base>();
@@ -5792,13 +5804,13 @@ public class FHIRPathEngine {
           throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_RESOLVE_NO_TYPE, element.getElement().getId());
         }
         if (element.getTypes().size() > 1) {
-          throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES, element.getElement().getId());
+          throw makeExceptionPL(element.getTypes().size(), expr, I18nConstants.FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES_PLURAL, element.getElement().getId());
         }
         if (!element.getTypes().get(0).hasTarget()) {
           throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_RESOLVE_NOT_REFERENCE, element.getElement().getId(), element.getElement().getType().get(0).getCode()+")");
         }
         if (element.getTypes().get(0).getTargetProfile().size() > 1) {
-          throw makeException(expr, I18nConstants.FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET, element.getElement().getId());
+          throw makeExceptionPL(element.getTypes().get(0).getTargetProfile().size(), expr, I18nConstants.FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET_PLURAL, element.getElement().getId());
         }
         sd = worker.fetchResource(StructureDefinition.class, element.getTypes().get(0).getTargetProfile().get(0).getValue());
         if (sd == null) {
@@ -5895,10 +5907,10 @@ public class FHIRPathEngine {
       throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_NOTYPE, ed.getElement().getId());
     }
     if (ed.getTypes().size() > 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES, ed.getElement().getId());
+      throw makeExceptionPL(ed.getTypes().size(), expr, I18nConstants.FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES_PLURAL, ed.getElement().getId());
     }
     if (ed.getTypes().get(0).getProfile().size() > 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES, ed.getElement().getId());
+      throw makeExceptionPL(ed.getTypes().get(0).getProfile().size(), expr, I18nConstants.FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES_PLURAL, ed.getElement().getId());
     }
     if (ed.getTypes().get(0).hasProfile()) { 
       return worker.fetchResource(StructureDefinition.class, ed.getTypes().get(0).getProfile().get(0).getValue());

@@ -638,6 +638,7 @@ public interface IWorkerContext {
    * @return
    */
   String formatMessage(String theMessage, Object... theMessageArguments);
+  String formatMessagePL(Integer pluralNum, String theMessage, Object... theMessageArguments);
 
   /**
    * Validation of a code - consult the terminology infrstructure and/or service 

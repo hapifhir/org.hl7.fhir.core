@@ -63,6 +63,13 @@ public abstract class I18nBase {
    * @return The formatted, internationalized, {@link String}
    */
   public String formatMessage(String theMessage, Object... theMessageArguments) {
+    if (theMessage.endsWith("_PLURAL")) {
+      throw new Error("I18n error: Plural Message called in non-plural mode");
+    }
+    return formatMessageP(theMessage, theMessageArguments);
+  }
+  
+  private String formatMessageP(String theMessage, Object... theMessageArguments) {
     String message = theMessage;
     if (messageExistsForLocale(theMessage, (theMessageArguments != null && theMessageArguments.length > 0))) {
       if (Objects.nonNull(theMessageArguments) && theMessageArguments.length > 0) {
@@ -72,6 +79,17 @@ public abstract class I18nBase {
       }
     }
     return message;
+  }
+  public String formatMessagePL(Integer plural, String theMessage, Object... theMessageArguments) {
+    if (!theMessage.endsWith("_PLURAL")) {
+      throw new Error("I18n error: Non-plural Message called in plural mode");
+    }
+    Object[] args = new Object[theMessageArguments.length+1];
+    args[0] = plural;
+    for (int i = 0; i < theMessageArguments.length; i++) {
+      args[i+1] = theMessageArguments[i];
+    }
+    return formatMessageP(theMessage, args);
   }
 
   /**
