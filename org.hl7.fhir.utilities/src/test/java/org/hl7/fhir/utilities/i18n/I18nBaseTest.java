@@ -52,11 +52,11 @@ class I18nBaseTest {
     I18nTestClass testClass = new I18nTestClass();
 
     //Answer value must be of the type {1}
-    String resultOne = testClass.formatMessagePL(1, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE_PLURAL);
+    String resultOne = testClass.formatMessagePlural(1, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE_PLURAL);
     assertThat(resultOne, containsString("be of the type"));
 
     //Answer value must be one of the {0} types {1}
-    String resultMany = testClass.formatMessagePL(3, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE_PLURAL);
+    String resultMany = testClass.formatMessagePlural(3, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE_PLURAL);
     assertThat(resultMany, containsString("one of the 3 types "));
 
   }
@@ -65,14 +65,14 @@ class I18nBaseTest {
   @DisplayName("Test pluralization works with initializing Locale.")
   void testFormatMessagePluralWithInitLocale() {
     I18nTestClass testClass = new I18nTestClass();
-    
+
     testClass.setLocale(Locale.GERMAN);
     //Answer value muss vom Typ {0} sein.
-    String resultOne = testClass.formatMessagePL(1, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE_PLURAL);
+    String resultOne = testClass.formatMessagePlural(1, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE_PLURAL);
     assertThat(resultOne, containsString("muss vom Typ"));
 
     //Answer value muss einer der Typen {1} sein
-    String resultMany = testClass.formatMessagePL(3, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE_PLURAL);
+    String resultMany = testClass.formatMessagePlural(3, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE_PLURAL);
     assertThat(resultMany, containsString("einer der Typen "));
 
   }
@@ -123,11 +123,11 @@ class I18nBaseTest {
     ResourceBundle loadedBundle = ResourceBundle.getBundle("Messages", Locale.GERMAN);
     PluralRules pluralRules = PluralRules.forLocale(Locale.GERMANY);
     for (String key : loadedBundle.keySet()) {
-       String[] keyComponent = key.split("_");
+       String[] keyComponent = key.split(I18nBase.KEY_DELIMITER);
 
-       assertFalse(keyComponent[keyComponent.length - 1].equalsIgnoreCase("PLURAL"), "Invalid use of PLURAL keyword for key: " + key);
+       assertFalse(keyComponent[keyComponent.length - 1].equalsIgnoreCase(I18nBase.PLURAL_SUFFIX), "Invalid use of PLURAL keyword for key: " + key);
        if (keyComponent.length > 2
-        && keyComponent[keyComponent.length - 2].equalsIgnoreCase("PLURAL")) {
+        && keyComponent[keyComponent.length - 2].equalsIgnoreCase(I18nBase.PLURAL_SUFFIX)) {
           assertTrue(pluralRules.getKeywords().contains(keyComponent[keyComponent.length - 1]));
        }
     }
