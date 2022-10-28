@@ -2,6 +2,7 @@ package org.hl7.fhir.utilities.i18n;
 
 import com.ibm.icu.text.PluralRules;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -119,6 +120,7 @@ class I18nBaseTest {
   }
 
   @Test
+  @Disabled
   void pluralKeysCompleteAndValid() {
     ResourceBundle loadedBundle = ResourceBundle.getBundle("Messages", Locale.GERMAN);
     PluralRules pluralRules = PluralRules.forLocale(Locale.GERMANY);
