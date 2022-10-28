@@ -119,7 +119,6 @@ public class ToolingExtensions {
   public static final String EXT_RESOURCE_IMPLEMENTS = "http://hl7.org/fhir/StructureDefinition/structuredefinition-implements";
   public static final String EXT_XML_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-xml-type";
   public static final String EXT_XML_NAME = "http://hl7.org/fhir/StructureDefinition/elementdefinition-xml-name";  
-  public static final String EXT_BINDING_STYLE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-binding-style";
   public static final String EXT_EXPLICIT_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-explicit-type-name";
 
   public static final String EXT_IGP_RESOURCES = "http://hl7.org/fhir/StructureDefinition/igpublisher-folder-resource";
@@ -138,6 +137,9 @@ public class ToolingExtensions {
   public static final String EXT_IGP_RESOURCE_INFO = "http://hl7.org/fhir/tools/StructureDefinition/resource-information";
   public static final String EXT_IGP_LOADVERSION = "http://hl7.org/fhir/StructureDefinition/igpublisher-loadversion";
   public static final String EXT_LIST_PACKAGE = "http://hl7.org/fhir/StructureDefinition/list-packageId";
+  public static final String EXT_JSON_NAME = "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-json-name";  
+  public static final String EXT_BINDING_STYLE = "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-binding-style";
+  public static final String EXT_EXTENSION_STYLE = "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-extension-style";
 
   // validated
   //  private static final String EXT_OID = "http://hl7.org/fhir/StructureDefinition/valueset-oid";
@@ -232,6 +234,11 @@ public class ToolingExtensions {
   public static final String EXT_MAPPING_CARD = "http://hl7.org/fhir/tools/StructureDefinition/conceptmap-source-cardinality";
   public static final String EXT_MAPPING_TGTTYPE = "http://hl7.org/fhir/tools/StructureDefinition/conceptmap-target-type";
   public static final String EXT_MAPPING_TGTCARD = "http://hl7.org/fhir/tools/StructureDefinition/conceptmap-target-cardinality";
+  
+  
+  
+  public static final String WEB_EXTENSION_STYLE = "http://build.fhir.org/ig/FHIR/fhir-tools-ig/branches/master/format-extensions.html#extension-related-extensions";
+  ;
   
   // specific extension helpers
 
@@ -989,5 +996,23 @@ public class ToolingExtensions {
 
   }
 
+  public static boolean hasExtensions(ElementDefinition d, String... urls) {
+    for (String url : urls) {
+      if (d.hasExtension(url)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public static int countExtensions(ElementDefinition d, String... urls) {
+    int res = 0;
+    for (String url : urls) {
+      if (d.hasExtension(url)) {
+        res++;
+      }
+    }
+    return res;
+  }
 
 }
