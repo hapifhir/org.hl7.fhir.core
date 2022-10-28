@@ -11,6 +11,7 @@ import org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterCom
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -123,7 +124,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     if (p.hasSearchType()) {
       td.br();
       td.tx("(");
-      td.ah( context.getSpecificationLink() == null ? "search.html#"+p.getSearchType().toCode() : Utilities.pathURL(context.getSpecificationLink(), "search.html#"+p.getSearchType().toCode())).tx(p.getSearchType().toCode());       
+      td.ah( context.getLink(KnownLinkType.SPEC) == null ? "search.html#"+p.getSearchType().toCode() : Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "search.html#"+p.getSearchType().toCode())).tx(p.getSearchType().toCode());       
       td.tx(")");
     }
     td = tr.td();

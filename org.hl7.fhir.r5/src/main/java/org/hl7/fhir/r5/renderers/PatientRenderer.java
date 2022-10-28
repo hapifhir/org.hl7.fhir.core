@@ -795,7 +795,7 @@ public class PatientRenderer extends ResourceRenderer {
       PropertyWrapper a = r.getChildByName("photo");
       for (BaseWrapper v : a.getValues()) {
         Attachment att = (Attachment) v.getBase();
-        if (att.getContentType().startsWith("image/") &&
+        if (att.hasContentType() && att.getContentType().startsWith("image/") &&
             att.getData() != null && (!context.isInlineGraphics() || (att.getData().length > 0 && att.getData().length < MAX_IMAGE_LENGTH))) {
           return true;
         } 
