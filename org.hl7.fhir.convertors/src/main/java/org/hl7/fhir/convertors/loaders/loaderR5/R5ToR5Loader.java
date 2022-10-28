@@ -138,42 +138,7 @@ public class R5ToR5Loader extends BaseLoaderR5 {
           patchUrl(ed);
       }
     }
-    // hack errors in R5 ballot
-    if (r5 instanceof StructureDefinition) {
-      StructureDefinition sd = (StructureDefinition) r5;
-      if ("5.0.0-ballot".equals(sd.getVersion()) && "ElementDefinition".equals(sd.getType())) {
-        for (ElementDefinition ed : sd.getDifferential().getElement()) {
-          hackEDR5BallotError(ed);
-        }
-        for (ElementDefinition ed : sd.getSnapshot().getElement()) {
-          hackEDR5BallotError(ed);
-        }
-      }
-      if ("5.0.0-ballot".equals(sd.getVersion()) && "Bundle".equals(sd.getType())) {
-        for (ElementDefinition ed : sd.getDifferential().getElement()) {
-          hackBundleR5BallotError(ed);
-        }
-        for (ElementDefinition ed : sd.getSnapshot().getElement()) {
-          hackBundleR5BallotError(ed);
-        }
-      }
-      if ("5.0.0-ballot".equals(sd.getVersion()) && "http://hl7.org/fhir/StructureDefinition/elementdefinition-defaulttype".equals(sd.getUrl())) {
-        sd.getContextFirstRep().setExpression("ElementDefinition");
-      }
-    }
     return r5;
-  }
-
-  private void hackBundleR5BallotError(ElementDefinition ed) {
-    if (ed.getPath().equals("Bundle.link.relation")) {
-      ToolingExtensions.removeExtension(ed.getBinding(), ToolingExtensions.EXT_BINDING_NAME);
-    }    
-  }
-
-  private void hackEDR5BallotError(ElementDefinition ed) {
-    if (ed.getPath().equals("ElementDefinition.type.code")) {
-      ed.getBinding().setStrength(BindingStrength.EXTENSIBLE);
-    }    
   }
 
   private void patchUrl(ElementDefinition ed) {
