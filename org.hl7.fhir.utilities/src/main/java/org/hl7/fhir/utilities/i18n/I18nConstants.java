@@ -585,6 +585,8 @@ public class I18nConstants {
   public static final String UNRECOGNISED_EXTENSION_CONTEXT_ = "Unrecognised_extension_context_";
   public static final String UNRECOGNISED_PREDICATE_ = "Unrecognised_predicate_";
   public static final String UNRECOGNISED_PROPERTY_ = "Unrecognised_property_";
+  public static final String UNRECOGNISED_PROPERTY_TYPE = "UNRECOGNISED_PROPERTY_TYPE";
+  public static final String UNRECOGNISED_PROPERTY_TYPE_WRONG = "UNRECOGNISED_PROPERTY_TYPE_WRONG";
   public static final String UNSUPPORTED_CODEABLECONCEPT_PATTERN__EXTENSIONS_ARE_NOT_ALLOWED__FOR_DISCRIMINATOR_FOR_SLICE_ = "Unsupported_CodeableConcept_pattern__extensions_are_not_allowed__for_discriminator_for_slice_";
   public static final String UNSUPPORTED_CODEABLECONCEPT_PATTERN__MUST_HAVE_AT_LEAST_ONE_CODING__FOR_DISCRIMINATOR_FOR_SLICE_ = "Unsupported_CodeableConcept_pattern__must_have_at_least_one_coding__for_discriminator_for_slice_";
   public static final String UNSUPPORTED_CODEABLECONCEPT_PATTERN__USING_TEXT__FOR_DISCRIMINATOR_FOR_SLICE_ = "Unsupported_CodeableConcept_pattern__using_text__for_discriminator_for_slice_";
