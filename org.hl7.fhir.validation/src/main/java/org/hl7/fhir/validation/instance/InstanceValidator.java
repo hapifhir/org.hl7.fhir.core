@@ -2824,7 +2824,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (invalidChars.isEmpty()) {
         return null;
       } else {
-        return context.formatMessagePL(c, I18nConstants.XHTML_URL_INVALID_CHARS_PLURAL, invalidChars.toString());
+        return context.formatMessagePlural(c, I18nConstants.XHTML_URL_INVALID_CHARS_PLURAL, invalidChars.toString());
       }
     }
   }
@@ -4242,7 +4242,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 throw new DefinitionException(context.formatMessage(I18nConstants.DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_NO_TYPES, discriminator, ed.getId(), profile.getUrl()));
               }
             } else if (criteriaElement.getType().size() > 1) {
-              throw new DefinitionException(context.formatMessagePL(criteriaElement.getType().size(), I18nConstants.DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_MULTIPLE_TYPES_PLURAL, discriminator, ed.getId(), profile.getUrl(), criteriaElement.typeSummary()));
+              throw new DefinitionException(context.formatMessagePlural(criteriaElement.getType().size(), I18nConstants.DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_MULTIPLE_TYPES_PLURAL, discriminator, ed.getId(), profile.getUrl(), criteriaElement.typeSummary()));
             } else
               throw new DefinitionException(context.formatMessage(I18nConstants.DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_NO_TYPES, discriminator, ed.getId(), profile.getUrl()));
             if (discriminator.isEmpty()) {
@@ -4255,7 +4255,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               throw new DefinitionException(context.formatMessage(I18nConstants.PROFILE_BASED_DISCRIMINATORS_MUST_HAVE_A_TYPE__IN_PROFILE_, criteriaElement.getId(), profile.getUrl()));
             }
             if (criteriaElement.getType().size() != 1) {
-              throw new DefinitionException(context.formatMessagePL(criteriaElement.getType().size(), I18nConstants.PROFILE_BASED_DISCRIMINATORS_MUST_HAVE_ONLY_ONE_TYPE__IN_PROFILE_PLURAL, criteriaElement.getId(), profile.getUrl()));
+              throw new DefinitionException(context.formatMessagePlural(criteriaElement.getType().size(), I18nConstants.PROFILE_BASED_DISCRIMINATORS_MUST_HAVE_ONLY_ONE_TYPE__IN_PROFILE_PLURAL, criteriaElement.getId(), profile.getUrl()));
             }
             List<CanonicalType> list = discriminator.endsWith(".resolve()") || discriminator.equals("resolve()") ? criteriaElement.getType().get(0).getTargetProfile() : criteriaElement.getType().get(0).getProfile();
             if (list.size() == 0) {
@@ -4293,7 +4293,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           anyFound = true;
       }
       if (!anyFound) {
-          throw new DefinitionException(context.formatMessagePL(slicer.getSlicing().getDiscriminator().size(), I18nConstants.Could_not_match_discriminator_for_slice_in_profile_PLURAL, discriminators, ed.getId(), profile.getUrl(), discriminators));
+          throw new DefinitionException(context.formatMessagePlural(slicer.getSlicing().getDiscriminator().size(), I18nConstants.Could_not_match_discriminator_for_slice_in_profile_PLURAL, discriminators, ed.getId(), profile.getUrl(), discriminators));
       }
 
       try {
@@ -5522,7 +5522,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           }
         }
       } else {
-        warningPL(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.getPath(), false, goodProfiles.size(), I18nConstants.VALIDATION_VAL_PROFILE_MULTIPLEMATCHES_PLURAL, ResourceUtilities.listStrings(goodProfiles.keySet()));        
+        warningPlural(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.getPath(), false, goodProfiles.size(), I18nConstants.VALIDATION_VAL_PROFILE_MULTIPLEMATCHES_PLURAL, ResourceUtilities.listStrings(goodProfiles.keySet()));
         for (String m : goodProfiles.keySet()) {
           p = this.context.fetchResource(StructureDefinition.class, m);
           for (ValidationMessage message : goodProfiles.get(m)) {
