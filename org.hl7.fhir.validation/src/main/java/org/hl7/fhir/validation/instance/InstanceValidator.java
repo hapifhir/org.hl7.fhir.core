@@ -4293,10 +4293,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           anyFound = true;
       }
       if (!anyFound) {
-        if (slicer.getSlicing().getDiscriminator().size() > 1)
-          throw new DefinitionException(context.formatMessagePL(slicer.getSlicing().getDiscriminator().size(), I18nConstants.COULD_NOT_MATCH_ANY_DISCRIMINATORS__FOR_SLICE__IN_PROFILE___NONE_OF_THE_DISCRIMINATOR__HAVE_FIXED_VALUE_BINDING_OR_EXISTENCE_ASSERTIONS_PLURAL, discriminators, ed.getId(), profile.getUrl(), discriminators));
-        else
-          throw new DefinitionException(context.formatMessage(I18nConstants.COULD_NOT_MATCH_DISCRIMINATOR__FOR_SLICE__IN_PROFILE___THE_DISCRIMINATOR__DOES_NOT_HAVE_FIXED_VALUE_BINDING_OR_EXISTENCE_ASSERTIONS, discriminators, ed.getId(), profile.getUrl(), discriminators));
+          throw new DefinitionException(context.formatMessagePL(slicer.getSlicing().getDiscriminator().size(), I18nConstants.Could_not_match_discriminator_for_slice_in_profile_PLURAL, discriminators, ed.getId(), profile.getUrl(), discriminators));
       }
 
       try {
