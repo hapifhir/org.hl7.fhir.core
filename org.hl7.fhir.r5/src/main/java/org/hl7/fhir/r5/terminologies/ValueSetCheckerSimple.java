@@ -412,7 +412,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         }
       }
     }
-    return new ValidationResult(IssueSeverity.WARNING, context.formatMessagePL(b.count(), I18nConstants.DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF_PLURAL, code.getSystem(), code.getCode(), b.toString(), code.getDisplay()), code.getSystem(), cc);
+    return new ValidationResult(IssueSeverity.WARNING, context.formatMessagePlural(b.count(), I18nConstants.DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF_PLURAL, code.getSystem(), code.getCode(), b.toString(), code.getDisplay()), code.getSystem(), cc);
   }
 
   private ConceptReferenceComponent findValueSetRef(String system, String code) {
@@ -471,7 +471,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     }
     for (ConceptSetComponent inc : valueset.getCompose().getInclude()) {
       if (inc.hasValueSet()) {
-        throw new FHIRException(context.formatMessagePL(inc.getValueSet().size(), I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_IMPORTS));
+        throw new FHIRException(context.formatMessagePlural(inc.getValueSet().size(), I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_IMPORTS));
       }
       if (!inc.hasSystem()) {
         throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_NO_SYSTEM));

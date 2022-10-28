@@ -2,7 +2,6 @@ package org.hl7.fhir.r4b.utils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.rmi.server.LoaderHandler;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -17,14 +16,11 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.NotImplementedException;
-import org.apache.commons.lang3.RegExUtils;
 import org.fhir.ucum.Decimal;
 import org.fhir.ucum.Pair;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r4b.conformance.ProfileUtilities;
 import org.hl7.fhir.r4b.context.IWorkerContext;
@@ -45,7 +41,6 @@ import org.hl7.fhir.r4b.model.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r4b.model.ExpressionNode.Function;
 import org.hl7.fhir.r4b.model.ExpressionNode.Kind;
 import org.hl7.fhir.r4b.model.ExpressionNode.Operation;
-import org.hl7.fhir.r4b.model.InstantType;
 import org.hl7.fhir.r4b.model.Property.PropertyMatcher;
 import org.hl7.fhir.r4b.model.IntegerType;
 import org.hl7.fhir.r4b.model.Property;
@@ -60,7 +55,6 @@ import org.hl7.fhir.r4b.model.TypeConvertor;
 import org.hl7.fhir.r4b.model.TypeDetails;
 import org.hl7.fhir.r4b.model.TypeDetails.ProfiledType;
 import org.hl7.fhir.r4b.model.ValueSet;
-import org.hl7.fhir.r4b.renderers.DataRenderer;
 import org.hl7.fhir.r4b.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r4b.utils.FHIRPathEngine.IEvaluationContext.FunctionDetails;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -69,9 +63,7 @@ import org.hl7.fhir.utilities.MergedList.MergeNode;
 import org.hl7.fhir.utilities.SourceLocation;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
-import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
-import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -578,7 +570,7 @@ public class FHIRPathEngine {
   }
 
   private FHIRException makeExceptionPL(Integer num, ExpressionNode holder, String constName, Object... args) {
-    String fmt = worker.formatMessagePL(num, constName, args);
+    String fmt = worker.formatMessagePlural(num, constName, args);
     if (location != null) {
       fmt = fmt + " "+worker.formatMessage(I18nConstants.FHIRPATH_LOCATION, location);
     }
