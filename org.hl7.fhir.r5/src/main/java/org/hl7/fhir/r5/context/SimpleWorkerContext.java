@@ -71,6 +71,7 @@ import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
+import org.hl7.fhir.r5.utils.R5Hacker;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.CSFileInputStream;
 import org.hl7.fhir.utilities.TextFile;
@@ -112,9 +113,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
         FileInputStream f = new FileInputStream(filename);
         try  {
           if (loader != null) {
-            return (CanonicalResource) loader.loadResource(f, true);
+            return R5Hacker.fixR5BrokenResource((CanonicalResource) loader.loadResource(f, true));
           } else {
-            return (CanonicalResource) new JsonParser().parse(f);
+            return R5Hacker.fixR5BrokenResource((CanonicalResource) new JsonParser().parse(f));
           }
         } finally {
           f.close();

@@ -19,6 +19,7 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.context.TerminologyCache;
 import org.hl7.fhir.r5.model.Parameters;
+import org.hl7.fhir.r5.utils.R5Hacker;
 import org.hl7.fhir.utilities.CSFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.ToolGlobalSettings;
@@ -117,6 +118,7 @@ public class TestingUtilities extends BaseTestingUtilities {
         System.out.println("Loading THO: "+utg.name()+"#"+utg.version());
         fcontext.loadFromPackage(utg, new TestPackageLoader(new String[]{"CodeSystem", "ValueSet"}));
       }      
+      R5Hacker.fixR5BrokenResources(fcontext);
       return fcontext;
     } catch (Exception e) {
       e.printStackTrace();
