@@ -4289,6 +4289,8 @@ public class ProfileUtilities extends TranslatingUtilities {
       } else if (hasDef && element.getType().size() > 1) {
         if (allAreReference(element.getType())) {
           row.setIcon("icon_reference.png", HierarchicalTableGenerator.TEXT_ICON_REFERENCE);
+        } else if (element.hasExtension(ToolingExtensions.EXT_JSON_PRIMITIVE_CHOICE)) {
+          row.setIcon("icon_choice.gif", HierarchicalTableGenerator.TEXT_ICON_CHOICE);
         } else {
           row.setIcon("icon_choice.gif", HierarchicalTableGenerator.TEXT_ICON_CHOICE);
           typesRow = row;
@@ -5002,9 +5004,9 @@ public class ProfileUtilities extends TranslatingUtilities {
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
           String code = ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_JSON_EMPTY);
           if ("present".equals(code)) {
-            c.getPieces().add(gen.new Piece(null, "This element is present as a JSON Array even when there are no items in the instance", null));     
+            c.getPieces().add(gen.new Piece(null, "JSON: This element is present as a JSON Array even when there are no items in the instance", null));     
           } else {
-            c.getPieces().add(gen.new Piece(null, "This element may be present as a JSON Array even when there are no items in the instance", null));     
+            c.getPieces().add(gen.new Piece(null, "JSON: This element may be present as a JSON Array even when there are no items in the instance", null));     
           }
         }
         String jn = ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_JSON_NAME);
@@ -5021,21 +5023,25 @@ public class ProfileUtilities extends TranslatingUtilities {
           }
         }
         
+        if (ToolingExtensions.readBoolExtension(definition, ToolingExtensions.EXT_JSON_PRIMITIVE_CHOICE)) {
+          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+          c.getPieces().add(gen.new Piece(null, "JSON: The type of this element is inferred from the JSON type in the instance", null));     
+        }
         if (ToolingExtensions.readBoolExtension(definition, ToolingExtensions.EXT_JSON_NULLABLE)) {
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
-          c.getPieces().add(gen.new Piece(null, "This object can be represented as null in the JSON structure (which counts as 'present' for cardinality purposes)", null));     
+          c.getPieces().add(gen.new Piece(null, "JSON: This object can be represented as null in the JSON structure (which counts as 'present' for cardinality purposes)", null));     
         }
         if (definition.hasExtension(ToolingExtensions.EXT_JSON_PROP_KEY)) {
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
           String code = ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_JSON_EMPTY);
-          c.getPieces().add(gen.new Piece(null, "Represented as a single JSON Object with named properties using the value of the "+code+" child as the key", null));     
+          c.getPieces().add(gen.new Piece(null, "JSON: Represented as a single JSON Object with named properties using the value of the "+code+" child as the key", null));     
         }      
         if (definition.hasExtension(ToolingExtensions.EXT_TYPE_SPEC)) {
           for (Extension e : definition.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_SPEC)) {
             if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
             String cond = ToolingExtensions.readStringExtension(e, "condition");
             String type = ToolingExtensions.readStringExtension(e, "type");
-            c.getPieces().add(gen.new Piece(null, "If ", null));          
+            c.getPieces().add(gen.new Piece(null, "JSON: If ", null));          
             Piece piece = gen.new Piece("code");
             piece.addHtml(new XhtmlNode(NodeType.Text).setContent(cond));
             c.getPieces().add(piece);          

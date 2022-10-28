@@ -222,6 +222,7 @@ public class ToolingExtensions {
   public static final String EXT_IMPLIED_PREFIX = "http://hl7.org/fhir/tools/StructureDefinition/implied-string-prefix";
   public static final String EXT_DATE_FORMAT = "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-date-format";
   public static final String EXT_ID_EXPECTATION = "http://hl7.org/fhir/tools/StructureDefinition/id-expectation";
+  public static final String EXT_JSON_PRIMITIVE_CHOICE = "http://hl7.org/fhir/tools/StructureDefinition/json-primitive-choice";
   
 
   // unregistered? - don't know what these are used for 
