@@ -40,6 +40,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -174,6 +175,10 @@ import org.hl7.fhir.utilities.xml.SchematronWriter.Section;
  */
 public class ProfileUtilities extends TranslatingUtilities {
 
+  private static final List<String> INHERITED_ED_URLS = Arrays.asList(
+      "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-binding-style",
+      "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-extension-style");
+  
   public static class SourcedChildDefinitions {
     private StructureDefinition source;
     private List<ElementDefinition> list;
@@ -689,6 +694,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         checkDifferential(derived.getDifferential().getElement(), typeName(derived.getType()), derived.getUrl());
         checkDifferentialBaseType(derived);
 
+        copyInheritedExtensions(base, derived);
         // so we have two lists - the base list, and the differential list
         // the differential list is only allowed to include things that are in the base list, but
         // is allowed to include them multiple times - thereby slicing them
@@ -860,6 +866,15 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
+  private void copyInheritedExtensions(StructureDefinition base, StructureDefinition derived) {
+    for (Extension ext : base.getExtension()) {
+      if (Utilities.existsInList(ext.getUrl(), INHERITED_ED_URLS) && !derived.hasExtension(ext.getUrl())) {
+        derived.getExtension().add(ext.copy());
+      }
+    }
+    
+  }
+
   private void addInheritedElementsForSpecialization(StructureDefinitionSnapshotComponent snapshot, ElementDefinition focus, String type, String path, String url, String weburl) {
      StructureDefinition sd = context.fetchTypeDefinition(type);
      if (sd != null) {
@@ -871,6 +886,11 @@ public class ProfileUtilities extends TranslatingUtilities {
            snapshot.getElement().add(outcome);
          } else {
            focus.getConstraint().addAll(ed.getConstraint());
+           for (Extension ext : ed.getExtension()) {
+             if (Utilities.existsInList(ext.getUrl(), INHERITED_ED_URLS) && !focus.hasExtension(ext.getUrl())) {
+               focus.getExtension().add(ext.copy());
+             }
+           }
          }
        }
      }
@@ -2965,6 +2985,11 @@ public class ProfileUtilities extends TranslatingUtilities {
     boolean isExtension = checkExtensionDoco(base);
 
 
+    for (Extension ext : source.getExtension()) {
+      if (Utilities.existsInList(ext.getUrl(), INHERITED_ED_URLS) && !dest.hasExtension(ext.getUrl())) {
+        dest.getExtension().add(ext.copy());
+      }
+    }
     // Before applying changes, apply them to what's in the profile
     StructureDefinition profile = null;
     if (base.hasSliceName())
