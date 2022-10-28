@@ -40,6 +40,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -117,6 +118,7 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.renderers.TerminologyRenderer;
 import org.hl7.fhir.r5.renderers.spreadsheets.SpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.FHIRLexer;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
@@ -173,6 +175,10 @@ import org.hl7.fhir.utilities.xml.SchematronWriter.Section;
  */
 public class ProfileUtilities extends TranslatingUtilities {
 
+  private static final List<String> INHERITED_ED_URLS = Arrays.asList(
+      "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-binding-style",
+      "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-extension-style");
+  
   public static class SourcedChildDefinitions {
     private StructureDefinition source;
     private List<ElementDefinition> list;
@@ -688,6 +694,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         checkDifferential(derived.getDifferential().getElement(), typeName(derived.getType()), derived.getUrl());
         checkDifferentialBaseType(derived);
 
+        copyInheritedExtensions(base, derived);
         // so we have two lists - the base list, and the differential list
         // the differential list is only allowed to include things that are in the base list, but
         // is allowed to include them multiple times - thereby slicing them
@@ -723,6 +730,13 @@ public class ProfileUtilities extends TranslatingUtilities {
               ElementDefinition outcome = updateURLs(url, webUrl, e.copy());
               e.setUserData(GENERATED_IN_SNAPSHOT, outcome);
               derived.getSnapshot().addElement(outcome);
+              if (walksInto(diff.getElement(), e)) {
+                if (e.getType().size() > 1) {
+                  throw new DefinitionException("Unsupported scenario: specialization walks into multiple types at "+e.getId()); 
+                } else {
+                  addInheritedElementsForSpecialization(derived.getSnapshot(), outcome, outcome.getTypeFirstRep().getWorkingCode(), outcome.getPath(), url, webUrl);
+                }
+              }
             }
           }
         }
@@ -849,6 +863,42 @@ public class ProfileUtilities extends TranslatingUtilities {
       derived.clearUserData("profileutils.snapshot.generating");
       snapshotStack.remove(derived.getUrl());
     }
+  }
+
+
+  private void copyInheritedExtensions(StructureDefinition base, StructureDefinition derived) {
+    for (Extension ext : base.getExtension()) {
+      if (Utilities.existsInList(ext.getUrl(), INHERITED_ED_URLS) && !derived.hasExtension(ext.getUrl())) {
+        derived.getExtension().add(ext.copy());
+      }
+    }
+    
+  }
+
+  private void addInheritedElementsForSpecialization(StructureDefinitionSnapshotComponent snapshot, ElementDefinition focus, String type, String path, String url, String weburl) {
+     StructureDefinition sd = context.fetchTypeDefinition(type);
+     if (sd != null) {
+       addInheritedElementsForSpecialization(snapshot, focus, sd.getBaseDefinition(), path, url, weburl);
+       for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+         if (ed.getPath().contains(".")) {
+           ElementDefinition outcome = updateURLs(url, weburl, ed.copy());
+           outcome.setPath(outcome.getPath().replace(sd.getType(), path));
+           snapshot.getElement().add(outcome);
+         } else {
+           focus.getConstraint().addAll(ed.getConstraint());
+           for (Extension ext : ed.getExtension()) {
+             if (Utilities.existsInList(ext.getUrl(), INHERITED_ED_URLS) && !focus.hasExtension(ext.getUrl())) {
+               focus.getExtension().add(ext.copy());
+             }
+           }
+         }
+       }
+     }
+  }
+
+  private boolean walksInto(List<ElementDefinition> list, ElementDefinition ed) {
+    int i = list.indexOf(ed);
+    return (i < list.size() - 1) && list.get(i + 1).getPath().startsWith(ed.getPath()+".");
   }
 
   private void fixTypeOfResourceId(StructureDefinition base) {
@@ -2935,6 +2985,11 @@ public class ProfileUtilities extends TranslatingUtilities {
     boolean isExtension = checkExtensionDoco(base);
 
 
+    for (Extension ext : source.getExtension()) {
+      if (Utilities.existsInList(ext.getUrl(), INHERITED_ED_URLS) && !dest.hasExtension(ext.getUrl())) {
+        dest.getExtension().add(ext.copy());
+      }
+    }
     // Before applying changes, apply them to what's in the profile
     StructureDefinition profile = null;
     if (base.hasSliceName())
@@ -4901,6 +4956,18 @@ public class ProfileUtilities extends TranslatingUtilities {
           c.getPieces().add(piece);          
           c.getPieces().add(gen.new Piece(null, " is prefixed to the value before validation", null));          
         }
+
+        if (definition.hasExtension(ToolingExtensions.EXT_EXTENSION_STYLE)) {
+          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+          String es = definition.getExtensionString(ToolingExtensions.EXT_EXTENSION_STYLE);
+          if ("named-elements".equals(es)) {
+            if (rc.hasLink(KnownLinkType.JSON_NAMES)) {
+              c.getPieces().add(gen.new Piece(rc.getLink(KnownLinkType.JSON_NAMES), "This element can be extended by named JSON elements", null));                        
+            } else {
+              c.getPieces().add(gen.new Piece(ToolingExtensions.WEB_EXTENSION_STYLE, "This element can be extended by named JSON elements", null));                        
+            }
+          }
+        }
         if (definition.hasExtension(ToolingExtensions.EXT_ID_EXPECTATION)) {
           String ide = ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_ID_EXPECTATION);
           if (ide.equals("optional")) {
@@ -4940,6 +5007,20 @@ public class ProfileUtilities extends TranslatingUtilities {
             c.getPieces().add(gen.new Piece(null, "This element may be present as a JSON Array even when there are no items in the instance", null));     
           }
         }
+        String jn = ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_JSON_NAME);
+        if (!Utilities.noString(jn)) {
+          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+          if (definition.getPath().contains(".")) {
+            c.getPieces().add(gen.new Piece(null, translate("sd.table", "JSON Property Name")+": ", null).addStyle("font-weight:bold"));
+            c.getPieces().add(gen.new Piece(null, jn, null));
+          } else {
+            c.getPieces().add(gen.new Piece(null, translate("sd.table", "JSON Property Name for Type")+": ", null).addStyle("font-weight:bold"));
+            Piece piece = gen.new Piece("code");
+            piece.addHtml(new XhtmlNode(NodeType.Text).setContent(jn));
+            c.getPieces().add(piece);            
+          }
+        }
+        
         if (ToolingExtensions.readBoolExtension(definition, ToolingExtensions.EXT_JSON_NULLABLE)) {
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
           c.getPieces().add(gen.new Piece(null, "This object can be represented as null in the JSON structure (which counts as 'present' for cardinality purposes)", null));     
