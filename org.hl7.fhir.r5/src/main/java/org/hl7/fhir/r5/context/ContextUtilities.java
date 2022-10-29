@@ -22,6 +22,7 @@ import org.hl7.fhir.r5.model.NamingSystem.NamingSystemIdentifierType;
 import org.hl7.fhir.r5.model.NamingSystem.NamingSystemUniqueIdComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.NamingSystem;
@@ -340,6 +341,17 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   public boolean isPrimitiveDatatype(String type) {
     StructureDefinition sd = context.fetchTypeDefinition(type);
     return sd != null && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;
+  }
+
+  public StructureDefinition fetchByJsonName(String key) {
+    for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
+      ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
+      if (sd.getKind() == StructureDefinitionKind.LOGICAL && ed != null && ed.hasExtension(ToolingExtensions.EXT_JSON_NAME) && 
+          key.equals(ToolingExtensions.readStringExtension(ed, ToolingExtensions.EXT_JSON_NAME))) {
+        return sd;
+      }
+    }
+    return null;
   }
 
 }
