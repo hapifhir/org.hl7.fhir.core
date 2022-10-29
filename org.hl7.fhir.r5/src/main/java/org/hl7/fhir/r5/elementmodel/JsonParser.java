@@ -66,6 +66,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.json.JsonTrackingParser.LocationData;
+import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
@@ -227,15 +228,15 @@ public class JsonParser extends ParserBase {
       if (property.isJsonPrimitiveChoice()) {
         if (object.has(property.getJsonName())) {
           JsonElement je = object.get(property.getJsonName());
-          String type = getTypeFromJsonType(je);
           if (processed != null) processed.add(property.getJsonName());
+          String type = getTypeFromJsonType(je);
           if (type == null) {
-            logError(line(je), col(je), path, IssueType.STRUCTURE, this.context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_TYPE, property.getName(), property.typeSummary()), IssueSeverity.ERROR);
+            logError(line(je), col(je), path, IssueType.STRUCTURE, this.context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_TYPE, describeType(je), property.getName(), property.typeSummary()), IssueSeverity.ERROR);
           } else if (property.hasType(type)) {
             Property np = new Property(property.getContext(), property.getDefinition(), property.getStructure(), property.getUtils(), type);
             parseChildPrimitive(object, context, processed, np, path, property.getName());
           } else {
-            logError(line(je), col(je), path, IssueType.STRUCTURE, this.context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_TYPE_WRONG, property.getName(), type, property.typeSummary()), IssueSeverity.ERROR);
+            logError(line(je), col(je), path, IssueType.STRUCTURE, this.context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_TYPE_WRONG, describeType(je), property.getName(), type, property.typeSummary()), IssueSeverity.ERROR);
           }
         }
       } else {
@@ -312,7 +313,7 @@ public class JsonParser extends ParserBase {
           logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.OBJECT_CANNOT_BE_KEYED_ARRAY_PROP_TYPE, propNames(properties), propK.typeSummary()), IssueSeverity.ERROR);                       
         } else if (propV.isList())  {
           logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.OBJECT_CANNOT_BE_KEYED_ARRAY_NO_LIST, propV.getName()), IssueSeverity.ERROR);                       
-        } else if (propV.isChoice())  {
+        } else if (propV.isChoice() && propV.getName().endsWith("[x]"))  {
           logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.OBJECT_CANNOT_BE_KEYED_ARRAY_NO_CHOICE, propV.getName()), IssueSeverity.ERROR);                       
         } else if (!(e instanceof JsonObject)) {
           logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_OBJECT_NOT_, describe(e)), IssueSeverity.ERROR);                       
@@ -334,15 +335,32 @@ public class JsonParser extends ParserBase {
             n.getChildren().add(nKey);
             nKey.setValue(pv.getKey());
             
-            // handle the value
-            String npathV = npathArr+"."+propV.getName();
-            String fpathV = fpathArr+"."+propV.getName();
-            if (propV.isPrimitive(propV.getType(null))) {
-              parseChildPrimitiveInstance(n, propV, propV.getName(), npathV, fpathV, pv.getValue(), null);
-            } else if (pv.getValue() instanceof JsonObject || pv.getValue() instanceof JsonNull) {
-              parseChildComplexInstance(npathV, fpathV, n, propV, propV.getName(), pv.getValue());
-            } else {
-              logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_OBJECT_NOT_, describe(pv.getValue())), IssueSeverity.ERROR);                       
+
+            boolean ok = true;
+            Property pvl = propV;
+            if (propV.isJsonPrimitiveChoice()) {
+              ok = false;
+              String type = getTypeFromJsonType(pv.getValue());
+              if (type == null) {
+                logError(line(pv.getValue()), col(pv.getValue()), path, IssueType.STRUCTURE, this.context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_TYPE, describeType(pv.getValue()), propV.getName(), propV.typeSummary()), IssueSeverity.ERROR);
+              } else if (propV.hasType(type)) {
+                pvl = new Property(propV.getContext(), propV.getDefinition(), propV.getStructure(), propV.getUtils(), type);
+                ok = true;
+              } else {
+                logError(line(pv.getValue()), col(pv.getValue()), path, IssueType.STRUCTURE, this.context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_TYPE_WRONG, describeType(pv.getValue()), propV.getName(), type, propV.typeSummary()), IssueSeverity.ERROR);
+              }
+            }
+            if (ok) {
+              // handle the value
+              String npathV = npathArr+"."+pvl.getName();
+              String fpathV = fpathArr+"."+pvl.getName();
+              if (propV.isPrimitive(pvl.getType(null))) {
+                parseChildPrimitiveInstance(n, pvl, pvl.getName(), npathV, fpathV, pv.getValue(), null);
+              } else if (pv.getValue() instanceof JsonObject || pv.getValue() instanceof JsonNull) {
+                parseChildComplexInstance(npathV, fpathV, n, pvl, pvl.getName(), pv.getValue());
+              } else {
+                logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_OBJECT_NOT_, describe(pv.getValue())), IssueSeverity.ERROR);                       
+              }
             }
             i++;
           }
@@ -350,7 +368,7 @@ public class JsonParser extends ParserBase {
       }
     } else {
       if (property.isList()) {
-        logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_ARRAY_NOT_, describeType(e), name, path), IssueSeverity.ERROR);
+        logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_ARRAY_NOT_, describe(e), name, path), IssueSeverity.ERROR);
       }
       parseChildComplexInstance(npath, fpath, element, property, name, e);
     }
@@ -362,18 +380,6 @@ public class JsonParser extends ParserBase {
       b.append(p.getName());
     }
     return b.toString();
-  }
-
-  private String describeType(JsonElement e) {
-    if (e.isJsonArray())
-      return "an Array";
-    if (e.isJsonObject())
-      return "an Object";
-    if (e.isJsonPrimitive())
-      return "a primitive property";
-    if (e.isJsonNull())
-      return "a Null";
-    return null;
   }
 
   private void parseChildComplexInstance(String npath, String fpath, Element element, Property property, String name, JsonElement e) throws FHIRException {
@@ -433,15 +439,41 @@ public class JsonParser extends ParserBase {
 
   private String describe(JsonElement e) {
     if (e instanceof JsonArray) {
-      return "an array";
+      return "an Array";
     }
     if (e instanceof JsonObject) {
-      return "an object";
+      return "an Object";
+    }
+    if (e instanceof JsonNull) {
+      return "a Null";
+    }
+    if (e instanceof JsonPrimitive) {
+      return "a Primitive property";
+    }
+    return null;
+  }
+
+  private String describeType(JsonElement e) {
+    if (e instanceof JsonArray) {
+      return "array";
+    }
+    if (e instanceof JsonObject) {
+      return "object";
     }
     if (e instanceof JsonNull) {
       return "null";
     }
-    return "a primitive property";
+    if (e instanceof JsonPrimitive) {
+      JsonPrimitive p = (JsonPrimitive) e;
+      if (p.isString()) {
+        return "string";
+      } else if (p.isBoolean()) {
+        return "boolean";
+      } else if (p.isNumber()) {
+        return "number";
+      }
+    }
+    return "??";
   }
 
   private void parseChildPrimitive(JsonObject object, Element element, Set<String> processed, Property property, String path, String name) throws FHIRException {
