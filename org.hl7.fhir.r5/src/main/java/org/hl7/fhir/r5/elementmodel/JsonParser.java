@@ -59,6 +59,7 @@ import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -301,18 +302,18 @@ public class JsonParser extends ParserBase {
       String code = property.getJsonKeyProperty();
       List<Property> properties = property.getChildProperties(element.getName(), null);
       if (properties.size() != 2) {
-        logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.OBJECT_CANNOT_BE_KEYED_ARRAY_CHILD_COUNT), IssueSeverity.ERROR);               
+        logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.OBJECT_CANNOT_BE_KEYED_ARRAY_CHILD_COUNT, propNames(properties)), IssueSeverity.ERROR);               
       } else {
         Property propK = properties.get(0);
         Property propV = properties.get(1);
         if (!propK.getName().equals(code)) {
-          logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.OBJECT_CANNOT_BE_KEYED_ARRAY_PROP_NAME), IssueSeverity.ERROR);                       
+          logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.OBJECT_CANNOT_BE_KEYED_ARRAY_PROP_NAME, propNames(properties)), IssueSeverity.ERROR);                       
         } else if (!propK.isPrimitive())  {
-          logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.OBJECT_CANNOT_BE_KEYED_ARRAY_PROP_TYPE), IssueSeverity.ERROR);                       
+          logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.OBJECT_CANNOT_BE_KEYED_ARRAY_PROP_TYPE, propNames(properties), propK.typeSummary()), IssueSeverity.ERROR);                       
         } else if (propV.isList())  {
-          logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.OBJECT_CANNOT_BE_KEYED_ARRAY_NO_LIST), IssueSeverity.ERROR);                       
+          logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.OBJECT_CANNOT_BE_KEYED_ARRAY_NO_LIST, propV.getName()), IssueSeverity.ERROR);                       
         } else if (propV.isChoice())  {
-          logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.OBJECT_CANNOT_BE_KEYED_ARRAY_NO_CHOICE), IssueSeverity.ERROR);                       
+          logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.OBJECT_CANNOT_BE_KEYED_ARRAY_NO_CHOICE, propV.getName()), IssueSeverity.ERROR);                       
         } else if (!(e instanceof JsonObject)) {
           logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_OBJECT_NOT_, describe(e)), IssueSeverity.ERROR);                       
         } else {
@@ -353,6 +354,14 @@ public class JsonParser extends ParserBase {
       }
       parseChildComplexInstance(npath, fpath, element, property, name, e);
     }
+  }
+
+  private Object propNames(List<Property> properties) {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+    for (Property p: properties) {
+      b.append(p.getName());
+    }
+    return b.toString();
   }
 
   private String describeType(JsonElement e) {
