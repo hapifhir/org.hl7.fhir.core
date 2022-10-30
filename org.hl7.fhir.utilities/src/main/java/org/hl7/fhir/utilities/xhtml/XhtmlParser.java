@@ -483,7 +483,6 @@ public class XhtmlParser {
     for (String an : node.getAttributes().keySet()) {
       if (an.equals("xmlns")) {
         result.def(node.getAttribute(an));
-        nsattrs.add(an);
       }
       if (an.startsWith("xmlns:")) {
         result.ns(an.substring(6), node.getAttribute(an));
