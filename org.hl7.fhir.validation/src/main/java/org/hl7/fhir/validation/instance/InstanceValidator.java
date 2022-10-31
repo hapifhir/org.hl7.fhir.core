@@ -669,7 +669,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     if (logicals.size() > 0) {
-      if (rulePL(errors, IssueType.BUSINESSRULE, "Configuration", logicals.size() == 1, logicals.size(), I18nConstants.MULTIPLE_LOGICAL_MODELS_PLURAL, ResourceUtilities.listUrls(logicals))) {
+      if (rulePlural(errors, IssueType.BUSINESSRULE, "Configuration", logicals.size() == 1, logicals.size(), I18nConstants.MULTIPLE_LOGICAL_MODELS_PLURAL, ResourceUtilities.listUrls(logicals))) {
         parser.setLogical(logicals.get(0));              
       }
     }
@@ -5095,7 +5095,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             for (CanonicalType u : typeForResource.getProfile()) {
               b.append(u.asStringValue());
             }
-            ok = rulePL(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(),
+            ok = rulePlural(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(),
                 false, typeForResource.getProfile().size(), I18nConstants.BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_PLURAL, special.toHuman(), typeForResource.getCode(), b.toString()) && ok;
           }
         }
@@ -5112,7 +5112,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               false, I18nConstants.BUNDLE_BUNDLE_ENTRY_TYPE2, resourceName, types.get(0)) && ok;
           
         } else {
-          ok = rulePL(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(),
+          ok = rulePlural(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(),
               false, types.size(), I18nConstants.BUNDLE_BUNDLE_ENTRY_TYPE3_PLURAL, resourceName, types) && ok;
         }
       }
@@ -5664,7 +5664,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             hintPL(errors, IssueType.NOTSUPPORTED, element.line(), element.col(), stack.getLiteralPath(), count >= ed.getMin(), count, I18nConstants.VALIDATION_VAL_PROFILE_NOCHECKMIN_PLURAL, profile.getUrl(), ed.getPath(), ed.getId(), ed.getSliceName(),ed.getLabel(), stack.getLiteralPath(), Integer.toString(ed.getMin()));
           else {
             if (count < ed.getMin()) {
-              ok = rulePL(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), false, count, I18nConstants.VALIDATION_VAL_PROFILE_MINIMUM_PLURAL, profile.getUrl(), ed.getPath(), ed.getId(), ed.getSliceName(),ed.getLabel(), stack.getLiteralPath(), Integer.toString(ed.getMin())) && ok;
+              ok = rulePlural(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), false, count, I18nConstants.VALIDATION_VAL_PROFILE_MINIMUM_PLURAL, profile.getUrl(), ed.getPath(), ed.getId(), ed.getSliceName(),ed.getLabel(), stack.getLiteralPath(), Integer.toString(ed.getMin())) && ok;
             }
           }
         }
@@ -5672,7 +5672,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           if (problematicPaths.contains(ed.getPath()))
             hintPL(errors, IssueType.NOTSUPPORTED, element.line(), element.col(), stack.getLiteralPath(), count <= Integer.parseInt(ed.getMax()), count, I18nConstants.VALIDATION_VAL_PROFILE_NOCHECKMAX_PLURAL, profile.getUrl(), ed.getPath(), ed.getId(), ed.getSliceName(),ed.getLabel(), stack.getLiteralPath(), ed.getMax());
           else if (count > Integer.parseInt(ed.getMax())) {
-            ok = rulePL(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), false, count, I18nConstants.VALIDATION_VAL_PROFILE_MAXIMUM_PLURAL, profile.getUrl(), ed.getPath(), ed.getId(), ed.getSliceName(),ed.getLabel(), stack.getLiteralPath(), ed.getMax(), Integer.toString(count)) && ok;
+            ok = rulePlural(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), false, count, I18nConstants.VALIDATION_VAL_PROFILE_MAXIMUM_PLURAL, profile.getUrl(), ed.getPath(), ed.getId(), ed.getSliceName(),ed.getLabel(), stack.getLiteralPath(), ed.getMax(), Integer.toString(count)) && ok;
           }
         }
       }
