@@ -16,6 +16,7 @@ import org.hl7.fhir.r5.model.SearchParameter.SearchParameterComponentComponent;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.Utilities;
@@ -73,7 +74,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
       tr.td().tx(Utilities.pluralize("Target Resources", spd.getTarget().size()));
       td = tr.td();
       if (isAllConcreteResources(spd.getTarget())) {
-        td.ah(Utilities.pathURL(context.getSpecificationLink(), "resourcelist.html")).tx("All Resources");
+        td.ah(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "resourcelist.html")).tx("All Resources");
       } else {
         for (CodeType t : spd.getTarget()) {
           StructureDefinition sd = context.getWorker().fetchTypeDefinition(t.toString());
