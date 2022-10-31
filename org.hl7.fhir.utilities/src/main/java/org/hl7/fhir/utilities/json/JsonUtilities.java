@@ -179,4 +179,8 @@ public class JsonUtilities {
       return odt.toInstant();
     }
   }
+
+  public static void setProperty(JsonObject json, String name, String value) {
+    json.addProperty(name, value);    
+  }
 }
