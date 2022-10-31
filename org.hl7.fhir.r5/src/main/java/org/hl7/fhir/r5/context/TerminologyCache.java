@@ -320,7 +320,7 @@ public class TerminologyCache {
     if (system.startsWith("urn:iso:std:iso:"))
       return "iso"+system.substring(16).replace(":", "");
     if (system.startsWith("http://terminology.hl7.org/CodeSystem/"))
-      return system.substring(38).replace("/", "");
+      return system.substring(38).replace("/", "").replace('|','X');
     if (system.startsWith("http://hl7.org/fhir/"))
       return system.substring(20).replace("/", "");
     if (system.equals("urn:ietf:bcp:47"))
