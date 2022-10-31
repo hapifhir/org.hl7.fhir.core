@@ -51,6 +51,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.TypesUtilities;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -59,8 +60,8 @@ public class Property {
 	private IWorkerContext context;
 	private ElementDefinition definition;
 	private StructureDefinition structure;
-	private Boolean canBePrimitive;
-  private ProfileUtilities profileUtilities; 
+  private ProfileUtilities profileUtilities;
+  private TypeRefComponent type;
 
   public Property(IWorkerContext context, ElementDefinition definition, StructureDefinition structure, ProfileUtilities profileUtilities) {
 		this.context = context;
@@ -70,6 +71,18 @@ public class Property {
 	}
 
 
+  public Property(IWorkerContext context, ElementDefinition definition, StructureDefinition structure, ProfileUtilities profileUtilities, String type) {
+    this.context = context;
+    this.definition = definition;
+    this.structure = structure;
+    this.profileUtilities = profileUtilities;
+    for (TypeRefComponent tr : definition.getType()) {
+      if (tr.getWorkingCode().equals(type)) {
+        this.type = tr;
+      }
+    }
+  }
+  
 	public Property(IWorkerContext context, ElementDefinition definition, StructureDefinition structure) {
     this(context, definition, structure, new ProfileUtilities(context, null, null));
 	}
@@ -77,6 +90,14 @@ public class Property {
 	public String getName() {
 		return definition.getPath().substring(definition.getPath().lastIndexOf(".")+1);
 	}
+
+  public String getJsonName() {
+    if (definition.hasExtension(ToolingExtensions.EXT_JSON_NAME)) {
+      return ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_JSON_NAME);
+    } else {
+      return getName();
+    }
+  }
 
   public String getXmlName() {
     if (definition.hasExtension(ToolingExtensions.EXT_XML_NAME)) {
@@ -101,7 +122,9 @@ public class Property {
 	}
 
 	public String getType() {
-		if (definition.getType().size() == 0)
+	  if (type != null) {
+	    return type.getWorkingCode();
+	  } else  if (definition.getType().size() == 0)
 			return null;
 		else if (definition.getType().size() > 1) {
 			String tn = definition.getType().get(0).getWorkingCode();
@@ -115,7 +138,10 @@ public class Property {
 	}
 
 	public String getType(String elementName) {
-    if (!definition.getPath().contains("."))
+	  if (type != null) {
+      return type.getWorkingCode();
+    } 
+	  if (!definition.getPath().contains("."))
       return definition.getPath();
     ElementDefinition ed = definition;
     if (definition.hasContentReference()) {
@@ -175,9 +201,18 @@ public class Property {
 	}
 
   public boolean hasType(String elementName) {
-    if (definition.getType().size() == 0)
+    if (type != null) {
+      return false; // ?
+    } else if (definition.getType().size() == 0) {
       return false;
-    else if (definition.getType().size() > 1) {
+    } else if (isJsonPrimitiveChoice()) { 
+      for (TypeRefComponent tr : definition.getType()) {
+        if (elementName.equals(tr.getWorkingCode())) {
+          return true;
+        }
+      }
+      return false;
+    } else if (definition.getType().size() > 1) {
       String t = definition.getType().get(0).getCode();
       boolean all = true;
       for (TypeRefComponent tr : definition.getType()) {
@@ -188,7 +223,7 @@ public class Property {
         return true;
       String tail = definition.getPath().substring(definition.getPath().lastIndexOf(".")+1);
       if (tail.endsWith("[x]") && elementName.startsWith(tail.substring(0, tail.length()-3))) {
-        String name = elementName.substring(tail.length()-3);
+//        String name = elementName.substring(tail.length()-3);
         return true;        
       } else
         return false;
@@ -230,7 +265,10 @@ public class Property {
 	}
 
 	public boolean isResource() {
-	  if (definition.getType().size() > 0) {
+	  if (type != null) {
+	    String tc = type.getCode();
+      return (("Resource".equals(tc) || "DomainResource".equals(tc)) ||  Utilities.existsInList(tc, context.getResourceNames()));
+	  } else if (definition.getType().size() > 0) {
       String tc = definition.getType().get(0).getCode();
       return definition.getType().size() == 1 && (("Resource".equals(tc) || "DomainResource".equals(tc)) ||  Utilities.existsInList(tc, context.getResourceNames()));
     }
@@ -268,7 +306,6 @@ public class Property {
 //		if (canBePrimitive!= null)
 //			return canBePrimitive;
 		
-		canBePrimitive = false;
   	if (structure.getKind() != StructureDefinitionKind.LOGICAL)
   		return false;
   	if (!hasType(name))
@@ -282,7 +319,6 @@ public class Property {
   		return false;
   	for (ElementDefinition ed : sd.getSnapshot().getElement()) {
   		if (ed.getPath().equals(sd.getId()+".value") && ed.getType().size() == 1 && isPrimitive(ed.getType().get(0).getCode())) {
-  			canBePrimitive = true;
   			return true;
   		}
   	}
@@ -290,6 +326,9 @@ public class Property {
 	}
 
   public boolean isChoice() {
+    if (type != null) {
+      return true;
+    }
     if (definition.getType().size() <= 1)
       return false;
     String tn = definition.getType().get(0).getCode();
@@ -532,4 +571,26 @@ public class Property {
   }
 
 
+  public boolean isLogical() {
+    return structure.getKind() == StructureDefinitionKind.LOGICAL;
+  }
+
+
+  public ProfileUtilities getUtils() {
+    return profileUtilities;
+  }
+
+  public boolean isJsonPrimitiveChoice() {
+    return ToolingExtensions.readBoolExtension(definition, ToolingExtensions.EXT_JSON_PRIMITIVE_CHOICE);
+  }
+
+  public Object typeSummary() {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(" | ");
+    for (TypeRefComponent t : definition.getType()) {
+      b.append(t.getCode());
+    }
+    return b.toString();
+  }
+
+  
 }
