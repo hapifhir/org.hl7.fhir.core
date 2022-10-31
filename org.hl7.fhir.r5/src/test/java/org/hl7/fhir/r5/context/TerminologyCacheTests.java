@@ -238,6 +238,8 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     assertTrue(cacheToken.hasVersion());
   }
 
+
+
   @Test
   public void testCodableConceptCacheTokenGeneration() throws IOException, URISyntaxException {
 
@@ -452,5 +454,21 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     String extracted = cache.extracted(json, vs);
 
     assertEquals("http://dummy.org", extracted);
+  }
+
+  @Test
+  public void testCodingWithSystemCacheTokenGenerationWithPipeCharSystem() throws IOException, URISyntaxException {
+
+    TerminologyCache terminologyCache = createTerminologyCache();
+    ValueSet valueSet = new ValueSet();
+
+    Coding coding = new Coding();
+    coding.setCode("dummyCode");
+    coding.setSystem("http://terminology.hl7.org/CodeSystem/dummy|System");
+    coding.setVersion("dummyVersion");
+    TerminologyCache.CacheToken cacheToken = terminologyCache.generateValidationToken(CacheTestUtils.validationOptions,
+      coding, valueSet);
+    assertEquals("dummyXSystem", cacheToken.getName());
+    assertTrue(cacheToken.hasVersion());
   }
 }
