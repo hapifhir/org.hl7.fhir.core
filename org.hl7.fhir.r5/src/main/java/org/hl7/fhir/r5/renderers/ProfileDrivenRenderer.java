@@ -1004,7 +1004,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
             PropertyWrapper pe = map.get(p.getName()+"["+url+"]");
             if (pe == null) {
               if (ed == null) {
-                if (url.startsWith("http://hl7.org/fhir") && !url.startsWith("http://hl7.org/fhir/us")) {
+                if (url != null && url.startsWith("http://hl7.org/fhir") && !url.startsWith("http://hl7.org/fhir/us")) {
                   throw new DefinitionException("unknown extension "+url);
                 }
                 // System.out.println("unknown extension "+url);
