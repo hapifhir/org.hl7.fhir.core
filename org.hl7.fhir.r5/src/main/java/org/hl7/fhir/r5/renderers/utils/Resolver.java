@@ -98,7 +98,7 @@ public class Resolver {
       if (resource instanceof Bundle) {
         Bundle b = (Bundle) resource;
         for (BundleEntryComponent be : b.getEntry()) {
-          if (be.getFullUrl().equals(value))
+          if (be.hasFullUrl() && be.getFullUrl().equals(value))
             return be;
           if (value.equals(be.getResource().fhirType()+"/"+be.getResource().getId()))
             return be;
