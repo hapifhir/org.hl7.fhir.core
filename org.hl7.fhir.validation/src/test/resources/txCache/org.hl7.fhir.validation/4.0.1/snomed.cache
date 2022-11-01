@@ -2056,3 +2056,14 @@ v: {
   "system" : "http://snomed.info/sct"
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "116288000",
+  "display" : "Paralytic stroke (disorder)"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Paralytic stroke",
+  "code" : "116288000",
+  "system" : "http://snomed.info/sct"
+}
+-------------------------------------------------------------------------------------
