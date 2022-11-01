@@ -320,7 +320,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
     return thePass;
   }
 
-  protected boolean hintPL(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, int num, String theMessage, Object... theMessageArguments) {
+  protected boolean hintPlural(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, int num, String theMessage, Object... theMessageArguments) {
     if (!thePass && doingHints()) {
       String message = context.formatMessagePlural(num, theMessage, theMessageArguments);
       addValidationMessage(errors, type, line, col, path, message, IssueSeverity.INFORMATION, theMessage);
