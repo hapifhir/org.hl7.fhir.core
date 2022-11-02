@@ -33,6 +33,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.google.gson.JsonElement;
@@ -456,19 +457,22 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     assertEquals("http://dummy.org", extracted);
   }
 
-  @Test
-  public void testCodingWithSystemCacheTokenGenerationWithPipeCharSystem() throws IOException, URISyntaxException {
+  @ParameterizedTest
+  @CsvSource({
+    "http://terminology.hl7.org/CodeSystem/id|version,id_version",
+    "http://hl7.org/fhir/id|version,id_version",
+    "http://hl7.org/fhir/sid/id|version,id_version"
+  })
+  public void testCacheTokenGenerationWithCanonicalUrl(String system, String expectedName) throws IOException, URISyntaxException {
 
     TerminologyCache terminologyCache = createTerminologyCache();
     ValueSet valueSet = new ValueSet();
 
     Coding coding = new Coding();
-    coding.setCode("dummyCode");
-    coding.setSystem("http://terminology.hl7.org/CodeSystem/dummy|System");
-    coding.setVersion("dummyVersion");
+    coding.setSystem(system);
     TerminologyCache.CacheToken cacheToken = terminologyCache.generateValidationToken(CacheTestUtils.validationOptions,
       coding, valueSet);
-    assertEquals("dummyXSystem", cacheToken.getName());
-    assertTrue(cacheToken.hasVersion());
+    assertEquals(expectedName, cacheToken.getName());
+
   }
 }

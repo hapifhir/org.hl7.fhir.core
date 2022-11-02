@@ -84,6 +84,7 @@ public class TerminologyCache {
   private static final String CAPABILITY_STATEMENT_TITLE = ".capabilityStatement";
   private static final String TERMINOLOGY_CAPABILITIES_TITLE = ".terminologyCapabilities";
 
+
   private SystemNameKeyGenerator systemNameKeyGenerator = new SystemNameKeyGenerator();
 
   public class CacheToken {
@@ -109,32 +110,61 @@ public class TerminologyCache {
     return systemNameKeyGenerator;
   }
   public class SystemNameKeyGenerator {
+    public static final String SNOMED_SCT_CODESYSTEM_URL = "http://snomed.info/sct";
+    public static final String RXNORM_CODESYSTEM_URL = "http://www.nlm.nih.gov/research/umls/rxnorm";
+    public static final String LOINC_CODESYSTEM_URL = "http://loinc.org";
+    public static final String UCUM_CODESYSTEM_URL = "http://unitsofmeasure.org";
+
+    public static final String HL7_TERMINOLOGY_CODESYSTEM_BASE_URL = "http://terminology.hl7.org/CodeSystem/";
+    public static final String HL7_SID_CODESYSTEM_BASE_URL = "http://hl7.org/fhir/sid/";
+    public static final String HL7_FHIR_CODESYSTEM_BASE_URL = "http://hl7.org/fhir/";
+
+    public static final String ISO_CODESYSTEM_URN = "urn:iso:std:iso:";
+    public static final String LANG_CODESYSTEM_URN = "urn:ietf:bcp:47";
+    public static final String MIMETYPES_CODESYSTEM_URN = "urn:ietf:bcp:13";
+
+    public static final String _11073_CODESYSTEM_URN = "urn:iso:std:iso:11073:10101";
+    public static final String DICOM_CODESYSTEM_URL = "http://dicom.nema.org/resources/ontology/DCM";
+
+
     public String getNameForSystem(String system) {
-      if (system.equals("http://snomed.info/sct"))
+      System.out.println(system);
+      if (system.equals(SNOMED_SCT_CODESYSTEM_URL))
         return "snomed";
-      if (system.equals("http://www.nlm.nih.gov/research/umls/rxnorm"))
+      if (system.equals(RXNORM_CODESYSTEM_URL))
         return "rxnorm";
-      if (system.equals("http://loinc.org"))
+      if (system.equals(LOINC_CODESYSTEM_URL))
         return "loinc";
-      if (system.equals("http://unitsofmeasure.org"))
+      if (system.equals(UCUM_CODESYSTEM_URL))
         return "ucum";
-      if (system.startsWith("http://hl7.org/fhir/sid/"))
-        return system.substring(24).replace("/", "");
-      if (system.startsWith("urn:iso:std:iso:"))
-        return "iso"+system.substring(16).replace(":", "");
-      if (system.startsWith("http://terminology.hl7.org/CodeSystem/"))
-        return system.substring(38).replace("/", "").replace('|','X');
-      if (system.startsWith("http://hl7.org/fhir/"))
-        return system.substring(20).replace("/", "");
-      if (system.equals("urn:ietf:bcp:47"))
+      if (system.startsWith(HL7_SID_CODESYSTEM_BASE_URL))
+        return getNameForCanonicalURL(HL7_SID_CODESYSTEM_BASE_URL, system);
+      if (system.startsWith(ISO_CODESYSTEM_URN))
+        return "iso"+system.substring(ISO_CODESYSTEM_URN.length()).replace(":", "");
+      if (system.startsWith(HL7_TERMINOLOGY_CODESYSTEM_BASE_URL))
+        return getNameForCanonicalURL(HL7_TERMINOLOGY_CODESYSTEM_BASE_URL, system);
+      if (system.startsWith(HL7_FHIR_CODESYSTEM_BASE_URL))
+        return getNameForCanonicalURL(HL7_FHIR_CODESYSTEM_BASE_URL, system);
+      if (system.equals(LANG_CODESYSTEM_URN))
         return "lang";
-      if (system.equals("urn:ietf:bcp:13"))
+      if (system.equals(MIMETYPES_CODESYSTEM_URN))
         return "mimetypes";
-      if (system.equals("urn:iso:std:iso:11073:10101"))
+      if (system.equals(_11073_CODESYSTEM_URN))
         return "11073";
-      if (system.equals("http://dicom.nema.org/resources/ontology/DCM"))
+      if (system.equals(DICOM_CODESYSTEM_URL))
         return "dicom";
       return system.replace("/", "_").replace(":", "_").replace("?", "X").replace("#", "X");
+    }
+
+    public String getNameForCanonicalURL(String baseUrl, String fullUrl) {
+      final String[] subIds = fullUrl.substring(baseUrl.length()).split("\\|");
+
+      String baseId = subIds[0].replace("/", "");
+      if (subIds.length == 2) {
+        return  baseId + "_" + subIds[1];
+      }
+      return baseId;
+
     }
   }
 
