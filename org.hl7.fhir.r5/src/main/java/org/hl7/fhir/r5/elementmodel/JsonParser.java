@@ -636,6 +636,10 @@ public class JsonParser extends ParserBase {
 
   @Override
   public void compose(Element e, OutputStream stream, OutputStyle style, String identity) throws FHIRException, IOException {
+    if (e.getPath() == null) {
+      e.populatePaths(null);
+    }
+    
     OutputStreamWriter osw = new OutputStreamWriter(stream, "UTF-8");
     if (style == OutputStyle.CANONICAL)
       json = new JsonCreatorCanonical(osw);
@@ -654,6 +658,10 @@ public class JsonParser extends ParserBase {
   }
 
   public void compose(Element e, JsonCreator json) throws Exception {
+    if (e.getPath() == null) {
+      e.populatePaths(null);
+    }
+    
     this.json = json;
     json.beginObject();
 
