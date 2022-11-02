@@ -2412,8 +2412,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           warning(errors, IssueType.VALUE, e.line(), e.col(), path, ds != DecimalStatus.RANGE, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_RANGE, e.primitiveValue());
           try {
             Decimal v = new Decimal(e.getValue());
-            ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxValueIntegerType() || 
-                !context.getMaxValueIntegerType().hasValue() || checkDecimalMaxValue(v, context.getMaxValueDecimalType().getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_GT, (context.hasMaxValueIntegerType() ? context.getMaxValueIntegerType() : "")) && ok;
+            ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxValueDecimalType() ||
+                !context.getMaxValueDecimalType().hasValue() || checkDecimalMaxValue(v, context.getMaxValueDecimalType().getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_GT, (context.hasMaxValueDecimalType() ? context.getMaxValueDecimalType() : "")) && ok;
             ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, !context.hasMinValueIntegerType() || 
                 !context.getMinValueIntegerType().hasValue() || checkDecimalMinValue(v, context.getMaxValueDecimalType().getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_LT, (context.hasMinValueIntegerType() ? context.getMinValueIntegerType() : "")) && ok;
           } catch (Exception ex) {
