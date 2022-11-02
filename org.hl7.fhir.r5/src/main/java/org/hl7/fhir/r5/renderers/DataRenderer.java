@@ -15,6 +15,7 @@ import java.time.format.FormatStyle;
 import java.time.format.SignStyle;
 import java.util.Currency;
 import java.util.List;
+import java.util.Set;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -96,6 +97,45 @@ public class DataRenderer extends Renderer {
   }
 
   // -- 2. Markdown support -------------------------------------------------------
+  
+  public static String processRelativeUrls(String markdown, String path) {
+    if (markdown == null) {
+      return "";
+    }
+    if (!Utilities.isAbsoluteUrl(path)) {
+      return markdown;
+    }
+    String basePath = path.contains("/") ? path.substring(0, path.lastIndexOf("/")+1) : path+"/";
+    StringBuilder b = new StringBuilder();
+    int i = 0;
+    while (i < markdown.length()) {
+      if (i < markdown.length()-3 && markdown.substring(i, i+2).equals("](")) {
+        int j = i + 2;
+        while (j < markdown.length() && markdown.charAt(j) != ')')
+          j++;
+        if (j < markdown.length()) {
+          String url = markdown.substring(i+2, j);
+          if (!Utilities.isAbsoluteUrl(url) && !url.startsWith("..")) {
+            // it's relative - so it's relative to the base URL
+              b.append("](");
+              b.append(basePath);
+          } else {
+            b.append("](");
+          }
+          i = i + 1;
+        } else 
+          b.append(markdown.charAt(i));
+      } else {
+        b.append(markdown.charAt(i));
+      }
+      i++;
+    }
+    return b.toString();
+  }
+
+  protected void addMarkdown(XhtmlNode x, String text, String path) throws FHIRFormatError, IOException, DefinitionException {
+    addMarkdown(x, processRelativeUrls(text, path));
+  }
   
   protected void addMarkdown(XhtmlNode x, String text) throws FHIRFormatError, IOException, DefinitionException {
     if (text != null) {
