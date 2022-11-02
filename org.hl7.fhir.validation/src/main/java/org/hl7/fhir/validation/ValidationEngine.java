@@ -618,6 +618,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     if (map == null) throw new Error("Unable to find map " + mapUri + " (Known Maps = " + context.listMapUrls() + ")");
     org.hl7.fhir.r5.elementmodel.Element resource = getTargetResourceFromStructureMap(map);
     scu.transform(null, src, map, resource);
+    resource.populatePaths(null);
     return resource;
   }
 

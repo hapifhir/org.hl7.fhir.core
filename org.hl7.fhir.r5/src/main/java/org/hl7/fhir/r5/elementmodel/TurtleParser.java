@@ -315,6 +315,10 @@ public class TurtleParser extends ParserBase {
 
 
   public void compose(Element e, Turtle ttl, String base) throws FHIRException {
+    if (e.getPath() == null) {
+      e.populatePaths(null);
+    }
+    
     ttl.prefix("fhir", FHIR_URI_BASE);
     ttl.prefix("rdfs", "http://www.w3.org/2000/01/rdf-schema#");
     ttl.prefix("owl", "http://www.w3.org/2002/07/owl#");
