@@ -68,6 +68,7 @@ import org.hl7.fhir.r5.renderers.utils.DirectWrappers;
 import org.hl7.fhir.r5.renderers.utils.DirectWrappers.BaseWrapperDirect;
 import org.hl7.fhir.r5.renderers.utils.DirectWrappers.PropertyWrapperDirect;
 import org.hl7.fhir.r5.renderers.utils.DirectWrappers.ResourceWrapperDirect;
+import org.hl7.fhir.r5.renderers.utils.ElementWrappers;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceWithReference;
@@ -103,7 +104,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     boolean idDone = false;
     XhtmlNode p = x.para();
     if (context.isAddGeneratedNarrativeHeader()) {
-      p.b().tx("Generated Narrative: "+r.fhirType());
+      p.b().tx("Generated Narrative: "+r.fhirType()+(context.isContained() ? " #"+r.getId() : ""));
       if (!Utilities.noString(r.getId())) {
         p.an(r.getId());
       }
@@ -756,35 +757,50 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     if (children.isEmpty()) {
       renderLeaf(res, e, defn, x, x, false, showCodeDetails, readDisplayHints(defn), path, indent);
     } else {
-      for (PropertyWrapper p : splitExtensions(profile, e.children())) {
-        if (p.hasValues()) {
-          ElementDefinition child = getElementDefinition(children, path+"."+p.getName(), p);
-          if (child == null) {
-            child = p.getElementDefinition();
-          }
-          if (child != null) {
-            if (!child.getBase().hasPath() || !child.getBase().getPath().startsWith("Resource.")) {
-              generateElementByProfile(res, profile, allElements, x, path, showCodeDetails, indent, p, child);
-            }
-          }
+      List<PropertyWrapper> pl = splitExtensions(profile, e.children());
+      for (PropertyWrapper p : pl) {
+        generateForProperty(res, profile, allElements, children, x, path, showCodeDetails, indent, false, p);
+      }
+      for (PropertyWrapper p : pl) {
+        generateForProperty(res, profile, allElements, children, x, path, showCodeDetails, indent, true, p);
+      }
+    }
+  }
+
+  private void generateForProperty(ResourceWrapper res, StructureDefinition profile,
+      List<ElementDefinition> allElements, List<ElementDefinition> children, XhtmlNode x, String path,
+      boolean showCodeDetails, int indent, boolean round2, PropertyWrapper p)
+      throws UnsupportedEncodingException, IOException, EOperationOutcome {
+    if (p.hasValues()) {
+      ElementDefinition child = getElementDefinition(children, path+"."+p.getName(), p);
+      if (child == null) {
+        child = p.getElementDefinition();
+      }
+      if (child != null) {
+        if (!child.getBase().hasPath() || !child.getBase().getPath().startsWith("Resource.")) {
+          generateElementByProfile(res, profile, allElements, x, path, showCodeDetails, indent, p, child, round2);
         }
       }
     }
   }
 
   public void generateElementByProfile(ResourceWrapper res, StructureDefinition profile, List<ElementDefinition> allElements, XhtmlNode x, String path,
-      boolean showCodeDetails, int indent, PropertyWrapper p, ElementDefinition child) throws UnsupportedEncodingException, IOException, EOperationOutcome {
+      boolean showCodeDetails, int indent, PropertyWrapper p, ElementDefinition child, boolean round2) throws UnsupportedEncodingException, IOException, EOperationOutcome {
     Map<String, String> displayHints = readDisplayHints(child);
     if ("DomainResource.contained".equals(child.getBase().getPath())) {
-//      for (BaseWrapper v : p.getValues()) {
-//        x.hr();
-//        RenderingContext ctxt = context.clone();
-//        ctxt.setContained(true);
-//        ResourceRenderer rnd = RendererFactory.factory(v.fhirType(), ctxt);
-//        ResourceWrapper rw = new ElementWrappers.ResourceWrapperMetaElement(ctxt, (org.hl7.fhir.r5.elementmodel.Element) v.getBase());
-//        rnd.render(x.blockquote(), rw);
-//      }
-    } else if (!exemptFromRendering(child)) {
+      if (round2) {
+        for (BaseWrapper v : p.getValues()) {
+          if (!RendererFactory.hasSpecificRenderer(v.fhirType())) {
+            x.hr();
+            RenderingContext ctxt = context.copy();
+            ctxt.setContained(true);
+            ResourceRenderer rnd = RendererFactory.factory(v.fhirType(), ctxt);
+            ResourceWrapper rw = new ElementWrappers.ResourceWrapperMetaElement(ctxt, (org.hl7.fhir.r5.elementmodel.Element) v.getBase());
+            rnd.render(x.blockquote(), rw);
+          }
+        }
+      }
+    } else if (!round2 && !exemptFromRendering(child)) {
       if (isExtension(p)) {
         hasExtensions = true;
       }
