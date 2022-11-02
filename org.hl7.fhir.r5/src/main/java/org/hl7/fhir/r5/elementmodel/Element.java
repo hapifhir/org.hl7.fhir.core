@@ -1238,5 +1238,18 @@ public class Element extends Base {
     }
     return "e:"+e+",w:"+w+",h:"+h;
   }
+
+  public void populatePaths(String path) {
+    if (path == null) {
+      path = fhirType();
+    }
+    setPath(path);
+    if (children != null) {
+      for (Element n : children) {
+        n.populatePaths(path+"."+n.getName());
+      }
+    }
+    
+  }
   
 }
