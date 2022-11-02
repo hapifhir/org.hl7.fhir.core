@@ -2067,3 +2067,14 @@ v: {
   "system" : "http://snomed.info/sct"
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "324689003",
+  "display" : "Nystatin 100000 unit/mL oral suspension"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Product containing precisely nystatin 100000 unit/1 milliliter conventional release oral suspension (clinical drug)",
+  "code" : "324689003",
+  "system" : "http://snomed.info/sct"
+}
+-------------------------------------------------------------------------------------
