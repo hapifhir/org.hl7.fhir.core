@@ -139,7 +139,9 @@ public class SimpleHTTPClient {
       u = new URL(url);
       c = (HttpURLConnection) u.openConnection();
       c.setRequestMethod("GET");
-      c.setRequestProperty("Accept", accept);
+      if (accept != null) {
+        c.setRequestProperty("Accept", accept);
+      }
       setHeaders(c);
       c.setInstanceFollowRedirects(false); 
       if (trustAll && url.startsWith("https://")) {
