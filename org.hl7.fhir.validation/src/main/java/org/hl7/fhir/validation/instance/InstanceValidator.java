@@ -2410,12 +2410,20 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         DecimalStatus ds = Utilities.checkDecimal(e.primitiveValue(), true, false);
         if (rule(errors, IssueType.INVALID, e.line(), e.col(), path, ds == DecimalStatus.OK || ds == DecimalStatus.RANGE, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_VALID, e.primitiveValue())) {
           warning(errors, IssueType.VALUE, e.line(), e.col(), path, ds != DecimalStatus.RANGE, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_RANGE, e.primitiveValue());
-          try {
+          try {            
             Decimal v = new Decimal(e.getValue());
-            ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxValueIntegerType() || 
-                !context.getMaxValueIntegerType().hasValue() || checkDecimalMaxValue(v, context.getMaxValueDecimalType().getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_GT, (context.hasMaxValueIntegerType() ? context.getMaxValueIntegerType() : "")) && ok;
-            ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, !context.hasMinValueIntegerType() || 
-                !context.getMinValueIntegerType().hasValue() || checkDecimalMinValue(v, context.getMaxValueDecimalType().getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_LT, (context.hasMinValueIntegerType() ? context.getMinValueIntegerType() : "")) && ok;
+            if (context.hasMaxValueDecimalType() && context.getMaxValueDecimalType().hasValue()) {
+              ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, checkDecimalMaxValue(v, context.getMaxValueDecimalType().getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_GT, context.getMaxValueDecimalType()) && ok;
+            } else if (context.hasMaxValueIntegerType() && context.getMaxValueIntegerType().hasValue()) {
+              // users can also provide a max integer type. It's not clear whether that's actually valid, but we'll check for it anyway
+              ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, checkDecimalMaxValue(v, new BigDecimal(context.getMaxValueIntegerType().getValue())), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_GT, context.getMaxValueIntegerType()) && ok;
+            }
+            
+            if (context.hasMinValueDecimalType() && context.getMaxValueDecimalType().hasValue()) {
+              ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, checkDecimalMinValue(v, context.getMaxValueDecimalType().getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_LT, context.getMaxValueDecimalType()) && ok;
+            } else if (context.hasMinValueIntegerType() && context.getMaxValueIntegerType().hasValue()) {
+              ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, checkDecimalMinValue(v, new BigDecimal(context.getMaxValueIntegerType().getValue())), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_LT, context.getMaxValueIntegerType()) && ok;
+            }
           } catch (Exception ex) {
             // should never happen?
           }
@@ -2449,7 +2457,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
 
     if (context.hasBinding() && e.primitiveValue() != null) {
-      ok = checkPrimitiveBinding(hostContext, errors, path, type, context, e, profile, node) && ok;
+      // special cases
+      if ("StructureDefinition.type".equals(context.getPath()) && "http://hl7.org/fhir/StructureDefinition/StructureDefinition".equals(profile.getUrl())) {
+        ok = checkTypeValue(errors, path, e, node.getElement());
+      } else {
+        ok = checkPrimitiveBinding(hostContext, errors, path, type, context, e, profile, node) && ok;
+      }
     }
 
     if (type.equals("markdown") && htmlInMarkdownCheck != HtmlInMarkdownCheck.NONE) {
@@ -2491,6 +2504,40 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     // for nothing to check
     return ok;
+  }
+
+  private boolean checkTypeValue(List<ValidationMessage> errors, String path, Element e, Element sd) {
+    String v = e.primitiveValue();
+    if (v == null) {
+      return rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.SD_TYPE_MISSING);
+    }
+    String url = sd.getChildValue("url");
+    String d = sd.getChildValue("derivation"); 
+    String k = sd.getChildValue("kind"); 
+    if (Utilities.isAbsoluteUrl(v)) {
+      warning(errors, IssueType.INVALID, e.line(), e.col(), path, ns(v).equals(ns(url)) || ns(v).equals(ns(url).replace("StructureDefinition/", "")), I18nConstants.SD_TYPE_NOT_MATCH_NS, v, url);
+      return rule(errors, IssueType.INVALID, e.line(), e.col(), path, "logical".equals(k), I18nConstants.SD_TYPE_NOT_LOGICAL, v, k);
+    } else {
+      boolean tok = false;
+      for (StructureDefinition t : context.fetchResourcesByType(StructureDefinition.class)) {
+        if (t.hasUserData("package") && t.getUserString("package").startsWith("hl7.fhir.r") && v.equals(t.getType())) {
+          tok = true;
+        }
+      }
+      if (tok) {
+        if (!(("http://hl7.org/fhir/StructureDefinition/"+v).equals(url))) {
+          return rule(errors, IssueType.INVALID, e.line(), e.col(), path, "constraint".equals(d), I18nConstants.SD_TYPE_NOT_DERIVED, v);
+        } else {
+          return true;
+        }
+      } else {
+        return rule(errors, IssueType.INVALID, e.line(), e.col(), path, tok, I18nConstants.SD_TYPE_NOT_LOCAL, v);
+      }
+    }
+  }
+
+  private String ns(String url) {
+    return url.contains("/") ? url.substring(0, url.lastIndexOf("/")) : url;
   }
 
   private Object prepWSPresentation(String s) {

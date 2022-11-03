@@ -238,7 +238,8 @@ public class ToolingExtensions {
   
   
   
-  public static final String WEB_EXTENSION_STYLE = "http://build.fhir.org/ig/FHIR/fhir-tools-ig/branches/master/format-extensions.html#extension-related-extensions";
+  public static final String WEB_EXTENSION_STYLE = "http://build.fhir.org/ig/FHIR/fhir-tools-ig/format-extensions.html#extension-related-extensions";
+  public static final String EXT_IGDEP_COMMENT = "http://hl7.org/fhir/tools/StructureDefinition/implementationguide-dependency-comment";
   ;
   
   // specific extension helpers

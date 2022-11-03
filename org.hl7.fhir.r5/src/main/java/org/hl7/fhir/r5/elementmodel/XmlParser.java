@@ -602,6 +602,9 @@ public class XmlParser extends ParserBase {
     xml.setSortAttributes(false);
     xml.setPretty(style == OutputStyle.PRETTY);
     xml.start();
+    if (e.getPath() == null) {
+      e.populatePaths(null);
+    }
     String ns = e.getProperty().getXmlNamespace();
     if (ns!=null && !"noNamespace".equals(ns)) {
       xml.setDefaultNamespace(ns);
@@ -654,6 +657,9 @@ public class XmlParser extends ParserBase {
   }
   
   public void compose(Element e, IXMLWriter xml) throws Exception {
+    if (e.getPath() == null) {
+      e.populatePaths(null);
+    }
     xml.start();
     xml.setDefaultNamespace(e.getProperty().getXmlNamespace());
     if (schemaPath != null) {

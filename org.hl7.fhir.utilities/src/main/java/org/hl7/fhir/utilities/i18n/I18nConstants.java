@@ -737,6 +737,15 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIER_NM_ILLEGAL_TYPE = "TYPE_SPECIFIER_NM_ILLEGAL_TYPE";
   public static final String TYPE_SPECIFIER_NM_ABSTRACT_TYPE = "TYPE_SPECIFIER_NM_ABSTRACT_TYPE";
   public static final String Bundle_BUNDLE_Entry_NO_LOGICAL_EXPL = "Bundle_BUNDLE_Entry_NO_LOGICAL_EXPL";
+  public static final String SD_TYPE_MISSING = "SD_TYPE_MISSING";
+  public static final String SD_TYPE_NOT_MATCH_NS = "SD_TYPE_NOT_MATCH_NS";
+  public static final String SD_TYPE_NOT_DERIVED = "SD_TYPE_NOT_DERIVED";
+  public static final String SD_TYPE_NOT_LOCAL = "SD_TYPE_NOT_LOCAL";
+  public static final String SD_TYPE_NOT_LOGICAL = "SD_TYPE_NOT_LOGICAL";
+  public static final String SD_CONSTRAINED_TYPE_NO_MATCH = "SD_CONSTRAINED_TYPE_NO_MATCH";
+  public static final String SD_SPECIALIZED_TYPE_MATCHES = "SD_SPECIALIZED_TYPE_MATCHES";
+  public static final String SD_CONSTRAINED_KIND_NO_MATCH = "SD_CONSTRAINED_KIND_NO_MATCH";
+  public static final String SD_PATH_TYPE_MISMATCH = "SD_PATH_TYPE_MISMATCH";
 }
 
 

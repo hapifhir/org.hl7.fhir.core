@@ -285,7 +285,7 @@ public class Resource30_50 {
   public org.hl7.fhir.dstu3.model.Resource convertResource(org.hl7.fhir.r5.model.Resource src) throws FHIRException {
     if (src == null) return null;
     if (src instanceof org.hl7.fhir.r5.model.Parameters) {
-      if (((org.hl7.fhir.r5.model.Parameters) src).hasParameter("profile-url"))
+      if (((org.hl7.fhir.r5.model.Parameters) src).hasParameterValue("profile-url"))
         return ExpansionProfile30_50.convertExpansionProfile((org.hl7.fhir.r5.model.Parameters) src);
       else return Parameters30_50.convertParameters((org.hl7.fhir.r5.model.Parameters) src);
     }
