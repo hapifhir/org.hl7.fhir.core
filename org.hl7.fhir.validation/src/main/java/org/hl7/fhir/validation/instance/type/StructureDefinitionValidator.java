@@ -69,14 +69,18 @@ public class StructureDefinitionValidator extends BaseValidator {
   public boolean validateStructureDefinition(List<ValidationMessage> errors, Element src, NodeStack stack)  {
     boolean ok = true;
     StructureDefinition sd = null;
+    String typeName = null;
     try {
       sd = loadAsSD(src);
       List<ElementDefinition> snapshot = sd.getSnapshot().getElement();
       sd.setSnapshot(null);
+      typeName = sd.getTypeName();
       StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
       if (warning(errors, IssueType.NOTFOUND, stack.getLiteralPath(), base != null, I18nConstants.UNABLE_TO_FIND_BASE__FOR_, sd.getBaseDefinition(), "StructureDefinition, so can't check the differential")) {
         if (rule(errors, IssueType.NOTFOUND, stack.getLiteralPath(), sd.hasDerivation(), I18nConstants.SD_MUST_HAVE_DERIVATION, sd.getUrl())) {
+          rule(errors, IssueType.NOTFOUND, stack.getLiteralPath(), base.getAbstract() || sd.hasKind() && sd.getKind() == base.getKind(), I18nConstants.SD_CONSTRAINED_KIND_NO_MATCH, sd.getKind().toCode(), base.getKind().toCode(), base.getType());
           if (sd.getDerivation() == TypeDerivationRule.CONSTRAINT) {
+            rule(errors, IssueType.NOTFOUND, stack.getLiteralPath(), sd.hasType() && sd.getType().equals(base.getType()), I18nConstants.SD_CONSTRAINED_TYPE_NO_MATCH, sd.getType(), base.getType());
             List<ValidationMessage> msgs = new ArrayList<>();
             ProfileUtilities pu = new ProfileUtilities(context, msgs, null);
             pu.setXver(xverManager);
@@ -100,6 +104,8 @@ public class StructureDefinitionValidator extends BaseValidator {
               int is = sd.getSnapshot().getElement().size();
               ok = rule(errors, IssueType.NOTFOUND, stack.getLiteralPath(), was == is, I18nConstants.SNAPSHOT_EXISTING_PROBLEM, was, is) && ok;
             }
+          } else {
+            rule(errors, IssueType.NOTFOUND, stack.getLiteralPath(), sd.hasType() && !sd.getType().equals(base.getType()), I18nConstants.SD_SPECIALIZED_TYPE_MATCHES, sd.getType(), base.getType());
           }
         } else {
           ok = false;
@@ -116,28 +122,30 @@ public class StructureDefinitionValidator extends BaseValidator {
     List<Element> differentials = src.getChildrenByName("differential");
     List<Element> snapshots = src.getChildrenByName("snapshot");
     for (Element differential : differentials) {
-      ok = validateElementList(errors, differential, stack.push(differential, -1, null, null), false, snapshots.size() > 0, sd) && ok;
+      ok = validateElementList(errors, differential, stack.push(differential, -1, null, null), false, snapshots.size() > 0, sd, typeName) && ok;
     }
     for (Element snapshot : snapshots) {
-      ok = validateElementList(errors, snapshot, stack.push(snapshot, -1, null, null), true, true, sd) && ok;
+      ok = validateElementList(errors, snapshot, stack.push(snapshot, -1, null, null), true, true, sd, typeName) && ok;
     }
     return ok;
   }
   
-  private boolean validateElementList(List<ValidationMessage> errors, Element elementList, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd) {
+  private boolean validateElementList(List<ValidationMessage> errors, Element elementList, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName) {
     boolean ok = true;
     List<Element> elements = elementList.getChildrenByName("element");
     int cc = 0;
     for (Element element : elements) {
-      ok = validateElementDefinition(errors, element, stack.push(element, cc, null, null), snapshot, hasSnapshot, sd) && ok;
+      ok = validateElementDefinition(errors, element, stack.push(element, cc, null, null), snapshot, hasSnapshot, sd, typeName) && ok;
       cc++;
     }    
     return ok;
   }
 
-  private boolean validateElementDefinition(List<ValidationMessage> errors, Element element, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd) {
+  private boolean validateElementDefinition(List<ValidationMessage> errors, Element element, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName) {
     boolean ok = true;
     boolean typeMustSupport = false;
+    String path = element.getNamedChildValue("path");
+    rule(errors, IssueType.NOTFOUND, stack.getLiteralPath(), typeName == null || path == null || path.equals(typeName) || path.startsWith(typeName+"."), I18nConstants.SD_PATH_TYPE_MISMATCH, typeName, path);
     List<Element> types = element.getChildrenByName("type");
     Set<String> typeCodes = new HashSet<>();
     Set<String> characteristics = new HashSet<>();
@@ -173,14 +181,14 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
       // check the stated profile - must be a constraint on the type 
       if (snapshot || sd != null) {
-        ok = validateElementType(errors, type, stack.push(type, -1, null, null), sd, element.getChildValue("path")) && ok;
+        ok = validateElementType(errors, type, stack.push(type, -1, null, null), sd, path) && ok;
       }
     }
     if (typeMustSupport) {
       if (snapshot) {
-        ok = rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), "true".equals(element.getChildValue("mustSupport")), I18nConstants.SD_NESTED_MUST_SUPPORT_SNAPSHOT, element.getNamedChildValue("path")) && ok;
+        ok = rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), "true".equals(element.getChildValue("mustSupport")), I18nConstants.SD_NESTED_MUST_SUPPORT_SNAPSHOT, path) && ok;
       } else {
-        hint(errors, IssueType.EXCEPTION, stack.getLiteralPath(), hasSnapshot || "true".equals(element.getChildValue("mustSupport")), I18nConstants.SD_NESTED_MUST_SUPPORT_DIFF, element.getNamedChildValue("path"));        
+        hint(errors, IssueType.EXCEPTION, stack.getLiteralPath(), hasSnapshot || "true".equals(element.getChildValue("mustSupport")), I18nConstants.SD_NESTED_MUST_SUPPORT_DIFF, path);        
       }
     }
     if (element.hasChild("binding")) {
@@ -188,7 +196,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         ok = rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("can-bind") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "Binding", typeCodes) && ok;
       }
       Element binding = element.getNamedChild("binding");
-      ok = validateBinding(errors, binding, stack.push(binding, -1, null, null), typeCodes, snapshot, element.getNamedChildValue("path")) && ok;
+      ok = validateBinding(errors, binding, stack.push(binding, -1, null, null), typeCodes, snapshot, path) && ok;
     } else {
       // this is a good idea but there's plenty of cases where the rule isn't met; maybe one day it's worth investing the time to exclude these cases and bring this rule back
 //      String bt = boundType(typeCodes);
@@ -375,7 +383,9 @@ public class StructureDefinitionValidator extends BaseValidator {
 
   private boolean validateBinding(List<ValidationMessage> errors, Element binding, NodeStack stack, Set<String> typeCodes, boolean snapshot, String path) {
     boolean ok = true;
-    ok = rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot || bindableType(typeCodes) != null, I18nConstants.SD_ED_BIND_NO_BINDABLE, path, typeCodes.toString()) && ok;
+    if (bindableType(typeCodes) == null) {
+      ok = rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot, I18nConstants.SD_ED_BIND_NO_BINDABLE, path, typeCodes.toString()) && ok;
+    } 
     if (!snapshot) {
       Set<String> bindables = getListofBindableTypes(typeCodes);    
       hint(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), bindables.size() <= 1, I18nConstants.SD_ED_BIND_MULTIPLE_TYPES, path, typeCodes.toString());
