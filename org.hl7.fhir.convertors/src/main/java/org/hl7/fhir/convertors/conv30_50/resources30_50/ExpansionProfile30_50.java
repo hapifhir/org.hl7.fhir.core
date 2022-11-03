@@ -12,52 +12,52 @@ public class ExpansionProfile30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.ExpansionProfile tgt = new org.hl7.fhir.dstu3.model.ExpansionProfile();
-    if (src.hasParameter("profile-url"))
-      tgt.setUrl(src.getParameter("profile-url").primitiveValue());
-    if (src.hasParameter("profile-version"))
-      tgt.setVersion(src.getParameter("profile-version").primitiveValue());
-    if (src.hasParameter("profile-name"))
-      tgt.setName(src.getParameter("profile-name").primitiveValue());
-    if (src.hasParameter("profile-status"))
-      tgt.setStatus(PublicationStatus.fromCode(src.getParameter("profile-status").primitiveValue()));
-    for (DataType t : src.getParameters("system-version")) {
+    if (src.hasParameterValue("profile-url"))
+      tgt.setUrl(src.getParameterValue("profile-url").primitiveValue());
+    if (src.hasParameterValue("profile-version"))
+      tgt.setVersion(src.getParameterValue("profile-version").primitiveValue());
+    if (src.hasParameterValue("profile-name"))
+      tgt.setName(src.getParameterValue("profile-name").primitiveValue());
+    if (src.hasParameterValue("profile-status"))
+      tgt.setStatus(PublicationStatus.fromCode(src.getParameterValue("profile-status").primitiveValue()));
+    for (DataType t : src.getParameterValues("system-version")) {
       String[] v = t.primitiveValue().split("\\|");
       tgt.addFixedVersion().setSystem(v[0]).setVersion(v[1]).setMode(SystemVersionProcessingMode.DEFAULT);
     }
-    for (DataType t : src.getParameters("force-system-version")) {
+    for (DataType t : src.getParameterValues("force-system-version")) {
       String[] v = t.primitiveValue().split("\\|");
       tgt.addFixedVersion().setSystem(v[0]).setVersion(v[1]).setMode(SystemVersionProcessingMode.OVERRIDE);
     }
-    for (DataType t : src.getParameters("check-system-version")) {
+    for (DataType t : src.getParameterValues("check-system-version")) {
       String[] v = t.primitiveValue().split("\\|");
       tgt.addFixedVersion().setSystem(v[0]).setVersion(v[1]).setMode(SystemVersionProcessingMode.CHECK);
     }
-    for (DataType t : src.getParameters("exclude-system")) {
+    for (DataType t : src.getParameterValues("exclude-system")) {
       String[] v = t.primitiveValue().split("\\|");
       tgt.getExcludedSystem().setSystem(v[0]).setVersion(v[1]);
     }
-    if (src.hasParameter("includeDesignations"))
+    if (src.hasParameterValue("includeDesignations"))
       tgt.setIncludeDesignations(src.getParameterBool(""));
-    for (DataType t : src.getParameters("designation")) {
+    for (DataType t : src.getParameterValues("designation")) {
       String[] v = t.primitiveValue().split("\\|");
       if ("urn:ietf:bcp:47".equals(v[0]))
         tgt.getDesignation().getInclude().addDesignation().setLanguage(v[1]);
       else
         tgt.getDesignation().getInclude().addDesignation().getUse().setSystem(v[0]).setCode(v[1]);
     }
-    if (src.hasParameter("includeDefinition"))
+    if (src.hasParameterValue("includeDefinition"))
       tgt.setIncludeDefinition(src.getParameterBool("includeDefinition"));
-    if (src.hasParameter("activeOnly"))
+    if (src.hasParameterValue("activeOnly"))
       tgt.setActiveOnly(src.getParameterBool("activeOnly"));
-    if (src.hasParameter("excludeNested"))
+    if (src.hasParameterValue("excludeNested"))
       tgt.setExcludeNested(src.getParameterBool("excludeNested"));
-    if (src.hasParameter("excludeNotForUI"))
+    if (src.hasParameterValue("excludeNotForUI"))
       tgt.setExcludeNotForUI(src.getParameterBool("excludeNotForUI"));
-    if (src.hasParameter("excludeNotForUI"))
+    if (src.hasParameterValue("excludeNotForUI"))
       tgt.setExcludePostCoordinated(src.getParameterBool("excludeNotForUI"));
-    if (src.hasParameter("displayLanguage"))
-      tgt.setDisplayLanguage(src.getParameter("displayLanguage").primitiveValue());
-    if (src.hasParameter("limitedExpansion"))
+    if (src.hasParameterValue("displayLanguage"))
+      tgt.setDisplayLanguage(src.getParameterValue("displayLanguage").primitiveValue());
+    if (src.hasParameterValue("limitedExpansion"))
       tgt.setLimitedExpansion(src.getParameterBool("getParameterBool"));
     return tgt;
   }

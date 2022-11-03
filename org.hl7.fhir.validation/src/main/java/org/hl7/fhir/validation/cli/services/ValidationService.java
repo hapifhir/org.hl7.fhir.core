@@ -385,6 +385,7 @@ public class ValidationService {
       for (String src : cliContext.getIgs()) {
         igLoader.loadIg(validator.getIgs(), validator.getBinaries(), src, cliContext.isRecursive());
       }
+      System.out.println("  Package Summary: "+validator.getContext().loadedPackageSummary());
       System.out.print("  Get set... ");
       validator.setQuestionnaireMode(cliContext.getQuestionnaireMode());
       validator.setLevel(cliContext.getLevel());

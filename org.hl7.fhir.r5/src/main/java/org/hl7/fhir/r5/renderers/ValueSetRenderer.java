@@ -769,7 +769,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       td = tr.td();
       if (cs != null) {
         String defn = CodeSystemUtilities.getCodeDefinition(cs, c.getCode());
-        addMarkdown(td, defn);
+        addMarkdown(td, defn, cs.getUserString("path"));
       }
     }
     for (String n  : Utilities.sorted(properties.keySet())) {
