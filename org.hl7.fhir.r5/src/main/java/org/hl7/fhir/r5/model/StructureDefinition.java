@@ -4671,7 +4671,14 @@ public String describeType() {
       return "Definition";
     }
   }
+
+public String getTypeName() {
+  String t = getType();
+  return StructureDefinitionKind.LOGICAL.equals(getKind()) && t.contains("/") ? t.substring(t.lastIndexOf("/")+1) : t;
+}
+
 // end addition
+
 
 }
 

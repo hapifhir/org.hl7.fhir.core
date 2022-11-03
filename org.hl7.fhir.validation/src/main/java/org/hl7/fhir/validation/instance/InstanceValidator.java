@@ -2457,7 +2457,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
 
     if (context.hasBinding() && e.primitiveValue() != null) {
-      ok = checkPrimitiveBinding(hostContext, errors, path, type, context, e, profile, node) && ok;
+      // special cases
+      if ("StructureDefinition.type".equals(context.getPath()) && "http://hl7.org/fhir/StructureDefinition/StructureDefinition".equals(profile.getUrl())) {
+        ok = checkTypeValue(errors, path, e, node.getElement());
+      } else {
+        ok = checkPrimitiveBinding(hostContext, errors, path, type, context, e, profile, node) && ok;
+      }
     }
 
     if (type.equals("markdown") && htmlInMarkdownCheck != HtmlInMarkdownCheck.NONE) {
@@ -2499,6 +2504,40 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     // for nothing to check
     return ok;
+  }
+
+  private boolean checkTypeValue(List<ValidationMessage> errors, String path, Element e, Element sd) {
+    String v = e.primitiveValue();
+    if (v == null) {
+      return rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.SD_TYPE_MISSING);
+    }
+    String url = sd.getChildValue("url");
+    String d = sd.getChildValue("derivation"); 
+    String k = sd.getChildValue("kind"); 
+    if (Utilities.isAbsoluteUrl(v)) {
+      warning(errors, IssueType.INVALID, e.line(), e.col(), path, ns(v).equals(ns(url)) || ns(v).equals(ns(url).replace("StructureDefinition/", "")), I18nConstants.SD_TYPE_NOT_MATCH_NS, v, url);
+      return rule(errors, IssueType.INVALID, e.line(), e.col(), path, "logical".equals(k), I18nConstants.SD_TYPE_NOT_LOGICAL, v, k);
+    } else {
+      boolean tok = false;
+      for (StructureDefinition t : context.fetchResourcesByType(StructureDefinition.class)) {
+        if (t.hasUserData("package") && t.getUserString("package").startsWith("hl7.fhir.r") && v.equals(t.getType())) {
+          tok = true;
+        }
+      }
+      if (tok) {
+        if (!(("http://hl7.org/fhir/StructureDefinition/"+v).equals(url))) {
+          return rule(errors, IssueType.INVALID, e.line(), e.col(), path, "constraint".equals(d), I18nConstants.SD_TYPE_NOT_DERIVED, v);
+        } else {
+          return true;
+        }
+      } else {
+        return rule(errors, IssueType.INVALID, e.line(), e.col(), path, tok, I18nConstants.SD_TYPE_NOT_LOCAL, v);
+      }
+    }
+  }
+
+  private String ns(String url) {
+    return url.contains("/") ? url.substring(0, url.lastIndexOf("/")) : url;
   }
 
   private Object prepWSPresentation(String s) {
