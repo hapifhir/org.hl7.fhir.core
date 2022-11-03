@@ -126,45 +126,47 @@ public class TerminologyCache {
     public static final String _11073_CODESYSTEM_URN = "urn:iso:std:iso:11073:10101";
     public static final String DICOM_CODESYSTEM_URL = "http://dicom.nema.org/resources/ontology/DCM";
 
-
     public String getNameForSystem(String system) {
-      System.out.println(system);
-      if (system.equals(SNOMED_SCT_CODESYSTEM_URL))
-        return "snomed";
-      if (system.equals(RXNORM_CODESYSTEM_URL))
-        return "rxnorm";
-      if (system.equals(LOINC_CODESYSTEM_URL))
-        return "loinc";
-      if (system.equals(UCUM_CODESYSTEM_URL))
-        return "ucum";
-      if (system.startsWith(HL7_SID_CODESYSTEM_BASE_URL))
-        return getNameForCanonicalURL(HL7_SID_CODESYSTEM_BASE_URL, system);
-      if (system.startsWith(ISO_CODESYSTEM_URN))
-        return "iso"+system.substring(ISO_CODESYSTEM_URN.length()).replace(":", "");
-      if (system.startsWith(HL7_TERMINOLOGY_CODESYSTEM_BASE_URL))
-        return getNameForCanonicalURL(HL7_TERMINOLOGY_CODESYSTEM_BASE_URL, system);
-      if (system.startsWith(HL7_FHIR_CODESYSTEM_BASE_URL))
-        return getNameForCanonicalURL(HL7_FHIR_CODESYSTEM_BASE_URL, system);
-      if (system.equals(LANG_CODESYSTEM_URN))
-        return "lang";
-      if (system.equals(MIMETYPES_CODESYSTEM_URN))
-        return "mimetypes";
-      if (system.equals(_11073_CODESYSTEM_URN))
-        return "11073";
-      if (system.equals(DICOM_CODESYSTEM_URL))
-        return "dicom";
-      return system.replace("/", "_").replace(":", "_").replace("?", "X").replace("#", "X");
+      final int lastPipe = system.lastIndexOf('|');
+      final String systemBaseName = lastPipe == -1 ? system : system.substring(0,lastPipe);
+      final String systemVersion = lastPipe == -1 ? null : system.substring(lastPipe + 1);
+
+      if (systemBaseName.equals(SNOMED_SCT_CODESYSTEM_URL))
+        return getVersionedSystem("snomed", systemVersion);
+      if (systemBaseName.equals(RXNORM_CODESYSTEM_URL))
+        return getVersionedSystem("rxnorm", systemVersion);
+      if (systemBaseName.equals(LOINC_CODESYSTEM_URL))
+        return getVersionedSystem("loinc", systemVersion);
+      if (systemBaseName.equals(UCUM_CODESYSTEM_URL))
+        return getVersionedSystem("ucum", systemVersion);
+      if (systemBaseName.startsWith(HL7_SID_CODESYSTEM_BASE_URL))
+        return getVersionedSystem(normalizeBaseURL(HL7_SID_CODESYSTEM_BASE_URL, systemBaseName), systemVersion);
+      if (systemBaseName.startsWith(ISO_CODESYSTEM_URN))
+        return getVersionedSystem("iso"+systemBaseName.substring(ISO_CODESYSTEM_URN.length()).replace(":", ""), systemVersion);
+      if (systemBaseName.startsWith(HL7_TERMINOLOGY_CODESYSTEM_BASE_URL))
+        return getVersionedSystem(normalizeBaseURL(HL7_TERMINOLOGY_CODESYSTEM_BASE_URL, systemBaseName), systemVersion);
+      if (systemBaseName.startsWith(HL7_FHIR_CODESYSTEM_BASE_URL))
+        return getVersionedSystem(normalizeBaseURL(HL7_FHIR_CODESYSTEM_BASE_URL, systemBaseName), systemVersion);
+      if (systemBaseName.equals(LANG_CODESYSTEM_URN))
+        return getVersionedSystem("lang", systemVersion);
+      if (systemBaseName.equals(MIMETYPES_CODESYSTEM_URN))
+        return getVersionedSystem("mimetypes", systemVersion);
+      if (systemBaseName.equals(_11073_CODESYSTEM_URN))
+        return getVersionedSystem("11073", systemVersion);
+      if (systemBaseName.equals(DICOM_CODESYSTEM_URL))
+        return getVersionedSystem("dicom", systemVersion);
+      return getVersionedSystem(systemBaseName.replace("/", "_").replace(":", "_").replace("?", "X").replace("#", "X"), systemVersion);
     }
 
-    public String getNameForCanonicalURL(String baseUrl, String fullUrl) {
-      final String[] subIds = fullUrl.substring(baseUrl.length()).split("\\|");
+    public String normalizeBaseURL(String baseUrl, String fullUrl) {
+      return fullUrl.substring(baseUrl.length()).replace("/", "");
+    }
 
-      String baseId = subIds[0].replace("/", "");
-      if (subIds.length == 2) {
-        return  baseId + "_" + subIds[1];
+    public String getVersionedSystem(String baseSystem, String version) {
+      if (version != null) {
+        return baseSystem + "_" + version;
       }
-      return baseId;
-
+      return baseSystem;
     }
   }
 

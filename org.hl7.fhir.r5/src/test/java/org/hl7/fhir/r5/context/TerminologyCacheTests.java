@@ -459,20 +459,29 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
 
   @ParameterizedTest
   @CsvSource({
-    "http://terminology.hl7.org/CodeSystem/id|version,id_version",
-    "http://hl7.org/fhir/id|version,id_version",
-    "http://hl7.org/fhir/sid/id|version,id_version"
+    "http://terminology.hl7.org/CodeSystem/id,id",
+    "http://hl7.org/fhir/id,id",
+    "http://hl7.org/fhir/sid/id,id",
+    "http://www.nlm.nih.gov/research/umls/rxnorm,rxnorm",
+    "http://snomed.info/sct,snomed",
   })
-  public void testCacheTokenGenerationWithCanonicalUrl(String system, String expectedName) throws IOException, URISyntaxException {
+  public void testCacheTokenGeneration(String system, String expectedName) throws IOException, URISyntaxException {
 
     TerminologyCache terminologyCache = createTerminologyCache();
     ValueSet valueSet = new ValueSet();
-
-    Coding coding = new Coding();
-    coding.setSystem(system);
-    TerminologyCache.CacheToken cacheToken = terminologyCache.generateValidationToken(CacheTestUtils.validationOptions,
-      coding, valueSet);
-    assertEquals(expectedName, cacheToken.getName());
-
+    {
+      Coding coding = new Coding();
+      coding.setSystem(system);
+      TerminologyCache.CacheToken cacheToken = terminologyCache.generateValidationToken(CacheTestUtils.validationOptions,
+        coding, valueSet);
+      assertEquals(expectedName, cacheToken.getName());
+    }
+    {
+      Coding coding = new Coding();
+      coding.setSystem(system + "|dummyVersion");
+      TerminologyCache.CacheToken cacheToken = terminologyCache.generateValidationToken(CacheTestUtils.validationOptions,
+        coding, valueSet);
+      assertEquals(expectedName + "_dummyVersion", cacheToken.getName());
+    }
   }
 }
