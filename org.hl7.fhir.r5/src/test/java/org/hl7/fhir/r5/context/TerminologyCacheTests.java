@@ -464,6 +464,15 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     "http://hl7.org/fhir/sid/id,id",
     "http://www.nlm.nih.gov/research/umls/rxnorm,rxnorm",
     "http://snomed.info/sct,snomed",
+    "http://www.nlm.nih.gov/research/umls/rxnorm,rxnorm",
+    "http://loinc.org,loinc",
+    "http://unitsofmeasure.org,ucum",
+    "urn:iso:std:iso:id,isoid",
+    "urn:ietf:bcp:47,lang",
+    "urn:ietf:bcp:13,mimetypes",
+    "urn:iso:std:iso:11073:10101,11073",
+    "my://random/system?with#chars,my___random_systemXwithXchars",
+    "http://dicom.nema.org/resources/ontology/DCM,dicom"
   })
   public void testCacheTokenGeneration(String system, String expectedName) throws IOException, URISyntaxException {
 

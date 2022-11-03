@@ -141,6 +141,8 @@ public class TerminologyCache {
         return getVersionedSystem("ucum", systemVersion);
       if (systemBaseName.startsWith(HL7_SID_CODESYSTEM_BASE_URL))
         return getVersionedSystem(normalizeBaseURL(HL7_SID_CODESYSTEM_BASE_URL, systemBaseName), systemVersion);
+      if (systemBaseName.equals(_11073_CODESYSTEM_URN))
+        return getVersionedSystem("11073", systemVersion);
       if (systemBaseName.startsWith(ISO_CODESYSTEM_URN))
         return getVersionedSystem("iso"+systemBaseName.substring(ISO_CODESYSTEM_URN.length()).replace(":", ""), systemVersion);
       if (systemBaseName.startsWith(HL7_TERMINOLOGY_CODESYSTEM_BASE_URL))
@@ -151,8 +153,6 @@ public class TerminologyCache {
         return getVersionedSystem("lang", systemVersion);
       if (systemBaseName.equals(MIMETYPES_CODESYSTEM_URN))
         return getVersionedSystem("mimetypes", systemVersion);
-      if (systemBaseName.equals(_11073_CODESYSTEM_URN))
-        return getVersionedSystem("11073", systemVersion);
       if (systemBaseName.equals(DICOM_CODESYSTEM_URL))
         return getVersionedSystem("dicom", systemVersion);
       return getVersionedSystem(systemBaseName.replace("/", "_").replace(":", "_").replace("?", "X").replace("#", "X"), systemVersion);
