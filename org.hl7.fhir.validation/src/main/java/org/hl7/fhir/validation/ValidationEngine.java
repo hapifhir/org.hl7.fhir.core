@@ -375,6 +375,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       if (VersionUtilities.isR4Ver(version)) {
         pid =  "hl7.terminology.r4";
       }
+      if (VersionUtilities.isR4BVer(version)) {
+        pid =  "hl7.terminology.r4";
+      }
       if (VersionUtilities.isR5Ver(version)) {
         pid =  "hl7.terminology.r5";
       }
