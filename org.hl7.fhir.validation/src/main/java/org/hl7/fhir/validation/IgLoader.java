@@ -18,6 +18,7 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -790,6 +791,17 @@ public class IgLoader {
       else
         throw new FHIRException("Unsupported format for " + fn);
       r = VersionConvertorFactory_40_50.convertResource(res);
+    } else if (fhirVersion.startsWith("4.3")) {
+      org.hl7.fhir.r4b.model.Resource res;
+      if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
+        res = new org.hl7.fhir.r4b.formats.XmlParser().parse(new ByteArrayInputStream(content));
+      else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
+        res = new org.hl7.fhir.r4b.formats.JsonParser().parse(new ByteArrayInputStream(content));
+      else if (fn.endsWith(".txt") || fn.endsWith(".map"))
+        res = new org.hl7.fhir.r4b.utils.structuremap.StructureMapUtilities(null).parse(new String(content), fn);
+      else
+        throw new FHIRException("Unsupported format for " + fn);
+      r = VersionConvertorFactory_43_50.convertResource(res);
     } else if (fhirVersion.startsWith("1.4")) {
       org.hl7.fhir.dstu2016may.model.Resource res;
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
@@ -808,7 +820,7 @@ public class IgLoader {
       else
         throw new FHIRException("Unsupported format for " + fn);
       r = VersionConvertorFactory_10_50.convertResource(res, new org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor5());
-    } else if (fhirVersion.equals(Constants.VERSION) || "current".equals(fhirVersion)) {
+    } else if (fhirVersion.startsWith("5.0")) {
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
         r = new XmlParser().parse(new ByteArrayInputStream(content));
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
