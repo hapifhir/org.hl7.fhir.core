@@ -254,7 +254,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
         flags.addPiece(gen.new Piece(getSDCLink("StructureDefinition-sdc-questionnaire-optionalDisplay.html"), null, "Is optional to display").addHtml(new XhtmlNode(NodeType.Element, "img").attribute("src", Utilities.path(context.getLocalPrefix(), "icon-qi-optional.png"))));
       }
       if (i.hasExtension("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-observationLinkPeriod")) {
-        flags.addPiece(gen.new Piece(getSDCLink("StructureDefinition-sdc-questionnaire-observationLinkPeriod"), null, "Is linked to an observation").addHtml(new XhtmlNode(NodeType.Element, "img").attribute("src", Utilities.path(context.getLocalPrefix(), "icon-qi-observation.png"))));
+        flags.addPiece(gen.new Piece(getSDCLink("StructureDefinition-sdc-questionnaire-observationLinkPeriod.html"), null, "Is linked to an observation").addHtml(new XhtmlNode(NodeType.Element, "img").attribute("src", Utilities.path(context.getLocalPrefix(), "icon-qi-observation.png"))));
       }
       if (i.hasExtension("http://hl7.org/fhir/StructureDefinition/questionnaire-choiceOrientation")) {
         String code = ToolingExtensions.readStringExtension(i,  "http://hl7.org/fhir/StructureDefinition/questionnaire-choiceOrientation");
@@ -263,7 +263,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       if (i.hasExtension("http://hl7.org/fhir/StructureDefinition/questionnaire-displayCategory")) {
         CodeableConcept cc = i.getExtensionByUrl("http://hl7.org/fhir/StructureDefinition/questionnaire-displayCategory").getValueCodeableConcept();
         String code = cc.getCode("http://hl7.org/fhir/questionnaire-display-category");
-        flags.addPiece(gen.new Piece(getSDCLink("StructureDefinition-sdc-questionnaire-displayCategory"), null, "Category: "+code).addHtml(new XhtmlNode(NodeType.Element, "img").attribute("src", Utilities.path(context.getLocalPrefix(), "icon-qi-"+code+".png"))));
+        flags.addPiece(gen.new Piece(getSDCLink("StructureDefinition-sdc-questionnaire-displayCategory.html"), null, "Category: "+code).addHtml(new XhtmlNode(NodeType.Element, "img").attribute("src", Utilities.path(context.getLocalPrefix(), "icon-qi-"+code+".png"))));
       }
     }    
     Cell defn = gen.new Cell();
@@ -697,7 +697,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       CodeableConcept cc = i.getExtensionByUrl("http://hl7.org/fhir/StructureDefinition/questionnaire-displayCategory").getValueCodeableConcept();
       String code = cc.getCode("http://hl7.org/fhir/questionnaire-display-category");
       hasFlag = true;
-      flags.ah("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-displayCategory", "Category: "+code).img(Utilities.path(context.getLocalPrefix(), "icon-qi-"+code+".png"), "icon");
+      flags.ah(getSDCLink("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-displayCategory"), "Category: "+code).img(Utilities.path(context.getLocalPrefix(), "icon-qi-"+code+".png"), "icon");
     }
 
     if (i.hasMaxLength()) {
@@ -984,7 +984,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     }
     if (qi.hasExtension("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-observationLinkPeriod")) {
       XhtmlNode tr = tbl.tr();
-      tr.td().ah("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-observationLinkPeriod").tx("Observation Link Period");
+      tr.td().ah(getSDCLink("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-observationLinkPeriod")).tx("Observation Link Period");
       render(tr.td(), qi.getExtensionByUrl("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-observationLinkPeriod").getValue());
     }
     
