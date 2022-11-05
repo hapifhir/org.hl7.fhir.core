@@ -5,6 +5,7 @@ import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -255,7 +256,11 @@ public class ValidatorCli {
     if (cliContext.getSv() == null) {
       cliContext.setSv(validationService.determineVersion(cliContext));
     }
-    System.out.println("  Jurisdiction: "+JurisdictionUtilities.displayJurisdiction(cliContext.getJurisdiction()));
+    if (cliContext.getJurisdiction() == null) {
+      System.out.println("  Jurisdiction: None specified (locale = "+Locale.getDefault().getCountry()+")");      
+    } else {
+      System.out.println("  Jurisdiction: "+JurisdictionUtilities.displayJurisdiction(cliContext.getJurisdiction()));
+    }
 
     System.out.println("Loading");
     // Comment this out because definitions filename doesn't necessarily contain version (and many not even be 14 characters long).
