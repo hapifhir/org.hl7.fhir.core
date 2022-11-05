@@ -84,15 +84,87 @@ public class TerminologyCache {
   private static final String ENTRY_MARKER = "-------------------------------------------------------------------------------------";
   private static final String BREAK = "####";
 
+  private SystemNameKeyGenerator systemNameKeyGenerator = new SystemNameKeyGenerator();
+
+  protected SystemNameKeyGenerator getSystemNameKeyGenerator() {
+    return systemNameKeyGenerator;
+  }
+
+  public class SystemNameKeyGenerator {
+    public static final String SNOMED_SCT_CODESYSTEM_URL = "http://snomed.info/sct";
+    public static final String RXNORM_CODESYSTEM_URL = "http://www.nlm.nih.gov/research/umls/rxnorm";
+    public static final String LOINC_CODESYSTEM_URL = "http://loinc.org";
+    public static final String UCUM_CODESYSTEM_URL = "http://unitsofmeasure.org";
+
+    public static final String HL7_TERMINOLOGY_CODESYSTEM_BASE_URL = "http://terminology.hl7.org/CodeSystem/";
+    public static final String HL7_SID_CODESYSTEM_BASE_URL = "http://hl7.org/fhir/sid/";
+    public static final String HL7_FHIR_CODESYSTEM_BASE_URL = "http://hl7.org/fhir/";
+
+    public static final String ISO_CODESYSTEM_URN = "urn:iso:std:iso:";
+    public static final String LANG_CODESYSTEM_URN = "urn:ietf:bcp:47";
+    public static final String MIMETYPES_CODESYSTEM_URN = "urn:ietf:bcp:13";
+
+    public static final String _11073_CODESYSTEM_URN = "urn:iso:std:iso:11073:10101";
+    public static final String DICOM_CODESYSTEM_URL = "http://dicom.nema.org/resources/ontology/DCM";
+
+    public String getNameForSystem(String system) {
+      final int lastPipe = system.lastIndexOf('|');
+      final String systemBaseName = lastPipe == -1 ? system : system.substring(0,lastPipe);
+      final String systemVersion = lastPipe == -1 ? null : system.substring(lastPipe + 1);
+
+      if (systemBaseName.equals(SNOMED_SCT_CODESYSTEM_URL))
+        return getVersionedSystem("snomed", systemVersion);
+      if (systemBaseName.equals(RXNORM_CODESYSTEM_URL))
+        return getVersionedSystem("rxnorm", systemVersion);
+      if (systemBaseName.equals(LOINC_CODESYSTEM_URL))
+        return getVersionedSystem("loinc", systemVersion);
+      if (systemBaseName.equals(UCUM_CODESYSTEM_URL))
+        return getVersionedSystem("ucum", systemVersion);
+      if (systemBaseName.startsWith(HL7_SID_CODESYSTEM_BASE_URL))
+        return getVersionedSystem(normalizeBaseURL(HL7_SID_CODESYSTEM_BASE_URL, systemBaseName), systemVersion);
+      if (systemBaseName.equals(_11073_CODESYSTEM_URN))
+        return getVersionedSystem("11073", systemVersion);
+      if (systemBaseName.startsWith(ISO_CODESYSTEM_URN))
+        return getVersionedSystem("iso"+systemBaseName.substring(ISO_CODESYSTEM_URN.length()).replace(":", ""), systemVersion);
+      if (systemBaseName.startsWith(HL7_TERMINOLOGY_CODESYSTEM_BASE_URL))
+        return getVersionedSystem(normalizeBaseURL(HL7_TERMINOLOGY_CODESYSTEM_BASE_URL, systemBaseName), systemVersion);
+      if (systemBaseName.startsWith(HL7_FHIR_CODESYSTEM_BASE_URL))
+        return getVersionedSystem(normalizeBaseURL(HL7_FHIR_CODESYSTEM_BASE_URL, systemBaseName), systemVersion);
+      if (systemBaseName.equals(LANG_CODESYSTEM_URN))
+        return getVersionedSystem("lang", systemVersion);
+      if (systemBaseName.equals(MIMETYPES_CODESYSTEM_URN))
+        return getVersionedSystem("mimetypes", systemVersion);
+      if (systemBaseName.equals(DICOM_CODESYSTEM_URL))
+        return getVersionedSystem("dicom", systemVersion);
+      return getVersionedSystem(systemBaseName.replace("/", "_").replace(":", "_").replace("?", "X").replace("#", "X"), systemVersion);
+    }
+
+    public String normalizeBaseURL(String baseUrl, String fullUrl) {
+      return fullUrl.substring(baseUrl.length()).replace("/", "");
+    }
+
+    public String getVersionedSystem(String baseSystem, String version) {
+      if (version != null) {
+        return baseSystem + "_" + version;
+      }
+      return baseSystem;
+    }
+  }
+
   public class CacheToken {
     private String name;
     private String key;
     private String request;
     public void setName(String n) {
+      String systemName = getSystemNameKeyGenerator().getNameForSystem(n);
       if (name == null)
-        name = n;
-      else if (!n.equals(name))
+        name = systemName;
+      else if (!systemName.equals(name))
         name = NAME_FOR_NO_SYSTEM;
+    }
+
+    public String getName() {
+      return name;
     }
   }
 
@@ -130,7 +202,7 @@ public class TerminologyCache {
   public CacheToken generateValidationToken(ValidationOptions options, Coding code, ValueSet vs) {
     CacheToken ct = new CacheToken();
     if (code.hasSystem())
-      ct.name = getNameForSystem(code.getSystem());
+      ct.name = getSystemNameKeyGenerator().getNameForSystem(code.getSystem());
     else
       ct.name = NAME_FOR_NO_SYSTEM;
     JsonParser json = new JsonParser();
@@ -159,7 +231,7 @@ public class TerminologyCache {
     CacheToken ct = new CacheToken();
     for (Coding c : code.getCoding()) {
       if (c.hasSystem())
-        ct.setName(getNameForSystem(c.getSystem()));
+        ct.setName(c.getSystem());
     }
     JsonParser json = new JsonParser();
     json.setOutputStyle(OutputStyle.PRETTY);
@@ -190,13 +262,13 @@ public class TerminologyCache {
     ValueSet vsc = getVSEssense(vs);
     for (ConceptSetComponent inc : vs.getCompose().getInclude())
       if (inc.hasSystem())
-        ct.setName(getNameForSystem(inc.getSystem()));
+        ct.setName(inc.getSystem());
     for (ConceptSetComponent inc : vs.getCompose().getExclude())
       if (inc.hasSystem())
-        ct.setName(getNameForSystem(inc.getSystem()));
+        ct.setName(inc.getSystem());
     for (ValueSetExpansionContainsComponent inc : vs.getExpansion().getContains())
       if (inc.hasSystem())
-        ct.setName(getNameForSystem(inc.getSystem()));
+        ct.setName(inc.getSystem());
     JsonParser json = new JsonParser();
     json.setOutputStyle(OutputStyle.PRETTY);
     try {
@@ -208,33 +280,7 @@ public class TerminologyCache {
     return ct;
   }
 
-  private String getNameForSystem(String system) {
-    if (system.equals("http://snomed.info/sct"))
-      return "snomed";
-    if (system.equals("http://www.nlm.nih.gov/research/umls/rxnorm"))
-      return "rxnorm";
-    if (system.equals("http://loinc.org"))
-      return "loinc";
-    if (system.equals("http://unitsofmeasure.org"))
-      return "ucum";
-    if (system.startsWith("http://hl7.org/fhir/sid/"))
-      return system.substring(24).replace("/", "");
-    if (system.startsWith("urn:iso:std:iso:"))
-      return "iso"+system.substring(16).replace(":", "");
-    if (system.startsWith("http://terminology.hl7.org/CodeSystem/"))
-      return system.substring(38).replace("/", "");
-    if (system.startsWith("http://hl7.org/fhir/"))
-      return system.substring(20).replace("/", "");
-    if (system.equals("urn:ietf:bcp:47"))
-      return "lang";
-    if (system.equals("urn:ietf:bcp:13"))
-      return "mimetypes";
-    if (system.equals("urn:iso:std:iso:11073:10101"))
-      return "11073";
-    if (system.equals("http://dicom.nema.org/resources/ontology/DCM"))
-      return "dicom";
-    return system.replace("/", "_").replace(":", "_").replace("?", "X").replace("#", "X");
-  }
+
 
   public NamedCache getNamedCache(CacheToken cacheToken) {
     NamedCache nc = caches.get(cacheToken.name);
@@ -520,7 +566,7 @@ public class TerminologyCache {
 
   public void removeCS(String url) {
     synchronized (lock) {
-      String name = getNameForSystem(url);
+      String name = getSystemNameKeyGenerator().getNameForSystem(url);
       if (caches.containsKey(name)) {
         caches.remove(name);
       }
