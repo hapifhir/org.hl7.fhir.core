@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
+// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -115,6 +115,10 @@ public class ActivityDefinition extends MetadataResource {
          */
         SUPPLYREQUEST, 
         /**
+         * A task to be performed.
+         */
+        TASK, 
+        /**
          * An authorization for the provision of glasses and/or contact lenses to a patient.
          */
         VISIONPRESCRIPTION, 
@@ -155,6 +159,8 @@ public class ActivityDefinition extends MetadataResource {
           return SERVICEREQUEST;
         if ("SupplyRequest".equals(codeString))
           return SUPPLYREQUEST;
+        if ("Task".equals(codeString))
+          return TASK;
         if ("VisionPrescription".equals(codeString))
           return VISIONPRESCRIPTION;
         if (Configuration.isAcceptInvalidEnums())
@@ -179,6 +185,7 @@ public class ActivityDefinition extends MetadataResource {
             case REQUESTORCHESTRATION: return "RequestOrchestration";
             case SERVICEREQUEST: return "ServiceRequest";
             case SUPPLYREQUEST: return "SupplyRequest";
+            case TASK: return "Task";
             case VISIONPRESCRIPTION: return "VisionPrescription";
             case NULL: return null;
             default: return "?";
@@ -201,6 +208,7 @@ public class ActivityDefinition extends MetadataResource {
             case REQUESTORCHESTRATION: return "http://hl7.org/fhir/fhir-types";
             case SERVICEREQUEST: return "http://hl7.org/fhir/fhir-types";
             case SUPPLYREQUEST: return "http://hl7.org/fhir/fhir-types";
+            case TASK: return "http://hl7.org/fhir/fhir-types";
             case VISIONPRESCRIPTION: return "http://hl7.org/fhir/fhir-types";
             case NULL: return null;
             default: return "?";
@@ -223,6 +231,7 @@ public class ActivityDefinition extends MetadataResource {
             case REQUESTORCHESTRATION: return "A set of related requests that can be used to capture intended activities that have inter-dependencies such as \"give this medication after that one\".";
             case SERVICEREQUEST: return "A record of a request for service such as diagnostic investigations, treatments, or operations to be performed.";
             case SUPPLYREQUEST: return "A record of a non-patient specific request for a medication, substance, device, certain types of biologically derived product, and nutrition product used in the healthcare setting.";
+            case TASK: return "A task to be performed.";
             case VISIONPRESCRIPTION: return "An authorization for the provision of glasses and/or contact lenses to a patient.";
             case NULL: return null;
             default: return "?";
@@ -245,6 +254,7 @@ public class ActivityDefinition extends MetadataResource {
             case REQUESTORCHESTRATION: return "RequestOrchestration";
             case SERVICEREQUEST: return "ServiceRequest";
             case SUPPLYREQUEST: return "SupplyRequest";
+            case TASK: return "Task";
             case VISIONPRESCRIPTION: return "VisionPrescription";
             case NULL: return null;
             default: return "?";
@@ -287,6 +297,8 @@ public class ActivityDefinition extends MetadataResource {
           return RequestResourceTypes.SERVICEREQUEST;
         if ("SupplyRequest".equals(codeString))
           return RequestResourceTypes.SUPPLYREQUEST;
+        if ("Task".equals(codeString))
+          return RequestResourceTypes.TASK;
         if ("VisionPrescription".equals(codeString))
           return RequestResourceTypes.VISIONPRESCRIPTION;
         throw new IllegalArgumentException("Unknown RequestResourceTypes code '"+codeString+"'");
@@ -329,6 +341,8 @@ public class ActivityDefinition extends MetadataResource {
           return new Enumeration<RequestResourceTypes>(this, RequestResourceTypes.SERVICEREQUEST);
         if ("SupplyRequest".equals(codeString))
           return new Enumeration<RequestResourceTypes>(this, RequestResourceTypes.SUPPLYREQUEST);
+        if ("Task".equals(codeString))
+          return new Enumeration<RequestResourceTypes>(this, RequestResourceTypes.TASK);
         if ("VisionPrescription".equals(codeString))
           return new Enumeration<RequestResourceTypes>(this, RequestResourceTypes.VISIONPRESCRIPTION);
         throw new FHIRException("Unknown RequestResourceTypes code '"+codeString+"'");
@@ -364,6 +378,8 @@ public class ActivityDefinition extends MetadataResource {
         return "ServiceRequest";
       if (code == RequestResourceTypes.SUPPLYREQUEST)
         return "SupplyRequest";
+      if (code == RequestResourceTypes.TASK)
+        return "Task";
       if (code == RequestResourceTypes.VISIONPRESCRIPTION)
         return "VisionPrescription";
       return "?";
