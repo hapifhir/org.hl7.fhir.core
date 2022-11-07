@@ -80,6 +80,12 @@
             <optional>true</optional>
         </dependency>
 
+        <dependency>
+            <groupId>com.ibm.icu</groupId>
+            <artifactId>icu4j</artifactId>
+            <version>72.1</version>
+        </dependency>
+
         <!-- JUnit Jupiter -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
