@@ -1,5 +1,7 @@
 package org.hl7.fhir.utilities.i18n;
 
+import com.ibm.icu.text.PluralRules;
+
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.Objects;
@@ -12,8 +14,11 @@ import java.util.ResourceBundle;
  */
 public abstract class I18nBase {
 
+  public static final String PLURAL_SUFFIX = "PLURAL";
+  public static final String KEY_DELIMITER = "_";
   private Locale locale;
   private ResourceBundle i18nMessages;
+  private PluralRules pluralRules;
   private boolean warnAboutMissingMessages = true;
 
   public Locale getLocale() {
@@ -35,6 +40,12 @@ public abstract class I18nBase {
   private void checkResourceBundleIsLoaded() {
     if (i18nMessages == null) {
       setValidationMessageLanguage(getLocale());
+    }
+  }
+
+  private void checkPluralRulesAreLoaded() {
+    if (pluralRules == null) {
+      setPluralRules(getLocale());
     }
   }
 
@@ -63,13 +74,14 @@ public abstract class I18nBase {
    * @return The formatted, internationalized, {@link String}
    */
   public String formatMessage(String theMessage, Object... theMessageArguments) {
-    if (theMessage.endsWith("_PLURAL")) {
-      throw new Error("I18n error: Plural Message called in non-plural mode");
-    }
-    return formatMessageP(theMessage, theMessageArguments);
+    return formatMessageForLocale(theMessage, theMessageArguments);
   }
-  
-  private String formatMessageP(String theMessage, Object... theMessageArguments) {
+
+  protected String getPluralKey(Integer number, String baseKey) {
+    return baseKey + KEY_DELIMITER + pluralRules.select(number);
+  }
+
+  private String formatMessageForLocale(String theMessage, Object... theMessageArguments) {
     String message = theMessage;
     if (messageExistsForLocale(theMessage, (theMessageArguments != null && theMessageArguments.length > 0))) {
       if (Objects.nonNull(theMessageArguments) && theMessageArguments.length > 0) {
@@ -80,16 +92,31 @@ public abstract class I18nBase {
     }
     return message;
   }
-  public String formatMessagePL(Integer plural, String theMessage, Object... theMessageArguments) {
-    if (!theMessage.endsWith("_PLURAL")) {
-      throw new Error("I18n error: Non-plural Message called in plural mode");
-    }
+
+  /**
+   * Formats the message with locale correct pluralization using the passed in
+   * message arguments.
+   *
+   * In the message properties files, each plural specific message will have a
+   * key consisting of a root key and a suffix denoting the plurality rule (_one
+   * for singular, _other for multiple in English, for example). Suffixes are
+   * provided by th ICU4J library from unicode.org
+   *
+   * @param plural The number that indicates the plurality of the phrase
+   * @param theMessage the root key of the phrase.
+   * @param theMessageArguments Placeholder arguments, if needed.
+   * @return The formatted, internationalized, {@link String}
+   */
+  public String formatMessagePlural(Integer plural, String theMessage, Object... theMessageArguments) {
+
     Object[] args = new Object[theMessageArguments.length+1];
     args[0] = plural;
     for (int i = 0; i < theMessageArguments.length; i++) {
       args[i+1] = theMessageArguments[i];
     }
-    return formatMessageP(theMessage, args);
+    checkPluralRulesAreLoaded();
+    String pluralKey = getPluralKey(plural, theMessage);
+    return formatMessageForLocale(pluralKey, args);
   }
 
   /**
@@ -98,6 +125,10 @@ public abstract class I18nBase {
    */
   public void setValidationMessageLanguage(Locale locale) {
     i18nMessages = ResourceBundle.getBundle("Messages", locale);
+  }
+
+  public void setPluralRules(Locale locale) {
+    pluralRules = PluralRules.forLocale(locale);
   }
 
   public boolean isWarnAboutMissingMessages() {
