@@ -74,17 +74,14 @@ public abstract class I18nBase {
    * @return The formatted, internationalized, {@link String}
    */
   public String formatMessage(String theMessage, Object... theMessageArguments) {
-    //if (isPluralKey(theMessage)) {
-    //  throw new Error("I18n error: Plural Message called in non-plural mode");
-    //}
-    return formatMessagePlural(theMessage, theMessageArguments);
+    return formatMessageForLocale(theMessage, theMessageArguments);
   }
 
   protected String getPluralKey(Integer number, String baseKey) {
     return baseKey + KEY_DELIMITER + pluralRules.select(number);
   }
 
-  private String formatMessagePlural(String theMessage, Object... theMessageArguments) {
+  private String formatMessageForLocale(String theMessage, Object... theMessageArguments) {
     String message = theMessage;
     if (messageExistsForLocale(theMessage, (theMessageArguments != null && theMessageArguments.length > 0))) {
       if (Objects.nonNull(theMessageArguments) && theMessageArguments.length > 0) {
@@ -112,9 +109,6 @@ public abstract class I18nBase {
    */
   public String formatMessagePlural(Integer plural, String theMessage, Object... theMessageArguments) {
 
-    //if (!isPluralKey(theMessage)) {
-    //  throw new Error("I18n error: Non-plural Message called in plural mode");
-    //}
     Object[] args = new Object[theMessageArguments.length+1];
     args[0] = plural;
     for (int i = 0; i < theMessageArguments.length; i++) {
@@ -122,11 +116,7 @@ public abstract class I18nBase {
     }
     checkPluralRulesAreLoaded();
     String pluralKey = getPluralKey(plural, theMessage);
-    return formatMessagePlural(pluralKey, args);
-  }
-
-  private static boolean isPluralKey(String theMessage) {
-    return theMessage.endsWith(KEY_DELIMITER + PLURAL_SUFFIX);
+    return formatMessageForLocale(pluralKey, args);
   }
 
   /**

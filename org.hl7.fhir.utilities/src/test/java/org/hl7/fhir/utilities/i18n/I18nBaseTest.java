@@ -119,20 +119,5 @@ class I18nBaseTest {
     return Arrays.stream(items).anyMatch(inputStr::contains);
   }
 
-  @Test
-  @Disabled
-  void pluralKeysCompleteAndValid() {
-    ResourceBundle loadedBundle = ResourceBundle.getBundle("Messages", Locale.GERMAN);
-    PluralRules pluralRules = PluralRules.forLocale(Locale.GERMANY);
-    for (String key : loadedBundle.keySet()) {
-       String[] keyComponent = key.split(I18nBase.KEY_DELIMITER);
-
-       assertFalse(keyComponent[keyComponent.length - 1].equalsIgnoreCase(I18nBase.PLURAL_SUFFIX), "Invalid use of PLURAL keyword for key: " + key);
-       if (keyComponent.length > 2
-        && keyComponent[keyComponent.length - 2].equalsIgnoreCase(I18nBase.PLURAL_SUFFIX)) {
-          assertTrue(pluralRules.getKeywords().contains(keyComponent[keyComponent.length - 1]));
-       }
-    }
-  }
 
 }
