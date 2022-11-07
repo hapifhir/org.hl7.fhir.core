@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
+// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1340,7 +1340,9 @@ A coverage may only be responsible for specific types of charges, and the sequen
     protected CodeableConcept currency;
 
     /**
-     * The calculated account balances - these are calculated and processed by the finance system.The balances with a `term` that is not current are usually generated/updated by an invoicing or similar process.
+     * The calculated account balances - these are calculated and processed by the finance system.
+
+The balances with a `term` that is not current are usually generated/updated by an invoicing or similar process.
      */
     @Child(name = "balance", type = {}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Calculated account balance(s)", formalDefinition="The calculated account balances - these are calculated and processed by the finance system.\r\rThe balances with a `term` that is not current are usually generated/updated by an invoicing or similar process." )
@@ -1899,7 +1901,9 @@ A coverage may only be responsible for specific types of charges, and the sequen
     }
 
     /**
-     * @return {@link #balance} (The calculated account balances - these are calculated and processed by the finance system.The balances with a `term` that is not current are usually generated/updated by an invoicing or similar process.)
+     * @return {@link #balance} (The calculated account balances - these are calculated and processed by the finance system.
+
+The balances with a `term` that is not current are usually generated/updated by an invoicing or similar process.)
      */
     public List<AccountBalanceComponent> getBalance() { 
       if (this.balance == null)

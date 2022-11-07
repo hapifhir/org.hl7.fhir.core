@@ -26,7 +26,7 @@ public class ValidationEngineTests {
   public static boolean inbuild;
 
   @Test
-  public void testCurrentXml() throws Exception {
+  public void test401Xml() throws Exception {
     if (!TestUtilities.silent)
       System.out.println("TestCurrentXml: Validate patient-example.xml in Current version");
     ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1");
@@ -49,7 +49,7 @@ public class ValidationEngineTests {
   }
 
   @Test
-  public void testCurrentJson() throws Exception {
+  public void test401Json() throws Exception {
     if (!TestUtilities.silent)
       System.out.println("TestCurrentJson: Validate patient-example.json in Current version");
     ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1");
@@ -59,6 +59,54 @@ public class ValidationEngineTests {
     int e = errors(op);
     int w = warnings(op);
     int h = hints(op);
+    Assertions.assertEquals(0, e);
+    Assertions.assertEquals(0, w);
+    Assertions.assertEquals(1, h);
+    assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
+    if (!TestUtilities.silent)
+      System.out.println("  .. done: " + Integer.toString(e) + " errors, " + Integer.toString(w) + " warnings, " + Integer.toString(h) + " information messages");
+  }
+
+  @Test
+  public void test430Xml() throws Exception {
+    if (!TestUtilities.silent)
+      System.out.println("TestCurrentXml: Validate patient-example.xml in Current version");
+    ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4b.core#4.3.0", DEF_TX, FhirPublication.R4, "4.3.0");
+    CacheVerificationLogger logger = new CacheVerificationLogger();
+    ve.getContext().getTxClient().setLogger(logger);
+    OperationOutcome op = ve.validate(FhirFormat.XML, TestingUtilities.loadTestResourceStream("validator", "patient-example.xml"), null);
+    int e = errors(op);
+    int w = warnings(op);
+    int h = hints(op);
+    if (!TestUtilities.silent) {
+      System.out.println("  .. done: " + Integer.toString(e) + " errors, " + Integer.toString(w) + " warnings, " + Integer.toString(h) + " information messages");
+      for (OperationOutcomeIssueComponent iss : op.getIssue()) {
+        System.out.println("    " + iss.getDetails().getText());
+      }
+    }
+    Assertions.assertEquals(0, e);
+    Assertions.assertEquals(0, w);
+    Assertions.assertEquals(1, h);
+    assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
+  }
+
+  @Test
+  public void test430Json() throws Exception {
+    if (!TestUtilities.silent)
+      System.out.println("TestCurrentJson: Validate patient-example.json in Current version");
+    ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4b.core#4.3.0", DEF_TX, FhirPublication.R4, "4.3.0");
+    CacheVerificationLogger logger = new CacheVerificationLogger();
+    ve.getContext().getTxClient().setLogger(logger);
+    OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "patient-example.json"), null);
+    int e = errors(op);
+    int w = warnings(op);
+    int h = hints(op);
+    if (!TestUtilities.silent) {
+      System.out.println("  .. done: " + Integer.toString(e) + " errors, " + Integer.toString(w) + " warnings, " + Integer.toString(h) + " information messages");
+      for (OperationOutcomeIssueComponent iss : op.getIssue()) {
+        System.out.println("    " + iss.getDetails().getText());
+      }
+    }
     Assertions.assertEquals(0, e);
     Assertions.assertEquals(0, w);
     Assertions.assertEquals(1, h);
@@ -230,8 +278,8 @@ public class ValidationEngineTests {
 
   public static void execute() throws Exception {
     ValidationEngineTests self = new ValidationEngineTests();
-    self.testCurrentXml();
-    self.testCurrentJson();
+    self.test401Xml();
+    self.test401Json();
     self.test102();
     self.test140();
     self.test301USCore();

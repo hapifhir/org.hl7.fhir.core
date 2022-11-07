@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
+// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -2507,7 +2507,9 @@ public class Encounter extends DomainResource {
     protected DateTimeType plannedEndDate;
 
     /**
-     * Actual quantity of time the encounter lasted. This excludes the time during leaves of absence.When missing it is the time in between the start and end values.
+     * Actual quantity of time the encounter lasted. This excludes the time during leaves of absence.
+
+When missing it is the time in between the start and end values.
      */
     @Child(name = "length", type = {Duration.class}, order=21, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Actual quantity of time the encounter lasted (less time absent)", formalDefinition="Actual quantity of time the encounter lasted. This excludes the time during leaves of absence.\r\rWhen missing it is the time in between the start and end values." )
@@ -3490,7 +3492,9 @@ public class Encounter extends DomainResource {
     }
 
     /**
-     * @return {@link #length} (Actual quantity of time the encounter lasted. This excludes the time during leaves of absence.When missing it is the time in between the start and end values.)
+     * @return {@link #length} (Actual quantity of time the encounter lasted. This excludes the time during leaves of absence.
+
+When missing it is the time in between the start and end values.)
      */
     public Duration getLength() { 
       if (this.length == null)
@@ -3506,7 +3510,9 @@ public class Encounter extends DomainResource {
     }
 
     /**
-     * @param value {@link #length} (Actual quantity of time the encounter lasted. This excludes the time during leaves of absence.When missing it is the time in between the start and end values.)
+     * @param value {@link #length} (Actual quantity of time the encounter lasted. This excludes the time during leaves of absence.
+
+When missing it is the time in between the start and end values.)
      */
     public Encounter setLength(Duration value) { 
       this.length = value;
