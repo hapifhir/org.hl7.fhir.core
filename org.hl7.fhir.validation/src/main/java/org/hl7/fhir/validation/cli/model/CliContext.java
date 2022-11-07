@@ -209,7 +209,7 @@ public class CliContext {
     return extensions;
   }
 
-  @JsonProperty("")
+  @JsonProperty("extensions")
   public CliContext setExtensions(List<String> extensions) {
     this.extensions = extensions;
     return this;
