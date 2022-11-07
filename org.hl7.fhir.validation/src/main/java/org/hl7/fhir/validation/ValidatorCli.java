@@ -258,6 +258,7 @@ public class ValidatorCli {
     }
     if (cliContext.getJurisdiction() == null) {
       System.out.println("  Jurisdiction: None specified (locale = "+Locale.getDefault().getCountry()+")");      
+      System.out.println("  Note that exceptions and validation failures may happen in the absense of a locale");      
     } else {
       System.out.println("  Jurisdiction: "+JurisdictionUtilities.displayJurisdiction(cliContext.getJurisdiction()));
     }
