@@ -74,9 +74,9 @@ public abstract class I18nBase {
    * @return The formatted, internationalized, {@link String}
    */
   public String formatMessage(String theMessage, Object... theMessageArguments) {
-    if (isPluralKey(theMessage)) {
-      throw new Error("I18n error: Plural Message called in non-plural mode");
-    }
+    //if (isPluralKey(theMessage)) {
+    //  throw new Error("I18n error: Plural Message called in non-plural mode");
+    //}
     return formatMessagePlural(theMessage, theMessageArguments);
   }
 
@@ -112,9 +112,9 @@ public abstract class I18nBase {
    */
   public String formatMessagePlural(Integer plural, String theMessage, Object... theMessageArguments) {
 
-    if (!isPluralKey(theMessage)) {
-      throw new Error("I18n error: Non-plural Message called in plural mode");
-    }
+    //if (!isPluralKey(theMessage)) {
+    //  throw new Error("I18n error: Non-plural Message called in plural mode");
+    //}
     Object[] args = new Object[theMessageArguments.length+1];
     args[0] = plural;
     for (int i = 0; i < theMessageArguments.length; i++) {
