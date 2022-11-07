@@ -57,7 +57,7 @@ public class JurisdictionUtilities {
   }
 
   public static String displayJurisdiction(String s) {
-    return displayJurisdiction(CodeSystemUtilities.readCoding(getJurisdictionFromLocale(s)));
+    return displayJurisdiction(CodeSystemUtilities.readCoding(s));
   }
   
   public static String displayJurisdiction(Coding c) {
