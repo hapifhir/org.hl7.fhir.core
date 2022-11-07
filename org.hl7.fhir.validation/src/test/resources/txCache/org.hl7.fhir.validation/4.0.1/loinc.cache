@@ -2173,3 +2173,14 @@ v: {
   "system" : "http://loinc.org"
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "9279-1",
+  "display" : "Respiratory Rate"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Respiratory rate",
+  "code" : "9279-1",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------

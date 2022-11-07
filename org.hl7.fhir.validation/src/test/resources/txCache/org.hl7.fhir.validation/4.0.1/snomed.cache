@@ -2078,3 +2078,14 @@ v: {
   "system" : "http://snomed.info/sct"
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "86290005",
+  "display" : "Respiratory rate (observable entity)"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Respiratory rate",
+  "code" : "86290005",
+  "system" : "http://snomed.info/sct"
+}
+-------------------------------------------------------------------------------------
