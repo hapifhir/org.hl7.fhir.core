@@ -209,6 +209,12 @@ public class CliContext {
     return extensions;
   }
 
+  @JsonProperty("extensions")
+  public CliContext setExtensions(List<String> extensions) {
+    this.extensions = extensions;
+    return this;
+  }
+
   @JsonProperty("hintAboutNonMustSupport")
   public boolean isHintAboutNonMustSupport() {
     return hintAboutNonMustSupport;
