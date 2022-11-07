@@ -669,7 +669,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     if (logicals.size() > 0) {
-      if (rulePlural(errors, IssueType.BUSINESSRULE, "Configuration", logicals.size() == 1, logicals.size(), I18nConstants.MULTIPLE_LOGICAL_MODELS_PLURAL, ResourceUtilities.listUrls(logicals))) {
+      if (rulePlural(errors, IssueType.BUSINESSRULE, "Configuration", logicals.size() == 1, logicals.size(), I18nConstants.MULTIPLE_LOGICAL_MODELS, ResourceUtilities.listUrls(logicals))) {
         parser.setLogical(logicals.get(0));              
       }
     }
@@ -2871,7 +2871,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (invalidChars.isEmpty()) {
         return null;
       } else {
-        return context.formatMessagePlural(c, I18nConstants.XHTML_URL_INVALID_CHARS_PLURAL, invalidChars.toString());
+        return context.formatMessagePlural(c, I18nConstants.XHTML_URL_INVALID_CHARS, invalidChars.toString());
       }
     }
   }
@@ -4340,7 +4340,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           anyFound = true;
       }
       if (!anyFound) {
-          throw new DefinitionException(context.formatMessagePlural(slicer.getSlicing().getDiscriminator().size(), I18nConstants.Could_not_match_discriminator_for_slice_in_profile_PLURAL, discriminators, ed.getId(), profile.getUrl(), discriminators));
+          throw new DefinitionException(context.formatMessagePlural(slicer.getSlicing().getDiscriminator().size(), I18nConstants.Could_not_match_discriminator_for_slice_in_profile, discriminators, ed.getId(), profile.getUrl(), discriminators));
       }
 
       try {
@@ -5143,7 +5143,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               b.append(u.asStringValue());
             }
             ok = rulePlural(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(),
-                false, typeForResource.getProfile().size(), I18nConstants.BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_PLURAL, special.toHuman(), typeForResource.getCode(), b.toString()) && ok;
+                false, typeForResource.getProfile().size(), I18nConstants.BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES, special.toHuman(), typeForResource.getCode(), b.toString()) && ok;
           }
         }
       } else {
