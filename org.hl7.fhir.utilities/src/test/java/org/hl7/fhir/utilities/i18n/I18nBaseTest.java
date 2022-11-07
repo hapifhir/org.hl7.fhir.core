@@ -53,11 +53,11 @@ class I18nBaseTest {
     I18nTestClass testClass = new I18nTestClass();
 
     //Answer value must be of the type {1}
-    String resultOne = testClass.formatMessagePlural(1, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE_PLURAL);
+    String resultOne = testClass.formatMessagePlural(1, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE);
     assertThat(resultOne, containsString("be of the type"));
 
     //Answer value must be one of the {0} types {1}
-    String resultMany = testClass.formatMessagePlural(3, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE_PLURAL);
+    String resultMany = testClass.formatMessagePlural(3, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE);
     assertThat(resultMany, containsString("one of the 3 types "));
 
   }
@@ -69,11 +69,11 @@ class I18nBaseTest {
 
     testClass.setLocale(Locale.GERMAN);
     //Answer value muss vom Typ {0} sein.
-    String resultOne = testClass.formatMessagePlural(1, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE_PLURAL);
+    String resultOne = testClass.formatMessagePlural(1, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE);
     assertThat(resultOne, containsString("muss vom Typ"));
 
     //Answer value muss einer der Typen {1} sein
-    String resultMany = testClass.formatMessagePlural(3, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE_PLURAL);
+    String resultMany = testClass.formatMessagePlural(3, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE);
     assertThat(resultMany, containsString("einer der Typen "));
 
   }

@@ -386,7 +386,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         }
       }
     }
-    return new ValidationResult(IssueSeverity.WARNING, context.formatMessagePlural(b.count(), I18nConstants.DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF_PLURAL, code.getSystem(), code.getCode(), b.toString(), code.getDisplay()), code.getSystem(), cc);
+    return new ValidationResult(IssueSeverity.WARNING, context.formatMessagePlural(b.count(), I18nConstants.DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF, code.getSystem(), code.getCode(), b.toString(), code.getDisplay()), code.getSystem(), cc);
   }
 
   private ConceptReferenceComponent findValueSetRef(String system, String code) {
