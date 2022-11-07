@@ -11,6 +11,9 @@ public class JurisdictionUtilities {
   }
 
   public static String getJurisdictionFromLocale(String s) {
+    if (s == null) {
+      return null;
+    }
     if (Utilities.existsInList(s.toUpperCase(), 
         "AD", "AE", "AF", "AG", "AI", "AL", "AM", "AO", "AQ",
         "AR", "AS", "AT", "AU", "AW", "AX", "AZ", "BA", "BB",
