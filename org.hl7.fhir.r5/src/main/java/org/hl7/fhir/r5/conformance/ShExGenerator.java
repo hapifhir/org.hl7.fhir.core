@@ -357,14 +357,29 @@ public class ShExGenerator {
   private String getExtendedType(StructureDefinition sd){
     if (sd == null)
       return null;
+
     String sId = sd.getId();
-    if (sd.hasBaseDefinition()){
-      String bd = sd.getBaseDefinition();
+    String bd = "";
+    if (sd.hasBaseDefinition()) {
+      bd = sd.getBaseDefinition();
       String[] els = bd.split("/");
       bd = els[els.length - 1];
-      if (bd != null && !bd.isEmpty() && !baseDataTypes.contains(bd))
-        sId += "> EXTENDS @<" + bd;
+
+      if (bd != null && !bd.isEmpty() && !baseDataTypes.contains(bd)) {
+        if ("Extension".equals(bd) && sd.hasContext() && (!sd.getContext().isEmpty())) {
+          for (StructureDefinition.StructureDefinitionContextComponent ctxc : sd.getContext()) {
+            if (ctxc.hasExpression()) {
+              if ("Extension".equals(bd))
+                bd = ctxc.getExpression();
+              else
+                bd += "," + ctxc.getExpression();
+            }
+          }
+        }
+      }
+      sId += "> EXTENDS @<" + bd;
     }
+
     return sId;
   }
 
@@ -391,15 +406,15 @@ public class ShExGenerator {
     String bd = null;
     ST shape_defn;
     // Resources are either incomplete items or consist of everything that is defined as a resource (completeModel)
-    if (sd.getName().equals("Identifier")){
-      System.out.println("Identifier found");
-    }
+//    if (sd.getName().equals("ActivityDefinition")){
+//      System.out.println("ActivityDefinition found");
+//    }
     if("Resource".equals(sd.getName())) {
       shape_defn = tmplt(RESOURCE_SHAPE_TEMPLATE);
       known_resources.add(sd.getName());
     } else {
       shape_defn = tmplt(SHAPE_DEFINITION_TEMPLATE).add("id", getExtendedType(sd));
-      if (sd.getKind().equals(StructureDefinition.StructureDefinitionKind.RESOURCE)) {
+      //if (sd.getKind().equals(StructureDefinition.StructureDefinitionKind.RESOURCE)) {
 //              || sd.getKind().equals(StructureDefinition.StructureDefinitionKind.COMPLEXTYPE)) {
         known_resources.add(sd.getName());
         ST resource_decl = tmplt(RESOURCE_DECL_TEMPLATE).
@@ -407,9 +422,9 @@ public class ShExGenerator {
                 add("root", tmplt(ROOT_TEMPLATE));
 //                add("root", top_level ? tmplt(ROOT_TEMPLATE) : "");
         shape_defn.add("resourceDecl", resource_decl.render());
-      } else {
-        shape_defn.add("resourceDecl", "");
-      }
+      //} else {
+      //  shape_defn.add("resourceDecl", "");
+     // }
 
       if (sd.hasBaseDefinition()){
         bd = sd.getBaseDefinition();
@@ -442,16 +457,16 @@ public class ShExGenerator {
     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
       if(!ed.getPath().contains("."))
         root_comment = ed.getShort();
-      else if ((StringUtils.countMatches(ed.getPath(), ".") == 1 && !"0".equals(ed.getMax())) &&
-              (ed.hasBase() && ed.getBase().getPath().startsWith(sdn))){
+      else if ((StringUtils.countMatches(ed.getPath(), ".") == 1 && !"0".equals(ed.getMax()))
+              && ("Extension".equals(bd) || ed.hasBase() && ed.getBase().getPath().startsWith(sdn))
+          ){
         String elementDefinition = genElementDefinition(sd, ed);
 
         boolean isInnerType = false;
         if (isInInnerTypes(ed)){
-          System.out.println("This element is already in innerTypes:" + ed.getPath());
+          //System.out.println("This element is already in innerTypes:" + ed.getPath());
           isInnerType = true;
         }
-
 
         // Process constraints
         for (ElementDefinition.ElementDefinitionConstraintComponent constraint : ed.getConstraint()) {
@@ -502,7 +517,7 @@ public class ShExGenerator {
       String ce = constraint.getExpression();
       String constItem = "Element:" + ed.getPath() + " Expression: " + ce;
       try {
-        translated = ed.getPath() + "\n\t\t\t# " + constraint.getHuman() + "\n\t\t\t# " + constraint.getXpath() + "\n\t\t\t" + constraint.getExpression();
+        translated = "# Constraints found on " + ed.getPath() + "\n\t\t\t# " + constraint.getHuman() + "\n\t\t\t# " + constraint.getXpath() + "\n\t\t\t" + constraint.getExpression();
         ExpressionNode expr = fpe.parse(ce);
         String shexConstraint = processExpressionNode(expr, false);
         System.out.print("Parsed to ShEx Constraint:" + shexConstraint);
@@ -1107,11 +1122,13 @@ public class ShExGenerator {
       String shortId = id.substring(id.lastIndexOf(".") + 1);
       if ((ed.hasContentReference() && (!ed.hasType())) || (id.equals(sd.getName() + "." + shortId))) {
         if ((sdType.equals(cstype)) || baseDataTypes.contains(sdType)) {
+          //if (!isInInnerTypes(ed)) {
             System.out.println("\n(INNER ED) Key: " + constraint.getKey() + " SD type: " + sd.getType() + " Element: " + ed.getPath() + " Constraint Source: " + constraint.getSource() + " Constraint:" + constraint.getExpression());
             String transl = translateConstraint(ed, constraint);
             if (transl.isEmpty() || innerConstraintsList.contains(transl))
               continue;
-          innerConstraintsList.add(transl);
+            innerConstraintsList.add(transl);
+          //}
         }
       }
     }

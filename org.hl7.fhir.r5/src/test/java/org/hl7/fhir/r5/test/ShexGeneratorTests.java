@@ -23,19 +23,21 @@ public class ShexGeneratorTests {
   private void doTest(String name) throws FileNotFoundException, IOException, FHIRException, UcumException {
     StructureDefinition sd = TestingUtilities.getSharedWorkerContext().fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null));
     if (sd == null) {
-      throw new FHIRException("StructuredDefinition for " + name + "was null");
+      throw new FHIRException("StructuredDefinition for " + name + " was null");
     }
     //Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), name.toLowerCase() + ".shex");
     Path outPath = FileSystems.getDefault().getPath(System.getProperty("user.home")+"/runtime_environments/ShExSchemas", name.toLowerCase() + ".shex");
     TextFile.stringToFile(new ShExGenerator(TestingUtilities.getSharedWorkerContext()).generate(HTMLLinkPolicy.NONE, sd), outPath.toString());
   }
 
-  private void doTestThis(String name){
+  private void doTestThis(String shortName, String name){
     StructureDefinition sd = TestingUtilities.getSharedWorkerContext().fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null));
     if (sd == null) {
-      throw new FHIRException("StructuredDefinition for " + name + "was null");
+      //throw new FHIRException("ERROR! ERROR! ERROR! StructuredDefinition for " + name + "was null");
+      System.out.println("ERROR! ERROR! ERROR! StructuredDefinition for " + name + " was null");
+      return;
     }
-    Path outPath = FileSystems.getDefault().getPath(System.getProperty("user.home") + "/runtime_environments/ShExSchemas", name + ".shex");
+    Path outPath = FileSystems.getDefault().getPath(System.getProperty("user.home") + "/runtime_environments/ShExSchemas", shortName + ".shex");
     try {
       TextFile.stringToFile(new ShExGenerator(TestingUtilities.getSharedWorkerContext()).generate(HTMLLinkPolicy.NONE, sd), outPath.toString());
     } catch (IOException e) {
@@ -59,8 +61,13 @@ public class ShexGeneratorTests {
     System.out.println("Processing " + title);
     System.out.println("************************************************************************");
     items.forEach((String item) -> {
+      String name = item;
+      if (item.indexOf("/") != -1) {
+        String els[] = item.split("/");
+        name = els[els.length - 1];
+      }
       System.out.println("******************** " + item + " *********************");
-      doTestThis(item);
+      doTestThis(name, item);
     });
   }
 
@@ -75,6 +82,10 @@ public class ShexGeneratorTests {
     List<String> extNames = new ArrayList<String>();
     List<String> logicalNames = new ArrayList<String>();
     List<String> otherNames = new ArrayList<String>();
+    List<String> sdURLs = new ArrayList<String>();
+    List<String> extURLs = new ArrayList<String>();
+    List<String> logicalURLs = new ArrayList<String>();
+    List<String> otherURLs = new ArrayList<String>();
     List<String> sdNamesPrint = new ArrayList<String>();
     List<String> extNamesPrint = new ArrayList<String>();
     List<String> logicalNamesPrint = new ArrayList<String>();
@@ -82,18 +93,22 @@ public class ShexGeneratorTests {
     sds.forEach((StructureDefinition sd ) ->{
       if (sd.getBaseDefinition() == null){
         logicalNames.add(sd.getName());
+        logicalURLs.add(sd.getUrl());
         logicalNamesPrint.add(sd.getKind().name() + "\t" + sd.getName() + "\t" + sd.getType() + "\t" + sd.getUrl() + "\t" + sd.getBaseDefinition());
       }
       else if (sd.getType().trim().equals(sd.getName().trim())) {
         sdNames.add(sd.getName());
+        sdURLs.add(sd.getUrl());
         sdNamesPrint.add(sd.getKind().name() + "\t" + sd.getName() + "\t" + sd.getType() + "\t" + sd.getUrl() + "\t" + sd.getBaseDefinition());
       }
       else if ("Extension".equals(sd.getType())) {
         extNames.add(sd.getName());
+        extURLs.add(sd.getUrl());
         extNamesPrint.add(sd.getKind().name() + "\t" + sd.getName() + "\t" + sd.getType() + "\t" + sd.getUrl() + "\t" + sd.getBaseDefinition());
       }
       else {
         otherNames.add(sd.getName());
+        otherURLs.add(sd.getUrl());
         otherNamesPrint.add(sd.getKind().name() + "\t" + sd.getName() + "\t" + sd.getType() + "\t" + sd.getUrl() + "\t" + sd.getBaseDefinition());
       }
     });
@@ -103,10 +118,15 @@ public class ShexGeneratorTests {
     //printList("Logical", logicalNamesPrint);
     //printList("Profiles", otherNamesPrint);
 
-    processList("StructureDefinitions", sdNames);
-    processList("Extensions", extNames);
+    //processList("StructureDefinitions", sdNames);
+    //processList("Extensions", extNames);
     //processList("Logical", logicalNames);
     //processList("Profiles", otherNames);
+
+    //processList("StructureDefinitions", sdURLs);
+    processList("Extensions", extURLs);
+    //processList("Logical", logicalURLs);
+    //processList("Profiles", otherURLs);
 
     System.out.println("************************************************************************");
     System.out.println("Total Items: " + sds.size());
