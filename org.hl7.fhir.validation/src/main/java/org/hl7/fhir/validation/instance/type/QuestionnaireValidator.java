@@ -402,7 +402,7 @@ public class QuestionnaireValidator extends BaseValidator {
   private boolean validateQuestionnaireResponseItem(ValidatorHostContext hostcontext, QuestionnaireWithContext qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, List<ElementWithIndex> elements, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
     boolean ok = true;
     if (elements.size() > 1) {
-      ok = rulePL(errors, IssueType.INVALID, elements.get(1).getElement().line(), elements.get(1).getElement().col(), stack.getLiteralPath(), qItem.getRepeats(), elements.size(), I18nConstants.QUESTIONNAIRE_QR_ITEM_ONLYONEI_PLURAL, qItem.getLinkId()) && ok;
+      ok = rulePlural(errors, IssueType.INVALID, elements.get(1).getElement().line(), elements.get(1).getElement().col(), stack.getLiteralPath(), qItem.getRepeats(), elements.size(), I18nConstants.QUESTIONNAIRE_QR_ITEM_ONLYONEI, qItem.getLinkId()) && ok;
     }
     for (ElementWithIndex element : elements) {
       NodeStack ns = stack.push(element.getElement(), element.getIndex(), null, null);
@@ -518,10 +518,8 @@ public class QuestionnaireValidator extends BaseValidator {
         if (values.get(0).getName().equals("value" + Utilities.capitalize(s)))
           return (s);
       }
-      if (types.length == 1)
-        ok.see(rule(errors, IssueType.STRUCTURE, values.get(0).line(), values.get(0).col(), ns.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE, types[0]));
-      else
-        ok.see(rulePL(errors, IssueType.STRUCTURE, values.get(0).line(), values.get(0).col(), ns.getLiteralPath(), false, types.length, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE_PLURAL, l.toString()));
+
+      ok.see(rulePlural(errors, IssueType.STRUCTURE, values.get(0).line(), values.get(0).col(), ns.getLiteralPath(), false, types.length, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE, l.toString()));
     }
     return null;
   }
