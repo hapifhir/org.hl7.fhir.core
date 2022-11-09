@@ -694,7 +694,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       XhtmlNode img = tc.addTag("span").setAttribute("style", "float: right").addTag("a").setAttribute("title", "Legend for this format").setAttribute("href", model.getDocoRef()).addTag("img");
       img.setAttribute("alt", "doco").setAttribute("style", "background-color: inherit").setAttribute("src", model.getDocoImg());
       if (model.isActive()) {
-        img.setAttribute("onload", "fhirTableInit(this)");
+        img.setAttribute("onLoad", "fhirTableInit(this)");
       }
     }
       

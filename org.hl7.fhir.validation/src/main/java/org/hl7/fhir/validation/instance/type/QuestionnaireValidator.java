@@ -32,6 +32,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -564,6 +565,8 @@ public class QuestionnaireValidator extends BaseValidator {
           ok = txRule(errors, res.getTxLink(), IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_BADOPTION, c.getSystem(), c.getCode()) && ok;
         } else if (res.getSeverity() != null) {
           super.addValidationMessage(errors, IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), res.getMessage(), res.getSeverity(), Source.TerminologyEngine, null);
+        } else if (res.getMessage() != null) {
+          super.addValidationMessage(errors, IssueType.INFORMATIONAL, value.line(), value.col(), stack.getLiteralPath(), res.getMessage(), res.getSeverity() == null ? IssueSeverity.INFORMATION : res.getSeverity(), Source.TerminologyEngine, null);          
         }
       } catch (Exception e) {
         warning(errors, IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_CODING, e.getMessage());

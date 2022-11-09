@@ -29,7 +29,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
 
   public boolean render(XhtmlNode x, StructureDefinition sd) throws FHIRFormatError, DefinitionException, IOException {
-    x.getChildNodes().add(context.getProfileUtilities().generateTable(context.getDefinitionsTarget(), sd, true, context.getDestDir(), false, sd.getId(), false, context.getLink(KnownLinkType.SPEC), "", sd.getKind() == StructureDefinitionKind.LOGICAL, false, null, false, false, context, ""));
+    x.getChildNodes().add(context.getProfileUtilities().generateTable(context.getDefinitionsTarget(), sd, true, context.getDestDir(), false, sd.getId(), false, 
+        context.getLink(KnownLinkType.SPEC), "", sd.getKind() == StructureDefinitionKind.LOGICAL, false, null, false, context, ""));
     return true;
   }
 
