@@ -609,6 +609,26 @@ public class ToolingExtensions {
       resource.getExtension().add(new Extension(uri).setValue(new StringType(value)));
   }
 
+  public static void setUriExtension(DomainResource resource, String uri, String value) {
+    if (Utilities.noString(value))
+      return;
+    Extension ext = getExtension(resource, uri);
+    if (ext != null)
+      ext.setValue(new UriType(value));
+    else
+      resource.getExtension().add(new Extension(uri).setValue(new UriType(value)));
+  }
+
+  public static void setUriExtension(Element resource, String uri, String value) {
+    if (Utilities.noString(value))
+      return;
+    Extension ext = getExtension(resource, uri);
+    if (ext != null)
+      ext.setValue(new UriType(value));
+    else
+      resource.getExtension().add(new Extension(uri).setValue(new UriType(value)));
+  }
+
   public static void setCodeExtension(DomainResource resource, String uri, String value) {
     if (Utilities.noString(value))
       return;
