@@ -46,7 +46,6 @@ public abstract class ResourceRenderer extends DataRenderer {
 
   protected ResourceContext rcontext;
   protected XVerExtensionManager xverManager;
-  protected boolean forResource;
   
   
   public ResourceRenderer(RenderingContext context) {
@@ -84,14 +83,8 @@ public abstract class ResourceRenderer extends DataRenderer {
   
   public void render(DomainResource r) throws IOException, FHIRException, EOperationOutcome {  
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
-    boolean ofr = forResource;
     boolean hasExtensions;
-    try {
-      forResource = true;
-      hasExtensions = render(x, r);
-    } finally {
-      forResource = ofr;
-    }
+    hasExtensions = render(x, r);
     inject(r, x, hasExtensions ? NarrativeStatus.EXTENSIONS :  NarrativeStatus.GENERATED);
   }
 
