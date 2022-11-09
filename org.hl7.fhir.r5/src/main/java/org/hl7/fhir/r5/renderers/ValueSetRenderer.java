@@ -40,6 +40,7 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionPropertyComponent;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
@@ -956,7 +957,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     x.br();
     x.tx(s);
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context.getDestDir(), context.isInlineGraphics(), true);
-    TableModel model = gen.new TableModel("exp.h="+index, !forResource);    
+    TableModel model = gen.new TableModel("exp.h="+index, context.getRules() == GenerationRules.IG_PUBLISHER);    
     model.setAlternating(true);
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("vs.exp.header", "Code"), translate("vs.exp.hint", "The code for the item"), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("vs.exp.header", "Display"), translate("vs.exp.hint", "The display for the item"), null, 0));

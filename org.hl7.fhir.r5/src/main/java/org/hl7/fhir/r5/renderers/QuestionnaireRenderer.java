@@ -24,6 +24,7 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -67,7 +68,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       x.b().tx("Structure");
     }
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context.getDestDir(), context.isInlineGraphics(), true);
-    TableModel model = gen.new TableModel("qtree="+q.getId(), !forResource);    
+    TableModel model = gen.new TableModel("qtree="+q.getId(), context.getRules() == GenerationRules.IG_PUBLISHER);    
     model.setAlternating(true);
     model.setDocoImg(context.getLink(KnownLinkType.SPEC) +"help16.png");
     model.setDocoRef(context.getLink(KnownLinkType.SPEC)+"formats.html#table");

@@ -118,6 +118,7 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.renderers.TerminologyRenderer;
 import org.hl7.fhir.r5.renderers.spreadsheets.SpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.FHIRLexer;
@@ -4101,8 +4102,8 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
   public XhtmlNode generateTable(String defFile, StructureDefinition profile, boolean diff, String imageFolder, boolean inlineGraphics, String profileBaseFileName, boolean snapshot, String corePath, String imagePath,
-                                 boolean logicalModel, boolean allInvariants, Set<String> outputTracker, boolean active, boolean mustSupport, RenderingContext rc) throws IOException, FHIRException {
-    return generateTable(defFile, profile, diff, imageFolder, inlineGraphics, profileBaseFileName, snapshot, corePath, imagePath, logicalModel, allInvariants, outputTracker, active, mustSupport, rc, "");
+                                 boolean logicalModel, boolean allInvariants, Set<String> outputTracker, boolean mustSupport, RenderingContext rc) throws IOException, FHIRException {
+    return generateTable(defFile, profile, diff, imageFolder, inlineGraphics, profileBaseFileName, snapshot, corePath, imagePath, logicalModel, allInvariants, outputTracker, mustSupport, rc, "");
   }
 
   public List<ElementDefinition> supplementMissingDiffElements(StructureDefinition profile) {
@@ -4124,11 +4125,11 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
   public XhtmlNode generateTable(String defFile, StructureDefinition profile, boolean diff, String imageFolder, boolean inlineGraphics, String profileBaseFileName, boolean snapshot, String corePath, String imagePath,
-      boolean logicalModel, boolean allInvariants, Set<String> outputTracker, boolean active, boolean mustSupport, RenderingContext rc, String anchorPrefix) throws IOException, FHIRException {
+      boolean logicalModel, boolean allInvariants, Set<String> outputTracker, boolean mustSupport, RenderingContext rc, String anchorPrefix) throws IOException, FHIRException {
     assert(diff != snapshot);// check it's ok to get rid of one of these
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(imageFolder, inlineGraphics, true);
     gen.setTranslator(getTranslator());
-    TableModel model = gen.initNormalTable(corePath, false, true, profile.getId()+(diff ? "d" : "s"), active);
+    TableModel model = gen.initNormalTable(corePath, false, true, profile.getId()+(diff ? "d" : "s"), rc.getRules() == GenerationRules.IG_PUBLISHER);
     List<ElementDefinition> list;
     if (diff)
       list = supplementMissingDiffElements(profile);

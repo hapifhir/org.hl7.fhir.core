@@ -28,6 +28,7 @@ import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.utilities.SimpleHTTPClient;
@@ -255,7 +256,7 @@ public class Scanner {
   }
 
   protected void genScanOutputItem(ScanOutputItem item, String filename) throws IOException, FHIRException, EOperationOutcome {
-    RenderingContext rc = new RenderingContext(getContext(), null, null, "http://hl7.org/fhir", "", null, RenderingContext.ResourceRendererMode.END_USER);
+    RenderingContext rc = new RenderingContext(getContext(), null, null, "http://hl7.org/fhir", "", null, RenderingContext.ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     rc.setNoSlowLookup(true);
     RendererFactory.factory(item.getOutcome(), rc).render(item.getOutcome());
     String s = new XhtmlComposer(XhtmlComposer.HTML).compose(item.getOutcome().getText().getDiv());
@@ -309,7 +310,7 @@ public class Scanner {
   protected OperationOutcome exceptionToOutcome(Exception ex) throws IOException, FHIRException, EOperationOutcome {
     OperationOutcome op = new OperationOutcome();
     op.addIssue().setCode(OperationOutcome.IssueType.EXCEPTION).setSeverity(OperationOutcome.IssueSeverity.FATAL).getDetails().setText(ex.getMessage());
-    RenderingContext rc = new RenderingContext(getContext(), null, null, "http://hl7.org/fhir", "", null, RenderingContext.ResourceRendererMode.END_USER);
+    RenderingContext rc = new RenderingContext(getContext(), null, null, "http://hl7.org/fhir", "", null, RenderingContext.ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     RendererFactory.factory(op, rc).render(op);
     return op;
   }
