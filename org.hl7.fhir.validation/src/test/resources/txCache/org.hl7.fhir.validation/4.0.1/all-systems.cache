@@ -2048,3 +2048,23 @@ v: {
   "system" : "http://unitsofmeasure.org"
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "en-US"
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "lang":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "English (United States)",
+  "code" : "en-US",
+  "system" : "urn:ietf:bcp:47"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "5933001",
+  "display" : "Clostridioides difficile (organism)"
+}, "url": "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.114222.4.11.3194", "version": "20200807", "lang":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+v: {
+  "display" : "Clostridioides difficile (organism)",
+  "code" : "5933001",
+  "system" : "http://snomed.info/sct"
+}
+-------------------------------------------------------------------------------------

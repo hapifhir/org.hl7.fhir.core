@@ -76,7 +76,7 @@ public class RenderingContext {
      * This means active content is allowed, though the default presentation must be *show everything* for balloting purposes
      * Active content is allowed 
      */
-    IG_PUBLISHER,
+    IG_PUBLISHER
   }
   
   public enum QuestionnaireRendererMode {
