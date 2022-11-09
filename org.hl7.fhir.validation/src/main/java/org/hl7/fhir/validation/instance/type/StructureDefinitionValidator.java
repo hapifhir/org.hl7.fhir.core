@@ -78,7 +78,8 @@ public class StructureDefinitionValidator extends BaseValidator {
       StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
       if (warning(errors, IssueType.NOTFOUND, stack.getLiteralPath(), base != null, I18nConstants.UNABLE_TO_FIND_BASE__FOR_, sd.getBaseDefinition(), "StructureDefinition, so can't check the differential")) {
         if (rule(errors, IssueType.NOTFOUND, stack.getLiteralPath(), sd.hasDerivation(), I18nConstants.SD_MUST_HAVE_DERIVATION, sd.getUrl())) {
-          rule(errors, IssueType.NOTFOUND, stack.getLiteralPath(), base.getAbstract() || sd.hasKind() && sd.getKind() == base.getKind(), I18nConstants.SD_CONSTRAINED_KIND_NO_MATCH, sd.getKind().toCode(), base.getKind().toCode(), base.getType());
+          boolean bok = base.getAbstract() || sd.hasKind() && sd.getKind() == base.getKind();
+          rule(errors, IssueType.NOTFOUND, stack.getLiteralPath(), bok, I18nConstants.SD_CONSTRAINED_KIND_NO_MATCH, sd.getKind().toCode(), base.getKind().toCode(), base.getType(), base.getUrl());
           if (sd.getDerivation() == TypeDerivationRule.CONSTRAINT) {
             rule(errors, IssueType.NOTFOUND, stack.getLiteralPath(), sd.hasType() && sd.getType().equals(base.getType()), I18nConstants.SD_CONSTRAINED_TYPE_NO_MATCH, sd.getType(), base.getType());
             List<ValidationMessage> msgs = new ArrayList<>();
