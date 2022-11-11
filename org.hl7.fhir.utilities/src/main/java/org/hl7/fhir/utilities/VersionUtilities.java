@@ -570,10 +570,23 @@ public class VersionUtilities {
     case "1.4" : return "http://hl7.org/fhir/DSTU2";
     case "3.0" : return "http://hl7.org/fhir/STU3";
     case "4.0" : return "http://hl7.org/fhir/R4";
-    case "4.5" : return "http://build.fhir.org";
+    case "4.3" : return "http://hl7.org/fhir/R4B";
     case "5.0" : return "http://build.fhir.org";
     default:
       return "http://hl7.org/fhir";
+    }
+  }
+
+  public static String getNameForVersion(String v) {
+    switch (getMajMin(v)) {
+    case "1.0" : return "R2";
+    case "1.4" : return "R2B";
+    case "3.0" : return "R3";
+    case "4.0" : return "R4";
+    case "4.3" : return "R4B";
+    case "5.0" : return "R5";
+    default:
+      return "R?";
     }
   }
 
