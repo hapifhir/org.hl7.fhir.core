@@ -283,6 +283,14 @@ public class NpmPackage {
     return retVal;
   }
 
+  /**
+   * Factory method that starts a new empty package using the given PackageGenerator to create the manifest
+   */
+  public static NpmPackage empty() {
+    NpmPackage retVal = new NpmPackage();
+    return retVal;
+  }
+
   public Map<String, Object> getUserData() {
     return userData;
   }
@@ -1061,6 +1069,12 @@ public class NpmPackage {
     if (!folder.types.containsKey(type))
       folder.types.put(type, new ArrayList<>());
     folder.types.get(type).add(name);
+    if ("package".equals(folderName) && "package.json".equals(name)) {
+      try {
+        npm = JsonTrackingParser.parseJson(cnt);
+      } catch (IOException e) {
+      }
+    }
   }
 
   public void loadAllFiles() throws IOException {
