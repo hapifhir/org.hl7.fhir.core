@@ -19,6 +19,7 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.context.TerminologyCache;
 import org.hl7.fhir.r5.model.Parameters;
+import org.hl7.fhir.r5.utils.R5Hacker;
 import org.hl7.fhir.utilities.CSFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.ToolGlobalSettings;
@@ -112,11 +113,12 @@ public class TestingUtilities extends BaseTestingUtilities {
       IWorkerContext fcontext = getWorkerContext(pcm.loadPackage(VersionUtilities.packageForVersion(version), version));
       fcontext.setUcumService(new UcumEssenceService(TestingUtilities.loadTestResourceStream("ucum", "ucum-essence.xml")));
       fcontext.setExpansionProfile(new Parameters());
-      if (!fcontext.hasPackage("hl7.terminology", null)) {
-        NpmPackage utg = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION).loadPackage("hl7.terminology");
+      if (!fcontext.hasPackage("hl7.terminology.r5", null)) {
+        NpmPackage utg = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION).loadPackage("hl7.terminology.r5");
         System.out.println("Loading THO: "+utg.name()+"#"+utg.version());
         fcontext.loadFromPackage(utg, new TestPackageLoader(new String[]{"CodeSystem", "ValueSet"}));
-      }
+      }      
+      R5Hacker.fixR5BrokenResources(fcontext);
       return fcontext;
     } catch (Exception e) {
       e.printStackTrace();
@@ -129,13 +131,15 @@ public class TestingUtilities extends BaseTestingUtilities {
   }
 
   public static SimpleWorkerContext getWorkerContext(NpmPackage npmPackage) throws Exception {
-    SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).withUserAgent(TestConstants.USER_AGENT).withTerminologyCachePath(getTerminologyCacheDirectory()).fromPackage(npmPackage);
+    SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).withUserAgent(TestConstants.USER_AGENT)
+        .withTerminologyCachePath(getTerminologyCacheDirectory()).fromPackage(npmPackage);
     TerminologyCache.setCacheErrors(true);
     return swc;
   }
 
   public static SimpleWorkerContext getWorkerContext(NpmPackage npmPackage, IWorkerContext.IContextResourceLoader loader) throws Exception {
-    SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).withUserAgent(TestConstants.USER_AGENT).withTerminologyCachePath(getTerminologyCacheDirectory()).fromPackage(npmPackage, loader);
+    SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).withUserAgent(TestConstants.USER_AGENT)
+        .withTerminologyCachePath(getTerminologyCacheDirectory()).fromPackage(npmPackage, loader);
     TerminologyCache.setCacheErrors(true);
     return swc;
   }

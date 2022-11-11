@@ -1,27 +1,21 @@
 package org.hl7.fhir.r5.renderers;
 
-import static java.time.temporal.ChronoField.DAY_OF_MONTH;
 import static java.time.temporal.ChronoField.MONTH_OF_YEAR;
 import static java.time.temporal.ChronoField.YEAR;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.text.DateFormat;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
-import java.time.format.ResolverStyle;
 import java.time.format.SignStyle;
 import java.util.Currency;
 import java.util.List;
-import java.util.TimeZone;
+import java.util.Set;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -40,12 +34,12 @@ import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ContactPoint;
+import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.r5.model.DataRequirement;
 import org.hl7.fhir.r5.model.DataRequirement.DataRequirementCodeFilterComponent;
 import org.hl7.fhir.r5.model.DataRequirement.DataRequirementDateFilterComponent;
 import org.hl7.fhir.r5.model.DataRequirement.DataRequirementSortComponent;
 import org.hl7.fhir.r5.model.DataRequirement.SortDirection;
-import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.DateType;
@@ -78,22 +72,18 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MarkDownProcessor;
-import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.validation.ValidationOptions;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
-
-import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
-import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
 
 public class DataRenderer extends Renderer {
   
@@ -108,6 +98,45 @@ public class DataRenderer extends Renderer {
   }
 
   // -- 2. Markdown support -------------------------------------------------------
+  
+  public static String processRelativeUrls(String markdown, String path) {
+    if (markdown == null) {
+      return "";
+    }
+    if (!Utilities.isAbsoluteUrl(path)) {
+      return markdown;
+    }
+    String basePath = path.contains("/") ? path.substring(0, path.lastIndexOf("/")+1) : path+"/";
+    StringBuilder b = new StringBuilder();
+    int i = 0;
+    while (i < markdown.length()) {
+      if (i < markdown.length()-3 && markdown.substring(i, i+2).equals("](")) {
+        int j = i + 2;
+        while (j < markdown.length() && markdown.charAt(j) != ')')
+          j++;
+        if (j < markdown.length()) {
+          String url = markdown.substring(i+2, j);
+          if (!Utilities.isAbsoluteUrl(url) && !url.startsWith("..")) {
+            // it's relative - so it's relative to the base URL
+              b.append("](");
+              b.append(basePath);
+          } else {
+            b.append("](");
+          }
+          i = i + 1;
+        } else 
+          b.append(markdown.charAt(i));
+      } else {
+        b.append(markdown.charAt(i));
+      }
+      i++;
+    }
+    return b.toString();
+  }
+
+  protected void addMarkdown(XhtmlNode x, String text, String path) throws FHIRFormatError, IOException, DefinitionException {
+    addMarkdown(x, processRelativeUrls(text, path));
+  }
   
   protected void addMarkdown(XhtmlNode x, String text) throws FHIRFormatError, IOException, DefinitionException {
     if (text != null) {
@@ -134,7 +163,7 @@ public class DataRenderer extends Renderer {
       }
   
       // 2. markdown
-      String s = getContext().getMarkdown().process(Utilities.escapeXml(text), "narrative generator");
+      String s = getContext().getMarkdown().process(text, "narrative generator");
       XhtmlParser p = new XhtmlParser();
       XhtmlNode m;
       try {
@@ -341,12 +370,12 @@ public class DataRenderer extends Renderer {
       return true;
     }
     if (Utilities.existsInList(t, 
-        "ActivityDefinition", "CapabilityStatement", "CapabilityStatement2", "ChargeItemDefinition", "Citation", "CodeSystem",
+        "ActivityDefinition", "CapabilityStatement", "ChargeItemDefinition", "Citation", "CodeSystem",
         "CompartmentDefinition", "ConceptMap", "ConditionDefinition", "EventDefinition", "Evidence", "EvidenceReport", "EvidenceVariable",
         "ExampleScenario", "GraphDefinition", "ImplementationGuide", "Library", "Measure", "MessageDefinition", "NamingSystem", "PlanDefinition"
         ))
       return true;
-    return sd.getBaseDefinitionElement().hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-codegen-super");
+    return false;
   }
 
   // -- 4. Language support ------------------------------------------------------
@@ -493,7 +522,7 @@ public class DataRenderer extends Renderer {
   // -- 6. Data type Rendering ---------------------------------------------- 
 
   public static String display(IWorkerContext context, DataType type) {
-    return new DataRenderer(new RenderingContext(context, null, null, "http://hl7.org/fhir/R4", "", null, ResourceRendererMode.END_USER)).display(type);
+    return new DataRenderer(new RenderingContext(context, null, null, "http://hl7.org/fhir/R4", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE)).display(type);
   }
   
   public String displayBase(Base b) {
@@ -1109,8 +1138,19 @@ public class DataRenderer extends Renderer {
       s = "id: "+s;      
     }
 
-    if (ii.hasUse())
-      s = s + " ("+ii.getUse().toString()+")";
+    if (ii.hasUse() || ii.hasPeriod()) {
+      s = s + "(";
+      if (ii.hasUse()) {
+        s = s + "use: "+ii.getUse().toString();
+      }
+      if (ii.hasUse() && ii.hasPeriod()) {
+        s = s + ", ";
+      }
+      if (ii.hasPeriod()) {
+        s = s + "period: "+displayPeriod(ii.getPeriod());
+      }
+      s = s + ")";
+    }    
     return s;
   }
   

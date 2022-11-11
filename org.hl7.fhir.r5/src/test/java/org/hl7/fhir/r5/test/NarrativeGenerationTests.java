@@ -25,6 +25,7 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.ElementWrappers;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ITypeParser;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.test.NarrativeGenerationTests.TestProfileKnowledgeProvider;
@@ -57,6 +58,10 @@ public class NarrativeGenerationTests {
 
     @Override
     public boolean isDatatype(String typeSimple) {
+      throw new NotImplementedException();      
+    }
+    @Override
+    public boolean isPrimitiveType(String typeSimple) {
       throw new NotImplementedException();      
     }
 
@@ -179,7 +184,7 @@ public class NarrativeGenerationTests {
   @ParameterizedTest(name = "{index}: file {0}")
   @MethodSource("data")
   public void test(String id, TestDetails test) throws Exception {
-    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER);
+    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     rc.setDestDir(Utilities.path("[tmp]", "narrative"));
     rc.setHeader(test.isHeader());
     rc.setDefinitionsTarget("test.html");

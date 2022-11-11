@@ -88,9 +88,11 @@ import org.hl7.fhir.utilities.Utilities;
 public class HierarchicalTableGenerator extends TranslatingUtilities {
   public static final String TEXT_ICON_REFERENCE = "Reference to another Resource";
   public static final String TEXT_ICON_PRIMITIVE = "Primitive Data Type";
+  public static final String TEXT_ICON_KEY = "JSON Key Value";
   public static final String TEXT_ICON_DATATYPE = "Data Type";
   public static final String TEXT_ICON_RESOURCE = "Resource";
   public static final String TEXT_ICON_ELEMENT = "Element";
+  public static final String TEXT_ICON_OBJECT_BOX = "Object";
   public static final String TEXT_ICON_REUSE = "Reference to another Element";
   public static final String TEXT_ICON_EXTENSION = "Extension";
   public static final String TEXT_ICON_CHOICE = "Choice of Types";
@@ -692,7 +694,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       XhtmlNode img = tc.addTag("span").setAttribute("style", "float: right").addTag("a").setAttribute("title", "Legend for this format").setAttribute("href", model.getDocoRef()).addTag("img");
       img.setAttribute("alt", "doco").setAttribute("style", "background-color: inherit").setAttribute("src", model.getDocoImg());
       if (model.isActive()) {
-        img.setAttribute("onload", "fhirTableInit(this)");
+        img.setAttribute("onLoad", "fhirTableInit(this)");
       }
     }
       

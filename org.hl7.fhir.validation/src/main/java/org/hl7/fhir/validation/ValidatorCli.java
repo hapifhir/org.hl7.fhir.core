@@ -1,5 +1,12 @@
 package org.hl7.fhir.validation;
 
+import java.io.File;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -61,6 +68,7 @@ POSSIBILITY OF SUCH DAMAGE.
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
+import org.hl7.fhir.utilities.FileFormat;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -68,15 +76,11 @@ import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.services.ComparisonService;
 import org.hl7.fhir.validation.cli.services.ValidationService;
-import org.hl7.fhir.validation.cli.utils.*;
+import org.hl7.fhir.validation.cli.utils.Display;
+import org.hl7.fhir.validation.cli.utils.EngineMode;
+import org.hl7.fhir.validation.cli.utils.Params;
 import org.hl7.fhir.validation.testexecutor.TestExecutor;
 import org.hl7.fhir.validation.testexecutor.TestExecutorParams;
-
-import java.io.File;
-import java.net.Authenticator;
-import java.net.PasswordAuthentication;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A executable class that will validate one or more FHIR resources against
@@ -153,6 +157,8 @@ public class ValidatorCli {
     }
 
     CliContext cliContext = Params.loadCliContext(args);
+
+    FileFormat.checkCharsetAndWarnIfNotUTF8(System.out);
 
     if (shouldDisplayHelpToUser(args)) {
       Display.displayHelpDetails();
@@ -250,7 +256,12 @@ public class ValidatorCli {
     if (cliContext.getSv() == null) {
       cliContext.setSv(validationService.determineVersion(cliContext));
     }
-    System.out.println("  Jurisdiction: "+JurisdictionUtilities.displayJurisdiction(cliContext.getJurisdiction()));
+    if (cliContext.getJurisdiction() == null) {
+      System.out.println("  Jurisdiction: None specified (locale = "+Locale.getDefault().getCountry()+")");      
+      System.out.println("  Note that exceptions and validation failures may happen in the absense of a locale");      
+    } else {
+      System.out.println("  Jurisdiction: "+JurisdictionUtilities.displayJurisdiction(cliContext.getJurisdiction()));
+    }
 
     System.out.println("Loading");
     // Comment this out because definitions filename doesn't necessarily contain version (and many not even be 14 characters long).

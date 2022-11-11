@@ -5,7 +5,6 @@ import java.util.List;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
@@ -17,21 +16,24 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.TimeTracker;
+import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
-
-import ca.uhn.fhir.validation.ValidationResult;
 
 public class CodeSystemValidator  extends BaseValidator {
 
-  public CodeSystemValidator(IWorkerContext context, TimeTracker timeTracker, XVerExtensionManager xverManager, Coding jurisdiction) {
+  private InstanceValidator parent;
+
+  public CodeSystemValidator(IWorkerContext context, TimeTracker timeTracker, InstanceValidator parent, XVerExtensionManager xverManager, Coding jurisdiction) {
     super(context, xverManager);
     source = Source.InstanceValidator;
     this.timeTracker = timeTracker;
     this.jurisdiction = jurisdiction;
+    this.parent = parent;
 
   }
 
-  public void validateCodeSystem(List<ValidationMessage> errors, Element cs, NodeStack stack, ValidationOptions options) {
+  public boolean validateCodeSystem(List<ValidationMessage> errors, Element cs, NodeStack stack, ValidationOptions options) {
+    boolean ok = true;
     String url = cs.getNamedChildValue("url");
     String content = cs.getNamedChildValue("content");
     String caseSensitive = cs.getNamedChildValue("caseSensitive");
@@ -53,14 +55,20 @@ public class CodeSystemValidator  extends BaseValidator {
         if (rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs.hasCompose(), I18nConstants.CODESYSTEM_CS_VS_INVALID, url, vsu)) { 
           if (rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs.getCompose().getInclude().size() == 1, I18nConstants.CODESYSTEM_CS_VS_INVALID, url, vsu)) {
             if (rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs.getCompose().getInclude().get(0).getSystem().equals(url), I18nConstants.CODESYSTEM_CS_VS_WRONGSYSTEM, url, vsu, vs.getCompose().getInclude().get(0).getSystem())) {
-              rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), !vs.getCompose().getInclude().get(0).hasValueSet()
-                  && !vs.getCompose().getInclude().get(0).hasConcept() && !vs.getCompose().getInclude().get(0).hasFilter(), I18nConstants.CODESYSTEM_CS_VS_INCLUDEDETAILS, url, vsu);
+              ok = rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), !vs.getCompose().getInclude().get(0).hasValueSet()
+                  && !vs.getCompose().getInclude().get(0).hasConcept() && !vs.getCompose().getInclude().get(0).hasFilter(), I18nConstants.CODESYSTEM_CS_VS_INCLUDEDETAILS, url, vsu) && ok;
               if (vs.hasExpansion()) {
                 int count = countConcepts(cs); 
-                rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs.getExpansion().getContains().size() == count, I18nConstants.CODESYSTEM_CS_VS_EXP_MISMATCH, url, vsu, count, vs.getExpansion().getContains().size());
+                ok = rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs.getExpansion().getContains().size() == count, I18nConstants.CODESYSTEM_CS_VS_EXP_MISMATCH, url, vsu, count, vs.getExpansion().getContains().size()) && ok;
               }
+            } else {
+              ok = false;
             }
+          } else {
+            ok = false;
           }
+        } else {
+          ok = false;
         }
       }
     } // todo... try getting the value set the other way...
@@ -70,7 +78,7 @@ public class CodeSystemValidator  extends BaseValidator {
         List<Element> concepts = cs.getChildrenByName("concept");
         int ce = 0;
         for (Element concept : concepts) {
-          validateSupplementConcept(errors, concept, stack.push(concept, ce, null, null), supp, options);
+          ok = validateSupplementConcept(errors, concept, stack.push(concept, ce, null, null), supp, options) && ok;
           ce++;
         }    
       } else {
@@ -79,8 +87,47 @@ public class CodeSystemValidator  extends BaseValidator {
         }
       }
     }
+
+    if (!stack.isContained()) {
+      ok = checkShareableCodeSystem(errors, cs, stack) && ok;
+    }
+    return ok;
   }
 
+
+  private boolean checkShareableCodeSystem(List<ValidationMessage> errors, Element cs, NodeStack stack) {
+    if (parent.isForPublication()) { 
+      if (isHL7(cs)) {
+        boolean ok = true;
+        ok = rule(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("url"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING_HL7, "url") && ok;                      
+        ok = rule(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("version"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING_HL7, "version") && ok;                      
+        ok = rule(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("title"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING_HL7, "title") && ok;                      
+        warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("name"), I18nConstants.CODESYSTEM_SHAREABLE_EXTRA_MISSING_HL7, "name");                      
+        ok = rule(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("status"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING_HL7, "status") && ok;                      
+        ok = rule(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("experimental"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING_HL7, "experimental") && ok;                      
+        ok = rule(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("description"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING_HL7, "description") && ok; 
+        ok = rule(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("content"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING_HL7, "content") && ok; 
+        if (!"supplement".equals(cs.getChildValue("content"))) {
+          ok = rule(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("caseSensitive"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING_HL7, "caseSensitive") && ok;
+        }
+        return ok;
+      } else {
+        warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("url"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING, "url");                      
+        warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("version"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING, "version");                      
+        warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("title"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING, "title");                      
+        warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("name"), I18nConstants.CODESYSTEM_SHAREABLE_EXTRA_MISSING, "name");                      
+        warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("status"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING, "status");                      
+        warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("experimental"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING, "experimental");                      
+        warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("description"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING, "description"); 
+        warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("content"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING, "content"); 
+        if (!"supplement".equals(cs.getChildValue("content"))) {
+          warning(errors, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("caseSensitive"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING, "caseSensitive");
+        }
+      }
+    }
+    return true;
+  }
+  
   private void metaChecks(List<ValidationMessage> errors, Element cs, NodeStack stack, String url,  String content, String caseSensitive, String hierarchyMeaning, boolean isSupplement) {
     if (isSupplement) {
       if (!"supplement".equals(content)) {
@@ -93,7 +140,7 @@ public class CodeSystemValidator  extends BaseValidator {
       }
       if (!Utilities.noString(hierarchyMeaning)) {
         NodeStack s = stack.push(cs.getNamedChild("hierarchyMeaning"), -1, null, null);
-        rule(errors, IssueType.BUSINESSRULE, s.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL, "caseSensitive");
+        rule(errors, IssueType.BUSINESSRULE, s.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL, "hierarchyMeaning");
       }
 
     } else {
@@ -150,11 +197,13 @@ public class CodeSystemValidator  extends BaseValidator {
     return false;
   }
 
-  private void validateSupplementConcept(List<ValidationMessage> errors, Element concept, NodeStack stack, String supp, ValidationOptions options) {
+  private boolean validateSupplementConcept(List<ValidationMessage> errors, Element concept, NodeStack stack, String supp, ValidationOptions options) {
     String code = concept.getChildValue("code");
     if (!Utilities.noString(code)) {
       org.hl7.fhir.r5.context.IWorkerContext.ValidationResult res = context.validateCode(options, systemFromCanonical(supp), versionFromCanonical(supp), code, null);
-      rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), res.isOk(), I18nConstants.CODESYSTEM_CS_SUPP_INVALID_CODE, supp, code);
+      return rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), res.isOk(), I18nConstants.CODESYSTEM_CS_SUPP_INVALID_CODE, supp, code);
+    } else {
+      return true;
     }
 
   }

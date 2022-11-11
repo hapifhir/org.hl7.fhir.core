@@ -304,7 +304,7 @@ public class VersionUtilities {
   public static boolean isMajMinOrLaterPatch(String test, String current) {
     String t = getMajMin(test);
     String c = getMajMin(current);
-    if (c != null && c.compareTo(t) == 0) {
+    if (c != null && t != null && c.compareTo(t) == 0) {
       String pt = getPatch(test);
       String pc = getPatch(current);
       if (pt==null || "x".equals(pt)) {
@@ -487,7 +487,6 @@ public class VersionUtilities {
 
       res.add("ActivityDefinition");
       res.add("CapabilityStatement");
-      res.add("CapabilityStatement2");
       res.add("ChargeItemDefinition");
       res.add("Citation");
       res.add("CodeSystem");
@@ -563,6 +562,19 @@ public class VersionUtilities {
       v = v.substring(0, refVer.length());
     }
     return refVer.equals(v);
+  }
+
+  public static String getSpecUrl(String v) {
+    switch (getMajMin(v)) {
+    case "1.0" : return "http://hl7.org/fhir/DSTU1";
+    case "1.4" : return "http://hl7.org/fhir/DSTU2";
+    case "3.0" : return "http://hl7.org/fhir/STU3";
+    case "4.0" : return "http://hl7.org/fhir/R4";
+    case "4.5" : return "http://build.fhir.org";
+    case "5.0" : return "http://build.fhir.org";
+    default:
+      return "http://hl7.org/fhir";
+    }
   }
 
 

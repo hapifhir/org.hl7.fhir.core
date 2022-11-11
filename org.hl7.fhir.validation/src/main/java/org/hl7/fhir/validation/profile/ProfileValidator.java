@@ -39,10 +39,10 @@ import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.validation.BaseValidator;
@@ -83,8 +83,9 @@ public class ProfileValidator extends BaseValidator {
     List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
     
     // must have a FHIR version- GF#3160
-    warning(errors, IssueType.BUSINESSRULE, profile.getUrl(), profile.hasFhirVersion(), "Profiles SHOULD state the FHIR Version on which they are based");
-    warning(errors, IssueType.BUSINESSRULE, profile.getUrl(), profile.hasVersion(), "Profiles SHOULD state their own version");
+    String s = (profile.getKind() == StructureDefinitionKind.LOGICAL) ? "Logical Models" : "Profiles";
+    warning(errors, IssueType.BUSINESSRULE, profile.getUrl(), profile.hasFhirVersion(), s+" SHOULD state the FHIR Version on which they are based");
+    warning(errors, IssueType.BUSINESSRULE, profile.getUrl(), profile.hasVersion(), s+" SHOULD state their own version");
     
     // extensions must be defined
     for (ElementDefinition ec : profile.getDifferential().getElement())

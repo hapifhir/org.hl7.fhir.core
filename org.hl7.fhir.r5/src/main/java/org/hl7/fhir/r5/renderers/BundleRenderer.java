@@ -7,7 +7,6 @@ import java.util.List;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
@@ -17,15 +16,12 @@ import org.hl7.fhir.r5.model.Bundle.BundleEntrySearchComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleType;
 import org.hl7.fhir.r5.model.Composition;
 import org.hl7.fhir.r5.model.Composition.SectionComponent;
-import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Provenance;
 import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
-import org.hl7.fhir.r5.renderers.utils.BaseWrappers.PropertyWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
@@ -79,8 +75,13 @@ public class BundleRenderer extends ResourceRenderer {
         if (be.has("fullUrl")) {
           root.an(makeInternalBundleLink(be.get("fullUrl").primitiveValue()));
         }
-        if (be.has("resource") && be.getChildByName("resource").getValues().get(0).has("id")) {
-          root.an(be.get("resource").fhirType() + "_" + be.getChildByName("resource").getValues().get(0).get("id").primitiveValue());
+        if (be.has("resource")) {
+          if (be.getChildByName("resource").getValues().get(0).has("id")) {
+            root.an(be.get("resource").fhirType() + "_" + be.getChildByName("resource").getValues().get(0).get("id").primitiveValue());
+          } else {
+            String id = makeIdFromBundleEntry(be.get("fullUrl").primitiveValue());
+            root.an(be.get("resource").fhirType() + "_" + id);
+          }
         }
         root.hr();
         if (be.has("fullUrl")) {
@@ -101,6 +102,7 @@ public class BundleRenderer extends ResourceRenderer {
           if (xn == null || xn.isEmpty()) {
             ResourceRenderer rr = RendererFactory.factory(rw, context);
             try {
+              rr.setRcontext(new ResourceContext(rcontext, rw));
               xn = rr.render(rw);
             } catch (Exception e) {
               xn = new XhtmlNode();
@@ -128,7 +130,7 @@ public class BundleRenderer extends ResourceRenderer {
       if (subject.hasNarrative()) {
         x.addChildren(subject.getNarrative());        
       } else {
-        RendererFactory.factory(subject, context).render(x, subject);
+        RendererFactory.factory(subject, context, new ResourceContext(rcontext, subject)).render(x, subject);
       }
     }
     x.hr();
@@ -204,12 +206,14 @@ public class BundleRenderer extends ResourceRenderer {
       if (nx != null && !nx.isEmpty()) {
         x.addChildren(nx);        
       } else {
-        RendererFactory.factory(subject, context).render(x, subject);
+        RendererFactory.factory(subject, context).setRcontext(new ResourceContext(rcontext, subject)).render(x, subject);
       }
     }
     x.hr();
     if (!comp.getText().hasDiv()) {
-      ResourceRenderer rr = RendererFactory.factory(comp, getContext());      rr.render(comp);
+      ResourceRenderer rr = RendererFactory.factory(comp, getContext());     
+      rr.setRcontext(new ResourceContext(rcontext, comp));
+      rr.render(comp);
     }
     if (comp.getText().hasDiv()) {
       x.addChildren(comp.getText().getDiv());
@@ -292,8 +296,14 @@ public class BundleRenderer extends ResourceRenderer {
         if (i > start) {
           if (be.hasFullUrl())
             x.an(makeInternalBundleLink(be.getFullUrl()));
-          if (be.hasResource() && be.getResource().hasId())
-            x.an(be.getResource().getResourceType().name() + "_" + be.getResource().getId());
+          if (be.hasResource()) {
+            if (be.getResource().hasId()) {
+              x.an(be.getResource().getResourceType().name() + "_" + be.getResource().getId());
+            } else {
+              String id = makeIdFromBundleEntry(be.getFullUrl());
+              x.an(be.getResource().getResourceType().name() + "_" + id);
+            }
+          }
           x.hr();
           if (docMode) {
             if (be.hasFullUrl() && be.hasResource()) {
@@ -329,6 +339,7 @@ public class BundleRenderer extends ResourceRenderer {
               if (xn == null || xn.isEmpty()) {
                 ResourceRenderer rr = RendererFactory.factory(be.getResource(), context);
                 try {
+                  rr.setRcontext(new ResourceContext(rcontext, be.getResource()));
                   xn = rr.build(be.getResource());
                 } catch (Exception e) {
                   xn = makeExceptionXhtml(e, "generating narrative");

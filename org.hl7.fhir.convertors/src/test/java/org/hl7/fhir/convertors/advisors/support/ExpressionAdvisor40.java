@@ -1,13 +1,13 @@
 package org.hl7.fhir.convertors.advisors.support;
 
+import javax.annotation.Nonnull;
+
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Uri10_40;
 import org.hl7.fhir.dstu2.model.StringType;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Expression;
 import org.hl7.fhir.r4.model.Extension;
-
-import javax.annotation.Nonnull;
 
 public final class ExpressionAdvisor40 extends BaseAdvisor_10_40 {
   public boolean useAdvisorForExtension(@Nonnull String path, @Nonnull Extension ext) throws FHIRException {

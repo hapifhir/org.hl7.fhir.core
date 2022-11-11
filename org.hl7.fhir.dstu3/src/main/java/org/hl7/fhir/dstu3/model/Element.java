@@ -173,6 +173,23 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
       return getExtension().get(0);
     }
 
+
+    public Extension getExtensionByUrl(String theUrl) {
+      org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
+      ArrayList<Extension> retVal = new ArrayList<Extension>();
+      for (Extension next : getExtension()) {
+        if (theUrl.equals(next.getUrl())) {
+          retVal.add(next);
+        }
+      }
+      if (retVal.size() == 0)
+        return null;
+      else {
+        org.apache.commons.lang3.Validate.isTrue(retVal.size() == 1, "Url "+theUrl+" must have only one match");
+        return retVal.get(0);
+      }
+    }
+
    /**
     * Returns an unmodifiable list containing all extensions on this element which 
     * match the given URL.

@@ -1,5 +1,8 @@
 package org.hl7.fhir.convertors;
 
+import java.io.IOException;
+import java.util.stream.Stream;
+
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r4.model.Base64BinaryType;
@@ -24,9 +27,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import java.io.IOException;
-import java.util.stream.Stream;
 
 public class VersionConvertorPrimitiveType40_50Test {
 

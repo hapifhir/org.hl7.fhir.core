@@ -38,6 +38,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.elementmodel.Element;
@@ -570,8 +571,6 @@ public class StructureMapUtilities {
         b.append(rtp.getValueDecimalType().asStringValue());
       else if (rtp.hasValueIdType())
         b.append(rtp.getValueIdType().asStringValue());
-      else if (rtp.hasValueDecimalType())
-        b.append(rtp.getValueDecimalType().asStringValue());
       else if (rtp.hasValueIntegerType())
         b.append(rtp.getValueIntegerType().asStringValue());
       else
@@ -1315,13 +1314,13 @@ public class StructureMapUtilities {
   private List<StructureMap> findMatchingMaps(String value) {
     List<StructureMap> res = new ArrayList<StructureMap>();
     if (value.contains("*")) {
-      for (StructureMap sm : worker.listTransforms()) {
+      for (StructureMap sm : worker.fetchResourcesByType(StructureMap.class)) {
         if (urlMatches(value, sm.getUrl())) {
           res.add(sm);
         }
       }
     } else {
-      StructureMap sm = worker.getTransform(value);
+      StructureMap sm = worker.fetchResource(StructureMap.class, value);
       if (sm != null)
         res.add(sm);
     }
@@ -1861,7 +1860,7 @@ public class StructureMapUtilities {
 
     String su = conceptMapUrl;
     if (conceptMapUrl.equals("http://hl7.org/fhir/ConceptMap/special-oid2uri")) {
-      String uri = worker.oid2Uri(src.getCode());
+      String uri = new ContextUtilities(worker).oid2Uri(src.getCode());
       if (uri == null)
         uri = "urn:oid:" + src.getCode();
       if ("uri".equals(fieldToReturn))
@@ -2408,7 +2407,7 @@ public class StructureMapUtilities {
   private TypeDetails getParam(VariablesForProfiling vars, StructureMapGroupRuleTargetParameterComponent parameter) throws DefinitionException {
     DataType p = parameter.getValue();
     if (!(p instanceof IdType))
-      return new TypeDetails(CollectionStatus.SINGLETON, ProfileUtilities.sdNs(p.fhirType(), worker.getOverrideVersionNs()));
+      return new TypeDetails(CollectionStatus.SINGLETON, ProfileUtilities.sdNs(p.fhirType(), null));
     else {
       String n = ((IdType) p).asStringValue();
       VariableForProfiling b = vars.get(VariableMode.INPUT, n);
@@ -2517,7 +2516,7 @@ public class StructureMapUtilities {
 
   private void addChildMappings(StringBuilder b, String id, String indent, StructureDefinition sd, ElementDefinition ed, boolean inner) throws DefinitionException {
     boolean first = true;
-    List<ElementDefinition> children = profileUtilities.getChildMap(sd, ed);
+    List<ElementDefinition> children = profileUtilities.getChildMap(sd, ed).getList();
     for (ElementDefinition child : children) {
       if (first && inner) {
         b.append(" then {\r\n");

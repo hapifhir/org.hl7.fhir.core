@@ -1,17 +1,16 @@
 package org.hl7.fhir.convertors.conv40_50;
 
-import org.apache.commons.codec.binary.Base64;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.apache.commons.codec.binary.Base64;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 public class AuditEvent40_50Test {
 

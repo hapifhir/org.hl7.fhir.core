@@ -16,6 +16,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.xml.sax.SAXException;
 
 public class SearchParameterAnalysis implements IPackageVisitorProcessor {
@@ -97,7 +98,7 @@ public class SearchParameterAnalysis implements IPackageVisitorProcessor {
   private Map<String, SearchParameterVersionAnalysis> versions = new HashMap<String, SearchParameterAnalysis.SearchParameterVersionAnalysis>();
   
   @Override
-  public void processResource(String pid, String version, String type, byte[] content) throws FHIRException {
+  public void processResource(String pid, NpmPackage npm, String version, String type, String id, byte[] content) throws FHIRException {
 //    System.out.println("v"+version+" "+type+" from "+pid);    
     boolean core = pid.startsWith("hl7.fhir.r") && (pid.contains(".core") || pid.contains(".examples"));
     version = VersionUtilities.getMajMin(version);

@@ -54,9 +54,10 @@ import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
-import org.hl7.fhir.r5.context.IWorkerContext.IPackageLoadingTracker;
 import org.hl7.fhir.r5.context.IWorkerContext.ILoggingService.LogCategory;
+import org.hl7.fhir.r5.context.IWorkerContextManager.IPackageLoadingTracker;
 import org.hl7.fhir.r5.context.TerminologyCache.CacheToken;
+import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.CanonicalResource;
@@ -70,6 +71,7 @@ import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.Constants;
+import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
@@ -87,6 +89,7 @@ import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.PlanDefinition;
 import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.Reference;
+import org.hl7.fhir.r5.model.Requirements;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.model.StringType;
@@ -149,6 +152,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     
     public Resource getResource() {
       return resource != null ? resource : proxy.getResource();
+    }
+      
+    public CanonicalResourceProxy getProxy() {
+      return proxy;
     }
     
     public String getUrl() {
@@ -218,6 +225,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private final CanonicalResourceManager<Questionnaire> questionnaires = new CanonicalResourceManager<Questionnaire>(false);
   private final CanonicalResourceManager<OperationDefinition> operations = new CanonicalResourceManager<OperationDefinition>(false);
   private final CanonicalResourceManager<PlanDefinition> plans = new CanonicalResourceManager<PlanDefinition>(false);
+  private final CanonicalResourceManager<ActorDefinition> actors = new CanonicalResourceManager<ActorDefinition>(false);
+  private final CanonicalResourceManager<Requirements> requirements = new CanonicalResourceManager<Requirements>(false);
   private final CanonicalResourceManager<NamingSystem> systems = new CanonicalResourceManager<NamingSystem>(false);
   private Map<String, NamingSystem> systemUrlMap;
 
@@ -246,7 +255,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   protected TerminologyCache txCache;
   protected TimeTracker clock;
   private boolean tlogging = true;
-  private ICanonicalResourceLocator locator;
+  private IWorkerContextManager.ICanonicalResourceLocator locator;
   protected String userAgent;
 
   protected BaseWorkerContext() throws FileNotFoundException, IOException, FHIRException {
@@ -300,10 +309,24 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       canRunWithoutTerminology = other.canRunWithoutTerminology;
       noTerminologyServer = other.noTerminologyServer;
       if (other.txCache != null)
-        txCache = other.txCache.copy();
+        txCache = other.txCache; // no copy. for now?
       expandCodesLimit = other.expandCodesLimit;
       logger = other.logger;
       expParameters = other.expParameters;
+      version = other.version;
+      cacheId = other.cacheId;
+      isTxCaching = other.isTxCaching;
+      cached.addAll(other.cached);
+      supportedCodeSystems.addAll(other.supportedCodeSystems);
+      unsupportedCodeSystems.addAll(other.unsupportedCodeSystems);
+      codeSystemsUsed.addAll(other.codeSystemsUsed);
+      ucumService = other.ucumService;
+      binaries.putAll(other.binaries);
+      oidCache.putAll(other.oidCache);
+      validationCache.putAll(other.validationCache);
+      tlogging = other.tlogging;
+      locator = other.locator;
+      userAgent = other.userAgent;
     }
   }
   
@@ -385,6 +408,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       case "NamingSystem":
         systems.register(r, packageInfo);
         break;
+      case "Requirements":
+        requirements.register(r, packageInfo);
+        break;
+      case "ActorDefinition":
+        actors.register(r, packageInfo);
+        break;
       }
     }
   }
@@ -454,6 +483,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           transforms.see((StructureMap) m, packageInfo);
         } else if (r instanceof NamingSystem) {
           systems.see((NamingSystem) m, packageInfo);
+          systemUrlMap = null;
+        } else if (r instanceof Requirements) {
+          requirements.see((Requirements) m, packageInfo);
+        } else if (r instanceof ActorDefinition) {
+          actors.see((ActorDefinition) m, packageInfo);
           systemUrlMap = null;
         }
       }
@@ -1297,20 +1331,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     txCache.clear();
   }
 
-  
-  @Override
-  public List<ConceptMap> findMapsForSource(String url) throws FHIRException {
-    synchronized (lock) {
-      List<ConceptMap> res = new ArrayList<ConceptMap>();
-      for (ConceptMap map : maps.getList()) {
-        if (((Reference) map.getSourceScope()).getReference().equals(url)) { 
-          res.add(map);
-        } 
-      } 
-      return res;
-    }
-  }
-
   public boolean isCanRunWithoutTerminology() {
     return canRunWithoutTerminology;
   }
@@ -1383,7 +1403,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
    
     if (class_ == StructureDefinition.class) {
-      uri = ProfileUtilities.sdNs(uri, getOverrideVersionNs());
+      uri = ProfileUtilities.sdNs(uri, null);
     }
     synchronized (lock) {
 
@@ -1435,20 +1455,16 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (transforms.has(uri)) {
           return (T) transforms.get(uri, version);
         } 
+        if (actors.has(uri)) {
+          return (T) transforms.get(uri, version);
+        } 
+        if (requirements.has(uri)) {
+          return (T) transforms.get(uri, version);
+        } 
         if (questionnaires.has(uri)) {
           return (T) questionnaires.get(uri, version);
         } 
-        if (uri.matches(Constants.URI_REGEX) && !uri.contains("ValueSet")) {
-          return null;
-        }
 
-        // it might be a special URL.
-        if (Utilities.isAbsoluteUrl(uri) || uri.startsWith("ValueSet/")) {
-          Resource res = null; // findTxValueSet(uri);
-          if (res != null) {
-            return (T) res;
-          }
-        }
         for (Map<String, ResourceProxy> rt : allResourcesById.values()) {
           for (ResourceProxy r : rt.values()) {
             if (uri.equals(r.getUrl())) {
@@ -1458,6 +1474,17 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
             }
           }            
         }
+        if (uri.matches(Constants.URI_REGEX) && !uri.contains("ValueSet")) {
+          return null;
+        }
+
+        // it might be a special URL.
+//        if (Utilities.isAbsoluteUrl(uri) || uri.startsWith("ValueSet/")) {
+//          Resource res = null; // findTxValueSet(uri);
+//          if (res != null) {
+//            return (T) res;
+//          }
+//        }
         return null;      
       } else if (class_ == ImplementationGuide.class) {
         return (T) guides.get(uri, version);
@@ -1477,6 +1504,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         return (T) codeSystems.get(uri, version);
       } else if (class_ == ConceptMap.class) {
         return (T) maps.get(uri, version);
+      } else if (class_ == ActorDefinition.class) {
+        return (T) actors.get(uri, version);
+      } else if (class_ == Requirements.class) {
+        return (T) requirements.get(uri, version);
       } else if (class_ == PlanDefinition.class) {
         return (T) plans.get(uri, version);
       } else if (class_ == OperationDefinition.class) {
@@ -1509,7 +1540,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (uri == null) {
       return null;
     }
-    uri = ProfileUtilities.sdNs(uri, getOverrideVersionNs());
+    uri = ProfileUtilities.sdNs(uri, null);
 
     synchronized (lock) {
 
@@ -1557,6 +1588,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (transforms.has(uri)) {
         return transforms.getPackageInfo(uri, version);
       } 
+      if (actors.has(uri)) {
+        return actors.getPackageInfo(uri, version);
+      } 
+      if (requirements.has(uri)) {
+        return requirements.getPackageInfo(uri, version);
+      } 
       if (questionnaires.has(uri)) {
         return questionnaires.getPackageInfo(uri, version);
       }         
@@ -1571,7 +1608,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
    
     if ("StructureDefinition".equals(cls)) {
-      uri = ProfileUtilities.sdNs(uri, getOverrideVersionNs());
+      uri = ProfileUtilities.sdNs(uri, null);
     }
     synchronized (lock) {
 
@@ -1624,6 +1661,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (transforms.has(uri)) {
           return (T) transforms.get(uri, version);
         } 
+        if (actors.has(uri)) {
+          return (T) actors.get(uri, version);
+        } 
+        if (requirements.has(uri)) {
+          return (T) requirements.get(uri, version);
+        } 
         if (questionnaires.has(uri)) {
           return (T) questionnaires.get(uri, version);
         } 
@@ -1646,6 +1689,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         return (T) structures.get(uri, version);
       } else if ("StructureMap".equals(cls)) {
         return (T) transforms.get(uri, version);
+      } else if ("Requirements".equals(cls)) {
+        return (T) requirements.get(uri, version);
+      } else if ("ActorDefinition".equals(cls)) {
+        return (T) actors.get(uri, version);
       } else if ("ValueSet".equals(cls)) {
         return (T) valueSets.get(uri, version);
       } else if ("CodeSystem".equals(cls)) {
@@ -1693,11 +1740,71 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       throw new FHIRException(formatMessage(I18nConstants.NOT_DONE_YET_CANT_FETCH_, uri));
     }
   }
+  
+  @SuppressWarnings("unchecked")
+  public <T extends Resource> List<T> fetchResourcesByType(Class<T> class_) {
+
+    List<T> res = new ArrayList<>();
+
+    synchronized (lock) {
+
+      if (class_ == Resource.class || class_ == DomainResource.class || class_ == CanonicalResource.class || class_ == null) {
+        res.addAll((List<T>) structures.getList());
+        res.addAll((List<T>) guides.getList());
+        res.addAll((List<T>) capstmts.getList());
+        res.addAll((List<T>) measures.getList());
+        res.addAll((List<T>) libraries.getList());
+        res.addAll((List<T>) valueSets.getList());
+        res.addAll((List<T>) codeSystems.getList());
+        res.addAll((List<T>) operations.getList());
+        res.addAll((List<T>) searchParameters.getList());
+        res.addAll((List<T>) plans.getList());
+        res.addAll((List<T>) maps.getList());
+        res.addAll((List<T>) transforms.getList());
+        res.addAll((List<T>) questionnaires.getList());
+        res.addAll((List<T>) systems.getList());
+        res.addAll((List<T>) actors.getList());
+        res.addAll((List<T>) requirements.getList());
+      } else if (class_ == ImplementationGuide.class) {
+        res.addAll((List<T>) guides.getList());
+      } else if (class_ == CapabilityStatement.class) {
+        res.addAll((List<T>) capstmts.getList());
+      } else if (class_ == Measure.class) {
+        res.addAll((List<T>) measures.getList());
+      } else if (class_ == Library.class) {
+        res.addAll((List<T>) libraries.getList());
+      } else if (class_ == StructureDefinition.class) {
+        res.addAll((List<T>) structures.getList());
+      } else if (class_ == StructureMap.class) {
+        res.addAll((List<T>) transforms.getList());
+      } else if (class_ == ValueSet.class) {
+        res.addAll((List<T>) valueSets.getList());
+      } else if (class_ == CodeSystem.class) {
+        res.addAll((List<T>) codeSystems.getList());
+      } else if (class_ == NamingSystem.class) {
+        res.addAll((List<T>) systems.getList());
+      } else if (class_ == ActorDefinition.class) {
+        res.addAll((List<T>) actors.getList());
+      } else if (class_ == Requirements.class) {
+        res.addAll((List<T>) requirements.getList());
+      } else if (class_ == ConceptMap.class) {
+        res.addAll((List<T>) maps.getList());
+      } else if (class_ == PlanDefinition.class) {
+        res.addAll((List<T>) plans.getList());
+      } else if (class_ == OperationDefinition.class) {
+        res.addAll((List<T>) operations.getList());
+      } else if (class_ == Questionnaire.class) {
+        res.addAll((List<T>) questionnaires.getList());
+      } else if (class_ == SearchParameter.class) {
+        res.addAll((List<T>) searchParameters.getList());
+      }
+    }
+    return res;
+  }
 
   private Set<String> notCanonical = new HashSet<String>();
 
-  private String overrideVersionNs;
-  protected IPackageLoadingTracker packageTracker;
+  protected IWorkerContextManager.IPackageLoadingTracker packageTracker;
 
   @Override
   public Resource fetchResourceById(String type, String uri) {
@@ -1886,6 +1993,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       } else if (fhirType.equals("NamingSystem")) {
         systems.drop(id);
         systemUrlMap = null;
+      } else if (fhirType.equals("ActorDefinition")) {
+        actors.drop(id);
+      } else if (fhirType.equals("Requirements")) {
+        requirements.drop(id);
       }
     }
   }
@@ -1905,25 +2016,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
-  @Override
-  public List<CanonicalResource> allConformanceResources() {
-    synchronized (lock) {
-      List<CanonicalResource> result = new ArrayList<CanonicalResource>();
-      structures.listAllM(result);
-      guides.listAllM(result);
-      capstmts.listAllM(result);
-      measures.listAllM(result);
-      libraries.listAllM(result);
-      codeSystems.listAllM(result);
-      valueSets.listAllM(result);
-      maps.listAllM(result);
-      transforms.listAllM(result);
-      plans.listAllM(result);
-      questionnaires.listAllM(result);
-      systems.listAllM(result);
-      return result;
-    }
-  }
   
   public String listSupportedSystems() {
     synchronized (lock) {
@@ -1950,20 +2042,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return m;
   }
   
-  public List<StructureMap> listTransforms() {
-    List<StructureMap> m = new ArrayList<StructureMap>();
-    synchronized (lock) {
-      transforms.listAll(m);    
-    }
-    return m;
-  }
-  
-  public StructureMap getTransform(String code) {
-    synchronized (lock) {
-      return transforms.get(code);
-    }
-  }
-
   public List<StructureDefinition> listStructures() {
     List<StructureDefinition> m = new ArrayList<StructureDefinition>();
     synchronized (lock) {
@@ -1977,63 +2055,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return structures.get(code);
     }
   }
-
-  @Override
-  public String oid2Uri(String oid) {
-    synchronized (lock) {
-      if (oid != null && oid.startsWith("urn:oid:")) {
-        oid = oid.substring(8);
-      }
-      if (oidCache.containsKey(oid)) {
-        return oidCache.get(oid);
-      }
-
-      String uri = OIDUtils.getUriForOid(oid);
-      if (uri != null) {
-        oidCache.put(oid, uri);
-        return uri;
-      }
-      CodeSystem cs = fetchCodeSystem("http://terminology.hl7.org/CodeSystem/v2-tables");
-      if (cs != null) {
-        for (ConceptDefinitionComponent cc : cs.getConcept()) {
-          for (ConceptPropertyComponent cp : cc.getProperty()) {
-            if (Utilities.existsInList(cp.getCode(), "v2-table-oid", "v2-cs-oid") && oid.equals(cp.getValue().primitiveValue())) {
-              for (ConceptPropertyComponent cp2 : cc.getProperty()) {
-                if ("v2-cs-uri".equals(cp2.getCode())) {
-                  oidCache.put(oid, cp2.getValue().primitiveValue());
-                  return cp2.getValue().primitiveValue();                  
-                }
-              }              
-            }
-          }
-        }
-      }
-      for (CodeSystem css : codeSystems.getList()) {
-        if (("urn:oid:"+oid).equals(css.getUrl())) {
-          oidCache.put(oid, css.getUrl());
-          return css.getUrl();
-        }
-        for (Identifier id : css.getIdentifier()) {
-          if ("urn:ietf:rfc:3986".equals(id.getSystem()) && ("urn:oid:"+oid).equals(id.getValue())) {
-            oidCache.put(oid, css.getUrl());
-            return css.getUrl();
-          }
-        }
-      }
-      for (NamingSystem ns : systems.getList()) {
-        if (hasOid(ns, oid)) {
-          uri = getUri(ns);
-          if (uri != null) {
-            oidCache.put(oid, null);
-            return null;
-          }
-        }
-      }
-    }
-    oidCache.put(oid, null);
-    return null;
-  }
-  
 
   private String getUri(NamingSystem ns) {
     for (NamingSystemUniqueIdComponent id : ns.getUniqueId()) {
@@ -2066,16 +2087,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   @Override
-  public String getOverrideVersionNs() {
-    return overrideVersionNs;
-  }
-
-  @Override
-  public void setOverrideVersionNs(String value) {
-    overrideVersionNs = value;
-  }
-
-  @Override
   public ILoggingService getLogger() {
     return logger;
   }
@@ -2105,15 +2116,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     this.ucumService = ucumService;
   }
 
-  @Override
-  public List<StructureDefinition> getStructures() {
-    List<StructureDefinition> res = new ArrayList<>();
-    synchronized (lock) { // tricky, because you need to lock this as well, but it's really not in use yet
-      structures.listAll(res);
-    }
-    return res;
-  }
-  
   public String getLinkForUrl(String corePath, String url) {
     if (url == null) {
       return null;
@@ -2133,6 +2135,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     
     if (transforms.has(url)) {
       return transforms.get(url).getUserString("path");
+    }
+    
+    if (actors.has(url)) {
+      return actors.get(url).getUserString("path");
+    }
+    
+    if (requirements.has(url)) {
+      return requirements.get(url).getUserString("path");
     }
     
     if (structures.has(url)) {
@@ -2203,16 +2213,35 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   public void finishLoading() {
+    if (!hasResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Base")) {
+      cacheResource(ProfileUtilities.makeBaseDefinition(version));
+    }
     for (StructureDefinition sd : listStructures()) {
       try {
         if (sd.getSnapshot().isEmpty()) { 
-          generateSnapshot(sd);
+          new ContextUtilities(this).generateSnapshot(sd);
 //          new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "snapshot", tail(sd.getUrl())+".xml")), sd);
         }
       } catch (Exception e) {
-//        System.out.println("Unable to generate snapshot for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
+        System.out.println("Unable to generate snapshot for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
       }
     }  
+    codeSystems.setVersion(version);
+    valueSets.setVersion(version);
+    maps.setVersion(version);
+    transforms.setVersion(version);
+    structures.setVersion(version);
+    measures.setVersion(version);
+    libraries.setVersion(version);
+    guides.setVersion(version);
+    capstmts.setVersion(version);
+    searchParameters.setVersion(version);
+    questionnaires.setVersion(version);
+    operations.setVersion(version);
+    plans.setVersion(version);
+    systems.setVersion(version);
+    actors.setVersion(version);
+    requirements.setVersion(version);
   }
 
   protected String tail(String url) {
@@ -2273,32 +2302,19 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public int countAllCaches() {
     return codeSystems.size() + valueSets.size() + maps.size() + transforms.size() + structures.size() + measures.size() + libraries.size() + 
-        guides.size() + capstmts.size() + searchParameters.size() + questionnaires.size() + operations.size() + plans.size() + systems.size();
+        guides.size() + capstmts.size() + searchParameters.size() + questionnaires.size() + operations.size() + plans.size() + 
+        systems.size()+ actors.size()+ requirements.size();
   }
 
   public Set<String> getCodeSystemsUsed() {
     return codeSystemsUsed ;
   }
  
-  public String getSpecUrl() {
-    String v = getVersion();
-    switch (VersionUtilities.getMajMin(v)) {
-    case "1.0" : return "http://hl7.org/fhir/DSTU1";
-    case "1.4" : return "http://hl7.org/fhir/DSTU2";
-    case "3.0" : return "http://hl7.org/fhir/STU3";
-    case "4.0" : return "http://hl7.org/fhir/R4";
-    case "4.5" : return "http://build.fhir.org";
-    case "5.0" : return "http://build.fhir.org";
-    default:
-      return "http://hl7.org/fhir";
-    }
-  }
-
-  public ICanonicalResourceLocator getLocator() {
+  public IWorkerContextManager.ICanonicalResourceLocator getLocator() {
     return locator;
   }
 
-  public void setLocator(ICanonicalResourceLocator locator) {
+  public void setLocator(IWorkerContextManager.ICanonicalResourceLocator locator) {
     this.locator = locator;
   }
 
@@ -2312,31 +2328,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       txClient.setUserAgent(userAgent);
   }
 
-  public List<String> getCanonicalResourceNames() {
-    List<String> names = new ArrayList<>();
-    for (StructureDefinition sd : allStructures()) {
-      if (sd.getKind() == StructureDefinitionKind.RESOURCE && !sd.getAbstract() && hasUrlProperty(sd)) {
-        names.add(sd.getType());
-      }
-    }
-    return names;
-  }
 
-  private boolean hasUrlProperty(StructureDefinition sd) {
-    for (ElementDefinition ed : sd.getSnapshot().getElement()) {
-      if (ed.getPath().equals(sd.getType()+".url")) {
-        return true;
-      }
-    }
-    return false;
-  }
-  
-  public IPackageLoadingTracker getPackageTracker() {
+  public IWorkerContextManager.IPackageLoadingTracker getPackageTracker() {
     return packageTracker;
   }
   
-  public IWorkerContext setPackageTracker(IPackageLoadingTracker packageTracker) {
+  public IWorkerContext setPackageTracker(IWorkerContextManager.IPackageLoadingTracker packageTracker) {
     this.packageTracker = packageTracker;
     return this;
   }
+  
 }

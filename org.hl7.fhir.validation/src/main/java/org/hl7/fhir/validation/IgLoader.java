@@ -1,14 +1,24 @@
 package org.hl7.fhir.validation;
 
-import com.google.gson.JsonObject;
-import lombok.Getter;
-import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
-import org.hl7.fhir.convertors.conv14_50.VersionConvertor_14_50;
-import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -18,31 +28,20 @@ import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
+import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.SimpleHTTPClient;
 import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
-import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.turtle.Turtle;
-import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.hl7.fhir.validation.cli.utils.Common;
 import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
-import org.w3c.dom.Document;
 
-import java.io.*;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
+import lombok.Getter;
 
 public class IgLoader {
 
@@ -219,27 +218,56 @@ public class IgLoader {
       }
       String pid = explore ? getPackageCacheManager().getPackageId(src) : null;
       if (!Utilities.noString(pid))
-        return fetchByPackage(pid + (v == null ? "" : "#" + v));
+        return fetchByPackage(pid + (v == null ? "" : "#" + v), false);
       else
         return fetchFromUrl(src + (v == null ? "" : "|" + v), explore);
     }
 
     File f = new File(Utilities.path(src));
     if (f.exists()) {
-      if (f.isDirectory() && new File(Utilities.path(src, "package.tgz")).exists())
-        return loadPackage(new FileInputStream(Utilities.path(src, "package.tgz")), Utilities.path(src, "package.tgz"));
-      if (f.isDirectory() && new File(Utilities.path(src, "igpack.zip")).exists())
-        return readZip(new FileInputStream(Utilities.path(src, "igpack.zip")));
-      if (f.isDirectory() && new File(Utilities.path(src, "validator.pack")).exists())
-        return readZip(new FileInputStream(Utilities.path(src, "validator.pack")));
-      if (f.isDirectory())
+      if (f.isDirectory() && new File(Utilities.path(src, "package.tgz")).exists()) {
+        FileInputStream stream = new FileInputStream(Utilities.path(src, "package.tgz"));
+        try {
+          return loadPackage(stream, Utilities.path(src, "package.tgz"), false);
+        } finally {
+          stream.close();
+        }
+      }
+      if (f.isDirectory() && new File(Utilities.path(src, "igpack.zip")).exists()) {
+        FileInputStream stream = new FileInputStream(Utilities.path(src, "igpack.zip"));
+        try {
+          return readZip(stream);
+        } finally {
+          stream.close();
+        }
+      }
+      if (f.isDirectory() && new File(Utilities.path(src, "validator.pack")).exists()) {
+        FileInputStream stream = new FileInputStream(Utilities.path(src, "validator.pack"));
+        try {
+          return readZip(stream);
+        } finally {
+          stream.close();
+        }
+      }
+      if (f.isDirectory()) {
         return scanDirectory(f, recursive);
-      if (src.endsWith(".tgz"))
-        return loadPackage(new FileInputStream(src), src);
-      if (src.endsWith(".pack"))
-        return readZip(new FileInputStream(src));
-      if (src.endsWith("igpack.zip"))
-        return readZip(new FileInputStream(src));
+      }
+      FileInputStream stream = new FileInputStream(src);
+      try {
+        if (src.endsWith(".tgz")) {
+          Map<String, byte[]> res = loadPackage(stream, src, false);
+          return res;
+        }
+        if (src.endsWith(".pack")) {
+          return readZip(stream);
+        }
+        if (src.endsWith("igpack.zip")) {
+          return readZip(stream);
+        }
+      } finally {
+        stream.close();
+      }
+
       Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), TextFile.fileToBytes(f), src, true);
       if (fmt != null) {
         Map<String, byte[]> res = new HashMap<String, byte[]>();
@@ -247,7 +275,7 @@ public class IgLoader {
         return res;
       }
     } else if ((src.matches(FilesystemPackageCacheManager.PACKAGE_REGEX) || src.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX)) && !src.endsWith(".zip") && !src.endsWith(".tgz")) {
-      return fetchByPackage(src);
+      return fetchByPackage(src, false);
     }
     throw new FHIRException("Unable to find/resolve/read " + (explore ? "-ig " : "") + src);
   }
@@ -429,7 +457,7 @@ public class IgLoader {
   }
 
 
-  private Map<String, byte[]> fetchByPackage(String src) throws FHIRException, IOException {
+  private Map<String, byte[]> fetchByPackage(String src, boolean loadInContext) throws FHIRException, IOException {
     String id = src;
     String version = null;
     if (src.contains("#")) {
@@ -447,17 +475,16 @@ public class IgLoader {
     } else
       pi = getPackageCacheManager().loadPackageFromCacheOnly(id, version);
     if (pi == null) {
-      return resolvePackage(id, version);
+      return resolvePackage(id, version, loadInContext);
     } else
-      return loadPackage(pi);
+      return loadPackage(pi, loadInContext);
   }
 
-  private Map<String, byte[]> loadPackage(InputStream stream, String name) throws FHIRException, IOException {
-    return loadPackage(NpmPackage.fromPackage(stream));
+  private Map<String, byte[]> loadPackage(InputStream stream, String name, boolean loadInContext) throws FHIRException, IOException {
+    return loadPackage(NpmPackage.fromPackage(stream), loadInContext);
   }
 
-  public Map<String, byte[]> loadPackage(NpmPackage pi) throws FHIRException, IOException {
-    getContext().getLoadedPackages().add(pi.name() + "#" + pi.version());
+  public Map<String, byte[]> loadPackage(NpmPackage pi, boolean loadInContext) throws FHIRException, IOException {
     Map<String, byte[]> res = new HashMap<String, byte[]>();
     for (String s : pi.dependencies()) {
       if (s.endsWith(".x") && s.length() > 2) {
@@ -475,11 +502,15 @@ public class IgLoader {
       if (!getContext().getLoadedPackages().contains(s)) {
         if (!VersionUtilities.isCorePackage(s)) {
           System.out.println("+  .. load IG from " + s);
-          res.putAll(fetchByPackage(s));
+          res.putAll(fetchByPackage(s, loadInContext));
         }
       }
     }
 
+    if (loadInContext) {
+//      getContext().getLoadedPackages().add(pi.name() + "#" + pi.version());
+      getContext().loadFromPackage(pi, ValidatorUtils.loaderForVersion(pi.fhirVersion()));
+    }
     for (String s : pi.listResources("CodeSystem", "ConceptMap", "ImplementationGuide", "CapabilityStatement", "SearchParameter", "Conformance", "StructureMap", "ValueSet", "StructureDefinition")) {
       res.put(s, TextFile.streamToBytes(pi.load("package", s)));
     }
@@ -488,11 +519,11 @@ public class IgLoader {
     return res;
   }
 
-  private Map<String, byte[]> resolvePackage(String id, String v) throws FHIRException, IOException {
+  private Map<String, byte[]> resolvePackage(String id, String v, boolean loadInContext) throws FHIRException, IOException {
     NpmPackage pi = getPackageCacheManager().loadPackage(id, v);
     if (pi != null && v == null)
       System.out.println("   ... Using version " + pi.version());
-    return loadPackage(pi);
+    return loadPackage(pi,  loadInContext);
   }
 
   private String readInfoVersion(byte[] bs) throws IOException {
@@ -603,7 +634,7 @@ public class IgLoader {
 
   private Map<String, byte[]> fetchFromUrl(String src, boolean explore) throws FHIRException, IOException {
     if (src.endsWith(".tgz"))
-      return loadPackage(fetchFromUrlSpecific(src, false), src);
+      return loadPackage(fetchFromUrlSpecific(src, false), src, false);
     if (src.endsWith(".pack"))
       return readZip(fetchFromUrlSpecific(src, false));
     if (src.endsWith("igpack.zip"))
@@ -613,7 +644,7 @@ public class IgLoader {
     if (explore) {
       stream = fetchFromUrlSpecific(Utilities.pathURL(src, "package.tgz"), true);
       if (stream != null)
-        return loadPackage(stream, Utilities.pathURL(src, "package.tgz"));
+        return loadPackage(stream, Utilities.pathURL(src, "package.tgz"), false);
       // todo: these options are deprecated - remove once all IGs have been rebuilt post R4 technical correction
       stream = fetchFromUrlSpecific(Utilities.pathURL(src, "igpack.zip"), true);
       if (stream != null)
@@ -760,6 +791,17 @@ public class IgLoader {
       else
         throw new FHIRException("Unsupported format for " + fn);
       r = VersionConvertorFactory_40_50.convertResource(res);
+    } else if (fhirVersion.startsWith("4.3")) {
+      org.hl7.fhir.r4b.model.Resource res;
+      if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
+        res = new org.hl7.fhir.r4b.formats.XmlParser().parse(new ByteArrayInputStream(content));
+      else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
+        res = new org.hl7.fhir.r4b.formats.JsonParser().parse(new ByteArrayInputStream(content));
+      else if (fn.endsWith(".txt") || fn.endsWith(".map"))
+        res = new org.hl7.fhir.r4b.utils.structuremap.StructureMapUtilities(null).parse(new String(content), fn);
+      else
+        throw new FHIRException("Unsupported format for " + fn);
+      r = VersionConvertorFactory_43_50.convertResource(res);
     } else if (fhirVersion.startsWith("1.4")) {
       org.hl7.fhir.dstu2016may.model.Resource res;
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
@@ -778,7 +820,7 @@ public class IgLoader {
       else
         throw new FHIRException("Unsupported format for " + fn);
       r = VersionConvertorFactory_10_50.convertResource(res, new org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor5());
-    } else if (fhirVersion.equals(Constants.VERSION) || "current".equals(fhirVersion)) {
+    } else if (fhirVersion.startsWith("5.0")) {
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
         r = new XmlParser().parse(new ByteArrayInputStream(content));
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))

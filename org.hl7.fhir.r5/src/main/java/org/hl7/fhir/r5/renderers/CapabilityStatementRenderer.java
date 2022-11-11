@@ -5,8 +5,7 @@ import java.io.UnsupportedEncodingException;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.model.DomainResource;
-import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceComponent;
@@ -14,11 +13,10 @@ import org.hl7.fhir.r5.model.CapabilityStatement.ResourceInteractionComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.SystemInteractionComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.SystemRestfulInteraction;
 import org.hl7.fhir.r5.model.CapabilityStatement.TypeRestfulInteraction;
-import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
-import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class CapabilityStatementRenderer extends ResourceRenderer {
@@ -41,7 +39,9 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     if (conf.getRest().size() > 0) {
       CapabilityStatementRestComponent rest = conf.getRest().get(0);
       XhtmlNode t = x.table(null);
-      addTableRow(t, "Mode", rest.getMode().toString());
+      if (rest.hasMode()) {
+        addTableRow(t, "Mode", rest.getMode().toString());
+      }
       addMarkdown(addTableRow(t, "Description"), rest.getDocumentation());
 
       addTableRow(t, "Transaction", showOp(rest, SystemRestfulInteraction.TRANSACTION));

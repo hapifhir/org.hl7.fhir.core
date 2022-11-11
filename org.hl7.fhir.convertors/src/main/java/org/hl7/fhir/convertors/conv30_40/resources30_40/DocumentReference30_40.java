@@ -53,6 +53,8 @@ public class DocumentReference30_40 {
       tgt.addContent(convertDocumentReferenceContentComponent(t));
     if (src.hasContext())
       tgt.setContext(convertDocumentReferenceContextComponent(src.getContext()));
+    for (org.hl7.fhir.r4.model.Reference t : src.getAuthor())
+      tgt.addAuthor(Reference30_40.convertReference(t));
     return tgt;
   }
 
@@ -91,6 +93,8 @@ public class DocumentReference30_40 {
       tgt.addContent(convertDocumentReferenceContentComponent(t));
     if (src.hasContext())
       tgt.setContext(convertDocumentReferenceContextComponent(src.getContext()));
+    for (org.hl7.fhir.dstu3.model.Reference t : src.getAuthor())
+      tgt.addAuthor(Reference30_40.convertReference(t));
     return tgt;
   }
 

@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.formats.IParser;
@@ -64,10 +65,10 @@ public class StructureMappingTests {
     context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "ed.xml"), "ed.xml", null);
     context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "st.xml"), "st.xml", null);
     context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "cda.xml"), "cda.xml", null);
-    for (StructureDefinition sd : context.getStructures()) {
+    for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
       if (!sd.hasSnapshot()) {
         System.out.println("generate snapshot for " + sd.getUrl());
-        context.generateSnapshot(sd, true);
+        new ContextUtilities(context).generateSnapshot(sd, true);
       }
     }
     if (context.getValidatorFactory() == null) {

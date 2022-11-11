@@ -4,16 +4,10 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.CodeType;
-import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Enumeration;
-import org.hl7.fhir.r5.model.Enumerations.AllResourceTypes;
-import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.OperationDefinition;
-import org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.model.SearchParameter.SearchComparator;
@@ -22,9 +16,9 @@ import org.hl7.fhir.r5.model.SearchParameter.SearchParameterComponentComponent;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -80,7 +74,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
       tr.td().tx(Utilities.pluralize("Target Resources", spd.getTarget().size()));
       td = tr.td();
       if (isAllConcreteResources(spd.getTarget())) {
-        td.ah(Utilities.pathURL(context.getSpecificationLink(), "resourcelist.html")).tx("All Resources");
+        td.ah(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "resourcelist.html")).tx("All Resources");
       } else {
         for (CodeType t : spd.getTarget()) {
           StructureDefinition sd = context.getWorker().fetchTypeDefinition(t.toString());
@@ -118,7 +112,8 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     if (spd.hasModifier()) {
       tr = tbl.tr();
       tr.td().tx("Modifiers");
-      td = tr.td().tx("Allowed: ");
+      td = tr.td();
+      td.tx("Allowed: ");
       for (Enumeration<SearchModifierCode> t : spd.getModifier()) {
         td.sep(", ");
         td.tx(t.asStringValue());
@@ -127,7 +122,8 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     if (spd.hasChain()) {
       tr = tbl.tr();
       tr.td().tx("Chains");
-      td = tr.td().tx("Allowed: ");
+      td = tr.td();
+      td.tx("Allowed: ");
       for (StringType t : spd.getChain()) {
         td.sep(", ");
         td.tx(t.asStringValue());

@@ -18,7 +18,6 @@ import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
 import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent;
-import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -34,6 +33,9 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public abstract class TerminologyRenderer extends ResourceRenderer {
   
+  private static final boolean DEBUG = false;
+
+
   public TerminologyRenderer(RenderingContext context) {
     super(context);
   }
@@ -116,9 +118,6 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
       XhtmlNode td = tr.td();
       XhtmlNode b = td.b();
       String link = m.getLink();
-      if (!Utilities.isAbsoluteUrl(link)) {
-        link = getContext().getSpecificationLink()+link;
-      }
       XhtmlNode a = b.ah(link);
       a.addText(m.getDetails().getName());
       if (m.getDetails().isDoDescription() && m.getMap().hasDescription())
@@ -309,8 +308,11 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
         a.tx("SNOMED-CT");
       }
       else {
-        if (value.startsWith("http://hl7.org") && !Utilities.existsInList(value, "http://hl7.org/fhir/sid/icd-10-us"))
-          System.out.println("Unable to resolve value set "+value);
+        if (value.startsWith("http://hl7.org") && !Utilities.existsInList(value, "http://hl7.org/fhir/sid/icd-10-us")) {
+          if (DEBUG) {
+            System.out.println("Unable to resolve value set "+value);
+          }
+        }
         li.addText(value);
       }
     }

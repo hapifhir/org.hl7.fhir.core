@@ -17,6 +17,7 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Url40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.UrlType;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -51,7 +52,10 @@ import org.hl7.fhir.utilities.Utilities;
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
 public class ImplementationGuide40_50 {
 
+  static final String EXT_IG_DEFINITION_PAGE_NAME = "http://hl7.org/fhir/tools/StructureDefinition/ig-page-name";
   static final String EXT_IG_DEFINITION_PARAMETER = "http://hl7.org/fhir/tools/StructureDefinition/ig-parameter";
+  static final String EXT_IG_DEFINITION_PARAM_URL_EXT = "http://hl7.org/fhir/tools/CodeSystem/ig-parameters";
+  static final String EXT_IG_DEFINITION_PARAM_URL_BASE = "http://hl7.org/fhir/guide-parameter-code";
 
   public static org.hl7.fhir.r5.model.ImplementationGuide convertImplementationGuide(org.hl7.fhir.r4.model.ImplementationGuide src) throws FHIRException {
     if (src == null)
@@ -2321,6 +2325,7 @@ public class ImplementationGuide40_50 {
     for (org.hl7.fhir.r4.model.Extension e : org.hl7.fhir.r4.utils.ToolingExtensions.getExtensions(src, EXT_IG_DEFINITION_PARAMETER)) {
       org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent p = new org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent();
       p.getCode().setCode(org.hl7.fhir.r4.utils.ToolingExtensions.readStringExtension(e, "code"));
+      p.getCode().setSystem(EXT_IG_DEFINITION_PARAM_URL_EXT);
       p.setValue(org.hl7.fhir.r4.utils.ToolingExtensions.readStringExtension(e, "value"));
       tgt.addParameter(p);
     }
@@ -2428,11 +2433,22 @@ public class ImplementationGuide40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionPageComponent tgt = new org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionPageComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
-    if (src.hasNameReference())
-      tgt.setName(src.getNameReference().getReference());
-    if (src.hasNameUrlType())
-      tgt.setName(src.getNameUrlType().getValue());
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt, EXT_IG_DEFINITION_PAGE_NAME);
+    if (src.hasExtension(EXT_IG_DEFINITION_PAGE_NAME)) {
+      tgt.setNameElement(Url40_50.convertUrl((UrlType) src.getExtensionByUrl(EXT_IG_DEFINITION_PAGE_NAME).getValue()));
+    }
+    if (src.hasNameReference()) {
+      tgt.setSource(new org.hl7.fhir.r5.model.UrlType(src.getNameReference().getReference()));
+      if (!tgt.hasName()) {
+        tgt.setName(tgt.getSourceUrlType().asStringValue());
+      }
+    }
+    if (src.hasNameUrlType()) {
+      tgt.setSource(Url40_50.convertUrl(src.getNameUrlType()));
+      if (!tgt.hasName()) {
+        tgt.setName(tgt.getSourceUrlType().asStringValue());
+      }
+    }
     if (src.hasTitle())
       tgt.setTitleElement(String40_50.convertString(src.getTitleElement()));
     if (src.hasGeneration())
@@ -2447,8 +2463,12 @@ public class ImplementationGuide40_50 {
       return null;
     org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionPageComponent tgt = new org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionPageComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
-    if (src.hasName())
-      tgt.setName(new org.hl7.fhir.r4.model.UrlType(src.getName()));
+    if (src.hasName()) {
+      tgt.addExtension().setUrl(EXT_IG_DEFINITION_PAGE_NAME).setValue(Url40_50.convertUrl(src.getNameElement()));
+    }
+    if (src.hasSourceUrlType()) {
+      tgt.setName(Url40_50.convertUrl(src.getSourceUrlType()));
+    } 
     if (src.hasTitle())
       tgt.setTitleElement(String40_50.convertString(src.getTitleElement()));
     if (src.hasGeneration())
@@ -2513,8 +2533,14 @@ public class ImplementationGuide40_50 {
       return null;
     org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent tgt = new org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
-    if (src.hasCode())
+    if (src.hasCode()) {
       tgt.getCode().setCode(src.getCode());
+      if (Utilities.existsInList(tgt.getCode().getCode(), "apply", "path-resource", "path-pages", "path-tx-cache", "expansion-parameter", "rule-broken-links", "generate-xml", "generate-json", "generate-turtle", "html-template")) {
+        tgt.getCode().setSystem(EXT_IG_DEFINITION_PARAM_URL_BASE);
+      } else {
+        tgt.getCode().setSystem(EXT_IG_DEFINITION_PARAM_URL_EXT);  
+      }
+    }
     if (src.hasValue())
       tgt.setValueElement(String40_50.convertString(src.getValueElement()));
     return tgt;

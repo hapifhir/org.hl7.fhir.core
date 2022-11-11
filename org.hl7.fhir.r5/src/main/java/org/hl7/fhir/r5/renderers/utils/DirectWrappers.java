@@ -224,7 +224,7 @@ public class DirectWrappers {
           return s;
         } else {
           // it might be a human name?
-          throw new Error("What to do?");
+          throw new Error("What to do? Type is "+b.fhirType());
         }
       }
       return null;
@@ -297,6 +297,10 @@ public class DirectWrappers {
         return null;
       else
         return new PropertyWrapperDirect(context, p);
+    }
+
+    public Resource getResource() {
+      return wrapped;
     }
 
   }

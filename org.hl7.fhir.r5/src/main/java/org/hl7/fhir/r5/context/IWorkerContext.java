@@ -87,8 +87,8 @@ import javax.annotation.Nonnull;
  * implementation. 
  * 
  * The functionality it provides is 
- *  - get access to parsers, validators, narrative builders etc
- *    (you can't create these directly because they need access 
+ *  - get access to canonical resources,terminology services, and validator
+ *    (you can't create a validator directly because it needs access 
  *    to the right context for their information)
  *    
  *  - find resources that the tools need to carry out their tasks
@@ -100,10 +100,121 @@ import javax.annotation.Nonnull;
  *  
  * @author Grahame
  */
-public interface IWorkerContext {
 
-  public interface IPackageLoadingTracker {
-    public void packageLoaded(String pid, String version);
+public interface IWorkerContext {
+  
+  class ValidationResult {
+    private ConceptDefinitionComponent definition;
+    private String system;
+    private IssueSeverity severity;
+    private String message;
+    private TerminologyServiceErrorClass errorClass;
+    private String txLink;
+    
+    @Override
+    public String toString() {
+      return "ValidationResult [definition=" + definition + ", system=" + system + ", severity=" + severity + ", message=" + message + ", errorClass="
+          + errorClass + ", txLink=" + txLink + "]";
+    }
+
+    public ValidationResult(IssueSeverity severity, String message) {
+      this.severity = severity;
+      this.message = message;
+    }
+    
+    public ValidationResult(String system, ConceptDefinitionComponent definition) {
+      this.system = system;
+      this.definition = definition;
+    }
+
+    public ValidationResult(IssueSeverity severity, String message, String system, ConceptDefinitionComponent definition) {
+      this.severity = severity;
+      this.message = message;
+      this.system = system;
+      this.definition = definition;
+    }
+    
+    public ValidationResult(IssueSeverity severity, String message, TerminologyServiceErrorClass errorClass) {
+      this.severity = severity;
+      this.message = message;
+      this.errorClass = errorClass;
+    }
+
+    public boolean isOk() {
+      return severity == null || severity == IssueSeverity.INFORMATION || severity == IssueSeverity.WARNING;
+    }
+
+    public String getSystem() {
+      return system;
+    }
+
+    public String getDisplay() {
+      return definition == null ? null : definition.getDisplay();
+    }
+
+    public String getCode() {
+      return definition == null ? null : definition.getCode();
+    }
+
+    public String getDefinition() {
+      return definition == null ? null : definition.getDefinition();
+    }
+
+    public ConceptDefinitionComponent asConceptDefinition() {
+      return definition;
+    }
+
+    public IssueSeverity getSeverity() {
+      return severity;
+    }
+
+    public String getMessage() {
+      return message;
+    }
+
+    public boolean IsNoService() {
+      return errorClass == TerminologyServiceErrorClass.NOSERVICE;
+    }
+
+    public TerminologyServiceErrorClass getErrorClass() {
+      return errorClass;
+    }
+
+    public ValidationResult setSeverity(IssueSeverity severity) {
+      this.severity = severity;
+      return this;
+    }
+
+    public ValidationResult setMessage(String message) {
+      this.message = message;
+      return this;
+    }
+
+    public ValidationResult setErrorClass(TerminologyServiceErrorClass errorClass) {
+      this.errorClass = errorClass;
+      return this;
+    }
+
+    public String getTxLink() {
+      return txLink;
+    }
+
+    public ValidationResult setTxLink(String txLink) {
+      this.txLink = txLink;
+      return this;
+    }
+
+    public boolean hasMessage() {
+      return message != null;
+    }
+    
+    public Coding asCoding() {
+      if (isOk() && definition != null && definition.getCode() != null) {
+        return new Coding(system, definition.getCode(), definition.getDisplay());
+      } else {
+        return null;
+      }
+    }
   }
 
   public class CodingValidationRequest {
@@ -223,10 +334,6 @@ public interface IWorkerContext {
     
   }
 
-  public interface ICanonicalResourceLocator {
-    void findResource(Object caller, String url); // if it can be found, put it in the context
-  }
-  
   public interface IContextResourceLoader {
     /** 
      * @return List of the resource types that should be loaded
@@ -263,9 +370,9 @@ public interface IWorkerContext {
     String getResourcePath(Resource resource);
 
     /**
-     * called when a mew package is being loaded
+     * called when a new package is being loaded
      * 
-     * this is called by loadPacakgeAndDependencies when a new package is loaded
+     * this is called by loadPackageAndDependencies when a new package is loaded
      * @param npm
      * @return
      * @throws IOException 
@@ -275,59 +382,22 @@ public interface IWorkerContext {
   }
 
   /**
-   * Get the versions of the definitions loaded in context
+   * Get the version of the definitions loaded in context
+   * This *does not* have to be 5.0 (R5) - the context can load other versions
+   * 
    * @return
    */
   public String getVersion();
   
   /**
-   * return the link to the base of the specification for the loaded version e.g. http://hl7.org/fhir/R4
+   * Get the UCUM service that provides access to units of measure reasoning services 
+   * 
+   * This service might not be available 
+   * 
+   * @return
    */
-  public String getSpecUrl();
-  
-  // get the UCUM service (might not be available)
   public UcumService getUcumService();
-  
-  // -- Parsers (read and write instances) ----------------------------------------
-
-
-  /**
-   * Get a parser to read/write instances. Use the defined type (will be extended 
-   * as further types are added, though the only currently anticipate type is RDF)
-   * 
-   * XML/JSON - the standard renderers
-   * XHTML - render the narrative only (generate it if necessary)
-   * 
-   * @param type
-   * @return
-   */
-  public IParser getParser(ParserType type);
-
-  /**
-   * Get a parser to read/write instances. Determine the type 
-   * from the stated type. Supported value for type:
-   * - the recommended MIME types
-   * - variants of application/xml and application/json
-   * - _format values xml, json
-   * 
-   * @param type
-   * @return
-   */	
-  public IParser getParser(String type);
-
-  /**
-   * Get a JSON parser
-   * 
-   * @return
-   */
-  public IParser newJsonParser();
-
-  /**
-   * Get an XML parser
-   * 
-   * @return
-   */
-  public IParser newXmlParser();
+  public void setUcumService(UcumService ucumService);
 
   /**
    * Get a validator that can check whether a resource is valid 
@@ -348,7 +418,7 @@ public interface IWorkerContext {
    * Also, the narrative generator uses this, and may access any kind of resource
    * 
    * The URI is called speculatively for things that might exist, so not finding 
-   * a matching resouce, return null, not an error
+   * a matching resource, return null, not an error
    * 
    * The URI can have one of 3 formats:
    *  - a full URL e.g. http://acme.org/fhir/ValueSet/[id]
@@ -357,6 +427,8 @@ public interface IWorkerContext {
    *  
    * It's an error if the second form doesn't agree with class_. It's an 
    * error if class_ is null for the last form
+   * 
+   * class can be Resource, DomainResource or CanonicalResource, which means resource of all kinds
    * 
    * @param resource
    * @param Reference
@@ -378,6 +450,17 @@ public interface IWorkerContext {
    * @return
    */
   public <T extends Resource> T fetchResource(Class<T> class_, String uri, CanonicalResource canonicalForSource);
+
+  /** 
+   * Fetch all the resources of a particular type. if class == (null | Resource | DomainResource | CanonicalResource) return everything
+   *  
+   * @param <T>
+   * @param class_
+   * @param uri
+   * @param canonicalForSource
+   * @return
+   */
+  public <T extends Resource> List<T> fetchResourcesByType(Class<T> class_);
 
   /**
    * Variation of fetchResource when you have a string type, and don't need the right class
@@ -453,40 +536,6 @@ public interface IWorkerContext {
    */
   public Set<String> getResourceNamesAsSet();
 
-  /**
-   * @return a list of the resource names that are canonical resources defined for this version
-   */
-  public List<String> getCanonicalResourceNames();
-  
-  /**
-   * @return a list of the resource and type names defined for this version
-   */
-  public List<String> getTypeNames();
-  
-  /**
-   * @return a list of all structure definitions, with snapshots generated (if possible)
-   */
-  public List<StructureDefinition> allStructures();
-  
-  /**
-   * @return a list of all structure definitions, without trying to generate snapshots
-   */
-  public List<StructureDefinition> getStructures();
-  
-  /**
-   * @return a list of all conformance resources
-   */
-  public List<CanonicalResource> allConformanceResources();
-  
-  /**
-   * Given a structure definition, generate a snapshot (or regenerate it)
-   * @param p
-   * @throws DefinitionException
-   * @throws FHIRException
-   */
-  public void generateSnapshot(StructureDefinition p) throws DefinitionException, FHIRException;
-  public void generateSnapshot(StructureDefinition mr, boolean ifLogical);
-  
   // -- Terminology services ------------------------------------------------------
 
   /**
@@ -509,6 +558,8 @@ public interface IWorkerContext {
    * return null if there isn't one (then the tool might try 
    * supportsSystem)
    * 
+   * This is a short cut for fetchResource(CodeSystem.class...)
+   * 
    * @param system
    * @return
    */
@@ -524,19 +575,13 @@ public interface IWorkerContext {
    * 
    * in the Conformance resource
    * 
+   * Not that not all supported code systems have an available CodeSystem resource
+   * 
    * @param system
    * @return
    * @throws Exception 
    */
   public boolean supportsSystem(String system) throws TerminologyServiceException;
-
-  /**
-   * find concept maps for a source
-   * @param url
-   * @return
-   * @throws FHIRException 
-   */
-  public List<ConceptMap> findMapsForSource(String url) throws FHIRException;  
 
   /**
    * ValueSet Expansion - see $expand
@@ -574,127 +619,26 @@ public interface IWorkerContext {
    */
   ValueSetExpansionOutcome expandVS(ConceptSetComponent inc, boolean hierarchical, boolean noInactive) throws TerminologyServiceException;
 
+  /**
+   * get/set the locale used when creating messages
+   * 
+   * todo: what's the difference?
+   * 
+   * @return
+   */
   Locale getLocale();
-
   void setLocale(Locale locale);
-
-  String formatMessage(String theMessage, Object... theMessageArguments);
-
   void setValidationMessageLanguage(Locale locale);
 
-  class ValidationResult {
-    private ConceptDefinitionComponent definition;
-    private String system;
-    private IssueSeverity severity;
-    private String message;
-    private TerminologyServiceErrorClass errorClass;
-    private String txLink;
-    
-    @Override
-    public String toString() {
-      return "ValidationResult [definition=" + definition + ", system=" + system + ", severity=" + severity + ", message=" + message + ", errorClass="
-          + errorClass + ", txLink=" + txLink + "]";
-    }
-
-    public ValidationResult(IssueSeverity severity, String message) {
-      this.severity = severity;
-      this.message = message;
-    }
-    
-    public ValidationResult(String system, ConceptDefinitionComponent definition) {
-      this.system = system;
-      this.definition = definition;
-    }
-
-    public ValidationResult(IssueSeverity severity, String message, String system, ConceptDefinitionComponent definition) {
-      this.severity = severity;
-      this.message = message;
-      this.system = system;
-      this.definition = definition;
-    }
-    
-    public ValidationResult(IssueSeverity severity, String message, TerminologyServiceErrorClass errorClass) {
-      this.severity = severity;
-      this.message = message;
-      this.errorClass = errorClass;
-    }
-
-    public boolean isOk() {
-      return severity == null || severity == IssueSeverity.INFORMATION || severity == IssueSeverity.WARNING;
-    }
-
-    public String getSystem() {
-      return system;
-    }
-
-    public String getDisplay() {
-      return definition == null ? null : definition.getDisplay();
-    }
-
-    public String getCode() {
-      return definition == null ? null : definition.getCode();
-    }
-
-    public String getDefinition() {
-      return definition == null ? null : definition.getDefinition();
-    }
-
-    public ConceptDefinitionComponent asConceptDefinition() {
-      return definition;
-    }
-
-    public IssueSeverity getSeverity() {
-      return severity;
-    }
-
-    public String getMessage() {
-      return message;
-    }
-
-    public boolean IsNoService() {
-      return errorClass == TerminologyServiceErrorClass.NOSERVICE;
-    }
-
-    public TerminologyServiceErrorClass getErrorClass() {
-      return errorClass;
-    }
-
-    public ValidationResult setSeverity(IssueSeverity severity) {
-      this.severity = severity;
-      return this;
-    }
-
-    public ValidationResult setMessage(String message) {
-      this.message = message;
-      return this;
-    }
-
-    public ValidationResult setErrorClass(TerminologyServiceErrorClass errorClass) {
-      this.errorClass = errorClass;
-      return this;
-    }
-
-    public String getTxLink() {
-      return txLink;
-    }
-
-    public ValidationResult setTxLink(String txLink) {
-      this.txLink = txLink;
-      return this;
-    }
-
-    public boolean hasMessage() {
-      return message != null;
-    }
-    
-    public Coding asCoding() {
-      if (isOk() && definition != null && definition.getCode() != null) {
-        return new Coding(system, definition.getCode(), definition.getDisplay());
-      } else {
-        return null;
-      }
-    }
-  }
+  /**
+   * Access to the contexts internationalised error messages
+   *  
+   * @param theMessage
+   * @param theMessageArguments
+   * @return
+   */
+  String formatMessage(String theMessage, Object... theMessageArguments);
+  String formatMessagePlural(Integer pluralNum, String theMessage, Object... theMessageArguments);
 
   /**
    * Validation of a code - consult the terminology infrstructure and/or service 
@@ -780,31 +724,32 @@ public interface IWorkerContext {
    */
   public ValidationResult validateCode(ValidationOptions options, Coding code, ValueSet vs);
   
+  /** 
+   * See comments in ValidationContextCarrier. This is called when there might be additional value sets etc 
+   * available in the context, but we don't want to pre-process them. 
+   * 
+   * @param options
+   * @param code
+   * @param vs
+   * @param ctxt
+   * @return
+   */
   public ValidationResult validateCode(ValidationOptions options, Coding code, ValueSet vs, ValidationContextCarrier ctxt);
 
+  /**
+   * Batch validate code - reduce latency and do a bunch of codes in a single server call. 
+   * Each is the same as a validateCode
+   * 
+   * @param options
+   * @param codes
+   * @param vs
+   */
   public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs);
   
-  /**
-   * returns the recommended tla for the type  (from the structure definitions)
-   * 
-   * @param name
-   * @return
-   */
-  public String getAbbreviation(String name);
-
-
-  /**
-   * translate an OID to a URI (look through known NamingSystems)
-   * @param code
-   * @return
-   */
-	public String oid2Uri(String code);
+  
+  // todo: figure these out
 	public Map<String, NamingSystem> getNSUrlMap();
-
-	/** 
-	 * @return true if the contxt has a terminology caching service internally
-	 */
-  public boolean hasCache();
+  public TranslationServices translator();
 
   public interface ILoggingService {
     public enum LogCategory {
@@ -818,28 +763,30 @@ public interface IWorkerContext {
     public void logMessage(String message); // status messages, always display
     public void logDebugMessage(LogCategory category, String message); // verbose; only when debugging 
   }
-
   public void setLogger(@Nonnull ILoggingService logger);
   public ILoggingService getLogger();
 
   public boolean isNoTerminologyServer();
   public Set<String> getCodeSystemsUsed();
-  public TranslationServices translator();
-  public List<StructureMap> listTransforms();
-  public StructureMap getTransform(String url);
-
-  public String getOverrideVersionNs();
-  public void setOverrideVersionNs(String value);
-
-  public StructureDefinition fetchTypeDefinition(String typeName);
-  public StructureDefinition fetchRawProfile(String url);
+  public int getClientRetryCount();
+  public IWorkerContext setClientRetryCount(int value);
   
-  public void setUcumService(UcumService ucumService);
+  public TimeTracker clock();
 
-  public String getLinkForUrl(String corePath, String s);
+  /**
+   * This is a short cut for fetchResource(StructureDefinition.class, ...)
+   * but it accepts a typename - that is, it resolves based on StructureDefinition.type 
+   * or StructureDefinition.url
+   * 
+   * @param typeName
+   * @return
+   */
+  public StructureDefinition fetchTypeDefinition(String typeName);
+  
 
   /**
    * Returns a set of keys that can be used to get binaries from this context.
+   * The binaries come from the loaded packages (mostly the pubpack)
    *
    * @return a set of binaries or null
    */
@@ -860,6 +807,10 @@ public interface IWorkerContext {
    */
   public byte[] getBinaryForKey(String binaryKey);
 
+  /*
+   * Todo: move these loaders out to IWorkerContextManager
+   * 
+   */
   /**
    * Load relevant resources of the appropriate types (as specified by the loader) from the nominated package
    * 
@@ -904,12 +855,8 @@ public interface IWorkerContext {
    public boolean hasPackage(PackageVersion pack);
    public PackageDetails getPackage(PackageVersion pack);
 
-  public int getClientRetryCount();
-  public IWorkerContext setClientRetryCount(int value);
-  
-  public TimeTracker clock();
-  public IPackageLoadingTracker getPackageTracker();
-  public IWorkerContext setPackageTracker(IPackageLoadingTracker packageTracker);
+  public IWorkerContextManager.IPackageLoadingTracker getPackageTracker();
+  public IWorkerContext setPackageTracker(IWorkerContextManager.IPackageLoadingTracker packageTracker);
 
   public PackageVersion getPackageForUrl(String url);
 }

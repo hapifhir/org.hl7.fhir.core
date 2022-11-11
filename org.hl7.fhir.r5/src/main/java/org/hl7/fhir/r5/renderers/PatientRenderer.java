@@ -9,19 +9,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.poi.hssf.record.chart.DatRecord;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.Address;
 import org.hl7.fhir.r5.model.Attachment;
-import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.ContactPoint;
 import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.DateType;
-import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.HumanName;
 import org.hl7.fhir.r5.model.HumanName.NameUse;
@@ -32,11 +28,10 @@ import org.hl7.fhir.r5.model.Period;
 import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.renderers.PatientRenderer.NamedReferance;
-import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.PropertyWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -148,6 +143,9 @@ public class PatientRenderer extends ResourceRenderer {
     }
     if (newUse == null) {
       return true;
+    }
+    if (oldUse == null) {
+      return existsInList(newUse, NameUse.OFFICIAL, NameUse.USUAL);
     }
     switch (oldUse) {
       case ANONYMOUS: return existsInList(newUse, NameUse.OFFICIAL, NameUse.USUAL);
@@ -797,7 +795,7 @@ public class PatientRenderer extends ResourceRenderer {
       PropertyWrapper a = r.getChildByName("photo");
       for (BaseWrapper v : a.getValues()) {
         Attachment att = (Attachment) v.getBase();
-        if (att.getContentType().startsWith("image/") &&
+        if (att.hasContentType() && att.getContentType().startsWith("image/") &&
             att.getData() != null && (!context.isInlineGraphics() || (att.getData().length > 0 && att.getData().length < MAX_IMAGE_LENGTH))) {
           return true;
         } 
