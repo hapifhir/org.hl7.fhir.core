@@ -222,6 +222,8 @@ public class Type40_50 {
       return UnsignedInt40_50.convertUnsignedInt((org.hl7.fhir.r5.model.UnsignedIntType) src);
     if (src instanceof org.hl7.fhir.r5.model.IntegerType)
       return Integer40_50.convertInteger((org.hl7.fhir.r5.model.IntegerType) src);
+    if (src instanceof org.hl7.fhir.r5.model.Integer64Type)
+      return Integer40_50.convertInteger64((org.hl7.fhir.r5.model.Integer64Type) src);
     if (src instanceof org.hl7.fhir.r5.model.UrlType) return Url40_50.convertUrl((org.hl7.fhir.r5.model.UrlType) src);
     if (src instanceof org.hl7.fhir.r5.model.UuidType)
       return Uuid40_50.convertUuid((org.hl7.fhir.r5.model.UuidType) src);

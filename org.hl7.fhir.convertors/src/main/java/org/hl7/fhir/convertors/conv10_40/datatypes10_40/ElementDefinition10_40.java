@@ -449,10 +449,12 @@ public class ElementDefinition10_40 {
     ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     if (src.hasStrength()) tgt.setStrengthElement(convertBindingStrength(src.getStrengthElement()));
     if (src.hasDescriptionElement()) tgt.setDescriptionElement(String10_40.convertString(src.getDescriptionElement()));
-    org.hl7.fhir.r4.model.Type vs = ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getValueSet());
-    if (vs != null) {
-      tgt.setValueSet(vs instanceof org.hl7.fhir.r4.model.Reference ? ((org.hl7.fhir.r4.model.Reference) vs).getReference() : vs.primitiveValue());
-      tgt.setValueSet(VersionConvertorConstants.refToVS(tgt.getValueSet()));
+    if (src.hasValueSet()) {
+      org.hl7.fhir.r4.model.Type vs = ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getValueSet());
+      if (vs != null) {
+        tgt.setValueSet(vs instanceof org.hl7.fhir.r4.model.Reference ? ((org.hl7.fhir.r4.model.Reference) vs).getReference() : vs.primitiveValue());
+        tgt.setValueSet(VersionConvertorConstants.refToVS(tgt.getValueSet()));
+      }
     }
     return tgt;
   }
