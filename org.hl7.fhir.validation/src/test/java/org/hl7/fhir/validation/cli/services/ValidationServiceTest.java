@@ -8,16 +8,21 @@ import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.model.FileInfo;
 import org.hl7.fhir.validation.cli.model.ValidationRequest;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 import static org.hl7.fhir.validation.tests.utilities.TestUtilities.getTerminologyCacheDirectory;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.AdditionalMatchers.and;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -73,6 +78,7 @@ class ValidationServiceTest {
   }
 
   @Test
+  @DisplayName("Test that conversion works when a single source is set and the -output param is set")
   public void convertSingleSource() throws Exception {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
@@ -85,6 +91,7 @@ class ValidationServiceTest {
   }
 
   @Test
+  @DisplayName("Test that conversion throws an Exception when no -output or -outputSuffix params are set")
   public void convertSingleSourceNoOutput() throws Exception {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
@@ -99,7 +106,8 @@ class ValidationServiceTest {
 
 
   @Test
-  public void convertMultipleSourceNoSuffix() throws Exception {
+  @DisplayName("Test that conversion throws an Exception when multiple sources are set and an -output param is set")
+  public void convertMultipleSourceOnlyOutput() throws Exception {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
@@ -112,6 +120,7 @@ class ValidationServiceTest {
   }
 
   @Test
+  @DisplayName("Test that conversion works when multiple sources are set and an output suffix parameter is set")
   public void convertMultipleSource() throws Exception {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
@@ -125,6 +134,7 @@ class ValidationServiceTest {
   }
 
   @Test
+  @DisplayName("Test that snapshot generation works when a single source is set and the -output param is set")
   public void generateSnapshotSingleSource() throws Exception {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
@@ -139,6 +149,7 @@ class ValidationServiceTest {
   }
 
   @Test
+  @DisplayName("Test that snapshot generation throws an Exception when no -output or -outputSuffix params are set")
   public void generateSnapshotSingleSourceNoOutput() throws Exception {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
@@ -146,12 +157,13 @@ class ValidationServiceTest {
 
     CliContext cliContext = getCliContextSingleSource();
     Exception exception = assertThrows( Exception.class, () -> {
-      validationService.generateSnapshot(cliContext.setOutput(DUMMY_OUTPUT).setSv(DUMMY_SV),validationEngine);
+      validationService.generateSnapshot(cliContext.setSv(DUMMY_SV),validationEngine);
     });
   }
 
   @Test
-  public void generateSnapshotMultipleSourceNoSuffix() throws Exception {
+  @DisplayName("Test that snapshot generation throws an Exception when multiple sources are set and an -output param is set")
+  public void generateSnapshotMultipleSourceOnlyOutput() throws Exception {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
@@ -164,6 +176,7 @@ class ValidationServiceTest {
   }
 
   @Test
+  @DisplayName("Test that snapshot generation works when multiple sources are set and an output suffix parameter is set")
   public void generateSnapshotMultipleSource() throws Exception {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
