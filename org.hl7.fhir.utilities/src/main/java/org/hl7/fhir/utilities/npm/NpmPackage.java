@@ -559,7 +559,7 @@ public class NpmPackage {
         for (JsonElement e : folder.index.getAsJsonArray("files")) {
           JsonObject fi = e.getAsJsonObject();
           if (Utilities.existsInList(JsonUtilities.str(fi, "resourceType"), types)) {
-            res.add(new PackageResourceInformation(folder.folder.getAbsolutePath(), fi));
+            res.add(new PackageResourceInformation(folder.folder == null ? "@"+folder.getName() : folder.folder.getAbsolutePath(), fi));
           }
         }
       }
@@ -1159,7 +1159,12 @@ public class NpmPackage {
  }
 
   public InputStream load(PackageResourceInformation p) throws FileNotFoundException {
-    return new FileInputStream(p.filename);
+    if (p.filename.startsWith("@")) {
+      String[] pl = p.filename.substring(1).split("\\/");
+      return new ByteArrayInputStream(folders.get(pl[0]).content.get(pl[1]));
+    } else {
+      return new FileInputStream(p.filename);
+    }
   }
 
   public Date dateAsDate() {
