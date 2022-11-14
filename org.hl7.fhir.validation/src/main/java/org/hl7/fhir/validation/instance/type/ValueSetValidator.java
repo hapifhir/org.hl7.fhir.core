@@ -179,7 +179,6 @@ public class ValueSetValidator extends BaseValidator {
         }
         cf++;
       }    
-      warning(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), systemOk, version == null ? I18nConstants.VALUESET_UNC_SYSTEM_WARNING :  I18nConstants.VALUESET_UNC_SYSTEM_WARNING_VER, system);            
     } else {
       warning(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), filters.size() == 0 && concepts.size() == 0, I18nConstants.VALUESET_NO_SYSTEM_WARNING);      
     }
@@ -191,6 +190,7 @@ public class ValueSetValidator extends BaseValidator {
     if (version == null) {
       ValidationResult vv = context.validateCode(ValidationOptions.defaults(), new Coding(system, code, null), null);
       if (vv.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
+        warning(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.VALUESET_UNC_SYSTEM_WARNING, system, vv.getMessage());                      
         return false;
       } else {
         boolean ok = vv.isOk();
@@ -199,6 +199,7 @@ public class ValueSetValidator extends BaseValidator {
     } else {
       ValidationResult vv = context.validateCode(ValidationOptions.defaults(), new Coding(system, code, null).setVersion(version), null);
       if (vv.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
+        warning(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.VALUESET_UNC_SYSTEM_WARNING_VER, system+"#"+version, vv.getMessage());            
         return false;        
       } else {
         boolean ok = vv.isOk();
