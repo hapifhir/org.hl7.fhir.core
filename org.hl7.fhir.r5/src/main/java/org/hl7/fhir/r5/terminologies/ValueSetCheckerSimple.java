@@ -240,7 +240,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         return new ValidationResult(IssueSeverity.ERROR, context.formatMessage(I18nConstants.CODESYSTEM_CS_NO_SUPPLEMENT, cs.getUrl()));        
       }
       if (cs!=null && cs.getContent() != CodeSystemContentMode.COMPLETE) {
-        warningMessage = "Resolved system "+system+", but the definition is not complete";
+        warningMessage = "Resolved system "+system+(cs.hasVersion() ? " (v"+cs.getVersion()+")" : "")+", but the definition is not complete";
         if (!inExpansion && cs.getContent() != CodeSystemContentMode.FRAGMENT) { // we're going to give it a go if it's a fragment
           throw new FHIRException(warningMessage);
         }
