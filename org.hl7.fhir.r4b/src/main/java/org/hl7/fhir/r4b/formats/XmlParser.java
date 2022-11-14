@@ -13779,7 +13779,7 @@ public class XmlParser extends XmlParserBase {
 
   protected boolean parseImplementationGuideDefinitionParameterComponentContent(int eventType, XmlPullParser xpp, ImplementationGuide.ImplementationGuideDefinitionParameterComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
     if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("code")) {
-      res.setCodeElement(parseEnumeration(xpp, ImplementationGuide.GuideParameterCode.NULL, new ImplementationGuide.GuideParameterCodeEnumFactory()));
+      res.setCodeElement(parseString(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("value")) {
       res.setValueElement(parseString(xpp));
     } else if (!parseBackboneElementContent(eventType, xpp, res)){ 
@@ -40194,7 +40194,7 @@ public class XmlParser extends XmlParserBase {
   protected void composeImplementationGuideDefinitionParameterComponentElements(ImplementationGuide.ImplementationGuideDefinitionParameterComponent element) throws IOException {
     composeBackboneElementElements(element);
     if (element.hasCodeElement())
-      composeEnumeration("code", element.getCodeElement(), new ImplementationGuide.GuideParameterCodeEnumFactory());
+      composeString("code", element.getCodeElement());
     if (element.hasValueElement()) {
       composeString("value", element.getValueElement());
     }
