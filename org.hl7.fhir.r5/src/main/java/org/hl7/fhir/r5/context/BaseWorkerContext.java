@@ -1016,6 +1016,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return res;
     }
 
+    String localError = null;
     if (options.isUseClient()) {
       // ok, first we try to validate locally
       try {
@@ -1028,6 +1029,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           return res;
         }
       } catch (Exception e) {
+        localError = e.getMessage();
       }
     }
     
@@ -1054,6 +1056,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       res = validateOnServer(vs, pIn, options);
     } catch (Exception e) {
       res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage()).setTxLink(txLog == null ? null : txLog.getLastId()).setErrorClass(TerminologyServiceErrorClass.SERVER_ERROR);
+    }
+    if (!res.isOk() && localError != null) {
+      res.setMessage("Local Error: "+localError+". Server Error: "+res.getMessage());
     }
     updateUnsupportedCodeSystems(res, code, codeKey);
     if (txCache != null) { // we never cache unsupported code systems - we always keep trying (but only once per run)
