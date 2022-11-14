@@ -2516,7 +2516,7 @@ public class ImplementationGuide43_50 {
     org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent tgt = new org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasCode())
-      tgt.getCode().setCode(src.getCode().toCode());
+      tgt.getCode().setCode(src.getCode());
     if (src.hasValue())
       tgt.setValueElement(String43_50.convertString(src.getValueElement()));
     return tgt;
