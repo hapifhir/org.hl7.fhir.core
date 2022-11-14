@@ -147,7 +147,7 @@ public class ValueSetValidator extends BaseValidator {
       for (Element concept : concepts) {
         // we treat the first differently because we want to know if tbe system is worth validating. if it is, then we batch the rest
         if (first) {
-          systemOk = validateValueSetIncludeConcept(errors, concept, stack.push(concept, cc, null, null), system, version);
+          systemOk = validateValueSetIncludeConcept(errors, concept, stack, stack.push(concept, cc, null, null), system, version);
           first = false;
         } else if (systemOk) {
           batch.add(prepareValidateValueSetIncludeConcept(errors, concept, stack.push(concept, cc, null, null), system, version));
@@ -185,12 +185,12 @@ public class ValueSetValidator extends BaseValidator {
     return ok;
   }
 
-  private boolean validateValueSetIncludeConcept(List<ValidationMessage> errors, Element concept, NodeStack stack, String system, String version) {
+  private boolean validateValueSetIncludeConcept(List<ValidationMessage> errors, Element concept, NodeStack stackInc, NodeStack stack, String system, String version) {
     String code = concept.getChildValue("code");
     if (version == null) {
       ValidationResult vv = context.validateCode(ValidationOptions.defaults(), new Coding(system, code, null), null);
       if (vv.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
-        warning(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.VALUESET_UNC_SYSTEM_WARNING, system, vv.getMessage());                      
+        warning(errors, IssueType.BUSINESSRULE, stackInc.getLiteralPath(), false, I18nConstants.VALUESET_UNC_SYSTEM_WARNING, system, vv.getMessage());                      
         return false;
       } else {
         boolean ok = vv.isOk();
@@ -199,7 +199,7 @@ public class ValueSetValidator extends BaseValidator {
     } else {
       ValidationResult vv = context.validateCode(ValidationOptions.defaults(), new Coding(system, code, null).setVersion(version), null);
       if (vv.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
-        warning(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.VALUESET_UNC_SYSTEM_WARNING_VER, system+"#"+version, vv.getMessage());            
+        warning(errors, IssueType.BUSINESSRULE, stackInc.getLiteralPath(), false, I18nConstants.VALUESET_UNC_SYSTEM_WARNING_VER, system+"#"+version, vv.getMessage());            
         return false;        
       } else {
         boolean ok = vv.isOk();
