@@ -1195,6 +1195,11 @@ public class NpmPackage {
     res.checkThrowException();
     return fromPackage(new ByteArrayInputStream(res.getContent()));
   }
+
+  @Override
+  public String toString() {
+    return "NpmPackage "+name()+"#"+version()+" [path=" + path + "]";
+  }
   
   
 }
