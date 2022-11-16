@@ -717,7 +717,10 @@ public class Utilities {
     return result;
   }
 
-
+  public static boolean isTokenChar(char ch) {
+    return isAlphabetic(ch) || (ch == '_'); 
+  }
+  
   public static boolean isDigit(char c) {
     return (c >= '0') && (c <= '9');
   }
