@@ -37,6 +37,7 @@ import java.util.List;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.ProfileUtilities.SourcedChildDefinitions;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.ParserBase.NamedElement;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
@@ -86,15 +87,15 @@ public class ObjectConverter  {
     if (base == null)
       return null;
     String tn = base.fhirType();
-    StructureDefinition sd = context.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(tn, context.getOverrideVersionNs()));
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(tn, null));
     if (sd == null)
       throw new FHIRException("Unable to find definition for type "+tn);
     Element res = new Element(property.getName(), property);
     if (sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE) 
       res.setValue(((PrimitiveType) base).asStringValue());
 
-    List<ElementDefinition> children = profileUtilities.getChildMap(sd, sd.getSnapshot().getElementFirstRep()); 
-    for (ElementDefinition child : children) {
+    SourcedChildDefinitions children = profileUtilities.getChildMap(sd, sd.getSnapshot().getElementFirstRep()); 
+    for (ElementDefinition child : children.getList()) {
       String n = tail(child.getPath());
       if (sd.getKind() != StructureDefinitionKind.PRIMITIVETYPE || !"value".equals(n)) {
         Base[] values = base.getProperty(n.hashCode(), n, false);

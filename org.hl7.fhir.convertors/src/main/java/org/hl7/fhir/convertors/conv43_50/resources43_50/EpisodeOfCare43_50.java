@@ -64,7 +64,7 @@ public class EpisodeOfCare43_50 {
       tgt.addReferralRequest(Reference43_50.convertReference(t));
     if (src.hasCareManager())
       tgt.setCareManager(Reference43_50.convertReference(src.getCareManager()));
-    for (org.hl7.fhir.r4b.model.Reference t : src.getTeam()) tgt.addTeam(Reference43_50.convertReference(t));
+    for (org.hl7.fhir.r4b.model.Reference t : src.getTeam()) tgt.addCareTeam(Reference43_50.convertReference(t));
     for (org.hl7.fhir.r4b.model.Reference t : src.getAccount()) tgt.addAccount(Reference43_50.convertReference(t));
     return tgt;
   }
@@ -94,7 +94,7 @@ public class EpisodeOfCare43_50 {
       tgt.addReferralRequest(Reference43_50.convertReference(t));
     if (src.hasCareManager())
       tgt.setCareManager(Reference43_50.convertReference(src.getCareManager()));
-    for (org.hl7.fhir.r5.model.Reference t : src.getTeam()) tgt.addTeam(Reference43_50.convertReference(t));
+    for (org.hl7.fhir.r5.model.Reference t : src.getCareTeam()) tgt.addTeam(Reference43_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getAccount()) tgt.addAccount(Reference43_50.convertReference(t));
     return tgt;
   }
@@ -197,7 +197,7 @@ public class EpisodeOfCare43_50 {
     org.hl7.fhir.r5.model.EpisodeOfCare.DiagnosisComponent tgt = new org.hl7.fhir.r5.model.EpisodeOfCare.DiagnosisComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasCondition())
-      tgt.setCondition(Reference43_50.convertReference(src.getCondition()));
+      tgt.setCondition(Reference43_50.convertReferenceToCodeableReference(src.getCondition()));
     if (src.hasRole())
       tgt.setRole(CodeableConcept43_50.convertCodeableConcept(src.getRole()));
     if (src.hasRank())
@@ -211,7 +211,7 @@ public class EpisodeOfCare43_50 {
     org.hl7.fhir.r4b.model.EpisodeOfCare.DiagnosisComponent tgt = new org.hl7.fhir.r4b.model.EpisodeOfCare.DiagnosisComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasCondition())
-      tgt.setCondition(Reference43_50.convertReference(src.getCondition()));
+      tgt.setCondition(Reference43_50.convertCodeableReferenceToReference(src.getCondition()));
     if (src.hasRole())
       tgt.setRole(CodeableConcept43_50.convertCodeableConcept(src.getRole()));
     if (src.hasRank())

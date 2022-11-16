@@ -16,11 +16,11 @@ import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionDesignationComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyComponent;
 import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.CodeSystemNavigator;
@@ -95,9 +95,11 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     if (cs.hasProperty()) {
       boolean hasRendered = false;
       boolean hasURI = false;
+      boolean hasDescription = false;
       for (PropertyComponent p : cs.getProperty()) {
         hasRendered = hasRendered || !p.getCode().equals(ToolingExtensions.getPresentation(p, p.getCodeElement()));
         hasURI = hasURI || p.hasUri();
+        hasDescription = hasDescription || p.hasDescription();
       }
       
       x.para().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Properties", getContext().getLang()));
@@ -111,7 +113,9 @@ public class CodeSystemRenderer extends TerminologyRenderer {
         tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "URL", getContext().getLang()));
       }
       tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Type", getContext().getLang()));
-      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Description", getContext().getLang()));
+      if (hasDescription) {
+        tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Description", getContext().getLang()));
+      }
       for (PropertyComponent p : cs.getProperty()) {
         tr = tbl.tr();
         if (hasRendered) {
@@ -122,21 +126,25 @@ public class CodeSystemRenderer extends TerminologyRenderer {
           tr.td().tx(p.getUri());
         }
         tr.td().tx(p.hasType() ? p.getType().toCode() : "");
-        tr.td().tx(p.getDescription());
+        if (hasDescription) {
+          tr.td().tx(p.getDescription());
+        }
       }
     }
   }
 
   private boolean generateCodeSystemContent(XhtmlNode x, CodeSystem cs, boolean hasExtensions, List<UsedConceptMap> maps) throws FHIRFormatError, DefinitionException, IOException {
     XhtmlNode p = x.para();
+    p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), "This code system "));
+    p.code().tx(cs.getUrl());
     if (cs.getContent() == CodeSystemContentMode.COMPLETE)
-      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), "This code system %s defines the following codes", cs.getUrl())+":");
+      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), " defines the following codes")+":");
     else if (cs.getContent() == CodeSystemContentMode.EXAMPLE)
-      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), "This code system %s defines some example codes", cs.getUrl())+":");
+      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), " defines some example codes")+":");
     else if (cs.getContent() == CodeSystemContentMode.FRAGMENT )
-      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), "This code system %s defines many codes, of which the following are a subset", cs.getUrl())+":");
+      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), " defines many codes, of which the following are a subset")+":");
     else if (cs.getContent() == CodeSystemContentMode.NOTPRESENT ) {
-      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), "This code system %s defines many codes, but they are not represented here", cs.getUrl()));
+      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), " defines many codes, but they are not represented here"));
       return false;
     }
     XhtmlNode t = x.table( "codes");
@@ -175,7 +183,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     hierarchy = hierarchy || csNav.isRestructure();
     
     List<String> langs = new ArrayList<>();
-    addMapHeaders(addTableHeaderRowStandard(t, hierarchy, display, definitions, commentS, version, deprecated, properties, null, null, false), maps);
+    addCopyColumn(addMapHeaders(addTableHeaderRowStandard(t, hierarchy, display, definitions, commentS, version, deprecated, properties, null, null, false), maps));
     for (ConceptDefinitionComponent c : csNav.getConcepts(null)) {
       hasExtensions = addDefineRowToTable(t, c, 0, hierarchy, display, definitions, commentS, version, deprecated, maps, cs.getUrl(), cs, properties, csNav, langs, isSupplement) || hasExtensions;
     }
@@ -192,6 +200,13 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       }
     }
     return hasExtensions;
+  }
+
+  private void addCopyColumn(XhtmlNode tr) {
+    if (context.isCopyButton()) {
+      tr.td().b().tx("Copy");
+    }
+    
   }
 
   private boolean conceptsHaveDefinition(ConceptDefinitionComponent c) {
@@ -269,7 +284,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
   }
 
   private boolean conceptsHaveDisplay(ConceptDefinitionComponent c) {
-    if (c.hasDisplay())
+    if (c.hasDisplay() && !c.getDisplay().equals(c.getCode()))
       return true;
     for (ConceptDefinitionComponent g : c.getConcept())
       if (conceptsHaveDisplay(g))
@@ -454,7 +469,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
         first = false;
         XhtmlNode span = td.span(null, mapping.comp.hasRelationship() ?  mapping.comp.getRelationship().toCode() : "");
         span.addText(getCharForRelationship(mapping.comp));
-        a = td.ah(getContext().getSpecificationLink()+m.getLink()+"#"+makeAnchor(mapping.group.getTarget(), mapping.comp.getCode()));
+        a = td.ah(getContext().getLink(KnownLinkType.SPEC)+m.getLink()+"#"+makeAnchor(mapping.group.getTarget(), mapping.comp.getCode()));
         a.addText(mapping.comp.getCode());
         if (!Utilities.noString(mapping.comp.getComment()))
           td.i().tx("("+mapping.comp.getComment()+")");
@@ -483,6 +498,12 @@ public class CodeSystemRenderer extends TerminologyRenderer {
         w = w + properties.size();
       }
       td = tr.td().colspan(Integer.toString(w));
+    }
+    if (context.isCopyButton()) {
+      td = tr.td();
+      clipboard(td, "icon_clipboard_x.png", "XML", "<system value=\""+Utilities.escapeXml(cs.getUrl())+"\">\n"+(cs.getVersionNeeded() ? "<version value=\""+Utilities.escapeXml(cs.getVersion())+"\">\n" : "")+"<code value=\""+Utilities.escapeXml(c.getCode())+"\">\n<display value=\""+Utilities.escapeXml(c.getDisplay())+"\">\n");
+      td.nbsp();
+      clipboard(td, "icon_clipboard_j.png", "JSON", "\"system\" : \""+Utilities.escapeXml(cs.getUrl())+"\",\n"+(cs.getVersionNeeded() ? "\"version\" : \""+Utilities.escapeXml(cs.getVersion())+"\",\n" : "")+"\"code\" : \""+Utilities.escapeXml(c.getCode())+"\",\n\"display\" : \""+Utilities.escapeXml(c.getDisplay())+"\"\n");
     }
     return hasExtensions;
   }

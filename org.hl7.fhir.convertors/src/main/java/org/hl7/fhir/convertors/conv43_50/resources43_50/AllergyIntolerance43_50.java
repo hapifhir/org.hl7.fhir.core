@@ -1,7 +1,8 @@
 package org.hl7.fhir.convertors.conv43_50.resources43_50;
 
+import java.util.stream.Collectors;
+
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
-import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Reference30_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Annotation43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableConcept43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Identifier43_50;
@@ -9,12 +10,10 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.DateTime4
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.AllergyIntolerance.AllergyIntoleranceParticipantComponent;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.AllergyIntolerance.AllergyIntoleranceParticipantComponent;
-
-import java.util.stream.Collectors;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

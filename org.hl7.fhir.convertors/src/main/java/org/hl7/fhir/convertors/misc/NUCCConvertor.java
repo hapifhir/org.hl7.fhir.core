@@ -1,5 +1,9 @@
 package org.hl7.fhir.convertors.misc;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -44,10 +48,6 @@ import org.hl7.fhir.r4.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r4.model.StringType;
 import org.hl7.fhir.utilities.CSVReader;
 import org.hl7.fhir.utilities.Utilities;
-
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 public class NUCCConvertor {
 

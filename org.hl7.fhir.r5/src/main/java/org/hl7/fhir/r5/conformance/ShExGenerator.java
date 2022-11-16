@@ -593,11 +593,11 @@ public class ShExGenerator {
       }
 
     } else if (typ.getCode().startsWith(Constants.NS_SYSTEM_TYPE)) {
-      String xt = typ.getWorkingCode();
+      String xt = getShexCode(typ.getWorkingCode());
+      
       // TODO: Remove the next line when the type of token gets switched to string
       // TODO: Add a rdf-type entry for valueInteger to xsd:integer (instead of int)
-      ST td_entry = tmplt(PRIMITIVE_ELEMENT_DEFN_TEMPLATE).add("typ",
-              xt.replace("xsd:token", "xsd:string").replace("xsd:int", "xsd:integer"));
+      ST td_entry = tmplt(PRIMITIVE_ELEMENT_DEFN_TEMPLATE).add("typ", xt);
       StringBuilder facets =  new StringBuilder();
       if(ed.hasMinValue()) {
         DataType mv = ed.getMinValue();
@@ -629,6 +629,53 @@ public class ShExGenerator {
       datatypes.add(typ.getWorkingCode());
       return simpleElement(sd, ed, typ.getWorkingCode());
     }
+  }
+
+  private String getShexCode(String c) {
+    switch (c) {
+    case "boolean" : 
+      return "xsd:boolean";
+    case "integer" : 
+      return "xsd:int";
+    case "integer64" : 
+      return "xsd:long";
+    case "decimal" : 
+      return "xsd:decimal, xsd:double";
+    case "base64Binary" : 
+      return "xsd:base64Binary";
+    case "instant" : 
+      return "xsd:dateTime";
+    case "string" : 
+      return "xsd:string";
+    case "uri" : 
+      return "xsd:anyURI";
+    case "date" : 
+      return "xsd:gYear, xsd:gYearMonth, xsd:date";
+    case "dateTime" : 
+      return "xsd:gYear, xsd:gYearMonth, xsd:date, xsd:dateTime";
+    case "time" : 
+      return "xsd:time";
+    case "code" : 
+      return "xsd:token";
+    case "oid" : 
+      return "xsd:anyURI";
+    case "uuid" : 
+      return "xsd:anyURI";
+    case "url" : 
+      return "xsd:anyURI";
+    case "canonical" : 
+      return "xsd:anyURI";
+    case "id" : 
+      return "xsd:string";
+    case "unsignedInt" : 
+      return "xsd:nonNegativeInteger";
+    case "positiveInt" : 
+      return "xsd:positiveInteger";
+    case "markdown" : 
+      return "xsd:string";
+    }
+    throw new Error("Not implemented yet");
+      
   }
 
   /**

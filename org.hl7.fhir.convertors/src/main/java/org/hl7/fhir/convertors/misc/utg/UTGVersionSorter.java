@@ -1,6 +1,17 @@
 package org.hl7.fhir.convertors.misc.utg;
 
-import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
@@ -8,8 +19,14 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.Bundle;
+import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.Provenance;
 import org.hl7.fhir.r5.model.Provenance.ProvenanceAgentComponent;
+import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
@@ -17,13 +34,7 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.text.ParseException;
-import java.util.*;
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 
 public class UTGVersionSorter {
 

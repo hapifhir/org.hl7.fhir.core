@@ -1,5 +1,9 @@
 package org.hl7.fhir.r4b.renderers;
 
+import static java.time.temporal.ChronoField.DAY_OF_MONTH;
+import static java.time.temporal.ChronoField.MONTH_OF_YEAR;
+import static java.time.temporal.ChronoField.YEAR;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
@@ -9,8 +13,12 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
+import java.time.format.ResolverStyle;
+import java.time.format.SignStyle;
 import java.util.Currency;
 import java.util.List;
 import java.util.TimeZone;
@@ -22,6 +30,7 @@ import org.hl7.fhir.r4b.context.IWorkerContext;
 import org.hl7.fhir.r4b.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r4b.model.Address;
 import org.hl7.fhir.r4b.model.Annotation;
+import org.hl7.fhir.r4b.model.BackboneType;
 import org.hl7.fhir.r4b.model.Base;
 import org.hl7.fhir.r4b.model.BaseDateTimeType;
 import org.hl7.fhir.r4b.model.CanonicalResource;
@@ -39,6 +48,8 @@ import org.hl7.fhir.r4b.model.DataRequirement.SortDirection;
 import org.hl7.fhir.r4b.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.r4b.model.DataType;
 import org.hl7.fhir.r4b.model.DateTimeType;
+import org.hl7.fhir.r4b.model.DateType;
+import org.hl7.fhir.r4b.model.ElementDefinition;
 import org.hl7.fhir.r4b.model.Enumeration;
 import org.hl7.fhir.r4b.model.Expression;
 import org.hl7.fhir.r4b.model.Extension;
@@ -68,6 +79,7 @@ import org.hl7.fhir.r4b.model.ValueSet.ConceptReferenceDesignationComponent;
 import org.hl7.fhir.r4b.renderers.utils.BaseWrappers.BaseWrapper;
 import org.hl7.fhir.r4b.renderers.utils.RenderingContext;
 import org.hl7.fhir.r4b.renderers.utils.RenderingContext.ResourceRendererMode;
+import org.hl7.fhir.r4b.utils.ToolingExtensions;
 import org.hl7.fhir.r4b.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
@@ -330,7 +342,7 @@ public class DataRenderer extends Renderer {
       return true;
     }
     if (Utilities.existsInList(t, 
-        "ActivityDefinition", "CapabilityStatement", "CapabilityStatement2", "ChargeItemDefinition", "Citation", "CodeSystem",
+        "ActivityDefinition", "CapabilityStatement", "ChargeItemDefinition", "Citation", "CodeSystem",
         "CompartmentDefinition", "ConceptMap", "ConditionDefinition", "EventDefinition", "Evidence", "EvidenceReport", "EvidenceVariable",
         "ExampleScenario", "GraphDefinition", "ImplementationGuide", "Library", "Measure", "MessageDefinition", "NamingSystem", "PlanDefinition"
         ))
@@ -348,8 +360,138 @@ public class DataRenderer extends Renderer {
     return value.primitiveValue();
   }
   
+  // -- 6. General purpose extension rendering ---------------------------------------------- 
 
-  // -- 5. Data type Rendering ---------------------------------------------- 
+  public boolean hasRenderableExtensions(DataType element) {
+    for (Extension ext : element.getExtension()) {
+      if (canRender(ext)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  public boolean hasRenderableExtensions(BackboneType element) {
+    for (Extension ext : element.getExtension()) {
+      if (canRender(ext)) {
+        return true;
+      }
+    }
+    return element.hasModifierExtension();  
+  }
+  
+  private String getExtensionLabel(Extension ext) {
+    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, ext.getUrl());
+    if (sd != null && ext.getValue().isPrimitive() && sd.hasSnapshot()) {
+      for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+        if (Utilities.existsInList(ed.getPath(), "Extension", "Extension.value[x]") && ed.hasLabel()) {
+          return ed.getLabel();
+        }
+      }
+    }
+    return null;    
+  }
+  
+  private boolean canRender(Extension ext) {
+    return getExtensionLabel(ext) != null;
+  }
+
+  public void renderExtensionsInList(XhtmlNode ul, DataType element) throws FHIRFormatError, DefinitionException, IOException {
+    for (Extension ext : element.getExtension()) {
+      if (canRender(ext)) {
+        String lbl = getExtensionLabel(ext);
+        XhtmlNode li = ul.li();
+        li.tx(lbl);
+        li.tx(": ");
+        render(li, ext.getValue());
+      }
+    }
+  }
+  
+  public void renderExtensionsInList(XhtmlNode ul, BackboneType element) throws FHIRFormatError, DefinitionException, IOException {
+    for (Extension ext : element.getModifierExtension()) {
+      if (canRender(ext)) {
+        String lbl = getExtensionLabel(ext);
+        XhtmlNode li = ul.li();
+        li = li.b();
+        li.tx(lbl);
+        li.tx(": ");        
+        render(li, ext.getValue());
+      } else {
+        // somehow have to do better than this 
+        XhtmlNode li = ul.li();
+        li.b().tx("WARNING: Unrenderable Modifier Extension!");
+      }
+    }
+    for (Extension ext : element.getExtension()) {
+      if (canRender(ext)) {
+        String lbl = getExtensionLabel(ext);
+        XhtmlNode li = ul.li();
+        li.tx(lbl);
+        li.tx(": ");
+        render(li, ext.getValue());
+      }
+    }
+  }
+  
+  public void renderExtensionsInText(XhtmlNode div, DataType element, String sep) throws FHIRFormatError, DefinitionException, IOException {
+    boolean first = true;
+    for (Extension ext : element.getExtension()) {
+      if (canRender(ext)) {
+        if (first) {
+          first = false;
+        } else {
+          div.tx(sep);
+          div.tx(" ");
+        }
+         
+        String lbl = getExtensionLabel(ext);
+        div.tx(lbl);
+        div.tx(": ");
+        render(div, ext.getValue());
+      }
+    }
+  }
+  
+  public void renderExtensionsInList(XhtmlNode div, BackboneType element, String sep) throws FHIRFormatError, DefinitionException, IOException {
+    boolean first = true;
+    for (Extension ext : element.getModifierExtension()) {
+      if (first) {
+        first = false;
+      } else {
+        div.tx(sep);
+        div.tx(" ");
+      }
+      if (canRender(ext)) {
+        String lbl = getExtensionLabel(ext);
+        XhtmlNode b = div.b();
+        b.tx(lbl);
+        b.tx(": ");
+        render(div, ext.getValue());
+      } else {
+        // somehow have to do better than this 
+        div.b().tx("WARNING: Unrenderable Modifier Extension!");
+      }
+    }
+    for (Extension ext : element.getExtension()) {
+      if (canRender(ext)) {
+        if (first) {
+          first = false;
+        } else {
+          div.tx(sep);
+          div.tx(" ");
+        }
+         
+        String lbl = getExtensionLabel(ext);
+        div.tx(lbl);
+        div.tx(": ");
+        render(div, ext.getValue());
+      }
+    }
+
+  }
+
+  // -- 6. Data type Rendering ---------------------------------------------- 
 
   public static String display(IWorkerContext context, DataType type) {
     return new DataRenderer(new RenderingContext(context, null, null, "http://hl7.org/fhir/R4", "", null, ResourceRendererMode.END_USER)).display(type);
@@ -413,15 +555,8 @@ public class DataRenderer extends Renderer {
     //   mode - if rendering mode is technical, format defaults to XML format
     //   locale - otherwise, format defaults to SHORT for the Locale (which defaults to default Locale)  
     if (isOnlyDate(type.getPrecision())) {
-      DateTimeFormatter fmt = context.getDateFormat();
-      if (fmt == null) {
-        if (context.isTechnicalMode()) {
-          fmt = DateTimeFormatter.ISO_DATE;
-        } else {
-          fmt = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).withLocale(context.getLocale());
-        }
-      }
 
+      DateTimeFormatter fmt = getDateFormatForPrecision(type);      
       LocalDate date = LocalDate.of(type.getYear(), type.getMonth()+1, type.getDay());
       return fmt.format(date);
     }
@@ -440,6 +575,43 @@ public class DataRenderer extends Renderer {
       zdt = zdt.withZoneSameInstant(zone);
     }
     return fmt.format(zdt);
+  }   
+  
+  private DateTimeFormatter getDateFormatForPrecision(BaseDateTimeType type) {
+    DateTimeFormatter fmt = getContextDateFormat(type);
+    if (fmt != null) {
+      return fmt;
+    }
+    if (context.isTechnicalMode()) {
+      switch (type.getPrecision()) {
+      case YEAR:
+        return new DateTimeFormatterBuilder().appendValue(YEAR, 4, 10, SignStyle.EXCEEDS_PAD).toFormatter();
+      case MONTH:
+        return  new DateTimeFormatterBuilder().appendValue(YEAR, 4, 10, SignStyle.EXCEEDS_PAD).appendLiteral('-').appendValue(MONTH_OF_YEAR, 2).toFormatter();
+      default:
+        return DateTimeFormatter.ISO_DATE;
+      }
+    } else {
+      switch (type.getPrecision()) {
+      case YEAR:
+        return DateTimeFormatter.ofPattern("uuuu");
+      case MONTH:
+        return DateTimeFormatter.ofPattern("MMM uuuu");
+      default:
+        return DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).withLocale(context.getLocale());
+      }
+    }
+  }
+
+  private DateTimeFormatter getContextDateFormat(BaseDateTimeType type) {
+    switch (type.getPrecision()) {
+    case YEAR:
+      return context.getDateYearFormat();
+    case MONTH:
+      return context.getDateYearMonthFormat();
+    default:
+      return context.getDateFormat();
+    }
   }   
   
   private boolean isOnlyDate(TemporalPrecisionEnum temporalPrecisionEnum) {
@@ -530,6 +702,12 @@ public class DataRenderer extends Renderer {
   public void renderDateTime(XhtmlNode x, Base e) {
     if (e.hasPrimitiveValue()) {
       x.addText(displayDateTime((DateTimeType) e));
+    }
+  }
+
+  public void renderDate(XhtmlNode x, Base e) {
+    if (e.hasPrimitiveValue()) {
+      x.addText(displayDateTime((DateType) e));
     }
   }
 
@@ -739,7 +917,7 @@ public class DataRenderer extends Renderer {
       CodeSystem cs = context.getWorker().fetchCodeSystem(system, version);
       if (cs != null && cs.hasUserData("path")) {
         if (!Utilities.noString(code)) {
-          return cs.getUserString("path")+"#"+Utilities.nmtokenize(code);
+          return cs.getUserString("path")+"#"+cs.getId()+"-"+Utilities.nmtokenize(code);
         } else {
           return cs.getUserString("path");
         }
@@ -755,8 +933,9 @@ public class DataRenderer extends Renderer {
     if (Utilities.noString(s))
       s = lookupCode(c.getSystem(), c.getVersion(), c.getCode());
 
+    CodeSystem cs = context.getWorker().fetchCodeSystem(c.getSystem());
 
-    String sn = describeSystem(c.getSystem());
+    String sn = cs != null ? cs.present() : describeSystem(c.getSystem());
     String link = getLinkForCode(c.getSystem(), c.getVersion(), c.getCode());
     if (link != null) {
       x.ah(link).tx(sn);
@@ -821,11 +1000,11 @@ public class DataRenderer extends Renderer {
     return s;
   }
 
-  protected void renderCodeableConcept(XhtmlNode x, CodeableConcept cc) {
+  protected void renderCodeableConcept(XhtmlNode x, CodeableConcept cc) throws FHIRFormatError, DefinitionException, IOException {
     renderCodeableConcept(x, cc, false);
   }
   
-  protected void renderCodeableReference(XhtmlNode x, CodeableReference e, boolean showCodeDetails) {
+  protected void renderCodeableReference(XhtmlNode x, CodeableReference e, boolean showCodeDetails) throws FHIRFormatError, DefinitionException, IOException {
     if (e.hasConcept()) {
       renderCodeableConcept(x, e.getConcept(), showCodeDetails);
     }
@@ -834,7 +1013,7 @@ public class DataRenderer extends Renderer {
     }
   }
 
-  protected void renderCodeableConcept(XhtmlNode x, CodeableConcept cc, boolean showCodeDetails) {
+  protected void renderCodeableConcept(XhtmlNode x, CodeableConcept cc, boolean showCodeDetails) throws FHIRFormatError, DefinitionException, IOException {
     if (cc.isEmpty()) {
       return;
     }
@@ -889,6 +1068,12 @@ public class DataRenderer extends Renderer {
         if (c.hasDisplay() && !s.equals(c.getDisplay())) {
           sp.tx(" \""+c.getDisplay()+"\"");
         }
+      }
+      if (hasRenderableExtensions(cc)) {
+        if (!first) {
+          sp.tx("; ");
+        }
+        renderExtensionsInText(sp, cc, ";");
       }
       sp.tx(")");
     } else {
@@ -1139,9 +1324,11 @@ public class DataRenderer extends Renderer {
   protected String displayQuantity(Quantity q) {
     StringBuilder s = new StringBuilder();
 
-    s.append("(system = '").append(TerminologyRenderer.describeSystem(q.getSystem()))
-    .append("' code ").append(q.getCode())
-    .append(" = '").append(lookupCode(q.getSystem(), null, q.getCode())).append("')");
+    s.append(q.hasValue() ? q.getValue() : "?");
+    if (q.hasUnit())
+      s.append(" ").append(q.getUnit());
+    else if (q.hasCode())
+      s.append(" ").append(q.getCode());
 
     return s.toString();
   }  
@@ -1158,26 +1345,33 @@ public class DataRenderer extends Renderer {
     }
     if (q.hasUnit())
       x.tx(" "+q.getUnit());
-    else if (q.hasCode())
+    else if (q.hasCode() && q.hasSystem()) {
+      // if there's a code there *shall* be a system, so if we've got one and not the other, things are invalid and we won't bother trying to render
+      if (q.hasSystem() && q.getSystem().equals("http://unitsofmeasure.org"))
       x.tx(" "+q.getCode());
+      else
+        x.tx("(unit "+q.getCode()+" from "+q.getSystem()+")");
+    }
     if (showCodeDetails && q.hasCode()) {
       x.span("background: LightGoldenRodYellow", null).tx(" (Details: "+TerminologyRenderer.describeSystem(q.getSystem())+" code "+q.getCode()+" = '"+lookupCode(q.getSystem(), null, q.getCode())+"')");
     }
   }
 
   public String displayRange(Range q) {
+    if (!q.hasLow() && !q.hasHigh())
+      return "?";
+
     StringBuilder b = new StringBuilder();
-    if (q.hasLow())
-      b.append(q.getLow().getValue().toString());
-    else
-      b.append("?");
-    b.append("-");
-    if (q.hasHigh())
-      b.append(q.getHigh().getValue().toString());
-    else
-      b.append("?");
-    if (q.getLow().hasUnit())
-      b.append(" "+q.getLow().getUnit());
+
+    boolean sameUnits = (q.getLow().hasUnit() && q.getHigh().hasUnit() && q.getLow().getUnit().equals(q.getHigh().getUnit())) 
+        || (q.getLow().hasCode() && q.getHigh().hasCode() && q.getLow().getCode().equals(q.getHigh().getCode()));
+    String low = "?";
+    if (q.hasLow() && q.getLow().hasValue())
+      low = sameUnits ? q.getLow().getValue().toString() : displayQuantity(q.getLow());
+    String high = displayQuantity(q.getHigh());
+    if (high.isEmpty())
+      high = "?";
+    b.append(low).append("\u00A0to\u00A0").append(high);
     return b.toString();
   }
 

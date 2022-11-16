@@ -1,7 +1,10 @@
 package org.hl7.fhir.convertors.conv43_50.resources43_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.*;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Attachment43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableConcept43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Identifier43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Period43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Instant43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.MarkDown43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
@@ -78,6 +81,8 @@ public class DocumentReference43_50 {
       tgt.addContent(convertDocumentReferenceContentComponent(t));
     if (src.hasContext())
       convertDocumentReferenceContextComponent(src.getContext(), tgt);
+    for (org.hl7.fhir.r4b.model.Reference t : src.getAuthor())
+      tgt.addAuthor(Reference43_50.convertReference(t));
     return tgt;
   }
 
@@ -118,6 +123,8 @@ public class DocumentReference43_50 {
     for (org.hl7.fhir.r5.model.DocumentReference.DocumentReferenceContentComponent t : src.getContent())
       tgt.addContent(convertDocumentReferenceContentComponent(t));
     convertDocumentReferenceContextComponent(src, tgt.getContext());
+    for (org.hl7.fhir.r5.model.Reference t : src.getAuthor())
+      tgt.addAuthor(Reference43_50.convertReference(t));
     return tgt;
   }
 
@@ -274,8 +281,8 @@ public class DocumentReference43_50 {
       tgt.setFacilityType(CodeableConcept43_50.convertCodeableConcept(src.getFacilityType()));
     if (src.hasPracticeSetting())
       tgt.setPracticeSetting(CodeableConcept43_50.convertCodeableConcept(src.getPracticeSetting()));
-    if (src.hasSourcePatientInfo())
-      tgt.setSourcePatientInfo(Reference43_50.convertReference(src.getSourcePatientInfo()));
+//    if (src.hasSourcePatientInfo())
+//      tgt.setSourcePatientInfo(Reference43_50.convertReference(src.getSourcePatientInfo()));
 //    for (org.hl7.fhir.r4b.model.Reference t : src.getRelated()) tgt.addRelated(Reference43_50.convertReference(t));
   }
 
@@ -290,8 +297,8 @@ public class DocumentReference43_50 {
       tgt.setFacilityType(CodeableConcept43_50.convertCodeableConcept(src.getFacilityType()));
     if (src.hasPracticeSetting())
       tgt.setPracticeSetting(CodeableConcept43_50.convertCodeableConcept(src.getPracticeSetting()));
-    if (src.hasSourcePatientInfo())
-      tgt.setSourcePatientInfo(Reference43_50.convertReference(src.getSourcePatientInfo()));
+//    if (src.hasSourcePatientInfo())
+//      tgt.setSourcePatientInfo(Reference43_50.convertReference(src.getSourcePatientInfo()));
 //    for (org.hl7.fhir.r5.model.Reference t : src.getRelated()) tgt.addRelated(Reference43_50.convertReference(t));
   }
 }

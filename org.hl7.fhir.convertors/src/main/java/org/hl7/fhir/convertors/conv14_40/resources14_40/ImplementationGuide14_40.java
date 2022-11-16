@@ -1,12 +1,18 @@
 package org.hl7.fhir.convertors.conv14_40.resources14_40;
 
+import java.util.List;
+
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext14_40;
 import org.hl7.fhir.convertors.conv14_40.VersionConvertor_14_40;
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.Reference14_40;
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.CodeableConcept14_40;
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.ContactPoint14_40;
-import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.*;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.Boolean14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.Code14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.DateTime14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.String14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.Uri14_40;
 import org.hl7.fhir.dstu2016may.model.ImplementationGuide;
 import org.hl7.fhir.dstu2016may.model.ImplementationGuide.GuidePageKind;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -14,8 +20,6 @@ import org.hl7.fhir.r4.model.CanonicalType;
 import org.hl7.fhir.r4.model.Enumeration;
 import org.hl7.fhir.r4.model.ImplementationGuide.GuidePageGeneration;
 import org.hl7.fhir.r4.model.Type;
-
-import java.util.List;
 
 public class ImplementationGuide14_40 {
 
@@ -316,7 +320,7 @@ public class ImplementationGuide14_40 {
 
   static public org.hl7.fhir.dstu2016may.model.ImplementationGuide.ImplementationGuidePackageComponent findPackage(List<ImplementationGuide.ImplementationGuidePackageComponent> definition, String id) {
     for (org.hl7.fhir.dstu2016may.model.ImplementationGuide.ImplementationGuidePackageComponent t : definition)
-      if (t.getId().equals(id))
+      if (t.hasId() && t.getId().equals(id))
         return t;
     org.hl7.fhir.dstu2016may.model.ImplementationGuide.ImplementationGuidePackageComponent t = new org.hl7.fhir.dstu2016may.model.ImplementationGuide.ImplementationGuidePackageComponent();
     t.setName("Default Package");

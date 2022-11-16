@@ -1,11 +1,11 @@
 package org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30;
 
+import java.util.Collections;
+
 import org.hl7.fhir.convertors.context.ConversionContext10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.Decimal10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.Integer10_30;
 import org.hl7.fhir.exceptions.FHIRException;
-
-import java.util.Collections;
 
 public class Timing10_30 {
   public static org.hl7.fhir.dstu3.model.Timing convertTiming(org.hl7.fhir.dstu2.model.Timing src) throws FHIRException {

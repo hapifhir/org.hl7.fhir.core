@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -184,18 +184,18 @@ public class SupplyDelivery extends DomainResource {
     @Block()
     public static class SupplyDeliverySuppliedItemComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * The amount of supply that has been dispensed. Includes unit of measure.
+         * The amount of the item that has been supplied.  Unit of measure may be included.
          */
         @Child(name = "quantity", type = {Quantity.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Amount dispensed", formalDefinition="The amount of supply that has been dispensed. Includes unit of measure." )
+        @Description(shortDefinition="Amount supplied", formalDefinition="The amount of the item that has been supplied.  Unit of measure may be included." )
         protected Quantity quantity;
 
         /**
-         * Identifies the medication, substance or device being dispensed. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.
+         * Identifies the medication, substance, device or biologically derived product being supplied. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.
          */
-        @Child(name = "item", type = {CodeableConcept.class, Medication.class, Substance.class, Device.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Medication, Substance, or Device supplied", formalDefinition="Identifies the medication, substance or device being dispensed. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/supply-item")
+        @Child(name = "item", type = {CodeableConcept.class, Medication.class, Substance.class, Device.class, BiologicallyDerivedProduct.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Medication, Substance, Device or Biologically Derived Product supplied", formalDefinition="Identifies the medication, substance, device or biologically derived product being supplied. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/supplydelivery-supplyitemtype")
         protected DataType item;
 
         private static final long serialVersionUID = -615919419L;
@@ -208,7 +208,7 @@ public class SupplyDelivery extends DomainResource {
       }
 
         /**
-         * @return {@link #quantity} (The amount of supply that has been dispensed. Includes unit of measure.)
+         * @return {@link #quantity} (The amount of the item that has been supplied.  Unit of measure may be included.)
          */
         public Quantity getQuantity() { 
           if (this.quantity == null)
@@ -224,7 +224,7 @@ public class SupplyDelivery extends DomainResource {
         }
 
         /**
-         * @param value {@link #quantity} (The amount of supply that has been dispensed. Includes unit of measure.)
+         * @param value {@link #quantity} (The amount of the item that has been supplied.  Unit of measure may be included.)
          */
         public SupplyDeliverySuppliedItemComponent setQuantity(Quantity value) { 
           this.quantity = value;
@@ -232,14 +232,14 @@ public class SupplyDelivery extends DomainResource {
         }
 
         /**
-         * @return {@link #item} (Identifies the medication, substance or device being dispensed. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.)
+         * @return {@link #item} (Identifies the medication, substance, device or biologically derived product being supplied. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.)
          */
         public DataType getItem() { 
           return this.item;
         }
 
         /**
-         * @return {@link #item} (Identifies the medication, substance or device being dispensed. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.)
+         * @return {@link #item} (Identifies the medication, substance, device or biologically derived product being supplied. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.)
          */
         public CodeableConcept getItemCodeableConcept() throws FHIRException { 
           if (this.item == null)
@@ -254,7 +254,7 @@ public class SupplyDelivery extends DomainResource {
         }
 
         /**
-         * @return {@link #item} (Identifies the medication, substance or device being dispensed. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.)
+         * @return {@link #item} (Identifies the medication, substance, device or biologically derived product being supplied. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.)
          */
         public Reference getItemReference() throws FHIRException { 
           if (this.item == null)
@@ -273,7 +273,7 @@ public class SupplyDelivery extends DomainResource {
         }
 
         /**
-         * @param value {@link #item} (Identifies the medication, substance or device being dispensed. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.)
+         * @param value {@link #item} (Identifies the medication, substance, device or biologically derived product being supplied. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.)
          */
         public SupplyDeliverySuppliedItemComponent setItem(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
@@ -284,18 +284,18 @@ public class SupplyDelivery extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("quantity", "Quantity", "The amount of supply that has been dispensed. Includes unit of measure.", 0, 1, quantity));
-          children.add(new Property("item[x]", "CodeableConcept|Reference(Medication|Substance|Device)", "Identifies the medication, substance or device being dispensed. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.", 0, 1, item));
+          children.add(new Property("quantity", "Quantity", "The amount of the item that has been supplied.  Unit of measure may be included.", 0, 1, quantity));
+          children.add(new Property("item[x]", "CodeableConcept|Reference(Medication|Substance|Device|BiologicallyDerivedProduct)", "Identifies the medication, substance, device or biologically derived product being supplied. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.", 0, 1, item));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -1285004149: /*quantity*/  return new Property("quantity", "Quantity", "The amount of supply that has been dispensed. Includes unit of measure.", 0, 1, quantity);
-          case 2116201613: /*item[x]*/  return new Property("item[x]", "CodeableConcept|Reference(Medication|Substance|Device)", "Identifies the medication, substance or device being dispensed. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.", 0, 1, item);
-          case 3242771: /*item*/  return new Property("item[x]", "CodeableConcept|Reference(Medication|Substance|Device)", "Identifies the medication, substance or device being dispensed. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.", 0, 1, item);
-          case 106644494: /*itemCodeableConcept*/  return new Property("item[x]", "CodeableConcept", "Identifies the medication, substance or device being dispensed. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.", 0, 1, item);
-          case 1376364920: /*itemReference*/  return new Property("item[x]", "Reference(Medication|Substance|Device)", "Identifies the medication, substance or device being dispensed. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.", 0, 1, item);
+          case -1285004149: /*quantity*/  return new Property("quantity", "Quantity", "The amount of the item that has been supplied.  Unit of measure may be included.", 0, 1, quantity);
+          case 2116201613: /*item[x]*/  return new Property("item[x]", "CodeableConcept|Reference(Medication|Substance|Device|BiologicallyDerivedProduct)", "Identifies the medication, substance, device or biologically derived product being supplied. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.", 0, 1, item);
+          case 3242771: /*item*/  return new Property("item[x]", "CodeableConcept|Reference(Medication|Substance|Device|BiologicallyDerivedProduct)", "Identifies the medication, substance, device or biologically derived product being supplied. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.", 0, 1, item);
+          case 106644494: /*itemCodeableConcept*/  return new Property("item[x]", "CodeableConcept", "Identifies the medication, substance, device or biologically derived product being supplied. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.", 0, 1, item);
+          case 1376364920: /*itemReference*/  return new Property("item[x]", "Reference(Medication|Substance|Device|BiologicallyDerivedProduct)", "Identifies the medication, substance, device or biologically derived product being supplied. This is either a link to a resource representing the details of the item or a code that identifies the item from a known list.", 0, 1, item);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -455,19 +455,19 @@ public class SupplyDelivery extends DomainResource {
     protected Reference patient;
 
     /**
-     * Indicates the type of dispensing event that is performed. Examples include: Trial Fill, Completion of Trial, Partial Fill, Emergency Fill, Samples, etc.
+     * Indicates the type of supply being provided.  Examples include: Medication, Device, Biologically Derived Product.
      */
     @Child(name = "type", type = {CodeableConcept.class}, order=5, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Category of dispense event", formalDefinition="Indicates the type of dispensing event that is performed. Examples include: Trial Fill, Completion of Trial, Partial Fill, Emergency Fill, Samples, etc." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/supplydelivery-type")
+    @Description(shortDefinition="Category of supply event", formalDefinition="Indicates the type of supply being provided.  Examples include: Medication, Device, Biologically Derived Product." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/supplydelivery-supplyitemtype")
     protected CodeableConcept type;
 
     /**
      * The item that is being delivered or has been supplied.
      */
-    @Child(name = "suppliedItem", type = {}, order=6, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "suppliedItem", type = {}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The item that is delivered or supplied", formalDefinition="The item that is being delivered or has been supplied." )
-    protected SupplyDeliverySuppliedItemComponent suppliedItem;
+    protected List<SupplyDeliverySuppliedItemComponent> suppliedItem;
 
     /**
      * The date or time(s) the activity occurred.
@@ -477,27 +477,27 @@ public class SupplyDelivery extends DomainResource {
     protected DataType occurrence;
 
     /**
-     * The individual responsible for dispensing the medication, supplier or device.
+     * The individual or organization responsible for supplying the delivery.
      */
     @Child(name = "supplier", type = {Practitioner.class, PractitionerRole.class, Organization.class}, order=8, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Dispenser", formalDefinition="The individual responsible for dispensing the medication, supplier or device." )
+    @Description(shortDefinition="The item supplier", formalDefinition="The individual or organization responsible for supplying the delivery." )
     protected Reference supplier;
 
     /**
-     * Identification of the facility/location where the Supply was shipped to, as part of the dispense event.
+     * Identification of the facility/location where the delivery was shipped to.
      */
     @Child(name = "destination", type = {Location.class}, order=9, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Where the Supply was sent", formalDefinition="Identification of the facility/location where the Supply was shipped to, as part of the dispense event." )
+    @Description(shortDefinition="Where the delivery was sent", formalDefinition="Identification of the facility/location where the delivery was shipped to." )
     protected Reference destination;
 
     /**
-     * Identifies the person who picked up the Supply.
+     * Identifies the person or organization that received the delivery.
      */
     @Child(name = "receiver", type = {Practitioner.class, PractitionerRole.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Who collected the Supply", formalDefinition="Identifies the person who picked up the Supply." )
+    @Description(shortDefinition="Who received the delivery", formalDefinition="Identifies the person or organization that received the delivery." )
     protected List<Reference> receiver;
 
-    private static final long serialVersionUID = -841753644L;
+    private static final long serialVersionUID = -734856482L;
 
   /**
    * Constructor
@@ -739,7 +739,7 @@ public class SupplyDelivery extends DomainResource {
     }
 
     /**
-     * @return {@link #type} (Indicates the type of dispensing event that is performed. Examples include: Trial Fill, Completion of Trial, Partial Fill, Emergency Fill, Samples, etc.)
+     * @return {@link #type} (Indicates the type of supply being provided.  Examples include: Medication, Device, Biologically Derived Product.)
      */
     public CodeableConcept getType() { 
       if (this.type == null)
@@ -755,7 +755,7 @@ public class SupplyDelivery extends DomainResource {
     }
 
     /**
-     * @param value {@link #type} (Indicates the type of dispensing event that is performed. Examples include: Trial Fill, Completion of Trial, Partial Fill, Emergency Fill, Samples, etc.)
+     * @param value {@link #type} (Indicates the type of supply being provided.  Examples include: Medication, Device, Biologically Derived Product.)
      */
     public SupplyDelivery setType(CodeableConcept value) { 
       this.type = value;
@@ -765,25 +765,54 @@ public class SupplyDelivery extends DomainResource {
     /**
      * @return {@link #suppliedItem} (The item that is being delivered or has been supplied.)
      */
-    public SupplyDeliverySuppliedItemComponent getSuppliedItem() { 
+    public List<SupplyDeliverySuppliedItemComponent> getSuppliedItem() { 
       if (this.suppliedItem == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create SupplyDelivery.suppliedItem");
-        else if (Configuration.doAutoCreate())
-          this.suppliedItem = new SupplyDeliverySuppliedItemComponent(); // cc
+        this.suppliedItem = new ArrayList<SupplyDeliverySuppliedItemComponent>();
       return this.suppliedItem;
     }
 
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public SupplyDelivery setSuppliedItem(List<SupplyDeliverySuppliedItemComponent> theSuppliedItem) { 
+      this.suppliedItem = theSuppliedItem;
+      return this;
+    }
+
     public boolean hasSuppliedItem() { 
-      return this.suppliedItem != null && !this.suppliedItem.isEmpty();
+      if (this.suppliedItem == null)
+        return false;
+      for (SupplyDeliverySuppliedItemComponent item : this.suppliedItem)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public SupplyDeliverySuppliedItemComponent addSuppliedItem() { //3
+      SupplyDeliverySuppliedItemComponent t = new SupplyDeliverySuppliedItemComponent();
+      if (this.suppliedItem == null)
+        this.suppliedItem = new ArrayList<SupplyDeliverySuppliedItemComponent>();
+      this.suppliedItem.add(t);
+      return t;
+    }
+
+    public SupplyDelivery addSuppliedItem(SupplyDeliverySuppliedItemComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.suppliedItem == null)
+        this.suppliedItem = new ArrayList<SupplyDeliverySuppliedItemComponent>();
+      this.suppliedItem.add(t);
+      return this;
     }
 
     /**
-     * @param value {@link #suppliedItem} (The item that is being delivered or has been supplied.)
+     * @return The first repetition of repeating field {@link #suppliedItem}, creating it if it does not already exist {3}
      */
-    public SupplyDelivery setSuppliedItem(SupplyDeliverySuppliedItemComponent value) { 
-      this.suppliedItem = value;
-      return this;
+    public SupplyDeliverySuppliedItemComponent getSuppliedItemFirstRep() { 
+      if (getSuppliedItem().isEmpty()) {
+        addSuppliedItem();
+      }
+      return getSuppliedItem().get(0);
     }
 
     /**
@@ -853,7 +882,7 @@ public class SupplyDelivery extends DomainResource {
     }
 
     /**
-     * @return {@link #supplier} (The individual responsible for dispensing the medication, supplier or device.)
+     * @return {@link #supplier} (The individual or organization responsible for supplying the delivery.)
      */
     public Reference getSupplier() { 
       if (this.supplier == null)
@@ -869,7 +898,7 @@ public class SupplyDelivery extends DomainResource {
     }
 
     /**
-     * @param value {@link #supplier} (The individual responsible for dispensing the medication, supplier or device.)
+     * @param value {@link #supplier} (The individual or organization responsible for supplying the delivery.)
      */
     public SupplyDelivery setSupplier(Reference value) { 
       this.supplier = value;
@@ -877,7 +906,7 @@ public class SupplyDelivery extends DomainResource {
     }
 
     /**
-     * @return {@link #destination} (Identification of the facility/location where the Supply was shipped to, as part of the dispense event.)
+     * @return {@link #destination} (Identification of the facility/location where the delivery was shipped to.)
      */
     public Reference getDestination() { 
       if (this.destination == null)
@@ -893,7 +922,7 @@ public class SupplyDelivery extends DomainResource {
     }
 
     /**
-     * @param value {@link #destination} (Identification of the facility/location where the Supply was shipped to, as part of the dispense event.)
+     * @param value {@link #destination} (Identification of the facility/location where the delivery was shipped to.)
      */
     public SupplyDelivery setDestination(Reference value) { 
       this.destination = value;
@@ -901,7 +930,7 @@ public class SupplyDelivery extends DomainResource {
     }
 
     /**
-     * @return {@link #receiver} (Identifies the person who picked up the Supply.)
+     * @return {@link #receiver} (Identifies the person or organization that received the delivery.)
      */
     public List<Reference> getReceiver() { 
       if (this.receiver == null)
@@ -960,12 +989,12 @@ public class SupplyDelivery extends DomainResource {
         children.add(new Property("partOf", "Reference(SupplyDelivery|Contract)", "A larger event of which this particular event is a component or step.", 0, java.lang.Integer.MAX_VALUE, partOf));
         children.add(new Property("status", "code", "A code specifying the state of the dispense event.", 0, 1, status));
         children.add(new Property("patient", "Reference(Patient)", "A link to a resource representing the person whom the delivered item is for.", 0, 1, patient));
-        children.add(new Property("type", "CodeableConcept", "Indicates the type of dispensing event that is performed. Examples include: Trial Fill, Completion of Trial, Partial Fill, Emergency Fill, Samples, etc.", 0, 1, type));
-        children.add(new Property("suppliedItem", "", "The item that is being delivered or has been supplied.", 0, 1, suppliedItem));
+        children.add(new Property("type", "CodeableConcept", "Indicates the type of supply being provided.  Examples include: Medication, Device, Biologically Derived Product.", 0, 1, type));
+        children.add(new Property("suppliedItem", "", "The item that is being delivered or has been supplied.", 0, java.lang.Integer.MAX_VALUE, suppliedItem));
         children.add(new Property("occurrence[x]", "dateTime|Period|Timing", "The date or time(s) the activity occurred.", 0, 1, occurrence));
-        children.add(new Property("supplier", "Reference(Practitioner|PractitionerRole|Organization)", "The individual responsible for dispensing the medication, supplier or device.", 0, 1, supplier));
-        children.add(new Property("destination", "Reference(Location)", "Identification of the facility/location where the Supply was shipped to, as part of the dispense event.", 0, 1, destination));
-        children.add(new Property("receiver", "Reference(Practitioner|PractitionerRole)", "Identifies the person who picked up the Supply.", 0, java.lang.Integer.MAX_VALUE, receiver));
+        children.add(new Property("supplier", "Reference(Practitioner|PractitionerRole|Organization)", "The individual or organization responsible for supplying the delivery.", 0, 1, supplier));
+        children.add(new Property("destination", "Reference(Location)", "Identification of the facility/location where the delivery was shipped to.", 0, 1, destination));
+        children.add(new Property("receiver", "Reference(Practitioner|PractitionerRole)", "Identifies the person or organization that received the delivery.", 0, java.lang.Integer.MAX_VALUE, receiver));
       }
 
       @Override
@@ -976,16 +1005,16 @@ public class SupplyDelivery extends DomainResource {
         case -995410646: /*partOf*/  return new Property("partOf", "Reference(SupplyDelivery|Contract)", "A larger event of which this particular event is a component or step.", 0, java.lang.Integer.MAX_VALUE, partOf);
         case -892481550: /*status*/  return new Property("status", "code", "A code specifying the state of the dispense event.", 0, 1, status);
         case -791418107: /*patient*/  return new Property("patient", "Reference(Patient)", "A link to a resource representing the person whom the delivered item is for.", 0, 1, patient);
-        case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Indicates the type of dispensing event that is performed. Examples include: Trial Fill, Completion of Trial, Partial Fill, Emergency Fill, Samples, etc.", 0, 1, type);
-        case 1993333233: /*suppliedItem*/  return new Property("suppliedItem", "", "The item that is being delivered or has been supplied.", 0, 1, suppliedItem);
+        case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Indicates the type of supply being provided.  Examples include: Medication, Device, Biologically Derived Product.", 0, 1, type);
+        case 1993333233: /*suppliedItem*/  return new Property("suppliedItem", "", "The item that is being delivered or has been supplied.", 0, java.lang.Integer.MAX_VALUE, suppliedItem);
         case -2022646513: /*occurrence[x]*/  return new Property("occurrence[x]", "dateTime|Period|Timing", "The date or time(s) the activity occurred.", 0, 1, occurrence);
         case 1687874001: /*occurrence*/  return new Property("occurrence[x]", "dateTime|Period|Timing", "The date or time(s) the activity occurred.", 0, 1, occurrence);
         case -298443636: /*occurrenceDateTime*/  return new Property("occurrence[x]", "dateTime", "The date or time(s) the activity occurred.", 0, 1, occurrence);
         case 1397156594: /*occurrencePeriod*/  return new Property("occurrence[x]", "Period", "The date or time(s) the activity occurred.", 0, 1, occurrence);
         case 1515218299: /*occurrenceTiming*/  return new Property("occurrence[x]", "Timing", "The date or time(s) the activity occurred.", 0, 1, occurrence);
-        case -1663305268: /*supplier*/  return new Property("supplier", "Reference(Practitioner|PractitionerRole|Organization)", "The individual responsible for dispensing the medication, supplier or device.", 0, 1, supplier);
-        case -1429847026: /*destination*/  return new Property("destination", "Reference(Location)", "Identification of the facility/location where the Supply was shipped to, as part of the dispense event.", 0, 1, destination);
-        case -808719889: /*receiver*/  return new Property("receiver", "Reference(Practitioner|PractitionerRole)", "Identifies the person who picked up the Supply.", 0, java.lang.Integer.MAX_VALUE, receiver);
+        case -1663305268: /*supplier*/  return new Property("supplier", "Reference(Practitioner|PractitionerRole|Organization)", "The individual or organization responsible for supplying the delivery.", 0, 1, supplier);
+        case -1429847026: /*destination*/  return new Property("destination", "Reference(Location)", "Identification of the facility/location where the delivery was shipped to.", 0, 1, destination);
+        case -808719889: /*receiver*/  return new Property("receiver", "Reference(Practitioner|PractitionerRole)", "Identifies the person or organization that received the delivery.", 0, java.lang.Integer.MAX_VALUE, receiver);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -1000,7 +1029,7 @@ public class SupplyDelivery extends DomainResource {
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<SupplyDeliveryStatus>
         case -791418107: /*patient*/ return this.patient == null ? new Base[0] : new Base[] {this.patient}; // Reference
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
-        case 1993333233: /*suppliedItem*/ return this.suppliedItem == null ? new Base[0] : new Base[] {this.suppliedItem}; // SupplyDeliverySuppliedItemComponent
+        case 1993333233: /*suppliedItem*/ return this.suppliedItem == null ? new Base[0] : this.suppliedItem.toArray(new Base[this.suppliedItem.size()]); // SupplyDeliverySuppliedItemComponent
         case 1687874001: /*occurrence*/ return this.occurrence == null ? new Base[0] : new Base[] {this.occurrence}; // DataType
         case -1663305268: /*supplier*/ return this.supplier == null ? new Base[0] : new Base[] {this.supplier}; // Reference
         case -1429847026: /*destination*/ return this.destination == null ? new Base[0] : new Base[] {this.destination}; // Reference
@@ -1033,7 +1062,7 @@ public class SupplyDelivery extends DomainResource {
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1993333233: // suppliedItem
-          this.suppliedItem = (SupplyDeliverySuppliedItemComponent) value; // SupplyDeliverySuppliedItemComponent
+          this.getSuppliedItem().add((SupplyDeliverySuppliedItemComponent) value); // SupplyDeliverySuppliedItemComponent
           return value;
         case 1687874001: // occurrence
           this.occurrence = TypeConvertor.castToType(value); // DataType
@@ -1068,7 +1097,7 @@ public class SupplyDelivery extends DomainResource {
         } else if (name.equals("type")) {
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("suppliedItem")) {
-          this.suppliedItem = (SupplyDeliverySuppliedItemComponent) value; // SupplyDeliverySuppliedItemComponent
+          this.getSuppliedItem().add((SupplyDeliverySuppliedItemComponent) value);
         } else if (name.equals("occurrence[x]")) {
           this.occurrence = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("supplier")) {
@@ -1091,7 +1120,7 @@ public class SupplyDelivery extends DomainResource {
         case -892481550:  return getStatusElement();
         case -791418107:  return getPatient();
         case 3575610:  return getType();
-        case 1993333233:  return getSuppliedItem();
+        case 1993333233:  return addSuppliedItem(); 
         case -2022646513:  return getOccurrence();
         case 1687874001:  return getOccurrence();
         case -1663305268:  return getSupplier();
@@ -1144,8 +1173,7 @@ public class SupplyDelivery extends DomainResource {
           return this.type;
         }
         else if (name.equals("suppliedItem")) {
-          this.suppliedItem = new SupplyDeliverySuppliedItemComponent();
-          return this.suppliedItem;
+          return addSuppliedItem();
         }
         else if (name.equals("occurrenceDateTime")) {
           this.occurrence = new DateTimeType();
@@ -1205,7 +1233,11 @@ public class SupplyDelivery extends DomainResource {
         dst.status = status == null ? null : status.copy();
         dst.patient = patient == null ? null : patient.copy();
         dst.type = type == null ? null : type.copy();
-        dst.suppliedItem = suppliedItem == null ? null : suppliedItem.copy();
+        if (suppliedItem != null) {
+          dst.suppliedItem = new ArrayList<SupplyDeliverySuppliedItemComponent>();
+          for (SupplyDeliverySuppliedItemComponent i : suppliedItem)
+            dst.suppliedItem.add(i.copy());
+        };
         dst.occurrence = occurrence == null ? null : occurrence.copy();
         dst.supplier = supplier == null ? null : supplier.copy();
         dst.destination = destination == null ? null : destination.copy();
@@ -1441,7 +1473,7 @@ public class SupplyDelivery extends DomainResource {
 * [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
 * [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
 * [MedicationUsage](medicationusage.html): Returns statements for a specific patient.
-* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement
+* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement
 * [Observation](observation.html): The subject that the observation is about (if patient)
 * [Procedure](procedure.html): Search by subject - a patient
 * [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
@@ -1450,10 +1482,10 @@ public class SupplyDelivery extends DomainResource {
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
+  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={BiologicallyDerivedProduct.class, Device.class, Group.class, Location.class, Medication.class, NutritionProduct.class, Organization.class, Patient.class, Practitioner.class, Procedure.class, Substance.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
@@ -1485,7 +1517,7 @@ public class SupplyDelivery extends DomainResource {
 * [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
 * [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
 * [MedicationUsage](medicationusage.html): Returns statements for a specific patient.
-* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement
+* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement
 * [Observation](observation.html): The subject that the observation is about (if patient)
 * [Procedure](procedure.html): Search by subject - a patient
 * [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
@@ -1494,7 +1526,7 @@ public class SupplyDelivery extends DomainResource {
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);

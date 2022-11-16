@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,7 +48,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * Common Ancestor declaration for conformance and knowledge artifact resources.
+ * Common Interface declaration for conformance and knowledge artifact resources.
  */
 public abstract class CanonicalResource extends DomainResource {
 
@@ -76,7 +76,7 @@ public abstract class CanonicalResource extends DomainResource {
       return 1;
     }
     /**
-     * @return {@link #url} (An absolute URI that is used to identify this canonical resource when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this canonical resource is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the canonical resource is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @return {@link #url} (An absolute URI that is used to identify this canonical resource when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this canonical resource is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the canonical resource is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public abstract UriType getUrlElement(); 
 
@@ -84,15 +84,15 @@ public abstract class CanonicalResource extends DomainResource {
     public abstract boolean hasUrl(); 
 
     /**
-     * @param value {@link #url} (An absolute URI that is used to identify this canonical resource when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this canonical resource is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the canonical resource is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @param value {@link #url} (An absolute URI that is used to identify this canonical resource when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this canonical resource is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the canonical resource is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public abstract CanonicalResource setUrlElement(UriType value); 
     /**
-     * @return An absolute URI that is used to identify this canonical resource when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this canonical resource is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the canonical resource is stored on different servers.
+     * @return An absolute URI that is used to identify this canonical resource when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this canonical resource is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the canonical resource is stored on different servers.
      */
     public abstract String getUrl(); 
     /**
-     * @param value An absolute URI that is used to identify this canonical resource when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this canonical resource is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the canonical resource is stored on different servers.
+     * @param value An absolute URI that is used to identify this canonical resource when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this canonical resource is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the canonical resource is stored on different servers.
      */
     public abstract CanonicalResource setUrl(String value); 
     /**
@@ -143,6 +143,32 @@ public abstract class CanonicalResource extends DomainResource {
      * @param value The identifier that is used to identify this version of the canonical resource when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the canonical resource author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.
      */
     public abstract CanonicalResource setVersion(String value); 
+    /**
+     * How many allowed for this property by the implementation
+     */
+    public int getVersionAlgorithmMax() { 
+      return 1;
+    }
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public abstract DataType getVersionAlgorithm(); 
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public abstract StringType getVersionAlgorithmStringType() throws FHIRException; 
+    public abstract boolean hasVersionAlgorithmStringType(); 
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public abstract Coding getVersionAlgorithmCoding() throws FHIRException; 
+    public abstract boolean hasVersionAlgorithmCoding(); 
+    public abstract boolean hasVersionAlgorithm(); 
+    /**
+     * @param value {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public abstract CanonicalResource setVersionAlgorithm(DataType value); 
+
     /**
      * How many allowed for this property by the implementation
      */
@@ -280,7 +306,7 @@ public abstract class CanonicalResource extends DomainResource {
       return 1;
     }
     /**
-     * @return {@link #publisher} (The name of the organization or individual that published the canonical resource.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     * @return {@link #publisher} (The name of the organization or individual responsible for the release and ongoing maintenance of the canonical resource.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
     public abstract StringType getPublisherElement(); 
 
@@ -288,15 +314,15 @@ public abstract class CanonicalResource extends DomainResource {
     public abstract boolean hasPublisher(); 
 
     /**
-     * @param value {@link #publisher} (The name of the organization or individual that published the canonical resource.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     * @param value {@link #publisher} (The name of the organization or individual responsible for the release and ongoing maintenance of the canonical resource.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
     public abstract CanonicalResource setPublisherElement(StringType value); 
     /**
-     * @return The name of the organization or individual that published the canonical resource.
+     * @return The name of the organization or individual responsible for the release and ongoing maintenance of the canonical resource.
      */
     public abstract String getPublisher(); 
     /**
-     * @param value The name of the organization or individual that published the canonical resource.
+     * @param value The name of the organization or individual responsible for the release and ongoing maintenance of the canonical resource.
      */
     public abstract CanonicalResource setPublisher(String value); 
     /**
@@ -443,6 +469,32 @@ public abstract class CanonicalResource extends DomainResource {
      * @param value A copyright statement relating to the canonical resource and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the canonical resource.
      */
     public abstract CanonicalResource setCopyright(String value); 
+    /**
+     * How many allowed for this property by the implementation
+     */
+    public int getCopyrightLabelMax() { 
+      return 1;
+    }
+    /**
+     * @return {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public abstract StringType getCopyrightLabelElement(); 
+
+    public abstract boolean hasCopyrightLabelElement(); 
+    public abstract boolean hasCopyrightLabel(); 
+
+    /**
+     * @param value {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public abstract CanonicalResource setCopyrightLabelElement(StringType value); 
+    /**
+     * @return A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    public abstract String getCopyrightLabel(); 
+    /**
+     * @param value A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    public abstract CanonicalResource setCopyrightLabel(String value); 
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
       }
@@ -557,6 +609,26 @@ public abstract class CanonicalResource extends DomainResource {
   public String getVersionedUrl() {
     return hasVersion() ? getUrl()+"|"+getVersion() : getUrl();
   }  
+  
+
+  public String oid() {
+    for (Identifier id : getIdentifier()) {
+      if (id.getValue().startsWith("urn:oid:")) {
+        return id.getValue().substring(8);
+      }
+    }
+    return null;
+  }
+
+  public String getOid() {
+    for (Identifier id : getIdentifier()) {
+      if ("urn:ietf:rfc:3986".equals(id.getSystem()) && id.hasValue() && id.getValue().startsWith("urn:oid:")) {
+        return id.getValue().substring(8);
+      }
+    }
+    return null;
+  }
+
 // end addition
 
 }

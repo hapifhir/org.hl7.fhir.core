@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,7 +49,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
 
 import org.hl7.fhir.instance.model.api.INarrative;
 /**
- * Base StructureDefinition for Narrative Type: A human-readable summary of the resource conveying the essential clinical and business information for the resource.
+ * Narrative Type: A human-readable summary of the resource conveying the essential clinical and business information for the resource.
  */
 @DatatypeDef(name="Narrative")
 public class Narrative extends BaseNarrative implements INarrative {
@@ -287,6 +287,7 @@ public class Narrative extends BaseNarrative implements INarrative {
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("status", "code", "The status of the narrative - whether it's entirely generated (from just the defined data or the extensions too), or whether a human authored it and it may contain additional data.", 0, 1, status));
+        children.add(new Property("div", "xhtml", "he actual narrative content, a stripped down version of XHTML", 0, 1, new XhtmlType(this)));
       }
 
       @Override

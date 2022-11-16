@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,7 +48,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * The SubscriptionStatus resource describes the state of a Subscription during notifications.
+ * The SubscriptionStatus resource describes the state of a Subscription during notifications. It is not persisted.
  */
 @ResourceDef(name="SubscriptionStatus", profile="http://hl7.org/fhir/StructureDefinition/SubscriptionStatus")
 public class SubscriptionStatus extends DomainResource {

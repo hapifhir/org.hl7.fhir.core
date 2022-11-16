@@ -656,12 +656,12 @@ public class XhtmlNode implements IBaseXhtml {
     return addTag("a").attribute("href", href).attribute("title", title);
   }
 
-  public XhtmlNode img(String src) {
-    return addTag("img").attribute("src", src);    
+  public XhtmlNode img(String src, String alt) {
+    return addTag("img").attribute("src", src).attribute("alt", alt);    
   }
 
-  public XhtmlNode img(String src, String title) {
-    return addTag("img").attribute("src", src).attribute("title", title);    
+  public XhtmlNode img(String src, String alt, String title) {
+    return addTag("img").attribute("src", src).attribute("alt", alt).attribute("title", title);    
   }
 
   public XhtmlNode an(String href) {

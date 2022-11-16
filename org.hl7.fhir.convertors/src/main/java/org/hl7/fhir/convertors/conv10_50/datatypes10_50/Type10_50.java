@@ -1,8 +1,44 @@
 package org.hl7.fhir.convertors.conv10_50.datatypes10_50;
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_50;
-import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.*;
-import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.*;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Address10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Age10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Annotation10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Attachment10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.CodeableConcept10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Coding10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.ContactPoint10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Count10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Distance10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Duration10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.HumanName10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Identifier10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Money10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Period10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Quantity10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Range10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Ratio10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.SampledData10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Signature10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.SimpleQuantity10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Timing10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Base64Binary10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Boolean10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Code10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Date10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.DateTime10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Decimal10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Id10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Instant10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Integer10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.MarkDown10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Oid10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.PositiveInt10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.String10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Time10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.UnsignedInt10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Uri10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Uuid10_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Type10_50 {

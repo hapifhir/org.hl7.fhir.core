@@ -40,7 +40,7 @@ public class ValidationOptions {
     return guessSystem;
   }
   
-  private ValidationOptions copy() {
+  public ValidationOptions copy() {
     ValidationOptions n = new ValidationOptions(language);
     n.useServer = useServer;
     n.useClient = useClient;

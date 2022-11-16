@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1330,19 +1330,26 @@ public class PlanDefinition extends MetadataResource {
         /**
          * The type of participant in the action.
          */
-        @Child(name = "typeReference", type = {CareTeam.class, Device.class, Group.class, HealthcareService.class, Location.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "typeCanonical", type = {CanonicalType.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Who or what can participate", formalDefinition="The type of participant in the action." )
+        protected CanonicalType typeCanonical;
+
+        /**
+         * The type of participant in the action.
+         */
+        @Child(name = "typeReference", type = {CareTeam.class, Device.class, DeviceDefinition.class, Endpoint.class, Group.class, HealthcareService.class, Location.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class}, order=3, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Who or what can participate", formalDefinition="The type of participant in the action." )
         protected Reference typeReference;
 
         /**
          * The role the participant should play in performing the described action.
          */
-        @Child(name = "role", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "role", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="E.g. Nurse, Surgeon, Parent", formalDefinition="The role the participant should play in performing the described action." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/action-participant-role")
         protected CodeableConcept role;
 
-        private static final long serialVersionUID = -1613816809L;
+        private static final long serialVersionUID = 1881639157L;
 
     /**
      * Constructor
@@ -1401,6 +1408,55 @@ public class PlanDefinition extends MetadataResource {
         }
 
         /**
+         * @return {@link #typeCanonical} (The type of participant in the action.). This is the underlying object with id, value and extensions. The accessor "getTypeCanonical" gives direct access to the value
+         */
+        public CanonicalType getTypeCanonicalElement() { 
+          if (this.typeCanonical == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create PlanDefinitionActorOptionComponent.typeCanonical");
+            else if (Configuration.doAutoCreate())
+              this.typeCanonical = new CanonicalType(); // bb
+          return this.typeCanonical;
+        }
+
+        public boolean hasTypeCanonicalElement() { 
+          return this.typeCanonical != null && !this.typeCanonical.isEmpty();
+        }
+
+        public boolean hasTypeCanonical() { 
+          return this.typeCanonical != null && !this.typeCanonical.isEmpty();
+        }
+
+        /**
+         * @param value {@link #typeCanonical} (The type of participant in the action.). This is the underlying object with id, value and extensions. The accessor "getTypeCanonical" gives direct access to the value
+         */
+        public PlanDefinitionActorOptionComponent setTypeCanonicalElement(CanonicalType value) { 
+          this.typeCanonical = value;
+          return this;
+        }
+
+        /**
+         * @return The type of participant in the action.
+         */
+        public String getTypeCanonical() { 
+          return this.typeCanonical == null ? null : this.typeCanonical.getValue();
+        }
+
+        /**
+         * @param value The type of participant in the action.
+         */
+        public PlanDefinitionActorOptionComponent setTypeCanonical(String value) { 
+          if (Utilities.noString(value))
+            this.typeCanonical = null;
+          else {
+            if (this.typeCanonical == null)
+              this.typeCanonical = new CanonicalType();
+            this.typeCanonical.setValue(value);
+          }
+          return this;
+        }
+
+        /**
          * @return {@link #typeReference} (The type of participant in the action.)
          */
         public Reference getTypeReference() { 
@@ -1451,7 +1507,8 @@ public class PlanDefinition extends MetadataResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("type", "code", "The type of participant in the action.", 0, 1, type));
-          children.add(new Property("typeReference", "Reference(CareTeam|Device|Group|HealthcareService|Location|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson)", "The type of participant in the action.", 0, 1, typeReference));
+          children.add(new Property("typeCanonical", "canonical(CapabilityStatement)", "The type of participant in the action.", 0, 1, typeCanonical));
+          children.add(new Property("typeReference", "Reference(CareTeam|Device|DeviceDefinition|Endpoint|Group|HealthcareService|Location|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson)", "The type of participant in the action.", 0, 1, typeReference));
           children.add(new Property("role", "CodeableConcept", "The role the participant should play in performing the described action.", 0, 1, role));
         }
 
@@ -1459,7 +1516,8 @@ public class PlanDefinition extends MetadataResource {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3575610: /*type*/  return new Property("type", "code", "The type of participant in the action.", 0, 1, type);
-          case 2074825009: /*typeReference*/  return new Property("typeReference", "Reference(CareTeam|Device|Group|HealthcareService|Location|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson)", "The type of participant in the action.", 0, 1, typeReference);
+          case -466635046: /*typeCanonical*/  return new Property("typeCanonical", "canonical(CapabilityStatement)", "The type of participant in the action.", 0, 1, typeCanonical);
+          case 2074825009: /*typeReference*/  return new Property("typeReference", "Reference(CareTeam|Device|DeviceDefinition|Endpoint|Group|HealthcareService|Location|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson)", "The type of participant in the action.", 0, 1, typeReference);
           case 3506294: /*role*/  return new Property("role", "CodeableConcept", "The role the participant should play in performing the described action.", 0, 1, role);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -1470,6 +1528,7 @@ public class PlanDefinition extends MetadataResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<ActionParticipantType>
+        case -466635046: /*typeCanonical*/ return this.typeCanonical == null ? new Base[0] : new Base[] {this.typeCanonical}; // CanonicalType
         case 2074825009: /*typeReference*/ return this.typeReference == null ? new Base[0] : new Base[] {this.typeReference}; // Reference
         case 3506294: /*role*/ return this.role == null ? new Base[0] : new Base[] {this.role}; // CodeableConcept
         default: return super.getProperty(hash, name, checkValid);
@@ -1483,6 +1542,9 @@ public class PlanDefinition extends MetadataResource {
         case 3575610: // type
           value = new ActionParticipantTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<ActionParticipantType>
+          return value;
+        case -466635046: // typeCanonical
+          this.typeCanonical = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         case 2074825009: // typeReference
           this.typeReference = TypeConvertor.castToReference(value); // Reference
@@ -1500,6 +1562,8 @@ public class PlanDefinition extends MetadataResource {
         if (name.equals("type")) {
           value = new ActionParticipantTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<ActionParticipantType>
+        } else if (name.equals("typeCanonical")) {
+          this.typeCanonical = TypeConvertor.castToCanonical(value); // CanonicalType
         } else if (name.equals("typeReference")) {
           this.typeReference = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("role")) {
@@ -1513,6 +1577,7 @@ public class PlanDefinition extends MetadataResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610:  return getTypeElement();
+        case -466635046:  return getTypeCanonicalElement();
         case 2074825009:  return getTypeReference();
         case 3506294:  return getRole();
         default: return super.makeProperty(hash, name);
@@ -1524,6 +1589,7 @@ public class PlanDefinition extends MetadataResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return new String[] {"code"};
+        case -466635046: /*typeCanonical*/ return new String[] {"canonical"};
         case 2074825009: /*typeReference*/ return new String[] {"Reference"};
         case 3506294: /*role*/ return new String[] {"CodeableConcept"};
         default: return super.getTypesForProperty(hash, name);
@@ -1535,6 +1601,9 @@ public class PlanDefinition extends MetadataResource {
       public Base addChild(String name) throws FHIRException {
         if (name.equals("type")) {
           throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.actor.option.type");
+        }
+        else if (name.equals("typeCanonical")) {
+          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.actor.option.typeCanonical");
         }
         else if (name.equals("typeReference")) {
           this.typeReference = new Reference();
@@ -1557,6 +1626,7 @@ public class PlanDefinition extends MetadataResource {
       public void copyValues(PlanDefinitionActorOptionComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
+        dst.typeCanonical = typeCanonical == null ? null : typeCanonical.copy();
         dst.typeReference = typeReference == null ? null : typeReference.copy();
         dst.role = role == null ? null : role.copy();
       }
@@ -1568,8 +1638,8 @@ public class PlanDefinition extends MetadataResource {
         if (!(other_ instanceof PlanDefinitionActorOptionComponent))
           return false;
         PlanDefinitionActorOptionComponent o = (PlanDefinitionActorOptionComponent) other_;
-        return compareDeep(type, o.type, true) && compareDeep(typeReference, o.typeReference, true) && compareDeep(role, o.role, true)
-          ;
+        return compareDeep(type, o.type, true) && compareDeep(typeCanonical, o.typeCanonical, true) && compareDeep(typeReference, o.typeReference, true)
+           && compareDeep(role, o.role, true);
       }
 
       @Override
@@ -1579,12 +1649,12 @@ public class PlanDefinition extends MetadataResource {
         if (!(other_ instanceof PlanDefinitionActorOptionComponent))
           return false;
         PlanDefinitionActorOptionComponent o = (PlanDefinitionActorOptionComponent) other_;
-        return compareValues(type, o.type, true);
+        return compareValues(type, o.type, true) && compareValues(typeCanonical, o.typeCanonical, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, typeReference, role
-          );
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, typeCanonical, typeReference
+          , role);
       }
 
   public String fhirType() {
@@ -1597,10 +1667,10 @@ public class PlanDefinition extends MetadataResource {
     @Block()
     public static class PlanDefinitionActionComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * An identifier that is unique within the PlanDefinition to allow linkage within the realized CarePlan and/or RequestGroup.
+         * An identifier that is unique within the PlanDefinition to allow linkage within the realized CarePlan and/or RequestOrchestration.
          */
         @Child(name = "linkId", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Unique id for the action in the PlanDefinition", formalDefinition="An identifier that is unique within the PlanDefinition to allow linkage within the realized CarePlan and/or RequestGroup." )
+        @Description(shortDefinition="Unique id for the action in the PlanDefinition", formalDefinition="An identifier that is unique within the PlanDefinition to allow linkage within the realized CarePlan and/or RequestOrchestration." )
         protected StringType linkId;
 
         /**
@@ -1674,7 +1744,7 @@ public class PlanDefinition extends MetadataResource {
          */
         @Child(name = "subject", type = {CodeableConcept.class, Group.class, CanonicalType.class}, order=11, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Type of individual the action is focused on", formalDefinition="A code, group definition, or canonical reference that describes the intended subject of the action and its children, if any. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/subject-type")
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/participant-resource-types")
         protected DataType subject;
 
         /**
@@ -1819,7 +1889,7 @@ public class PlanDefinition extends MetadataResource {
       }
 
         /**
-         * @return {@link #linkId} (An identifier that is unique within the PlanDefinition to allow linkage within the realized CarePlan and/or RequestGroup.). This is the underlying object with id, value and extensions. The accessor "getLinkId" gives direct access to the value
+         * @return {@link #linkId} (An identifier that is unique within the PlanDefinition to allow linkage within the realized CarePlan and/or RequestOrchestration.). This is the underlying object with id, value and extensions. The accessor "getLinkId" gives direct access to the value
          */
         public StringType getLinkIdElement() { 
           if (this.linkId == null)
@@ -1839,7 +1909,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         /**
-         * @param value {@link #linkId} (An identifier that is unique within the PlanDefinition to allow linkage within the realized CarePlan and/or RequestGroup.). This is the underlying object with id, value and extensions. The accessor "getLinkId" gives direct access to the value
+         * @param value {@link #linkId} (An identifier that is unique within the PlanDefinition to allow linkage within the realized CarePlan and/or RequestOrchestration.). This is the underlying object with id, value and extensions. The accessor "getLinkId" gives direct access to the value
          */
         public PlanDefinitionActionComponent setLinkIdElement(StringType value) { 
           this.linkId = value;
@@ -1847,14 +1917,14 @@ public class PlanDefinition extends MetadataResource {
         }
 
         /**
-         * @return An identifier that is unique within the PlanDefinition to allow linkage within the realized CarePlan and/or RequestGroup.
+         * @return An identifier that is unique within the PlanDefinition to allow linkage within the realized CarePlan and/or RequestOrchestration.
          */
         public String getLinkId() { 
           return this.linkId == null ? null : this.linkId.getValue();
         }
 
         /**
-         * @param value An identifier that is unique within the PlanDefinition to allow linkage within the realized CarePlan and/or RequestGroup.
+         * @param value An identifier that is unique within the PlanDefinition to allow linkage within the realized CarePlan and/or RequestOrchestration.
          */
         public PlanDefinitionActionComponent setLinkId(String value) { 
           if (Utilities.noString(value))
@@ -3269,7 +3339,7 @@ public class PlanDefinition extends MetadataResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("linkId", "string", "An identifier that is unique within the PlanDefinition to allow linkage within the realized CarePlan and/or RequestGroup.", 0, 1, linkId));
+          children.add(new Property("linkId", "string", "An identifier that is unique within the PlanDefinition to allow linkage within the realized CarePlan and/or RequestOrchestration.", 0, 1, linkId));
           children.add(new Property("prefix", "string", "A user-visible prefix for the action. For example a section or item numbering such as 1. or A.", 0, 1, prefix));
           children.add(new Property("title", "string", "The textual description of the action displayed to a user. For example, when the action is a test to be performed, the title would be the title of the test such as Assay by HPLC.", 0, 1, title));
           children.add(new Property("description", "string", "A brief description of the action used to provide a summary to display to the user.", 0, 1, description));
@@ -3303,7 +3373,7 @@ public class PlanDefinition extends MetadataResource {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -1102667083: /*linkId*/  return new Property("linkId", "string", "An identifier that is unique within the PlanDefinition to allow linkage within the realized CarePlan and/or RequestGroup.", 0, 1, linkId);
+          case -1102667083: /*linkId*/  return new Property("linkId", "string", "An identifier that is unique within the PlanDefinition to allow linkage within the realized CarePlan and/or RequestOrchestration.", 0, 1, linkId);
           case -980110702: /*prefix*/  return new Property("prefix", "string", "A user-visible prefix for the action. For example a section or item numbering such as 1. or A.", 0, 1, prefix);
           case 110371416: /*title*/  return new Property("title", "string", "The textual description of the action displayed to a user. For example, when the action is a test to be performed, the title would be the title of the test such as Assay by HPLC.", 0, 1, title);
           case -1724546052: /*description*/  return new Property("description", "string", "A brief description of the action used to provide a summary to display to the user.", 0, 1, description);
@@ -5075,14 +5145,21 @@ public class PlanDefinition extends MetadataResource {
         /**
          * The type of participant in the action.
          */
-        @Child(name = "typeReference", type = {CareTeam.class, Device.class, Group.class, HealthcareService.class, Location.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "typeCanonical", type = {CanonicalType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Who or what can participate", formalDefinition="The type of participant in the action." )
+        protected CanonicalType typeCanonical;
+
+        /**
+         * The type of participant in the action.
+         */
+        @Child(name = "typeReference", type = {CareTeam.class, Device.class, DeviceDefinition.class, Endpoint.class, Group.class, HealthcareService.class, Location.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class}, order=4, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Who or what can participate", formalDefinition="The type of participant in the action." )
         protected Reference typeReference;
 
         /**
          * The role the participant should play in performing the described action.
          */
-        @Child(name = "role", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "role", type = {CodeableConcept.class}, order=5, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="E.g. Nurse, Surgeon, Parent", formalDefinition="The role the participant should play in performing the described action." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/action-participant-role")
         protected CodeableConcept role;
@@ -5090,12 +5167,12 @@ public class PlanDefinition extends MetadataResource {
         /**
          * Indicates how the actor will be involved in the action - author, reviewer, witness, etc.
          */
-        @Child(name = "function", type = {CodeableConcept.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "function", type = {CodeableConcept.class}, order=6, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="E.g. Author, Reviewer, Witness, etc.", formalDefinition="Indicates how the actor will be involved in the action - author, reviewer, witness, etc." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-participant-function")
         protected CodeableConcept function;
 
-        private static final long serialVersionUID = -1307587293L;
+        private static final long serialVersionUID = -1467052283L;
 
     /**
      * Constructor
@@ -5203,6 +5280,55 @@ public class PlanDefinition extends MetadataResource {
         }
 
         /**
+         * @return {@link #typeCanonical} (The type of participant in the action.). This is the underlying object with id, value and extensions. The accessor "getTypeCanonical" gives direct access to the value
+         */
+        public CanonicalType getTypeCanonicalElement() { 
+          if (this.typeCanonical == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create PlanDefinitionActionParticipantComponent.typeCanonical");
+            else if (Configuration.doAutoCreate())
+              this.typeCanonical = new CanonicalType(); // bb
+          return this.typeCanonical;
+        }
+
+        public boolean hasTypeCanonicalElement() { 
+          return this.typeCanonical != null && !this.typeCanonical.isEmpty();
+        }
+
+        public boolean hasTypeCanonical() { 
+          return this.typeCanonical != null && !this.typeCanonical.isEmpty();
+        }
+
+        /**
+         * @param value {@link #typeCanonical} (The type of participant in the action.). This is the underlying object with id, value and extensions. The accessor "getTypeCanonical" gives direct access to the value
+         */
+        public PlanDefinitionActionParticipantComponent setTypeCanonicalElement(CanonicalType value) { 
+          this.typeCanonical = value;
+          return this;
+        }
+
+        /**
+         * @return The type of participant in the action.
+         */
+        public String getTypeCanonical() { 
+          return this.typeCanonical == null ? null : this.typeCanonical.getValue();
+        }
+
+        /**
+         * @param value The type of participant in the action.
+         */
+        public PlanDefinitionActionParticipantComponent setTypeCanonical(String value) { 
+          if (Utilities.noString(value))
+            this.typeCanonical = null;
+          else {
+            if (this.typeCanonical == null)
+              this.typeCanonical = new CanonicalType();
+            this.typeCanonical.setValue(value);
+          }
+          return this;
+        }
+
+        /**
          * @return {@link #typeReference} (The type of participant in the action.)
          */
         public Reference getTypeReference() { 
@@ -5278,7 +5404,8 @@ public class PlanDefinition extends MetadataResource {
           super.listChildren(children);
           children.add(new Property("actorId", "string", "A reference to the id element of the actor who will participate in this action.", 0, 1, actorId));
           children.add(new Property("type", "code", "The type of participant in the action.", 0, 1, type));
-          children.add(new Property("typeReference", "Reference(CareTeam|Device|Group|HealthcareService|Location|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson)", "The type of participant in the action.", 0, 1, typeReference));
+          children.add(new Property("typeCanonical", "canonical(CapabilityStatement)", "The type of participant in the action.", 0, 1, typeCanonical));
+          children.add(new Property("typeReference", "Reference(CareTeam|Device|DeviceDefinition|Endpoint|Group|HealthcareService|Location|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson)", "The type of participant in the action.", 0, 1, typeReference));
           children.add(new Property("role", "CodeableConcept", "The role the participant should play in performing the described action.", 0, 1, role));
           children.add(new Property("function", "CodeableConcept", "Indicates how the actor will be involved in the action - author, reviewer, witness, etc.", 0, 1, function));
         }
@@ -5288,7 +5415,8 @@ public class PlanDefinition extends MetadataResource {
           switch (_hash) {
           case -1161623056: /*actorId*/  return new Property("actorId", "string", "A reference to the id element of the actor who will participate in this action.", 0, 1, actorId);
           case 3575610: /*type*/  return new Property("type", "code", "The type of participant in the action.", 0, 1, type);
-          case 2074825009: /*typeReference*/  return new Property("typeReference", "Reference(CareTeam|Device|Group|HealthcareService|Location|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson)", "The type of participant in the action.", 0, 1, typeReference);
+          case -466635046: /*typeCanonical*/  return new Property("typeCanonical", "canonical(CapabilityStatement)", "The type of participant in the action.", 0, 1, typeCanonical);
+          case 2074825009: /*typeReference*/  return new Property("typeReference", "Reference(CareTeam|Device|DeviceDefinition|Endpoint|Group|HealthcareService|Location|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson)", "The type of participant in the action.", 0, 1, typeReference);
           case 3506294: /*role*/  return new Property("role", "CodeableConcept", "The role the participant should play in performing the described action.", 0, 1, role);
           case 1380938712: /*function*/  return new Property("function", "CodeableConcept", "Indicates how the actor will be involved in the action - author, reviewer, witness, etc.", 0, 1, function);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -5301,6 +5429,7 @@ public class PlanDefinition extends MetadataResource {
         switch (hash) {
         case -1161623056: /*actorId*/ return this.actorId == null ? new Base[0] : new Base[] {this.actorId}; // StringType
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<ActionParticipantType>
+        case -466635046: /*typeCanonical*/ return this.typeCanonical == null ? new Base[0] : new Base[] {this.typeCanonical}; // CanonicalType
         case 2074825009: /*typeReference*/ return this.typeReference == null ? new Base[0] : new Base[] {this.typeReference}; // Reference
         case 3506294: /*role*/ return this.role == null ? new Base[0] : new Base[] {this.role}; // CodeableConcept
         case 1380938712: /*function*/ return this.function == null ? new Base[0] : new Base[] {this.function}; // CodeableConcept
@@ -5318,6 +5447,9 @@ public class PlanDefinition extends MetadataResource {
         case 3575610: // type
           value = new ActionParticipantTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<ActionParticipantType>
+          return value;
+        case -466635046: // typeCanonical
+          this.typeCanonical = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         case 2074825009: // typeReference
           this.typeReference = TypeConvertor.castToReference(value); // Reference
@@ -5340,6 +5472,8 @@ public class PlanDefinition extends MetadataResource {
         } else if (name.equals("type")) {
           value = new ActionParticipantTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<ActionParticipantType>
+        } else if (name.equals("typeCanonical")) {
+          this.typeCanonical = TypeConvertor.castToCanonical(value); // CanonicalType
         } else if (name.equals("typeReference")) {
           this.typeReference = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("role")) {
@@ -5356,6 +5490,7 @@ public class PlanDefinition extends MetadataResource {
         switch (hash) {
         case -1161623056:  return getActorIdElement();
         case 3575610:  return getTypeElement();
+        case -466635046:  return getTypeCanonicalElement();
         case 2074825009:  return getTypeReference();
         case 3506294:  return getRole();
         case 1380938712:  return getFunction();
@@ -5369,6 +5504,7 @@ public class PlanDefinition extends MetadataResource {
         switch (hash) {
         case -1161623056: /*actorId*/ return new String[] {"string"};
         case 3575610: /*type*/ return new String[] {"code"};
+        case -466635046: /*typeCanonical*/ return new String[] {"canonical"};
         case 2074825009: /*typeReference*/ return new String[] {"Reference"};
         case 3506294: /*role*/ return new String[] {"CodeableConcept"};
         case 1380938712: /*function*/ return new String[] {"CodeableConcept"};
@@ -5384,6 +5520,9 @@ public class PlanDefinition extends MetadataResource {
         }
         else if (name.equals("type")) {
           throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.participant.type");
+        }
+        else if (name.equals("typeCanonical")) {
+          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.participant.typeCanonical");
         }
         else if (name.equals("typeReference")) {
           this.typeReference = new Reference();
@@ -5411,6 +5550,7 @@ public class PlanDefinition extends MetadataResource {
         super.copyValues(dst);
         dst.actorId = actorId == null ? null : actorId.copy();
         dst.type = type == null ? null : type.copy();
+        dst.typeCanonical = typeCanonical == null ? null : typeCanonical.copy();
         dst.typeReference = typeReference == null ? null : typeReference.copy();
         dst.role = role == null ? null : role.copy();
         dst.function = function == null ? null : function.copy();
@@ -5423,8 +5563,9 @@ public class PlanDefinition extends MetadataResource {
         if (!(other_ instanceof PlanDefinitionActionParticipantComponent))
           return false;
         PlanDefinitionActionParticipantComponent o = (PlanDefinitionActionParticipantComponent) other_;
-        return compareDeep(actorId, o.actorId, true) && compareDeep(type, o.type, true) && compareDeep(typeReference, o.typeReference, true)
-           && compareDeep(role, o.role, true) && compareDeep(function, o.function, true);
+        return compareDeep(actorId, o.actorId, true) && compareDeep(type, o.type, true) && compareDeep(typeCanonical, o.typeCanonical, true)
+           && compareDeep(typeReference, o.typeReference, true) && compareDeep(role, o.role, true) && compareDeep(function, o.function, true)
+          ;
       }
 
       @Override
@@ -5434,12 +5575,13 @@ public class PlanDefinition extends MetadataResource {
         if (!(other_ instanceof PlanDefinitionActionParticipantComponent))
           return false;
         PlanDefinitionActionParticipantComponent o = (PlanDefinitionActionParticipantComponent) other_;
-        return compareValues(actorId, o.actorId, true) && compareValues(type, o.type, true);
+        return compareValues(actorId, o.actorId, true) && compareValues(type, o.type, true) && compareValues(typeCanonical, o.typeCanonical, true)
+          ;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(actorId, type, typeReference
-          , role, function);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(actorId, type, typeCanonical
+          , typeReference, role, function);
       }
 
   public String fhirType() {
@@ -5675,10 +5817,10 @@ public class PlanDefinition extends MetadataResource {
   }
 
     /**
-     * An absolute URI that is used to identify this plan definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this plan definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the plan definition is stored on different servers.
+     * An absolute URI that is used to identify this plan definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this plan definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the plan definition is stored on different servers.
      */
     @Child(name = "url", type = {UriType.class}, order=0, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Canonical identifier for this plan definition, represented as a URI (globally unique)", formalDefinition="An absolute URI that is used to identify this plan definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this plan definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the plan definition is stored on different servers." )
+    @Description(shortDefinition="Canonical identifier for this plan definition, represented as a URI (globally unique)", formalDefinition="An absolute URI that is used to identify this plan definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this plan definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the plan definition is stored on different servers." )
     protected UriType url;
 
     /**
@@ -5742,9 +5884,9 @@ public class PlanDefinition extends MetadataResource {
     /**
      * A code, group definition, or canonical reference that describes  or identifies the intended subject of the plan definition. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.
      */
-    @Child(name = "subject", type = {CodeableConcept.class, Group.class, CanonicalType.class}, order=9, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "subject", type = {CodeableConcept.class, Group.class, MedicinalProductDefinition.class, SubstanceDefinition.class, AdministrableProductDefinition.class, ManufacturedItemDefinition.class, PackagedProductDefinition.class, CanonicalType.class}, order=9, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Type of individual the plan definition is focused on", formalDefinition="A code, group definition, or canonical reference that describes  or identifies the intended subject of the plan definition. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/subject-type")
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/participant-resource-types")
     protected DataType subject;
 
     /**
@@ -5755,10 +5897,10 @@ public class PlanDefinition extends MetadataResource {
     protected DateTimeType date;
 
     /**
-     * The name of the organization or individual that published the plan definition.
+     * The name of the organization or individual responsible for the release and ongoing maintenance of the plan definition.
      */
     @Child(name = "publisher", type = {StringType.class}, order=11, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Name of the publisher (organization or individual)", formalDefinition="The name of the organization or individual that published the plan definition." )
+    @Description(shortDefinition="Name of the publisher/steward (organization or individual)", formalDefinition="The name of the organization or individual responsible for the release and ongoing maintenance of the plan definition." )
     protected StringType publisher;
 
     /**
@@ -5903,7 +6045,15 @@ public class PlanDefinition extends MetadataResource {
     @Description(shortDefinition="Action defined by the plan", formalDefinition="An action or group of actions to be taken as part of the plan. For example, in clinical care, an action would be to prescribe a particular indicated medication, or perform a particular test as appropriate. In pharmaceutical quality, an action would be the test that needs to be performed on a drug product as defined in the quality specification." )
     protected List<PlanDefinitionActionComponent> action;
 
-    private static final long serialVersionUID = -2104269622L;
+    /**
+     * If a CodeableConcept is present, it indicates the pre-condition for performing the service.  For example "pain", "on flare-up", etc.
+     */
+    @Child(name = "asNeeded", type = {BooleanType.class, CodeableConcept.class}, order=32, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Preconditions for service", formalDefinition="If a CodeableConcept is present, it indicates the pre-condition for performing the service.  For example \"pain\", \"on flare-up\", etc." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/medication-as-needed-reason")
+    protected DataType asNeeded;
+
+    private static final long serialVersionUID = -915510607L;
 
   /**
    * Constructor
@@ -5921,7 +6071,7 @@ public class PlanDefinition extends MetadataResource {
     }
 
     /**
-     * @return {@link #url} (An absolute URI that is used to identify this plan definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this plan definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the plan definition is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @return {@link #url} (An absolute URI that is used to identify this plan definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this plan definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the plan definition is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public UriType getUrlElement() { 
       if (this.url == null)
@@ -5941,7 +6091,7 @@ public class PlanDefinition extends MetadataResource {
     }
 
     /**
-     * @param value {@link #url} (An absolute URI that is used to identify this plan definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this plan definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the plan definition is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @param value {@link #url} (An absolute URI that is used to identify this plan definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this plan definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the plan definition is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public PlanDefinition setUrlElement(UriType value) { 
       this.url = value;
@@ -5949,14 +6099,14 @@ public class PlanDefinition extends MetadataResource {
     }
 
     /**
-     * @return An absolute URI that is used to identify this plan definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this plan definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the plan definition is stored on different servers.
+     * @return An absolute URI that is used to identify this plan definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this plan definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the plan definition is stored on different servers.
      */
     public String getUrl() { 
       return this.url == null ? null : this.url.getValue();
     }
 
     /**
-     * @param value An absolute URI that is used to identify this plan definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this plan definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the plan definition is stored on different servers.
+     * @param value An absolute URI that is used to identify this plan definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this plan definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the plan definition is stored on different servers.
      */
     public PlanDefinition setUrl(String value) { 
       if (Utilities.noString(value))
@@ -6448,7 +6598,7 @@ public class PlanDefinition extends MetadataResource {
     }
 
     /**
-     * @return {@link #publisher} (The name of the organization or individual that published the plan definition.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     * @return {@link #publisher} (The name of the organization or individual responsible for the release and ongoing maintenance of the plan definition.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
     public StringType getPublisherElement() { 
       if (this.publisher == null)
@@ -6468,7 +6618,7 @@ public class PlanDefinition extends MetadataResource {
     }
 
     /**
-     * @param value {@link #publisher} (The name of the organization or individual that published the plan definition.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     * @param value {@link #publisher} (The name of the organization or individual responsible for the release and ongoing maintenance of the plan definition.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
     public PlanDefinition setPublisherElement(StringType value) { 
       this.publisher = value;
@@ -6476,14 +6626,14 @@ public class PlanDefinition extends MetadataResource {
     }
 
     /**
-     * @return The name of the organization or individual that published the plan definition.
+     * @return The name of the organization or individual responsible for the release and ongoing maintenance of the plan definition.
      */
     public String getPublisher() { 
       return this.publisher == null ? null : this.publisher.getValue();
     }
 
     /**
-     * @param value The name of the organization or individual that published the plan definition.
+     * @param value The name of the organization or individual responsible for the release and ongoing maintenance of the plan definition.
      */
     public PlanDefinition setPublisher(String value) { 
       if (Utilities.noString(value))
@@ -7511,9 +7661,137 @@ public class PlanDefinition extends MetadataResource {
       return getAction().get(0);
     }
 
+    /**
+     * @return {@link #asNeeded} (If a CodeableConcept is present, it indicates the pre-condition for performing the service.  For example "pain", "on flare-up", etc.)
+     */
+    public DataType getAsNeeded() { 
+      return this.asNeeded;
+    }
+
+    /**
+     * @return {@link #asNeeded} (If a CodeableConcept is present, it indicates the pre-condition for performing the service.  For example "pain", "on flare-up", etc.)
+     */
+    public BooleanType getAsNeededBooleanType() throws FHIRException { 
+      if (this.asNeeded == null)
+        this.asNeeded = new BooleanType();
+      if (!(this.asNeeded instanceof BooleanType))
+        throw new FHIRException("Type mismatch: the type BooleanType was expected, but "+this.asNeeded.getClass().getName()+" was encountered");
+      return (BooleanType) this.asNeeded;
+    }
+
+    public boolean hasAsNeededBooleanType() { 
+      return this != null && this.asNeeded instanceof BooleanType;
+    }
+
+    /**
+     * @return {@link #asNeeded} (If a CodeableConcept is present, it indicates the pre-condition for performing the service.  For example "pain", "on flare-up", etc.)
+     */
+    public CodeableConcept getAsNeededCodeableConcept() throws FHIRException { 
+      if (this.asNeeded == null)
+        this.asNeeded = new CodeableConcept();
+      if (!(this.asNeeded instanceof CodeableConcept))
+        throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.asNeeded.getClass().getName()+" was encountered");
+      return (CodeableConcept) this.asNeeded;
+    }
+
+    public boolean hasAsNeededCodeableConcept() { 
+      return this != null && this.asNeeded instanceof CodeableConcept;
+    }
+
+    public boolean hasAsNeeded() { 
+      return this.asNeeded != null && !this.asNeeded.isEmpty();
+    }
+
+    /**
+     * @param value {@link #asNeeded} (If a CodeableConcept is present, it indicates the pre-condition for performing the service.  For example "pain", "on flare-up", etc.)
+     */
+    public PlanDefinition setAsNeeded(DataType value) { 
+      if (value != null && !(value instanceof BooleanType || value instanceof CodeableConcept))
+        throw new Error("Not the right type for PlanDefinition.asNeeded[x]: "+value.fhirType());
+      this.asNeeded = value;
+      return this;
+    }
+
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getVersionAlgorithmMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public DataType getVersionAlgorithm() { 
+      throw new Error("The resource type \"PlanDefinition\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public StringType getVersionAlgorithmStringType() { 
+      throw new Error("The resource type \"PlanDefinition\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    public boolean hasVersionAlgorithmStringType() { 
+      return false;////K 
+    }
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public Coding getVersionAlgorithmCoding() { 
+      throw new Error("The resource type \"PlanDefinition\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    public boolean hasVersionAlgorithmCoding() { 
+      return false;////K 
+    }
+    public boolean hasVersionAlgorithm() { 
+      return false;
+    }
+    /**
+     * @param value {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public PlanDefinition setVersionAlgorithm(DataType value) { 
+      throw new Error("The resource type \"PlanDefinition\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getCopyrightLabelMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public StringType getCopyrightLabelElement() { 
+      throw new Error("The resource type \"PlanDefinition\" does not implement the property \"copyrightLabel\"");
+    }
+
+    public boolean hasCopyrightLabelElement() { 
+      return false;
+    }
+    public boolean hasCopyrightLabel() {
+      return false;
+    }
+
+    /**
+     * @param value {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public PlanDefinition setCopyrightLabelElement(StringType value) { 
+      throw new Error("The resource type \"PlanDefinition\" does not implement the property \"copyrightLabel\""); 
+    }
+    public String getCopyrightLabel() { 
+      throw new Error("The resource type \"PlanDefinition\" does not implement the property \"copyrightLabel\""); 
+    }
+    /**
+     * @param value A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    public PlanDefinition setCopyrightLabel(String value) { 
+      throw new Error("The resource type \"PlanDefinition\" does not implement the property \"copyrightLabel\""); 
+    }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("url", "uri", "An absolute URI that is used to identify this plan definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this plan definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the plan definition is stored on different servers.", 0, 1, url));
+        children.add(new Property("url", "uri", "An absolute URI that is used to identify this plan definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this plan definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the plan definition is stored on different servers.", 0, 1, url));
         children.add(new Property("identifier", "Identifier", "A formal identifier that is used to identify this plan definition when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("version", "string", "The identifier that is used to identify this version of the plan definition when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the plan definition author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence. To provide a version consistent with the Decision Support Service specification, use the format Major.Minor.Revision (e.g. 1.0.0). For more information on versioning knowledge assets, refer to the Decision Support Service specification. Note that a version is required for non-experimental active artifacts.", 0, 1, version));
         children.add(new Property("name", "string", "A natural language name identifying the plan definition. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name));
@@ -7522,9 +7800,9 @@ public class PlanDefinition extends MetadataResource {
         children.add(new Property("type", "CodeableConcept", "A high-level category for the plan definition that distinguishes the kinds of systems that would be interested in the plan definition.", 0, 1, type));
         children.add(new Property("status", "code", "The status of this plan definition. Enables tracking the life-cycle of the content.", 0, 1, status));
         children.add(new Property("experimental", "boolean", "A Boolean value to indicate that this plan definition is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.", 0, 1, experimental));
-        children.add(new Property("subject[x]", "CodeableConcept|Reference(Group)|canonical(MedicinalProductDefinition|SubstanceDefinition|AdministrableProductDefinition|ManufacturedItemDefinition|PackagedProductDefinition|EvidenceVariable)", "A code, group definition, or canonical reference that describes  or identifies the intended subject of the plan definition. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.", 0, 1, subject));
+        children.add(new Property("subject[x]", "CodeableConcept|Reference(Group|MedicinalProductDefinition|SubstanceDefinition|AdministrableProductDefinition|ManufacturedItemDefinition|PackagedProductDefinition)|canonical(EvidenceVariable)", "A code, group definition, or canonical reference that describes  or identifies the intended subject of the plan definition. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.", 0, 1, subject));
         children.add(new Property("date", "dateTime", "The date  (and optionally time) when the plan definition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the plan definition changes.", 0, 1, date));
-        children.add(new Property("publisher", "string", "The name of the organization or individual that published the plan definition.", 0, 1, publisher));
+        children.add(new Property("publisher", "string", "The name of the organization or individual responsible for the release and ongoing maintenance of the plan definition.", 0, 1, publisher));
         children.add(new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact));
         children.add(new Property("description", "markdown", "A free text natural language description of the plan definition from a consumer's perspective.", 0, 1, description));
         children.add(new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate plan definition instances.", 0, java.lang.Integer.MAX_VALUE, useContext));
@@ -7545,12 +7823,13 @@ public class PlanDefinition extends MetadataResource {
         children.add(new Property("goal", "", "A goal describes an expected outcome that activities within the plan are intended to achieve. For example, weight loss, restoring an activity of daily living, obtaining herd immunity via immunization, meeting a process improvement objective, meeting the acceptance criteria for a test as specified by a quality specification, etc.", 0, java.lang.Integer.MAX_VALUE, goal));
         children.add(new Property("actor", "", "Actors represent the individuals or groups involved in the execution of the defined set of activities.", 0, java.lang.Integer.MAX_VALUE, actor));
         children.add(new Property("action", "", "An action or group of actions to be taken as part of the plan. For example, in clinical care, an action would be to prescribe a particular indicated medication, or perform a particular test as appropriate. In pharmaceutical quality, an action would be the test that needs to be performed on a drug product as defined in the quality specification.", 0, java.lang.Integer.MAX_VALUE, action));
+        children.add(new Property("asNeeded[x]", "boolean|CodeableConcept", "If a CodeableConcept is present, it indicates the pre-condition for performing the service.  For example \"pain\", \"on flare-up\", etc.", 0, 1, asNeeded));
       }
 
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this plan definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this plan definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the plan definition is stored on different servers.", 0, 1, url);
+        case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this plan definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this plan definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the plan definition is stored on different servers.", 0, 1, url);
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "A formal identifier that is used to identify this plan definition when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case 351608024: /*version*/  return new Property("version", "string", "The identifier that is used to identify this version of the plan definition when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the plan definition author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence. To provide a version consistent with the Decision Support Service specification, use the format Major.Minor.Revision (e.g. 1.0.0). For more information on versioning knowledge assets, refer to the Decision Support Service specification. Note that a version is required for non-experimental active artifacts.", 0, 1, version);
         case 3373707: /*name*/  return new Property("name", "string", "A natural language name identifying the plan definition. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name);
@@ -7559,13 +7838,13 @@ public class PlanDefinition extends MetadataResource {
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "A high-level category for the plan definition that distinguishes the kinds of systems that would be interested in the plan definition.", 0, 1, type);
         case -892481550: /*status*/  return new Property("status", "code", "The status of this plan definition. Enables tracking the life-cycle of the content.", 0, 1, status);
         case -404562712: /*experimental*/  return new Property("experimental", "boolean", "A Boolean value to indicate that this plan definition is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.", 0, 1, experimental);
-        case -573640748: /*subject[x]*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)|canonical(MedicinalProductDefinition|SubstanceDefinition|AdministrableProductDefinition|ManufacturedItemDefinition|PackagedProductDefinition|EvidenceVariable)", "A code, group definition, or canonical reference that describes  or identifies the intended subject of the plan definition. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.", 0, 1, subject);
-        case -1867885268: /*subject*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)|canonical(MedicinalProductDefinition|SubstanceDefinition|AdministrableProductDefinition|ManufacturedItemDefinition|PackagedProductDefinition|EvidenceVariable)", "A code, group definition, or canonical reference that describes  or identifies the intended subject of the plan definition. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.", 0, 1, subject);
+        case -573640748: /*subject[x]*/  return new Property("subject[x]", "CodeableConcept|Reference(Group|MedicinalProductDefinition|SubstanceDefinition|AdministrableProductDefinition|ManufacturedItemDefinition|PackagedProductDefinition)|canonical(EvidenceVariable)", "A code, group definition, or canonical reference that describes  or identifies the intended subject of the plan definition. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.", 0, 1, subject);
+        case -1867885268: /*subject*/  return new Property("subject[x]", "CodeableConcept|Reference(Group|MedicinalProductDefinition|SubstanceDefinition|AdministrableProductDefinition|ManufacturedItemDefinition|PackagedProductDefinition)|canonical(EvidenceVariable)", "A code, group definition, or canonical reference that describes  or identifies the intended subject of the plan definition. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.", 0, 1, subject);
         case -1257122603: /*subjectCodeableConcept*/  return new Property("subject[x]", "CodeableConcept", "A code, group definition, or canonical reference that describes  or identifies the intended subject of the plan definition. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.", 0, 1, subject);
-        case 772938623: /*subjectReference*/  return new Property("subject[x]", "Reference(Group)", "A code, group definition, or canonical reference that describes  or identifies the intended subject of the plan definition. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.", 0, 1, subject);
-        case -1768521432: /*subjectCanonical*/  return new Property("subject[x]", "canonical(MedicinalProductDefinition|SubstanceDefinition|AdministrableProductDefinition|ManufacturedItemDefinition|PackagedProductDefinition|EvidenceVariable)", "A code, group definition, or canonical reference that describes  or identifies the intended subject of the plan definition. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.", 0, 1, subject);
+        case 772938623: /*subjectReference*/  return new Property("subject[x]", "Reference(Group|MedicinalProductDefinition|SubstanceDefinition|AdministrableProductDefinition|ManufacturedItemDefinition|PackagedProductDefinition)", "A code, group definition, or canonical reference that describes  or identifies the intended subject of the plan definition. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.", 0, 1, subject);
+        case -1768521432: /*subjectCanonical*/  return new Property("subject[x]", "canonical(EvidenceVariable)", "A code, group definition, or canonical reference that describes  or identifies the intended subject of the plan definition. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.", 0, 1, subject);
         case 3076014: /*date*/  return new Property("date", "dateTime", "The date  (and optionally time) when the plan definition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the plan definition changes.", 0, 1, date);
-        case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual that published the plan definition.", 0, 1, publisher);
+        case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual responsible for the release and ongoing maintenance of the plan definition.", 0, 1, publisher);
         case 951526432: /*contact*/  return new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact);
         case -1724546052: /*description*/  return new Property("description", "markdown", "A free text natural language description of the plan definition from a consumer's perspective.", 0, 1, description);
         case -669707736: /*useContext*/  return new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate plan definition instances.", 0, java.lang.Integer.MAX_VALUE, useContext);
@@ -7586,6 +7865,10 @@ public class PlanDefinition extends MetadataResource {
         case 3178259: /*goal*/  return new Property("goal", "", "A goal describes an expected outcome that activities within the plan are intended to achieve. For example, weight loss, restoring an activity of daily living, obtaining herd immunity via immunization, meeting a process improvement objective, meeting the acceptance criteria for a test as specified by a quality specification, etc.", 0, java.lang.Integer.MAX_VALUE, goal);
         case 92645877: /*actor*/  return new Property("actor", "", "Actors represent the individuals or groups involved in the execution of the defined set of activities.", 0, java.lang.Integer.MAX_VALUE, actor);
         case -1422950858: /*action*/  return new Property("action", "", "An action or group of actions to be taken as part of the plan. For example, in clinical care, an action would be to prescribe a particular indicated medication, or perform a particular test as appropriate. In pharmaceutical quality, an action would be the test that needs to be performed on a drug product as defined in the quality specification.", 0, java.lang.Integer.MAX_VALUE, action);
+        case -544329575: /*asNeeded[x]*/  return new Property("asNeeded[x]", "boolean|CodeableConcept", "If a CodeableConcept is present, it indicates the pre-condition for performing the service.  For example \"pain\", \"on flare-up\", etc.", 0, 1, asNeeded);
+        case -1432923513: /*asNeeded*/  return new Property("asNeeded[x]", "boolean|CodeableConcept", "If a CodeableConcept is present, it indicates the pre-condition for performing the service.  For example \"pain\", \"on flare-up\", etc.", 0, 1, asNeeded);
+        case -591717471: /*asNeededBoolean*/  return new Property("asNeeded[x]", "boolean", "If a CodeableConcept is present, it indicates the pre-condition for performing the service.  For example \"pain\", \"on flare-up\", etc.", 0, 1, asNeeded);
+        case 1556420122: /*asNeededCodeableConcept*/  return new Property("asNeeded[x]", "CodeableConcept", "If a CodeableConcept is present, it indicates the pre-condition for performing the service.  For example \"pain\", \"on flare-up\", etc.", 0, 1, asNeeded);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -7626,6 +7909,7 @@ public class PlanDefinition extends MetadataResource {
         case 3178259: /*goal*/ return this.goal == null ? new Base[0] : this.goal.toArray(new Base[this.goal.size()]); // PlanDefinitionGoalComponent
         case 92645877: /*actor*/ return this.actor == null ? new Base[0] : this.actor.toArray(new Base[this.actor.size()]); // PlanDefinitionActorComponent
         case -1422950858: /*action*/ return this.action == null ? new Base[0] : this.action.toArray(new Base[this.action.size()]); // PlanDefinitionActionComponent
+        case -1432923513: /*asNeeded*/ return this.asNeeded == null ? new Base[0] : new Base[] {this.asNeeded}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -7731,6 +8015,9 @@ public class PlanDefinition extends MetadataResource {
         case -1422950858: // action
           this.getAction().add((PlanDefinitionActionComponent) value); // PlanDefinitionActionComponent
           return value;
+        case -1432923513: // asNeeded
+          this.asNeeded = TypeConvertor.castToType(value); // DataType
+          return value;
         default: return super.setProperty(hash, name, value);
         }
 
@@ -7803,6 +8090,8 @@ public class PlanDefinition extends MetadataResource {
           this.getActor().add((PlanDefinitionActorComponent) value);
         } else if (name.equals("action")) {
           this.getAction().add((PlanDefinitionActionComponent) value);
+        } else if (name.equals("asNeeded[x]")) {
+          this.asNeeded = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -7844,6 +8133,8 @@ public class PlanDefinition extends MetadataResource {
         case 3178259:  return addGoal(); 
         case 92645877:  return addActor(); 
         case -1422950858:  return addAction(); 
+        case -544329575:  return getAsNeeded();
+        case -1432923513:  return getAsNeeded();
         default: return super.makeProperty(hash, name);
         }
 
@@ -7884,6 +8175,7 @@ public class PlanDefinition extends MetadataResource {
         case 3178259: /*goal*/ return new String[] {};
         case 92645877: /*actor*/ return new String[] {};
         case -1422950858: /*action*/ return new String[] {};
+        case -1432923513: /*asNeeded*/ return new String[] {"boolean", "CodeableConcept"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -7998,6 +8290,14 @@ public class PlanDefinition extends MetadataResource {
         else if (name.equals("action")) {
           return addAction();
         }
+        else if (name.equals("asNeededBoolean")) {
+          this.asNeeded = new BooleanType();
+          return this.asNeeded;
+        }
+        else if (name.equals("asNeededCodeableConcept")) {
+          this.asNeeded = new CodeableConcept();
+          return this.asNeeded;
+        }
         else
           return super.addChild(name);
       }
@@ -8103,6 +8403,7 @@ public class PlanDefinition extends MetadataResource {
           for (PlanDefinitionActionComponent i : action)
             dst.action.add(i.copy());
         };
+        dst.asNeeded = asNeeded == null ? null : asNeeded.copy();
       }
 
       protected PlanDefinition typedCopy() {
@@ -8127,7 +8428,7 @@ public class PlanDefinition extends MetadataResource {
            && compareDeep(topic, o.topic, true) && compareDeep(author, o.author, true) && compareDeep(editor, o.editor, true)
            && compareDeep(reviewer, o.reviewer, true) && compareDeep(endorser, o.endorser, true) && compareDeep(relatedArtifact, o.relatedArtifact, true)
            && compareDeep(library, o.library, true) && compareDeep(goal, o.goal, true) && compareDeep(actor, o.actor, true)
-           && compareDeep(action, o.action, true);
+           && compareDeep(action, o.action, true) && compareDeep(asNeeded, o.asNeeded, true);
       }
 
       @Override
@@ -8151,7 +8452,7 @@ public class PlanDefinition extends MetadataResource {
           , name, title, subtitle, type, status, experimental, subject, date, publisher
           , contact, description, useContext, jurisdiction, purpose, usage, copyright, approvalDate
           , lastReviewDate, effectivePeriod, topic, author, editor, reviewer, endorser, relatedArtifact
-          , library, goal, actor, action);
+          , library, goal, actor, action, asNeeded);
       }
 
   @Override
@@ -8167,7 +8468,7 @@ public class PlanDefinition extends MetadataResource {
    * Path: <b>PlanDefinition.relatedArtifact.where(type='composed-of').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="composed-of", path="PlanDefinition.relatedArtifact.where(type='composed-of').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="composed-of", path="PlanDefinition.relatedArtifact.where(type='composed-of').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_COMPOSED_OF = "composed-of";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>composed-of</b>
@@ -8339,7 +8640,7 @@ public class PlanDefinition extends MetadataResource {
    * Path: <b>PlanDefinition.relatedArtifact.where(type='depends-on').resource | PlanDefinition.library</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="depends-on", path="PlanDefinition.relatedArtifact.where(type='depends-on').resource | PlanDefinition.library", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="depends-on", path="PlanDefinition.relatedArtifact.where(type='depends-on').resource | PlanDefinition.library", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_DEPENDS_ON = "depends-on";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>depends-on</b>
@@ -8365,7 +8666,7 @@ public class PlanDefinition extends MetadataResource {
    * Path: <b>PlanDefinition.relatedArtifact.where(type='derived-from').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="derived-from", path="PlanDefinition.relatedArtifact.where(type='derived-from').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="derived-from", path="PlanDefinition.relatedArtifact.where(type='derived-from').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_DERIVED_FROM = "derived-from";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>derived-from</b>
@@ -8491,7 +8792,7 @@ public class PlanDefinition extends MetadataResource {
    * Path: <b>PlanDefinition.relatedArtifact.where(type='predecessor').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="predecessor", path="PlanDefinition.relatedArtifact.where(type='predecessor').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="predecessor", path="PlanDefinition.relatedArtifact.where(type='predecessor').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_PREDECESSOR = "predecessor";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>predecessor</b>
@@ -8557,7 +8858,7 @@ public class PlanDefinition extends MetadataResource {
    * Path: <b>PlanDefinition.relatedArtifact.where(type='successor').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="successor", path="PlanDefinition.relatedArtifact.where(type='successor').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="successor", path="PlanDefinition.relatedArtifact.where(type='successor').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_SUCCESSOR = "successor";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>successor</b>

@@ -22,3 +22,22 @@
   public String getVersionedUrl() {
     return hasVersion() ? getUrl()+"|"+getVersion() : getUrl();
   }  
+  
+
+  public String oid() {
+    for (Identifier id : getIdentifier()) {
+      if (id.getValue().startsWith("urn:oid:")) {
+        return id.getValue().substring(8);
+      }
+    }
+    return null;
+  }
+
+  public String getOid() {
+    for (Identifier id : getIdentifier()) {
+      if ("urn:ietf:rfc:3986".equals(id.getSystem()) && id.hasValue() && id.getValue().startsWith("urn:oid:")) {
+        return id.getValue().substring(8);
+      }
+    }
+    return null;
+  }

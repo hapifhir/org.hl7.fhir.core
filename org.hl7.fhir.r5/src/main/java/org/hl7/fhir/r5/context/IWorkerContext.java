@@ -87,8 +87,8 @@ import javax.annotation.Nonnull;
  * implementation. 
  * 
  * The functionality it provides is 
- *  - get access to parsers, validators, narrative builders etc
- *    (you can't create these directly because they need access 
+ *  - get access to canonical resources,terminology services, and validator
+ *    (you can't create a validator directly because it needs access 
  *    to the right context for their information)
  *    
  *  - find resources that the tools need to carry out their tasks
@@ -100,484 +100,9 @@ import javax.annotation.Nonnull;
  *  
  * @author Grahame
  */
+
 public interface IWorkerContext {
-
-  public interface IPackageLoadingTracker {
-    public void packageLoaded(String pid, String version);
-  }
-
-  public class CodingValidationRequest {
-    private Coding coding;
-    private ValidationResult result;
-    private CacheToken cacheToken;
-    
-    public CodingValidationRequest(Coding coding) {
-      super();
-      this.coding = coding;
-    }
-
-    public ValidationResult getResult() {
-      return result;
-    }
-
-    public void setResult(ValidationResult result) {
-      this.result = result;
-    }
-
-    public Coding getCoding() {
-      return coding;
-    }
-
-    public boolean hasResult() {
-      return result != null;
-    }
-
-    /**
-     * internal logic; external users of batch validation should ignore this property
-     * 
-     * @return
-     */
-    public CacheToken getCacheToken() {
-      return cacheToken;
-    }
-
-    /**
-     * internal logic; external users of batch validation should ignore this property
-     * 
-     * @param cacheToken
-     */
-    public void setCacheToken(CacheToken cacheToken) {
-      this.cacheToken = cacheToken;
-    }
-    
-    
-  }
-
-  public class PackageVersion {
-    private String id;
-    private String version;
-    private Date date;
-    
-    public PackageVersion(String source, Date date) {
-      if (source == null) {
-        throw new Error("Source cannot be null");
-      }
-      if (!source.contains("#")) {
-        throw new FHIRException("Source ");        
-      }
-      id = source.substring(0, source.indexOf("#"));
-      version = source.substring(source.indexOf("#")+1);
-      this.date = date;
-    }
-    public PackageVersion(String id, String version, Date date) {
-      super();
-      this.id = id;
-      this.version = version;
-      this.date = date;
-    }
-    
-    public String getId() {
-      return id;
-    }
-    public String getVersion() {
-      return version;
-    }
-    public boolean isExamplesPackage() {
-      boolean b = id.startsWith("hl7.fhir.") && id.endsWith(".examples");
-      return b;
-    }
-    @Override
-    public String toString() {
-      return id+"#"+version;
-    }
-    public Date getDate() {
-      return date;
-    }
-    
-  }
-
-  public class PackageDetails extends PackageVersion {
-    private String name;
-    private String canonical;
-    private String web;
-    
-    public PackageDetails(String id, String version, String name, String canonical, String web, Date date) {
-      super(id, version, date);
-      this.name = name;
-      this.canonical = canonical;
-      this.web = web;
-    }
-    public String getName() {
-      return name;
-    }
-    public String getCanonical() {
-      return canonical;
-    }
-    public String getWeb() {
-      return web;
-    }
-    
-  }
-
-  public interface ICanonicalResourceLocator {
-    void findResource(Object caller, String url); // if it can be found, put it in the context
-  }
   
-  public interface IContextResourceLoader {
-    /** 
-     * @return List of the resource types that should be loaded
-     */
-    String[] getTypes();
-    
-    /**
-     * Request to actually load the resources and do whatever is required
-     *  
-     * @param stream
-     * @param isJson
-     * @return A bundle because some single resources become multiple resources after loading
-     * @throws FHIRException
-     * @throws IOException
-     */
-    Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException;
-    
-    /**
-     * Load a single resources (lazy load)
-     * 
-     * @param stream
-     * @param isJson
-     * @return
-     * @throws FHIRException - throw this if you a single resource can't be returned - can't lazy load in this circumstance   
-     * @throws IOException
-     */
-    Resource loadResource(InputStream stream, boolean isJson) throws FHIRException, IOException;
-    
-    /** 
-     * get the path for references to this resource.
-     * @param resource
-     * @return null if not tracking paths
-     */
-    String getResourcePath(Resource resource);
-
-    /**
-     * called when a mew package is being loaded
-     * 
-     * this is called by loadPacakgeAndDependencies when a new package is loaded
-     * @param npm
-     * @return
-     * @throws IOException 
-     * @throws JsonSyntaxException 
-     */
-    IContextResourceLoader getNewLoader(NpmPackage npm) throws JsonSyntaxException, IOException;   
-  }
-
-  /**
-   * Get the versions of the definitions loaded in context
-   * @return
-   */
-  public String getVersion();
-  
-  /**
-   * return the link to the base of the specification for the loaded version e.g. http://hl7.org/fhir/R4
-   */
-  public String getSpecUrl();
-  
-  // get the UCUM service (might not be available)
-  public UcumService getUcumService();
-  
-  // -- Parsers (read and write instances) ----------------------------------------
-
-
-  /**
-   * Get a parser to read/write instances. Use the defined type (will be extended 
-   * as further types are added, though the only currently anticipate type is RDF)
-   * 
-   * XML/JSON - the standard renderers
-   * XHTML - render the narrative only (generate it if necessary)
-   * 
-   * @param type
-   * @return
-   */
-  public IParser getParser(ParserType type);
-
-  /**
-   * Get a parser to read/write instances. Determine the type 
-   * from the stated type. Supported value for type:
-   * - the recommended MIME types
-   * - variants of application/xml and application/json
-   * - _format values xml, json
-   * 
-   * @param type
-   * @return
-   */	
-  public IParser getParser(String type);
-
-  /**
-   * Get a JSON parser
-   * 
-   * @return
-   */
-  public IParser newJsonParser();
-
-  /**
-   * Get an XML parser
-   * 
-   * @return
-   */
-  public IParser newXmlParser();
-
-  /**
-   * Get a validator that can check whether a resource is valid 
-   * 
-   * @return a prepared generator
-   * @throws FHIRException 
-   * @
-   */
-  public IResourceValidator newValidator() throws FHIRException;
-
-  // -- resource fetchers ---------------------------------------------------
-
-  /**
-   * Find an identified resource. The most common use of this is to access the the 
-   * standard conformance resources that are part of the standard - structure 
-   * definitions, value sets, concept maps, etc.
-   * 
-   * Also, the narrative generator uses this, and may access any kind of resource
-   * 
-   * The URI is called speculatively for things that might exist, so not finding 
-   * a matching resouce, return null, not an error
-   * 
-   * The URI can have one of 3 formats:
-   *  - a full URL e.g. http://acme.org/fhir/ValueSet/[id]
-   *  - a relative URL e.g. ValueSet/[id]
-   *  - a logical id e.g. [id]
-   *  
-   * It's an error if the second form doesn't agree with class_. It's an 
-   * error if class_ is null for the last form
-   * 
-   * @param resource
-   * @param Reference
-   * @return
-   * @throws FHIRException 
-   * @throws Exception
-   */
-  public <T extends Resource> T fetchResource(Class<T> class_, String uri);
-  public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException;
-  public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version);
-
-  /** has the same functionality as fetchResource, but passes in information about the source of the 
-   * reference (this may affect resolution of version)
-   *  
-   * @param <T>
-   * @param class_
-   * @param uri
-   * @param canonicalForSource
-   * @return
-   */
-  public <T extends Resource> T fetchResource(Class<T> class_, String uri, CanonicalResource canonicalForSource);
-
-  /**
-   * Variation of fetchResource when you have a string type, and don't need the right class
-   * 
-   * The URI can have one of 3 formats:
-   *  - a full URL e.g. http://acme.org/fhir/ValueSet/[id]
-   *  - a relative URL e.g. ValueSet/[id]
-   *  - a logical id e.g. [id]
-   *  
-   * if type == null, the URI can't be a simple logical id
-   * 
-   * @param type
-   * @param uri
-   * @return
-   */
-  public Resource fetchResourceById(String type, String uri);
-  
-  /**
-   * find whether a resource is available. 
-   * 
-   * Implementations of the interface can assume that if hasResource ruturns 
-   * true, the resource will usually be fetched subsequently
-   * 
-   * @param class_
-   * @param uri
-   * @return
-   */
-  public <T extends Resource> boolean hasResource(Class<T> class_, String uri);
-
-  /**
-   * cache a resource for later retrieval using fetchResource.
-   * 
-   * Note that various context implementations will have their own ways of loading
-   * rseources, and not all need implement cacheResource.
-   * 
-   * If the resource is loaded out of a package, call cacheResourceFromPackage instead
-   * @param res
-   * @throws FHIRException 
-   */
-  public void cacheResource(Resource res) throws FHIRException;
-  
-  /**
-   * cache a resource for later retrieval using fetchResource.
-   * 
-   * The package information is used to help manage the cache internally, and to 
-   * help with reference resolution. Packages should be define using cachePackage (but don't have to be)
-   *    
-   * Note that various context implementations will have their own ways of loading
-   * rseources, and not all need implement cacheResource
-   * 
-   * @param res
-   * @throws FHIRException 
-   */
-  public void cacheResourceFromPackage(Resource res, PackageVersion packageDetails) throws FHIRException;
-  
-  /**
-   * Inform the cache about package dependencies. This can be used to help resolve references
-   * 
-   * Note that the cache doesn't load dependencies
-   *  
-   * @param packageInfo
-   */
-  public void cachePackage(PackageDetails packageDetails, List<PackageVersion> dependencies);
-  
-  // -- profile services ---------------------------------------------------------
-  
-  /**
-   * @return a list of the resource names defined for this version
-   */
-  public List<String> getResourceNames();
-  /**
-   * @return a set of the resource names defined for this version
-   */
-  public Set<String> getResourceNamesAsSet();
-
-  /**
-   * @return a list of the resource names that are canonical resources defined for this version
-   */
-  public List<String> getCanonicalResourceNames();
-  
-  /**
-   * @return a list of the resource and type names defined for this version
-   */
-  public List<String> getTypeNames();
-  
-  /**
-   * @return a list of all structure definitions, with snapshots generated (if possible)
-   */
-  public List<StructureDefinition> allStructures();
-  
-  /**
-   * @return a list of all structure definitions, without trying to generate snapshots
-   */
-  public List<StructureDefinition> getStructures();
-  
-  /**
-   * @return a list of all conformance resources
-   */
-  public List<CanonicalResource> allConformanceResources();
-  
-  /**
-   * Given a structure definition, generate a snapshot (or regenerate it)
-   * @param p
-   * @throws DefinitionException
-   * @throws FHIRException
-   */
-  public void generateSnapshot(StructureDefinition p) throws DefinitionException, FHIRException;
-  public void generateSnapshot(StructureDefinition mr, boolean ifLogical);
-  
-  // -- Terminology services ------------------------------------------------------
-
-  /**
-   * Set the expansion parameters passed through the terminology server when txServer calls are made
-   * 
-   * Note that the Validation Options override these when they are specified on validateCode
-   */
-  public Parameters getExpansionParameters();
-
-  /**
-   * Get the expansion parameters passed through the terminology server when txServer calls are made
-   * 
-   * Note that the Validation Options override these when they are specified on validateCode
-   */
-  public void setExpansionProfile(Parameters expParameters);
-
-  // these are the terminology services used internally by the tools
-  /**
-   * Find the code system definition for the nominated system uri. 
-   * return null if there isn't one (then the tool might try 
-   * supportsSystem)
-   * 
-   * @param system
-   * @return
-   */
-  public CodeSystem fetchCodeSystem(String system);
-  public CodeSystem fetchCodeSystem(String system, String version);
-
-  /**
-   * True if the underlying terminology service provider will do 
-   * expansion and code validation for the terminology. Corresponds
-   * to the extension 
-   * 
-   * http://hl7.org/fhir/StructureDefinition/capabilitystatement-supported-system
-   * 
-   * in the Conformance resource
-   * 
-   * @param system
-   * @return
-   * @throws Exception 
-   */
-  public boolean supportsSystem(String system) throws TerminologyServiceException;
-
-  /**
-   * find concept maps for a source
-   * @param url
-   * @return
-   * @throws FHIRException 
-   */
-  public List<ConceptMap> findMapsForSource(String url) throws FHIRException;  
-
-  /**
-   * ValueSet Expansion - see $expand
-   *  
-   * @param source
-   * @return
-   */
-  public ValueSetExpansionOutcome expandVS(ValueSet source, boolean cacheOk, boolean heiarchical);
-  
-  /**
-   * ValueSet Expansion - see $expand
-   *  
-   * @param source
-   * @return
-   */
-  public ValueSetExpansionOutcome expandVS(ValueSet source, boolean cacheOk, boolean heiarchical, boolean incompleteOk);
-  
-  /**
-   * ValueSet Expansion - see $expand, but resolves the binding first
-   *  
-   * @param source
-   * @return
-   * @throws FHIRException 
-   */
-  public ValueSetExpansionOutcome expandVS(ElementDefinitionBindingComponent binding, boolean cacheOk, boolean heiarchical) throws FHIRException;
-  
-  /**
-   * Value set expanion inside the internal expansion engine - used 
-   * for references to supported system (see "supportsSystem") for
-   * which there is no value set. 
-   * 
-   * @param inc
-   * @return
-   * @throws FHIRException 
-   */
-  ValueSetExpansionOutcome expandVS(ConceptSetComponent inc, boolean hierarchical, boolean noInactive) throws TerminologyServiceException;
-
-  Locale getLocale();
-
-  void setLocale(Locale locale);
-
-  String formatMessage(String theMessage, Object... theMessageArguments);
-
-  void setValidationMessageLanguage(Locale locale);
-
   class ValidationResult {
     private ConceptDefinitionComponent definition;
     private String system;
@@ -692,6 +217,429 @@ public interface IWorkerContext {
     }
   }
 
+  public class CodingValidationRequest {
+    private Coding coding;
+    private ValidationResult result;
+    private CacheToken cacheToken;
+    
+    public CodingValidationRequest(Coding coding) {
+      super();
+      this.coding = coding;
+    }
+
+    public ValidationResult getResult() {
+      return result;
+    }
+
+    public void setResult(ValidationResult result) {
+      this.result = result;
+    }
+
+    public Coding getCoding() {
+      return coding;
+    }
+
+    public boolean hasResult() {
+      return result != null;
+    }
+
+    /**
+     * internal logic; external users of batch validation should ignore this property
+     * 
+     * @return
+     */
+    public CacheToken getCacheToken() {
+      return cacheToken;
+    }
+
+    /**
+     * internal logic; external users of batch validation should ignore this property
+     * 
+     * @param cacheToken
+     */
+    public void setCacheToken(CacheToken cacheToken) {
+      this.cacheToken = cacheToken;
+    }
+    
+    
+  }
+
+  public class PackageVersion {
+    private String id;
+    private String version;
+    private Date date;
+    
+    public PackageVersion(String source, Date date) {
+      if (source == null) {
+        throw new Error("Source cannot be null");
+      }
+      if (!source.contains("#")) {
+        throw new FHIRException("Source ");        
+      }
+      id = source.substring(0, source.indexOf("#"));
+      version = source.substring(source.indexOf("#")+1);
+      this.date = date;
+    }
+    public PackageVersion(String id, String version, Date date) {
+      super();
+      this.id = id;
+      this.version = version;
+      this.date = date;
+    }
+    
+    public String getId() {
+      return id;
+    }
+    public String getVersion() {
+      return version;
+    }
+    public boolean isExamplesPackage() {
+      boolean b = id.startsWith("hl7.fhir.") && id.endsWith(".examples");
+      return b;
+    }
+    @Override
+    public String toString() {
+      return id+"#"+version;
+    }
+    public Date getDate() {
+      return date;
+    }
+    public boolean isHTO() {
+      boolean b = id.startsWith("hl7.terminology.r");
+      return b;
+    }
+    
+  }
+
+  public class PackageDetails extends PackageVersion {
+    private String name;
+    private String canonical;
+    private String web;
+    
+    public PackageDetails(String id, String version, String name, String canonical, String web, Date date) {
+      super(id, version, date);
+      this.name = name;
+      this.canonical = canonical;
+      this.web = web;
+    }
+    public String getName() {
+      return name;
+    }
+    public String getCanonical() {
+      return canonical;
+    }
+    public String getWeb() {
+      return web;
+    }
+    
+  }
+
+  public interface IContextResourceLoader {
+    /** 
+     * @return List of the resource types that should be loaded
+     */
+    String[] getTypes();
+    
+    /**
+     * Request to actually load the resources and do whatever is required
+     *  
+     * @param stream
+     * @param isJson
+     * @return A bundle because some single resources become multiple resources after loading
+     * @throws FHIRException
+     * @throws IOException
+     */
+    Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException;
+    
+    /**
+     * Load a single resources (lazy load)
+     * 
+     * @param stream
+     * @param isJson
+     * @return
+     * @throws FHIRException - throw this if you a single resource can't be returned - can't lazy load in this circumstance   
+     * @throws IOException
+     */
+    Resource loadResource(InputStream stream, boolean isJson) throws FHIRException, IOException;
+    
+    /** 
+     * get the path for references to this resource.
+     * @param resource
+     * @return null if not tracking paths
+     */
+    String getResourcePath(Resource resource);
+
+    /**
+     * called when a new package is being loaded
+     * 
+     * this is called by loadPackageAndDependencies when a new package is loaded
+     * @param npm
+     * @return
+     * @throws IOException 
+     * @throws JsonSyntaxException 
+     */
+    IContextResourceLoader getNewLoader(NpmPackage npm) throws JsonSyntaxException, IOException;   
+  }
+
+  /**
+   * Get the version of the definitions loaded in context
+   * This *does not* have to be 5.0 (R5) - the context can load other versions
+   * 
+   * @return
+   */
+  public String getVersion();
+  
+  /**
+   * Get the UCUM service that provides access to units of measure reasoning services 
+   * 
+   * This service might not be available 
+   * 
+   * @return
+   */
+  public UcumService getUcumService();
+  public void setUcumService(UcumService ucumService);
+
+  /**
+   * Get a validator that can check whether a resource is valid 
+   * 
+   * @return a prepared generator
+   * @throws FHIRException 
+   * @
+   */
+  public IResourceValidator newValidator() throws FHIRException;
+
+  // -- resource fetchers ---------------------------------------------------
+
+  /**
+   * Find an identified resource. The most common use of this is to access the the 
+   * standard conformance resources that are part of the standard - structure 
+   * definitions, value sets, concept maps, etc.
+   * 
+   * Also, the narrative generator uses this, and may access any kind of resource
+   * 
+   * The URI is called speculatively for things that might exist, so not finding 
+   * a matching resource, return null, not an error
+   * 
+   * The URI can have one of 3 formats:
+   *  - a full URL e.g. http://acme.org/fhir/ValueSet/[id]
+   *  - a relative URL e.g. ValueSet/[id]
+   *  - a logical id e.g. [id]
+   *  
+   * It's an error if the second form doesn't agree with class_. It's an 
+   * error if class_ is null for the last form
+   * 
+   * class can be Resource, DomainResource or CanonicalResource, which means resource of all kinds
+   * 
+   * @param resource
+   * @param Reference
+   * @return
+   * @throws FHIRException 
+   * @throws Exception
+   */
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri);
+  public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException;
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version);
+
+  /** has the same functionality as fetchResource, but passes in information about the source of the 
+   * reference (this may affect resolution of version)
+   *  
+   * @param <T>
+   * @param class_
+   * @param uri
+   * @param canonicalForSource
+   * @return
+   */
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, CanonicalResource canonicalForSource);
+
+  /** 
+   * Fetch all the resources of a particular type. if class == (null | Resource | DomainResource | CanonicalResource) return everything
+   *  
+   * @param <T>
+   * @param class_
+   * @param uri
+   * @param canonicalForSource
+   * @return
+   */
+  public <T extends Resource> List<T> fetchResourcesByType(Class<T> class_);
+
+  /**
+   * Variation of fetchResource when you have a string type, and don't need the right class
+   * 
+   * The URI can have one of 3 formats:
+   *  - a full URL e.g. http://acme.org/fhir/ValueSet/[id]
+   *  - a relative URL e.g. ValueSet/[id]
+   *  - a logical id e.g. [id]
+   *  
+   * if type == null, the URI can't be a simple logical id
+   * 
+   * @param type
+   * @param uri
+   * @return
+   */
+  public Resource fetchResourceById(String type, String uri);
+  
+  /**
+   * find whether a resource is available. 
+   * 
+   * Implementations of the interface can assume that if hasResource ruturns 
+   * true, the resource will usually be fetched subsequently
+   * 
+   * @param class_
+   * @param uri
+   * @return
+   */
+  public <T extends Resource> boolean hasResource(Class<T> class_, String uri);
+
+  /**
+   * cache a resource for later retrieval using fetchResource.
+   * 
+   * Note that various context implementations will have their own ways of loading
+   * rseources, and not all need implement cacheResource.
+   * 
+   * If the resource is loaded out of a package, call cacheResourceFromPackage instead
+   * @param res
+   * @throws FHIRException 
+   */
+  public void cacheResource(Resource res) throws FHIRException;
+  
+  /**
+   * cache a resource for later retrieval using fetchResource.
+   * 
+   * The package information is used to help manage the cache internally, and to 
+   * help with reference resolution. Packages should be define using cachePackage (but don't have to be)
+   *    
+   * Note that various context implementations will have their own ways of loading
+   * rseources, and not all need implement cacheResource
+   * 
+   * @param res
+   * @throws FHIRException 
+   */
+  public void cacheResourceFromPackage(Resource res, PackageVersion packageDetails) throws FHIRException;
+  
+  /**
+   * Inform the cache about package dependencies. This can be used to help resolve references
+   * 
+   * Note that the cache doesn't load dependencies
+   *  
+   * @param packageInfo
+   */
+  public void cachePackage(PackageDetails packageDetails, List<PackageVersion> dependencies);
+  
+  // -- profile services ---------------------------------------------------------
+  
+  /**
+   * @return a list of the resource names defined for this version
+   */
+  public List<String> getResourceNames();
+  /**
+   * @return a set of the resource names defined for this version
+   */
+  public Set<String> getResourceNamesAsSet();
+
+  // -- Terminology services ------------------------------------------------------
+
+  /**
+   * Set the expansion parameters passed through the terminology server when txServer calls are made
+   * 
+   * Note that the Validation Options override these when they are specified on validateCode
+   */
+  public Parameters getExpansionParameters();
+
+  /**
+   * Get the expansion parameters passed through the terminology server when txServer calls are made
+   * 
+   * Note that the Validation Options override these when they are specified on validateCode
+   */
+  public void setExpansionProfile(Parameters expParameters);
+
+  // these are the terminology services used internally by the tools
+  /**
+   * Find the code system definition for the nominated system uri. 
+   * return null if there isn't one (then the tool might try 
+   * supportsSystem)
+   * 
+   * This is a short cut for fetchResource(CodeSystem.class...)
+   * 
+   * @param system
+   * @return
+   */
+  public CodeSystem fetchCodeSystem(String system);
+  public CodeSystem fetchCodeSystem(String system, String version);
+
+  /**
+   * True if the underlying terminology service provider will do 
+   * expansion and code validation for the terminology. Corresponds
+   * to the extension 
+   * 
+   * http://hl7.org/fhir/StructureDefinition/capabilitystatement-supported-system
+   * 
+   * in the Conformance resource
+   * 
+   * Not that not all supported code systems have an available CodeSystem resource
+   * 
+   * @param system
+   * @return
+   * @throws Exception 
+   */
+  public boolean supportsSystem(String system) throws TerminologyServiceException;
+
+  /**
+   * ValueSet Expansion - see $expand
+   *  
+   * @param source
+   * @return
+   */
+  public ValueSetExpansionOutcome expandVS(ValueSet source, boolean cacheOk, boolean heiarchical);
+  
+  /**
+   * ValueSet Expansion - see $expand
+   *  
+   * @param source
+   * @return
+   */
+  public ValueSetExpansionOutcome expandVS(ValueSet source, boolean cacheOk, boolean heiarchical, boolean incompleteOk);
+  
+  /**
+   * ValueSet Expansion - see $expand, but resolves the binding first
+   *  
+   * @param source
+   * @return
+   * @throws FHIRException 
+   */
+  public ValueSetExpansionOutcome expandVS(ElementDefinitionBindingComponent binding, boolean cacheOk, boolean heiarchical) throws FHIRException;
+  
+  /**
+   * Value set expanion inside the internal expansion engine - used 
+   * for references to supported system (see "supportsSystem") for
+   * which there is no value set. 
+   * 
+   * @param inc
+   * @return
+   * @throws FHIRException 
+   */
+  ValueSetExpansionOutcome expandVS(ConceptSetComponent inc, boolean hierarchical, boolean noInactive) throws TerminologyServiceException;
+
+  /**
+   * get/set the locale used when creating messages
+   * 
+   * todo: what's the difference?
+   * 
+   * @return
+   */
+  Locale getLocale();
+  void setLocale(Locale locale);
+  void setValidationMessageLanguage(Locale locale);
+
+  /**
+   * Access to the contexts internationalised error messages
+   *  
+   * @param theMessage
+   * @param theMessageArguments
+   * @return
+   */
+  String formatMessage(String theMessage, Object... theMessageArguments);
+  String formatMessagePlural(Integer pluralNum, String theMessage, Object... theMessageArguments);
+
   /**
    * Validation of a code - consult the terminology infrstructure and/or service 
    * to see whether it is known. If known, return a description of it
@@ -776,31 +724,32 @@ public interface IWorkerContext {
    */
   public ValidationResult validateCode(ValidationOptions options, Coding code, ValueSet vs);
   
+  /** 
+   * See comments in ValidationContextCarrier. This is called when there might be additional value sets etc 
+   * available in the context, but we don't want to pre-process them. 
+   * 
+   * @param options
+   * @param code
+   * @param vs
+   * @param ctxt
+   * @return
+   */
   public ValidationResult validateCode(ValidationOptions options, Coding code, ValueSet vs, ValidationContextCarrier ctxt);
 
+  /**
+   * Batch validate code - reduce latency and do a bunch of codes in a single server call. 
+   * Each is the same as a validateCode
+   * 
+   * @param options
+   * @param codes
+   * @param vs
+   */
   public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs);
   
-  /**
-   * returns the recommended tla for the type  (from the structure definitions)
-   * 
-   * @param name
-   * @return
-   */
-  public String getAbbreviation(String name);
-
-
-  /**
-   * translate an OID to a URI (look through known NamingSystems)
-   * @param code
-   * @return
-   */
-	public String oid2Uri(String code);
+  
+  // todo: figure these out
 	public Map<String, NamingSystem> getNSUrlMap();
-
-	/** 
-	 * @return true if the contxt has a terminology caching service internally
-	 */
-  public boolean hasCache();
+  public TranslationServices translator();
 
   public interface ILoggingService {
     public enum LogCategory {
@@ -814,28 +763,30 @@ public interface IWorkerContext {
     public void logMessage(String message); // status messages, always display
     public void logDebugMessage(LogCategory category, String message); // verbose; only when debugging 
   }
-
   public void setLogger(@Nonnull ILoggingService logger);
   public ILoggingService getLogger();
 
   public boolean isNoTerminologyServer();
   public Set<String> getCodeSystemsUsed();
-  public TranslationServices translator();
-  public List<StructureMap> listTransforms();
-  public StructureMap getTransform(String url);
-
-  public String getOverrideVersionNs();
-  public void setOverrideVersionNs(String value);
-
-  public StructureDefinition fetchTypeDefinition(String typeName);
-  public StructureDefinition fetchRawProfile(String url);
+  public int getClientRetryCount();
+  public IWorkerContext setClientRetryCount(int value);
   
-  public void setUcumService(UcumService ucumService);
+  public TimeTracker clock();
 
-  public String getLinkForUrl(String corePath, String s);
+  /**
+   * This is a short cut for fetchResource(StructureDefinition.class, ...)
+   * but it accepts a typename - that is, it resolves based on StructureDefinition.type 
+   * or StructureDefinition.url
+   * 
+   * @param typeName
+   * @return
+   */
+  public StructureDefinition fetchTypeDefinition(String typeName);
+  
 
   /**
    * Returns a set of keys that can be used to get binaries from this context.
+   * The binaries come from the loaded packages (mostly the pubpack)
    *
    * @return a set of binaries or null
    */
@@ -856,6 +807,10 @@ public interface IWorkerContext {
    */
   public byte[] getBinaryForKey(String binaryKey);
 
+  /*
+   * Todo: move these loaders out to IWorkerContextManager
+   * 
+   */
   /**
    * Load relevant resources of the appropriate types (as specified by the loader) from the nominated package
    * 
@@ -900,12 +855,8 @@ public interface IWorkerContext {
    public boolean hasPackage(PackageVersion pack);
    public PackageDetails getPackage(PackageVersion pack);
 
-  public int getClientRetryCount();
-  public IWorkerContext setClientRetryCount(int value);
-  
-  public TimeTracker clock();
-  public IPackageLoadingTracker getPackageTracker();
-  public IWorkerContext setPackageTracker(IPackageLoadingTracker packageTracker);
+  public IWorkerContextManager.IPackageLoadingTracker getPackageTracker();
+  public IWorkerContext setPackageTracker(IWorkerContextManager.IPackageLoadingTracker packageTracker);
 
   public PackageVersion getPackageForUrl(String url);
 }

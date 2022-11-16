@@ -33,6 +33,17 @@ package org.hl7.fhir.utilities;
 
 public interface FileNotifier {
 
+
+  public interface FileNotifier2 {
+
+    /// if return false, not copy
+    public boolean copyFile(String src, String dst);
+
+    /// if return false, not copy
+    public boolean copyFolder(String src, String dst);
+
+  }
   public void copyFile(String src, String dst);
   
+
 }

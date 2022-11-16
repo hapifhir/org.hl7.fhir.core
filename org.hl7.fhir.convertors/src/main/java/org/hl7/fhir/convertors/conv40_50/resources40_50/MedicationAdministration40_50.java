@@ -6,7 +6,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableCon
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.SimpleQuantity40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
@@ -49,7 +48,7 @@ public class MedicationAdministration40_50 {
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-    for (org.hl7.fhir.r4.model.UriType t : src.getInstantiates()) tgt.getInstantiatesUri().add(Uri40_50.convertUri(t));
+//    for (org.hl7.fhir.r4.model.UriType t : src.getInstantiates()) tgt.getInstantiatesUri().add(Uri40_50.convertUri(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference40_50.convertReference(t));
     if (src.hasStatus())
       tgt.setStatusElement(convertMedicationAdministrationStatus(src.getStatusElement()));
@@ -93,7 +92,7 @@ public class MedicationAdministration40_50 {
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-    for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiates().add(Uri40_50.convertUri(t));
+//    for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiates().add(Uri40_50.convertUri(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference40_50.convertReference(t));
     if (src.hasStatus())
       tgt.setStatusElement(convertMedicationAdministrationStatus(src.getStatusElement()));

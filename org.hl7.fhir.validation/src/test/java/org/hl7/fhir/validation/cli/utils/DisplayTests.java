@@ -1,6 +1,5 @@
 package org.hl7.fhir.validation.cli.utils;
 
-import org.hl7.fhir.validation.cli.utils.Display;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -4,6 +4,7 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.ServiceRequest;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 
 
 public class PublicationHacker {
@@ -16,7 +17,7 @@ public class PublicationHacker {
       
       // ServiceRequest.code
       if (res.getValue().contains("LOINC is  (preferred)[http://build.fhir.org/terminologies.html#preferred]")) {
-        res.setValue(res.getValue().replace("LOINC is  (preferred)[http://build.fhir.org/terminologies.html#preferred]", "LOINC is [preferred]("+Utilities.pathURL(context.getSpecUrl(), "terminologies.html#preferred)")));
+        res.setValue(res.getValue().replace("LOINC is  (preferred)[http://build.fhir.org/terminologies.html#preferred]", "LOINC is [preferred]("+Utilities.pathURL(VersionUtilities.getSpecUrl(context.getVersion()), "terminologies.html#preferred)")));
       }
       if (res.getValue().contains("[here](valueset-diagnostic-requests.html)")) {
         res.setValue(res.getValue().replace("[here](valueset-diagnostic-requests.html)", "here"));

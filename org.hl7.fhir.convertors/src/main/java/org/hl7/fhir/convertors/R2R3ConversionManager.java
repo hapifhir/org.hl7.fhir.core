@@ -1,5 +1,21 @@
 package org.hl7.fhir.convertors;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -36,17 +52,21 @@ import org.hl7.fhir.dstu3.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.dstu3.formats.FormatUtilities;
 import org.hl7.fhir.dstu3.formats.IParser.OutputStyle;
 import org.hl7.fhir.dstu3.formats.JsonParser;
-import org.hl7.fhir.dstu3.model.*;
+import org.hl7.fhir.dstu3.model.Base;
+import org.hl7.fhir.dstu3.model.Coding;
+import org.hl7.fhir.dstu3.model.ExpansionProfile;
+import org.hl7.fhir.dstu3.model.MetadataResource;
+import org.hl7.fhir.dstu3.model.PractitionerRole;
+import org.hl7.fhir.dstu3.model.Resource;
+import org.hl7.fhir.dstu3.model.ResourceFactory;
+import org.hl7.fhir.dstu3.model.StructureDefinition;
 import org.hl7.fhir.dstu3.model.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.dstu3.model.StructureMap;
+import org.hl7.fhir.dstu3.model.UriType;
 import org.hl7.fhir.dstu3.utils.StructureMapUtilities;
 import org.hl7.fhir.dstu3.utils.StructureMapUtilities.ITransformerServices;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.TextFile;
-
-import java.io.*;
-import java.util.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 /**
  * This class manages conversion from R2 to R3 and vice versa

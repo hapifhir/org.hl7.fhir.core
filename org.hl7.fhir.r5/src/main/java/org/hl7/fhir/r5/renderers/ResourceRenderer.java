@@ -3,24 +3,24 @@ package org.hl7.fhir.r5.renderers;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
-import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
+import org.hl7.fhir.r5.model.CodeableReference;
+import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DomainResource;
+import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.Narrative;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.PropertyWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
@@ -39,9 +39,13 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public abstract class ResourceRenderer extends DataRenderer {
 
+  public enum RendererType {
+    NATIVE, PROFILE, LIQUID
+
+  }
+
   protected ResourceContext rcontext;
   protected XVerExtensionManager xverManager;
-  protected boolean forResource;
   
   
   public ResourceRenderer(RenderingContext context) {
@@ -51,6 +55,15 @@ public abstract class ResourceRenderer extends DataRenderer {
   public ResourceRenderer(RenderingContext context, ResourceContext rcontext) {
     super(context);
     this.rcontext = rcontext;
+  }
+
+  public ResourceContext getRcontext() {
+    return rcontext;
+  }
+
+  public ResourceRenderer setRcontext(ResourceContext rcontext) {
+    this.rcontext = rcontext;
+    return this;
   }
 
   public XhtmlNode build(Resource dr) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
@@ -70,14 +83,8 @@ public abstract class ResourceRenderer extends DataRenderer {
   
   public void render(DomainResource r) throws IOException, FHIRException, EOperationOutcome {  
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
-    boolean ofr = forResource;
     boolean hasExtensions;
-    try {
-      forResource = true;
-      hasExtensions = render(x, r);
-    } finally {
-      forResource = ofr;
-    }
+    hasExtensions = render(x, r);
     inject(r, x, hasExtensions ? NarrativeStatus.EXTENSIONS :  NarrativeStatus.GENERATED);
   }
 
@@ -163,6 +170,36 @@ public abstract class ResourceRenderer extends DataRenderer {
           x.tx(" ("+cr.present()+")");          
         }
       }
+    }
+  }
+
+  public void render(Resource res, XhtmlNode x, DataType type) throws FHIRFormatError, DefinitionException, IOException {
+    if (type instanceof Reference) {
+      renderReference(res, x, (Reference) type);
+    } else if (type instanceof CodeableReference) {
+      CodeableReference cr = (CodeableReference) type;
+      if (cr.hasReference()) {
+        renderReference(res, x, cr.getReference());
+      } else {
+        render(x, type);
+      } 
+    } else { 
+      render(x, type);
+    }
+  }
+
+  public void render(ResourceWrapper res, XhtmlNode x, DataType type) throws FHIRFormatError, DefinitionException, IOException {
+    if (type instanceof Reference) {
+      renderReference(res, x, (Reference) type);
+    } else if (type instanceof CodeableReference) {
+      CodeableReference cr = (CodeableReference) type;
+      if (cr.hasReference()) {
+        renderReference(res, x, cr.getReference());
+      } else {
+        render(x, type);
+      } 
+    } else { 
+      render(x, type);
     }
   }
 
@@ -286,7 +323,11 @@ public abstract class ResourceRenderer extends DataRenderer {
     if (rcontext != null) {
       BundleEntryComponent bundleResource = rcontext.resolve(url);
       if (bundleResource != null) {
-        String bundleUrl = "#" + bundleResource.getResource().getResourceType().name() + "_" + bundleResource.getResource().getId(); 
+        String id = bundleResource.getResource().getId();
+        if (id == null) {
+          id = makeIdFromBundleEntry(bundleResource.getFullUrl());
+        }
+        String bundleUrl = "#" + bundleResource.getResource().getResourceType().name() + "_" + id; 
         return new ResourceWithReference(bundleUrl, new ResourceWrapperDirect(this.context, bundleResource.getResource()));
       }
       org.hl7.fhir.r5.elementmodel.Element bundleElement = rcontext.resolveElement(url, version);
@@ -312,6 +353,16 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
   
   
+  protected String makeIdFromBundleEntry(String url) {
+    if (url == null) {
+      return null;
+    }
+    if (url.startsWith("urn:uuid:")) {
+      return url.substring(9).toLowerCase();
+    }
+    return fullUrlToAnchor(url);    
+  }
+
   private String fullUrlToAnchor(String url) {
     return url.replace(":", "").replace("/", "_");
   }
@@ -398,12 +449,16 @@ public abstract class ResourceRenderer extends DataRenderer {
     return true;
   }
 
-  protected void renderResourceHeader(ResourceWrapper r, XhtmlNode x) throws UnsupportedEncodingException, FHIRException, IOException {
+  protected void renderResourceHeader(ResourceWrapper r, XhtmlNode x, boolean doId) throws UnsupportedEncodingException, FHIRException, IOException {
     XhtmlNode div = x.div().style("display: inline-block").style("background-color: #d9e0e7").style("padding: 6px")
          .style("margin: 4px").style("border: 1px solid #8da1b4")
          .style("border-radius: 5px").style("line-height: 60%");
 
     String id = getPrimitiveValue(r, "id"); 
+    if (doId) {
+      div.an(id);
+    }
+
     String lang = getPrimitiveValue(r, "language"); 
     String ir = getPrimitiveValue(r, "implicitRules"); 
     BaseWrapper meta = r.getChildByName("meta").hasValues() ? r.getChildByName("meta").getValues().get(0) : null;
@@ -502,5 +557,9 @@ public abstract class ResourceRenderer extends DataRenderer {
       inject(dr, x, NarrativeStatus.GENERATED);   
     }
     
+  }
+  
+  public RendererType getRendererType() {
+    return RendererType.NATIVE;
   }
 }

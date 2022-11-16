@@ -8,8 +8,6 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Timing
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Boolean30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Integer30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Boolean40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Dosage30_50 {

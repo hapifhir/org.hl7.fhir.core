@@ -4,7 +4,11 @@ import org.hl7.fhir.convertors.context.ConversionContext14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.ElementDefinition14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.complextypes14_50.CodeableConcept14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.complextypes14_50.ContactPoint14_50;
-import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.*;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.Boolean14_50;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.Code14_50;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.DateTime14_50;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.String14_50;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.Uri14_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeType;
 
@@ -45,10 +49,10 @@ public class SearchParameter14_50 {
       tgt.setDescription(src.getDescription());
     if (src.hasExpression())
       tgt.setExpression(ElementDefinition14_50.convertTo2016MayExpression(src.getExpression()));
-    if (src.hasXpath())
-      tgt.setXpathElement(String14_50.convertString(src.getXpathElement()));
-    if (src.hasXpathUsage())
-      tgt.setXpathUsageElement(convertXPathUsageType(src.getXpathUsageElement()));
+//    if (src.hasXpath())
+//      tgt.setXpathElement(String14_50.convertString(src.getXpathElement()));
+    if (src.hasProcessingMode())
+      tgt.setXpathUsageElement(convertXPathUsageType(src.getProcessingModeElement()));
     for (CodeType t : src.getTarget()) tgt.addTarget(t.getValue());
     return tgt;
   }
@@ -81,17 +85,17 @@ public class SearchParameter14_50 {
       tgt.setPurpose(src.getRequirements());
     if (src.hasCodeElement())
       tgt.setCodeElement(Code14_50.convertCode(src.getCodeElement()));
-    tgt.addBase(src.getBase());
+    tgt.getBase().add(Code14_50.convertCode(src.getBaseElement()));
     if (src.hasType())
       tgt.setTypeElement(Enumerations14_50.convertSearchParamType(src.getTypeElement()));
     if (src.hasDescription())
       tgt.setDescription(src.getDescription());
     if (src.hasExpression())
       tgt.setExpression(ElementDefinition14_50.convertToR4Expression(src.getExpression()));
-    if (src.hasXpath())
-      tgt.setXpathElement(String14_50.convertString(src.getXpathElement()));
+//    if (src.hasXpath())
+//      tgt.setXpathElement(String14_50.convertString(src.getXpathElement()));
     if (src.hasXpathUsage())
-      tgt.setXpathUsageElement(convertXPathUsageType(src.getXpathUsageElement()));
+      tgt.setProcessingModeElement(convertXPathUsageType(src.getXpathUsageElement()));
     for (org.hl7.fhir.dstu2016may.model.CodeType t : src.getTarget()) tgt.addTarget(t.getValue());
     return tgt;
   }
@@ -120,7 +124,7 @@ public class SearchParameter14_50 {
     return tgt;
   }
 
-  static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType> convertXPathUsageType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SearchParameter.XPathUsageType> src) throws FHIRException {
+  static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType> convertXPathUsageType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SearchParameter.SearchProcessingModeType> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageTypeEnumFactory());
@@ -143,29 +147,29 @@ public class SearchParameter14_50 {
     return tgt;
   }
 
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SearchParameter.XPathUsageType> convertXPathUsageType(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType> src) throws FHIRException {
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SearchParameter.SearchProcessingModeType> convertXPathUsageType(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SearchParameter.XPathUsageType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.SearchParameter.XPathUsageTypeEnumFactory());
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SearchParameter.SearchProcessingModeType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.SearchParameter.SearchProcessingModeTypeEnumFactory());
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case NORMAL:
-        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.XPathUsageType.NORMAL);
+        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchProcessingModeType.NORMAL);
         break;
       case PHONETIC:
-        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.XPathUsageType.PHONETIC);
+        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchProcessingModeType.PHONETIC);
         break;
       case NEARBY:
-        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.XPathUsageType.OTHER);
+        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchProcessingModeType.OTHER);
         break;
       case DISTANCE:
-        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.XPathUsageType.OTHER);
+        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchProcessingModeType.OTHER);
         break;
       case OTHER:
-        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.XPathUsageType.OTHER);
+        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchProcessingModeType.OTHER);
         break;
       default:
-        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.XPathUsageType.NULL);
+        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.SearchProcessingModeType.NULL);
         break;
     }
     return tgt;

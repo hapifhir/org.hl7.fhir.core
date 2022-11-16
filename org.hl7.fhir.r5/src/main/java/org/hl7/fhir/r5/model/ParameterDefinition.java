@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,7 +46,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * Base StructureDefinition for ParameterDefinition Type: The parameters to the module. This collection specifies both the input and output parameters. Input parameters are provided by the caller as part of the $evaluate operation. Output parameters are included in the GuidanceResponse.
+ * ParameterDefinition Type: The parameters to the module. This collection specifies both the input and output parameters. Input parameters are provided by the caller as part of the $evaluate operation. Output parameters are included in the GuidanceResponse.
  */
 @DatatypeDef(name="ParameterDefinition")
 public class ParameterDefinition extends DataType implements ICompositeType {
@@ -92,8 +92,8 @@ public class ParameterDefinition extends DataType implements ICompositeType {
      */
     @Child(name = "type", type = {CodeType.class}, order=5, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="What type of value", formalDefinition="The type of the parameter." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/all-types")
-    protected Enumeration<FHIRAllTypes> type;
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/fhir-types")
+    protected Enumeration<FHIRTypes> type;
 
     /**
      * If specified, this indicates a profile that the input data must conform to, or that the output data will conform to.
@@ -102,7 +102,7 @@ public class ParameterDefinition extends DataType implements ICompositeType {
     @Description(shortDefinition="What profile the value is expected to be", formalDefinition="If specified, this indicates a profile that the input data must conform to, or that the output data will conform to." )
     protected CanonicalType profile;
 
-    private static final long serialVersionUID = -1132749008L;
+    private static final long serialVersionUID = 2027429213L;
 
   /**
    * Constructor
@@ -114,7 +114,7 @@ public class ParameterDefinition extends DataType implements ICompositeType {
   /**
    * Constructor
    */
-    public ParameterDefinition(OperationParameterUse use, FHIRAllTypes type) {
+    public ParameterDefinition(OperationParameterUse use, FHIRTypes type) {
       super();
       this.setUse(use);
       this.setType(type);
@@ -360,12 +360,12 @@ public class ParameterDefinition extends DataType implements ICompositeType {
     /**
      * @return {@link #type} (The type of the parameter.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
      */
-    public Enumeration<FHIRAllTypes> getTypeElement() { 
+    public Enumeration<FHIRTypes> getTypeElement() { 
       if (this.type == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ParameterDefinition.type");
         else if (Configuration.doAutoCreate())
-          this.type = new Enumeration<FHIRAllTypes>(new FHIRAllTypesEnumFactory()); // bb
+          this.type = new Enumeration<FHIRTypes>(new FHIRTypesEnumFactory()); // bb
       return this.type;
     }
 
@@ -380,7 +380,7 @@ public class ParameterDefinition extends DataType implements ICompositeType {
     /**
      * @param value {@link #type} (The type of the parameter.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
      */
-    public ParameterDefinition setTypeElement(Enumeration<FHIRAllTypes> value) { 
+    public ParameterDefinition setTypeElement(Enumeration<FHIRTypes> value) { 
       this.type = value;
       return this;
     }
@@ -388,16 +388,16 @@ public class ParameterDefinition extends DataType implements ICompositeType {
     /**
      * @return The type of the parameter.
      */
-    public FHIRAllTypes getType() { 
+    public FHIRTypes getType() { 
       return this.type == null ? null : this.type.getValue();
     }
 
     /**
      * @param value The type of the parameter.
      */
-    public ParameterDefinition setType(FHIRAllTypes value) { 
+    public ParameterDefinition setType(FHIRTypes value) { 
         if (this.type == null)
-          this.type = new Enumeration<FHIRAllTypes>(new FHIRAllTypesEnumFactory());
+          this.type = new Enumeration<FHIRTypes>(new FHIRTypesEnumFactory());
         this.type.setValue(value);
       return this;
     }
@@ -485,7 +485,7 @@ public class ParameterDefinition extends DataType implements ICompositeType {
         case 108114: /*min*/ return this.min == null ? new Base[0] : new Base[] {this.min}; // IntegerType
         case 107876: /*max*/ return this.max == null ? new Base[0] : new Base[] {this.max}; // StringType
         case 1587405498: /*documentation*/ return this.documentation == null ? new Base[0] : new Base[] {this.documentation}; // StringType
-        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<FHIRAllTypes>
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<FHIRTypes>
         case -309425751: /*profile*/ return this.profile == null ? new Base[0] : new Base[] {this.profile}; // CanonicalType
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -512,8 +512,8 @@ public class ParameterDefinition extends DataType implements ICompositeType {
           this.documentation = TypeConvertor.castToString(value); // StringType
           return value;
         case 3575610: // type
-          value = new FHIRAllTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.type = (Enumeration) value; // Enumeration<FHIRAllTypes>
+          value = new FHIRTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<FHIRTypes>
           return value;
         case -309425751: // profile
           this.profile = TypeConvertor.castToCanonical(value); // CanonicalType
@@ -537,8 +537,8 @@ public class ParameterDefinition extends DataType implements ICompositeType {
         } else if (name.equals("documentation")) {
           this.documentation = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("type")) {
-          value = new FHIRAllTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.type = (Enumeration) value; // Enumeration<FHIRAllTypes>
+          value = new FHIRTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<FHIRTypes>
         } else if (name.equals("profile")) {
           this.profile = TypeConvertor.castToCanonical(value); // CanonicalType
         } else

@@ -129,4 +129,33 @@ public class OperationOutcomeUtilities {
     }
     return res;
   }
+  
+
+  public static OperationOutcomeIssueComponent convertToIssueSimple(ValidationMessage message, OperationOutcome op) {
+    OperationOutcomeIssueComponent issue = new OperationOutcome.OperationOutcomeIssueComponent();
+    issue.setUserData("source.vm", message);   
+    issue.setCode(convert(message.getType()));
+    
+    if (message.getLocation() != null) {
+      // message location has a fhirPath in it. We need to populate the expression
+      issue.addExpression(message.getLocation());
+    }
+    if (message.getLine() >= 0 && message.getCol() >= 0) {
+      issue.setDiagnostics("["+message.getLine()+","+message.getCol()+"]");
+    }
+    issue.setSeverity(convert(message.getLevel()));
+    CodeableConcept c = new CodeableConcept();
+    c.setText(message.getMessage());
+    issue.setDetails(c);
+    return issue;
+  }
+
+  public static OperationOutcome createOutcomeSimple(List<ValidationMessage> messages) {
+    OperationOutcome res = new OperationOutcome();
+    for (ValidationMessage vm : messages) {
+      res.addIssue(convertToIssueSimple(vm, res));
+    }
+    return res;
+  }
+
 }

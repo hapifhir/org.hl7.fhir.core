@@ -1,6 +1,15 @@
 package org.hl7.fhir.validation;
 
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -36,11 +45,17 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.JsonParser;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
-import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.DomainResource;
+import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
@@ -55,16 +70,29 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.validation.cli.utils.ValidationLevel;
 import org.hl7.fhir.validation.instance.utils.IndexedElement;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.apache.commons.lang3.StringUtils.isBlank;
-
 public class BaseValidator implements IValidationContextResourceLoader {
+
+  public class BooleanValue {
+
+    private boolean value;
+
+    public BooleanValue(boolean value) {
+      super();
+      this.value = value;
+    }
+
+    public boolean isValue() {
+      return value;
+    }
+
+    public void setValue(boolean value) {
+      this.value = value;
+    }
+
+    public void see(boolean ok) {
+      value = value && ok;
+    }
+  }
 
   public class TrackedLocationRelatedMessage {
     private Object location;
@@ -292,6 +320,14 @@ public class BaseValidator implements IValidationContextResourceLoader {
     return thePass;
   }
 
+  protected boolean hintPlural(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, int num, String theMessage, Object... theMessageArguments) {
+    if (!thePass && doingHints()) {
+      String message = context.formatMessagePlural(num, theMessage, theMessageArguments);
+      addValidationMessage(errors, type, line, col, path, message, IssueSeverity.INFORMATION, theMessage);
+    }
+    return thePass;
+  }
+
   protected ValidationMessage signpost(List<ValidationMessage> errors, IssueType type, int line, int col, String path, String theMessage, Object... theMessageArguments) {
     String message = context.formatMessage(theMessage, theMessageArguments);
     return addValidationMessage(errors, type, line, col, path, message, IssueSeverity.INFORMATION, theMessage).setSignpost(true);
@@ -351,6 +387,14 @@ public class BaseValidator implements IValidationContextResourceLoader {
     return thePass;
   }
 
+  protected boolean rulePlural(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, int num, String theMessage, Object... theMessageArguments) {
+    if (!thePass && doingErrors()) {
+      String message = context.formatMessagePlural(num, theMessage, theMessageArguments);
+      addValidationMessage(errors, type, line, col, path, message, IssueSeverity.ERROR, theMessage);
+    }
+    return thePass;
+  }
+
   protected boolean txRule(List<ValidationMessage> errors, String txLink, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass && doingErrors()) {
       String message = context.formatMessage(theMessage, theMessageArguments);
@@ -405,6 +449,14 @@ public class BaseValidator implements IValidationContextResourceLoader {
   protected boolean rule(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass && doingErrors()) {
       String message = context.formatMessage(theMessage, theMessageArguments);
+      addValidationMessage(errors, type, -1, -1, path, message, IssueSeverity.ERROR, theMessage);
+    }
+    return thePass;
+  }
+
+  protected boolean rulePlural(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, int num, String theMessage, Object... theMessageArguments) {
+    if (!thePass && doingErrors()) {
+      String message = context.formatMessagePlural(num, theMessage, theMessageArguments);
       addValidationMessage(errors, type, -1, -1, path, message, IssueSeverity.ERROR, theMessage);
     }
     return thePass;
@@ -471,6 +523,16 @@ public class BaseValidator implements IValidationContextResourceLoader {
   protected boolean warning(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
     if (!thePass && doingWarnings()) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
+      IssueSeverity severity = IssueSeverity.WARNING;
+      addValidationMessage(errors, type, line, col, path, nmsg, severity, msg);
+    }
+    return thePass;
+
+  }
+
+  protected boolean warningPlural(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, int num, String msg, Object... theMessageArguments) {
+    if (!thePass && doingWarnings()) {
+      String nmsg = context.formatMessagePlural(num, msg, theMessageArguments);
       IssueSeverity severity = IssueSeverity.WARNING;
       addValidationMessage(errors, type, line, col, path, nmsg, severity, msg);
     }
@@ -731,6 +793,9 @@ public class BaseValidator implements IValidationContextResourceLoader {
 
   protected ValueSet resolveBindingReference(DomainResource ctxt, String reference, String uri) {
     if (reference != null) {
+      if (reference.equals("http://www.rfc-editor.org/bcp/bcp13.txt")) {
+        reference = "http://hl7.org/fhir/ValueSet/mimetypes";
+      }
       if (reference.startsWith("#")) {
         for (Resource c : ctxt.getContained()) {
           if (c.getId().equals(reference.substring(1)) && (c instanceof ValueSet))
@@ -1032,7 +1097,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
           return null;
         case Valid:
           StructureDefinition defn = xverDefn(url);
-          context.generateSnapshot(defn);
+          new ContextUtilities(context).generateSnapshot(defn);
           context.cacheResource(defn);
           return defn;
         default:
@@ -1058,7 +1123,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
         break;
       case Valid:
         StructureDefinition ex = xverDefn(url);
-        context.generateSnapshot(ex);
+        new ContextUtilities(context).generateSnapshot(ex);
         context.cacheResource(ex);
         return ex;
       default:
@@ -1152,5 +1217,8 @@ public class BaseValidator implements IValidationContextResourceLoader {
     return level;
   }
 
- 
+  protected boolean isHL7(Element cr) {
+    String url = cr.getChildValue("url");
+    return url != null && url.contains("hl7");
+  }
 }

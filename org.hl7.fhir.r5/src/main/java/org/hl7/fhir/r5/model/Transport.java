@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -87,7 +87,7 @@ public class Transport extends DomainResource {
          */
         INSTANCEORDER, 
         /**
-         * The request represents a component or option for a RequestGroup that establishes timing, conditionality and/or other constraints among a set of requests.  Refer to [[[RequestGroup]]] for additional information on how this status is used.
+         * The request represents a component or option for a RequestOrchestration that establishes timing, conditionality and/or other constraints among a set of requests.  Refer to [[[RequestOrchestration]]] for additional information on how this status is used.
          */
         OPTION, 
         /**
@@ -160,7 +160,7 @@ public class Transport extends DomainResource {
             case REFLEXORDER: return "The request represents an automatically generated supplemental authorization for action based on a parent authorization together with initial results of the action taken against that parent authorization.";
             case FILLERORDER: return "The request represents the view of an authorization instantiated by a fulfilling system representing the details of the fulfiller's intention to act upon a submitted order.";
             case INSTANCEORDER: return "An order created in fulfillment of a broader order that represents the authorization for a single activity occurrence.  E.g. The administration of a single dose of a drug.";
-            case OPTION: return "The request represents a component or option for a RequestGroup that establishes timing, conditionality and/or other constraints among a set of requests.  Refer to [[[RequestGroup]]] for additional information on how this status is used.";
+            case OPTION: return "The request represents a component or option for a RequestOrchestration that establishes timing, conditionality and/or other constraints among a set of requests.  Refer to [[[RequestOrchestration]]] for additional information on how this status is used.";
             case NULL: return null;
             default: return "?";
           }
@@ -734,7 +734,7 @@ public class Transport extends DomainResource {
         /**
          * The value of the input parameter as a basic type.
          */
-        @Child(name = "value", type = {Base64BinaryType.class, BooleanType.class, CanonicalType.class, CodeType.class, DateType.class, DateTimeType.class, DecimalType.class, IdType.class, InstantType.class, IntegerType.class, Integer64Type.class, MarkdownType.class, OidType.class, PositiveIntType.class, StringType.class, TimeType.class, UnsignedIntType.class, UriType.class, UrlType.class, UuidType.class, Address.class, Age.class, Annotation.class, Attachment.class, CodeableConcept.class, CodeableReference.class, Coding.class, ContactPoint.class, Count.class, Distance.class, Duration.class, HumanName.class, Identifier.class, Money.class, Period.class, Quantity.class, Range.class, Ratio.class, RatioRange.class, Reference.class, SampledData.class, Signature.class, Timing.class, ContactDetail.class, Contributor.class, DataRequirement.class, Expression.class, ParameterDefinition.class, RelatedArtifact.class, TriggerDefinition.class, UsageContext.class, Dosage.class, Meta.class}, order=2, min=1, max=1, modifier=false, summary=false)
+        @Child(name = "value", type = {Base64BinaryType.class, BooleanType.class, CanonicalType.class, CodeType.class, DateType.class, DateTimeType.class, DecimalType.class, IdType.class, InstantType.class, IntegerType.class, Integer64Type.class, MarkdownType.class, OidType.class, PositiveIntType.class, StringType.class, TimeType.class, UnsignedIntType.class, UriType.class, UrlType.class, UuidType.class, Address.class, Age.class, Annotation.class, Attachment.class, CodeableConcept.class, CodeableReference.class, Coding.class, ContactPoint.class, Count.class, Distance.class, Duration.class, HumanName.class, Identifier.class, Money.class, Period.class, Quantity.class, Range.class, Ratio.class, RatioRange.class, Reference.class, SampledData.class, Signature.class, Timing.class, ContactDetail.class, DataRequirement.class, Expression.class, ParameterDefinition.class, RelatedArtifact.class, TriggerDefinition.class, UsageContext.class, Availability.class, ExtendedContactDetail.class, Dosage.class, Meta.class}, order=2, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Content to use in performing the transport", formalDefinition="The value of the input parameter as a basic type." )
         protected DataType value;
 
@@ -1450,21 +1450,6 @@ public class Transport extends DomainResource {
         /**
          * @return {@link #value} (The value of the input parameter as a basic type.)
          */
-        public Contributor getValueContributor() throws FHIRException { 
-          if (this.value == null)
-            this.value = new Contributor();
-          if (!(this.value instanceof Contributor))
-            throw new FHIRException("Type mismatch: the type Contributor was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (Contributor) this.value;
-        }
-
-        public boolean hasValueContributor() { 
-          return this != null && this.value instanceof Contributor;
-        }
-
-        /**
-         * @return {@link #value} (The value of the input parameter as a basic type.)
-         */
         public DataRequirement getValueDataRequirement() throws FHIRException { 
           if (this.value == null)
             this.value = new DataRequirement();
@@ -1555,6 +1540,36 @@ public class Transport extends DomainResource {
         /**
          * @return {@link #value} (The value of the input parameter as a basic type.)
          */
+        public Availability getValueAvailability() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Availability();
+          if (!(this.value instanceof Availability))
+            throw new FHIRException("Type mismatch: the type Availability was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Availability) this.value;
+        }
+
+        public boolean hasValueAvailability() { 
+          return this != null && this.value instanceof Availability;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public ExtendedContactDetail getValueExtendedContactDetail() throws FHIRException { 
+          if (this.value == null)
+            this.value = new ExtendedContactDetail();
+          if (!(this.value instanceof ExtendedContactDetail))
+            throw new FHIRException("Type mismatch: the type ExtendedContactDetail was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (ExtendedContactDetail) this.value;
+        }
+
+        public boolean hasValueExtendedContactDetail() { 
+          return this != null && this.value instanceof ExtendedContactDetail;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
         public Dosage getValueDosage() throws FHIRException { 
           if (this.value == null)
             this.value = new Dosage();
@@ -1590,7 +1605,7 @@ public class Transport extends DomainResource {
          * @param value {@link #value} (The value of the input parameter as a basic type.)
          */
         public ParameterComponent setValue(DataType value) { 
-          if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof CodeableReference || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof RatioRange || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof Contributor || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Dosage || value instanceof Meta))
+          if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof CodeableReference || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof RatioRange || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Availability || value instanceof ExtendedContactDetail || value instanceof Dosage || value instanceof Meta))
             throw new Error("Not the right type for Transport.input.value[x]: "+value.fhirType());
           this.value = value;
           return this;
@@ -1599,15 +1614,15 @@ public class Transport extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "A code or description indicating how the input is intended to be used as part of the transport execution.", 0, 1, type));
-          children.add(new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The value of the input parameter as a basic type.", 0, 1, value));
+          children.add(new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Availability|ExtendedContactDetail|Dosage|Meta", "The value of the input parameter as a basic type.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "A code or description indicating how the input is intended to be used as part of the transport execution.", 0, 1, type);
-          case -1410166417: /*value[x]*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The value of the input parameter as a basic type.", 0, 1, value);
-          case 111972721: /*value*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Availability|ExtendedContactDetail|Dosage|Meta", "The value of the input parameter as a basic type.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Availability|ExtendedContactDetail|Dosage|Meta", "The value of the input parameter as a basic type.", 0, 1, value);
           case -1535024575: /*valueBase64Binary*/  return new Property("value[x]", "base64Binary", "The value of the input parameter as a basic type.", 0, 1, value);
           case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "The value of the input parameter as a basic type.", 0, 1, value);
           case -786218365: /*valueCanonical*/  return new Property("value[x]", "canonical", "The value of the input parameter as a basic type.", 0, 1, value);
@@ -1652,13 +1667,14 @@ public class Transport extends DomainResource {
           case -540985785: /*valueSignature*/  return new Property("value[x]", "Signature", "The value of the input parameter as a basic type.", 0, 1, value);
           case -1406282469: /*valueTiming*/  return new Property("value[x]", "Timing", "The value of the input parameter as a basic type.", 0, 1, value);
           case -1125200224: /*valueContactDetail*/  return new Property("value[x]", "ContactDetail", "The value of the input parameter as a basic type.", 0, 1, value);
-          case 1281021610: /*valueContributor*/  return new Property("value[x]", "Contributor", "The value of the input parameter as a basic type.", 0, 1, value);
           case 1710554248: /*valueDataRequirement*/  return new Property("value[x]", "DataRequirement", "The value of the input parameter as a basic type.", 0, 1, value);
           case -307517719: /*valueExpression*/  return new Property("value[x]", "Expression", "The value of the input parameter as a basic type.", 0, 1, value);
           case 1387478187: /*valueParameterDefinition*/  return new Property("value[x]", "ParameterDefinition", "The value of the input parameter as a basic type.", 0, 1, value);
           case 1748214124: /*valueRelatedArtifact*/  return new Property("value[x]", "RelatedArtifact", "The value of the input parameter as a basic type.", 0, 1, value);
           case 976830394: /*valueTriggerDefinition*/  return new Property("value[x]", "TriggerDefinition", "The value of the input parameter as a basic type.", 0, 1, value);
           case 588000479: /*valueUsageContext*/  return new Property("value[x]", "UsageContext", "The value of the input parameter as a basic type.", 0, 1, value);
+          case 1678530924: /*valueAvailability*/  return new Property("value[x]", "Availability", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -1567222041: /*valueExtendedContactDetail*/  return new Property("value[x]", "ExtendedContactDetail", "The value of the input parameter as a basic type.", 0, 1, value);
           case -1858636920: /*valueDosage*/  return new Property("value[x]", "Dosage", "The value of the input parameter as a basic type.", 0, 1, value);
           case -765920490: /*valueMeta*/  return new Property("value[x]", "Meta", "The value of the input parameter as a basic type.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -1716,7 +1732,7 @@ public class Transport extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
-        case 111972721: /*value*/ return new String[] {"base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid", "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "CodeableReference", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "RatioRange", "Reference", "SampledData", "Signature", "Timing", "ContactDetail", "Contributor", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext", "Dosage", "Meta"};
+        case 111972721: /*value*/ return new String[] {"base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid", "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "CodeableReference", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "RatioRange", "Reference", "SampledData", "Signature", "Timing", "ContactDetail", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext", "Availability", "ExtendedContactDetail", "Dosage", "Meta"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1904,10 +1920,6 @@ public class Transport extends DomainResource {
           this.value = new ContactDetail();
           return this.value;
         }
-        else if (name.equals("valueContributor")) {
-          this.value = new Contributor();
-          return this.value;
-        }
         else if (name.equals("valueDataRequirement")) {
           this.value = new DataRequirement();
           return this.value;
@@ -1930,6 +1942,14 @@ public class Transport extends DomainResource {
         }
         else if (name.equals("valueUsageContext")) {
           this.value = new UsageContext();
+          return this.value;
+        }
+        else if (name.equals("valueAvailability")) {
+          this.value = new Availability();
+          return this.value;
+        }
+        else if (name.equals("valueExtendedContactDetail")) {
+          this.value = new ExtendedContactDetail();
           return this.value;
         }
         else if (name.equals("valueDosage")) {
@@ -1999,7 +2019,7 @@ public class Transport extends DomainResource {
         /**
          * The value of the Output parameter as a basic type.
          */
-        @Child(name = "value", type = {Base64BinaryType.class, BooleanType.class, CanonicalType.class, CodeType.class, DateType.class, DateTimeType.class, DecimalType.class, IdType.class, InstantType.class, IntegerType.class, Integer64Type.class, MarkdownType.class, OidType.class, PositiveIntType.class, StringType.class, TimeType.class, UnsignedIntType.class, UriType.class, UrlType.class, UuidType.class, Address.class, Age.class, Annotation.class, Attachment.class, CodeableConcept.class, CodeableReference.class, Coding.class, ContactPoint.class, Count.class, Distance.class, Duration.class, HumanName.class, Identifier.class, Money.class, Period.class, Quantity.class, Range.class, Ratio.class, RatioRange.class, Reference.class, SampledData.class, Signature.class, Timing.class, ContactDetail.class, Contributor.class, DataRequirement.class, Expression.class, ParameterDefinition.class, RelatedArtifact.class, TriggerDefinition.class, UsageContext.class, Dosage.class, Meta.class}, order=2, min=1, max=1, modifier=false, summary=false)
+        @Child(name = "value", type = {Base64BinaryType.class, BooleanType.class, CanonicalType.class, CodeType.class, DateType.class, DateTimeType.class, DecimalType.class, IdType.class, InstantType.class, IntegerType.class, Integer64Type.class, MarkdownType.class, OidType.class, PositiveIntType.class, StringType.class, TimeType.class, UnsignedIntType.class, UriType.class, UrlType.class, UuidType.class, Address.class, Age.class, Annotation.class, Attachment.class, CodeableConcept.class, CodeableReference.class, Coding.class, ContactPoint.class, Count.class, Distance.class, Duration.class, HumanName.class, Identifier.class, Money.class, Period.class, Quantity.class, Range.class, Ratio.class, RatioRange.class, Reference.class, SampledData.class, Signature.class, Timing.class, ContactDetail.class, DataRequirement.class, Expression.class, ParameterDefinition.class, RelatedArtifact.class, TriggerDefinition.class, UsageContext.class, Availability.class, ExtendedContactDetail.class, Dosage.class, Meta.class}, order=2, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Result of output", formalDefinition="The value of the Output parameter as a basic type." )
         protected DataType value;
 
@@ -2715,21 +2735,6 @@ public class Transport extends DomainResource {
         /**
          * @return {@link #value} (The value of the Output parameter as a basic type.)
          */
-        public Contributor getValueContributor() throws FHIRException { 
-          if (this.value == null)
-            this.value = new Contributor();
-          if (!(this.value instanceof Contributor))
-            throw new FHIRException("Type mismatch: the type Contributor was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (Contributor) this.value;
-        }
-
-        public boolean hasValueContributor() { 
-          return this != null && this.value instanceof Contributor;
-        }
-
-        /**
-         * @return {@link #value} (The value of the Output parameter as a basic type.)
-         */
         public DataRequirement getValueDataRequirement() throws FHIRException { 
           if (this.value == null)
             this.value = new DataRequirement();
@@ -2820,6 +2825,36 @@ public class Transport extends DomainResource {
         /**
          * @return {@link #value} (The value of the Output parameter as a basic type.)
          */
+        public Availability getValueAvailability() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Availability();
+          if (!(this.value instanceof Availability))
+            throw new FHIRException("Type mismatch: the type Availability was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Availability) this.value;
+        }
+
+        public boolean hasValueAvailability() { 
+          return this != null && this.value instanceof Availability;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public ExtendedContactDetail getValueExtendedContactDetail() throws FHIRException { 
+          if (this.value == null)
+            this.value = new ExtendedContactDetail();
+          if (!(this.value instanceof ExtendedContactDetail))
+            throw new FHIRException("Type mismatch: the type ExtendedContactDetail was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (ExtendedContactDetail) this.value;
+        }
+
+        public boolean hasValueExtendedContactDetail() { 
+          return this != null && this.value instanceof ExtendedContactDetail;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
         public Dosage getValueDosage() throws FHIRException { 
           if (this.value == null)
             this.value = new Dosage();
@@ -2855,7 +2890,7 @@ public class Transport extends DomainResource {
          * @param value {@link #value} (The value of the Output parameter as a basic type.)
          */
         public TransportOutputComponent setValue(DataType value) { 
-          if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof CodeableReference || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof RatioRange || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof Contributor || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Dosage || value instanceof Meta))
+          if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof CodeableReference || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof RatioRange || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Availability || value instanceof ExtendedContactDetail || value instanceof Dosage || value instanceof Meta))
             throw new Error("Not the right type for Transport.output.value[x]: "+value.fhirType());
           this.value = value;
           return this;
@@ -2864,15 +2899,15 @@ public class Transport extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "The name of the Output parameter.", 0, 1, type));
-          children.add(new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The value of the Output parameter as a basic type.", 0, 1, value));
+          children.add(new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Availability|ExtendedContactDetail|Dosage|Meta", "The value of the Output parameter as a basic type.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The name of the Output parameter.", 0, 1, type);
-          case -1410166417: /*value[x]*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case 111972721: /*value*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Availability|ExtendedContactDetail|Dosage|Meta", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Availability|ExtendedContactDetail|Dosage|Meta", "The value of the Output parameter as a basic type.", 0, 1, value);
           case -1535024575: /*valueBase64Binary*/  return new Property("value[x]", "base64Binary", "The value of the Output parameter as a basic type.", 0, 1, value);
           case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "The value of the Output parameter as a basic type.", 0, 1, value);
           case -786218365: /*valueCanonical*/  return new Property("value[x]", "canonical", "The value of the Output parameter as a basic type.", 0, 1, value);
@@ -2917,13 +2952,14 @@ public class Transport extends DomainResource {
           case -540985785: /*valueSignature*/  return new Property("value[x]", "Signature", "The value of the Output parameter as a basic type.", 0, 1, value);
           case -1406282469: /*valueTiming*/  return new Property("value[x]", "Timing", "The value of the Output parameter as a basic type.", 0, 1, value);
           case -1125200224: /*valueContactDetail*/  return new Property("value[x]", "ContactDetail", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case 1281021610: /*valueContributor*/  return new Property("value[x]", "Contributor", "The value of the Output parameter as a basic type.", 0, 1, value);
           case 1710554248: /*valueDataRequirement*/  return new Property("value[x]", "DataRequirement", "The value of the Output parameter as a basic type.", 0, 1, value);
           case -307517719: /*valueExpression*/  return new Property("value[x]", "Expression", "The value of the Output parameter as a basic type.", 0, 1, value);
           case 1387478187: /*valueParameterDefinition*/  return new Property("value[x]", "ParameterDefinition", "The value of the Output parameter as a basic type.", 0, 1, value);
           case 1748214124: /*valueRelatedArtifact*/  return new Property("value[x]", "RelatedArtifact", "The value of the Output parameter as a basic type.", 0, 1, value);
           case 976830394: /*valueTriggerDefinition*/  return new Property("value[x]", "TriggerDefinition", "The value of the Output parameter as a basic type.", 0, 1, value);
           case 588000479: /*valueUsageContext*/  return new Property("value[x]", "UsageContext", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case 1678530924: /*valueAvailability*/  return new Property("value[x]", "Availability", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -1567222041: /*valueExtendedContactDetail*/  return new Property("value[x]", "ExtendedContactDetail", "The value of the Output parameter as a basic type.", 0, 1, value);
           case -1858636920: /*valueDosage*/  return new Property("value[x]", "Dosage", "The value of the Output parameter as a basic type.", 0, 1, value);
           case -765920490: /*valueMeta*/  return new Property("value[x]", "Meta", "The value of the Output parameter as a basic type.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -2981,7 +3017,7 @@ public class Transport extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
-        case 111972721: /*value*/ return new String[] {"base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid", "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "CodeableReference", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "RatioRange", "Reference", "SampledData", "Signature", "Timing", "ContactDetail", "Contributor", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext", "Dosage", "Meta"};
+        case 111972721: /*value*/ return new String[] {"base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid", "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "CodeableReference", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "RatioRange", "Reference", "SampledData", "Signature", "Timing", "ContactDetail", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext", "Availability", "ExtendedContactDetail", "Dosage", "Meta"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -3169,10 +3205,6 @@ public class Transport extends DomainResource {
           this.value = new ContactDetail();
           return this.value;
         }
-        else if (name.equals("valueContributor")) {
-          this.value = new Contributor();
-          return this.value;
-        }
         else if (name.equals("valueDataRequirement")) {
           this.value = new DataRequirement();
           return this.value;
@@ -3195,6 +3227,14 @@ public class Transport extends DomainResource {
         }
         else if (name.equals("valueUsageContext")) {
           this.value = new UsageContext();
+          return this.value;
+        }
+        else if (name.equals("valueAvailability")) {
+          this.value = new Availability();
+          return this.value;
+        }
+        else if (name.equals("valueExtendedContactDetail")) {
+          this.value = new ExtendedContactDetail();
           return this.value;
         }
         else if (name.equals("valueDosage")) {
@@ -3406,10 +3446,10 @@ public class Transport extends DomainResource {
     protected Reference owner;
 
     /**
-     * Principal physical location where the this transport is performed.
+     * Principal physical location where this transport is performed.
      */
     @Child(name = "location", type = {Location.class}, order=21, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Where transport occurs", formalDefinition="Principal physical location where the this transport is performed." )
+    @Description(shortDefinition="Where transport occurs", formalDefinition="Principal physical location where this transport is performed." )
     protected Reference location;
 
     /**
@@ -4350,7 +4390,7 @@ public class Transport extends DomainResource {
     }
 
     /**
-     * @return {@link #location} (Principal physical location where the this transport is performed.)
+     * @return {@link #location} (Principal physical location where this transport is performed.)
      */
     public Reference getLocation() { 
       if (this.location == null)
@@ -4366,7 +4406,7 @@ public class Transport extends DomainResource {
     }
 
     /**
-     * @param value {@link #location} (Principal physical location where the this transport is performed.)
+     * @param value {@link #location} (Principal physical location where this transport is performed.)
      */
     public Transport setLocation(Reference value) { 
       this.location = value;
@@ -4805,7 +4845,7 @@ public class Transport extends DomainResource {
         children.add(new Property("requester", "Reference(Device|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson)", "The creator of the transport.", 0, 1, requester));
         children.add(new Property("performerType", "CodeableConcept", "The kind of participant that should perform the transport.", 0, java.lang.Integer.MAX_VALUE, performerType));
         children.add(new Property("owner", "Reference(Practitioner|PractitionerRole|Organization|CareTeam|HealthcareService|Patient|Device|RelatedPerson)", "Individual organization or Device currently responsible for transport execution.", 0, 1, owner));
-        children.add(new Property("location", "Reference(Location)", "Principal physical location where the this transport is performed.", 0, 1, location));
+        children.add(new Property("location", "Reference(Location)", "Principal physical location where this transport is performed.", 0, 1, location));
         children.add(new Property("reasonCode", "CodeableConcept", "A description or code indicating why this transport needs to be performed.", 0, 1, reasonCode));
         children.add(new Property("reasonReference", "Reference(Any)", "A resource reference indicating why this transport needs to be performed.", 0, 1, reasonReference));
         children.add(new Property("insurance", "Reference(Coverage|ClaimResponse)", "Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be relevant to the Transport.", 0, java.lang.Integer.MAX_VALUE, insurance));
@@ -4843,7 +4883,7 @@ public class Transport extends DomainResource {
         case 693933948: /*requester*/  return new Property("requester", "Reference(Device|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson)", "The creator of the transport.", 0, 1, requester);
         case -901444568: /*performerType*/  return new Property("performerType", "CodeableConcept", "The kind of participant that should perform the transport.", 0, java.lang.Integer.MAX_VALUE, performerType);
         case 106164915: /*owner*/  return new Property("owner", "Reference(Practitioner|PractitionerRole|Organization|CareTeam|HealthcareService|Patient|Device|RelatedPerson)", "Individual organization or Device currently responsible for transport execution.", 0, 1, owner);
-        case 1901043637: /*location*/  return new Property("location", "Reference(Location)", "Principal physical location where the this transport is performed.", 0, 1, location);
+        case 1901043637: /*location*/  return new Property("location", "Reference(Location)", "Principal physical location where this transport is performed.", 0, 1, location);
         case 722137681: /*reasonCode*/  return new Property("reasonCode", "CodeableConcept", "A description or code indicating why this transport needs to be performed.", 0, 1, reasonCode);
         case -1146218137: /*reasonReference*/  return new Property("reasonReference", "Reference(Any)", "A resource reference indicating why this transport needs to be performed.", 0, 1, reasonReference);
         case 73049818: /*insurance*/  return new Property("insurance", "Reference(Coverage|ClaimResponse)", "Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be relevant to the Transport.", 0, java.lang.Integer.MAX_VALUE, insurance);

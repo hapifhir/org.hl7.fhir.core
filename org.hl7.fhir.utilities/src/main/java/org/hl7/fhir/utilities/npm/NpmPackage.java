@@ -40,7 +40,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -64,13 +63,11 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.SimpleHTTPClient;
+import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
-import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
-import org.hl7.fhir.utilities.npm.NpmPackage.ITransformingLoader;
-import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformationSorter;
+import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
 
 import com.google.gson.GsonBuilder;
@@ -283,6 +280,14 @@ public class NpmPackage {
   public static NpmPackage empty(PackageGenerator thePackageGenerator) {
     NpmPackage retVal = new NpmPackage();
     retVal.npm = thePackageGenerator.getRootJsonObject();
+    return retVal;
+  }
+
+  /**
+   * Factory method that starts a new empty package using the given PackageGenerator to create the manifest
+   */
+  public static NpmPackage empty() {
+    NpmPackage retVal = new NpmPackage();
     return retVal;
   }
 
@@ -554,7 +559,7 @@ public class NpmPackage {
         for (JsonElement e : folder.index.getAsJsonArray("files")) {
           JsonObject fi = e.getAsJsonObject();
           if (Utilities.existsInList(JsonUtilities.str(fi, "resourceType"), types)) {
-            res.add(new PackageResourceInformation(folder.folder.getAbsolutePath(), fi));
+            res.add(new PackageResourceInformation(folder.folder == null ? "@"+folder.getName() : folder.folder.getAbsolutePath(), fi));
           }
         }
       }
@@ -1064,6 +1069,12 @@ public class NpmPackage {
     if (!folder.types.containsKey(type))
       folder.types.put(type, new ArrayList<>());
     folder.types.get(type).add(name);
+    if ("package".equals(folderName) && "package.json".equals(name)) {
+      try {
+        npm = JsonTrackingParser.parseJson(cnt);
+      } catch (IOException e) {
+      }
+    }
   }
 
   public void loadAllFiles() throws IOException {
@@ -1099,6 +1110,10 @@ public class NpmPackage {
 
   public boolean isCore() {
     return Utilities.existsInList(JsonUtilities.str(npm, "type"), "fhir.core", "Core");
+  }
+
+  public boolean isTx() {
+    return JsonUtilities.str(npm, "name").startsWith("hl7.terminology");
   }
 
   public boolean hasCanonical(String url) {
@@ -1144,7 +1159,12 @@ public class NpmPackage {
  }
 
   public InputStream load(PackageResourceInformation p) throws FileNotFoundException {
-    return new FileInputStream(p.filename);
+    if (p.filename.startsWith("@")) {
+      String[] pl = p.filename.substring(1).split("\\/");
+      return new ByteArrayInputStream(folders.get(pl[0]).content.get(pl[1]));
+    } else {
+      return new FileInputStream(p.filename);
+    }
   }
 
   public Date dateAsDate() {
@@ -1174,6 +1194,11 @@ public class NpmPackage {
     HTTPResult res = fetcher.get(source+"?nocache=" + System.currentTimeMillis());
     res.checkThrowException();
     return fromPackage(new ByteArrayInputStream(res.getContent()));
+  }
+
+  @Override
+  public String toString() {
+    return "NpmPackage "+name()+"#"+version()+" [path=" + path + "]";
   }
   
   

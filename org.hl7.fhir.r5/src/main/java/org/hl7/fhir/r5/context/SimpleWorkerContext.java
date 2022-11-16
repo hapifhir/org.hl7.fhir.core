@@ -29,8 +29,6 @@ package org.hl7.fhir.r5.context;
   
  */
 
-
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -73,6 +71,7 @@ import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
+import org.hl7.fhir.r5.utils.R5Hacker;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.CSFileInputStream;
 import org.hl7.fhir.utilities.TextFile;
@@ -95,7 +94,7 @@ import ca.uhn.fhir.parser.DataFormatException;
  * very light client to connect to an open unauthenticated terminology service
  */
 
-public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerContext, ProfileKnowledgeProvider {
+public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerContext {
 
   public static class PackageResourceLoader extends CanonicalResourceProxy {
 
@@ -114,9 +113,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
         FileInputStream f = new FileInputStream(filename);
         try  {
           if (loader != null) {
-            return (CanonicalResource) loader.loadResource(f, true);
+            return R5Hacker.fixR5BrokenResource((CanonicalResource) loader.loadResource(f, true));
           } else {
-            return (CanonicalResource) new JsonParser().parse(f);
+            return R5Hacker.fixR5BrokenResource((CanonicalResource) new JsonParser().parse(f));
           }
         } finally {
           f.close();
@@ -141,11 +140,11 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   private String revision;
   private String date;
   private IValidatorFactory validatorFactory;
-  private boolean ignoreProfileErrors;
   private boolean progress;
   private final List<String> loadedPackages = new ArrayList<>();
   private boolean canNoTS;
   private XVerExtensionManager xverManager;
+  private boolean allowLazyLoading = true;
 
   private SimpleWorkerContext() throws IOException, FHIRException {
     super();
@@ -155,7 +154,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     super(locale);
   }
 
-  private SimpleWorkerContext(SimpleWorkerContext other) throws IOException, FHIRException {
+  public SimpleWorkerContext(SimpleWorkerContext other) throws IOException, FHIRException {
     super();
     copy(other);
   }
@@ -167,12 +166,16 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   
   protected void copy(SimpleWorkerContext other) {
     super.copy(other);
-    questionnaire = other.questionnaire;
     binaries.putAll(other.binaries);
     version = other.version;
     revision = other.revision;
     date = other.date;
     validatorFactory = other.validatorFactory;
+    progress = other.progress;
+    loadedPackages.addAll(other.loadedPackages);
+    canNoTS = other.canNoTS;
+    xverManager = other.xverManager;
+    allowLazyLoading = other.allowLazyLoading;
   }
 
 
@@ -468,6 +471,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     if (loadedPackages.contains(pi.id()+"#"+pi.version())) {
       return 0;
     }
+    
     loadedPackages.add(pi.id()+"#"+pi.version());
     if (packageTracker != null) {
       packageTracker.packageLoaded(pi.id(), pi.version());
@@ -476,7 +480,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     if ((types == null || types.length == 0) &&  loader != null) {
       types = loader.getTypes();
     }
-    if (VersionUtilities.isR2Ver(pi.fhirVersion()) || !pi.canLazyLoad()) {
+    if (VersionUtilities.isR2Ver(pi.fhirVersion()) || !pi.canLazyLoad() || !allowLazyLoading) {
       // can't lazy load R2 because of valueset/codesystem implementation
       if (types.length == 0) {
         types = new String[] { "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem" };
@@ -552,34 +556,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
 	@Override
-	public IParser getParser(ParserType type) {
-		switch (type) {
-		case JSON: return newJsonParser();
-		case XML: return newXmlParser();
-		default:
-			throw new Error(formatMessage(I18nConstants.PARSER_TYPE__NOT_SUPPORTED, type.toString()));
-		}
-	}
-
-	@Override
-	public IParser getParser(String type) {
-		if (type.equalsIgnoreCase("JSON"))
-			return new JsonParser();
-		if (type.equalsIgnoreCase("XML"))
-			return new XmlParser();
-		throw new Error(formatMessage(I18nConstants.PARSER_TYPE__NOT_SUPPORTED, type.toString()));
-	}
-
-	@Override
-	public IParser newJsonParser() {
-		return new JsonParser();
-	}
-	@Override
-	public IParser newXmlParser() {
-		return new XmlParser();
-	}
-
-	@Override
 	public IResourceValidator newValidator() throws FHIRException {
 	  if (validatorFactory == null)
 	    throw new Error(formatMessage(I18nConstants.NO_VALIDATOR_CONFIGURED));
@@ -600,68 +576,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     return result;
   }
 
-  @Override
-  public List<String> getTypeNames() {
-    List<String> result = new ArrayList<String>();
-    for (StructureDefinition sd : listStructures()) {
-      if (sd.getKind() != StructureDefinitionKind.LOGICAL && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION)
-        result.add(sd.getName());
-    }
-    Collections.sort(result);
-    return result;
-  }
-
-  @Override
-  public String getAbbreviation(String name) {
-    return "xxx";
-  }
-
-  @Override
-  public boolean isDatatype(String typeSimple) {
-    // TODO Auto-generated method stub
-    return false;
-  }
-
-  @Override
-  public boolean isResource(String t) {
-    StructureDefinition sd;
-    try {
-      sd = fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/"+t);
-    } catch (Exception e) {
-      return false;
-    }
-    if (sd == null)
-      return false;
-    if (sd.getDerivation() == TypeDerivationRule.CONSTRAINT)
-      return false;
-    return sd.getKind() == StructureDefinitionKind.RESOURCE;
-  }
-
-  @Override
-  public boolean hasLinkFor(String typeSimple) {
-    return false;
-  }
-
-  @Override
-  public String getLinkFor(String corePath, String typeSimple) {
-    return null;
-  }
-
-  @Override
-  public BindingResolution resolveBinding(StructureDefinition profile, ElementDefinitionBindingComponent binding, String path) {
-    return null;
-  }
-
-  @Override
-  public BindingResolution resolveBinding(StructureDefinition profile, String url, String path) {
-    return null;
-  }
-
-  @Override
-  public String getLinkForProfile(StructureDefinition profile, String url) {
-    return null;
-  }
-
+ 
   public Questionnaire getQuestionnaire() {
     return questionnaire;
   }
@@ -670,28 +585,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     this.questionnaire = questionnaire;
   }
 
-  @Override
-  public List<StructureDefinition> allStructures() {
-    List<StructureDefinition> result = new ArrayList<StructureDefinition>();
-    Set<StructureDefinition> set = new HashSet<StructureDefinition>();
-    for (StructureDefinition sd : listStructures()) {
-      if (!set.contains(sd)) {
-        try {
-          generateSnapshot(sd);
-          // new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "snapshot", tail(sd.getUrl())+".xml")), sd);
-        } catch (Exception e) {
-          System.out.println("Unable to generate snapshot for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
-          if (true) {
-            e.printStackTrace();
-          }
-        }
-        result.add(sd);
-        set.add(sd);
-      }
-    }
-    return result;
-  }
-
+ 
 
   public void loadBinariesFromFolder(String folder) throws IOException {
     for (String n : new File(folder).list()) {
@@ -730,15 +624,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     }
   }
 
-  @Override
-  public boolean prependLinks() {
-    return false;
-  }
-
-  @Override
-  public boolean hasCache() {
-    return true;
-  }
+ 
 
   @Override
   public String getVersion() {
@@ -748,7 +634,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   
   public List<StructureMap> findTransformsforSource(String url) {
     List<StructureMap> res = new ArrayList<StructureMap>();
-    for (StructureMap map : listTransforms()) {
+    for (StructureMap map : fetchResourcesByType(StructureMap.class)) {
       boolean match = false;
       boolean ok = true;
       for (StructureMapStructureComponent t : map.getStructure()) {
@@ -777,7 +663,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     if (r instanceof StructureDefinition) {
       StructureDefinition p = (StructureDefinition)r;
       try {
-        generateSnapshot(p);
+        new ContextUtilities(this).generateSnapshot(p);
       } catch (Exception e) {
         // not sure what to do in this case?
         System.out.println("Unable to generate snapshot for "+uri+": "+e.getMessage());
@@ -785,72 +671,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     }
     return r;
   }
-  
-  @Override
-  public StructureDefinition fetchRawProfile(String uri) {
-    StructureDefinition r = super.fetchResource(StructureDefinition.class, uri);
-    return r;
-  }
-  
-  @Override
-  public void generateSnapshot(StructureDefinition p) throws FHIRException {
-    generateSnapshot(p, false);
-  }
-  
-  @Override
-  public void generateSnapshot(StructureDefinition p, boolean logical) throws FHIRException {
-    if ((!p.hasSnapshot() || isProfileNeedsRegenerate(p) ) && (logical || p.getKind() != StructureDefinitionKind.LOGICAL)) {
-      if (!p.hasBaseDefinition())
-        throw new DefinitionException(formatMessage(I18nConstants.PROFILE___HAS_NO_BASE_AND_NO_SNAPSHOT, p.getName(), p.getUrl()));
-      StructureDefinition sd = fetchResource(StructureDefinition.class, p.getBaseDefinition());
-      if (sd == null && "http://hl7.org/fhir/StructureDefinition/Base".equals(p.getBaseDefinition())) {
-        sd = ProfileUtilities.makeBaseDefinition(p.getFhirVersion());
-      }
-      if (sd == null) {
-        throw new DefinitionException(formatMessage(I18nConstants.PROFILE___BASE__COULD_NOT_BE_RESOLVED, p.getName(), p.getUrl(), p.getBaseDefinition()));
-      }
-      List<ValidationMessage> msgs = new ArrayList<ValidationMessage>();
-      List<String> errors = new ArrayList<String>();
-      ProfileUtilities pu = new ProfileUtilities(this, msgs, this);
-      pu.setAutoFixSliceNames(true);
-      pu.setThrowException(false);
-      if (xverManager == null) {
-        xverManager = new XVerExtensionManager(this);
-      }
-      pu.setXver(xverManager);
-      if (sd.getDerivation() == TypeDerivationRule.CONSTRAINT) {
-        pu.sortDifferential(sd, p, p.getUrl(), errors, true);
-      }
-      pu.setDebug(false);
-      for (String err : errors)
-        msgs.add(new ValidationMessage(Source.ProfileValidator, IssueType.EXCEPTION, p.getUserString("path"), "Error sorting Differential: "+err, ValidationMessage.IssueSeverity.ERROR));
-      pu.generateSnapshot(sd, p, p.getUrl(), sd.getUserString("webroot"), p.getName());
-      for (ValidationMessage msg : msgs) {
-        if ((!ignoreProfileErrors && msg.getLevel() == ValidationMessage.IssueSeverity.ERROR) || msg.getLevel() == ValidationMessage.IssueSeverity.FATAL)
-          throw new DefinitionException(formatMessage(I18nConstants.PROFILE___ELEMENT__ERROR_GENERATING_SNAPSHOT_, p.getName(), p.getUrl(), msg.getLocation(), msg.getMessage()));
-      }
-      if (!p.hasSnapshot())
-        throw new FHIRException(formatMessage(I18nConstants.PROFILE___ERROR_GENERATING_SNAPSHOT, p.getName(), p.getUrl()));
-      pu = null;
-    }
-  }
 
-  // work around the fact that some Implementation guides were published with old snapshot generators that left invalid snapshots behind.
-  private boolean isProfileNeedsRegenerate(StructureDefinition p) {
-    boolean needs = !p.hasUserData("hack.regnerated") && Utilities.existsInList(p.getUrl(), "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaireresponse");
-    if (needs) {
-      p.setUserData("hack.regnerated", "yes");
-    }
-    return needs;
-  }
 
-  public boolean isIgnoreProfileErrors() {
-    return ignoreProfileErrors;
-  }
 
-  public void setIgnoreProfileErrors(boolean ignoreProfileErrors) {
-    this.ignoreProfileErrors = ignoreProfileErrors;
-  }
 
   public String listMapUrls() {
     return Utilities.listCanonicalUrls(transforms.keys());
@@ -911,5 +734,18 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     return null;
   }
 
+  public boolean isAllowLazyLoading() {
+    return allowLazyLoading;
+  }
+
+  public void setAllowLazyLoading(boolean allowLazyLoading) {
+    this.allowLazyLoading = allowLazyLoading;
+  }
+
+  public String loadedPackageSummary() {
+     return loadedPackages.toString();
+  }
+
+  
 }
 

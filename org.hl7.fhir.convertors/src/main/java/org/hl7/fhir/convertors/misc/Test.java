@@ -4,6 +4,9 @@ package org.hl7.fhir.convertors.misc;
 
 
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -42,9 +45,6 @@ import org.hl7.fhir.dstu3.formats.JsonParser;
 import org.hl7.fhir.dstu3.formats.XmlParser;
 import org.hl7.fhir.dstu3.model.Bundle;
 import org.hl7.fhir.utilities.Utilities;
-
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 
 public class Test {
   public final static String DEF_TS_SERVER = "http://fhir-dev.healthintersections.com.au/open";

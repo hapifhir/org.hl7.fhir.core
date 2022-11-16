@@ -29,4 +29,10 @@ public class CodeableConcept40_50 {
     tgt.setConcept(convertCodeableConcept(src));
     return tgt;
   }
+  
+
+  public static org.hl7.fhir.r4.model.CodeableConcept convertCodeableReferenceToCodeableConcept(CodeableReference src) {
+    return convertCodeableConcept(src.getConcept());
+  }
 }
+

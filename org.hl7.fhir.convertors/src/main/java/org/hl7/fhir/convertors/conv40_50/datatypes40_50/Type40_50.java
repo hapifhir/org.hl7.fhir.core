@@ -1,11 +1,66 @@
 package org.hl7.fhir.convertors.conv40_50.datatypes40_50;
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.*;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.*;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.*;
-import org.hl7.fhir.convertors.conv40_50.resources40_50.*;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Address40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Age40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Annotation40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Attachment40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Coding40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.ContactPoint40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Count40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Distance40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Duration40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.HumanName40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Money40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.MoneyQuantity40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Period40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Quantity40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Range40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Ratio40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.SampledData40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Signature40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.SimpleQuantity40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Timing40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.ContactDetail40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.Contributor40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.DataRequirement40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.Expression40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.ParameterDefinition40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.RelatedArtifact40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.TriggerDefinition40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.UsageContext40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Base64Binary40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Boolean40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Canonical40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Code40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Date40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Decimal40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Id40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Instant40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Integer40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.MarkDown40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Oid40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.PositiveInt40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Time40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.UnsignedInt40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Url40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uuid40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Dosage40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.ElementDefinition40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Extension40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Meta40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Narrative40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
+import org.hl7.fhir.convertors.conv40_50.resources40_50.MarketingStatus40_50;
+import org.hl7.fhir.convertors.conv40_50.resources40_50.Population40_50;
+import org.hl7.fhir.convertors.conv40_50.resources40_50.ProdCharacteristic40_50;
+import org.hl7.fhir.convertors.conv40_50.resources40_50.ProductShelfLife40_50;
+import org.hl7.fhir.convertors.conv40_50.resources40_50.SubstanceAmount40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Type40_50 {
@@ -167,6 +222,8 @@ public class Type40_50 {
       return UnsignedInt40_50.convertUnsignedInt((org.hl7.fhir.r5.model.UnsignedIntType) src);
     if (src instanceof org.hl7.fhir.r5.model.IntegerType)
       return Integer40_50.convertInteger((org.hl7.fhir.r5.model.IntegerType) src);
+    if (src instanceof org.hl7.fhir.r5.model.Integer64Type)
+      return Integer40_50.convertInteger64((org.hl7.fhir.r5.model.Integer64Type) src);
     if (src instanceof org.hl7.fhir.r5.model.UrlType) return Url40_50.convertUrl((org.hl7.fhir.r5.model.UrlType) src);
     if (src instanceof org.hl7.fhir.r5.model.UuidType)
       return Uuid40_50.convertUuid((org.hl7.fhir.r5.model.UuidType) src);

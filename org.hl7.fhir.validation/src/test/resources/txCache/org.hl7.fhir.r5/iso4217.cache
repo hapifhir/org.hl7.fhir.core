@@ -12,7 +12,7 @@ e: {
   "error" : "java.lang.NullPointerException"
 }
 -------------------------------------------------------------------------------------
-{"hierarchical" : false, "url": "http://hl7.org/fhir/ValueSet/currencies", "version": "4.0.1"}####
+{"hierarchical" : false, "url": "http://hl7.org/fhir/ValueSet/currencies", "version": "5.0.0-ballot"}####
 e: {
   "error" : "java.lang.NullPointerException"
 }

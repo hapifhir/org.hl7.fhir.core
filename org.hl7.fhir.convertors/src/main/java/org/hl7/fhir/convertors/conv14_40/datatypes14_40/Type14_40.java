@@ -1,8 +1,43 @@
 package org.hl7.fhir.convertors.conv14_40.datatypes14_40;
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_14_40;
-import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.*;
-import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.*;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.Address14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.Age14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.Annotation14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.Attachment14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.CodeableConcept14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.Coding14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.ContactPoint14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.Count14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.Distance14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.Duration14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.HumanName14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.Identifier14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.Money14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.Period14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.Quantity14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.Range14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.Ratio14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.SampledData14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.Signature14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.Timing14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.Base64Binary14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.Boolean14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.Code14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.Date14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.DateTime14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.Decimal14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.Id14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.Instant14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.Integer14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.MarkDown14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.Oid14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.PositiveInt14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.String14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.Time14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.UnsignedInt14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.Uri14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.Uuid14_40;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Type14_40 {

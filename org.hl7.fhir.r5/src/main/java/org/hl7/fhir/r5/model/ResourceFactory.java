@@ -28,7 +28,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
 
 
   
@@ -41,6 +41,8 @@ public class ResourceFactory extends Factory {
             return new Account();
         if ("ActivityDefinition".equals(name))
             return new ActivityDefinition();
+        if ("ActorDefinition".equals(name))
+            return new ActorDefinition();
         if ("AdministrableProductDefinition".equals(name))
             return new AdministrableProductDefinition();
         if ("AdverseEvent".equals(name))
@@ -67,8 +69,6 @@ public class ResourceFactory extends Factory {
             return new Bundle();
         if ("CapabilityStatement".equals(name))
             return new CapabilityStatement();
-        if ("CapabilityStatement2".equals(name))
-            return new CapabilityStatement2();
         if ("CarePlan".equals(name))
             return new CarePlan();
         if ("CareTeam".equals(name))
@@ -161,6 +161,8 @@ public class ResourceFactory extends Factory {
             return new Flag();
         if ("FormularyItem".equals(name))
             return new FormularyItem();
+        if ("GenomicStudy".equals(name))
+            return new GenomicStudy();
         if ("Goal".equals(name))
             return new Goal();
         if ("GraphDefinition".equals(name))
@@ -279,6 +281,10 @@ public class ResourceFactory extends Factory {
             return new RelatedPerson();
         if ("RequestGroup".equals(name))
             return new RequestGroup();
+        if ("RequestOrchestration".equals(name))
+            return new RequestOrchestration();
+        if ("Requirements".equals(name))
+            return new Requirements();
         if ("ResearchStudy".equals(name))
             return new ResearchStudy();
         if ("ResearchSubject".equals(name))
@@ -395,6 +401,8 @@ public class ResourceFactory extends Factory {
             return new Annotation();
         if ("Attachment".equals(name))
             return new Attachment();
+        if ("Availability".equals(name))
+            return new Availability();
         if ("CodeableConcept".equals(name))
             return new CodeableConcept();
         if ("CodeableReference".equals(name))
@@ -433,6 +441,8 @@ public class ResourceFactory extends Factory {
             return new MarketingStatus();
         if ("Meta".equals(name))
             return new Meta();
+        if ("MonetaryComponent".equals(name))
+            return new MonetaryComponent();
         if ("Money".equals(name))
             return new Money();
         if ("Narrative".equals(name))
@@ -467,6 +477,8 @@ public class ResourceFactory extends Factory {
             return new TriggerDefinition();
         if ("UsageContext".equals(name))
             return new UsageContext();
+        if ("VirtualServiceDetail".equals(name))
+            return new VirtualServiceDetail();
 
         else
             throw new FHIRException("Unknown Type Name '"+name+"'");    }
@@ -494,6 +506,7 @@ public class ResourceFactory extends Factory {
         case 3601339: return new UuidType();
         case 487334413: return new Account();
         case 851278306: return new ActivityDefinition();
+        case 454247688: return new ActorDefinition();
         case 1643210993: return new AdministrableProductDefinition();
         case -329624856: return new AdverseEvent();
         case 1721380104: return new AllergyIntolerance();
@@ -507,7 +520,6 @@ public class ResourceFactory extends Factory {
         case -202769967: return new BodyStructure();
         case 2000952482: return new Bundle();
         case -871422185: return new CapabilityStatement();
-        case -1244283909: return new CapabilityStatement2();
         case 57208314: return new CarePlan();
         case 57320750: return new CareTeam();
         case -883723257: return new ChargeItem();
@@ -554,6 +566,7 @@ public class ResourceFactory extends Factory {
         case 1260711798: return new FamilyMemberHistory();
         case 2192268: return new Flag();
         case 1238228672: return new FormularyItem();
+        case -1128240127: return new GenomicStudy();
         case 2224947: return new Goal();
         case -180371167: return new GraphDefinition();
         case 69076575: return new Group();
@@ -613,6 +626,8 @@ public class ResourceFactory extends Factory {
         case 2137545436: return new RegulatedAuthorization();
         case 846088000: return new RelatedPerson();
         case 1445374288: return new RequestGroup();
+        case 1880382482: return new RequestOrchestration();
+        case -1455554384: return new Requirements();
         case 1312904398: return new ResearchStudy();
         case -1008013583: return new ResearchSubject();
         case -766422255: return new RiskAssessment();
@@ -648,6 +663,7 @@ public class ResourceFactory extends Factory {
         case 65759: return new Age();
         case 438421327: return new Annotation();
         case 29963587: return new Attachment();
+        case -2133104261: return new Availability();
         case -1153521791: return new CodeableConcept();
         case -464287196: return new CodeableReference();
         case 2023747466: return new Coding();
@@ -667,6 +683,7 @@ public class ResourceFactory extends Factory {
         case 375032009: return new Identifier();
         case -926250600: return new MarketingStatus();
         case 2394661: return new Meta();
+        case -1336076400: return new MonetaryComponent();
         case 74526880: return new Money();
         case -540546990: return new Narrative();
         case 671337916: return new ParameterDefinition();
@@ -684,6 +701,7 @@ public class ResourceFactory extends Factory {
         case -1789797270: return new Timing();
         case 770498827: return new TriggerDefinition();
         case 1071332590: return new UsageContext();
+        case 1218149947: return new VirtualServiceDetail();
 
       default:
         throw new FHIRException("Unknown Resource or Type Name '"+name+"'");

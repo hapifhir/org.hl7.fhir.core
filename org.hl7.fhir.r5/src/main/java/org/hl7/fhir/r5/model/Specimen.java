@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -52,6 +52,102 @@ import ca.uhn.fhir.model.api.annotation.Block;
  */
 @ResourceDef(name="Specimen", profile="http://hl7.org/fhir/StructureDefinition/Specimen")
 public class Specimen extends DomainResource {
+
+    public enum SpecimenCombined {
+        /**
+         * The specimen is in a group.
+         */
+        GROUPED, 
+        /**
+         * The specimen is pooled.
+         */
+        POOLED, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static SpecimenCombined fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("grouped".equals(codeString))
+          return GROUPED;
+        if ("pooled".equals(codeString))
+          return POOLED;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown SpecimenCombined code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case GROUPED: return "grouped";
+            case POOLED: return "pooled";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case GROUPED: return "http://hl7.org/fhir/specimen-combined";
+            case POOLED: return "http://hl7.org/fhir/specimen-combined";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case GROUPED: return "The specimen is in a group.";
+            case POOLED: return "The specimen is pooled.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case GROUPED: return "Grouped";
+            case POOLED: return "Pooled";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+    }
+
+  public static class SpecimenCombinedEnumFactory implements EnumFactory<SpecimenCombined> {
+    public SpecimenCombined fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("grouped".equals(codeString))
+          return SpecimenCombined.GROUPED;
+        if ("pooled".equals(codeString))
+          return SpecimenCombined.POOLED;
+        throw new IllegalArgumentException("Unknown SpecimenCombined code '"+codeString+"'");
+        }
+        public Enumeration<SpecimenCombined> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<SpecimenCombined>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("grouped".equals(codeString))
+          return new Enumeration<SpecimenCombined>(this, SpecimenCombined.GROUPED);
+        if ("pooled".equals(codeString))
+          return new Enumeration<SpecimenCombined>(this, SpecimenCombined.POOLED);
+        throw new FHIRException("Unknown SpecimenCombined code '"+codeString+"'");
+        }
+    public String toCode(SpecimenCombined code) {
+      if (code == SpecimenCombined.GROUPED)
+        return "grouped";
+      if (code == SpecimenCombined.POOLED)
+        return "pooled";
+      return "?";
+      }
+    public String toSystem(SpecimenCombined code) {
+      return code.getSystem();
+      }
+    }
 
     public enum SpecimenStatus {
         /**
@@ -1715,37 +1811,53 @@ public class Specimen extends DomainResource {
     protected List<Reference> request;
 
     /**
+     * This element signifies if the specimen is part of a group or pooled.
+     */
+    @Child(name = "combined", type = {CodeType.class}, order=8, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="grouped | pooled", formalDefinition="This element signifies if the specimen is part of a group or pooled." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/specimen-combined")
+    protected Enumeration<SpecimenCombined> combined;
+
+    /**
+     * The role or reason for the specimen in the testing workflow.
+     */
+    @Child(name = "role", type = {CodeableConcept.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="The role the specimen serves", formalDefinition="The role or reason for the specimen in the testing workflow." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/specimen-role")
+    protected List<CodeableConcept> role;
+
+    /**
      * A physical feature or landmark on a specimen, highlighted for context by the collector of the specimen (e.g. surgeon), that identifies the type of feature as well as its meaning (e.g. the red ink indicating the resection margin of the right lobe of the excised prostate tissue or wire loop at radiologically suspected tumor location).
      */
-    @Child(name = "feature", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "feature", type = {}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The physical feature of a specimen ", formalDefinition="A physical feature or landmark on a specimen, highlighted for context by the collector of the specimen (e.g. surgeon), that identifies the type of feature as well as its meaning (e.g. the red ink indicating the resection margin of the right lobe of the excised prostate tissue or wire loop at radiologically suspected tumor location)." )
     protected List<SpecimenFeatureComponent> feature;
 
     /**
      * Details concerning the specimen collection.
      */
-    @Child(name = "collection", type = {}, order=9, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "collection", type = {}, order=11, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Collection details", formalDefinition="Details concerning the specimen collection." )
     protected SpecimenCollectionComponent collection;
 
     /**
      * Details concerning processing and processing steps for the specimen.
      */
-    @Child(name = "processing", type = {}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "processing", type = {}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Processing and processing step details", formalDefinition="Details concerning processing and processing steps for the specimen." )
     protected List<SpecimenProcessingComponent> processing;
 
     /**
      * The container holding the specimen.  The recursive nature of containers; i.e. blood in tube in tray in rack is not addressed here.
      */
-    @Child(name = "container", type = {}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "container", type = {}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Direct container of specimen (tube/slide, etc.)", formalDefinition="The container holding the specimen.  The recursive nature of containers; i.e. blood in tube in tray in rack is not addressed here." )
     protected List<SpecimenContainerComponent> container;
 
     /**
      * A mode or state of being that describes the nature of the specimen.
      */
-    @Child(name = "condition", type = {CodeableConcept.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "condition", type = {CodeableConcept.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="State of the specimen", formalDefinition="A mode or state of being that describes the nature of the specimen." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/v2-0493")
     protected List<CodeableConcept> condition;
@@ -1753,11 +1865,11 @@ public class Specimen extends DomainResource {
     /**
      * To communicate any details or issues about the specimen or during the specimen collection. (for example: broken vial, sent with patient, frozen).
      */
-    @Child(name = "note", type = {Annotation.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "note", type = {Annotation.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Comments", formalDefinition="To communicate any details or issues about the specimen or during the specimen collection. (for example: broken vial, sent with patient, frozen)." )
     protected List<Annotation> note;
 
-    private static final long serialVersionUID = 1193796650L;
+    private static final long serialVersionUID = -445425000L;
 
   /**
    * Constructor
@@ -2096,6 +2208,108 @@ public class Specimen extends DomainResource {
     }
 
     /**
+     * @return {@link #combined} (This element signifies if the specimen is part of a group or pooled.). This is the underlying object with id, value and extensions. The accessor "getCombined" gives direct access to the value
+     */
+    public Enumeration<SpecimenCombined> getCombinedElement() { 
+      if (this.combined == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Specimen.combined");
+        else if (Configuration.doAutoCreate())
+          this.combined = new Enumeration<SpecimenCombined>(new SpecimenCombinedEnumFactory()); // bb
+      return this.combined;
+    }
+
+    public boolean hasCombinedElement() { 
+      return this.combined != null && !this.combined.isEmpty();
+    }
+
+    public boolean hasCombined() { 
+      return this.combined != null && !this.combined.isEmpty();
+    }
+
+    /**
+     * @param value {@link #combined} (This element signifies if the specimen is part of a group or pooled.). This is the underlying object with id, value and extensions. The accessor "getCombined" gives direct access to the value
+     */
+    public Specimen setCombinedElement(Enumeration<SpecimenCombined> value) { 
+      this.combined = value;
+      return this;
+    }
+
+    /**
+     * @return This element signifies if the specimen is part of a group or pooled.
+     */
+    public SpecimenCombined getCombined() { 
+      return this.combined == null ? null : this.combined.getValue();
+    }
+
+    /**
+     * @param value This element signifies if the specimen is part of a group or pooled.
+     */
+    public Specimen setCombined(SpecimenCombined value) { 
+      if (value == null)
+        this.combined = null;
+      else {
+        if (this.combined == null)
+          this.combined = new Enumeration<SpecimenCombined>(new SpecimenCombinedEnumFactory());
+        this.combined.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #role} (The role or reason for the specimen in the testing workflow.)
+     */
+    public List<CodeableConcept> getRole() { 
+      if (this.role == null)
+        this.role = new ArrayList<CodeableConcept>();
+      return this.role;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public Specimen setRole(List<CodeableConcept> theRole) { 
+      this.role = theRole;
+      return this;
+    }
+
+    public boolean hasRole() { 
+      if (this.role == null)
+        return false;
+      for (CodeableConcept item : this.role)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public CodeableConcept addRole() { //3
+      CodeableConcept t = new CodeableConcept();
+      if (this.role == null)
+        this.role = new ArrayList<CodeableConcept>();
+      this.role.add(t);
+      return t;
+    }
+
+    public Specimen addRole(CodeableConcept t) { //3
+      if (t == null)
+        return this;
+      if (this.role == null)
+        this.role = new ArrayList<CodeableConcept>();
+      this.role.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #role}, creating it if it does not already exist {3}
+     */
+    public CodeableConcept getRoleFirstRep() { 
+      if (getRole().isEmpty()) {
+        addRole();
+      }
+      return getRole().get(0);
+    }
+
+    /**
      * @return {@link #feature} (A physical feature or landmark on a specimen, highlighted for context by the collector of the specimen (e.g. surgeon), that identifies the type of feature as well as its meaning (e.g. the red ink indicating the resection margin of the right lobe of the excised prostate tissue or wire loop at radiologically suspected tumor location).)
      */
     public List<SpecimenFeatureComponent> getFeature() { 
@@ -2394,6 +2608,8 @@ public class Specimen extends DomainResource {
         children.add(new Property("receivedTime", "dateTime", "Time when specimen is received by the testing laboratory for processing or testing.", 0, 1, receivedTime));
         children.add(new Property("parent", "Reference(Specimen)", "Reference to the parent (source) specimen which is used when the specimen was either derived from or a component of another specimen.", 0, java.lang.Integer.MAX_VALUE, parent));
         children.add(new Property("request", "Reference(ServiceRequest)", "Details concerning a service request that required a specimen to be collected.", 0, java.lang.Integer.MAX_VALUE, request));
+        children.add(new Property("combined", "code", "This element signifies if the specimen is part of a group or pooled.", 0, 1, combined));
+        children.add(new Property("role", "CodeableConcept", "The role or reason for the specimen in the testing workflow.", 0, java.lang.Integer.MAX_VALUE, role));
         children.add(new Property("feature", "", "A physical feature or landmark on a specimen, highlighted for context by the collector of the specimen (e.g. surgeon), that identifies the type of feature as well as its meaning (e.g. the red ink indicating the resection margin of the right lobe of the excised prostate tissue or wire loop at radiologically suspected tumor location).", 0, java.lang.Integer.MAX_VALUE, feature));
         children.add(new Property("collection", "", "Details concerning the specimen collection.", 0, 1, collection));
         children.add(new Property("processing", "", "Details concerning processing and processing steps for the specimen.", 0, java.lang.Integer.MAX_VALUE, processing));
@@ -2413,6 +2629,8 @@ public class Specimen extends DomainResource {
         case -767961010: /*receivedTime*/  return new Property("receivedTime", "dateTime", "Time when specimen is received by the testing laboratory for processing or testing.", 0, 1, receivedTime);
         case -995424086: /*parent*/  return new Property("parent", "Reference(Specimen)", "Reference to the parent (source) specimen which is used when the specimen was either derived from or a component of another specimen.", 0, java.lang.Integer.MAX_VALUE, parent);
         case 1095692943: /*request*/  return new Property("request", "Reference(ServiceRequest)", "Details concerning a service request that required a specimen to be collected.", 0, java.lang.Integer.MAX_VALUE, request);
+        case -612455675: /*combined*/  return new Property("combined", "code", "This element signifies if the specimen is part of a group or pooled.", 0, 1, combined);
+        case 3506294: /*role*/  return new Property("role", "CodeableConcept", "The role or reason for the specimen in the testing workflow.", 0, java.lang.Integer.MAX_VALUE, role);
         case -979207434: /*feature*/  return new Property("feature", "", "A physical feature or landmark on a specimen, highlighted for context by the collector of the specimen (e.g. surgeon), that identifies the type of feature as well as its meaning (e.g. the red ink indicating the resection margin of the right lobe of the excised prostate tissue or wire loop at radiologically suspected tumor location).", 0, java.lang.Integer.MAX_VALUE, feature);
         case -1741312354: /*collection*/  return new Property("collection", "", "Details concerning the specimen collection.", 0, 1, collection);
         case 422194963: /*processing*/  return new Property("processing", "", "Details concerning processing and processing steps for the specimen.", 0, java.lang.Integer.MAX_VALUE, processing);
@@ -2435,6 +2653,8 @@ public class Specimen extends DomainResource {
         case -767961010: /*receivedTime*/ return this.receivedTime == null ? new Base[0] : new Base[] {this.receivedTime}; // DateTimeType
         case -995424086: /*parent*/ return this.parent == null ? new Base[0] : this.parent.toArray(new Base[this.parent.size()]); // Reference
         case 1095692943: /*request*/ return this.request == null ? new Base[0] : this.request.toArray(new Base[this.request.size()]); // Reference
+        case -612455675: /*combined*/ return this.combined == null ? new Base[0] : new Base[] {this.combined}; // Enumeration<SpecimenCombined>
+        case 3506294: /*role*/ return this.role == null ? new Base[0] : this.role.toArray(new Base[this.role.size()]); // CodeableConcept
         case -979207434: /*feature*/ return this.feature == null ? new Base[0] : this.feature.toArray(new Base[this.feature.size()]); // SpecimenFeatureComponent
         case -1741312354: /*collection*/ return this.collection == null ? new Base[0] : new Base[] {this.collection}; // SpecimenCollectionComponent
         case 422194963: /*processing*/ return this.processing == null ? new Base[0] : this.processing.toArray(new Base[this.processing.size()]); // SpecimenProcessingComponent
@@ -2473,6 +2693,13 @@ public class Specimen extends DomainResource {
           return value;
         case 1095692943: // request
           this.getRequest().add(TypeConvertor.castToReference(value)); // Reference
+          return value;
+        case -612455675: // combined
+          value = new SpecimenCombinedEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.combined = (Enumeration) value; // Enumeration<SpecimenCombined>
+          return value;
+        case 3506294: // role
+          this.getRole().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -979207434: // feature
           this.getFeature().add((SpecimenFeatureComponent) value); // SpecimenFeatureComponent
@@ -2516,6 +2743,11 @@ public class Specimen extends DomainResource {
           this.getParent().add(TypeConvertor.castToReference(value));
         } else if (name.equals("request")) {
           this.getRequest().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("combined")) {
+          value = new SpecimenCombinedEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.combined = (Enumeration) value; // Enumeration<SpecimenCombined>
+        } else if (name.equals("role")) {
+          this.getRole().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("feature")) {
           this.getFeature().add((SpecimenFeatureComponent) value);
         } else if (name.equals("collection")) {
@@ -2544,6 +2776,8 @@ public class Specimen extends DomainResource {
         case -767961010:  return getReceivedTimeElement();
         case -995424086:  return addParent(); 
         case 1095692943:  return addRequest(); 
+        case -612455675:  return getCombinedElement();
+        case 3506294:  return addRole(); 
         case -979207434:  return addFeature(); 
         case -1741312354:  return getCollection();
         case 422194963:  return addProcessing(); 
@@ -2566,6 +2800,8 @@ public class Specimen extends DomainResource {
         case -767961010: /*receivedTime*/ return new String[] {"dateTime"};
         case -995424086: /*parent*/ return new String[] {"Reference"};
         case 1095692943: /*request*/ return new String[] {"Reference"};
+        case -612455675: /*combined*/ return new String[] {"code"};
+        case 3506294: /*role*/ return new String[] {"CodeableConcept"};
         case -979207434: /*feature*/ return new String[] {};
         case -1741312354: /*collection*/ return new String[] {};
         case 422194963: /*processing*/ return new String[] {};
@@ -2605,6 +2841,12 @@ public class Specimen extends DomainResource {
         }
         else if (name.equals("request")) {
           return addRequest();
+        }
+        else if (name.equals("combined")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Specimen.combined");
+        }
+        else if (name.equals("role")) {
+          return addRole();
         }
         else if (name.equals("feature")) {
           return addFeature();
@@ -2662,6 +2904,12 @@ public class Specimen extends DomainResource {
           for (Reference i : request)
             dst.request.add(i.copy());
         };
+        dst.combined = combined == null ? null : combined.copy();
+        if (role != null) {
+          dst.role = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : role)
+            dst.role.add(i.copy());
+        };
         if (feature != null) {
           dst.feature = new ArrayList<SpecimenFeatureComponent>();
           for (SpecimenFeatureComponent i : feature)
@@ -2704,9 +2952,9 @@ public class Specimen extends DomainResource {
         return compareDeep(identifier, o.identifier, true) && compareDeep(accessionIdentifier, o.accessionIdentifier, true)
            && compareDeep(status, o.status, true) && compareDeep(type, o.type, true) && compareDeep(subject, o.subject, true)
            && compareDeep(receivedTime, o.receivedTime, true) && compareDeep(parent, o.parent, true) && compareDeep(request, o.request, true)
-           && compareDeep(feature, o.feature, true) && compareDeep(collection, o.collection, true) && compareDeep(processing, o.processing, true)
-           && compareDeep(container, o.container, true) && compareDeep(condition, o.condition, true) && compareDeep(note, o.note, true)
-          ;
+           && compareDeep(combined, o.combined, true) && compareDeep(role, o.role, true) && compareDeep(feature, o.feature, true)
+           && compareDeep(collection, o.collection, true) && compareDeep(processing, o.processing, true) && compareDeep(container, o.container, true)
+           && compareDeep(condition, o.condition, true) && compareDeep(note, o.note, true);
       }
 
       @Override
@@ -2716,13 +2964,14 @@ public class Specimen extends DomainResource {
         if (!(other_ instanceof Specimen))
           return false;
         Specimen o = (Specimen) other_;
-        return compareValues(status, o.status, true) && compareValues(receivedTime, o.receivedTime, true);
+        return compareValues(status, o.status, true) && compareValues(receivedTime, o.receivedTime, true) && compareValues(combined, o.combined, true)
+          ;
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, accessionIdentifier
-          , status, type, subject, receivedTime, parent, request, feature, collection
-          , processing, container, condition, note);
+          , status, type, subject, receivedTime, parent, request, combined, role, feature
+          , collection, processing, container, condition, note);
       }
 
   @Override
@@ -2919,6 +3168,32 @@ public class Specimen extends DomainResource {
    * the path value of "<b>Specimen:patient</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("Specimen:patient").toLocked();
+
+ /**
+   * Search parameter: <b>procedure</b>
+   * <p>
+   * Description: <b>The procedure that collected the specimen</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Specimen.collection.procedure</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="procedure", path="Specimen.collection.procedure", description="The procedure that collected the specimen", type="reference", target={Procedure.class } )
+  public static final String SP_PROCEDURE = "procedure";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>procedure</b>
+   * <p>
+   * Description: <b>The procedure that collected the specimen</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Specimen.collection.procedure</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PROCEDURE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PROCEDURE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Specimen:procedure</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PROCEDURE = new ca.uhn.fhir.model.api.Include("Specimen:procedure").toLocked();
 
  /**
    * Search parameter: <b>status</b>

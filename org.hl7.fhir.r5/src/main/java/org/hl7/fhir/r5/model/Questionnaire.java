@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -551,11 +551,11 @@ public class Questionnaire extends MetadataResource {
          */
         BOOLEAN, 
         /**
-         * Question with is a real number answer (valueDecimal).
+         * Question with is a real number answer (valueDecimal).  There is an extension 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit' that can be used to computably convey the unit of measure associated with the answer for use when performing data extraction to an element of type Quantity.
          */
         DECIMAL, 
         /**
-         * Question with an integer answer (valueInteger).
+         * Question with an integer answer (valueInteger).  There is an extension 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit' that can be used to computably convey the unit of measure associated with the answer for use when performing data extraction to an element of type Quantity.
          */
         INTEGER, 
         /**
@@ -571,7 +571,7 @@ public class Questionnaire extends MetadataResource {
          */
         TIME, 
         /**
-         * Question with a short (few words to short sentence) free-text entry answer (valueString).
+         * Question with a short (few words to short sentence) free-text entry answer (valueString).  Strings SHOULD NOT contain carriage return or newline characters.  If multi-line answers are needed, use the 'text' type.
          */
         STRING, 
         /**
@@ -595,7 +595,7 @@ public class Questionnaire extends MetadataResource {
          */
         REFERENCE, 
         /**
-         * Question with a combination of a numeric value and unit, potentially with a comparator (<, >, etc.) as an answer. (valueQuantity) There is an extension 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit' that can be used to define what unit should be captured (or the unit that has a ucum conversion from the provided unit).
+         * Question with a combination of a numeric value and unit as an answer. (valueSimpleQuantity)  There are two extensions ('http://hl7.org/fhir/StructureDefinition/questionnaire-unitOption' and 'http://hl7.org/fhir/StructureDefinition/questionnaire-unitValueSet')  that can be used to define what unit should be selected for the Quantity.code and Quantity.system.
          */
         QUANTITY, 
         /**
@@ -692,18 +692,18 @@ public class Questionnaire extends MetadataResource {
             case DISPLAY: return "Text for display that will not capture an answer or have child items.";
             case QUESTION: return "An item that defines a specific answer to be captured, and which may have child items. (the answer provided in the QuestionnaireResponse should be of the defined datatype).";
             case BOOLEAN: return "Question with a yes/no answer (valueBoolean).";
-            case DECIMAL: return "Question with is a real number answer (valueDecimal).";
-            case INTEGER: return "Question with an integer answer (valueInteger).";
+            case DECIMAL: return "Question with is a real number answer (valueDecimal).  There is an extension 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit' that can be used to computably convey the unit of measure associated with the answer for use when performing data extraction to an element of type Quantity.";
+            case INTEGER: return "Question with an integer answer (valueInteger).  There is an extension 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit' that can be used to computably convey the unit of measure associated with the answer for use when performing data extraction to an element of type Quantity.";
             case DATE: return "Question with a date answer (valueDate).";
             case DATETIME: return "Question with a date and time answer (valueDateTime).";
             case TIME: return "Question with a time (hour:minute:second) answer independent of date. (valueTime).";
-            case STRING: return "Question with a short (few words to short sentence) free-text entry answer (valueString).";
+            case STRING: return "Question with a short (few words to short sentence) free-text entry answer (valueString).  Strings SHOULD NOT contain carriage return or newline characters.  If multi-line answers are needed, use the 'text' type.";
             case TEXT: return "Question with a long (potentially multi-paragraph) free-text entry answer (valueString).";
             case URL: return "Question with a URL (website, FTP site, etc.) answer (valueUri).";
             case CODING: return "Question with a Coding - generally drawn from a list of possible answers (valueCoding)";
             case ATTACHMENT: return "Question with binary content such as an image, PDF, etc. as an answer (valueAttachment).";
             case REFERENCE: return "Question with a reference to another resource (practitioner, organization, etc.) as an answer (valueReference).";
-            case QUANTITY: return "Question with a combination of a numeric value and unit, potentially with a comparator (<, >, etc.) as an answer. (valueQuantity) There is an extension 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit' that can be used to define what unit should be captured (or the unit that has a ucum conversion from the provided unit).";
+            case QUANTITY: return "Question with a combination of a numeric value and unit as an answer. (valueSimpleQuantity)  There are two extensions ('http://hl7.org/fhir/StructureDefinition/questionnaire-unitOption' and 'http://hl7.org/fhir/StructureDefinition/questionnaire-unitValueSet')  that can be used to define what unit should be selected for the Quantity.code and Quantity.system.";
             case NULL: return null;
             default: return "?";
           }
@@ -887,9 +887,9 @@ public class Questionnaire extends MetadataResource {
         /**
          * The name of a section, the text of a question or text content for a display item.
          */
-        @Child(name = "text", type = {MarkdownType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "text", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Primary text for the item", formalDefinition="The name of a section, the text of a question or text content for a display item." )
-        protected MarkdownType text;
+        protected StringType text;
 
         /**
          * The type of questionnaire item this is - whether text for display, a grouping of other items or a particular type of data to be captured (string, integer, Coding, etc.).
@@ -930,10 +930,10 @@ public class Questionnaire extends MetadataResource {
         protected BooleanType required;
 
         /**
-         * An indication, if true, that the item may occur multiple times in the response, collecting multiple answers for questions or multiple sets of answers for groups.
+         * An indication, if true, that a QuestionnaireResponse for this item may include multiple answers associated with a single instance of this item (for question-type items) or multiple repetitions of the item (for group-type items).
          */
         @Child(name = "repeats", type = {BooleanType.class}, order=11, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Whether the item may repeat", formalDefinition="An indication, if true, that the item may occur multiple times in the response, collecting multiple answers for questions or multiple sets of answers for groups." )
+        @Description(shortDefinition="Whether the item may repeat", formalDefinition="An indication, if true, that a QuestionnaireResponse for this item may include multiple answers associated with a single instance of this item (for question-type items) or multiple repetitions of the item (for group-type items)." )
         protected BooleanType repeats;
 
         /**
@@ -986,7 +986,7 @@ public class Questionnaire extends MetadataResource {
         @Description(shortDefinition="Nested questionnaire items", formalDefinition="Text, questions and other groups to be nested beneath a question or group." )
         protected List<QuestionnaireItemComponent> item;
 
-        private static final long serialVersionUID = 794112941L;
+        private static final long serialVersionUID = -1760914161L;
 
     /**
      * Constructor
@@ -1203,12 +1203,12 @@ public class Questionnaire extends MetadataResource {
         /**
          * @return {@link #text} (The name of a section, the text of a question or text content for a display item.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
          */
-        public MarkdownType getTextElement() { 
+        public StringType getTextElement() { 
           if (this.text == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create QuestionnaireItemComponent.text");
             else if (Configuration.doAutoCreate())
-              this.text = new MarkdownType(); // bb
+              this.text = new StringType(); // bb
           return this.text;
         }
 
@@ -1223,7 +1223,7 @@ public class Questionnaire extends MetadataResource {
         /**
          * @param value {@link #text} (The name of a section, the text of a question or text content for a display item.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
          */
-        public QuestionnaireItemComponent setTextElement(MarkdownType value) { 
+        public QuestionnaireItemComponent setTextElement(StringType value) { 
           this.text = value;
           return this;
         }
@@ -1239,11 +1239,11 @@ public class Questionnaire extends MetadataResource {
          * @param value The name of a section, the text of a question or text content for a display item.
          */
         public QuestionnaireItemComponent setText(String value) { 
-          if (value == null)
+          if (Utilities.noString(value))
             this.text = null;
           else {
             if (this.text == null)
-              this.text = new MarkdownType();
+              this.text = new StringType();
             this.text.setValue(value);
           }
           return this;
@@ -1491,7 +1491,7 @@ public class Questionnaire extends MetadataResource {
         }
 
         /**
-         * @return {@link #repeats} (An indication, if true, that the item may occur multiple times in the response, collecting multiple answers for questions or multiple sets of answers for groups.). This is the underlying object with id, value and extensions. The accessor "getRepeats" gives direct access to the value
+         * @return {@link #repeats} (An indication, if true, that a QuestionnaireResponse for this item may include multiple answers associated with a single instance of this item (for question-type items) or multiple repetitions of the item (for group-type items).). This is the underlying object with id, value and extensions. The accessor "getRepeats" gives direct access to the value
          */
         public BooleanType getRepeatsElement() { 
           if (this.repeats == null)
@@ -1511,7 +1511,7 @@ public class Questionnaire extends MetadataResource {
         }
 
         /**
-         * @param value {@link #repeats} (An indication, if true, that the item may occur multiple times in the response, collecting multiple answers for questions or multiple sets of answers for groups.). This is the underlying object with id, value and extensions. The accessor "getRepeats" gives direct access to the value
+         * @param value {@link #repeats} (An indication, if true, that a QuestionnaireResponse for this item may include multiple answers associated with a single instance of this item (for question-type items) or multiple repetitions of the item (for group-type items).). This is the underlying object with id, value and extensions. The accessor "getRepeats" gives direct access to the value
          */
         public QuestionnaireItemComponent setRepeatsElement(BooleanType value) { 
           this.repeats = value;
@@ -1519,14 +1519,14 @@ public class Questionnaire extends MetadataResource {
         }
 
         /**
-         * @return An indication, if true, that the item may occur multiple times in the response, collecting multiple answers for questions or multiple sets of answers for groups.
+         * @return An indication, if true, that a QuestionnaireResponse for this item may include multiple answers associated with a single instance of this item (for question-type items) or multiple repetitions of the item (for group-type items).
          */
         public boolean getRepeats() { 
           return this.repeats == null || this.repeats.isEmpty() ? false : this.repeats.getValue();
         }
 
         /**
-         * @param value An indication, if true, that the item may occur multiple times in the response, collecting multiple answers for questions or multiple sets of answers for groups.
+         * @param value An indication, if true, that a QuestionnaireResponse for this item may include multiple answers associated with a single instance of this item (for question-type items) or multiple repetitions of the item (for group-type items).
          */
         public QuestionnaireItemComponent setRepeats(boolean value) { 
             if (this.repeats == null)
@@ -1888,13 +1888,13 @@ public class Questionnaire extends MetadataResource {
           children.add(new Property("definition", "uri", "This element is a URI that refers to an [ElementDefinition](elementdefinition.html) that provides information about this item, including information that might otherwise be included in the instance of the Questionnaire resource. A detailed description of the construction of the URI is shown in [Comments](questionnaire.html#definition), below.", 0, 1, definition));
           children.add(new Property("code", "Coding", "A terminology code that corresponds to this group or question (e.g. a code from LOINC, which defines many questions and answers).", 0, java.lang.Integer.MAX_VALUE, code));
           children.add(new Property("prefix", "string", "A short label for a particular group, question or set of display text within the questionnaire used for reference by the individual completing the questionnaire.", 0, 1, prefix));
-          children.add(new Property("text", "markdown", "The name of a section, the text of a question or text content for a display item.", 0, 1, text));
+          children.add(new Property("text", "string", "The name of a section, the text of a question or text content for a display item.", 0, 1, text));
           children.add(new Property("type", "code", "The type of questionnaire item this is - whether text for display, a grouping of other items or a particular type of data to be captured (string, integer, Coding, etc.).", 0, 1, type));
           children.add(new Property("enableWhen", "", "A constraint indicating that this item should only be enabled (displayed/allow answers to be captured) when the specified condition is true.", 0, java.lang.Integer.MAX_VALUE, enableWhen));
           children.add(new Property("enableBehavior", "code", "Controls how multiple enableWhen values are interpreted -  whether all or any must be true.", 0, 1, enableBehavior));
           children.add(new Property("disabledDisplay", "code", "Indicates if and how items that are disabled (because enableWhen evaluates to 'false') should be displayed.", 0, 1, disabledDisplay));
           children.add(new Property("required", "boolean", "An indication, if true, that the item must be present in a \"completed\" QuestionnaireResponse.  If false, the item may be skipped when answering the questionnaire.", 0, 1, required));
-          children.add(new Property("repeats", "boolean", "An indication, if true, that the item may occur multiple times in the response, collecting multiple answers for questions or multiple sets of answers for groups.", 0, 1, repeats));
+          children.add(new Property("repeats", "boolean", "An indication, if true, that a QuestionnaireResponse for this item may include multiple answers associated with a single instance of this item (for question-type items) or multiple repetitions of the item (for group-type items).", 0, 1, repeats));
           children.add(new Property("readOnly", "boolean", "An indication, when true, that the value cannot be changed by a human respondent to the Questionnaire.", 0, 1, readOnly));
           children.add(new Property("maxLength", "integer", "The maximum number of characters that are permitted in the answer to be considered a \"valid\" QuestionnaireResponse.", 0, 1, maxLength));
           children.add(new Property("answerConstraint", "code", "For items that have a defined set of allowed answers (via answerOption or answerValueset), indicates whether values *other* than those specified can be selected.", 0, 1, answerConstraint));
@@ -1911,13 +1911,13 @@ public class Questionnaire extends MetadataResource {
           case -1014418093: /*definition*/  return new Property("definition", "uri", "This element is a URI that refers to an [ElementDefinition](elementdefinition.html) that provides information about this item, including information that might otherwise be included in the instance of the Questionnaire resource. A detailed description of the construction of the URI is shown in [Comments](questionnaire.html#definition), below.", 0, 1, definition);
           case 3059181: /*code*/  return new Property("code", "Coding", "A terminology code that corresponds to this group or question (e.g. a code from LOINC, which defines many questions and answers).", 0, java.lang.Integer.MAX_VALUE, code);
           case -980110702: /*prefix*/  return new Property("prefix", "string", "A short label for a particular group, question or set of display text within the questionnaire used for reference by the individual completing the questionnaire.", 0, 1, prefix);
-          case 3556653: /*text*/  return new Property("text", "markdown", "The name of a section, the text of a question or text content for a display item.", 0, 1, text);
+          case 3556653: /*text*/  return new Property("text", "string", "The name of a section, the text of a question or text content for a display item.", 0, 1, text);
           case 3575610: /*type*/  return new Property("type", "code", "The type of questionnaire item this is - whether text for display, a grouping of other items or a particular type of data to be captured (string, integer, Coding, etc.).", 0, 1, type);
           case 1893321565: /*enableWhen*/  return new Property("enableWhen", "", "A constraint indicating that this item should only be enabled (displayed/allow answers to be captured) when the specified condition is true.", 0, java.lang.Integer.MAX_VALUE, enableWhen);
           case 1854802165: /*enableBehavior*/  return new Property("enableBehavior", "code", "Controls how multiple enableWhen values are interpreted -  whether all or any must be true.", 0, 1, enableBehavior);
           case -1254886746: /*disabledDisplay*/  return new Property("disabledDisplay", "code", "Indicates if and how items that are disabled (because enableWhen evaluates to 'false') should be displayed.", 0, 1, disabledDisplay);
           case -393139297: /*required*/  return new Property("required", "boolean", "An indication, if true, that the item must be present in a \"completed\" QuestionnaireResponse.  If false, the item may be skipped when answering the questionnaire.", 0, 1, required);
-          case 1094288952: /*repeats*/  return new Property("repeats", "boolean", "An indication, if true, that the item may occur multiple times in the response, collecting multiple answers for questions or multiple sets of answers for groups.", 0, 1, repeats);
+          case 1094288952: /*repeats*/  return new Property("repeats", "boolean", "An indication, if true, that a QuestionnaireResponse for this item may include multiple answers associated with a single instance of this item (for question-type items) or multiple repetitions of the item (for group-type items).", 0, 1, repeats);
           case -867683742: /*readOnly*/  return new Property("readOnly", "boolean", "An indication, when true, that the value cannot be changed by a human respondent to the Questionnaire.", 0, 1, readOnly);
           case -791400086: /*maxLength*/  return new Property("maxLength", "integer", "The maximum number of characters that are permitted in the answer to be considered a \"valid\" QuestionnaireResponse.", 0, 1, maxLength);
           case 746396731: /*answerConstraint*/  return new Property("answerConstraint", "code", "For items that have a defined set of allowed answers (via answerOption or answerValueset), indicates whether values *other* than those specified can be selected.", 0, 1, answerConstraint);
@@ -1937,7 +1937,7 @@ public class Questionnaire extends MetadataResource {
         case -1014418093: /*definition*/ return this.definition == null ? new Base[0] : new Base[] {this.definition}; // UriType
         case 3059181: /*code*/ return this.code == null ? new Base[0] : this.code.toArray(new Base[this.code.size()]); // Coding
         case -980110702: /*prefix*/ return this.prefix == null ? new Base[0] : new Base[] {this.prefix}; // StringType
-        case 3556653: /*text*/ return this.text == null ? new Base[0] : new Base[] {this.text}; // MarkdownType
+        case 3556653: /*text*/ return this.text == null ? new Base[0] : new Base[] {this.text}; // StringType
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<QuestionnaireItemType>
         case 1893321565: /*enableWhen*/ return this.enableWhen == null ? new Base[0] : this.enableWhen.toArray(new Base[this.enableWhen.size()]); // QuestionnaireItemEnableWhenComponent
         case 1854802165: /*enableBehavior*/ return this.enableBehavior == null ? new Base[0] : new Base[] {this.enableBehavior}; // Enumeration<EnableWhenBehavior>
@@ -1972,7 +1972,7 @@ public class Questionnaire extends MetadataResource {
           this.prefix = TypeConvertor.castToString(value); // StringType
           return value;
         case 3556653: // text
-          this.text = TypeConvertor.castToMarkdown(value); // MarkdownType
+          this.text = TypeConvertor.castToString(value); // StringType
           return value;
         case 3575610: // type
           value = new QuestionnaireItemTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
@@ -2033,7 +2033,7 @@ public class Questionnaire extends MetadataResource {
         } else if (name.equals("prefix")) {
           this.prefix = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("text")) {
-          this.text = TypeConvertor.castToMarkdown(value); // MarkdownType
+          this.text = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("type")) {
           value = new QuestionnaireItemTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<QuestionnaireItemType>
@@ -2102,7 +2102,7 @@ public class Questionnaire extends MetadataResource {
         case -1014418093: /*definition*/ return new String[] {"uri"};
         case 3059181: /*code*/ return new String[] {"Coding"};
         case -980110702: /*prefix*/ return new String[] {"string"};
-        case 3556653: /*text*/ return new String[] {"markdown"};
+        case 3556653: /*text*/ return new String[] {"string"};
         case 3575610: /*type*/ return new String[] {"code"};
         case 1893321565: /*enableWhen*/ return new String[] {};
         case 1854802165: /*enableBehavior*/ return new String[] {"code"};
@@ -3577,30 +3577,38 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
     protected StringType version;
 
     /**
+     * Indicates the mechanism used to compare versions to determine which is more current.
+     */
+    @Child(name = "versionAlgorithm", type = {StringType.class, Coding.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="How to compare versions", formalDefinition="Indicates the mechanism used to compare versions to determine which is more current." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/version-algorithm")
+    protected DataType versionAlgorithm;
+
+    /**
      * A natural language name identifying the questionnaire. This name should be usable as an identifier for the module by machine processing applications such as code generation.
      */
-    @Child(name = "name", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "name", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Name for this questionnaire (computer friendly)", formalDefinition="A natural language name identifying the questionnaire. This name should be usable as an identifier for the module by machine processing applications such as code generation." )
     protected StringType name;
 
     /**
      * A short, descriptive, user-friendly title for the questionnaire.
      */
-    @Child(name = "title", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "title", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Name for this questionnaire (human friendly)", formalDefinition="A short, descriptive, user-friendly title for the questionnaire." )
     protected StringType title;
 
     /**
      * The URL of a Questionnaire that this Questionnaire is based on.
      */
-    @Child(name = "derivedFrom", type = {CanonicalType.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "derivedFrom", type = {CanonicalType.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Instantiates protocol or definition", formalDefinition="The URL of a Questionnaire that this Questionnaire is based on." )
     protected List<CanonicalType> derivedFrom;
 
     /**
      * The status of this questionnaire. Enables tracking the life-cycle of the content.
      */
-    @Child(name = "status", type = {CodeType.class}, order=6, min=1, max=1, modifier=true, summary=true)
+    @Child(name = "status", type = {CodeType.class}, order=7, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The status of this questionnaire. Enables tracking the life-cycle of the content." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
     protected Enumeration<PublicationStatus> status;
@@ -3608,14 +3616,14 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
     /**
      * A Boolean value to indicate that this questionnaire is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
      */
-    @Child(name = "experimental", type = {BooleanType.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "experimental", type = {BooleanType.class}, order=8, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="For testing purposes, not real usage", formalDefinition="A Boolean value to indicate that this questionnaire is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage." )
     protected BooleanType experimental;
 
     /**
      * The types of subjects that can be the subject of responses created for the questionnaire.
      */
-    @Child(name = "subjectType", type = {CodeType.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "subjectType", type = {CodeType.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Resource that can be subject of QuestionnaireResponse", formalDefinition="The types of subjects that can be the subject of responses created for the questionnaire." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/resource-types")
     protected List<CodeType> subjectType;
@@ -3623,42 +3631,42 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
     /**
      * The date  (and optionally time) when the questionnaire was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the questionnaire changes.
      */
-    @Child(name = "date", type = {DateTimeType.class}, order=9, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "date", type = {DateTimeType.class}, order=10, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Date last formally published", formalDefinition="The date  (and optionally time) when the questionnaire was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the questionnaire changes." )
     protected DateTimeType date;
 
     /**
-     * The name of the organization or individual that published the questionnaire.
+     * The name of the organization or individual responsible for the release and ongoing maintenance of the questionnaire.
      */
-    @Child(name = "publisher", type = {StringType.class}, order=10, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Name of the publisher (organization or individual)", formalDefinition="The name of the organization or individual that published the questionnaire." )
+    @Child(name = "publisher", type = {StringType.class}, order=11, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Name of the publisher/steward (organization or individual)", formalDefinition="The name of the organization or individual responsible for the release and ongoing maintenance of the questionnaire." )
     protected StringType publisher;
 
     /**
      * Contact details to assist a user in finding and communicating with the publisher.
      */
-    @Child(name = "contact", type = {ContactDetail.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "contact", type = {ContactDetail.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Contact details for the publisher", formalDefinition="Contact details to assist a user in finding and communicating with the publisher." )
     protected List<ContactDetail> contact;
 
     /**
      * A free text natural language description of the questionnaire from a consumer's perspective.
      */
-    @Child(name = "description", type = {MarkdownType.class}, order=12, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "description", type = {MarkdownType.class}, order=13, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Natural language description of the questionnaire", formalDefinition="A free text natural language description of the questionnaire from a consumer's perspective." )
     protected MarkdownType description;
 
     /**
      * The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate questionnaire instances.
      */
-    @Child(name = "useContext", type = {UsageContext.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "useContext", type = {UsageContext.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The context that the content is intended to support", formalDefinition="The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate questionnaire instances." )
     protected List<UsageContext> useContext;
 
     /**
      * A legal or geographic region in which the questionnaire is intended to be used.
      */
-    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Intended jurisdiction for questionnaire (if applicable)", formalDefinition="A legal or geographic region in which the questionnaire is intended to be used." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/jurisdiction")
     protected List<CodeableConcept> jurisdiction;
@@ -3666,42 +3674,49 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
     /**
      * Explanation of why this questionnaire is needed and why it has been designed as it has.
      */
-    @Child(name = "purpose", type = {MarkdownType.class}, order=15, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "purpose", type = {MarkdownType.class}, order=16, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Why this questionnaire is defined", formalDefinition="Explanation of why this questionnaire is needed and why it has been designed as it has." )
     protected MarkdownType purpose;
 
     /**
      * A copyright statement relating to the questionnaire and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the questionnaire.
      */
-    @Child(name = "copyright", type = {MarkdownType.class}, order=16, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "copyright", type = {MarkdownType.class}, order=17, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Use and/or publishing restrictions", formalDefinition="A copyright statement relating to the questionnaire and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the questionnaire." )
     protected MarkdownType copyright;
 
     /**
+     * A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    @Child(name = "copyrightLabel", type = {StringType.class}, order=18, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Copyright holder and year(s)", formalDefinition="A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved')." )
+    protected StringType copyrightLabel;
+
+    /**
      * The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
-    @Child(name = "approvalDate", type = {DateType.class}, order=17, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "approvalDate", type = {DateType.class}, order=19, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When the questionnaire was approved by publisher", formalDefinition="The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage." )
     protected DateType approvalDate;
 
     /**
      * The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
      */
-    @Child(name = "lastReviewDate", type = {DateType.class}, order=18, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "lastReviewDate", type = {DateType.class}, order=20, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When the questionnaire was last reviewed", formalDefinition="The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date." )
     protected DateType lastReviewDate;
 
     /**
      * The period during which the questionnaire content was or is planned to be in active use.
      */
-    @Child(name = "effectivePeriod", type = {Period.class}, order=19, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "effectivePeriod", type = {Period.class}, order=21, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When the questionnaire is expected to be used", formalDefinition="The period during which the questionnaire content was or is planned to be in active use." )
     protected Period effectivePeriod;
 
     /**
      * An identifier for this question or group of questions in a particular terminology such as LOINC.
      */
-    @Child(name = "code", type = {Coding.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "code", type = {Coding.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Concept that represents the overall questionnaire", formalDefinition="An identifier for this question or group of questions in a particular terminology such as LOINC." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/questionnaire-questions")
     protected List<Coding> code;
@@ -3709,11 +3724,11 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
     /**
      * A particular question, question grouping or display text that is part of the questionnaire.
      */
-    @Child(name = "item", type = {}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "item", type = {}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Questions and sections within the Questionnaire", formalDefinition="A particular question, question grouping or display text that is part of the questionnaire." )
     protected List<QuestionnaireItemComponent> item;
 
-    private static final long serialVersionUID = -2135957722L;
+    private static final long serialVersionUID = -863684953L;
 
   /**
    * Constructor
@@ -3878,6 +3893,57 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           this.version = new StringType();
         this.version.setValue(value);
       }
+      return this;
+    }
+
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public DataType getVersionAlgorithm() { 
+      return this.versionAlgorithm;
+    }
+
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public StringType getVersionAlgorithmStringType() throws FHIRException { 
+      if (this.versionAlgorithm == null)
+        this.versionAlgorithm = new StringType();
+      if (!(this.versionAlgorithm instanceof StringType))
+        throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.versionAlgorithm.getClass().getName()+" was encountered");
+      return (StringType) this.versionAlgorithm;
+    }
+
+    public boolean hasVersionAlgorithmStringType() { 
+      return this != null && this.versionAlgorithm instanceof StringType;
+    }
+
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public Coding getVersionAlgorithmCoding() throws FHIRException { 
+      if (this.versionAlgorithm == null)
+        this.versionAlgorithm = new Coding();
+      if (!(this.versionAlgorithm instanceof Coding))
+        throw new FHIRException("Type mismatch: the type Coding was expected, but "+this.versionAlgorithm.getClass().getName()+" was encountered");
+      return (Coding) this.versionAlgorithm;
+    }
+
+    public boolean hasVersionAlgorithmCoding() { 
+      return this != null && this.versionAlgorithm instanceof Coding;
+    }
+
+    public boolean hasVersionAlgorithm() { 
+      return this.versionAlgorithm != null && !this.versionAlgorithm.isEmpty();
+    }
+
+    /**
+     * @param value {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public Questionnaire setVersionAlgorithm(DataType value) { 
+      if (value != null && !(value instanceof StringType || value instanceof Coding))
+        throw new Error("Not the right type for Questionnaire.versionAlgorithm[x]: "+value.fhirType());
+      this.versionAlgorithm = value;
       return this;
     }
 
@@ -4241,7 +4307,7 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
     }
 
     /**
-     * @return {@link #publisher} (The name of the organization or individual that published the questionnaire.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     * @return {@link #publisher} (The name of the organization or individual responsible for the release and ongoing maintenance of the questionnaire.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
     public StringType getPublisherElement() { 
       if (this.publisher == null)
@@ -4261,7 +4327,7 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
     }
 
     /**
-     * @param value {@link #publisher} (The name of the organization or individual that published the questionnaire.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     * @param value {@link #publisher} (The name of the organization or individual responsible for the release and ongoing maintenance of the questionnaire.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
     public Questionnaire setPublisherElement(StringType value) { 
       this.publisher = value;
@@ -4269,14 +4335,14 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
     }
 
     /**
-     * @return The name of the organization or individual that published the questionnaire.
+     * @return The name of the organization or individual responsible for the release and ongoing maintenance of the questionnaire.
      */
     public String getPublisher() { 
       return this.publisher == null ? null : this.publisher.getValue();
     }
 
     /**
-     * @param value The name of the organization or individual that published the questionnaire.
+     * @param value The name of the organization or individual responsible for the release and ongoing maintenance of the questionnaire.
      */
     public Questionnaire setPublisher(String value) { 
       if (Utilities.noString(value))
@@ -4596,6 +4662,55 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
     }
 
     /**
+     * @return {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public StringType getCopyrightLabelElement() { 
+      if (this.copyrightLabel == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Questionnaire.copyrightLabel");
+        else if (Configuration.doAutoCreate())
+          this.copyrightLabel = new StringType(); // bb
+      return this.copyrightLabel;
+    }
+
+    public boolean hasCopyrightLabelElement() { 
+      return this.copyrightLabel != null && !this.copyrightLabel.isEmpty();
+    }
+
+    public boolean hasCopyrightLabel() { 
+      return this.copyrightLabel != null && !this.copyrightLabel.isEmpty();
+    }
+
+    /**
+     * @param value {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public Questionnaire setCopyrightLabelElement(StringType value) { 
+      this.copyrightLabel = value;
+      return this;
+    }
+
+    /**
+     * @return A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    public String getCopyrightLabel() { 
+      return this.copyrightLabel == null ? null : this.copyrightLabel.getValue();
+    }
+
+    /**
+     * @param value A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    public Questionnaire setCopyrightLabel(String value) { 
+      if (Utilities.noString(value))
+        this.copyrightLabel = null;
+      else {
+        if (this.copyrightLabel == null)
+          this.copyrightLabel = new StringType();
+        this.copyrightLabel.setValue(value);
+      }
+      return this;
+    }
+
+    /**
      * @return {@link #approvalDate} (The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.). This is the underlying object with id, value and extensions. The accessor "getApprovalDate" gives direct access to the value
      */
     public DateType getApprovalDateElement() { 
@@ -4831,7 +4946,7 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
       return 0;
     }
     /**
-     * @return {@link #topic} (Descriptive topics related to the content of the questionnaire. Topics provide a high-level categorization of the questionnaire that can be useful for filtering and searching.)
+     * @return {@link #topic} (Descriptive topics related to the content of the questionnaire. Topics provide a high-level categorization as well as keywords for the questionnaire that can be useful for filtering and searching.)
      */
     public List<CodeableConcept> getTopic() { 
       return new ArrayList<>();
@@ -4840,23 +4955,23 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
     public Questionnaire setTopic(List<CodeableConcept> theTopic) { 
-      throw new Error("The resource type \"Questionnaire\" does not implement the property \"topic\"");
+      throw new Error("The resource type \"Questionnaire\" does not implement the property \"topic\""); 
     }
     public boolean hasTopic() { 
       return false;
     }
 
     public CodeableConcept addTopic() { //3
-      throw new Error("The resource type \"Questionnaire\" does not implement the property \"topic\"");
+      throw new Error("The resource type \"Questionnaire\" does not implement the property \"topic\""); 
     }
     public Questionnaire addTopic(CodeableConcept t) { //3
-      throw new Error("The resource type \"Questionnaire\" does not implement the property \"topic\"");
+      throw new Error("The resource type \"Questionnaire\" does not implement the property \"topic\""); 
     }
     /**
      * @return The first repetition of repeating field {@link #topic}, creating it if it does not already exist {2}
      */
     public CodeableConcept getTopicFirstRep() { 
-      throw new Error("The resource type \"Questionnaire\" does not implement the property \"topic\"");
+      throw new Error("The resource type \"Questionnaire\" does not implement the property \"topic\""); 
     }
     /**
      * not supported on this implementation
@@ -4875,23 +4990,23 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
     public Questionnaire setAuthor(List<ContactDetail> theAuthor) { 
-      throw new Error("The resource type \"Questionnaire\" does not implement the property \"author\"");
+      throw new Error("The resource type \"Questionnaire\" does not implement the property \"author\""); 
     }
     public boolean hasAuthor() { 
       return false;
     }
 
     public ContactDetail addAuthor() { //3
-      throw new Error("The resource type \"Questionnaire\" does not implement the property \"author\"");
+      throw new Error("The resource type \"Questionnaire\" does not implement the property \"author\""); 
     }
     public Questionnaire addAuthor(ContactDetail t) { //3
-      throw new Error("The resource type \"Questionnaire\" does not implement the property \"author\"");
+      throw new Error("The resource type \"Questionnaire\" does not implement the property \"author\""); 
     }
     /**
      * @return The first repetition of repeating field {@link #author}, creating it if it does not already exist {2}
      */
     public ContactDetail getAuthorFirstRep() { 
-      throw new Error("The resource type \"Questionnaire\" does not implement the property \"author\"");
+      throw new Error("The resource type \"Questionnaire\" does not implement the property \"author\""); 
     }
     /**
      * not supported on this implementation
@@ -4910,23 +5025,23 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
     public Questionnaire setEditor(List<ContactDetail> theEditor) { 
-      throw new Error("The resource type \"Questionnaire\" does not implement the property \"editor\"");
+      throw new Error("The resource type \"Questionnaire\" does not implement the property \"editor\""); 
     }
     public boolean hasEditor() { 
       return false;
     }
 
     public ContactDetail addEditor() { //3
-      throw new Error("The resource type \"Questionnaire\" does not implement the property \"editor\"");
+      throw new Error("The resource type \"Questionnaire\" does not implement the property \"editor\""); 
     }
     public Questionnaire addEditor(ContactDetail t) { //3
-      throw new Error("The resource type \"Questionnaire\" does not implement the property \"editor\"");
+      throw new Error("The resource type \"Questionnaire\" does not implement the property \"editor\""); 
     }
     /**
      * @return The first repetition of repeating field {@link #editor}, creating it if it does not already exist {2}
      */
     public ContactDetail getEditorFirstRep() { 
-      throw new Error("The resource type \"Questionnaire\" does not implement the property \"editor\"");
+      throw new Error("The resource type \"Questionnaire\" does not implement the property \"editor\""); 
     }
     /**
      * not supported on this implementation
@@ -4945,23 +5060,23 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
     public Questionnaire setReviewer(List<ContactDetail> theReviewer) { 
-      throw new Error("The resource type \"Questionnaire\" does not implement the property \"reviewer\"");
+      throw new Error("The resource type \"Questionnaire\" does not implement the property \"reviewer\""); 
     }
     public boolean hasReviewer() { 
       return false;
     }
 
     public ContactDetail addReviewer() { //3
-      throw new Error("The resource type \"Questionnaire\" does not implement the property \"reviewer\"");
+      throw new Error("The resource type \"Questionnaire\" does not implement the property \"reviewer\""); 
     }
     public Questionnaire addReviewer(ContactDetail t) { //3
-      throw new Error("The resource type \"Questionnaire\" does not implement the property \"reviewer\"");
+      throw new Error("The resource type \"Questionnaire\" does not implement the property \"reviewer\""); 
     }
     /**
      * @return The first repetition of repeating field {@link #reviewer}, creating it if it does not already exist {2}
      */
     public ContactDetail getReviewerFirstRep() { 
-      throw new Error("The resource type \"Questionnaire\" does not implement the property \"reviewer\"");
+      throw new Error("The resource type \"Questionnaire\" does not implement the property \"reviewer\""); 
     }
     /**
      * not supported on this implementation
@@ -4980,23 +5095,23 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
     public Questionnaire setEndorser(List<ContactDetail> theEndorser) { 
-      throw new Error("The resource type \"Questionnaire\" does not implement the property \"endorser\"");
+      throw new Error("The resource type \"Questionnaire\" does not implement the property \"endorser\""); 
     }
     public boolean hasEndorser() { 
       return false;
     }
 
     public ContactDetail addEndorser() { //3
-      throw new Error("The resource type \"Questionnaire\" does not implement the property \"endorser\"");
+      throw new Error("The resource type \"Questionnaire\" does not implement the property \"endorser\""); 
     }
     public Questionnaire addEndorser(ContactDetail t) { //3
-      throw new Error("The resource type \"Questionnaire\" does not implement the property \"endorser\"");
+      throw new Error("The resource type \"Questionnaire\" does not implement the property \"endorser\""); 
     }
     /**
      * @return The first repetition of repeating field {@link #endorser}, creating it if it does not already exist {2}
      */
     public ContactDetail getEndorserFirstRep() { 
-      throw new Error("The resource type \"Questionnaire\" does not implement the property \"endorser\"");
+      throw new Error("The resource type \"Questionnaire\" does not implement the property \"endorser\""); 
     }
     /**
      * not supported on this implementation
@@ -5015,29 +5130,30 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
     public Questionnaire setRelatedArtifact(List<RelatedArtifact> theRelatedArtifact) { 
-      throw new Error("The resource type \"Questionnaire\" does not implement the property \"relatedArtifact\"");
+      throw new Error("The resource type \"Questionnaire\" does not implement the property \"relatedArtifact\""); 
     }
     public boolean hasRelatedArtifact() { 
       return false;
     }
 
     public RelatedArtifact addRelatedArtifact() { //3
-      throw new Error("The resource type \"Questionnaire\" does not implement the property \"relatedArtifact\"");
+      throw new Error("The resource type \"Questionnaire\" does not implement the property \"relatedArtifact\""); 
     }
     public Questionnaire addRelatedArtifact(RelatedArtifact t) { //3
-      throw new Error("The resource type \"Questionnaire\" does not implement the property \"relatedArtifact\"");
+      throw new Error("The resource type \"Questionnaire\" does not implement the property \"relatedArtifact\""); 
     }
     /**
      * @return The first repetition of repeating field {@link #relatedArtifact}, creating it if it does not already exist {2}
      */
     public RelatedArtifact getRelatedArtifactFirstRep() { 
-      throw new Error("The resource type \"Questionnaire\" does not implement the property \"relatedArtifact\"");
+      throw new Error("The resource type \"Questionnaire\" does not implement the property \"relatedArtifact\""); 
     }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("url", "uri", "An absolute URI that is used to identify this questionnaire when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this questionnaire is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the questionnaire is stored on different servers.", 0, 1, url));
         children.add(new Property("identifier", "Identifier", "A formal identifier that is used to identify this questionnaire when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("version", "string", "The identifier that is used to identify this version of the questionnaire when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the questionnaire author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version));
+        children.add(new Property("versionAlgorithm[x]", "string|Coding", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm));
         children.add(new Property("name", "string", "A natural language name identifying the questionnaire. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name));
         children.add(new Property("title", "string", "A short, descriptive, user-friendly title for the questionnaire.", 0, 1, title));
         children.add(new Property("derivedFrom", "canonical(Questionnaire)", "The URL of a Questionnaire that this Questionnaire is based on.", 0, java.lang.Integer.MAX_VALUE, derivedFrom));
@@ -5045,13 +5161,14 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         children.add(new Property("experimental", "boolean", "A Boolean value to indicate that this questionnaire is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.", 0, 1, experimental));
         children.add(new Property("subjectType", "code", "The types of subjects that can be the subject of responses created for the questionnaire.", 0, java.lang.Integer.MAX_VALUE, subjectType));
         children.add(new Property("date", "dateTime", "The date  (and optionally time) when the questionnaire was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the questionnaire changes.", 0, 1, date));
-        children.add(new Property("publisher", "string", "The name of the organization or individual that published the questionnaire.", 0, 1, publisher));
+        children.add(new Property("publisher", "string", "The name of the organization or individual responsible for the release and ongoing maintenance of the questionnaire.", 0, 1, publisher));
         children.add(new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact));
         children.add(new Property("description", "markdown", "A free text natural language description of the questionnaire from a consumer's perspective.", 0, 1, description));
         children.add(new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate questionnaire instances.", 0, java.lang.Integer.MAX_VALUE, useContext));
         children.add(new Property("jurisdiction", "CodeableConcept", "A legal or geographic region in which the questionnaire is intended to be used.", 0, java.lang.Integer.MAX_VALUE, jurisdiction));
         children.add(new Property("purpose", "markdown", "Explanation of why this questionnaire is needed and why it has been designed as it has.", 0, 1, purpose));
         children.add(new Property("copyright", "markdown", "A copyright statement relating to the questionnaire and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the questionnaire.", 0, 1, copyright));
+        children.add(new Property("copyrightLabel", "string", "A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').", 0, 1, copyrightLabel));
         children.add(new Property("approvalDate", "date", "The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.", 0, 1, approvalDate));
         children.add(new Property("lastReviewDate", "date", "The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.", 0, 1, lastReviewDate));
         children.add(new Property("effectivePeriod", "Period", "The period during which the questionnaire content was or is planned to be in active use.", 0, 1, effectivePeriod));
@@ -5065,6 +5182,10 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this questionnaire when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this questionnaire is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the questionnaire is stored on different servers.", 0, 1, url);
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "A formal identifier that is used to identify this questionnaire when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case 351608024: /*version*/  return new Property("version", "string", "The identifier that is used to identify this version of the questionnaire when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the questionnaire author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version);
+        case -115699031: /*versionAlgorithm[x]*/  return new Property("versionAlgorithm[x]", "string|Coding", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm);
+        case 1508158071: /*versionAlgorithm*/  return new Property("versionAlgorithm[x]", "string|Coding", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm);
+        case 1836908904: /*versionAlgorithmString*/  return new Property("versionAlgorithm[x]", "string", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm);
+        case 1373807809: /*versionAlgorithmCoding*/  return new Property("versionAlgorithm[x]", "Coding", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm);
         case 3373707: /*name*/  return new Property("name", "string", "A natural language name identifying the questionnaire. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name);
         case 110371416: /*title*/  return new Property("title", "string", "A short, descriptive, user-friendly title for the questionnaire.", 0, 1, title);
         case 1077922663: /*derivedFrom*/  return new Property("derivedFrom", "canonical(Questionnaire)", "The URL of a Questionnaire that this Questionnaire is based on.", 0, java.lang.Integer.MAX_VALUE, derivedFrom);
@@ -5072,13 +5193,14 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         case -404562712: /*experimental*/  return new Property("experimental", "boolean", "A Boolean value to indicate that this questionnaire is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.", 0, 1, experimental);
         case -603200890: /*subjectType*/  return new Property("subjectType", "code", "The types of subjects that can be the subject of responses created for the questionnaire.", 0, java.lang.Integer.MAX_VALUE, subjectType);
         case 3076014: /*date*/  return new Property("date", "dateTime", "The date  (and optionally time) when the questionnaire was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the questionnaire changes.", 0, 1, date);
-        case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual that published the questionnaire.", 0, 1, publisher);
+        case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual responsible for the release and ongoing maintenance of the questionnaire.", 0, 1, publisher);
         case 951526432: /*contact*/  return new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact);
         case -1724546052: /*description*/  return new Property("description", "markdown", "A free text natural language description of the questionnaire from a consumer's perspective.", 0, 1, description);
         case -669707736: /*useContext*/  return new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate questionnaire instances.", 0, java.lang.Integer.MAX_VALUE, useContext);
         case -507075711: /*jurisdiction*/  return new Property("jurisdiction", "CodeableConcept", "A legal or geographic region in which the questionnaire is intended to be used.", 0, java.lang.Integer.MAX_VALUE, jurisdiction);
         case -220463842: /*purpose*/  return new Property("purpose", "markdown", "Explanation of why this questionnaire is needed and why it has been designed as it has.", 0, 1, purpose);
         case 1522889671: /*copyright*/  return new Property("copyright", "markdown", "A copyright statement relating to the questionnaire and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the questionnaire.", 0, 1, copyright);
+        case 765157229: /*copyrightLabel*/  return new Property("copyrightLabel", "string", "A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').", 0, 1, copyrightLabel);
         case 223539345: /*approvalDate*/  return new Property("approvalDate", "date", "The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.", 0, 1, approvalDate);
         case -1687512484: /*lastReviewDate*/  return new Property("lastReviewDate", "date", "The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.", 0, 1, lastReviewDate);
         case -403934648: /*effectivePeriod*/  return new Property("effectivePeriod", "Period", "The period during which the questionnaire content was or is planned to be in active use.", 0, 1, effectivePeriod);
@@ -5095,6 +5217,7 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         case 116079: /*url*/ return this.url == null ? new Base[0] : new Base[] {this.url}; // UriType
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case 351608024: /*version*/ return this.version == null ? new Base[0] : new Base[] {this.version}; // StringType
+        case 1508158071: /*versionAlgorithm*/ return this.versionAlgorithm == null ? new Base[0] : new Base[] {this.versionAlgorithm}; // DataType
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
         case 110371416: /*title*/ return this.title == null ? new Base[0] : new Base[] {this.title}; // StringType
         case 1077922663: /*derivedFrom*/ return this.derivedFrom == null ? new Base[0] : this.derivedFrom.toArray(new Base[this.derivedFrom.size()]); // CanonicalType
@@ -5109,6 +5232,7 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         case -507075711: /*jurisdiction*/ return this.jurisdiction == null ? new Base[0] : this.jurisdiction.toArray(new Base[this.jurisdiction.size()]); // CodeableConcept
         case -220463842: /*purpose*/ return this.purpose == null ? new Base[0] : new Base[] {this.purpose}; // MarkdownType
         case 1522889671: /*copyright*/ return this.copyright == null ? new Base[0] : new Base[] {this.copyright}; // MarkdownType
+        case 765157229: /*copyrightLabel*/ return this.copyrightLabel == null ? new Base[0] : new Base[] {this.copyrightLabel}; // StringType
         case 223539345: /*approvalDate*/ return this.approvalDate == null ? new Base[0] : new Base[] {this.approvalDate}; // DateType
         case -1687512484: /*lastReviewDate*/ return this.lastReviewDate == null ? new Base[0] : new Base[] {this.lastReviewDate}; // DateType
         case -403934648: /*effectivePeriod*/ return this.effectivePeriod == null ? new Base[0] : new Base[] {this.effectivePeriod}; // Period
@@ -5130,6 +5254,9 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           return value;
         case 351608024: // version
           this.version = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 1508158071: // versionAlgorithm
+          this.versionAlgorithm = TypeConvertor.castToType(value); // DataType
           return value;
         case 3373707: // name
           this.name = TypeConvertor.castToString(value); // StringType
@@ -5174,6 +5301,9 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         case 1522889671: // copyright
           this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
+        case 765157229: // copyrightLabel
+          this.copyrightLabel = TypeConvertor.castToString(value); // StringType
+          return value;
         case 223539345: // approvalDate
           this.approvalDate = TypeConvertor.castToDate(value); // DateType
           return value;
@@ -5202,6 +5332,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("version")) {
           this.version = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("versionAlgorithm[x]")) {
+          this.versionAlgorithm = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("name")) {
           this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
@@ -5231,6 +5363,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("copyright")) {
           this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
+        } else if (name.equals("copyrightLabel")) {
+          this.copyrightLabel = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("approvalDate")) {
           this.approvalDate = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("lastReviewDate")) {
@@ -5252,6 +5386,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         case 116079:  return getUrlElement();
         case -1618432855:  return addIdentifier(); 
         case 351608024:  return getVersionElement();
+        case -115699031:  return getVersionAlgorithm();
+        case 1508158071:  return getVersionAlgorithm();
         case 3373707:  return getNameElement();
         case 110371416:  return getTitleElement();
         case 1077922663:  return addDerivedFromElement();
@@ -5266,6 +5402,7 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         case -507075711:  return addJurisdiction(); 
         case -220463842:  return getPurposeElement();
         case 1522889671:  return getCopyrightElement();
+        case 765157229:  return getCopyrightLabelElement();
         case 223539345:  return getApprovalDateElement();
         case -1687512484:  return getLastReviewDateElement();
         case -403934648:  return getEffectivePeriod();
@@ -5282,6 +5419,7 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         case 116079: /*url*/ return new String[] {"uri"};
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case 351608024: /*version*/ return new String[] {"string"};
+        case 1508158071: /*versionAlgorithm*/ return new String[] {"string", "Coding"};
         case 3373707: /*name*/ return new String[] {"string"};
         case 110371416: /*title*/ return new String[] {"string"};
         case 1077922663: /*derivedFrom*/ return new String[] {"canonical"};
@@ -5296,6 +5434,7 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         case -507075711: /*jurisdiction*/ return new String[] {"CodeableConcept"};
         case -220463842: /*purpose*/ return new String[] {"markdown"};
         case 1522889671: /*copyright*/ return new String[] {"markdown"};
+        case 765157229: /*copyrightLabel*/ return new String[] {"string"};
         case 223539345: /*approvalDate*/ return new String[] {"date"};
         case -1687512484: /*lastReviewDate*/ return new String[] {"date"};
         case -403934648: /*effectivePeriod*/ return new String[] {"Period"};
@@ -5316,6 +5455,14 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         }
         else if (name.equals("version")) {
           throw new FHIRException("Cannot call addChild on a primitive type Questionnaire.version");
+        }
+        else if (name.equals("versionAlgorithmString")) {
+          this.versionAlgorithm = new StringType();
+          return this.versionAlgorithm;
+        }
+        else if (name.equals("versionAlgorithmCoding")) {
+          this.versionAlgorithm = new Coding();
+          return this.versionAlgorithm;
         }
         else if (name.equals("name")) {
           throw new FHIRException("Cannot call addChild on a primitive type Questionnaire.name");
@@ -5359,6 +5506,9 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         else if (name.equals("copyright")) {
           throw new FHIRException("Cannot call addChild on a primitive type Questionnaire.copyright");
         }
+        else if (name.equals("copyrightLabel")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Questionnaire.copyrightLabel");
+        }
         else if (name.equals("approvalDate")) {
           throw new FHIRException("Cannot call addChild on a primitive type Questionnaire.approvalDate");
         }
@@ -5399,6 +5549,7 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
             dst.identifier.add(i.copy());
         };
         dst.version = version == null ? null : version.copy();
+        dst.versionAlgorithm = versionAlgorithm == null ? null : versionAlgorithm.copy();
         dst.name = name == null ? null : name.copy();
         dst.title = title == null ? null : title.copy();
         if (derivedFrom != null) {
@@ -5433,6 +5584,7 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         };
         dst.purpose = purpose == null ? null : purpose.copy();
         dst.copyright = copyright == null ? null : copyright.copy();
+        dst.copyrightLabel = copyrightLabel == null ? null : copyrightLabel.copy();
         dst.approvalDate = approvalDate == null ? null : approvalDate.copy();
         dst.lastReviewDate = lastReviewDate == null ? null : lastReviewDate.copy();
         dst.effectivePeriod = effectivePeriod == null ? null : effectivePeriod.copy();
@@ -5460,14 +5612,14 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
           return false;
         Questionnaire o = (Questionnaire) other_;
         return compareDeep(url, o.url, true) && compareDeep(identifier, o.identifier, true) && compareDeep(version, o.version, true)
-           && compareDeep(name, o.name, true) && compareDeep(title, o.title, true) && compareDeep(derivedFrom, o.derivedFrom, true)
-           && compareDeep(status, o.status, true) && compareDeep(experimental, o.experimental, true) && compareDeep(subjectType, o.subjectType, true)
-           && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true) && compareDeep(contact, o.contact, true)
-           && compareDeep(description, o.description, true) && compareDeep(useContext, o.useContext, true)
+           && compareDeep(versionAlgorithm, o.versionAlgorithm, true) && compareDeep(name, o.name, true) && compareDeep(title, o.title, true)
+           && compareDeep(derivedFrom, o.derivedFrom, true) && compareDeep(status, o.status, true) && compareDeep(experimental, o.experimental, true)
+           && compareDeep(subjectType, o.subjectType, true) && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true)
+           && compareDeep(contact, o.contact, true) && compareDeep(description, o.description, true) && compareDeep(useContext, o.useContext, true)
            && compareDeep(jurisdiction, o.jurisdiction, true) && compareDeep(purpose, o.purpose, true) && compareDeep(copyright, o.copyright, true)
-           && compareDeep(approvalDate, o.approvalDate, true) && compareDeep(lastReviewDate, o.lastReviewDate, true)
-           && compareDeep(effectivePeriod, o.effectivePeriod, true) && compareDeep(code, o.code, true) && compareDeep(item, o.item, true)
-          ;
+           && compareDeep(copyrightLabel, o.copyrightLabel, true) && compareDeep(approvalDate, o.approvalDate, true)
+           && compareDeep(lastReviewDate, o.lastReviewDate, true) && compareDeep(effectivePeriod, o.effectivePeriod, true)
+           && compareDeep(code, o.code, true) && compareDeep(item, o.item, true);
       }
 
       @Override
@@ -5481,15 +5633,16 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
            && compareValues(title, o.title, true) && compareValues(derivedFrom, o.derivedFrom, true) && compareValues(status, o.status, true)
            && compareValues(experimental, o.experimental, true) && compareValues(subjectType, o.subjectType, true)
            && compareValues(date, o.date, true) && compareValues(publisher, o.publisher, true) && compareValues(description, o.description, true)
-           && compareValues(purpose, o.purpose, true) && compareValues(copyright, o.copyright, true) && compareValues(approvalDate, o.approvalDate, true)
-           && compareValues(lastReviewDate, o.lastReviewDate, true);
+           && compareValues(purpose, o.purpose, true) && compareValues(copyright, o.copyright, true) && compareValues(copyrightLabel, o.copyrightLabel, true)
+           && compareValues(approvalDate, o.approvalDate, true) && compareValues(lastReviewDate, o.lastReviewDate, true)
+          ;
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, identifier, version
-          , name, title, derivedFrom, status, experimental, subjectType, date, publisher
-          , contact, description, useContext, jurisdiction, purpose, copyright, approvalDate
-          , lastReviewDate, effectivePeriod, code, item);
+          , versionAlgorithm, name, title, derivedFrom, status, experimental, subjectType
+          , date, publisher, contact, description, useContext, jurisdiction, purpose, copyright
+          , copyrightLabel, approvalDate, lastReviewDate, effectivePeriod, code, item);
       }
 
   @Override

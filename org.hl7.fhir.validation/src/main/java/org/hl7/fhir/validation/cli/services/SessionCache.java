@@ -1,11 +1,11 @@
 package org.hl7.fhir.validation.cli.services;
 
-import org.apache.commons.collections4.map.PassiveExpiringMap;
-import org.hl7.fhir.validation.ValidationEngine;
-
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.collections4.map.PassiveExpiringMap;
+import org.hl7.fhir.validation.ValidationEngine;
 
 /**
  * SessionCache for storing and retrieving ValidationEngine instances, so callers do not have to re-instantiate a new

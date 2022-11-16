@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -708,6 +708,542 @@ A coverage may only be responsible for specific types of charges, and the sequen
 
   }
 
+    @Block()
+    public static class AccountRelatedAccountComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Relationship of the associated Account.
+         */
+        @Child(name = "relationship", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Relationship of the associated Account", formalDefinition="Relationship of the associated Account." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/account-relationship")
+        protected CodeableConcept relationship;
+
+        /**
+         * Reference to an associated Account.
+         */
+        @Child(name = "account", type = {Account.class}, order=2, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Reference to an associated Account", formalDefinition="Reference to an associated Account." )
+        protected Reference account;
+
+        private static final long serialVersionUID = 1586291361L;
+
+    /**
+     * Constructor
+     */
+      public AccountRelatedAccountComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public AccountRelatedAccountComponent(Reference account) {
+        super();
+        this.setAccount(account);
+      }
+
+        /**
+         * @return {@link #relationship} (Relationship of the associated Account.)
+         */
+        public CodeableConcept getRelationship() { 
+          if (this.relationship == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AccountRelatedAccountComponent.relationship");
+            else if (Configuration.doAutoCreate())
+              this.relationship = new CodeableConcept(); // cc
+          return this.relationship;
+        }
+
+        public boolean hasRelationship() { 
+          return this.relationship != null && !this.relationship.isEmpty();
+        }
+
+        /**
+         * @param value {@link #relationship} (Relationship of the associated Account.)
+         */
+        public AccountRelatedAccountComponent setRelationship(CodeableConcept value) { 
+          this.relationship = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #account} (Reference to an associated Account.)
+         */
+        public Reference getAccount() { 
+          if (this.account == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AccountRelatedAccountComponent.account");
+            else if (Configuration.doAutoCreate())
+              this.account = new Reference(); // cc
+          return this.account;
+        }
+
+        public boolean hasAccount() { 
+          return this.account != null && !this.account.isEmpty();
+        }
+
+        /**
+         * @param value {@link #account} (Reference to an associated Account.)
+         */
+        public AccountRelatedAccountComponent setAccount(Reference value) { 
+          this.account = value;
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("relationship", "CodeableConcept", "Relationship of the associated Account.", 0, 1, relationship));
+          children.add(new Property("account", "Reference(Account)", "Reference to an associated Account.", 0, 1, account));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case -261851592: /*relationship*/  return new Property("relationship", "CodeableConcept", "Relationship of the associated Account.", 0, 1, relationship);
+          case -1177318867: /*account*/  return new Property("account", "Reference(Account)", "Reference to an associated Account.", 0, 1, account);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case -261851592: /*relationship*/ return this.relationship == null ? new Base[0] : new Base[] {this.relationship}; // CodeableConcept
+        case -1177318867: /*account*/ return this.account == null ? new Base[0] : new Base[] {this.account}; // Reference
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case -261851592: // relationship
+          this.relationship = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -1177318867: // account
+          this.account = TypeConvertor.castToReference(value); // Reference
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("relationship")) {
+          this.relationship = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("account")) {
+          this.account = TypeConvertor.castToReference(value); // Reference
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -261851592:  return getRelationship();
+        case -1177318867:  return getAccount();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -261851592: /*relationship*/ return new String[] {"CodeableConcept"};
+        case -1177318867: /*account*/ return new String[] {"Reference"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("relationship")) {
+          this.relationship = new CodeableConcept();
+          return this.relationship;
+        }
+        else if (name.equals("account")) {
+          this.account = new Reference();
+          return this.account;
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public AccountRelatedAccountComponent copy() {
+        AccountRelatedAccountComponent dst = new AccountRelatedAccountComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AccountRelatedAccountComponent dst) {
+        super.copyValues(dst);
+        dst.relationship = relationship == null ? null : relationship.copy();
+        dst.account = account == null ? null : account.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof AccountRelatedAccountComponent))
+          return false;
+        AccountRelatedAccountComponent o = (AccountRelatedAccountComponent) other_;
+        return compareDeep(relationship, o.relationship, true) && compareDeep(account, o.account, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof AccountRelatedAccountComponent))
+          return false;
+        AccountRelatedAccountComponent o = (AccountRelatedAccountComponent) other_;
+        return true;
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(relationship, account);
+      }
+
+  public String fhirType() {
+    return "Account.relatedAccount";
+
+  }
+
+  }
+
+    @Block()
+    public static class AccountBalanceComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Who is expected to pay this part of the balance.
+         */
+        @Child(name = "aggregate", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Who is expected to pay this part of the balance", formalDefinition="Who is expected to pay this part of the balance." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/account-aggregate")
+        protected CodeableConcept aggregate;
+
+        /**
+         * The term of the account balances - The balance value is the amount that was outstanding for this age.
+         */
+        @Child(name = "term", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="current | 30 | 60 | 90 | 120", formalDefinition="The term of the account balances - The balance value is the amount that was outstanding for this age." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/account-balance-term")
+        protected CodeableConcept term;
+
+        /**
+         * The amount is only an estimated value - this is likely common for `current` term balances, but not with known terms (that were generated by a backend process).
+         */
+        @Child(name = "estimate", type = {BooleanType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Estimated balance", formalDefinition="The amount is only an estimated value - this is likely common for `current` term balances, but not with known terms (that were generated by a backend process)." )
+        protected BooleanType estimate;
+
+        /**
+         * The actual balance value calculated for the age defined in the term property.
+         */
+        @Child(name = "amount", type = {Money.class}, order=4, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Calculated amount", formalDefinition="The actual balance value calculated for the age defined in the term property." )
+        protected Money amount;
+
+        private static final long serialVersionUID = -338990145L;
+
+    /**
+     * Constructor
+     */
+      public AccountBalanceComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public AccountBalanceComponent(Money amount) {
+        super();
+        this.setAmount(amount);
+      }
+
+        /**
+         * @return {@link #aggregate} (Who is expected to pay this part of the balance.)
+         */
+        public CodeableConcept getAggregate() { 
+          if (this.aggregate == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AccountBalanceComponent.aggregate");
+            else if (Configuration.doAutoCreate())
+              this.aggregate = new CodeableConcept(); // cc
+          return this.aggregate;
+        }
+
+        public boolean hasAggregate() { 
+          return this.aggregate != null && !this.aggregate.isEmpty();
+        }
+
+        /**
+         * @param value {@link #aggregate} (Who is expected to pay this part of the balance.)
+         */
+        public AccountBalanceComponent setAggregate(CodeableConcept value) { 
+          this.aggregate = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #term} (The term of the account balances - The balance value is the amount that was outstanding for this age.)
+         */
+        public CodeableConcept getTerm() { 
+          if (this.term == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AccountBalanceComponent.term");
+            else if (Configuration.doAutoCreate())
+              this.term = new CodeableConcept(); // cc
+          return this.term;
+        }
+
+        public boolean hasTerm() { 
+          return this.term != null && !this.term.isEmpty();
+        }
+
+        /**
+         * @param value {@link #term} (The term of the account balances - The balance value is the amount that was outstanding for this age.)
+         */
+        public AccountBalanceComponent setTerm(CodeableConcept value) { 
+          this.term = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #estimate} (The amount is only an estimated value - this is likely common for `current` term balances, but not with known terms (that were generated by a backend process).). This is the underlying object with id, value and extensions. The accessor "getEstimate" gives direct access to the value
+         */
+        public BooleanType getEstimateElement() { 
+          if (this.estimate == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AccountBalanceComponent.estimate");
+            else if (Configuration.doAutoCreate())
+              this.estimate = new BooleanType(); // bb
+          return this.estimate;
+        }
+
+        public boolean hasEstimateElement() { 
+          return this.estimate != null && !this.estimate.isEmpty();
+        }
+
+        public boolean hasEstimate() { 
+          return this.estimate != null && !this.estimate.isEmpty();
+        }
+
+        /**
+         * @param value {@link #estimate} (The amount is only an estimated value - this is likely common for `current` term balances, but not with known terms (that were generated by a backend process).). This is the underlying object with id, value and extensions. The accessor "getEstimate" gives direct access to the value
+         */
+        public AccountBalanceComponent setEstimateElement(BooleanType value) { 
+          this.estimate = value;
+          return this;
+        }
+
+        /**
+         * @return The amount is only an estimated value - this is likely common for `current` term balances, but not with known terms (that were generated by a backend process).
+         */
+        public boolean getEstimate() { 
+          return this.estimate == null || this.estimate.isEmpty() ? false : this.estimate.getValue();
+        }
+
+        /**
+         * @param value The amount is only an estimated value - this is likely common for `current` term balances, but not with known terms (that were generated by a backend process).
+         */
+        public AccountBalanceComponent setEstimate(boolean value) { 
+            if (this.estimate == null)
+              this.estimate = new BooleanType();
+            this.estimate.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #amount} (The actual balance value calculated for the age defined in the term property.)
+         */
+        public Money getAmount() { 
+          if (this.amount == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AccountBalanceComponent.amount");
+            else if (Configuration.doAutoCreate())
+              this.amount = new Money(); // cc
+          return this.amount;
+        }
+
+        public boolean hasAmount() { 
+          return this.amount != null && !this.amount.isEmpty();
+        }
+
+        /**
+         * @param value {@link #amount} (The actual balance value calculated for the age defined in the term property.)
+         */
+        public AccountBalanceComponent setAmount(Money value) { 
+          this.amount = value;
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("aggregate", "CodeableConcept", "Who is expected to pay this part of the balance.", 0, 1, aggregate));
+          children.add(new Property("term", "CodeableConcept", "The term of the account balances - The balance value is the amount that was outstanding for this age.", 0, 1, term));
+          children.add(new Property("estimate", "boolean", "The amount is only an estimated value - this is likely common for `current` term balances, but not with known terms (that were generated by a backend process).", 0, 1, estimate));
+          children.add(new Property("amount", "Money", "The actual balance value calculated for the age defined in the term property.", 0, 1, amount));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 175177151: /*aggregate*/  return new Property("aggregate", "CodeableConcept", "Who is expected to pay this part of the balance.", 0, 1, aggregate);
+          case 3556460: /*term*/  return new Property("term", "CodeableConcept", "The term of the account balances - The balance value is the amount that was outstanding for this age.", 0, 1, term);
+          case -1959779032: /*estimate*/  return new Property("estimate", "boolean", "The amount is only an estimated value - this is likely common for `current` term balances, but not with known terms (that were generated by a backend process).", 0, 1, estimate);
+          case -1413853096: /*amount*/  return new Property("amount", "Money", "The actual balance value calculated for the age defined in the term property.", 0, 1, amount);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 175177151: /*aggregate*/ return this.aggregate == null ? new Base[0] : new Base[] {this.aggregate}; // CodeableConcept
+        case 3556460: /*term*/ return this.term == null ? new Base[0] : new Base[] {this.term}; // CodeableConcept
+        case -1959779032: /*estimate*/ return this.estimate == null ? new Base[0] : new Base[] {this.estimate}; // BooleanType
+        case -1413853096: /*amount*/ return this.amount == null ? new Base[0] : new Base[] {this.amount}; // Money
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 175177151: // aggregate
+          this.aggregate = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 3556460: // term
+          this.term = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -1959779032: // estimate
+          this.estimate = TypeConvertor.castToBoolean(value); // BooleanType
+          return value;
+        case -1413853096: // amount
+          this.amount = TypeConvertor.castToMoney(value); // Money
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("aggregate")) {
+          this.aggregate = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("term")) {
+          this.term = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("estimate")) {
+          this.estimate = TypeConvertor.castToBoolean(value); // BooleanType
+        } else if (name.equals("amount")) {
+          this.amount = TypeConvertor.castToMoney(value); // Money
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 175177151:  return getAggregate();
+        case 3556460:  return getTerm();
+        case -1959779032:  return getEstimateElement();
+        case -1413853096:  return getAmount();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 175177151: /*aggregate*/ return new String[] {"CodeableConcept"};
+        case 3556460: /*term*/ return new String[] {"CodeableConcept"};
+        case -1959779032: /*estimate*/ return new String[] {"boolean"};
+        case -1413853096: /*amount*/ return new String[] {"Money"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("aggregate")) {
+          this.aggregate = new CodeableConcept();
+          return this.aggregate;
+        }
+        else if (name.equals("term")) {
+          this.term = new CodeableConcept();
+          return this.term;
+        }
+        else if (name.equals("estimate")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Account.balance.estimate");
+        }
+        else if (name.equals("amount")) {
+          this.amount = new Money();
+          return this.amount;
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public AccountBalanceComponent copy() {
+        AccountBalanceComponent dst = new AccountBalanceComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AccountBalanceComponent dst) {
+        super.copyValues(dst);
+        dst.aggregate = aggregate == null ? null : aggregate.copy();
+        dst.term = term == null ? null : term.copy();
+        dst.estimate = estimate == null ? null : estimate.copy();
+        dst.amount = amount == null ? null : amount.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof AccountBalanceComponent))
+          return false;
+        AccountBalanceComponent o = (AccountBalanceComponent) other_;
+        return compareDeep(aggregate, o.aggregate, true) && compareDeep(term, o.term, true) && compareDeep(estimate, o.estimate, true)
+           && compareDeep(amount, o.amount, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof AccountBalanceComponent))
+          return false;
+        AccountBalanceComponent o = (AccountBalanceComponent) other_;
+        return compareValues(estimate, o.estimate, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(aggregate, term, estimate
+          , amount);
+      }
+
+  public String fhirType() {
+    return "Account.balance";
+
+  }
+
+  }
+
     /**
      * Unique identifier used to reference the account.  Might or might not be intended for human use (e.g. credit card number).
      */
@@ -789,13 +1325,37 @@ A coverage may only be responsible for specific types of charges, and the sequen
     protected List<GuarantorComponent> guarantor;
 
     /**
-     * Reference to a parent Account.
+     * Other associated accounts related to this account.
      */
-    @Child(name = "partOf", type = {Account.class}, order=11, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Reference to a parent Account", formalDefinition="Reference to a parent Account." )
-    protected Reference partOf;
+    @Child(name = "relatedAccount", type = {}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Other associated accounts related to this account", formalDefinition="Other associated accounts related to this account." )
+    protected List<AccountRelatedAccountComponent> relatedAccount;
 
-    private static final long serialVersionUID = 1419356403L;
+    /**
+     * The default currency for the account.
+     */
+    @Child(name = "currency", type = {CodeableConcept.class}, order=12, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="The base or default currency", formalDefinition="The default currency for the account." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/currencies")
+    protected CodeableConcept currency;
+
+    /**
+     * The calculated account balances - these are calculated and processed by the finance system.
+
+The balances with a `term` that is not current are usually generated/updated by an invoicing or similar process.
+     */
+    @Child(name = "balance", type = {}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Calculated account balance(s)", formalDefinition="The calculated account balances - these are calculated and processed by the finance system.\r\rThe balances with a `term` that is not current are usually generated/updated by an invoicing or similar process." )
+    protected List<AccountBalanceComponent> balance;
+
+    /**
+     * Time the balance amount was calculated.
+     */
+    @Child(name = "calculatedAt", type = {InstantType.class}, order=14, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Time the balance amount was calculated", formalDefinition="Time the balance amount was calculated." )
+    protected InstantType calculatedAt;
+
+    private static final long serialVersionUID = -589833144L;
 
   /**
    * Constructor
@@ -1264,26 +1824,183 @@ A coverage may only be responsible for specific types of charges, and the sequen
     }
 
     /**
-     * @return {@link #partOf} (Reference to a parent Account.)
+     * @return {@link #relatedAccount} (Other associated accounts related to this account.)
      */
-    public Reference getPartOf() { 
-      if (this.partOf == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Account.partOf");
-        else if (Configuration.doAutoCreate())
-          this.partOf = new Reference(); // cc
-      return this.partOf;
-    }
-
-    public boolean hasPartOf() { 
-      return this.partOf != null && !this.partOf.isEmpty();
+    public List<AccountRelatedAccountComponent> getRelatedAccount() { 
+      if (this.relatedAccount == null)
+        this.relatedAccount = new ArrayList<AccountRelatedAccountComponent>();
+      return this.relatedAccount;
     }
 
     /**
-     * @param value {@link #partOf} (Reference to a parent Account.)
+     * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Account setPartOf(Reference value) { 
-      this.partOf = value;
+    public Account setRelatedAccount(List<AccountRelatedAccountComponent> theRelatedAccount) { 
+      this.relatedAccount = theRelatedAccount;
+      return this;
+    }
+
+    public boolean hasRelatedAccount() { 
+      if (this.relatedAccount == null)
+        return false;
+      for (AccountRelatedAccountComponent item : this.relatedAccount)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public AccountRelatedAccountComponent addRelatedAccount() { //3
+      AccountRelatedAccountComponent t = new AccountRelatedAccountComponent();
+      if (this.relatedAccount == null)
+        this.relatedAccount = new ArrayList<AccountRelatedAccountComponent>();
+      this.relatedAccount.add(t);
+      return t;
+    }
+
+    public Account addRelatedAccount(AccountRelatedAccountComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.relatedAccount == null)
+        this.relatedAccount = new ArrayList<AccountRelatedAccountComponent>();
+      this.relatedAccount.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #relatedAccount}, creating it if it does not already exist {3}
+     */
+    public AccountRelatedAccountComponent getRelatedAccountFirstRep() { 
+      if (getRelatedAccount().isEmpty()) {
+        addRelatedAccount();
+      }
+      return getRelatedAccount().get(0);
+    }
+
+    /**
+     * @return {@link #currency} (The default currency for the account.)
+     */
+    public CodeableConcept getCurrency() { 
+      if (this.currency == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Account.currency");
+        else if (Configuration.doAutoCreate())
+          this.currency = new CodeableConcept(); // cc
+      return this.currency;
+    }
+
+    public boolean hasCurrency() { 
+      return this.currency != null && !this.currency.isEmpty();
+    }
+
+    /**
+     * @param value {@link #currency} (The default currency for the account.)
+     */
+    public Account setCurrency(CodeableConcept value) { 
+      this.currency = value;
+      return this;
+    }
+
+    /**
+     * @return {@link #balance} (The calculated account balances - these are calculated and processed by the finance system.
+
+The balances with a `term` that is not current are usually generated/updated by an invoicing or similar process.)
+     */
+    public List<AccountBalanceComponent> getBalance() { 
+      if (this.balance == null)
+        this.balance = new ArrayList<AccountBalanceComponent>();
+      return this.balance;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public Account setBalance(List<AccountBalanceComponent> theBalance) { 
+      this.balance = theBalance;
+      return this;
+    }
+
+    public boolean hasBalance() { 
+      if (this.balance == null)
+        return false;
+      for (AccountBalanceComponent item : this.balance)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public AccountBalanceComponent addBalance() { //3
+      AccountBalanceComponent t = new AccountBalanceComponent();
+      if (this.balance == null)
+        this.balance = new ArrayList<AccountBalanceComponent>();
+      this.balance.add(t);
+      return t;
+    }
+
+    public Account addBalance(AccountBalanceComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.balance == null)
+        this.balance = new ArrayList<AccountBalanceComponent>();
+      this.balance.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #balance}, creating it if it does not already exist {3}
+     */
+    public AccountBalanceComponent getBalanceFirstRep() { 
+      if (getBalance().isEmpty()) {
+        addBalance();
+      }
+      return getBalance().get(0);
+    }
+
+    /**
+     * @return {@link #calculatedAt} (Time the balance amount was calculated.). This is the underlying object with id, value and extensions. The accessor "getCalculatedAt" gives direct access to the value
+     */
+    public InstantType getCalculatedAtElement() { 
+      if (this.calculatedAt == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Account.calculatedAt");
+        else if (Configuration.doAutoCreate())
+          this.calculatedAt = new InstantType(); // bb
+      return this.calculatedAt;
+    }
+
+    public boolean hasCalculatedAtElement() { 
+      return this.calculatedAt != null && !this.calculatedAt.isEmpty();
+    }
+
+    public boolean hasCalculatedAt() { 
+      return this.calculatedAt != null && !this.calculatedAt.isEmpty();
+    }
+
+    /**
+     * @param value {@link #calculatedAt} (Time the balance amount was calculated.). This is the underlying object with id, value and extensions. The accessor "getCalculatedAt" gives direct access to the value
+     */
+    public Account setCalculatedAtElement(InstantType value) { 
+      this.calculatedAt = value;
+      return this;
+    }
+
+    /**
+     * @return Time the balance amount was calculated.
+     */
+    public Date getCalculatedAt() { 
+      return this.calculatedAt == null ? null : this.calculatedAt.getValue();
+    }
+
+    /**
+     * @param value Time the balance amount was calculated.
+     */
+    public Account setCalculatedAt(Date value) { 
+      if (value == null)
+        this.calculatedAt = null;
+      else {
+        if (this.calculatedAt == null)
+          this.calculatedAt = new InstantType();
+        this.calculatedAt.setValue(value);
+      }
       return this;
     }
 
@@ -1300,7 +2017,10 @@ A coverage may only be responsible for specific types of charges, and the sequen
         children.add(new Property("owner", "Reference(Organization)", "Indicates the service area, hospital, department, etc. with responsibility for managing the Account.", 0, 1, owner));
         children.add(new Property("description", "string", "Provides additional information about what the account tracks and how it is used.", 0, 1, description));
         children.add(new Property("guarantor", "", "The parties responsible for balancing the account if other payment options fall short.", 0, java.lang.Integer.MAX_VALUE, guarantor));
-        children.add(new Property("partOf", "Reference(Account)", "Reference to a parent Account.", 0, 1, partOf));
+        children.add(new Property("relatedAccount", "", "Other associated accounts related to this account.", 0, java.lang.Integer.MAX_VALUE, relatedAccount));
+        children.add(new Property("currency", "CodeableConcept", "The default currency for the account.", 0, 1, currency));
+        children.add(new Property("balance", "", "The calculated account balances - these are calculated and processed by the finance system.\r\rThe balances with a `term` that is not current are usually generated/updated by an invoicing or similar process.", 0, java.lang.Integer.MAX_VALUE, balance));
+        children.add(new Property("calculatedAt", "instant", "Time the balance amount was calculated.", 0, 1, calculatedAt));
       }
 
       @Override
@@ -1317,7 +2037,10 @@ A coverage may only be responsible for specific types of charges, and the sequen
         case 106164915: /*owner*/  return new Property("owner", "Reference(Organization)", "Indicates the service area, hospital, department, etc. with responsibility for managing the Account.", 0, 1, owner);
         case -1724546052: /*description*/  return new Property("description", "string", "Provides additional information about what the account tracks and how it is used.", 0, 1, description);
         case -188629045: /*guarantor*/  return new Property("guarantor", "", "The parties responsible for balancing the account if other payment options fall short.", 0, java.lang.Integer.MAX_VALUE, guarantor);
-        case -995410646: /*partOf*/  return new Property("partOf", "Reference(Account)", "Reference to a parent Account.", 0, 1, partOf);
+        case 962039682: /*relatedAccount*/  return new Property("relatedAccount", "", "Other associated accounts related to this account.", 0, java.lang.Integer.MAX_VALUE, relatedAccount);
+        case 575402001: /*currency*/  return new Property("currency", "CodeableConcept", "The default currency for the account.", 0, 1, currency);
+        case -339185956: /*balance*/  return new Property("balance", "", "The calculated account balances - these are calculated and processed by the finance system.\r\rThe balances with a `term` that is not current are usually generated/updated by an invoicing or similar process.", 0, java.lang.Integer.MAX_VALUE, balance);
+        case 1089469073: /*calculatedAt*/  return new Property("calculatedAt", "instant", "Time the balance amount was calculated.", 0, 1, calculatedAt);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -1337,7 +2060,10 @@ A coverage may only be responsible for specific types of charges, and the sequen
         case 106164915: /*owner*/ return this.owner == null ? new Base[0] : new Base[] {this.owner}; // Reference
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
         case -188629045: /*guarantor*/ return this.guarantor == null ? new Base[0] : this.guarantor.toArray(new Base[this.guarantor.size()]); // GuarantorComponent
-        case -995410646: /*partOf*/ return this.partOf == null ? new Base[0] : new Base[] {this.partOf}; // Reference
+        case 962039682: /*relatedAccount*/ return this.relatedAccount == null ? new Base[0] : this.relatedAccount.toArray(new Base[this.relatedAccount.size()]); // AccountRelatedAccountComponent
+        case 575402001: /*currency*/ return this.currency == null ? new Base[0] : new Base[] {this.currency}; // CodeableConcept
+        case -339185956: /*balance*/ return this.balance == null ? new Base[0] : this.balance.toArray(new Base[this.balance.size()]); // AccountBalanceComponent
+        case 1089469073: /*calculatedAt*/ return this.calculatedAt == null ? new Base[0] : new Base[] {this.calculatedAt}; // InstantType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1380,8 +2106,17 @@ A coverage may only be responsible for specific types of charges, and the sequen
         case -188629045: // guarantor
           this.getGuarantor().add((GuarantorComponent) value); // GuarantorComponent
           return value;
-        case -995410646: // partOf
-          this.partOf = TypeConvertor.castToReference(value); // Reference
+        case 962039682: // relatedAccount
+          this.getRelatedAccount().add((AccountRelatedAccountComponent) value); // AccountRelatedAccountComponent
+          return value;
+        case 575402001: // currency
+          this.currency = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -339185956: // balance
+          this.getBalance().add((AccountBalanceComponent) value); // AccountBalanceComponent
+          return value;
+        case 1089469073: // calculatedAt
+          this.calculatedAt = TypeConvertor.castToInstant(value); // InstantType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1413,8 +2148,14 @@ A coverage may only be responsible for specific types of charges, and the sequen
           this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("guarantor")) {
           this.getGuarantor().add((GuarantorComponent) value);
-        } else if (name.equals("partOf")) {
-          this.partOf = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("relatedAccount")) {
+          this.getRelatedAccount().add((AccountRelatedAccountComponent) value);
+        } else if (name.equals("currency")) {
+          this.currency = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("balance")) {
+          this.getBalance().add((AccountBalanceComponent) value);
+        } else if (name.equals("calculatedAt")) {
+          this.calculatedAt = TypeConvertor.castToInstant(value); // InstantType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1434,7 +2175,10 @@ A coverage may only be responsible for specific types of charges, and the sequen
         case 106164915:  return getOwner();
         case -1724546052:  return getDescriptionElement();
         case -188629045:  return addGuarantor(); 
-        case -995410646:  return getPartOf();
+        case 962039682:  return addRelatedAccount(); 
+        case 575402001:  return getCurrency();
+        case -339185956:  return addBalance(); 
+        case 1089469073:  return getCalculatedAtElement();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1454,7 +2198,10 @@ A coverage may only be responsible for specific types of charges, and the sequen
         case 106164915: /*owner*/ return new String[] {"Reference"};
         case -1724546052: /*description*/ return new String[] {"string"};
         case -188629045: /*guarantor*/ return new String[] {};
-        case -995410646: /*partOf*/ return new String[] {"Reference"};
+        case 962039682: /*relatedAccount*/ return new String[] {};
+        case 575402001: /*currency*/ return new String[] {"CodeableConcept"};
+        case -339185956: /*balance*/ return new String[] {};
+        case 1089469073: /*calculatedAt*/ return new String[] {"instant"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1499,9 +2246,18 @@ A coverage may only be responsible for specific types of charges, and the sequen
         else if (name.equals("guarantor")) {
           return addGuarantor();
         }
-        else if (name.equals("partOf")) {
-          this.partOf = new Reference();
-          return this.partOf;
+        else if (name.equals("relatedAccount")) {
+          return addRelatedAccount();
+        }
+        else if (name.equals("currency")) {
+          this.currency = new CodeableConcept();
+          return this.currency;
+        }
+        else if (name.equals("balance")) {
+          return addBalance();
+        }
+        else if (name.equals("calculatedAt")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Account.calculatedAt");
         }
         else
           return super.addChild(name);
@@ -1547,7 +2303,18 @@ A coverage may only be responsible for specific types of charges, and the sequen
           for (GuarantorComponent i : guarantor)
             dst.guarantor.add(i.copy());
         };
-        dst.partOf = partOf == null ? null : partOf.copy();
+        if (relatedAccount != null) {
+          dst.relatedAccount = new ArrayList<AccountRelatedAccountComponent>();
+          for (AccountRelatedAccountComponent i : relatedAccount)
+            dst.relatedAccount.add(i.copy());
+        };
+        dst.currency = currency == null ? null : currency.copy();
+        if (balance != null) {
+          dst.balance = new ArrayList<AccountBalanceComponent>();
+          for (AccountBalanceComponent i : balance)
+            dst.balance.add(i.copy());
+        };
+        dst.calculatedAt = calculatedAt == null ? null : calculatedAt.copy();
       }
 
       protected Account typedCopy() {
@@ -1565,7 +2332,8 @@ A coverage may only be responsible for specific types of charges, and the sequen
            && compareDeep(type, o.type, true) && compareDeep(name, o.name, true) && compareDeep(subject, o.subject, true)
            && compareDeep(servicePeriod, o.servicePeriod, true) && compareDeep(coverage, o.coverage, true)
            && compareDeep(owner, o.owner, true) && compareDeep(description, o.description, true) && compareDeep(guarantor, o.guarantor, true)
-           && compareDeep(partOf, o.partOf, true);
+           && compareDeep(relatedAccount, o.relatedAccount, true) && compareDeep(currency, o.currency, true)
+           && compareDeep(balance, o.balance, true) && compareDeep(calculatedAt, o.calculatedAt, true);
       }
 
       @Override
@@ -1576,13 +2344,13 @@ A coverage may only be responsible for specific types of charges, and the sequen
           return false;
         Account o = (Account) other_;
         return compareValues(status, o.status, true) && compareValues(name, o.name, true) && compareValues(description, o.description, true)
-          ;
+           && compareValues(calculatedAt, o.calculatedAt, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, billingStatus
           , type, name, subject, servicePeriod, coverage, owner, description, guarantor
-          , partOf);
+          , relatedAccount, currency, balance, calculatedAt);
       }
 
   @Override
@@ -1727,6 +2495,32 @@ A coverage may only be responsible for specific types of charges, and the sequen
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam PERIOD = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_PERIOD);
+
+ /**
+   * Search parameter: <b>relatedaccount</b>
+   * <p>
+   * Description: <b>Parent and other related accounts</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Account.relatedAccount.account</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="relatedaccount", path="Account.relatedAccount.account", description="Parent and other related accounts", type="reference", target={Account.class } )
+  public static final String SP_RELATEDACCOUNT = "relatedaccount";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>relatedaccount</b>
+   * <p>
+   * Description: <b>Parent and other related accounts</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Account.relatedAccount.account</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam RELATEDACCOUNT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_RELATEDACCOUNT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Account:relatedaccount</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_RELATEDACCOUNT = new ca.uhn.fhir.model.api.Include("Account:relatedaccount").toLocked();
 
  /**
    * Search parameter: <b>status</b>

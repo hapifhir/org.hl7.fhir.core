@@ -1,6 +1,9 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
 
+import java.util.Collections;
+import java.util.stream.Collectors;
+
 import org.hl7.fhir.convertors.context.ConversionContext30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Annotation30_40;
@@ -13,9 +16,6 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Stri
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Uri30_40;
 import org.hl7.fhir.dstu3.model.Device;
 import org.hl7.fhir.exceptions.FHIRException;
-
-import java.util.Collections;
-import java.util.stream.Collectors;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

@@ -1,5 +1,13 @@
 package org.hl7.fhir.convertors.misc;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Date;
+
+import javax.annotation.Nonnull;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -41,13 +49,6 @@ import org.hl7.fhir.dstu3.model.ValueSet;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
-import javax.annotation.Nonnull;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Date;
 
 public class IGPackConverter102 extends BaseAdvisor_10_30 {
 

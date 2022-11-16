@@ -1,5 +1,8 @@
 package org.hl7.fhir.validation;
 
+import java.io.PrintWriter;
+import java.util.List;
+
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -8,9 +11,6 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.terminologies.ConceptMapEngine;
 import org.hl7.fhir.r5.utils.structuremap.ITransformerServices;
-
-import java.io.PrintWriter;
-import java.util.List;
 
 public class TransformSupportServices implements ITransformerServices {
 
