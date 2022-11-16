@@ -106,7 +106,7 @@ public class JsonObject extends JsonElement {
   }
 
   public Boolean getBoolean(String name) {
-    return ((JsonBoolean) get(name)).isValue();
+    return has(name) ?  ((JsonBoolean) get(name)).isValue() : false;
   }
 
   public JsonObject forceObj(String name) throws JsonException {
