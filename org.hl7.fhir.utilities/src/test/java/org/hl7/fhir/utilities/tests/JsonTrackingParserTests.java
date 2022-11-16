@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.junit.jupiter.api.Test;
 
-public class JsonParserTests {
+public class JsonTrackingParserTests {
 
   @Test
   public void test() throws IOException {
