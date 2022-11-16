@@ -38,6 +38,8 @@ import org.hl7.fhir.utilities.json.parser.JsonLexer.TokenType;
  *   * missing commas in objects and arrays 
  *   * comments - anything starting // will be processed as a comma to the end of the line
  *   
+ * Other JSON5 features might be added in the future
+ *   
  * The FHIR Validator uses this parser in Json5 mode, and the object model is marked up 
  * with deviations from base JSON spec so that the validator can record them as errors 
  * (this is better than blowing up parsing the JSON)
