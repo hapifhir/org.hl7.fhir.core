@@ -3,8 +3,13 @@ package org.hl7.fhir.convertors.conv10_50.resources10_50;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_50;
 import org.hl7.fhir.convertors.context.ConversionContext10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Signature10_50;
-import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.*;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Decimal10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Instant10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.String10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.UnsignedInt10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Uri10_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Bundle.LinkRelationTypes;
 import org.hl7.fhir.utilities.FhirPublication;
 
 public class Bundle10_50 {
@@ -195,7 +200,7 @@ public class Bundle10_50 {
     org.hl7.fhir.r5.model.Bundle.BundleLinkComponent tgt = new org.hl7.fhir.r5.model.Bundle.BundleLinkComponent();
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasRelationElement())
-      tgt.setRelationElement(String10_50.convertString(src.getRelationElement()));
+      tgt.setRelation(LinkRelationTypes.fromCode(src.getRelation()));
     if (src.hasUrlElement())
       tgt.setUrlElement(Uri10_50.convertUri(src.getUrlElement()));
     return tgt;
@@ -207,7 +212,7 @@ public class Bundle10_50 {
     org.hl7.fhir.dstu2.model.Bundle.BundleLinkComponent tgt = new org.hl7.fhir.dstu2.model.Bundle.BundleLinkComponent();
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasRelationElement())
-      tgt.setRelationElement(String10_50.convertString(src.getRelationElement()));
+      tgt.setRelation((src.getRelation().toCode()));
     if (src.hasUrlElement())
       tgt.setUrlElement(Uri10_50.convertUri(src.getUrlElement()));
     return tgt;

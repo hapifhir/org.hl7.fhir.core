@@ -1,6 +1,5 @@
 package org.hl7.fhir.convertors;
 
-import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Type10_30;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_30;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

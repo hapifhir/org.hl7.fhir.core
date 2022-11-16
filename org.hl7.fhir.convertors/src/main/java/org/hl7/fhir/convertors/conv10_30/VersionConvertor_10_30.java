@@ -1,16 +1,15 @@
 package org.hl7.fhir.convertors.conv10_30;
 
+import javax.annotation.Nonnull;
+
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_30;
 import org.hl7.fhir.convertors.context.ConversionContext10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.BackboneElement10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Element10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Type10_30;
 import org.hl7.fhir.convertors.conv10_30.resources10_30.Resource10_30;
-import org.hl7.fhir.convertors.conv10_40.datatypes10_40.BackboneElement10_40;
 import org.hl7.fhir.dstu2.model.CodeableConcept;
 import org.hl7.fhir.exceptions.FHIRException;
-
-import javax.annotation.Nonnull;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

@@ -40,6 +40,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.elementmodel.ParserBase.NamedElement;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -83,8 +84,15 @@ public class Manager {
       }
       return null;
     }
-
-    
+    public static FhirFormat readFromMimeType(String mt) {
+      if (mt.contains("/xml") || mt.contains("+xml")) {
+        return FhirFormat.XML;
+      }
+      if (mt.contains("/json") || mt.contains("+json")) {
+        return FhirFormat.JSON;
+      }
+      return null;
+    }
   }
   
   public static List<NamedElement> parse(IWorkerContext context, InputStream source, FhirFormat inputFormat) throws FHIRFormatError, DefinitionException, IOException, FHIRException {

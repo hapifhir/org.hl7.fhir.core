@@ -15,4 +15,31 @@ public class Canonical40_50 {
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     return tgt;
   }
+
+  public static org.hl7.fhir.r5.model.UriType convertCanonicalToUri(org.hl7.fhir.r4.model.CanonicalType src) throws FHIRException {
+    org.hl7.fhir.r5.model.UriType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.UriType(src.getValueAsString()) : new org.hl7.fhir.r5.model.UriType();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    return tgt;
+  }
+
+  public static org.hl7.fhir.r4.model.UriType convertCanonicalToUri(org.hl7.fhir.r5.model.CanonicalType src) throws FHIRException {
+    org.hl7.fhir.r4.model.UriType tgt = src.hasValue() ? new org.hl7.fhir.r4.model.UriType(src.getValueAsString()) : new org.hl7.fhir.r4.model.UriType();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    return tgt;
+  }
+
+
+
+  public static org.hl7.fhir.r5.model.CanonicalType convertUriToCanonical(org.hl7.fhir.r4.model.UriType src) throws FHIRException {
+    org.hl7.fhir.r5.model.CanonicalType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.CanonicalType(src.getValueAsString()) : new org.hl7.fhir.r5.model.CanonicalType();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    return tgt;
+  }
+
+  public static org.hl7.fhir.r4.model.CanonicalType convertUriToCanonical(org.hl7.fhir.r5.model.UriType src) throws FHIRException {
+    org.hl7.fhir.r4.model.CanonicalType tgt = src.hasValue() ? new org.hl7.fhir.r4.model.CanonicalType(src.getValueAsString()) : new org.hl7.fhir.r4.model.CanonicalType();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    return tgt;
+  }
+
 }

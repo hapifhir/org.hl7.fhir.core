@@ -39,10 +39,10 @@ import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.validation.BaseValidator;
@@ -51,9 +51,11 @@ public class ProfileValidator extends BaseValidator {
 
   private boolean checkAggregation = false;
   private boolean checkMustSupport = false;
+  private FHIRPathEngine fpe;
 
   public ProfileValidator(IWorkerContext context, XVerExtensionManager xverManager) {
     super(context, xverManager);
+    fpe = new FHIRPathEngine(context);
   }
 
   public boolean isCheckAggregation() {
@@ -81,8 +83,9 @@ public class ProfileValidator extends BaseValidator {
     List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
     
     // must have a FHIR version- GF#3160
-    warning(errors, IssueType.BUSINESSRULE, profile.getUrl(), profile.hasFhirVersion(), "Profiles SHOULD state the FHIR Version on which they are based");
-    warning(errors, IssueType.BUSINESSRULE, profile.getUrl(), profile.hasVersion(), "Profiles SHOULD state their own version");
+    String s = (profile.getKind() == StructureDefinitionKind.LOGICAL) ? "Logical Models" : "Profiles";
+    warning(errors, IssueType.BUSINESSRULE, profile.getUrl(), profile.hasFhirVersion(), s+" SHOULD state the FHIR Version on which they are based");
+    warning(errors, IssueType.BUSINESSRULE, profile.getUrl(), profile.hasVersion(), s+" SHOULD state their own version");
     
     // extensions must be defined
     for (ElementDefinition ec : profile.getDifferential().getElement())
@@ -95,16 +98,15 @@ public class ProfileValidator extends BaseValidator {
       Hashtable<String, ElementDefinition> snapshotElements = new Hashtable<String, ElementDefinition>();
       for (ElementDefinition ed : profile.getSnapshot().getElement()) {
         snapshotElements.put(ed.getId(), ed);
-        checkExtensions(profile, errors, "snapshot", ed);
         for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
           if (forBuild) {
             if (!inExemptList(inv.getKey())) {
               if (rule(errors, IssueType.BUSINESSRULE, profile.getId()+"::"+ed.getPath()+"::"+inv.getKey(), inv.hasExpression(), "The invariant has no FHIR Path expression ("+inv.getXpath()+")")) {
-                try {
-                  new FHIRPathEngine(context).check(null, profile.getType(), ed.getPath(), inv.getExpression()); // , inv.hasXpath() && inv.getXpath().startsWith("@value")
-                } catch (Exception e) {
-//                  rule(errors, IssueType.STRUCTURE, profile.getId()+"::"+ed.getPath()+"::"+inv.getId(), exprExt != null, e.getMessage());
-                }
+//                try {
+//                  fpe.check(null, profile.getType(), ed.getPath(), inv.getExpression()); // , inv.hasXpath() && inv.getXpath().startsWith("@value")
+//                } catch (Exception e) {
+//                  // rule(errors, IssueType.STRUCTURE, profile.getId()+"::"+ed.getPath()+"::"+inv.getId(), false, e.getMessage());
+//                }
               } 
             }
           }

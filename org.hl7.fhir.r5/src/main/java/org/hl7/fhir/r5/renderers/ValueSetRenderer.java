@@ -1,7 +1,5 @@
 package org.hl7.fhir.r5.renderers;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,10 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -27,34 +23,33 @@ import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
-import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.ExtensionHelper;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
-import org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
+import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionPropertyComponent;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
-import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
-import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Title;
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -80,7 +75,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
   }
   
   public boolean render(XhtmlNode x, ValueSet vs, boolean header) throws FHIRFormatError, DefinitionException, IOException {
-   List<UsedConceptMap> maps = findReleventMaps(vs);
+    List<UsedConceptMap> maps = findReleventMaps(vs);
     
     boolean hasExtensions;
     if (vs.hasExpansion()) {
@@ -103,19 +98,33 @@ public class ValueSetRenderer extends TerminologyRenderer {
   
   private List<UsedConceptMap> findReleventMaps(ValueSet vs) throws FHIRException {
     List<UsedConceptMap> res = new ArrayList<UsedConceptMap>();
-    for (CanonicalResource md : getContext().getWorker().allConformanceResources()) {
-      if (md instanceof ConceptMap) {
-        ConceptMap cm = (ConceptMap) md;
-        if (isSource(vs, cm.getSourceScope())) {
-          ConceptMapRenderInstructions re = findByTarget(cm.getTargetScope());
-          if (re != null) {
-            ValueSet vst = cm.hasTargetScope() ? getContext().getWorker().fetchResource(ValueSet.class, cm.hasTargetScopeCanonicalType() ? cm.getTargetScopeCanonicalType().getValue() : cm.getTargetScopeUriType().asStringValue()) : null;
-            res.add(new UsedConceptMap(re, vst == null ? cm.getUserString("path") : vst.getUserString("path"), cm));
-          }
+    for (ConceptMap cm : getContext().getWorker().fetchResourcesByType(ConceptMap.class)) {
+      if (isSource(vs, cm.getSourceScope())) {
+        ConceptMapRenderInstructions re = findByTarget(cm.getTargetScope());
+        if (re == null) {
+          re = new ConceptMapRenderInstructions(cm.present(), cm.getUrl(), false);
+        }
+        if (re != null) {
+          ValueSet vst = cm.hasTargetScope() ? getContext().getWorker().fetchResource(ValueSet.class, cm.hasTargetScopeCanonicalType() ? cm.getTargetScopeCanonicalType().getValue() : cm.getTargetScopeUriType().asStringValue()) : null;
+          res.add(new UsedConceptMap(re, vst == null ? cm.getUserString("path") : vst.getUserString("path"), cm));
         }
       }
     }
     return res;
+
+//    @Override
+//    public List<ConceptMap> findMapsForSource(String url) throws FHIRException {
+//      synchronized (lock) {
+//        List<ConceptMap> res = new ArrayList<ConceptMap>();
+//        for (ConceptMap map : maps.getList()) {
+//          if (((Reference) map.getSourceScope()).getReference().equals(url)) { 
+//            res.add(map);
+//          } 
+//        } 
+//        return res;
+//      }
+//    }
+
 //    Map<ConceptMap, String> mymaps = new HashMap<ConceptMap, String>();
 //  for (ConceptMap a : context.getWorker().findMapsForSource(vs.getUrl())) {
 //    String url = "";
@@ -155,6 +164,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     boolean hasExtensions = false;
     List<String> langs = new ArrayList<String>();
     Map<String, String> designations = new HashMap<>(); //  map of url = description, where url is the designation code. Designations that are for languages won't make it into this list
+    Map<String, String> properties = new HashMap<>(); //  map of url = description, where url is the designation code. Designations that are for languages won't make it into this list
 
     if (header) {
       XhtmlNode h = x.addTag(getHeader());
@@ -195,40 +205,32 @@ public class ValueSetRenderer extends TerminologyRenderer {
       }
     }
     
-    boolean doSystem = true; // checkDoSystem(vs, src);
     boolean doDefinition = checkDoDefinition(vs.getExpansion().getContains());
-    if (doSystem && allFromOneSystem(vs)) {
-      doSystem = false;
-      XhtmlNode p = x.para();
-      p.tx("All codes in this table are from the system ");
-      allCS = getContext().getWorker().fetchCodeSystem(vs.getExpansion().getContains().get(0).getSystem());
-      String ref = null;
-      if (allCS != null)
-        ref = getCsRef(allCS);
-      if (ref == null)
-        p.code(vs.getExpansion().getContains().get(0).getSystem());
-      else
-        p.ah(context.fixReference(ref)).code(vs.getExpansion().getContains().get(0).getSystem());
-    }
     XhtmlNode t = x.table( "codes");
     XhtmlNode tr = t.tr();
     if (doLevel)
       tr.td().b().tx("Level");
     tr.td().attribute("style", "white-space:nowrap").b().tx("Code");
-    if (doSystem)
-      tr.td().b().tx("System");
+    tr.td().b().tx("System");
     XhtmlNode tdDisp = tr.td();
     tdDisp.b().tx("Display");
     boolean doDesignations = false;
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
       scanForDesignations(c, langs, designations);
     }
+    scanForProperties(vs.getExpansion(), langs, properties);
     if (doDefinition) {
       tr.td().b().tx("Definition");
       doDesignations = false;
+      for (String n : Utilities.sorted(properties.keySet())) {
+        tr.td().b().ah(properties.get(n)).addText(n);        
+      }
     } else {
+      for (String n : Utilities.sorted(properties.keySet())) {
+        tr.td().b().ah(properties.get(n)).addText(n);        
+      }
       // if we're not doing definitions and we don't have too many languages, we'll do them in line
-      doDesignations = langs.size() + designations.size() < MAX_DESIGNATIONS_IN_LINE;
+      doDesignations = langs.size() + properties.size() + designations.size() < MAX_DESIGNATIONS_IN_LINE;
 
       if (doDesignations) {
         if (vs.hasLanguage()) {
@@ -246,7 +248,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     
     addMapHeaders(tr, maps);
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
-      addExpansionRowToTable(t, c, 1, doLevel, doSystem, doDefinition, maps, allCS, langs, designations, doDesignations);
+      addExpansionRowToTable(t, c, 1, doLevel, true, doDefinition, maps, allCS, langs, designations, doDesignations, properties);
     }
 
     // now, build observed languages
@@ -275,6 +277,30 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }
 
     return hasExtensions;
+  }
+
+
+  private void scanForProperties(ValueSetExpansionComponent exp, List<String> langs, Map<String, String> properties) {
+    properties.clear();
+    for (ValueSetExpansionPropertyComponent pp : exp.getProperty()) {
+      if (pp.hasCode() && pp.hasUri() && anyActualproperties(exp.getContains(), pp.getCode())) {
+        properties.put(pp.getCode(), pp.getUri());
+      }
+    }
+  }
+
+  private boolean anyActualproperties(List<ValueSetExpansionContainsComponent> contains, String pp) {
+    for (ValueSetExpansionContainsComponent c : contains) {
+      for (ConceptPropertyComponent cp : c.getProperty()) {
+        if (pp.equals(cp.getCode())) {
+          return true;
+        }
+      }
+      if (anyActualproperties(c.getContains(), pp)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private void generateContentModeNotices(XhtmlNode x, ValueSetExpansionComponent expansion) {
@@ -346,12 +372,14 @@ public class ValueSetRenderer extends TerminologyRenderer {
       return null;
     }
     String src = source.primitiveValue();
-    if (src != null)
-      for (ConceptMapRenderInstructions t : renderingMaps) {
-        if (src.equals(t.getUrl()))
-          return t;
-      }
-    return null;
+    if (src == null) {
+      return null;
+    }
+    for (ConceptMapRenderInstructions t : renderingMaps) {
+      if (src.equals(t.getUrl()))
+        return t;
+    }
+    return null;    
   }
 
 
@@ -650,6 +678,9 @@ public class ValueSetRenderer extends TerminologyRenderer {
   }
 
   private  <T extends Resource> String getCsRef(T cs) {
+    if (cs == null) {
+      return "?cs-n?";
+    }
     String ref = (String) cs.getUserData("filename");
     if (ref == null)
       ref = (String) cs.getUserData("path");
@@ -710,7 +741,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }    
   }
 
-  private void addExpansionRowToTable(XhtmlNode t, ValueSetExpansionContainsComponent c, int i, boolean doLevel, boolean doSystem, boolean doDefinition, List<UsedConceptMap> maps, CodeSystem allCS, List<String> langs, Map<String, String> designations, boolean doDesignations) {
+  private void addExpansionRowToTable(XhtmlNode t, ValueSetExpansionContainsComponent c, int i, boolean doLevel, boolean doSystem, boolean doDefinition, List<UsedConceptMap> maps, CodeSystem allCS, List<String> langs, Map<String, String> designations, boolean doDesignations, Map<String, String> properties) throws FHIRFormatError, DefinitionException, IOException {
     XhtmlNode tr = t.tr();
     XhtmlNode td = tr.td();
 
@@ -737,8 +768,17 @@ public class ValueSetRenderer extends TerminologyRenderer {
       if (cs == null)
         cs = getContext().getWorker().fetchCodeSystem(c.getSystem());
       td = tr.td();
-      if (cs != null)
-        td.addText(CodeSystemUtilities.getCodeDefinition(cs, c.getCode()));
+      if (cs != null) {
+        String defn = CodeSystemUtilities.getCodeDefinition(cs, c.getCode());
+        addMarkdown(td, defn, cs.getUserString("path"));
+      }
+    }
+    for (String n  : Utilities.sorted(properties.keySet())) {
+      td = tr.td();
+      String ps = getPropertyValue(c, n); 
+      if (!Utilities.noString(ps)) {  
+        td.addText(ps);        
+      }
     }
     for (UsedConceptMap m : maps) {
       td = tr.td();
@@ -760,13 +800,22 @@ public class ValueSetRenderer extends TerminologyRenderer {
       addLangaugesToRow(c, langs, tr);
     }
     for (ValueSetExpansionContainsComponent cc : c.getContains()) {
-      addExpansionRowToTable(t, cc, i+1, doLevel, doSystem, doDefinition, maps, allCS, langs, designations, doDesignations);
+      addExpansionRowToTable(t, cc, i+1, doLevel, doSystem, doDefinition, maps, allCS, langs, designations, doDesignations, properties);
     }
   }
 
 
 
 
+
+  private String getPropertyValue(ValueSetExpansionContainsComponent c, String n) {
+    for (ConceptPropertyComponent  cp : c.getProperty()) {
+      if (n.equals(cp.getCode())) {
+        return cp.getValue().primitiveValue();
+      }
+    }
+    return null;
+  }
 
   private boolean checkSystemMatches(String system, ValueSetExpansionContainsComponent cc) {
     if (!system.equals(cc.getSystem()))
@@ -810,14 +859,15 @@ public class ValueSetRenderer extends TerminologyRenderer {
   }
 
   private void addRefToCode(XhtmlNode td, String target, String vslink, String code) {
-    CodeSystem cs = getContext().getWorker().fetchCodeSystem(target);
-    String cslink = getCsRef(cs);
-    XhtmlNode a = null;
-    if (cslink != null) 
-      a = td.ah(getContext().getSpecificationLink()+cslink+"#"+cs.getId()+"-"+code);
-    else
-      a = td.ah(getContext().getSpecificationLink()+vslink+"#"+code);
-    a.addText(code);
+    addCodeToTable(false, target, code, null, td);
+//    CodeSystem cs = getContext().getWorker().fetchCodeSystem(target);
+//    String cslink = getCsRef(cs);
+//    String link = cslink != null ? cslink+"#"+cs.getId()+"-"+code : vslink+"#"+code;
+//    if (!Utilities.isAbsoluteUrl(link)) {
+//      link = getContext().getSpecificationLink()+link;
+//    }
+//    XhtmlNode a = td.ah(link);
+//    a.addText(code);
   }
 
   private boolean generateComposition(XhtmlNode x, ValueSet vs, boolean header, List<UsedConceptMap> maps) throws FHIRException, IOException {
@@ -907,7 +957,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     x.br();
     x.tx(s);
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context.getDestDir(), context.isInlineGraphics(), true);
-    TableModel model = gen.new TableModel("exp.h="+index, !forResource);    
+    TableModel model = gen.new TableModel("exp.h="+index, context.getRules() == GenerationRules.IG_PUBLISHER);    
     model.setAlternating(true);
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("vs.exp.header", "Code"), translate("vs.exp.hint", "The code for the item"), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("vs.exp.header", "Display"), translate("vs.exp.hint", "The display for the item"), null, 0));
@@ -1065,13 +1115,14 @@ public class ValueSetRenderer extends TerminologyRenderer {
 
           // for performance reasons, we do all the fetching in one batch
           definitions = getConceptsForCodes(e, inc);
+
           
           XhtmlNode t = li.table("none");
           boolean hasComments = false;
           boolean hasDefinition = false;
           for (ConceptReferenceComponent c : inc.getConcept()) {
             hasComments = hasComments || ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_VS_COMMENT);
-            ConceptDefinitionComponent cc = definitions.get(c.getCode()); 
+            ConceptDefinitionComponent cc = definitions == null ? null : definitions.get(c.getCode()); 
             hasDefinition = hasDefinition || ((cc != null && cc.hasDefinition()) || ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_DEFINITION));
           }
           if (hasComments || hasDefinition)
@@ -1080,7 +1131,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           for (ConceptReferenceComponent c : inc.getConcept()) {
             XhtmlNode tr = t.tr();
             XhtmlNode td = tr.td();
-            ConceptDefinitionComponent cc = definitions.get(c.getCode()); 
+            ConceptDefinitionComponent cc = definitions == null ? null : definitions.get(c.getCode()); 
             addCodeToTable(false, inc.getSystem(), c.getCode(), c.hasDisplay()? c.getDisplay() : cc != null ? cc.getDisplay() : "", td);
 
             td = tr.td();
@@ -1106,6 +1157,21 @@ public class ValueSetRenderer extends TerminologyRenderer {
             if (doDesignations) {
               addDesignationsToRow(c, designations, tr);
               addLangaugesToRow(c, langs, tr);
+            }
+            for (UsedConceptMap m : maps) {
+              td = tr.td();
+              List<TargetElementComponentWrapper> mappings = findMappingsForCode(c.getCode(), m.getMap());
+              boolean first = true;
+              for (TargetElementComponentWrapper mapping : mappings) {
+                if (!first)
+                    td.br();
+                first = false;
+                XhtmlNode span = td.span(null, mapping.comp.getRelationship().toString());
+                span.addText(getCharForRelationship(mapping.comp));
+                addRefToCode(td, mapping.group.getTarget(), m.getLink(), mapping.comp.getCode()); 
+                if (!Utilities.noString(mapping.comp.getComment()))
+                  td.i().tx("("+mapping.comp.getComment()+")");
+              }
             }
           }
         }
@@ -1234,7 +1300,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }
     
     ValueSetExpansionComponent vse = null;
-    if (!context.isNoSlowLookup() && !getContext().getWorker().hasCache()) {
+    if (!context.isNoSlowLookup()) { // && !getContext().getWorker().hasCache()) { removed GG 20220107 like what is this trying to do?
       try {
         ValueSetExpansionOutcome vso = getContext().getWorker().expandVS(inc, false, false);   
         ValueSet valueset = vso.getValueset();
@@ -1254,7 +1320,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     for (ConceptReferenceComponent cc : inc.getConcept()) {
       String code = cc.getCode();
       ConceptDefinitionComponent v = null;
-      if (e != null) {
+      if (e != null && code != null) {
         v = getConceptForCode(e.getConcept(), code);
       }
       if (v == null && vse != null) {

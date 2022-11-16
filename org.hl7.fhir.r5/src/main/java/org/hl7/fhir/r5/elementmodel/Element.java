@@ -1,5 +1,7 @@
 package org.hl7.fhir.r5.elementmodel;
 
+import java.io.PrintStream;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -42,6 +44,7 @@ import java.util.Set;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ElementDefinition;
@@ -50,7 +53,9 @@ import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
 import org.hl7.fhir.r5.model.ICoding;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.TypeConvertor;
+import org.hl7.fhir.r5.model.Base.ValidationInfo;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.utilities.ElementDecoration;
@@ -71,9 +76,8 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  */
 public class Element extends Base {
 
-
   public enum SpecialElement {
-		CONTAINED, BUNDLE_ENTRY, BUNDLE_OUTCOME, PARAMETER;
+		CONTAINED, BUNDLE_ENTRY, BUNDLE_OUTCOME, PARAMETER, LOGICAL;
 
     public static SpecialElement fromProperty(Property property) {
       if (property.getStructure().getType().equals("Parameters"))
@@ -84,6 +88,8 @@ public class Element extends Base {
         return BUNDLE_OUTCOME;
       if (property.getName().equals("contained")) 
         return CONTAINED;
+      if (property.getStructure().getKind() == StructureDefinitionKind.LOGICAL)
+        return LOGICAL;
       throw new FHIRException("Unknown resource containing a native resource: "+property.getDefinition().getId());
     }
 
@@ -93,6 +99,7 @@ public class Element extends Base {
       case BUNDLE_OUTCOME: return "outcome";
       case CONTAINED: return "contained";
       case PARAMETER: return "parameter";
+      case LOGICAL: return "logical";
       default: return "??";        
       }
     }
@@ -120,6 +127,8 @@ public class Element extends Base {
   private Map<String, List<Element>> childMap;
   private int descendentCount;
   private int instanceId;
+  private boolean isNull;
+  private Base source;
 
 	public Element(String name) {
 		super();
@@ -207,7 +216,15 @@ public class Element extends Base {
 
 	}
 
-	public boolean hasValue() {
+	public boolean isNull() {
+    return isNull;
+  }
+
+  public void setNull(boolean isNull) {
+    this.isNull = isNull;
+  }
+
+  public boolean hasValue() {
 		return value != null;
 	}
 
@@ -486,7 +503,7 @@ public class Element extends Base {
   }
 
   private boolean isDataType(Base v) {
-    return v instanceof DataType &&  property.getContext().getTypeNames().contains(v.fhirType());
+    return v instanceof DataType && new ContextUtilities(property.getContext()).getTypeNames().contains(v.fhirType());
   }
 
   @Override
@@ -845,7 +862,7 @@ public class Element extends Base {
     private List<ElementDefinition> children;
     public ElementSortComparator(Element e, Property property) {
       String tn = e.getType();
-      StructureDefinition sd = property.getContext().fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(tn, property.getContext().getOverrideVersionNs()));
+      StructureDefinition sd = property.getContext().fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(tn, null));
       if (sd != null && !sd.getAbstract())
         children = sd.getSnapshot().getElement();
       else
@@ -1123,6 +1140,116 @@ public class Element extends Base {
   public void setInstanceId(int instanceId) {
     this.instanceId = instanceId;
   }
+
+
+  @Override
+  public boolean hasValidationInfo() {
+    return hasSource() ? source.hasValidationInfo() : super.hasValidationInfo();
+  }
+
+  @Override
+  public List<ValidationInfo> getValidationInfo() {
+    return hasSource() ? source.getValidationInfo() : super.getValidationInfo();
+  }
+
+  @Override
+  public ValidationInfo addDefinition(StructureDefinition source, ElementDefinition defn, ValidationMode mode) {
+    if (this.source != null) {
+      return this.source.addDefinition(source, defn, mode);
+    } else {
+      return super.addDefinition(source, defn, mode);
+    }
+  }
+
+  public boolean hasSource() {
+    return source != null;
+  }
+
   
+  public Base getSource() {
+    return source;
+  }
+
+  public void setSource(Base source) {
+    this.source = source;
+  }
+
+  public void printToOutput() {
+    printToOutput(System.out, "");
+    
+  }
+
+  public void printToOutput(PrintStream stream) {
+    printToOutput(stream, "");
+    
+  }
+
+  private void printToOutput(PrintStream out, String indent) {
+    String s = indent+name +(index == -1 ? "" : "["+index+"]") +(special != null ? "$"+special.toHuman(): "")+ (type!= null || explicitType != null ? " : "+type+(explicitType != null ? "/'"+explicitType+"'" : "") : "");
+    if (isNull) {
+      s = s + " = (null)";
+    } else if (value != null) {
+      s = s + " = '"+value+"'";      
+    } else if (xhtml != null) {
+      s = s + " = (xhtml)";
+    }
+    if (property != null) {
+      s = s +" {"+property.summary();
+      if (elementProperty != null) {
+        s = s +" -> "+elementProperty.summary();
+      }
+      s = s + "}";
+    }
+    if (line > 0) {
+      s = s + " (l"+line+":c"+col+")";
+    }
+    out.println(s);
+    if (children != null) {
+      for (Element child : children) {
+        child.printToOutput(out, indent+"  ");
+      }
+    }
+    
+  }
+
+  private String msgCounts() {
+    int e = 0;
+    int w = 0;
+    int h = 0;
+    for (ValidationMessage msg : messages) {
+      switch (msg.getLevel()) {
+      case ERROR:
+        e++;
+        break;
+      case FATAL:
+        e++;
+        break;
+      case INFORMATION:
+        h++;
+        break;
+      case NULL:
+        break;
+      case WARNING:
+        w++;
+        break;
+      default:
+        break;      
+      }
+    }
+    return "e:"+e+",w:"+w+",h:"+h;
+  }
+
+  public void populatePaths(String path) {
+    if (path == null) {
+      path = fhirType();
+    }
+    setPath(path);
+    if (children != null) {
+      for (Element n : children) {
+        n.populatePaths(path+"."+n.getName());
+      }
+    }
+    
+  }
   
 }

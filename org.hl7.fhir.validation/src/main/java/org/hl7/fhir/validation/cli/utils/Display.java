@@ -1,18 +1,13 @@
 package org.hl7.fhir.validation.cli.utils;
 
-import org.apache.commons.io.FileUtils;
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.r5.model.Constants;
-import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
-import java.util.Map;
 
 /**
  * Class for displaying output to the cli user.

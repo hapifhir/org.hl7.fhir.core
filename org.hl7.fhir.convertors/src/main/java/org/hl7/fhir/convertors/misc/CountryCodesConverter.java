@@ -1,5 +1,12 @@
 package org.hl7.fhir.convertors.misc;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -42,12 +49,6 @@ import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.FileInputStream;
-import java.io.IOException;
 
 public class CountryCodesConverter {
 

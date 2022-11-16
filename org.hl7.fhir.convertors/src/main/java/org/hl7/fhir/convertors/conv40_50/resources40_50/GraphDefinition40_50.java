@@ -4,7 +4,14 @@ import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.ContactDetail40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.UsageContext40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Boolean40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Canonical40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Code40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Integer40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.MarkDown40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -68,7 +75,7 @@ public class GraphDefinition40_50 {
     if (src.hasPurpose())
       tgt.setPurposeElement(MarkDown40_50.convertMarkdown(src.getPurposeElement()));
     if (src.hasStart())
-      tgt.setStartElement(Code40_50.convertResourceEnum(src.getStartElement()));
+      tgt.setStartElement(Code40_50.convertCode(src.getStartElement()));
     if (src.hasProfile())
       tgt.setProfileElement(Canonical40_50.convertCanonical(src.getProfileElement()));
     for (org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkComponent t : src.getLink())
@@ -106,7 +113,7 @@ public class GraphDefinition40_50 {
     if (src.hasPurpose())
       tgt.setPurposeElement(MarkDown40_50.convertMarkdown(src.getPurposeElement()));
     if (src.hasStart())
-      tgt.setStartElement(Code40_50.convertResourceEnum(src.getStartElement()));
+      tgt.setStartElement(Code40_50.convertCode(src.getStartElement()));
     if (src.hasProfile())
       tgt.setProfileElement(Canonical40_50.convertCanonical(src.getProfileElement()));
     for (org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkComponent t : src.getLink())

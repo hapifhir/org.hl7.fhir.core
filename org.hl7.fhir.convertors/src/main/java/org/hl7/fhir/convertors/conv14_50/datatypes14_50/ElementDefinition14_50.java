@@ -1,18 +1,24 @@
 package org.hl7.fhir.convertors.conv14_50.datatypes14_50;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.complextypes14_50.Coding14_50;
-import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.*;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.Boolean14_50;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.Code14_50;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.Id14_50;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.Integer14_50;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.MarkDown14_50;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.String14_50;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.Uri14_50;
 import org.hl7.fhir.convertors.conv14_50.resources14_50.Enumerations14_50;
 import org.hl7.fhir.dstu2016may.model.ElementDefinition;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.utilities.Utilities;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class ElementDefinition14_50 {
   public static org.hl7.fhir.r5.model.ElementDefinition convertElementDefinition(org.hl7.fhir.dstu2016may.model.ElementDefinition src, List<ElementDefinition> context, int pos) throws FHIRException {
@@ -486,7 +492,7 @@ public class ElementDefinition14_50 {
     org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent tgt = new org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent();
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
     if (src.hasKeyElement()) tgt.setKeyElement(Id14_50.convertId(src.getKeyElement()));
-    if (src.hasRequirements()) tgt.setRequirementsElement(String14_50.convertString(src.getRequirementsElement()));
+    if (src.hasRequirements()) tgt.setRequirementsElement(String14_50.convertStringToMarkdown(src.getRequirementsElement()));
     if (src.hasSeverity()) tgt.setSeverityElement(convertConstraintSeverity(src.getSeverityElement()));
     if (src.hasHumanElement()) tgt.setHumanElement(String14_50.convertString(src.getHumanElement()));
     if (src.hasExpression()) tgt.setExpression(convertToR4Expression(src.getExpression()));
@@ -556,7 +562,7 @@ public class ElementDefinition14_50 {
     org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent tgt = new org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent();
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
     if (src.hasStrength()) tgt.setStrengthElement(Enumerations14_50.convertBindingStrength(src.getStrengthElement()));
-    if (src.hasDescription()) tgt.setDescriptionElement(String14_50.convertString(src.getDescriptionElement()));
+    if (src.hasDescription()) tgt.setDescriptionElement(String14_50.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasValueSet()) {
       org.hl7.fhir.r5.model.DataType t = ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().convertType(src.getValueSet());
       if (t instanceof org.hl7.fhir.r5.model.Reference)

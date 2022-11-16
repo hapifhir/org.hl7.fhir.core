@@ -20,7 +20,7 @@ public class MedicationAdministration30_50 {
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier30_50.convertIdentifier(t));
-    for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri()) tgt.addDefinition().setReference(t.getValue());
+//    for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri()) tgt.addDefinition().setReference(t.getValue());
     for (org.hl7.fhir.r5.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference30_50.convertReference(t));
     if (src.hasStatus())
       tgt.setStatusElement(convertMedicationAdministrationStatus(src.getStatusElement()));
@@ -64,7 +64,7 @@ public class MedicationAdministration30_50 {
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyDomainResource(src, tgt);
     for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier30_50.convertIdentifier(t));
-    for (org.hl7.fhir.dstu3.model.Reference t : src.getDefinition()) tgt.addInstantiatesUri(t.getReference());
+//    for (org.hl7.fhir.dstu3.model.Reference t : src.getDefinition()) tgt.addInstantiatesUri(t.getReference());
     for (org.hl7.fhir.dstu3.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference30_50.convertReference(t));
     if (src.hasStatus())
       tgt.setStatusElement(convertMedicationAdministrationStatus(src.getStatusElement()));

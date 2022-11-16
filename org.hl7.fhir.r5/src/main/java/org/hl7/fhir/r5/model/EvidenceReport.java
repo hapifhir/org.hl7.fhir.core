@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -2389,10 +2389,10 @@ public class EvidenceReport extends MetadataResource {
   }
 
     /**
-     * An absolute URI that is used to identify this EvidenceReport when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.
+     * An absolute URI that is used to identify this EvidenceReport when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.
      */
     @Child(name = "url", type = {UriType.class}, order=0, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Canonical identifier for this EvidenceReport, represented as a globally unique URI", formalDefinition="An absolute URI that is used to identify this EvidenceReport when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers." )
+    @Description(shortDefinition="Canonical identifier for this EvidenceReport, represented as a globally unique URI", formalDefinition="An absolute URI that is used to identify this EvidenceReport when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers." )
     protected UriType url;
 
     /**
@@ -2461,10 +2461,10 @@ public class EvidenceReport extends MetadataResource {
     protected EvidenceReportSubjectComponent subject;
 
     /**
-     * The name of the organization or individual that published the evidence report.
+     * The name of the organization or individual responsible for the release and ongoing maintenance of the evidence report.
      */
     @Child(name = "publisher", type = {StringType.class}, order=10, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Name of the publisher (organization or individual)", formalDefinition="The name of the organization or individual that published the evidence report." )
+    @Description(shortDefinition="Name of the publisher/steward (organization or individual)", formalDefinition="The name of the organization or individual responsible for the release and ongoing maintenance of the evidence report." )
     protected StringType publisher;
 
     /**
@@ -2535,7 +2535,7 @@ public class EvidenceReport extends MetadataResource {
     }
 
     /**
-     * @return {@link #url} (An absolute URI that is used to identify this EvidenceReport when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @return {@link #url} (An absolute URI that is used to identify this EvidenceReport when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public UriType getUrlElement() { 
       if (this.url == null)
@@ -2555,7 +2555,7 @@ public class EvidenceReport extends MetadataResource {
     }
 
     /**
-     * @param value {@link #url} (An absolute URI that is used to identify this EvidenceReport when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @param value {@link #url} (An absolute URI that is used to identify this EvidenceReport when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public EvidenceReport setUrlElement(UriType value) { 
       this.url = value;
@@ -2563,14 +2563,14 @@ public class EvidenceReport extends MetadataResource {
     }
 
     /**
-     * @return An absolute URI that is used to identify this EvidenceReport when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.
+     * @return An absolute URI that is used to identify this EvidenceReport when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.
      */
     public String getUrl() { 
       return this.url == null ? null : this.url.getValue();
     }
 
     /**
-     * @param value An absolute URI that is used to identify this EvidenceReport when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.
+     * @param value An absolute URI that is used to identify this EvidenceReport when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.
      */
     public EvidenceReport setUrl(String value) { 
       if (Utilities.noString(value))
@@ -2993,7 +2993,7 @@ public class EvidenceReport extends MetadataResource {
     }
 
     /**
-     * @return {@link #publisher} (The name of the organization or individual that published the evidence report.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     * @return {@link #publisher} (The name of the organization or individual responsible for the release and ongoing maintenance of the evidence report.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
     public StringType getPublisherElement() { 
       if (this.publisher == null)
@@ -3013,7 +3013,7 @@ public class EvidenceReport extends MetadataResource {
     }
 
     /**
-     * @param value {@link #publisher} (The name of the organization or individual that published the evidence report.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     * @param value {@link #publisher} (The name of the organization or individual responsible for the release and ongoing maintenance of the evidence report.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
     public EvidenceReport setPublisherElement(StringType value) { 
       this.publisher = value;
@@ -3021,14 +3021,14 @@ public class EvidenceReport extends MetadataResource {
     }
 
     /**
-     * @return The name of the organization or individual that published the evidence report.
+     * @return The name of the organization or individual responsible for the release and ongoing maintenance of the evidence report.
      */
     public String getPublisher() { 
       return this.publisher == null ? null : this.publisher.getValue();
     }
 
     /**
-     * @param value The name of the organization or individual that published the evidence report.
+     * @param value The name of the organization or individual responsible for the release and ongoing maintenance of the evidence report.
      */
     public EvidenceReport setPublisher(String value) { 
       if (Utilities.noString(value))
@@ -3437,17 +3437,58 @@ public class EvidenceReport extends MetadataResource {
      * @param value {@link #version} (The identifier that is used to identify this version of the evidence report when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the evidence report author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
      */
     public EvidenceReport setVersionElement(StringType value) { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"version\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"version\""); 
     }
     public String getVersion() { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"version\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"version\""); 
     }
     /**
      * @param value The identifier that is used to identify this version of the evidence report when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the evidence report author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.
      */
     public EvidenceReport setVersion(String value) { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"version\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"version\""); 
     }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getVersionAlgorithmMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public DataType getVersionAlgorithm() { 
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public StringType getVersionAlgorithmStringType() { 
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    public boolean hasVersionAlgorithmStringType() { 
+      return false;////K 
+    }
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public Coding getVersionAlgorithmCoding() { 
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    public boolean hasVersionAlgorithmCoding() { 
+      return false;////K 
+    }
+    public boolean hasVersionAlgorithm() { 
+      return false;
+    }
+    /**
+     * @param value {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public EvidenceReport setVersionAlgorithm(DataType value) { 
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+
     /**
      * not supported on this implementation
      */
@@ -3473,16 +3514,16 @@ public class EvidenceReport extends MetadataResource {
      * @param value {@link #name} (A natural language name identifying the evidence report. This name should be usable as an identifier for the module by machine processing applications such as code generation.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
      */
     public EvidenceReport setNameElement(StringType value) { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"name\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"name\""); 
     }
     public String getName() { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"name\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"name\""); 
     }
     /**
      * @param value A natural language name identifying the evidence report. This name should be usable as an identifier for the module by machine processing applications such as code generation.
      */
     public EvidenceReport setName(String value) { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"name\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"name\""); 
     }
     /**
      * not supported on this implementation
@@ -3509,16 +3550,16 @@ public class EvidenceReport extends MetadataResource {
      * @param value {@link #title} (A short, descriptive, user-friendly title for the evidence report.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
      */
     public EvidenceReport setTitleElement(StringType value) { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"title\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"title\""); 
     }
     public String getTitle() { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"title\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"title\""); 
     }
     /**
      * @param value A short, descriptive, user-friendly title for the evidence report.
      */
     public EvidenceReport setTitle(String value) { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"title\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"title\""); 
     }
     /**
      * not supported on this implementation
@@ -3545,16 +3586,16 @@ public class EvidenceReport extends MetadataResource {
      * @param value {@link #experimental} (A Boolean value to indicate that this evidence report is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.). This is the underlying object with id, value and extensions. The accessor "getExperimental" gives direct access to the value
      */
     public EvidenceReport setExperimentalElement(BooleanType value) { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"experimental\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"experimental\""); 
     }
     public boolean getExperimental() { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"experimental\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"experimental\""); 
     }
     /**
      * @param value A Boolean value to indicate that this evidence report is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
      */
     public EvidenceReport setExperimental(boolean value) { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"experimental\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"experimental\""); 
     }
     /**
      * not supported on this implementation
@@ -3581,16 +3622,16 @@ public class EvidenceReport extends MetadataResource {
      * @param value {@link #date} (The date  (and optionally time) when the evidence report was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the evidence report changes.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
      */
     public EvidenceReport setDateElement(DateTimeType value) { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"date\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"date\""); 
     }
     public Date getDate() { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"date\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"date\""); 
     }
     /**
      * @param value The date  (and optionally time) when the evidence report was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the evidence report changes.
      */
     public EvidenceReport setDate(Date value) { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"date\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"date\""); 
     }
     /**
      * not supported on this implementation
@@ -3617,16 +3658,16 @@ public class EvidenceReport extends MetadataResource {
      * @param value {@link #description} (A free text natural language description of the evidence report from a consumer's perspective.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
      */
     public EvidenceReport setDescriptionElement(MarkdownType value) { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"description\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"description\""); 
     }
     public String getDescription() { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"description\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"description\""); 
     }
     /**
      * @param value A free text natural language description of the evidence report from a consumer's perspective.
      */
     public EvidenceReport setDescription(String value) { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"description\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"description\""); 
     }
     /**
      * not supported on this implementation
@@ -3645,23 +3686,23 @@ public class EvidenceReport extends MetadataResource {
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
     public EvidenceReport setJurisdiction(List<CodeableConcept> theJurisdiction) { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"jurisdiction\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"jurisdiction\""); 
     }
     public boolean hasJurisdiction() { 
       return false;
     }
 
     public CodeableConcept addJurisdiction() { //3
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"jurisdiction\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"jurisdiction\""); 
     }
     public EvidenceReport addJurisdiction(CodeableConcept t) { //3
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"jurisdiction\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"jurisdiction\""); 
     }
     /**
      * @return The first repetition of repeating field {@link #jurisdiction}, creating it if it does not already exist {2}
      */
     public CodeableConcept getJurisdictionFirstRep() { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"jurisdiction\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"jurisdiction\""); 
     }
     /**
      * not supported on this implementation
@@ -3688,16 +3729,16 @@ public class EvidenceReport extends MetadataResource {
      * @param value {@link #purpose} (Explanation of why this evidence report is needed and why it has been designed as it has.). This is the underlying object with id, value and extensions. The accessor "getPurpose" gives direct access to the value
      */
     public EvidenceReport setPurposeElement(MarkdownType value) { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"purpose\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"purpose\""); 
     }
     public String getPurpose() { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"purpose\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"purpose\""); 
     }
     /**
      * @param value Explanation of why this evidence report is needed and why it has been designed as it has.
      */
     public EvidenceReport setPurpose(String value) { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"purpose\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"purpose\""); 
     }
     /**
      * not supported on this implementation
@@ -3724,16 +3765,52 @@ public class EvidenceReport extends MetadataResource {
      * @param value {@link #copyright} (A copyright statement relating to the evidence report and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the evidence report.). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value
      */
     public EvidenceReport setCopyrightElement(MarkdownType value) { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"copyright\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"copyright\""); 
     }
     public String getCopyright() { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"copyright\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"copyright\""); 
     }
     /**
      * @param value A copyright statement relating to the evidence report and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the evidence report.
      */
     public EvidenceReport setCopyright(String value) { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"copyright\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"copyright\""); 
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getCopyrightLabelMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public StringType getCopyrightLabelElement() { 
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"copyrightLabel\"");
+    }
+
+    public boolean hasCopyrightLabelElement() { 
+      return false;
+    }
+    public boolean hasCopyrightLabel() {
+      return false;
+    }
+
+    /**
+     * @param value {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public EvidenceReport setCopyrightLabelElement(StringType value) { 
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"copyrightLabel\""); 
+    }
+    public String getCopyrightLabel() { 
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"copyrightLabel\""); 
+    }
+    /**
+     * @param value A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    public EvidenceReport setCopyrightLabel(String value) { 
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"copyrightLabel\""); 
     }
     /**
      * not supported on this implementation
@@ -3760,16 +3837,16 @@ public class EvidenceReport extends MetadataResource {
      * @param value {@link #approvalDate} (The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.). This is the underlying object with id, value and extensions. The accessor "getApprovalDate" gives direct access to the value
      */
     public EvidenceReport setApprovalDateElement(DateType value) { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"approvalDate\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"approvalDate\""); 
     }
     public Date getApprovalDate() { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"approvalDate\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"approvalDate\""); 
     }
     /**
      * @param value The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
     public EvidenceReport setApprovalDate(Date value) { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"approvalDate\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"approvalDate\""); 
     }
     /**
      * not supported on this implementation
@@ -3796,16 +3873,16 @@ public class EvidenceReport extends MetadataResource {
      * @param value {@link #lastReviewDate} (The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.). This is the underlying object with id, value and extensions. The accessor "getLastReviewDate" gives direct access to the value
      */
     public EvidenceReport setLastReviewDateElement(DateType value) { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"lastReviewDate\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"lastReviewDate\""); 
     }
     public Date getLastReviewDate() { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"lastReviewDate\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"lastReviewDate\""); 
     }
     /**
      * @param value The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
      */
     public EvidenceReport setLastReviewDate(Date value) { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"lastReviewDate\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"lastReviewDate\""); 
     }
     /**
      * not supported on this implementation
@@ -3818,7 +3895,7 @@ public class EvidenceReport extends MetadataResource {
      * @return {@link #effectivePeriod} (The period during which the evidence report content was or is planned to be in active use.)
      */
     public Period getEffectivePeriod() { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"effectivePeriod\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"effectivePeriod\""); 
     }
     public boolean hasEffectivePeriod() { 
       return false;
@@ -3827,7 +3904,7 @@ public class EvidenceReport extends MetadataResource {
      * @param value {@link #effectivePeriod} (The period during which the evidence report content was or is planned to be in active use.)
      */
     public EvidenceReport setEffectivePeriod(Period value) { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"effectivePeriod\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"effectivePeriod\""); 
     }
 
     /**
@@ -3838,7 +3915,7 @@ public class EvidenceReport extends MetadataResource {
       return 0;
     }
     /**
-     * @return {@link #topic} (Descriptive topics related to the content of the evidence report. Topics provide a high-level categorization of the evidence report that can be useful for filtering and searching.)
+     * @return {@link #topic} (Descriptive topics related to the content of the evidence report. Topics provide a high-level categorization as well as keywords for the evidence report that can be useful for filtering and searching.)
      */
     public List<CodeableConcept> getTopic() { 
       return new ArrayList<>();
@@ -3847,27 +3924,27 @@ public class EvidenceReport extends MetadataResource {
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
     public EvidenceReport setTopic(List<CodeableConcept> theTopic) { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"topic\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"topic\""); 
     }
     public boolean hasTopic() { 
       return false;
     }
 
     public CodeableConcept addTopic() { //3
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"topic\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"topic\""); 
     }
     public EvidenceReport addTopic(CodeableConcept t) { //3
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"topic\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"topic\""); 
     }
     /**
      * @return The first repetition of repeating field {@link #topic}, creating it if it does not already exist {2}
      */
     public CodeableConcept getTopicFirstRep() { 
-      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"topic\"");
+      throw new Error("The resource type \"EvidenceReport\" does not implement the property \"topic\""); 
     }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("url", "uri", "An absolute URI that is used to identify this EvidenceReport when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.", 0, 1, url));
+        children.add(new Property("url", "uri", "An absolute URI that is used to identify this EvidenceReport when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.", 0, 1, url));
         children.add(new Property("status", "code", "The status of this summary. Enables tracking the life-cycle of the content.", 0, 1, status));
         children.add(new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate evidence report instances.", 0, java.lang.Integer.MAX_VALUE, useContext));
         children.add(new Property("identifier", "Identifier", "A formal identifier that is used to identify this EvidenceReport when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier));
@@ -3877,7 +3954,7 @@ public class EvidenceReport extends MetadataResource {
         children.add(new Property("note", "Annotation", "Used for footnotes and annotations.", 0, java.lang.Integer.MAX_VALUE, note));
         children.add(new Property("relatedArtifact", "RelatedArtifact", "Link, description or reference to artifact associated with the report.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact));
         children.add(new Property("subject", "", "Specifies the subject or focus of the report. Answers \"What is this report about?\".", 0, 1, subject));
-        children.add(new Property("publisher", "string", "The name of the organization or individual that published the evidence report.", 0, 1, publisher));
+        children.add(new Property("publisher", "string", "The name of the organization or individual responsible for the release and ongoing maintenance of the evidence report.", 0, 1, publisher));
         children.add(new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact));
         children.add(new Property("author", "ContactDetail", "An individiual, organization, or device primarily involved in the creation and maintenance of the content.", 0, java.lang.Integer.MAX_VALUE, author));
         children.add(new Property("editor", "ContactDetail", "An individiual, organization, or device primarily responsible for internal coherence of the content.", 0, java.lang.Integer.MAX_VALUE, editor));
@@ -3890,7 +3967,7 @@ public class EvidenceReport extends MetadataResource {
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this EvidenceReport when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.", 0, 1, url);
+        case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this EvidenceReport when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.", 0, 1, url);
         case -892481550: /*status*/  return new Property("status", "code", "The status of this summary. Enables tracking the life-cycle of the content.", 0, 1, status);
         case -669707736: /*useContext*/  return new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate evidence report instances.", 0, java.lang.Integer.MAX_VALUE, useContext);
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "A formal identifier that is used to identify this EvidenceReport when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier);
@@ -3903,7 +3980,7 @@ public class EvidenceReport extends MetadataResource {
         case 3387378: /*note*/  return new Property("note", "Annotation", "Used for footnotes and annotations.", 0, java.lang.Integer.MAX_VALUE, note);
         case 666807069: /*relatedArtifact*/  return new Property("relatedArtifact", "RelatedArtifact", "Link, description or reference to artifact associated with the report.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact);
         case -1867885268: /*subject*/  return new Property("subject", "", "Specifies the subject or focus of the report. Answers \"What is this report about?\".", 0, 1, subject);
-        case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual that published the evidence report.", 0, 1, publisher);
+        case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual responsible for the release and ongoing maintenance of the evidence report.", 0, 1, publisher);
         case 951526432: /*contact*/  return new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact);
         case -1406328437: /*author*/  return new Property("author", "ContactDetail", "An individiual, organization, or device primarily involved in the creation and maintenance of the content.", 0, java.lang.Integer.MAX_VALUE, author);
         case -1307827859: /*editor*/  return new Property("editor", "ContactDetail", "An individiual, organization, or device primarily responsible for internal coherence of the content.", 0, java.lang.Integer.MAX_VALUE, editor);

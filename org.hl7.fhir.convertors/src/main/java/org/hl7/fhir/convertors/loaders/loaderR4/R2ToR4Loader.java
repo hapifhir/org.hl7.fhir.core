@@ -1,5 +1,11 @@
 package org.hl7.fhir.convertors.loaders.loaderR4;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -43,12 +49,6 @@ import org.hl7.fhir.r4.model.MetadataResource;
 import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r4.model.UriType;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 public class R2ToR4Loader extends BaseLoaderR4 {
 

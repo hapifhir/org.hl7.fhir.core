@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,7 +51,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * A ValueSet resource instance specifies a set of codes drawn from one or more code systems, intended for use in a particular context. Value sets link between [[[CodeSystem]]] definitions and their use in [coded elements](terminologies.html).
  */
 @ResourceDef(name="ValueSet", profile="http://hl7.org/fhir/StructureDefinition/ValueSet")
-public class ValueSet extends CanonicalResource {
+public class ValueSet extends MetadataResource {
 
     @Block()
     public static class ValueSetComposeComponent extends BackboneElement implements IBaseBackboneElement {
@@ -1468,13 +1468,21 @@ public class ValueSet extends CanonicalResource {
         protected Coding use;
 
         /**
+         * Additional codes that detail how this designation would be used, if there is more than one use.
+         */
+        @Child(name = "additionalUse", type = {Coding.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Additional ways how this designation would be used", formalDefinition="Additional codes that detail how this designation would be used, if there is more than one use." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/designation-use")
+        protected List<Coding> additionalUse;
+
+        /**
          * The text value for this designation.
          */
-        @Child(name = "value", type = {StringType.class}, order=3, min=1, max=1, modifier=false, summary=false)
+        @Child(name = "value", type = {StringType.class}, order=4, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="The text value for this designation", formalDefinition="The text value for this designation." )
         protected StringType value;
 
-        private static final long serialVersionUID = 1515662414L;
+        private static final long serialVersionUID = -141147882L;
 
     /**
      * Constructor
@@ -1565,6 +1573,59 @@ public class ValueSet extends CanonicalResource {
         }
 
         /**
+         * @return {@link #additionalUse} (Additional codes that detail how this designation would be used, if there is more than one use.)
+         */
+        public List<Coding> getAdditionalUse() { 
+          if (this.additionalUse == null)
+            this.additionalUse = new ArrayList<Coding>();
+          return this.additionalUse;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public ConceptReferenceDesignationComponent setAdditionalUse(List<Coding> theAdditionalUse) { 
+          this.additionalUse = theAdditionalUse;
+          return this;
+        }
+
+        public boolean hasAdditionalUse() { 
+          if (this.additionalUse == null)
+            return false;
+          for (Coding item : this.additionalUse)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public Coding addAdditionalUse() { //3
+          Coding t = new Coding();
+          if (this.additionalUse == null)
+            this.additionalUse = new ArrayList<Coding>();
+          this.additionalUse.add(t);
+          return t;
+        }
+
+        public ConceptReferenceDesignationComponent addAdditionalUse(Coding t) { //3
+          if (t == null)
+            return this;
+          if (this.additionalUse == null)
+            this.additionalUse = new ArrayList<Coding>();
+          this.additionalUse.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #additionalUse}, creating it if it does not already exist {3}
+         */
+        public Coding getAdditionalUseFirstRep() { 
+          if (getAdditionalUse().isEmpty()) {
+            addAdditionalUse();
+          }
+          return getAdditionalUse().get(0);
+        }
+
+        /**
          * @return {@link #value} (The text value for this designation.). This is the underlying object with id, value and extensions. The accessor "getValue" gives direct access to the value
          */
         public StringType getValueElement() { 
@@ -1613,6 +1674,7 @@ public class ValueSet extends CanonicalResource {
           super.listChildren(children);
           children.add(new Property("language", "code", "The language this designation is defined for.", 0, 1, language));
           children.add(new Property("use", "Coding", "A code that represents types of uses of designations.", 0, 1, use));
+          children.add(new Property("additionalUse", "Coding", "Additional codes that detail how this designation would be used, if there is more than one use.", 0, java.lang.Integer.MAX_VALUE, additionalUse));
           children.add(new Property("value", "string", "The text value for this designation.", 0, 1, value));
         }
 
@@ -1621,6 +1683,7 @@ public class ValueSet extends CanonicalResource {
           switch (_hash) {
           case -1613589672: /*language*/  return new Property("language", "code", "The language this designation is defined for.", 0, 1, language);
           case 116103: /*use*/  return new Property("use", "Coding", "A code that represents types of uses of designations.", 0, 1, use);
+          case 938414048: /*additionalUse*/  return new Property("additionalUse", "Coding", "Additional codes that detail how this designation would be used, if there is more than one use.", 0, java.lang.Integer.MAX_VALUE, additionalUse);
           case 111972721: /*value*/  return new Property("value", "string", "The text value for this designation.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -1632,6 +1695,7 @@ public class ValueSet extends CanonicalResource {
         switch (hash) {
         case -1613589672: /*language*/ return this.language == null ? new Base[0] : new Base[] {this.language}; // CodeType
         case 116103: /*use*/ return this.use == null ? new Base[0] : new Base[] {this.use}; // Coding
+        case 938414048: /*additionalUse*/ return this.additionalUse == null ? new Base[0] : this.additionalUse.toArray(new Base[this.additionalUse.size()]); // Coding
         case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // StringType
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -1647,6 +1711,9 @@ public class ValueSet extends CanonicalResource {
         case 116103: // use
           this.use = TypeConvertor.castToCoding(value); // Coding
           return value;
+        case 938414048: // additionalUse
+          this.getAdditionalUse().add(TypeConvertor.castToCoding(value)); // Coding
+          return value;
         case 111972721: // value
           this.value = TypeConvertor.castToString(value); // StringType
           return value;
@@ -1661,6 +1728,8 @@ public class ValueSet extends CanonicalResource {
           this.language = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("use")) {
           this.use = TypeConvertor.castToCoding(value); // Coding
+        } else if (name.equals("additionalUse")) {
+          this.getAdditionalUse().add(TypeConvertor.castToCoding(value));
         } else if (name.equals("value")) {
           this.value = TypeConvertor.castToString(value); // StringType
         } else
@@ -1673,6 +1742,7 @@ public class ValueSet extends CanonicalResource {
         switch (hash) {
         case -1613589672:  return getLanguageElement();
         case 116103:  return getUse();
+        case 938414048:  return addAdditionalUse(); 
         case 111972721:  return getValueElement();
         default: return super.makeProperty(hash, name);
         }
@@ -1684,6 +1754,7 @@ public class ValueSet extends CanonicalResource {
         switch (hash) {
         case -1613589672: /*language*/ return new String[] {"code"};
         case 116103: /*use*/ return new String[] {"Coding"};
+        case 938414048: /*additionalUse*/ return new String[] {"Coding"};
         case 111972721: /*value*/ return new String[] {"string"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -1698,6 +1769,9 @@ public class ValueSet extends CanonicalResource {
         else if (name.equals("use")) {
           this.use = new Coding();
           return this.use;
+        }
+        else if (name.equals("additionalUse")) {
+          return addAdditionalUse();
         }
         else if (name.equals("value")) {
           throw new FHIRException("Cannot call addChild on a primitive type ValueSet.compose.include.concept.designation.value");
@@ -1716,6 +1790,11 @@ public class ValueSet extends CanonicalResource {
         super.copyValues(dst);
         dst.language = language == null ? null : language.copy();
         dst.use = use == null ? null : use.copy();
+        if (additionalUse != null) {
+          dst.additionalUse = new ArrayList<Coding>();
+          for (Coding i : additionalUse)
+            dst.additionalUse.add(i.copy());
+        };
         dst.value = value == null ? null : value.copy();
       }
 
@@ -1726,8 +1805,8 @@ public class ValueSet extends CanonicalResource {
         if (!(other_ instanceof ConceptReferenceDesignationComponent))
           return false;
         ConceptReferenceDesignationComponent o = (ConceptReferenceDesignationComponent) other_;
-        return compareDeep(language, o.language, true) && compareDeep(use, o.use, true) && compareDeep(value, o.value, true)
-          ;
+        return compareDeep(language, o.language, true) && compareDeep(use, o.use, true) && compareDeep(additionalUse, o.additionalUse, true)
+           && compareDeep(value, o.value, true);
       }
 
       @Override
@@ -1741,7 +1820,8 @@ public class ValueSet extends CanonicalResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(language, use, value);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(language, use, additionalUse
+          , value);
       }
 
   public String fhirType() {
@@ -2083,48 +2163,55 @@ public class ValueSet extends CanonicalResource {
         protected UriType identifier;
 
         /**
+         * As per paging Search results, the next URLs are opaque to the client, have no dictated structure, and only the server understands them.
+         */
+        @Child(name = "next", type = {UriType.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Opaque urls for paging through expansion results", formalDefinition="As per paging Search results, the next URLs are opaque to the client, have no dictated structure, and only the server understands them." )
+        protected UriType next;
+
+        /**
          * The time at which the expansion was produced by the expanding system.
          */
-        @Child(name = "timestamp", type = {DateTimeType.class}, order=2, min=1, max=1, modifier=false, summary=false)
+        @Child(name = "timestamp", type = {DateTimeType.class}, order=3, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Time ValueSet expansion happened", formalDefinition="The time at which the expansion was produced by the expanding system." )
         protected DateTimeType timestamp;
 
         /**
          * The total number of concepts in the expansion. If the number of concept nodes in this resource is less than the stated number, then the server can return more using the offset parameter.
          */
-        @Child(name = "total", type = {IntegerType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "total", type = {IntegerType.class}, order=4, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Total number of codes in the expansion", formalDefinition="The total number of concepts in the expansion. If the number of concept nodes in this resource is less than the stated number, then the server can return more using the offset parameter." )
         protected IntegerType total;
 
         /**
          * If paging is being used, the offset at which this resource starts.  I.e. this resource is a partial view into the expansion. If paging is not being used, this element SHALL NOT be present.
          */
-        @Child(name = "offset", type = {IntegerType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "offset", type = {IntegerType.class}, order=5, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Offset at which this resource starts", formalDefinition="If paging is being used, the offset at which this resource starts.  I.e. this resource is a partial view into the expansion. If paging is not being used, this element SHALL NOT be present." )
         protected IntegerType offset;
 
         /**
          * A parameter that controlled the expansion process. These parameters may be used by users of expanded value sets to check whether the expansion is suitable for a particular purpose, or to pick the correct expansion.
          */
-        @Child(name = "parameter", type = {}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "parameter", type = {}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Parameter that controlled the expansion process", formalDefinition="A parameter that controlled the expansion process. These parameters may be used by users of expanded value sets to check whether the expansion is suitable for a particular purpose, or to pick the correct expansion." )
         protected List<ValueSetExpansionParameterComponent> parameter;
 
         /**
          * A property defines an additional slot through which additional information can be provided about a concept.
          */
-        @Child(name = "property", type = {}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "property", type = {}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Additional information supplied about each concept", formalDefinition="A property defines an additional slot through which additional information can be provided about a concept." )
         protected List<ValueSetExpansionPropertyComponent> property;
 
         /**
          * The codes that are contained in the value set expansion.
          */
-        @Child(name = "contains", type = {}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "contains", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Codes in the value set", formalDefinition="The codes that are contained in the value set expansion." )
         protected List<ValueSetExpansionContainsComponent> contains;
 
-        private static final long serialVersionUID = 12372258L;
+        private static final long serialVersionUID = 1141573269L;
 
     /**
      * Constructor
@@ -2186,6 +2273,55 @@ public class ValueSet extends CanonicalResource {
             if (this.identifier == null)
               this.identifier = new UriType();
             this.identifier.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #next} (As per paging Search results, the next URLs are opaque to the client, have no dictated structure, and only the server understands them.). This is the underlying object with id, value and extensions. The accessor "getNext" gives direct access to the value
+         */
+        public UriType getNextElement() { 
+          if (this.next == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ValueSetExpansionComponent.next");
+            else if (Configuration.doAutoCreate())
+              this.next = new UriType(); // bb
+          return this.next;
+        }
+
+        public boolean hasNextElement() { 
+          return this.next != null && !this.next.isEmpty();
+        }
+
+        public boolean hasNext() { 
+          return this.next != null && !this.next.isEmpty();
+        }
+
+        /**
+         * @param value {@link #next} (As per paging Search results, the next URLs are opaque to the client, have no dictated structure, and only the server understands them.). This is the underlying object with id, value and extensions. The accessor "getNext" gives direct access to the value
+         */
+        public ValueSetExpansionComponent setNextElement(UriType value) { 
+          this.next = value;
+          return this;
+        }
+
+        /**
+         * @return As per paging Search results, the next URLs are opaque to the client, have no dictated structure, and only the server understands them.
+         */
+        public String getNext() { 
+          return this.next == null ? null : this.next.getValue();
+        }
+
+        /**
+         * @param value As per paging Search results, the next URLs are opaque to the client, have no dictated structure, and only the server understands them.
+         */
+        public ValueSetExpansionComponent setNext(String value) { 
+          if (Utilities.noString(value))
+            this.next = null;
+          else {
+            if (this.next == null)
+              this.next = new UriType();
+            this.next.setValue(value);
           }
           return this;
         }
@@ -2487,6 +2623,7 @@ public class ValueSet extends CanonicalResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("identifier", "uri", "An identifier that uniquely identifies this expansion of the valueset, based on a unique combination of the provided parameters, the system default parameters, and the underlying system code system versions etc. Systems may re-use the same identifier as long as those factors remain the same, and the expansion is the same, but are not required to do so. This is a business identifier.", 0, 1, identifier));
+          children.add(new Property("next", "uri", "As per paging Search results, the next URLs are opaque to the client, have no dictated structure, and only the server understands them.", 0, 1, next));
           children.add(new Property("timestamp", "dateTime", "The time at which the expansion was produced by the expanding system.", 0, 1, timestamp));
           children.add(new Property("total", "integer", "The total number of concepts in the expansion. If the number of concept nodes in this resource is less than the stated number, then the server can return more using the offset parameter.", 0, 1, total));
           children.add(new Property("offset", "integer", "If paging is being used, the offset at which this resource starts.  I.e. this resource is a partial view into the expansion. If paging is not being used, this element SHALL NOT be present.", 0, 1, offset));
@@ -2499,6 +2636,7 @@ public class ValueSet extends CanonicalResource {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case -1618432855: /*identifier*/  return new Property("identifier", "uri", "An identifier that uniquely identifies this expansion of the valueset, based on a unique combination of the provided parameters, the system default parameters, and the underlying system code system versions etc. Systems may re-use the same identifier as long as those factors remain the same, and the expansion is the same, but are not required to do so. This is a business identifier.", 0, 1, identifier);
+          case 3377907: /*next*/  return new Property("next", "uri", "As per paging Search results, the next URLs are opaque to the client, have no dictated structure, and only the server understands them.", 0, 1, next);
           case 55126294: /*timestamp*/  return new Property("timestamp", "dateTime", "The time at which the expansion was produced by the expanding system.", 0, 1, timestamp);
           case 110549828: /*total*/  return new Property("total", "integer", "The total number of concepts in the expansion. If the number of concept nodes in this resource is less than the stated number, then the server can return more using the offset parameter.", 0, 1, total);
           case -1019779949: /*offset*/  return new Property("offset", "integer", "If paging is being used, the offset at which this resource starts.  I.e. this resource is a partial view into the expansion. If paging is not being used, this element SHALL NOT be present.", 0, 1, offset);
@@ -2514,6 +2652,7 @@ public class ValueSet extends CanonicalResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : new Base[] {this.identifier}; // UriType
+        case 3377907: /*next*/ return this.next == null ? new Base[0] : new Base[] {this.next}; // UriType
         case 55126294: /*timestamp*/ return this.timestamp == null ? new Base[0] : new Base[] {this.timestamp}; // DateTimeType
         case 110549828: /*total*/ return this.total == null ? new Base[0] : new Base[] {this.total}; // IntegerType
         case -1019779949: /*offset*/ return this.offset == null ? new Base[0] : new Base[] {this.offset}; // IntegerType
@@ -2530,6 +2669,9 @@ public class ValueSet extends CanonicalResource {
         switch (hash) {
         case -1618432855: // identifier
           this.identifier = TypeConvertor.castToUri(value); // UriType
+          return value;
+        case 3377907: // next
+          this.next = TypeConvertor.castToUri(value); // UriType
           return value;
         case 55126294: // timestamp
           this.timestamp = TypeConvertor.castToDateTime(value); // DateTimeType
@@ -2558,6 +2700,8 @@ public class ValueSet extends CanonicalResource {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
           this.identifier = TypeConvertor.castToUri(value); // UriType
+        } else if (name.equals("next")) {
+          this.next = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("timestamp")) {
           this.timestamp = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("total")) {
@@ -2579,6 +2723,7 @@ public class ValueSet extends CanonicalResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855:  return getIdentifierElement();
+        case 3377907:  return getNextElement();
         case 55126294:  return getTimestampElement();
         case 110549828:  return getTotalElement();
         case -1019779949:  return getOffsetElement();
@@ -2594,6 +2739,7 @@ public class ValueSet extends CanonicalResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855: /*identifier*/ return new String[] {"uri"};
+        case 3377907: /*next*/ return new String[] {"uri"};
         case 55126294: /*timestamp*/ return new String[] {"dateTime"};
         case 110549828: /*total*/ return new String[] {"integer"};
         case -1019779949: /*offset*/ return new String[] {"integer"};
@@ -2609,6 +2755,9 @@ public class ValueSet extends CanonicalResource {
       public Base addChild(String name) throws FHIRException {
         if (name.equals("identifier")) {
           throw new FHIRException("Cannot call addChild on a primitive type ValueSet.expansion.identifier");
+        }
+        else if (name.equals("next")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.expansion.next");
         }
         else if (name.equals("timestamp")) {
           throw new FHIRException("Cannot call addChild on a primitive type ValueSet.expansion.timestamp");
@@ -2641,6 +2790,7 @@ public class ValueSet extends CanonicalResource {
       public void copyValues(ValueSetExpansionComponent dst) {
         super.copyValues(dst);
         dst.identifier = identifier == null ? null : identifier.copy();
+        dst.next = next == null ? null : next.copy();
         dst.timestamp = timestamp == null ? null : timestamp.copy();
         dst.total = total == null ? null : total.copy();
         dst.offset = offset == null ? null : offset.copy();
@@ -2668,7 +2818,7 @@ public class ValueSet extends CanonicalResource {
         if (!(other_ instanceof ValueSetExpansionComponent))
           return false;
         ValueSetExpansionComponent o = (ValueSetExpansionComponent) other_;
-        return compareDeep(identifier, o.identifier, true) && compareDeep(timestamp, o.timestamp, true)
+        return compareDeep(identifier, o.identifier, true) && compareDeep(next, o.next, true) && compareDeep(timestamp, o.timestamp, true)
            && compareDeep(total, o.total, true) && compareDeep(offset, o.offset, true) && compareDeep(parameter, o.parameter, true)
            && compareDeep(property, o.property, true) && compareDeep(contains, o.contains, true);
       }
@@ -2680,13 +2830,13 @@ public class ValueSet extends CanonicalResource {
         if (!(other_ instanceof ValueSetExpansionComponent))
           return false;
         ValueSetExpansionComponent o = (ValueSetExpansionComponent) other_;
-        return compareValues(identifier, o.identifier, true) && compareValues(timestamp, o.timestamp, true)
+        return compareValues(identifier, o.identifier, true) && compareValues(next, o.next, true) && compareValues(timestamp, o.timestamp, true)
            && compareValues(total, o.total, true) && compareValues(offset, o.offset, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, timestamp, total
-          , offset, parameter, property, contains);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, next, timestamp
+          , total, offset, parameter, property, contains);
       }
 
   public String fhirType() {
@@ -4090,7 +4240,14 @@ public class ValueSet extends CanonicalResource {
         @Description(shortDefinition="Value of the property for this concept", formalDefinition="The value of this property." )
         protected DataType value;
 
-        private static final long serialVersionUID = -422546419L;
+        /**
+         * A subproperty value for this concept.
+         */
+        @Child(name = "subProperty", type = {}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="SubProperty value for the concept", formalDefinition="A subproperty value for this concept." )
+        protected List<ConceptSubPropertyComponent> subProperty;
+
+        private static final long serialVersionUID = -948620650L;
 
     /**
      * Constructor
@@ -4279,10 +4436,64 @@ public class ValueSet extends CanonicalResource {
           return this;
         }
 
+        /**
+         * @return {@link #subProperty} (A subproperty value for this concept.)
+         */
+        public List<ConceptSubPropertyComponent> getSubProperty() { 
+          if (this.subProperty == null)
+            this.subProperty = new ArrayList<ConceptSubPropertyComponent>();
+          return this.subProperty;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public ConceptPropertyComponent setSubProperty(List<ConceptSubPropertyComponent> theSubProperty) { 
+          this.subProperty = theSubProperty;
+          return this;
+        }
+
+        public boolean hasSubProperty() { 
+          if (this.subProperty == null)
+            return false;
+          for (ConceptSubPropertyComponent item : this.subProperty)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public ConceptSubPropertyComponent addSubProperty() { //3
+          ConceptSubPropertyComponent t = new ConceptSubPropertyComponent();
+          if (this.subProperty == null)
+            this.subProperty = new ArrayList<ConceptSubPropertyComponent>();
+          this.subProperty.add(t);
+          return t;
+        }
+
+        public ConceptPropertyComponent addSubProperty(ConceptSubPropertyComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.subProperty == null)
+            this.subProperty = new ArrayList<ConceptSubPropertyComponent>();
+          this.subProperty.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #subProperty}, creating it if it does not already exist {3}
+         */
+        public ConceptSubPropertyComponent getSubPropertyFirstRep() { 
+          if (getSubProperty().isEmpty()) {
+            addSubProperty();
+          }
+          return getSubProperty().get(0);
+        }
+
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("code", "code", "A code that is a reference to ValueSet.expansion.property.code.", 0, 1, code));
           children.add(new Property("value[x]", "code|Coding|string|integer|boolean|dateTime|decimal", "The value of this property.", 0, 1, value));
+          children.add(new Property("subProperty", "", "A subproperty value for this concept.", 0, java.lang.Integer.MAX_VALUE, subProperty));
         }
 
         @Override
@@ -4298,6 +4509,390 @@ public class ValueSet extends CanonicalResource {
           case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "The value of this property.", 0, 1, value);
           case 1047929900: /*valueDateTime*/  return new Property("value[x]", "dateTime", "The value of this property.", 0, 1, value);
           case -2083993440: /*valueDecimal*/  return new Property("value[x]", "decimal", "The value of this property.", 0, 1, value);
+          case 321372213: /*subProperty*/  return new Property("subProperty", "", "A subproperty value for this concept.", 0, java.lang.Integer.MAX_VALUE, subProperty);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeType
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
+        case 321372213: /*subProperty*/ return this.subProperty == null ? new Base[0] : this.subProperty.toArray(new Base[this.subProperty.size()]); // ConceptSubPropertyComponent
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3059181: // code
+          this.code = TypeConvertor.castToCode(value); // CodeType
+          return value;
+        case 111972721: // value
+          this.value = TypeConvertor.castToType(value); // DataType
+          return value;
+        case 321372213: // subProperty
+          this.getSubProperty().add((ConceptSubPropertyComponent) value); // ConceptSubPropertyComponent
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = TypeConvertor.castToCode(value); // CodeType
+        } else if (name.equals("value[x]")) {
+          this.value = TypeConvertor.castToType(value); // DataType
+        } else if (name.equals("subProperty")) {
+          this.getSubProperty().add((ConceptSubPropertyComponent) value);
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3059181:  return getCodeElement();
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
+        case 321372213:  return addSubProperty(); 
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3059181: /*code*/ return new String[] {"code"};
+        case 111972721: /*value*/ return new String[] {"code", "Coding", "string", "integer", "boolean", "dateTime", "decimal"};
+        case 321372213: /*subProperty*/ return new String[] {};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("code")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.expansion.contains.property.code");
+        }
+        else if (name.equals("valueCode")) {
+          this.value = new CodeType();
+          return this.value;
+        }
+        else if (name.equals("valueCoding")) {
+          this.value = new Coding();
+          return this.value;
+        }
+        else if (name.equals("valueString")) {
+          this.value = new StringType();
+          return this.value;
+        }
+        else if (name.equals("valueInteger")) {
+          this.value = new IntegerType();
+          return this.value;
+        }
+        else if (name.equals("valueBoolean")) {
+          this.value = new BooleanType();
+          return this.value;
+        }
+        else if (name.equals("valueDateTime")) {
+          this.value = new DateTimeType();
+          return this.value;
+        }
+        else if (name.equals("valueDecimal")) {
+          this.value = new DecimalType();
+          return this.value;
+        }
+        else if (name.equals("subProperty")) {
+          return addSubProperty();
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public ConceptPropertyComponent copy() {
+        ConceptPropertyComponent dst = new ConceptPropertyComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ConceptPropertyComponent dst) {
+        super.copyValues(dst);
+        dst.code = code == null ? null : code.copy();
+        dst.value = value == null ? null : value.copy();
+        if (subProperty != null) {
+          dst.subProperty = new ArrayList<ConceptSubPropertyComponent>();
+          for (ConceptSubPropertyComponent i : subProperty)
+            dst.subProperty.add(i.copy());
+        };
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof ConceptPropertyComponent))
+          return false;
+        ConceptPropertyComponent o = (ConceptPropertyComponent) other_;
+        return compareDeep(code, o.code, true) && compareDeep(value, o.value, true) && compareDeep(subProperty, o.subProperty, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof ConceptPropertyComponent))
+          return false;
+        ConceptPropertyComponent o = (ConceptPropertyComponent) other_;
+        return compareValues(code, o.code, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, value, subProperty
+          );
+      }
+
+  public String fhirType() {
+    return "ValueSet.expansion.contains.property";
+
+  }
+
+  }
+
+    @Block()
+    public static class ConceptSubPropertyComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * A code that is a reference to ValueSet.expansion.property.code.
+         */
+        @Child(name = "code", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Reference to ValueSet.expansion.property.code", formalDefinition="A code that is a reference to ValueSet.expansion.property.code." )
+        protected CodeType code;
+
+        /**
+         * The value of this subproperty.
+         */
+        @Child(name = "value", type = {CodeType.class, Coding.class, StringType.class, IntegerType.class, BooleanType.class, DateTimeType.class, DecimalType.class}, order=2, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Value of the subproperty for this concept", formalDefinition="The value of this subproperty." )
+        protected DataType value;
+
+        private static final long serialVersionUID = -422546419L;
+
+    /**
+     * Constructor
+     */
+      public ConceptSubPropertyComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public ConceptSubPropertyComponent(String code, DataType value) {
+        super();
+        this.setCode(code);
+        this.setValue(value);
+      }
+
+        /**
+         * @return {@link #code} (A code that is a reference to ValueSet.expansion.property.code.). This is the underlying object with id, value and extensions. The accessor "getCode" gives direct access to the value
+         */
+        public CodeType getCodeElement() { 
+          if (this.code == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ConceptSubPropertyComponent.code");
+            else if (Configuration.doAutoCreate())
+              this.code = new CodeType(); // bb
+          return this.code;
+        }
+
+        public boolean hasCodeElement() { 
+          return this.code != null && !this.code.isEmpty();
+        }
+
+        public boolean hasCode() { 
+          return this.code != null && !this.code.isEmpty();
+        }
+
+        /**
+         * @param value {@link #code} (A code that is a reference to ValueSet.expansion.property.code.). This is the underlying object with id, value and extensions. The accessor "getCode" gives direct access to the value
+         */
+        public ConceptSubPropertyComponent setCodeElement(CodeType value) { 
+          this.code = value;
+          return this;
+        }
+
+        /**
+         * @return A code that is a reference to ValueSet.expansion.property.code.
+         */
+        public String getCode() { 
+          return this.code == null ? null : this.code.getValue();
+        }
+
+        /**
+         * @param value A code that is a reference to ValueSet.expansion.property.code.
+         */
+        public ConceptSubPropertyComponent setCode(String value) { 
+            if (this.code == null)
+              this.code = new CodeType();
+            this.code.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #value} (The value of this subproperty.)
+         */
+        public DataType getValue() { 
+          return this.value;
+        }
+
+        /**
+         * @return {@link #value} (The value of this subproperty.)
+         */
+        public CodeType getValueCodeType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new CodeType();
+          if (!(this.value instanceof CodeType))
+            throw new FHIRException("Type mismatch: the type CodeType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (CodeType) this.value;
+        }
+
+        public boolean hasValueCodeType() { 
+          return this != null && this.value instanceof CodeType;
+        }
+
+        /**
+         * @return {@link #value} (The value of this subproperty.)
+         */
+        public Coding getValueCoding() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Coding();
+          if (!(this.value instanceof Coding))
+            throw new FHIRException("Type mismatch: the type Coding was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Coding) this.value;
+        }
+
+        public boolean hasValueCoding() { 
+          return this != null && this.value instanceof Coding;
+        }
+
+        /**
+         * @return {@link #value} (The value of this subproperty.)
+         */
+        public StringType getValueStringType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new StringType();
+          if (!(this.value instanceof StringType))
+            throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (StringType) this.value;
+        }
+
+        public boolean hasValueStringType() { 
+          return this != null && this.value instanceof StringType;
+        }
+
+        /**
+         * @return {@link #value} (The value of this subproperty.)
+         */
+        public IntegerType getValueIntegerType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new IntegerType();
+          if (!(this.value instanceof IntegerType))
+            throw new FHIRException("Type mismatch: the type IntegerType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (IntegerType) this.value;
+        }
+
+        public boolean hasValueIntegerType() { 
+          return this != null && this.value instanceof IntegerType;
+        }
+
+        /**
+         * @return {@link #value} (The value of this subproperty.)
+         */
+        public BooleanType getValueBooleanType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new BooleanType();
+          if (!(this.value instanceof BooleanType))
+            throw new FHIRException("Type mismatch: the type BooleanType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (BooleanType) this.value;
+        }
+
+        public boolean hasValueBooleanType() { 
+          return this != null && this.value instanceof BooleanType;
+        }
+
+        /**
+         * @return {@link #value} (The value of this subproperty.)
+         */
+        public DateTimeType getValueDateTimeType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new DateTimeType();
+          if (!(this.value instanceof DateTimeType))
+            throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (DateTimeType) this.value;
+        }
+
+        public boolean hasValueDateTimeType() { 
+          return this != null && this.value instanceof DateTimeType;
+        }
+
+        /**
+         * @return {@link #value} (The value of this subproperty.)
+         */
+        public DecimalType getValueDecimalType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new DecimalType();
+          if (!(this.value instanceof DecimalType))
+            throw new FHIRException("Type mismatch: the type DecimalType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (DecimalType) this.value;
+        }
+
+        public boolean hasValueDecimalType() { 
+          return this != null && this.value instanceof DecimalType;
+        }
+
+        public boolean hasValue() { 
+          return this.value != null && !this.value.isEmpty();
+        }
+
+        /**
+         * @param value {@link #value} (The value of this subproperty.)
+         */
+        public ConceptSubPropertyComponent setValue(DataType value) { 
+          if (value != null && !(value instanceof CodeType || value instanceof Coding || value instanceof StringType || value instanceof IntegerType || value instanceof BooleanType || value instanceof DateTimeType || value instanceof DecimalType))
+            throw new Error("Not the right type for ValueSet.expansion.contains.property.subProperty.value[x]: "+value.fhirType());
+          this.value = value;
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("code", "code", "A code that is a reference to ValueSet.expansion.property.code.", 0, 1, code));
+          children.add(new Property("value[x]", "code|Coding|string|integer|boolean|dateTime|decimal", "The value of this subproperty.", 0, 1, value));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3059181: /*code*/  return new Property("code", "code", "A code that is a reference to ValueSet.expansion.property.code.", 0, 1, code);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "code|Coding|string|integer|boolean|dateTime|decimal", "The value of this subproperty.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "code|Coding|string|integer|boolean|dateTime|decimal", "The value of this subproperty.", 0, 1, value);
+          case -766209282: /*valueCode*/  return new Property("value[x]", "code", "The value of this subproperty.", 0, 1, value);
+          case -1887705029: /*valueCoding*/  return new Property("value[x]", "Coding", "The value of this subproperty.", 0, 1, value);
+          case -1424603934: /*valueString*/  return new Property("value[x]", "string", "The value of this subproperty.", 0, 1, value);
+          case -1668204915: /*valueInteger*/  return new Property("value[x]", "integer", "The value of this subproperty.", 0, 1, value);
+          case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "The value of this subproperty.", 0, 1, value);
+          case 1047929900: /*valueDateTime*/  return new Property("value[x]", "dateTime", "The value of this subproperty.", 0, 1, value);
+          case -2083993440: /*valueDecimal*/  return new Property("value[x]", "decimal", "The value of this subproperty.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -4362,7 +4957,7 @@ public class ValueSet extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("code")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.expansion.contains.property.code");
+          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.expansion.contains.property.subProperty.code");
         }
         else if (name.equals("valueCode")) {
           this.value = new CodeType();
@@ -4396,13 +4991,13 @@ public class ValueSet extends CanonicalResource {
           return super.addChild(name);
       }
 
-      public ConceptPropertyComponent copy() {
-        ConceptPropertyComponent dst = new ConceptPropertyComponent();
+      public ConceptSubPropertyComponent copy() {
+        ConceptSubPropertyComponent dst = new ConceptSubPropertyComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(ConceptPropertyComponent dst) {
+      public void copyValues(ConceptSubPropertyComponent dst) {
         super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.value = value == null ? null : value.copy();
@@ -4412,9 +5007,9 @@ public class ValueSet extends CanonicalResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof ConceptPropertyComponent))
+        if (!(other_ instanceof ConceptSubPropertyComponent))
           return false;
-        ConceptPropertyComponent o = (ConceptPropertyComponent) other_;
+        ConceptSubPropertyComponent o = (ConceptSubPropertyComponent) other_;
         return compareDeep(code, o.code, true) && compareDeep(value, o.value, true);
       }
 
@@ -4422,9 +5017,9 @@ public class ValueSet extends CanonicalResource {
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof ConceptPropertyComponent))
+        if (!(other_ instanceof ConceptSubPropertyComponent))
           return false;
-        ConceptPropertyComponent o = (ConceptPropertyComponent) other_;
+        ConceptSubPropertyComponent o = (ConceptSubPropertyComponent) other_;
         return compareValues(code, o.code, true);
       }
 
@@ -4433,7 +5028,7 @@ public class ValueSet extends CanonicalResource {
       }
 
   public String fhirType() {
-    return "ValueSet.expansion.contains.property";
+    return "ValueSet.expansion.contains.property.subProperty";
 
   }
 
@@ -4749,10 +5344,10 @@ public class ValueSet extends CanonicalResource {
     protected DateTimeType date;
 
     /**
-     * The name of the organization or individual that published the value set.
+     * The name of the organization or individual responsible for the release and ongoing maintenance of the value set.
      */
     @Child(name = "publisher", type = {StringType.class}, order=8, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Name of the publisher (organization or individual)", formalDefinition="The name of the organization or individual that published the value set." )
+    @Description(shortDefinition="Name of the publisher/steward (organization or individual)", formalDefinition="The name of the organization or individual responsible for the release and ongoing maintenance of the value set." )
     protected StringType publisher;
 
     /**
@@ -4806,27 +5401,91 @@ public class ValueSet extends CanonicalResource {
     protected MarkdownType copyright;
 
     /**
+     * The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
+     */
+    @Child(name = "approvalDate", type = {DateType.class}, order=16, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="When the ValueSet was approved by publisher", formalDefinition="The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage." )
+    protected DateType approvalDate;
+
+    /**
+     * The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
+     */
+    @Child(name = "lastReviewDate", type = {DateType.class}, order=17, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="When the ValueSet was last reviewed", formalDefinition="The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date." )
+    protected DateType lastReviewDate;
+
+    /**
+     * The period during which the ValueSet content was or is planned to be in active use.
+     */
+    @Child(name = "effectivePeriod", type = {Period.class}, order=18, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="When the ValueSet is expected to be used", formalDefinition="The period during which the ValueSet content was or is planned to be in active use." )
+    protected Period effectivePeriod;
+
+    /**
+     * Descriptions related to the content of the ValueSet. Topics provide a high-level categorization as well as keywords for the ValueSet that can be useful for filtering and searching.
+     */
+    @Child(name = "topic", type = {CodeableConcept.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="E.g. Education, Treatment, Assessment, etc.", formalDefinition="Descriptions related to the content of the ValueSet. Topics provide a high-level categorization as well as keywords for the ValueSet that can be useful for filtering and searching." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/definition-topic")
+    protected List<CodeableConcept> topic;
+
+    /**
+     * An individiual or organization primarily involved in the creation and maintenance of the ValueSet.
+     */
+    @Child(name = "author", type = {ContactDetail.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Who authored the ValueSet", formalDefinition="An individiual or organization primarily involved in the creation and maintenance of the ValueSet." )
+    protected List<ContactDetail> author;
+
+    /**
+     * An individual or organization primarily responsible for internal coherence of the ValueSet.
+     */
+    @Child(name = "editor", type = {ContactDetail.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Who edited the ValueSet", formalDefinition="An individual or organization primarily responsible for internal coherence of the ValueSet." )
+    protected List<ContactDetail> editor;
+
+    /**
+     * An individual or organization primarily responsible for review of some aspect of the ValueSet.
+     */
+    @Child(name = "reviewer", type = {ContactDetail.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Who reviewed the ValueSet", formalDefinition="An individual or organization primarily responsible for review of some aspect of the ValueSet." )
+    protected List<ContactDetail> reviewer;
+
+    /**
+     * An individual or organization responsible for officially endorsing the ValueSet for use in some setting.
+     */
+    @Child(name = "endorser", type = {ContactDetail.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Who endorsed the ValueSet", formalDefinition="An individual or organization responsible for officially endorsing the ValueSet for use in some setting." )
+    protected List<ContactDetail> endorser;
+
+    /**
+     * Related artifacts such as additional documentation, justification, dependencies, bibliographic references, and predecessor and successor artifacts.
+     */
+    @Child(name = "relatedArtifact", type = {RelatedArtifact.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Additional documentation, citations, etc.", formalDefinition="Related artifacts such as additional documentation, justification, dependencies, bibliographic references, and predecessor and successor artifacts." )
+    protected List<RelatedArtifact> relatedArtifact;
+
+    /**
      * A set of criteria that define the contents of the value set by including or excluding codes selected from the specified code system(s) that the value set draws from. This is also known as the Content Logical Definition (CLD).
      */
-    @Child(name = "compose", type = {}, order=16, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "compose", type = {}, order=25, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Content logical definition of the value set (CLD)", formalDefinition="A set of criteria that define the contents of the value set by including or excluding codes selected from the specified code system(s) that the value set draws from. This is also known as the Content Logical Definition (CLD)." )
     protected ValueSetComposeComponent compose;
 
     /**
      * A value set can also be "expanded", where the value set is turned into a simple collection of enumerated codes. This element holds the expansion, if it has been performed.
      */
-    @Child(name = "expansion", type = {}, order=17, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "expansion", type = {}, order=26, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Used when the value set is \"expanded\"", formalDefinition="A value set can also be \"expanded\", where the value set is turned into a simple collection of enumerated codes. This element holds the expansion, if it has been performed." )
     protected ValueSetExpansionComponent expansion;
 
     /**
      * Description of the semantic space the Value Set Expansion is intended to cover and should further clarify the text in ValueSet.description.
      */
-    @Child(name = "scope", type = {}, order=18, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "scope", type = {}, order=27, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Description of the semantic space the Value Set Expansion is intended to cover and should further clarify the text in ValueSet.description", formalDefinition="Description of the semantic space the Value Set Expansion is intended to cover and should further clarify the text in ValueSet.description." )
     protected ValueSetScopeComponent scope;
 
-    private static final long serialVersionUID = 1111958035L;
+    private static final long serialVersionUID = -1552826200L;
 
   /**
    * Constructor
@@ -5232,7 +5891,7 @@ public class ValueSet extends CanonicalResource {
     }
 
     /**
-     * @return {@link #publisher} (The name of the organization or individual that published the value set.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     * @return {@link #publisher} (The name of the organization or individual responsible for the release and ongoing maintenance of the value set.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
     public StringType getPublisherElement() { 
       if (this.publisher == null)
@@ -5252,7 +5911,7 @@ public class ValueSet extends CanonicalResource {
     }
 
     /**
-     * @param value {@link #publisher} (The name of the organization or individual that published the value set.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     * @param value {@link #publisher} (The name of the organization or individual responsible for the release and ongoing maintenance of the value set.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
     public ValueSet setPublisherElement(StringType value) { 
       this.publisher = value;
@@ -5260,14 +5919,14 @@ public class ValueSet extends CanonicalResource {
     }
 
     /**
-     * @return The name of the organization or individual that published the value set.
+     * @return The name of the organization or individual responsible for the release and ongoing maintenance of the value set.
      */
     public String getPublisher() { 
       return this.publisher == null ? null : this.publisher.getValue();
     }
 
     /**
-     * @param value The name of the organization or individual that published the value set.
+     * @param value The name of the organization or individual responsible for the release and ongoing maintenance of the value set.
      */
     public ValueSet setPublisher(String value) { 
       if (Utilities.noString(value))
@@ -5632,6 +6291,446 @@ public class ValueSet extends CanonicalResource {
     }
 
     /**
+     * @return {@link #approvalDate} (The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.). This is the underlying object with id, value and extensions. The accessor "getApprovalDate" gives direct access to the value
+     */
+    public DateType getApprovalDateElement() { 
+      if (this.approvalDate == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create ValueSet.approvalDate");
+        else if (Configuration.doAutoCreate())
+          this.approvalDate = new DateType(); // bb
+      return this.approvalDate;
+    }
+
+    public boolean hasApprovalDateElement() { 
+      return this.approvalDate != null && !this.approvalDate.isEmpty();
+    }
+
+    public boolean hasApprovalDate() { 
+      return this.approvalDate != null && !this.approvalDate.isEmpty();
+    }
+
+    /**
+     * @param value {@link #approvalDate} (The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.). This is the underlying object with id, value and extensions. The accessor "getApprovalDate" gives direct access to the value
+     */
+    public ValueSet setApprovalDateElement(DateType value) { 
+      this.approvalDate = value;
+      return this;
+    }
+
+    /**
+     * @return The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
+     */
+    public Date getApprovalDate() { 
+      return this.approvalDate == null ? null : this.approvalDate.getValue();
+    }
+
+    /**
+     * @param value The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
+     */
+    public ValueSet setApprovalDate(Date value) { 
+      if (value == null)
+        this.approvalDate = null;
+      else {
+        if (this.approvalDate == null)
+          this.approvalDate = new DateType();
+        this.approvalDate.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #lastReviewDate} (The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.). This is the underlying object with id, value and extensions. The accessor "getLastReviewDate" gives direct access to the value
+     */
+    public DateType getLastReviewDateElement() { 
+      if (this.lastReviewDate == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create ValueSet.lastReviewDate");
+        else if (Configuration.doAutoCreate())
+          this.lastReviewDate = new DateType(); // bb
+      return this.lastReviewDate;
+    }
+
+    public boolean hasLastReviewDateElement() { 
+      return this.lastReviewDate != null && !this.lastReviewDate.isEmpty();
+    }
+
+    public boolean hasLastReviewDate() { 
+      return this.lastReviewDate != null && !this.lastReviewDate.isEmpty();
+    }
+
+    /**
+     * @param value {@link #lastReviewDate} (The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.). This is the underlying object with id, value and extensions. The accessor "getLastReviewDate" gives direct access to the value
+     */
+    public ValueSet setLastReviewDateElement(DateType value) { 
+      this.lastReviewDate = value;
+      return this;
+    }
+
+    /**
+     * @return The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
+     */
+    public Date getLastReviewDate() { 
+      return this.lastReviewDate == null ? null : this.lastReviewDate.getValue();
+    }
+
+    /**
+     * @param value The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
+     */
+    public ValueSet setLastReviewDate(Date value) { 
+      if (value == null)
+        this.lastReviewDate = null;
+      else {
+        if (this.lastReviewDate == null)
+          this.lastReviewDate = new DateType();
+        this.lastReviewDate.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #effectivePeriod} (The period during which the ValueSet content was or is planned to be in active use.)
+     */
+    public Period getEffectivePeriod() { 
+      if (this.effectivePeriod == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create ValueSet.effectivePeriod");
+        else if (Configuration.doAutoCreate())
+          this.effectivePeriod = new Period(); // cc
+      return this.effectivePeriod;
+    }
+
+    public boolean hasEffectivePeriod() { 
+      return this.effectivePeriod != null && !this.effectivePeriod.isEmpty();
+    }
+
+    /**
+     * @param value {@link #effectivePeriod} (The period during which the ValueSet content was or is planned to be in active use.)
+     */
+    public ValueSet setEffectivePeriod(Period value) { 
+      this.effectivePeriod = value;
+      return this;
+    }
+
+    /**
+     * @return {@link #topic} (Descriptions related to the content of the ValueSet. Topics provide a high-level categorization as well as keywords for the ValueSet that can be useful for filtering and searching.)
+     */
+    public List<CodeableConcept> getTopic() { 
+      if (this.topic == null)
+        this.topic = new ArrayList<CodeableConcept>();
+      return this.topic;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ValueSet setTopic(List<CodeableConcept> theTopic) { 
+      this.topic = theTopic;
+      return this;
+    }
+
+    public boolean hasTopic() { 
+      if (this.topic == null)
+        return false;
+      for (CodeableConcept item : this.topic)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public CodeableConcept addTopic() { //3
+      CodeableConcept t = new CodeableConcept();
+      if (this.topic == null)
+        this.topic = new ArrayList<CodeableConcept>();
+      this.topic.add(t);
+      return t;
+    }
+
+    public ValueSet addTopic(CodeableConcept t) { //3
+      if (t == null)
+        return this;
+      if (this.topic == null)
+        this.topic = new ArrayList<CodeableConcept>();
+      this.topic.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #topic}, creating it if it does not already exist {3}
+     */
+    public CodeableConcept getTopicFirstRep() { 
+      if (getTopic().isEmpty()) {
+        addTopic();
+      }
+      return getTopic().get(0);
+    }
+
+    /**
+     * @return {@link #author} (An individiual or organization primarily involved in the creation and maintenance of the ValueSet.)
+     */
+    public List<ContactDetail> getAuthor() { 
+      if (this.author == null)
+        this.author = new ArrayList<ContactDetail>();
+      return this.author;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ValueSet setAuthor(List<ContactDetail> theAuthor) { 
+      this.author = theAuthor;
+      return this;
+    }
+
+    public boolean hasAuthor() { 
+      if (this.author == null)
+        return false;
+      for (ContactDetail item : this.author)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public ContactDetail addAuthor() { //3
+      ContactDetail t = new ContactDetail();
+      if (this.author == null)
+        this.author = new ArrayList<ContactDetail>();
+      this.author.add(t);
+      return t;
+    }
+
+    public ValueSet addAuthor(ContactDetail t) { //3
+      if (t == null)
+        return this;
+      if (this.author == null)
+        this.author = new ArrayList<ContactDetail>();
+      this.author.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #author}, creating it if it does not already exist {3}
+     */
+    public ContactDetail getAuthorFirstRep() { 
+      if (getAuthor().isEmpty()) {
+        addAuthor();
+      }
+      return getAuthor().get(0);
+    }
+
+    /**
+     * @return {@link #editor} (An individual or organization primarily responsible for internal coherence of the ValueSet.)
+     */
+    public List<ContactDetail> getEditor() { 
+      if (this.editor == null)
+        this.editor = new ArrayList<ContactDetail>();
+      return this.editor;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ValueSet setEditor(List<ContactDetail> theEditor) { 
+      this.editor = theEditor;
+      return this;
+    }
+
+    public boolean hasEditor() { 
+      if (this.editor == null)
+        return false;
+      for (ContactDetail item : this.editor)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public ContactDetail addEditor() { //3
+      ContactDetail t = new ContactDetail();
+      if (this.editor == null)
+        this.editor = new ArrayList<ContactDetail>();
+      this.editor.add(t);
+      return t;
+    }
+
+    public ValueSet addEditor(ContactDetail t) { //3
+      if (t == null)
+        return this;
+      if (this.editor == null)
+        this.editor = new ArrayList<ContactDetail>();
+      this.editor.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #editor}, creating it if it does not already exist {3}
+     */
+    public ContactDetail getEditorFirstRep() { 
+      if (getEditor().isEmpty()) {
+        addEditor();
+      }
+      return getEditor().get(0);
+    }
+
+    /**
+     * @return {@link #reviewer} (An individual or organization primarily responsible for review of some aspect of the ValueSet.)
+     */
+    public List<ContactDetail> getReviewer() { 
+      if (this.reviewer == null)
+        this.reviewer = new ArrayList<ContactDetail>();
+      return this.reviewer;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ValueSet setReviewer(List<ContactDetail> theReviewer) { 
+      this.reviewer = theReviewer;
+      return this;
+    }
+
+    public boolean hasReviewer() { 
+      if (this.reviewer == null)
+        return false;
+      for (ContactDetail item : this.reviewer)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public ContactDetail addReviewer() { //3
+      ContactDetail t = new ContactDetail();
+      if (this.reviewer == null)
+        this.reviewer = new ArrayList<ContactDetail>();
+      this.reviewer.add(t);
+      return t;
+    }
+
+    public ValueSet addReviewer(ContactDetail t) { //3
+      if (t == null)
+        return this;
+      if (this.reviewer == null)
+        this.reviewer = new ArrayList<ContactDetail>();
+      this.reviewer.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #reviewer}, creating it if it does not already exist {3}
+     */
+    public ContactDetail getReviewerFirstRep() { 
+      if (getReviewer().isEmpty()) {
+        addReviewer();
+      }
+      return getReviewer().get(0);
+    }
+
+    /**
+     * @return {@link #endorser} (An individual or organization responsible for officially endorsing the ValueSet for use in some setting.)
+     */
+    public List<ContactDetail> getEndorser() { 
+      if (this.endorser == null)
+        this.endorser = new ArrayList<ContactDetail>();
+      return this.endorser;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ValueSet setEndorser(List<ContactDetail> theEndorser) { 
+      this.endorser = theEndorser;
+      return this;
+    }
+
+    public boolean hasEndorser() { 
+      if (this.endorser == null)
+        return false;
+      for (ContactDetail item : this.endorser)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public ContactDetail addEndorser() { //3
+      ContactDetail t = new ContactDetail();
+      if (this.endorser == null)
+        this.endorser = new ArrayList<ContactDetail>();
+      this.endorser.add(t);
+      return t;
+    }
+
+    public ValueSet addEndorser(ContactDetail t) { //3
+      if (t == null)
+        return this;
+      if (this.endorser == null)
+        this.endorser = new ArrayList<ContactDetail>();
+      this.endorser.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #endorser}, creating it if it does not already exist {3}
+     */
+    public ContactDetail getEndorserFirstRep() { 
+      if (getEndorser().isEmpty()) {
+        addEndorser();
+      }
+      return getEndorser().get(0);
+    }
+
+    /**
+     * @return {@link #relatedArtifact} (Related artifacts such as additional documentation, justification, dependencies, bibliographic references, and predecessor and successor artifacts.)
+     */
+    public List<RelatedArtifact> getRelatedArtifact() { 
+      if (this.relatedArtifact == null)
+        this.relatedArtifact = new ArrayList<RelatedArtifact>();
+      return this.relatedArtifact;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ValueSet setRelatedArtifact(List<RelatedArtifact> theRelatedArtifact) { 
+      this.relatedArtifact = theRelatedArtifact;
+      return this;
+    }
+
+    public boolean hasRelatedArtifact() { 
+      if (this.relatedArtifact == null)
+        return false;
+      for (RelatedArtifact item : this.relatedArtifact)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public RelatedArtifact addRelatedArtifact() { //3
+      RelatedArtifact t = new RelatedArtifact();
+      if (this.relatedArtifact == null)
+        this.relatedArtifact = new ArrayList<RelatedArtifact>();
+      this.relatedArtifact.add(t);
+      return t;
+    }
+
+    public ValueSet addRelatedArtifact(RelatedArtifact t) { //3
+      if (t == null)
+        return this;
+      if (this.relatedArtifact == null)
+        this.relatedArtifact = new ArrayList<RelatedArtifact>();
+      this.relatedArtifact.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #relatedArtifact}, creating it if it does not already exist {3}
+     */
+    public RelatedArtifact getRelatedArtifactFirstRep() { 
+      if (getRelatedArtifact().isEmpty()) {
+        addRelatedArtifact();
+      }
+      return getRelatedArtifact().get(0);
+    }
+
+    /**
      * @return {@link #compose} (A set of criteria that define the contents of the value set by including or excluding codes selected from the specified code system(s) that the value set draws from. This is also known as the Content Logical Definition (CLD).)
      */
     public ValueSetComposeComponent getCompose() { 
@@ -5703,6 +6802,83 @@ public class ValueSet extends CanonicalResource {
       return this;
     }
 
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getVersionAlgorithmMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public DataType getVersionAlgorithm() { 
+      throw new Error("The resource type \"ValueSet\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public StringType getVersionAlgorithmStringType() { 
+      throw new Error("The resource type \"ValueSet\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    public boolean hasVersionAlgorithmStringType() { 
+      return false;////K 
+    }
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public Coding getVersionAlgorithmCoding() { 
+      throw new Error("The resource type \"ValueSet\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    public boolean hasVersionAlgorithmCoding() { 
+      return false;////K 
+    }
+    public boolean hasVersionAlgorithm() { 
+      return false;
+    }
+    /**
+     * @param value {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public ValueSet setVersionAlgorithm(DataType value) { 
+      throw new Error("The resource type \"ValueSet\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getCopyrightLabelMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public StringType getCopyrightLabelElement() { 
+      throw new Error("The resource type \"ValueSet\" does not implement the property \"copyrightLabel\"");
+    }
+
+    public boolean hasCopyrightLabelElement() { 
+      return false;
+    }
+    public boolean hasCopyrightLabel() {
+      return false;
+    }
+
+    /**
+     * @param value {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public ValueSet setCopyrightLabelElement(StringType value) { 
+      throw new Error("The resource type \"ValueSet\" does not implement the property \"copyrightLabel\""); 
+    }
+    public String getCopyrightLabel() { 
+      throw new Error("The resource type \"ValueSet\" does not implement the property \"copyrightLabel\""); 
+    }
+    /**
+     * @param value A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    public ValueSet setCopyrightLabel(String value) { 
+      throw new Error("The resource type \"ValueSet\" does not implement the property \"copyrightLabel\""); 
+    }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("url", "uri", "An absolute URI that is used to identify this value set when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this value set is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the value set is stored on different servers.", 0, 1, url));
@@ -5713,7 +6889,7 @@ public class ValueSet extends CanonicalResource {
         children.add(new Property("status", "code", "The status of this value set. Enables tracking the life-cycle of the content. The status of the value set applies to the value set definition (ValueSet.compose) and the associated ValueSet metadata. Expansions do not have a state.", 0, 1, status));
         children.add(new Property("experimental", "boolean", "A Boolean value to indicate that this value set is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.", 0, 1, experimental));
         children.add(new Property("date", "dateTime", "The date (and optionally time) when the value set metadata or content logical definition (.compose) was created or revised.", 0, 1, date));
-        children.add(new Property("publisher", "string", "The name of the organization or individual that published the value set.", 0, 1, publisher));
+        children.add(new Property("publisher", "string", "The name of the organization or individual responsible for the release and ongoing maintenance of the value set.", 0, 1, publisher));
         children.add(new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact));
         children.add(new Property("description", "markdown", "A free text natural language description of the value set from a consumer's perspective. The textual description specifies the span of meanings for concepts to be included within the Value Set Expansion, and also may specify the intended use and limitations of the Value Set.", 0, 1, description));
         children.add(new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate value set instances.", 0, java.lang.Integer.MAX_VALUE, useContext));
@@ -5721,6 +6897,15 @@ public class ValueSet extends CanonicalResource {
         children.add(new Property("immutable", "boolean", "If this is set to 'true', then no new versions of the content logical definition can be created.  Note: Other metadata might still change.", 0, 1, immutable));
         children.add(new Property("purpose", "markdown", "Explanation of why this value set is needed and why it has been designed as it has.", 0, 1, purpose));
         children.add(new Property("copyright", "markdown", "A copyright statement relating to the value set and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the value set.", 0, 1, copyright));
+        children.add(new Property("approvalDate", "date", "The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.", 0, 1, approvalDate));
+        children.add(new Property("lastReviewDate", "date", "The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.", 0, 1, lastReviewDate));
+        children.add(new Property("effectivePeriod", "Period", "The period during which the ValueSet content was or is planned to be in active use.", 0, 1, effectivePeriod));
+        children.add(new Property("topic", "CodeableConcept", "Descriptions related to the content of the ValueSet. Topics provide a high-level categorization as well as keywords for the ValueSet that can be useful for filtering and searching.", 0, java.lang.Integer.MAX_VALUE, topic));
+        children.add(new Property("author", "ContactDetail", "An individiual or organization primarily involved in the creation and maintenance of the ValueSet.", 0, java.lang.Integer.MAX_VALUE, author));
+        children.add(new Property("editor", "ContactDetail", "An individual or organization primarily responsible for internal coherence of the ValueSet.", 0, java.lang.Integer.MAX_VALUE, editor));
+        children.add(new Property("reviewer", "ContactDetail", "An individual or organization primarily responsible for review of some aspect of the ValueSet.", 0, java.lang.Integer.MAX_VALUE, reviewer));
+        children.add(new Property("endorser", "ContactDetail", "An individual or organization responsible for officially endorsing the ValueSet for use in some setting.", 0, java.lang.Integer.MAX_VALUE, endorser));
+        children.add(new Property("relatedArtifact", "RelatedArtifact", "Related artifacts such as additional documentation, justification, dependencies, bibliographic references, and predecessor and successor artifacts.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact));
         children.add(new Property("compose", "", "A set of criteria that define the contents of the value set by including or excluding codes selected from the specified code system(s) that the value set draws from. This is also known as the Content Logical Definition (CLD).", 0, 1, compose));
         children.add(new Property("expansion", "", "A value set can also be \"expanded\", where the value set is turned into a simple collection of enumerated codes. This element holds the expansion, if it has been performed.", 0, 1, expansion));
         children.add(new Property("scope", "", "Description of the semantic space the Value Set Expansion is intended to cover and should further clarify the text in ValueSet.description.", 0, 1, scope));
@@ -5737,7 +6922,7 @@ public class ValueSet extends CanonicalResource {
         case -892481550: /*status*/  return new Property("status", "code", "The status of this value set. Enables tracking the life-cycle of the content. The status of the value set applies to the value set definition (ValueSet.compose) and the associated ValueSet metadata. Expansions do not have a state.", 0, 1, status);
         case -404562712: /*experimental*/  return new Property("experimental", "boolean", "A Boolean value to indicate that this value set is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.", 0, 1, experimental);
         case 3076014: /*date*/  return new Property("date", "dateTime", "The date (and optionally time) when the value set metadata or content logical definition (.compose) was created or revised.", 0, 1, date);
-        case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual that published the value set.", 0, 1, publisher);
+        case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual responsible for the release and ongoing maintenance of the value set.", 0, 1, publisher);
         case 951526432: /*contact*/  return new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact);
         case -1724546052: /*description*/  return new Property("description", "markdown", "A free text natural language description of the value set from a consumer's perspective. The textual description specifies the span of meanings for concepts to be included within the Value Set Expansion, and also may specify the intended use and limitations of the Value Set.", 0, 1, description);
         case -669707736: /*useContext*/  return new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate value set instances.", 0, java.lang.Integer.MAX_VALUE, useContext);
@@ -5745,6 +6930,15 @@ public class ValueSet extends CanonicalResource {
         case 1596987778: /*immutable*/  return new Property("immutable", "boolean", "If this is set to 'true', then no new versions of the content logical definition can be created.  Note: Other metadata might still change.", 0, 1, immutable);
         case -220463842: /*purpose*/  return new Property("purpose", "markdown", "Explanation of why this value set is needed and why it has been designed as it has.", 0, 1, purpose);
         case 1522889671: /*copyright*/  return new Property("copyright", "markdown", "A copyright statement relating to the value set and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the value set.", 0, 1, copyright);
+        case 223539345: /*approvalDate*/  return new Property("approvalDate", "date", "The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.", 0, 1, approvalDate);
+        case -1687512484: /*lastReviewDate*/  return new Property("lastReviewDate", "date", "The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.", 0, 1, lastReviewDate);
+        case -403934648: /*effectivePeriod*/  return new Property("effectivePeriod", "Period", "The period during which the ValueSet content was or is planned to be in active use.", 0, 1, effectivePeriod);
+        case 110546223: /*topic*/  return new Property("topic", "CodeableConcept", "Descriptions related to the content of the ValueSet. Topics provide a high-level categorization as well as keywords for the ValueSet that can be useful for filtering and searching.", 0, java.lang.Integer.MAX_VALUE, topic);
+        case -1406328437: /*author*/  return new Property("author", "ContactDetail", "An individiual or organization primarily involved in the creation and maintenance of the ValueSet.", 0, java.lang.Integer.MAX_VALUE, author);
+        case -1307827859: /*editor*/  return new Property("editor", "ContactDetail", "An individual or organization primarily responsible for internal coherence of the ValueSet.", 0, java.lang.Integer.MAX_VALUE, editor);
+        case -261190139: /*reviewer*/  return new Property("reviewer", "ContactDetail", "An individual or organization primarily responsible for review of some aspect of the ValueSet.", 0, java.lang.Integer.MAX_VALUE, reviewer);
+        case 1740277666: /*endorser*/  return new Property("endorser", "ContactDetail", "An individual or organization responsible for officially endorsing the ValueSet for use in some setting.", 0, java.lang.Integer.MAX_VALUE, endorser);
+        case 666807069: /*relatedArtifact*/  return new Property("relatedArtifact", "RelatedArtifact", "Related artifacts such as additional documentation, justification, dependencies, bibliographic references, and predecessor and successor artifacts.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact);
         case 950497682: /*compose*/  return new Property("compose", "", "A set of criteria that define the contents of the value set by including or excluding codes selected from the specified code system(s) that the value set draws from. This is also known as the Content Logical Definition (CLD).", 0, 1, compose);
         case 17878207: /*expansion*/  return new Property("expansion", "", "A value set can also be \"expanded\", where the value set is turned into a simple collection of enumerated codes. This element holds the expansion, if it has been performed.", 0, 1, expansion);
         case 109264468: /*scope*/  return new Property("scope", "", "Description of the semantic space the Value Set Expansion is intended to cover and should further clarify the text in ValueSet.description.", 0, 1, scope);
@@ -5772,6 +6966,15 @@ public class ValueSet extends CanonicalResource {
         case 1596987778: /*immutable*/ return this.immutable == null ? new Base[0] : new Base[] {this.immutable}; // BooleanType
         case -220463842: /*purpose*/ return this.purpose == null ? new Base[0] : new Base[] {this.purpose}; // MarkdownType
         case 1522889671: /*copyright*/ return this.copyright == null ? new Base[0] : new Base[] {this.copyright}; // MarkdownType
+        case 223539345: /*approvalDate*/ return this.approvalDate == null ? new Base[0] : new Base[] {this.approvalDate}; // DateType
+        case -1687512484: /*lastReviewDate*/ return this.lastReviewDate == null ? new Base[0] : new Base[] {this.lastReviewDate}; // DateType
+        case -403934648: /*effectivePeriod*/ return this.effectivePeriod == null ? new Base[0] : new Base[] {this.effectivePeriod}; // Period
+        case 110546223: /*topic*/ return this.topic == null ? new Base[0] : this.topic.toArray(new Base[this.topic.size()]); // CodeableConcept
+        case -1406328437: /*author*/ return this.author == null ? new Base[0] : this.author.toArray(new Base[this.author.size()]); // ContactDetail
+        case -1307827859: /*editor*/ return this.editor == null ? new Base[0] : this.editor.toArray(new Base[this.editor.size()]); // ContactDetail
+        case -261190139: /*reviewer*/ return this.reviewer == null ? new Base[0] : this.reviewer.toArray(new Base[this.reviewer.size()]); // ContactDetail
+        case 1740277666: /*endorser*/ return this.endorser == null ? new Base[0] : this.endorser.toArray(new Base[this.endorser.size()]); // ContactDetail
+        case 666807069: /*relatedArtifact*/ return this.relatedArtifact == null ? new Base[0] : this.relatedArtifact.toArray(new Base[this.relatedArtifact.size()]); // RelatedArtifact
         case 950497682: /*compose*/ return this.compose == null ? new Base[0] : new Base[] {this.compose}; // ValueSetComposeComponent
         case 17878207: /*expansion*/ return this.expansion == null ? new Base[0] : new Base[] {this.expansion}; // ValueSetExpansionComponent
         case 109264468: /*scope*/ return this.scope == null ? new Base[0] : new Base[] {this.scope}; // ValueSetScopeComponent
@@ -5832,6 +7035,33 @@ public class ValueSet extends CanonicalResource {
         case 1522889671: // copyright
           this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
+        case 223539345: // approvalDate
+          this.approvalDate = TypeConvertor.castToDate(value); // DateType
+          return value;
+        case -1687512484: // lastReviewDate
+          this.lastReviewDate = TypeConvertor.castToDate(value); // DateType
+          return value;
+        case -403934648: // effectivePeriod
+          this.effectivePeriod = TypeConvertor.castToPeriod(value); // Period
+          return value;
+        case 110546223: // topic
+          this.getTopic().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          return value;
+        case -1406328437: // author
+          this.getAuthor().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
+          return value;
+        case -1307827859: // editor
+          this.getEditor().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
+          return value;
+        case -261190139: // reviewer
+          this.getReviewer().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
+          return value;
+        case 1740277666: // endorser
+          this.getEndorser().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
+          return value;
+        case 666807069: // relatedArtifact
+          this.getRelatedArtifact().add(TypeConvertor.castToRelatedArtifact(value)); // RelatedArtifact
+          return value;
         case 950497682: // compose
           this.compose = (ValueSetComposeComponent) value; // ValueSetComposeComponent
           return value;
@@ -5881,6 +7111,24 @@ public class ValueSet extends CanonicalResource {
           this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("copyright")) {
           this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
+        } else if (name.equals("approvalDate")) {
+          this.approvalDate = TypeConvertor.castToDate(value); // DateType
+        } else if (name.equals("lastReviewDate")) {
+          this.lastReviewDate = TypeConvertor.castToDate(value); // DateType
+        } else if (name.equals("effectivePeriod")) {
+          this.effectivePeriod = TypeConvertor.castToPeriod(value); // Period
+        } else if (name.equals("topic")) {
+          this.getTopic().add(TypeConvertor.castToCodeableConcept(value));
+        } else if (name.equals("author")) {
+          this.getAuthor().add(TypeConvertor.castToContactDetail(value));
+        } else if (name.equals("editor")) {
+          this.getEditor().add(TypeConvertor.castToContactDetail(value));
+        } else if (name.equals("reviewer")) {
+          this.getReviewer().add(TypeConvertor.castToContactDetail(value));
+        } else if (name.equals("endorser")) {
+          this.getEndorser().add(TypeConvertor.castToContactDetail(value));
+        } else if (name.equals("relatedArtifact")) {
+          this.getRelatedArtifact().add(TypeConvertor.castToRelatedArtifact(value));
         } else if (name.equals("compose")) {
           this.compose = (ValueSetComposeComponent) value; // ValueSetComposeComponent
         } else if (name.equals("expansion")) {
@@ -5911,6 +7159,15 @@ public class ValueSet extends CanonicalResource {
         case 1596987778:  return getImmutableElement();
         case -220463842:  return getPurposeElement();
         case 1522889671:  return getCopyrightElement();
+        case 223539345:  return getApprovalDateElement();
+        case -1687512484:  return getLastReviewDateElement();
+        case -403934648:  return getEffectivePeriod();
+        case 110546223:  return addTopic(); 
+        case -1406328437:  return addAuthor(); 
+        case -1307827859:  return addEditor(); 
+        case -261190139:  return addReviewer(); 
+        case 1740277666:  return addEndorser(); 
+        case 666807069:  return addRelatedArtifact(); 
         case 950497682:  return getCompose();
         case 17878207:  return getExpansion();
         case 109264468:  return getScope();
@@ -5938,6 +7195,15 @@ public class ValueSet extends CanonicalResource {
         case 1596987778: /*immutable*/ return new String[] {"boolean"};
         case -220463842: /*purpose*/ return new String[] {"markdown"};
         case 1522889671: /*copyright*/ return new String[] {"markdown"};
+        case 223539345: /*approvalDate*/ return new String[] {"date"};
+        case -1687512484: /*lastReviewDate*/ return new String[] {"date"};
+        case -403934648: /*effectivePeriod*/ return new String[] {"Period"};
+        case 110546223: /*topic*/ return new String[] {"CodeableConcept"};
+        case -1406328437: /*author*/ return new String[] {"ContactDetail"};
+        case -1307827859: /*editor*/ return new String[] {"ContactDetail"};
+        case -261190139: /*reviewer*/ return new String[] {"ContactDetail"};
+        case 1740277666: /*endorser*/ return new String[] {"ContactDetail"};
+        case 666807069: /*relatedArtifact*/ return new String[] {"RelatedArtifact"};
         case 950497682: /*compose*/ return new String[] {};
         case 17878207: /*expansion*/ return new String[] {};
         case 109264468: /*scope*/ return new String[] {};
@@ -5995,6 +7261,34 @@ public class ValueSet extends CanonicalResource {
         }
         else if (name.equals("copyright")) {
           throw new FHIRException("Cannot call addChild on a primitive type ValueSet.copyright");
+        }
+        else if (name.equals("approvalDate")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.approvalDate");
+        }
+        else if (name.equals("lastReviewDate")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.lastReviewDate");
+        }
+        else if (name.equals("effectivePeriod")) {
+          this.effectivePeriod = new Period();
+          return this.effectivePeriod;
+        }
+        else if (name.equals("topic")) {
+          return addTopic();
+        }
+        else if (name.equals("author")) {
+          return addAuthor();
+        }
+        else if (name.equals("editor")) {
+          return addEditor();
+        }
+        else if (name.equals("reviewer")) {
+          return addReviewer();
+        }
+        else if (name.equals("endorser")) {
+          return addEndorser();
+        }
+        else if (name.equals("relatedArtifact")) {
+          return addRelatedArtifact();
         }
         else if (name.equals("compose")) {
           this.compose = new ValueSetComposeComponent();
@@ -6057,6 +7351,39 @@ public class ValueSet extends CanonicalResource {
         dst.immutable = immutable == null ? null : immutable.copy();
         dst.purpose = purpose == null ? null : purpose.copy();
         dst.copyright = copyright == null ? null : copyright.copy();
+        dst.approvalDate = approvalDate == null ? null : approvalDate.copy();
+        dst.lastReviewDate = lastReviewDate == null ? null : lastReviewDate.copy();
+        dst.effectivePeriod = effectivePeriod == null ? null : effectivePeriod.copy();
+        if (topic != null) {
+          dst.topic = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : topic)
+            dst.topic.add(i.copy());
+        };
+        if (author != null) {
+          dst.author = new ArrayList<ContactDetail>();
+          for (ContactDetail i : author)
+            dst.author.add(i.copy());
+        };
+        if (editor != null) {
+          dst.editor = new ArrayList<ContactDetail>();
+          for (ContactDetail i : editor)
+            dst.editor.add(i.copy());
+        };
+        if (reviewer != null) {
+          dst.reviewer = new ArrayList<ContactDetail>();
+          for (ContactDetail i : reviewer)
+            dst.reviewer.add(i.copy());
+        };
+        if (endorser != null) {
+          dst.endorser = new ArrayList<ContactDetail>();
+          for (ContactDetail i : endorser)
+            dst.endorser.add(i.copy());
+        };
+        if (relatedArtifact != null) {
+          dst.relatedArtifact = new ArrayList<RelatedArtifact>();
+          for (RelatedArtifact i : relatedArtifact)
+            dst.relatedArtifact.add(i.copy());
+        };
         dst.compose = compose == null ? null : compose.copy();
         dst.expansion = expansion == null ? null : expansion.copy();
         dst.scope = scope == null ? null : scope.copy();
@@ -6078,8 +7405,12 @@ public class ValueSet extends CanonicalResource {
            && compareDeep(experimental, o.experimental, true) && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true)
            && compareDeep(contact, o.contact, true) && compareDeep(description, o.description, true) && compareDeep(useContext, o.useContext, true)
            && compareDeep(jurisdiction, o.jurisdiction, true) && compareDeep(immutable, o.immutable, true)
-           && compareDeep(purpose, o.purpose, true) && compareDeep(copyright, o.copyright, true) && compareDeep(compose, o.compose, true)
-           && compareDeep(expansion, o.expansion, true) && compareDeep(scope, o.scope, true);
+           && compareDeep(purpose, o.purpose, true) && compareDeep(copyright, o.copyright, true) && compareDeep(approvalDate, o.approvalDate, true)
+           && compareDeep(lastReviewDate, o.lastReviewDate, true) && compareDeep(effectivePeriod, o.effectivePeriod, true)
+           && compareDeep(topic, o.topic, true) && compareDeep(author, o.author, true) && compareDeep(editor, o.editor, true)
+           && compareDeep(reviewer, o.reviewer, true) && compareDeep(endorser, o.endorser, true) && compareDeep(relatedArtifact, o.relatedArtifact, true)
+           && compareDeep(compose, o.compose, true) && compareDeep(expansion, o.expansion, true) && compareDeep(scope, o.scope, true)
+          ;
       }
 
       @Override
@@ -6093,13 +7424,16 @@ public class ValueSet extends CanonicalResource {
            && compareValues(title, o.title, true) && compareValues(status, o.status, true) && compareValues(experimental, o.experimental, true)
            && compareValues(date, o.date, true) && compareValues(publisher, o.publisher, true) && compareValues(description, o.description, true)
            && compareValues(immutable, o.immutable, true) && compareValues(purpose, o.purpose, true) && compareValues(copyright, o.copyright, true)
+           && compareValues(approvalDate, o.approvalDate, true) && compareValues(lastReviewDate, o.lastReviewDate, true)
           ;
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, identifier, version
           , name, title, status, experimental, date, publisher, contact, description, useContext
-          , jurisdiction, immutable, purpose, copyright, compose, expansion, scope);
+          , jurisdiction, immutable, purpose, copyright, approvalDate, lastReviewDate, effectivePeriod
+          , topic, author, editor, reviewer, endorser, relatedArtifact, compose, expansion
+          , scope);
       }
 
   @Override
@@ -6128,6 +7462,32 @@ public class ValueSet extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
 
  /**
+   * Search parameter: <b>derived-from</b>
+   * <p>
+   * Description: <b>A resource that the ValueSet is derived from</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ValueSet.relatedArtifact.where(type='derived-from').resource</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="derived-from", path="ValueSet.relatedArtifact.where(type='derived-from').resource", description="A resource that the ValueSet is derived from", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_DERIVED_FROM = "derived-from";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>derived-from</b>
+   * <p>
+   * Description: <b>A resource that the ValueSet is derived from</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ValueSet.relatedArtifact.where(type='derived-from').resource</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DERIVED_FROM = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DERIVED_FROM);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ValueSet:derived-from</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_DERIVED_FROM = new ca.uhn.fhir.model.api.Include("ValueSet:derived-from").toLocked();
+
+ /**
    * Search parameter: <b>expansion</b>
    * <p>
    * Description: <b>Identifies the value set expansion (business identifier)</b><br>
@@ -6148,6 +7508,32 @@ public class ValueSet extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.UriClientParam EXPANSION = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_EXPANSION);
 
  /**
+   * Search parameter: <b>predecessor</b>
+   * <p>
+   * Description: <b>The predecessor of the ValueSet</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ValueSet.relatedArtifact.where(type='predecessor').resource</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="predecessor", path="ValueSet.relatedArtifact.where(type='predecessor').resource", description="The predecessor of the ValueSet", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_PREDECESSOR = "predecessor";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>predecessor</b>
+   * <p>
+   * Description: <b>The predecessor of the ValueSet</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ValueSet.relatedArtifact.where(type='predecessor').resource</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PREDECESSOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PREDECESSOR);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ValueSet:predecessor</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PREDECESSOR = new ca.uhn.fhir.model.api.Include("ValueSet:predecessor").toLocked();
+
+ /**
    * Search parameter: <b>reference</b>
    * <p>
    * Description: <b>A code system included or excluded in the value set or an imported value set</b><br>
@@ -6166,6 +7552,26 @@ public class ValueSet extends CanonicalResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.UriClientParam REFERENCE = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_REFERENCE);
+
+ /**
+   * Search parameter: <b>topic</b>
+   * <p>
+   * Description: <b>Topics associated with the ValueSet</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ValueSet.topic</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="topic", path="ValueSet.topic", description="Topics associated with the ValueSet", type="token" )
+  public static final String SP_TOPIC = "topic";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>topic</b>
+   * <p>
+   * Description: <b>Topics associated with the ValueSet</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ValueSet.topic</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TOPIC = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TOPIC);
 
  /**
    * Search parameter: <b>context-quantity</b>
@@ -6532,6 +7938,38 @@ public class ValueSet extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.StringClientParam DESCRIPTION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DESCRIPTION);
 
  /**
+   * Search parameter: <b>effective</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CodeSystem](codesystem.html): The time during which the CodeSystem is intended to be in use
+* [ConceptMap](conceptmap.html): The time during which the ConceptMap is intended to be in use
+* [NamingSystem](namingsystem.html): The time during which the NamingSystem is intended to be in use
+* [ValueSet](valueset.html): The time during which the ValueSet is intended to be in use
+</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>CodeSystem.effectivePeriod | ConceptMap.effectivePeriod | NamingSystem.effectivePeriod | ValueSet.effectivePeriod</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="effective", path="CodeSystem.effectivePeriod | ConceptMap.effectivePeriod | NamingSystem.effectivePeriod | ValueSet.effectivePeriod", description="Multiple Resources: \r\n\r\n* [CodeSystem](codesystem.html): The time during which the CodeSystem is intended to be in use\r\n* [ConceptMap](conceptmap.html): The time during which the ConceptMap is intended to be in use\r\n* [NamingSystem](namingsystem.html): The time during which the NamingSystem is intended to be in use\r\n* [ValueSet](valueset.html): The time during which the ValueSet is intended to be in use\r\n", type="date" )
+  public static final String SP_EFFECTIVE = "effective";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>effective</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CodeSystem](codesystem.html): The time during which the CodeSystem is intended to be in use
+* [ConceptMap](conceptmap.html): The time during which the ConceptMap is intended to be in use
+* [NamingSystem](namingsystem.html): The time during which the NamingSystem is intended to be in use
+* [ValueSet](valueset.html): The time during which the ValueSet is intended to be in use
+</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>CodeSystem.effectivePeriod | ConceptMap.effectivePeriod | NamingSystem.effectivePeriod | ValueSet.effectivePeriod</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam EFFECTIVE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_EFFECTIVE);
+
+ /**
    * Search parameter: <b>identifier</b>
    * <p>
    * Description: <b>Multiple Resources: 
@@ -6539,16 +7977,17 @@ public class ValueSet extends CanonicalResource {
 * [CodeSystem](codesystem.html): External identifier for the code system
 * [ConceptMap](conceptmap.html): External identifier for the concept map
 * [MessageDefinition](messagedefinition.html): External identifier for the message definition
+* [NamingSystem](namingsystem.html): External identifier for the naming system
 * [StructureDefinition](structuredefinition.html): External identifier for the structure definition
 * [StructureMap](structuremap.html): External identifier for the structure map
 * [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities
 * [ValueSet](valueset.html): External identifier for the value set
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier</b><br>
+   * Path: <b>CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | NamingSystem.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="identifier", path="CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier", description="Multiple Resources: \r\n\r\n* [CodeSystem](codesystem.html): External identifier for the code system\r\n* [ConceptMap](conceptmap.html): External identifier for the concept map\r\n* [MessageDefinition](messagedefinition.html): External identifier for the message definition\r\n* [StructureDefinition](structuredefinition.html): External identifier for the structure definition\r\n* [StructureMap](structuremap.html): External identifier for the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities\r\n* [ValueSet](valueset.html): External identifier for the value set\r\n", type="token" )
+  @SearchParamDefinition(name="identifier", path="CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | NamingSystem.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier", description="Multiple Resources: \r\n\r\n* [CodeSystem](codesystem.html): External identifier for the code system\r\n* [ConceptMap](conceptmap.html): External identifier for the concept map\r\n* [MessageDefinition](messagedefinition.html): External identifier for the message definition\r\n* [NamingSystem](namingsystem.html): External identifier for the naming system\r\n* [StructureDefinition](structuredefinition.html): External identifier for the structure definition\r\n* [StructureMap](structuremap.html): External identifier for the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities\r\n* [ValueSet](valueset.html): External identifier for the value set\r\n", type="token" )
   public static final String SP_IDENTIFIER = "identifier";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
@@ -6558,13 +7997,14 @@ public class ValueSet extends CanonicalResource {
 * [CodeSystem](codesystem.html): External identifier for the code system
 * [ConceptMap](conceptmap.html): External identifier for the concept map
 * [MessageDefinition](messagedefinition.html): External identifier for the message definition
+* [NamingSystem](namingsystem.html): External identifier for the naming system
 * [StructureDefinition](structuredefinition.html): External identifier for the structure definition
 * [StructureMap](structuremap.html): External identifier for the structure map
 * [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities
 * [ValueSet](valueset.html): External identifier for the value set
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier</b><br>
+   * Path: <b>CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | NamingSystem.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
@@ -6827,7 +8267,7 @@ public class ValueSet extends CanonicalResource {
 * [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement
 * [CodeSystem](codesystem.html): The uri that identifies the code system
 * [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition
-* [ConceptMap](conceptmap.html): The uri that identifies the concept map
+* [ConceptMap](conceptmap.html): The URI that identifies the concept map
 * [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition
 * [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide
 * [MessageDefinition](messagedefinition.html): The uri that identifies the message definition
@@ -6843,7 +8283,7 @@ public class ValueSet extends CanonicalResource {
    * Path: <b>CapabilityStatement.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | GraphDefinition.url | ImplementationGuide.url | MessageDefinition.url | NamingSystem.url | OperationDefinition.url | SearchParameter.url | StructureDefinition.url | StructureMap.url | TerminologyCapabilities.url | ValueSet.url</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="url", path="CapabilityStatement.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | GraphDefinition.url | ImplementationGuide.url | MessageDefinition.url | NamingSystem.url | OperationDefinition.url | SearchParameter.url | StructureDefinition.url | StructureMap.url | TerminologyCapabilities.url | ValueSet.url", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement\r\n* [CodeSystem](codesystem.html): The uri that identifies the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition\r\n* [ConceptMap](conceptmap.html): The uri that identifies the concept map\r\n* [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition\r\n* [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide\r\n* [MessageDefinition](messagedefinition.html): The uri that identifies the message definition\r\n* [NamingSystem](namingsystem.html): The uri that identifies the naming system\r\n* [OperationDefinition](operationdefinition.html): The uri that identifies the operation definition\r\n* [SearchParameter](searchparameter.html): The uri that identifies the search parameter\r\n* [StructureDefinition](structuredefinition.html): The uri that identifies the structure definition\r\n* [StructureMap](structuremap.html): The uri that identifies the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): The uri that identifies the terminology capabilities\r\n* [ValueSet](valueset.html): The uri that identifies the value set\r\n", type="uri" )
+  @SearchParamDefinition(name="url", path="CapabilityStatement.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | GraphDefinition.url | ImplementationGuide.url | MessageDefinition.url | NamingSystem.url | OperationDefinition.url | SearchParameter.url | StructureDefinition.url | StructureMap.url | TerminologyCapabilities.url | ValueSet.url", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement\r\n* [CodeSystem](codesystem.html): The uri that identifies the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition\r\n* [ConceptMap](conceptmap.html): The URI that identifies the concept map\r\n* [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition\r\n* [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide\r\n* [MessageDefinition](messagedefinition.html): The uri that identifies the message definition\r\n* [NamingSystem](namingsystem.html): The uri that identifies the naming system\r\n* [OperationDefinition](operationdefinition.html): The uri that identifies the operation definition\r\n* [SearchParameter](searchparameter.html): The uri that identifies the search parameter\r\n* [StructureDefinition](structuredefinition.html): The uri that identifies the structure definition\r\n* [StructureMap](structuremap.html): The uri that identifies the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): The uri that identifies the terminology capabilities\r\n* [ValueSet](valueset.html): The uri that identifies the value set\r\n", type="uri" )
   public static final String SP_URL = "url";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>url</b>
@@ -6853,7 +8293,7 @@ public class ValueSet extends CanonicalResource {
 * [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement
 * [CodeSystem](codesystem.html): The uri that identifies the code system
 * [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition
-* [ConceptMap](conceptmap.html): The uri that identifies the concept map
+* [ConceptMap](conceptmap.html): The URI that identifies the concept map
 * [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition
 * [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide
 * [MessageDefinition](messagedefinition.html): The uri that identifies the message definition
@@ -6922,6 +8362,86 @@ public class ValueSet extends CanonicalResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
+
+ /**
+   * Search parameter: <b>author</b>
+   * <p>
+   * Description: <b>Optional Extensions Element</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>CodeSystem.extension('http://hl7.org/fhir/StructureDefinition/valueset-author').value</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="author", path="CodeSystem.extension('http://hl7.org/fhir/StructureDefinition/valueset-author').value", description="Optional Extensions Element", type="string" )
+  public static final String SP_AUTHOR = "author";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>author</b>
+   * <p>
+   * Description: <b>Optional Extensions Element</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>CodeSystem.extension('http://hl7.org/fhir/StructureDefinition/valueset-author').value</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam AUTHOR = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_AUTHOR);
+
+ /**
+   * Search parameter: <b>end</b>
+   * <p>
+   * Description: <b>Optional Extensions Element</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>CodeSystem.extension('http://hl7.org/fhir/StructureDefinition/valueset-expirationDate').value</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="end", path="CodeSystem.extension('http://hl7.org/fhir/StructureDefinition/valueset-expirationDate').value", description="Optional Extensions Element", type="date" )
+  public static final String SP_END = "end";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>end</b>
+   * <p>
+   * Description: <b>Optional Extensions Element</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>CodeSystem.extension('http://hl7.org/fhir/StructureDefinition/valueset-expirationDate').value</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam END = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_END);
+
+ /**
+   * Search parameter: <b>keyword</b>
+   * <p>
+   * Description: <b>Optional Extensions Element</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>CodeSystem.extension('http://hl7.org/fhir/StructureDefinition/valueset-keyWord').value</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="keyword", path="CodeSystem.extension('http://hl7.org/fhir/StructureDefinition/valueset-keyWord').value", description="Optional Extensions Element", type="string" )
+  public static final String SP_KEYWORD = "keyword";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>keyword</b>
+   * <p>
+   * Description: <b>Optional Extensions Element</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>CodeSystem.extension('http://hl7.org/fhir/StructureDefinition/valueset-keyWord').value</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam KEYWORD = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_KEYWORD);
+
+ /**
+   * Search parameter: <b>workflow</b>
+   * <p>
+   * Description: <b>Optional Extensions Element</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CodeSystem.extension('http://hl7.org/fhir/StructureDefinition/valueset-workflowStatus').value</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="workflow", path="CodeSystem.extension('http://hl7.org/fhir/StructureDefinition/valueset-workflowStatus').value", description="Optional Extensions Element", type="token" )
+  public static final String SP_WORKFLOW = "workflow";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>workflow</b>
+   * <p>
+   * Description: <b>Optional Extensions Element</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CodeSystem.extension('http://hl7.org/fhir/StructureDefinition/valueset-workflowStatus').value</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam WORKFLOW = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_WORKFLOW);
 
 
 }

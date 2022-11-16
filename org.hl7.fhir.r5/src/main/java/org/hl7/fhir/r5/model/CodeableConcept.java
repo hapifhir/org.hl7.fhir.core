@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,7 +46,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * Base StructureDefinition for CodeableConcept Type: A concept that may be defined by a formal reference to a terminology or ontology or may be provided by text.
+ * CodeableConcept Type: A concept that may be defined by a formal reference to a terminology or ontology or may be provided by text.
  */
 @DatatypeDef(name="CodeableConcept")
 public class CodeableConcept extends DataType implements ICompositeType {
@@ -403,6 +403,11 @@ public boolean hasCoding(String system, String code) {
     
   public void addCoding(String system, String code, String display) {
     getCoding().add(new Coding(system, code, display));
+  }
+
+  @Override
+  public String toString() {
+    return hasCoding() ? getCoding().toString() : "["+getText()+"]";
   }
   
 // end addition

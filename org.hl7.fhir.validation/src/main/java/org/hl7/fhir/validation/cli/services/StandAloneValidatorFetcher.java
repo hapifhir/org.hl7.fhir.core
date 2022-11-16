@@ -1,10 +1,18 @@
 package org.hl7.fhir.validation.cli.services;
 
-import com.google.gson.JsonObject;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.IWorkerContext.ICanonicalResourceLocator;
+import org.hl7.fhir.r5.context.IWorkerContextManager;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.ElementDefinition;
@@ -22,21 +30,14 @@ import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.VersionUtilities.VersionURLInfo;
-import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
+import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import com.google.gson.JsonObject;
 
-public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IValidationPolicyAdvisor, ICanonicalResourceLocator {
+public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IValidationPolicyAdvisor, IWorkerContextManager.ICanonicalResourceLocator {
 
   List<String> mappingsUris = new ArrayList<>();
   private FilesystemPackageCacheManager pcm;

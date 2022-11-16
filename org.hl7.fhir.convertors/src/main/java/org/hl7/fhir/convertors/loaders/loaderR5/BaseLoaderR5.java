@@ -1,16 +1,18 @@
 package org.hl7.fhir.convertors.loaders.loaderR5;
 
-import com.google.gson.JsonSyntaxException;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
+import java.io.IOException;
+
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext.IContextResourceLoader;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 
-import java.io.IOException;
+import com.google.gson.JsonSyntaxException;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 @Accessors(chain = true)
 public abstract class BaseLoaderR5 implements IContextResourceLoader {

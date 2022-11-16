@@ -2,10 +2,6 @@ package org.hl7.fhir.utilities.npm;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.TextFile;

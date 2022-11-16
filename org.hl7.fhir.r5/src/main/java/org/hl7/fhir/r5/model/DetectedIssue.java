@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -161,6 +161,134 @@ public class DetectedIssue extends DomainResource {
       return "?";
       }
     public String toSystem(DetectedIssueSeverity code) {
+      return code.getSystem();
+      }
+    }
+
+    public enum DetectedIssueStatus {
+        /**
+         * This is an initial or interim observation: data may be incomplete or unverified.
+         */
+        PRELIMINARY, 
+        /**
+         * The observation is complete and there are no further actions needed. Additional information such \"released\", \"signed\", etc would be represented using [Provenance](provenance.html) which provides not only the act but also the actors and dates and other related data. These act states would be associated with an observation status of `preliminary` until they are all completed and then a status of `final` would be applied.
+         */
+        FINAL, 
+        /**
+         * The observation has been withdrawn following previous final release.  This electronic record should never have existed, though it is possible that real-world decisions were based on it. (If real-world activity has occurred, the status should be \"cancelled\" rather than \"entered-in-error\".).
+         */
+        ENTEREDINERROR, 
+        /**
+         * Indicates the detected issue has been mitigated
+         */
+        MITIGATED, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static DetectedIssueStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("preliminary".equals(codeString))
+          return PRELIMINARY;
+        if ("final".equals(codeString))
+          return FINAL;
+        if ("entered-in-error".equals(codeString))
+          return ENTEREDINERROR;
+        if ("mitigated".equals(codeString))
+          return MITIGATED;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown DetectedIssueStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case PRELIMINARY: return "preliminary";
+            case FINAL: return "final";
+            case ENTEREDINERROR: return "entered-in-error";
+            case MITIGATED: return "mitigated";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case PRELIMINARY: return "http://hl7.org/fhir/observation-status";
+            case FINAL: return "http://hl7.org/fhir/observation-status";
+            case ENTEREDINERROR: return "http://hl7.org/fhir/observation-status";
+            case MITIGATED: return "http://hl7.org/fhir/detectedissue-status";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case PRELIMINARY: return "This is an initial or interim observation: data may be incomplete or unverified.";
+            case FINAL: return "The observation is complete and there are no further actions needed. Additional information such \"released\", \"signed\", etc would be represented using [Provenance](provenance.html) which provides not only the act but also the actors and dates and other related data. These act states would be associated with an observation status of `preliminary` until they are all completed and then a status of `final` would be applied.";
+            case ENTEREDINERROR: return "The observation has been withdrawn following previous final release.  This electronic record should never have existed, though it is possible that real-world decisions were based on it. (If real-world activity has occurred, the status should be \"cancelled\" rather than \"entered-in-error\".).";
+            case MITIGATED: return "Indicates the detected issue has been mitigated";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case PRELIMINARY: return "Preliminary";
+            case FINAL: return "Final";
+            case ENTEREDINERROR: return "Entered in Error";
+            case MITIGATED: return "Mitigated";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+    }
+
+  public static class DetectedIssueStatusEnumFactory implements EnumFactory<DetectedIssueStatus> {
+    public DetectedIssueStatus fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("preliminary".equals(codeString))
+          return DetectedIssueStatus.PRELIMINARY;
+        if ("final".equals(codeString))
+          return DetectedIssueStatus.FINAL;
+        if ("entered-in-error".equals(codeString))
+          return DetectedIssueStatus.ENTEREDINERROR;
+        if ("mitigated".equals(codeString))
+          return DetectedIssueStatus.MITIGATED;
+        throw new IllegalArgumentException("Unknown DetectedIssueStatus code '"+codeString+"'");
+        }
+        public Enumeration<DetectedIssueStatus> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<DetectedIssueStatus>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("preliminary".equals(codeString))
+          return new Enumeration<DetectedIssueStatus>(this, DetectedIssueStatus.PRELIMINARY);
+        if ("final".equals(codeString))
+          return new Enumeration<DetectedIssueStatus>(this, DetectedIssueStatus.FINAL);
+        if ("entered-in-error".equals(codeString))
+          return new Enumeration<DetectedIssueStatus>(this, DetectedIssueStatus.ENTEREDINERROR);
+        if ("mitigated".equals(codeString))
+          return new Enumeration<DetectedIssueStatus>(this, DetectedIssueStatus.MITIGATED);
+        throw new FHIRException("Unknown DetectedIssueStatus code '"+codeString+"'");
+        }
+    public String toCode(DetectedIssueStatus code) {
+      if (code == DetectedIssueStatus.PRELIMINARY)
+        return "preliminary";
+      if (code == DetectedIssueStatus.FINAL)
+        return "final";
+      if (code == DetectedIssueStatus.ENTEREDINERROR)
+        return "entered-in-error";
+      if (code == DetectedIssueStatus.MITIGATED)
+        return "mitigated";
+      return "?";
+      }
+    public String toSystem(DetectedIssueStatus code) {
       return code.getSystem();
       }
     }
@@ -723,83 +851,91 @@ public class DetectedIssue extends DomainResource {
      * Indicates the status of the detected issue.
      */
     @Child(name = "status", type = {CodeType.class}, order=1, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="registered | preliminary | final | amended +", formalDefinition="Indicates the status of the detected issue." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/observation-status")
-    protected Enumeration<ObservationStatus> status;
+    @Description(shortDefinition="preliminary | final | entered-in-error | mitigated", formalDefinition="Indicates the status of the detected issue." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/detectedissue-status")
+    protected Enumeration<DetectedIssueStatus> status;
 
     /**
-     * Identifies the general type of issue identified.
+     * A code that classifies the general type of detected issue.
      */
-    @Child(name = "code", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Issue Category, e.g. drug-drug, duplicate therapy, etc.", formalDefinition="Identifies the general type of issue identified." )
+    @Child(name = "category", type = {CodeableConcept.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Type of detected issue, e.g. drug-drug, duplicate therapy, etc.", formalDefinition="A code that classifies the general type of detected issue." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/detectedissue-category")
+    protected List<CodeableConcept> category;
+
+    /**
+     * Identifies the specific type of issue identified.
+     */
+    @Child(name = "code", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Specific type of detected issue, e.g. drug-drug, duplicate therapy, etc.", formalDefinition="Identifies the specific type of issue identified." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/detectedissue-category")
     protected CodeableConcept code;
 
     /**
      * Indicates the degree of importance associated with the identified issue based on the potential impact on the patient.
      */
-    @Child(name = "severity", type = {CodeType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "severity", type = {CodeType.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="high | moderate | low", formalDefinition="Indicates the degree of importance associated with the identified issue based on the potential impact on the patient." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/detectedissue-severity")
     protected Enumeration<DetectedIssueSeverity> severity;
 
     /**
-     * Indicates the patient whose record the detected issue is associated with.
+     * Indicates the subject whose record the detected issue is associated with.
      */
-    @Child(name = "patient", type = {Patient.class}, order=4, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Associated patient", formalDefinition="Indicates the patient whose record the detected issue is associated with." )
-    protected Reference patient;
+    @Child(name = "subject", type = {Patient.class, Group.class, Device.class, Location.class, Organization.class, Procedure.class, Practitioner.class, Medication.class, Substance.class, BiologicallyDerivedProduct.class, NutritionProduct.class}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Associated subject", formalDefinition="Indicates the subject whose record the detected issue is associated with." )
+    protected Reference subject;
 
     /**
      * The date or period when the detected issue was initially identified.
      */
-    @Child(name = "identified", type = {DateTimeType.class, Period.class}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "identified", type = {DateTimeType.class, Period.class}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When identified", formalDefinition="The date or period when the detected issue was initially identified." )
     protected DataType identified;
 
     /**
      * Individual or device responsible for the issue being raised.  For example, a decision support application or a pharmacist conducting a medication review.
      */
-    @Child(name = "author", type = {Practitioner.class, PractitionerRole.class, Device.class}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "author", type = {Patient.class, RelatedPerson.class, Practitioner.class, PractitionerRole.class, Device.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The provider or device that identified the issue", formalDefinition="Individual or device responsible for the issue being raised.  For example, a decision support application or a pharmacist conducting a medication review." )
     protected Reference author;
 
     /**
      * Indicates the resource representing the current activity or proposed activity that is potentially problematic.
      */
-    @Child(name = "implicated", type = {Reference.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "implicated", type = {Reference.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Problem resource", formalDefinition="Indicates the resource representing the current activity or proposed activity that is potentially problematic." )
     protected List<Reference> implicated;
 
     /**
      * Supporting evidence or manifestations that provide the basis for identifying the detected issue such as a GuidanceResponse or MeasureReport.
      */
-    @Child(name = "evidence", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "evidence", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Supporting evidence", formalDefinition="Supporting evidence or manifestations that provide the basis for identifying the detected issue such as a GuidanceResponse or MeasureReport." )
     protected List<DetectedIssueEvidenceComponent> evidence;
 
     /**
      * A textual explanation of the detected issue.
      */
-    @Child(name = "detail", type = {StringType.class}, order=9, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "detail", type = {StringType.class}, order=10, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Description and context", formalDefinition="A textual explanation of the detected issue." )
     protected StringType detail;
 
     /**
      * The literature, knowledge-base or similar reference that describes the propensity for the detected issue identified.
      */
-    @Child(name = "reference", type = {UriType.class}, order=10, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "reference", type = {UriType.class}, order=11, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Authority for issue", formalDefinition="The literature, knowledge-base or similar reference that describes the propensity for the detected issue identified." )
     protected UriType reference;
 
     /**
      * Indicates an action that has been taken or is committed to reduce or eliminate the likelihood of the risk identified by the detected issue from manifesting.  Can also reflect an observation of known mitigating factors that may reduce/eliminate the need for any action.
      */
-    @Child(name = "mitigation", type = {}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "mitigation", type = {}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Step taken to address", formalDefinition="Indicates an action that has been taken or is committed to reduce or eliminate the likelihood of the risk identified by the detected issue from manifesting.  Can also reflect an observation of known mitigating factors that may reduce/eliminate the need for any action." )
     protected List<DetectedIssueMitigationComponent> mitigation;
 
-    private static final long serialVersionUID = -781032584L;
+    private static final long serialVersionUID = -101003859L;
 
   /**
    * Constructor
@@ -811,7 +947,7 @@ public class DetectedIssue extends DomainResource {
   /**
    * Constructor
    */
-    public DetectedIssue(ObservationStatus status) {
+    public DetectedIssue(DetectedIssueStatus status) {
       super();
       this.setStatus(status);
     }
@@ -872,12 +1008,12 @@ public class DetectedIssue extends DomainResource {
     /**
      * @return {@link #status} (Indicates the status of the detected issue.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public Enumeration<ObservationStatus> getStatusElement() { 
+    public Enumeration<DetectedIssueStatus> getStatusElement() { 
       if (this.status == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create DetectedIssue.status");
         else if (Configuration.doAutoCreate())
-          this.status = new Enumeration<ObservationStatus>(new ObservationStatusEnumFactory()); // bb
+          this.status = new Enumeration<DetectedIssueStatus>(new DetectedIssueStatusEnumFactory()); // bb
       return this.status;
     }
 
@@ -892,7 +1028,7 @@ public class DetectedIssue extends DomainResource {
     /**
      * @param value {@link #status} (Indicates the status of the detected issue.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public DetectedIssue setStatusElement(Enumeration<ObservationStatus> value) { 
+    public DetectedIssue setStatusElement(Enumeration<DetectedIssueStatus> value) { 
       this.status = value;
       return this;
     }
@@ -900,22 +1036,75 @@ public class DetectedIssue extends DomainResource {
     /**
      * @return Indicates the status of the detected issue.
      */
-    public ObservationStatus getStatus() { 
+    public DetectedIssueStatus getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
      * @param value Indicates the status of the detected issue.
      */
-    public DetectedIssue setStatus(ObservationStatus value) { 
+    public DetectedIssue setStatus(DetectedIssueStatus value) { 
         if (this.status == null)
-          this.status = new Enumeration<ObservationStatus>(new ObservationStatusEnumFactory());
+          this.status = new Enumeration<DetectedIssueStatus>(new DetectedIssueStatusEnumFactory());
         this.status.setValue(value);
       return this;
     }
 
     /**
-     * @return {@link #code} (Identifies the general type of issue identified.)
+     * @return {@link #category} (A code that classifies the general type of detected issue.)
+     */
+    public List<CodeableConcept> getCategory() { 
+      if (this.category == null)
+        this.category = new ArrayList<CodeableConcept>();
+      return this.category;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public DetectedIssue setCategory(List<CodeableConcept> theCategory) { 
+      this.category = theCategory;
+      return this;
+    }
+
+    public boolean hasCategory() { 
+      if (this.category == null)
+        return false;
+      for (CodeableConcept item : this.category)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public CodeableConcept addCategory() { //3
+      CodeableConcept t = new CodeableConcept();
+      if (this.category == null)
+        this.category = new ArrayList<CodeableConcept>();
+      this.category.add(t);
+      return t;
+    }
+
+    public DetectedIssue addCategory(CodeableConcept t) { //3
+      if (t == null)
+        return this;
+      if (this.category == null)
+        this.category = new ArrayList<CodeableConcept>();
+      this.category.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #category}, creating it if it does not already exist {3}
+     */
+    public CodeableConcept getCategoryFirstRep() { 
+      if (getCategory().isEmpty()) {
+        addCategory();
+      }
+      return getCategory().get(0);
+    }
+
+    /**
+     * @return {@link #code} (Identifies the specific type of issue identified.)
      */
     public CodeableConcept getCode() { 
       if (this.code == null)
@@ -931,7 +1120,7 @@ public class DetectedIssue extends DomainResource {
     }
 
     /**
-     * @param value {@link #code} (Identifies the general type of issue identified.)
+     * @param value {@link #code} (Identifies the specific type of issue identified.)
      */
     public DetectedIssue setCode(CodeableConcept value) { 
       this.code = value;
@@ -988,26 +1177,26 @@ public class DetectedIssue extends DomainResource {
     }
 
     /**
-     * @return {@link #patient} (Indicates the patient whose record the detected issue is associated with.)
+     * @return {@link #subject} (Indicates the subject whose record the detected issue is associated with.)
      */
-    public Reference getPatient() { 
-      if (this.patient == null)
+    public Reference getSubject() { 
+      if (this.subject == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create DetectedIssue.patient");
+          throw new Error("Attempt to auto-create DetectedIssue.subject");
         else if (Configuration.doAutoCreate())
-          this.patient = new Reference(); // cc
-      return this.patient;
+          this.subject = new Reference(); // cc
+      return this.subject;
     }
 
-    public boolean hasPatient() { 
-      return this.patient != null && !this.patient.isEmpty();
+    public boolean hasSubject() { 
+      return this.subject != null && !this.subject.isEmpty();
     }
 
     /**
-     * @param value {@link #patient} (Indicates the patient whose record the detected issue is associated with.)
+     * @param value {@link #subject} (Indicates the subject whose record the detected issue is associated with.)
      */
-    public DetectedIssue setPatient(Reference value) { 
-      this.patient = value;
+    public DetectedIssue setSubject(Reference value) { 
+      this.subject = value;
       return this;
     }
 
@@ -1347,11 +1536,12 @@ public class DetectedIssue extends DomainResource {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Business identifier associated with the detected issue record.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("status", "code", "Indicates the status of the detected issue.", 0, 1, status));
-        children.add(new Property("code", "CodeableConcept", "Identifies the general type of issue identified.", 0, 1, code));
+        children.add(new Property("category", "CodeableConcept", "A code that classifies the general type of detected issue.", 0, java.lang.Integer.MAX_VALUE, category));
+        children.add(new Property("code", "CodeableConcept", "Identifies the specific type of issue identified.", 0, 1, code));
         children.add(new Property("severity", "code", "Indicates the degree of importance associated with the identified issue based on the potential impact on the patient.", 0, 1, severity));
-        children.add(new Property("patient", "Reference(Patient)", "Indicates the patient whose record the detected issue is associated with.", 0, 1, patient));
+        children.add(new Property("subject", "Reference(Patient|Group|Device|Location|Organization|Procedure|Practitioner|Medication|Substance|BiologicallyDerivedProduct|NutritionProduct)", "Indicates the subject whose record the detected issue is associated with.", 0, 1, subject));
         children.add(new Property("identified[x]", "dateTime|Period", "The date or period when the detected issue was initially identified.", 0, 1, identified));
-        children.add(new Property("author", "Reference(Practitioner|PractitionerRole|Device)", "Individual or device responsible for the issue being raised.  For example, a decision support application or a pharmacist conducting a medication review.", 0, 1, author));
+        children.add(new Property("author", "Reference(Patient|RelatedPerson|Practitioner|PractitionerRole|Device)", "Individual or device responsible for the issue being raised.  For example, a decision support application or a pharmacist conducting a medication review.", 0, 1, author));
         children.add(new Property("implicated", "Reference(Any)", "Indicates the resource representing the current activity or proposed activity that is potentially problematic.", 0, java.lang.Integer.MAX_VALUE, implicated));
         children.add(new Property("evidence", "", "Supporting evidence or manifestations that provide the basis for identifying the detected issue such as a GuidanceResponse or MeasureReport.", 0, java.lang.Integer.MAX_VALUE, evidence));
         children.add(new Property("detail", "string", "A textual explanation of the detected issue.", 0, 1, detail));
@@ -1364,14 +1554,15 @@ public class DetectedIssue extends DomainResource {
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Business identifier associated with the detected issue record.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case -892481550: /*status*/  return new Property("status", "code", "Indicates the status of the detected issue.", 0, 1, status);
-        case 3059181: /*code*/  return new Property("code", "CodeableConcept", "Identifies the general type of issue identified.", 0, 1, code);
+        case 50511102: /*category*/  return new Property("category", "CodeableConcept", "A code that classifies the general type of detected issue.", 0, java.lang.Integer.MAX_VALUE, category);
+        case 3059181: /*code*/  return new Property("code", "CodeableConcept", "Identifies the specific type of issue identified.", 0, 1, code);
         case 1478300413: /*severity*/  return new Property("severity", "code", "Indicates the degree of importance associated with the identified issue based on the potential impact on the patient.", 0, 1, severity);
-        case -791418107: /*patient*/  return new Property("patient", "Reference(Patient)", "Indicates the patient whose record the detected issue is associated with.", 0, 1, patient);
+        case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Group|Device|Location|Organization|Procedure|Practitioner|Medication|Substance|BiologicallyDerivedProduct|NutritionProduct)", "Indicates the subject whose record the detected issue is associated with.", 0, 1, subject);
         case 569355781: /*identified[x]*/  return new Property("identified[x]", "dateTime|Period", "The date or period when the detected issue was initially identified.", 0, 1, identified);
         case -1618432869: /*identified*/  return new Property("identified[x]", "dateTime|Period", "The date or period when the detected issue was initially identified.", 0, 1, identified);
         case -968788650: /*identifiedDateTime*/  return new Property("identified[x]", "dateTime", "The date or period when the detected issue was initially identified.", 0, 1, identified);
         case 520482364: /*identifiedPeriod*/  return new Property("identified[x]", "Period", "The date or period when the detected issue was initially identified.", 0, 1, identified);
-        case -1406328437: /*author*/  return new Property("author", "Reference(Practitioner|PractitionerRole|Device)", "Individual or device responsible for the issue being raised.  For example, a decision support application or a pharmacist conducting a medication review.", 0, 1, author);
+        case -1406328437: /*author*/  return new Property("author", "Reference(Patient|RelatedPerson|Practitioner|PractitionerRole|Device)", "Individual or device responsible for the issue being raised.  For example, a decision support application or a pharmacist conducting a medication review.", 0, 1, author);
         case -810216884: /*implicated*/  return new Property("implicated", "Reference(Any)", "Indicates the resource representing the current activity or proposed activity that is potentially problematic.", 0, java.lang.Integer.MAX_VALUE, implicated);
         case 382967383: /*evidence*/  return new Property("evidence", "", "Supporting evidence or manifestations that provide the basis for identifying the detected issue such as a GuidanceResponse or MeasureReport.", 0, java.lang.Integer.MAX_VALUE, evidence);
         case -1335224239: /*detail*/  return new Property("detail", "string", "A textual explanation of the detected issue.", 0, 1, detail);
@@ -1386,10 +1577,11 @@ public class DetectedIssue extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
-        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<ObservationStatus>
+        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<DetectedIssueStatus>
+        case 50511102: /*category*/ return this.category == null ? new Base[0] : this.category.toArray(new Base[this.category.size()]); // CodeableConcept
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
         case 1478300413: /*severity*/ return this.severity == null ? new Base[0] : new Base[] {this.severity}; // Enumeration<DetectedIssueSeverity>
-        case -791418107: /*patient*/ return this.patient == null ? new Base[0] : new Base[] {this.patient}; // Reference
+        case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Reference
         case -1618432869: /*identified*/ return this.identified == null ? new Base[0] : new Base[] {this.identified}; // DataType
         case -1406328437: /*author*/ return this.author == null ? new Base[0] : new Base[] {this.author}; // Reference
         case -810216884: /*implicated*/ return this.implicated == null ? new Base[0] : this.implicated.toArray(new Base[this.implicated.size()]); // Reference
@@ -1409,8 +1601,11 @@ public class DetectedIssue extends DomainResource {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new ObservationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<ObservationStatus>
+          value = new DetectedIssueStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<DetectedIssueStatus>
+          return value;
+        case 50511102: // category
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 3059181: // code
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -1419,8 +1614,8 @@ public class DetectedIssue extends DomainResource {
           value = new DetectedIssueSeverityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.severity = (Enumeration) value; // Enumeration<DetectedIssueSeverity>
           return value;
-        case -791418107: // patient
-          this.patient = TypeConvertor.castToReference(value); // Reference
+        case -1867885268: // subject
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1618432869: // identified
           this.identified = TypeConvertor.castToType(value); // DataType
@@ -1453,15 +1648,17 @@ public class DetectedIssue extends DomainResource {
         if (name.equals("identifier")) {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new ObservationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<ObservationStatus>
+          value = new DetectedIssueStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<DetectedIssueStatus>
+        } else if (name.equals("category")) {
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("code")) {
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("severity")) {
           value = new DetectedIssueSeverityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.severity = (Enumeration) value; // Enumeration<DetectedIssueSeverity>
-        } else if (name.equals("patient")) {
-          this.patient = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("subject")) {
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("identified[x]")) {
           this.identified = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("author")) {
@@ -1486,9 +1683,10 @@ public class DetectedIssue extends DomainResource {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
+        case 50511102:  return addCategory(); 
         case 3059181:  return getCode();
         case 1478300413:  return getSeverityElement();
-        case -791418107:  return getPatient();
+        case -1867885268:  return getSubject();
         case 569355781:  return getIdentified();
         case -1618432869:  return getIdentified();
         case -1406328437:  return getAuthor();
@@ -1507,9 +1705,10 @@ public class DetectedIssue extends DomainResource {
         switch (hash) {
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case -892481550: /*status*/ return new String[] {"code"};
+        case 50511102: /*category*/ return new String[] {"CodeableConcept"};
         case 3059181: /*code*/ return new String[] {"CodeableConcept"};
         case 1478300413: /*severity*/ return new String[] {"code"};
-        case -791418107: /*patient*/ return new String[] {"Reference"};
+        case -1867885268: /*subject*/ return new String[] {"Reference"};
         case -1618432869: /*identified*/ return new String[] {"dateTime", "Period"};
         case -1406328437: /*author*/ return new String[] {"Reference"};
         case -810216884: /*implicated*/ return new String[] {"Reference"};
@@ -1530,6 +1729,9 @@ public class DetectedIssue extends DomainResource {
         else if (name.equals("status")) {
           throw new FHIRException("Cannot call addChild on a primitive type DetectedIssue.status");
         }
+        else if (name.equals("category")) {
+          return addCategory();
+        }
         else if (name.equals("code")) {
           this.code = new CodeableConcept();
           return this.code;
@@ -1537,9 +1739,9 @@ public class DetectedIssue extends DomainResource {
         else if (name.equals("severity")) {
           throw new FHIRException("Cannot call addChild on a primitive type DetectedIssue.severity");
         }
-        else if (name.equals("patient")) {
-          this.patient = new Reference();
-          return this.patient;
+        else if (name.equals("subject")) {
+          this.subject = new Reference();
+          return this.subject;
         }
         else if (name.equals("identifiedDateTime")) {
           this.identified = new DateTimeType();
@@ -1591,9 +1793,14 @@ public class DetectedIssue extends DomainResource {
             dst.identifier.add(i.copy());
         };
         dst.status = status == null ? null : status.copy();
+        if (category != null) {
+          dst.category = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : category)
+            dst.category.add(i.copy());
+        };
         dst.code = code == null ? null : code.copy();
         dst.severity = severity == null ? null : severity.copy();
-        dst.patient = patient == null ? null : patient.copy();
+        dst.subject = subject == null ? null : subject.copy();
         dst.identified = identified == null ? null : identified.copy();
         dst.author = author == null ? null : author.copy();
         if (implicated != null) {
@@ -1626,11 +1833,11 @@ public class DetectedIssue extends DomainResource {
         if (!(other_ instanceof DetectedIssue))
           return false;
         DetectedIssue o = (DetectedIssue) other_;
-        return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(code, o.code, true)
-           && compareDeep(severity, o.severity, true) && compareDeep(patient, o.patient, true) && compareDeep(identified, o.identified, true)
-           && compareDeep(author, o.author, true) && compareDeep(implicated, o.implicated, true) && compareDeep(evidence, o.evidence, true)
-           && compareDeep(detail, o.detail, true) && compareDeep(reference, o.reference, true) && compareDeep(mitigation, o.mitigation, true)
-          ;
+        return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(category, o.category, true)
+           && compareDeep(code, o.code, true) && compareDeep(severity, o.severity, true) && compareDeep(subject, o.subject, true)
+           && compareDeep(identified, o.identified, true) && compareDeep(author, o.author, true) && compareDeep(implicated, o.implicated, true)
+           && compareDeep(evidence, o.evidence, true) && compareDeep(detail, o.detail, true) && compareDeep(reference, o.reference, true)
+           && compareDeep(mitigation, o.mitigation, true);
       }
 
       @Override
@@ -1645,9 +1852,9 @@ public class DetectedIssue extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, code
-          , severity, patient, identified, author, implicated, evidence, detail, reference
-          , mitigation);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, category
+          , code, severity, subject, identified, author, implicated, evidence, detail
+          , reference, mitigation);
       }
 
   @Override
@@ -1663,7 +1870,7 @@ public class DetectedIssue extends DomainResource {
    * Path: <b>DetectedIssue.author</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="author", path="DetectedIssue.author", description="The provider or device that identified the issue", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Device.class, Practitioner.class, PractitionerRole.class } )
+  @SearchParamDefinition(name="author", path="DetectedIssue.author", description="The provider or device that identified the issue", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Device.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
   public static final String SP_AUTHOR = "author";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>author</b>
@@ -1682,19 +1889,39 @@ public class DetectedIssue extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_AUTHOR = new ca.uhn.fhir.model.api.Include("DetectedIssue:author").toLocked();
 
  /**
-   * Search parameter: <b>code</b>
+   * Search parameter: <b>category</b>
    * <p>
    * Description: <b>Issue Category, e.g. drug-drug, duplicate therapy, etc.</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>DetectedIssue.category</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="category", path="DetectedIssue.category", description="Issue Category, e.g. drug-drug, duplicate therapy, etc.", type="token" )
+  public static final String SP_CATEGORY = "category";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>category</b>
+   * <p>
+   * Description: <b>Issue Category, e.g. drug-drug, duplicate therapy, etc.</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>DetectedIssue.category</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CATEGORY);
+
+ /**
+   * Search parameter: <b>code</b>
+   * <p>
+   * Description: <b>Issue Type, e.g. drug-drug, duplicate therapy, etc.</b><br>
    * Type: <b>token</b><br>
    * Path: <b>DetectedIssue.code</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="code", path="DetectedIssue.code", description="Issue Category, e.g. drug-drug, duplicate therapy, etc.", type="token" )
+  @SearchParamDefinition(name="code", path="DetectedIssue.code", description="Issue Type, e.g. drug-drug, duplicate therapy, etc.", type="token" )
   public static final String SP_CODE = "code";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>code</b>
    * <p>
-   * Description: <b>Issue Category, e.g. drug-drug, duplicate therapy, etc.</b><br>
+   * Description: <b>Issue Type, e.g. drug-drug, duplicate therapy, etc.</b><br>
    * Type: <b>token</b><br>
    * Path: <b>DetectedIssue.code</b><br>
    * </p>
@@ -1729,7 +1956,7 @@ public class DetectedIssue extends DomainResource {
    * Path: <b>DetectedIssue.implicated</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="implicated", path="DetectedIssue.implicated", description="Problem resource", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="implicated", path="DetectedIssue.implicated", description="Problem resource", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_IMPLICATED = "implicated";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>implicated</b>
@@ -1766,6 +1993,32 @@ public class DetectedIssue extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>subject</b>
+   * <p>
+   * Description: <b>Associated subject</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>DetectedIssue.subject</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="subject", path="DetectedIssue.subject", description="Associated subject", type="reference", target={BiologicallyDerivedProduct.class, Device.class, Group.class, Location.class, Medication.class, NutritionProduct.class, Organization.class, Patient.class, Practitioner.class, Procedure.class, Substance.class } )
+  public static final String SP_SUBJECT = "subject";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <p>
+   * Description: <b>Associated subject</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>DetectedIssue.subject</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>DetectedIssue:subject</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("DetectedIssue:subject").toLocked();
 
  /**
    * Search parameter: <b>identifier</b>
@@ -1881,7 +2134,7 @@ public class DetectedIssue extends DomainResource {
 * [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
 * [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
 * [MedicationUsage](medicationusage.html): Returns statements for a specific patient.
-* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement
+* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement
 * [Observation](observation.html): The subject that the observation is about (if patient)
 * [Procedure](procedure.html): Search by subject - a patient
 * [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
@@ -1890,10 +2143,10 @@ public class DetectedIssue extends DomainResource {
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
+  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={BiologicallyDerivedProduct.class, Device.class, Group.class, Location.class, Medication.class, NutritionProduct.class, Organization.class, Patient.class, Practitioner.class, Procedure.class, Substance.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
@@ -1925,7 +2178,7 @@ public class DetectedIssue extends DomainResource {
 * [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
 * [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
 * [MedicationUsage](medicationusage.html): Returns statements for a specific patient.
-* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement
+* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement
 * [Observation](observation.html): The subject that the observation is about (if patient)
 * [Procedure](procedure.html): Search by subject - a patient
 * [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
@@ -1934,7 +2187,7 @@ public class DetectedIssue extends DomainResource {
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);

@@ -8,18 +8,12 @@ import org.apache.commons.codec.binary.Base64;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.model.Annotation;
 import org.hl7.fhir.r5.model.Attachment;
-import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ContactDetail;
 import org.hl7.fhir.r5.model.ContactPoint;
 import org.hl7.fhir.r5.model.DataRequirement;
-import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Library;
-import org.hl7.fhir.r5.model.ListResource;
-import org.hl7.fhir.r5.model.ListResource.ListResourceEntryComponent;
 import org.hl7.fhir.r5.model.ParameterDefinition;
-import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.RelatedArtifact;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
@@ -27,7 +21,6 @@ import org.hl7.fhir.r5.renderers.utils.BaseWrappers.PropertyWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceWithReference;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -383,10 +376,10 @@ public class LibraryRenderer extends ResourceRenderer {
           p.code().tx(att.getContentType()+lang(att));
         }
         if (att.getData().length < LibraryRenderer.DATA_IMG_SIZE_CUTOFF) {
-          x.img("data: "+att.getContentType()+">;base64,"+b64(att.getData()));
+          x.img("data: "+att.getContentType()+">;base64,"+b64(att.getData()), "data");
         } else {
           String filename = "Library-"+baseId+(counter == 0 ? "" : "-"+Integer.toString(counter))+"."+imgExtension(att.getContentType()); 
-          x.img(filename);
+          x.img(filename, "data");
         }        
       } else if (txt != null && !noShowData) {
         XhtmlNode p = x.para();

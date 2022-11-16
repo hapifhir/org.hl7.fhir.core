@@ -5,7 +5,7 @@
   "version" : "1.0.0",
   "name" : "FHIR Reference Server Teminology Capability Statement",
   "status" : "active",
-  "date" : "2022-07-13T04:36:48.317Z",
+  "date" : "2022-09-12T07:14:02.176Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
@@ -1269,6 +1269,9 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/hl7-work-group"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/icd-o-3"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/immunization-evaluation-dose-status"

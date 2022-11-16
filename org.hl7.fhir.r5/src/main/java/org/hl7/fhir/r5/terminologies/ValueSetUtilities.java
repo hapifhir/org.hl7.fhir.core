@@ -1,5 +1,9 @@
 package org.hl7.fhir.r5.terminologies;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,16 +35,27 @@ package org.hl7.fhir.r5.terminologies;
 
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.Meta;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
+import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
+import org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent;
+import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionPropertyComponent;
+import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.ConceptDefinitionComponentSorter;
+import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.ConceptStatus;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
@@ -233,5 +248,43 @@ public class ValueSetUtilities {
     vs.getCompose().addInclude().setSystem("http://snomed.info/sct");
     return vs;
   }
+
+  public static void setDeprecated(List<ValueSetExpansionPropertyComponent> vsProp,  ValueSetExpansionContainsComponent n) {
+    n.addProperty().setCode("status").setValue(new CodeType("deprecated"));
+    for (ValueSetExpansionPropertyComponent o : vsProp) {
+      if ("status".equals(o.getCode())) {
+        return;
+      }
+    }
+    vsProp.add(new ValueSetExpansionPropertyComponent().setCode("status").setUri("http://hl7.org/fhir/concept-properties#status"));
+  }
+
+
+  public static class ConceptReferenceComponentSorter implements Comparator<ConceptReferenceComponent> {
+
+    @Override
+    public int compare(ConceptReferenceComponent o1, ConceptReferenceComponent o2) {
+      return o1.getCode().compareToIgnoreCase(o2.getCode());
+    }
+  }
+
+
+  public static void sortInclude(ConceptSetComponent inc) {
+    Collections.sort(inc.getConcept(), new ConceptReferenceComponentSorter());
+  }
+
+  public static String getAllCodesSystem(ValueSet vs) {
+    if (vs.hasCompose()) {
+      ValueSetComposeComponent c = vs.getCompose();
+      if (c.getExclude().isEmpty() && c.getInclude().size() == 1) {
+        ConceptSetComponent i = c.getIncludeFirstRep();
+        if (i.hasSystem() && !i.hasValueSet() && !i.hasConcept() && !i.hasFilter()) {
+          return i.getSystem();
+        }
+      }
+    }
+    return null;
+  }
+
 
 }

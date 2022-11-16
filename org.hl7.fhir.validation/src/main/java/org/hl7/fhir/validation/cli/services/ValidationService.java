@@ -1,44 +1,51 @@
 package org.hl7.fhir.validation.cli.services;
 
-import org.hl7.fhir.exceptions.FHIRException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryMXBean;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hl7.fhir.r5.conformance.R5ExtensionsLoader;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.context.SystemOutLoggingService;
 import org.hl7.fhir.r5.context.TerminologyCache;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
-import org.hl7.fhir.r5.conformance.R5ExtensionsLoader;
-import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
-import org.hl7.fhir.r5.context.SimpleWorkerContext.PackageResourceLoader;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.formats.IParser;
-import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
+import org.hl7.fhir.r5.model.Bundle;
+import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.ConceptMap;
+import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
+import org.hl7.fhir.r5.model.StructureMap;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.spreadsheets.CodeSystemSpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.spreadsheets.ConceptMapSpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.spreadsheets.StructureDefinitionSpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.spreadsheets.ValueSetSpreadsheetGenerator;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.SimpleTimeTracker;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
-import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
-import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.ValidationRecord;
-import org.hl7.fhir.validation.cli.model.*;
+import org.hl7.fhir.validation.cli.model.CliContext;
+import org.hl7.fhir.validation.cli.model.FileInfo;
+import org.hl7.fhir.validation.cli.model.ValidationOutcome;
+import org.hl7.fhir.validation.cli.model.ValidationRequest;
+import org.hl7.fhir.validation.cli.model.ValidationResponse;
 import org.hl7.fhir.validation.cli.renderers.CSVRenderer;
 import org.hl7.fhir.validation.cli.renderers.DefaultRenderer;
 import org.hl7.fhir.validation.cli.renderers.ESLintCompactRenderer;
@@ -46,19 +53,6 @@ import org.hl7.fhir.validation.cli.renderers.NativeRenderer;
 import org.hl7.fhir.validation.cli.renderers.ValidationOutputRenderer;
 import org.hl7.fhir.validation.cli.utils.EngineMode;
 import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
-
-import lombok.val;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.lang.management.ManagementFactory;
-import java.lang.management.MemoryMXBean;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class ValidationService {
 
@@ -209,8 +203,25 @@ public class ValidationService {
   }
 
   public void convertSources(CliContext cliContext, ValidationEngine validator) throws Exception {
-    System.out.println(" ...convert");
-    validator.convert(cliContext.getSources().get(0), cliContext.getOutput());
+
+      if (!((cliContext.getOutput() == null) ^ (cliContext.getOutputSuffix() == null))) {
+        throw new Exception("Convert requires one of {-output, -outputSuffix} parameter to be set");
+      }
+
+      List<String> sources = cliContext.getSources();
+      if ((sources.size() == 1) && (cliContext.getOutput() != null)) {
+        System.out.println(" ...convert");
+        validator.convert(sources.get(0), cliContext.getOutput());
+      } else {
+        if (cliContext.getOutputSuffix() == null) {
+          throw new Exception("Converting multiple/wildcard sources requires a -outputSuffix parameter to be set");
+        }
+        for (int i = 0; i < sources.size(); i++) {
+            String output = sources.get(i) + "." + cliContext.getOutputSuffix();
+            validator.convert(sources.get(i), output);
+            System.out.println(" ...convert [" + i +  "] (" + sources.get(i) + " to " + output + ")");
+        }
+      }
   }
 
   public void evaluateFhirpath(CliContext cliContext, ValidationEngine validator) throws Exception {
@@ -219,11 +230,28 @@ public class ValidationService {
   }
 
   public void generateSnapshot(CliContext cliContext, ValidationEngine validator) throws Exception {
-    StructureDefinition r = validator.snapshot(cliContext.getSources().get(0), cliContext.getSv());
-    System.out.println(" ...generated snapshot successfully");
-    if (cliContext.getOutput() != null) {
-      validator.handleOutput(r, cliContext.getOutput(), cliContext.getSv());
-    }
+
+      if (!((cliContext.getOutput() == null) ^ (cliContext.getOutputSuffix() == null))) {
+        throw new Exception("Snapshot generation requires one of {-output, -outputSuffix} parameter to be set");
+      }
+
+      List<String> sources = cliContext.getSources();
+      if ((sources.size() == 1) && (cliContext.getOutput() != null)) {
+        StructureDefinition r = validator.snapshot(sources.get(0), cliContext.getSv());
+        System.out.println(" ...generated snapshot successfully");
+        validator.handleOutput(r, cliContext.getOutput(), cliContext.getSv());
+      } else {
+        if (cliContext.getOutputSuffix() == null) {
+          throw new Exception("Snapshot generation for multiple/wildcard sources requires a -outputSuffix parameter to be set");
+        }
+        for (int i = 0; i < sources.size(); i++) {
+          StructureDefinition r = validator.snapshot(sources.get(i), cliContext.getSv());
+          String output = sources.get(i) + "." + cliContext.getOutputSuffix();
+          validator.handleOutput(r, output, cliContext.getSv());
+          System.out.println(" ...generated snapshot [" + i +  "] successfully (" + sources.get(i) + " to " + output + ")");
+        }
+      }
+
   }
 
   public void generateNarrative(CliContext cliContext, ValidationEngine validator) throws Exception {
@@ -242,13 +270,14 @@ public class ValidationService {
     if (cliContext.getMap() == null)
       throw new Exception("Must provide a map when doing a transform");
     try {
-      List<StructureDefinition> structures = validator.getContext().allStructures();
+      ContextUtilities cu = new ContextUtilities(validator.getContext());
+      List<StructureDefinition> structures =  cu.allStructures();
       for (StructureDefinition sd : structures) {
         if (!sd.hasSnapshot()) {
           if (sd.getKind() != null && sd.getKind() == StructureDefinitionKind.LOGICAL) {
-            validator.getContext().generateSnapshot(sd, true);
+            cu.generateSnapshot(sd, true);
           } else {
-            validator.getContext().generateSnapshot(sd, false);
+            cu.generateSnapshot(sd, false);
           }
         }
       }
@@ -277,13 +306,14 @@ public class ValidationService {
     if (cliContext.getOutput() == null)
       throw new Exception("Must provide an output name when compiling a transform");
     try {
-      List<StructureDefinition> structures = validator.getContext().allStructures();
+      ContextUtilities cu = new ContextUtilities(validator.getContext());
+      List<StructureDefinition> structures = cu.allStructures();
       for (StructureDefinition sd : structures) {
         if (!sd.hasSnapshot()) {
           if (sd.getKind() != null && sd.getKind() == StructureDefinitionKind.LOGICAL) {
-            validator.getContext().generateSnapshot(sd, true);
+            cu.generateSnapshot(sd, true);
           } else {
-            validator.getContext().generateSnapshot(sd, false);
+            cu.generateSnapshot(sd, false);
           }
         }
       }
@@ -343,8 +373,9 @@ public class ValidationService {
       System.out.println(" - " + validator.getContext().countAllCaches() + " resources (" + tt.milestone() + ")");
       igLoader.loadIg(validator.getIgs(), validator.getBinaries(), "hl7.terminology", false);
       System.out.print("  Load R5 Extensions");
-      R5ExtensionsLoader r5e = new R5ExtensionsLoader(validator.getPcm());
-      r5e.loadR5Extensions(validator.getContext());
+      R5ExtensionsLoader r5e = new R5ExtensionsLoader(validator.getPcm(), validator.getContext());
+      r5e.load();
+      r5e.loadR5Extensions();
       System.out.println(" - " + r5e.getCount() + " resources (" + tt.milestone() + ")");
       System.out.print("  Terminology server " + cliContext.getTxServer());
       String txver = validator.setTerminologyServer(cliContext.getTxServer(), cliContext.getTxLog(), ver);
@@ -354,6 +385,7 @@ public class ValidationService {
       for (String src : cliContext.getIgs()) {
         igLoader.loadIg(validator.getIgs(), validator.getBinaries(), src, cliContext.isRecursive());
       }
+      System.out.println("  Package Summary: "+validator.getContext().loadedPackageSummary());
       System.out.print("  Get set... ");
       validator.setQuestionnaireMode(cliContext.getQuestionnaireMode());
       validator.setLevel(cliContext.getLevel());
@@ -372,12 +404,14 @@ public class ValidationService {
       validator.setAssumeValidRestReferences(cliContext.isAssumeValidRestReferences());
       validator.setShowMessagesFromReferences(cliContext.isShowMessagesFromReferences());
       validator.setDoImplicitFHIRPathStringConversion(cliContext.isDoImplicitFHIRPathStringConversion());
+      validator.setHtmlInMarkdownCheck(cliContext.getHtmlInMarkdownCheck());
       validator.setNoExtensibleBindingMessages(cliContext.isNoExtensibleBindingMessages());
       validator.setNoUnicodeBiDiControlChars(cliContext.isNoUnicodeBiDiControlChars());
       validator.setNoInvariantChecks(cliContext.isNoInvariants());
       validator.setWantInvariantInMessage(cliContext.isWantInvariantsInMessages());
       validator.setSecurityChecks(cliContext.isSecurityChecks());
       validator.setCrumbTrails(cliContext.isCrumbTrails());
+      validator.setForPublication(cliContext.isForPublication());
       validator.setShowTimes(cliContext.isShowTimes());
       validator.setAllowExampleUrls(cliContext.isAllowExampleUrls());
       StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(validator.getPcm(), validator.getContext(), validator);    

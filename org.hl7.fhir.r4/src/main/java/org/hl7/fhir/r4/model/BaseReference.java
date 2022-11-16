@@ -38,7 +38,7 @@ import org.hl7.fhir.instance.model.api.IIdType;
 
 public abstract class BaseReference extends Type implements IBaseReference, ICompositeType {
 
-    /**
+  /**
      * This is not a part of the "wire format" resource, but can be changed/accessed by parsers
      */
     private transient IBaseResource resource;
@@ -92,5 +92,13 @@ public abstract class BaseReference extends Type implements IBaseReference, ICom
 	public boolean isEmpty() {
 		return resource == null && super.isEmpty();
 	}
+
+  @Override
+  public void copyValues(Element dst) {
+    super.copyValues(dst);
+    if (resource != null && dst instanceof BaseReference) {
+      ((BaseReference) dst).setResource(resource);
+    }
+  }
 
 }

@@ -28,7 +28,7 @@ public class PackageHacker {
   private static boolean useSecureReferences = false;
   
   public static void main(String[] args) throws FileNotFoundException, IOException {
-    new PackageHacker().edit(args[0]);
+    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/us/sdoh-clinicalcare/2022Jan/package.tgz");
   }
 
   private void edit(String name) throws FileNotFoundException, IOException {
@@ -48,6 +48,7 @@ public class PackageHacker {
     if (pck.getFolders().containsKey("xml")) {
       fixContent(pck.getFolders().get("xml").getContent());
     }
+    fixExampleContent(pck.getFolders().get("example").getContent());
     
     System.out.println("Revised Package");
     System.out.println("=======================");
@@ -61,8 +62,14 @@ public class PackageHacker {
     }   
   }
 
+  private void fixExampleContent(Map<String, byte[]> content) {
+    byte[] cnt = content.get("ServiceRequest-SDOHCC-ServiceRequestCompletedFoodPantryApplicationAssistExample.json");
+    content.put("ServiceRequest-SDOHCC-ServiceRequestCompletedFoodPantryApplicationAssist.json", cnt);
+    content.remove("ServiceRequest-SDOHCC-ServiceRequestCompletedFoodPantryApplicationAssistExample.json");
+  }
+
   private void fixContent(Map<String, byte[]> content) {
-    fixVersionInContent(content);
+//    fixVersionInContent(content);
 
   }
 
@@ -71,7 +78,7 @@ public class PackageHacker {
   }
 
   private void change(JsonObject npm) throws FileNotFoundException, IOException {
-    fixVersions(npm);
+//    fixVersions(npm);
 //    npm.remove("notForPublication");
 //    npm.addProperty("url", "http://hl7.org/fhir/us/carin-rtpbc/STU1");
 //    npm.remove("name");
@@ -80,10 +87,10 @@ public class PackageHacker {
 //    npm.addProperty("canonical", "http://hl7.org/fhir/us/davinci-drug-formulary");
 ////    npm.remove("description");
 ////    npm.addProperty("description", "Group Wrapper that includes all the R4 packages");
-    npm.remove("url");
-    npm.addProperty("url", "http://hl7.org/fhir/R4B");
-    npm.remove("homepage");
-    npm.addProperty("homepage", "http://hl7.org/fhir/R4B");
+//    npm.remove("url");
+//    npm.addProperty("url", "http://hl7.org/fhir/R4B");
+//    npm.remove("homepage");
+//    npm.addProperty("homepage", "http://hl7.org/fhir/R4B");
 //    npm.remove("dependencies");
 //    JsonObject dep = new JsonObject();
 //    npm.add("dependencies", dep);
@@ -95,6 +102,7 @@ public class PackageHacker {
 //    dep.addProperty("hl7.fhir.r4.examples", "4.0.1");
 //    dep.addProperty("hl7.fhir.r4.expansions", "4.0.1");
 //    dep.addProperty("hl7.fhir.r4.elements", "4.0.1");
+    npm.addProperty("jurisdiction", "urn:iso:std:iso:3166#US");
   }
 
   private void fixVersionInContent(Map<String, byte[]> content) {

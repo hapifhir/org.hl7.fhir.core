@@ -1,5 +1,9 @@
 package org.hl7.fhir.convertors.misc;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,10 +38,6 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.dstu3.model.Bundle;
 import org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.utilities.Utilities;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 
 /*
  * load reosurces in xml format, and sve them in package format (json, with correct name

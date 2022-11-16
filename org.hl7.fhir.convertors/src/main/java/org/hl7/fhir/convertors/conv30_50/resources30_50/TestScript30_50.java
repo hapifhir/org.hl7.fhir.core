@@ -7,7 +7,13 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.UsageContext30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Coding30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
-import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.*;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Boolean30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.DateTime30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Id30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Integer30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.MarkDown30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Uri30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class TestScript30_50 {
@@ -538,7 +544,7 @@ public class TestScript30_50 {
       tgt.setRequestMethodElement(convertTestScriptRequestMethodCode(src.getRequestMethodElement()));
     if (src.hasRequestURL()) tgt.setRequestURLElement(String30_50.convertString(src.getRequestURLElement()));
     if (src.hasResource())
-      tgt.setResource(org.hl7.fhir.r5.model.TestScript.FHIRDefinedType.fromCode(src.getResource()));
+      tgt.setResource(src.getResource());
     if (src.hasResponse()) tgt.setResponseElement(convertAssertionResponseTypes(src.getResponseElement()));
     if (src.hasResponseCode()) tgt.setResponseCodeElement(String30_50.convertString(src.getResponseCodeElement()));
     if (src.hasSourceId()) tgt.setSourceIdElement(Id30_50.convertId(src.getSourceIdElement()));
@@ -573,7 +579,7 @@ public class TestScript30_50 {
     if (src.hasRequestMethod())
       tgt.setRequestMethodElement(convertTestScriptRequestMethodCode(src.getRequestMethodElement()));
     if (src.hasRequestURL()) tgt.setRequestURLElement(String30_50.convertString(src.getRequestURLElement()));
-    if (src.hasResource()) tgt.setResource(src.getResource().toCode());
+    if (src.hasResource()) tgt.setResource(src.getResource());
     if (src.hasResponse()) tgt.setResponseElement(convertAssertionResponseTypes(src.getResponseElement()));
     if (src.hasResponseCode()) tgt.setResponseCodeElement(String30_50.convertString(src.getResponseCodeElement()));
     if (src.hasSourceId()) tgt.setSourceIdElement(Id30_50.convertId(src.getSourceIdElement()));

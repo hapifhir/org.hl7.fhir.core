@@ -1,17 +1,22 @@
 package org.hl7.fhir.convertors.conv10_40.datatypes10_40;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Coding10_40;
-import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.*;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Boolean10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Code10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Id10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Integer10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.MarkDown10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.String10_40;
 import org.hl7.fhir.dstu2.utils.ToolingExtensions;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.conformance.ProfileUtilities;
 import org.hl7.fhir.r4.model.ElementDefinition;
 import org.hl7.fhir.utilities.Utilities;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class ElementDefinition10_40 {
   public static org.hl7.fhir.r4.model.ElementDefinition convertElementDefinition(org.hl7.fhir.dstu2.model.ElementDefinition src, List<String> slicePaths, List<org.hl7.fhir.dstu2.model.ElementDefinition> context, int pos) throws FHIRException {
@@ -444,10 +449,12 @@ public class ElementDefinition10_40 {
     ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     if (src.hasStrength()) tgt.setStrengthElement(convertBindingStrength(src.getStrengthElement()));
     if (src.hasDescriptionElement()) tgt.setDescriptionElement(String10_40.convertString(src.getDescriptionElement()));
-    org.hl7.fhir.r4.model.Type vs = ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getValueSet());
-    if (vs != null) {
-      tgt.setValueSet(vs instanceof org.hl7.fhir.r4.model.Reference ? ((org.hl7.fhir.r4.model.Reference) vs).getReference() : vs.primitiveValue());
-      tgt.setValueSet(VersionConvertorConstants.refToVS(tgt.getValueSet()));
+    if (src.hasValueSet()) {
+      org.hl7.fhir.r4.model.Type vs = ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getValueSet());
+      if (vs != null) {
+        tgt.setValueSet(vs instanceof org.hl7.fhir.r4.model.Reference ? ((org.hl7.fhir.r4.model.Reference) vs).getReference() : vs.primitiveValue());
+        tgt.setValueSet(VersionConvertorConstants.refToVS(tgt.getValueSet()));
+      }
     }
     return tgt;
   }

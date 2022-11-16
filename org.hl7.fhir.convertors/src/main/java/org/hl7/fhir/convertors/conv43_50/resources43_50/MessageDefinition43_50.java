@@ -5,7 +5,14 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableCon
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Identifier43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.ContactDetail43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.UsageContext43_50;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.*;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Boolean43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Canonical43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Code43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.DateTime43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.MarkDown43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.UnsignedInt43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -250,7 +257,7 @@ public class MessageDefinition43_50 {
     org.hl7.fhir.r5.model.MessageDefinition.MessageDefinitionFocusComponent tgt = new org.hl7.fhir.r5.model.MessageDefinition.MessageDefinitionFocusComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasCode())
-      tgt.setCodeElement(Code43_50.convertResourceEnum(src.getCodeElement()));
+      tgt.setCodeElement(Code43_50.convertCode(src.getCodeElement()));
     if (src.hasProfile())
       tgt.setProfileElement(Canonical43_50.convertCanonical(src.getProfileElement()));
     if (src.hasMin())
@@ -266,7 +273,7 @@ public class MessageDefinition43_50 {
     org.hl7.fhir.r4b.model.MessageDefinition.MessageDefinitionFocusComponent tgt = new org.hl7.fhir.r4b.model.MessageDefinition.MessageDefinitionFocusComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasCode())
-      tgt.setCodeElement(Code43_50.convertResourceEnum(src.getCodeElement()));
+      tgt.setCodeElement(Code43_50.convertCode(src.getCodeElement()));
     if (src.hasProfile())
       tgt.setProfileElement(Canonical43_50.convertCanonical(src.getProfileElement()));
     if (src.hasMin())

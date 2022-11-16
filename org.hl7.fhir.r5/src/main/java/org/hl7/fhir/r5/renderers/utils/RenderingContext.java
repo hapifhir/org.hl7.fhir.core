@@ -6,8 +6,10 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -15,6 +17,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
@@ -38,6 +41,7 @@ public class RenderingContext {
   // parses xml to an XML instance. Whatever codes provides this needs to provide something that parses the right version 
   public interface ITypeParser {
     Base parseType(String xml, String type) throws FHIRFormatError, IOException, FHIRException ;
+    Base parseType(Element base) throws FHIRFormatError, IOException, FHIRException ;
   }
 
   /**
@@ -61,6 +65,20 @@ public class RenderingContext {
     TECHNICAL
   }
 
+  public enum GenerationRules {
+    /**
+     * The output must be valid XHTML for a resource: no active content, etc. The only external dependency allowed is fhir.css 
+     */
+    VALID_RESOURCE,
+    
+    /**
+     * The output must be valid for an implementation guide according ot the base FHIR template. 
+     * This means active content is allowed, though the default presentation must be *show everything* for balloting purposes
+     * Active content is allowed 
+     */
+    IG_PUBLISHER
+  }
+  
   public enum QuestionnaireRendererMode {
     /**
      * A visual presentation of the questionnaire, with a set of property panes that can be toggled on and off.
@@ -89,9 +107,16 @@ public class RenderingContext {
     LINKS
   }
 
+  public enum KnownLinkType {
+    SELF,  // absolute link to where the content is to be found (only used in a few circumstances when making external references to tools)
+    SPEC,  // version specific link to core specification
+    JSON_NAMES
+    
+  }
   private IWorkerContext worker;
   private MarkDownProcessor markdown;
   private ResourceRendererMode mode;
+  private GenerationRules rules;
   private IReferenceResolver resolver;
   private ILiquidTemplateProvider templateProvider;
   private IEvaluationContext services;
@@ -99,12 +124,11 @@ public class RenderingContext {
 
   private String lang;
   private String localPrefix; // relative link within local context
-  private String specificationLink;
-  private String selfLink; // absolute link to where the content is to be found (only used in a few circumstances when making external references to tools)
   private int headerLevelContext;
   private boolean canonicalUrlsAsLinks;
   private boolean pretty;
   private boolean header;
+  private boolean contained;
 
   private ValidationOptions terminologyServiceOptions = new ValidationOptions();
   private boolean noSlowLookup;
@@ -114,13 +138,14 @@ public class RenderingContext {
   private String tooCostlyNoteNotEmptyDependent;
   private List<String> codeSystemPropList = new ArrayList<>();
 
-  private ProfileUtilities profileUtilities;
+  private ProfileUtilities profileUtilitiesR;
   private String definitionsTarget;
   private String destDir;
   private boolean inlineGraphics;
 
   private QuestionnaireRendererMode questionnaireMode = QuestionnaireRendererMode.FORM;
   private boolean addGeneratedNarrativeHeader = true;
+  private boolean showComments = false;
 
   private FhirPublication targetVersion;
   private Locale locale;
@@ -129,7 +154,10 @@ public class RenderingContext {
   private DateTimeFormatter dateFormat;
   private DateTimeFormatter dateYearFormat;
   private DateTimeFormatter dateYearMonthFormat;
+  private boolean copyButton;
+  private ProfileKnowledgeProvider pkp;
   
+  private Map<KnownLinkType, String> links = new HashMap<>();
   /**
    * 
    * @param context - access to all related resources that might be needed
@@ -138,30 +166,78 @@ public class RenderingContext {
    * @param specLink - path to FHIR specification
    * @param lang - langauage to render in
    */
-  public RenderingContext(IWorkerContext worker, MarkDownProcessor markdown, ValidationOptions terminologyServiceOptions, String specLink, String localPrefix, String lang, ResourceRendererMode mode) {
+  public RenderingContext(IWorkerContext worker, MarkDownProcessor markdown, ValidationOptions terminologyServiceOptions, String specLink, String localPrefix, String lang, ResourceRendererMode mode, GenerationRules rules) {
     super();
     this.worker = worker;
     this.markdown = markdown;
     this.lang = lang;
-    this.specificationLink = specLink;
+    this.links.put(KnownLinkType.SPEC, specLink);
     this.localPrefix = localPrefix;
     this.mode = mode;
+    this.rules = rules;
     if (terminologyServiceOptions != null) {
       this.terminologyServiceOptions = terminologyServiceOptions;
     }
  // default to US locale - discussion here: https://github.com/hapifhir/org.hl7.fhir.core/issues/666
     this.locale = new Locale.Builder().setLanguageTag("en-US").build(); 
-    profileUtilities = new ProfileUtilities(worker, null, null);
   }
+  public RenderingContext copy() {
+    RenderingContext res = new RenderingContext(worker, markdown, terminologyServiceOptions, getLink(KnownLinkType.SPEC), localPrefix, lang, mode, rules);
+
+    res.resolver = resolver;
+    res.templateProvider = templateProvider;
+    res.services = services;
+    res.parser = parser;
+
+    res.headerLevelContext = headerLevelContext;
+    res.canonicalUrlsAsLinks = canonicalUrlsAsLinks;
+    res.pretty = pretty;
+    res.contained = contained;
+    
+    res.noSlowLookup = noSlowLookup;
+    res.tooCostlyNoteEmpty = tooCostlyNoteEmpty;
+    res.tooCostlyNoteNotEmpty = tooCostlyNoteNotEmpty;
+    res.tooCostlyNoteEmptyDependent = tooCostlyNoteEmptyDependent;
+    res.tooCostlyNoteNotEmptyDependent = tooCostlyNoteNotEmptyDependent;
+    res.codeSystemPropList.addAll(codeSystemPropList);
+
+    res.profileUtilitiesR = profileUtilitiesR;
+    res.definitionsTarget = definitionsTarget;
+    res.destDir = destDir;
+    res.addGeneratedNarrativeHeader = addGeneratedNarrativeHeader;
+    res.questionnaireMode = questionnaireMode;
+    res.header = header;
+    res.links.putAll(links);
+    res.inlineGraphics = inlineGraphics;
+    res.timeZoneId = timeZoneId;
+    res.dateTimeFormat = dateTimeFormat;
+    res.dateFormat = dateFormat;
+    res.dateYearFormat = dateYearFormat;
+    res.dateYearMonthFormat = dateYearMonthFormat;
+    res.targetVersion = targetVersion;
+    res.locale = locale;
+    res.showComments = showComments;
+    res.copyButton = copyButton;
+    res.pkp = pkp;
+
+    res.terminologyServiceOptions = terminologyServiceOptions.copy();
+    return res;
+  }
+  
 
   public IWorkerContext getContext() {
     return worker;
   }
 
+
+  
   // -- 2. Markdown support -------------------------------------------------------
 
   public ProfileUtilities getProfileUtilities() {
-    return profileUtilities;
+    if (profileUtilitiesR == null) {
+      profileUtilitiesR = new ProfileUtilities(worker, null, pkp);
+    }
+    return profileUtilitiesR;
   }
 
   public IWorkerContext getWorker() {
@@ -186,10 +262,6 @@ public class RenderingContext {
 
   public String getLang() {
     return lang;
-  }
-
-  public String getSpecificationLink() {
-    return specificationLink;
   }
 
   public String getLocalPrefix() {
@@ -288,7 +360,7 @@ public class RenderingContext {
   }
 
   public RenderingContext setProfileUtilities(ProfileUtilities profileUtilities) {
-    this.profileUtilities = profileUtilities;
+    this.profileUtilitiesR = profileUtilities;
     return this;
   }
 
@@ -338,41 +410,6 @@ public class RenderingContext {
     return this;
   }
 
-  public RenderingContext copy() {
-    RenderingContext res = new RenderingContext(worker, markdown, terminologyServiceOptions, specificationLink, localPrefix, lang, mode);
-
-    res.resolver = resolver;
-    res.templateProvider = templateProvider;
-    res.services = services;
-    res.parser = parser;
-
-    res.headerLevelContext = headerLevelContext;
-    res.canonicalUrlsAsLinks = canonicalUrlsAsLinks;
-    res.pretty = pretty;
-
-    res.noSlowLookup = noSlowLookup;
-    res.tooCostlyNoteEmpty = tooCostlyNoteEmpty;
-    res.tooCostlyNoteNotEmpty = tooCostlyNoteNotEmpty;
-    res.tooCostlyNoteEmptyDependent = tooCostlyNoteEmptyDependent;
-    res.tooCostlyNoteNotEmptyDependent = tooCostlyNoteNotEmptyDependent;
-    res.codeSystemPropList.addAll(codeSystemPropList);
-
-    res.profileUtilities = profileUtilities;
-    res.definitionsTarget = definitionsTarget;
-    res.destDir = destDir;
-    res.addGeneratedNarrativeHeader = addGeneratedNarrativeHeader;
-    res.questionnaireMode = questionnaireMode;
-    res.header = header;
-    res.selfLink = selfLink;
-    res.inlineGraphics = inlineGraphics;
-    res.timeZoneId = timeZoneId;
-    res.dateTimeFormat = dateTimeFormat;
-    res.dateFormat = dateFormat;
-    res.dateYearFormat = dateYearFormat;
-    res.dateYearMonthFormat = dateYearMonthFormat;
-
-    return res;
-  }
 
   public boolean isInlineGraphics() {
     return inlineGraphics;
@@ -401,21 +438,12 @@ public class RenderingContext {
     return this;
   }
 
-  public String getSelfLink() {
-    return selfLink;
-  }
-
-  public RenderingContext setSelfLink(String selfLink) {
-    this.selfLink = selfLink;
-    return this;
-  }
-
   public String fixReference(String ref) {
     if (!Utilities.isAbsoluteUrl(ref)) {
       return (localPrefix == null ? "" : localPrefix)+ref;
     }
     if (ref.startsWith("http://hl7.org/fhir") && !ref.substring(20).contains("/")) {
-      return specificationLink+ref.substring(20);
+      return getLink(KnownLinkType.SPEC)+ref.substring(20);
     }
     return ref;
   }
@@ -443,8 +471,9 @@ public class RenderingContext {
     return targetVersion;
   }
 
-  public void setTargetVersion(FhirPublication targetVersion) {
+  public RenderingContext setTargetVersion(FhirPublication targetVersion) {
     this.targetVersion = targetVersion;
+    return this;
   }
 
   public boolean isTechnicalMode() {
@@ -463,8 +492,9 @@ public class RenderingContext {
     }
   }
 
-  public void setLocale(Locale locale) {
+  public RenderingContext setLocale(Locale locale) {
     this.locale = locale;
+    return this;
   }
 
 
@@ -484,8 +514,9 @@ public class RenderingContext {
     return timeZoneId;
   }
 
-  public void setTimeZoneId(ZoneId timeZoneId) {
+  public RenderingContext setTimeZoneId(ZoneId timeZoneId) {
     this.timeZoneId = timeZoneId;
+    return this;
   }
 
 
@@ -499,12 +530,14 @@ public class RenderingContext {
     return this.dateTimeFormat;
   }
 
-  public void setDateTimeFormat(DateTimeFormatter dateTimeFormat) {
+  public RenderingContext setDateTimeFormat(DateTimeFormatter dateTimeFormat) {
     this.dateTimeFormat = dateTimeFormat;
+    return this;
   }
 
-  public void setDateTimeFormatString(String dateTimeFormat) {
+  public RenderingContext setDateTimeFormatString(String dateTimeFormat) {
     this.dateTimeFormat = DateTimeFormatter.ofPattern(dateTimeFormat);
+    return this;
   }
 
   /**
@@ -517,45 +550,99 @@ public class RenderingContext {
     return this.dateFormat;
   }
 
-  public void setDateFormat(DateTimeFormatter dateFormat) {
+  public RenderingContext setDateFormat(DateTimeFormatter dateFormat) {
     this.dateFormat = dateFormat;
+    return this;
   }
 
-  public void setDateFormatString(String dateFormat) {
+  public RenderingContext setDateFormatString(String dateFormat) {
     this.dateFormat = DateTimeFormatter.ofPattern(dateFormat);
+    return this;
   }
 
   public DateTimeFormatter getDateYearFormat() {
     return dateYearFormat;
   }
 
-  public void setDateYearFormat(DateTimeFormatter dateYearFormat) {
+  public RenderingContext setDateYearFormat(DateTimeFormatter dateYearFormat) {
     this.dateYearFormat = dateYearFormat;
+    return this;
   }
 
-  public void setDateYearFormatString(String dateYearFormat) {
+  public RenderingContext setDateYearFormatString(String dateYearFormat) {
     this.dateYearFormat = DateTimeFormatter.ofPattern(dateYearFormat);
+    return this;
   }
 
   public DateTimeFormatter getDateYearMonthFormat() {
     return dateYearMonthFormat;
   }
 
-  public void setDateYearMonthFormat(DateTimeFormatter dateYearMonthFormat) {
+  public RenderingContext setDateYearMonthFormat(DateTimeFormatter dateYearMonthFormat) {
     this.dateYearMonthFormat = dateYearMonthFormat;
+    return this;
   }
 
-  public void setDateYearMonthFormatString(String dateYearMonthFormat) {
+  public RenderingContext setDateYearMonthFormatString(String dateYearMonthFormat) {
     this.dateYearMonthFormat = DateTimeFormatter.ofPattern(dateYearMonthFormat);
+    return this;
   }
 
   public ResourceRendererMode getMode() {
     return mode;
   }
 
-  public void setMode(ResourceRendererMode mode) {
+  public RenderingContext setMode(ResourceRendererMode mode) {
     this.mode = mode;
+    return this;
+  }
+
+  public boolean isContained() {
+    return contained;
+  }
+
+  public RenderingContext setContained(boolean contained) {
+    this.contained = contained;
+    return this;
+  }
+  public boolean isShowComments() {
+    return showComments;
+  }
+  public RenderingContext setShowComments(boolean showComments) {
+    this.showComments = showComments;
+    return this;
+  }
+  public boolean isCopyButton() {
+    return copyButton;
+  }
+  public RenderingContext setCopyButton(boolean copyButton) {
+    this.copyButton = copyButton;
+    return this;
   }
   
+  public void setPkp(ProfileKnowledgeProvider pkp) {
+    this.pkp = pkp;
+  }
+  public ProfileKnowledgeProvider getPkp() {
+    return pkp;
+  }
   
+  public boolean hasLink(KnownLinkType link) {
+    return links.containsKey(link);
+  }
+  
+  public String getLink(KnownLinkType link) {
+    return links.get(link);
+  }
+  public void addLink(KnownLinkType type, String link) {
+    links.put(type, link);
+    
+  }
+  public GenerationRules getRules() {
+    return rules;
+  }
+  public void setRules(GenerationRules rules) {
+    this.rules = rules;
+  }
+
 }

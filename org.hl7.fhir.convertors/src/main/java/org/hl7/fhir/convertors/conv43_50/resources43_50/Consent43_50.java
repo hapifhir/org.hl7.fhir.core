@@ -1,7 +1,11 @@
 package org.hl7.fhir.convertors.conv43_50.resources43_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.*;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Attachment43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableConcept43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Coding43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Identifier43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Period43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Boolean43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.DateTime43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
@@ -270,26 +274,26 @@ public class Consent43_50 {
     return tgt;
   }
 
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Consent.ConsentProvisionType> convertConsentProvisionType(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Consent.ConsentProvisionType> src) throws FHIRException {
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ConsentProvisionType> convertConsentProvisionType(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Consent.ConsentProvisionType> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Consent.ConsentProvisionType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Consent.ConsentProvisionTypeEnumFactory());
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ConsentProvisionType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.ConsentProvisionTypeEnumFactory());
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case DENY:
-        tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentProvisionType.DENY);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConsentProvisionType.DENY);
         break;
       case PERMIT:
-        tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentProvisionType.PERMIT);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConsentProvisionType.PERMIT);
         break;
       default:
-        tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentProvisionType.NULL);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConsentProvisionType.NULL);
         break;
     }
     return tgt;
   }
 
-  static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Consent.ConsentProvisionType> convertConsentProvisionType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Consent.ConsentProvisionType> src) throws FHIRException {
+  static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Consent.ConsentProvisionType> convertConsentProvisionType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ConsentProvisionType> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Consent.ConsentProvisionType> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Consent.ConsentProvisionTypeEnumFactory());
@@ -356,32 +360,32 @@ public class Consent43_50 {
     return tgt;
   }
 
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Consent.ConsentDataMeaning> convertConsentDataMeaning(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Consent.ConsentDataMeaning> src) throws FHIRException {
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ConsentDataMeaning> convertConsentDataMeaning(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Consent.ConsentDataMeaning> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Consent.ConsentDataMeaning> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Consent.ConsentDataMeaningEnumFactory());
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ConsentDataMeaning> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.ConsentDataMeaningEnumFactory());
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case INSTANCE:
-        tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentDataMeaning.INSTANCE);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConsentDataMeaning.INSTANCE);
         break;
       case RELATED:
-        tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentDataMeaning.RELATED);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConsentDataMeaning.RELATED);
         break;
       case DEPENDENTS:
-        tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentDataMeaning.DEPENDENTS);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConsentDataMeaning.DEPENDENTS);
         break;
       case AUTHOREDBY:
-        tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentDataMeaning.AUTHOREDBY);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConsentDataMeaning.AUTHOREDBY);
         break;
       default:
-        tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentDataMeaning.NULL);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConsentDataMeaning.NULL);
         break;
     }
     return tgt;
   }
 
-  static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Consent.ConsentDataMeaning> convertConsentDataMeaning(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Consent.ConsentDataMeaning> src) throws FHIRException {
+  static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Consent.ConsentDataMeaning> convertConsentDataMeaning(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ConsentDataMeaning> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Consent.ConsentDataMeaning> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Consent.ConsentDataMeaningEnumFactory());

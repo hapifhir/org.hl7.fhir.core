@@ -1,31 +1,29 @@
 package org.hl7.fhir.convertors;
 
-import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Type10_30;
+import java.util.stream.Stream;
+
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_30;
+import org.hl7.fhir.dstu2.model.Base64BinaryType;
 import org.hl7.fhir.dstu2.model.BooleanType;
 import org.hl7.fhir.dstu2.model.CodeType;
-import org.hl7.fhir.dstu2.model.DateType;
 import org.hl7.fhir.dstu2.model.DateTimeType;
+import org.hl7.fhir.dstu2.model.DateType;
 import org.hl7.fhir.dstu2.model.DecimalType;
 import org.hl7.fhir.dstu2.model.InstantType;
-import org.hl7.fhir.dstu2.model.PositiveIntType;
-import org.hl7.fhir.dstu2.model.UnsignedIntType;
 import org.hl7.fhir.dstu2.model.IntegerType;
 import org.hl7.fhir.dstu2.model.MarkdownType;
 import org.hl7.fhir.dstu2.model.OidType;
+import org.hl7.fhir.dstu2.model.PositiveIntType;
+import org.hl7.fhir.dstu2.model.PrimitiveType;
 import org.hl7.fhir.dstu2.model.StringType;
 import org.hl7.fhir.dstu2.model.TimeType;
-import org.hl7.fhir.dstu2.model.UuidType;
-import org.hl7.fhir.dstu2.model.PrimitiveType;
-import org.hl7.fhir.dstu2.model.Base64BinaryType;
+import org.hl7.fhir.dstu2.model.UnsignedIntType;
 import org.hl7.fhir.dstu2.model.UriType;
-
+import org.hl7.fhir.dstu2.model.UuidType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import java.util.stream.Stream;
 
 public class VersionConvertorPrimitiveType10_30Test {
 

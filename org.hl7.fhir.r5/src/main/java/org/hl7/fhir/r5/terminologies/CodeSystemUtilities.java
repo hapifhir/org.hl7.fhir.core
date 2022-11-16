@@ -41,6 +41,7 @@ import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -53,10 +54,13 @@ import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DateTimeType;
+import org.hl7.fhir.r5.model.DecimalType;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.ConceptDefinitionComponentSorter;
 import org.hl7.fhir.r5.model.Identifier;
+import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.Meta;
+import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.StandardsStatus;
@@ -64,11 +68,40 @@ import org.hl7.fhir.utilities.Utilities;
 
 public class CodeSystemUtilities {
 
+  public static class SystemReference {
+    private String link;
+    private String text;
+    private boolean local;
+    
+    public SystemReference(String text, String link) {
+      super();
+      this.link = link;
+      this.text = text;
+    }
+    public SystemReference(String text, String link, boolean local) {
+      super();
+      this.link = link;
+      this.text = text;
+      this.local = local;
+    }
+    
+    public String getLink() {
+      return link;
+    }
+    public String getText() {
+      return text;
+    }
+    public boolean isLocal() {
+      return local;
+    }
+    
+  }
+
   public static class ConceptDefinitionComponentSorter implements Comparator<ConceptDefinitionComponent> {
 
     @Override
     public int compare(ConceptDefinitionComponent o1, ConceptDefinitionComponent o2) {
-      return o1.getCode().compareTo(o2.getCode());
+      return o1.getCode().compareToIgnoreCase(o2.getCode());
     }
 
   }
@@ -177,6 +210,58 @@ public class CodeSystemUtilities {
       concept.addProperty().setCode("notSelectable").setValue(new BooleanType(true));    
   }
 
+  public static void setProperty(CodeSystem cs, ConceptDefinitionComponent concept, String code, DataType value) throws FHIRFormatError {
+    defineProperty(cs, code, propertyTypeForValue(value));
+    ConceptPropertyComponent p = getProperty(concept,  code);
+    if (p != null)
+      p.setValue(value);
+    else
+      concept.addProperty().setCode(code).setValue(value);    
+  }
+  
+
+  private static PropertyType propertyTypeForValue(DataType value) {
+    if (value instanceof BooleanType) {
+      return PropertyType.BOOLEAN;
+    }
+    if (value instanceof CodeType) {
+      return PropertyType.CODE;
+    }
+    if (value instanceof Coding) {
+      return PropertyType.CODING;
+    }
+    if (value instanceof DateTimeType) {
+      return PropertyType.DATETIME;
+    }
+    if (value instanceof DecimalType) {
+      return PropertyType.DECIMAL;
+    }
+    if (value instanceof IntegerType) {
+      return PropertyType.INTEGER;
+    }
+    if (value instanceof StringType) {
+      return PropertyType.STRING;
+    }
+    throw new Error("Unknown property type "+value.getClass().getName());
+  }
+
+  private static void defineProperty(CodeSystem cs, String code, PropertyType pt) {
+    String url = "http://hl7.org/fhir/concept-properties#"+code;
+    for (PropertyComponent p : cs.getProperty()) {
+      if (p.getCode().equals(code)) {
+        if (!p.getUri().equals(url)) {
+          throw new Error("URI mismatch for code "+code+" url = "+p.getUri()+" vs "+url);
+        }
+        if (!p.getType().equals(pt)) {
+          throw new Error("Type mismatch for code "+code+" type = "+p.getType()+" vs "+pt);
+        }
+        return;
+      }
+    }
+    cs.addProperty().setCode(code).setUri(url).setType(pt).setUri(url);
+  
+  }
+
   public static void defineNotSelectableProperty(CodeSystem cs) {
     defineCodeSystemProperty(cs, "notSelectable", "Indicates that the code is abstract - only intended to be used as a selector for other concepts", PropertyType.BOOLEAN);
   }
@@ -241,16 +326,42 @@ public class CodeSystemUtilities {
     }
   }
 
+  public static boolean isInactive(CodeSystem cs, ConceptDefinitionComponent def, boolean ignoreStatus)  {
+    try {
+      for (ConceptPropertyComponent p : def.getProperty()) {
+        if (!ignoreStatus) {
+          if ("status".equals(p.getCode()) && p.hasValue() && p.hasValueCodeType() && "inactive".equals(p.getValueCodeType().getCode()))
+            return true;
+        }
+        // legacy  
+        if ("inactive".equals(p.getCode()) && p.hasValue() && p.getValue() instanceof BooleanType) 
+          return ((BooleanType) p.getValue()).getValue();
+      }
+      return false;
+    } catch (FHIRException e) {
+      return false;
+    }
+  }
+
   public static void setDeprecated(CodeSystem cs, ConceptDefinitionComponent concept, DateTimeType date) throws FHIRFormatError {
     setStatus(cs, concept, ConceptStatus.Deprecated);
     defineDeprecatedProperty(cs);
     concept.addProperty().setCode("deprecationDate").setValue(date);    
   }
+
+
+  public static void setDeprecated(CodeSystem cs, ConceptDefinitionComponent concept) throws FHIRFormatError {
+    setStatus(cs, concept, ConceptStatus.Deprecated);
+  }
   
   public static boolean isInactive(CodeSystem cs, ConceptDefinitionComponent def) throws FHIRException {
     for (ConceptPropertyComponent p : def.getProperty()) {
-      if ("status".equals(p.getCode()) && p.hasValueStringType()) 
+      if ("status".equals(p.getCode()) && p.hasValueStringType()) {
         return "inactive".equals(p.getValueStringType().primitiveValue()) || "retired".equals(p.getValueStringType().primitiveValue());
+      }
+      if ("inactive".equals(p.getCode()) && p.hasValueBooleanType()) {
+        return p.getValueBooleanType().getValue();
+      }
     }
     return false;
   }
@@ -538,5 +649,26 @@ public class CodeSystemUtilities {
     return jurisdiction == null || !jurisdiction.contains("#") ?  null : new Coding().setCode(jurisdiction.substring(jurisdiction.indexOf("#")+1)).setSystem(jurisdiction.substring(0, jurisdiction.indexOf("#")));
   }
 
-
+  public static SystemReference getSystemReference(String system, IWorkerContext ctxt) {
+    if (system == null) {
+      return null;
+    } if ("http://snomed.info/sct".equals(system)) {
+      return new SystemReference("SNOMED CT", "https://browser.ihtsdotools.org/");      
+    } else if ("http://loinc.org".equals(system)) {
+      return new SystemReference("LOINC", "https://loinc.org/");            
+    } else if ("http://unitsofmeasure.org".equals(system)) {
+      return new SystemReference("UCUM", "http://ucum.org");            
+    } else if (system.equals("http://www.nlm.nih.gov/research/umls/rxnorm")) {
+      return new SystemReference("RxNorm", "http://www.nlm.nih.gov/research/umls/rxnorm");
+    } else if (ctxt != null) {
+      CodeSystem cs = ctxt.fetchCodeSystem(system);
+      if (cs != null && cs.hasUserData("path")) {
+        return new SystemReference(cs.present(), cs.getUserString("path"), Utilities.isAbsoluteUrl(cs.getUserString("path")));
+      } else if (cs != null) {
+        return new SystemReference(cs.present(), null);
+      }
+    }
+    return null;
+  }
 }
+

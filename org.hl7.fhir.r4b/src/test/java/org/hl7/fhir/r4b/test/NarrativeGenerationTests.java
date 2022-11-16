@@ -8,16 +8,21 @@ import java.util.stream.Stream;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.SystemUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r4b.conformance.ProfileUtilities;
+import org.hl7.fhir.r4b.conformance.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.r4b.context.IWorkerContext;
 import org.hl7.fhir.r4b.elementmodel.Manager;
 import org.hl7.fhir.r4b.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r4b.formats.JsonParser;
 import org.hl7.fhir.r4b.formats.XmlParser;
 import org.hl7.fhir.r4b.model.Base;
+import org.hl7.fhir.r4b.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r4b.model.Resource;
+import org.hl7.fhir.r4b.model.StructureDefinition;
 import org.hl7.fhir.r4b.renderers.RendererFactory;
 
 import org.hl7.fhir.r4b.renderers.utils.ElementWrappers;
@@ -28,6 +33,7 @@ import org.hl7.fhir.r4b.test.utils.TestingUtilities;
 
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xml.XMLUtil;
@@ -41,6 +47,64 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 public class NarrativeGenerationTests {
+
+  public class TestProfileKnowledgeProvider implements ProfileKnowledgeProvider {
+
+    private IWorkerContext context;
+
+    public TestProfileKnowledgeProvider(IWorkerContext context) {
+      this.context = context;
+    }
+
+    @Override
+    public boolean isDatatype(String typeSimple) {
+      throw new NotImplementedException();      
+    }
+
+    @Override
+    public boolean isResource(String typeSimple) {
+      throw new NotImplementedException();      
+    }
+
+    @Override
+    public boolean hasLinkFor(String typeSimple) {
+      throw new NotImplementedException();      
+    }
+
+    @Override
+    public String getLinkFor(String corePath, String typeSimple) {
+      throw new NotImplementedException();      
+    }
+
+    @Override
+    public BindingResolution resolveBinding(StructureDefinition def, ElementDefinitionBindingComponent binding, String path) throws FHIRException {
+      throw new NotImplementedException();      
+    }
+
+    @Override
+    public BindingResolution resolveBinding(StructureDefinition def, String url, String path) throws FHIRException {
+      throw new NotImplementedException();      
+    }
+
+    @Override
+    public String getLinkForProfile(StructureDefinition profile, String url) {
+      if ("http://hl7.org/fhir/StructureDefinition/Composition".equals(url)) {
+        return "http://hl7.org/fhir/composition.html|TestComposition";
+      }
+      throw new NotImplementedException();      
+    }
+
+    @Override
+    public boolean prependLinks() {
+      throw new NotImplementedException();      
+    }
+
+    @Override
+    public String getLinkForUrl(String corePath, String s) {
+      throw new NotImplementedException();      
+    }
+
+  }
 
   public class TestTypeParser implements ITypeParser {
 
@@ -98,15 +162,7 @@ public class NarrativeGenerationTests {
     List<Arguments> objects = new ArrayList<>();
     while (test != null && test.getNodeName().equals("test")) {
       TestDetails t = new TestDetails(test);
-      if (t.getId().equals("sdc")) {
-        if (SystemUtils.OS_NAME.contains(WINDOWS)) {
-          objects.add(Arguments.of(t.getId(), t));
-        } else {
-          System.out.println("sdc test not being adding because the current OS will not pass the test...");
-        }
-      } else {
-        objects.add(Arguments.of(t.getId(), t));
-      }
+      objects.add(Arguments.of(t.getId(), t));
       test = XMLUtil.getNextSibling(test);
     }
     return objects.stream();
@@ -121,7 +177,7 @@ public class NarrativeGenerationTests {
   @MethodSource("data")
   public void test(String id, TestDetails test) throws Exception {
     RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER);
-    rc.setDestDir("");
+    rc.setDestDir(Utilities.path("[tmp]", "narrative"));
     rc.setHeader(test.isHeader());
     rc.setDefinitionsTarget("test.html");
     rc.setTerminologyServiceOptions(TerminologyServiceOptions.defaults());
@@ -135,6 +191,7 @@ public class NarrativeGenerationTests {
     rc.setDateFormatString("yyyy-MM-dd");
 
     rc.setMode(test.technical ? ResourceRendererMode.TECHNICAL : ResourceRendererMode.END_USER);
+    rc.setProfileUtilities(new ProfileUtilities(rc.getContext(), null, new TestProfileKnowledgeProvider(rc.getContext())));
         
     
     Resource source;
@@ -145,7 +202,7 @@ public class NarrativeGenerationTests {
     }
     
     XhtmlNode x = RendererFactory.factory(source, rc).build(source);
-    String target = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".html"));
+    String target = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r4b", "narrative", test.getId() + ".html"));
     String output = HEADER+new XhtmlComposer(true, true).compose(x)+FOOTER;
     String tfn = TestingUtilities.tempFile("narrative", test.getId() + ".target.html");
     String ofn = TestingUtilities.tempFile("narrative", test.getId() + ".output.html");
@@ -155,7 +212,7 @@ public class NarrativeGenerationTests {
     Assertions.assertTrue(msg == null, "Output does not match expected: "+msg);
     
     if (test.isMeta()) {
-      org.hl7.fhir.r4b.elementmodel.Element e = Manager.parseSingle(context, TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".xml"), FhirFormat.XML); 
+      org.hl7.fhir.r4b.elementmodel.Element e = Manager.parseSingle(context, TestingUtilities.loadTestResourceStream("r4b", "narrative", test.getId() + ".xml"), FhirFormat.XML); 
       x = RendererFactory.factory(source, rc).render(new ElementWrappers.ResourceWrapperMetaElement(rc, e));
 
       target = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r4b", "narrative", test.getId() + "-meta.html"));

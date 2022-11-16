@@ -238,8 +238,8 @@ public class XmlSchemaGenerator  {
 
   private String getNs(StructureDefinition sd) {
     String ns = "http://hl7.org/fhir";
-    if (sd.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace"))
-      ns = ToolingExtensions.readStringExtension(sd, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace");
+    if (sd.hasExtension(ToolingExtensions.EXT_XML_NAMESPACE))
+      ns = ToolingExtensions.readStringExtension(sd, ToolingExtensions.EXT_XML_NAMESPACE);
     return ns;
   }
 

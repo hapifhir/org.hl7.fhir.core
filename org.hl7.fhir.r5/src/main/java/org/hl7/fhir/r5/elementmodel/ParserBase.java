@@ -39,10 +39,12 @@ import java.util.List;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
@@ -92,10 +94,13 @@ public abstract class ParserBase {
   public enum ValidationPolicy { NONE, QUICK, EVERYTHING }
 
   public boolean isPrimitive(String code) {
-    return Utilities.existsInList(code, "boolean", "integer", "integer64", "string", "decimal", "uri", "base64Binary", "instant", "date", "dateTime", "time", "code", "oid", "id", "markdown", "unsignedInt", "positiveInt", "xhtml", "url", "canonical");
+    StructureDefinition sd = context.fetchTypeDefinition(code);
+    if (sd != null) {
+      return sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;
+    }
+
+    return Utilities.existsInList(code, "boolean", "integer", "integer64", "string", "decimal", "uri", "base64Binary", "instant", "date", "dateTime", "time", "code", "oid", "id", "markdown", "unsignedInt", "positiveInt", "uuid", "xhtml", "url", "canonical");
     
-//    StructureDefinition sd = context.fetchTypeDefinition(code);
-//    return sd != null && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;
 	}
 
 	protected IWorkerContext context;
@@ -104,6 +109,7 @@ public abstract class ParserBase {
   protected ILinkResolver linkResolver;
   protected boolean showDecorations;
   protected IdRenderingPolicy idPolicy = IdRenderingPolicy.All;
+  protected StructureDefinition logical;
   
 	public ParserBase(IWorkerContext context) {
 		super();
@@ -120,6 +126,9 @@ public abstract class ParserBase {
   
   public Element parseSingle(InputStream stream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
     List<NamedElement> res = parse(stream);
+    if (res.size() == 0) {
+      throw new FHIRException("Parsing FHIR content returned no elements in a context where one element is required");
+    }
     if (res.size() != 1) {
       throw new FHIRException("Parsing FHIR content returned multiple elements in a context where only one element is allowed");
     }
@@ -149,7 +158,7 @@ public abstract class ParserBase {
       logError(line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS_CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAME), IssueSeverity.FATAL);
       return null;
   	}
-	  for (StructureDefinition sd : context.allStructures()) {
+	  for (StructureDefinition sd : new ContextUtilities(context).allStructures()) {
 	    if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/de-")) {
 	      if(name.equals(sd.getType()) && (ns == null || ns.equals(FormatUtilities.FHIR_NS)) && !ToolingExtensions.hasExtension(sd, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace"))
 	        return sd;
@@ -168,15 +177,15 @@ public abstract class ParserBase {
       return null;
   	}
     // first pass: only look at base definitions
-	  for (StructureDefinition sd : context.getStructures()) {
+	  for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
 	    if (sd.getUrl().equals("http://hl7.org/fhir/StructureDefinition/"+name)) {
-	      context.generateSnapshot(sd); 
+	      new ContextUtilities(context).generateSnapshot(sd); 
 	      return sd;
 	    }
 	  }
-    for (StructureDefinition sd : context.getStructures()) {
+    for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
       if (name.equals(sd.getType()) && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
-        context.generateSnapshot(sd); 
+        new ContextUtilities(context).generateSnapshot(sd); 
         return sd;
       }
     }
@@ -223,6 +232,18 @@ public abstract class ParserBase {
     } else {
       return idPolicy.forRoot();
     }
+  }
+
+  public boolean hasLogical() {
+    return logical != null;
+  }
+
+  public StructureDefinition getLogical() {
+    return logical;
+  }
+
+  public void setLogical(StructureDefinition logical) {
+    this.logical = logical;
   }
 
 }

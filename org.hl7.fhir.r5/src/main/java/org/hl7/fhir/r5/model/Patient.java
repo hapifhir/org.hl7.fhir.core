@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -710,10 +710,10 @@ public class Patient extends DomainResource {
     @Block()
     public static class PatientCommunicationComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. "en" for English, or "en-US" for American English versus "en-EN" for England English.
+         * The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. "en" for English, or "en-US" for American English versus "en-AU" for Australian English.
          */
         @Child(name = "language", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The language which can be used to communicate with the patient about his or her health", formalDefinition="The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. \"en\" for English, or \"en-US\" for American English versus \"en-EN\" for England English." )
+        @Description(shortDefinition="The language which can be used to communicate with the patient about his or her health", formalDefinition="The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. \"en\" for English, or \"en-US\" for American English versus \"en-AU\" for Australian English." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/languages")
         protected CodeableConcept language;
 
@@ -742,7 +742,7 @@ public class Patient extends DomainResource {
       }
 
         /**
-         * @return {@link #language} (The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. "en" for English, or "en-US" for American English versus "en-EN" for England English.)
+         * @return {@link #language} (The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. "en" for English, or "en-US" for American English versus "en-AU" for Australian English.)
          */
         public CodeableConcept getLanguage() { 
           if (this.language == null)
@@ -758,7 +758,7 @@ public class Patient extends DomainResource {
         }
 
         /**
-         * @param value {@link #language} (The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. "en" for English, or "en-US" for American English versus "en-EN" for England English.)
+         * @param value {@link #language} (The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. "en" for English, or "en-US" for American English versus "en-AU" for Australian English.)
          */
         public PatientCommunicationComponent setLanguage(CodeableConcept value) { 
           this.language = value;
@@ -812,14 +812,14 @@ public class Patient extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("language", "CodeableConcept", "The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. \"en\" for English, or \"en-US\" for American English versus \"en-EN\" for England English.", 0, 1, language));
+          children.add(new Property("language", "CodeableConcept", "The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. \"en\" for English, or \"en-US\" for American English versus \"en-AU\" for Australian English.", 0, 1, language));
           children.add(new Property("preferred", "boolean", "Indicates whether or not the patient prefers this language (over other languages he masters up a certain level).", 0, 1, preferred));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -1613589672: /*language*/  return new Property("language", "CodeableConcept", "The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. \"en\" for English, or \"en-US\" for American English versus \"en-EN\" for England English.", 0, 1, language);
+          case -1613589672: /*language*/  return new Property("language", "CodeableConcept", "The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. \"en\" for English, or \"en-US\" for American English versus \"en-AU\" for Australian English.", 0, 1, language);
           case -1294005119: /*preferred*/  return new Property("preferred", "boolean", "Indicates whether or not the patient prefers this language (over other languages he masters up a certain level).", 0, 1, preferred);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -940,10 +940,10 @@ public class Patient extends DomainResource {
     @Block()
     public static class PatientLinkComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * The other patient resource that the link refers to.
+         * Link to a Patient or RelatedPerson resource that concerns the same actual individual.
          */
         @Child(name = "other", type = {Patient.class, RelatedPerson.class}, order=1, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="The other patient or related person resource that the link refers to", formalDefinition="The other patient resource that the link refers to." )
+        @Description(shortDefinition="The other patient or related person resource that the link refers to", formalDefinition="Link to a Patient or RelatedPerson resource that concerns the same actual individual." )
         protected Reference other;
 
         /**
@@ -973,7 +973,7 @@ public class Patient extends DomainResource {
       }
 
         /**
-         * @return {@link #other} (The other patient resource that the link refers to.)
+         * @return {@link #other} (Link to a Patient or RelatedPerson resource that concerns the same actual individual.)
          */
         public Reference getOther() { 
           if (this.other == null)
@@ -989,7 +989,7 @@ public class Patient extends DomainResource {
         }
 
         /**
-         * @param value {@link #other} (The other patient resource that the link refers to.)
+         * @param value {@link #other} (Link to a Patient or RelatedPerson resource that concerns the same actual individual.)
          */
         public PatientLinkComponent setOther(Reference value) { 
           this.other = value;
@@ -1043,14 +1043,14 @@ public class Patient extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("other", "Reference(Patient|RelatedPerson)", "The other patient resource that the link refers to.", 0, 1, other));
+          children.add(new Property("other", "Reference(Patient|RelatedPerson)", "Link to a Patient or RelatedPerson resource that concerns the same actual individual.", 0, 1, other));
           children.add(new Property("type", "code", "The type of link between this patient resource and another patient resource.", 0, 1, type));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 106069776: /*other*/  return new Property("other", "Reference(Patient|RelatedPerson)", "The other patient resource that the link refers to.", 0, 1, other);
+          case 106069776: /*other*/  return new Property("other", "Reference(Patient|RelatedPerson)", "Link to a Patient or RelatedPerson resource that concerns the same actual individual.", 0, 1, other);
           case 3575610: /*type*/  return new Property("type", "code", "The type of link between this patient resource and another patient resource.", 0, 1, type);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -2614,17 +2614,17 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
  /**
    * Search parameter: <b>link</b>
    * <p>
-   * Description: <b>All patients linked to the given patient</b><br>
+   * Description: <b>All patients/related persons linked to the given patient</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>Patient.link.other</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="link", path="Patient.link.other", description="All patients linked to the given patient", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={Patient.class, RelatedPerson.class } )
+  @SearchParamDefinition(name="link", path="Patient.link.other", description="All patients/related persons linked to the given patient", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={Patient.class, RelatedPerson.class } )
   public static final String SP_LINK = "link";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>link</b>
    * <p>
-   * Description: <b>All patients linked to the given patient</b><br>
+   * Description: <b>All patients/related persons linked to the given patient</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>Patient.link.other</b><br>
    * </p>
@@ -2688,17 +2688,17 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
    * <p>
    * Description: <b>Search by url for a participation agreement, which is stored in a DocumentReference</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>DocumentReference.extension('http://example.org/fhir/StructureDefinition/participation-agreement')</b><br>
+   * Path: <b>DocumentReference.extension('http://example.org/fhir/StructureDefinition/participation-agreement').value</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="part-agree", path="DocumentReference.extension('http://example.org/fhir/StructureDefinition/participation-agreement')", description="Search by url for a participation agreement, which is stored in a DocumentReference", type="reference", target={DocumentReference.class } )
+  @SearchParamDefinition(name="part-agree", path="DocumentReference.extension('http://example.org/fhir/StructureDefinition/participation-agreement').value", description="Search by url for a participation agreement, which is stored in a DocumentReference", type="reference", target={DocumentReference.class } )
   public static final String SP_PART_AGREE = "part-agree";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>part-agree</b>
    * <p>
    * Description: <b>Search by url for a participation agreement, which is stored in a DocumentReference</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>DocumentReference.extension('http://example.org/fhir/StructureDefinition/participation-agreement')</b><br>
+   * Path: <b>DocumentReference.extension('http://example.org/fhir/StructureDefinition/participation-agreement').value</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PART_AGREE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PART_AGREE);
@@ -2943,10 +2943,10 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
 * [RelatedPerson](relatedperson.html): A value in an email contact
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')</b><br>
+   * Path: <b>Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.contact.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="email", path="Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A value in an email contact\r\n* [Person](person.html): A value in an email contact\r\n* [Practitioner](practitioner.html): A value in an email contact\r\n* [PractitionerRole](practitionerrole.html): A value in an email contact\r\n* [RelatedPerson](relatedperson.html): A value in an email contact\r\n", type="token" )
+  @SearchParamDefinition(name="email", path="Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.contact.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A value in an email contact\r\n* [Person](person.html): A value in an email contact\r\n* [Practitioner](practitioner.html): A value in an email contact\r\n* [PractitionerRole](practitionerrole.html): A value in an email contact\r\n* [RelatedPerson](relatedperson.html): A value in an email contact\r\n", type="token" )
   public static final String SP_EMAIL = "email";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>email</b>
@@ -2960,7 +2960,7 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
 * [RelatedPerson](relatedperson.html): A value in an email contact
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')</b><br>
+   * Path: <b>Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.contact.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam EMAIL = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EMAIL);
@@ -3065,10 +3065,10 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
 * [RelatedPerson](relatedperson.html): A value in a phone contact
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone')</b><br>
+   * Path: <b>Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.contact.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone')</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="phone", path="Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone')", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A value in a phone contact\r\n* [Person](person.html): A value in a phone contact\r\n* [Practitioner](practitioner.html): A value in a phone contact\r\n* [PractitionerRole](practitionerrole.html): A value in a phone contact\r\n* [RelatedPerson](relatedperson.html): A value in a phone contact\r\n", type="token" )
+  @SearchParamDefinition(name="phone", path="Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.contact.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone')", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A value in a phone contact\r\n* [Person](person.html): A value in a phone contact\r\n* [Practitioner](practitioner.html): A value in a phone contact\r\n* [PractitionerRole](practitionerrole.html): A value in a phone contact\r\n* [RelatedPerson](relatedperson.html): A value in a phone contact\r\n", type="token" )
   public static final String SP_PHONE = "phone";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>phone</b>
@@ -3082,7 +3082,7 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
 * [RelatedPerson](relatedperson.html): A value in a phone contact
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone')</b><br>
+   * Path: <b>Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.contact.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone')</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam PHONE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PHONE);
@@ -3131,10 +3131,10 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
 * [RelatedPerson](relatedperson.html): The value in any kind of contact
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.telecom | RelatedPerson.telecom</b><br>
+   * Path: <b>Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.contact.telecom | RelatedPerson.telecom</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="telecom", path="Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.telecom | RelatedPerson.telecom", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): The value in any kind of telecom details of the patient\r\n* [Person](person.html): The value in any kind of contact\r\n* [Practitioner](practitioner.html): The value in any kind of contact\r\n* [PractitionerRole](practitionerrole.html): The value in any kind of contact\r\n* [RelatedPerson](relatedperson.html): The value in any kind of contact\r\n", type="token" )
+  @SearchParamDefinition(name="telecom", path="Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.contact.telecom | RelatedPerson.telecom", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): The value in any kind of telecom details of the patient\r\n* [Person](person.html): The value in any kind of contact\r\n* [Practitioner](practitioner.html): The value in any kind of contact\r\n* [PractitionerRole](practitionerrole.html): The value in any kind of contact\r\n* [RelatedPerson](relatedperson.html): The value in any kind of contact\r\n", type="token" )
   public static final String SP_TELECOM = "telecom";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>telecom</b>
@@ -3148,7 +3148,7 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
 * [RelatedPerson](relatedperson.html): The value in any kind of contact
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.telecom | RelatedPerson.telecom</b><br>
+   * Path: <b>Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.contact.telecom | RelatedPerson.telecom</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam TELECOM = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TELECOM);
@@ -3158,17 +3158,17 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
    * <p>
    * Description: <b>Searches for patients based on age as calculated based on current date and date of birth.  Deceased patients are excluded from the search.</b><br>
    * Type: <b>number</b><br>
-   * Path: <b>null</b><br>
+   * Path: <b>Patient.birthDate</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="age", path="", description="Searches for patients based on age as calculated based on current date and date of birth.  Deceased patients are excluded from the search.", type="number" )
+  @SearchParamDefinition(name="age", path="Patient.birthDate", description="Searches for patients based on age as calculated based on current date and date of birth.  Deceased patients are excluded from the search.", type="number" )
   public static final String SP_AGE = "age";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>age</b>
    * <p>
    * Description: <b>Searches for patients based on age as calculated based on current date and date of birth.  Deceased patients are excluded from the search.</b><br>
    * Type: <b>number</b><br>
-   * Path: <b>null</b><br>
+   * Path: <b>Patient.birthDate</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.NumberClientParam AGE = new ca.uhn.fhir.rest.gclient.NumberClientParam(SP_AGE);
@@ -3178,17 +3178,17 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
    * <p>
    * Description: <b>Search based on whether a patient was part of a multiple birth or not.</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>null</b><br>
+   * Path: <b>Patient.multipleBirthBoolean | Patient.multipleBirthInteger</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="birthOrderBoolean", path="", description="Search based on whether a patient was part of a multiple birth or not.", type="token" )
+  @SearchParamDefinition(name="birthOrderBoolean", path="Patient.multipleBirthBoolean | Patient.multipleBirthInteger", description="Search based on whether a patient was part of a multiple birth or not.", type="token" )
   public static final String SP_BIRTHORDERBOOLEAN = "birthOrderBoolean";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>birthOrderBoolean</b>
    * <p>
    * Description: <b>Search based on whether a patient was part of a multiple birth or not.</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>null</b><br>
+   * Path: <b>Patient.multipleBirthBoolean | Patient.multipleBirthInteger</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam BIRTHORDERBOOLEAN = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_BIRTHORDERBOOLEAN);
@@ -3198,17 +3198,17 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
    * <p>
    * Description: <b>Search based on patient's mother's maiden name</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Patient.extension('http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName')</b><br>
+   * Path: <b>Patient.extension('http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName').value</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="mothersMaidenName", path="Patient.extension('http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName')", description="Search based on patient's mother's maiden name", type="string" )
+  @SearchParamDefinition(name="mothersMaidenName", path="Patient.extension('http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName').value", description="Search based on patient's mother's maiden name", type="string" )
   public static final String SP_MOTHERSMAIDENNAME = "mothersMaidenName";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>mothersMaidenName</b>
    * <p>
    * Description: <b>Search based on patient's mother's maiden name</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Patient.extension('http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName')</b><br>
+   * Path: <b>Patient.extension('http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName').value</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.StringClientParam MOTHERSMAIDENNAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_MOTHERSMAIDENNAME);

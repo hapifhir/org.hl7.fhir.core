@@ -223,8 +223,24 @@ public class DirectWrappers {
             s = s + " " + family.getValues().get(0).primitiveValue().toUpperCase();
           return s;
         } else {
-          // it might be a human name?
-          throw new Error("What to do?");
+          Property p = b.getChildByName("name");
+          if (p == null || !p.hasValues()) {            
+            p = b.getChildByName("name");
+          }
+          if (p == null || !p.hasValues()) {            
+            p = b.getChildByName("text");
+          }
+          if (p == null || !p.hasValues()) {            
+            p = b.getChildByName("value");
+          }
+          if (p == null || !p.hasValues()) {            
+            p = b.getChildByName("productName"); // MedicinalProductDefinition
+          }
+          if (p == null || !p.hasValues()) {            
+            throw new Error("What to render for 'name'? Type is "+b.fhirType());
+          } else {
+            return p.getValues().get(0).primitiveValue();            
+          }
         }
       }
       return null;
@@ -297,6 +313,10 @@ public class DirectWrappers {
         return null;
       else
         return new PropertyWrapperDirect(context, p);
+    }
+
+    public Resource getResource() {
+      return wrapped;
     }
 
   }

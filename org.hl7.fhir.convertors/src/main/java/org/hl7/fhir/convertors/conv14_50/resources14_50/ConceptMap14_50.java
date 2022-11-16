@@ -1,5 +1,8 @@
 package org.hl7.fhir.convertors.conv14_50.resources14_50;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hl7.fhir.convertors.SourceElementComponentWrapper;
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext14_50;
@@ -7,7 +10,11 @@ import org.hl7.fhir.convertors.conv14_50.datatypes14_50.Reference14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.complextypes14_50.CodeableConcept14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.complextypes14_50.ContactPoint14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.complextypes14_50.Identifier14_50;
-import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.*;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.Boolean14_50;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.Code14_50;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.DateTime14_50;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.String14_50;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.Uri14_50;
 import org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -18,9 +25,6 @@ import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ConceptMap14_50 {
 
@@ -325,7 +329,7 @@ public class ConceptMap14_50 {
 
   static public ConceptMapGroupComponent getGroup(ConceptMap map, String srcs, String tgts) {
     for (ConceptMapGroupComponent grp : map.getGroup()) {
-      if (grp.getSource().equals(srcs) && grp.getTarget().equals(tgts))
+      if (grp.hasSource() && grp.getSource().equals(srcs) && grp.getTarget().equals(tgts))
         return grp;
     }
     ConceptMapGroupComponent grp = map.addGroup();

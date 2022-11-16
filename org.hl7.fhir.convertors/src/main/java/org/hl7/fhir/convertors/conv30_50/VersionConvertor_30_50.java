@@ -1,15 +1,16 @@
 package org.hl7.fhir.convertors.conv30_50;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_50;
 import org.hl7.fhir.convertors.context.ConversionContext30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.BackboneElement30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Element30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Type30_50;
 import org.hl7.fhir.exceptions.FHIRException;
-
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

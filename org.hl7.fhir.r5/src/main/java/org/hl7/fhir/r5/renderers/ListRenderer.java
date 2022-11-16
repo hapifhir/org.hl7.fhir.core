@@ -7,7 +7,6 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.Annotation;
 import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.ListResource;
 import org.hl7.fhir.r5.model.ListResource.ListResourceEntryComponent;
 import org.hl7.fhir.r5.model.Reference;
@@ -207,7 +206,6 @@ public class ListRenderer extends ResourceRenderer {
     }
   }
 
-
   private XhtmlNode shortForRef(XhtmlNode x, Base ref) throws UnsupportedEncodingException, IOException {
     if (ref == null) {
       x.tx("(null)");
@@ -215,16 +213,20 @@ public class ListRenderer extends ResourceRenderer {
       String disp = ref.getChildByName("display") != null && ref.getChildByName("display").hasValues() ? ref.getChildByName("display").getValues().get(0).primitiveValue() : null;
       if (ref.getChildByName("reference").hasValues()) {
         String url = ref.getChildByName("reference").getValues().get(0).primitiveValue();
-        ResourceWithReference r = context.getResolver().resolve(context, url);
-        if (r == null) {
-          if (disp == null) {
-            disp = url;
-          }
-          x.tx(disp);
-        } else if (r.getResource() != null) {
-          RendererFactory.factory(r.getResource().getName(), context).renderReference(r.getResource(), x, (Reference) ref);
+        if (url.startsWith("#")) {
+          x.tx("?ngen-16a?");
         } else {
-          RendererFactory.factory(url, context).renderReference(r.getResource(), x, (Reference) ref);
+          ResourceWithReference r = context.getResolver().resolve(context, url);
+          if (r == null) {
+            if (disp == null) {
+              disp = url;
+            }
+            x.tx(disp);
+          } else if (r.getResource() != null) {
+            RendererFactory.factory(r.getResource().getName(), context).renderReference(r.getResource(), x, (Reference) ref);
+          } else {
+            x.ah(r.getReference()).tx(url);
+          }
         }
       } else if (disp != null) {
         x.tx(disp);      

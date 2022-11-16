@@ -2,7 +2,11 @@ package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
 import org.hl7.fhir.convertors.context.ConversionContext30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.*;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Attachment30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.CodeableConcept30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Coding30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identifier30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Period30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 
@@ -49,6 +53,8 @@ public class DocumentReference30_40 {
       tgt.addContent(convertDocumentReferenceContentComponent(t));
     if (src.hasContext())
       tgt.setContext(convertDocumentReferenceContextComponent(src.getContext()));
+    for (org.hl7.fhir.r4.model.Reference t : src.getAuthor())
+      tgt.addAuthor(Reference30_40.convertReference(t));
     return tgt;
   }
 
@@ -87,6 +93,8 @@ public class DocumentReference30_40 {
       tgt.addContent(convertDocumentReferenceContentComponent(t));
     if (src.hasContext())
       tgt.setContext(convertDocumentReferenceContextComponent(src.getContext()));
+    for (org.hl7.fhir.dstu3.model.Reference t : src.getAuthor())
+      tgt.addAuthor(Reference30_40.convertReference(t));
     return tgt;
   }
 

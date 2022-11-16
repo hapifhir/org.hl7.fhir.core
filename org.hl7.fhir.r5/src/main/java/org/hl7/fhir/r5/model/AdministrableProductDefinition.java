@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -2372,6 +2372,26 @@ public class AdministrableProductDefinition extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam ROUTE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ROUTE);
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>The status of this administrable product. Enables tracking the life-cycle of the content.</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AdministrableProductDefinition.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="AdministrableProductDefinition.status", description="The status of this administrable product. Enables tracking the life-cycle of the content.", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>The status of this administrable product. Enables tracking the life-cycle of the content.</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AdministrableProductDefinition.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
  /**
    * Search parameter: <b>target-species</b>

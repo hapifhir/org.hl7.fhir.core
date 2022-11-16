@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,6 +53,102 @@ import ca.uhn.fhir.model.api.annotation.Block;
 @ResourceDef(name="Group", profile="http://hl7.org/fhir/StructureDefinition/Group")
 public class Group extends DomainResource {
 
+    public enum GroupMembershipBasis {
+        /**
+         * The Group.characteristics specified are both necessary and sufficient to determine membership. All entities that meet the criteria are considered to be members of the group, whether referenced by the group or not. If members are present, they are individuals that happen to be known as meeting the Group.characteristics. The list cannot be presumed to be complete.
+         */
+        DEFINITIONAL, 
+        /**
+         * The Group.characteristics are necessary but not sufficient to determine membership. Membership is determined by being listed as one of the Group.member.
+         */
+        ENUMERATED, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static GroupMembershipBasis fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("definitional".equals(codeString))
+          return DEFINITIONAL;
+        if ("enumerated".equals(codeString))
+          return ENUMERATED;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown GroupMembershipBasis code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case DEFINITIONAL: return "definitional";
+            case ENUMERATED: return "enumerated";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case DEFINITIONAL: return "http://hl7.org/fhir/group-membership-basis";
+            case ENUMERATED: return "http://hl7.org/fhir/group-membership-basis";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case DEFINITIONAL: return "The Group.characteristics specified are both necessary and sufficient to determine membership. All entities that meet the criteria are considered to be members of the group, whether referenced by the group or not. If members are present, they are individuals that happen to be known as meeting the Group.characteristics. The list cannot be presumed to be complete.";
+            case ENUMERATED: return "The Group.characteristics are necessary but not sufficient to determine membership. Membership is determined by being listed as one of the Group.member.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case DEFINITIONAL: return "Definitional";
+            case ENUMERATED: return "Enumerated";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+    }
+
+  public static class GroupMembershipBasisEnumFactory implements EnumFactory<GroupMembershipBasis> {
+    public GroupMembershipBasis fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("definitional".equals(codeString))
+          return GroupMembershipBasis.DEFINITIONAL;
+        if ("enumerated".equals(codeString))
+          return GroupMembershipBasis.ENUMERATED;
+        throw new IllegalArgumentException("Unknown GroupMembershipBasis code '"+codeString+"'");
+        }
+        public Enumeration<GroupMembershipBasis> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<GroupMembershipBasis>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("definitional".equals(codeString))
+          return new Enumeration<GroupMembershipBasis>(this, GroupMembershipBasis.DEFINITIONAL);
+        if ("enumerated".equals(codeString))
+          return new Enumeration<GroupMembershipBasis>(this, GroupMembershipBasis.ENUMERATED);
+        throw new FHIRException("Unknown GroupMembershipBasis code '"+codeString+"'");
+        }
+    public String toCode(GroupMembershipBasis code) {
+      if (code == GroupMembershipBasis.DEFINITIONAL)
+        return "definitional";
+      if (code == GroupMembershipBasis.ENUMERATED)
+        return "enumerated";
+      return "?";
+      }
+    public String toSystem(GroupMembershipBasis code) {
+      return code.getSystem();
+      }
+    }
+
     public enum GroupType {
         /**
          * Group contains \"person\" Patient resources.
@@ -71,13 +167,29 @@ public class Group extends DomainResource {
          */
         DEVICE, 
         /**
-         * Group contains Medication resources.
+         * Group contains CareTeam resources.
          */
-        MEDICATION, 
+        CARETEAM, 
         /**
-         * Group contains Substance resources.
+         * Group contains HealthcareService resources.
          */
-        SUBSTANCE, 
+        HEALTHCARESERVICE, 
+        /**
+         * Group contains Location resources.
+         */
+        LOCATION, 
+        /**
+         * Group contains Organization resources.
+         */
+        ORGANIZATION, 
+        /**
+         * Group contains RelatedPerson resources.
+         */
+        RELATEDPERSON, 
+        /**
+         * Group contains Specimen resources.
+         */
+        SPECIMEN, 
         /**
          * added to help the parsers with the generic types
          */
@@ -93,10 +205,18 @@ public class Group extends DomainResource {
           return PRACTITIONER;
         if ("device".equals(codeString))
           return DEVICE;
-        if ("medication".equals(codeString))
-          return MEDICATION;
-        if ("substance".equals(codeString))
-          return SUBSTANCE;
+        if ("careteam".equals(codeString))
+          return CARETEAM;
+        if ("healthcareservice".equals(codeString))
+          return HEALTHCARESERVICE;
+        if ("location".equals(codeString))
+          return LOCATION;
+        if ("organization".equals(codeString))
+          return ORGANIZATION;
+        if ("relatedperson".equals(codeString))
+          return RELATEDPERSON;
+        if ("specimen".equals(codeString))
+          return SPECIMEN;
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
@@ -108,8 +228,12 @@ public class Group extends DomainResource {
             case ANIMAL: return "animal";
             case PRACTITIONER: return "practitioner";
             case DEVICE: return "device";
-            case MEDICATION: return "medication";
-            case SUBSTANCE: return "substance";
+            case CARETEAM: return "careteam";
+            case HEALTHCARESERVICE: return "healthcareservice";
+            case LOCATION: return "location";
+            case ORGANIZATION: return "organization";
+            case RELATEDPERSON: return "relatedperson";
+            case SPECIMEN: return "specimen";
             case NULL: return null;
             default: return "?";
           }
@@ -120,8 +244,12 @@ public class Group extends DomainResource {
             case ANIMAL: return "http://hl7.org/fhir/group-type";
             case PRACTITIONER: return "http://hl7.org/fhir/group-type";
             case DEVICE: return "http://hl7.org/fhir/group-type";
-            case MEDICATION: return "http://hl7.org/fhir/group-type";
-            case SUBSTANCE: return "http://hl7.org/fhir/group-type";
+            case CARETEAM: return "http://hl7.org/fhir/group-type";
+            case HEALTHCARESERVICE: return "http://hl7.org/fhir/group-type";
+            case LOCATION: return "http://hl7.org/fhir/group-type";
+            case ORGANIZATION: return "http://hl7.org/fhir/group-type";
+            case RELATEDPERSON: return "http://hl7.org/fhir/group-type";
+            case SPECIMEN: return "http://hl7.org/fhir/group-type";
             case NULL: return null;
             default: return "?";
           }
@@ -132,8 +260,12 @@ public class Group extends DomainResource {
             case ANIMAL: return "Group contains \"animal\" Patient resources.";
             case PRACTITIONER: return "Group contains healthcare practitioner resources (Practitioner or PractitionerRole).";
             case DEVICE: return "Group contains Device resources.";
-            case MEDICATION: return "Group contains Medication resources.";
-            case SUBSTANCE: return "Group contains Substance resources.";
+            case CARETEAM: return "Group contains CareTeam resources.";
+            case HEALTHCARESERVICE: return "Group contains HealthcareService resources.";
+            case LOCATION: return "Group contains Location resources.";
+            case ORGANIZATION: return "Group contains Organization resources.";
+            case RELATEDPERSON: return "Group contains RelatedPerson resources.";
+            case SPECIMEN: return "Group contains Specimen resources.";
             case NULL: return null;
             default: return "?";
           }
@@ -144,8 +276,12 @@ public class Group extends DomainResource {
             case ANIMAL: return "Animal";
             case PRACTITIONER: return "Practitioner";
             case DEVICE: return "Device";
-            case MEDICATION: return "Medication";
-            case SUBSTANCE: return "Substance";
+            case CARETEAM: return "CareTeam";
+            case HEALTHCARESERVICE: return "HealthcareService";
+            case LOCATION: return "Location";
+            case ORGANIZATION: return "Organization";
+            case RELATEDPERSON: return "RelatedPerson";
+            case SPECIMEN: return "Specimen";
             case NULL: return null;
             default: return "?";
           }
@@ -165,10 +301,18 @@ public class Group extends DomainResource {
           return GroupType.PRACTITIONER;
         if ("device".equals(codeString))
           return GroupType.DEVICE;
-        if ("medication".equals(codeString))
-          return GroupType.MEDICATION;
-        if ("substance".equals(codeString))
-          return GroupType.SUBSTANCE;
+        if ("careteam".equals(codeString))
+          return GroupType.CARETEAM;
+        if ("healthcareservice".equals(codeString))
+          return GroupType.HEALTHCARESERVICE;
+        if ("location".equals(codeString))
+          return GroupType.LOCATION;
+        if ("organization".equals(codeString))
+          return GroupType.ORGANIZATION;
+        if ("relatedperson".equals(codeString))
+          return GroupType.RELATEDPERSON;
+        if ("specimen".equals(codeString))
+          return GroupType.SPECIMEN;
         throw new IllegalArgumentException("Unknown GroupType code '"+codeString+"'");
         }
         public Enumeration<GroupType> fromType(Base code) throws FHIRException {
@@ -187,10 +331,18 @@ public class Group extends DomainResource {
           return new Enumeration<GroupType>(this, GroupType.PRACTITIONER);
         if ("device".equals(codeString))
           return new Enumeration<GroupType>(this, GroupType.DEVICE);
-        if ("medication".equals(codeString))
-          return new Enumeration<GroupType>(this, GroupType.MEDICATION);
-        if ("substance".equals(codeString))
-          return new Enumeration<GroupType>(this, GroupType.SUBSTANCE);
+        if ("careteam".equals(codeString))
+          return new Enumeration<GroupType>(this, GroupType.CARETEAM);
+        if ("healthcareservice".equals(codeString))
+          return new Enumeration<GroupType>(this, GroupType.HEALTHCARESERVICE);
+        if ("location".equals(codeString))
+          return new Enumeration<GroupType>(this, GroupType.LOCATION);
+        if ("organization".equals(codeString))
+          return new Enumeration<GroupType>(this, GroupType.ORGANIZATION);
+        if ("relatedperson".equals(codeString))
+          return new Enumeration<GroupType>(this, GroupType.RELATEDPERSON);
+        if ("specimen".equals(codeString))
+          return new Enumeration<GroupType>(this, GroupType.SPECIMEN);
         throw new FHIRException("Unknown GroupType code '"+codeString+"'");
         }
     public String toCode(GroupType code) {
@@ -202,10 +354,18 @@ public class Group extends DomainResource {
         return "practitioner";
       if (code == GroupType.DEVICE)
         return "device";
-      if (code == GroupType.MEDICATION)
-        return "medication";
-      if (code == GroupType.SUBSTANCE)
-        return "substance";
+      if (code == GroupType.CARETEAM)
+        return "careteam";
+      if (code == GroupType.HEALTHCARESERVICE)
+        return "healthcareservice";
+      if (code == GroupType.LOCATION)
+        return "location";
+      if (code == GroupType.ORGANIZATION)
+        return "organization";
+      if (code == GroupType.RELATEDPERSON)
+        return "relatedperson";
+      if (code == GroupType.SPECIMEN)
+        return "specimen";
       return "?";
       }
     public String toSystem(GroupType code) {
@@ -638,7 +798,7 @@ public class Group extends DomainResource {
         /**
          * A reference to the entity that is a member of the group. Must be consistent with Group.type. If the entity is another group, then the type must be the same.
          */
-        @Child(name = "entity", type = {Patient.class, Practitioner.class, PractitionerRole.class, Device.class, Group.class, RelatedPerson.class, Specimen.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Child(name = "entity", type = {CareTeam.class, Device.class, Group.class, HealthcareService.class, Location.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class, Specimen.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Reference to the group member", formalDefinition="A reference to the entity that is a member of the group. Must be consistent with Group.type. If the entity is another group, then the type must be the same." )
         protected Reference entity;
 
@@ -768,7 +928,7 @@ public class Group extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("entity", "Reference(Patient|Practitioner|PractitionerRole|Device|Group|RelatedPerson|Specimen)", "A reference to the entity that is a member of the group. Must be consistent with Group.type. If the entity is another group, then the type must be the same.", 0, 1, entity));
+          children.add(new Property("entity", "Reference(CareTeam|Device|Group|HealthcareService|Location|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson|Specimen)", "A reference to the entity that is a member of the group. Must be consistent with Group.type. If the entity is another group, then the type must be the same.", 0, 1, entity));
           children.add(new Property("period", "Period", "The period that the member was in the group, if known.", 0, 1, period));
           children.add(new Property("inactive", "boolean", "A flag to indicate that the member is no longer in the group, but previously may have been a member.", 0, 1, inactive));
         }
@@ -776,7 +936,7 @@ public class Group extends DomainResource {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -1298275357: /*entity*/  return new Property("entity", "Reference(Patient|Practitioner|PractitionerRole|Device|Group|RelatedPerson|Specimen)", "A reference to the entity that is a member of the group. Must be consistent with Group.type. If the entity is another group, then the type must be the same.", 0, 1, entity);
+          case -1298275357: /*entity*/  return new Property("entity", "Reference(CareTeam|Device|Group|HealthcareService|Location|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson|Specimen)", "A reference to the entity that is a member of the group. Must be consistent with Group.type. If the entity is another group, then the type must be the same.", 0, 1, entity);
           case -991726143: /*period*/  return new Property("period", "Period", "The period that the member was in the group, if known.", 0, 1, period);
           case 24665195: /*inactive*/  return new Property("inactive", "boolean", "A flag to indicate that the member is no longer in the group, but previously may have been a member.", 0, 1, inactive);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -928,16 +1088,20 @@ public class Group extends DomainResource {
      * Identifies the broad classification of the kind of resources the group includes.
      */
     @Child(name = "type", type = {CodeType.class}, order=2, min=1, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="person | animal | practitioner | device | medication | substance", formalDefinition="Identifies the broad classification of the kind of resources the group includes." )
+    @Description(shortDefinition="person | animal | practitioner | device | careteam | healthcareservice | location | organization | relatedperson | specimen", formalDefinition="Identifies the broad classification of the kind of resources the group includes." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/group-type")
     protected Enumeration<GroupType> type;
 
     /**
-     * If true, indicates that the resource refers to a specific group of real individuals.  If false, the group defines a set of intended individuals.
+     * Basis for membership in the Group:
+
+* 'definitional': The Group.characteristics specified are both necessary and sufficient to determine membership. All entities that meet the criteria are considered to be members of the group, whether referenced by the group or not. If members are present, they are individuals that happen to be known as meeting the Group.characteristics. The list cannot be presumed to be complete.
+* 'enumerated': The Group.characteristics are necessary but not sufficient to determine membership. Membership is determined by being listed as one of the Group.member.
      */
-    @Child(name = "actual", type = {BooleanType.class}, order=3, min=1, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Descriptive or actual", formalDefinition="If true, indicates that the resource refers to a specific group of real individuals.  If false, the group defines a set of intended individuals." )
-    protected BooleanType actual;
+    @Child(name = "membership", type = {CodeType.class}, order=3, min=1, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="definitional | enumerated", formalDefinition="Basis for membership in the Group:\n\n* 'definitional': The Group.characteristics specified are both necessary and sufficient to determine membership. All entities that meet the criteria are considered to be members of the group, whether referenced by the group or not. If members are present, they are individuals that happen to be known as meeting the Group.characteristics. The list cannot be presumed to be complete.\n* 'enumerated': The Group.characteristics are necessary but not sufficient to determine membership. Membership is determined by being listed as one of the Group.member." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/group-membership-basis")
+    protected Enumeration<GroupMembershipBasis> membership;
 
     /**
      * Provides a specific type of resource the group includes; e.g. "cow", "syringe", etc.
@@ -988,7 +1152,7 @@ public class Group extends DomainResource {
     @Description(shortDefinition="Who or what is in group", formalDefinition="Identifies the resource instances that are members of the group." )
     protected List<GroupMemberComponent> member;
 
-    private static final long serialVersionUID = -1476844328L;
+    private static final long serialVersionUID = -39542514L;
 
   /**
    * Constructor
@@ -1000,10 +1164,10 @@ public class Group extends DomainResource {
   /**
    * Constructor
    */
-    public Group(GroupType type, boolean actual) {
+    public Group(GroupType type, GroupMembershipBasis membership) {
       super();
       this.setType(type);
-      this.setActual(actual);
+      this.setMembership(membership);
     }
 
     /**
@@ -1150,47 +1314,59 @@ public class Group extends DomainResource {
     }
 
     /**
-     * @return {@link #actual} (If true, indicates that the resource refers to a specific group of real individuals.  If false, the group defines a set of intended individuals.). This is the underlying object with id, value and extensions. The accessor "getActual" gives direct access to the value
+     * @return {@link #membership} (Basis for membership in the Group:
+
+* 'definitional': The Group.characteristics specified are both necessary and sufficient to determine membership. All entities that meet the criteria are considered to be members of the group, whether referenced by the group or not. If members are present, they are individuals that happen to be known as meeting the Group.characteristics. The list cannot be presumed to be complete.
+* 'enumerated': The Group.characteristics are necessary but not sufficient to determine membership. Membership is determined by being listed as one of the Group.member.). This is the underlying object with id, value and extensions. The accessor "getMembership" gives direct access to the value
      */
-    public BooleanType getActualElement() { 
-      if (this.actual == null)
+    public Enumeration<GroupMembershipBasis> getMembershipElement() { 
+      if (this.membership == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Group.actual");
+          throw new Error("Attempt to auto-create Group.membership");
         else if (Configuration.doAutoCreate())
-          this.actual = new BooleanType(); // bb
-      return this.actual;
+          this.membership = new Enumeration<GroupMembershipBasis>(new GroupMembershipBasisEnumFactory()); // bb
+      return this.membership;
     }
 
-    public boolean hasActualElement() { 
-      return this.actual != null && !this.actual.isEmpty();
+    public boolean hasMembershipElement() { 
+      return this.membership != null && !this.membership.isEmpty();
     }
 
-    public boolean hasActual() { 
-      return this.actual != null && !this.actual.isEmpty();
+    public boolean hasMembership() { 
+      return this.membership != null && !this.membership.isEmpty();
     }
 
     /**
-     * @param value {@link #actual} (If true, indicates that the resource refers to a specific group of real individuals.  If false, the group defines a set of intended individuals.). This is the underlying object with id, value and extensions. The accessor "getActual" gives direct access to the value
+     * @param value {@link #membership} (Basis for membership in the Group:
+
+* 'definitional': The Group.characteristics specified are both necessary and sufficient to determine membership. All entities that meet the criteria are considered to be members of the group, whether referenced by the group or not. If members are present, they are individuals that happen to be known as meeting the Group.characteristics. The list cannot be presumed to be complete.
+* 'enumerated': The Group.characteristics are necessary but not sufficient to determine membership. Membership is determined by being listed as one of the Group.member.). This is the underlying object with id, value and extensions. The accessor "getMembership" gives direct access to the value
      */
-    public Group setActualElement(BooleanType value) { 
-      this.actual = value;
+    public Group setMembershipElement(Enumeration<GroupMembershipBasis> value) { 
+      this.membership = value;
       return this;
     }
 
     /**
-     * @return If true, indicates that the resource refers to a specific group of real individuals.  If false, the group defines a set of intended individuals.
+     * @return Basis for membership in the Group:
+
+* 'definitional': The Group.characteristics specified are both necessary and sufficient to determine membership. All entities that meet the criteria are considered to be members of the group, whether referenced by the group or not. If members are present, they are individuals that happen to be known as meeting the Group.characteristics. The list cannot be presumed to be complete.
+* 'enumerated': The Group.characteristics are necessary but not sufficient to determine membership. Membership is determined by being listed as one of the Group.member.
      */
-    public boolean getActual() { 
-      return this.actual == null || this.actual.isEmpty() ? false : this.actual.getValue();
+    public GroupMembershipBasis getMembership() { 
+      return this.membership == null ? null : this.membership.getValue();
     }
 
     /**
-     * @param value If true, indicates that the resource refers to a specific group of real individuals.  If false, the group defines a set of intended individuals.
+     * @param value Basis for membership in the Group:
+
+* 'definitional': The Group.characteristics specified are both necessary and sufficient to determine membership. All entities that meet the criteria are considered to be members of the group, whether referenced by the group or not. If members are present, they are individuals that happen to be known as meeting the Group.characteristics. The list cannot be presumed to be complete.
+* 'enumerated': The Group.characteristics are necessary but not sufficient to determine membership. Membership is determined by being listed as one of the Group.member.
      */
-    public Group setActual(boolean value) { 
-        if (this.actual == null)
-          this.actual = new BooleanType();
-        this.actual.setValue(value);
+    public Group setMembership(GroupMembershipBasis value) { 
+        if (this.membership == null)
+          this.membership = new Enumeration<GroupMembershipBasis>(new GroupMembershipBasisEnumFactory());
+        this.membership.setValue(value);
       return this;
     }
 
@@ -1496,7 +1672,7 @@ public class Group extends DomainResource {
         children.add(new Property("identifier", "Identifier", "A unique business identifier for this group.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("active", "boolean", "Indicates whether the record for the group is available for use or is merely being retained for historical purposes.", 0, 1, active));
         children.add(new Property("type", "code", "Identifies the broad classification of the kind of resources the group includes.", 0, 1, type));
-        children.add(new Property("actual", "boolean", "If true, indicates that the resource refers to a specific group of real individuals.  If false, the group defines a set of intended individuals.", 0, 1, actual));
+        children.add(new Property("membership", "code", "Basis for membership in the Group:\n\n* 'definitional': The Group.characteristics specified are both necessary and sufficient to determine membership. All entities that meet the criteria are considered to be members of the group, whether referenced by the group or not. If members are present, they are individuals that happen to be known as meeting the Group.characteristics. The list cannot be presumed to be complete.\n* 'enumerated': The Group.characteristics are necessary but not sufficient to determine membership. Membership is determined by being listed as one of the Group.member.", 0, 1, membership));
         children.add(new Property("code", "CodeableConcept", "Provides a specific type of resource the group includes; e.g. \"cow\", \"syringe\", etc.", 0, 1, code));
         children.add(new Property("name", "string", "A label assigned to the group for human identification and communication.", 0, 1, name));
         children.add(new Property("description", "markdown", "Explanation of what the group represents and how it is intended to be used.", 0, 1, description));
@@ -1512,7 +1688,7 @@ public class Group extends DomainResource {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "A unique business identifier for this group.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case -1422950650: /*active*/  return new Property("active", "boolean", "Indicates whether the record for the group is available for use or is merely being retained for historical purposes.", 0, 1, active);
         case 3575610: /*type*/  return new Property("type", "code", "Identifies the broad classification of the kind of resources the group includes.", 0, 1, type);
-        case -1422939762: /*actual*/  return new Property("actual", "boolean", "If true, indicates that the resource refers to a specific group of real individuals.  If false, the group defines a set of intended individuals.", 0, 1, actual);
+        case -1340241962: /*membership*/  return new Property("membership", "code", "Basis for membership in the Group:\n\n* 'definitional': The Group.characteristics specified are both necessary and sufficient to determine membership. All entities that meet the criteria are considered to be members of the group, whether referenced by the group or not. If members are present, they are individuals that happen to be known as meeting the Group.characteristics. The list cannot be presumed to be complete.\n* 'enumerated': The Group.characteristics are necessary but not sufficient to determine membership. Membership is determined by being listed as one of the Group.member.", 0, 1, membership);
         case 3059181: /*code*/  return new Property("code", "CodeableConcept", "Provides a specific type of resource the group includes; e.g. \"cow\", \"syringe\", etc.", 0, 1, code);
         case 3373707: /*name*/  return new Property("name", "string", "A label assigned to the group for human identification and communication.", 0, 1, name);
         case -1724546052: /*description*/  return new Property("description", "markdown", "Explanation of what the group represents and how it is intended to be used.", 0, 1, description);
@@ -1531,7 +1707,7 @@ public class Group extends DomainResource {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case -1422950650: /*active*/ return this.active == null ? new Base[0] : new Base[] {this.active}; // BooleanType
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<GroupType>
-        case -1422939762: /*actual*/ return this.actual == null ? new Base[0] : new Base[] {this.actual}; // BooleanType
+        case -1340241962: /*membership*/ return this.membership == null ? new Base[0] : new Base[] {this.membership}; // Enumeration<GroupMembershipBasis>
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // MarkdownType
@@ -1557,8 +1733,9 @@ public class Group extends DomainResource {
           value = new GroupTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<GroupType>
           return value;
-        case -1422939762: // actual
-          this.actual = TypeConvertor.castToBoolean(value); // BooleanType
+        case -1340241962: // membership
+          value = new GroupMembershipBasisEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.membership = (Enumeration) value; // Enumeration<GroupMembershipBasis>
           return value;
         case 3059181: // code
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -1595,8 +1772,9 @@ public class Group extends DomainResource {
         } else if (name.equals("type")) {
           value = new GroupTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<GroupType>
-        } else if (name.equals("actual")) {
-          this.actual = TypeConvertor.castToBoolean(value); // BooleanType
+        } else if (name.equals("membership")) {
+          value = new GroupMembershipBasisEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.membership = (Enumeration) value; // Enumeration<GroupMembershipBasis>
         } else if (name.equals("code")) {
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("name")) {
@@ -1622,7 +1800,7 @@ public class Group extends DomainResource {
         case -1618432855:  return addIdentifier(); 
         case -1422950650:  return getActiveElement();
         case 3575610:  return getTypeElement();
-        case -1422939762:  return getActualElement();
+        case -1340241962:  return getMembershipElement();
         case 3059181:  return getCode();
         case 3373707:  return getNameElement();
         case -1724546052:  return getDescriptionElement();
@@ -1641,7 +1819,7 @@ public class Group extends DomainResource {
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case -1422950650: /*active*/ return new String[] {"boolean"};
         case 3575610: /*type*/ return new String[] {"code"};
-        case -1422939762: /*actual*/ return new String[] {"boolean"};
+        case -1340241962: /*membership*/ return new String[] {"code"};
         case 3059181: /*code*/ return new String[] {"CodeableConcept"};
         case 3373707: /*name*/ return new String[] {"string"};
         case -1724546052: /*description*/ return new String[] {"markdown"};
@@ -1665,8 +1843,8 @@ public class Group extends DomainResource {
         else if (name.equals("type")) {
           throw new FHIRException("Cannot call addChild on a primitive type Group.type");
         }
-        else if (name.equals("actual")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Group.actual");
+        else if (name.equals("membership")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Group.membership");
         }
         else if (name.equals("code")) {
           this.code = new CodeableConcept();
@@ -1715,7 +1893,7 @@ public class Group extends DomainResource {
         };
         dst.active = active == null ? null : active.copy();
         dst.type = type == null ? null : type.copy();
-        dst.actual = actual == null ? null : actual.copy();
+        dst.membership = membership == null ? null : membership.copy();
         dst.code = code == null ? null : code.copy();
         dst.name = name == null ? null : name.copy();
         dst.description = description == null ? null : description.copy();
@@ -1745,7 +1923,7 @@ public class Group extends DomainResource {
           return false;
         Group o = (Group) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(active, o.active, true) && compareDeep(type, o.type, true)
-           && compareDeep(actual, o.actual, true) && compareDeep(code, o.code, true) && compareDeep(name, o.name, true)
+           && compareDeep(membership, o.membership, true) && compareDeep(code, o.code, true) && compareDeep(name, o.name, true)
            && compareDeep(description, o.description, true) && compareDeep(quantity, o.quantity, true) && compareDeep(managingEntity, o.managingEntity, true)
            && compareDeep(characteristic, o.characteristic, true) && compareDeep(member, o.member, true);
       }
@@ -1757,15 +1935,15 @@ public class Group extends DomainResource {
         if (!(other_ instanceof Group))
           return false;
         Group o = (Group) other_;
-        return compareValues(active, o.active, true) && compareValues(type, o.type, true) && compareValues(actual, o.actual, true)
+        return compareValues(active, o.active, true) && compareValues(type, o.type, true) && compareValues(membership, o.membership, true)
            && compareValues(name, o.name, true) && compareValues(description, o.description, true) && compareValues(quantity, o.quantity, true)
           ;
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, active, type
-          , actual, code, name, description, quantity, managingEntity, characteristic, member
-          );
+          , membership, code, name, description, quantity, managingEntity, characteristic
+          , member);
       }
 
   @Override
@@ -1774,24 +1952,30 @@ public class Group extends DomainResource {
    }
 
  /**
-   * Search parameter: <b>actual</b>
+   * Search parameter: <b>characteristic-reference</b>
    * <p>
-   * Description: <b>Descriptive or actual</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Group.actual</b><br>
+   * Description: <b>An entity referenced in a characteristic</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>(Group.characteristic.value as Reference)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="actual", path="Group.actual", description="Descriptive or actual", type="token" )
-  public static final String SP_ACTUAL = "actual";
+  @SearchParamDefinition(name="characteristic-reference", path="(Group.characteristic.value as Reference)", description="An entity referenced in a characteristic", type="reference" )
+  public static final String SP_CHARACTERISTIC_REFERENCE = "characteristic-reference";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>actual</b>
+   * <b>Fluent Client</b> search parameter constant for <b>characteristic-reference</b>
    * <p>
-   * Description: <b>Descriptive or actual</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Group.actual</b><br>
+   * Description: <b>An entity referenced in a characteristic</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>(Group.characteristic.value as Reference)</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ACTUAL = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ACTUAL);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam CHARACTERISTIC_REFERENCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_CHARACTERISTIC_REFERENCE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Group:characteristic-reference</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_CHARACTERISTIC_REFERENCE = new ca.uhn.fhir.model.api.Include("Group:characteristic-reference").toLocked();
 
  /**
    * Search parameter: <b>characteristic-value</b>
@@ -1927,7 +2111,7 @@ public class Group extends DomainResource {
    * Path: <b>Group.member.entity</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="member", path="Group.member.entity", description="Reference to the group member", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Device.class, Group.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class, Specimen.class } )
+  @SearchParamDefinition(name="member", path="Group.member.entity", description="Reference to the group member", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={CareTeam.class, Device.class, Group.class, HealthcareService.class, Location.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class, Specimen.class } )
   public static final String SP_MEMBER = "member";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>member</b>
@@ -1944,6 +2128,46 @@ public class Group extends DomainResource {
    * the path value of "<b>Group:member</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_MEMBER = new ca.uhn.fhir.model.api.Include("Group:member").toLocked();
+
+ /**
+   * Search parameter: <b>membership</b>
+   * <p>
+   * Description: <b>Definitional or enumerated group</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Group.membership</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="membership", path="Group.membership", description="Definitional or enumerated group", type="token" )
+  public static final String SP_MEMBERSHIP = "membership";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>membership</b>
+   * <p>
+   * Description: <b>Definitional or enumerated group</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Group.membership</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam MEMBERSHIP = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_MEMBERSHIP);
+
+ /**
+   * Search parameter: <b>name</b>
+   * <p>
+   * Description: <b>A portion of the Group's name</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Group.name</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="name", path="Group.name", description="A portion of the Group's name", type="string" )
+  public static final String SP_NAME = "name";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>name</b>
+   * <p>
+   * Description: <b>A portion of the Group's name</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Group.name</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
 
  /**
    * Search parameter: <b>type</b>

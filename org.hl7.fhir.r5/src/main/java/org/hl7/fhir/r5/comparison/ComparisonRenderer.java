@@ -45,6 +45,7 @@ public class ComparisonRenderer implements IEvaluationContext {
   private ComparisonSession session;
   private Map<String, String> templates = new HashMap<>();
   private String folder;
+  private String preamble;
 
   public ComparisonRenderer(IWorkerContext contextLeft, IWorkerContext contextRight, String folder, ComparisonSession session) {
     super();
@@ -52,6 +53,14 @@ public class ComparisonRenderer implements IEvaluationContext {
     this.contextRight = contextRight;       
     this.folder = folder;
     this.session = session;
+  }
+  
+  public String getPreamble() {
+    return preamble;
+  }
+
+  public void setPreamble(String preamble) {
+    this.preamble = preamble;
   }
 
   public Map<String, String> getTemplates() {
@@ -61,6 +70,9 @@ public class ComparisonRenderer implements IEvaluationContext {
   public File render(String leftName, String rightName) throws IOException {
     dumpBinaries();
     StringBuilder b = new StringBuilder();
+    if (preamble != null) {
+      b.append(preamble);
+    }
     b.append("<table class=\"grid\">\r\n");
     b.append(" <tr>\r\n");
     b.append("  <td width=\"260\"><b>"+Utilities.escapeXml(leftName)+"</b></td>\r\n");

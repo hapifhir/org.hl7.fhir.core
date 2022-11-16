@@ -7,7 +7,12 @@ import org.hl7.fhir.convertors.conv10_50.datatypes10_50.Reference10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.CodeableConcept10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Coding10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.ContactPoint10_50;
-import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.*;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Boolean10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Code10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.DateTime10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.String10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.UnsignedInt10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Uri10_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceComponent;
@@ -713,26 +718,26 @@ public class Conformance10_50 {
     return tgt;
   }
 
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RestfulCapabilityMode> convertRestfulConformanceMode(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Conformance.RestfulConformanceMode> src) throws FHIRException {
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CapabilityStatement.RestfulCapabilityMode> convertRestfulConformanceMode(org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Conformance.RestfulConformanceMode> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RestfulCapabilityMode> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.RestfulCapabilityModeEnumFactory());
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CapabilityStatement.RestfulCapabilityMode> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.CapabilityStatement.RestfulCapabilityModeEnumFactory());
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case CLIENT:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RestfulCapabilityMode.CLIENT);
+        tgt.setValue(org.hl7.fhir.r5.model.CapabilityStatement.RestfulCapabilityMode.CLIENT);
         break;
       case SERVER:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RestfulCapabilityMode.SERVER);
+        tgt.setValue(org.hl7.fhir.r5.model.CapabilityStatement.RestfulCapabilityMode.SERVER);
         break;
       default:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RestfulCapabilityMode.NULL);
+        tgt.setValue(org.hl7.fhir.r5.model.CapabilityStatement.RestfulCapabilityMode.NULL);
         break;
     }
     return tgt;
   }
 
-  static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Conformance.RestfulConformanceMode> convertRestfulConformanceMode(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RestfulCapabilityMode> src) throws FHIRException {
+  static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Conformance.RestfulConformanceMode> convertRestfulConformanceMode(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CapabilityStatement.RestfulCapabilityMode> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Conformance.RestfulConformanceMode> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Conformance.RestfulConformanceModeEnumFactory());
