@@ -1,7 +1,7 @@
 ## Validator Changes
 
-* no changes
+* Validate HTML entities in XHTML in resources
 
 ## Other code changes
 
-* no changes
+* Stop producing XHTML entities in resources when rendering
