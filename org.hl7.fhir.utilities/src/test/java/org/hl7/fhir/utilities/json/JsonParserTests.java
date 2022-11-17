@@ -26,7 +26,7 @@ public class JsonParserTests {
   public void testComments2() throws IOException, JsonException {
     JsonObject obj = JsonParser.parseObject("{\n  // some comment \n  \"n1\" : \"v1\"\n}\n", true);
     Assertions.assertEquals(0, obj.getComments().size());
-    JsonString c = obj.getStr("n1");
+    JsonString c = obj.getString("n1");
     Assertions.assertEquals(1, c.getComments().size());
     Assertions.assertEquals("some comment", c.getComments().get(0));
     Assertions.assertEquals("{\"n1\":\"v1\"}", JsonParser.compose(obj, false));
@@ -38,7 +38,7 @@ public class JsonParserTests {
     JsonObject obj = JsonParser.parseObject("// some comment\n{\n  \"n1\" : \"v1\"\n}\n", true);
     Assertions.assertEquals(1, obj.getComments().size());
     Assertions.assertEquals("some comment", obj.getComments().get(0));
-    JsonString c = obj.getStr("n1");
+    JsonString c = obj.getString("n1");
     Assertions.assertEquals(0, c.getComments().size());
     Assertions.assertEquals("{\"n1\":\"v1\"}", JsonParser.compose(obj, false));
     Assertions.assertEquals("// some comment\n{\n  \"n1\" : \"v1\"\n}\n", JsonParser.compose(obj, true));
@@ -539,7 +539,7 @@ public class JsonParserTests {
   public void testDuplicates2() throws IOException, JsonException {
     JsonObject e = JsonParser.parseObject("{ \"n\" : 1, \"n\" : 2 }", false, true);
     Assertions.assertEquals(2, e.getProperties().size());
-    Assertions.assertEquals(2, e.getInteger("n"));
+    Assertions.assertEquals(2, e.asInteger("n"));
     Assertions.assertEquals("{\"n\":1,\"n\":2}", JsonParser.compose(e));
   }
   

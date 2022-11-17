@@ -53,6 +53,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
+import org.hl7.fhir.r5.elementmodel.ParserBase.ValidationPolicy;
 import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.DateTimeType;
@@ -63,6 +64,7 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.formats.XmlLocationAnnotator;
 import org.hl7.fhir.r5.utils.formats.XmlLocationData;
 import org.hl7.fhir.utilities.ElementDecoration;
+import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -389,8 +391,15 @@ public class XmlParser extends ParserBase {
     			  XhtmlNode xhtml;
     			  if (property.getDefinition().hasRepresentation(PropertyRepresentation.CDATEXT))
     			    xhtml = new CDANarrativeFormat().convert((org.w3c.dom.Element) child);
-          	else 
-              xhtml = new XhtmlParser().setValidatorMode(true).parseHtmlNode((org.w3c.dom.Element) child);
+          	else {
+              XhtmlParser xp = new XhtmlParser();
+              xhtml = xp.parseHtmlNode((org.w3c.dom.Element) child);
+              if (policy == ValidationPolicy.EVERYTHING) {
+                for (StringPair s : xp.getValidationIssues()) {
+                  logError(line(child, false), col(child, false), path, IssueType.INVALID, context.formatMessage(s.getName(), s.getValue()), IssueSeverity.ERROR);                
+                }
+              }
+          	}
 						Element n = new Element(property.getName(), property, "xhtml", new XhtmlComposer(XhtmlComposer.XML, false).compose(xhtml)).setXhtml(xhtml).markLocation(line(child, false), col(child, false));
             n.setPath(element.getPath()+"."+property.getName());
             element.getChildren().add(n);

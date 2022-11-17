@@ -930,13 +930,17 @@ public class NpmPackage {
       for (String s : folder.content.keySet()) {
         byte[] b = folder.content.get(s);
         String name = n+"/"+s;
-        indexer.seeFile(s, b);
-        if (!s.equals(".index.json") && !s.equals("package.json")) {
-          TarArchiveEntry entry = new TarArchiveEntry(name);
-          entry.setSize(b.length);
-          tar.putArchiveEntry(entry);
-          tar.write(b);
-          tar.closeArchiveEntry();
+        if (b == null) {
+          System.out.println(name+" is null");
+        } else {
+          indexer.seeFile(s, b);
+          if (!s.equals(".index.json") && !s.equals("package.json")) {
+            TarArchiveEntry entry = new TarArchiveEntry(name);
+            entry.setSize(b.length);
+            tar.putArchiveEntry(entry);
+            tar.write(b);
+            tar.closeArchiveEntry();
+          }
         }
       }
       byte[] cnt = indexer.build().getBytes(StandardCharsets.UTF_8);
