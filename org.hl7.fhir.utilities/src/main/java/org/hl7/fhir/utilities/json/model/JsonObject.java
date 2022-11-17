@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.JsonException;
 
 
@@ -61,6 +62,13 @@ public class JsonObject extends JsonElement {
     return propMap.containsKey(name);
   }
 
+  public void drop(String name) {
+    if (propMap.containsKey(name)) {
+      propMap.remove(name);
+      properties.removeIf((JsonProperty item) -> name.equals(item.getName()));
+    }
+  }
+  
   public List<JsonProperty> getProperties() {
     return properties;
   }
@@ -73,54 +81,110 @@ public class JsonObject extends JsonElement {
     }
   }
 
-  public JsonObject getObj(String name) {
-    return (JsonObject) get(name);
+  public boolean hasObject(String name) {
+    return propMap.containsKey(name) && propMap.get(name).getValue().elementType() == JsonElementType.OBJECT;
   }
 
-  public JsonString getStr(String name) {
-    return (JsonString) get(name);
+  public boolean hasArray(String name) {
+    return propMap.containsKey(name) && propMap.get(name).getValue().elementType() == JsonElementType.ARRAY;
   }
 
-  public JsonBoolean getBool(String name) {
-    return (JsonBoolean) get(name);
+  public boolean hasPrimitive(String name) {
+    return propMap.containsKey(name) && propMap.get(name).getValue() instanceof JsonPrimitive;
+  }
+
+  public boolean hasString(String name) {
+    return propMap.containsKey(name) && propMap.get(name).getValue().elementType() == JsonElementType.STRING;
+  }
+
+  public boolean hasNumber(String name) {
+    return propMap.containsKey(name) && propMap.get(name).getValue().elementType() == JsonElementType.NUMBER;
+  }
+
+  public boolean hasBoolean(String name) {
+    return propMap.containsKey(name) && propMap.get(name).getValue().elementType() == JsonElementType.BOOLEAN;
+  }
+
+  public boolean hasNull(String name) {
+    return propMap.containsKey(name) && propMap.get(name).getValue().elementType() == JsonElementType.NULL;
+  }
+
+
+  public JsonObject getObject(String name) {
+    return hasObject(name) ?  (JsonObject) get(name) : null;
+  }
+
+  public JsonString getString(String name) {
+    return hasString(name) ? (JsonString) get(name) : null;
+  }
+
+  public JsonBoolean getBoolean(String name) {
+    return hasBoolean(name) ? (JsonBoolean) get(name) : null;
   }
   
-  public JsonNumber getNum(String name) {
-    return (JsonNumber) get(name);
+  public JsonNumber getNumber(String name) {
+    return hasNumber(name) ? (JsonNumber) get(name) : null;
   }
   
   public JsonNull getNull(String name) {
-    return (JsonNull) get(name);
+    return hasNull(name) ?(JsonNull) get(name) : null;
   }
   
-  public JsonArray getArr(String name) {
-    return (JsonArray) get(name);
+  public JsonArray getArray(String name) {
+    return hasArray(name) ? (JsonArray) get(name) : null;
   }
 
-  public Integer getInteger(String name) {
-    return ((JsonNumber) get(name)).getInteger();
+  public Integer asInteger(String name) {
+    if (hasNumber(name)) {
+      return ((JsonNumber) get(name)).getInteger();
+    }
+    if (hasPrimitive(name)) {
+      String s = asString(name);
+      if (Utilities.isInteger(s)) {
+        return Integer.parseInt(s);
+      }
+    }
+    return null;
   }
 
-  public String getString(String name) {
-    return ((JsonPrimitive) get(name)).toString();
+  public String asString(String name) {
+    return hasPrimitive(name) ? ((JsonPrimitive) get(name)).toString() : null;
   }
 
-  public Boolean getBoolean(String name) {
-    return has(name) ?  ((JsonBoolean) get(name)).isValue() : false;
+  public boolean asBoolean(String name) {
+    if (hasBoolean(name)) {
+      return ((JsonBoolean) get(name)).isValue();
+    }
+    if (hasPrimitive(name)) {
+      String s = asString(name);
+      if ("true".equals(s)) {
+        return true;
+      }
+      if ("false".equals(s)) {
+        return false;
+      }
+    }
+    return false;
   }
 
-  public JsonObject forceObj(String name) throws JsonException {
+  public JsonObject forceObject(String name) throws JsonException {
+    if (has(name) && !hasObject(name)) {
+      drop(name);
+    }
     if (!has(name)) {
       add(name, new JsonObject());
     }
-    return getObj(name);
+    return getObject(name);
   }
 
-  public JsonArray forceArr(String name) throws JsonException {
+  public JsonArray forceArray(String name) throws JsonException {
+    if (has(name) && !hasArray(name)) {
+      drop(name);
+    }
     if (!has(name)) {
       add(name, new JsonArray());
     }
-    return getArr(name);
+    return getArray(name);
   }
   
 

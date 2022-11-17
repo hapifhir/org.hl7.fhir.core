@@ -62,9 +62,9 @@ public class XVerExtensionManager {
       }
     }
     JsonObject root = lists.get(v);
-    JsonObject path = root.getObj(e);
+    JsonObject path = root.getObject(e);
     if (path == null) {
-      path = root.getObj(e+"[x]");      
+      path = root.getObject(e+"[x]");      
     }
     if (path == null) {
       return XVerExtensionStatus.Unknown;
@@ -85,9 +85,9 @@ public class XVerExtensionManager {
     String verTarget = VersionUtilities.getMajMin(context.getVersion());
     String e = url.substring(54);
     JsonObject root = lists.get(verSource);
-    JsonObject path = root.getObj(e);
+    JsonObject path = root.getObject(e);
     if (path == null) {
-      path = root.getObj(e+"[x]");
+      path = root.getObject(e+"[x]");
     }
     
     StructureDefinition sd = new StructureDefinition();
@@ -115,8 +115,8 @@ public class XVerExtensionManager {
       ElementDefinition val = sd.getDifferential().addElement().setPath("Extension.value[x]").setMin(1);
       populateTypes(path, val, verSource, verTarget);
     } else if (path.has("elements")) {
-      for (JsonElement i : path.getArr("elements").getItems()) {
-        JsonObject elt = root.getObj(e+"."+i.toString());
+      for (JsonElement i : path.forceArray("elements").getItems()) {
+        JsonObject elt = root.getObject(e+"."+i.toString());
         if (elt != null) {
         String s = i.toString().replace("[x]", "");
         sd.getDifferential().addElement().setPath("Extension.extension").setSliceName(s);
@@ -134,7 +134,7 @@ public class XVerExtensionManager {
     } else {
       throw new FHIRException("Internal error - attempt to define extension for "+url+" when it is invalid");
     }
-    if (path.has("modifier") && path.getBoolean("modifier")) {
+    if (path.has("modifier") && path.asBoolean("modifier")) {
       ElementDefinition baseDef = new ElementDefinition("Extension");
       sd.getDifferential().getElement().add(0, baseDef);
       baseDef.setIsModifier(true);
@@ -143,7 +143,7 @@ public class XVerExtensionManager {
   }
 
   public void populateTypes(JsonObject path, ElementDefinition val, String verSource, String verTarget) {
-    for (JsonElement i : path.getArr("types").getItems()) {
+    for (JsonElement i : path.forceArray("types").getItems()) {
       String s = i.toString();
       if (!s.startsWith("!")) {
         if (s.contains("(")) {
