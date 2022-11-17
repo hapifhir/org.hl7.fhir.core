@@ -20,6 +20,8 @@ public class Params {
   public static final String LEVEL = "-level";
   public static final String HTML_OUTPUT = "-html-output";
   public static final String PROXY = "-proxy";
+
+  public static final String HTTPS_PROXY = "-https-proxy";
   public static final String PROXY_AUTH = "-auth";
   public static final String PROFILE = "-profile";
   public static final String BUNDLE = "-bundle";
@@ -136,7 +138,10 @@ public class Params {
         i++; // ignore next parameter
       } else if (args[i].equals(PROXY_AUTH)) {
         i++;
-      } else if (args[i].equals(PROFILE)) {
+      } else if (args[i].equals(HTTPS_PROXY)) {
+        i++;
+      }
+      else if (args[i].equals(PROFILE)) {
         String p = null;
         if (i + 1 == args.length) {
           throw new Error("Specified -profile without indicating profile source");
