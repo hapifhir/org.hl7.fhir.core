@@ -537,7 +537,13 @@ public class JsonParser extends ParserBase {
         }
         if (!n.getProperty().isChoice() && n.getType().equals("xhtml")) {
           try {
-            n.setXhtml(new XhtmlParser().setValidatorMode(policy == ValidationPolicy.EVERYTHING).parse(n.getValue(), null).getDocumentElement());
+            XhtmlParser xhtml = new XhtmlParser();
+            n.setXhtml(xhtml.setXmlMode(true).parse(n.getValue(), null).getDocumentElement());
+            if (policy == ValidationPolicy.EVERYTHING) {
+              for (StringPair s : xhtml.getValidationIssues()) {
+                logError(line(main), col(main), npath, IssueType.INVALID, context.formatMessage(s.getName(), s.getValue()), IssueSeverity.ERROR);                
+              }
+            }
           } catch (Exception e) {
             logError(line(main), col(main), npath, IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_XHTML_, e.getMessage()), IssueSeverity.ERROR);
           }
@@ -545,8 +551,9 @@ public class JsonParser extends ParserBase {
         if (policy == ValidationPolicy.EVERYTHING) {
           // now we cross-check the primitive format against the stated type
           if (Utilities.existsInList(n.getType(), "boolean")) {
-            if (!p.isBoolean())
+            if (!p.isBoolean()) {
               logError(line(main), col(main), npath, IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_JSON_THE_PRIMITIVE_VALUE_MUST_BE_A_BOOLEAN), IssueSeverity.ERROR);
+            }
           } else if (Utilities.existsInList(n.getType(), "integer", "unsignedInt", "positiveInt", "decimal")) {
             if (!p.isNumber())
               logError(line(main), col(main), npath, IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_JSON_THE_PRIMITIVE_VALUE_MUST_BE_A_NUMBER), IssueSeverity.ERROR);
