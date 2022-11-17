@@ -746,6 +746,8 @@ public class I18nConstants {
   public static final String SD_SPECIALIZED_TYPE_MATCHES = "SD_SPECIALIZED_TYPE_MATCHES";
   public static final String SD_CONSTRAINED_KIND_NO_MATCH = "SD_CONSTRAINED_KIND_NO_MATCH";
   public static final String SD_PATH_TYPE_MISMATCH = "SD_PATH_TYPE_MISMATCH";
+  public static final String XHTML_XHTML_Image_Reference_Illegal = "XHTML_XHTML_Image_Reference_Illegal";
+  public static final String XHTML_XHTML_Entity_Illegal = "XHTML_XHTML_Entity_Illegal";
 }
 
 

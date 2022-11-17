@@ -239,11 +239,9 @@ public class ElementWrappers {
       if (div == null) {
         div = new org.hl7.fhir.r5.elementmodel.Element("div", txt.getProperty().getChild(null, "div"));
         txt.getChildren().add(div);
-        div.setValue(new XhtmlComposer(XhtmlComposer.XML, context.isPretty()).compose(x));
-      }
-      div.setValue(x.toString());
+      } 
+      div.setValue(new XhtmlComposer(XhtmlComposer.XML, context.isPretty()).compose(x));
       div.setXhtml(x);
-
     }
 
     @Override

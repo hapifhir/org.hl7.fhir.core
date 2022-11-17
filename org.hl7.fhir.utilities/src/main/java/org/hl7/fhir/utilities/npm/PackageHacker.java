@@ -28,7 +28,7 @@ public class PackageHacker {
   private static boolean useSecureReferences = false;
   
   public static void main(String[] args) throws FileNotFoundException, IOException {
-    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/us/sdoh-clinicalcare/2022Jan/package.tgz");
+    new PackageHacker().edit("/Users/grahamegrieve/work/www.fhir.org/source/guides/chile/hl7.fhir.cl.corecl#1.0.0.tgz");
   }
 
   private void edit(String name) throws FileNotFoundException, IOException {
@@ -80,7 +80,8 @@ public class PackageHacker {
   private void change(JsonObject npm) throws FileNotFoundException, IOException {
 //    fixVersions(npm);
 //    npm.remove("notForPublication");
-//    npm.addProperty("url", "http://hl7.org/fhir/us/carin-rtpbc/STU1");
+    npm.remove("url");
+    npm.addProperty("url", "https://hl7chile.cl/fhir/ig/CoreCL/1.7.0");
 //    npm.remove("name");
 //    npm.addProperty("name", "hl7.fhir.uv.smart-app-launch");
 //    npm.remove("canonical");
@@ -102,7 +103,7 @@ public class PackageHacker {
 //    dep.addProperty("hl7.fhir.r4.examples", "4.0.1");
 //    dep.addProperty("hl7.fhir.r4.expansions", "4.0.1");
 //    dep.addProperty("hl7.fhir.r4.elements", "4.0.1");
-    npm.addProperty("jurisdiction", "urn:iso:std:iso:3166#US");
+//    npm.addProperty("jurisdiction", "urn:iso:std:iso:3166#CL");
   }
 
   private void fixVersionInContent(Map<String, byte[]> content) {
