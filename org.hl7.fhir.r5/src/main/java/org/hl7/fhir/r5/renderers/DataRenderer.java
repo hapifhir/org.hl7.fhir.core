@@ -1129,25 +1129,25 @@ public class DataRenderer extends Renderer {
 
     if (ii.hasType()) {
       if (ii.getType().hasText())
-        s = ii.getType().getText()+": "+s;
+        s = ii.getType().getText()+":&#xA0;"+s;
       else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasDisplay())
         s = ii.getType().getCoding().get(0).getDisplay()+": "+s;
       else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasCode())
         s = lookupCode(ii.getType().getCoding().get(0).getSystem(), ii.getType().getCoding().get(0).getVersion(), ii.getType().getCoding().get(0).getCode())+": "+s;
     } else {
-      s = "id: "+s;      
+      s = "id:&#xA0;"+s;      
     }
 
     if (ii.hasUse() || ii.hasPeriod()) {
-      s = s + "(";
+      s = s + "&#xA0;(";
       if (ii.hasUse()) {
-        s = s + "use: "+ii.getUse().toString();
+        s = s + "use:&#xA0;"+ii.getUse().toString();
       }
       if (ii.hasUse() && ii.hasPeriod()) {
-        s = s + ", ";
+        s = s + ",&#xA0;";
       }
       if (ii.hasPeriod()) {
-        s = s + "period: "+displayPeriod(ii.getPeriod());
+        s = s + "period:&#xA0;"+displayPeriod(ii.getPeriod());
       }
       s = s + ")";
     }    

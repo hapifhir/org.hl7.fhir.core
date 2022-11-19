@@ -25,6 +25,7 @@ import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.CodeSystemNavigator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.LoincLinker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -547,7 +548,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     if (cc.getSystem().equals("http://snomed.info/sct"))
       return "http://snomed.info/sct/"+cc.getCode();
     if (cc.getSystem().equals("http://loinc.org"))
-      return "http://s.details.loinc.org/LOINC/"+cc.getCode()+".html";
+      return LoincLinker.getLinkForCode(cc.getCode());
     return null;
   }
 
