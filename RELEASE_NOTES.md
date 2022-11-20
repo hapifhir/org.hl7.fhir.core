@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* fix references to LOINC in generated narrative 
+* fix references to LOINC codes in generated narrative 
