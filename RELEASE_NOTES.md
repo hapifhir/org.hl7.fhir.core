@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* fix references to LOINC in generated narrative 
