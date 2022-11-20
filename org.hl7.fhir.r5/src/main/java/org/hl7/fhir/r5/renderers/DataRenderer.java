@@ -1129,25 +1129,25 @@ public class DataRenderer extends Renderer {
 
     if (ii.hasType()) {
       if (ii.getType().hasText())
-        s = ii.getType().getText()+":&#xA0;"+s;
+        s = ii.getType().getText()+":\u00A0"+s;
       else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasDisplay())
         s = ii.getType().getCoding().get(0).getDisplay()+": "+s;
       else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasCode())
         s = lookupCode(ii.getType().getCoding().get(0).getSystem(), ii.getType().getCoding().get(0).getVersion(), ii.getType().getCoding().get(0).getCode())+": "+s;
     } else {
-      s = "id:&#xA0;"+s;      
+      s = "id:\u00A0"+s;      
     }
 
     if (ii.hasUse() || ii.hasPeriod()) {
-      s = s + "&#xA0;(";
+      s = s + "\u00A0(";
       if (ii.hasUse()) {
-        s = s + "use:&#xA0;"+ii.getUse().toString();
+        s = s + "use:\u00A0"+ii.getUse().toString();
       }
       if (ii.hasUse() && ii.hasPeriod()) {
-        s = s + ",&#xA0;";
+        s = s + ",\u00A0";
       }
       if (ii.hasPeriod()) {
-        s = s + "period:&#xA0;"+displayPeriod(ii.getPeriod());
+        s = s + "period:\u00A0"+displayPeriod(ii.getPeriod());
       }
       s = s + ")";
     }    
