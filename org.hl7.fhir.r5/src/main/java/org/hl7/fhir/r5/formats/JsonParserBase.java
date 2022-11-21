@@ -98,7 +98,7 @@ import org.slf4j.LoggerFactory;
 public abstract class JsonParserBase extends ParserBase implements IParser {
 
   static {
-    LoggerFactory.getLogger("org.hl7.fhir.r5.formats.JsonParserBase").debug("JSON Parser is being loaded");
+//    LoggerFactory.getLogger("org.hl7.fhir.r5.formats.JsonParserBase").debug("JSON Parser is being loaded");
     ClassesLoadedFlags.ourJsonParserBaseLoaded = true;
   }
 

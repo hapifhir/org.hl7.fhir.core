@@ -748,6 +748,8 @@ public class I18nConstants {
   public static final String SD_PATH_TYPE_MISMATCH = "SD_PATH_TYPE_MISMATCH";
   public static final String XHTML_XHTML_Image_Reference_Illegal = "XHTML_XHTML_Image_Reference_Illegal";
   public static final String XHTML_XHTML_Entity_Illegal = "XHTML_XHTML_Entity_Illegal";
+  public static final String UNABLE_TO_RESOLVE_CONTENT_REFERENCE = "UNABLE_TO_RESOLVE_CONTENT_REFERENCE";
+  public static final String UNABLE_TO_RESOLVE_CONTENT_REFERENCE_IN_THIS_CONTEXT = "UNABLE_TO_RESOLVE_CONTENT_REFERENCE_IN_THIS_CONTEXT";
 }
 
 
