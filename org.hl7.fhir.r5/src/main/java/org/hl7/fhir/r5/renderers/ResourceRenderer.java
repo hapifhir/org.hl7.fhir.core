@@ -248,7 +248,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       if (display != null) {
         c.addText(": "+display);
       }
-      if ((tr == null || !tr.getReference().startsWith("#")) && name != null) {
+      if ((tr == null || (tr.getReference() != null && !tr.getReference().startsWith("#"))) && name != null) {
         x.addText(" \""+name+"\"");
       }
       if (r.hasExtension(ToolingExtensions.EXT_TARGET_ID)) {
