@@ -313,6 +313,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     @With
     private final IWorkerContext.ILoggingService loggingService;
 
+    @With
+    private boolean THO = true;
+
 
     public ValidationEngineBuilder() {
       terminologyCachePath = null;
@@ -326,7 +329,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       loggingService = new SystemOutLoggingService();
     }
 
-    public ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, IWorkerContext.ILoggingService loggingService) {
+    public ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, IWorkerContext.ILoggingService loggingService, boolean THO) {
       this.terminologyCachePath = terminologyCachePath;
       this.userAgent = userAgent;
       this.version = version;
@@ -336,10 +339,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       this.timeTracker = timeTracker;
       this.canRunWithoutTerminologyServer = canRunWithoutTerminologyServer;
       this.loggingService = loggingService;
+      this.THO = THO;
     }
 
     public ValidationEngineBuilder withTxServer(String txServer, String txLog, FhirPublication txVersion) {
-      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, txServer, txLog, txVersion,timeTracker, canRunWithoutTerminologyServer, loggingService);
+      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, txServer, txLog, txVersion, timeTracker, canRunWithoutTerminologyServer, loggingService, THO);
     }
 
     public ValidationEngine fromNothing() throws IOException {
@@ -364,7 +368,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       }
       engine.setVersion(version);
       engine.setIgLoader(new IgLoader(engine.getPcm(), engine.getContext(), engine.getVersion(), engine.isDebug()));
-      loadTx(engine);
+      if (THO) {
+        loadTx(engine);
+      }
       return engine;
     }
 
