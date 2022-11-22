@@ -142,14 +142,14 @@ public class QuestionnaireValidator extends BaseValidator {
       List<Element> ewl = item.getChildren("enableWhen");
       for (Element ew : ewl) {
         String ql = ew.getNamedChildValue("question");
-        if (rule(errors, IssueType.BUSINESSRULE, ns.getLiteralPath(), ql != null, I18nConstants.QUESTIONNAIRE_Q_ENABLEWHEN_NOLINK)) {
+        if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, ns.getLiteralPath(), ql != null, I18nConstants.QUESTIONNAIRE_Q_ENABLEWHEN_NOLINK)) {
           Element tgt = getQuestionById(item, ql);
-          if (rule(errors, IssueType.BUSINESSRULE, ns.getLiteralPath(), tgt == null, I18nConstants.QUESTIONNAIRE_Q_ENABLEWHEN_ISINNER)) {
+          if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, ns.getLiteralPath(), tgt == null, I18nConstants.QUESTIONNAIRE_Q_ENABLEWHEN_ISINNER)) {
             tgt = getQuestionById(questionnaire, ql);
-            if (rule(errors, IssueType.BUSINESSRULE, ns.getLiteralPath(), tgt != null, I18nConstants.QUESTIONNAIRE_Q_ENABLEWHEN_NOTARGET, ql, item.getChildValue("linkId"))) {
-              if (rule(errors, IssueType.BUSINESSRULE, ns.getLiteralPath(), tgt != item, I18nConstants.QUESTIONNAIRE_Q_ENABLEWHEN_SELF)) {
+            if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, ns.getLiteralPath(), tgt != null, I18nConstants.QUESTIONNAIRE_Q_ENABLEWHEN_NOTARGET, ql, item.getChildValue("linkId"))) {
+              if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, ns.getLiteralPath(), tgt != item, I18nConstants.QUESTIONNAIRE_Q_ENABLEWHEN_SELF)) {
                 if (!isBefore(item, tgt, parents)) {
-                  warning(errors, IssueType.BUSINESSRULE, ns.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_Q_ENABLEWHEN_AFTER, ql);
+                  warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, ns.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_Q_ENABLEWHEN_AFTER, ql);
                 }
               } else {
                 ok = false;
@@ -245,10 +245,10 @@ public class QuestionnaireValidator extends BaseValidator {
     }
     boolean qok;
     if (questionnaireMode == QuestionnaireMode.REQUIRED) {
-      qok = rule(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), questionnaire != null, I18nConstants.QUESTIONNAIRE_QR_Q_NONE);
+      qok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), questionnaire != null, I18nConstants.QUESTIONNAIRE_QR_Q_NONE);
       ok = qok;
     } else {
-      qok = hint(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), questionnaire != null, I18nConstants.QUESTIONNAIRE_QR_Q_NONE);
+      qok = hint(errors, NO_RULE_DATE, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), questionnaire != null, I18nConstants.QUESTIONNAIRE_QR_Q_NONE);
     }
     if (qok) {
       QuestionnaireWithContext qsrc = null;
@@ -258,12 +258,12 @@ public class QuestionnaireValidator extends BaseValidator {
         qsrc = QuestionnaireWithContext.fromQuestionnaire(context.fetchResource(Questionnaire.class, questionnaire));          
       }
       if (questionnaireMode == QuestionnaireMode.REQUIRED) {
-        qok = rule(errors, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, I18nConstants.QUESTIONNAIRE_QR_Q_NOTFOUND, questionnaire);
+        qok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, I18nConstants.QUESTIONNAIRE_QR_Q_NOTFOUND, questionnaire);
         ok = qok && ok;
       } else if (questionnaire.startsWith("http://example.org")) {
-        qok = hint(errors, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, I18nConstants.QUESTIONNAIRE_QR_Q_NOTFOUND, questionnaire);
+        qok = hint(errors, NO_RULE_DATE, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, I18nConstants.QUESTIONNAIRE_QR_Q_NOTFOUND, questionnaire);
       } else {
-        qok = warning(errors, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, I18nConstants.QUESTIONNAIRE_QR_Q_NOTFOUND, questionnaire);
+        qok = warning(errors, NO_RULE_DATE, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, I18nConstants.QUESTIONNAIRE_QR_Q_NOTFOUND, questionnaire);
       }
       if (qok) {
         boolean inProgress = "in-progress".equals(element.getNamedChildValue("status"));
@@ -277,22 +277,22 @@ public class QuestionnaireValidator extends BaseValidator {
     BooleanValue ok = new BooleanValue(true);
     
     String text = element.getNamedChildValue("text");
-    ok.see(rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), Utilities.noString(text) || text.equals(qItem.getText()), I18nConstants.QUESTIONNAIRE_QR_ITEM_TEXT, qItem.getLinkId()));
+    ok.see(rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), Utilities.noString(text) || text.equals(qItem.getText()), I18nConstants.QUESTIONNAIRE_QR_ITEM_TEXT, qItem.getLinkId()));
 
     List<Element> answers = new ArrayList<Element>();
     element.getNamedChildren("answer", answers);
     if (inProgress)
-      warning(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), isAnswerRequirementFulfilled(qItem, answers), I18nConstants.QUESTIONNAIRE_QR_ITEM_MISSING, qItem.getLinkId());
+      warning(errors, NO_RULE_DATE, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), isAnswerRequirementFulfilled(qItem, answers), I18nConstants.QUESTIONNAIRE_QR_ITEM_MISSING, qItem.getLinkId());
     else if (myEnableWhenEvaluator.isQuestionEnabled(hostContext, qItem, qstack, fpe)) {
-      ok.see(rule(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), isAnswerRequirementFulfilled(qItem, answers), I18nConstants.QUESTIONNAIRE_QR_ITEM_MISSING, qItem.getLinkId()));
+      ok.see(rule(errors, NO_RULE_DATE, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), isAnswerRequirementFulfilled(qItem, answers), I18nConstants.QUESTIONNAIRE_QR_ITEM_MISSING, qItem.getLinkId()));
     } else if (!answers.isEmpty()) { // items without answers should be allowed, but not items with answers to questions that are disabled
       // it appears that this is always a duplicate error - it will always already have been reported, so no need to report it again?
       // GDG 2019-07-13
-//      rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), !isAnswerRequirementFulfilled(qItem, answers), I18nConstants.QUESTIONNAIRE_QR_ITEM_NOTENABLED, qItem.getLinkId());
+//      rule(errors, UNKNOWN_DATE_TIME, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), !isAnswerRequirementFulfilled(qItem, answers), I18nConstants.QUESTIONNAIRE_QR_ITEM_NOTENABLED, qItem.getLinkId());
     }
 
     if (answers.size() > 1) {
-      ok.see(rule(errors, IssueType.INVALID, answers.get(1).line(), answers.get(1).col(), stack.getLiteralPath(), qItem.getRepeats(), I18nConstants.QUESTIONNAIRE_QR_ITEM_ONLYONEA));
+      ok.see(rule(errors, NO_RULE_DATE, IssueType.INVALID, answers.get(1).line(), answers.get(1).col(), stack.getLiteralPath(), qItem.getRepeats(), I18nConstants.QUESTIONNAIRE_QR_ITEM_ONLYONEA));
     }
     
     int i = 0;
@@ -301,7 +301,7 @@ public class QuestionnaireValidator extends BaseValidator {
       if (qItem.getType() != null) {
         switch (qItem.getType()) {
           case GROUP:
-            ok.see(rule(errors, IssueType.STRUCTURE, answer.line(), answer.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_GROUP));
+            ok.see(rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, answer.line(), answer.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_GROUP));
             break;
           case DISPLAY:  // nothing
             break;
@@ -381,15 +381,15 @@ public class QuestionnaireValidator extends BaseValidator {
       i++;
     }
     if (qItem.getType() == null) {
-      ok.see(fail(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOTYPE, qItem.getLinkId()));
+      ok.see(fail(errors, NO_RULE_DATE, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOTYPE, qItem.getLinkId()));
     } else if (qItem.getType() == QuestionnaireItemType.DISPLAY) {
       List<Element> items = new ArrayList<Element>();
       element.getNamedChildren("item", items);
-      ok.see(rule(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), items.isEmpty(), I18nConstants.QUESTIONNAIRE_QR_ITEM_DISPLAY, qItem.getLinkId()));
+      ok.see(rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), items.isEmpty(), I18nConstants.QUESTIONNAIRE_QR_ITEM_DISPLAY, qItem.getLinkId()));
     } else if (qItem.getType() != QuestionnaireItemType.GROUP) {
       List<Element> items = new ArrayList<Element>();
       element.getNamedChildren("item", items);
-      ok.see(rule(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), items.isEmpty(), I18nConstants.QUESTIONNAIRE_QR_ITEM_GROUP_ANSWER, qItem.getLinkId()));
+      ok.see(rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), items.isEmpty(), I18nConstants.QUESTIONNAIRE_QR_ITEM_GROUP_ANSWER, qItem.getLinkId()));
     } else {
       ok.see(validateQuestionannaireResponseItems(hostContext, qsrc, qItem.getItem(), errors, element, stack, inProgress, questionnaireResponseRoot, qstack));
     }
@@ -403,7 +403,7 @@ public class QuestionnaireValidator extends BaseValidator {
   private boolean validateQuestionnaireResponseItem(ValidatorHostContext hostcontext, QuestionnaireWithContext qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, List<ElementWithIndex> elements, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
     boolean ok = true;
     if (elements.size() > 1) {
-      ok = rulePlural(errors, IssueType.INVALID, elements.get(1).getElement().line(), elements.get(1).getElement().col(), stack.getLiteralPath(), qItem.getRepeats(), elements.size(), I18nConstants.QUESTIONNAIRE_QR_ITEM_ONLYONEI, qItem.getLinkId()) && ok;
+      ok = rulePlural(errors, NO_RULE_DATE, IssueType.INVALID, elements.get(1).getElement().line(), elements.get(1).getElement().col(), stack.getLiteralPath(), qItem.getRepeats(), elements.size(), I18nConstants.QUESTIONNAIRE_QR_ITEM_ONLYONEI, qItem.getLinkId()) && ok;
     }
     for (ElementWithIndex element : elements) {
       NodeStack ns = stack.push(element.getElement(), element.getIndex(), null, null);
@@ -430,18 +430,18 @@ public class QuestionnaireValidator extends BaseValidator {
     int counter = 0;
     for (Element item : items) {
       String linkId = item.getNamedChildValue("linkId");
-      if (rule(errors, IssueType.REQUIRED, item.line(), item.col(), stack.getLiteralPath(), !Utilities.noString(linkId), I18nConstants.QUESTIONNAIRE_QR_ITEM_NOLINKID)) {
+      if (rule(errors, NO_RULE_DATE, IssueType.REQUIRED, item.line(), item.col(), stack.getLiteralPath(), !Utilities.noString(linkId), I18nConstants.QUESTIONNAIRE_QR_ITEM_NOLINKID)) {
         int index = getLinkIdIndex(qItems, linkId);
         if (index == -1) {
           QuestionnaireItemComponent qItem = findQuestionnaireItem(qsrc, linkId);
           if (qItem != null) {
-            ok = rule(errors, IssueType.STRUCTURE, item.line(), item.col(), stack.getLiteralPath(), index > -1, misplacedItemError(qItem)) && ok;
+            ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, item.line(), item.col(), stack.getLiteralPath(), index > -1, misplacedItemError(qItem)) && ok;
             NodeStack ns = stack.push(item, counter, null, null);
             ok = validateQuestionnaireResponseItem(hostContext, qsrc, qItem, errors, item, ns, inProgress, questionnaireResponseRoot, qstack.push(qItem, item)) && ok;
           } else
-            ok = rule(errors, IssueType.NOTFOUND, item.line(), item.col(), stack.getLiteralPath(), index > -1, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOTFOUND, linkId) && ok;
+            ok = rule(errors, NO_RULE_DATE, IssueType.NOTFOUND, item.line(), item.col(), stack.getLiteralPath(), index > -1, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOTFOUND, linkId) && ok;
         } else {
-          ok = rule(errors, IssueType.STRUCTURE, item.line(), item.col(), stack.getLiteralPath(), index >= lastIndex, I18nConstants.QUESTIONNAIRE_QR_ITEM_ORDER) && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, item.line(), item.col(), stack.getLiteralPath(), index >= lastIndex, I18nConstants.QUESTIONNAIRE_QR_ITEM_ORDER) && ok;
           lastIndex = index;
 
           // If an item has a child called "linkId" but no child called "answer",
@@ -472,7 +472,7 @@ public class QuestionnaireValidator extends BaseValidator {
       if (!enabled) {
         for (ElementWithIndex e : mapItem) {
           NodeStack ns = stack.push(e.getElement(), e.getElement().getIndex(), e.getElement().getProperty().getDefinition(), e.getElement().getProperty().getDefinition());
-          ok = rule(errors, IssueType.INVALID, e.getElement().line(), e.getElement().col(), ns.getLiteralPath(), enabled, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOTENABLED2, qItem.getLinkId()) && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.getElement().line(), e.getElement().col(), ns.getLiteralPath(), enabled, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOTENABLED2, qItem.getLinkId()) && ok;
         }
       }
 
@@ -485,9 +485,9 @@ public class QuestionnaireValidator extends BaseValidator {
       if (enabled && qItem.getRequired()) {
         String message = context.formatMessage(I18nConstants.QUESTIONNAIRE_QR_ITEM_MISSING, qItem.getLinkId());
         if (inProgress) {
-          warning(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), false, message);
+          warning(errors, NO_RULE_DATE, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), false, message);
         } else {
-          ok = rule(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), false, message) && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), false, message) && ok;
         }
       }
 
@@ -520,7 +520,7 @@ public class QuestionnaireValidator extends BaseValidator {
           return (s);
       }
 
-      ok.see(rulePlural(errors, IssueType.STRUCTURE, values.get(0).line(), values.get(0).col(), ns.getLiteralPath(), false, types.length, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE, l.toString()));
+      ok.see(rulePlural(errors, NO_RULE_DATE, IssueType.STRUCTURE, values.get(0).line(), values.get(0).col(), ns.getLiteralPath(), false, types.length, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE, l.toString()));
     }
     return null;
   }
@@ -548,7 +548,7 @@ public class QuestionnaireValidator extends BaseValidator {
     } else {
       vs = resolveBindingReference(qSrc.q(), ref, qSrc.q().getUrl());
     }
-    if (warning(errors, IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), vs != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(ref))) {
+    if (warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), vs != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(ref))) {
       try {
         Coding c = ObjectConverter.readAsCoding(value);
         if (isBlank(c.getCode()) && isBlank(c.getSystem()) && isNotBlank(c.getDisplay())) {
@@ -562,14 +562,14 @@ public class QuestionnaireValidator extends BaseValidator {
         ValidationResult res = context.validateCode(new ValidationOptions(stack.getWorkingLang()), c, vs, vc);
         timeTracker.tx(t, "vc "+c.getSystem()+"#"+c.getCode()+" '"+c.getDisplay()+"'");
         if (!res.isOk()) {
-          ok = txRule(errors, res.getTxLink(), IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_BADOPTION, c.getSystem(), c.getCode()) && ok;
+          ok = txRule(errors, NO_RULE_DATE, res.getTxLink(), IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_BADOPTION, c.getSystem(), c.getCode()) && ok;
         } else if (res.getSeverity() != null) {
-          super.addValidationMessage(errors, IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), res.getMessage(), res.getSeverity(), Source.TerminologyEngine, null);
+          super.addValidationMessage(errors, NO_RULE_DATE, IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), res.getMessage(), res.getSeverity(), Source.TerminologyEngine, null);
         } else if (res.getMessage() != null) {
-          super.addValidationMessage(errors, IssueType.INFORMATIONAL, value.line(), value.col(), stack.getLiteralPath(), res.getMessage(), res.getSeverity() == null ? IssueSeverity.INFORMATION : res.getSeverity(), Source.TerminologyEngine, null);          
+          super.addValidationMessage(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, value.line(), value.col(), stack.getLiteralPath(), res.getMessage(), res.getSeverity() == null ? IssueSeverity.INFORMATION : res.getSeverity(), Source.TerminologyEngine, null);          
         }
       } catch (Exception e) {
-        warning(errors, IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_CODING, e.getMessage());
+        warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_CODING, e.getMessage());
       }
     }
     return ok;
@@ -594,7 +594,7 @@ public class QuestionnaireValidator extends BaseValidator {
     else if (qItem.hasAnswerValueSet())
       return validateAnswerCode(errors, v, stack, qSrc, qItem.getAnswerValueSet(), theOpenChoice);
     else
-      hint(errors, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOOPTIONS);
+      hint(errors, NO_RULE_DATE, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOOPTIONS);
     return true;
   }
 
@@ -625,7 +625,7 @@ public class QuestionnaireValidator extends BaseValidator {
         }
       }
       if (list.isEmpty() && !openChoice) {
-        ok = rule(errors, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOOPTIONSINTEGER) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOOPTIONSINTEGER) && ok;
       } else {
         boolean found = false;
         for (IntegerType item : list) {
@@ -635,11 +635,11 @@ public class QuestionnaireValidator extends BaseValidator {
           }
         }
         if (!found) {
-          ok = rule(errors, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), found, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOINTEGER, v.primitiveValue()) && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), found, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOINTEGER, v.primitiveValue()) && ok;
         }
       }
     } else {
-      hint(errors, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_INTNOOPTIONS);
+      hint(errors, NO_RULE_DATE, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_INTNOOPTIONS);
     }
     return ok;
   }
@@ -658,7 +658,7 @@ public class QuestionnaireValidator extends BaseValidator {
         }
       }
       if (list.isEmpty() && !openChoice) {
-        ok = rule(errors, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOOPTIONSDATE) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOOPTIONSDATE) && ok;
       } else {
         boolean found = false;
         for (DateType item : list) {
@@ -668,11 +668,11 @@ public class QuestionnaireValidator extends BaseValidator {
           }
         }
         if (!found) {
-          ok = rule(errors, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), found, I18nConstants.QUESTIONNAIRE_QR_ITEM_NODATE, v.primitiveValue()) && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), found, I18nConstants.QUESTIONNAIRE_QR_ITEM_NODATE, v.primitiveValue()) && ok;
         }
       }
     } else {
-      hint(errors, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DATENOOPTIONS);
+      hint(errors, NO_RULE_DATE, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DATENOOPTIONS);
     }
     return ok;
   }
@@ -691,7 +691,7 @@ public class QuestionnaireValidator extends BaseValidator {
         }
       }
       if (list.isEmpty() && !openChoice) {
-        ok = rule(errors, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOOPTIONSTIME) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOOPTIONSTIME) && ok;
       } else {
         boolean found = false;
         for (TimeType item : list) {
@@ -701,11 +701,11 @@ public class QuestionnaireValidator extends BaseValidator {
           }
         }
         if (!found) {
-          ok = rule(errors, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), found, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOTIME, v.primitiveValue()) && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), found, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOTIME, v.primitiveValue()) && ok;
         }
       }
     } else {
-      hint(errors, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_TIMENOOPTIONS);
+      hint(errors, NO_RULE_DATE, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_TIMENOOPTIONS);
     }
     return ok;
   }
@@ -727,7 +727,7 @@ public class QuestionnaireValidator extends BaseValidator {
       }
       if (!openChoice) {
         if (list.isEmpty()) {
-          ok = rule(errors, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOOPTIONSSTRING) && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOOPTIONSSTRING) && ok;
         } else {
           boolean found = false;
           for (StringType item : list) {
@@ -737,12 +737,12 @@ public class QuestionnaireValidator extends BaseValidator {
             }
           }
           if (!found) {
-            ok = rule(errors, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), found, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOSTRING, v.primitiveValue()) && ok;
+            ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), found, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOSTRING, v.primitiveValue()) && ok;
           }
         }
       }
     } else {
-      hint(errors, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_STRINGNOOPTIONS);
+      hint(errors, NO_RULE_DATE, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_STRINGNOOPTIONS);
     }
     return ok;
   }
@@ -766,7 +766,7 @@ public class QuestionnaireValidator extends BaseValidator {
         }
       }
       if (list.isEmpty() && !openChoice) {
-        ok = rule(errors, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOOPTIONSCODING) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOOPTIONSCODING) && ok;
       } else {
         boolean found = false;
         for (Coding item : list) {
@@ -776,11 +776,11 @@ public class QuestionnaireValidator extends BaseValidator {
           }
         }
         if (!found) {
-          ok = rule(errors, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), found, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOCODING, system, code) && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), found, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOCODING, system, code) && ok;
         }
       }
     } else {
-      hint(errors, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_CODINGNOOPTIONS);
+      hint(errors, NO_RULE_DATE, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_CODINGNOOPTIONS);
     }
     return ok;
   }

@@ -60,6 +60,7 @@ import org.hl7.fhir.utilities.turtle.Turtle.TTLList;
 import org.hl7.fhir.utilities.turtle.Turtle.TTLLiteral;
 import org.hl7.fhir.utilities.turtle.Turtle.TTLObject;
 import org.hl7.fhir.utilities.turtle.Turtle.TTLURL;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 
@@ -82,7 +83,7 @@ public class TurtleParser extends ParserBase {
       try {
         src.parse(TextFile.streamToString(input));
       } catch (Exception e) {  
-        logError(-1, -1, "(document)", IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_TURTLE_, e.getMessage()), IssueSeverity.FATAL);
+        logError(ValidationMessage.NO_RULE_DATE, -1, -1, "(document)", IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_TURTLE_, e.getMessage()), IssueSeverity.FATAL);
         return null;
       }
       Element e = parse(src);
@@ -111,7 +112,7 @@ public class TurtleParser extends ParserBase {
     // still here: well, we didn't find a start point
     String msg = "Error parsing Turtle: unable to find any node maked as the entry point (where " + FHIR_URI_BASE + "nodeRole = " + FHIR_URI_BASE + "treeRoot)";
     if (policy == ValidationPolicy.EVERYTHING) {
-      logError(-1, -1, "(document)", IssueType.INVALID, msg, IssueSeverity.FATAL);
+      logError(ValidationMessage.NO_RULE_DATE, -1, -1, "(document)", IssueType.INVALID, msg, IssueSeverity.FATAL);
       return null;
     } else {
       throw new FHIRFormatError(msg);
@@ -121,7 +122,7 @@ public class TurtleParser extends ParserBase {
   private Element parse(Turtle src, TTLComplex cmp) throws FHIRException {
     TTLObject type = cmp.getPredicates().get("http://www.w3.org/2000/01/rdf-schema#type");
     if (type == null) {
-      logError(cmp.getLine(), cmp.getCol(), "(document)", IssueType.INVALID, context.formatMessage(I18nConstants.UNKNOWN_RESOURCE_TYPE_MISSING_RDFSTYPE), IssueSeverity.FATAL);
+      logError(ValidationMessage.NO_RULE_DATE, cmp.getLine(), cmp.getCol(), "(document)", IssueType.INVALID, context.formatMessage(I18nConstants.UNKNOWN_RESOURCE_TYPE_MISSING_RDFSTYPE), IssueSeverity.FATAL);
       return null;
     }
     if (type instanceof TTLList) {
@@ -134,7 +135,7 @@ public class TurtleParser extends ParserBase {
       }
     }
     if (!(type instanceof TTLURL)) {
-      logError(cmp.getLine(), cmp.getCol(), "(document)", IssueType.INVALID, context.formatMessage(I18nConstants.UNEXPECTED_DATATYPE_FOR_RDFSTYPE), IssueSeverity.FATAL);
+      logError(ValidationMessage.NO_RULE_DATE, cmp.getLine(), cmp.getCol(), "(document)", IssueType.INVALID, context.formatMessage(I18nConstants.UNEXPECTED_DATATYPE_FOR_RDFSTYPE), IssueSeverity.FATAL);
       return null;
     }
     String name = ((TTLURL) type).getUri();
@@ -179,7 +180,7 @@ public class TurtleParser extends ParserBase {
       for (String u : object.getPredicates().keySet()) {
         if (!processed.contains(u)) {
           TTLObject n = object.getPredicates().get(u);
-          logError(n.getLine(), n.getCol(), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.UNRECOGNISED_PREDICATE_, u), IssueSeverity.ERROR);
+          logError(ValidationMessage.NO_RULE_DATE, n.getLine(), n.getCol(), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.UNRECOGNISED_PREDICATE_, u), IssueSeverity.ERROR);
         }
       }
     }
@@ -218,13 +219,13 @@ public class TurtleParser extends ParserBase {
             // todo: check type
             n.setValue(value);
           } else
-            logError(object.getLine(), object.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_A_LITERAL_NOT_, "a "+e.getClass().getName()), IssueSeverity.ERROR);
+            logError(ValidationMessage.NO_RULE_DATE, object.getLine(), object.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_A_LITERAL_NOT_, "a "+e.getClass().getName()), IssueSeverity.ERROR);
         }
       } else 
         parseChildren(src, npath, child, n, false);
 
     } else 
-      logError(object.getLine(), object.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_A_URI_OR_BNODE_NOT_, "a "+e.getClass().getName()), IssueSeverity.ERROR);
+      logError(ValidationMessage.NO_RULE_DATE, object.getLine(), object.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_A_URI_OR_BNODE_NOT_, "a "+e.getClass().getName()), IssueSeverity.ERROR);
   }
 
 
@@ -240,7 +241,7 @@ public class TurtleParser extends ParserBase {
       String url = ((TTLURL) e).getUri();
       obj = src.getObject(url);
       if (obj == null) {
-        logError(e.getLine(), e.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.REFERENCE_TO__CANNOT_BE_RESOLVED, url), IssueSeverity.FATAL);
+        logError(ValidationMessage.NO_RULE_DATE, e.getLine(), e.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.REFERENCE_TO__CANNOT_BE_RESOLVED, url), IssueSeverity.FATAL);
         return;
       }
     } else
@@ -248,7 +249,7 @@ public class TurtleParser extends ParserBase {
       
     TTLObject type = obj.getPredicates().get("http://www.w3.org/2000/01/rdf-schema#type");
     if (type == null) {
-      logError(object.getLine(), object.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.UNKNOWN_RESOURCE_TYPE_MISSING_RDFSTYPE), IssueSeverity.FATAL);
+      logError(ValidationMessage.NO_RULE_DATE, object.getLine(), object.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.UNKNOWN_RESOURCE_TYPE_MISSING_RDFSTYPE), IssueSeverity.FATAL);
       return;
   }
     if (type instanceof TTLList) {
@@ -261,7 +262,7 @@ public class TurtleParser extends ParserBase {
       }
     }
     if (!(type instanceof TTLURL)) {
-      logError(object.getLine(), object.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.UNEXPECTED_DATATYPE_FOR_RDFSTYPE), IssueSeverity.FATAL);
+      logError(ValidationMessage.NO_RULE_DATE, object.getLine(), object.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.UNEXPECTED_DATATYPE_FOR_RDFSTYPE), IssueSeverity.FATAL);
       return;
     }
     String rt = ((TTLURL) type).getUri();
