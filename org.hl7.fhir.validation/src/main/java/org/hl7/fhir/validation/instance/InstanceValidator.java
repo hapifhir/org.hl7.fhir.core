@@ -2509,14 +2509,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean checkTypeValue(List<ValidationMessage> errors, String path, Element e, Element sd) {
     String v = e.primitiveValue();
     if (v == null) {
-      return rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.SD_TYPE_MISSING);
+      return rule(errors, "2022-11-02", IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.SD_TYPE_MISSING);
     }
     String url = sd.getChildValue("url");
     String d = sd.getChildValue("derivation"); 
     String k = sd.getChildValue("kind"); 
     if (Utilities.isAbsoluteUrl(v)) {
-      warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, ns(v).equals(ns(url)) || ns(v).equals(ns(url).replace("StructureDefinition/", "")), I18nConstants.SD_TYPE_NOT_MATCH_NS, v, url);
-      return rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, "logical".equals(k), I18nConstants.SD_TYPE_NOT_LOGICAL, v, k);
+      warning(errors, "2022-11-02", IssueType.INVALID, e.line(), e.col(), path, ns(v).equals(ns(url)) || ns(v).equals(ns(url).replace("StructureDefinition/", "")), I18nConstants.SD_TYPE_NOT_MATCH_NS, v, url);
+      return rule(errors, "2022-11-02", IssueType.INVALID, e.line(), e.col(), path, "logical".equals(k), I18nConstants.SD_TYPE_NOT_LOGICAL, v, k);
     } else {
       boolean tok = false;
       for (StructureDefinition t : context.fetchResourcesByType(StructureDefinition.class)) {
@@ -2526,12 +2526,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       if (tok) {
         if (!(("http://hl7.org/fhir/StructureDefinition/"+v).equals(url))) {
-          return rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, "constraint".equals(d), I18nConstants.SD_TYPE_NOT_DERIVED, v);
+          return rule(errors, "2022-11-02", IssueType.INVALID, e.line(), e.col(), path, "constraint".equals(d), I18nConstants.SD_TYPE_NOT_DERIVED, v);
         } else {
           return true;
         }
       } else {
-        return rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, tok, I18nConstants.SD_TYPE_NOT_LOCAL, v);
+        return rule(errors, "2022-11-02", IssueType.INVALID, e.line(), e.col(), path, tok, I18nConstants.SD_TYPE_NOT_LOCAL, v);
       }
     }
   }
