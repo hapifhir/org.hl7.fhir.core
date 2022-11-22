@@ -67,6 +67,7 @@ import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.json.JsonTrackingParser.LocationData;
 import org.hl7.fhir.utilities.json.JsonUtilities;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
@@ -126,7 +127,7 @@ public class JsonParser extends ParserBase {
       try {
         obj = JsonTrackingParser.parse(source, map, false, allowComments);
       } catch (Exception e) {
-        logError(-1, -1,context.formatMessage(I18nConstants.DOCUMENT), IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_JSON_, e.getMessage()), IssueSeverity.FATAL);
+        logError(ValidationMessage.NO_RULE_DATE, -1, -1,context.formatMessage(I18nConstants.DOCUMENT), IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_JSON_, e.getMessage()), IssueSeverity.FATAL);
         return null;
       }
       assert (map.containsKey(obj));
@@ -156,7 +157,7 @@ public class JsonParser extends ParserBase {
     if (sd == null) {
       JsonElement rt = object.get("resourceType");
       if (rt == null) {
-        logError(line(object), col(object), "$", IssueType.INVALID, context.formatMessage(I18nConstants.UNABLE_TO_FIND_RESOURCETYPE_PROPERTY), IssueSeverity.FATAL);
+        logError(ValidationMessage.NO_RULE_DATE, line(object), col(object), "$", IssueType.INVALID, context.formatMessage(I18nConstants.UNABLE_TO_FIND_RESOURCETYPE_PROPERTY), IssueSeverity.FATAL);
         return null;
       } else {
         name = rt.getAsString();
@@ -190,7 +191,7 @@ public class JsonParser extends ParserBase {
         //    		}
       }
       if (!found)
-        logError(line(object), col(object), path, IssueType.INVALID, context.formatMessage(I18nConstants.OBJECT_MUST_HAVE_SOME_CONTENT), IssueSeverity.ERROR);
+        logError(ValidationMessage.NO_RULE_DATE, line(object), col(object), path, IssueType.INVALID, context.formatMessage(I18nConstants.OBJECT_MUST_HAVE_SOME_CONTENT), IssueSeverity.ERROR);
     }
   }
 
@@ -216,7 +217,7 @@ public class JsonParser extends ParserBase {
             Property property = new Property(context, sd.getSnapshot().getElementFirstRep(), sd, element.getProperty().getUtils());
             parseChildItem(path, object, element, null, property);
           } else {
-            logError(line(e.getValue()), col(e.getValue()), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_, e.getKey()), IssueSeverity.ERROR);
+            logError(ValidationMessage.NO_RULE_DATE, line(e.getValue()), col(e.getValue()), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_, e.getKey()), IssueSeverity.ERROR);
           }
         }
       }
@@ -231,12 +232,12 @@ public class JsonParser extends ParserBase {
           if (processed != null) processed.add(property.getJsonName());
           String type = getTypeFromJsonType(je);
           if (type == null) {
-            logError(line(je), col(je), path, IssueType.STRUCTURE, this.context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_TYPE, describeType(je), property.getName(), property.typeSummary()), IssueSeverity.ERROR);
+            logError(ValidationMessage.NO_RULE_DATE, line(je), col(je), path, IssueType.STRUCTURE, this.context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_TYPE, describeType(je), property.getName(), property.typeSummary()), IssueSeverity.ERROR);
           } else if (property.hasType(type)) {
             Property np = new Property(property.getContext(), property.getDefinition(), property.getStructure(), property.getUtils(), type);
             parseChildPrimitive(object, context, processed, np, path, property.getName());
           } else {
-            logError(line(je), col(je), path, IssueType.STRUCTURE, this.context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_TYPE_WRONG, describeType(je), property.getName(), type, property.typeSummary()), IssueSeverity.ERROR);
+            logError(ValidationMessage.NO_RULE_DATE, line(je), col(je), path, IssueType.STRUCTURE, this.context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_TYPE_WRONG, describeType(je), property.getName(), type, property.typeSummary()), IssueSeverity.ERROR);
           }
         }
       } else {
@@ -291,7 +292,7 @@ public class JsonParser extends ParserBase {
         if (property.canBeEmpty()) {
           // nothing
         } else {
-          logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.ARRAY_CANNOT_BE_EMPTY), IssueSeverity.ERROR);
+          logError(ValidationMessage.NO_RULE_DATE, line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.ARRAY_CANNOT_BE_EMPTY), IssueSeverity.ERROR);
         }
       }
       int c = 0;
@@ -303,20 +304,20 @@ public class JsonParser extends ParserBase {
       String code = property.getJsonKeyProperty();
       List<Property> properties = property.getChildProperties(element.getName(), null);
       if (properties.size() != 2) {
-        logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.OBJECT_CANNOT_BE_KEYED_ARRAY_CHILD_COUNT, propNames(properties)), IssueSeverity.ERROR);               
+        logError(ValidationMessage.NO_RULE_DATE, line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.OBJECT_CANNOT_BE_KEYED_ARRAY_CHILD_COUNT, propNames(properties)), IssueSeverity.ERROR);               
       } else {
         Property propK = properties.get(0);
         Property propV = properties.get(1);
         if (!propK.getName().equals(code)) {
-          logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.OBJECT_CANNOT_BE_KEYED_ARRAY_PROP_NAME, propNames(properties)), IssueSeverity.ERROR);                       
+          logError(ValidationMessage.NO_RULE_DATE, line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.OBJECT_CANNOT_BE_KEYED_ARRAY_PROP_NAME, propNames(properties)), IssueSeverity.ERROR);                       
         } else if (!propK.isPrimitive())  {
-          logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.OBJECT_CANNOT_BE_KEYED_ARRAY_PROP_TYPE, propNames(properties), propK.typeSummary()), IssueSeverity.ERROR);                       
+          logError(ValidationMessage.NO_RULE_DATE, line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.OBJECT_CANNOT_BE_KEYED_ARRAY_PROP_TYPE, propNames(properties), propK.typeSummary()), IssueSeverity.ERROR);                       
         } else if (propV.isList())  {
-          logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.OBJECT_CANNOT_BE_KEYED_ARRAY_NO_LIST, propV.getName()), IssueSeverity.ERROR);                       
+          logError(ValidationMessage.NO_RULE_DATE, line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.OBJECT_CANNOT_BE_KEYED_ARRAY_NO_LIST, propV.getName()), IssueSeverity.ERROR);                       
         } else if (propV.isChoice() && propV.getName().endsWith("[x]"))  {
-          logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.OBJECT_CANNOT_BE_KEYED_ARRAY_NO_CHOICE, propV.getName()), IssueSeverity.ERROR);                       
+          logError(ValidationMessage.NO_RULE_DATE, line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.OBJECT_CANNOT_BE_KEYED_ARRAY_NO_CHOICE, propV.getName()), IssueSeverity.ERROR);                       
         } else if (!(e instanceof JsonObject)) {
-          logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_OBJECT_NOT_, describe(e)), IssueSeverity.ERROR);                       
+          logError(ValidationMessage.NO_RULE_DATE, line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_OBJECT_NOT_, describe(e)), IssueSeverity.ERROR);                       
         } else {
           JsonObject o = (JsonObject) e;
           int i = 0;
@@ -342,12 +343,12 @@ public class JsonParser extends ParserBase {
               ok = false;
               String type = getTypeFromJsonType(pv.getValue());
               if (type == null) {
-                logError(line(pv.getValue()), col(pv.getValue()), path, IssueType.STRUCTURE, this.context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_TYPE, describeType(pv.getValue()), propV.getName(), propV.typeSummary()), IssueSeverity.ERROR);
+                logError(ValidationMessage.NO_RULE_DATE, line(pv.getValue()), col(pv.getValue()), path, IssueType.STRUCTURE, this.context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_TYPE, describeType(pv.getValue()), propV.getName(), propV.typeSummary()), IssueSeverity.ERROR);
               } else if (propV.hasType(type)) {
                 pvl = new Property(propV.getContext(), propV.getDefinition(), propV.getStructure(), propV.getUtils(), type);
                 ok = true;
               } else {
-                logError(line(pv.getValue()), col(pv.getValue()), path, IssueType.STRUCTURE, this.context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_TYPE_WRONG, describeType(pv.getValue()), propV.getName(), type, propV.typeSummary()), IssueSeverity.ERROR);
+                logError(ValidationMessage.NO_RULE_DATE, line(pv.getValue()), col(pv.getValue()), path, IssueType.STRUCTURE, this.context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_TYPE_WRONG, describeType(pv.getValue()), propV.getName(), type, propV.typeSummary()), IssueSeverity.ERROR);
               }
             }
             if (ok) {
@@ -359,7 +360,7 @@ public class JsonParser extends ParserBase {
               } else if (pv.getValue() instanceof JsonObject || pv.getValue() instanceof JsonNull) {
                 parseChildComplexInstance(npathV, fpathV, n, pvl, pvl.getName(), pv.getValue());
               } else {
-                logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_OBJECT_NOT_, describe(pv.getValue())), IssueSeverity.ERROR);                       
+                logError(ValidationMessage.NO_RULE_DATE, line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_OBJECT_NOT_, describe(pv.getValue())), IssueSeverity.ERROR);                       
               }
             }
             i++;
@@ -368,7 +369,7 @@ public class JsonParser extends ParserBase {
       }
     } else {
       if (property.isList()) {
-        logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_ARRAY_NOT_, describe(e), name, path), IssueSeverity.ERROR);
+        logError(ValidationMessage.NO_RULE_DATE, line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_ARRAY_NOT_, describe(e), name, path), IssueSeverity.ERROR);
       }
       parseChildComplexInstance(npath, fpath, element, property, name, e);
     }
@@ -397,19 +398,19 @@ public class JsonParser extends ParserBase {
       if (type != null) {
         StructureDefinition sd = context.fetchResource(StructureDefinition.class, type);
         if (sd == null) {
-          logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.TYPE_SPECIFIER_ILLEGAL_TYPE, type, cond), IssueSeverity.ERROR);
+          logError(ValidationMessage.NO_RULE_DATE, line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.TYPE_SPECIFIER_ILLEGAL_TYPE, type, cond), IssueSeverity.ERROR);
         } else {
           if (sd.getAbstract()) {
-            logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.TYPE_SPECIFIER_ABSTRACT_TYPE, type, cond), IssueSeverity.ERROR);
+            logError(ValidationMessage.NO_RULE_DATE, line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.TYPE_SPECIFIER_ABSTRACT_TYPE, type, cond), IssueSeverity.ERROR);
           }
           property = property.cloneToType(sd);
         }
       } else {
         StructureDefinition sd = context.fetchTypeDefinition(property.getType());
         if (sd == null) {
-          logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.TYPE_SPECIFIER_NM_ILLEGAL_TYPE, property.getType()), IssueSeverity.ERROR);
+          logError(ValidationMessage.NO_RULE_DATE, line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.TYPE_SPECIFIER_NM_ILLEGAL_TYPE, property.getType()), IssueSeverity.ERROR);
         } else if (sd.getAbstract()) {
-          logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.TYPE_SPECIFIER_NM_ABSTRACT_TYPE, property.getType()), IssueSeverity.ERROR);
+          logError(ValidationMessage.NO_RULE_DATE, line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.TYPE_SPECIFIER_NM_ABSTRACT_TYPE, property.getType()), IssueSeverity.ERROR);
         }        
       }
     }
@@ -433,7 +434,7 @@ public class JsonParser extends ParserBase {
       n.setNull(true);
       // nothing to do, it's ok, but we treat it like it doesn't exist
     } else {
-      logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE__NOT_, (property.isList() ? "an Array" : "an Object"), describe(e), name, npath), IssueSeverity.ERROR);
+      logError(ValidationMessage.NO_RULE_DATE, line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE__NOT_, (property.isList() ? "an Array" : "an Object"), describe(e), name, npath), IssueSeverity.ERROR);
     }
   }
 
@@ -487,11 +488,11 @@ public class JsonParser extends ParserBase {
       if (property.isList()) {
         boolean ok = true;
         if (!(main == null || main instanceof JsonArray)) {
-          logError(line(main), col(main), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_ARRAY_NOT_, describe(main), name, path), IssueSeverity.ERROR);
+          logError(ValidationMessage.NO_RULE_DATE, line(main), col(main), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_ARRAY_NOT_, describe(main), name, path), IssueSeverity.ERROR);
           ok = false;
         }
         if (!(fork == null || fork instanceof JsonArray)) {
-          logError(line(fork), col(fork), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_BASE_PROPERTY_MUST_BE_AN_ARRAY_NOT_, describe(main), name, path), IssueSeverity.ERROR);
+          logError(ValidationMessage.NO_RULE_DATE, line(fork), col(fork), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_BASE_PROPERTY_MUST_BE_AN_ARRAY_NOT_, describe(main), name, path), IssueSeverity.ERROR);
           ok = false;
         }
         if (ok) {
@@ -519,10 +520,10 @@ public class JsonParser extends ParserBase {
 
   private void parseChildPrimitiveInstance(Element element, Property property, String name, String npath, String fpath, JsonElement main, JsonElement fork) throws FHIRException {
     if (main != null && !(main instanceof JsonPrimitive))
-      logError(line(main), col(main), npath, IssueType.INVALID, context.formatMessage(
+      logError(ValidationMessage.NO_RULE_DATE, line(main), col(main), npath, IssueType.INVALID, context.formatMessage(
           I18nConstants.THIS_PROPERTY_MUST_BE_AN_SIMPLE_VALUE_NOT_, describe(main), name, npath), IssueSeverity.ERROR);
     else if (fork != null && !(fork instanceof JsonObject))
-      logError(line(fork), col(fork), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_OBJECT_NOT_, describe(fork), name, npath), IssueSeverity.ERROR);
+      logError(ValidationMessage.NO_RULE_DATE, line(fork), col(fork), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_OBJECT_NOT_, describe(fork), name, npath), IssueSeverity.ERROR);
     else {
       Element n = new Element(name, property).markLocation(line(main != null ? main : fork), col(main != null ? main : fork));
       n.setPath(fpath);
@@ -541,24 +542,24 @@ public class JsonParser extends ParserBase {
             n.setXhtml(xhtml.setXmlMode(true).parse(n.getValue(), null).getDocumentElement());
             if (policy == ValidationPolicy.EVERYTHING) {
               for (StringPair s : xhtml.getValidationIssues()) {
-                logError(line(main), col(main), npath, IssueType.INVALID, context.formatMessage(s.getName(), s.getValue()), IssueSeverity.ERROR);                
+                logError("2022-11-17", line(main), col(main), npath, IssueType.INVALID, context.formatMessage(s.getName(), s.getValue()), IssueSeverity.ERROR);                
               }
             }
           } catch (Exception e) {
-            logError(line(main), col(main), npath, IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_XHTML_, e.getMessage()), IssueSeverity.ERROR);
+            logError(ValidationMessage.NO_RULE_DATE, line(main), col(main), npath, IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_XHTML_, e.getMessage()), IssueSeverity.ERROR);
           }
         }
         if (policy == ValidationPolicy.EVERYTHING) {
           // now we cross-check the primitive format against the stated type
           if (Utilities.existsInList(n.getType(), "boolean")) {
             if (!p.isBoolean()) {
-              logError(line(main), col(main), npath, IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_JSON_THE_PRIMITIVE_VALUE_MUST_BE_A_BOOLEAN), IssueSeverity.ERROR);
+              logError(ValidationMessage.NO_RULE_DATE, line(main), col(main), npath, IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_JSON_THE_PRIMITIVE_VALUE_MUST_BE_A_BOOLEAN), IssueSeverity.ERROR);
             }
           } else if (Utilities.existsInList(n.getType(), "integer", "unsignedInt", "positiveInt", "decimal")) {
             if (!p.isNumber())
-              logError(line(main), col(main), npath, IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_JSON_THE_PRIMITIVE_VALUE_MUST_BE_A_NUMBER), IssueSeverity.ERROR);
+              logError(ValidationMessage.NO_RULE_DATE, line(main), col(main), npath, IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_JSON_THE_PRIMITIVE_VALUE_MUST_BE_A_NUMBER), IssueSeverity.ERROR);
           } else if (!p.isString())
-            logError(line(main), col(main), npath, IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_JSON_THE_PRIMITIVE_VALUE_MUST_BE_A_STRING), IssueSeverity.ERROR);
+            logError(ValidationMessage.NO_RULE_DATE, line(main), col(main), npath, IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_JSON_THE_PRIMITIVE_VALUE_MUST_BE_A_STRING), IssueSeverity.ERROR);
         }
       }
       if (fork != null) {
@@ -573,12 +574,12 @@ public class JsonParser extends ParserBase {
   private void parseResource(String npath, JsonObject res, Element parent, Property elementProperty) throws FHIRException {
     JsonElement rt = res.get("resourceType");
     if (rt == null) {
-      logError(line(res), col(res), npath, IssueType.INVALID, context.formatMessage(I18nConstants.UNABLE_TO_FIND_RESOURCETYPE_PROPERTY), IssueSeverity.FATAL);
+      logError(ValidationMessage.NO_RULE_DATE, line(res), col(res), npath, IssueType.INVALID, context.formatMessage(I18nConstants.UNABLE_TO_FIND_RESOURCETYPE_PROPERTY), IssueSeverity.FATAL);
     } else {
       String name = rt.getAsString();
       StructureDefinition sd = context.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null));
       if (sd == null) {
-        logError(line(res), col(res), npath, IssueType.INVALID, context.formatMessage(I18nConstants.CONTAINED_RESOURCE_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAME_, name), IssueSeverity.FATAL);			    
+        logError(ValidationMessage.NO_RULE_DATE, line(res), col(res), npath, IssueType.INVALID, context.formatMessage(I18nConstants.CONTAINED_RESOURCE_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAME_, name), IssueSeverity.FATAL);			    
       } else {
         parent.updateProperty(new Property(context, sd.getSnapshot().getElement().get(0), sd, this.profileUtilities), SpecialElement.fromProperty(parent.getProperty()), elementProperty);
         parent.setType(name);
