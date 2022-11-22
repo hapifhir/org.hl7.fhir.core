@@ -90,7 +90,7 @@ public class R5ExtensionsLoader {
       } else if (pri.getResourceType().equals("ValueSet")) {
         valueSets.put(pri.getUrl(), new Loadable<ValueSet>(pri));
         valueSets.put(pri.getUrl()+"|"+pri.getVersion(), new Loadable<ValueSet>(pri));
-      } else if (pri.getResourceType().equals("StructureDefinition") && pri.getStatedType().equals("Extension"))  {
+      } else if (pri.getResourceType().equals("StructureDefinition"))  {
         structures.add(new Loadable<StructureDefinition>(pri));
       }
     } 
@@ -100,7 +100,7 @@ public class R5ExtensionsLoader {
     count = 0;
     List<String> typeNames = new ContextUtilities(context).getTypeNames();
     for (Loadable<StructureDefinition> lsd : structures) {
-      if (!context.hasResource(StructureDefinition.class, lsd.info.getUrl())) {
+      if (lsd.info.getStatedType().equals("Extension") && !context.hasResource(StructureDefinition.class, lsd.info.getUrl())) {
         StructureDefinition sd = lsd.getResource();
         if (sd.getDerivation() == TypeDerivationRule.CONSTRAINT) {
           if (survivesStrippingTypes(sd, context, typeNames)) {
