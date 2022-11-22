@@ -50,7 +50,7 @@ public class BundleValidator extends BaseValidator {
     type = StringUtils.defaultString(type);
     
     if (entries.size() == 0) {
-      ok = rule(errors, IssueType.INVALID, stack.getLiteralPath(), !(type.equals(DOCUMENT) || type.equals(MESSAGE)), I18nConstants.BUNDLE_BUNDLE_ENTRY_NOFIRST) && ok;
+      ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, stack.getLiteralPath(), !(type.equals(DOCUMENT) || type.equals(MESSAGE)), I18nConstants.BUNDLE_BUNDLE_ENTRY_NOFIRST) && ok;
     } else {
       // Get the first entry, the MessageHeader
       Element firstEntry = entries.get(0);
@@ -61,7 +61,7 @@ public class BundleValidator extends BaseValidator {
 
       if (type.equals(DOCUMENT)) {
         Element resource = firstEntry.getNamedChild(RESOURCE);
-        if (rule(errors, IssueType.INVALID, firstEntry.line(), firstEntry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), resource != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOFIRSTRESOURCE)) {
+        if (rule(errors, NO_RULE_DATE, IssueType.INVALID, firstEntry.line(), firstEntry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), resource != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOFIRSTRESOURCE)) {
           String id = resource.getNamedChildValue(ID);
           ok = validateDocument(errors, bundle, entries, resource, firstStack.push(resource, -1, null, null), fullUrl, id) && ok;
         }
@@ -73,7 +73,7 @@ public class BundleValidator extends BaseValidator {
       if (type.equals(MESSAGE)) {
         Element resource = firstEntry.getNamedChild(RESOURCE);
         String id = resource.getNamedChildValue(ID);
-        if (rule(errors, IssueType.INVALID, firstEntry.line(), firstEntry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), resource != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOFIRSTRESOURCE)) {
+        if (rule(errors, NO_RULE_DATE, IssueType.INVALID, firstEntry.line(), firstEntry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), resource != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOFIRSTRESOURCE)) {
           ok = validateMessage(errors, entries, resource, firstStack.push(resource, -1, null, null), fullUrl, id) && ok;
         }
         ok = checkAllInterlinked(errors, entries, stack, bundle, VersionUtilities.isR5Ver(context.getVersion())) && ok;
@@ -82,7 +82,7 @@ public class BundleValidator extends BaseValidator {
         checkSearchSet(errors, bundle, entries, stack);
       }
       // We do not yet have rules requiring that the id and fullUrl match when dealing with messaging Bundles
-      //      validateResourceIds(errors, entries, stack);
+      //      validateResourceIds(errors, UNKNOWN_DATE_TIME, entries, stack);
     }
 
     int count = 0;
@@ -97,12 +97,12 @@ public class BundleValidator extends BaseValidator {
       String id = getIdForEntry(entry);
       if (url != null) {
         if (!(!url.equals(fullUrl) || (url.matches(uriRegexForVersion()) && url.endsWith("/" + id))) && !isV3orV2Url(url))
-          ok = rule(errors, IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), false, I18nConstants.BUNDLE_BUNDLE_ENTRY_MISMATCHIDURL, url, fullUrl, id) && ok;
-        ok = rule(errors, IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), !url.equals(fullUrl) || serverBase == null || (url.equals(Utilities.pathURL(serverBase, entry.getNamedChild(RESOURCE).fhirType(), id))), I18nConstants.BUNDLE_BUNDLE_ENTRY_CANONICAL, url, fullUrl) && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), false, I18nConstants.BUNDLE_BUNDLE_ENTRY_MISMATCHIDURL, url, fullUrl, id) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), !url.equals(fullUrl) || serverBase == null || (url.equals(Utilities.pathURL(serverBase, entry.getNamedChild(RESOURCE).fhirType(), id))), I18nConstants.BUNDLE_BUNDLE_ENTRY_CANONICAL, url, fullUrl) && ok;
       }
 
       if (!VersionUtilities.isR2Ver(context.getVersion())) {
-        ok = rule(errors, IssueType.INVALID, entry.line(), entry.col(), estack.getLiteralPath(), fullUrlOptional || fullUrl != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_FULLURL_REQUIRED) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, entry.line(), entry.col(), estack.getLiteralPath(), fullUrlOptional || fullUrl != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_FULLURL_REQUIRED) && ok;
       }
       // check bundle profile requests
       if (entry.hasChild(RESOURCE)) {
@@ -118,7 +118,7 @@ public class BundleValidator extends BaseValidator {
               Element res = entry.getNamedChild(RESOURCE);
               NodeStack rstack = estack.push(res, -1, null, null);
               if (validator.isCrumbTrails()) {
-                res.addMessage(signpost(errors, IssueType.INFORMATIONAL, res.line(), res.col(), stack.getLiteralPath(), I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_BUNDLE_PARAM, defn.getUrl()));
+                res.addMessage(signpost(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, res.line(), res.col(), stack.getLiteralPath(), I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_BUNDLE_PARAM, defn.getUrl()));
               }
               stack.resetIds();
               ok = validator.startInner(hostContext, errors, res, res, defn, rstack, false, pct, mode) && ok;
@@ -140,11 +140,11 @@ public class BundleValidator extends BaseValidator {
     Element selfLink = getSelfLink(links);
     List<String> types = new ArrayList<>();
     if (selfLink == null) {
-      warning(errors, IssueType.INVALID, bundle.line(), bundle.col(), stack.getLiteralPath(), false, I18nConstants.BUNDLE_SEARCH_NOSELF);
+      warning(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), stack.getLiteralPath(), false, I18nConstants.BUNDLE_SEARCH_NOSELF);
     } else {
       readSearchResourceTypes(selfLink.getNamedChildValue("url"), types);
       if (types.size() == 0) {
-        hint(errors, IssueType.INVALID, bundle.line(), bundle.col(), stack.getLiteralPath(), false, I18nConstants.BUNDLE_SEARCH_SELF_NOT_UNDERSTOOD);
+        hint(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), stack.getLiteralPath(), false, I18nConstants.BUNDLE_SEARCH_SELF_NOT_UNDERSTOOD);
       }
     }
 
@@ -157,19 +157,19 @@ public class BundleValidator extends BaseValidator {
         NodeStack estack = stack.push(entry, count, null, null);
         count++;
         Element res = entry.getNamedChild("resource");
-        if (rule(errors, IssueType.INVALID, bundle.line(), bundle.col(), estack.getLiteralPath(), res != null, I18nConstants.BUNDLE_SEARCH_ENTRY_NO_RESOURCE)) {
+        if (rule(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), estack.getLiteralPath(), res != null, I18nConstants.BUNDLE_SEARCH_ENTRY_NO_RESOURCE)) {
           NodeStack rstack = estack.push(res, -1, null, null);
           String rt = res.fhirType();
           Boolean ok = checkSearchType(types, rt);
           if (ok == null) {
             typeProblem = true;
-            hint(errors, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), selfLink == null, I18nConstants.BUNDLE_SEARCH_ENTRY_TYPE_NOT_SURE);                       
+            hint(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), selfLink == null, I18nConstants.BUNDLE_SEARCH_ENTRY_TYPE_NOT_SURE);                       
             String id = res.getNamedChildValue("id");
-            warning(errors, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), id != null || "OperationOutcome".equals(rt), I18nConstants.BUNDLE_SEARCH_ENTRY_NO_RESOURCE_ID);
+            warning(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), id != null || "OperationOutcome".equals(rt), I18nConstants.BUNDLE_SEARCH_ENTRY_NO_RESOURCE_ID);
           } else if (ok) {
             if (!"OperationOutcome".equals(rt)) {
               String id = res.getNamedChildValue("id");
-              warning(errors, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), id != null, I18nConstants.BUNDLE_SEARCH_ENTRY_NO_RESOURCE_ID);
+              warning(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), id != null, I18nConstants.BUNDLE_SEARCH_ENTRY_NO_RESOURCE_ID);
               if (rtype != null && !rt.equals(rtype)) {
                 typeProblem = true;
               } else if (rtype == null) {
@@ -178,14 +178,14 @@ public class BundleValidator extends BaseValidator {
             }
           } else {
             typeProblem = true;
-            warning(errors, IssueType.INVALID, bundle.line(), bundle.col(), estack.getLiteralPath(), false, I18nConstants.BUNDLE_SEARCH_ENTRY_WRONG_RESOURCE_TYPE_NO_MODE, rt, types);            
+            warning(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), estack.getLiteralPath(), false, I18nConstants.BUNDLE_SEARCH_ENTRY_WRONG_RESOURCE_TYPE_NO_MODE, rt, types);            
           }
         }
       }      
       if (typeProblem) {
-        warning(errors, IssueType.INVALID, bundle.line(), bundle.col(), stack.getLiteralPath(), !typeProblem, I18nConstants.BUNDLE_SEARCH_NO_MODE);
+        warning(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), stack.getLiteralPath(), !typeProblem, I18nConstants.BUNDLE_SEARCH_NO_MODE);
       } else {
-        hint(errors, IssueType.INVALID, bundle.line(), bundle.col(), stack.getLiteralPath(), !typeProblem, I18nConstants.BUNDLE_SEARCH_NO_MODE);        
+        hint(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), stack.getLiteralPath(), !typeProblem, I18nConstants.BUNDLE_SEARCH_NO_MODE);        
       }
     } else {
       int count = 0;
@@ -198,19 +198,19 @@ public class BundleValidator extends BaseValidator {
         if (s != null) {
           sm = s.getNamedChildValue("mode");
         }
-        warning(errors, IssueType.INVALID, bundle.line(), bundle.col(), estack.getLiteralPath(), sm != null, I18nConstants.BUNDLE_SEARCH_NO_MODE);
-        if (rule(errors, IssueType.INVALID, bundle.line(), bundle.col(), estack.getLiteralPath(), res != null, I18nConstants.BUNDLE_SEARCH_ENTRY_NO_RESOURCE)) {
+        warning(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), estack.getLiteralPath(), sm != null, I18nConstants.BUNDLE_SEARCH_NO_MODE);
+        if (rule(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), estack.getLiteralPath(), res != null, I18nConstants.BUNDLE_SEARCH_ENTRY_NO_RESOURCE)) {
           NodeStack rstack = estack.push(res, -1, null, null);
           String rt = res.fhirType();
           String id = res.getNamedChildValue("id");
           if (sm != null) {
             if ("match".equals(sm)) {
-              rule(errors, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), id != null, I18nConstants.BUNDLE_SEARCH_ENTRY_NO_RESOURCE_ID);
-              rule(errors, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), types.size() == 0 || checkSearchType(types, rt), I18nConstants.BUNDLE_SEARCH_ENTRY_WRONG_RESOURCE_TYPE_MODE, rt, types);
+              rule(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), id != null, I18nConstants.BUNDLE_SEARCH_ENTRY_NO_RESOURCE_ID);
+              rule(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), types.size() == 0 || checkSearchType(types, rt), I18nConstants.BUNDLE_SEARCH_ENTRY_WRONG_RESOURCE_TYPE_MODE, rt, types);
             } else if ("include".equals(sm)) {
-              rule(errors, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), id != null, I18nConstants.BUNDLE_SEARCH_ENTRY_NO_RESOURCE_ID);
+              rule(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), id != null, I18nConstants.BUNDLE_SEARCH_ENTRY_NO_RESOURCE_ID);
             } else { // outcome
-              rule(errors, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), "OperationOutcome".equals(rt), I18nConstants.BUNDLE_SEARCH_ENTRY_WRONG_RESOURCE_TYPE_OUTCOME, rt);
+              rule(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), "OperationOutcome".equals(rt), I18nConstants.BUNDLE_SEARCH_ENTRY_WRONG_RESOURCE_TYPE_OUTCOME, rt);
             }
           }
         }
@@ -289,7 +289,7 @@ public class BundleValidator extends BaseValidator {
   private boolean validateDocument(List<ValidationMessage> errors, Element bundle, List<Element> entries, Element composition, NodeStack stack, String fullUrl, String id) {
     boolean ok = true;
     // first entry must be a composition
-    if (rule(errors, IssueType.INVALID, composition.line(), composition.col(), stack.getLiteralPath(), composition.getType().equals("Composition"), I18nConstants.BUNDLE_BUNDLE_ENTRY_DOCUMENT)) {
+    if (rule(errors, NO_RULE_DATE, IssueType.INVALID, composition.line(), composition.col(), stack.getLiteralPath(), composition.getType().equals("Composition"), I18nConstants.BUNDLE_BUNDLE_ENTRY_DOCUMENT)) {
 
       // the composition subject etc references must resolve in the bundle
       ok = validateDocumentReference(errors, bundle, entries, composition, stack, fullUrl, id, false, "subject", "Composition") && ok;
@@ -368,7 +368,7 @@ public class BundleValidator extends BaseValidator {
   private boolean validateMessage(List<ValidationMessage> errors, List<Element> entries, Element messageHeader, NodeStack stack, String fullUrl, String id) {
     boolean ok = true;
     // first entry must be a messageheader
-    if (rule(errors, IssueType.INVALID, messageHeader.line(), messageHeader.col(), stack.getLiteralPath(), messageHeader.getType().equals("MessageHeader"), I18nConstants.VALIDATION_BUNDLE_MESSAGE)) {
+    if (rule(errors, NO_RULE_DATE, IssueType.INVALID, messageHeader.line(), messageHeader.col(), stack.getLiteralPath(), messageHeader.getType().equals("MessageHeader"), I18nConstants.VALIDATION_BUNDLE_MESSAGE)) {
       List<Element> elements = messageHeader.getChildren("focus");
       for (Element elem : elements)
         ok = validateBundleReference(errors, messageHeader, entries, elem, "MessageHeader Data", stack.push(elem, -1, null, null), fullUrl, "MessageHeader", id) && ok;
@@ -385,7 +385,7 @@ public class BundleValidator extends BaseValidator {
 
     if (ref != null && !Utilities.noString(reference) && !reference.startsWith("#")) {
       Element target = resolveInBundle(bundle, entries, reference, fullUrl, type, id);
-      return rule(errors, IssueType.INVALID, ref.line(), ref.col(), stack.addToLiteralPath("reference"), target != null,
+      return rule(errors, NO_RULE_DATE, IssueType.INVALID, ref.line(), ref.col(), stack.addToLiteralPath("reference"), target != null,
         I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND, reference, name);
     }
     return true;
@@ -409,7 +409,7 @@ public class BundleValidator extends BaseValidator {
     boolean ok = bundle.hasChild(META)
       && bundle.getNamedChild(META).hasChild(LAST_UPDATED)
       && bundle.getNamedChild(META).getNamedChild(LAST_UPDATED).hasValue();
-    ruleHtml(errors, IssueType.REQUIRED, stack.getLiteralPath(), ok, I18nConstants.DOCUMENT_DATE_REQUIRED, I18nConstants.DOCUMENT_DATE_REQUIRED_HTML);
+    ruleHtml(errors, NO_RULE_DATE, IssueType.REQUIRED, stack.getLiteralPath(), ok, I18nConstants.DOCUMENT_DATE_REQUIRED, I18nConstants.DOCUMENT_DATE_REQUIRED_HTML);
     return ok;
   }
 
@@ -460,7 +460,7 @@ public class BundleValidator extends BaseValidator {
             }
           }
           if (add) {
-            warning(errors, IssueType.INFORMATIONAL, e.getEntry().line(), e.getEntry().col(), 
+            warning(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, e.getEntry().line(), e.getEntry().col(), 
                 stack.addToLiteralPath(ENTRY + '[' + (i + 1) + ']'), isExpectedToBeReverse(e.getResource().fhirType()), 
                 I18nConstants.BUNDLE_BUNDLE_ENTRY_REVERSE, (e.getEntry().getChildValue(FULL_URL) != null ? "'" + e.getEntry().getChildValue(FULL_URL) + "'" : ""));
 //            System.out.println("Found reverse links for "+e.getIndex());             
@@ -475,9 +475,9 @@ public class BundleValidator extends BaseValidator {
     for (EntrySummary e : entryList) {
       Element entry = e.getEntry();
       if (isError) {
-        ok = rule(errors, IssueType.INFORMATIONAL, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY + '[' + (i + 1) + ']'), visited.contains(e), I18nConstants.BUNDLE_BUNDLE_ENTRY_ORPHAN, (entry.getChildValue(FULL_URL) != null ? "'" + entry.getChildValue(FULL_URL) + "'" : "")) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY + '[' + (i + 1) + ']'), visited.contains(e), I18nConstants.BUNDLE_BUNDLE_ENTRY_ORPHAN, (entry.getChildValue(FULL_URL) != null ? "'" + entry.getChildValue(FULL_URL) + "'" : "")) && ok;
       } else {
-        warning(errors, IssueType.INFORMATIONAL, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY + '[' + (i + 1) + ']'), visited.contains(e), I18nConstants.BUNDLE_BUNDLE_ENTRY_ORPHAN, (entry.getChildValue(FULL_URL) != null ? "'" + entry.getChildValue(FULL_URL) + "'" : ""));
+        warning(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY + '[' + (i + 1) + ']'), visited.contains(e), I18nConstants.BUNDLE_BUNDLE_ENTRY_ORPHAN, (entry.getChildValue(FULL_URL) != null ? "'" + entry.getChildValue(FULL_URL) + "'" : ""));
       }
       i++;
     }
@@ -534,7 +534,7 @@ public class BundleValidator extends BaseValidator {
         } else if (fullUrl.startsWith("urn:uuid") || fullUrl.startsWith("urn:oid")) {
           urlId = fullUrl.substring(fullUrl.lastIndexOf(':') + 1);
         }
-        rule(errors, IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath("entry[" + i + "]"), urlId.equals(id), I18nConstants.BUNDLE_BUNDLE_ENTRY_IDURLMISMATCH, id, fullUrl);
+        rule(errors, NO_RULE_DATE, IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath("entry[" + i + "]"), urlId.equals(id), I18nConstants.BUNDLE_BUNDLE_ENTRY_IDURLMISMATCH, id, fullUrl);
       }
       i++;
     }

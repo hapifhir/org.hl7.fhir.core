@@ -67,6 +67,7 @@ import org.hl7.fhir.utilities.ElementDecoration;
 import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.xhtml.CDANarrativeFormat;
@@ -160,9 +161,9 @@ public class XmlParser extends ParserBase {
   	  if (e.getMessage().contains("lineNumber:") && e.getMessage().contains("columnNumber:")) {
         int line = Utilities.parseInt(extractVal(e.getMessage(), "lineNumber"), 0); 
         int col = Utilities.parseInt(extractVal(e.getMessage(), "columnNumber"), 0); 
-        logError(line, col, "(xml)", IssueType.INVALID, e.getMessage().substring(e.getMessage().lastIndexOf(";")+1).trim(), IssueSeverity.FATAL);
+        logError(ValidationMessage.NO_RULE_DATE, line, col, "(xml)", IssueType.INVALID, e.getMessage().substring(e.getMessage().lastIndexOf(";")+1).trim(), IssueSeverity.FATAL);
   	  } else {
-        logError(0, 0, "(xml)", IssueType.INVALID, e.getMessage(), IssueSeverity.FATAL);
+        logError(ValidationMessage.NO_RULE_DATE, 0, 0, "(xml)", IssueType.INVALID, e.getMessage(), IssueSeverity.FATAL);
   	  }
       doc = null;
   	}
@@ -186,7 +187,7 @@ public class XmlParser extends ParserBase {
       Node node = document.getFirstChild();
       while (node != null) {
         if (node.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE)
-          logError(line(document, false), col(document, false), "(document)", IssueType.INVALID, context.formatMessage(
+          logError(ValidationMessage.NO_RULE_DATE, line(document, false), col(document, false), "(document)", IssueType.INVALID, context.formatMessage(
             I18nConstants.NO_PROCESSING_INSTRUCTIONS_ALLOWED_IN_RESOURCES), IssueSeverity.ERROR);
         node = node.getNextSibling();
       }
@@ -266,14 +267,14 @@ public class XmlParser extends ParserBase {
   private void checkElement(org.w3c.dom.Element element, String path, Property prop) throws FHIRFormatError {
     if (policy == ValidationPolicy.EVERYTHING) {
       if (empty(element) && FormatUtilities.FHIR_NS.equals(element.getNamespaceURI())) // this rule only applies to FHIR Content
-        logError(line(element, false), col(element, false), path, IssueType.INVALID, context.formatMessage(I18nConstants.ELEMENT_MUST_HAVE_SOME_CONTENT), IssueSeverity.ERROR);
+        logError(ValidationMessage.NO_RULE_DATE, line(element, false), col(element, false), path, IssueType.INVALID, context.formatMessage(I18nConstants.ELEMENT_MUST_HAVE_SOME_CONTENT), IssueSeverity.ERROR);
       String ns = prop.getXmlNamespace();
       String elementNs = element.getNamespaceURI();
       if (elementNs == null) {
         elementNs = "noNamespace";
       }
       if (!elementNs.equals(ns))
-        logError(line(element, false), col(element, false), path, IssueType.INVALID, context.formatMessage(I18nConstants.WRONG_NAMESPACE__EXPECTED_, ns), IssueSeverity.ERROR);
+        logError(ValidationMessage.NO_RULE_DATE, line(element, false), col(element, false), path, IssueType.INVALID, context.formatMessage(I18nConstants.WRONG_NAMESPACE__EXPECTED_, ns), IssueSeverity.ERROR);
     }
   }
 
@@ -332,7 +333,7 @@ public class XmlParser extends ParserBase {
             }
             line = line(nt, end);
             col = col(nt, end);
-            logError(line, col, path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.TEXT_SHOULD_NOT_BE_PRESENT, Utilities.makeSingleLine(n.getTextContent().trim())), IssueSeverity.ERROR);
+            logError(ValidationMessage.NO_RULE_DATE, line, col, path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.TEXT_SHOULD_NOT_BE_PRESENT, Utilities.makeSingleLine(n.getTextContent().trim())), IssueSeverity.ERROR);
           }
           n = n.getNextSibling();
         }
@@ -343,7 +344,7 @@ public class XmlParser extends ParserBase {
     	Node attr = node.getAttributes().item(i);
     	String value = attr.getNodeValue();
     	if (!validAttrValue(value)) {
-        logError(line, col, path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.XML_ATTR_VALUE_INVALID, attr.getNodeName()), IssueSeverity.ERROR);
+        logError(ValidationMessage.NO_RULE_DATE, line, col, path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.XML_ATTR_VALUE_INVALID, attr.getNodeName()), IssueSeverity.ERROR);
     	}
     	if (!(attr.getNodeName().equals("xmlns") || attr.getNodeName().startsWith("xmlns:"))) {
       	Property property = getAttrProp(properties, attr.getLocalName(), attr.getNamespaceURI());
@@ -368,7 +369,7 @@ public class XmlParser extends ParserBase {
             ok = ok || (attr.getLocalName().equals("schemaLocation")); // xsi:schemalocation allowed for non FHIR content
           ok = ok || (hasTypeAttr(element) && attr.getLocalName().equals("type") && FormatUtilities.NS_XSI.equals(attr.getNamespaceURI())); // xsi:type allowed if element says so
           if (!ok) { 
-            logError(line(node, false), col(node, false), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.UNDEFINED_ATTRIBUTE__ON__FOR_TYPE__PROPERTIES__, attr.getNodeName(), node.getNodeName(), element.fhirType(), properties), IssueSeverity.ERROR);
+            logError(ValidationMessage.NO_RULE_DATE, line(node, false), col(node, false), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.UNDEFINED_ATTRIBUTE__ON__FOR_TYPE__PROPERTIES__, attr.getNodeName(), node.getNodeName(), element.fhirType(), properties), IssueSeverity.ERROR);
           }
       	}
     	}
@@ -396,7 +397,7 @@ public class XmlParser extends ParserBase {
               xhtml = xp.parseHtmlNode((org.w3c.dom.Element) child);
               if (policy == ValidationPolicy.EVERYTHING) {
                 for (StringPair s : xp.getValidationIssues()) {
-                  logError(line(child, false), col(child, false), path, IssueType.INVALID, context.formatMessage(s.getName(), s.getValue()), IssueSeverity.ERROR);                
+                  logError("2022-11-17", line(child, false), col(child, false), path, IssueType.INVALID, context.formatMessage(s.getName(), s.getValue()), IssueSeverity.ERROR);                
                 }
               }
           	}
@@ -421,7 +422,7 @@ public class XmlParser extends ParserBase {
                     xsiType = ToolingExtensions.readStringExtension(property.getDefinition(), "http://hl7.org/fhir/StructureDefinition/elementdefinition-defaulttype");
                     n.setType(xsiType);
                   } else {
-                    logError(line(child, false), col(child, false), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.NO_TYPE_FOUND_ON_, child.getLocalName()), IssueSeverity.ERROR);
+                    logError(ValidationMessage.NO_RULE_DATE, line(child, false), col(child, false), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.NO_TYPE_FOUND_ON_, child.getLocalName()), IssueSeverity.ERROR);
       		          ok = false;
                   }
     						} else {
@@ -442,11 +443,11 @@ public class XmlParser extends ParserBase {
     				}
     			}
       	} else
-          logError(line(child, false), col(child, false), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.UNDEFINED_ELEMENT_, child.getLocalName()), IssueSeverity.ERROR);
+          logError(ValidationMessage.NO_RULE_DATE, line(child, false), col(child, false), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.UNDEFINED_ELEMENT_, child.getLocalName()), IssueSeverity.ERROR);
     	} else if (child.getNodeType() == Node.CDATA_SECTION_NODE){
-        logError(line(child, false), col(child, false), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.CDATA_IS_NOT_ALLOWED), IssueSeverity.ERROR);
+        logError(ValidationMessage.NO_RULE_DATE, line(child, false), col(child, false), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.CDATA_IS_NOT_ALLOWED), IssueSeverity.ERROR);
     	} else if (!Utilities.existsInList(child.getNodeType(), 3, 8)) {
-        logError(line(child, false), col(child, false), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.NODE_TYPE__IS_NOT_ALLOWED, Integer.toString(child.getNodeType())), IssueSeverity.ERROR);
+        logError(ValidationMessage.NO_RULE_DATE, line(child, false), col(child, false), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.NODE_TYPE__IS_NOT_ALLOWED, Integer.toString(child.getNodeType())), IssueSeverity.ERROR);
     	}
     	child = child.getNextSibling();
     }
@@ -801,7 +802,7 @@ public class XmlParser extends ParserBase {
         } 
       }
       if (e != null && !"UTF-8".equalsIgnoreCase(e)) {
-        logError(0, 0, "XML", IssueType.INVALID, context.formatMessage(I18nConstants.XML_ENCODING_INVALID), IssueSeverity.ERROR);
+        logError(ValidationMessage.NO_RULE_DATE, 0, 0, "XML", IssueType.INVALID, context.formatMessage(I18nConstants.XML_ENCODING_INVALID), IssueSeverity.ERROR);
       }
 
       i = header.indexOf("version=\"");
@@ -816,7 +817,7 @@ public class XmlParser extends ParserBase {
       return "?xml-p1?";
     } catch (Exception e) {
       // suppress this error 
-      logError(0, 0, "XML", IssueType.INVALID, e.getMessage(), IssueSeverity.ERROR);
+      logError(ValidationMessage.NO_RULE_DATE, 0, 0, "XML", IssueType.INVALID, e.getMessage(), IssueSeverity.ERROR);
     }
     return "?xml-p2?";
   }
