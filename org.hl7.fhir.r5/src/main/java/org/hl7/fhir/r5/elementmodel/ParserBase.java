@@ -227,7 +227,7 @@ public abstract class ParserBase {
     if (!"id".equals(e.getName())) {
       return true;
     }
-    if (path.contains(".")) {
+    if (path!=null && path.contains(".")) {
       return idPolicy.forInner();
     } else {
       return idPolicy.forRoot();
