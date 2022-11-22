@@ -1633,7 +1633,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               if (!outcome.hasContentReference() && !outcome.hasType()) {
                 throw new DefinitionException(context.formatMessage(I18nConstants.NOT_DONE_YET));
               }
-              if (hasInnerDiffMatches(differential, currentBase.getPath(), diffCursor, diffLimit, base.getElement(), false)) {
+              if (hasInnerDiffMatches(differential, cpath, diffCursor, diffLimit, base.getElement(), false)) {
                 if (baseHasChildren(base, currentBase)) { // not a new type here
                   throw new Error("This situation is not yet handled (constrain slicing to 1..1 and fix base slice for inline structure - please report issue to grahame@fhir.org along with a test case that reproduces this error (@ "+cpath+" | "+currentBase.getPath()+")");
                 } else {
@@ -2093,7 +2093,11 @@ public class ProfileUtilities extends TranslatingUtilities {
   public StructureDefinition getTypeForElement(StructureDefinitionDifferentialComponent differential, int diffCursor, String profileName,
       List<ElementDefinition> diffMatches, ElementDefinition outcome, String webUrl) {
     if (outcome.getType().size() == 0) {
-      throw new DefinitionException(context.formatMessage(I18nConstants._HAS_NO_CHILDREN__AND_NO_TYPES_IN_PROFILE_, diffMatches.get(0).getPath(), differential.getElement().get(diffCursor).getPath(), profileName));
+      if (outcome.hasContentReference()) { 
+        throw new Error(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_CONTENT_REFERENCE_IN_THIS_CONTEXT, outcome.getContentReference(), outcome.getId(), outcome.getPath()));
+      } else {
+        throw new DefinitionException(context.formatMessage(I18nConstants._HAS_NO_CHILDREN__AND_NO_TYPES_IN_PROFILE_, diffMatches.get(0).getPath(), differential.getElement().get(diffCursor).getPath(), profileName));
+      }
     }
     if (outcome.getType().size() > 1) {
       for (TypeRefComponent t : outcome.getType()) {
@@ -2882,7 +2886,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private boolean hasInnerDiffMatches(StructureDefinitionDifferentialComponent context, String path, int start, int end, List<ElementDefinition> base, boolean allowSlices) throws DefinitionException {
     end = Math.min(context.getElement().size(), end);
     start = Math.max(0,  start);
-    
+  
     for (int i = start; i <= end; i++) {
       ElementDefinition ed = context.getElement().get(i);
       String statedPath = ed.getPath();
@@ -2893,9 +2897,11 @@ public class ProfileUtilities extends TranslatingUtilities {
       } else if (path.endsWith("[x]") && statedPath.startsWith(path.substring(0, path.length() -3))) {
         return true;
       } else if (i != start && !allowSlices && !statedPath.startsWith(path+".")) {
-        break;
+        return false;
       } else if (i != start && allowSlices && !statedPath.startsWith(path)) {
-        break;
+        return false;
+      } else {
+        // not sure why we get here, but returning false at this point makes a bunch of tests fail
       }
     }
     return false;

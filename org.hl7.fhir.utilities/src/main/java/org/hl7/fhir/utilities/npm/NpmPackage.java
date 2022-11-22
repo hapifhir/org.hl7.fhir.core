@@ -102,26 +102,31 @@ public class NpmPackage {
   
   public class PackageResourceInformation {
     private String id;
-    private String type;
+    private String resourceType;
     private String url;
     private String version;
     private String filename;
     private String supplements;
+    private String stype;
     
     public PackageResourceInformation(String root, JsonObject fi) throws IOException {
       super();
       id = JsonUtilities.str(fi, "id");
-      type = JsonUtilities.str(fi, "resourceType");
+      resourceType = JsonUtilities.str(fi, "resourceType");
       url = JsonUtilities.str(fi, "url");
       version = JsonUtilities.str(fi, "version");
       filename = Utilities.path(root, JsonUtilities.str(fi, "filename"));
       supplements = JsonUtilities.str(fi, "supplements");
+      stype = JsonUtilities.str(fi, "type");
     }
     public String getId() {
       return id;
     }
-    public String getType() {
-      return type;
+    public String getResourceType() {
+      return resourceType;
+    }
+    public String getStatedType() {
+      return stype;
     }
     public String getUrl() {
       return url;
