@@ -1195,8 +1195,20 @@ public class ProfileUtilities extends TranslatingUtilities {
    * @throws DefinitionException, FHIRException 
    * @throws Exception
    */
-  private ElementDefinition processPaths(String indent, StructureDefinitionSnapshotComponent result, StructureDefinitionSnapshotComponent base, StructureDefinitionDifferentialComponent differential, int baseCursor, int diffCursor, int baseLimit,
-      int diffLimit, String url, String webUrl, String profileName, String contextPathSrc, String contextPathDst, boolean trimDifferential, String contextName, String resultPathBase, boolean slicingDone, ElementDefinition slicer, String typeSlicingPath, List<ElementRedirection> redirector, StructureDefinition srcSD) throws DefinitionException, FHIRException {
+  private ElementDefinition processPaths(final String indent,
+                                         final StructureDefinitionSnapshotComponent result,
+                                         StructureDefinitionSnapshotComponent base,
+                                         final StructureDefinitionDifferentialComponent differential,
+                                         int baseCursor, int diffCursor,
+                                         final int baseLimit, final int diffLimit,
+                                         final String url, final String webUrl,
+                                         final String profileName, final String contextPathSrc,
+                                         final String contextPathDst,
+                                         final boolean trimDifferential,
+                                         String contextName,
+                                         String resultPathBase,
+                                         final boolean slicingDone, final ElementDefinition slicer, final String typeSlicingPath, final List<ElementRedirection> redirector,
+                                         final StructureDefinition srcSD) throws FHIRException {
     if (debug) {
       System.out.println(indent+"PP @ "+resultPathBase+" / "+contextPathSrc+" : base = "+baseCursor+" to "+baseLimit+", diff = "+diffCursor+" to "+diffLimit+" (slicing = "+slicingDone+", k "+(redirector == null ? "null" : redirector.toString())+")");
     }
