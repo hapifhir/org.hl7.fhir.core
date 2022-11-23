@@ -559,7 +559,8 @@ public class SnapShotGenerationTests {
       if (dst.exists())
         dst.delete();
       IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", test.getId() + "-expected.xml"), new FileOutputStream(dst));
-      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(TestingUtilities.tempFile("snapshot", test.getId() + "-actual.xml")), output);
+      String actualFilePath = TestingUtilities.tempFile("snapshot", test.getId() + "-actual.xml");
+      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(actualFilePath), output);
       StructureDefinition t1 = test.expected.copy();
       t1.setText(null);
       StructureDefinition t2 = test.output.copy();

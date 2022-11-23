@@ -919,6 +919,14 @@ public class ProfileUtilities extends TranslatingUtilities {
     }    
   }
 
+  /**
+   * Check if derived has the correct base type
+   *
+   * Clear first element of differential under certain conditions.
+   *
+   * @param derived
+   * @throws Error
+   */
   public void checkDifferentialBaseType(StructureDefinition derived) throws Error {
     if (derived.hasDifferential() && !derived.getDifferential().getElementFirstRep().getPath().contains(".") && !derived.getDifferential().getElementFirstRep().getType().isEmpty()) {
       if (wantFixDifferentialFirstElementType && typeMatchesAncestor(derived.getDifferential().getElementFirstRep().getType(), derived.getBaseDefinition())) {
@@ -1010,6 +1018,12 @@ public class ProfileUtilities extends TranslatingUtilities {
     }
   }
 
+  /**
+   * Check that a differential is valid.
+   * @param elements
+   * @param type
+   * @param url
+   */
   private void checkDifferential(List<ElementDefinition> elements, String type, String url) {
     boolean first = true;
     for (ElementDefinition ed : elements) {
@@ -1291,48 +1305,51 @@ public class ProfileUtilities extends TranslatingUtilities {
             String baseId = id.substring(0, id.length()-lid.length()) + lid.substring(0, lid.indexOf("/")); // this is wrong if there's more than one reslice (todo: one thing at a time)
             template = getById(result.getElement(), baseId);
             
-          } else if (diffMatches.get(0).hasType() && diffMatches.get(0).getType().size() == 1 && diffMatches.get(0).getType().get(0).hasProfile() && !"Reference".equals(diffMatches.get(0).getType().get(0).getWorkingCode())) {
-            CanonicalType p = diffMatches.get(0).getType().get(0).getProfile().get(0);
-            StructureDefinition sd = context.fetchResource(StructureDefinition.class, p.getValue());
-            if (sd == null && xver != null && xver.matchingUrl(p.getValue())) {
-              switch (xver.status(p.getValue())) {
-              case BadVersion: throw new FHIRException("Reference to invalid version in extension url "+p.getValue());
-              case Invalid: throw new FHIRException("Reference to invalid extension "+p.getValue());
-              case Unknown: throw new FHIRException("Reference to unknown extension "+p.getValue()); 
+          } else if (diffMatches.get(0).hasType()
+            && diffMatches.get(0).getType().size() == 1
+            && diffMatches.get(0).getType().get(0).hasProfile()
+            && !"Reference".equals(diffMatches.get(0).getType().get(0).getWorkingCode())) {
+            CanonicalType firstTypeProfile = diffMatches.get(0).getType().get(0).getProfile().get(0);
+            StructureDefinition firstTypeStructureDefinition = context.fetchResource(StructureDefinition.class, firstTypeProfile.getValue());
+            if (firstTypeStructureDefinition == null && xver != null && xver.matchingUrl(firstTypeProfile.getValue())) {
+              switch (xver.status(firstTypeProfile.getValue())) {
+              case BadVersion: throw new FHIRException("Reference to invalid version in extension url "+firstTypeProfile.getValue());
+              case Invalid: throw new FHIRException("Reference to invalid extension "+firstTypeProfile.getValue());
+              case Unknown: throw new FHIRException("Reference to unknown extension "+firstTypeProfile.getValue());
               case Valid: 
-                sd = xver.makeDefinition(p.getValue());
-                generateSnapshot(context.fetchTypeDefinition("Extension"), sd, sd.getUrl(), webUrl, sd.getName());
+                firstTypeStructureDefinition = xver.makeDefinition(firstTypeProfile.getValue());
+                generateSnapshot(context.fetchTypeDefinition("Extension"), firstTypeStructureDefinition, firstTypeStructureDefinition.getUrl(), webUrl, firstTypeStructureDefinition.getName());
               }
             }
-            if (sd != null) {
-              if (!isMatchingType(sd, diffMatches.get(0).getType(), p.getExtensionString(ToolingExtensions.EXT_PROFILE_ELEMENT))) {
-                throw new DefinitionException(context.formatMessage(I18nConstants.VALIDATION_VAL_PROFILE_WRONGTYPE2, sd.getUrl(), diffMatches.get(0).getPath(), sd.getType(), p.getValue(), diffMatches.get(0).getType().get(0).getWorkingCode()));            
+            if (firstTypeStructureDefinition != null) {
+              if (!isMatchingType(firstTypeStructureDefinition, diffMatches.get(0).getType(), firstTypeProfile.getExtensionString(ToolingExtensions.EXT_PROFILE_ELEMENT))) {
+                throw new DefinitionException(context.formatMessage(I18nConstants.VALIDATION_VAL_PROFILE_WRONGTYPE2, firstTypeStructureDefinition.getUrl(), diffMatches.get(0).getPath(), firstTypeStructureDefinition.getType(), firstTypeProfile.getValue(), diffMatches.get(0).getType().get(0).getWorkingCode()));
               }
-              if (isGenerating(sd)) {
+              if (isGenerating(firstTypeStructureDefinition)) {
                 // this is a special case, because we're only going to access the first element, and we can rely on the fact that it's already populated.
                 // but we check anyway
-                if (sd.getSnapshot().getElementFirstRep().isEmpty()) {
-                  throw new FHIRException(context.formatMessage(I18nConstants.ATTEMPT_TO_USE_A_SNAPSHOT_ON_PROFILE__AS__BEFORE_IT_IS_GENERATED, sd.getUrl(), "Source for first element"));
+                if (firstTypeStructureDefinition.getSnapshot().getElementFirstRep().isEmpty()) {
+                  throw new FHIRException(context.formatMessage(I18nConstants.ATTEMPT_TO_USE_A_SNAPSHOT_ON_PROFILE__AS__BEFORE_IT_IS_GENERATED, firstTypeStructureDefinition.getUrl(), "Source for first element"));
                 }
-              } else if (!sd.hasSnapshot()) {
-                StructureDefinition sdb = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+              } else if (!firstTypeStructureDefinition.hasSnapshot()) {
+                StructureDefinition sdb = context.fetchResource(StructureDefinition.class, firstTypeStructureDefinition.getBaseDefinition());
                 if (sdb == null)
-                  throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_FIND_BASE__FOR_, sd.getBaseDefinition(), sd.getUrl()));
+                  throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_FIND_BASE__FOR_, firstTypeStructureDefinition.getBaseDefinition(), firstTypeStructureDefinition.getUrl()));
                 checkNotGenerating(sdb, "an extension base");
-                generateSnapshot(sdb, sd, sd.getUrl(), (sdb.hasUserData("path")) ? Utilities.extractBaseUrl(sdb.getUserString("path")) : webUrl, sd.getName());
+                generateSnapshot(sdb, firstTypeStructureDefinition, firstTypeStructureDefinition.getUrl(), (sdb.hasUserData("path")) ? Utilities.extractBaseUrl(sdb.getUserString("path")) : webUrl, firstTypeStructureDefinition.getName());
               }
               ElementDefinition src;
-              if (p.hasExtension(ToolingExtensions.EXT_PROFILE_ELEMENT)) {
+              if (firstTypeProfile.hasExtension(ToolingExtensions.EXT_PROFILE_ELEMENT)) {
                  src = null;
-                 String eid = p.getExtensionString(ToolingExtensions.EXT_PROFILE_ELEMENT);
-                 for (ElementDefinition t : sd.getSnapshot().getElement()) {
+                 String eid = firstTypeProfile.getExtensionString(ToolingExtensions.EXT_PROFILE_ELEMENT);
+                 for (ElementDefinition t : firstTypeStructureDefinition.getSnapshot().getElement()) {
                    if (eid.equals(t.getId()))
                      src = t;
                  }
                  if (src == null)
-                  throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_FIND_ELEMENT__IN_, eid, p.getValue()));
+                  throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_FIND_ELEMENT__IN_, eid, firstTypeProfile.getValue()));
               } else 
-                src = sd.getSnapshot().getElement().get(0);
+                src = firstTypeStructureDefinition.getSnapshot().getElement().get(0);
               template = src.copy().setPath(currentBase.getPath());
               template.setSliceName(null);
               // temporary work around
@@ -1343,7 +1360,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             }
           } 
           if (template == null)
-            template = currentBase.copy();
+              template = currentBase.copy();
           else
             // some of what's in currentBase overrides template
             template = fillOutFromBase(template, currentBase);
