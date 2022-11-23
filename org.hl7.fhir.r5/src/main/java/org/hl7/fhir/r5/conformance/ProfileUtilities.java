@@ -702,8 +702,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
         // our approach is to walk through the base list, and see whether the differential
         // says anything about them.
-        int baseCursor = 0;
-        int diffCursor = 0; // we need a diff cursor because we can only look ahead, in the bound scoped by longer paths
+        // we need a diff cursor because we can only look ahead, in the bound scoped by longer paths
 
 
         for (ElementDefinition e : derived.getDifferential().getElement()) 
@@ -720,8 +719,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         //      if (derived.getId().equals("2.16.840.1.113883.10.20.22.2.1.1")) {
         //        debug = true;
         //      }
-        processPaths("", derived.getSnapshot(), baseSnapshot, diff, baseCursor, diffCursor, baseSnapshot.getElement().size()-1, 
-            derived.getDifferential().hasElement() ? derived.getDifferential().getElement().size()-1 : -1, url, webUrl, derived.present(), null, null, false, base.getUrl(), null, false, null, null, new ArrayList<ElementRedirection>(), base);
+        processPaths(base, derived, url, webUrl, diff, baseSnapshot);
         checkGroupConstraints(derived);
         if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
           for (ElementDefinition e : diff.getElement()) {
@@ -862,6 +860,11 @@ public class ProfileUtilities extends TranslatingUtilities {
       derived.clearUserData("profileutils.snapshot.generating");
       snapshotStack.remove(derived.getUrl());
     }
+  }
+
+  private void processPaths(StructureDefinition base, StructureDefinition derived, String url, String webUrl, StructureDefinitionDifferentialComponent diff, StructureDefinitionSnapshotComponent baseSnapshot) {
+    processPaths("", derived.getSnapshot(), baseSnapshot, diff, 0, 0, baseSnapshot.getElement().size()-1,
+        derived.getDifferential().hasElement() ? derived.getDifferential().getElement().size()-1 : -1, url, webUrl, derived.present(), null, null, false, base.getUrl(), null, false, null, null, new ArrayList<ElementRedirection>(), base);
   }
 
 
