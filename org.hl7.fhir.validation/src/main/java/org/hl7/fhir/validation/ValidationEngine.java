@@ -1028,6 +1028,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         resolvedUrls.put(type+"|"+url, ok);
         return ok;
       } catch (Exception e) {
+        e.printStackTrace();
         resolvedUrls.put(type+"|"+url, false);
         return false;
       }

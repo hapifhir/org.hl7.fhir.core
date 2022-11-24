@@ -4825,7 +4825,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } catch (Exception e) {
         if (STACK_TRACE) { e.printStackTrace(); }
         crLookups.put(url, new CanonicalResourceLookupResult(e.getMessage()));
-        if (e.getMessage().startsWith("java.net.UnknownHostException:")) {
+        if (e.getMessage() != null && e.getMessage().startsWith("java.net.UnknownHostException:")) {
           try {
             warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_ERROR_NETWORK, profile.primitiveValue(), new URI(url).getHost());
           } catch (URISyntaxException e1) {
