@@ -220,8 +220,11 @@ public class JsonParser {
       lexer.next();
       lexer.getStates().push(new State("", true));
     } 
-    else
+    else if (lexer.getType() != null) {
       throw lexer.error("Unexpected content at start of JSON: "+lexer.getType().toString());
+    } else {
+      throw lexer.error("Unexpected content at start of JSON");      
+    }
 
     if (lexer.getType() != TokenType.Close) {
       parseProperty();
@@ -568,7 +571,7 @@ public class JsonParser {
         int length = 0;
         for (JsonElement i : arr.getItems()) {
           if (i instanceof JsonPrimitive) {
-            length = length + i.toString().length();
+            length = length + ((JsonPrimitive)i).toJson().length();
           }
           if (i.elementType() == JsonElementType.ARRAY || i.elementType() == JsonElementType.OBJECT
               || i.hasComments()) { // 20 is a somewhat arbitrary cut off

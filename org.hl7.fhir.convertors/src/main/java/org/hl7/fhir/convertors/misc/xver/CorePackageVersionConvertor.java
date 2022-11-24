@@ -17,13 +17,12 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.convertors.misc.xver.CorePackageVersionConvertor.BaseConvertor;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.json.JsonTrackingParser;
-import org.hl7.fhir.utilities.json.JsonUtilities;
+import org.hl7.fhir.utilities.json.model.JsonArray;
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.NpmPackage.NpmPackageFolder;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 public class CorePackageVersionConvertor {
 
@@ -582,13 +581,13 @@ public class CorePackageVersionConvertor {
   }
 
   private byte[] convertPackage(byte[] cnt, String version) throws IOException {
-    JsonObject json = JsonTrackingParser.parseJson(cnt);
+    JsonObject json = JsonParser.parseObject(cnt);
     json.remove("fhir-version-list");
     JsonArray vl = new JsonArray();
     json.add("fhirVersions", vl);
     vl.add(version);
-    json.addProperty("name", JsonUtilities.str(json, "name")+".as."+VersionUtilities.getNameForVersion(version).toLowerCase());
-    json.addProperty("title", JsonUtilities.str(json, "title")+" (as Version "+VersionUtilities.getNameForVersion(version).toLowerCase()+")");
-    return JsonTrackingParser.write(json).getBytes(StandardCharsets.UTF_8);
+    json.add("name", json.asString("name")+".as."+VersionUtilities.getNameForVersion(version).toLowerCase());
+    json.add("title", json.asString("title")+" (as Version "+VersionUtilities.getNameForVersion(version).toLowerCase()+")");
+    return JsonParser.composeBytes(json);
   }
 }

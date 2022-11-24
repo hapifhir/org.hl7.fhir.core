@@ -1,5 +1,7 @@
 package org.hl7.fhir.utilities.json.model;
 
+import org.hl7.fhir.utilities.Utilities;
+
 public class JsonString extends JsonPrimitive {
   private String value;
 
@@ -8,10 +10,14 @@ public class JsonString extends JsonPrimitive {
     this.value = value;
   }
 
+  private JsonString() {
+  }
+
   public JsonElementType elementType() {
     return JsonElementType.STRING;
   }
 
+  @Override
   public String getValue() {
     return value;
   }
@@ -22,7 +28,23 @@ public class JsonString extends JsonPrimitive {
 
   @Override
   public String toString() {
-    return value;
+    throw new Error("This should not be called");
+    // return "\""+ Utilities.escapeJson(value)+"\"";
   }
 
+  @Override
+  public String toJson() {
+    return "\""+ Utilities.escapeJson(value)+"\"";
+  }
+  
+  @Override
+  protected JsonElement copy(JsonElement other) {
+    value = ((JsonString) other).value;
+    return this;
+  }
+  
+  @Override
+  protected JsonElement make() {
+    return new JsonString();
+  }
 }

@@ -8,6 +8,9 @@ public class JsonBoolean extends JsonPrimitive {
     this.value = value;
   }
 
+  private JsonBoolean() {
+  }
+
   public JsonElementType elementType() {
     return JsonElementType.BOOLEAN;
   }
@@ -20,6 +23,7 @@ public class JsonBoolean extends JsonPrimitive {
     this.value = value;
   }
   
+  @Override
   public String getValue() {
     return value ? "true" : "false";
   }
@@ -27,5 +31,16 @@ public class JsonBoolean extends JsonPrimitive {
   @Override
   public String toString() {
     return getValue();
+  }
+  
+  @Override
+  protected JsonElement copy(JsonElement other) {
+    value = ((JsonBoolean) other).value;
+    return this;
+  }
+  
+  @Override
+  protected JsonElement make() {
+    return new JsonBoolean();
   }
 }

@@ -1,11 +1,12 @@
 package org.hl7.fhir.convertors.misc;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
-import org.hl7.fhir.utilities.json.JsonTrackingParser;
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
 
-import com.google.gson.JsonObject;
 
 public class JsonProcessor {
   public static void main(String[] args) throws Exception {
@@ -13,9 +14,9 @@ public class JsonProcessor {
   }
 
   private void process(String source) throws IOException {
-    JsonObject json = JsonTrackingParser.parseJsonFile(source);
+    JsonObject json = JsonParser.parseObjectFromFile(source);
     process(json);
-    JsonTrackingParser.write(json, new File(source), true);
+    JsonParser.compose(json, new FileOutputStream(source), true);
     
   }
 
@@ -178,11 +179,11 @@ public class JsonProcessor {
   }
 
   private void process(JsonObject json, String name) {
-    JsonObject j = json.getAsJsonObject(name);
+    JsonObject j = json.getJsonObject(name);
     if (j == null) {
       System.out.println("Can't find "+name);
     } else {
-      j.addProperty("modifier", true);
+      j.add("modifier", true);
     }
     
   }
