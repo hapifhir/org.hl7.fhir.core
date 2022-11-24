@@ -7,7 +7,8 @@ import java.util.List;
 
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.json.JsonTrackingParser;
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -37,11 +38,6 @@ import org.hl7.fhir.utilities.json.JsonTrackingParser;
   POSSIBILITY OF SUCH DAMAGE.
   
  */
-
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 
 public class PackageMaintainer {
 
@@ -96,11 +92,10 @@ public class PackageMaintainer {
       if (f.isDirectory())
         strip(f);
       else if (f.getName().endsWith(".json")) {
-        JsonObject json = JsonTrackingParser.parseJson(f);
+        JsonObject json = JsonParser.parseObject(f);
         if (json.has("resourceType") && json.has("text")) {
           json.remove("text");
-          Gson gson = new GsonBuilder().create();
-          String src = gson.toJson(json);
+          String src = JsonParser.compose(json);
           TextFile.stringToFile(src, f.getAbsolutePath());
         }
       }
