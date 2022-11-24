@@ -4,6 +4,7 @@ import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -145,5 +146,17 @@ public class RendererFactory {
         "CapabilityStatement", "CompartmentDefinition", "ImplementationGuide", "Library", "NamingSystem", "OperationDefinition", 
         "Questionnaire", "SearchParameter", "StructureDefinition", "ActorDefinition", "Requirements");
   }
+
+  /**
+   * This is a list of renderers that return something different in IG mode, and the implementation guide 
+   * publisher will regenerate the narrative for the IG mode 
+   * @param rt
+   * @return
+   */
+  public static boolean hasIGSpecificRenderer(String rt) {
+    
+    return Utilities.existsInList(rt, "ValueSet", "CapabilityStatement", "Questionnaire");
+  }
   
+
 }
