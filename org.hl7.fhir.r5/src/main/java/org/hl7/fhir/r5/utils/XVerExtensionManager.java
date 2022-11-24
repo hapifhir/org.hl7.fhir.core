@@ -62,9 +62,9 @@ public class XVerExtensionManager {
       }
     }
     JsonObject root = lists.get(v);
-    JsonObject path = root.getObject(e);
+    JsonObject path = root.getJsonObject(e);
     if (path == null) {
-      path = root.getObject(e+"[x]");      
+      path = root.getJsonObject(e+"[x]");      
     }
     if (path == null) {
       return XVerExtensionStatus.Unknown;
@@ -85,9 +85,9 @@ public class XVerExtensionManager {
     String verTarget = VersionUtilities.getMajMin(context.getVersion());
     String e = url.substring(54);
     JsonObject root = lists.get(verSource);
-    JsonObject path = root.getObject(e);
+    JsonObject path = root.getJsonObject(e);
     if (path == null) {
-      path = root.getObject(e+"[x]");
+      path = root.getJsonObject(e+"[x]");
     }
     
     StructureDefinition sd = new StructureDefinition();
@@ -116,9 +116,9 @@ public class XVerExtensionManager {
       populateTypes(path, val, verSource, verTarget);
     } else if (path.has("elements")) {
       for (JsonElement i : path.forceArray("elements").getItems()) {
-        JsonObject elt = root.getObject(e+"."+i.toString());
+        JsonObject elt = root.getJsonObject(e+"."+i.asString());
         if (elt != null) {
-        String s = i.toString().replace("[x]", "");
+        String s = i.asString().replace("[x]", "");
         sd.getDifferential().addElement().setPath("Extension.extension").setSliceName(s);
         sd.getDifferential().addElement().setPath("Extension.extension.extension").setMax("0");
         sd.getDifferential().addElement().setPath("Extension.extension.url").setFixed(new UriType(s));
@@ -144,7 +144,7 @@ public class XVerExtensionManager {
 
   public void populateTypes(JsonObject path, ElementDefinition val, String verSource, String verTarget) {
     for (JsonElement i : path.forceArray("types").getItems()) {
-      String s = i.toString();
+      String s = i.asString();
       if (!s.startsWith("!")) {
         if (s.contains("(")) {
           String t = s.substring(0, s.indexOf("("));

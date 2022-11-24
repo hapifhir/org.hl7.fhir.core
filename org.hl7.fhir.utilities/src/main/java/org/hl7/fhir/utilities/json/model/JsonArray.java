@@ -1,12 +1,13 @@
 package org.hl7.fhir.utilities.json.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hl7.fhir.utilities.json.JsonException;
 
 
-public class JsonArray extends JsonElement {
+public class JsonArray extends JsonElement implements Iterable<JsonElement> {
   private List<JsonElement> items = new ArrayList<>();
   private List<Boolean> noCommas; // validator use
   private List<Boolean> unQuoted; // validator use
@@ -15,7 +16,7 @@ public class JsonArray extends JsonElement {
     List<String> list = new ArrayList<>();
     for (JsonElement n : items) {
       if (n instanceof JsonPrimitive) {
-        list.add(n.toString());
+        list.add(n.asJsonPrimitive().getValue());
       }
     }
     return list;
@@ -25,7 +26,7 @@ public class JsonArray extends JsonElement {
     return items;
   }
 
-  public List<JsonObject> asObjects() {
+  public List<JsonObject> asJsonObjects() {
     List<JsonObject> list = new ArrayList<>();
     for (JsonElement n : items) {
       if (n instanceof JsonObject) {
@@ -79,11 +80,50 @@ public class JsonArray extends JsonElement {
 
 
   public JsonObject findByStringProp(JsonArray arr, String prop, String value) {
-    for (JsonObject obj : asObjects()) {
-      if (obj.has(prop) && value.equals(obj.getString(prop))) 
+    for (JsonObject obj : asJsonObjects()) {
+      if (obj.has(prop) && value.equals(obj.asString(prop))) 
         return obj;
     }
     return null;
+  }
+  
+  public Iterator<JsonElement> iterator() {
+    return items.iterator();
+  }
+
+  public JsonElement get(int i) {
+    return items.get(i);
+  }
+
+  public JsonArray deepCopy() {
+    return (JsonArray) make().copy(this);
+  }
+
+  @Override
+  protected JsonElement copy(JsonElement other) {
+    JsonArray o = (JsonArray) other;
+    for (JsonElement p : o.getItems()) {
+      add(p.deepCopy());
+    }
+    return this;
+  }
+  
+  @Override
+  protected JsonElement make() {
+    return new JsonArray();
+  }
+  
+  @Override
+  public String toString() {
+    StringBuilder b = new StringBuilder();
+    b.append("[ ");
+    boolean first = true;
+    for (JsonElement p : items) {
+      if (first) first = false; else b.append(", ");
+      b.append(p.toString());
+    }
+    b.append(" ]");
+    return b.toString();
   }
   
 }

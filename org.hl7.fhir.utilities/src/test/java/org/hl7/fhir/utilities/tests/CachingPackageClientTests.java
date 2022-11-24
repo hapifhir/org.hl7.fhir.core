@@ -1,13 +1,13 @@
 package org.hl7.fhir.utilities.tests;
 
+import java.io.IOException;
+import java.util.List;
+
 import org.hl7.fhir.utilities.npm.CachingPackageClient;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.PackageInfo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.util.List;
 
 public class CachingPackageClientTests {
 

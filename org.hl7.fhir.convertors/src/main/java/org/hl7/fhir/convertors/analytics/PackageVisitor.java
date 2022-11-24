@@ -16,8 +16,10 @@ import org.hl7.fhir.utilities.SimpleHTTPClient;
 import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.json.JsonTrackingParser;
-import org.hl7.fhir.utilities.json.JsonUtilities;
+import org.hl7.fhir.utilities.json.model.JsonArray;
+import org.hl7.fhir.utilities.json.model.JsonElement;
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.PackageClient;
@@ -27,10 +29,6 @@ import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 public class PackageVisitor {
   
@@ -140,11 +138,11 @@ public class PackageVisitor {
       }
       i++;
     }    
-    JsonObject json = JsonTrackingParser.fetchJson("https://raw.githubusercontent.com/FHIR/ig-registry/master/fhir-ig-list.json");
+    JsonObject json = JsonParser.parseObjectFromUrl("https://raw.githubusercontent.com/FHIR/ig-registry/master/fhir-ig-list.json");
     i = 0;
-    List<JsonObject> objects = JsonUtilities.objects(json, "guides");
+    List<JsonObject> objects = json.getJsonObjects("guides");
     for (JsonObject o : objects) {
-      String pid = JsonUtilities.str(o, "npm-name");
+      String pid = o.asString("npm-name");
       if (pid != null && !cpidSet.contains(pid)) {
         cpidSet.add(pid);
         List<String> vList = listVersions(pid);
@@ -195,11 +193,10 @@ public class PackageVisitor {
   private Map<String, String> getAllCIPackages() throws IOException {
     Map<String, String> res = new HashMap<>();
     if (current) {
-      JsonArray json = JsonTrackingParser.fetchJsonArray("https://build.fhir.org/ig/qas.json");
-      for (JsonElement j : json) {
-        JsonObject o = (JsonObject) j;
-        String url = JsonUtilities.str(o, "repo");
-        res.put(url, JsonUtilities.str(o, "package-id"));
+      JsonArray json = (JsonArray) JsonParser.parseFromUrl("https://build.fhir.org/ig/qas.json");
+      for (JsonObject o  : json.asJsonObjects()) {
+        String url = o.asString("repo");
+        res.put(url, o.asString("package-id"));
       }
     }
     return res;
@@ -220,13 +217,13 @@ public class PackageVisitor {
     for (PackageInfo i : pc.search(null, null, null, false)) {
       list.add(i.getId());
     }    
-    JsonObject json = JsonTrackingParser.fetchJson("https://raw.githubusercontent.com/FHIR/ig-registry/master/fhir-ig-list.json");
-    for (JsonObject ig : JsonUtilities.objects(json, "guides")) {
-      list.add(JsonUtilities.str(ig, "npm-name"));
+    JsonObject json = JsonParser.parseObjectFromUrl("https://raw.githubusercontent.com/FHIR/ig-registry/master/fhir-ig-list.json");
+    for (JsonObject ig : json.getJsonObjects("guides")) {
+      list.add(ig.asString("npm-name"));
     }
-    json = JsonTrackingParser.fetchJson("https://raw.githubusercontent.com/FHIR/ig-registry/master/package-feeds.json");
-    for (JsonObject feed : JsonUtilities.objects(json, "feeds")) {
-      processFeed(list, JsonUtilities.str(feed, "url"));
+    json = JsonParser.parseObjectFromUrl("https://raw.githubusercontent.com/FHIR/ig-registry/master/package-feeds.json");
+    for (JsonObject feed : json.getJsonObjects("feeds")) {
+      processFeed(list, feed.asString("url"));
     }
     
     return list;
