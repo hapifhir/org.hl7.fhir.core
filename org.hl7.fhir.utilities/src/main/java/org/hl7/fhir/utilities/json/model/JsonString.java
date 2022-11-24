@@ -28,8 +28,7 @@ public class JsonString extends JsonPrimitive {
 
   @Override
   public String toString() {
-    throw new Error("This should not be called");
-    // return "\""+ Utilities.escapeJson(value)+"\"";
+    return "\""+ Utilities.escapeJson(value)+"\"";
   }
 
   @Override
