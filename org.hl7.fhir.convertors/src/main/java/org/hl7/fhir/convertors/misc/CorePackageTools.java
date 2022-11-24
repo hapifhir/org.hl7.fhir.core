@@ -7,10 +7,10 @@ import java.io.IOException;
 
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.json.JsonTrackingParser;
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 
-import com.google.gson.JsonObject;
 
 public class CorePackageTools {
 
@@ -33,7 +33,7 @@ public class CorePackageTools {
   private void buildXml(String json, String xml, String version) throws FHIRFormatError, IOException {
     for (File f : new File(Utilities.path(json, "package")).listFiles()) {
       if (f.getName().endsWith(".json")) {
-        JsonObject j = new JsonTrackingParser().parseJson(f);
+        JsonObject j = JsonParser.parseObject(f);
         if (j.has("resourceType")) {
           if ("1.4".equals(version)) {
             String n = f.getName();

@@ -62,15 +62,13 @@ import org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDependsOnCom
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.json.model.JsonArray;
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.model.JsonString;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.NpmPackageIndexBuilder;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
 import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 
 public class NPMPackageGenerator {
 
@@ -118,13 +116,13 @@ public class NPMPackageGenerator {
   public static NPMPackageGenerator subset(NPMPackageGenerator master, String destFile, String id, String name, Date date, boolean notForPublication) throws FHIRException, IOException {
     JsonObject p = master.packageJ.deepCopy();
     p.remove("name");
-    p.addProperty("name", id);
+    p.add("name", id);
     p.remove("type");
-    p.addProperty("type", PackageType.CONFORMANCE.getCode());    
+    p.add("type", PackageType.CONFORMANCE.getCode());    
     p.remove("title");
-    p.addProperty("title", name);
+    p.add("title", name);
     if (notForPublication) {
-      p.addProperty("notForPublication", true);
+      p.add("notForPublication", true);
     }
 
     return new NPMPackageGenerator(destFile, p, date, notForPublication);
@@ -142,17 +140,16 @@ public class NPMPackageGenerator {
     String dt = new SimpleDateFormat("yyyyMMddHHmmss").format(date);
     packageJ = npm;
     packageManifest = new JsonObject();
-    packageManifest.addProperty("version", npm.get("version").getAsString());
-    packageManifest.addProperty("date", dt);
+    packageManifest.set("version", npm.asString("version"));
+    packageManifest.set("date", dt);
     if (notForPublication) {
-      packageManifest.addProperty("notForPublication", true);
+      packageManifest.add("notForPublication", true);
     }
-    npm.addProperty("date", dt);
-    packageManifest.addProperty("name", npm.get("name").getAsString());
+    npm.set("date", dt);
+    packageManifest.set("name", npm.asString("name"));
     this.destFile = destFile;
     start();
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    String json = gson.toJson(npm);
+    String json = JsonParser.compose(npm, true);
     try {
       addFile(Category.RESOURCE, "package.json", json.getBytes("UTF-8"));
     } catch (UnsupportedEncodingException e) {
@@ -183,31 +180,31 @@ public class NPMPackageGenerator {
     }
 
     JsonObject npm = new JsonObject();
-    npm.addProperty("name", ig.getPackageId());
-    npm.addProperty("version", ig.getVersion());
+    npm.add("name", ig.getPackageId());
+    npm.add("version", ig.getVersion());
     igVersion = ig.getVersion();
-    npm.addProperty("tools-version", ToolsVersion.TOOLS_VERSION);
-    npm.addProperty("type", kind.getCode());
-    npm.addProperty("date", dt);
+    npm.add("tools-version", ToolsVersion.TOOLS_VERSION);
+    npm.add("type", kind.getCode());
+    npm.add("date", dt);
     if (ig.hasLicense()) {
-      npm.addProperty("license", ig.getLicense().toCode());
+      npm.add("license", ig.getLicense().toCode());
     }
-    npm.addProperty("canonical", canonical);
+    npm.add("canonical", canonical);
     if (notForPublication) {
-      npm.addProperty("notForPublication", true);
+      npm.add("notForPublication", true);
     }
-    npm.addProperty("url", web);
+    npm.add("url", web);
     if (ig.hasTitle()) {
-      npm.addProperty("title", ig.getTitle());
+      npm.add("title", ig.getTitle());
     }
     if (ig.hasDescription()) {
-      npm.addProperty("description", ig.getDescription()+ " (built "+dtHuman+timezone()+")");
+      npm.add("description", ig.getDescription()+ " (built "+dtHuman+timezone()+")");
     }
     JsonArray vl = new JsonArray();
     
     npm.add("fhirVersions", vl);
     for (String v : fhirVersion) { 
-      vl.add(new JsonPrimitive(v));
+      vl.add(new JsonString(v));
     }
     
     if (kind != PackageType.CORE) {
@@ -216,15 +213,15 @@ public class NPMPackageGenerator {
       for (String v : fhirVersion) { 
         String vp = packageForVersion(v);
         if (vp != null ) {
-          dep.addProperty(vp, v);
+          dep.add(vp, v);
         }
       }
       for (ImplementationGuideDependsOnComponent d : ig.getDependsOn()) {
-        dep.addProperty(d.getPackageId(), d.getVersion());
+        dep.add(d.getPackageId(), d.getVersion());
       }
     }
     if (ig.hasPublisher()) {
-      npm.addProperty("author", ig.getPublisher());
+      npm.add("author", ig.getPublisher());
     }
     JsonArray m = new JsonArray();
     for (ContactDetail t : ig.getContact()) {
@@ -233,23 +230,22 @@ public class NPMPackageGenerator {
       if (t.hasName() & (email != null || url != null)) {
         JsonObject md = new JsonObject();
         m.add(md);
-        md.addProperty("name", t.getName());
+        md.add("name", t.getName());
         if (email != null)
-          md.addProperty("email", email);
+          md.add("email", email);
         if (url != null)
-          md.addProperty("url", url);
+          md.add("url", url);
       }
     }
     if (m.size() > 0)
       npm.add("maintainers", m);
     if (ig.getManifest().hasRendering())
-      npm.addProperty("homepage", ig.getManifest().getRendering());
+      npm.add("homepage", ig.getManifest().getRendering());
     JsonObject dir = new JsonObject();
     npm.add("directories", dir);
-    dir.addProperty("lib", "package");
-    dir.addProperty("example", "example");
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    String json = gson.toJson(npm);
+    dir.add("lib", "package");
+    dir.add("example", "example");
+    String json = JsonParser.compose(npm, true);
     try {
       addFile(Category.RESOURCE, "package.json", json.getBytes("UTF-8"));
     } catch (UnsupportedEncodingException e) {
@@ -257,14 +253,14 @@ public class NPMPackageGenerator {
     packageJ = npm;
 
     packageManifest = new JsonObject();
-    packageManifest.addProperty("version", ig.getVersion());
+    packageManifest.add("version", ig.getVersion());
     JsonArray fv = new JsonArray();
     for (String v : fhirVersion) {
       fv.add(v);
     }
     packageManifest.add("fhirVersion", fv);
-    packageManifest.addProperty("date", dt);
-    packageManifest.addProperty("name", ig.getPackageId());
+    packageManifest.add("date", dt);
+    packageManifest.add("name", ig.getPackageId());
 
   }
 
@@ -380,8 +376,7 @@ public class NPMPackageGenerator {
     OutputStream.close();
     TextFile.bytesToFile(OutputStream.toByteArray(), destFile);
     // also, for cache management on current builds, generate a little manifest
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    String json = gson.toJson(packageManifest);
+    String json = JsonParser.compose(packageManifest, true);
     TextFile.stringToFile(json, Utilities.changeFileExt(destFile, ".manifest.json"), false);
   }
 

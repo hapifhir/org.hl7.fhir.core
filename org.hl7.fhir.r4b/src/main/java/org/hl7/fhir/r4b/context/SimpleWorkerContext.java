@@ -216,7 +216,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   public static SimpleWorkerContext fromPackage(NpmPackage pi, IContextResourceLoader loader) throws FileNotFoundException, IOException, FHIRException {
     SimpleWorkerContext res = new SimpleWorkerContext();
     res.setAllowLoadingDuplicates(true);
-    res.version = pi.getNpm().get("version").getAsString();
+    res.version = pi.getNpm().asString("version");
     res.loadFromPackage(pi, loader);
     res.finishLoading();
     return res;

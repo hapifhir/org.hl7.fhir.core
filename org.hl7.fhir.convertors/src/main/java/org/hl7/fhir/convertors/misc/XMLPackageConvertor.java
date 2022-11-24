@@ -5,11 +5,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Map.Entry;
 
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.model.JsonProperty;
 import org.hl7.fhir.utilities.npm.NpmPackage;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
 
 public class XMLPackageConvertor {
 
@@ -26,13 +24,13 @@ public class XMLPackageConvertor {
           System.out.println("Package " + f.getAbsolutePath());
           NpmPackage p = NpmPackage.fromPackage(new FileInputStream(f));
           if (p.getNpm().has("dependencies")) {
-            JsonObject dep = p.getNpm().getAsJsonObject("dependencies");
-            if (dep.entrySet().isEmpty()) {
+            JsonObject dep = p.getNpm().getJsonObject("dependencies");
+            if (dep.getProperties().isEmpty()) {
               System.out.println("  Dependencies: none");
             } else {
               System.out.println("  Dependencies:");
-              for (Entry<String, JsonElement> e : dep.entrySet()) {
-                System.out.println("    " + e.getKey() + ": " + e.getValue().getAsString());
+              for (JsonProperty e : dep.getProperties()) {
+                System.out.println("    " + e.getName() + ": " + e.getValue().toString());
               }
             }
           } else {

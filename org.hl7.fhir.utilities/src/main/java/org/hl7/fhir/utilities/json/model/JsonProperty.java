@@ -49,5 +49,10 @@ public class JsonProperty {
   public void setUnquotedValue(boolean unquotedValue) {
     this.unquotedValue = unquotedValue;
   }
+
+  @Override
+  public String toString() {
+    return "\""+name+"\" : "+value.toString();
+  }
   
 }

@@ -1,14 +1,15 @@
 package org.hl7.fhir.utilities.i18n;
 
-import com.ibm.icu.text.PluralRules;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
+
+import com.ibm.icu.text.PluralRules;
 
 public class ICU4JTests {
 

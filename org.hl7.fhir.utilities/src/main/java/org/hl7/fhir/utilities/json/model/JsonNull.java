@@ -6,7 +6,7 @@ public class JsonNull extends JsonPrimitive {
     return JsonElementType.NULL;
   }
 
-
+  @Override
   public String getValue() {
     return "null";
   }
@@ -14,5 +14,15 @@ public class JsonNull extends JsonPrimitive {
   @Override
   public String toString() {
     return getValue();
+  }
+    
+  @Override
+  protected JsonElement copy(JsonElement other) {
+    return this;
+  }
+  
+  @Override
+  protected JsonElement make() {
+    return new JsonNull();
   }
 }

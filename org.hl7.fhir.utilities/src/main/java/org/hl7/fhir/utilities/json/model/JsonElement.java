@@ -45,4 +45,71 @@ public abstract class JsonElement {
   public boolean hasComments() {
     return comments != null && !comments.isEmpty();
   }
+  
+  public JsonElement deepCopy() {
+    return make().copy(this);
+  }
+  
+  protected abstract JsonElement copy(JsonElement jsonElement);
+  protected abstract JsonElement make();
+  
+  public boolean isJsonObject() {
+    return elementType() == JsonElementType.OBJECT;
+  }
+  
+  public boolean isJsonArray() {
+    return elementType() == JsonElementType.ARRAY;
+  }
+  
+  public boolean isJsonPrimitive() {
+    return isJsonBoolean() || isJsonString() || isJsonNull() || isJsonNumber();
+  }
+
+  public boolean isJsonBoolean() {
+    return elementType() == JsonElementType.BOOLEAN;
+  }
+
+  public boolean isJsonString() {
+    return elementType() == JsonElementType.STRING;
+  }
+
+  public boolean isJsonNumber() {
+    return elementType() == JsonElementType.NUMBER;
+  }
+
+  public boolean isJsonNull() {
+    return elementType() == JsonElementType.NULL;
+  }
+
+  public JsonObject asJsonObject() {
+    return isJsonObject() ? (JsonObject) this : null;
+  }
+
+  public JsonArray asJsonArray() {
+    return isJsonArray() ? (JsonArray) this : null;
+  }
+  
+  public JsonPrimitive asJsonPrimitive() {
+    return isJsonPrimitive() ? (JsonPrimitive) this : null;
+  }
+
+  public JsonBoolean asJsonBoolean() {
+    return isJsonBoolean() ? (JsonBoolean) this : null;
+  }
+
+  public JsonString asJsonString() {
+    return isJsonString() ? (JsonString) this : null;
+  }
+
+  public JsonNumber asJsonNumber() {
+    return isJsonNumber() ? (JsonNumber) this : null;
+  }
+
+  public JsonNull asJsonNull() {
+    return isJsonNull() ? (JsonNull) this : null;
+  }
+
+  public String asString() {
+    return isJsonPrimitive() ? ((JsonPrimitive) this).getValue() : null;
+  }
 }

@@ -12,10 +12,11 @@ import java.util.Map;
 
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.json.model.JsonArray;
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
 
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+
 
 /**
  * intenral use only - set the file name to edit in main(), and fill out the edit routine
@@ -74,14 +75,14 @@ public class PackageHacker {
   }
 
   private String nice(JsonObject json) {
-    return new GsonBuilder().setPrettyPrinting().create().toJson(json);
+    return JsonParser.compose(json, true);
   }
 
   private void change(JsonObject npm) throws FileNotFoundException, IOException {
 //    fixVersions(npm);
 //    npm.remove("notForPublication");
     npm.remove("url");
-    npm.addProperty("url", "https://hl7chile.cl/fhir/ig/CoreCL/1.7.0");
+    npm.add("url", "https://hl7chile.cl/fhir/ig/CoreCL/1.7.0");
 //    npm.remove("name");
 //    npm.addProperty("name", "hl7.fhir.uv.smart-app-launch");
 //    npm.remove("canonical");
@@ -128,7 +129,7 @@ public class PackageHacker {
 
   private void setProperty(JsonObject npm, String name, String value) {
     npm.remove("homepage");
-    npm.addProperty("homepage", "http://hl7.org/fhir");    
+    npm.add("homepage", "http://hl7.org/fhir");    
   }
 
   private void fixNames(Map<String, byte[]> content) {
