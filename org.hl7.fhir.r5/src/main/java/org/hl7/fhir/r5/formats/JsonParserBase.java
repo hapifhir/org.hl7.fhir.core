@@ -218,8 +218,6 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
     json.finish();
     osw.flush();
   }
-    
-
   
   /* -- json routines --------------------------------------------------- */
 
@@ -227,14 +225,14 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
   private boolean htmlPretty;
   
   private JsonObject loadJson(InputStream input) throws JsonSyntaxException, IOException {
-    return JsonTrackingParser.parse(TextFile.streamToString(input), null, allowUnknownContent, allowComments);
-    // return parser.parse(TextFile.streamToString(input)).getAsJsonObject();
+    // the GSON parser is the fastest, but the least robust 
+    if (allowComments || allowUnknownContent) {
+      return JsonTrackingParser.parse(TextFile.streamToString(input), null, allowUnknownContent, allowComments);      
+    } else {
+      return (JsonObject) com.google.gson.JsonParser.parseString(TextFile.streamToString(input));
+    }
   }
   
-//  private JsonObject loadJson(String input) {
-//    return parser.parse(input).getAsJsonObject();
-//  }
-//  
   protected void parseElementProperties(JsonObject json, Element e) throws IOException, FHIRFormatError {
     if (json != null && json.has("id"))
       e.setId(json.get("id").getAsString());
