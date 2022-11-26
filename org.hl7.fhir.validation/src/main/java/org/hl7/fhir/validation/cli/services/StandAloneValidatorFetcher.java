@@ -30,12 +30,11 @@ import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.VersionUtilities.VersionURLInfo;
-import org.hl7.fhir.utilities.json.JsonTrackingParser;
-import org.hl7.fhir.utilities.json.JsonUtilities;
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 
-import com.google.gson.JsonObject;
 
 public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IValidationPolicyAdvisor, IWorkerContextManager.ICanonicalResourceLocator {
 
@@ -166,9 +165,9 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
     if (mappingsUris.isEmpty()) {
       JsonObject json;
       try {
-        json = JsonTrackingParser.fetchJson("http://hl7.org/fhir/mappingspaces.json");
-        for (JsonObject ms : JsonUtilities.objects(json, "spaces")) {
-          mappingsUris.add(JsonUtilities.str(ms, "url"));
+        json = JsonParser.parseObjectFromUrl("http://hl7.org/fhir/mappingspaces.json");
+        for (JsonObject ms : json.getJsonObjects("spaces")) {
+          mappingsUris.add(ms.asString("url"));
         }
       } catch (IOException e) {
         // frozen R4 list
