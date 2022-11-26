@@ -7,13 +7,13 @@ import org.hl7.fhir.utilities.json.JsonException;
 
 public abstract class JsonElement {
 
-  private List<String> comments;
+  private List<JsonComment> comments;
   private JsonLocationData start;
   private JsonLocationData end;
   
-  public abstract JsonElementType elementType();
+  public abstract JsonElementType type();
 
-  public List<String> getComments() {
+  public List<JsonComment> getComments() {
     if (comments == null ) {
       comments = new ArrayList<>();
     }
@@ -54,11 +54,11 @@ public abstract class JsonElement {
   protected abstract JsonElement make();
   
   public boolean isJsonObject() {
-    return elementType() == JsonElementType.OBJECT;
+    return type() == JsonElementType.OBJECT;
   }
   
   public boolean isJsonArray() {
-    return elementType() == JsonElementType.ARRAY;
+    return type() == JsonElementType.ARRAY;
   }
   
   public boolean isJsonPrimitive() {
@@ -66,19 +66,19 @@ public abstract class JsonElement {
   }
 
   public boolean isJsonBoolean() {
-    return elementType() == JsonElementType.BOOLEAN;
+    return type() == JsonElementType.BOOLEAN;
   }
 
   public boolean isJsonString() {
-    return elementType() == JsonElementType.STRING;
+    return type() == JsonElementType.STRING;
   }
 
   public boolean isJsonNumber() {
-    return elementType() == JsonElementType.NUMBER;
+    return type() == JsonElementType.NUMBER;
   }
 
   public boolean isJsonNull() {
-    return elementType() == JsonElementType.NULL;
+    return type() == JsonElementType.NULL;
   }
 
   public JsonObject asJsonObject() {
