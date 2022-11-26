@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Stack;
 
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.json.model.JsonComment;
 import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonLocationData;
 
@@ -46,7 +47,7 @@ public class JsonLexer {
   private StringBuilder b = new StringBuilder();
   private boolean allowComments;
   private boolean allowUnquotedStrings;
-  private List<String> comments = new ArrayList<>();
+  private List<JsonComment> comments = new ArrayList<>();
   private boolean isUnquoted;
 
   public JsonLexer(String source, boolean allowComments, boolean allowUnquotedStrings) throws IOException {
@@ -166,6 +167,7 @@ public class JsonLexer {
     do {
       ch = getNextChar();
       if (allowComments && ch == '/') {
+        JsonLocationData start = location.prev();
         char ch1 = getNextChar();
         if (ch1 == '/') {
           StringBuilder b = new StringBuilder();
@@ -174,7 +176,7 @@ public class JsonLexer {
             if (first) first = false; else b.append(ch);
             ch = getNextChar();
           }
-          comments.add(b.toString().trim());
+          comments.add(new JsonComment(b.toString().trim(), start, location.prev()));
         } else {
           push(ch1);
         }         
@@ -291,6 +293,11 @@ public class JsonLexer {
 
   public boolean isUnquoted() {
     return isUnquoted;
+  }
+
+  @Override
+  public String toString() {
+    return "JsonLexer [cursor=" + cursor + ", peek=" + peek + ", type=" + type + ", location=" + location.toString() + "]";
   }
 
 
