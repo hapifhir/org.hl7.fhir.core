@@ -12,4 +12,6 @@ public class JsonTrackingParserTests {
     JsonTrackingParser.parseJson("{\r\n  \"index-version\": 1,\r\n  \"files\": []\r\n}");
   }
   
+
+  
 }

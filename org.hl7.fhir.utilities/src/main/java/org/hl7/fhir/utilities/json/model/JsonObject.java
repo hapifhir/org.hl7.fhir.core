@@ -24,7 +24,9 @@ public class JsonObject extends JsonElement {
   public JsonObject add(String name, JsonElement value) throws JsonException {
     check(name != null, "Name is null");
     check(value != null, "Value is null");
-    check(get(name) == null, "Name '"+name+"' already exists");
+    if (get(name) != null) {
+      check(false, "Name '"+name+"' already exists (value = "+get(name).toString()+")");
+    }
     JsonProperty p = new JsonProperty(name, value);
     properties.add(p);
     propMap.put(name, p);
@@ -116,6 +118,15 @@ public class JsonObject extends JsonElement {
     return propMap.containsKey(name);
   }
 
+  public boolean has(String... names) {
+    for (String n : names) {
+      if (propMap.containsKey(n)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   public void remove(String name) {
     if (propMap.containsKey(name)) {
       propMap.remove(name);
@@ -125,6 +136,10 @@ public class JsonObject extends JsonElement {
   
   public List<JsonProperty> getProperties() {
     return properties;
+  }
+
+  public List<String> getNames() {
+    return Utilities.sorted(propMap.keySet());
   }
 
   public String str(String name) {
@@ -296,6 +311,14 @@ public class JsonObject extends JsonElement {
   @Override
   protected JsonElement make() {
     return new JsonObject();
+  }
+  
+  public JsonObject findByStringProp(String arrName, String prop, String value) {
+    for (JsonObject obj : getJsonObjects(arrName)) {
+      if (obj.has(prop) && value.equals(obj.asString(prop))) 
+        return obj;
+    }
+    return null;
   }
   
   public void merge(JsonObject source) {

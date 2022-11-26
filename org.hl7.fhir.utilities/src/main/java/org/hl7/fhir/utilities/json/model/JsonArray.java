@@ -79,7 +79,7 @@ public class JsonArray extends JsonElement implements Iterable<JsonElement> {
   }
 
 
-  public JsonObject findByStringProp(JsonArray arr, String prop, String value) {
+  public JsonObject findByStringProp(String prop, String value) {
     for (JsonObject obj : asJsonObjects()) {
       if (obj.has(prop) && value.equals(obj.asString(prop))) 
         return obj;
