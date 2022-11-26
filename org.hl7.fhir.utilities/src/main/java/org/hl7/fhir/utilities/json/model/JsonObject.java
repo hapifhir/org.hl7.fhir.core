@@ -16,8 +16,9 @@ public class JsonObject extends JsonElement {
   
   private List<JsonProperty> properties = new ArrayList<>();
   private Map<String, JsonProperty> propMap = new HashMap<>();
+  private boolean extraComma; // json5 support
   
-  public JsonElementType elementType() {
+  public JsonElementType type() {
     return JsonElementType.OBJECT;
   }
 
@@ -151,11 +152,11 @@ public class JsonObject extends JsonElement {
   }
 
   public boolean hasObject(String name) {
-    return propMap.containsKey(name) && propMap.get(name).getValue().elementType() == JsonElementType.OBJECT;
+    return propMap.containsKey(name) && propMap.get(name).getValue().type() == JsonElementType.OBJECT;
   }
 
   public boolean hasArray(String name) {
-    return propMap.containsKey(name) && propMap.get(name).getValue().elementType() == JsonElementType.ARRAY;
+    return propMap.containsKey(name) && propMap.get(name).getValue().type() == JsonElementType.ARRAY;
   }
 
   public boolean hasPrimitive(String name) {
@@ -163,19 +164,19 @@ public class JsonObject extends JsonElement {
   }
 
   public boolean hasString(String name) {
-    return propMap.containsKey(name) && propMap.get(name).getValue().elementType() == JsonElementType.STRING;
+    return propMap.containsKey(name) && propMap.get(name).getValue().type() == JsonElementType.STRING;
   }
 
   public boolean hasNumber(String name) {
-    return propMap.containsKey(name) && propMap.get(name).getValue().elementType() == JsonElementType.NUMBER;
+    return propMap.containsKey(name) && propMap.get(name).getValue().type() == JsonElementType.NUMBER;
   }
 
   public boolean hasBoolean(String name) {
-    return propMap.containsKey(name) && propMap.get(name).getValue().elementType() == JsonElementType.BOOLEAN;
+    return propMap.containsKey(name) && propMap.get(name).getValue().type() == JsonElementType.BOOLEAN;
   }
 
   public boolean hasNull(String name) {
-    return propMap.containsKey(name) && propMap.get(name).getValue().elementType() == JsonElementType.NULL;
+    return propMap.containsKey(name) && propMap.get(name).getValue().type() == JsonElementType.NULL;
   }
 
 
@@ -349,5 +350,14 @@ public class JsonObject extends JsonElement {
     b.append(" }");
     return b.toString();
   }
+
+  public boolean isExtraComma() {
+    return extraComma;
+  }
+
+  public void setExtraComma(boolean extraComma) {
+    this.extraComma = extraComma;
+  }
+  
   
 }
