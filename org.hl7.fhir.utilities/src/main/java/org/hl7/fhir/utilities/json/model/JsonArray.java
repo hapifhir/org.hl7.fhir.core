@@ -11,6 +11,7 @@ public class JsonArray extends JsonElement implements Iterable<JsonElement> {
   private List<JsonElement> items = new ArrayList<>();
   private List<Boolean> noCommas; // validator use
   private List<Boolean> unQuoted; // validator use
+  private boolean extraComma; // json5 support
   
   public List<String> asStrings() {
     List<String> list = new ArrayList<>();
@@ -36,7 +37,7 @@ public class JsonArray extends JsonElement implements Iterable<JsonElement> {
     return list;    
   }
   
-  public JsonElementType elementType() {
+  public JsonElementType type() {
     return JsonElementType.ARRAY;
   }
   
@@ -124,6 +125,14 @@ public class JsonArray extends JsonElement implements Iterable<JsonElement> {
     }
     b.append(" ]");
     return b.toString();
+  }
+
+  public boolean isExtraComma() {
+    return extraComma;
+  }
+
+  public void setExtraComma(boolean extraComma) {
+    this.extraComma = extraComma;
   }
   
 }

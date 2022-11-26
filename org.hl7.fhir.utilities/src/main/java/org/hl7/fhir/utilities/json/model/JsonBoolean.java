@@ -11,7 +11,7 @@ public class JsonBoolean extends JsonPrimitive {
   private JsonBoolean() {
   }
 
-  public JsonElementType elementType() {
+  public JsonElementType type() {
     return JsonElementType.BOOLEAN;
   }
 

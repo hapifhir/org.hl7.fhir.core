@@ -17,7 +17,7 @@ public class JsonNumber extends JsonPrimitive {
   private JsonNumber() {
   }
 
-  public JsonElementType elementType() {
+  public JsonElementType type() {
     return JsonElementType.NUMBER;
   }
 

@@ -13,7 +13,7 @@ public class JsonString extends JsonPrimitive {
   private JsonString() {
   }
 
-  public JsonElementType elementType() {
+  public JsonElementType type() {
     return JsonElementType.STRING;
   }
 

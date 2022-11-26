@@ -14,6 +14,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonBoolean;
+import org.hl7.fhir.utilities.json.model.JsonComment;
 import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonElementType;
 import org.hl7.fhir.utilities.json.model.JsonLocationData;
@@ -305,6 +306,7 @@ public class JsonParser {
 
   private void readObject(String path, JsonObject obj, boolean root) throws IOException, JsonException {
     while (!(itemType == ItemType.End) || (root && (itemType == ItemType.Eof))) {
+      obj.setExtraComma(false);
       switch (itemType) {
       case Object:
         JsonObject child = new JsonObject(); //(obj.path+'.'+ItemName);
@@ -374,6 +376,7 @@ public class JsonParser {
       }
       itemNoComma = false;
       endProperty = lexer.getLocation().copy();
+      obj.setExtraComma(lexer.getType() == TokenType.Comma);
       next();
     }
   }
@@ -382,6 +385,7 @@ public class JsonParser {
     boolean res = false;
     while (!((itemType == ItemType.End) || (root && (itemType == ItemType.Eof)))) {
       res  = true;
+      arr.setExtraComma(false);
       switch (itemType) {
       case Object:
         JsonObject obj  = new JsonObject(); // (arr.path+'['+inttostr(i)+']');
@@ -436,6 +440,7 @@ public class JsonParser {
       }
       itemNoComma = false;
       arr.setEnd(lexer.getLocation().copy());
+      arr.setExtraComma(lexer.getType() == TokenType.Comma);
       next();
     }
     return res;
@@ -465,7 +470,12 @@ public class JsonParser {
         lexer.getStates().pop();
       if (lexer.getType() == TokenType.Comma) {
         lexer.next();
-        parseProperty();
+        if (allowNoComma && (lexer.getType() == TokenType.CloseArray || lexer.getType() == TokenType.Close)) {
+          itemType = ItemType.End;
+          lexer.next();
+        } else {
+          parseProperty();
+        }
       } else if (lexer.getType() == TokenType.Close) {
         itemType = ItemType.End;
         lexer.next();
@@ -551,17 +561,17 @@ public class JsonParser {
     return b.toString();
   }
 
-  private void writeComments(StringBuilder b, List<String> comments, int indent) {
-    for (String s : comments) {
+  private void writeComments(StringBuilder b, List<JsonComment> comments, int indent) {
+    for (JsonComment s : comments) {
       b.append("// ");
-      b.append(s);
+      b.append(s.getContent());
       b.append("\n");
       b.append(Utilities.padLeft("", ' ', indent));
     }
   }
 
   private void write(StringBuilder b, JsonElement e, boolean pretty, int indent) {
-    switch (e.elementType()) {
+    switch (e.type()) {
     case ARRAY:
       JsonArray arr = (JsonArray) e;
       b.append("[");
@@ -573,7 +583,7 @@ public class JsonParser {
           if (i instanceof JsonPrimitive) {
             length = length + ((JsonPrimitive)i).toJson().length();
           }
-          if (i.elementType() == JsonElementType.ARRAY || i.elementType() == JsonElementType.OBJECT
+          if (i.type() == JsonElementType.ARRAY || i.type() == JsonElementType.OBJECT
               || i.hasComments()) { // 20 is a somewhat arbitrary cut off
             complex = true;
           }
