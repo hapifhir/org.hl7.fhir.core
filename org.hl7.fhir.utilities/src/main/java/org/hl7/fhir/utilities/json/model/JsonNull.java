@@ -2,7 +2,7 @@ package org.hl7.fhir.utilities.json.model;
 
 public class JsonNull extends JsonPrimitive {
   
-  public JsonElementType elementType() {
+  public JsonElementType type() {
     return JsonElementType.NULL;
   }
 

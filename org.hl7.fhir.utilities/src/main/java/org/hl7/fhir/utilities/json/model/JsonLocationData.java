@@ -50,7 +50,7 @@ public class JsonLocationData {
   public void back() {
     if (col == 1) {
       line--;
-      line = lastCol;
+      col = lastCol;
     } else {
       col--;
     }

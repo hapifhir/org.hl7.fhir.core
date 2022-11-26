@@ -172,6 +172,7 @@ import org.hl7.fhir.utilities.Utilities.DecimalStatus;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.VersionUtilities.VersionURLInfo;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -198,9 +199,6 @@ import org.hl7.fhir.validation.instance.utils.ResolvedReference;
 import org.hl7.fhir.validation.instance.utils.ResourceValidationTracker;
 import org.hl7.fhir.validation.instance.utils.ValidatorHostContext;
 import org.w3c.dom.Document;
-
-import com.google.gson.JsonObject;
-
 
 /**
  * Thinking of using this in a java program? Don't!
@@ -429,6 +427,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean wantCheckSnapshotUnchanged;
   private boolean noUnicodeBiDiControlChars;
   private HtmlInMarkdownCheck htmlInMarkdownCheck;
+  private boolean allowComments;
  
   private List<ImplementationGuide> igs = new ArrayList<>();
   private List<String> extensionDomains = new ArrayList<String>();
@@ -580,6 +579,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     this.allowExamples = value;
   }
 
+  public boolean isAllowComments() {
+    return allowComments;
+  }
+
+  public void setAllowComments(boolean allowComments) {
+    this.allowComments = allowComments;
+  }
+
   public boolean isCrumbTrails() {
     return crumbTrails;
   }
@@ -677,6 +684,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       ((XmlParser) parser).setAllowXsiLocation(allowXsiLocation);
     }
     parser.setupValidation(ValidationPolicy.EVERYTHING, errors);
+    if (parser instanceof XmlParser) {
+      ((XmlParser) parser).setAllowXsiLocation(allowXsiLocation);
+    }
+    if (parser instanceof JsonParser) {
+      ((JsonParser) parser).setAllowComments(allowComments);
+    }
     long t = System.nanoTime();
     List<NamedElement> list = null;
     try {
