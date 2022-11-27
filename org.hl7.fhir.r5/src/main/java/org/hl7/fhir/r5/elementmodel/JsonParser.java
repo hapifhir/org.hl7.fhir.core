@@ -54,6 +54,7 @@ import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonCreator;
 import org.hl7.fhir.r5.formats.JsonCreatorCanonical;
+import org.hl7.fhir.r5.formats.JsonCreatorDirect;
 import org.hl7.fhir.r5.formats.JsonCreatorGson;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
@@ -182,10 +183,10 @@ public class JsonParser extends ParserBase {
   }
 
   private void checkComments(JsonElement element, Element b, String path) throws FHIRFormatError {
-    if (element.hasComments()) {
+    if (element != null && element.hasComments()) {
       if (allowComments) {
         for (JsonComment c : element.getComments()) {
-          b.getFormatCommentsPre().add(c.getContent());
+          b.getComments().add(c.getContent());
         }
       } else {
         for (JsonComment c : element.getComments()) {
@@ -322,7 +323,7 @@ public class JsonParser extends ParserBase {
       }
       int c = 0;
       for (JsonElement am : arr) {
-        parseChildComplexInstance(npath+"["+c+"]", fpath+"["+c+"]", element, property, name, am);
+        parseChildComplexInstance(npath+"["+c+"]", fpath+"["+c+"]", element, property, name, am, c == 0 ? arr : null, path);
         c++;
       }
     } else if (property.isJsonKeyArray()) {
@@ -394,7 +395,7 @@ public class JsonParser extends ParserBase {
               if (propV.isPrimitive(pvl.getType(null))) {
                 parseChildPrimitiveInstance(n, pvl, pvl.getName(), npathV, fpathV, pv.getValue(), null);
               } else if (pv.getValue() instanceof JsonObject || pv.getValue() instanceof JsonNull) {
-                parseChildComplexInstance(npathV, fpathV, n, pvl, pvl.getName(), pv.getValue());
+                parseChildComplexInstance(npathV, fpathV, n, pvl, pvl.getName(), pv.getValue(), null, null);
               } else {
                 logError(ValidationMessage.NO_RULE_DATE, line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_OBJECT_NOT_, describe(pv.getValue())), IssueSeverity.ERROR);                       
               }
@@ -407,7 +408,7 @@ public class JsonParser extends ParserBase {
       if (property.isList()) {
         logError(ValidationMessage.NO_RULE_DATE, line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_ARRAY_NOT_, describe(e), name, path), IssueSeverity.ERROR);
       }
-      parseChildComplexInstance(npath, fpath, element, property, name, e);
+      parseChildComplexInstance(npath, fpath, element, property, name, e, null, null);
     }
   }
 
@@ -419,7 +420,7 @@ public class JsonParser extends ParserBase {
     return b.toString();
   }
 
-  private void parseChildComplexInstance(String npath, String fpath, Element element, Property property, String name, JsonElement e) throws FHIRException {
+  private void parseChildComplexInstance(String npath, String fpath, Element element, Property property, String name, JsonElement e, JsonElement commentContext, String commentPath) throws FHIRException {
     if (property.hasTypeSpecifier()) {
       FHIRPathEngine fpe = new FHIRPathEngine(context);
       String type = null;
@@ -454,6 +455,7 @@ public class JsonParser extends ParserBase {
       JsonObject child = (JsonObject) e;
       Element n = new Element(name, property).markLocation(line(child), col(child));
       n.setPath(fpath);
+      checkComments(commentContext, n, commentPath);        
       checkObject(child, n, npath);
       element.getChildren().add(n);
       if (property.isResource()) {
@@ -465,6 +467,7 @@ public class JsonParser extends ParserBase {
       // we create an element marked as a null element so we know something was present
       JsonNull child = (JsonNull) e;
       Element n = new Element(name, property).markLocation(line(child), col(child));
+      checkComments(commentContext, n, commentPath);        
       checkComments(child, n, fpath);
       n.setPath(fpath);
       element.getChildren().add(n);
@@ -675,13 +678,16 @@ public class JsonParser extends ParserBase {
     if (e.getPath() == null) {
       e.populatePaths(null);
     }
-    
+
     OutputStreamWriter osw = new OutputStreamWriter(stream, "UTF-8");
-    if (style == OutputStyle.CANONICAL)
+    if (style == OutputStyle.CANONICAL) {
       json = new JsonCreatorCanonical(osw);
-    else
-      json = new JsonCreatorGson(osw);
-    json.setIndent(style == OutputStyle.PRETTY ? "  " : "");
+    } else if (style == OutputStyle.PRETTY) {
+      json = new JsonCreatorDirect(osw, true, allowComments);
+    } else {
+      json = new JsonCreatorDirect(osw, false, allowComments);
+    }
+    checkComposeComments(e);
     json.beginObject();
     prop("resourceType", e.getType(), null);
     Set<String> done = new HashSet<String>();
@@ -693,12 +699,19 @@ public class JsonParser extends ParserBase {
     osw.flush();
   }
 
+  private void checkComposeComments(Element e) {
+    for (String s : e.getComments()) {
+      json.comment(s);
+    }
+  }
+
   public void compose(Element e, JsonCreator json) throws Exception {
     if (e.getPath() == null) {
       e.populatePaths(null);
     }
     
     this.json = json;
+    checkComposeComments(e);
     json.beginObject();
 
     prop("resourceType", e.getType(), linkResolver == null ? null : linkResolver.resolveProperty(e.getProperty()));
@@ -711,6 +724,7 @@ public class JsonParser extends ParserBase {
   }
 
   private void compose(String path, Element e, Set<String> done, Element child) throws IOException {
+    checkComposeComments(child);
     if (wantCompose(path, child)) {
       boolean isList = child.hasElementProperty() ? child.getElementProperty().isList() : child.getProperty().isList();
       if (!isList) {// for specials, ignore the cardinality of the stated type
