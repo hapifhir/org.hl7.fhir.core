@@ -30,6 +30,12 @@
         <byte_buddy_version>1.12.14</byte_buddy_version>
         <apache_poi_version>4.1.1</apache_poi_version>
         <saxon_he_version>9.8.0-15</saxon_he_version>
+        <maven.compiler.release>11</maven.compiler.release>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.testRelease>11</maven.compiler.testRelease>
+        <maven.compiler.testSource>11</maven.compiler.testSource>
+        <maven.compiler.testTarget>11</maven.compiler.testTarget>
     </properties>
 
     <name>HL7 Core Artifacts</name>
@@ -178,8 +184,11 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <release>11</release>
+                    <source>11</source>
+                    <target>11</target>
+                    <testSource>11</testSource>
+                    <testTarget>11</testTarget>
                     <forceJavacCompilerUse>false</forceJavacCompilerUse>
                     <encoding>UTF-8</encoding>
                     <!-- Allows running the compiler in a separate process. If false it uses the built in compiler,
@@ -382,34 +391,6 @@
     </build>
 
     <profiles>
-        <profile>
-            <id>surefire-java-8</id>
-            <activation>
-                <jdk>(,1.8]</jdk>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>${maven_surefire_version}</version>
-                        <configuration>
-                            <forkCount>1</forkCount>
-                            <reuseForks>true</reuseForks>
-                            <parallel>classes</parallel>
-                            <trimStackTrace>false</trimStackTrace>
-                            <testFailureIgnore>false</testFailureIgnore>
-                            <!-- We need to include the ${argLine} here so the Jacoco test arguments are included in the
-                             Surefire testing run. This may appear as an error in some IDEs, but it will run regardless.
-                            -->
-                            <!-- UseConcMarkSweepGC is required for Java 8 builds, or else garbage collection will fail
-                            for forked tests -->
-                            <argLine>${argLine} -Xmx4096m -XX:+UseConcMarkSweepGC</argLine>
-                            <redirectTestOutputToFile>false</redirectTestOutputToFile>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </build>
-    </profile>
     <profile>
         <id>surefire-java-9-plus</id>
         <activation>
