@@ -4756,7 +4756,11 @@ public class FHIRPathEngine {
             }
           }
         } else if (hostServices != null) {
-          res = hostServices.resolveReference(context.appInfo, s, refContext);
+          try {
+            res = hostServices.resolveReference(context.appInfo, s, refContext);
+          } catch (Exception e) {
+            res = null;
+          }
         }
         if (res != null) {
           result.add(res);
