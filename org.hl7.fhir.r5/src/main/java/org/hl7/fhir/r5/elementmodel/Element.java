@@ -1251,5 +1251,13 @@ public class Element extends Base {
     }
     
   }
+
+  public String fhirTypeRoot() {
+    if (fhirType().contains("/")) {
+      return fhirType().substring(fhirType().lastIndexOf("/")+1);
+    } else {
+      return fhirType();
+    }
+  }
   
 }
