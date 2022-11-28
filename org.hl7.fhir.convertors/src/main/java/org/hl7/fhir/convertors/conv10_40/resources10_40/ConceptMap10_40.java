@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv10_40.resources10_40;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.hl7.fhir.convertors.SourceElementComponentWrapper;
 import org.hl7.fhir.convertors.context.ConversionContext10_40;
@@ -313,7 +314,7 @@ public class ConceptMap10_40 {
 
   static public ConceptMapGroupComponent getGroup(ConceptMap map, String srcs, String tgts) {
     for (ConceptMapGroupComponent grp : map.getGroup()) {
-      if (grp.getSource().equals(srcs) && grp.getTarget().equals(tgts))
+      if (Objects.equals(grp.getSource(), srcs) && Objects.equals(grp.getTarget(), tgts))
         return grp;
     }
     ConceptMapGroupComponent grp = map.addGroup();
