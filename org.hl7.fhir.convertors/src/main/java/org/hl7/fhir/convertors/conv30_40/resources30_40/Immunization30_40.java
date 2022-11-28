@@ -31,9 +31,11 @@ public class Immunization30_40 {
     if (src.hasStatus())
       tgt.setStatusElement(convertImmunizationStatus(src.getStatusElement()));
     if (src.hasNotGiven()) {
-      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Immunization.ImmunizationStatus> notDoneElement = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Immunization.ImmunizationStatusEnumFactory());
-      notDoneElement.setValue(Immunization.ImmunizationStatus.NOTDONE);
-      tgt.setStatusElement(notDoneElement);
+      if (src.getNotGiven()) {
+        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Immunization.ImmunizationStatus> notDoneElement = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Immunization.ImmunizationStatusEnumFactory());
+        notDoneElement.setValue(Immunization.ImmunizationStatus.NOTDONE);
+        tgt.setStatusElement(notDoneElement);
+      }
       tgt.addExtension(getExtensionForNotGiven(src.getNotGiven()));
     }
     if (src.hasVaccineCode())

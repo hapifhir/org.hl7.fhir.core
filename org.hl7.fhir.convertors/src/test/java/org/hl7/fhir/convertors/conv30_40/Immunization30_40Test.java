@@ -4,8 +4,6 @@ import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_40;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -21,7 +19,7 @@ public class Immunization30_40Test {
 
   public static Stream<Arguments> getR4toDSTU3Arguments() {
     return Stream.of(
-      Arguments.of("test1", "/immunization_40-not-done.json", "/immunization_30_completed_notGiven.json")
+      Arguments.of("test1", "/immunization_40_not-done.json", "/immunization_30_completed_notGiven.json")
     );
   }
   @ParameterizedTest(name = "Test r4 -> dstu3 immunization conversions {0}")
@@ -41,7 +39,8 @@ public class Immunization30_40Test {
 
   public static Stream<Arguments> getDSTU3toR4Arguments() {
     return Stream.of(
-      Arguments.of("test1", "/immunization_30_completed_notGiven.json", "/immunization_40-not-done-notGiven.json")
+      Arguments.of("test1", "/immunization_30_completed_notGiven.json", "/immunization_40_not-done_notGiven.json"),
+      Arguments.of("test2", "/immunization_30_completed.json", "/immunization_40_completed_given.json")
     );
   }
 
@@ -60,9 +59,4 @@ public class Immunization30_40Test {
       "Failed comparing\n" + r4_parser.composeString(r4_expected) + "\nand\n" + r4_parser.composeString(r4_conv));
   }
 
-  @Test
-  @DisplayName("")
-  public void test3() throws IOException {
-
-  }
 }
