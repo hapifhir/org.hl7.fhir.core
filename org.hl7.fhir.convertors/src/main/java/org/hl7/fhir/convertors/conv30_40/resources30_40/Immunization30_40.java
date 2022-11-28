@@ -10,7 +10,10 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Bool
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Date30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.DateTime30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
+import org.hl7.fhir.dstu3.model.BooleanType;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.Extension;
+import org.hl7.fhir.r4.model.Immunization;
 
 public class Immunization30_40 {
 
@@ -23,6 +26,12 @@ public class Immunization30_40 {
       tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
     if (src.hasStatus())
       tgt.setStatusElement(convertImmunizationStatus(src.getStatusElement()));
+    if (src.hasNotGiven()) {
+      org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Immunization.ImmunizationStatus> notDoneElement = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Immunization.ImmunizationStatusEnumFactory());
+      notDoneElement.setValue(Immunization.ImmunizationStatus.NOTDONE);
+      tgt.setStatusElement(notDoneElement);
+      tgt.addExtension(getExtensionForNotGiven(src.getNotGiven()));
+    }
     if (src.hasVaccineCode())
       tgt.setVaccineCode(CodeableConcept30_40.convertCodeableConcept(src.getVaccineCode()));
     if (src.hasPatient())
@@ -57,6 +66,13 @@ public class Immunization30_40 {
     return tgt;
   }
 
+  public static org.hl7.fhir.r4.model.Extension getExtensionForNotGiven(boolean notGiven) {
+    org.hl7.fhir.r4.model.Extension extension = new  org.hl7.fhir.r4.model.Extension();
+    extension.setUrl("http://hl7.org/fhir/3.0/StructureDefinition/extension-Immunization.notGiven");
+    extension.setValue(new org.hl7.fhir.r4.model.BooleanType(notGiven));
+    return extension;
+  }
+
   public static org.hl7.fhir.dstu3.model.Immunization convertImmunization(org.hl7.fhir.r4.model.Immunization src) throws FHIRException {
     if (src == null)
       return null;
@@ -64,8 +80,13 @@ public class Immunization30_40 {
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
-    if (src.hasStatus())
+    if (src.hasStatus()) {
       tgt.setStatusElement(convertImmunizationStatus(src.getStatusElement()));
+      switch (src.getStatusElement().getValue()) {
+        case NOTDONE: tgt.setNotGivenElement(new BooleanType(true));
+          break;
+      }
+    }
     if (src.hasVaccineCode())
       tgt.setVaccineCode(CodeableConcept30_40.convertCodeableConcept(src.getVaccineCode()));
     if (src.hasPatient())
@@ -97,6 +118,8 @@ public class Immunization30_40 {
     for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation30_40.convertAnnotation(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
       tgt.getExplanation().addReason(CodeableConcept30_40.convertCodeableConcept(t));
+
+
     return tgt;
   }
 
@@ -131,6 +154,9 @@ public class Immunization30_40 {
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
     switch (src.getValue()) {
       case COMPLETED:
+        tgt.setValue(org.hl7.fhir.dstu3.model.Immunization.ImmunizationStatus.COMPLETED);
+        break;
+      case NOTDONE:
         tgt.setValue(org.hl7.fhir.dstu3.model.Immunization.ImmunizationStatus.COMPLETED);
         break;
       case ENTEREDINERROR:

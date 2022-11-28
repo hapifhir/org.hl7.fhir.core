@@ -31,7 +31,7 @@ public class Immunization30_40Test {
   @DisplayName("Test dstu3 -> r4 immunization conversion.")
   public void test2() throws IOException {
     InputStream dstu3_input = this.getClass().getResourceAsStream("/immunization_30.json");
-    InputStream r4_expected_output = this.getClass().getResourceAsStream("/immunization_40.json");
+    InputStream r4_expected_output = this.getClass().getResourceAsStream("/immunization_40-converted.json");
 
     org.hl7.fhir.dstu3.model.Immunization dstu3_actual = (org.hl7.fhir.dstu3.model.Immunization) new org.hl7.fhir.dstu3.formats.JsonParser().parse(dstu3_input);
     org.hl7.fhir.r4.model.Resource r4_conv = VersionConvertorFactory_30_40.convertResource(dstu3_actual, new BaseAdvisor_30_40(false));
