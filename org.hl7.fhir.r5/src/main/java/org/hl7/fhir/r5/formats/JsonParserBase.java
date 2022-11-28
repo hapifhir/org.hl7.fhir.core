@@ -183,11 +183,13 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
   @Override
   public void compose(OutputStream stream, Resource resource) throws IOException {
     OutputStreamWriter osw = new OutputStreamWriter(stream, "UTF-8");
-    if (style == OutputStyle.CANONICAL)
+    if (style == OutputStyle.CANONICAL) {
       json = new JsonCreatorCanonical(osw);
-    else
-      json = new JsonCreatorDirect(osw); // use this instead of Gson because this preserves decimal formatting
-    json.setIndent(style == OutputStyle.PRETTY ? "  " : "");
+    } else if (style == OutputStyle.PRETTY) {
+      json = new JsonCreatorDirect(osw, true, false);
+    } else {
+      json = new JsonCreatorDirect(osw, false, false); // use this instead of Gson because this preserves decimal formatting
+    }
     json.beginObject();
     composeResource(resource);
     json.endObject();
@@ -207,11 +209,13 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
   @Override
   public void compose(OutputStream stream, DataType type, String rootName) throws IOException {
     OutputStreamWriter osw = new OutputStreamWriter(stream, "UTF-8");
-    if (style == OutputStyle.CANONICAL)
+    if (style == OutputStyle.CANONICAL) {
       json = new JsonCreatorCanonical(osw);
-    else
-      json = new JsonCreatorDirect(osw);// use this instead of Gson because this preserves decimal formatting
-    json.setIndent(style == OutputStyle.PRETTY ? "  " : "");
+    } else if (style == OutputStyle.PRETTY) {
+      json = new JsonCreatorDirect(osw, true, false);
+    } else {
+      json = new JsonCreatorDirect(osw, false, false); // use this instead of Gson because this preserves decimal formatting
+    }
     json.beginObject();
     composeTypeInner(type);
     json.endObject();
