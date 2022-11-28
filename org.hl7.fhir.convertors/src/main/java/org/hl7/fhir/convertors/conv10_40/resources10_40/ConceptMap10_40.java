@@ -18,6 +18,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.CanonicalType;
 import org.hl7.fhir.r4.model.ConceptMap;
 import org.hl7.fhir.r4.model.ConceptMap.ConceptMapGroupComponent;
+import org.hl7.fhir.r4.model.Type;
 
 public class ConceptMap10_40 {
 
@@ -55,10 +56,14 @@ public class ConceptMap10_40 {
       tgt.setPurpose(src.getRequirements());
     if (src.hasCopyright())
       tgt.setCopyright(src.getCopyright());
-    org.hl7.fhir.r4.model.Type r = ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getSource());
-    tgt.setSource(r instanceof org.hl7.fhir.r4.model.Reference ? new CanonicalType(((org.hl7.fhir.r4.model.Reference) r).getReference()) : r);
-    r = ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getTarget());
-    tgt.setTarget(r instanceof org.hl7.fhir.r4.model.Reference ? new CanonicalType(((org.hl7.fhir.r4.model.Reference) r).getReference()) : r);
+    if (src.hasSource()) {
+      org.hl7.fhir.r4.model.Type r = ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getSource());
+      tgt.setSource(r instanceof org.hl7.fhir.r4.model.Reference ? new CanonicalType(((org.hl7.fhir.r4.model.Reference) r).getReference()) : r);
+    }
+    if (src.hasTarget()) {
+      Type r = ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getTarget());
+      tgt.setTarget(r instanceof org.hl7.fhir.r4.model.Reference ? new CanonicalType(((org.hl7.fhir.r4.model.Reference) r).getReference()) : r);
+    }
     for (org.hl7.fhir.dstu2.model.ConceptMap.SourceElementComponent t : src.getElement()) {
       List<SourceElementComponentWrapper<ConceptMap.SourceElementComponent>> ws = convertSourceElementComponent(t);
       for (SourceElementComponentWrapper<ConceptMap.SourceElementComponent> w : ws)
