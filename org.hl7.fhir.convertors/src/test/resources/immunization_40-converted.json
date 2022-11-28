@@ -5,6 +5,12 @@
     "status": "generated",
     "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">dummyDiv</div>"
   },
+  "extension":[
+    {
+      "url":"http://hl7.org/fhir/3.0/StructureDefinition/extension-Immunization.notGiven",
+      "valueBoolean":true
+    }
+  ],
   "status": "not-done",
   "vaccineCode": {
     "coding": [
