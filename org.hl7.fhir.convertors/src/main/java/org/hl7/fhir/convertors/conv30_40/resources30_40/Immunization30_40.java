@@ -15,7 +15,11 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.Immunization;
 
+
+
 public class Immunization30_40 {
+
+  public static final String NOT_GIVEN_EXTENSION_URL = "http://hl7.org/fhir/3.0/StructureDefinition/extension-Immunization.notGiven";
 
   public static org.hl7.fhir.r4.model.Immunization convertImmunization(org.hl7.fhir.dstu3.model.Immunization src) throws FHIRException {
     if (src == null)
@@ -68,7 +72,7 @@ public class Immunization30_40 {
 
   public static org.hl7.fhir.r4.model.Extension getExtensionForNotGiven(boolean notGiven) {
     org.hl7.fhir.r4.model.Extension extension = new  org.hl7.fhir.r4.model.Extension();
-    extension.setUrl("http://hl7.org/fhir/3.0/StructureDefinition/extension-Immunization.notGiven");
+    extension.setUrl(NOT_GIVEN_EXTENSION_URL);
     extension.setValue(new org.hl7.fhir.r4.model.BooleanType(notGiven));
     return extension;
   }
@@ -82,10 +86,13 @@ public class Immunization30_40 {
       tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
     if (src.hasStatus()) {
       tgt.setStatusElement(convertImmunizationStatus(src.getStatusElement()));
-      switch (src.getStatusElement().getValue()) {
-        case NOTDONE: tgt.setNotGivenElement(new BooleanType(true));
-          break;
-      }
+       if (src.getStatusElement().getValue() == Immunization.ImmunizationStatus.NOTDONE)
+         tgt.setNotGivenElement(new BooleanType(true));
+    }
+    if (src.hasExtension(NOT_GIVEN_EXTENSION_URL)) {
+      Extension notGivenExtension = src.getExtensionByUrl(NOT_GIVEN_EXTENSION_URL);
+      if (notGivenExtension.hasValue() && notGivenExtension.getValueAsPrimitive() instanceof org.hl7.fhir.r4.model.BooleanType)
+        tgt.setNotGivenElement(new org.hl7.fhir.dstu3.model.BooleanType());
     }
     if (src.hasVaccineCode())
       tgt.setVaccineCode(CodeableConcept30_40.convertCodeableConcept(src.getVaccineCode()));
@@ -154,8 +161,6 @@ public class Immunization30_40 {
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
     switch (src.getValue()) {
       case COMPLETED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Immunization.ImmunizationStatus.COMPLETED);
-        break;
       case NOTDONE:
         tgt.setValue(org.hl7.fhir.dstu3.model.Immunization.ImmunizationStatus.COMPLETED);
         break;
