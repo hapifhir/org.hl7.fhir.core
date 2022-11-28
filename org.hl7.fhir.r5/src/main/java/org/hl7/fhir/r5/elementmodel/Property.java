@@ -592,5 +592,10 @@ public class Property {
     return b.toString();
   }
 
+
+  public boolean hasJsonName() {
+    return definition.hasExtension(ToolingExtensions.EXT_JSON_NAME);
+  }
+
   
 }
