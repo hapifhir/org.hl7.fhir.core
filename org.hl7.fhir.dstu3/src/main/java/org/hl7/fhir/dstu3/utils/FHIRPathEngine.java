@@ -341,7 +341,7 @@ public class FHIRPathEngine {
     if (base != null)
       list.add(base);
     log = new StringBuilder();
-    return execute(new ExecutionContext(null, base != null && base.isResource() ? base : null, base, null, base), list, exp, true);
+    return execute(new ExecutionContext(null, base.isResource() ? base : null, base, null, base), list, exp, true);
   }
 
   /**
