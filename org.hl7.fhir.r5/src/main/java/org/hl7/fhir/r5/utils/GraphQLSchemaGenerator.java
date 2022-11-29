@@ -298,12 +298,12 @@ public class GraphQLSchemaGenerator {
       List<StringBuilder> list = new ArrayList<>();
       StringBuilder b = new StringBuilder();
       list.add(b);
-      b.append("type ");
-      b.append(sd.getName());
-      StructureDefinition sdp = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
-      if (sdp != null) {
+      b.append("interface ");
+      b.append(sd.getName() + "Base");
+      StructureDefinition baseSd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+      if (baseSd != null) {
         b.append(" implements ");
-        b.append(sdp.getType());
+        b.append(baseSd.getType() + "Base");
       }
       b.append(" {\r\n");
       ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
@@ -311,6 +311,17 @@ public class GraphQLSchemaGenerator {
       b.append("}");
       b.append("\r\n");
       b.append("\r\n");
+
+      b.append("type ");
+      b.append(sd.getName());
+      b.append(" implements ");
+      b.append(sd.getName() + "Base");
+      b.append(" {\r\n");
+      generateProperties(existingTypeNames, list, b, sd.getName(), sd, ed, "type", "");
+      b.append("}");
+      b.append("\r\n");
+      b.append("\r\n");
+
       for (StringBuilder bs : list) {
         writer.write(bs.toString());
       }
