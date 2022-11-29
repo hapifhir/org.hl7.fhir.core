@@ -1,12 +1,12 @@
 package org.hl7.fhir.utilities.tests.execution;
 
-import org.hl7.fhir.utilities.tests.execution.junit4.JUnit4TestExecutor;
-import org.hl7.fhir.utilities.tests.execution.junit5.JUnit5ModuleTestExecutor;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.hl7.fhir.utilities.tests.execution.junit4.JUnit4TestExecutor;
+import org.hl7.fhir.utilities.tests.execution.junit5.JUnit5ModuleTestExecutor;
+import org.junit.jupiter.api.Test;
 
 public class ModuleTestExecutorTests {
 

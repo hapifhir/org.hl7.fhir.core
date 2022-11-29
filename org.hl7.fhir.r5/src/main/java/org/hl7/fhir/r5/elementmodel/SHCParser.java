@@ -21,17 +21,15 @@ import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.json.JsonTrackingParser;
-import org.hl7.fhir.utilities.json.JsonTrackingParser.LocationData;
-import org.hl7.fhir.utilities.json.JsonUtilities;
+import org.hl7.fhir.utilities.json.model.JsonArray;
+import org.hl7.fhir.utilities.json.model.JsonElement;
+import org.hl7.fhir.utilities.json.model.JsonElementType;
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.model.JsonPrimitive;
+import org.hl7.fhir.utilities.json.model.JsonProperty;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 
 /**
  * this class is actually a smart health cards validator. 
@@ -51,7 +49,6 @@ import com.google.gson.JsonPrimitive;
 public class SHCParser extends ParserBase {
 
   private JsonParser jsonParser;
-  private Map<JsonElement, LocationData> map;
   private List<String> types = new ArrayList<>();
   
   public SHCParser(IWorkerContext context) {
@@ -65,16 +62,16 @@ public class SHCParser extends ParserBase {
     List<String> list = new ArrayList<>();
     String pfx = null;
     if (src.startsWith("{")) {
-      JsonObject json = JsonTrackingParser.parseJson(src);
+      JsonObject json = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(src);
       if (checkProperty(json, "$", "verifiableCredential", true, "Array")) {
        pfx = "verifiableCredential";
-       JsonArray arr = json.getAsJsonArray("verifiableCredential");
+       JsonArray arr = json.getJsonArray("verifiableCredential");
        int i = 0;
        for (JsonElement e : arr) {
          if (!(e instanceof JsonPrimitive)) {
-           logError(ValidationMessage.NO_RULE_DATE, line(e), col(e), "$.verifiableCredential["+i+"]", IssueType.STRUCTURE, "Wrong Property verifiableCredential in JSON Payload. Expected : String but found "+JsonUtilities.type(e), IssueSeverity.ERROR);                
+           logError(ValidationMessage.NO_RULE_DATE, line(e), col(e), "$.verifiableCredential["+i+"]", IssueType.STRUCTURE, "Wrong Property verifiableCredential in JSON Payload. Expected : String but found "+e.type().toName(), IssueSeverity.ERROR);                
          } else {
-           list.add(e.getAsString());
+           list.add(e.asString());
          }
          i++;
        }
@@ -95,14 +92,13 @@ public class SHCParser extends ParserBase {
         logError(ValidationMessage.NO_RULE_DATE, 1, 1, prefix+"JWT", IssueType.INVALID, "Unable to decode JWT token", IssueSeverity.ERROR);
         return res;      
       }
-      map = jwt.map;
 
       checkNamedProperties(jwt.getPayload(), prefix+"payload", "iss", "nbf", "vc");
       checkProperty(jwt.getPayload(), prefix+"payload", "iss", true, "String");
       logError(ValidationMessage.NO_RULE_DATE, 1, 1, prefix+"JWT", IssueType.INFORMATIONAL, "The FHIR Validator does not check the JWT signature "+
-          "(see https://demo-portals.smarthealth.cards/VerifierPortal.html or https://github.com/smart-on-fhir/health-cards-dev-tools) (Issuer = '"+jwt.getPayload().get("iss").getAsString()+"')", IssueSeverity.INFORMATION);
+          "(see https://demo-portals.smarthealth.cards/VerifierPortal.html or https://github.com/smart-on-fhir/health-cards-dev-tools) (Issuer = '"+jwt.getPayload().asString("iss")+"')", IssueSeverity.INFORMATION);
       checkProperty(jwt.getPayload(), prefix+"payload", "nbf", true, "Number");
-      JsonObject vc = jwt.getPayload().getAsJsonObject("vc");
+      JsonObject vc = jwt.getPayload().getJsonObject("vc");
       if (vc == null) {
         logError(ValidationMessage.NO_RULE_DATE, 1, 1, "JWT", IssueType.STRUCTURE, "Unable to find property 'vc' in the payload", IssueSeverity.ERROR);
         return res;
@@ -112,13 +108,13 @@ public class SHCParser extends ParserBase {
       if (!checkProperty(vc, path, "type", true, "Array")) {
         return res;
       }
-      JsonArray type = vc.getAsJsonArray("type");
+      JsonArray type = vc.getJsonArray("type");
       int i = 0;
       for (JsonElement e : type) {
-        if (!(e instanceof JsonPrimitive)) {
-          logError(ValidationMessage.NO_RULE_DATE, line(e), col(e), path+".type["+i+"]", IssueType.STRUCTURE, "Wrong Property Type in JSON Payload. Expected : String but found "+JsonUtilities.type(e), IssueSeverity.ERROR);
+        if (e.type() != JsonElementType.STRING) {
+          logError(ValidationMessage.NO_RULE_DATE, line(e), col(e), path+".type["+i+"]", IssueType.STRUCTURE, "Wrong Property Type in JSON Payload. Expected : String but found "+e.type().toName(), IssueSeverity.ERROR);
         } else {
-          types.add(e.getAsString());
+          types.add(e.asString());
         }
         i++;
       }
@@ -129,21 +125,21 @@ public class SHCParser extends ParserBase {
       if (!checkProperty(vc, path, "credentialSubject", true, "Object")) {
         return res;
       }
-      JsonObject cs = vc.getAsJsonObject("credentialSubject");
+      JsonObject cs = vc.getJsonObject("credentialSubject");
       path = path+".credentialSubject";
       if (!checkProperty(cs, path, "fhirVersion", true, "String")) {
         return res;
       }
       JsonElement fv = cs.get("fhirVersion");
-      if (!VersionUtilities.versionsCompatible(context.getVersion(), fv.getAsString())) {
-        logError(ValidationMessage.NO_RULE_DATE, line(fv), col(fv), path+".fhirVersion", IssueType.STRUCTURE, "Card claims to be of version "+fv.getAsString()+", cannot be validated against version "+context.getVersion(), IssueSeverity.ERROR);
+      if (!VersionUtilities.versionsCompatible(context.getVersion(), fv.asString())) {
+        logError(ValidationMessage.NO_RULE_DATE, line(fv), col(fv), path+".fhirVersion", IssueType.STRUCTURE, "Card claims to be of version "+fv.asString()+", cannot be validated against version "+context.getVersion(), IssueSeverity.ERROR);
         return res;
       }
       if (!checkProperty(cs, path, "fhirBundle", true, "Object")) {
         return res;
       }
       // ok. all checks passed, we can now validate the bundle
-      Element e = jsonParser.parse(cs.getAsJsonObject("fhirBundle"), map);
+      Element e = jsonParser.parse(cs.getJsonObject("fhirBundle"));
       if (e != null) {
         res.add(new NamedElement(path, e));
       }
@@ -170,7 +166,7 @@ public class SHCParser extends ParserBase {
   private boolean checkProperty(JsonObject obj, String path, String name, boolean required, String type) {
     JsonElement e = obj.get(name);
     if (e != null) {
-      String t = JsonUtilities.type(e);
+      String t = e.type().toName();
       if (!type.equals(t)) {
         logError(ValidationMessage.NO_RULE_DATE, line(e), col(e), path+"."+name, IssueType.STRUCTURE, "Wrong Property Type in JSON Payload. Expected : "+type+" but found "+t, IssueSeverity.ERROR);                
       } else {
@@ -185,25 +181,19 @@ public class SHCParser extends ParserBase {
   }
 
   private void checkNamedProperties(JsonObject obj, String path, String... names) {
-    for (Entry<String, JsonElement> e : obj.entrySet()) {
-      if (!Utilities.existsInList(e.getKey(), names)) {
-        logError(ValidationMessage.NO_RULE_DATE, line(e.getValue()), col(e.getValue()), path+"."+e.getKey(), IssueType.STRUCTURE, "Unknown Property in JSON Payload", IssueSeverity.WARNING);                
+    for (JsonProperty e : obj.getProperties()) {
+      if (!Utilities.existsInList(e.getName(), names)) {
+        logError(ValidationMessage.NO_RULE_DATE, line(e.getValue()), col(e.getValue()), path+"."+e.getName(), IssueType.STRUCTURE, "Unknown Property in JSON Payload", IssueSeverity.WARNING);                
       }
     }
   }
   
   private int line(JsonElement e) {
-    if (map == null|| !map.containsKey(e))
-      return -1;
-    else
-      return map.get(e).getLine();
+    return e.getStart().getLine();
   }
 
   private int col(JsonElement e) {
-    if (map == null|| !map.containsKey(e))
-      return -1;
-    else
-      return map.get(e).getCol();
+    return e.getStart().getCol();
   }
 
 
@@ -218,7 +208,6 @@ public class SHCParser extends ParserBase {
 
     private JsonObject header;
     private JsonObject payload;
-    public Map<JsonElement, LocationData> map = new HashMap<>();
     
     public JsonObject getHeader() {
       return header;
@@ -273,11 +262,11 @@ public class SHCParser extends ParserBase {
       throw new FHIRException("The input is not a valid base 64 encoded string.", e);
     }
     JWT res = new JWT();
-    res.header = JsonTrackingParser.parseJson(headerJson);
-    if ("DEF".equals(JsonUtilities.str(res.header, "zip"))) {
+    res.header = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(headerJson);
+    if ("DEF".equals(res.header.asString("zip"))) {
       payloadJson = inflate(payloadJson);
     }
-    res.payload = JsonTrackingParser.parse(TextFile.bytesToString(payloadJson), res.map, true);
+    res.payload = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(TextFile.bytesToString(payloadJson), true);
     return res;
   }
   

@@ -281,7 +281,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     case "uuid" :return  addCharacteristicsForType(set, "has-length", "can-bind");
     case "xhtml" :return  addCharacteristicsForType(set);
     case "Address" :return  addCharacteristicsForType(set, "do-translations");
-    case "Age" : return addCharacteristicsForType(set, "has-range", "is-continuous");
+    case "Age" : return addCharacteristicsForType(set, "has-range", "is-continuous", "can-bind", "has-units");
     case "Annotation" :return  addCharacteristicsForType(set);
     case "Attachment" :return  addCharacteristicsForType(set, "has-size", "do-translations");
     case "CodeableConcept" :return  addCharacteristicsForType(set, "can-bind", "do-translations");
@@ -289,14 +289,14 @@ public class StructureDefinitionValidator extends BaseValidator {
     case "Coding" : return addCharacteristicsForType(set, "can-bind", "do-translations");
     case "ContactPoint" :return  addCharacteristicsForType(set);
     case "Count" :return  addCharacteristicsForType(set, "has-range");
-    case "Distance" :return  addCharacteristicsForType(set, "has-range", "is-continuous");
-    case "Duration" : return addCharacteristicsForType(set, "has-range", "is-continuous");
+    case "Distance" :return  addCharacteristicsForType(set, "has-range", "is-continuous", "can-bind", "has-units");
+    case "Duration" : return addCharacteristicsForType(set, "has-range", "is-continuous", "can-bind", "has-units");
     case "HumanName" :return  addCharacteristicsForType(set);
     case "Identifier" : return addCharacteristicsForType(set);
     case "Money" : return addCharacteristicsForType(set, "has-range", "is-continuous");
     case "Period" : return addCharacteristicsForType(set);
     case "Quantity" :return  addCharacteristicsForType(set, "has-range", "is-continuous", "can-bind", "has-units");
-    case "Range" :return  addCharacteristicsForType(set, "has-units");
+    case "Range" :return  addCharacteristicsForType(set, "has-units", "can-bind", "has-units");
     case "Ratio" :return  addCharacteristicsForType(set, "has-units");
     case "RatioRange" : return addCharacteristicsForType(set, "has-units");
     case "Reference" : return addCharacteristicsForType(set, "has-target");
@@ -316,8 +316,8 @@ public class StructureDefinitionValidator extends BaseValidator {
     case "Resource" :return  addCharacteristicsForType(set);
     case "Extension" :return  addCharacteristicsForType(set, "can-bind");
     case "Narrative" :return  addCharacteristicsForType(set);
-    case "MoneyQuantity" :return  addCharacteristicsForType(set);
-    case "SimpleQuantity" :return  addCharacteristicsForType(set);
+    case "MoneyQuantity" :return  addCharacteristicsForType(set, "has-range", "is-continuous", "can-bind", "has-units");
+    case "SimpleQuantity" :return  addCharacteristicsForType(set, "has-range", "is-continuous", "can-bind", "has-units");
     case "MarketingStatus" :return  addCharacteristicsForType(set);
     case "ExtendedContactDetail" :return  addCharacteristicsForType(set);
     case "VirtualServiceDetail" :return  addCharacteristicsForType(set);

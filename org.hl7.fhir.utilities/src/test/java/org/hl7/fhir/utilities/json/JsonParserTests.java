@@ -26,9 +26,14 @@ public class JsonParserTests {
   public void testComments2() throws IOException, JsonException {
     JsonObject obj = JsonParser.parseObject("{\n  // some comment \n  \"n1\" : \"v1\"\n}\n", true);
     Assertions.assertEquals(0, obj.getComments().size());
-    JsonString c = obj.getString("n1");
+    JsonString c = obj.getJsonString("n1");
     Assertions.assertEquals(1, c.getComments().size());
-    Assertions.assertEquals("some comment", c.getComments().get(0));
+    Assertions.assertEquals("some comment", c.getComments().get(0).getContent());
+    Assertions.assertEquals(2, c.getComments().get(0).getStart().getLine());
+    Assertions.assertEquals(3, c.getComments().get(0).getStart().getCol());
+    Assertions.assertEquals(2, c.getComments().get(0).getEnd().getLine());
+    Assertions.assertEquals(19, c.getComments().get(0).getEnd().getCol());
+    Assertions.assertEquals("some comment", c.getComments().get(0).getContent());
     Assertions.assertEquals("{\"n1\":\"v1\"}", JsonParser.compose(obj, false));
     Assertions.assertEquals("{\n  // some comment\n  \"n1\" : \"v1\"\n}\n", JsonParser.compose(obj, true));
   }
@@ -37,8 +42,12 @@ public class JsonParserTests {
   public void testComments3() throws IOException, JsonException {
     JsonObject obj = JsonParser.parseObject("// some comment\n{\n  \"n1\" : \"v1\"\n}\n", true);
     Assertions.assertEquals(1, obj.getComments().size());
-    Assertions.assertEquals("some comment", obj.getComments().get(0));
-    JsonString c = obj.getString("n1");
+    Assertions.assertEquals("some comment", obj.getComments().get(0).getContent());
+    Assertions.assertEquals(1, obj.getComments().get(0).getStart().getLine());
+    Assertions.assertEquals(1, obj.getComments().get(0).getStart().getCol());
+    Assertions.assertEquals(1, obj.getComments().get(0).getEnd().getLine());
+    Assertions.assertEquals(16, obj.getComments().get(0).getEnd().getCol());
+    JsonString c = obj.getJsonString("n1");
     Assertions.assertEquals(0, c.getComments().size());
     Assertions.assertEquals("{\"n1\":\"v1\"}", JsonParser.compose(obj, false));
     Assertions.assertEquals("// some comment\n{\n  \"n1\" : \"v1\"\n}\n", JsonParser.compose(obj, true));
@@ -477,10 +486,10 @@ public class JsonParserTests {
   @Test
   public void testElementBool() throws IOException, JsonException {
     JsonElement e = JsonParser.parse("true");
-    Assertions.assertEquals(JsonElementType.BOOLEAN, e.elementType());
+    Assertions.assertEquals(JsonElementType.BOOLEAN, e.type());
     Assertions.assertEquals(true, ((JsonBoolean) e).isValue());
     e = JsonParser.parse("// comment\nfalse", true);
-    Assertions.assertEquals(JsonElementType.BOOLEAN, e.elementType());
+    Assertions.assertEquals(JsonElementType.BOOLEAN, e.type());
     Assertions.assertEquals(false, ((JsonBoolean) e).isValue());
     Assertions.assertEquals("false", JsonParser.compose(e));
     Assertions.assertEquals("// comment\nfalse\n", JsonParser.compose(e, true));
@@ -489,10 +498,10 @@ public class JsonParserTests {
   @Test
   public void testElementNumber() throws IOException, JsonException {
     JsonElement e = JsonParser.parse("1");
-    Assertions.assertEquals(JsonElementType.NUMBER, e.elementType());
+    Assertions.assertEquals(JsonElementType.NUMBER, e.type());
     Assertions.assertEquals("1", ((JsonNumber) e).getValue());
     e = JsonParser.parse("// comment \n-1.2e10", true);
-    Assertions.assertEquals(JsonElementType.NUMBER, e.elementType());
+    Assertions.assertEquals(JsonElementType.NUMBER, e.type());
     Assertions.assertEquals("-1.2e10", ((JsonNumber) e).getValue());
     Assertions.assertEquals("-1.2e10", JsonParser.compose(e));
     Assertions.assertEquals("// comment\n-1.2e10\n", JsonParser.compose(e, true));
@@ -501,19 +510,19 @@ public class JsonParserTests {
   @Test
   public void testElementString() throws IOException, JsonException {
     JsonElement e = JsonParser.parse("\"str\\ning\"");
-    Assertions.assertEquals(JsonElementType.STRING, e.elementType());
+    Assertions.assertEquals(JsonElementType.STRING, e.type());
     Assertions.assertEquals("str\ning", ((JsonString) e).getValue());
     Assertions.assertEquals("\"str\\ning\"", JsonParser.compose(e));
     Assertions.assertEquals("\"str\\ning\"\n", JsonParser.compose(e, true));
     e = JsonParser.parse("// comment\n\"\"", true);
-    Assertions.assertEquals(JsonElementType.STRING, e.elementType());
+    Assertions.assertEquals(JsonElementType.STRING, e.type());
     Assertions.assertEquals("", ((JsonString) e).getValue());
   }
   
   @Test
   public void testElementNull() throws IOException, JsonException {
     JsonElement e = JsonParser.parse("null");
-    Assertions.assertEquals(JsonElementType.NULL, e.elementType());
+    Assertions.assertEquals(JsonElementType.NULL, e.type());
     Assertions.assertEquals("null", JsonParser.compose(e));
     Assertions.assertEquals("null\n", JsonParser.compose(e, true));
   }
@@ -521,12 +530,12 @@ public class JsonParserTests {
   @Test
   public void testElementArray() throws IOException, JsonException {
     JsonElement e = JsonParser.parse("[\"test\", null, true]");
-    Assertions.assertEquals(JsonElementType.ARRAY, e.elementType());
+    Assertions.assertEquals(JsonElementType.ARRAY, e.type());
     Assertions.assertEquals(3, ((JsonArray) e).size());
     Assertions.assertEquals("[\"test\",null,true]", JsonParser.compose(e));
     Assertions.assertEquals("[\"test\", null, true]\n", JsonParser.compose(e, true));
     e = JsonParser.parse("// comment\n[]", true);
-    Assertions.assertEquals(JsonElementType.ARRAY, e.elementType());
+    Assertions.assertEquals(JsonElementType.ARRAY, e.type());
     Assertions.assertEquals(0, ((JsonArray) e).size());
   }
   
@@ -567,8 +576,20 @@ public class JsonParserTests {
     Assertions.assertEquals(2, e.size());
     Assertions.assertEquals(false, e.isNoComma(0));
     Assertions.assertEquals(true, e.isNoComma(1));
+    Assertions.assertEquals(false, e.isExtraComma());
   }
-  
+
+  @Test
+  public void testNoCommainArr3() throws IOException, JsonException {
+    JsonArray e = (JsonArray) JsonParser.parse("[1, 2 3,]", true);
+    Assertions.assertEquals(3, e.size());
+    Assertions.assertEquals(false, e.isNoComma(0));
+    Assertions.assertEquals(false, e.isNoComma(1));
+    Assertions.assertEquals(true, e.isNoComma(2));
+    Assertions.assertEquals(true, e.isExtraComma());
+  }
+
+
 
   @Test
   public void testUnquoted1() throws IOException, JsonException {
@@ -583,5 +604,14 @@ public class JsonParserTests {
     Assertions.assertEquals(true, e.getProperties().get(0).isUnquotedValue());
     Assertions.assertEquals(false, e.getProperties().get(1).isUnquotedName());
     Assertions.assertEquals(true, e.getProperties().get(1).isUnquotedValue());
+    Assertions.assertEquals(false, e.isExtraComma());
   }
+  
+  @Test
+  public void testExtraComma() throws IOException, JsonException {
+    JsonObject o = (JsonObject) JsonParser.parse("{ \"a\" : \"b\", \"c\" : \"d\",}", true);
+    Assertions.assertEquals(2, o.getProperties().size());
+    Assertions.assertEquals(true, o.isExtraComma());
+  }
+  
 }

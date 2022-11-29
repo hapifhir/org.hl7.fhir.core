@@ -4658,8 +4658,8 @@ public class StructureDefinition extends CanonicalResource {
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
-// Manual code (from Configuration.txt):
-public String describeType() {
+  // Manual code (from Configuration.txt):
+  public String describeType() {
     if ("Extension".equals(getType()))
       return "Extension" ;
     switch (getKind()) {
@@ -4672,12 +4672,20 @@ public String describeType() {
     }
   }
 
-public String getTypeName() {
-  String t = getType();
-  return StructureDefinitionKind.LOGICAL.equals(getKind()) && t.contains("/") ? t.substring(t.lastIndexOf("/")+1) : t;
-}
+  public String getTypeName() {
+    String t = getType();
+    return StructureDefinitionKind.LOGICAL.equals(getKind()) && t.contains("/") ? t.substring(t.lastIndexOf("/")+1) : t;
+  }
 
-// end addition
+  public String getTypeTail() {
+    if (getType().contains("/")) {
+      return getType().substring(getType().lastIndexOf("/")+1);
+    } else {
+      return getType();
+    }
+  }
+
+  // end addition
 
 
 }
