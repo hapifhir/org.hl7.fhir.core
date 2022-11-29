@@ -548,10 +548,10 @@ public class TurtleParser extends ParserBase {
       if (code.contains(":") || code.contains("="))
         generateLinkedPredicate(t, code);
       else
-        t.linkedPredicate("a", "sct:" + urlescape(code), null);
+        t.linkedPredicate("a", "sct:" + urlescape(code), null, null);
     } else if ("http://loinc.org".equals(system)) {
       t.prefix("loinc", "http://loinc.org/rdf#");
-      t.linkedPredicate("a", "loinc:"+urlescape(code).toUpperCase(), null);
+      t.linkedPredicate("a", "loinc:"+urlescape(code).toUpperCase(), null, null);
     }  
   }
   private void generateLinkedPredicate(Complex t, String code) throws FHIRException {
