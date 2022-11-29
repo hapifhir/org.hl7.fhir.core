@@ -5,13 +5,14 @@
     "status": "generated",
     "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">dummyDiv</div>"
   },
+  "status": "entered-in-error",
+  "notGiven": true,
   "extension":[
     {
       "url":"http://hl7.org/fhir/3.0/StructureDefinition/extension-Immunization.notGiven",
       "valueBoolean":true
     }
   ],
-  "status": "completed",
   "vaccineCode": {
     "coding": [
       {
@@ -24,6 +25,6 @@
   "patient": {
     "reference": "Patient/example"
   },
-  "occurrenceDateTime": "2013-01-10",
+  "date": "2013-01-10",
   "primarySource": true
 }
