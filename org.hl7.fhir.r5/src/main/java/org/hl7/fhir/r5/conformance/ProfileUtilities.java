@@ -131,6 +131,7 @@ import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
 import org.hl7.fhir.r5.utils.formats.CSVWriter;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
+import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -4554,6 +4555,10 @@ public class ProfileUtilities extends TranslatingUtilities {
       p.setHint(translate("sd.table", "This element has or is affected by constraints ("+listConstraintsAndConditions(element)+")"));
       p.addStyle(CONSTRAINT_STYLE);
       p.setReference(VersionUtilities.getSpecUrl(context.getVersion())+"conformance-rules.html#constraints");
+    }
+    if (element != null && element.hasExtension(ToolingExtensions.EXT_STANDARDS_STATUS)) {
+      StandardsStatus ss = StandardsStatus.fromCode(element.getExtensionString(ToolingExtensions.EXT_STANDARDS_STATUS));
+      gc.addStyledText("Standards Status = "+ss.toDisplay(), ss.getAbbrev(), "black", ss.getColor(), baseSpecUrl()+"versions.html#std-process", true);
     }
 
     ExtensionContext extDefn = null;

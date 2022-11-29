@@ -10,10 +10,18 @@ public class JsonNumber extends JsonPrimitive {
     this.value = value;
   }
 
-  public JsonElementType elementType() {
+  public JsonNumber(int value) {
+    this.value = Integer.toString(value);
+  }
+
+  private JsonNumber() {
+  }
+
+  public JsonElementType type() {
     return JsonElementType.NUMBER;
   }
 
+  @Override
   public String getValue() {
     return value;
   }
@@ -29,5 +37,16 @@ public class JsonNumber extends JsonPrimitive {
     } else {
       return null; 
     }
+  }
+  
+  @Override
+  protected JsonElement copy(JsonElement other) {
+    value = ((JsonNumber) other).value;
+    return this;
+  }
+  
+  @Override
+  protected JsonElement make() {
+    return new JsonNumber();
   }
 }

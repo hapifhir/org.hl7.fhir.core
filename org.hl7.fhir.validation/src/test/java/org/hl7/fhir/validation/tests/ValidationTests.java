@@ -265,6 +265,9 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (content.has("best-practice")) {
       val.setBestPracticeWarningLevel(BestPracticeWarningLevel.valueOf(content.get("best-practice").getAsString()));
     }
+    if (content.has("allow-comments")) {
+      val.setAllowComments(content.get("allow-comments").getAsBoolean());
+    }
     if (content.has("examples")) {
       val.setAllowExamples(content.get("examples").getAsBoolean());
     } else {
@@ -368,9 +371,6 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       checkOutcomes(errorsLogical, logical, "logical", name);
     }
     logger.verifyHasNoRequests();
-    if (BUILD_NEW) {
-      JsonTrackingParser.write(manifest, new File(Utilities.path("[tmp]", "validator", "manifest.new.json")));
-    }
   }
 
 
@@ -444,6 +444,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     OperationOutcome actual = OperationOutcomeUtilities.createOutcomeSimple(errors);
     actual.setText(null);
     String json = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(actual);
+    
 
     List<String> fails = new ArrayList<>();
     
@@ -482,7 +483,32 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       logOutput(json);
       logOutput("");
       logOutput("========================================================");
-      logOutput("");      
+      logOutput("");  
+      if (BUILD_NEW && actual.getIssue().size() > 0) {
+        if (java.has("output")) {
+          java.remove("output");
+        }
+        if (java.has("error-locations")) {
+          java.remove("error-locations");
+        }
+        if (java.has("warningCount")) {
+          java.remove("warningCount");
+        }
+        if (java.has("infoCount")) {
+          java.remove("infoCount");
+        }
+        if (java.has("errorCount")) {
+          java.remove("errorCount");
+        }
+        if (java.has("outcome")) {
+          java.remove("outcome");
+        }
+        if (actual.hasIssue()) {
+          JsonObject oj = JsonTrackingParser.parse(json, null);
+          java.add("outcome", oj);
+        }
+        JsonTrackingParser.write(manifest, new File(Utilities.path("[tmp]", "validator", "manifest.new.json")));
+      }
       Assertions.fail("\r\n"+String.join("\r\n", fails));
     }
 //    int ec = 0;
@@ -526,30 +552,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 //        Assert.assertEquals("Location should be " + el.get(i).getAsString() + ", but was " + errLocs.get(i), errLocs.get(i), el.get(i).getAsString());
 //      }
 //    }
-    if (BUILD_NEW) {
-      if (java.has("output")) {
-        java.remove("output");
-      }
-      if (java.has("error-locations")) {
-        java.remove("error-locations");
-      }
-      if (java.has("warningCount")) {
-        java.remove("warningCount");
-      }
-      if (java.has("infoCount")) {
-        java.remove("infoCount");
-      }
-      if (java.has("errorCount")) {
-        java.remove("errorCount");
-      }
-      if (java.has("outcome")) {
-        java.remove("outcome");
-      }
-      if (actual.hasIssue()) {
-        JsonObject oj = JsonTrackingParser.parse(json, null);
-        java.add("outcome", oj);
-      }
-    }
+    
   }
 
   private void logOutput(String msg) {

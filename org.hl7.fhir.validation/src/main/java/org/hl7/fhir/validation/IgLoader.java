@@ -34,7 +34,6 @@ import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.turtle.Turtle;
@@ -718,7 +717,7 @@ public class IgLoader {
   private Manager.FhirFormat checkFormat(byte[] cnt, String filename) {
     System.out.println("   ..Detect format for " + filename);
     try {
-      JsonTrackingParser.parseJson(cnt);
+      org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(cnt);
       return Manager.FhirFormat.JSON;
     } catch (Exception e) {
       log("Not JSON: " + e.getMessage());

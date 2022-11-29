@@ -49,18 +49,24 @@ public class JsonCreatorDirect implements JsonCreator {
 
   private Writer writer;
   private boolean pretty;
+  private boolean comments;
   private boolean named;
   private List<Boolean> valued = new ArrayList<Boolean>();
   private int indent;
+  private List<String> commentList = new ArrayList<>(); 
   
-  public JsonCreatorDirect(Writer writer) {
+  public JsonCreatorDirect(Writer writer, boolean pretty, boolean comments) {
     super();
     this.writer = writer;
+    this.pretty = pretty;
+    this.comments = pretty && comments;
   }
 
   @Override
-  public void setIndent(String indent) {
-    this.pretty = !Utilities.noString(indent);
+  public void comment(String content) {
+    if (comments) {
+      commentList.add(content);
+    }
   }
 
   @Override
@@ -73,6 +79,21 @@ public class JsonCreatorDirect implements JsonCreator {
     }
     valued.add(0, false);
   }
+
+  private void commitComments() throws IOException {
+    if (comments) {
+      for (String s : commentList) {
+        writer.write("// ");
+        writer.write(s);
+        writer.write("\r\n");
+        for (int i = 0; i < indent; i++) {
+          writer.write("  ");
+        }
+      }
+      commentList.clear();
+    }
+  }
+
 
   public void stepIn() throws IOException {
     if (pretty) {
@@ -95,6 +116,7 @@ public class JsonCreatorDirect implements JsonCreator {
   }
 
   private void checkState() throws IOException {
+    commitComments();
     if (named) {
       if (pretty)
         writer.write(" : ");

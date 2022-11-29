@@ -11,9 +11,8 @@ import org.hl7.fhir.r5.elementmodel.SHCParser.JWT;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.json.JsonTrackingParser;
-
-import com.google.gson.JsonObject;
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
 
 public class ResourceChecker {
 
@@ -56,7 +55,7 @@ public class ResourceChecker {
         }
         // no, we have to look inside, and decide.
         try {
-          JsonObject json = JsonTrackingParser.parseJson(cnt);
+          JsonObject json = JsonParser.parseObject(cnt);
           if (json.has("verifiableCredential")) {
             return FhirFormat.SHC;
           }        

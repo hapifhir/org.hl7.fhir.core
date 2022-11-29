@@ -10,9 +10,8 @@ import java.util.Set;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.TextFile;
-import org.hl7.fhir.utilities.json.JsonTrackingParser;
-
-import com.google.gson.JsonObject;
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
 
 public class ExamplesPackageBuilder {
 
@@ -25,10 +24,10 @@ public class ExamplesPackageBuilder {
     Set<String> set = new HashSet<>();
     for (File f : new File(source).listFiles()) {
       if (f.getName().endsWith(".json")) {
-        JsonObject obj = JsonTrackingParser.parseJson(new FileInputStream(f));
+        JsonObject obj = JsonParser.parseObject(new FileInputStream(f));
         if (obj.has("resourceType") && obj.has("id")) {
-          String type = obj.get("resourceType").getAsString();
-          String id = obj.get("id").getAsString();
+          String type = obj.asString("resourceType");
+          String id = obj.asString("id");
           byte[] content = TextFile.fileToBytes(f);
           if (type.equals("ConceptMap")) {
             System.out.println("convert "+f.getName());

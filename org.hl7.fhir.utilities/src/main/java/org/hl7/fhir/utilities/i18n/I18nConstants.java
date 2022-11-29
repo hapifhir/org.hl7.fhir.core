@@ -2,7 +2,6 @@ package org.hl7.fhir.utilities.i18n;
 
 public class I18nConstants {
 
-  
   public static final String ADDING_WRONG_PATH = "Adding_wrong_path";
   public static final String ADDING_WRONG_PATH_IN_PROFILE___VS_ = "Adding_wrong_path_in_profile___vs_";
   public static final String ADDING_WRONG_PATH__OUTCOMEGETPATH___RESULTPATHBASE__ = "Adding_wrong_path__outcomegetPath___resultPathBase__";
@@ -543,6 +542,7 @@ public class I18nConstants {
   public static final String UNABLE_TO_FIND_ELEMENT__IN_ = "Unable_to_find_element__in_";
   public static final String UNABLE_TO_FIND_PROFILE__AT_ = "Unable_to_find_profile__at_";
   public static final String UNABLE_TO_FIND_RESOURCETYPE_PROPERTY = "Unable_to_find_resourceType_property";
+  public static final String RESOURCETYPE_PROPERTY_WRONG_TYPE = "RESOURCETYPE_PROPERTY_WRONG_TYPE";
   public static final String UNABLE_TO_FIND_RESOURCE__AT__RESOLVING_DISCRIMINATOR__FROM_ = "Unable_to_find_resource__at__resolving_discriminator__from_";
   public static final String UNABLE_TO_FIND__RESOLVING_DISCRIMINATOR__FROM_ = "Unable_to_find__resolving_discriminator__from_";
   public static final String UNABLE_TO_HANDLE_SYSTEM__CONCEPT_FILTER_WITH_OP__ = "Unable_to_handle_system__concept_filter_with_op__";
@@ -750,6 +750,13 @@ public class I18nConstants {
   public static final String XHTML_XHTML_Entity_Illegal = "XHTML_XHTML_Entity_Illegal";
   public static final String UNABLE_TO_RESOLVE_CONTENT_REFERENCE = "UNABLE_TO_RESOLVE_CONTENT_REFERENCE";
   public static final String UNABLE_TO_RESOLVE_CONTENT_REFERENCE_IN_THIS_CONTEXT = "UNABLE_TO_RESOLVE_CONTENT_REFERENCE_IN_THIS_CONTEXT";
+  public static final String DUPLICATE_JSON_PROPERTY = "DUPLICATE_JSON_PROPERTY";
+  public static final String DUPLICATE_JSON_PROPERTY_KEY = "DUPLICATE_JSON_PROPERTY_KEY";
+  public static final String JSON_PROPERTY_NO_QUOTES = "JSON_PROPERTY_NO_QUOTES";
+  public static final String JSON_PROPERTY_VALUE_NO_QUOTES = "JSON_PROPERTY_VALUE_NO_QUOTES";
+  public static final String JSON_COMMA_MISSING = "JSON_COMMA_MISSING";
+  public static final String JSON_COMMA_EXTRA = "JSON_COMMA_EXTRA";
+  public static final String JSON_COMMENTS_NOT_ALLOWED = "JSON_COMMENTS_NOT_ALLOWED";
 }
 
 
