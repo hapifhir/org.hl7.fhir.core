@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv10_50.resources10_50;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.hl7.fhir.convertors.SourceElementComponentWrapper;
 import org.hl7.fhir.convertors.VersionConvertorConstants;
@@ -20,6 +21,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
@@ -61,10 +63,14 @@ public class ConceptMap10_50 {
       tgt.setPurpose(src.getRequirements());
     if (src.hasCopyright())
       tgt.setCopyright(src.getCopyright());
-    org.hl7.fhir.r5.model.DataType r = ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getSource());
-    tgt.setSourceScope(r instanceof org.hl7.fhir.r5.model.Reference ? new CanonicalType(((org.hl7.fhir.r5.model.Reference) r).getReference()) : r);
-    r = ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getTarget());
-    tgt.setTargetScope(r instanceof org.hl7.fhir.r5.model.Reference ? new CanonicalType(((org.hl7.fhir.r5.model.Reference) r).getReference()) : r);
+    if (src.hasSource()) {
+      org.hl7.fhir.r5.model.DataType r = ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getSource());
+      tgt.setSourceScope(r instanceof org.hl7.fhir.r5.model.Reference ? new CanonicalType(((org.hl7.fhir.r5.model.Reference) r).getReference()) : r);
+    }
+    if (src.hasTarget()) {
+      DataType r = ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getTarget());
+      tgt.setTargetScope(r instanceof org.hl7.fhir.r5.model.Reference ? new CanonicalType(((org.hl7.fhir.r5.model.Reference) r).getReference()) : r);
+    }
     for (org.hl7.fhir.dstu2.model.ConceptMap.SourceElementComponent t : src.getElement()) {
       List<SourceElementComponentWrapper<ConceptMap.SourceElementComponent>> ws = convertSourceElementComponent(t);
       for (SourceElementComponentWrapper<ConceptMap.SourceElementComponent> w : ws)
@@ -312,7 +318,7 @@ public class ConceptMap10_50 {
 
   static public ConceptMapGroupComponent getGroup(ConceptMap map, String srcs, String tgts) {
     for (ConceptMapGroupComponent grp : map.getGroup()) {
-      if (grp.getSource().equals(srcs) && grp.getTarget().equals(tgts))
+      if (Objects.equals(grp.getSource(), srcs) && Objects.equals(grp.getTarget(), tgts))
         return grp;
     }
     ConceptMapGroupComponent grp = map.addGroup();
