@@ -10,7 +10,7 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Bool
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Date30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.DateTime30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
-import org.hl7.fhir.dstu3.model.BooleanType;
+
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.Immunization;
@@ -89,12 +89,14 @@ public class Immunization30_40 {
     if (src.hasStatus()) {
       tgt.setStatusElement(convertImmunizationStatus(src.getStatusElement()));
        if (src.getStatusElement().getValue() == Immunization.ImmunizationStatus.NOTDONE)
-         tgt.setNotGivenElement(new BooleanType(true));
+         tgt.setNotGivenElement(new org.hl7.fhir.dstu3.model.BooleanType(true));
+       else
+         tgt.setNotGivenElement(new org.hl7.fhir.dstu3.model.BooleanType(false));
     }
     if (src.hasExtension(NOT_GIVEN_EXTENSION_URL)) {
       Extension notGivenExtension = src.getExtensionByUrl(NOT_GIVEN_EXTENSION_URL);
       if (notGivenExtension.hasValue() && notGivenExtension.getValueAsPrimitive() instanceof org.hl7.fhir.r4.model.BooleanType)
-        tgt.setNotGivenElement(new org.hl7.fhir.dstu3.model.BooleanType());
+        tgt.setNotGivenElement(new org.hl7.fhir.dstu3.model.BooleanType(((org.hl7.fhir.r4.model.BooleanType)notGivenExtension.getValueAsPrimitive()).getValue()));
     }
     if (src.hasVaccineCode())
       tgt.setVaccineCode(CodeableConcept30_40.convertCodeableConcept(src.getVaccineCode()));
