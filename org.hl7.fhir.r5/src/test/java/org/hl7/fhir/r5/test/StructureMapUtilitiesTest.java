@@ -5,11 +5,15 @@ import java.util.List;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
+import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.elementmodel.Manager;
+import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetComponent;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.structuremap.ITransformerServices;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
@@ -36,6 +40,22 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
 
     // StructureMap/ActivityDefinition3to4: StructureMap.group[3].rule[2].name error id value '"expression"' is not valid
     Assertions.assertEquals("expression", structureMap.getGroup().get(2).getRule().get(1).getName());
+  }
+  
+  @Test
+  public void testCast() throws IOException, FHIRException {
+    // org.hl7.fhir.exceptions.FHIRException: Exception executing transform ext.value = cast(value, 'positiveInt') on Rule "item": cast to positiveInt not yet supported
+    StructureMapUtilities scu = new StructureMapUtilities(context, this);
+    String fileMap = TestingUtilities.loadTestResource("r5", "structure-mapping", "cast.map");
+    Element source = Manager.parseSingle(context, TestingUtilities.loadTestResourceStream("r5", "structure-mapping", "qrext.json"), FhirFormat.JSON);
+    StructureMap structureMap = scu.parse(fileMap, "cast");
+    Element target = Manager.build(context, scu.getTargetType(structureMap));
+    scu.transform(null, source, structureMap, target);
+    FHIRPathEngine fp = new FHIRPathEngine(context);
+    Assertions.assertEquals("implicit",fp.evaluateToString(target, "extension[0].value"));
+    Assertions.assertEquals("explicit",fp.evaluateToString(target, "extension[1].value"));
+    Assertions.assertEquals("2147483647",fp.evaluateToString(target, "extension[2].value"));
+    Assertions.assertEquals("2147483647",fp.evaluateToString(target, "extension[3].value"));
   }
 
   private void assertSerializeDeserialize(StructureMap structureMap) {
