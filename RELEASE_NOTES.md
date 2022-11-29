@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* BugFix: NPE when using FhirPathEngine.evaluate with a null base object 
