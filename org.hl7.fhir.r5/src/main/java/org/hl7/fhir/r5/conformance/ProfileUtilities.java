@@ -179,7 +179,11 @@ public class ProfileUtilities extends TranslatingUtilities {
   private static final List<String> INHERITED_ED_URLS = Arrays.asList(
       "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-binding-style",
       "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-extension-style");
-  
+
+  public IWorkerContext getContext() {
+    return this.context;
+  }
+
   public static class SourcedChildDefinitions {
     private StructureDefinition source;
     private List<ElementDefinition> list;
