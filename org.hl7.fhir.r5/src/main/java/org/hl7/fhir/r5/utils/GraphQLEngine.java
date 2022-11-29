@@ -697,7 +697,7 @@ public class GraphQLEngine implements IGraphQLEngine {
     Argument arg = new Argument();
     params.add(arg);
     arg.setName(getSingleValue(parg));
-    arg.addValue(new StringValue(source.fhirType()+"/"+source.getId()));
+    arg.addValue(new StringValue(source.fhirType()+"/"+source.getIdPart()));
     Bundle bnd = (Bundle) services.search(appInfo, field.getName().substring(0, field.getName().length()-10), params);
     Base bndWrapper = new SearchWrapper(field.getName(), bnd);
     arg = target.addField(field.getAlias()+suffix, listStatus(field, false));
