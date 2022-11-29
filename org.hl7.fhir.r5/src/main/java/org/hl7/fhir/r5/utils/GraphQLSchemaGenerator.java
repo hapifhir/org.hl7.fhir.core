@@ -277,8 +277,14 @@ public class GraphQLSchemaGenerator {
 
   private void generateElementBase(Writer writer, EnumSet<FHIROperationType> operations) throws IOException {
     if (operations.contains(FHIROperationType.READ) || operations.contains(FHIROperationType.SEARCH)) {
+      writer.write("interface IElement {\r\n");
+      writer.write("  id: String\r\n");
+      writer.write("  extension: [Extension]\r\n");
+      writer.write("}\r\n");
+      writer.write("\r\n");
+
       writer.write("type ElementBase {\r\n");
-      writer.write("  id: ID\r\n");
+      writer.write("  id: String\r\n");
       writer.write("  extension: [Extension]\r\n");
       writer.write("}\r\n");
       writer.write("\r\n");
@@ -299,12 +305,8 @@ public class GraphQLSchemaGenerator {
       StringBuilder b = new StringBuilder();
       list.add(b);
       b.append("interface ");
-      b.append(sd.getName() + "Base");
-      StructureDefinition baseSd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
-      if (baseSd != null) {
-        b.append(" implements ");
-        b.append(baseSd.getType() + "Base");
-      }
+      b.append("I" + sd.getName());
+      generateTypeSuperinterfaceDeclaration(sd, b);
       b.append(" {\r\n");
       ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
       generateProperties(existingTypeNames, list, b, sd.getName(), sd, ed, "type", "");
@@ -314,8 +316,7 @@ public class GraphQLSchemaGenerator {
 
       b.append("type ");
       b.append(sd.getName());
-      b.append(" implements ");
-      b.append(sd.getName() + "Base");
+      generateTypeSuperinterfaceDeclaration(sd, b);
       b.append(" {\r\n");
       generateProperties(existingTypeNames, list, b, sd.getName(), sd, ed, "type", "");
       b.append("}");
@@ -345,6 +346,23 @@ public class GraphQLSchemaGenerator {
       }
     }
 
+  }
+
+  private void generateTypeSuperinterfaceDeclaration(StructureDefinition theParentSd, StringBuilder theBuilder) {
+    StructureDefinition baseSd = theParentSd;
+    boolean first = true;
+    while (baseSd != null && baseSd.getBaseDefinition() != null) {
+      baseSd = context.fetchResource(StructureDefinition.class, baseSd.getBaseDefinition());
+      if (baseSd != null) {
+        if (first) {
+          theBuilder.append(" implements ");
+          first = false;
+        } else {
+          theBuilder.append(" & ");
+        }
+        theBuilder.append("I" + baseSd.getType());
+      }
+    }
   }
 
   private void generateProperties(Map<String, String> existingTypeNames, List<StringBuilder> list, StringBuilder b, String typeName, StructureDefinition sd, ElementDefinition ed, String mode, String suffix) throws IOException {
