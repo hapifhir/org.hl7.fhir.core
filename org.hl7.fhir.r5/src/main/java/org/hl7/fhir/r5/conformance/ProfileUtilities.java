@@ -118,6 +118,7 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.renderers.TerminologyRenderer;
 import org.hl7.fhir.r5.renderers.spreadsheets.SpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.FHIRLexer;
@@ -130,6 +131,7 @@ import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
 import org.hl7.fhir.r5.utils.formats.CSVWriter;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
+import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -1632,7 +1634,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               if (!outcome.hasContentReference() && !outcome.hasType()) {
                 throw new DefinitionException(context.formatMessage(I18nConstants.NOT_DONE_YET));
               }
-              if (hasInnerDiffMatches(differential, currentBase.getPath(), diffCursor, diffLimit, base.getElement(), false)) {
+              if (hasInnerDiffMatches(differential, cpath, diffCursor, diffLimit, base.getElement(), false)) {
                 if (baseHasChildren(base, currentBase)) { // not a new type here
                   throw new Error("This situation is not yet handled (constrain slicing to 1..1 and fix base slice for inline structure - please report issue to grahame@fhir.org along with a test case that reproduces this error (@ "+cpath+" | "+currentBase.getPath()+")");
                 } else {
@@ -2092,7 +2094,11 @@ public class ProfileUtilities extends TranslatingUtilities {
   public StructureDefinition getTypeForElement(StructureDefinitionDifferentialComponent differential, int diffCursor, String profileName,
       List<ElementDefinition> diffMatches, ElementDefinition outcome, String webUrl) {
     if (outcome.getType().size() == 0) {
-      throw new DefinitionException(context.formatMessage(I18nConstants._HAS_NO_CHILDREN__AND_NO_TYPES_IN_PROFILE_, diffMatches.get(0).getPath(), differential.getElement().get(diffCursor).getPath(), profileName));
+      if (outcome.hasContentReference()) { 
+        throw new Error(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_CONTENT_REFERENCE_IN_THIS_CONTEXT, outcome.getContentReference(), outcome.getId(), outcome.getPath()));
+      } else {
+        throw new DefinitionException(context.formatMessage(I18nConstants._HAS_NO_CHILDREN__AND_NO_TYPES_IN_PROFILE_, diffMatches.get(0).getPath(), differential.getElement().get(diffCursor).getPath(), profileName));
+      }
     }
     if (outcome.getType().size() > 1) {
       for (TypeRefComponent t : outcome.getType()) {
@@ -2881,7 +2887,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private boolean hasInnerDiffMatches(StructureDefinitionDifferentialComponent context, String path, int start, int end, List<ElementDefinition> base, boolean allowSlices) throws DefinitionException {
     end = Math.min(context.getElement().size(), end);
     start = Math.max(0,  start);
-    
+  
     for (int i = start; i <= end; i++) {
       ElementDefinition ed = context.getElement().get(i);
       String statedPath = ed.getPath();
@@ -2892,9 +2898,11 @@ public class ProfileUtilities extends TranslatingUtilities {
       } else if (path.endsWith("[x]") && statedPath.startsWith(path.substring(0, path.length() -3))) {
         return true;
       } else if (i != start && !allowSlices && !statedPath.startsWith(path+".")) {
-        break;
+        return false;
       } else if (i != start && allowSlices && !statedPath.startsWith(path)) {
-        break;
+        return false;
+      } else {
+        // not sure why we get here, but returning false at this point makes a bunch of tests fail
       }
     }
     return false;
@@ -4101,8 +4109,8 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
   public XhtmlNode generateTable(String defFile, StructureDefinition profile, boolean diff, String imageFolder, boolean inlineGraphics, String profileBaseFileName, boolean snapshot, String corePath, String imagePath,
-                                 boolean logicalModel, boolean allInvariants, Set<String> outputTracker, boolean active, boolean mustSupport, RenderingContext rc) throws IOException, FHIRException {
-    return generateTable(defFile, profile, diff, imageFolder, inlineGraphics, profileBaseFileName, snapshot, corePath, imagePath, logicalModel, allInvariants, outputTracker, active, mustSupport, rc, "");
+                                 boolean logicalModel, boolean allInvariants, Set<String> outputTracker, boolean mustSupport, RenderingContext rc) throws IOException, FHIRException {
+    return generateTable(defFile, profile, diff, imageFolder, inlineGraphics, profileBaseFileName, snapshot, corePath, imagePath, logicalModel, allInvariants, outputTracker, mustSupport, rc, "");
   }
 
   public List<ElementDefinition> supplementMissingDiffElements(StructureDefinition profile) {
@@ -4124,11 +4132,11 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
   public XhtmlNode generateTable(String defFile, StructureDefinition profile, boolean diff, String imageFolder, boolean inlineGraphics, String profileBaseFileName, boolean snapshot, String corePath, String imagePath,
-      boolean logicalModel, boolean allInvariants, Set<String> outputTracker, boolean active, boolean mustSupport, RenderingContext rc, String anchorPrefix) throws IOException, FHIRException {
+      boolean logicalModel, boolean allInvariants, Set<String> outputTracker, boolean mustSupport, RenderingContext rc, String anchorPrefix) throws IOException, FHIRException {
     assert(diff != snapshot);// check it's ok to get rid of one of these
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(imageFolder, inlineGraphics, true);
     gen.setTranslator(getTranslator());
-    TableModel model = gen.initNormalTable(corePath, false, true, profile.getId()+(diff ? "d" : "s"), active);
+    TableModel model = gen.initNormalTable(corePath, false, true, profile.getId()+(diff ? "d" : "s"), rc.getRules() == GenerationRules.IG_PUBLISHER);
     List<ElementDefinition> list;
     if (diff)
       list = supplementMissingDiffElements(profile);
@@ -4487,9 +4495,13 @@ public class ProfileUtilities extends TranslatingUtilities {
     }
     if (element != null && (hasNonBaseConstraints(element.getConstraint()) || hasNonBaseConditions(element.getCondition()))) {
       Piece p = gc.addText(ProfileUtilities.CONSTRAINT_CHAR);
-      p.setHint(translate("sd.table", "This element has or is affected by some invariants ("+listConstraintsAndConditions(element)+")"));
+      p.setHint(translate("sd.table", "This element has or is affected by constraints ("+listConstraintsAndConditions(element)+")"));
       p.addStyle(CONSTRAINT_STYLE);
       p.setReference(VersionUtilities.getSpecUrl(context.getVersion())+"conformance-rules.html#constraints");
+    }
+    if (element != null && element.hasExtension(ToolingExtensions.EXT_STANDARDS_STATUS)) {
+      StandardsStatus ss = StandardsStatus.fromCode(element.getExtensionString(ToolingExtensions.EXT_STANDARDS_STATUS));
+      gc.addStyledText("Standards Status = "+ss.toDisplay(), ss.getAbbrev(), "black", ss.getColor(), baseSpecUrl()+"versions.html#std-process", true);
     }
 
     ExtensionContext extDefn = null;

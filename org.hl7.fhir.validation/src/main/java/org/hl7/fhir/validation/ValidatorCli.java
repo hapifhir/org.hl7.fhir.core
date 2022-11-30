@@ -99,6 +99,10 @@ public class ValidatorCli {
 
   public static final String HTTP_PROXY_HOST = "http.proxyHost";
   public static final String HTTP_PROXY_PORT = "http.proxyPort";
+
+  public static final String HTTPS_PROXY_HOST = "https.proxyHost";
+
+  public static final String HTTPS_PROXY_PORT = "https.proxyPort";
   public static final String HTTP_PROXY_USER = "http.proxyUser";
   public static final String HTTP_PROXY_PASS = "http.proxyPassword";
   public static final String JAVA_DISABLED_TUNNELING_SCHEMES = "jdk.http.auth.tunneling.disabledSchemes";
@@ -111,17 +115,34 @@ public class ValidatorCli {
     TimeTracker tt = new TimeTracker();
     TimeTracker.Session tts = tt.start("Loading");
 
-    args = preProcessArgs(args);
-    
+    args = addAdditionalParamsForIpsParam(args);
+    setJavaSystemProxyParamsFromParams(args);
+
     Display.displayVersion();
     Display.displaySystemInfo();
 
-    if (Params.hasParam(args, Params.PROXY)) {
-      assert Params.getParam(args, Params.PROXY) != null : "PROXY arg passed in was NULL";
-      String[] p = Params.getParam(args, Params.PROXY).split(":");
-      System.setProperty(HTTP_PROXY_HOST, p[0]);
-      System.setProperty(HTTP_PROXY_PORT, p[1]);
+    CliContext cliContext = Params.loadCliContext(args);
+    FileFormat.checkCharsetAndWarnIfNotUTF8(System.out);
+
+    if (shouldDisplayHelpToUser(args)) {
+      Display.displayHelpDetails();
+    } else if (Params.hasParam(args, Params.COMPARE)) {
+      if (destinationDirectoryValid(Params.getParam(args, Params.DESTINATION))) {
+        doLeftRightComparison(args, cliContext, tt);
+      }
+    } else if (Params.hasParam(args, Params.TEST)) {
+      parseTestParamsAndExecute(args);
     }
+    else {
+      Display.printCliArgumentsAndInfo(args);
+      doValidation(tt, tts, cliContext);
+    }
+  }
+
+  private static void setJavaSystemProxyParamsFromParams(String[] args) {
+
+    setJavaSystemProxyHostFromParams(args, Params.PROXY, HTTP_PROXY_HOST, HTTP_PROXY_PORT);
+    setJavaSystemProxyHostFromParams(args, Params.HTTPS_PROXY, HTTPS_PROXY_HOST, HTTPS_PROXY_PORT);
 
     if (Params.hasParam(args, Params.PROXY_AUTH)) {
       assert Params.getParam(args, Params.PROXY) != null : "Cannot set PROXY_AUTH without setting PROXY...";
@@ -155,23 +176,15 @@ public class ValidatorCli {
       System.setProperty(JAVA_DISABLED_TUNNELING_SCHEMES, "");
       System.setProperty(JAVA_DISABLED_PROXY_SCHEMES, "");
     }
+  }
 
-    CliContext cliContext = Params.loadCliContext(args);
+  private static void setJavaSystemProxyHostFromParams(String[] args, String proxyParam, String proxyHostProperty, String proxyPortProperty) {
+    if (Params.hasParam(args, proxyParam)) {
+      assert Params.getParam(args, proxyParam) != null : "PROXY arg passed in was NULL";
+      String[] p = Params.getParam(args, proxyParam).split(":");
 
-    FileFormat.checkCharsetAndWarnIfNotUTF8(System.out);
-
-    if (shouldDisplayHelpToUser(args)) {
-      Display.displayHelpDetails();
-    } else if (Params.hasParam(args, Params.COMPARE)) {
-      if (destinationDirectoryValid(Params.getParam(args, Params.DESTINATION))) {
-        doLeftRightComparison(args, cliContext, tt);
-      }
-    } else if (Params.hasParam(args, Params.TEST)) {
-      parseTestParamsAndExecute(args);
-    }
-    else {
-      Display.printCliArgumentsAndInfo(args);
-      doValidation(tt, tts, cliContext);
+      System.setProperty(proxyHostProperty, p[0]);
+      System.setProperty(proxyPortProperty, p[1]);
     }
   }
 
@@ -190,7 +203,7 @@ public class ValidatorCli {
     System.exit(0);
   }
 
-  private static String[] preProcessArgs(String[] args) {
+  private static String[] addAdditionalParamsForIpsParam(String[] args) {
     // ips$branch --> -version 4.0 -ig hl7.fhir.uv.ips#current$connectathon-2 -profile http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips
     List<String> res = new ArrayList<>();
     for (String a : args) {

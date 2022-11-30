@@ -360,9 +360,10 @@ public class ElementDefinition14_40 {
     if (src.hasTarget()) {
       for (org.hl7.fhir.r4.model.UriType u : src.getTargetProfile()) {
         tgt.addProfile(u.getValue());
-        String baseName = u.getValue().toLowerCase();
-        if (baseName.contains("reference") && !baseName.contains("documentreference"))
-          throw new Error("2016May Target profile contains the word 'reference':" + u);
+        // disabled 2022-11-11 - gdg - I don't see what value this is bringing anywhere?
+//        String baseName = u.getValue().toLowerCase();
+//        if (baseName.contains("reference") && !baseName.contains("documentreference"))
+//          throw new Error("2016May Target profile contains the word 'reference':" + u);
       }
       for (org.hl7.fhir.r4.model.UriType u : src.getProfile()) {
         if (src.getCode().equals("Reference")) {

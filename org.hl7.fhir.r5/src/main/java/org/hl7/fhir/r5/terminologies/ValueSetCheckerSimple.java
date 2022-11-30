@@ -240,7 +240,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         return new ValidationResult(IssueSeverity.ERROR, context.formatMessage(I18nConstants.CODESYSTEM_CS_NO_SUPPLEMENT, cs.getUrl()));        
       }
       if (cs!=null && cs.getContent() != CodeSystemContentMode.COMPLETE) {
-        warningMessage = "Resolved system "+system+", but the definition is not complete";
+        warningMessage = "Resolved system "+system+(cs.hasVersion() ? " (v"+cs.getVersion()+")" : "")+", but the definition is not complete";
         if (!inExpansion && cs.getContent() != CodeSystemContentMode.FRAGMENT) { // we're going to give it a go if it's a fragment
           throw new FHIRException(warningMessage);
         }
@@ -248,6 +248,15 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
 
       if (cs != null /*&& (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)*/) {
         if (!(cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)) {
+          if (inInclude) {
+            ConceptReferenceComponent cc = findInInclude(code);
+            if (cc != null) {
+              // we'll take it on faith
+              res = new ValidationResult(system, new ConceptDefinitionComponent().setCode(cc.getCode()).setDisplay(cc.getDisplay()));
+              res.setMessage("Resolved system "+system+", but the definition is not complete, so assuming value set include is correct");
+              return res;
+            }
+          }
           // we can't validate that here. 
           throw new FHIRException("Unable to evaluate based on empty code system");
         }
@@ -322,6 +331,22 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       }
     }
     return false;
+  }
+
+  private ConceptReferenceComponent findInInclude(Coding code) {
+    if (valueset == null || code.getSystem() == null || code.getCode() == null) {
+      return null;
+    }
+    for (ConceptSetComponent inc : valueset.getCompose().getInclude()) {
+      if (inc.hasSystem() && inc.getSystem().equals(code.getSystem())) {
+        for (ConceptReferenceComponent cc : inc.getConcept()) {
+          if (cc.hasCode() && cc.getCode().equals(code.getCode())) {
+            return cc;
+          }
+        }
+      }
+    }
+    return null;
   }
 
   private CodeSystem findSpecialCodeSystem(String system, String version) {

@@ -364,19 +364,21 @@ public class ValidationService {
         System.out.println("No such cached session exists for session id " + sessionId + ", re-instantiating validator.");
       }
       System.out.print("  Load FHIR v" + cliContext.getSv() + " from " + definitions);
-      ValidationEngine validator = new ValidationEngine.ValidationEngineBuilder().withVersion(cliContext.getSv()).withTimeTracker(tt).withUserAgent("fhir/validator").fromSource(definitions);
+      ValidationEngine validator = new ValidationEngine.ValidationEngineBuilder().withTHO(false).withVersion(cliContext.getSv()).withTimeTracker(tt).withUserAgent("fhir/validator").fromSource(definitions);
 
       sessionId = sessionCache.cacheSession(validator);
 
       FhirPublication ver = FhirPublication.fromCode(cliContext.getSv());
-      IgLoader igLoader = new IgLoader(validator.getPcm(), validator.getContext(), validator.getVersion(), validator.isDebug());
       System.out.println(" - " + validator.getContext().countAllCaches() + " resources (" + tt.milestone() + ")");
+      IgLoader igLoader = new IgLoader(validator.getPcm(), validator.getContext(), validator.getVersion(), validator.isDebug());
       igLoader.loadIg(validator.getIgs(), validator.getBinaries(), "hl7.terminology", false);
-      System.out.print("  Load R5 Extensions");
-      R5ExtensionsLoader r5e = new R5ExtensionsLoader(validator.getPcm(), validator.getContext());
-      r5e.load();
-      r5e.loadR5Extensions();
-      System.out.println(" - " + r5e.getCount() + " resources (" + tt.milestone() + ")");
+      if (!VersionUtilities.isR5Ver(validator.getContext().getVersion())) {
+        System.out.print("  Load R5 Extensions");
+        R5ExtensionsLoader r5e = new R5ExtensionsLoader(validator.getPcm(), validator.getContext());
+        r5e.load();
+        r5e.loadR5Extensions();
+        System.out.println(" - " + r5e.getCount() + " resources (" + tt.milestone() + ")");
+      }
       System.out.print("  Terminology server " + cliContext.getTxServer());
       String txver = validator.setTerminologyServer(cliContext.getTxServer(), cliContext.getTxLog(), ver);
       System.out.println(" - Version " + txver + " (" + tt.milestone() + ")");

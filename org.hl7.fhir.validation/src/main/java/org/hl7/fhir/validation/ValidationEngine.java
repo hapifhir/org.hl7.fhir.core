@@ -59,6 +59,7 @@ import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
@@ -312,6 +313,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     @With
     private final IWorkerContext.ILoggingService loggingService;
 
+    @With
+    private boolean THO = true;
+
 
     public ValidationEngineBuilder() {
       terminologyCachePath = null;
@@ -325,7 +329,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       loggingService = new SystemOutLoggingService();
     }
 
-    public ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, IWorkerContext.ILoggingService loggingService) {
+    public ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, IWorkerContext.ILoggingService loggingService, boolean THO) {
       this.terminologyCachePath = terminologyCachePath;
       this.userAgent = userAgent;
       this.version = version;
@@ -335,10 +339,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       this.timeTracker = timeTracker;
       this.canRunWithoutTerminologyServer = canRunWithoutTerminologyServer;
       this.loggingService = loggingService;
+      this.THO = THO;
     }
 
     public ValidationEngineBuilder withTxServer(String txServer, String txLog, FhirPublication txVersion) {
-      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, txServer, txLog, txVersion,timeTracker, canRunWithoutTerminologyServer, loggingService);
+      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, txServer, txLog, txVersion, timeTracker, canRunWithoutTerminologyServer, loggingService, THO);
     }
 
     public ValidationEngine fromNothing() throws IOException {
@@ -363,7 +368,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       }
       engine.setVersion(version);
       engine.setIgLoader(new IgLoader(engine.getPcm(), engine.getContext(), engine.getVersion(), engine.isDebug()));
-      loadTx(engine);
+      if (THO) {
+        loadTx(engine);
+      }
       return engine;
     }
 
@@ -652,7 +659,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   public Resource generate(String source, String version) throws FHIRException, IOException, EOperationOutcome {
     Content cnt = igLoader.loadContent(source, "validate", false);
     Resource res = igLoader.loadResourceByVersion(version, cnt.focus, source);
-    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER);
+    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     genResource(res, rc);
     return (Resource) res;
   }
@@ -1021,6 +1028,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         resolvedUrls.put(type+"|"+url, ok);
         return ok;
       } catch (Exception e) {
+        e.printStackTrace();
         resolvedUrls.put(type+"|"+url, false);
         return false;
       }

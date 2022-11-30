@@ -29,13 +29,12 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.json.JsonTrackingParser;
-import org.hl7.fhir.utilities.json.JsonUtilities;
+import org.hl7.fhir.utilities.json.model.JsonArray;
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.NpmPackageIndexBuilder;
 
 import com.google.common.base.Charsets;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 public class NpmPackageVersionConverter {
 
@@ -105,7 +104,7 @@ public class NpmPackageVersionConverter {
       if (!e.getKey().equals("package/package.json")) {
         byte[] cnv = e.getValue();
         try {
-          JsonObject json = JsonTrackingParser.parseJson(e.getValue());
+          JsonObject json = JsonParser.parseObject(e.getValue());
           if (json.has("resourceType")) {
             cnv = convertResource(e.getKey(), e.getValue());
           }
@@ -174,11 +173,11 @@ public class NpmPackageVersionConverter {
   }
 
   private byte[] convertPackage(byte[] cnt) throws IOException {
-    JsonObject json = JsonTrackingParser.parseJson(cnt);
-    currentVersion = json.getAsJsonArray("fhirVersions").get(0).getAsString();
-    String name = JsonUtilities.str(json, "name");
+    JsonObject json = JsonParser.parseObject(cnt);
+    currentVersion = json.getJsonArray("fhirVersions").get(0).asString();
+    String name = json.asString("name");
     json.remove("name");
-    json.addProperty("name", name + "." + vCode);
+    json.add("name", name + "." + vCode);
     json.remove("fhirVersions");
     json.remove("dependencies");
     JsonArray fv = new JsonArray();
@@ -186,8 +185,8 @@ public class NpmPackageVersionConverter {
     fv.add(version);
     JsonObject dep = new JsonObject();
     json.add("dependencies", dep);
-    dep.addProperty(VersionUtilities.packageForVersion(version), version);
-    return JsonTrackingParser.write(json).getBytes(Charsets.UTF_8);
+    dep.add(VersionUtilities.packageForVersion(version), version);
+    return JsonParser.composeBytes(json);
   }
 
   private byte[] convertResource(String n, byte[] cnt) {

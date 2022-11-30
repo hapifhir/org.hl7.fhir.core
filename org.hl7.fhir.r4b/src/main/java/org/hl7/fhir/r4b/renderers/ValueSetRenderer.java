@@ -47,6 +47,7 @@ import org.hl7.fhir.r4b.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r4b.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r4b.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4b.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.LoincLinker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -717,7 +718,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       else if ("http://snomed.info/sct".equals(system)) {
         td.ah(sctLink(code)).addText(code);
       } else if ("http://loinc.org".equals(system)) {
-          td.ah("http://details.loinc.org/LOINC/"+code+".html").addText(code);
+          td.ah(LoincLinker.getLinkForCode(code)).addText(code);
       } else        
         td.addText(code);
     } else {

@@ -9,10 +9,9 @@ import java.util.Set;
 
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.json.JsonTrackingParser;
-import org.hl7.fhir.utilities.json.JsonUtilities;
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
 
-import com.google.gson.JsonObject;
 
 public class PackageScanner {
 
@@ -63,7 +62,7 @@ public class PackageScanner {
             } catch (Exception e) {
               fv = "--";
             }
-            output.add(pck.name()+"\t"+pck.version()+"\t"+pck.canonical()+"\t"+fv+'\t'+pck.fhirVersionList()+'\t'+JsonUtilities.str(json, "kind")+'\t'+JsonUtilities.str(json, "type")+'\t'+JsonTrackingParser.writeDense(json));          } catch (Exception e) {
+            output.add(pck.name()+"\t"+pck.version()+"\t"+pck.canonical()+"\t"+fv+'\t'+pck.fhirVersionList()+'\t'+json.asString("kind")+'\t'+json.asString("type")+'\t'+JsonParser.compose(json));          } catch (Exception e) {
             System.out.println("Error acessing "+pi.getId()+"#"+piv.getVersion()+": "+e.getMessage());
             e.printStackTrace();
           }

@@ -40,10 +40,12 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionPropertyComponent;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.LoincLinker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
@@ -834,7 +836,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       else if ("http://snomed.info/sct".equals(system)) {
         td.ah(sctLink(code)).addText(code);
       } else if ("http://loinc.org".equals(system)) {
-          td.ah("http://details.loinc.org/LOINC/"+code+".html").addText(code);
+          td.ah(LoincLinker.getLinkForCode(code)).addText(code);
       } else        
         td.addText(code);
     } else {
@@ -956,7 +958,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     x.br();
     x.tx(s);
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context.getDestDir(), context.isInlineGraphics(), true);
-    TableModel model = gen.new TableModel("exp.h="+index, !forResource);    
+    TableModel model = gen.new TableModel("exp.h="+index, context.getRules() == GenerationRules.IG_PUBLISHER);    
     model.setAlternating(true);
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("vs.exp.header", "Code"), translate("vs.exp.hint", "The code for the item"), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("vs.exp.header", "Display"), translate("vs.exp.hint", "The display for the item"), null, 0));

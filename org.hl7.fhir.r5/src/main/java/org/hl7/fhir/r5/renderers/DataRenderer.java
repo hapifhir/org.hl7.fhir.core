@@ -72,6 +72,7 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
@@ -521,7 +522,7 @@ public class DataRenderer extends Renderer {
   // -- 6. Data type Rendering ---------------------------------------------- 
 
   public static String display(IWorkerContext context, DataType type) {
-    return new DataRenderer(new RenderingContext(context, null, null, "http://hl7.org/fhir/R4", "", null, ResourceRendererMode.END_USER)).display(type);
+    return new DataRenderer(new RenderingContext(context, null, null, "http://hl7.org/fhir/R4", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE)).display(type);
   }
   
   public String displayBase(Base b) {
@@ -1128,25 +1129,25 @@ public class DataRenderer extends Renderer {
 
     if (ii.hasType()) {
       if (ii.getType().hasText())
-        s = ii.getType().getText()+": "+s;
+        s = ii.getType().getText()+":\u00A0"+s;
       else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasDisplay())
         s = ii.getType().getCoding().get(0).getDisplay()+": "+s;
       else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasCode())
         s = lookupCode(ii.getType().getCoding().get(0).getSystem(), ii.getType().getCoding().get(0).getVersion(), ii.getType().getCoding().get(0).getCode())+": "+s;
     } else {
-      s = "id: "+s;      
+      s = "id:\u00A0"+s;      
     }
 
     if (ii.hasUse() || ii.hasPeriod()) {
-      s = s + "(";
+      s = s + "\u00A0(";
       if (ii.hasUse()) {
-        s = s + "use: "+ii.getUse().toString();
+        s = s + "use:\u00A0"+ii.getUse().toString();
       }
       if (ii.hasUse() && ii.hasPeriod()) {
-        s = s + ", ";
+        s = s + ",\u00A0";
       }
       if (ii.hasPeriod()) {
-        s = s + "period: "+displayPeriod(ii.getPeriod());
+        s = s + "period:\u00A0"+displayPeriod(ii.getPeriod());
       }
       s = s + ")";
     }    

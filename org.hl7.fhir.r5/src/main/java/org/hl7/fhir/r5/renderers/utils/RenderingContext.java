@@ -65,6 +65,20 @@ public class RenderingContext {
     TECHNICAL
   }
 
+  public enum GenerationRules {
+    /**
+     * The output must be valid XHTML for a resource: no active content, etc. The only external dependency allowed is fhir.css 
+     */
+    VALID_RESOURCE,
+    
+    /**
+     * The output must be valid for an implementation guide according ot the base FHIR template. 
+     * This means active content is allowed, though the default presentation must be *show everything* for balloting purposes
+     * Active content is allowed 
+     */
+    IG_PUBLISHER
+  }
+  
   public enum QuestionnaireRendererMode {
     /**
      * A visual presentation of the questionnaire, with a set of property panes that can be toggled on and off.
@@ -102,6 +116,7 @@ public class RenderingContext {
   private IWorkerContext worker;
   private MarkDownProcessor markdown;
   private ResourceRendererMode mode;
+  private GenerationRules rules;
   private IReferenceResolver resolver;
   private ILiquidTemplateProvider templateProvider;
   private IEvaluationContext services;
@@ -151,7 +166,7 @@ public class RenderingContext {
    * @param specLink - path to FHIR specification
    * @param lang - langauage to render in
    */
-  public RenderingContext(IWorkerContext worker, MarkDownProcessor markdown, ValidationOptions terminologyServiceOptions, String specLink, String localPrefix, String lang, ResourceRendererMode mode) {
+  public RenderingContext(IWorkerContext worker, MarkDownProcessor markdown, ValidationOptions terminologyServiceOptions, String specLink, String localPrefix, String lang, ResourceRendererMode mode, GenerationRules rules) {
     super();
     this.worker = worker;
     this.markdown = markdown;
@@ -159,6 +174,7 @@ public class RenderingContext {
     this.links.put(KnownLinkType.SPEC, specLink);
     this.localPrefix = localPrefix;
     this.mode = mode;
+    this.rules = rules;
     if (terminologyServiceOptions != null) {
       this.terminologyServiceOptions = terminologyServiceOptions;
     }
@@ -166,7 +182,7 @@ public class RenderingContext {
     this.locale = new Locale.Builder().setLanguageTag("en-US").build(); 
   }
   public RenderingContext copy() {
-    RenderingContext res = new RenderingContext(worker, markdown, terminologyServiceOptions, getLink(KnownLinkType.SPEC), localPrefix, lang, mode);
+    RenderingContext res = new RenderingContext(worker, markdown, terminologyServiceOptions, getLink(KnownLinkType.SPEC), localPrefix, lang, mode, rules);
 
     res.resolver = resolver;
     res.templateProvider = templateProvider;
@@ -618,9 +634,15 @@ public class RenderingContext {
   public String getLink(KnownLinkType link) {
     return links.get(link);
   }
-  public void addLink(KnownLinkType self, String targetOutput) {
-    // TODO Auto-generated method stub
+  public void addLink(KnownLinkType type, String link) {
+    links.put(type, link);
     
+  }
+  public GenerationRules getRules() {
+    return rules;
+  }
+  public void setRules(GenerationRules rules) {
+    this.rules = rules;
   }
 
 }

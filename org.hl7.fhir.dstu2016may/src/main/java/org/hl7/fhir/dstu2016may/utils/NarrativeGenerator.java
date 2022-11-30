@@ -154,6 +154,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.LoincLinker;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.Utilities;
@@ -2482,7 +2483,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     if (cc.getSystem().equals("http://snomed.info/sct"))
       return "http://snomed.info/sct/"+cc.getCode();
     if (cc.getSystem().equals("http://loinc.org"))
-      return "http://s.details.loinc.org/LOINC/"+cc.getCode()+".html";
+      return LoincLinker.getLinkForCode(cc.getCode());
     return null;
   }
 

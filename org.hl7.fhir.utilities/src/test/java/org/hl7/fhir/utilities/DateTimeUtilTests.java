@@ -1,6 +1,12 @@
 package org.hl7.fhir.utilities;
 
-import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
@@ -8,12 +14,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
-import java.util.stream.Stream;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 
 public class DateTimeUtilTests {
 

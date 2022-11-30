@@ -790,7 +790,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     if ("DomainResource.contained".equals(child.getBase().getPath())) {
       if (round2) {
         for (BaseWrapper v : p.getValues()) {
-          if (!RendererFactory.hasSpecificRenderer(v.fhirType())) {
+          if (v.getBase() != null && !RendererFactory.hasSpecificRenderer(v.fhirType())) {
             x.hr();
             RenderingContext ctxt = context.copy();
             ctxt.setContained(true);

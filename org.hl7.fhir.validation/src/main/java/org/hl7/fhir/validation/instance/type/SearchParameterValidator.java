@@ -51,13 +51,13 @@ public class SearchParameterValidator extends BaseValidator {
     
     if (!Utilities.noString(master)) {
       SearchParameter sp = context.fetchResource(SearchParameter.class, master);
-      if (warning(errors, IssueType.BUSINESSRULE,stack.getLiteralPath(), sp != null, I18nConstants.SEARCHPARAMETER_NOTFOUND, master)) {
+      if (warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE,stack.getLiteralPath(), sp != null, I18nConstants.SEARCHPARAMETER_NOTFOUND, master)) {
         // base must be in the master list of base
         List<Element> bl = cs.getChildren("base");
         for (Element b : bl) {
-          ok = rule(errors, IssueType.BUSINESSRULE,stack.getLiteralPath(), sp.hasBase(b.primitiveValue()) || sp.hasBase("Resource"), I18nConstants.SEARCHPARAMETER_BASE_WRONG, master, b.primitiveValue()) && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE,stack.getLiteralPath(), sp.hasBase(b.primitiveValue()) || sp.hasBase("Resource"), I18nConstants.SEARCHPARAMETER_BASE_WRONG, master, b.primitiveValue()) && ok;
         }
-        ok = rule(errors, IssueType.BUSINESSRULE,stack.getLiteralPath(), !cs.hasChild("type") || sp.getType().toCode().equals(cs.getNamedChildValue("type")), I18nConstants.SEARCHPARAMETER_TYPE_WRONG, master, sp.getType().toCode(), cs.getNamedChildValue("type")) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE,stack.getLiteralPath(), !cs.hasChild("type") || sp.getType().toCode().equals(cs.getNamedChildValue("type")), I18nConstants.SEARCHPARAMETER_TYPE_WRONG, master, sp.getType().toCode(), cs.getNamedChildValue("type")) && ok;
         if (sp.hasExpression() && cs.hasChild("expression") && !sp.getExpression().equals(cs.getNamedChildValue("expression"))) {
           List<String> bases = new ArrayList<>();
           for (Element b : cs.getChildren("base")) {
@@ -65,7 +65,7 @@ public class SearchParameterValidator extends BaseValidator {
           }
           String expThis = canonicalise(cs.getNamedChildValue("expression"), bases);
           String expOther = canonicalise(sp.getExpression(), bases); 
-          warning(errors, IssueType.BUSINESSRULE,stack.getLiteralPath(), expThis.equals(expOther), I18nConstants.SEARCHPARAMETER_EXP_WRONG, master, sp.getExpression(), cs.getNamedChildValue("expression"));
+          warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE,stack.getLiteralPath(), expThis.equals(expOther), I18nConstants.SEARCHPARAMETER_EXP_WRONG, master, sp.getExpression(), cs.getNamedChildValue("expression"));
         }
         // todo: check compositions
       }

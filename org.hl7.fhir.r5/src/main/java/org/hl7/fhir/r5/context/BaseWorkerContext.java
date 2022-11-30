@@ -1016,6 +1016,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return res;
     }
 
+    String localError = null;
     if (options.isUseClient()) {
       // ok, first we try to validate locally
       try {
@@ -1028,6 +1029,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           return res;
         }
       } catch (Exception e) {
+        localError = e.getMessage();
       }
     }
     
@@ -1054,6 +1056,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       res = validateOnServer(vs, pIn, options);
     } catch (Exception e) {
       res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage()).setTxLink(txLog == null ? null : txLog.getLastId()).setErrorClass(TerminologyServiceErrorClass.SERVER_ERROR);
+    }
+    if (!res.isOk() && localError != null) {
+      res.setMessage("Local Error: "+localError+". Server Error: "+res.getMessage());
     }
     updateUnsupportedCodeSystems(res, code, codeKey);
     if (txCache != null) { // we never cache unsupported code systems - we always keep trying (but only once per run)
@@ -2216,6 +2221,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (!hasResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Base")) {
       cacheResource(ProfileUtilities.makeBaseDefinition(version));
     }
+    System.out.print(".");
     for (StructureDefinition sd : listStructures()) {
       try {
         if (sd.getSnapshot().isEmpty()) { 
@@ -2226,6 +2232,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         System.out.println("Unable to generate snapshot for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
       }
     }  
+    System.out.print(":");
     codeSystems.setVersion(version);
     valueSets.setVersion(version);
     maps.setVersion(version);

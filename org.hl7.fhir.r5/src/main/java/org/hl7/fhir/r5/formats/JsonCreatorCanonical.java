@@ -116,7 +116,7 @@ public class JsonCreatorCanonical implements JsonCreator {
   
   public JsonCreatorCanonical(OutputStreamWriter osw) {
     stack = new Stack<JsonCreatorCanonical.JsonCanObject>();
-    jj = new JsonCreatorDirect(osw);
+    jj = new JsonCreatorDirect(osw, false, false);
     name = null;
   }
 
@@ -124,13 +124,6 @@ public class JsonCreatorCanonical implements JsonCreator {
     String res = name;
     name = null;
     return res;
-  }
-  
-  @Override
-  public void setIndent(String indent) {
-    if (!indent.equals(""))
-      throw new Error("do not use pretty when canonical is set");
-    jj.setIndent(indent);
   }
 
   @Override
@@ -275,6 +268,12 @@ public class JsonCreatorCanonical implements JsonCreator {
   @Override
   public void anchor(String name) {
     // not used
+  }
+
+  @Override
+  public void comment(String content) {
+    // canonical JSON ignores comments
+    
   }
        
     
