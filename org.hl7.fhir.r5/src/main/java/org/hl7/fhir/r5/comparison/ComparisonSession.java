@@ -60,12 +60,12 @@ public class ComparisonSession {
     return title;
   }
 
-  public ResourceComparison compare(String left, String right) throws DefinitionException, FHIRFormatError, IOException {
-    CanonicalResource l = (CanonicalResource) contextLeft.fetchResource(Resource.class, left);
+  public ResourceComparison compare(String left, Resource leftSource, String right, Resource rightSource) throws DefinitionException, FHIRFormatError, IOException {
+    CanonicalResource l = (CanonicalResource) contextLeft.fetchResource(Resource.class, left, leftSource);
     if (l == null) {
       throw new DefinitionException("Unable to resolve "+left);
     }
-    CanonicalResource r = (CanonicalResource) contextRight.fetchResource(Resource.class, right);
+    CanonicalResource r = (CanonicalResource) contextRight.fetchResource(Resource.class, right, rightSource);
     if (r == null) {
       throw new DefinitionException("Unable to resolve "+right);
     }

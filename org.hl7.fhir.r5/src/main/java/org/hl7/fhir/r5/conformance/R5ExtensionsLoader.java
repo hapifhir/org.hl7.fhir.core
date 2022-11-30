@@ -13,7 +13,6 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.R5ExtensionsLoader.Loadable;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -22,6 +21,7 @@ import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.utils.ResourceSorters;
@@ -64,7 +64,7 @@ public class R5ExtensionsLoader {
   private Map<String, Loadable<CodeSystem>> codeSystems;
   private List<Loadable<StructureDefinition>> structures;
   private IWorkerContext context;
-  private PackageVersion pd;
+  private PackageInformation pd;
   private JsonParser json;
   
   public R5ExtensionsLoader(BasePackageCacheManager pcm, IWorkerContext context) {
@@ -79,7 +79,7 @@ public class R5ExtensionsLoader {
 
   public void load() throws FHIRException, IOException {
     pck = pcm.loadPackage("hl7.fhir.r5.core", "current");
-    pd = new PackageVersion(pck.name(), pck.version(), pck.dateAsDate());    
+    pd = new PackageInformation(pck);    
 
     String[] types = new String[] { "StructureDefinition", "ValueSet", "CodeSystem" };
     json = new JsonParser();
@@ -140,7 +140,7 @@ public class R5ExtensionsLoader {
     }
   }
 
-  private void loadValueSet(String url, IWorkerContext context, Map<String, Loadable<ValueSet>> valueSets, Map<String, Loadable<CodeSystem>> codeSystems, PackageVersion pd) throws FHIRFormatError, FileNotFoundException, IOException {
+  private void loadValueSet(String url, IWorkerContext context, Map<String, Loadable<ValueSet>> valueSets, Map<String, Loadable<CodeSystem>> codeSystems, PackageInformation pd) throws FHIRFormatError, FileNotFoundException, IOException {
     if (valueSets.containsKey(url)) {
       ValueSet vs = valueSets.get(url).getResource();      
       context.cacheResourceFromPackage(vs, pd);

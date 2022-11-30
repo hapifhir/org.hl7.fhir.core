@@ -942,7 +942,7 @@ public class Element extends Base {
         return null;
       ICodingImpl c = new ICodingImpl(true, true, false, false);
       c.code = primitiveValue();
-      ValueSetExpansionOutcome vse = property.getContext().expandVS(property.getDefinition().getBinding(), true, false);
+      ValueSetExpansionOutcome vse = property.getContext().expandVS(property.getStructure(), property.getDefinition().getBinding(), true, false);
       if (vse.getValueset() == null)
         return null;
       for (ValueSetExpansionContainsComponent cc : vse.getValueset().getExpansion().getContains()) {
