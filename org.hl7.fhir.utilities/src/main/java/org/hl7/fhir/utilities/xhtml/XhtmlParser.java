@@ -60,45 +60,84 @@ public class XhtmlParser {
   public static final String XHTML_NS = "http://www.w3.org/1999/xhtml";
   private static final char END_OF_CHARS = (char) -1;
 
-  public class NSMap {
-    private Map<String, String> nslist = new HashMap<String, String>();
+  public class NamespaceNormalizationMap {
 
-    public NSMap(NSMap nsm) {
-      if (nsm != null)
-        nslist.putAll(nsm.nslist);
+    private String defaultNamespace;
+
+    private String originalNamespacePrefix;
+    private Map<String, String> map = new HashMap<String, String>();
+
+    public NamespaceNormalizationMap(NamespaceNormalizationMap namespaceMap) {
+      if (namespaceMap != null) {
+        map.putAll(namespaceMap.map);
+        this.defaultNamespace = namespaceMap.defaultNamespace;
+        this.originalNamespacePrefix = namespaceMap.originalNamespacePrefix;
+      }
     }
 
-    public void def(String ns) {
-      nslist.put("", ns);
+    public void setDefaultNamespace(String defaultNamespace) {
+      this.defaultNamespace = defaultNamespace;
     }
 
-    public void ns(String abbrev, String ns) {
-      nslist.put(abbrev, ns);  
+    /**
+     * Keeps track of the original namespace this element had before it was normalized
+     *
+     * This way, child elements using that prefix will be able recognize that they
+     * should use the default namespace.
+     *
+     * <namespaceA:parentElement xmlns:namespaceA="http://www.somewhere.org/namespaceA">
+     *   <namespaceA: childElement/>
+     * </namespaceA:parentElement>
+     *
+     * parentElement's namespaceA would become the default namespace.
+     *
+     * When normalizing childElement originalNamespacePrefix would be namespaceA,
+     * so we would know that childElement should use the default namespace.
+     *
+     * <parentElement xmlns="http://www.somewhere.org/namespaceA">
+     *   <childElement/>
+     * </parentElement>
+     *
+     * @param originalNamespacePrefix
+     */
+    public void setOriginalNamespacePrefix(String originalNamespacePrefix) {
+      this.originalNamespacePrefix = originalNamespacePrefix;
     }
 
-    public String def() {
-      return nslist.get("");
+    public void putNamespacePrefix(String prefix, String namespace) {
+      map.put(prefix, namespace);
     }
 
-    public boolean hasDef() {
-      return nslist.containsKey("");
+    public String getDefaultNamespace() {
+      return defaultNamespace;
     }
 
-    public String get(String abbrev) {
-      return nslist.containsKey(abbrev) ? nslist.get(abbrev) : "http://error/undefined-namespace";
+    public boolean hasDefaultNamespace() {
+      return defaultNamespace != null;
+    }
+
+    public String getNamespaceForPrefix(String prefix) {
+      if (originalNamespacePrefix != null && originalNamespacePrefix.equals(prefix)) {
+        return defaultNamespace;
+      }
+      return  map.containsKey(prefix) ? map.get(prefix) : "http://error/undefined-namespace";
+    }
+
+    public Set<Map.Entry<String, String>> getPrefixNamespaceEntrySet() {
+      return map.entrySet();
     }
   }
 
-  public class QName {
-    private String ns;
+  public class ElementName {
+    private String namespace;
     private String name;
 
-    public QName(String src) {
+    public ElementName(String src) {
       if (src.contains(":")) {
-        ns = src.substring(0, src.indexOf(":"));
+        namespace = src.substring(0, src.indexOf(":"));
         name = src.substring(src.indexOf(":")+1);
       } else {
-        ns = null;
+        namespace = null;
         name = src;
       }
     }
@@ -107,17 +146,17 @@ public class XhtmlParser {
       return name;
     }
 
-    public boolean hasNs() {
-      return ns != null;
+    public boolean hasNamespace() {
+      return namespace != null;
     }
 
-    public String getNs() {
-      return ns;
+    public String getNamespace() {
+      return namespace;
     }
 
     @Override
     public String toString() {
-      return ns+"::"+name;
+      return namespace +"::"+name;
     }
 
   }
@@ -455,14 +494,14 @@ public class XhtmlParser {
       throw new FHIRFormatError("Unable to Parse HTML - does not start with tag. Found "+peekChar()+descLoc());
     readChar();
     markLocation();
-    QName n = new QName(readName().toLowerCase());
+    ElementName n = new ElementName(readName().toLowerCase());
     if ((entryName != null) && !n.getName().equals(entryName))
       throw new FHIRFormatError("Unable to Parse HTML - starts with '"+n+"' not '"+entryName+"'"+descLoc());
     XhtmlNode root = result.addTag(n.getName());
     root.setLocation(markLocation());
     parseAttributes(root);
     markLocation();
-    NSMap nsm = checkNamespaces(n, root, null, true);
+    NamespaceNormalizationMap nsm = normalizeNamespaces(n, root, null, true);
     if (readChar() == '/') {
       if (peekChar() != '>')
         throw new FHIRFormatError("unexpected non-end of element "+n+" "+descLoc());
@@ -481,34 +520,59 @@ public class XhtmlParser {
     return res;
   }
 
-  private NSMap checkNamespaces(QName n, XhtmlNode node, NSMap nsm, boolean root) {
-    // what we do here is strip out any stated namespace attributes, putting them in the namesapce map
+  private NamespaceNormalizationMap normalizeNamespaces(ElementName elementName, XhtmlNode node, NamespaceNormalizationMap parentNamespaceMap, boolean nodeIsRoot) {
+    // what we do here is strip out any stated namespace attributes, putting them in the namespace map
     // then we figure out what the namespace of this element is, and state it explicitly if it's not the default
 
-    NSMap result = new NSMap(nsm);
-    List<String> nsattrs = new ArrayList<String>();
+    NamespaceNormalizationMap nodeNamespaceMap = new NamespaceNormalizationMap(parentNamespaceMap);
+    List<String> namespaceAttributes = new ArrayList<String>();
     for (String an : node.getAttributes().keySet()) {
       if (an.equals("xmlns")) {
-        result.def(node.getAttribute(an));
-        nsattrs.add(an);
+        nodeNamespaceMap.setDefaultNamespace(node.getAttribute(an));
+        namespaceAttributes.add(an);
       }
       if (an.startsWith("xmlns:")) {
-        result.ns(an.substring(6), node.getAttribute(an));
-        nsattrs.add(an);
+        nodeNamespaceMap.putNamespacePrefix(an.substring(6), node.getAttribute(an));
+        namespaceAttributes.add(an);
       }
     }
-    for (String s : nsattrs)
+
+    for (String s : namespaceAttributes)
       node.getAttributes().remove(s);
-    if (n.hasNs()) {
-      String nns = result.get(n.getNs());
-      if (!nns.equals(result.def())) {
-        node.getAttributes().put("xmlns", nns);
-        result.def(nns);
+    if (elementName.hasNamespace()) {
+      String elementNamespace = nodeNamespaceMap.getNamespaceForPrefix(elementName.getNamespace());
+      if (!elementNamespace.equals(nodeNamespaceMap.getDefaultNamespace())) {
+        node.getAttributes().put("xmlns", elementNamespace);
+        nodeNamespaceMap.setDefaultNamespace(elementNamespace);
+        nodeNamespaceMap.setOriginalNamespacePrefix(elementName.getNamespace());
+        nodeNamespaceMap.map.remove(elementName.getNamespace());
       }
-    } else if (root && result.hasDef()) {
-      node.getAttributes().put("xmlns", result.def());
     }
-    return result;
+    // Add namespaces back if not defined in parentNamespaceMap (we haven't seen it before, so we need to define it here)
+    if (shouldAddXmlnsNamespaceAttribute(parentNamespaceMap, nodeIsRoot, nodeNamespaceMap)) {
+      node.getAttributes().put("xmlns", nodeNamespaceMap.getDefaultNamespace());
+    }
+    for (Map.Entry<String, String> entry : nodeNamespaceMap.getPrefixNamespaceEntrySet() ) {
+      if (shouldAddXmlnsNamespacePrefixAttribute(parentNamespaceMap, nodeIsRoot, entry.getKey())) {
+        node.getAttributes().put("xmlns:" + entry.getKey(), entry.getValue());
+      }
+    }
+
+    return nodeNamespaceMap;
+  }
+
+  private static boolean shouldAddXmlnsNamespacePrefixAttribute(NamespaceNormalizationMap parentNamespaceMap, boolean nodeIsRoot, String attributeKey) {
+    if (nodeIsRoot) {
+      return true;
+    }
+    return  (!parentNamespaceMap.map.containsKey(attributeKey));
+  }
+
+  private static boolean shouldAddXmlnsNamespaceAttribute(NamespaceNormalizationMap parentNamespaceMap, boolean nodeIsRoot, NamespaceNormalizationMap nodeNamespaceMap) {
+    if (nodeIsRoot) {
+      return nodeNamespaceMap.hasDefaultNamespace();
+    }
+    return nodeNamespaceMap.hasDefaultNamespace() && (parentNamespaceMap == null || !nodeNamespaceMap.getDefaultNamespace().equals(parentNamespaceMap.getDefaultNamespace()));
   }
 
   private void addTextNode(XhtmlNode node, StringBuilder s)
@@ -522,7 +586,7 @@ public class XhtmlParser {
       s.setLength(0);
     }
   }
-  private void parseElementInner(XhtmlNode node, List<XhtmlNode> parents, NSMap nsm, boolean escaping) throws FHIRFormatError, IOException 
+  private void parseElementInner(XhtmlNode node, List<XhtmlNode> parents, NamespaceNormalizationMap nsm, boolean escaping) throws FHIRFormatError, IOException
   {
     StringBuilder s = new StringBuilder();
     while (peekChar() != END_OF_CHARS && !parents.contains(unwindPoint) && !(node == unwindPoint))
@@ -541,7 +605,7 @@ public class XhtmlParser {
           node.addComment(readToTagEnd()).setLocation(markLocation());
         else if (peekChar() == '/') {
           readChar();
-          QName n = new QName(readToTagEnd());
+          ElementName n = new ElementName(readToTagEnd());
           if (node.getName().equals(n.getName()))
             return;
           else
@@ -591,10 +655,10 @@ public class XhtmlParser {
     addTextNode(node, s);
   }
 
-  private void parseElement(XhtmlNode parent, List<XhtmlNode> parents, NSMap nsm) throws IOException, FHIRFormatError 
+  private void parseElement(XhtmlNode parent, List<XhtmlNode> parents, NamespaceNormalizationMap namespaceMap) throws IOException, FHIRFormatError
   {
     markLocation();
-    QName name = new QName(readName());
+    ElementName name = new ElementName(readName());
     XhtmlNode node = parent.addTag(name.getName());
     node.setLocation(markLocation());
     List<XhtmlNode> newParents = new ArrayList<XhtmlNode>();
@@ -602,13 +666,13 @@ public class XhtmlParser {
     newParents.add(parent);
     parseAttributes(node);
     markLocation();
-    nsm = checkNamespaces(name, node, nsm, false);
+    namespaceMap = normalizeNamespaces(name, node, namespaceMap, false);
     if (readChar() == '/') {
       if (peekChar() != '>')
         throw new FHIRFormatError("unexpected non-end of element "+name+" "+descLoc());
       readChar();
     } else {
-      parseElementInner(node, newParents, nsm, "script".equals(name.getName()));
+      parseElementInner(node, newParents, namespaceMap, "script".equals(name.getName()));
     }
   }
 
