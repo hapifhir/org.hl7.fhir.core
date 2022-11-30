@@ -763,7 +763,7 @@ public class DataRenderer extends Renderer {
     }
   }
   
-  protected void renderUri(XhtmlNode x, UriType uri, String path, String id) {
+  protected void renderUri(XhtmlNode x, UriType uri, String path, String id, Resource src) {
     if (isCanonical(path)) {
       x.code().tx(uri.getValue());
     } else {
@@ -773,7 +773,7 @@ public class DataRenderer extends Renderer {
       } else if (uri.getValue().startsWith("mailto:")) {
         x.ah(uri.getValue()).addText(uri.getValue().substring(7));
       } else {
-        Resource target = context.getContext().fetchResource(Resource.class, uri.getValue());
+        Resource target = context.getContext().fetchResource(Resource.class, uri.getValue(), src);
         if (target != null && target.hasUserData("path")) {
           String title = target instanceof CanonicalResource ? ((CanonicalResource) target).present() : uri.getValue();
           x.ah(target.getUserString("path")).addText(title);

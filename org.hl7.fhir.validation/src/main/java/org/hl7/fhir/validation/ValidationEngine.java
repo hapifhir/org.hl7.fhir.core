@@ -29,7 +29,6 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.context.IWorkerContextManager;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.context.SystemOutLoggingService;
@@ -52,6 +51,7 @@ import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ExpressionNode;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -429,7 +429,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       if (userAgent != null) {
         contextBuilder.withUserAgent(userAgent);
       }
-      context = contextBuilder.fromDefinitions(source, ValidatorUtils.loaderForVersion(version), new PackageVersion(src, new Date()));
+      context = contextBuilder.fromDefinitions(source, ValidatorUtils.loaderForVersion(version), new PackageInformation(src, new Date()));
       ValidatorUtils.grabNatives(getBinaries(), source, "http://hl7.org/fhir");
     }
     // ucum-essence.xml should be in the class path. if it's not, ask about how to sort this out 
