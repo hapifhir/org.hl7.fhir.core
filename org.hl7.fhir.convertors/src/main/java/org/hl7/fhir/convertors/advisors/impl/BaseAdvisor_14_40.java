@@ -27,8 +27,9 @@ public class BaseAdvisor_14_40 extends BaseAdvisor40<org.hl7.fhir.dstu2016may.mo
 
   public boolean ignoreExtension(@Nonnull String path,
                                  @Nonnull String url) {
-    List<String> paths = Arrays.asList(path.split(","));
-    if ((paths.get(paths.size() - 1).equals("Conformance")) && (conformanceIgnoredUrls.contains(url))) {
+    final List<String> paths = Arrays.asList(path.split(","));
+    final String lastPath = paths.get(paths.size() - 1);
+    if ((lastPath.equals("Conformance")) && (conformanceIgnoredUrls.contains(url))) {
       return true;
     } else {
       return this.ignoredUrls.contains(url);

@@ -22,7 +22,7 @@ public class Immunization30_40Test {
       Arguments.of("not-done no notGiven extension", "/immunization_40_not-done.json", "/immunization_30_completed_notGiven.json"),
       Arguments.of("completed no notGiven extension", "/immunization_40_completed.json", "/immunization_30_completed_given.json"),
       Arguments.of("entered-in-error no notGiven extension", "/immunization_40_entered-in-error.json", "/immunization_30_entered-in-error_given.json"),
-      Arguments.of("entered-in-error notGiven extension", "/immunization_40_entered-in-error_notGiven-extension.json", "/immunization_30_entered-in-error_notGiven-extension.json")
+      Arguments.of("entered-in-error notGiven extension", "/immunization_40_entered-in-error_notGiven-extension.json", "/immunization_30_entered-in-error_notGiven.json")
     );
   }
   @ParameterizedTest(name = "Test r4 -> dstu3 immunization conversions: {0}")
