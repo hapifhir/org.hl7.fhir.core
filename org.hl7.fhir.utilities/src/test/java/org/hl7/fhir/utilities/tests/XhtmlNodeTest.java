@@ -110,8 +110,31 @@ public class XhtmlNodeTest {
   @Test
   public void testParseEntities() throws FHIRFormatError, IOException {
     XhtmlNode x = new XhtmlParser().parse(BaseTestingUtilities.loadTestResource("xhtml", "entities.html"), "div");
-  }
-    
 
+  }
+
+  @Test
+  public void testParseSvg() throws FHIRFormatError, IOException {
+    XhtmlNode x = new XhtmlParser().parse(BaseTestingUtilities.loadTestResource("xhtml", "svg.html"), "svg");
+
+    Assertions.assertEquals("http://www.w3.org/2000/svg", x.getChildNodes().get(1).getAttributes().get("xmlns"));
+    Assertions.assertEquals("http://www.w3.org/1999/xlink", x.getChildNodes().get(1).getAttributes().get("xmlns:xlink"));
+  }
+
+  @Test
+  public void testParseSvgNotRoot() throws FHIRFormatError, IOException {
+    XhtmlNode x = new XhtmlParser().parse(BaseTestingUtilities.loadTestResource("xhtml", "non-root-svg.html"), "div");
+
+    Assertions.assertEquals("http://www.w3.org/2000/svg", x.getChildNodes().get(0).getChildNodes().get(1).getAttributes().get("xmlns"));
+    Assertions.assertEquals("http://www.w3.org/1999/xlink", x.getChildNodes().get(0).getChildNodes().get(1).getAttributes().get("xmlns:xlink"));
+  }
+
+  @Test
+  public void testParseNamespacedSvgNotRoot() throws FHIRFormatError, IOException {
+    XhtmlNode x = new XhtmlParser().parse(BaseTestingUtilities.loadTestResource("xhtml", "namespaced-non-root-svg.html"), "div");
+
+    Assertions.assertEquals("http://www.w3.org/2000/svg", x.getChildNodes().get(0).getChildNodes().get(1).getAttributes().get("xmlns"));
+    Assertions.assertEquals("http://www.w3.org/1999/xlink", x.getChildNodes().get(0).getChildNodes().get(1).getAttributes().get("xmlns:xlink"));
+  }
 
 }
