@@ -140,7 +140,7 @@ import javax.annotation.Nonnull;
 
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext{
 
-  private static final boolean QA_CHECK_REFERENCE_SOURCE = true;
+  private static final boolean QA_CHECK_REFERENCE_SOURCE = false; // see comments below
 
   public class ResourceProxy {
     private Resource resource;
