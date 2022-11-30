@@ -23,12 +23,13 @@ public class BaseAdvisor_43_50 extends BaseAdvisor50<org.hl7.fhir.r4b.model.Exte
   @Override
   public boolean ignoreExtension(@Nonnull String path,
                                  @Nonnull String url) throws FHIRException {
-    List<String> paths = Arrays.asList(path.split(","));
-    if ((paths.get(paths.size() - 1).equals("TestScript")) && (TestScriptIgnoredUrls.contains(url))) {
+    final List<String> paths = Arrays.asList(path.split(","));
+    final String lastPath = paths.get(paths.size() - 1);
+    if ((lastPath.equals("TestScript")) && (TestScriptIgnoredUrls.contains(url))) {
       return true;
-    } else if (paths.get(paths.size() - 1).equals("Basic") && url.startsWith("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.")) {
+    } else if (lastPath.equals("Basic") && url.startsWith("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.")) {
       return true;
-    } else if (paths.get(paths.size() - 1).equals("Basic") && url.startsWith("http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.")) {
+    } else if (lastPath.equals("Basic") && url.startsWith("http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.")) {
       return true;
     } else
       return false;
