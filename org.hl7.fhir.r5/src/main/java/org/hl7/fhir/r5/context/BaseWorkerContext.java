@@ -88,6 +88,7 @@ import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.PlanDefinition;
+import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Requirements;
@@ -1300,9 +1301,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         } else if (p.getName().equals("display")) {
           display = p.getValue().primitiveValue();
         } else if (p.getName().equals("system")) {
-          system = p.getValue().primitiveValue();
+          system = ((PrimitiveType<?>) p.getValue()).asStringValue();
         } else if (p.getName().equals("code")) {
-          code = p.getValue().primitiveValue();
+          code = ((PrimitiveType<?>) p.getValue()).asStringValue();
         } else if (p.getName().equals("cause")) {
           try {
             IssueType it = IssueType.fromCode(((StringType) p.getValue()).getValue());

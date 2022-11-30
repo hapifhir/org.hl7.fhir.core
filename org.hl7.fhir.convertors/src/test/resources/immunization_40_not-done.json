@@ -1,0 +1,23 @@
+{
+  "resourceType": "Immunization",
+  "id": "notGiven",
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">dummyDiv</div>"
+  },
+  "status": "not-done",
+  "vaccineCode": {
+    "coding": [
+      {
+        "system": "http://hl7.org/fhir/sid/cvx",
+        "code": "01",
+        "display": "DTP"
+      }
+    ]
+  },
+  "patient": {
+    "reference": "Patient/example"
+  },
+  "occurrenceDateTime": "2013-01-10",
+  "primarySource": true
+}
