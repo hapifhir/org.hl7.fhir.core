@@ -1707,10 +1707,49 @@ public class StructureMapUtilities {
           if (tgt.getParameter().size() == 1)
             throw new FHIRException("Implicit type parameters on cast not yet supported");
           String t = getParamString(vars, tgt.getParameter().get(1));
-          if (t.equals("string"))
-            return new StringType(src);
-          else
-            throw new FHIRException("cast to " + t + " not yet supported");
+          switch(t) {
+            case "boolean":
+              return new BooleanType(src);
+            case "integer":
+              return new IntegerType(src);
+            case  "integer64":
+              return new Integer64Type(src);
+            case  "string":
+              return new StringType(src);
+            case  "decimal":
+              return new DecimalType(src);
+            case  "uri":
+              return new UriType(src);
+            case  "base64Binary":
+              return new Base64BinaryType(src);
+            case  "instant":
+              return new InstantType(src);
+            case  "date":
+              return new DateType(src);
+            case  "dateTime":
+              return new DateTimeType(src);
+            case  "time":
+              return new TimeType(src);
+            case  "code":
+              return new CodeType(src);
+            case  "oid":
+              return new OidType(src);
+            case  "id":
+              return new IdType(src);
+            case  "markdown":
+              return new MarkdownType(src);
+            case  "unsignedInt":
+              return new UnsignedIntType(src);
+            case  "positiveInt":
+              return new PositiveIntType(src);
+            case  "uuid":
+              return new UuidType(src);
+            case  "url":
+              return new UrlType(src);
+            case  "canonical":
+              return new CanonicalType(src);
+          }
+          throw new FHIRException("cast to " + t + " not yet supported");
         case APPEND:
           StringBuilder sb = new StringBuilder(getParamString(vars, tgt.getParameter().get(0)));
           for (int i = 1; i < tgt.getParameter().size(); i++)
