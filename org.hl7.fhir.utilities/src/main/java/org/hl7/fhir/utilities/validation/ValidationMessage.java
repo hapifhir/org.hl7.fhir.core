@@ -817,12 +817,13 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
     return ruleDate;
   }
 
-  public void setRuleDate(Date ruleDate) {
+  public ValidationMessage setRuleDate(Date ruleDate) {
     this.ruleDate = ruleDate;
+    return this;
   }
 
 
-  public void setRuleDate(String value) {
+  public ValidationMessage setRuleDate(String value) {
     if (value == null) {
       ruleDate = null;
     } else {
@@ -834,5 +835,6 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
       }
       ruleDate = d;
     }
+    return this;
   }
 }

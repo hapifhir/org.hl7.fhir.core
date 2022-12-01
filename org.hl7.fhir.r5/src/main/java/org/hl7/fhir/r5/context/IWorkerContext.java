@@ -8,19 +8,19 @@ import java.util.Date;
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
-  
+
   Redistribution and use in source and binary forms, with or without modification, 
   are permitted provided that the following conditions are met:
-    
-   * Redistributions of source code must retain the above copyright notice, this 
+
+ * Redistributions of source code must retain the above copyright notice, this 
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
+ * Redistributions in binary form must reproduce the above copyright notice, 
      this list of conditions and the following disclaimer in the documentation 
      and/or other materials provided with the distribution.
-   * Neither the name of HL7 nor the names of its contributors may be used to 
+ * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
-  
+
   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
@@ -31,7 +31,7 @@ import java.util.Date;
   WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
   POSSIBILITY OF SUCH DAMAGE.
-  
+
  */
 
 
@@ -58,6 +58,7 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.NamingSystem;
+import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -102,7 +103,7 @@ import javax.annotation.Nonnull;
  */
 
 public interface IWorkerContext {
-  
+
   class ValidationResult {
     private ConceptDefinitionComponent definition;
     private String system;
@@ -110,7 +111,7 @@ public interface IWorkerContext {
     private String message;
     private TerminologyServiceErrorClass errorClass;
     private String txLink;
-    
+
     @Override
     public String toString() {
       return "ValidationResult [definition=" + definition + ", system=" + system + ", severity=" + severity + ", message=" + message + ", errorClass="
@@ -121,7 +122,7 @@ public interface IWorkerContext {
       this.severity = severity;
       this.message = message;
     }
-    
+
     public ValidationResult(String system, ConceptDefinitionComponent definition) {
       this.system = system;
       this.definition = definition;
@@ -133,7 +134,7 @@ public interface IWorkerContext {
       this.system = system;
       this.definition = definition;
     }
-    
+
     public ValidationResult(IssueSeverity severity, String message, TerminologyServiceErrorClass errorClass) {
       this.severity = severity;
       this.message = message;
@@ -207,7 +208,7 @@ public interface IWorkerContext {
     public boolean hasMessage() {
       return message != null;
     }
-    
+
     public Coding asCoding() {
       if (isOk() && definition != null && definition.getCode() != null) {
         return new Coding(system, definition.getCode(), definition.getDisplay());
@@ -221,7 +222,7 @@ public interface IWorkerContext {
     private Coding coding;
     private ValidationResult result;
     private CacheToken cacheToken;
-    
+
     public CodingValidationRequest(Coding coding) {
       super();
       this.coding = coding;
@@ -260,86 +261,17 @@ public interface IWorkerContext {
     public void setCacheToken(CacheToken cacheToken) {
       this.cacheToken = cacheToken;
     }
-    
-    
+
+
   }
 
-  public class PackageVersion {
-    private String id;
-    private String version;
-    private Date date;
-    
-    public PackageVersion(String source, Date date) {
-      if (source == null) {
-        throw new Error("Source cannot be null");
-      }
-      if (!source.contains("#")) {
-        throw new FHIRException("Source ");        
-      }
-      id = source.substring(0, source.indexOf("#"));
-      version = source.substring(source.indexOf("#")+1);
-      this.date = date;
-    }
-    public PackageVersion(String id, String version, Date date) {
-      super();
-      this.id = id;
-      this.version = version;
-      this.date = date;
-    }
-    
-    public String getId() {
-      return id;
-    }
-    public String getVersion() {
-      return version;
-    }
-    public boolean isExamplesPackage() {
-      boolean b = id.startsWith("hl7.fhir.") && id.endsWith(".examples");
-      return b;
-    }
-    @Override
-    public String toString() {
-      return id+"#"+version;
-    }
-    public Date getDate() {
-      return date;
-    }
-    public boolean isHTO() {
-      boolean b = id.startsWith("hl7.terminology.r");
-      return b;
-    }
-    
-  }
-
-  public class PackageDetails extends PackageVersion {
-    private String name;
-    private String canonical;
-    private String web;
-    
-    public PackageDetails(String id, String version, String name, String canonical, String web, Date date) {
-      super(id, version, date);
-      this.name = name;
-      this.canonical = canonical;
-      this.web = web;
-    }
-    public String getName() {
-      return name;
-    }
-    public String getCanonical() {
-      return canonical;
-    }
-    public String getWeb() {
-      return web;
-    }
-    
-  }
 
   public interface IContextResourceLoader {
     /** 
      * @return List of the resource types that should be loaded
      */
     String[] getTypes();
-    
+
     /**
      * Request to actually load the resources and do whatever is required
      *  
@@ -350,7 +282,7 @@ public interface IWorkerContext {
      * @throws IOException
      */
     Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException;
-    
+
     /**
      * Load a single resources (lazy load)
      * 
@@ -361,7 +293,7 @@ public interface IWorkerContext {
      * @throws IOException
      */
     Resource loadResource(InputStream stream, boolean isJson) throws FHIRException, IOException;
-    
+
     /** 
      * get the path for references to this resource.
      * @param resource
@@ -388,7 +320,7 @@ public interface IWorkerContext {
    * @return
    */
   public String getVersion();
-  
+
   /**
    * Get the UCUM service that provides access to units of measure reasoning services 
    * 
@@ -438,6 +370,7 @@ public interface IWorkerContext {
    */
   public <T extends Resource> T fetchResource(Class<T> class_, String uri);
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException;
+  public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, Resource sourceOfReference) throws FHIRException;
   public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version);
 
   /** has the same functionality as fetchResource, but passes in information about the source of the 
@@ -449,7 +382,7 @@ public interface IWorkerContext {
    * @param canonicalForSource
    * @return
    */
-  public <T extends Resource> T fetchResource(Class<T> class_, String uri, CanonicalResource canonicalForSource);
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, Resource sourceOfReference);
 
   /** 
    * Fetch all the resources of a particular type. if class == (null | Resource | DomainResource | CanonicalResource) return everything
@@ -477,7 +410,7 @@ public interface IWorkerContext {
    * @return
    */
   public Resource fetchResourceById(String type, String uri);
-  
+
   /**
    * find whether a resource is available. 
    * 
@@ -501,7 +434,7 @@ public interface IWorkerContext {
    * @throws FHIRException 
    */
   public void cacheResource(Resource res) throws FHIRException;
-  
+
   /**
    * cache a resource for later retrieval using fetchResource.
    * 
@@ -514,8 +447,8 @@ public interface IWorkerContext {
    * @param res
    * @throws FHIRException 
    */
-  public void cacheResourceFromPackage(Resource res, PackageVersion packageDetails) throws FHIRException;
-  
+  public void cacheResourceFromPackage(Resource res, PackageInformation packageInfo) throws FHIRException;
+
   /**
    * Inform the cache about package dependencies. This can be used to help resolve references
    * 
@@ -523,10 +456,10 @@ public interface IWorkerContext {
    *  
    * @param packageInfo
    */
-  public void cachePackage(PackageDetails packageDetails, List<PackageVersion> dependencies);
-  
+  public void cachePackage(PackageInformation packageInfo);
+
   // -- profile services ---------------------------------------------------------
-  
+
   /**
    * @return a list of the resource names defined for this version
    */
@@ -590,7 +523,7 @@ public interface IWorkerContext {
    * @return
    */
   public ValueSetExpansionOutcome expandVS(ValueSet source, boolean cacheOk, boolean heiarchical);
-  
+
   /**
    * ValueSet Expansion - see $expand
    *  
@@ -598,7 +531,7 @@ public interface IWorkerContext {
    * @return
    */
   public ValueSetExpansionOutcome expandVS(ValueSet source, boolean cacheOk, boolean heiarchical, boolean incompleteOk);
-  
+
   /**
    * ValueSet Expansion - see $expand, but resolves the binding first
    *  
@@ -606,8 +539,8 @@ public interface IWorkerContext {
    * @return
    * @throws FHIRException 
    */
-  public ValueSetExpansionOutcome expandVS(ElementDefinitionBindingComponent binding, boolean cacheOk, boolean heiarchical) throws FHIRException;
-  
+  public ValueSetExpansionOutcome expandVS(Resource src, ElementDefinitionBindingComponent binding, boolean cacheOk, boolean heiarchical) throws FHIRException;
+
   /**
    * Value set expanion inside the internal expansion engine - used 
    * for references to supported system (see "supportsSystem") for
@@ -656,7 +589,7 @@ public interface IWorkerContext {
    * @return
    */
   public ValidationResult validateCode(ValidationOptions options, String code, ValueSet vs);
-  
+
   /**
    * Validation of a code - consult the terminology infrstructure and/or service 
    * to see whether it is known. If known, return a description of it
@@ -672,7 +605,7 @@ public interface IWorkerContext {
    * @return
    */
   public ValidationResult validateCode(ValidationOptions options, String system, String version, String code, String display);
-  
+
   /**
    * Validation of a code - consult the terminology infrstructure and/or service 
    * to see whether it is known. If known, return a description of it
@@ -723,7 +656,7 @@ public interface IWorkerContext {
    * @return
    */
   public ValidationResult validateCode(ValidationOptions options, Coding code, ValueSet vs);
-  
+
   /** 
    * See comments in ValidationContextCarrier. This is called when there might be additional value sets etc 
    * available in the context, but we don't want to pre-process them. 
@@ -745,10 +678,10 @@ public interface IWorkerContext {
    * @param vs
    */
   public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs);
-  
-  
+
+
   // todo: figure these out
-	public Map<String, NamingSystem> getNSUrlMap();
+  public Map<String, NamingSystem> getNSUrlMap();
   public TranslationServices translator();
 
   public interface ILoggingService {
@@ -770,7 +703,7 @@ public interface IWorkerContext {
   public Set<String> getCodeSystemsUsed();
   public int getClientRetryCount();
   public IWorkerContext setClientRetryCount(int value);
-  
+
   public TimeTracker clock();
 
   /**
@@ -782,7 +715,7 @@ public interface IWorkerContext {
    * @return
    */
   public StructureDefinition fetchTypeDefinition(String typeName);
-  
+
 
   /**
    * Returns a set of keys that can be used to get binaries from this context.
@@ -849,14 +782,14 @@ public interface IWorkerContext {
    * @param pcm - used to find and load additional dependencies
    * @return the number of resources loaded
    */
-   int loadFromPackageAndDependencies(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm) throws FileNotFoundException, IOException, FHIRException;
+  int loadFromPackageAndDependencies(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm) throws FileNotFoundException, IOException, FHIRException;
 
-   public boolean hasPackage(String id, String ver);
-   public boolean hasPackage(PackageVersion pack);
-   public PackageDetails getPackage(PackageVersion pack);
+  public boolean hasPackage(String id, String ver);
+  public boolean hasPackage(PackageInformation pack);
+  public PackageInformation getPackage(String id, String ver);
+  public PackageInformation getPackageForUrl(String url);
 
   public IWorkerContextManager.IPackageLoadingTracker getPackageTracker();
   public IWorkerContext setPackageTracker(IWorkerContextManager.IPackageLoadingTracker packageTracker);
 
-  public PackageVersion getPackageForUrl(String url);
 }

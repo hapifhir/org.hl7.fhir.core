@@ -135,7 +135,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
       tbl = x.table("grid");
       for (SearchParameterComponentComponent t : spd.getComponent()) {
         tr = tbl.tr();
-        SearchParameter tsp = context.getWorker().fetchResource(SearchParameter.class, t.getDefinition());
+        SearchParameter tsp = context.getWorker().fetchResource(SearchParameter.class, t.getDefinition(), spd);
         if (tsp != null && tsp.hasUserData("path")) {
           tr.td().ah(tsp.getUserString("path")).tx(tsp.present());          
         } else {

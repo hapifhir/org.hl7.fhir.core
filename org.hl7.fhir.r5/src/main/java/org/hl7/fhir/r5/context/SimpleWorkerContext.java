@@ -294,7 +294,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       return build(context);
     }
 
-    public SimpleWorkerContext fromDefinitions(Map<String, byte[]> source, IContextResourceLoader loader, PackageVersion pi) throws IOException, FHIRException  {
+    public SimpleWorkerContext fromDefinitions(Map<String, byte[]> source, IContextResourceLoader loader, PackageInformation pi) throws IOException, FHIRException  {
       SimpleWorkerContext context = getSimpleWorkerContextInstance();
       for (String name : source.keySet()) {
         try {
@@ -311,7 +311,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     }
   }
 
-  private void loadDefinitionItem(String name, InputStream stream, IContextResourceLoader loader, ILoadFilter filter, PackageVersion pi) throws IOException, FHIRException {
+  private void loadDefinitionItem(String name, InputStream stream, IContextResourceLoader loader, ILoadFilter filter, PackageInformation pi) throws IOException, FHIRException {
     if (name.endsWith(".xml"))
       loadFromFile(stream, name, loader, filter);
     else if (name.endsWith(".json"))
@@ -390,7 +390,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 		}
 	}
 
-  private void loadFromFileJson(InputStream stream, String name, IContextResourceLoader loader, ILoadFilter filter, PackageVersion pi) throws IOException, FHIRException {
+  private void loadFromFileJson(InputStream stream, String name, IContextResourceLoader loader, ILoadFilter filter, PackageInformation pi) throws IOException, FHIRException {
     Bundle f = null;
     try {
       if (loader != null)
@@ -487,7 +487,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       }
       for (String s : pi.listResources(types)) {
         try {
-          loadDefinitionItem(s, pi.load("package", s), loader, null, new PackageVersion(pi.id(), pi.version(), pi.dateAsDate()));
+          loadDefinitionItem(s, pi.load("package", s), loader, null, new PackageInformation(pi));
           t++;
         } catch (Exception e) {
           throw new FHIRException(formatMessage(I18nConstants.ERROR_READING__FROM_PACKAGE__, s, pi.name(), pi.version(), e.getMessage()), e);
@@ -500,7 +500,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       for (PackageResourceInformation pri : pi.listIndexedResources(types)) {
         if (!pri.getFilename().contains("ig-r4")) {
           try {
-            registerResourceFromPackage(new PackageResourceLoader(pri, loader), new PackageVersion(pi.id(), pi.version(), pi.dateAsDate()));
+            registerResourceFromPackage(new PackageResourceLoader(pri, loader), new PackageInformation(pi));
             t++;
           } catch (FHIRException e) {
             throw new FHIRException(formatMessage(I18nConstants.ERROR_READING__FROM_PACKAGE__, pri.getFilename(), pi.name(), pi.version(), e.getMessage()), e);
@@ -672,6 +672,21 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     return r;
   }
 
+  @Override
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, Resource source) {
+    T r = super.fetchResource(class_, uri, source);
+    if (r instanceof StructureDefinition) {
+      StructureDefinition p = (StructureDefinition)r;
+      try {
+        new ContextUtilities(this).generateSnapshot(p);
+      } catch (Exception e) {
+        // not sure what to do in this case?
+        System.out.println("Unable to generate snapshot for "+uri+": "+e.getMessage());
+      }
+    }
+    return r;
+  }
+
 
 
 
@@ -706,7 +721,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
    return xverManager;
   }
   
-  public void cachePackage(PackageVersion packageDetails, List<PackageVersion> dependencies) {
+  public void cachePackage(PackageInformation packageInfo) {
     // nothing yet
   }
 
@@ -720,17 +735,12 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
   @Override
-  public void cachePackage(PackageDetails packageDetails, List<PackageVersion> dependencies) {
-    // TODO Auto-generated method stub    
-  }
-
-  @Override
-  public boolean hasPackage(PackageVersion pack) {
+  public boolean hasPackage(PackageInformation pack) {
     return false;
   }
 
   @Override
-  public PackageDetails getPackage(PackageVersion pack) {
+  public PackageInformation getPackage(String id, String ver) {
     return null;
   }
 

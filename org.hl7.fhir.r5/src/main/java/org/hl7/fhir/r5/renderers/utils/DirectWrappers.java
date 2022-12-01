@@ -295,7 +295,7 @@ public class DirectWrappers {
         if ("DomainResource".equals(sd.getType())) {
           return true;
         }
-        sd = context.getWorker().fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+        sd = context.getWorker().fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
       }
       return false;
 

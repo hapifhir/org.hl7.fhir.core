@@ -864,7 +864,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         StructureDefinition sd = profiles.get(i);
         if (sd.hasExtension(ToolingExtensions.EXT_SD_DEPENDENCY)) {
           for (Extension ext : sd.getExtensionsByUrl(ToolingExtensions.EXT_SD_DEPENDENCY)) {
-            StructureDefinition dep = context.fetchResource( StructureDefinition.class, ext.getValue().primitiveValue());
+            StructureDefinition dep = context.fetchResource( StructureDefinition.class, ext.getValue().primitiveValue(), sd);
             if (dep == null) {
               warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_DEPENDS_NOT_RESOLVED, ext.getValue().primitiveValue(), sd.getVersionedUrl());                
             } else if (!profiles.contains(dep)) {
@@ -1025,7 +1025,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return false;
     } else {
       try {
-        if (context.fetchResourceWithException(ValueSet.class, system) != null) {
+        if (context.fetchResourceWithException(ValueSet.class, system, element.getProperty().getStructure()) != null) {
           rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_SYSTEM_VALUESET, system);
           // Lloyd: This error used to prohibit checking for downstream issues, but there are some cases where that checking needs to occur.  Please talk to me before changing the code back.
         }
@@ -1192,7 +1192,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       ElementDefinitionBindingComponent binding = theElementCntext.getBinding();
       if (warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, I18nConstants.TERMINOLOGY_TX_BINDING_MISSING, path)) {
         if (binding.hasValueSet()) {
-          ValueSet valueset = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl());
+          ValueSet valueset = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl(), profile);
           if (valueset == null) {
             CodeSystem cs = context.fetchCodeSystem(binding.getValueSet());
             if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(binding.getValueSet()))) {
@@ -1324,7 +1324,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       ElementDefinitionBindingComponent binding = theElementCntext.getBinding();
       if (warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, I18nConstants.TERMINOLOGY_TX_BINDING_MISSING, path)) {
         if (binding.hasValueSet()) {
-          ValueSet valueset = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl());
+          ValueSet valueset = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl(), profile);
           if (valueset == null) {
             CodeSystem cs = context.fetchCodeSystem(binding.getValueSet());
             if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(binding.getValueSet()))) {
@@ -1455,7 +1455,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             ElementDefinitionBindingComponent binding = theElementCntext.getBinding();
             if (warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, I18nConstants.TERMINOLOGY_TX_BINDING_MISSING2, path)) {
               if (binding.hasValueSet()) {
-                ValueSet valueset = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl());
+                ValueSet valueset = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl(), profile);
                 if (valueset == null) {
                   CodeSystem cs = context.fetchCodeSystem(binding.getValueSet());
                   if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(binding.getValueSet()))) {
@@ -1600,7 +1600,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private void checkMaxValueSet(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, String maxVSUrl, CodeableConcept cc, NodeStack stack) {
-    ValueSet valueset = resolveBindingReference(profile, maxVSUrl, profile.getUrl());
+    ValueSet valueset = resolveBindingReference(profile, maxVSUrl, profile.getUrl(), profile);
     if (valueset == null) {
       CodeSystem cs = context.fetchCodeSystem(maxVSUrl);
       if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(maxVSUrl))) {
@@ -1635,7 +1635,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean checkMaxValueSet(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, String maxVSUrl, Coding c, NodeStack stack) {
     boolean ok = true;
-    ValueSet valueset = resolveBindingReference(profile, maxVSUrl, profile.getUrl());
+    ValueSet valueset = resolveBindingReference(profile, maxVSUrl, profile.getUrl(), profile);
     if (valueset == null) {
       CodeSystem cs = context.fetchCodeSystem(maxVSUrl);
       if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(maxVSUrl))) {
@@ -1664,7 +1664,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean checkMaxValueSet(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, String maxVSUrl, String value, NodeStack stack) {
     boolean ok = true;
-    ValueSet valueset = resolveBindingReference(profile, maxVSUrl, profile.getUrl());
+    ValueSet valueset = resolveBindingReference(profile, maxVSUrl, profile.getUrl(), profile);
     if (valueset == null) {
       CodeSystem cs = context.fetchCodeSystem(maxVSUrl);
       if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(maxVSUrl))) {
@@ -1732,7 +1732,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             ElementDefinitionBindingComponent binding = theElementCntext.getBinding();
             if (warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, I18nConstants.TERMINOLOGY_TX_BINDING_MISSING2, path)) {
               if (binding.hasValueSet()) {
-                ValueSet valueset = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl());
+                ValueSet valueset = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl(), profile);
                 if (valueset == null) {
                   CodeSystem cs = context.fetchCodeSystem(binding.getValueSet());
                   if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(binding.getValueSet()))) {
@@ -1977,7 +1977,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 break;
               }
               if (sd.getBaseDefinition() != null) {
-                sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+                sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
               } else {
                 sd = null;
               }
@@ -2533,7 +2533,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else {
       boolean tok = false;
       for (StructureDefinition t : context.fetchResourcesByType(StructureDefinition.class)) {
-        if (t.hasUserData("package") && t.getUserString("package").startsWith("hl7.fhir.r") && v.equals(t.getType())) {
+        if (t.hasSourcePackage() && t.getSourcePackage().getId().startsWith("hl7.fhir.r") && v.equals(t.getType())) {
           tok = true;
         }
       }
@@ -2921,7 +2921,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     // firstly, resolve the value set
     ElementDefinitionBindingComponent binding = elementContext.getBinding();
     if (binding.hasValueSet()) {
-      ValueSet vs = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl());
+      ValueSet vs = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl(), profile);
       if (vs == null) { 
         CodeSystem cs = context.fetchCodeSystem(binding.getValueSet());
         if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(binding.getValueSet()))) {
@@ -3442,7 +3442,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       StructureDefinition sdFT = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/"+ft);
       boolean rok = false;
       for (CanonicalType tp : type.getTargetProfile()) {
-        StructureDefinition sd = context.fetchResource(StructureDefinition.class, tp.getValue());
+        StructureDefinition sd = context.fetchResource(StructureDefinition.class, tp.getValue(), profile);
         if (sd != null) {
           types.add(sd.getType());
         }
@@ -3452,7 +3452,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             rok = true;
             break;
           }
-          sdF = sdF.hasBaseDefinition() ? context.fetchResource(StructureDefinition.class, sdF.getBaseDefinition()) : null;
+          sdF = sdF.hasBaseDefinition() ? context.fetchResource(StructureDefinition.class, sdF.getBaseDefinition(), sdF) : null;
         }
       }
       ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, types.isEmpty() || rok,
@@ -3758,7 +3758,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     for (TypeRefComponent type : element.getType()) {
       for (CanonicalType p : type.getProfile()) {
         String id = p.hasExtension(ToolingExtensions.EXT_PROFILE_ELEMENT) ? p.getExtensionString(ToolingExtensions.EXT_PROFILE_ELEMENT) : null;
-        StructureDefinition sd = context.fetchResource(StructureDefinition.class, p.getValue());
+        StructureDefinition sd = context.fetchResource(StructureDefinition.class, p.getValue(), profile);
         if (sd == null)
           throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_PROFILE_, p));
         profile = sd;
@@ -3801,13 +3801,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return igs;
   }
 
-  private StructureDefinition getProfileForType(String type, List<TypeRefComponent> list) {
+  private StructureDefinition getProfileForType(String type, List<TypeRefComponent> list, Resource src) {
     for (TypeRefComponent tr : list) {
       String url = tr.getWorkingCode();
       if (!Utilities.isAbsoluteUrl(url))
         url = "http://hl7.org/fhir/StructureDefinition/" + url;
       long t = System.nanoTime();
-      StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
+      StructureDefinition sd = context.fetchResource(StructureDefinition.class, url, src);
       timeTracker.sd(t);
       if (sd != null && (sd.getType().equals(type) || sd.getUrl().equals(type)) && sd.hasSnapshot()) {
         return sd;
@@ -4196,7 +4196,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return null;
     } else {
       long t = System.nanoTime();
-      StructureDefinition fr = context.fetchResource(StructureDefinition.class, pr);
+      StructureDefinition fr = context.fetchResource(StructureDefinition.class, pr, profile);
       timeTracker.sd(t);
       return fr;
     }
@@ -4800,7 +4800,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     for (ImplementationGuide ig : igs) {
       for (ImplementationGuideGlobalComponent gl : ig.getGlobal()) {
         if (rt.equals(gl.getType())) {
-          StructureDefinition sd = context.fetchResource(StructureDefinition.class, gl.getProfile());
+          StructureDefinition sd = context.fetchResource(StructureDefinition.class, gl.getProfile(), ig);
           if (warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), sd != null, I18nConstants.VALIDATION_VAL_GLOBAL_PROFILE_UNKNOWN, gl.getProfile())) {
             if (crumbTrails) {
               element.addMessage(signpost(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_GLOBAL, sd.getVersionedUrl(), ig.getVersionedUrl()));
@@ -5132,7 +5132,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
           if (typeForResource.getProfile().size() == 1) {
             long t = System.nanoTime();
-            StructureDefinition profile = this.context.fetchResource(StructureDefinition.class, typeForResource.getProfile().get(0).asStringValue());
+            StructureDefinition profile = this.context.fetchResource(StructureDefinition.class, typeForResource.getProfile().get(0).asStringValue(), parentProfile);
             timeTracker.sd(t);
             trackUsage(profile, hostContext, element);
             if (rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(),
@@ -5165,7 +5165,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } else {
         List<String> types = new ArrayList<>();
         for (UriType u : typeForResource.getProfile()) {
-          StructureDefinition sd = this.context.fetchResource(StructureDefinition.class, u.getValue());
+          StructureDefinition sd = this.context.fetchResource(StructureDefinition.class, u.getValue(), parentProfile);
           if (sd != null && !types.contains(sd.getType())) {
             types.add(sd.getType());
           }
@@ -5210,7 +5210,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           }
         }
       }
-      sdt = context.fetchResource(StructureDefinition.class, sdt.getBaseDefinition());
+      sdt = context.fetchResource(StructureDefinition.class, sdt.getBaseDefinition(), sdt);
     }
     return false;
   }
@@ -5533,7 +5533,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     String tail = null;
     if (profiles.isEmpty()) {
       if (type != null) {
-        p = getProfileForType(type, checkDefn.getType());
+        p = getProfileForType(type, checkDefn.getType(), profile);
 
         // If dealing with a primitive type, then we need to check the current child against
         // the invariants (constraints) on the current element, because otherwise it only gets
@@ -5550,7 +5550,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         tail = url.substring(url.indexOf("#") + 1);
         url = url.substring(0, url.indexOf("#"));
       }
-      p = this.context.fetchResource(StructureDefinition.class, url);
+      p = this.context.fetchResource(StructureDefinition.class, url, profile);
       ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, ei.line(), ei.col(), ei.getPath(), p != null, I18nConstants.VALIDATION_VAL_UNKNOWN_PROFILE, profiles.get(0)) && ok;
     } else {
       elementValidated = true;
@@ -6020,7 +6020,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return false;
     }
     while (profile != null) {
-      profile = context.fetchResource(StructureDefinition.class, profile.getBaseDefinition());
+      profile = context.fetchResource(StructureDefinition.class, profile.getBaseDefinition(), profile);
       if (profile != null) {
         if (source.equals(profile.getUrl())) {
           return true;
