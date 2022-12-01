@@ -1,9 +1,5 @@
 package org.hl7.fhir.r5.conformance;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -36,9 +32,6 @@ import java.io.FileReader;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -55,10 +48,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.conformance.ProfileUtilities.SourcedChildDefinitions;
 import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider.BindingResolution;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.elementmodel.Property;
@@ -66,9 +57,7 @@ import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.BooleanType;
-import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
@@ -110,18 +99,14 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingCompo
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionSnapshotComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.UriType;
-import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.renderers.TerminologyRenderer;
-import org.hl7.fhir.r5.renderers.spreadsheets.SpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
-import org.hl7.fhir.r5.utils.FHIRLexer;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.PublicationHacker;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -132,15 +117,9 @@ import org.hl7.fhir.r5.utils.formats.CSVWriter;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.StandardsStatus;
-import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
-import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
-import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
-import org.hl7.fhir.utilities.npm.NpmPackage;
-import org.hl7.fhir.utilities.npm.PackageHacker;
-import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -219,62 +198,6 @@ public class ProfileUtilities extends TranslatingUtilities {
       return element;
     }
 
-  }
-
-  public class ElementRedirection {
-
-    private String path;
-    private ElementDefinition element;
-
-    public ElementRedirection(ElementDefinition element, String path) {
-      this.path = path;
-      this.element = element;
-    }
-
-    public ElementDefinition getElement() {
-      return element;
-    }
-
-    @Override
-    public String toString() {
-      return element.toString() + " : "+path;
-    }
-
-    public String getPath() {
-      return path;
-    }
-
-  }
-  
-  public class TypeSlice {
-    private ElementDefinition defn;
-    private String type;
-    public TypeSlice(ElementDefinition defn, String type) {
-      super();
-      this.defn = defn;
-      this.type = type;
-    }
-    public ElementDefinition getDefn() {
-      return defn;
-    }
-    public String getType() {
-      return type;
-    }
-    
-  }
-  public class BaseTypeSlice {
-    private ElementDefinition defn;
-    private String type;
-    private int start;
-    private int end;
-    public boolean handled;
-    public BaseTypeSlice(ElementDefinition defn, String type, int start, int end) {
-      super();
-      this.defn = defn;
-      this.type = type;
-      this.start = start;
-      this.end = end;
-    }
   }
 
   public static class ElementChoiceGroup {
@@ -361,7 +284,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   public static final String DERIVATION_POINTER = "derived.pointer";
   public static final String IS_DERIVED = "derived.fact";
   public static final String UD_ERROR_STATUS = "error-status";
-  private static final String GENERATED_IN_SNAPSHOT = "profileutilities.snapshot.processed";
+  protected static final String GENERATED_IN_SNAPSHOT = "profileutilities.snapshot.processed";
   private static final boolean COPY_BINDING_EXTENSIONS = false;
   private static final boolean DONT_DO_THIS = false;
   private final boolean ADD_REFERENCE_TO_TABLE = true;
@@ -725,6 +648,9 @@ public class ProfileUtilities extends TranslatingUtilities {
         //        debug = true;
         //      }
         processPaths(base, derived, url, webUrl, diff, baseSnapshot);
+
+        new ProfilePathProcessor(this).processPaths(base, derived, url, webUrl, diff, baseSnapshot);
+
         checkGroupConstraints(derived);
         if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
           for (ElementDefinition e : diff.getElement()) {
@@ -1479,7 +1405,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           int nbl = findEndOfElement(base, baseCursor);
           int ndc = differential.getElement().indexOf(diffMatches.get(0));
           ElementDefinition elementToRemove = null;
-          boolean shortCut = !typeList.isEmpty() && typeList.get(0).type != null;
+          boolean shortCut = !typeList.isEmpty() && typeList.get(0).getType() != null;
           // we come here whether they are sliced in the diff, or whether the short cut is used.
           if (shortCut) {
             // this is the short cut method, we've just dived in and specified a type slice.
@@ -1489,7 +1415,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               ElementDefinition ed = new ElementDefinition();
               ed.setPath(determineTypeSlicePath(diffMatches.get(0).getPath(), currentBasePath));
               for (TypeSlice ts : typeList) 
-                ed.addType().setCode(ts.type);
+                ed.addType().setCode(ts.getType());
               ed.setSlicing(new ElementDefinitionSlicingComponent());
               ed.getSlicing().addDiscriminator().setType(DiscriminatorType.TYPE).setPath("$this");
               ed.getSlicing().setRules(SlicingRules.CLOSED);
@@ -1533,8 +1459,8 @@ public class ProfileUtilities extends TranslatingUtilities {
           }
           // check the slice names too while we're at it...
           for (TypeSlice ts : typeList) {
-              if (ts.type != null) {
-                String tn = rootName(currentBasePath)+Utilities.capitalize(ts.type);
+              if (ts.getType() != null) {
+                String tn = rootName(currentBasePath)+Utilities.capitalize(ts.getType());
                 if (!ts.defn.hasSliceName()) {
                   ts.defn.setSliceName(tn);
                 } else if (!ts.defn.getSliceName().equals(tn)) {
@@ -1882,9 +1808,9 @@ public class ProfileUtilities extends TranslatingUtilities {
             int sEnd = nbl;
             BaseTypeSlice bs = chooseMatchingBaseSlice(baseSlices, type);
             if (bs != null) {
-              sStart = bs.start;
-              sEnd = bs.end;
-              bs.handled = true;
+              sStart = bs.getStart();
+              sEnd = bs.getEnd();
+              bs.setHandled(true);
             }
             processPaths(indent+"  ", result, base, differential, sStart, ndc, sEnd, ndl, url, webUrl, profileName+pathTail(diffMatches, i), contextPathSrc, contextPathDst, trimDifferential, contextName, resultPathBase, true, e, currentBasePath, redirector, srcSD);
           }
@@ -1901,16 +1827,16 @@ public class ProfileUtilities extends TranslatingUtilities {
             }
           }
           for (BaseTypeSlice bs : baseSlices) {
-            if (!bs.handled) {
+            if (!bs.isHandled()) {
               // ok we gimme up a fake differential that says nothing, and run that against the slice.
               StructureDefinitionDifferentialComponent fakeDiff = new StructureDefinitionDifferentialComponent();
-              fakeDiff.getElementFirstRep().setPath(bs.defn.getPath());
-              processPaths(indent+"  ", result, base, fakeDiff, bs.start, 0, bs.end, 0, url, webUrl, profileName+tail(bs.defn.getPath()), contextPathSrc, contextPathDst, trimDifferential, contextName, resultPathBase, true, e, currentBasePath, redirector, srcSD);
+              fakeDiff.getElementFirstRep().setPath(bs.getDefn().getPath());
+              processPaths(indent+"  ", result, base, fakeDiff, bs.getStart(), 0, bs.getEnd(), 0, url, webUrl, profileName+tail(bs.getDefn().getPath()), contextPathSrc, contextPathDst, trimDifferential, contextName, resultPathBase, true, e, currentBasePath, redirector, srcSD);
               
             }
           }
           // ok, done with that - next in the base list
-          baseCursor = baseSlices.get(baseSlices.size()-1).end+1;
+          baseCursor = baseSlices.get(baseSlices.size() - 1).getEnd() +1;
           diffCursor = ndl+1;
           //throw new Error("not done yet - slicing / types @ "+cpath);
         } else {
@@ -2122,7 +2048,7 @@ public class ProfileUtilities extends TranslatingUtilities {
                       && diffMatches.get(0).hasSliceName()));
   }
 
-  private ElementDefinition getById(List<ElementDefinition> list, String baseId) {
+  protected ElementDefinition getById(List<ElementDefinition> list, String baseId) {
     for (ElementDefinition t : list) {
       if (baseId.equals(t.getId())) {
         return t;
@@ -2131,7 +2057,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     return null;
   }
 
-  private void updateConstraintSources(ElementDefinition ed, String url) {
+  protected void updateConstraintSources(ElementDefinition ed, String url) {
     for (ElementDefinitionConstraintComponent c : ed.getConstraint()) {
       if (!c.hasSource()) {
         c.setSource(url);
@@ -2140,7 +2066,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     
   }
 
-  private Set<String> getListOfTypes(ElementDefinition e) {
+  protected Set<String> getListOfTypes(ElementDefinition e) {
     Set<String> result = new HashSet<>();
     for (TypeRefComponent t : e.getType()) {
       result.add(t.getCode());
@@ -2169,7 +2095,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     return dt;
   }
 
-  private String sliceNames(List<ElementDefinition> diffMatches) {
+  protected String sliceNames(List<ElementDefinition> diffMatches) {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     for (ElementDefinition ed : diffMatches) {
       if (ed.hasSliceName()) {
@@ -2179,7 +2105,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     return b.toString();
   }
 
-  private boolean isMatchingType(StructureDefinition sd, List<TypeRefComponent> types, String inner) {
+  protected boolean isMatchingType(StructureDefinition sd, List<TypeRefComponent> types, String inner) {
     while (sd != null) {
       for (TypeRefComponent tr : types) {
         if (sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition") && sd.getType().equals(tr.getCode())) {
@@ -2216,7 +2142,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     return false;
   }
 
-  private boolean isValidType(TypeRefComponent t, ElementDefinition base) {
+  protected boolean isValidType(TypeRefComponent t, ElementDefinition base) {
     for (TypeRefComponent tr : base.getType()) {
       if (tr.getCode().equals(t.getCode())) {
         return true;
@@ -2229,18 +2155,18 @@ public class ProfileUtilities extends TranslatingUtilities {
     return false;
   }
 
-  private boolean isGenerating(StructureDefinition sd) {
+  protected boolean isGenerating(StructureDefinition sd) {
     return sd.hasUserData("profileutils.snapshot.generating");
   }
 
 
-  private void checkNotGenerating(StructureDefinition sd, String role) {
+  protected void checkNotGenerating(StructureDefinition sd, String role) {
     if (sd.hasUserData("profileutils.snapshot.generating")) {
       throw new FHIRException(context.formatMessage(I18nConstants.ATTEMPT_TO_USE_A_SNAPSHOT_ON_PROFILE__AS__BEFORE_IT_IS_GENERATED, sd.getUrl(), role));
     }
   }
 
-  private boolean isBaseResource(List<TypeRefComponent> types) {
+  protected boolean isBaseResource(List<TypeRefComponent> types) {
     if (types.isEmpty())
       return false;
     for (TypeRefComponent type : types) {
@@ -2272,9 +2198,9 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private BaseTypeSlice chooseMatchingBaseSlice(List<BaseTypeSlice> baseSlices, String type) {
+  protected BaseTypeSlice chooseMatchingBaseSlice(List<BaseTypeSlice> baseSlices, String type) {
     for (BaseTypeSlice bs : baseSlices) {
-      if (bs.type.equals(type)) {
+      if (bs.getType().equals(type)) {
         return bs;
       }
     }
@@ -2282,7 +2208,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private List<BaseTypeSlice> findBaseSlices(StructureDefinitionSnapshotComponent list, int start) {
+  protected List<BaseTypeSlice> findBaseSlices(StructureDefinitionSnapshotComponent list, int start) {
     List<BaseTypeSlice> res = new ArrayList<>();
     ElementDefinition base = list.getElement().get(start);
     int i = start + 1;
@@ -2301,7 +2227,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private String getWebUrl(StructureDefinition dt, String webUrl, String indent) {
+  protected String getWebUrl(StructureDefinition dt, String webUrl, String indent) {
     if (dt.hasUserData("path")) {
       // this is a hack, but it works for now, since we don't have deep folders
       String url = dt.getUserString("path");
@@ -2316,7 +2242,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     }
   }
 
-  private void removeStatusExtensions(ElementDefinition outcome) {
+  protected void removeStatusExtensions(ElementDefinition outcome) {
     outcome.removeExtension(ToolingExtensions.EXT_FMM_LEVEL);
     outcome.removeExtension(ToolingExtensions.EXT_FMM_SUPPORT);
     outcome.removeExtension(ToolingExtensions.EXT_FMM_DERIVED);
@@ -2327,11 +2253,11 @@ public class ProfileUtilities extends TranslatingUtilities {
     outcome.removeExtension(ToolingExtensions.EXT_FMM_DERIVED);
   }
 
-  private String descED(List<ElementDefinition> list, int index) {
+  protected String descED(List<ElementDefinition> list, int index) {
     return index >=0 && index < list.size() ? list.get(index).present() : "X";
   }
 
-  private boolean baseHasChildren(StructureDefinitionSnapshotComponent base, ElementDefinition ed) {
+  public boolean baseHasChildren(StructureDefinitionSnapshotComponent base, ElementDefinition ed) {
     int index = base.getElement().indexOf(ed);
     if (index == -1 || index >= base.getElement().size()-1)
       return false;
@@ -2349,18 +2275,18 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private int indexOfFirstNonChild(StructureDefinitionSnapshotComponent base, ElementDefinition currentBase, int i, int baseLimit) {
+  public int indexOfFirstNonChild(StructureDefinitionSnapshotComponent base, ElementDefinition currentBase, int i, int baseLimit) {
     return baseLimit+1;
   }
 
 
-  private String rootName(String cpath) {
+  protected String rootName(String cpath) {
     String t = tail(cpath);
     return t.replace("[x]", "");
   }
 
 
-  private String determineTypeSlicePath(String path, String cpath) {
+  protected String determineTypeSlicePath(String path, String cpath) {
     String headP = path.substring(0, path.lastIndexOf("."));
 //    String tailP = path.substring(path.lastIndexOf(".")+1);
     String tailC = cpath.substring(cpath.lastIndexOf(".")+1);
@@ -2368,7 +2294,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private boolean isImplicitSlicing(ElementDefinition ed, String path) {
+  protected boolean isImplicitSlicing(ElementDefinition ed, String path) {
     if (ed == null || ed.getPath() == null || path == null)
       return false;
     if (path.equals(ed.getPath()))
@@ -2378,7 +2304,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private boolean diffsConstrainTypes(List<ElementDefinition> diffMatches, String cPath, List<TypeSlice> typeList) {
+  protected boolean diffsConstrainTypes(List<ElementDefinition> diffMatches, String cPath, List<TypeSlice> typeList) {
 //    if (diffMatches.size() < 2)
     //      return false;
     String p = diffMatches.get(0).getPath();
@@ -2424,7 +2350,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private List<ElementRedirection> redirectorStack(List<ElementRedirection> redirector, ElementDefinition outcome, String path) {
+  protected List<ElementRedirection> redirectorStack(List<ElementRedirection> redirector, ElementDefinition outcome, String path) {
     List<ElementRedirection> result = new ArrayList<ElementRedirection>();
     result.addAll(redirector);
     result.add(new ElementRedirection(outcome, path));
@@ -2432,7 +2358,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private List<TypeRefComponent> getByTypeName(List<TypeRefComponent> type, String t) {
+  protected List<TypeRefComponent> getByTypeName(List<TypeRefComponent> type, String t) {
     List<TypeRefComponent> res = new ArrayList<TypeRefComponent>();
     for (TypeRefComponent tr : type) {
       if (t.equals(tr.getWorkingCode()))
@@ -2442,14 +2368,14 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private void replaceFromContentReference(ElementDefinition outcome, ElementDefinition tgt) {
+  protected void replaceFromContentReference(ElementDefinition outcome, ElementDefinition tgt) {
     outcome.setContentReference(null);
     outcome.getType().clear(); // though it should be clear anyway
     outcome.getType().addAll(tgt.getType());    
   }
 
 
-  private boolean baseWalksInto(List<ElementDefinition> elements, int cursor) {
+  protected boolean baseWalksInto(List<ElementDefinition> elements, int cursor) {
     if (cursor >= elements.size())
       return false;
     String path = elements.get(cursor).getPath();
@@ -2458,7 +2384,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private ElementDefinition fillOutFromBase(ElementDefinition profile, ElementDefinition usage) throws FHIRFormatError {
+  protected  ElementDefinition fillOutFromBase(ElementDefinition profile, ElementDefinition usage) throws FHIRFormatError {
     ElementDefinition res = profile.copy();
     if (!res.hasSliceName())
       res.setSliceName(usage.getSliceName());
@@ -2512,7 +2438,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private boolean checkExtensionDoco(ElementDefinition base) {
+  protected boolean checkExtensionDoco(ElementDefinition base) {
     // see task 3970. For an extension, there's no point copying across all the underlying definitional stuff
     boolean isExtension = (base.getPath().equals("Extension") || base.getPath().endsWith(".extension") || base.getPath().endsWith(".modifierExtension")) &&
           (!base.hasBase() || !"II.extension".equals(base.getBase().getPath()));
@@ -2528,7 +2454,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private String pathTail(List<ElementDefinition> diffMatches, int i) {
+  protected String pathTail(List<ElementDefinition> diffMatches, int i) {
     
     ElementDefinition d = diffMatches.get(i);
     String s = d.getPath().contains(".") ? d.getPath().substring(d.getPath().lastIndexOf(".")+1) : d.getPath();
@@ -2536,7 +2462,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private void markDerived(ElementDefinition outcome) {
+  protected void markDerived(ElementDefinition outcome) {
     for (ElementDefinitionConstraintComponent inv : outcome.getConstraint())
       inv.setUserData(IS_DERIVED, true);
   }
@@ -2568,7 +2494,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private void updateFromBase(ElementDefinition derived, ElementDefinition base, String baseProfileUrl) {
+  protected void updateFromBase(ElementDefinition derived, ElementDefinition base, String baseProfileUrl) {
     derived.setUserData(BASE_MODEL, baseProfileUrl);
     derived.setUserData(BASE_PATH, base.getPath());
     if (base.hasBase()) {
@@ -2587,7 +2513,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private boolean pathStartsWith(String p1, String p2) {
+  protected boolean pathStartsWith(String p1, String p2) {
     return p1.startsWith(p2) || (p2.endsWith("[x].") && p1.startsWith(p2.substring(0, p2.length()-4)));
   }
 
@@ -2596,7 +2522,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private String fixedPathSource(String contextPath, String pathSimple, List<ElementRedirection> redirector) {
+  protected String fixedPathSource(String contextPath, String pathSimple, List<ElementRedirection> redirector) {
     if (contextPath == null)
       return pathSimple;
 //    String ptail = pathSimple.substring(contextPath.length() + 1);
@@ -2615,7 +2541,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     }
   }
   
-  private String fixedPathDest(String contextPath, String pathSimple, List<ElementRedirection> redirector, String redirectSource) {
+  protected String fixedPathDest(String contextPath, String pathSimple, List<ElementRedirection> redirector, String redirectSource) {
     String s;
     if (contextPath == null)
       s = pathSimple;
@@ -2637,7 +2563,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     return s;
   }  
 
-  private StructureDefinition getProfileForDataType(TypeRefComponent type, String webUrl)  {
+  protected StructureDefinition getProfileForDataType(TypeRefComponent type, String webUrl)  {
     StructureDefinition sd = null;
     if (type.hasProfile()) {
       sd = context.fetchResource(StructureDefinition.class, type.getProfile().get(0).getValue());
@@ -2661,7 +2587,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     return sd;
   }
 
-  private StructureDefinition getProfileForDataType(String type)  {
+  protected StructureDefinition getProfileForDataType(String type)  {
     StructureDefinition sd = context.fetchTypeDefinition(type);
     if (sd == null)
       System.out.println("XX: failed to find profle for type: " + type); // debug GJM
@@ -2684,7 +2610,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private boolean isDataType(List<TypeRefComponent> types) {
+  protected boolean isDataType(List<TypeRefComponent> types) {
     if (types.isEmpty())
       return false;
     for (TypeRefComponent type : types) {
@@ -2867,7 +2793,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     return "";
   }
 
-  private List<ElementDefinition> getSiblings(List<ElementDefinition> list, ElementDefinition current) {
+  protected List<ElementDefinition> getSiblings(List<ElementDefinition> list, ElementDefinition current) {
     List<ElementDefinition> result = new ArrayList<ElementDefinition>();
     String path = current.getPath();
     int cursor = list.indexOf(current)+1;
@@ -2879,7 +2805,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     return result;
   }
 
-  private void updateFromSlicing(ElementDefinitionSlicingComponent dst, ElementDefinitionSlicingComponent src) {
+  protected void updateFromSlicing(ElementDefinitionSlicingComponent dst, ElementDefinitionSlicingComponent src) {
     if (src.hasOrderedElement())
       dst.setOrderedElement(src.getOrderedElement().copy());
     if (src.hasDiscriminator()) {
@@ -2900,11 +2826,11 @@ public class ProfileUtilities extends TranslatingUtilities {
       dst.setRulesElement(src.getRulesElement().copy());
   }
 
-  private boolean orderMatches(BooleanType diff, BooleanType base) {
+  protected boolean orderMatches(BooleanType diff, BooleanType base) {
     return (diff == null) || (base == null) || (diff.getValue() == base.getValue());
   }
 
-  private boolean discriminatorMatches(List<ElementDefinitionSlicingDiscriminatorComponent> diff, List<ElementDefinitionSlicingDiscriminatorComponent> base) {
+  protected boolean discriminatorMatches(List<ElementDefinitionSlicingDiscriminatorComponent> diff, List<ElementDefinitionSlicingDiscriminatorComponent> base) {
     if (diff.isEmpty() || base.isEmpty())
     	return true;
     if (diff.size() != base.size())
@@ -2920,16 +2846,16 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private boolean ruleMatches(SlicingRules diff, SlicingRules base) {
+  protected boolean ruleMatches(SlicingRules diff, SlicingRules base) {
     return (diff == null) || (base == null) || (diff == base) || (base == SlicingRules.OPEN) ||
         ((diff == SlicingRules.OPENATEND && base == SlicingRules.CLOSED));
   }
 
-  private boolean isSlicedToOneOnly(ElementDefinition e) {
+  protected boolean isSlicedToOneOnly(ElementDefinition e) {
     return (e.hasSlicing() && e.hasMaxElement() && e.getMax().equals("1"));
   }
 
-  private ElementDefinitionSlicingComponent makeExtensionSlicing() {
+  protected ElementDefinitionSlicingComponent makeExtensionSlicing() {
   	ElementDefinitionSlicingComponent slice = new ElementDefinitionSlicingComponent();
     slice.addDiscriminator().setPath("url").setType(DiscriminatorType.VALUE);
     slice.setOrdered(false);
@@ -2937,11 +2863,11 @@ public class ProfileUtilities extends TranslatingUtilities {
     return slice;
   }
 
-  private boolean isExtension(ElementDefinition currentBase) {
+  protected boolean isExtension(ElementDefinition currentBase) {
     return currentBase.getPath().endsWith(".extension") || currentBase.getPath().endsWith(".modifierExtension");
   }
 
-  private boolean hasInnerDiffMatches(StructureDefinitionDifferentialComponent context, String path, int start, int end, List<ElementDefinition> base, boolean allowSlices) throws DefinitionException {
+  public boolean hasInnerDiffMatches(StructureDefinitionDifferentialComponent context, String path, int start, int end, List<ElementDefinition> base, boolean allowSlices) throws DefinitionException {
     end = Math.min(context.getElement().size(), end);
     start = Math.max(0,  start);
   
@@ -2965,7 +2891,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     return false;
   }
 
-  private List<ElementDefinition> getDiffMatches(StructureDefinitionDifferentialComponent context, String path, int start, int end, String profileName) throws DefinitionException {
+  protected List<ElementDefinition> getDiffMatches(StructureDefinitionDifferentialComponent context, String path, int start, int end, String profileName) throws DefinitionException {
     List<ElementDefinition> result = new ArrayList<ElementDefinition>();
     String[] p = path.split("\\.");
     for (int i = start; i <= end; i++) {
@@ -3002,7 +2928,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     return (p.endsWith("[x]") && sp.startsWith(p.substring(0, p.length()-3))) || (sp.endsWith("[x]") && p.startsWith(sp.substring(0, sp.length()-3))) ;
   }
 
-  private int findEndOfElement(StructureDefinitionDifferentialComponent context, int cursor) {
+  protected int findEndOfElement(StructureDefinitionDifferentialComponent context, int cursor) {
 	    int result = cursor;
 	    if (cursor >= context.getElement().size())
 	      return result;
@@ -3012,7 +2938,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 	    return result;
 	  }
 
-  private int findEndOfElement(StructureDefinitionSnapshotComponent context, int cursor) {
+  protected int findEndOfElement(StructureDefinitionSnapshotComponent context, int cursor) {
 	    int result = cursor;
 	    String path = context.getElement().get(cursor).getPath()+".";
 	    while (result < context.getElement().size()- 1 && context.getElement().get(result+1).getPath().startsWith(path))
@@ -3020,7 +2946,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 	    return result;
 	  }
 
-  private boolean unbounded(ElementDefinition definition) {
+  protected boolean unbounded(ElementDefinition definition) {
     StringType max = definition.getMaxElement();
     if (max == null)
       return false; // this is not valid
@@ -3031,7 +2957,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     return true;
   }
 
-  private void updateFromDefinition(ElementDefinition dest, ElementDefinition source, String pn, boolean trimDifferential, String purl, StructureDefinition srcSD) throws DefinitionException, FHIRException {
+  protected void updateFromDefinition(ElementDefinition dest, ElementDefinition source, String pn, boolean trimDifferential, String purl, StructureDefinition srcSD) throws DefinitionException, FHIRException {
     source.setUserData(GENERATED_IN_SNAPSHOT, dest);
     // we start with a clone of the base profile ('dest') and we copy from the profile ('source')
     // over the top for anything the source has
@@ -4025,7 +3951,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 //    return null;
   }
 
-  private ElementDefinitionResolution getElementById(StructureDefinition source, List<ElementDefinition> elements, String contentReference) {
+  protected ElementDefinitionResolution getElementById(StructureDefinition source, List<ElementDefinition> elements, String contentReference) {
     if (!contentReference.startsWith("#") && contentReference.contains("#")) {
       String url = contentReference.substring(0, contentReference.indexOf("#"));
       contentReference = contentReference.substring(contentReference.indexOf("#"));
@@ -5649,7 +5575,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     return result;
   }
 
-  private String tail(String path) {
+  protected String tail(String path) {
     if (path == null) {
       return "";
     } else if (path.contains("."))
@@ -5685,7 +5611,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  public boolean isPrimitive(String value) {
+  protected boolean isPrimitive(String value) {
     StructureDefinition sd = context.fetchTypeDefinition(value);
     if (sd == null) // might be running before all SDs are available
       return Utilities.existsInList(value, "base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid");
@@ -6295,7 +6221,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   }
 
-  private void generateIds(List<ElementDefinition> list, String name, String type, StructureDefinition srcSD) throws DefinitionException  {
+  protected void generateIds(List<ElementDefinition> list, String name, String type, StructureDefinition srcSD) throws DefinitionException  {
     if (list.isEmpty())
       return;
     

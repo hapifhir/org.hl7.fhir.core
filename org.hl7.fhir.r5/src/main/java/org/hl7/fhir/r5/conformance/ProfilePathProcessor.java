@@ -6,9 +6,7 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
-import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -20,16 +18,23 @@ import java.util.Set;
 
 public class ProfilePathProcessor {
 
-  private final IWorkerContext context;
-  private final boolean debug;
-
-  private ProfileUtilities profileUtilities;
+  private final ProfileUtilities profileUtilities;
 
   public ProfilePathProcessor(ProfileUtilities profileUtilities) {
-    this.context = profileUtilities.getContext();
-    this.debug = profileUtilities.isDebug();
+    this.profileUtilities = profileUtilities;
   }
 
+  protected void processPaths(StructureDefinition base, StructureDefinition derived, String url, String webUrl, StructureDefinition.StructureDefinitionDifferentialComponent diff, StructureDefinition.StructureDefinitionSnapshotComponent baseSnapshot) {
+    processPaths("", derived.getSnapshot(), baseSnapshot, diff, 0, 0, baseSnapshot.getElement().size()-1,
+      derived.getDifferential().hasElement() ? derived.getDifferential().getElement().size()-1 : -1, url, webUrl, derived.present(), null, null, false, base.getUrl(), null, false, null, null, new ArrayList<ElementRedirection>(), base);
+  }
+
+  /**
+   * @param trimDifferential
+   * @param srcSD
+   * @throws DefinitionException, FHIRException
+   * @throws Exception
+   */
   private ElementDefinition processPaths(final String indent,
                                          final StructureDefinition.StructureDefinitionSnapshotComponent result,
                                          StructureDefinition.StructureDefinitionSnapshotComponent base,
@@ -42,13 +47,13 @@ public class ProfilePathProcessor {
                                          final boolean trimDifferential,
                                          String contextName,
                                          String resultPathBase,
-                                         final boolean slicingDone, final ElementDefinition slicer, final String typeSlicingPath, final List<ProfileUtilities.ElementRedirection> redirector,
+                                         final boolean slicingDone, final ElementDefinition slicer, final String typeSlicingPath, final List<ElementRedirection> redirector,
                                          final StructureDefinition srcSD) throws FHIRException {
     if (debug) {
       System.out.println(indent+"PP @ "+resultPathBase+" / "+contextPathSrc+" : base = "+baseCursor+" to "+baseLimit+", diff = "+diffCursor+" to "+diffLimit+" (slicing = "+slicingDone+", k "+(redirector == null ? "null" : redirector.toString())+")");
     }
     ElementDefinition res = null;
-    List<ProfileUtilities.TypeSlice> typeList = new ArrayList<>();
+    List<TypeSlice> typeList = new ArrayList<>();
     // just repeat processing entries until we run out of our allowed scope (1st entry, the allowed scope is all the entries)
     while (baseCursor <= baseLimit) {
       // get the current focus of the base, and decide what to do
@@ -296,7 +301,7 @@ public class ProfilePathProcessor {
                   throw new DefinitionException(context.formatMessage(I18nConstants._HAS_CHILDREN__FOR_TYPE__IN_PROFILE__BUT_CANT_FIND_TYPE, diffMatches.isEmpty() ?  "??" : diffMatches.get(0).getPath(), differential.getElement().get(diffCursor).getPath(), typeCode(outcome.getType()), profileName));
                 contextName = dt.getUrl();
                 processPaths(indent+"  ", result, dt.getSnapshot(), differential, 1 /* starting again on the data type, but skip the root */, start, dt.getSnapshot().getElement().size()-1,
-                  diffCursor - 1, url, getWebUrl(dt, webUrl, indent), profileName+pathTail(diffMatches, 0), diffMatches.get(0).getPath(), outcome.getPath(), trimDifferential, contextName, resultPathBase, false, null, null, new ArrayList<ProfileUtilities.ElementRedirection>(), srcSD);
+                  diffCursor - 1, url, getWebUrl(dt, webUrl, indent), profileName+pathTail(diffMatches, 0), diffMatches.get(0).getPath(), outcome.getPath(), trimDifferential, contextName, resultPathBase, false, null, null, new ArrayList<ElementRedirection>(), srcSD);
               }
             }
           }
@@ -306,7 +311,7 @@ public class ProfilePathProcessor {
           int nbl = findEndOfElement(base, baseCursor);
           int ndc = differential.getElement().indexOf(diffMatches.get(0));
           ElementDefinition elementToRemove = null;
-          boolean shortCut = !typeList.isEmpty() && typeList.get(0).type != null;
+          boolean shortCut = !typeList.isEmpty() && typeList.get(0).getType() != null;
           // we come here whether they are sliced in the diff, or whether the short cut is used.
           if (shortCut) {
             // this is the short cut method, we've just dived in and specified a type slice.
@@ -315,8 +320,8 @@ public class ProfilePathProcessor {
               // we insert a cloned element with the right types at the start of the diffMatches
               ElementDefinition ed = new ElementDefinition();
               ed.setPath(determineTypeSlicePath(diffMatches.get(0).getPath(), currentBasePath));
-              for (ProfileUtilities.TypeSlice ts : typeList)
-                ed.addType().setCode(ts.type);
+              for (TypeSlice ts : typeList)
+                ed.addType().setCode(ts.getType());
               ed.setSlicing(new ElementDefinition.ElementDefinitionSlicingComponent());
               ed.getSlicing().addDiscriminator().setType(ElementDefinition.DiscriminatorType.TYPE).setPath("$this");
               ed.getSlicing().setRules(ElementDefinition.SlicingRules.CLOSED);
@@ -359,9 +364,9 @@ public class ProfilePathProcessor {
             }
           }
           // check the slice names too while we're at it...
-          for (ProfileUtilities.TypeSlice ts : typeList) {
-            if (ts.type != null) {
-              String tn = rootName(currentBasePath)+Utilities.capitalize(ts.type);
+          for (TypeSlice ts : typeList) {
+            if (ts.getType() != null) {
+              String tn = rootName(currentBasePath)+Utilities.capitalize(ts.getType());
               if (!ts.defn.hasSliceName()) {
                 ts.defn.setSliceName(tn);
               } else if (!ts.defn.getSliceName().equals(tn)) {
@@ -429,7 +434,7 @@ public class ProfilePathProcessor {
           if (!"0".equals(e.getMax())) {
             // check that there's a slice for each allowed types
             Set<String> allowedTypes = getListOfTypes(e);
-            for (ProfileUtilities.TypeSlice t : typeList) {
+            for (TypeSlice t : typeList) {
               if (t.type != null) {
                 allowedTypes.remove(t.type);
               } else if (t.getDefn().hasSliceName() && t.getDefn().getType().size() == 1) {
@@ -616,7 +621,7 @@ public class ProfilePathProcessor {
               // we insert a cloned element with the right types at the start of the diffMatches
               ElementDefinition ed = new ElementDefinition();
               ed.setPath(determineTypeSlicePath(diffMatches.get(0).getPath(), currentBasePath));
-              for (ProfileUtilities.TypeSlice ts : typeList)
+              for (TypeSlice ts : typeList)
                 ed.addType().setCode(ts.type);
               ed.setSlicing(new ElementDefinition.ElementDefinitionSlicingComponent());
               ed.getSlicing().addDiscriminator().setType(ElementDefinition.DiscriminatorType.TYPE).setPath("$this");
@@ -660,7 +665,7 @@ public class ProfilePathProcessor {
             }
           }
           // check the slice names too while we're at it...
-          for (ProfileUtilities.TypeSlice ts : typeList) {
+          for (TypeSlice ts : typeList) {
             if (ts.type != null) {
               String tn = rootName(currentBasePath)+Utilities.capitalize(ts.type);
               if (!ts.defn.hasSliceName()) {
@@ -691,7 +696,7 @@ public class ProfilePathProcessor {
           start++;
 
           String fixedType = null;
-          List<ProfileUtilities.BaseTypeSlice> baseSlices = findBaseSlices(base, nbl);
+          List<BaseTypeSlice> baseSlices = findBaseSlices(base, nbl);
           // now process the siblings, which should each be type constrained - and may also have their own children. they may match existing slices
           // now we process the base scope repeatedly for each instance of the item in the differential list
           for (int i = start; i < diffMatches.size(); i++) {
@@ -707,11 +712,11 @@ public class ProfilePathProcessor {
             ndl = findEndOfElement(differential, ndc);
             int sStart = baseCursor;
             int sEnd = nbl;
-            ProfileUtilities.BaseTypeSlice bs = chooseMatchingBaseSlice(baseSlices, type);
+            BaseTypeSlice bs = chooseMatchingBaseSlice(baseSlices, type);
             if (bs != null) {
-              sStart = bs.start;
-              sEnd = bs.end;
-              bs.handled = true;
+              sStart = bs.getStart();
+              sEnd = bs.getEnd();
+              bs.setHandled(true);
             }
             processPaths(indent+"  ", result, base, differential, sStart, ndc, sEnd, ndl, url, webUrl, profileName+pathTail(diffMatches, i), contextPathSrc, contextPathDst, trimDifferential, contextName, resultPathBase, true, e, currentBasePath, redirector, srcSD);
           }
@@ -727,17 +732,17 @@ public class ProfilePathProcessor {
               }
             }
           }
-          for (ProfileUtilities.BaseTypeSlice bs : baseSlices) {
-            if (!bs.handled) {
+          for (BaseTypeSlice bs : baseSlices) {
+            if (!bs.isHandled()) {
               // ok we gimme up a fake differential that says nothing, and run that against the slice.
               StructureDefinition.StructureDefinitionDifferentialComponent fakeDiff = new StructureDefinition.StructureDefinitionDifferentialComponent();
-              fakeDiff.getElementFirstRep().setPath(bs.defn.getPath());
-              processPaths(indent+"  ", result, base, fakeDiff, bs.start, 0, bs.end, 0, url, webUrl, profileName+tail(bs.defn.getPath()), contextPathSrc, contextPathDst, trimDifferential, contextName, resultPathBase, true, e, currentBasePath, redirector, srcSD);
+              fakeDiff.getElementFirstRep().setPath(bs.getDefn().getPath());
+              processPaths(indent+"  ", result, base, fakeDiff, bs.getStart(), 0, bs.getEnd(), 0, url, webUrl, profileName+tail(bs.getDefn().getPath()), contextPathSrc, contextPathDst, trimDifferential, contextName, resultPathBase, true, e, currentBasePath, redirector, srcSD);
 
             }
           }
           // ok, done with that - next in the base list
-          baseCursor = baseSlices.get(baseSlices.size()-1).end+1;
+          baseCursor = baseSlices.get(baseSlices.size() - 1).getEnd() +1;
           diffCursor = ndl+1;
           //throw new Error("not done yet - slicing / types @ "+cpath);
         } else {
@@ -934,218 +939,21 @@ public class ProfilePathProcessor {
     return res;
   }
 
-  private List<ElementDefinition> getDiffMatches(StructureDefinition.StructureDefinitionDifferentialComponent context, String path, int start, int end, String profileName) throws DefinitionException {
-    List<ElementDefinition> result = new ArrayList<ElementDefinition>();
-    String[] p = path.split("\\.");
-    for (int i = start; i <= end; i++) {
-      String statedPath = context.getElement().get(i).getPath();
-      String[] sp = statedPath.split("\\.");
-      boolean ok = sp.length == p.length;
-      for (int j = 0; j < p.length; j++) {
-        ok = ok && sp.length > j && (p[j].equals(sp[j]) || isSameBase(p[j], sp[j]));
-      }
-// don't need this debug check - everything is ok
-//      if (ok != (statedPath.equals(path) || (path.endsWith("[x]") && statedPath.length() > path.length() - 2 &&
-//            statedPath.substring(0, path.length()-3).equals(path.substring(0, path.length()-3)) &&
-//            (statedPath.length() < path.length() || !statedPath.substring(path.length()).contains("."))))) {
-//        System.out.println("mismatch in paths: "+statedPath +" vs " +path);
-//      }
-      if (ok) {
-        /*
-         * Commenting this out because it raises warnings when profiling inherited elements.  For example,
-         * Error: unknown element 'Bundle.meta.profile' (or it is out of order) in profile ... (looking for 'Bundle.entry')
-         * Not sure we have enough information here to do the check properly.  Might be better done when we're sorting the profile?
 
-        if (i != start && result.isEmpty() && !path.startsWith(context.getElement().get(start).getPath()))
-          messages.add(new ValidationMessage(Source.ProfileValidator, IssueType.VALUE, "StructureDefinition.differential.element["+Integer.toString(start)+"]", "Error: unknown element '"+context.getElement().get(start).getPath()+"' (or it is out of order) in profile '"+url+"' (looking for '"+path+"')", IssueSeverity.WARNING));
-
-         */
-        result.add(context.getElement().get(i));
-      }
+  private boolean oneMatchingElementInDifferential(boolean slicingDone, String path, List<ElementDefinition> diffMatches) {
+    if (diffMatches.size() != 1) {
+      return false;
     }
-    return result;
+    if (slicingDone) {
+      return true;
+    }
+    if (profileUtilities.isImplicitSlicing(diffMatches.get(0), path)) {
+      return false;
+    }
+    return   !(diffMatches.get(0).hasSlicing()
+      || (profileUtilities.isExtension(diffMatches.get(0))
+      && diffMatches.get(0).hasSliceName()));
   }
-
-  private StructureDefinition getProfileForDataType(ElementDefinition.TypeRefComponent type, String webUrl)  {
-    StructureDefinition sd = null;
-    if (type.hasProfile()) {
-      sd = context.fetchResource(StructureDefinition.class, type.getProfile().get(0).getValue());
-      if (sd == null) {
-        if (profileUtilities.getXver() != null && profileUtilities.getXver().matchingUrl(type.getProfile().get(0).getValue()) && xver.status(type.getProfile().get(0).getValue()) == XVerExtensionManager.XVerExtensionStatus.Valid) {
-          sd = profileUtilities.getXver().makeDefinition(type.getProfile().get(0).getValue());
-          profileUtilities.generateSnapshot(context.fetchTypeDefinition("Extension"), sd, sd.getUrl(), webUrl, sd.getName());
-        }
-      }
-      if (sd == null) {
-        if (debug) {
-          System.out.println("Failed to find referenced profile: " + type.getProfile());
-        }
-      }
-
-    }
-    if (sd == null)
-      sd = context.fetchTypeDefinition(type.getWorkingCode());
-    if (sd == null)
-      System.out.println("XX: failed to find profle for type: " + type.getWorkingCode()); // debug GJM
-    return sd;
-  }
-
-  private String fixedPathSource(String contextPath, String pathSimple, List<ProfileUtilities.ElementRedirection> redirector) {
-    if (contextPath == null)
-      return pathSimple;
-//    String ptail = pathSimple.substring(contextPath.length() + 1);
-    if (redirector != null && redirector.size() > 0) {
-      String ptail = null;
-      if (contextPath.length() >= pathSimple.length()) {
-        ptail = pathSimple.substring(pathSimple.indexOf(".")+1);
-      } else {
-        ptail = pathSimple.substring(contextPath.length()+1);
-      }
-      return redirector.get(redirector.size()-1).getPath()+"."+ptail;
-//      return contextPath+"."+tail(redirector.getPath())+"."+ptail.substring(ptail.indexOf(".")+1);
-    } else {
-      String ptail = pathSimple.substring(pathSimple.indexOf(".")+1);
-      return contextPath+"."+ptail;
-    }
-  }
-
-  private String fixedPathDest(String contextPath, String pathSimple, List<ProfileUtilities.ElementRedirection> redirector, String redirectSource) {
-    String s;
-    if (contextPath == null)
-      s = pathSimple;
-    else {
-      if (redirector != null && redirector.size() > 0) {
-        String ptail = null;
-        if (redirectSource.length() >= pathSimple.length()) {
-          ptail = pathSimple.substring(pathSimple.indexOf(".")+1);
-        } else {
-          ptail = pathSimple.substring(redirectSource.length()+1);
-        }
-        //      ptail = ptail.substring(ptail.indexOf(".")+1);
-        s = contextPath+"."+/*tail(redirector.getPath())+"."+*/ptail;
-      } else {
-        String ptail = pathSimple.substring(pathSimple.indexOf(".")+1);
-        s = contextPath+"."+ptail;
-      }
-    }
-    return s;
-  }
-
-  private String getWebUrl(StructureDefinition dt, String webUrl, String indent) {
-    if (dt.hasUserData("path")) {
-      // this is a hack, but it works for now, since we don't have deep folders
-      String url = dt.getUserString("path");
-      int i = url.lastIndexOf("/");
-      if (i < 1) {
-        return profileUtilities.getDefWebRoot();
-      } else {
-        return url.substring(0, i+1);
-      }
-    } else {
-      return webUrl;
-    }
-  }
-
-  /**
-   * Finds internal references in an Element's Binding and StructureDefinition references (in TypeRef) and bases them on the given url
-   * @param url - the base url to use to turn internal references into absolute references
-   * @param element - the Element to update
-   * @return - the updated Element
-   */
-  public ElementDefinition updateURLs(String url, String webUrl, ElementDefinition element) {
-    if (element != null) {
-      ElementDefinition defn = element;
-      if (defn.hasBinding() && defn.getBinding().hasValueSet() && defn.getBinding().getValueSet().startsWith("#"))
-        defn.getBinding().setValueSet(url+defn.getBinding().getValueSet());
-      for (ElementDefinition.TypeRefComponent t : defn.getType()) {
-        for (UriType u : t.getProfile()) {
-          if (u.getValue().startsWith("#"))
-            u.setValue(url+t.getProfile());
-        }
-        for (UriType u : t.getTargetProfile()) {
-          if (u.getValue().startsWith("#"))
-            u.setValue(url+t.getTargetProfile());
-        }
-      }
-      if (webUrl != null) {
-        // also, must touch up the markdown
-        if (element.hasDefinition())
-          element.setDefinition(processRelativeUrls(element.getDefinition(), webUrl, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames, null, false));
-        if (element.hasComment())
-          element.setComment(processRelativeUrls(element.getComment(), webUrl, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames, null, false));
-        if (element.hasRequirements())
-          element.setRequirements(processRelativeUrls(element.getRequirements(), webUrl, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames, null, false));
-        if (element.hasMeaningWhenMissing())
-          element.setMeaningWhenMissing(processRelativeUrls(element.getMeaningWhenMissing(), webUrl, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames, null, false));
-      }
-    }
-    return element;
-  }
-
-  public static String processRelativeUrls(String markdown, String webUrl, String basePath, List<String> resourceNames, Set<String> baseFilenames, Set<String> localFilenames, boolean processRelatives) {
-    if (markdown == null) {
-      return "";
-    }
-    StringBuilder b = new StringBuilder();
-    int i = 0;
-    while (i < markdown.length()) {
-      if (i < markdown.length()-3 && markdown.substring(i, i+2).equals("](")) {
-        int j = i + 2;
-        while (j < markdown.length() && markdown.charAt(j) != ')')
-          j++;
-        if (j < markdown.length()) {
-          String url = markdown.substring(i+2, j);
-          if (!Utilities.isAbsoluteUrl(url) && !url.startsWith("..")) {
-            //
-            // In principle, relative URLs are supposed to be converted to absolute URLs in snapshots.
-            // that's what this code is doing.
-            //
-            // But that hasn't always happened and there's packages out there where the snapshots
-            // contain relative references that actually are references to the main specification
-            //
-            // This code is trying to guess which relative references are actually to the
-            // base specification.
-            //
-            if (ProfileUtilities.isLikelySourceURLReference(url, resourceNames, baseFilenames, localFilenames)) {
-              b.append("](");
-              b.append(basePath);
-              i = i + 1;
-            } else {
-              b.append("](");
-              // disabled 7-Dec 2021 GDG - we don't want to fool with relative URLs at all?
-              // re-enabled 11-Feb 2022 GDG - we do want to do this. At least, $assemble in davinci-dtr, where the markdown comes from the SDC IG, and an SDC local reference must be changed to point to SDC. in this case, it's called when generating snapshots
-              // added processRelatives parameter to deal with this (well, to try)
-              if (processRelatives && webUrl != null && !issLocalFileName(url, localFilenames)) {
-//                System.out.println("Making "+url+" relative to '"+webUrl+"'");
-                b.append(webUrl);
-              } else {
-//                System.out.println("Not making "+url+" relative to '"+webUrl+"'");
-              }
-              i = i + 1;
-            }
-          } else
-            b.append(markdown.charAt(i));
-        } else
-          b.append(markdown.charAt(i));
-      } else {
-        b.append(markdown.charAt(i));
-      }
-      i++;
-    }
-    return b.toString();
-  }
-
-  public static boolean issLocalFileName(String url, Set<String> localFilenames) {
-    if (localFilenames != null) {
-      for (String n : localFilenames) {
-        if (url.startsWith(n.toLowerCase())) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
 
 
 }
