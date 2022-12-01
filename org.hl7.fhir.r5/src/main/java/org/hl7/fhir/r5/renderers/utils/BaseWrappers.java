@@ -11,6 +11,7 @@ import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.ResourceRenderer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -56,6 +57,7 @@ public class BaseWrappers {
     public StructureDefinition getDefinition();
     public boolean hasNarrative();
     public String getNameFromResource();
+    public Resource getResource(); // if there is one
   }
 
   public interface BaseWrapper extends WrapperBase {

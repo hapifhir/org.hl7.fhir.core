@@ -269,7 +269,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
   }
 
 
-  protected void AddVsRef(String value, XhtmlNode li) {
+  protected void AddVsRef(String value, XhtmlNode li, Resource source) {
     Resource res = null;
     if (rcontext != null) {
       BundleEntryComponent be = rcontext.resolve(value);
@@ -283,13 +283,11 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     }      
     CanonicalResource vs = (CanonicalResource) res;
     if (vs == null)
-      vs = getContext().getWorker().fetchResource(ValueSet.class, value);
+      vs = getContext().getWorker().fetchResource(ValueSet.class, value, source);
     if (vs == null)
-      vs = getContext().getWorker().fetchResource(StructureDefinition.class, value);
-    //    if (vs == null)
-    //      vs = context.getWorker().fetchResource(DataElement.class, value);
+      vs = getContext().getWorker().fetchResource(StructureDefinition.class, value, source);
     if (vs == null)
-      vs = getContext().getWorker().fetchResource(Questionnaire.class, value);
+      vs = getContext().getWorker().fetchResource(Questionnaire.class, value, source);
     if (vs != null) {
       String ref = (String) vs.getUserData("path");
 
