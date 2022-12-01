@@ -647,7 +647,6 @@ public class ProfileUtilities extends TranslatingUtilities {
         //      if (derived.getId().equals("2.16.840.1.113883.10.20.22.2.1.1")) {
         //        debug = true;
         //      }
-        processPaths(base, derived, url, webUrl, diff, baseSnapshot);
 
         new ProfilePathProcessor(this).processPaths(base, derived, url, webUrl, diff, baseSnapshot);
 
