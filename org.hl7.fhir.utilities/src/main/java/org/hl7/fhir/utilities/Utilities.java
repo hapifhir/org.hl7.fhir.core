@@ -477,6 +477,9 @@ public class Utilities {
   }
 
   public static String appendForwardSlash(String definitions) {
+    if (definitions == null) {
+      return "/";
+    }
     return definitions.endsWith("/") ? definitions : definitions + "/";
   }
 
