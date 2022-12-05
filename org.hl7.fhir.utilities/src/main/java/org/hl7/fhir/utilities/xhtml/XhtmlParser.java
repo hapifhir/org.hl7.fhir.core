@@ -506,10 +506,12 @@ public class XhtmlParser {
       if (peekChar() != '>')
         throw new FHIRFormatError("unexpected non-end of element "+n+" "+descLoc());
       readChar();
+      root.setEmptyExpanded(false);
     } else {
       unwindPoint = null;
       List<XhtmlNode> p = new ArrayList<>();
       parseElementInner(root, p, nsm, true);
+      root.setEmptyExpanded(true);
     }
     return result;
   }
@@ -671,7 +673,9 @@ public class XhtmlParser {
       if (peekChar() != '>')
         throw new FHIRFormatError("unexpected non-end of element "+name+" "+descLoc());
       readChar();
+      node.setEmptyExpanded(false);
     } else {
+      node.setEmptyExpanded(true);
       parseElementInner(node, newParents, namespaceMap, "script".equals(name.getName()));
     }
   }

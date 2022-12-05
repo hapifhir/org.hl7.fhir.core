@@ -90,40 +90,42 @@ public class XhtmlComposer {
   private void composeDoc(XhtmlDocument doc) throws IOException  {
     // headers....
 //    dst.append("<html>" + (pretty ? "\r\n" : ""));
-    for (XhtmlNode c : doc.getChildNodes())
+    for (XhtmlNode c : doc.getChildNodes()) {
       writeNode("  ", c, false);
+    }
 //    dst.append("</html>" + (pretty ? "\r\n" : ""));
   }
 
   private void writeNode(String indent, XhtmlNode node, boolean noPrettyOverride) throws IOException  {
-    if (node.getNodeType() == NodeType.Comment)
+    if (node.getNodeType() == NodeType.Comment) {
       writeComment(indent, node, noPrettyOverride);
-    else if (node.getNodeType() == NodeType.DocType)
+    } else if (node.getNodeType() == NodeType.DocType) {
       writeDocType(node);
-    else if (node.getNodeType() == NodeType.Instruction)
+    } else if (node.getNodeType() == NodeType.Instruction) {
       writeInstruction(node);
-    else if (node.getNodeType() == NodeType.Element)
+    } else if (node.getNodeType() == NodeType.Element) {
       writeElement(indent, node, noPrettyOverride);
-    else if (node.getNodeType() == NodeType.Document)
+    } else if (node.getNodeType() == NodeType.Document) {
       writeDocument(indent, node);
-    else if (node.getNodeType() == NodeType.Text)
+    } else if (node.getNodeType() == NodeType.Text) {
       writeText(node);
-    else if (node.getNodeType() == null)
+    } else if (node.getNodeType() == null) {
       throw new IOException("Null node type");
-    else
+    } else {
       throw new IOException("Unknown node type: "+node.getNodeType().toString());
+    }
   }
 
   private void writeText(XhtmlNode node) throws IOException  {
     for (char c : node.getContent().toCharArray())
     {
-      if (c == '&')
+      if (c == '&') {
         dst.append("&amp;");
-      else if (c == '<')
+      } else if (c == '<') {
         dst.append("&lt;");
-      else if (c == '>')
+      } else if (c == '>') {
         dst.append("&gt;");
-      else if (xml) {
+      } else if (xml) {
         if (c == '"')
           dst.append("&quot;");
         else 
@@ -189,26 +191,34 @@ public class XhtmlComposer {
       indent = "";
 
     // html self closing tags: http://xahlee.info/js/html5_non-closing_tag.html 
-    if (node.getChildNodes().size() == 0 && (xml || Utilities.existsInList(node.getName(), "area", "base", "br", "col", "command", "embed", "hr", "img", "input", "keygen", "link", "menuitem", "meta", "param", "source", "track", "wbr")))
+    boolean concise = node.getChildNodes().size() == 0;
+    if (node.hasEmptyExpanded() && node.getEmptyExpanded()) {
+      concise = false;
+    }
+    if (!xml && Utilities.existsInList(node.getName(), "area", "base", "br", "col", "command", "embed", "hr", "img", "input", "keygen", "link", "menuitem", "meta", "param", "source", "track", "wbr")) {
+      concise = false;
+    }
+
+    if (concise)
       dst.append(indent + "<" + node.getName() + attributes(node) + "/>" + (pretty && !noPrettyOverride ? "\r\n" : ""));
     else {
-    boolean act = node.allChildrenAreText();
-    if (act || !pretty ||  noPrettyOverride)
-      dst.append(indent + "<" + node.getName() + attributes(node)+">");
-    else
-      dst.append(indent + "<" + node.getName() + attributes(node) + ">\r\n");
-    if (node.getName() == "head" && node.getElement("meta") == null)
-      dst.append(indent + "  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>" + (pretty && !noPrettyOverride ? "\r\n" : ""));
+      boolean act = node.allChildrenAreText();
+      if (act || !pretty ||  noPrettyOverride)
+        dst.append(indent + "<" + node.getName() + attributes(node)+">");
+      else
+        dst.append(indent + "<" + node.getName() + attributes(node) + ">\r\n");
+      if (node.getName() == "head" && node.getElement("meta") == null)
+        dst.append(indent + "  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>" + (pretty && !noPrettyOverride ? "\r\n" : ""));
 
 
-    for (XhtmlNode c : node.getChildNodes())
-      writeNode(indent + "  ", c, noPrettyOverride || node.isNoPretty());
-    if (act)
-      dst.append("</" + node.getName() + ">" + (pretty && !noPrettyOverride ? "\r\n" : ""));
-    else if (node.getChildNodes().get(node.getChildNodes().size() - 1).getNodeType() == NodeType.Text)
-      dst.append((pretty && !noPrettyOverride ? "\r\n"+ indent : "")  + "</" + node.getName() + ">" + (pretty && !noPrettyOverride ? "\r\n" : ""));
-    else
-      dst.append(indent + "</" + node.getName() + ">" + (pretty && !noPrettyOverride ? "\r\n" : ""));
+      for (XhtmlNode c : node.getChildNodes())
+        writeNode(indent + "  ", c, noPrettyOverride || node.isNoPretty());
+      if (act)
+        dst.append("</" + node.getName() + ">" + (pretty && !noPrettyOverride ? "\r\n" : ""));
+      else if (node.getChildNodes().get(node.getChildNodes().size() - 1).getNodeType() == NodeType.Text)
+        dst.append((pretty && !noPrettyOverride ? "\r\n"+ indent : "")  + "</" + node.getName() + ">" + (pretty && !noPrettyOverride ? "\r\n" : ""));
+      else
+        dst.append(indent + "</" + node.getName() + ">" + (pretty && !noPrettyOverride ? "\r\n" : ""));
     }
   }
 

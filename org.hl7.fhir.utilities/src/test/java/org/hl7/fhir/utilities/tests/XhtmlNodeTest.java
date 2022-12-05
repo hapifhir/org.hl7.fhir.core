@@ -6,6 +6,8 @@ import java.io.ObjectOutputStream;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 import org.junit.jupiter.api.Assertions;
@@ -137,4 +139,25 @@ public class XhtmlNodeTest {
     Assertions.assertEquals("http://www.w3.org/1999/xlink", x.getChildNodes().get(0).getChildNodes().get(1).getAttributes().get("xmlns:xlink"));
   }
 
+
+  @Test
+  public void testParseSvgElements() throws FHIRFormatError, IOException {
+    String src = BaseTestingUtilities.loadTestResource("xhtml", "xhtml-empty-elements.xml");
+    XhtmlNode x = new XhtmlParser().parse(src, "xml");
+   
+    
+    String xml = new XhtmlComposer(false, false).compose(x);
+    Assertions.assertEquals(src.trim(), xml.trim());
+  }
+
+
+  @Test
+  public void testParseSvgF() throws FHIRFormatError, IOException {
+    String src = TextFile.fileToString("/Users/grahamegrieve/work/r5/source/fhir-exchanges.svg.html");
+    XhtmlNode x = new XhtmlParser().parse(src, "svg");
+    String xml = new XhtmlComposer(false, true).compose(x);
+    TextFile.stringToFile(xml,  "/Users/grahamegrieve/work/r5/source/fhir-exchanges.svg.html");
+  }
+  
+  
 }
