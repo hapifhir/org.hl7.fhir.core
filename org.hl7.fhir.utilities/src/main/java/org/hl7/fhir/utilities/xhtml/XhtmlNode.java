@@ -1,5 +1,7 @@
 package org.hl7.fhir.utilities.xhtml;
 
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -38,20 +40,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.instance.model.api.IBaseXhtml;
 import org.hl7.fhir.utilities.MarkDownProcessor;
-import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
-import org.hl7.fhir.utilities.i18n.I18nConstants;
-import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
+import org.hl7.fhir.utilities.Utilities;
 
-import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.primitive.XhtmlDt;
-
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @ca.uhn.fhir.model.api.annotation.DatatypeDef(name="xhtml")
 public class XhtmlNode implements IBaseXhtml {
@@ -93,6 +89,7 @@ public class XhtmlNode implements IBaseXhtml {
   private boolean inPara;
   private boolean inLink;
   private boolean seperated;  
+  private Boolean emptyExpanded;
 
   public XhtmlNode() {
     super();
@@ -413,6 +410,19 @@ public class XhtmlNode implements IBaseXhtml {
       }
     }
     return null;
+  }
+
+
+  public Boolean getEmptyExpanded() {
+    return emptyExpanded;
+  }
+
+  public boolean hasEmptyExpanded() {
+    return emptyExpanded != null;
+  }
+
+  public void setEmptyExpanded(Boolean emptyExpanded) {
+    this.emptyExpanded = emptyExpanded;
   }
 
 
