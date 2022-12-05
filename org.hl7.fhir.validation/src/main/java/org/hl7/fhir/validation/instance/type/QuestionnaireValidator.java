@@ -260,7 +260,7 @@ public class QuestionnaireValidator extends BaseValidator {
       if (questionnaireMode == QuestionnaireMode.REQUIRED) {
         qok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, I18nConstants.QUESTIONNAIRE_QR_Q_NOTFOUND, questionnaire);
         ok = qok && ok;
-      } else if (questionnaire.startsWith("http://example.org")) {
+      } else if (questionnaire.startsWith("http://example.org") || questionnaire.startsWith("https://example.org")) {
         qok = hint(errors, NO_RULE_DATE, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, I18nConstants.QUESTIONNAIRE_QR_Q_NOTFOUND, questionnaire);
       } else {
         qok = warning(errors, NO_RULE_DATE, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, I18nConstants.QUESTIONNAIRE_QR_Q_NOTFOUND, questionnaire);
