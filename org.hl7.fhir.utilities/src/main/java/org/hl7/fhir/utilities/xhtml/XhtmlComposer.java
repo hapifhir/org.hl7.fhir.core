@@ -196,7 +196,7 @@ public class XhtmlComposer {
       concise = false;
     }
     if (!xml && Utilities.existsInList(node.getName(), "area", "base", "br", "col", "command", "embed", "hr", "img", "input", "keygen", "link", "menuitem", "meta", "param", "source", "track", "wbr")) {
-      concise = false;
+      concise = true;
     }
 
     if (concise)
