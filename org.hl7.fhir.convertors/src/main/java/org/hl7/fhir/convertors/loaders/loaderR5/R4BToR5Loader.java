@@ -160,4 +160,11 @@ public class R4BToR5Loader extends BaseLoaderR5 implements IContextResourceLoade
       }
     }
   }
+  
+  @Override
+  public List<CodeSystem> getCodeSystems() {
+    return new ArrayList<>();
+  }
+
+
 }
