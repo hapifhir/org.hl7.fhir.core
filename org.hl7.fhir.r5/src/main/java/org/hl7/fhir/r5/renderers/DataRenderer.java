@@ -1574,7 +1574,7 @@ public class DataRenderer extends Renderer {
         if (rep.hasOffset()) {
           st = Integer.toString(rep.getOffset())+"min ";
         }
-        b.append("Do "+st);
+        b.append(st);
         for (Enumeration<EventTiming> wh : rep.getWhen())
           b.append(displayEventCode(wh.getValue()));
       } else {
@@ -1592,7 +1592,7 @@ public class DataRenderer extends Renderer {
             st = st + "-"+rep.getPeriodMax().toPlainString();
           st = st + " "+displayTimeUnits(rep.getPeriodUnit());
         }
-        b.append("Do "+st);
+        b.append(st);
       }
       if (rep.hasBoundsPeriod() && rep.getBoundsPeriod().hasEnd())
         b.append("Until "+displayDateTime(rep.getBoundsPeriod().getEndElement()));

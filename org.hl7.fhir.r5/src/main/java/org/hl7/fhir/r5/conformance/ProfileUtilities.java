@@ -4497,7 +4497,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       Piece p = gc.addText(ProfileUtilities.CONSTRAINT_CHAR);
       p.setHint(translate("sd.table", "This element has or is affected by constraints ("+listConstraintsAndConditions(element)+")"));
       p.addStyle(CONSTRAINT_STYLE);
-      p.setReference(VersionUtilities.getSpecUrl(context.getVersion())+"conformance-rules.html#constraints");
+      p.setReference(Utilities.pathURL(VersionUtilities.getSpecUrl(context.getVersion()), "conformance-rules.html#constraints"));
     }
     if (element != null && element.hasExtension(ToolingExtensions.EXT_STANDARDS_STATUS)) {
       StandardsStatus ss = StandardsStatus.fromCode(element.getExtensionString(ToolingExtensions.EXT_STANDARDS_STATUS));
