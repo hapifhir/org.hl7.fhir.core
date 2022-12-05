@@ -763,7 +763,7 @@ public class DataRenderer extends Renderer {
     }
   }
   
-  protected void renderUri(XhtmlNode x, UriType uri, String path, String id) {
+  protected void renderUri(XhtmlNode x, UriType uri, String path, String id, Resource src) {
     if (isCanonical(path)) {
       x.code().tx(uri.getValue());
     } else {
@@ -773,7 +773,7 @@ public class DataRenderer extends Renderer {
       } else if (uri.getValue().startsWith("mailto:")) {
         x.ah(uri.getValue()).addText(uri.getValue().substring(7));
       } else {
-        Resource target = context.getContext().fetchResource(Resource.class, uri.getValue());
+        Resource target = context.getContext().fetchResource(Resource.class, uri.getValue(), src);
         if (target != null && target.hasUserData("path")) {
           String title = target instanceof CanonicalResource ? ((CanonicalResource) target).present() : uri.getValue();
           x.ah(target.getUserString("path")).addText(title);
@@ -1574,7 +1574,7 @@ public class DataRenderer extends Renderer {
         if (rep.hasOffset()) {
           st = Integer.toString(rep.getOffset())+"min ";
         }
-        b.append("Do "+st);
+        b.append(st);
         for (Enumeration<EventTiming> wh : rep.getWhen())
           b.append(displayEventCode(wh.getValue()));
       } else {
@@ -1592,7 +1592,7 @@ public class DataRenderer extends Renderer {
             st = st + "-"+rep.getPeriodMax().toPlainString();
           st = st + " "+displayTimeUnits(rep.getPeriodUnit());
         }
-        b.append("Do "+st);
+        b.append(st);
       }
       if (rep.hasBoundsPeriod() && rep.getBoundsPeriod().hasEnd())
         b.append("Until "+displayDateTime(rep.getBoundsPeriod().getEndElement()));

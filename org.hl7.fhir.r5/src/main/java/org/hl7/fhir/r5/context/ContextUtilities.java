@@ -239,7 +239,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
     if ((!p.hasSnapshot() || isProfileNeedsRegenerate(p) ) && (ifLogical || p.getKind() != StructureDefinitionKind.LOGICAL)) {
       if (!p.hasBaseDefinition())
         throw new DefinitionException(context.formatMessage(I18nConstants.PROFILE___HAS_NO_BASE_AND_NO_SNAPSHOT, p.getName(), p.getUrl()));
-      StructureDefinition sd = context.fetchResource(StructureDefinition.class, p.getBaseDefinition());
+      StructureDefinition sd = context.fetchResource(StructureDefinition.class, p.getBaseDefinition(), p);
       if (sd == null && "http://hl7.org/fhir/StructureDefinition/Base".equals(p.getBaseDefinition())) {
         sd = ProfileUtilities.makeBaseDefinition(p.getFhirVersion());
       }

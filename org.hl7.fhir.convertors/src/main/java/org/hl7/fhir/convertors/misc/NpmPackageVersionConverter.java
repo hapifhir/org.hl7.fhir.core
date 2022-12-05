@@ -27,6 +27,10 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations.FHIRVersionEnumFactory;
+import org.hl7.fhir.r5.model.ImplementationGuide;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.model.JsonArray;
@@ -99,9 +103,10 @@ public class NpmPackageVersionConverter {
 
     Map<String, byte[]> output = new HashMap<>();
     output.put("package/package.json", convertPackage(content.get("package/package.json")));
+    output.put("package/other/spec.internals", convertSpec(content.get("package/other/spec.internals")));
 
     for (Entry<String, byte[]> e : content.entrySet()) {
-      if (!e.getKey().equals("package/package.json")) {
+      if (!e.getKey().equals("package/package.json") && !e.getKey().equals("package/other/spec.internals")) {
         byte[] cnv = e.getValue();
         try {
           JsonObject json = JsonParser.parseObject(e.getValue());
@@ -189,10 +194,17 @@ public class NpmPackageVersionConverter {
     return JsonParser.composeBytes(json);
   }
 
+  private byte[] convertSpec(byte[] cnt) throws IOException {
+    JsonObject json = JsonParser.parseObject(cnt);
+    json.set("ig-version", version);
+    return JsonParser.composeBytes(json, true);
+  }
+
   private byte[] convertResource(String n, byte[] cnt) {
     try {
       if (VersionUtilities.isR2Ver(currentVersion)) {
         org.hl7.fhir.dstu2.model.Resource res = new org.hl7.fhir.dstu2.formats.JsonParser().parse(cnt);
+        convertResourceR2(res);
         if (VersionUtilities.isR2Ver(version)) {
           return new org.hl7.fhir.dstu2.formats.JsonParser().composeBytes(res);
         } else if (VersionUtilities.isR2BVer(version)) {
@@ -206,6 +218,7 @@ public class NpmPackageVersionConverter {
         }
       } else if (VersionUtilities.isR2BVer(currentVersion)) {
         org.hl7.fhir.dstu2016may.model.Resource res = new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(cnt);
+        convertResourceR2B(res);
         if (VersionUtilities.isR2Ver(version)) {
           return new org.hl7.fhir.dstu2.formats.JsonParser().composeBytes(VersionConvertorFactory_10_30.convertResource(VersionConvertorFactory_14_30.convertResource(res)));
         } else if (VersionUtilities.isR2BVer(version)) {
@@ -219,6 +232,7 @@ public class NpmPackageVersionConverter {
         }
       } else if (VersionUtilities.isR3Ver(currentVersion)) {
         org.hl7.fhir.dstu3.model.Resource res = new org.hl7.fhir.dstu3.formats.JsonParser().parse(cnt);
+        convertResourceR3(res);
         if (VersionUtilities.isR2Ver(version)) {
           return new org.hl7.fhir.dstu2.formats.JsonParser().composeBytes(VersionConvertorFactory_10_30.convertResource(res));
         } else if (VersionUtilities.isR2BVer(version)) {
@@ -232,6 +246,7 @@ public class NpmPackageVersionConverter {
         }
       } else if (VersionUtilities.isR4Ver(currentVersion)) {
         org.hl7.fhir.r4.model.Resource res = new org.hl7.fhir.r4.formats.JsonParser().parse(cnt);
+        convertResourceR4(res);
         if (VersionUtilities.isR2Ver(version)) {
           return new org.hl7.fhir.dstu2.formats.JsonParser().composeBytes(VersionConvertorFactory_10_40.convertResource(res, new PR2Handler()));
         } else if (VersionUtilities.isR2BVer(version)) {
@@ -245,6 +260,7 @@ public class NpmPackageVersionConverter {
         }
       } else if (VersionUtilities.isR5Ver(currentVersion)) {
         org.hl7.fhir.r5.model.Resource res = new org.hl7.fhir.r5.formats.JsonParser().parse(cnt);
+        convertResourceR5(res);
         if (VersionUtilities.isR2Ver(version)) {
           return new org.hl7.fhir.dstu2.formats.JsonParser().composeBytes(VersionConvertorFactory_10_50.convertResource(res));
         } else if (VersionUtilities.isR2BVer(version)) {
@@ -262,6 +278,43 @@ public class NpmPackageVersionConverter {
       ex.printStackTrace();
       errors.add("Error converting " + n + ": " + ex.getMessage());
       return null;
+    }
+  }
+
+  private void convertResourceR2(org.hl7.fhir.dstu2.model.Resource res) {
+    if (res instanceof org.hl7.fhir.dstu2.model.ImplementationGuide) {
+      org.hl7.fhir.dstu2.model.ImplementationGuide ig = (org.hl7.fhir.dstu2.model.ImplementationGuide) res;
+      ig.setFhirVersion(version);
+    } 
+  }
+
+  private void convertResourceR2B(org.hl7.fhir.dstu2016may.model.Resource res) {
+    if (res instanceof org.hl7.fhir.dstu2016may.model.ImplementationGuide) {
+      org.hl7.fhir.dstu2016may.model.ImplementationGuide ig = (org.hl7.fhir.dstu2016may.model.ImplementationGuide) res;
+      ig.setFhirVersion(version);
+    } 
+  }
+
+  private void convertResourceR3(org.hl7.fhir.dstu3.model.Resource res) {
+    if (res instanceof org.hl7.fhir.dstu3.model.ImplementationGuide) {
+      org.hl7.fhir.dstu3.model.ImplementationGuide ig = (org.hl7.fhir.dstu3.model.ImplementationGuide) res;
+      ig.setFhirVersion(version);
+    }    
+  }
+
+  private void convertResourceR4(org.hl7.fhir.r4.model.Resource res) {
+    if (res instanceof org.hl7.fhir.r4.model.ImplementationGuide) {
+      org.hl7.fhir.r4.model.ImplementationGuide ig = (org.hl7.fhir.r4.model.ImplementationGuide) res;
+      ig.getFhirVersion().clear();
+      ig.getFhirVersion().add(new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Enumerations.FHIRVersionEnumFactory(), version));
+    }
+  }
+
+  private void convertResourceR5(Resource res) {
+    if (res instanceof ImplementationGuide) {
+      ImplementationGuide ig = (ImplementationGuide) res;
+      ig.getFhirVersion().clear();
+      ig.getFhirVersion().add(new Enumeration<>(new FHIRVersionEnumFactory(), version));
     }
   }
 

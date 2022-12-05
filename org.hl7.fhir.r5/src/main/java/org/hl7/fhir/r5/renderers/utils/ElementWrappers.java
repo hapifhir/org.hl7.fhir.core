@@ -17,6 +17,7 @@ import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Property;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -266,7 +267,7 @@ public class ElementWrappers {
         if ("DomainResource".equals(sd.getType())) {
           return true;
         }
-        sd = context.getWorker().fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+        sd = context.getWorker().fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
       }
       return false;
     }
@@ -286,6 +287,11 @@ public class ElementWrappers {
 
     public Element getElement() {
       return wrapped;
+    }
+
+    @Override
+    public Resource getResource() {
+      return null;
     }
 
 }

@@ -40,6 +40,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 
 public class DefinitionNavigator {
@@ -164,19 +165,20 @@ public class DefinitionNavigator {
    * 
    * you have to provide a type if there's more than one type 
    * for current() since this library doesn't know how to choose
+   * @param res 
    * @throws DefinitionException 
    * @
    */
-  public boolean hasTypeChildren(TypeRefComponent type) throws DefinitionException {
+  public boolean hasTypeChildren(TypeRefComponent type, Resource res) throws DefinitionException {
     if (typeChildren == null || typeOfChildren != type) {
-      loadTypedChildren(type);
+      loadTypedChildren(type, res);
     }
     return !typeChildren.isEmpty();
   }
 
-  private void loadTypedChildren(TypeRefComponent type) throws DefinitionException {
+  private void loadTypedChildren(TypeRefComponent type, Resource src) throws DefinitionException {
     typeOfChildren = null;
-    StructureDefinition sd = context.fetchResource(StructureDefinition.class, /* GF#13465 : this somehow needs to be revisited type.hasProfile() ? type.getProfile() : */ type.getWorkingCode());
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, /* GF#13465 : this somehow needs to be revisited type.hasProfile() ? type.getProfile() : */ type.getWorkingCode(), src);
     if (sd != null) {
       DefinitionNavigator dn = new DefinitionNavigator(context, sd, 0, path, names, sd.getType());
       typeChildren = dn.children();
@@ -187,13 +189,14 @@ public class DefinitionNavigator {
 
   /**
    * 
+   * @param res 
    * @return
    * @throws DefinitionException 
    * @
    */
-  public List<DefinitionNavigator> childrenFromType(TypeRefComponent type) throws DefinitionException {
+  public List<DefinitionNavigator> childrenFromType(TypeRefComponent type, Resource res) throws DefinitionException {
     if (typeChildren == null || typeOfChildren != type) {
-      loadTypedChildren(type);
+      loadTypedChildren(type, res);
     }
     return typeChildren;
   }

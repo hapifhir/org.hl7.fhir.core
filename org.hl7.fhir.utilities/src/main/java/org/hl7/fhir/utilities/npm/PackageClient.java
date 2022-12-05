@@ -75,10 +75,11 @@ public class PackageClient {
   }
 
   public List<PackageInfo> getVersions(String id) throws IOException {
+    String url = Utilities.pathURL(address, id);
     List<PackageInfo> res = new ArrayList<>();
     JsonObject json;
     try {
-      json = fetchJson(Utilities.pathURL(address, id));
+      json = fetchJson(url);
       JsonObject versions = json.getJsonObject("versions");
       boolean hasDates = true;
       if (versions != null) {
@@ -103,6 +104,7 @@ public class PackageClient {
         Collections.sort(res, new PackageInfo.PackageInfoSorter(false));
       }
     } catch (Exception e) {
+      System.out.println("Error fetching "+url+": "+e.getMessage());
     }
     return res;    
   }

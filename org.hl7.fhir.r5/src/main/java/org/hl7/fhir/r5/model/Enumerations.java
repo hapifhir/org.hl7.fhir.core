@@ -11547,6 +11547,10 @@ The primary difference between a medicationusage and a medicationadministration 
           return FHIRTypes.VISIONPRESCRIPTION;
         if ("Parameters".equals(codeString))
           return FHIRTypes.PARAMETERS;
+        if ("Any".equals(codeString))
+          return FHIRTypes.RESOURCE;
+        if ("CapabilityStatement2".equals(codeString))
+          return FHIRTypes.CAPABILITYSTATEMENT;
         throw new IllegalArgumentException("Unknown FHIRTypes code '"+codeString+"'");
         }
         public Enumeration<FHIRTypes> fromType(Base code) throws FHIRException {

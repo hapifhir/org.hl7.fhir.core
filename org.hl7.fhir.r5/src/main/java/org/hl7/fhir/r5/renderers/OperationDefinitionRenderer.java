@@ -52,7 +52,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     if (opd.hasInputProfile()) {
       XhtmlNode p = x.para();
       p.tx("Input parameters Profile: ");
-      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, opd.getInputProfile());
+      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, opd.getInputProfile(), opd);
       if (sd == null) {
         p.pre().tx(opd.getInputProfile());        
       } else {
@@ -62,7 +62,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     if (opd.hasOutputProfile()) {
       XhtmlNode p = x.para();
       p.tx("Output parameters Profile: ");
-      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, opd.getOutputProfile());
+      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, opd.getOutputProfile(), opd);
       if (sd == null) {
         p.pre().tx(opd.getOutputProfile());        
       } else {
@@ -79,7 +79,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     tr.td().b().tx("Binding");
     tr.td().b().tx("Documentation");
     for (OperationDefinitionParameterComponent p : opd.getParameter()) {
-      genOpParam(tbl, "", p);
+      genOpParam(tbl, "", p, opd);
     }
     addMarkdown(x, opd.getComment());
     return true;
@@ -98,7 +98,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     return ((OperationDefinition) r).present();
   }
 
-  private void genOpParam(XhtmlNode tbl, String path, OperationDefinitionParameterComponent p) throws EOperationOutcome, FHIRException, IOException {
+  private void genOpParam(XhtmlNode tbl, String path, OperationDefinitionParameterComponent p, Resource opd) throws EOperationOutcome, FHIRException, IOException {
     XhtmlNode tr;
     tr = tbl.tr();
     tr.td().addText(p.getUse().toString());
@@ -129,13 +129,13 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     }
     td = tr.td();
     if (p.hasBinding() && p.getBinding().hasValueSet()) {
-      AddVsRef(p.getBinding().getValueSet(), td);
+      AddVsRef(p.getBinding().getValueSet(), td, opd);
       td.tx(" ("+p.getBinding().getStrength().getDisplay()+")");
     }
     addMarkdown(tr.td(), p.getDocumentation());
     if (!p.hasType()) {
       for (OperationDefinitionParameterComponent pp : p.getPart()) {
-        genOpParam(tbl, path+p.getName()+".", pp);
+        genOpParam(tbl, path+p.getName()+".", pp, opd);
       }
     }
   }
