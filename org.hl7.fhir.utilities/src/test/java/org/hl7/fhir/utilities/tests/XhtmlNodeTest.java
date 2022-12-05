@@ -150,14 +150,5 @@ public class XhtmlNodeTest {
     Assertions.assertEquals(src.trim(), xml.trim());
   }
 
-
-  @Test
-  public void testParseSvgF() throws FHIRFormatError, IOException {
-    String src = TextFile.fileToString("/Users/grahamegrieve/work/r5/source/fhir-exchanges.svg.html");
-    XhtmlNode x = new XhtmlParser().parse(src, "svg");
-    String xml = new XhtmlComposer(false, true).compose(x);
-    TextFile.stringToFile(xml,  "/Users/grahamegrieve/work/r5/source/fhir-exchanges.svg.html");
-  }
-  
   
 }
