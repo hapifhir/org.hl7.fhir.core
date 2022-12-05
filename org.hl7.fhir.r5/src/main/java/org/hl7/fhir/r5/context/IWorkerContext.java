@@ -310,7 +310,14 @@ public interface IWorkerContext {
      * @throws IOException 
      * @throws JsonSyntaxException 
      */
-    IContextResourceLoader getNewLoader(NpmPackage npm) throws JsonSyntaxException, IOException;   
+    IContextResourceLoader getNewLoader(NpmPackage npm) throws JsonSyntaxException, IOException;
+
+    /**
+     * called when processing R2 for implicit code systems in ValueSets 
+     * 
+     * @return
+     */
+    List<CodeSystem> getCodeSystems();   
   }
 
   /**

@@ -122,9 +122,6 @@ public class R2ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
       r2 = new XmlParser().parse(stream);
     org.hl7.fhir.r5.model.Resource r5 = VersionConvertorFactory_10_50.convertResource(r2, advisor);
     setPath(r5);
-    if (!advisor.getCslist().isEmpty()) {
-      throw new FHIRException("Error: Cannot have included code systems");
-    }
     if (killPrimitives) {
       throw new FHIRException("Cannot kill primitives when using deferred loading");
     }
@@ -152,4 +149,15 @@ public class R2ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
       }
     }
   }
+  
+  @Override
+  public List<CodeSystem> getCodeSystems() {
+    List<CodeSystem> list = new ArrayList<>();
+    if (!advisor.getCslist().isEmpty()) {
+      list.addAll(advisor.getCslist());
+      advisor.getCslist().clear();
+    }
+    return list;
+  }
+
 }
