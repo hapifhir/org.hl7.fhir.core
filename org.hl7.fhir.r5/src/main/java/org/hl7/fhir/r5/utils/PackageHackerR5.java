@@ -1,13 +1,13 @@
 package org.hl7.fhir.r5.utils;
 
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
-import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.StructureDefinition;
 
 public class PackageHackerR5 {
 
-  public static void fixLoadedResource(CanonicalResourceProxy r, PackageVersion packageInfo) {
+  public static void fixLoadedResource(CanonicalResourceProxy r, PackageInformation packageInfo) {
    if ("http://terminology.hl7.org/CodeSystem/v2-0391|2.6".equals(r.getUrl())) {
      r.hack("http://terminology.hl7.org/CodeSystem/v2-0391-2.6", "2.6");
    }

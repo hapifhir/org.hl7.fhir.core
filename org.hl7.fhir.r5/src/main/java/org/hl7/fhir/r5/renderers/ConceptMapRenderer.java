@@ -44,12 +44,12 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     XhtmlNode p = x.para();
     p.tx("Mapping from ");
     if (cm.hasSourceScope())
-      AddVsRef(cm.getSourceScope().primitiveValue(), p);
+      AddVsRef(cm.getSourceScope().primitiveValue(), p, cm);
     else
       p.tx("(not specified)");
     p.tx(" to ");
     if (cm.hasTargetScope())
-      AddVsRef(cm.getTargetScope().primitiveValue(), p);
+      AddVsRef(cm.getTargetScope().primitiveValue(), p, cm);
     else 
       p.tx("(not specified)");
 

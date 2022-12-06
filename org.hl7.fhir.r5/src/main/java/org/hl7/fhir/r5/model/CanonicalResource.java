@@ -587,7 +587,7 @@ public abstract class CanonicalResource extends DomainResource {
 // Manual code (from Configuration.txt):
   @Override
   public String toString() {
-    return fhirType()+"["+getUrl()+"]";
+    return fhirType()+"["+getUrl()+(hasVersion() ? "|"+getVersion(): "")+"]";
   }
   
   public String present() {

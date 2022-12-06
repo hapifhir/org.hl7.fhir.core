@@ -142,14 +142,14 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
 
   public void renderCanonical(ResourceWrapper rw, XhtmlNode x, String url) throws UnsupportedEncodingException, IOException {
-    renderCanonical(rw, x, url, true); 
+    renderCanonical(rw, x, url, true, rw.getResource()); 
   }
   
-  public void renderCanonical(ResourceWrapper rw, XhtmlNode x, String url, boolean allowLinks) throws UnsupportedEncodingException, IOException {
+  public void renderCanonical(ResourceWrapper rw, XhtmlNode x, String url, boolean allowLinks, Resource src) throws UnsupportedEncodingException, IOException {
     if (url == null) {
       return;
     }
-    Resource target = context.getWorker().fetchResource(Resource.class, url);
+    Resource target = context.getWorker().fetchResource(Resource.class, url, src);
     if (target == null || !(target instanceof CanonicalResource)) {
       x.code().tx(url);
     } else {

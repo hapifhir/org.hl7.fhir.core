@@ -225,7 +225,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     return hasExt;    
   }
 
-  public void genDefinitionLink(HierarchicalTableGenerator gen, QuestionnaireResponseItemComponent i, Cell defn) {
+  public void genDefinitionLink(HierarchicalTableGenerator gen, QuestionnaireResponseItemComponent i, Cell defn, Resource src) {
     // can we resolve the definition? 
     String path = null;
     String d = i.getDefinition();
@@ -233,7 +233,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
       path = d.substring(d.indexOf("#")+1);
       d = d.substring(0, d.indexOf("#"));
     }
-    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d);
+    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d, src);
     if (sd != null) {
       String url = sd.getUserString("path");
       if (url != null) {
@@ -246,7 +246,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     }
   }
 
-  public void genDefinitionLink(XhtmlNode x, QuestionnaireResponseItemComponent i) {
+  public void genDefinitionLink(XhtmlNode x, QuestionnaireResponseItemComponent i, Resource src) {
     // can we resolve the definition? 
     String path = null;
     String d = i.getDefinition();
@@ -254,7 +254,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
       path = d.substring(d.indexOf("#")+1);
       d = d.substring(0, d.indexOf("#"));
     }
-    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d);
+    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d, src);
     if (sd != null) {
       String url = sd.getUserString("path");
       if (url != null) {

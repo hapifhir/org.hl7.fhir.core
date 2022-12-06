@@ -446,6 +446,24 @@ public abstract class Resource extends BaseResource implements IAnyResource {
   public String getLanguage(String defValue) {
     return hasLanguage() ? getLanguage() : defValue;
   }
+  
+  // when possible, the source package is considered when performing reference resolution. 
+  
+  private PackageInformation sourcePackage;
+
+  public boolean hasSourcePackage() {
+    return sourcePackage != null;
+  }
+
+  public PackageInformation getSourcePackage() {
+    return sourcePackage;
+  }
+
+  public void setSourcePackage(PackageInformation sourcePackage) {
+    this.sourcePackage = sourcePackage;
+  }
+  
+  
 // end addition
 
 }
