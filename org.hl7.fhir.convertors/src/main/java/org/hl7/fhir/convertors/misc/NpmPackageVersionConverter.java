@@ -51,16 +51,19 @@ public class NpmPackageVersionConverter {
   private final List<String> errors = new ArrayList<>();
   private String currentVersion;
 
-  public NpmPackageVersionConverter(String source, String dest, String version) {
+  private String packageId;
+
+  public NpmPackageVersionConverter(String source, String dest, String version, String packageId) {
     super();
     this.source = source;
     this.dest = dest;
     this.vCode = version;
+    this.packageId = packageId;
     this.version = VersionUtilities.versionFromCode(version);
   }
 
   public static void main(String[] args) throws IOException {
-    NpmPackageVersionConverter self = new NpmPackageVersionConverter(args[0], args[1], args[2]);
+    NpmPackageVersionConverter self = new NpmPackageVersionConverter(args[0], args[1], args[2], args[3]);
     self.execute();
     System.out.println("Finished");
     for (String s : self.errors) {
@@ -181,6 +184,7 @@ public class NpmPackageVersionConverter {
     JsonObject json = JsonParser.parseObject(cnt);
     currentVersion = json.getJsonArray("fhirVersions").get(0).asString();
     String name = json.asString("name");
+    assert(packageId.equals(name + "." + vCode));
     json.remove("name");
     json.add("name", name + "." + vCode);
     json.remove("fhirVersions");
@@ -197,6 +201,7 @@ public class NpmPackageVersionConverter {
   private byte[] convertSpec(byte[] cnt) throws IOException {
     JsonObject json = JsonParser.parseObject(cnt);
     json.set("ig-version", version);
+    json.set("npm-name", packageId);
     return JsonParser.composeBytes(json, true);
   }
 
@@ -307,6 +312,7 @@ public class NpmPackageVersionConverter {
       org.hl7.fhir.r4.model.ImplementationGuide ig = (org.hl7.fhir.r4.model.ImplementationGuide) res;
       ig.getFhirVersion().clear();
       ig.getFhirVersion().add(new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Enumerations.FHIRVersionEnumFactory(), version));
+      ig.setPackageId(packageId);
     }
   }
 
@@ -315,6 +321,7 @@ public class NpmPackageVersionConverter {
       ImplementationGuide ig = (ImplementationGuide) res;
       ig.getFhirVersion().clear();
       ig.getFhirVersion().add(new Enumeration<>(new FHIRVersionEnumFactory(), version));
+      ig.setPackageId(packageId);
     }
   }
 
