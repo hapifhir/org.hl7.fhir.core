@@ -179,7 +179,7 @@ public class NpmPackage {
     }
 
     public boolean readIndex(JsonObject index) {
-      if (!index.has("index-version") || (index.asInteger("index-version") != 1)) {
+      if (!index.has("index-version") || (index.asInteger("index-version") != NpmPackageIndexBuilder.CURRENT_INDEX_VERSION)) {
         return false;
       }
       this.index = index;
