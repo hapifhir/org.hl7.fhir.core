@@ -35,7 +35,7 @@ public class ValueSetSpreadsheetGenerator extends CanonicalSpreadsheetGenerator 
     if (vs == null) {
       System.out.println("no valueset!");
     }
-    addValueSetMetadata(renderCanonicalResource(vs), vs);
+    addValueSetMetadata(renderCanonicalResource(vs, false), vs);
     for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
       genInclude(vs, inc, "Include");
     }

@@ -463,7 +463,7 @@ public class ValidationService {
     CanonicalResource cr = validator.loadCanonicalResource(cliContext.getSources().get(0), cliContext.getSv());
     boolean ok = true;
     if (cr instanceof StructureDefinition) {
-      new StructureDefinitionSpreadsheetGenerator(validator.getContext(), false, false).renderStructureDefinition((StructureDefinition) cr).finish(new FileOutputStream(cliContext.getOutput()));
+      new StructureDefinitionSpreadsheetGenerator(validator.getContext(), false, false).renderStructureDefinition((StructureDefinition) cr, false).finish(new FileOutputStream(cliContext.getOutput()));
     } else if (cr instanceof CodeSystem) {
       new CodeSystemSpreadsheetGenerator(validator.getContext()).renderCodeSystem((CodeSystem) cr).finish(new FileOutputStream(cliContext.getOutput()));
     } else if (cr instanceof ValueSet) {

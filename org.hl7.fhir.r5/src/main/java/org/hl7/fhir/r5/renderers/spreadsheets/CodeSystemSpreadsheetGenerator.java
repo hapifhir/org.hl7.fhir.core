@@ -42,7 +42,7 @@ public class CodeSystemSpreadsheetGenerator extends CanonicalSpreadsheetGenerato
     if (cs == null) {
       System.out.println("no code system!");
     }
-    addCodeSystemMetadata(renderCanonicalResource(cs), cs);
+    addCodeSystemMetadata(renderCanonicalResource(cs, false), cs);
     
     if (cs.hasProperty()) {
       addProperties(cs.getProperty());

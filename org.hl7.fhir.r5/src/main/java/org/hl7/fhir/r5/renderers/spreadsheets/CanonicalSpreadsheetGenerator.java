@@ -20,13 +20,16 @@ public class CanonicalSpreadsheetGenerator extends SpreadsheetGenerator {
     super(context);
   }
 
-  protected Sheet renderCanonicalResource(CanonicalResource cr) {
-    Sheet sheet = makeSheet("Metadata");
+  protected Sheet renderCanonicalResource(CanonicalResource cr, boolean forMultiple) {
+    Sheet sheet = forMultiple && hasSheet("Metadata") ? getSheet("Metadata") : makeSheet("Metadata");
 
-    Row headerRow = sheet.createRow(0);
+    Row headerRow = sheet.createRow(forMultiple ? sheet.getLastRowNum()+1 : 0);
     addCell(headerRow, 0, "Property", styles.get("header"));
     addCell(headerRow, 1, "Value", styles.get("header"));
 
+    if (forMultiple) {
+      addMetadataRow(sheet, "ID", cr.getId());      
+    }
     addMetadataRow(sheet, "URL", cr.getUrl());
     for (Identifier id : cr.getIdentifier()) {
       addMetadataRow(sheet, "Identifier", dr.display(id));

@@ -5140,16 +5140,26 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
   // generate a CSV representation of the structure definition
-  public void generateCsvs(OutputStream dest, StructureDefinition structure, boolean asXml) throws IOException, DefinitionException, Exception {
+  public void generateCsv(OutputStream dest, StructureDefinition structure, boolean asXml) throws IOException, DefinitionException, Exception {
     if (!structure.hasSnapshot())
       throw new DefinitionException(context.formatMessage(I18nConstants.NEEDS_A_SNAPSHOT));
 
     CSVWriter csv = new CSVWriter(dest, structure, asXml);
 
     for (ElementDefinition child : structure.getSnapshot().getElement()) {
-      csv.processElement(child);
+      csv.processElement(null, child);
     }
     csv.dump();
+  }
+  
+  // generate a CSV representation of the structure definition
+  public void addToCSV(CSVWriter csv, StructureDefinition structure) throws IOException, DefinitionException, Exception {
+    if (!structure.hasSnapshot())
+      throw new DefinitionException(context.formatMessage(I18nConstants.NEEDS_A_SNAPSHOT));
+
+    for (ElementDefinition child : structure.getSnapshot().getElement()) {
+      csv.processElement(structure, child);
+    }
   }
   
   
