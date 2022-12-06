@@ -18,12 +18,13 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
  */
 public class NpmPackageIndexBuilder {
   
+  public static final Integer CURRENT_INDEX_VERSION = 2;
   private JsonObject index;
   private JsonArray files;
   
   public void start() {
     index = new JsonObject();
-    index.add("index-version", 1);
+    index.add("index-version", CURRENT_INDEX_VERSION);
     files = new JsonArray();
     index.add("files", files);
   }
@@ -55,6 +56,9 @@ public class NpmPackageIndexBuilder {
           }
           if (json.hasPrimitive("supplements")) {
             fi.add("supplements", json.asString("supplements"));
+          }
+          if (json.hasPrimitive("content")) {
+            fi.add("content", json.asString("content"));
           }
         }
       } catch (Exception e) {
