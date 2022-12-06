@@ -22,7 +22,7 @@ public class ConceptMapSpreadsheetGenerator extends CanonicalSpreadsheetGenerato
   }
 
   public ConceptMapSpreadsheetGenerator renderConceptMap(ConceptMap cm) {
-    addConceptMapMetadata(renderCanonicalResource(cm), cm);
+    addConceptMapMetadata(renderCanonicalResource(cm, false), cm);
     int i = 0;
     for (ConceptMapGroupComponent grp : cm.getGroup()) {
       renderGroup(grp, i);
