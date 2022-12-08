@@ -51,7 +51,6 @@ public class ShExGenerator {
   public boolean withComments = true;                // include comments
   public boolean completeModel = false;              // doing complete build (fhir.shex)
 
-
   private static String SHEX_TEMPLATE = "$header$\n\n" +
           "$shapeDefinitions$";
 
@@ -271,6 +270,7 @@ public class ShExGenerator {
   }
 
   /**
+   * DEEPAK
    * this is called externally to generate a set of structures to a single ShEx file
    * generally, it will be called with a single structure, or a long list of structures (all of them)
    *
@@ -288,16 +288,18 @@ public class ShExGenerator {
               tmplt(START_TEMPLATE).add("id", structures.get(0).getId()).render();
     else
       start_cmd = "";
-    shex_def.add("header", tmplt(HEADER_TEMPLATE).
-            add("start", start_cmd).
-            add("fhir", FHIR).
-            add("fhirvs", FHIR_VS).render());
+
+    shex_def.add("header",
+                  tmplt(HEADER_TEMPLATE).
+                      add("start", start_cmd).
+                      add("fhir", FHIR).
+                      add("fhirvs", FHIR_VS).render());
 
     Collections.sort(structures, new SortById());
     StringBuilder shapeDefinitions = new StringBuilder();
 
-    // For unknown reasons, the list of structures carries duplicates.  We remove them
-    // Also, it is possible for the same sd to have multiple hashes...
+    // For unknown reasons, the list of structures carries duplicates.
+    // We remove them.  Also, it is possible for the same sd to have multiple hashes...
     uniq_structures = new LinkedList<StructureDefinition>();
     uniq_structure_urls = new HashSet<String>();
     for (StructureDefinition sd : structures) {
@@ -306,7 +308,6 @@ public class ShExGenerator {
         uniq_structure_urls.add(sd.getUrl());
       }
     }
-
 
     for (StructureDefinition sd : uniq_structures) {
       shapeDefinitions.append(genShapeDefinition(sd, true));
@@ -365,18 +366,19 @@ public class ShExGenerator {
       String[] els = bd.split("/");
       bd = els[els.length - 1];
 
-      if (bd != null && !bd.isEmpty() && !baseDataTypes.contains(bd)) {
-        if ("Extension".equals(bd) && sd.hasContext() && (!sd.getContext().isEmpty())) {
-          for (StructureDefinition.StructureDefinitionContextComponent ctxc : sd.getContext()) {
-            if (ctxc.hasExpression()) {
-              if ("Extension".equals(bd))
-                bd = ctxc.getExpression();
-              else
-                bd += "," + ctxc.getExpression();
-            }
-          }
-        }
-      }
+      // TODO - EXTENSION CODE - DEEPAK 12/5/2022
+//      if (bd != null && !bd.isEmpty() && !baseDataTypes.contains(bd)) {
+//        if ("Extension".equals(bd) && sd.hasContext() && (!sd.getContext().isEmpty())) {
+//          for (StructureDefinition.StructureDefinitionContextComponent ctxc : sd.getContext()) {
+//            if (ctxc.hasExpression()) {
+//              if ("Extension".equals(bd))
+//                bd = ctxc.getExpression();
+//              else
+//                bd += "," + ctxc.getExpression();
+//            }
+//          }
+//        }
+//      }
       sId += "> EXTENDS @<" + bd;
     }
 
@@ -393,6 +395,7 @@ public class ShExGenerator {
   }
 
   /**
+   * DEEPAK
    * Emit a ShEx definition for the supplied StructureDefinition
    * @param sd Structure definition to emit
    * @param top_level True means outermost type, False means recursively called
@@ -403,7 +406,6 @@ public class ShExGenerator {
     if("xhtml".equals(sd.getName()) || (completeModel && "Resource".equals(sd.getName())))
       return "";
 
-    String bd = null;
     ST shape_defn;
     // Resources are either incomplete items or consist of everything that is defined as a resource (completeModel)
 //    if (sd.getName().equals("ActivityDefinition")){
@@ -420,21 +422,9 @@ public class ShExGenerator {
         ST resource_decl = tmplt(RESOURCE_DECL_TEMPLATE).
                 add("id", sd.getId()).
                 add("root", tmplt(ROOT_TEMPLATE));
-//                add("root", top_level ? tmplt(ROOT_TEMPLATE) : "");
         shape_defn.add("resourceDecl", resource_decl.render());
-      //} else {
-      //  shape_defn.add("resourceDecl", "");
-     // }
 
-      if (sd.hasBaseDefinition()){
-        bd = sd.getBaseDefinition();
-        String[] els = bd.split("/");
-        bd = els[els.length - 1];
-        if (bd != null && !bd.isEmpty() && baseDataTypes.contains(bd))
-          shape_defn.add("fhirType", "\n a [fhir:" + sd.getId() + "];");
-        else
           shape_defn.add("fhirType", " ");
-      }
     }
 
     // Generate the defining elements
@@ -458,7 +448,7 @@ public class ShExGenerator {
       if(!ed.getPath().contains("."))
         root_comment = ed.getShort();
       else if ((StringUtils.countMatches(ed.getPath(), ".") == 1 && !"0".equals(ed.getMax()))
-              && ("Extension".equals(bd) || ed.hasBase() && ed.getBase().getPath().startsWith(sdn))
+              && ("Extension".equals(ed) || ed.hasBase() && ed.getBase().getPath().startsWith(sdn))
           ){
         String elementDefinition = genElementDefinition(sd, ed);
 
@@ -495,6 +485,15 @@ public class ShExGenerator {
           }
         elements.add(elementDefinition);
       }
+      else {
+        List<ElementDefinition> children = profileUtilities.getChildList(sd, ed);
+        if (children.size() > 0) {
+          for (ElementDefinition child : children) {
+            if (child.getPath().startsWith(ed.getPath()))
+              innerTypes.add(new ImmutablePair<StructureDefinition, ElementDefinition>(sd, ed));
+          }
+        }
+      }
     }
 
     shape_defn.add("elements", StringUtils.join(elements, "\n"));
@@ -510,6 +509,12 @@ public class ShExGenerator {
     return shape_defn.render();
   }
 
+  /**
+   * DEEPAK
+   * @param ed
+   * @param constraint
+   * @return
+   */
   private String translateConstraint(ElementDefinition ed, ElementDefinition.ElementDefinitionConstraintComponent constraint){
     String translated = "";
 
@@ -530,6 +535,12 @@ public class ShExGenerator {
     return translated;
   }
 
+  /**
+   * DEEPAK
+   * @param node
+   * @param quote
+   * @return
+   */
   private String processExpressionNode(ExpressionNode node, boolean quote) {
     if (node == null)
       return "";
@@ -586,10 +597,21 @@ public class ShExGenerator {
     return node.toString();
   }
 
+  /**
+   * DEEPAK
+   * @param str
+   * @return
+   */
   private String TBD(String str){
     return " <TBD " + str + " TBD> ";
   }
 
+  /**
+   * DEEPAK
+   * @param str
+   * @param quote
+   * @return
+   */
   private String quoteThis(String str, boolean quote){
 
     if (quote)
@@ -599,6 +621,7 @@ public class ShExGenerator {
   }
 
   /**
+   * DEEPAK
    * Generate a flattened definition for the inner types
    * @return stringified inner type definitions
    */
@@ -616,6 +639,11 @@ public class ShExGenerator {
     return itDefs.toString();
   }
 
+  /**
+   * DEEPAK
+   * @param ed
+   * @return
+   */
   private boolean  isInInnerTypes(ElementDefinition ed) {
 
     if (this.innerTypes.isEmpty())
@@ -629,6 +657,7 @@ public class ShExGenerator {
   }
 
   /**
+   * DEEPAK
    * Generate a shape definition for the current set of datatypes
    * @return stringified data type definitions
    */
@@ -650,6 +679,12 @@ public class ShExGenerator {
     return dtDefs.toString();
   }
 
+  /**
+   * DEEPAK
+   * @param text
+   * @param max_col
+   * @return
+   */
   private ArrayList<String> split_text(String text, int max_col) {
     int pos = 0;
     ArrayList<String> rval = new ArrayList<String>();
@@ -673,6 +708,11 @@ public class ShExGenerator {
     return rval;
   }
 
+  /**
+   * DEEPAK
+   * @param tmplt
+   * @param ed
+   */
   private void addComment(ST tmplt, ElementDefinition ed) {
     if(withComments && ed.hasShort() && !ed.getId().startsWith("Extension.")) {
       int nspaces;
@@ -698,19 +738,20 @@ public class ShExGenerator {
 
 
   /**
+   * DEEPAK
    * Generate a ShEx element definition
    * @param sd Containing structure definition
    * @param ed Containing element definition
    * @return ShEx definition
    */
-  private String genElementDefinition(StructureDefinition sd, ElementDefinition ed) {
+  private String genElementDefinition(StructureDefinition sd,
+                                      ElementDefinition ed) {
     String id = ed.hasBase() ? ed.getBase().getPath() : ed.getPath();
 
     String shortId = id.substring(id.lastIndexOf(".") + 1);
 
     if ((ed.getType().size() > 0) &&
       (ed.getType().get(0).getCode().startsWith(Constants.NS_SYSTEM_TYPE))) {
-      //id = id.substring(0, id.lastIndexOf(".")) + "v";
       shortId = "v";
     }
 
@@ -720,18 +761,15 @@ public class ShExGenerator {
 
     element_def = tmplt(ELEMENT_TEMPLATE);
     if (id.endsWith("[x]")) {
-      //element_def = ed.getType().size() > 1? tmplt(INNER_SHAPE_TEMPLATE) : tmplt(ELEMENT_TEMPLATE);
       element_def.add("id", "fhir:" + shortId.replace("[x]", ""));
     } else {
-      //element_def = tmplt(ELEMENT_TEMPLATE);
-      //element_def.add("id", "fhir:" + (id.charAt(0) == id.toLowerCase().charAt(0)? shortId : id) + " ");
       element_def.add("id", "fhir:" + shortId + " ");
     }
 
     List<ElementDefinition> children = profileUtilities.getChildList(sd, ed);
     if (children.size() > 0) {
       String parentPath = sd.getName();
-      if ((ed.hasContentReference() && (!ed.hasType())) || (!id.equals(sd.getName() + "." + shortId))) {
+      if ((ed.hasContentReference() && (!ed.hasType())) || (!id.equals(parentPath + "." + shortId))) {
         //System.out.println("Not Adding innerType:" + id + " to " + sd.getName());
       } else
         innerTypes.add(new ImmutablePair<StructureDefinition, ElementDefinition>(sd, ed));
@@ -763,7 +801,7 @@ public class ShExGenerator {
         }
         if (refPath == null)
           throw new AssertionError("Reference path not found: " + ref);
-        // String typ = id.substring(0, id.indexOf(".") + 1) + ed.getContentReference().substring(1);
+
         defn = simpleElement(sd, ed, refPath);
       }
 
@@ -800,12 +838,11 @@ public class ShExGenerator {
       defnToStore = StringUtils.substringBetween(defnToStore, "<", ">");
       if (!oneOrMoreTypes.contains(defnToStore))
         oneOrMoreTypes.add(defnToStore);
-    }
-    else{
-          if (!refChoices.isEmpty()) {
-          defn += " AND {fhir:link \n\t\t\t@<" +
-              refChoices.replaceAll("_OR_", "> OR \n\t\t\t@<") + "> }";
-        }
+    } else {
+      if (!refChoices.isEmpty()) {
+        defn += " AND {fhir:link \n\t\t\t@<" +
+          refChoices.replaceAll("_OR_", "> OR \n\t\t\t@<") + "> }";
+      }
     }
 
     element_def.add("defn", defn);
@@ -836,6 +873,7 @@ public class ShExGenerator {
   }
 
   /**
+   * DEEPAK
    * Generate a type reference and optional value set definition
    * @param sd Containing StructureDefinition
    * @param ed Element being defined
@@ -866,6 +904,7 @@ public class ShExGenerator {
   }
 
   /**
+   * DEEPAK
    * Generate a type reference
    * @param sd Containing structure definition
    * @param ed Containing element definition
@@ -928,6 +967,11 @@ public class ShExGenerator {
     }
   }
 
+  /**
+   * DEEPAK
+   * @param c
+   * @return
+   */
   private String getShexCode(String c) {
     switch (c) {
     case "boolean" : 
@@ -1010,18 +1054,21 @@ public class ShExGenerator {
   }
 
   /**
+   * DEEPAK
    * Generate a list of type choices for a "name[x]" style id
    * @param sd Structure containing ed
    * @param ed element definition
    * @param id choice identifier
    * @return ShEx fragment for the set of choices
    */
-  private String genChoiceTypes(StructureDefinition sd, ElementDefinition ed, String id) {
+  private String genChoiceTypes(StructureDefinition sd,
+                                ElementDefinition ed,
+                                String id) {
     List<String> choiceEntries = new ArrayList<String>();
     List<String> refValues = new ArrayList<String>();
     String base = id.replace("[x]", "");
 
-    for(ElementDefinition.TypeRefComponent typ : ed.getType()) {
+    for (ElementDefinition.TypeRefComponent typ : ed.getType()) {
       String entry = genChoiceEntry(sd, ed, "", "", typ);
       refValues.clear();
       if (typ.hasTargetProfile()) {
@@ -1040,12 +1087,17 @@ public class ShExGenerator {
   }
 
   /**
+   * DEEPAK
    * Generate an entry in a choice list
    * @param base base identifier
    * @param typ type/discriminant
    * @return ShEx fragment for choice entry
    */
-  private String genChoiceEntry(StructureDefinition sd, ElementDefinition ed, String id, String base, ElementDefinition.TypeRefComponent typ) {
+  private String genChoiceEntry(StructureDefinition sd,
+                                ElementDefinition ed,
+                                String id,
+                                String base,
+                                ElementDefinition.TypeRefComponent typ) {
     ST shex_choice_entry = tmplt(ELEMENT_TEMPLATE);
 
     String ext = typ.getWorkingCode();
@@ -1057,6 +1109,11 @@ public class ShExGenerator {
     return shex_choice_entry.render();
   }
 
+  /**
+   * DEEPAK
+   * @param oneOrMoreType
+   * @return
+   */
   private String getOneOrMoreType(String oneOrMoreType) {
     if ((oneOrMoreType == null)||(oneOrMoreTypes.isEmpty()))
       return "";
@@ -1084,6 +1141,7 @@ public class ShExGenerator {
   }
 
   /**
+   * DEEPAK
    * Generate a definition for a referenced element
    * @param sd Containing structure definition
    * @param ed Inner element
@@ -1145,6 +1203,7 @@ public class ShExGenerator {
   }
 
   /**
+   * DEEPAK
    * Generate a reference to a resource
    * @param id attribute identifier
    * @param typ possible reference types
@@ -1161,6 +1220,7 @@ public class ShExGenerator {
   }
 
   /**
+   * DEEPAK
    * Return the type name for typ
    * @param typ type to get name for
    * @return name
@@ -1178,6 +1238,11 @@ public class ShExGenerator {
     }
   }
 
+  /**
+   * DEEPAK
+   * @param vs
+   * @return
+   */
   private String genValueSet(ValueSet vs) {
     ST vsd = tmplt(VALUE_SET_DEFINITION).add("vsuri", vsprefix(vs.getUrl())).add("comment", vs.getDescription());
     ValueSetExpander.ValueSetExpansionOutcome vse = context.expandVS(vs, true, false);
@@ -1193,6 +1258,12 @@ public class ShExGenerator {
   }
 
 
+  /**
+   * DEEPAK
+   * @param ctxt
+   * @param reference
+   * @return
+   */
   // TODO: find a utility that implements this
   private ValueSet resolveBindingReference(DomainResource ctxt, String reference) {
     try {

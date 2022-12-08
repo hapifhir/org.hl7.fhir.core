@@ -73,7 +73,7 @@ public class ShexGeneratorTests {
 
   @Test
   public void doTestAll() throws FileNotFoundException, IOException, FHIRException, UcumException {
-    List<StructureDefinition> sds = TestingUtilities.getSharedWorkerContext().allStructures();
+    List<StructureDefinition> sds = TestingUtilities.getSharedWorkerContext().fetchResourcesByType(StructureDefinition.class);
     if ((sds == null)||(sds.isEmpty())) {
       throw new FHIRException("No StructuredDefinition found");
     }
@@ -124,9 +124,9 @@ public class ShexGeneratorTests {
     //processList("Profiles", otherNames);
 
     processList("StructureDefinitions", sdURLs);
-    processList("Extensions", extURLs);
-    //processList("Logical", logicalURLs);
-    //processList("Profiles", otherURLs);
+    //processList("Extensions", extURLs);
+    processList("Logical", logicalURLs);
+    processList("Profiles", otherURLs);
 
     System.out.println("************************************************************************");
     System.out.println("Total Items: " + sds.size());
@@ -155,6 +155,11 @@ public class ShexGeneratorTests {
   @Test
   public void testObservation() throws FHIRException, IOException, UcumException {
     doTest("Observation");
+  }
+
+  @Test
+  public void testCapabilityStatement() throws FHIRException, IOException, UcumException {
+    doTest("CapabilityStatement");
   }
 
   @Test

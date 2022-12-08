@@ -56,7 +56,7 @@ public class LDContextGeneratorTests {
   public void doTestAll() throws IOException, FHIRException {
 
     //List<StructureDefinition> sds = TestingUtilities.context("4.4.0").allStructures();
-    List<StructureDefinition> sds = TestingUtilities.getWorkerContext("4.4.0").allStructures();
+    List<StructureDefinition> sds = TestingUtilities.getWorkerContext("4.4.0").fetchResourcesByType(StructureDefinition.class);
     ConcurrentHashMap<String, String> renderedJson;
 
     for(StructureDefinition sd : sds) {
