@@ -320,6 +320,10 @@ public class CodeSystemUtilities {
         if ("deprecated".equals(p.getCode()) && p.hasValue() && p.getValue() instanceof BooleanType) 
           return ((BooleanType) p.getValue()).getValue();
       }
+      StandardsStatus ss = ToolingExtensions.getStandardsStatus(def);
+      if (ss == StandardsStatus.DEPRECATED) {
+        return true;
+      }
       return false;
     } catch (FHIRException e) {
       return false;
@@ -669,6 +673,10 @@ public class CodeSystemUtilities {
       }
     }
     return null;
+  }
+
+  public static boolean isNotCurrent(CodeSystem cs, ConceptDefinitionComponent c) {
+    return isInactive(cs, c) || isDeprecated(cs, c, false);
   }
 }
 
