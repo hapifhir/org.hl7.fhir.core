@@ -837,6 +837,10 @@ public class ToolingExtensions {
     return StandardsStatus.fromCode(ToolingExtensions.readStringExtension(dr, ToolingExtensions.EXT_STANDARDS_STATUS));
   }
 
+  public static StandardsStatus getStandardsStatus(Element e) throws FHIRException {
+    return StandardsStatus.fromCode(ToolingExtensions.readStringExtension(e, ToolingExtensions.EXT_STANDARDS_STATUS));
+  }
+
   public static void setStandardsStatus(DomainResource dr, StandardsStatus status, String normativeVersion) {
     if (status == null)
       ToolingExtensions.removeExtension(dr, ToolingExtensions.EXT_STANDARDS_STATUS);

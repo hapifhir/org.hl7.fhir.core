@@ -44,11 +44,20 @@ public class BundleValidator extends BaseValidator {
 
   public boolean validateBundle(List<ValidationMessage> errors, Element bundle, NodeStack stack, boolean checkSpecials, ValidatorHostContext hostContext, PercentageTracker pct, ValidationMode mode) {
     boolean ok = true;
-    List<Element> entries = new ArrayList<Element>();
-    bundle.getNamedChildren(ENTRY, entries);
     String type = bundle.getNamedChildValue(TYPE);
     type = StringUtils.defaultString(type);
+    List<Element> entries = new ArrayList<Element>();
+    bundle.getNamedChildren(ENTRY, entries);    
     
+    List<Element> links = new ArrayList<Element>();
+    bundle.getNamedChildren(LINK, links);
+    if (links.size() > 0) {
+      int i = 0;
+      for (Element l : links) {
+        ok = validateLink(errors, bundle, links, l, stack.push(l, i++, null, null), type, entries) && ok;
+      }
+    }
+
     if (entries.size() == 0) {
       ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, stack.getLiteralPath(), !(type.equals(DOCUMENT) || type.equals(MESSAGE)), I18nConstants.BUNDLE_BUNDLE_ENTRY_NOFIRST) && ok;
     } else {
@@ -68,7 +77,7 @@ public class BundleValidator extends BaseValidator {
         if (!VersionUtilities.isThisOrLater(FHIRVersion._4_0_1.getDisplay(), bundle.getProperty().getStructure().getFhirVersion().getDisplay())) {
           ok = handleSpecialCaseForLastUpdated(bundle, errors, stack) && ok;
         }
-        ok = checkAllInterlinked(errors, entries, stack, bundle, true) && ok;
+        ok = checkAllInterlinked(errors, entries, stack, bundle, false) && ok;
       }
       if (type.equals(MESSAGE)) {
         Element resource = firstEntry.getNamedChild(RESOURCE);
@@ -76,7 +85,7 @@ public class BundleValidator extends BaseValidator {
         if (rule(errors, NO_RULE_DATE, IssueType.INVALID, firstEntry.line(), firstEntry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), resource != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOFIRSTRESOURCE)) {
           ok = validateMessage(errors, entries, resource, firstStack.push(resource, -1, null, null), fullUrl, id) && ok;
         }
-        ok = checkAllInterlinked(errors, entries, stack, bundle, VersionUtilities.isR5Ver(context.getVersion())) && ok;
+        ok = checkAllInterlinked(errors, entries, stack, bundle, true) && ok;
       }
       if (type.equals(SEARCHSET)) {
         checkSearchSet(errors, bundle, entries, stack);
@@ -129,6 +138,151 @@ public class BundleValidator extends BaseValidator {
       
       // todo: check specials
       count++;
+    }
+    return ok;
+  }
+
+  private boolean validateLink(List<ValidationMessage> errors, Element bundle, List<Element> links, Element link, NodeStack stack, String type, List<Element> entries) {
+    switch (type) {
+    case "document": return validateDocumentLink(errors, bundle, links, link, stack, entries);
+    case "message": return validateMessageLink(errors, bundle, links, link, stack, entries);
+    case "history":
+    case "searchset": return validateSearchLink(errors, bundle, links, link, stack);
+    case "collection": return validateCollectionLink(errors, bundle, links, link, stack);
+    case "subscription-notification": return validateSubscriptionLink(errors, bundle, links, link, stack);
+    case "transaction":
+    case "transaction-response":
+    case "batch":
+    case "batch-response":
+      return validateTransactionOrBatchLink(errors, bundle, links, link, stack);
+    default:
+      return true; // unknown document type, deal with that elsewhere
+    }
+//    rule(errors, "2022-12-09", IssueType.INVALID, l.line(), l.col(), stack.getLiteralPath(), false, I18nConstants.BUNDLE_LINK_UNKNOWN, );    
+  }
+
+  private boolean validateDocumentLink(List<ValidationMessage> errors, Element bundle, List<Element> links, Element link, NodeStack stack, List<Element> entries) {
+    boolean ok = true;
+    Element relE = link.getNamedChild("relation");
+    if (relE != null) {
+      NodeStack relStack = stack.push(relE, -1, null, null); 
+      String rel = relE.getValue();
+      ok = rule(errors, "2022-12-09", IssueType.INVALID, relE.line(), relE.col(), relStack.getLiteralPath(), !Utilities.existsInList(rel, "first", "previous", "next", "last"), I18nConstants.BUNDLE_LINK_SEARCH_PROHIBITED, rel);
+      if ("self".equals(rel)) {
+        ok = rule(errors, "2022-12-09", IssueType.INVALID, relE.line(), relE.col(), relStack.getLiteralPath(), relationshipUnique(rel, link, links), I18nConstants.BUNDLE_LINK_SEARCH_NO_DUPLICATES, rel) && ok;
+      }
+      if ("stylesheet".equals(rel)) {
+        Element urlE = link.getNamedChild("url");
+        if (urlE != null) {
+          NodeStack urlStack = stack.push(urlE, -1, null, null); 
+          String url = urlE.getValue();
+          if (url != null) {
+            if (Utilities.isAbsoluteUrl(url)) {
+              // todo: do we need to consider rel = base?
+              if (url.equals("https://hl7.org/fhir/fhir.css")) {
+                // well, this is ok!
+              } else {
+                warning(errors, "2022-12-09", IssueType.BUSINESSRULE, urlE.line(), urlE.col(), urlStack.getLiteralPath(), false, I18nConstants.BUNDLE_LINK_STYELSHEET_EXTERNAL);
+                if (url.startsWith("http://")) {
+                  warning(errors, "2022-12-09", IssueType.BUSINESSRULE, urlE.line(), urlE.col(), urlStack.getLiteralPath(), false, I18nConstants.BUNDLE_LINK_STYELSHEET_INSECURE);
+                } 
+                if (!Utilities.isAbsoluteUrlLinkable(url)) {
+                  warning(errors, "2022-12-09", IssueType.BUSINESSRULE, urlE.line(), urlE.col(), urlStack.getLiteralPath(), false, I18nConstants.BUNDLE_LINK_STYELSHEET_LINKABLE);
+                }
+              }
+            } else {
+              // has to resolve in the bundle
+              boolean found = false;
+              for (Element e : entries) {
+                Element res = e.getNamedChild("resource");
+                if (res != null && (""+res.fhirType()+"/"+res.getIdBase()).equals(url)) {
+                  found = true;
+                  break;
+                }                
+              }
+              ok = rule(errors, "2022-12-09", IssueType.NOTFOUND, urlE.line(), urlE.col(), urlStack.getLiteralPath(), found, I18nConstants.BUNDLE_LINK_STYELSHEET_NOT_FOUND) && ok;              
+            }
+          }
+        }
+      }
+    }
+    return ok;
+  }
+
+  private boolean validateMessageLink(List<ValidationMessage> errors, Element bundle, List<Element> links, Element link, NodeStack stack, List<Element> entries) {
+    boolean ok = true;
+    Element relE = link.getNamedChild("relation");
+    if (relE != null) {
+      NodeStack relStack = stack.push(relE, -1, null, null); 
+      String rel = relE.getValue();
+      ok = rule(errors, "2022-12-09", IssueType.INVALID, relE.line(), relE.col(), relStack.getLiteralPath(), !Utilities.existsInList(rel, "first", "previous", "next", "last"), I18nConstants.BUNDLE_LINK_SEARCH_PROHIBITED, rel);
+      if ("self".equals(rel)) {
+        ok = rule(errors, "2022-12-09", IssueType.INVALID, relE.line(), relE.col(), relStack.getLiteralPath(), relationshipUnique(rel, link, links), I18nConstants.BUNDLE_LINK_SEARCH_NO_DUPLICATES, rel) && ok;
+      }
+    }
+    return ok;
+  }
+
+  private boolean validateSearchLink(List<ValidationMessage> errors, Element bundle, List<Element> links, Element link,  NodeStack stack) {
+    String rel = StringUtils.defaultString(link.getNamedChildValue("relation"));
+    if (Utilities.existsInList(rel, "first", "previous", "next", "last", "self")) {
+      return rule(errors, "2022-12-09", IssueType.INVALID, link.line(), link.col(), stack.getLiteralPath(), relationshipUnique(rel, link, links), I18nConstants.BUNDLE_LINK_SEARCH_NO_DUPLICATES, rel);
+    } else {
+      return true;
+    }
+  }
+
+  private boolean relationshipUnique(String rel, Element link, List<Element> links) {
+    for (Element l : links) {
+      if (l != link && rel.equals(l.getNamedChildValue("relation"))) {
+        return false;
+      }
+      if (l == link) {
+        // we only want to complain once, so we only look above this one
+        return true; 
+      }
+    }
+    return true;
+  }
+
+  private boolean validateCollectionLink(List<ValidationMessage> errors, Element bundle, List<Element> links, Element link, NodeStack stack) {
+    boolean ok = true;  
+    Element relE = link.getNamedChild("relation");
+    if (relE != null) {
+      NodeStack relStack = stack.push(relE, -1, null, null); 
+      String rel = relE.getValue();
+      ok = rule(errors, "2022-12-09", IssueType.INVALID, relE.line(), relE.col(), relStack.getLiteralPath(), !Utilities.existsInList(rel, "first", "previous", "next", "last"), I18nConstants.BUNDLE_LINK_SEARCH_PROHIBITED, rel);
+      if ("self".equals(rel)) {
+        ok = rule(errors, "2022-12-09", IssueType.INVALID, relE.line(), relE.col(), relStack.getLiteralPath(), relationshipUnique(rel, link, links), I18nConstants.BUNDLE_LINK_SEARCH_NO_DUPLICATES, rel) && ok;
+      }
+    }
+    return ok;
+  }
+
+  private boolean validateSubscriptionLink(List<ValidationMessage> errors, Element bundle, List<Element> links, Element link, NodeStack stack) {
+    boolean ok = true;  
+    Element relE = link.getNamedChild("relation");
+    if (relE != null) {
+      NodeStack relStack = stack.push(relE, -1, null, null); 
+      String rel = relE.getValue();
+      ok = rule(errors, "2022-12-09", IssueType.INVALID, relE.line(), relE.col(), relStack.getLiteralPath(), !Utilities.existsInList(rel, "first", "previous", "next", "last"), I18nConstants.BUNDLE_LINK_SEARCH_PROHIBITED, rel);
+      if ("self".equals(rel)) {
+        ok = rule(errors, "2022-12-09", IssueType.INVALID, relE.line(), relE.col(), relStack.getLiteralPath(), relationshipUnique(rel, link, links), I18nConstants.BUNDLE_LINK_SEARCH_NO_DUPLICATES, rel) && ok;
+      }
+    }
+    return ok;
+  }
+
+  private boolean validateTransactionOrBatchLink(List<ValidationMessage> errors, Element bundle, List<Element> links, Element link, NodeStack stack) {
+    boolean ok = true;  
+    Element relE = link.getNamedChild("relation");
+    if (relE != null) {
+      NodeStack relStack = stack.push(relE, -1, null, null); 
+      String rel = relE.getValue();
+      ok = rule(errors, "2022-12-09", IssueType.INVALID, relE.line(), relE.col(), relStack.getLiteralPath(), !Utilities.existsInList(rel, "first", "previous", "next", "last"), I18nConstants.BUNDLE_LINK_SEARCH_PROHIBITED, rel);
+      if ("self".equals(rel)) {
+        ok = rule(errors, "2022-12-09", IssueType.INVALID, relE.line(), relE.col(), relStack.getLiteralPath(), relationshipUnique(rel, link, links), I18nConstants.BUNDLE_LINK_SEARCH_NO_DUPLICATES, rel) && ok;
+      }
     }
     return ok;
   }
@@ -413,7 +567,7 @@ public class BundleValidator extends BaseValidator {
     return ok;
   }
 
-  private boolean checkAllInterlinked(List<ValidationMessage> errors, List<Element> entries, NodeStack stack, Element bundle, boolean isError) {
+  private boolean checkAllInterlinked(List<ValidationMessage> errors, List<Element> entries, NodeStack stack, Element bundle, boolean isMessage) {
     boolean ok = true;
     List<EntrySummary> entryList = new ArrayList<>();
     int i = 0;
@@ -447,6 +601,7 @@ public class BundleValidator extends BaseValidator {
 
     Set<EntrySummary> visited = new HashSet<>();
     visitLinked(visited, entryList.get(0));
+    visitBundleLinks(visited, entryList, bundle);
     boolean foundRevLinks;
     do {
       foundRevLinks = false;
@@ -460,10 +615,22 @@ public class BundleValidator extends BaseValidator {
             }
           }
           if (add) {
-            warning(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, e.getEntry().line(), e.getEntry().col(), 
+            if (isMessage) {
+              hint(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, e.getEntry().line(), e.getEntry().col(), 
+                  stack.addToLiteralPath(ENTRY + '[' + (i + 1) + ']'), isExpectedToBeReverse(e.getResource().fhirType()), 
+                  I18nConstants.BUNDLE_BUNDLE_ENTRY_REVERSE_MSG, (e.getEntry().getChildValue(FULL_URL) != null ? "'" + e.getEntry().getChildValue(FULL_URL) + "'" : ""));              
+            } else {
+            // this was illegal up to R4B, but changed to be legal in R5
+            if (VersionUtilities.isR5VerOrLater(context.getVersion())) {
+              hint(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, e.getEntry().line(), e.getEntry().col(), 
+                  stack.addToLiteralPath(ENTRY + '[' + (i + 1) + ']'), isExpectedToBeReverse(e.getResource().fhirType()), 
+                  I18nConstants.BUNDLE_BUNDLE_ENTRY_REVERSE_R4, (e.getEntry().getChildValue(FULL_URL) != null ? "'" + e.getEntry().getChildValue(FULL_URL) + "'" : ""));              
+            } else {
+              warning(errors, NO_RULE_DATE, IssueType.INVALID, e.getEntry().line(), e.getEntry().col(), 
                 stack.addToLiteralPath(ENTRY + '[' + (i + 1) + ']'), isExpectedToBeReverse(e.getResource().fhirType()), 
-                I18nConstants.BUNDLE_BUNDLE_ENTRY_REVERSE, (e.getEntry().getChildValue(FULL_URL) != null ? "'" + e.getEntry().getChildValue(FULL_URL) + "'" : ""));
-//            System.out.println("Found reverse links for "+e.getIndex());             
+                I18nConstants.BUNDLE_BUNDLE_ENTRY_REVERSE_R4, (e.getEntry().getChildValue(FULL_URL) != null ? "'" + e.getEntry().getChildValue(FULL_URL) + "'" : ""));
+            }
+            }
             foundRevLinks = true;
             visitLinked(visited, e);
           }
@@ -474,10 +641,10 @@ public class BundleValidator extends BaseValidator {
     i = 0;
     for (EntrySummary e : entryList) {
       Element entry = e.getEntry();
-      if (isError) {
-        ok = rule(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY + '[' + (i + 1) + ']'), visited.contains(e), I18nConstants.BUNDLE_BUNDLE_ENTRY_ORPHAN, (entry.getChildValue(FULL_URL) != null ? "'" + entry.getChildValue(FULL_URL) + "'" : "")) && ok;
+      if (isMessage) {
+        warning(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY + '[' + (i + 1) + ']'), visited.contains(e), I18nConstants.BUNDLE_BUNDLE_ENTRY_ORPHAN_MESSAGE, (entry.getChildValue(FULL_URL) != null ? "'" + entry.getChildValue(FULL_URL) + "'" : ""));
       } else {
-        warning(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY + '[' + (i + 1) + ']'), visited.contains(e), I18nConstants.BUNDLE_BUNDLE_ENTRY_ORPHAN, (entry.getChildValue(FULL_URL) != null ? "'" + entry.getChildValue(FULL_URL) + "'" : ""));
+        ok = rule(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY + '[' + (i + 1) + ']'), visited.contains(e), I18nConstants.BUNDLE_BUNDLE_ENTRY_ORPHAN_DOCUMENT, (entry.getChildValue(FULL_URL) != null ? "'" + entry.getChildValue(FULL_URL) + "'" : "")) && ok;
       }
       i++;
     }
@@ -485,6 +652,26 @@ public class BundleValidator extends BaseValidator {
   }
 
 
+
+  private void visitBundleLinks(Set<EntrySummary> visited, List<EntrySummary> entryList, Element bundle) {
+    List<Element> links = bundle.getChildrenByName("link");
+    for (Element link : links) {
+      String rel = link.getNamedChildValue("relation");
+      String url = link.getNamedChildValue("url");
+      if (rel != null && url != null) {
+        if (Utilities.existsInList(rel, "stylesheet")) {
+          for (EntrySummary e : entryList) {
+            if (e.getResource() != null) {
+              if (url.equals(e.getResource().fhirType()+"/"+e.getResource().getIdBase())) {
+                visited.add(e);
+                break;
+              }
+            }
+          }
+        }
+      }
+    }    
+  }
 
   private boolean isExpectedToBeReverse(String fhirType) {
     return Utilities.existsInList(fhirType, "Provenance");
