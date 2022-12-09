@@ -186,6 +186,7 @@ public class ToolingExtensions {
   public static final String EXT_RESOURCE_INTERFACE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-interface";
   public static final String EXT_SEC_CAT = "http://hl7.org/fhir/StructureDefinition/structuredefinition-security-category";
   public static final String EXT_STANDARDS_STATUS = "http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status";
+  public static final String EXT_STANDARDS_STATUS_REASON = "http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status-reason";
   public static final String EXT_TABLE_NAME = "http://hl7.org/fhir/StructureDefinition/structuredefinition-table-name";
   public static final String EXT_TARGET_ID = "http://hl7.org/fhir/StructureDefinition/targetElement";
   public static final String EXT_TARGET_PATH = "http://hl7.org/fhir/StructureDefinition/targetPath";
