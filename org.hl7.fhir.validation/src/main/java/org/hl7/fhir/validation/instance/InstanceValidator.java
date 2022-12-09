@@ -4801,7 +4801,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       for (ImplementationGuideGlobalComponent gl : ig.getGlobal()) {
         if (rt.equals(gl.getType())) {
           StructureDefinition sd = context.fetchResource(StructureDefinition.class, gl.getProfile(), ig);
-          if (warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), sd != null, I18nConstants.VALIDATION_VAL_GLOBAL_PROFILE_UNKNOWN, gl.getProfile())) {
+          if (warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), sd != null, I18nConstants.VALIDATION_VAL_GLOBAL_PROFILE_UNKNOWN, gl.getProfile(), ig.getVersionedUrl())) {
             if (crumbTrails) {
               element.addMessage(signpost(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_GLOBAL, sd.getVersionedUrl(), ig.getVersionedUrl()));
             }
