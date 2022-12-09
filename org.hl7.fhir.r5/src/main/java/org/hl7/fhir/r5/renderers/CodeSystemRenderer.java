@@ -316,6 +316,11 @@ public class CodeSystemRenderer extends TerminologyRenderer {
   private boolean addDefineRowToTable(XhtmlNode t, ConceptDefinitionComponent c, int level, boolean hasHierarchy, boolean hasDisplay, boolean hasDefinitions, boolean comment, boolean version, boolean deprecated, List<UsedConceptMap> maps, String system, CodeSystem cs, List<PropertyComponent> properties, CodeSystemNavigator csNav, List<String> langs, boolean isSupplement) throws FHIRFormatError, DefinitionException, IOException {
     boolean hasExtensions = false;
     XhtmlNode tr = t.tr();
+    boolean notCurrent = CodeSystemUtilities.isNotCurrent(cs, c);
+    if (notCurrent) {
+      tr.setAttribute("style", "background-color: #ffeeee");
+    }
+    
     XhtmlNode td = tr.td();
     if (hasHierarchy) {
       td.addText(Integer.toString(level+1));
@@ -392,6 +397,14 @@ public class CodeSystemRenderer extends TerminologyRenderer {
             td.tx(": "+cc.getDisplay()+")");
           } else
             td.addText(cc.getCode()+" '"+cc.getDisplay()+"' in "+cc.getSystem()+")");
+        } else {
+          Extension ext = c.getExtensionByUrl(ToolingExtensions.EXT_STANDARDS_STATUS);
+          if (ext != null) {
+            ext = ext.getValue().getExtensionByUrl(ToolingExtensions.EXT_STANDARDS_STATUS_REASON);
+            if (ext != null) {
+              addMarkdown(td, ext.getValue().primitiveValue());
+            }
+          }
         }
       }
     }
