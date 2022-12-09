@@ -311,7 +311,12 @@ public class VersionUtilities {
         return true;
       }
       if (pc!=null) {
-        return compareVersionPart(pt, pc);
+        if (pt.contains("-") && !pc.contains("-")) {
+          pt = pt.substring(0, pt.indexOf("-"));
+          return pt.compareTo(pc) >= 0;
+        } else {
+          return compareVersionPart(pt, pc);          
+        }
       }
     }
     return false;
