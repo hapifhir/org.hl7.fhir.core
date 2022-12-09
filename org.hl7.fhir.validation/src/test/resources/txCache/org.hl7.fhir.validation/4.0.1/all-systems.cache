@@ -2068,3 +2068,12 @@ v: {
   "system" : "http://snomed.info/sct"
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "text/css"
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "text/css",
+  "code" : "text/css",
+  "system" : "urn:ietf:bcp:13"
+}
+-------------------------------------------------------------------------------------
