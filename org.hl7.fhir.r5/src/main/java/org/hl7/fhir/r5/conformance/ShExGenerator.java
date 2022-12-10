@@ -389,8 +389,19 @@ public class ShExGenerator {
     if (ed == null)
       return "";
     String bd = (ed.getType().size() > 0)? (ed.getType().get(0).getCode()) : "";
-    if (bd != null && !bd.isEmpty() && !baseDataTypes.contains(bd))
-        bd = "> EXTENDS @<" + bd;
+    if (bd != null && !bd.isEmpty() && !baseDataTypes.contains(bd)) {
+//      if (bd.equals("Extension")){
+//        if (ed.hasSliceName())
+//          return ed.getSliceName();
+//
+//        String shortId = ed.getId();
+//        if (ed.getId().indexOf(":") != -1)
+//          return ed.getId().substring(ed.getId().lastIndexOf(":") + 1);
+//
+//        return shortId;
+//      }
+      bd = "> EXTENDS @<" + bd;
+    }
     return bd;
   }
 
@@ -447,9 +458,16 @@ public class ShExGenerator {
     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
       if(!ed.getPath().contains("."))
         root_comment = ed.getShort();
-      else if ((StringUtils.countMatches(ed.getPath(), ".") == 1 && !"0".equals(ed.getMax()))
-              && ("Extension".equals(ed) || ed.hasBase() && ed.getBase().getPath().startsWith(sdn))
-          ){
+      else if (
+              (StringUtils.countMatches(ed.getPath(), ".") == 1 && !"0".equals(ed.getMax()))
+              && (ed.hasBase()
+                    && (
+                         ed.getBase().getPath().startsWith(sdn)
+                           || (ed.getBase().getPath().startsWith("Extension"))
+                           || (ed.getBase().getPath().startsWith("Element.extension")&&(ed.hasSliceName()))
+                        )
+                )
+      ){
         String elementDefinition = genElementDefinition(sd, ed);
 
         boolean isInnerType = false;
@@ -629,8 +647,9 @@ public class ShExGenerator {
     StringBuilder itDefs = new StringBuilder();
     while(emittedInnerTypes.size() < innerTypes.size()) {
       for (Pair<StructureDefinition, ElementDefinition> it : new HashSet<Pair<StructureDefinition, ElementDefinition>>(innerTypes)) {
-        if ((!emittedInnerTypes.contains(it)) &&
-          (it.getRight().hasBase() && it.getRight().getBase().getPath().startsWith(it.getLeft().getName()))){
+        if ((!emittedInnerTypes.contains(it))
+            // && (it.getRight().hasBase() && it.getRight().getBase().getPath().startsWith(it.getLeft().getName()))
+        ){
             itDefs.append("\n").append(genInnerTypeDef(it.getLeft(), it.getRight()));
           emittedInnerTypes.add(it);
         }
@@ -748,7 +767,16 @@ public class ShExGenerator {
                                       ElementDefinition ed) {
     String id = ed.hasBase() ? ed.getBase().getPath() : ed.getPath();
 
-    String shortId = id.substring(id.lastIndexOf(".") + 1);
+    String shortId = id;
+    String typ = id;
+
+    if (id.equals("Element.extension") && ed.hasSliceName()) {
+      shortId = ed.getSliceName();
+      if (ed.getType().size() > 0)
+        typ = ed.getType().get(0).getCode();
+    }
+     else
+        shortId = id.substring(id.lastIndexOf(".") + 1);
 
     if ((ed.getType().size() > 0) &&
       (ed.getType().get(0).getCode().startsWith(Constants.NS_SYSTEM_TYPE))) {
@@ -774,7 +802,7 @@ public class ShExGenerator {
       } else
         innerTypes.add(new ImmutablePair<StructureDefinition, ElementDefinition>(sd, ed));
 
-      defn = simpleElement(sd, ed, id);
+      defn = simpleElement(sd, ed, typ);
     }
 
     String refChoices = "";
@@ -1148,7 +1176,7 @@ public class ShExGenerator {
    * @return ShEx representation of element reference
    */
   private String genInnerTypeDef(StructureDefinition sd, ElementDefinition ed) {
-    String path = ed.hasBase() ? ed.getBase().getPath() : ed.getPath();;
+    String path = ed.hasBase() ? ed.getBase().getPath() : ed.getPath();
     ST element_reference = tmplt(SHAPE_DEFINITION_TEMPLATE);
     element_reference.add("resourceDecl", "");  // Not a resource
     element_reference.add("id", path + getExtendedType(ed));

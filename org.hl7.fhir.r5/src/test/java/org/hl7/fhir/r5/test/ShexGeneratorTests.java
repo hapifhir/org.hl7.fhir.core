@@ -124,7 +124,7 @@ public class ShexGeneratorTests {
     //processList("Profiles", otherNames);
 
     processList("StructureDefinitions", sdURLs);
-    //processList("Extensions", extURLs);
+    processList("Extensions", extURLs);
     processList("Logical", logicalURLs);
     processList("Profiles", otherURLs);
 
