@@ -47,6 +47,12 @@ public class JsonArray extends JsonElement implements Iterable<JsonElement> {
     return this;
   }
   
+  public JsonArray add(int i, JsonElement node) throws JsonException {
+    check(node != null, "null object in JsonArray.add()");
+    items.add(i, node);
+    return this;
+  }
+  
   public JsonArray add(String value) throws JsonException {
     check(value != null, "null value in JsonArray.add()");
     items.add(new JsonString(value));
@@ -133,6 +139,11 @@ public class JsonArray extends JsonElement implements Iterable<JsonElement> {
 
   public void setExtraComma(boolean extraComma) {
     this.extraComma = extraComma;
+  }
+
+  public void remove(JsonElement e) {
+    items.remove(e);
+    
   }
   
 }
