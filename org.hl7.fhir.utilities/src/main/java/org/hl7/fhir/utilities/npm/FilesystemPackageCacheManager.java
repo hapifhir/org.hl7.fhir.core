@@ -37,6 +37,7 @@ import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.NpmPackage.NpmPackageFolder;
+import org.hl7.fhir.utilities.npm.PackageList.PackageListEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -728,9 +729,9 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
     String pu = Utilities.pathURL(url, "package-list.json");
     String aurl = pu;
-    JsonObject json;
+    PackageList pl;
     try {
-      json = JsonParser.parseObjectFromUrl(pu);
+      pl = PackageList.fromUrl(pu);
     } catch (Exception e) {
       String pv = Utilities.pathURL(url, v, "package.tgz");
       try {
@@ -741,12 +742,12 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         throw new FHIRException("Error fetching package directly (" + pv + "), or fetching package list for " + id + " from " + pu + ": " + e1.getMessage(), e1);
       }
     }
-    if (!id.equals(json.asString("package-id")))
-      throw new FHIRException("Package ids do not match in " + pu + ": " + id + " vs " + json.asString("package-id"));
-    for (JsonObject vo : json.getJsonObjects("list")) {
-      if (v.equals(vo.asString("version"))) {
-        aurl = Utilities.pathURL(vo.asString("path"), "package.tgz");
-        String u = Utilities.pathURL(vo.asString("path"), "package.tgz");
+    if (!id.equals(pl.pid()))
+      throw new FHIRException("Package ids do not match in " + pu + ": " + id + " vs " + pl.pid());
+    for (PackageListEntry vo : pl.versions()) {
+      if (v.equals(vo.version())) {
+        aurl = Utilities.pathURL(vo.path(), "package.tgz");
+        String u = Utilities.pathURL(vo.path(), "package.tgz");
         return new InputStreamWithSrc(fetchFromUrlSpecific(u, true), u, v);
       }
     }
@@ -769,13 +770,12 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     if (url == null) {
       throw new FHIRException("Unable to resolve package id " + id);
     }
-    String pu = Utilities.pathURL(url, "package-list.json");
-    JsonObject json = JsonParser.parseObjectFromUrl(pu);
-    if (!id.equals(json.asString("package-id")))
-      throw new FHIRException("Package ids do not match in " + pu + ": " + id + " vs " + json.asString("package-id"));
-    for (JsonObject vo : json.getJsonObjects("list")) {
-      if (vo.asBoolean("current")) {
-        return vo.asString("version");
+    PackageList pl = PackageList.fromUrl(Utilities.pathURL(url, "package-list.json"));
+    if (!id.equals(pl.pid()))
+      throw new FHIRException("Package ids do not match in " + pl.source() + ": " + id + " vs " + pl.pid());
+    for (PackageListEntry vo : pl.versions()) {
+      if (vo.current()) {
+        return vo.version();
       }
     }
 

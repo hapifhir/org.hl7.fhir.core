@@ -41,8 +41,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.xml.XMLConstants;
-import javax.xml.namespace.NamespaceContext;
-
 /**
 * An implementation of <a
 * href="http://java.sun.com/javase/6/docs/api/javax/xml/namespace/NamespaceContext.html">
@@ -50,7 +48,7 @@ import javax.xml.namespace.NamespaceContext;
 * 
 * @author McDowell
 */
-public final class NamespaceContextMap implements NamespaceContext {
+public final class NamespaceContextMap  {
 
  private final Map<String, String> prefixMap;
  private final Map<String, Set<String>> nsMap;
@@ -133,21 +131,18 @@ public final class NamespaceContextMap implements NamespaceContext {
    return nsMap;
  }
 
- @Override
  public String getNamespaceURI(String prefix) {
    checkNotNull(prefix);
    String nsURI = prefixMap.get(prefix);
    return nsURI == null ? XMLConstants.NULL_NS_URI : nsURI;
  }
 
- @Override
  public String getPrefix(String namespaceURI) {
    checkNotNull(namespaceURI);
    Set<String> set = nsMap.get(namespaceURI);
    return set == null ? null : set.iterator().next();
  }
 
- @Override
  public Iterator<String> getPrefixes(String namespaceURI) {
    checkNotNull(namespaceURI);
    Set<String> set = nsMap.get(namespaceURI);
