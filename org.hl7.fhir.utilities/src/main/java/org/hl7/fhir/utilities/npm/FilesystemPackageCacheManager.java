@@ -444,8 +444,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
             npm.getNpm().add("version", v);
           }
           TextFile.stringToFile(JsonParser.compose(npm.getNpm(), true), Utilities.path(cacheFolder, id + "#" + v, "package", "package.json"), false);
-          pck = loadPackageInfo(packRoot);
         }
+        pck = loadPackageInfo(packRoot);
       } catch (Exception e) {
         try {
           // don't leave a half extracted package behind
