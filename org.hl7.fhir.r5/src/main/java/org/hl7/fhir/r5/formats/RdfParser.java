@@ -22356,7 +22356,7 @@ public class RdfParser extends RdfParserBase {
       composeCode(t, "SearchParameter", "code", element.getCodeElement(), -1);
     }
     for (int i = 0; i < element.getBase().size(); i++) {
-      composeEnum(t, "SearchParameter", "base", element.getBase().get(i), i);
+      composeCode(t, "SearchParameter", "base", element.getBase().get(i), i);
     }
     if (element.hasTypeElement()) {
       composeEnum(t, "SearchParameter", "type", element.getTypeElement(), -1);

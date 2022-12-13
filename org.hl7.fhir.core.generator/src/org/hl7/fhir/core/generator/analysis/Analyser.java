@@ -309,7 +309,7 @@ public class Analyser {
     if (!Utilities.existsInList(name, "Resource")) {
       for (SearchParameter sp : definitions.getSearchParams().getList()) {
         boolean relevant = false;
-        for (Enumeration<AllResourceTypes> c : sp.getBase()) {
+        for (CodeType c : sp.getBase()) {
           if (c.getValue().equals(name)) {
             relevant = true;
             break;

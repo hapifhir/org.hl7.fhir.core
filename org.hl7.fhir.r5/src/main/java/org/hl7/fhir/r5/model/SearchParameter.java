@@ -1050,7 +1050,7 @@ public class SearchParameter extends CanonicalResource {
     @Child(name = "base", type = {CodeType.class}, order=16, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The resource type(s) this search parameter applies to", formalDefinition="The base resource type(s) that this search parameter can be used against." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/all-resource-types")
-    protected List<Enumeration<AllResourceTypes>> base;
+    protected List<CodeType> base;
 
     /**
      * The type of value that a search parameter may contain, and how the content is interpreted.
@@ -1146,7 +1146,7 @@ public class SearchParameter extends CanonicalResource {
   /**
    * Constructor
    */
-    public SearchParameter(String url, String name, PublicationStatus status, String description, String code, AllResourceTypes base, SearchParamType type) {
+    public SearchParameter(String url, String name, PublicationStatus status, String description, String code, String base, SearchParamType type) {
       super();
       this.setUrl(url);
       this.setName(name);
@@ -1934,16 +1934,16 @@ public class SearchParameter extends CanonicalResource {
     /**
      * @return {@link #base} (The base resource type(s) that this search parameter can be used against.)
      */
-    public List<Enumeration<AllResourceTypes>> getBase() { 
+    public List<CodeType> getBase() { 
       if (this.base == null)
-        this.base = new ArrayList<Enumeration<AllResourceTypes>>();
+        this.base = new ArrayList<CodeType>();
       return this.base;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public SearchParameter setBase(List<Enumeration<AllResourceTypes>> theBase) { 
+    public SearchParameter setBase(List<CodeType> theBase) { 
       this.base = theBase;
       return this;
     }
@@ -1951,7 +1951,7 @@ public class SearchParameter extends CanonicalResource {
     public boolean hasBase() { 
       if (this.base == null)
         return false;
-      for (Enumeration<AllResourceTypes> item : this.base)
+      for (CodeType item : this.base)
         if (!item.isEmpty())
           return true;
       return false;
@@ -1960,10 +1960,10 @@ public class SearchParameter extends CanonicalResource {
     /**
      * @return {@link #base} (The base resource type(s) that this search parameter can be used against.)
      */
-    public Enumeration<AllResourceTypes> addBaseElement() {//2 
-      Enumeration<AllResourceTypes> t = new Enumeration<AllResourceTypes>(new AllResourceTypesEnumFactory());
+    public CodeType addBaseElement() {//2 
+      CodeType t = new CodeType();
       if (this.base == null)
-        this.base = new ArrayList<Enumeration<AllResourceTypes>>();
+        this.base = new ArrayList<CodeType>();
       this.base.add(t);
       return t;
     }
@@ -1971,11 +1971,11 @@ public class SearchParameter extends CanonicalResource {
     /**
      * @param value {@link #base} (The base resource type(s) that this search parameter can be used against.)
      */
-    public SearchParameter addBase(AllResourceTypes value) { //1
-      Enumeration<AllResourceTypes> t = new Enumeration<AllResourceTypes>(new AllResourceTypesEnumFactory());
-      t.setValue(value);
+    public SearchParameter addBase(String code) { //1
+      CodeType t = new CodeType();
+      t.setValue(code);
       if (this.base == null)
-        this.base = new ArrayList<Enumeration<AllResourceTypes>>();
+        this.base = new ArrayList<CodeType>();
       this.base.add(t);
       return this;
     }
@@ -1983,11 +1983,11 @@ public class SearchParameter extends CanonicalResource {
     /**
      * @param value {@link #base} (The base resource type(s) that this search parameter can be used against.)
      */
-    public boolean hasBase(AllResourceTypes value) { 
+    public boolean hasBase(String code) { 
       if (this.base == null)
         return false;
-      for (Enumeration<AllResourceTypes> v : this.base)
-        if (v.getValue().equals(value)) // code
+      for (CodeType v : this.base)
+        if (v.getValue().equals(code)) // code
           return true;
       return false;
     }
@@ -2838,8 +2838,8 @@ public class SearchParameter extends CanonicalResource {
           this.code = TypeConvertor.castToCode(value); // CodeType
           return value;
         case 3016401: // base
-          value = new AllResourceTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getBase().add((Enumeration) value); // Enumeration<AllResourceTypes>
+          value = TypeConvertor.castToCode(value);
+          this.getBase().add((CodeType) value); // Enumeration<AllResourceTypes>
           return value;
         case 3575610: // type
           value = new SearchParamTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
@@ -2919,8 +2919,8 @@ public class SearchParameter extends CanonicalResource {
         } else if (name.equals("code")) {
           this.code = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("base")) {
-          value = new AllResourceTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getBase().add((Enumeration) value);
+          value = TypeConvertor.castToCode(value);
+          this.getBase().add((CodeType) value);
         } else if (name.equals("type")) {
           value = new SearchParamTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<SearchParamType>
@@ -3162,8 +3162,8 @@ public class SearchParameter extends CanonicalResource {
         dst.purpose = purpose == null ? null : purpose.copy();
         dst.code = code == null ? null : code.copy();
         if (base != null) {
-          dst.base = new ArrayList<Enumeration<AllResourceTypes>>();
-          for (Enumeration<AllResourceTypes> i : base)
+          dst.base = new ArrayList<CodeType>();
+          for (CodeType i : base)
             dst.base.add(i.copy());
         };
         dst.type = type == null ? null : type.copy();
@@ -4474,15 +4474,6 @@ public class SearchParameter extends CanonicalResource {
 
 // Manual code (from Configuration.txt):
   public boolean supportsCopyright() {
-    return false;
-  }
-
-  public boolean hasBase(String n) {
-    for (Enumeration<AllResourceTypes> b : getBase()) {
-      if (b.getCode().equals(n)) {
-        return true;
-      }
-    }
     return false;
   }
   

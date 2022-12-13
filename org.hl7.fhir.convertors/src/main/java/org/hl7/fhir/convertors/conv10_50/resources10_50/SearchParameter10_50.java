@@ -10,8 +10,6 @@ import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Uri1
 import org.hl7.fhir.dstu2.utils.ToolingExtensions;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeType;
-import org.hl7.fhir.r5.model.Enumeration;
-import org.hl7.fhir.r5.model.Enumerations.AllResourceTypes;
 
 public class SearchParameter10_50 {
 
@@ -38,7 +36,7 @@ public class SearchParameter10_50 {
       tgt.setRequirements(src.getPurpose());
     if (src.hasCodeElement())
       tgt.setCodeElement(Code10_50.convertCode(src.getCodeElement()));
-    for (Enumeration<AllResourceTypes> t : src.getBase()) tgt.setBase(t.getCode());
+    for (CodeType t : src.getBase()) tgt.setBaseElement(Code10_50.convertCode(t));
     if (src.hasType())
       tgt.setTypeElement(Enumerations10_50.convertSearchParamType(src.getTypeElement()));
     if (src.hasDescription())
@@ -75,7 +73,7 @@ public class SearchParameter10_50 {
       tgt.setPurpose(src.getRequirements());
     if (src.hasCodeElement())
       tgt.setCodeElement(Code10_50.convertCode(src.getCodeElement()));
-    tgt.addBase(AllResourceTypes.fromCode(src.getBase()));
+    tgt.getBase().add(Code10_50.convertCode(src.getBaseElement()));
     if (src.hasType())
       tgt.setTypeElement(Enumerations10_50.convertSearchParamType(src.getTypeElement()));
     if (src.hasDescription())
