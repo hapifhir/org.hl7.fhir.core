@@ -94,39 +94,49 @@ public class ShexGeneratorTests {
       if (sd.getBaseDefinition() == null){
         logicalNames.add(sd.getName());
         logicalURLs.add(sd.getUrl());
-        logicalNamesPrint.add(sd.getKind().name() + "\t" + sd.getName() + "\t" + sd.getType() + "\t" + sd.getUrl() + "\t" + sd.getBaseDefinition());
+        logicalNamesPrint.add(getSDInfo(sd));
       }
       else if (sd.getType().trim().equals(sd.getName().trim())) {
         sdNames.add(sd.getName());
         sdURLs.add(sd.getUrl());
-        sdNamesPrint.add(sd.getKind().name() + "\t" + sd.getName() + "\t" + sd.getType() + "\t" + sd.getUrl() + "\t" + sd.getBaseDefinition());
+        sdNamesPrint.add(getSDInfo(sd));
       }
       else if ("Extension".equals(sd.getType())) {
         extNames.add(sd.getName());
         extURLs.add(sd.getUrl());
-        extNamesPrint.add(sd.getKind().name() + "\t" + sd.getName() + "\t" + sd.getType() + "\t" + sd.getUrl() + "\t" + sd.getBaseDefinition());
+        extNamesPrint.add(getSDInfo(sd));
       }
       else {
         otherNames.add(sd.getName());
         otherURLs.add(sd.getUrl());
-        otherNamesPrint.add(sd.getKind().name() + "\t" + sd.getName() + "\t" + sd.getType() + "\t" + sd.getUrl() + "\t" + sd.getBaseDefinition());
+        otherNamesPrint.add(getSDInfo(sd));
       }
     });
 
-    //printList("StructureDefinitions", sdNamesPrint);
-    //printList("Extensions", extNamesPrint);
-    //printList("Logical", logicalNamesPrint);
-    //printList("Profiles", otherNamesPrint);
+    System.out.println("************************************************************************");
+    System.out.println("************************   FHIR SDs LIST  ******************************");
+    System.out.println("************************************************************************");
+
+    printList("StructureDefinitions", sdNamesPrint);
+    printList("Extensions", extNamesPrint);
+    printList("Logical", logicalNamesPrint);
+    printList("Profiles", otherNamesPrint);
 
     //processList("StructureDefinitions", sdNames);
     //processList("Extensions", extNames);
     //processList("Logical", logicalNames);
     //processList("Profiles", otherNames);
 
+    System.out.println("************************************************************************");
+    System.out.println("************************ BEGIN PROCESSING ******************************");
+    System.out.println("************************************************************************");
+
     processList("StructureDefinitions", sdURLs);
     processList("Extensions", extURLs);
     processList("Logical", logicalURLs);
     processList("Profiles", otherURLs);
+
+    System.out.println("************************ END PROCESSING ******************************");
 
     System.out.println("************************************************************************");
     System.out.println("Total Items: " + sds.size());
@@ -135,6 +145,21 @@ public class ShexGeneratorTests {
     System.out.println("Total Logical: " + logicalNames.size());
     System.out.println("Total Other: " + otherNames.size());
     System.out.println("************************************************************************");
+  }
+
+  private String getSDInfo(StructureDefinition sd){
+
+    if (sd != null) {
+      String kind = " "; try { kind = sd.getKind().name(); } catch(Exception e) {System.out.println("Kind is null");}
+      String name = " "; try { name = sd.getName(); } catch(Exception e) {System.out.println("Name is null");}
+      String type = " "; try { type = sd.getType(); } catch(Exception e) {System.out.println("Type is null");}
+      String derv = " "; try { derv = sd.getDerivation().name(); } catch(Exception e) {System.out.println("Derivation is null");}
+      String url = " "; try { url = sd.getUrl(); } catch(Exception e) {System.out.println("URL is null");}
+      String base = " "; try { base = sd.getBaseDefinition(); } catch(Exception e) {System.out.println("Base is null");}
+      return kind + "\t" + name + "\t" + type + "\t" + derv + "\t" + url + "\t" + base;
+    }
+
+    return "";
   }
 
   @Test
@@ -160,6 +185,11 @@ public class ShexGeneratorTests {
   @Test
   public void testCapabilityStatement() throws FHIRException, IOException, UcumException {
     doTest("CapabilityStatement");
+  }
+
+  @Test
+  public void testMoneyQuantityprofile() throws FHIRException, IOException, UcumException {
+    doTest("MoneyQuantity");
   }
 
   @Test
