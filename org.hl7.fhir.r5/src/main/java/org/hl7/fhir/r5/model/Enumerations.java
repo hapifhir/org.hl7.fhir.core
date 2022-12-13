@@ -10144,6 +10144,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return VISIONPRESCRIPTION;
         if ("Parameters".equals(codeString))
           return PARAMETERS;
+        if ("Any".equals(codeString))
+          return RESOURCE;
         throw new FHIRException("Unknown FHIRTypes code '"+codeString+"'");
         }
         public String toCode() {
@@ -11545,6 +11547,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return FHIRTypes.VISIONPRESCRIPTION;
         if ("Parameters".equals(codeString))
           return FHIRTypes.PARAMETERS;
+        if ("Any".equals(codeString))
+          return FHIRTypes.RESOURCE;
         throw new IllegalArgumentException("Unknown FHIRTypes code '"+codeString+"'");
         }
         public Enumeration<FHIRTypes> fromType(Base code) throws FHIRException {
