@@ -432,7 +432,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           if (progress)
             log(" done.");
         }
-        pck = loadPackageInfo(packRoot);
         if (!id.equals(npm.getNpm().asString("name")) || !v.equals(npm.getNpm().asString("version"))) {
           if (!id.equals(npm.getNpm().asString("name"))) {
             npm.getNpm().add("original-name", npm.getNpm().asString("name"));
@@ -445,6 +444,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
             npm.getNpm().add("version", v);
           }
           TextFile.stringToFile(JsonParser.compose(npm.getNpm(), true), Utilities.path(cacheFolder, id + "#" + v, "package", "package.json"), false);
+          pck = loadPackageInfo(packRoot);
         }
       } catch (Exception e) {
         try {
