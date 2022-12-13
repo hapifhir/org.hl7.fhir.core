@@ -54,6 +54,7 @@
             <artifactId>lombok</artifactId>
             <version>${lombok_version}</version>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
 
         <!-- JSON Utilities -->
@@ -92,6 +93,7 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
@@ -99,6 +101,7 @@
             <artifactId>byte-buddy</artifactId>
             <version>${byte_buddy_version}</version>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
@@ -106,6 +109,7 @@
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit_jupiter_version}</version>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
@@ -113,6 +117,7 @@
             <artifactId>junit-vintage-engine</artifactId>
             <version>${junit_jupiter_version}</version>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
@@ -120,6 +125,7 @@
             <artifactId>junit-jupiter-params</artifactId>
             <version>${junit_jupiter_version}</version>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
@@ -127,6 +133,7 @@
             <artifactId>junit-platform-launcher</artifactId>
             <version>${junit_platform_launcher_version}</version>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
@@ -134,6 +141,7 @@
             <artifactId>fhir-test-cases</artifactId>
             <version>${validator_test_case_version}</version>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
@@ -141,6 +149,7 @@
             <artifactId>junit</artifactId>
             <version>4.13.2</version>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
 
 

@@ -37,37 +37,49 @@
             <artifactId>gson</artifactId>
             <optional>true</optional>
         </dependency>
+		<dependency> <!-- to resolve com.google.common.base -->
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava_version}</version>
+            <optional>true</optional>
+		</dependency>
 
         <!-- FHIR Versions -->
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
             <artifactId>org.hl7.fhir.dstu2</artifactId>
             <version>${project.version}</version>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
             <artifactId>org.hl7.fhir.dstu2016may</artifactId>
             <version>${project.version}</version>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
             <artifactId>org.hl7.fhir.dstu3</artifactId>
             <version>${project.version}</version>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
             <artifactId>org.hl7.fhir.r4</artifactId>
             <version>${project.version}</version>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
             <artifactId>org.hl7.fhir.r4b</artifactId>
             <version>${project.version}</version>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
             <artifactId>org.hl7.fhir.r5</artifactId>
             <version>${project.version}</version>
+            <optional>true</optional>
         </dependency>
 
         <!-- UCUM -->
@@ -120,6 +132,29 @@
                 <artifactId>duplicate-finder-maven-plugin</artifactId>
                 <configuration>
                     <skip>true</skip>
+                </configuration>
+            </plugin>
+            <!-- Bundle plugin is duplicated here
+                 because the converters project has
+                 privaste package references to */impl -->
+			<plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <_nouses>true</_nouses>
+                        <_removeheaders>Built-By, Include-Resource, Private-Package, Require-Capability</_removeheaders>
+						<Export-Package>
+							org.hl7.fhir.convertors.advisors.impl;-noimport:=true,
+							org.hl7.fhir.convertors.*;-noimport:=true
+						</Export-Package>
+						<Import-Package>
+						    ca.uhn.fhir.*;-remove-attribute:=version,
+						    org.hl7.fhir.instance.model.api;-remove-attribute:=version,
+						    *
+						</Import-Package>
+                    </instructions>
                 </configuration>
             </plugin>
         </plugins>
