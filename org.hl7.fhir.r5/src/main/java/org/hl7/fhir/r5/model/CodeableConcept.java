@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -404,12 +404,12 @@ public boolean hasCoding(String system, String code) {
   public void addCoding(String system, String code, String display) {
     getCoding().add(new Coding(system, code, display));
   }
-
-  @Override
-  public String toString() {
-    return hasCoding() ? getCoding().toString() : "["+getText()+"]";
-  }
   
+  @Override 
+  public String toString() { 
+    return hasCoding() ? getCoding().toString() : "["+getText()+"]"; 
+  } 
+   
 // end addition
 
 }

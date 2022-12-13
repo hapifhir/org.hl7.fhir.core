@@ -17,6 +17,7 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.TestScript.TestScriptScopeComponent;
 
 /*
@@ -106,7 +107,7 @@ public class TestScript43_50 {
       tgt.setMetadata(convertTestScriptMetadataComponent(src.getMetadata()));
     for (org.hl7.fhir.r4b.model.TestScript.TestScriptFixtureComponent t : src.getFixture())
       tgt.addFixture(convertTestScriptFixtureComponent(t));
-    for (org.hl7.fhir.r4b.model.Reference t : src.getProfile()) tgt.addProfile(Reference43_50.convertReference(t));
+    for (org.hl7.fhir.r4b.model.Reference t : src.getProfile()) tgt.getProfile().add(Reference43_50.convertReferenceToCanonical(t));
     for (org.hl7.fhir.r4b.model.TestScript.TestScriptVariableComponent t : src.getVariable())
       tgt.addVariable(convertTestScriptVariableComponent(t));
     if (src.hasSetup())
@@ -161,7 +162,7 @@ public class TestScript43_50 {
       tgt.setMetadata(convertTestScriptMetadataComponent(src.getMetadata()));
     for (org.hl7.fhir.r5.model.TestScript.TestScriptFixtureComponent t : src.getFixture())
       tgt.addFixture(convertTestScriptFixtureComponent(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getProfile()) tgt.addProfile(Reference43_50.convertReference(t));
+    for (CanonicalType t : src.getProfile()) tgt.addProfile(Reference43_50.convertCanonicalToReference(t));
     for (org.hl7.fhir.r5.model.TestScript.TestScriptVariableComponent t : src.getVariable())
       tgt.addVariable(convertTestScriptVariableComponent(t));
     if (src.hasSetup())

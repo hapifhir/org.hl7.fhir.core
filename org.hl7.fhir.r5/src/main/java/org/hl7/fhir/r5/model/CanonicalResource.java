@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -280,7 +280,7 @@ public abstract class CanonicalResource extends DomainResource {
       return 1;
     }
     /**
-     * @return {@link #date} (The date  (and optionally time) when the canonical resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the canonical resource changes.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
+     * @return {@link #date} (The date  (and optionally time) when the canonical resource was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the canonical resource changes.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
      */
     public abstract DateTimeType getDateElement(); 
 
@@ -288,15 +288,15 @@ public abstract class CanonicalResource extends DomainResource {
     public abstract boolean hasDate(); 
 
     /**
-     * @param value {@link #date} (The date  (and optionally time) when the canonical resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the canonical resource changes.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
+     * @param value {@link #date} (The date  (and optionally time) when the canonical resource was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the canonical resource changes.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
      */
     public abstract CanonicalResource setDateElement(DateTimeType value); 
     /**
-     * @return The date  (and optionally time) when the canonical resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the canonical resource changes.
+     * @return The date  (and optionally time) when the canonical resource was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the canonical resource changes.
      */
     public abstract Date getDate(); 
     /**
-     * @param value The date  (and optionally time) when the canonical resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the canonical resource changes.
+     * @param value The date  (and optionally time) when the canonical resource was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the canonical resource changes.
      */
     public abstract CanonicalResource setDate(Date value); 
     /**

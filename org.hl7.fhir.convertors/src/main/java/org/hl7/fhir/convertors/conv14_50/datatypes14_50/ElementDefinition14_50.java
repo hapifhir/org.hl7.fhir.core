@@ -496,7 +496,7 @@ public class ElementDefinition14_50 {
     if (src.hasSeverity()) tgt.setSeverityElement(convertConstraintSeverity(src.getSeverityElement()));
     if (src.hasHumanElement()) tgt.setHumanElement(String14_50.convertString(src.getHumanElement()));
     if (src.hasExpression()) tgt.setExpression(convertToR4Expression(src.getExpression()));
-    if (src.hasXpathElement()) tgt.setXpathElement(String14_50.convertString(src.getXpathElement()));
+//    if (src.hasXpathElement()) tgt.setXpathElement(String14_50.convertString(src.getXpathElement()));
     return tgt;
   }
 
@@ -509,7 +509,7 @@ public class ElementDefinition14_50 {
     if (src.hasSeverity()) tgt.setSeverityElement(convertConstraintSeverity(src.getSeverityElement()));
     if (src.hasHumanElement()) tgt.setHumanElement(String14_50.convertString(src.getHumanElement()));
     if (src.hasExpression()) tgt.setExpression(convertTo2016MayExpression(src.getExpression()));
-    if (src.hasXpathElement()) tgt.setXpathElement(String14_50.convertString(src.getXpathElement()));
+//    if (src.hasXpathElement()) tgt.setXpathElement(String14_50.convertString(src.getXpathElement()));
     return tgt;
   }
 

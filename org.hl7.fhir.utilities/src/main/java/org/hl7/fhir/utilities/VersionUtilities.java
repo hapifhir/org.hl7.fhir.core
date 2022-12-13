@@ -570,6 +570,13 @@ public class VersionUtilities {
   }
 
   public static String getSpecUrl(String v) {
+    if (v.contains("-cibuild")) {
+      return "http://build.fhir.org";
+    }
+    if (v.contains("-")) {
+      return "http://hl7.org/fhir/"+v;
+    }
+    
     switch (getMajMin(v)) {
     case "1.0" : return "http://hl7.org/fhir/DSTU1";
     case "1.4" : return "http://hl7.org/fhir/DSTU2";

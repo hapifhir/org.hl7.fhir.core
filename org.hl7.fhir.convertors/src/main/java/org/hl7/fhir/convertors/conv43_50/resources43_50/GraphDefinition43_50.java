@@ -74,12 +74,12 @@ public class GraphDefinition43_50 {
       tgt.addJurisdiction(CodeableConcept43_50.convertCodeableConcept(t));
     if (src.hasPurpose())
       tgt.setPurposeElement(MarkDown43_50.convertMarkdown(src.getPurposeElement()));
-    if (src.hasStart())
-      tgt.setStartElement(Code43_50.convertCode(src.getStartElement()));
-    if (src.hasProfile())
-      tgt.setProfileElement(Canonical43_50.convertCanonical(src.getProfileElement()));
-    for (org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkComponent t : src.getLink())
-      tgt.addLink(convertGraphDefinitionLinkComponent(t));
+//    if (src.hasStart())
+//      tgt.setStartElement(Code43_50.convertCode(src.getStartElement()));
+//    if (src.hasProfile())
+//      tgt.setProfileElement(Canonical43_50.convertCanonical(src.getProfileElement()));
+//    for (org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkComponent t : src.getLink())
+//      tgt.addLink(convertGraphDefinitionLinkComponent(t));
     return tgt;
   }
 
@@ -112,268 +112,268 @@ public class GraphDefinition43_50 {
       tgt.addJurisdiction(CodeableConcept43_50.convertCodeableConcept(t));
     if (src.hasPurpose())
       tgt.setPurposeElement(MarkDown43_50.convertMarkdown(src.getPurposeElement()));
-    if (src.hasStart())
-      tgt.setStartElement(Code43_50.convertCode(src.getStartElement()));
-    if (src.hasProfile())
-      tgt.setProfileElement(Canonical43_50.convertCanonical(src.getProfileElement()));
-    for (org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkComponent t : src.getLink())
-      tgt.addLink(convertGraphDefinitionLinkComponent(t));
+//    if (src.hasStart())
+//      tgt.setStartElement(Code43_50.convertCode(src.getStartElement()));
+//    if (src.hasProfile())
+//      tgt.setProfileElement(Canonical43_50.convertCanonical(src.getProfileElement()));
+//    for (org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkComponent t : src.getLink())
+//      tgt.addLink(convertGraphDefinitionLinkComponent(t));
     return tgt;
   }
-
-  public static org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkComponent convertGraphDefinitionLinkComponent(org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkComponent tgt = new org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkComponent();
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
-    if (src.hasPath())
-      tgt.setPathElement(String43_50.convertString(src.getPathElement()));
-    if (src.hasSliceName())
-      tgt.setSliceNameElement(String43_50.convertString(src.getSliceNameElement()));
-    if (src.hasMin())
-      tgt.setMinElement(Integer43_50.convertInteger(src.getMinElement()));
-    if (src.hasMax())
-      tgt.setMaxElement(String43_50.convertString(src.getMaxElement()));
-    if (src.hasDescription())
-      tgt.setDescriptionElement(String43_50.convertString(src.getDescriptionElement()));
-    for (org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkTargetComponent t : src.getTarget())
-      tgt.addTarget(convertGraphDefinitionLinkTargetComponent(t));
-    return tgt;
-  }
-
-  public static org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkComponent convertGraphDefinitionLinkComponent(org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkComponent tgt = new org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkComponent();
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
-    if (src.hasPath())
-      tgt.setPathElement(String43_50.convertString(src.getPathElement()));
-    if (src.hasSliceName())
-      tgt.setSliceNameElement(String43_50.convertString(src.getSliceNameElement()));
-    if (src.hasMin())
-      tgt.setMinElement(Integer43_50.convertInteger(src.getMinElement()));
-    if (src.hasMax())
-      tgt.setMaxElement(String43_50.convertString(src.getMaxElement()));
-    if (src.hasDescription())
-      tgt.setDescriptionElement(String43_50.convertString(src.getDescriptionElement()));
-    for (org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetComponent t : src.getTarget())
-      tgt.addTarget(convertGraphDefinitionLinkTargetComponent(t));
-    return tgt;
-  }
-
-  public static org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetComponent convertGraphDefinitionLinkTargetComponent(org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkTargetComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetComponent tgt = new org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetComponent();
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
-    if (src.hasType())
-      tgt.setTypeElement(Code43_50.convertResourceEnum(src.getTypeElement()));
-    if (src.hasParams())
-      tgt.setParamsElement(String43_50.convertString(src.getParamsElement()));
-    if (src.hasProfile())
-      tgt.setProfileElement(Canonical43_50.convertCanonical(src.getProfileElement()));
-    for (org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent t : src.getCompartment())
-      tgt.addCompartment(convertGraphDefinitionLinkTargetCompartmentComponent(t));
-    for (org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkComponent t : src.getLink())
-      tgt.addLink(convertGraphDefinitionLinkComponent(t));
-    return tgt;
-  }
-
-  public static org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkTargetComponent convertGraphDefinitionLinkTargetComponent(org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkTargetComponent tgt = new org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkTargetComponent();
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
-    if (src.hasType())
-      tgt.setTypeElement(Code43_50.convertResourceEnum(src.getTypeElement()));
-    if (src.hasParams())
-      tgt.setParamsElement(String43_50.convertString(src.getParamsElement()));
-    if (src.hasProfile())
-      tgt.setProfileElement(Canonical43_50.convertCanonical(src.getProfileElement()));
-    for (org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent t : src.getCompartment())
-      tgt.addCompartment(convertGraphDefinitionLinkTargetCompartmentComponent(t));
-    for (org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkComponent t : src.getLink())
-      tgt.addLink(convertGraphDefinitionLinkComponent(t));
-    return tgt;
-  }
-
-  public static org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent convertGraphDefinitionLinkTargetCompartmentComponent(org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent tgt = new org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent();
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
-    if (src.hasUse())
-      tgt.setUseElement(convertGraphCompartmentUse(src.getUseElement()));
-    if (src.hasCode())
-      tgt.setCodeElement(convertCompartmentCode(src.getCodeElement()));
-    if (src.hasRule())
-      tgt.setRuleElement(convertGraphCompartmentRule(src.getRuleElement()));
-    if (src.hasExpression())
-      tgt.setExpressionElement(String43_50.convertString(src.getExpressionElement()));
-    if (src.hasDescription())
-      tgt.setDescriptionElement(String43_50.convertString(src.getDescriptionElement()));
-    return tgt;
-  }
-
-  public static org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent convertGraphDefinitionLinkTargetCompartmentComponent(org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent tgt = new org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent();
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
-    if (src.hasUse())
-      tgt.setUseElement(convertGraphCompartmentUse(src.getUseElement()));
-    if (src.hasCode())
-      tgt.setCodeElement(convertCompartmentCode(src.getCodeElement()));
-    if (src.hasRule())
-      tgt.setRuleElement(convertGraphCompartmentRule(src.getRuleElement()));
-    if (src.hasExpression())
-      tgt.setExpressionElement(String43_50.convertString(src.getExpressionElement()));
-    if (src.hasDescription())
-      tgt.setDescriptionElement(String43_50.convertString(src.getDescriptionElement()));
-    return tgt;
-  }
-
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentUse> convertGraphCompartmentUse(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentUse> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentUse> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentUseEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case CONDITION:
-        tgt.setValue(org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentUse.CONDITION);
-        break;
-      case REQUIREMENT:
-        tgt.setValue(org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentUse.REQUIREMENT);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentUse.NULL);
-        break;
-    }
-    return tgt;
-  }
-
-  static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentUse> convertGraphCompartmentUse(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentUse> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentUse> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentUseEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case CONDITION:
-        tgt.setValue(org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentUse.CONDITION);
-        break;
-      case REQUIREMENT:
-        tgt.setValue(org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentUse.REQUIREMENT);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentUse.NULL);
-        break;
-    }
-    return tgt;
-  }
-
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.CompartmentType> convertCompartmentCode(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.CompartmentType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.CompartmentType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.CompartmentTypeEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PATIENT:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.PATIENT);
-        break;
-      case ENCOUNTER:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.ENCOUNTER);
-        break;
-      case RELATEDPERSON:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.RELATEDPERSON);
-        break;
-      case PRACTITIONER:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.PRACTITIONER);
-        break;
-      case DEVICE:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.DEVICE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.NULL);
-        break;
-    }
-    return tgt;
-  }
-
-  static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.CompartmentType> convertCompartmentCode(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.CompartmentType> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.CompartmentType> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Enumerations.CompartmentTypeEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PATIENT:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.CompartmentType.PATIENT);
-        break;
-      case ENCOUNTER:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.CompartmentType.ENCOUNTER);
-        break;
-      case RELATEDPERSON:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.CompartmentType.RELATEDPERSON);
-        break;
-      case PRACTITIONER:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.CompartmentType.PRACTITIONER);
-        break;
-      case DEVICE:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.CompartmentType.DEVICE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.CompartmentType.NULL);
-        break;
-    }
-    return tgt;
-  }
-
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentRule> convertGraphCompartmentRule(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentRule> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentRule> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentRuleEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case IDENTICAL:
-        tgt.setValue(org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentRule.IDENTICAL);
-        break;
-      case MATCHING:
-        tgt.setValue(org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentRule.MATCHING);
-        break;
-      case DIFFERENT:
-        tgt.setValue(org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentRule.DIFFERENT);
-        break;
-      case CUSTOM:
-        tgt.setValue(org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentRule.CUSTOM);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentRule.NULL);
-        break;
-    }
-    return tgt;
-  }
-
-  static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentRule> convertGraphCompartmentRule(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentRule> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentRule> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentRuleEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case IDENTICAL:
-        tgt.setValue(org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentRule.IDENTICAL);
-        break;
-      case MATCHING:
-        tgt.setValue(org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentRule.MATCHING);
-        break;
-      case DIFFERENT:
-        tgt.setValue(org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentRule.DIFFERENT);
-        break;
-      case CUSTOM:
-        tgt.setValue(org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentRule.CUSTOM);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentRule.NULL);
-        break;
-    }
-    return tgt;
-  }
+//
+//  public static org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkComponent convertGraphDefinitionLinkComponent(org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkComponent src) throws FHIRException {
+//    if (src == null)
+//      return null;
+//    org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkComponent tgt = new org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkComponent();
+//    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
+//    if (src.hasPath())
+//      tgt.setPathElement(String43_50.convertString(src.getPathElement()));
+//    if (src.hasSliceName())
+//      tgt.setSliceNameElement(String43_50.convertString(src.getSliceNameElement()));
+//    if (src.hasMin())
+//      tgt.setMinElement(Integer43_50.convertInteger(src.getMinElement()));
+//    if (src.hasMax())
+//      tgt.setMaxElement(String43_50.convertString(src.getMaxElement()));
+//    if (src.hasDescription())
+//      tgt.setDescriptionElement(String43_50.convertString(src.getDescriptionElement()));
+//    for (org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkTargetComponent t : src.getTarget())
+//      tgt.addTarget(convertGraphDefinitionLinkTargetComponent(t));
+//    return tgt;
+//  }
+//
+//  public static org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkComponent convertGraphDefinitionLinkComponent(org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkComponent src) throws FHIRException {
+//    if (src == null)
+//      return null;
+//    org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkComponent tgt = new org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkComponent();
+//    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
+//    if (src.hasPath())
+//      tgt.setPathElement(String43_50.convertString(src.getPathElement()));
+//    if (src.hasSliceName())
+//      tgt.setSliceNameElement(String43_50.convertString(src.getSliceNameElement()));
+//    if (src.hasMin())
+//      tgt.setMinElement(Integer43_50.convertInteger(src.getMinElement()));
+//    if (src.hasMax())
+//      tgt.setMaxElement(String43_50.convertString(src.getMaxElement()));
+//    if (src.hasDescription())
+//      tgt.setDescriptionElement(String43_50.convertString(src.getDescriptionElement()));
+//    for (org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetComponent t : src.getTarget())
+//      tgt.addTarget(convertGraphDefinitionLinkTargetComponent(t));
+//    return tgt;
+//  }
+//
+//  public static org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetComponent convertGraphDefinitionLinkTargetComponent(org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkTargetComponent src) throws FHIRException {
+//    if (src == null)
+//      return null;
+//    org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetComponent tgt = new org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetComponent();
+//    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
+//    if (src.hasType())
+//      tgt.setTypeElement(Code43_50.convertResourceEnum(src.getTypeElement()));
+//    if (src.hasParams())
+//      tgt.setParamsElement(String43_50.convertString(src.getParamsElement()));
+//    if (src.hasProfile())
+//      tgt.setProfileElement(Canonical43_50.convertCanonical(src.getProfileElement()));
+//    for (org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent t : src.getCompartment())
+//      tgt.addCompartment(convertGraphDefinitionLinkTargetCompartmentComponent(t));
+//    for (org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkComponent t : src.getLink())
+//      tgt.addLink(convertGraphDefinitionLinkComponent(t));
+//    return tgt;
+//  }
+//
+//  public static org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkTargetComponent convertGraphDefinitionLinkTargetComponent(org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetComponent src) throws FHIRException {
+//    if (src == null)
+//      return null;
+//    org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkTargetComponent tgt = new org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkTargetComponent();
+//    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
+//    if (src.hasType())
+//      tgt.setTypeElement(Code43_50.convertResourceEnum(src.getTypeElement()));
+//    if (src.hasParams())
+//      tgt.setParamsElement(String43_50.convertString(src.getParamsElement()));
+//    if (src.hasProfile())
+//      tgt.setProfileElement(Canonical43_50.convertCanonical(src.getProfileElement()));
+//    for (org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent t : src.getCompartment())
+//      tgt.addCompartment(convertGraphDefinitionLinkTargetCompartmentComponent(t));
+//    for (org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkComponent t : src.getLink())
+//      tgt.addLink(convertGraphDefinitionLinkComponent(t));
+//    return tgt;
+//  }
+//
+//  public static org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent convertGraphDefinitionLinkTargetCompartmentComponent(org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent src) throws FHIRException {
+//    if (src == null)
+//      return null;
+//    org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent tgt = new org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent();
+//    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
+//    if (src.hasUse())
+//      tgt.setUseElement(convertGraphCompartmentUse(src.getUseElement()));
+//    if (src.hasCode())
+//      tgt.setCodeElement(convertCompartmentCode(src.getCodeElement()));
+//    if (src.hasRule())
+//      tgt.setRuleElement(convertGraphCompartmentRule(src.getRuleElement()));
+//    if (src.hasExpression())
+//      tgt.setExpressionElement(String43_50.convertString(src.getExpressionElement()));
+//    if (src.hasDescription())
+//      tgt.setDescriptionElement(String43_50.convertString(src.getDescriptionElement()));
+//    return tgt;
+//  }
+//
+//  public static org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent convertGraphDefinitionLinkTargetCompartmentComponent(org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent src) throws FHIRException {
+//    if (src == null)
+//      return null;
+//    org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent tgt = new org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent();
+//    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
+//    if (src.hasUse())
+//      tgt.setUseElement(convertGraphCompartmentUse(src.getUseElement()));
+//    if (src.hasCode())
+//      tgt.setCodeElement(convertCompartmentCode(src.getCodeElement()));
+//    if (src.hasRule())
+//      tgt.setRuleElement(convertGraphCompartmentRule(src.getRuleElement()));
+//    if (src.hasExpression())
+//      tgt.setExpressionElement(String43_50.convertString(src.getExpressionElement()));
+//    if (src.hasDescription())
+//      tgt.setDescriptionElement(String43_50.convertString(src.getDescriptionElement()));
+//    return tgt;
+//  }
+//
+//  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentUse> convertGraphCompartmentUse(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentUse> src) throws FHIRException {
+//    if (src == null || src.isEmpty())
+//      return null;
+//    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentUse> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentUseEnumFactory());
+//    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+//    switch (src.getValue()) {
+//      case CONDITION:
+//        tgt.setValue(org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentUse.CONDITION);
+//        break;
+//      case REQUIREMENT:
+//        tgt.setValue(org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentUse.REQUIREMENT);
+//        break;
+//      default:
+//        tgt.setValue(org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentUse.NULL);
+//        break;
+//    }
+//    return tgt;
+//  }
+//
+//  static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentUse> convertGraphCompartmentUse(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentUse> src) throws FHIRException {
+//    if (src == null || src.isEmpty())
+//      return null;
+//    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentUse> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentUseEnumFactory());
+//    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+//    switch (src.getValue()) {
+//      case CONDITION:
+//        tgt.setValue(org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentUse.CONDITION);
+//        break;
+//      case REQUIREMENT:
+//        tgt.setValue(org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentUse.REQUIREMENT);
+//        break;
+//      default:
+//        tgt.setValue(org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentUse.NULL);
+//        break;
+//    }
+//    return tgt;
+//  }
+//
+//  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.CompartmentType> convertCompartmentCode(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.CompartmentType> src) throws FHIRException {
+//    if (src == null || src.isEmpty())
+//      return null;
+//    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.CompartmentType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.CompartmentTypeEnumFactory());
+//    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+//    switch (src.getValue()) {
+//      case PATIENT:
+//        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.PATIENT);
+//        break;
+//      case ENCOUNTER:
+//        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.ENCOUNTER);
+//        break;
+//      case RELATEDPERSON:
+//        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.RELATEDPERSON);
+//        break;
+//      case PRACTITIONER:
+//        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.PRACTITIONER);
+//        break;
+//      case DEVICE:
+//        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.DEVICE);
+//        break;
+//      default:
+//        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.NULL);
+//        break;
+//    }
+//    return tgt;
+//  }
+//
+//  static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.CompartmentType> convertCompartmentCode(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.CompartmentType> src) throws FHIRException {
+//    if (src == null || src.isEmpty())
+//      return null;
+//    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.Enumerations.CompartmentType> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.Enumerations.CompartmentTypeEnumFactory());
+//    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+//    switch (src.getValue()) {
+//      case PATIENT:
+//        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.CompartmentType.PATIENT);
+//        break;
+//      case ENCOUNTER:
+//        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.CompartmentType.ENCOUNTER);
+//        break;
+//      case RELATEDPERSON:
+//        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.CompartmentType.RELATEDPERSON);
+//        break;
+//      case PRACTITIONER:
+//        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.CompartmentType.PRACTITIONER);
+//        break;
+//      case DEVICE:
+//        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.CompartmentType.DEVICE);
+//        break;
+//      default:
+//        tgt.setValue(org.hl7.fhir.r4b.model.Enumerations.CompartmentType.NULL);
+//        break;
+//    }
+//    return tgt;
+//  }
+//
+//  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentRule> convertGraphCompartmentRule(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentRule> src) throws FHIRException {
+//    if (src == null || src.isEmpty())
+//      return null;
+//    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentRule> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentRuleEnumFactory());
+//    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+//    switch (src.getValue()) {
+//      case IDENTICAL:
+//        tgt.setValue(org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentRule.IDENTICAL);
+//        break;
+//      case MATCHING:
+//        tgt.setValue(org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentRule.MATCHING);
+//        break;
+//      case DIFFERENT:
+//        tgt.setValue(org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentRule.DIFFERENT);
+//        break;
+//      case CUSTOM:
+//        tgt.setValue(org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentRule.CUSTOM);
+//        break;
+//      default:
+//        tgt.setValue(org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentRule.NULL);
+//        break;
+//    }
+//    return tgt;
+//  }
+//
+//  static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentRule> convertGraphCompartmentRule(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.GraphDefinition.GraphCompartmentRule> src) throws FHIRException {
+//    if (src == null || src.isEmpty())
+//      return null;
+//    org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentRule> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentRuleEnumFactory());
+//    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+//    switch (src.getValue()) {
+//      case IDENTICAL:
+//        tgt.setValue(org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentRule.IDENTICAL);
+//        break;
+//      case MATCHING:
+//        tgt.setValue(org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentRule.MATCHING);
+//        break;
+//      case DIFFERENT:
+//        tgt.setValue(org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentRule.DIFFERENT);
+//        break;
+//      case CUSTOM:
+//        tgt.setValue(org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentRule.CUSTOM);
+//        break;
+//      default:
+//        tgt.setValue(org.hl7.fhir.r4b.model.GraphDefinition.GraphCompartmentRule.NULL);
+//        break;
+//    }
+//    return tgt;
+//  }
 }

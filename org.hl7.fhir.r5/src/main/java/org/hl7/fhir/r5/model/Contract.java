@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -688,10 +688,10 @@ public class Contract extends DomainResource {
         protected Reference publisher;
 
         /**
-         * The date (and optionally time) when the contract was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the contract changes.
+         * The date (and optionally time) when the contract was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the contract changes.
          */
         @Child(name = "publicationDate", type = {DateTimeType.class}, order=4, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="When published", formalDefinition="The date (and optionally time) when the contract was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the contract changes." )
+        @Description(shortDefinition="When published", formalDefinition="The date (and optionally time) when the contract was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the contract changes." )
         protected DateTimeType publicationDate;
 
         /**
@@ -800,7 +800,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return {@link #publicationDate} (The date (and optionally time) when the contract was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the contract changes.). This is the underlying object with id, value and extensions. The accessor "getPublicationDate" gives direct access to the value
+         * @return {@link #publicationDate} (The date (and optionally time) when the contract was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the contract changes.). This is the underlying object with id, value and extensions. The accessor "getPublicationDate" gives direct access to the value
          */
         public DateTimeType getPublicationDateElement() { 
           if (this.publicationDate == null)
@@ -820,7 +820,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @param value {@link #publicationDate} (The date (and optionally time) when the contract was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the contract changes.). This is the underlying object with id, value and extensions. The accessor "getPublicationDate" gives direct access to the value
+         * @param value {@link #publicationDate} (The date (and optionally time) when the contract was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the contract changes.). This is the underlying object with id, value and extensions. The accessor "getPublicationDate" gives direct access to the value
          */
         public ContentDefinitionComponent setPublicationDateElement(DateTimeType value) { 
           this.publicationDate = value;
@@ -828,14 +828,14 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return The date (and optionally time) when the contract was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the contract changes.
+         * @return The date (and optionally time) when the contract was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the contract changes.
          */
         public Date getPublicationDate() { 
           return this.publicationDate == null ? null : this.publicationDate.getValue();
         }
 
         /**
-         * @param value The date (and optionally time) when the contract was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the contract changes.
+         * @param value The date (and optionally time) when the contract was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the contract changes.
          */
         public ContentDefinitionComponent setPublicationDate(Date value) { 
           if (value == null)
@@ -947,7 +947,7 @@ public class Contract extends DomainResource {
           children.add(new Property("type", "CodeableConcept", "Precusory content structure and use, i.e., a boilerplate, template, application for a contract such as an insurance policy or benefits under a program, e.g., workers compensation.", 0, 1, type));
           children.add(new Property("subType", "CodeableConcept", "Detailed Precusory content type.", 0, 1, subType));
           children.add(new Property("publisher", "Reference(Practitioner|PractitionerRole|Organization)", "The  individual or organization that published the Contract precursor content.", 0, 1, publisher));
-          children.add(new Property("publicationDate", "dateTime", "The date (and optionally time) when the contract was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the contract changes.", 0, 1, publicationDate));
+          children.add(new Property("publicationDate", "dateTime", "The date (and optionally time) when the contract was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the contract changes.", 0, 1, publicationDate));
           children.add(new Property("publicationStatus", "code", "amended | appended | cancelled | disputed | entered-in-error | executable +.", 0, 1, publicationStatus));
           children.add(new Property("copyright", "markdown", "A copyright statement relating to Contract precursor content. Copyright statements are generally legal restrictions on the use and publishing of the Contract precursor content.", 0, 1, copyright));
         }
@@ -958,7 +958,7 @@ public class Contract extends DomainResource {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Precusory content structure and use, i.e., a boilerplate, template, application for a contract such as an insurance policy or benefits under a program, e.g., workers compensation.", 0, 1, type);
           case -1868521062: /*subType*/  return new Property("subType", "CodeableConcept", "Detailed Precusory content type.", 0, 1, subType);
           case 1447404028: /*publisher*/  return new Property("publisher", "Reference(Practitioner|PractitionerRole|Organization)", "The  individual or organization that published the Contract precursor content.", 0, 1, publisher);
-          case 1470566394: /*publicationDate*/  return new Property("publicationDate", "dateTime", "The date (and optionally time) when the contract was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the contract changes.", 0, 1, publicationDate);
+          case 1470566394: /*publicationDate*/  return new Property("publicationDate", "dateTime", "The date (and optionally time) when the contract was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the contract changes.", 0, 1, publicationDate);
           case 616500542: /*publicationStatus*/  return new Property("publicationStatus", "code", "amended | appended | cancelled | disputed | entered-in-error | executable +.", 0, 1, publicationStatus);
           case 1522889671: /*copyright*/  return new Property("copyright", "markdown", "A copyright statement relating to Contract precursor content. Copyright statements are generally legal restrictions on the use and publishing of the Contract precursor content.", 0, 1, copyright);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -9258,10 +9258,10 @@ public class Contract extends DomainResource {
     protected List<Reference> supportingInfo;
 
     /**
-     * Links to Provenance records for past versions of this Contract definition, derivative, or instance, which identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the Contract.  The Provence.entity indicates the target that was changed in the update. http://build.fhir.org/provenance-definitions.html#Provenance.entity.
+     * Links to Provenance records for past versions of this Contract definition, derivative, or instance, which identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the Contract.  The Provence.entity indicates the target that was changed in the update (see [Provenance.entity](provenance-definitions.html#Provenance.entity)).
      */
     @Child(name = "relevantHistory", type = {Provenance.class}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Key event in Contract History", formalDefinition="Links to Provenance records for past versions of this Contract definition, derivative, or instance, which identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the Contract.  The Provence.entity indicates the target that was changed in the update. http://build.fhir.org/provenance-definitions.html#Provenance.entity." )
+    @Description(shortDefinition="Key event in Contract History", formalDefinition="Links to Provenance records for past versions of this Contract definition, derivative, or instance, which identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the Contract.  The Provence.entity indicates the target that was changed in the update (see [Provenance.entity](provenance-definitions.html#Provenance.entity))." )
     protected List<Reference> relevantHistory;
 
     /**
@@ -10453,7 +10453,7 @@ public class Contract extends DomainResource {
     }
 
     /**
-     * @return {@link #relevantHistory} (Links to Provenance records for past versions of this Contract definition, derivative, or instance, which identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the Contract.  The Provence.entity indicates the target that was changed in the update. http://build.fhir.org/provenance-definitions.html#Provenance.entity.)
+     * @return {@link #relevantHistory} (Links to Provenance records for past versions of this Contract definition, derivative, or instance, which identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the Contract.  The Provence.entity indicates the target that was changed in the update (see [Provenance.entity](provenance-definitions.html#Provenance.entity)).)
      */
     public List<Reference> getRelevantHistory() { 
       if (this.relevantHistory == null)
@@ -10797,7 +10797,7 @@ public class Contract extends DomainResource {
         children.add(new Property("contentDefinition", "", "Precusory content developed with a focus and intent of supporting the formation a Contract instance, which may be associated with and transformable into a Contract.", 0, 1, contentDefinition));
         children.add(new Property("term", "", "One or more Contract Provisions, which may be related and conveyed as a group, and may contain nested groups.", 0, java.lang.Integer.MAX_VALUE, term));
         children.add(new Property("supportingInfo", "Reference(Any)", "Information that may be needed by/relevant to the performer in their execution of this term action.", 0, java.lang.Integer.MAX_VALUE, supportingInfo));
-        children.add(new Property("relevantHistory", "Reference(Provenance)", "Links to Provenance records for past versions of this Contract definition, derivative, or instance, which identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the Contract.  The Provence.entity indicates the target that was changed in the update. http://build.fhir.org/provenance-definitions.html#Provenance.entity.", 0, java.lang.Integer.MAX_VALUE, relevantHistory));
+        children.add(new Property("relevantHistory", "Reference(Provenance)", "Links to Provenance records for past versions of this Contract definition, derivative, or instance, which identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the Contract.  The Provence.entity indicates the target that was changed in the update (see [Provenance.entity](provenance-definitions.html#Provenance.entity)).", 0, java.lang.Integer.MAX_VALUE, relevantHistory));
         children.add(new Property("signer", "", "Parties with legal standing in the Contract, including the principal parties, the grantor(s) and grantee(s), which are any person or organization bound by the contract, and any ancillary parties, which facilitate the execution of the contract such as a notary or witness.", 0, java.lang.Integer.MAX_VALUE, signer));
         children.add(new Property("friendly", "", "The \"patient friendly language\" versionof the Contract in whole or in parts. \"Patient friendly language\" means the representation of the Contract and Contract Provisions in a manner that is readily accessible and understandable by a layperson in accordance with best practices for communication styles that ensure that those agreeing to or signing the Contract understand the roles, actions, obligations, responsibilities, and implication of the agreement.", 0, java.lang.Integer.MAX_VALUE, friendly));
         children.add(new Property("legal", "", "List of Legal expressions or representations of this Contract.", 0, java.lang.Integer.MAX_VALUE, legal));
@@ -10838,7 +10838,7 @@ public class Contract extends DomainResource {
         case 247055020: /*contentDefinition*/  return new Property("contentDefinition", "", "Precusory content developed with a focus and intent of supporting the formation a Contract instance, which may be associated with and transformable into a Contract.", 0, 1, contentDefinition);
         case 3556460: /*term*/  return new Property("term", "", "One or more Contract Provisions, which may be related and conveyed as a group, and may contain nested groups.", 0, java.lang.Integer.MAX_VALUE, term);
         case 1922406657: /*supportingInfo*/  return new Property("supportingInfo", "Reference(Any)", "Information that may be needed by/relevant to the performer in their execution of this term action.", 0, java.lang.Integer.MAX_VALUE, supportingInfo);
-        case 1538891575: /*relevantHistory*/  return new Property("relevantHistory", "Reference(Provenance)", "Links to Provenance records for past versions of this Contract definition, derivative, or instance, which identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the Contract.  The Provence.entity indicates the target that was changed in the update. http://build.fhir.org/provenance-definitions.html#Provenance.entity.", 0, java.lang.Integer.MAX_VALUE, relevantHistory);
+        case 1538891575: /*relevantHistory*/  return new Property("relevantHistory", "Reference(Provenance)", "Links to Provenance records for past versions of this Contract definition, derivative, or instance, which identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the Contract.  The Provence.entity indicates the target that was changed in the update (see [Provenance.entity](provenance-definitions.html#Provenance.entity)).", 0, java.lang.Integer.MAX_VALUE, relevantHistory);
         case -902467798: /*signer*/  return new Property("signer", "", "Parties with legal standing in the Contract, including the principal parties, the grantor(s) and grantee(s), which are any person or organization bound by the contract, and any ancillary parties, which facilitate the execution of the contract such as a notary or witness.", 0, java.lang.Integer.MAX_VALUE, signer);
         case -1423054677: /*friendly*/  return new Property("friendly", "", "The \"patient friendly language\" versionof the Contract in whole or in parts. \"Patient friendly language\" means the representation of the Contract and Contract Provisions in a manner that is readily accessible and understandable by a layperson in accordance with best practices for communication styles that ensure that those agreeing to or signing the Contract understand the roles, actions, obligations, responsibilities, and implication of the agreement.", 0, java.lang.Integer.MAX_VALUE, friendly);
         case 102851257: /*legal*/  return new Property("legal", "", "List of Legal expressions or representations of this Contract.", 0, java.lang.Integer.MAX_VALUE, legal);

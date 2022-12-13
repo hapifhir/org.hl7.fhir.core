@@ -799,4 +799,6 @@ public interface IWorkerContext {
   public IWorkerContextManager.IPackageLoadingTracker getPackageTracker();
   public IWorkerContext setPackageTracker(IWorkerContextManager.IPackageLoadingTracker packageTracker);
 
+  public String getSpecUrl();
+
 }
