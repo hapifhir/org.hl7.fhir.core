@@ -61,6 +61,13 @@
         </dependency>
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
+            <artifactId>org.hl7.fhir.r4b</artifactId>
+            <version>${project.version}</version>
+			<!-- OSGi doesn't need to load all the time -->
+			<optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>ca.uhn.hapi.fhir</groupId>
             <artifactId>org.hl7.fhir.r5</artifactId>
             <version>${project.version}</version>
 			<!-- OSGi doesn't need to load all the time -->
