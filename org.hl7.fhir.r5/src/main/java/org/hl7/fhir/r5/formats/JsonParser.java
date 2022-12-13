@@ -27903,9 +27903,9 @@ public class JsonParser extends JsonParserBase {
       JsonArray array = getJArray(json, "base");
       for (int i = 0; i < array.size(); i++) {
         if (array.get(i).isJsonNull()) {
-          res.getBase().add(new Enumeration<Enumerations.AllResourceTypes>(new Enumerations.AllResourceTypesEnumFactory(), Enumerations.AllResourceTypes.NULL));
+          res.getBase().add(new CodeType());
         } else {;
-          res.getBase().add(parseEnumeration(array.get(i).getAsString(), Enumerations.AllResourceTypes.NULL, new Enumerations.AllResourceTypesEnumFactory()));
+          res.getBase().add(parseCode(array.get(i).getAsString()));
         }
       }
     };
@@ -27913,7 +27913,7 @@ public class JsonParser extends JsonParserBase {
       JsonArray array = getJArray(json, "_base");
       for (int i = 0; i < array.size(); i++) {
         if (i == res.getBase().size())
-          res.getBase().add(parseEnumeration(null, Enumerations.AllResourceTypes.NULL, new Enumerations.AllResourceTypesEnumFactory()));
+          res.getBase().add(new CodeType());
         if (array.get(i) instanceof JsonObject) 
           parseElementProperties(array.get(i).getAsJsonObject(), res.getBase().get(i));
       }
@@ -64718,13 +64718,13 @@ public class JsonParser extends JsonParserBase {
       }
       if (element.hasBase()) {
         openArray("base");
-        for (Enumeration<Enumerations.AllResourceTypes> e : element.getBase()) 
-          composeEnumerationCore(null, e, new Enumerations.AllResourceTypesEnumFactory(), true);
+        for (CodeType e : element.getBase()) 
+          composeCodeCore(null, e, true);
         closeArray();
         if (anyHasExtras(element.getBase())) {
           openArray("_base");
-          for (Enumeration<Enumerations.AllResourceTypes> e : element.getBase()) 
-            composeEnumerationExtras(null, e, new Enumerations.AllResourceTypesEnumFactory(), true);
+          for (CodeType e : element.getBase()) 
+            composeCodeExtras(null, e, true);
           closeArray();
         }
       };

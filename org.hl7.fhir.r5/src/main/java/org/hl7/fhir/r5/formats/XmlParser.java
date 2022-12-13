@@ -24175,7 +24175,7 @@ public class XmlParser extends XmlParserBase {
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("code")) {
       res.setCodeElement(parseCode(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("base")) {
-      res.getBase().add(parseEnumeration(xpp, Enumerations.AllResourceTypes.NULL, new Enumerations.AllResourceTypesEnumFactory()));
+      res.getBase().add(parseCode(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("type")) {
       res.setTypeElement(parseEnumeration(xpp, Enumerations.SearchParamType.NULL, new Enumerations.SearchParamTypeEnumFactory()));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("expression")) {
@@ -55508,8 +55508,8 @@ public class XmlParser extends XmlParserBase {
       composeCode("code", element.getCodeElement());
     }
       if (element.hasBase()) 
-        for (Enumeration<Enumerations.AllResourceTypes> e : element.getBase()) 
-          composeEnumeration("base", e, new Enumerations.AllResourceTypesEnumFactory());
+        for (CodeType e : element.getBase()) 
+          composeCode("base", e);
     if (element.hasTypeElement())
       composeEnumeration("type", element.getTypeElement(), new Enumerations.SearchParamTypeEnumFactory());
     if (element.hasExpressionElement()) {
