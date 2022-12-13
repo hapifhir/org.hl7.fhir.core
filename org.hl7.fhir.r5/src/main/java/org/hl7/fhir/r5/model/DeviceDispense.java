@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -137,15 +137,15 @@ public class DeviceDispense extends DomainResource {
         }
         public String getSystem() {
           switch (this) {
-            case PREPARATION: return "http://terminology.hl7.org/CodeSystem/devicedispense-status";
-            case INPROGRESS: return "http://terminology.hl7.org/CodeSystem/devicedispense-status";
-            case CANCELLED: return "http://terminology.hl7.org/CodeSystem/devicedispense-status";
-            case ONHOLD: return "http://terminology.hl7.org/CodeSystem/devicedispense-status";
-            case COMPLETED: return "http://terminology.hl7.org/CodeSystem/devicedispense-status";
-            case ENTEREDINERROR: return "http://terminology.hl7.org/CodeSystem/devicedispense-status";
-            case STOPPED: return "http://terminology.hl7.org/CodeSystem/devicedispense-status";
-            case DECLINED: return "http://terminology.hl7.org/CodeSystem/devicedispense-status";
-            case UNKNOWN: return "http://terminology.hl7.org/CodeSystem/devicedispense-status";
+            case PREPARATION: return "http://hl7.org/fhir/devicedispense-status";
+            case INPROGRESS: return "http://hl7.org/fhir/devicedispense-status";
+            case CANCELLED: return "http://hl7.org/fhir/devicedispense-status";
+            case ONHOLD: return "http://hl7.org/fhir/devicedispense-status";
+            case COMPLETED: return "http://hl7.org/fhir/devicedispense-status";
+            case ENTEREDINERROR: return "http://hl7.org/fhir/devicedispense-status";
+            case STOPPED: return "http://hl7.org/fhir/devicedispense-status";
+            case DECLINED: return "http://hl7.org/fhir/devicedispense-status";
+            case UNKNOWN: return "http://hl7.org/fhir/devicedispense-status";
             case NULL: return null;
             default: return "?";
           }

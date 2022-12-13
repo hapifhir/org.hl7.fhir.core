@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -453,9 +453,7 @@ public class Organization extends DomainResource {
     protected List<Reference> endpoint;
 
     /**
-     * The official certifications, accreditations, training, designations and licenses that authorize and/or otherwise endorse the provision of care by the organization.
-
-For example, an approval to provide a type of services issued by a certifying body (such as the US Joint Commission) to an organization.
+     * The official certifications, accreditations, training, designations and licenses that authorize and/or otherwise endorse the provision of care by the organization.For example, an approval to provide a type of services issued by a certifying body (such as the US Joint Commission) to an organization.
      */
     @Child(name = "qualification", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Qualifications, certifications, accreditations, licenses, training, etc pertaining to the provision of care", formalDefinition="The official certifications, accreditations, training, designations and licenses that authorize and/or otherwise endorse the provision of care by the organization.\r\rFor example, an approval to provide a type of services issued by a certifying body (such as the US Joint Commission) to an organization." )
@@ -911,9 +909,7 @@ For example, an approval to provide a type of services issued by a certifying bo
     }
 
     /**
-     * @return {@link #qualification} (The official certifications, accreditations, training, designations and licenses that authorize and/or otherwise endorse the provision of care by the organization.
-
-For example, an approval to provide a type of services issued by a certifying body (such as the US Joint Commission) to an organization.)
+     * @return {@link #qualification} (The official certifications, accreditations, training, designations and licenses that authorize and/or otherwise endorse the provision of care by the organization.For example, an approval to provide a type of services issued by a certifying body (such as the US Joint Commission) to an organization.)
      */
     public List<OrganizationQualificationComponent> getQualification() { 
       if (this.qualification == null)

@@ -15,6 +15,8 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Stri
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Uri30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations.AllResourceTypes;
 
 public class SearchParameter30_50 {
 
@@ -213,7 +215,7 @@ public class SearchParameter30_50 {
       tgt.setPurposeElement(MarkDown30_50.convertMarkdown(src.getPurposeElement()));
     if (src.hasCode())
       tgt.setCodeElement(Code30_50.convertCode(src.getCodeElement()));
-    for (org.hl7.fhir.dstu3.model.CodeType t : src.getBase()) tgt.getBase().add(Code30_50.convertCode(t));
+    for (org.hl7.fhir.dstu3.model.CodeType t : src.getBase()) tgt.addBase(AllResourceTypes.fromCode(t.asStringValue()));
     if (src.hasType())
       tgt.setTypeElement(Enumerations30_50.convertSearchParamType(src.getTypeElement()));
     if (src.hasDerivedFrom())
@@ -268,7 +270,7 @@ public class SearchParameter30_50 {
       tgt.setPurposeElement(MarkDown30_50.convertMarkdown(src.getPurposeElement()));
     if (src.hasCode())
       tgt.setCodeElement(Code30_50.convertCode(src.getCodeElement()));
-    for (CodeType t : src.getBase()) tgt.getBase().add(Code30_50.convertCode(t));
+    for (Enumeration<AllResourceTypes> t : src.getBase()) tgt.addBase(t.getCode());
     if (src.hasType())
       tgt.setTypeElement(Enumerations30_50.convertSearchParamType(src.getTypeElement()));
     if (src.hasDerivedFrom())

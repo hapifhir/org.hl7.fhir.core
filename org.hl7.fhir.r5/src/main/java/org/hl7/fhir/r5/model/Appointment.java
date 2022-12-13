@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1506,9 +1506,7 @@ public class Appointment extends DomainResource {
         protected BooleanType sunday;
 
         /**
-         * The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.
-
-e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.
+         * The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.
          */
         @Child(name = "weekInterval", type = {PositiveIntType.class}, order=8, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Recurs every nth week", formalDefinition="The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.\r\re.g. For recurring every second week this interval would be 2, or every third week the interval would be 3." )
@@ -1839,9 +1837,7 @@ e.g. For recurring every second week this interval would be 2, or every third we
         }
 
         /**
-         * @return {@link #weekInterval} (The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.
-
-e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.). This is the underlying object with id, value and extensions. The accessor "getWeekInterval" gives direct access to the value
+         * @return {@link #weekInterval} (The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.). This is the underlying object with id, value and extensions. The accessor "getWeekInterval" gives direct access to the value
          */
         public PositiveIntType getWeekIntervalElement() { 
           if (this.weekInterval == null)
@@ -1861,9 +1857,7 @@ e.g. For recurring every second week this interval would be 2, or every third we
         }
 
         /**
-         * @param value {@link #weekInterval} (The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.
-
-e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.). This is the underlying object with id, value and extensions. The accessor "getWeekInterval" gives direct access to the value
+         * @param value {@link #weekInterval} (The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.). This is the underlying object with id, value and extensions. The accessor "getWeekInterval" gives direct access to the value
          */
         public AppointmentRecurrenceTemplateWeeklyTemplateComponent setWeekIntervalElement(PositiveIntType value) { 
           this.weekInterval = value;
@@ -1871,18 +1865,14 @@ e.g. For recurring every second week this interval would be 2, or every third we
         }
 
         /**
-         * @return The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.
-
-e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.
+         * @return The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.
          */
         public int getWeekInterval() { 
           return this.weekInterval == null || this.weekInterval.isEmpty() ? 0 : this.weekInterval.getValue();
         }
 
         /**
-         * @param value The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.
-
-e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.
+         * @param value The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.
          */
         public AppointmentRecurrenceTemplateWeeklyTemplateComponent setWeekInterval(int value) { 
             if (this.weekInterval == null)

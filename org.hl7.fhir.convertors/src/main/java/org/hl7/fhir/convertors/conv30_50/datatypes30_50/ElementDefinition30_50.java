@@ -558,7 +558,7 @@ public class ElementDefinition30_50 {
     if (src.hasSeverity()) tgt.setSeverityElement(convertConstraintSeverity(src.getSeverityElement()));
     if (src.hasHuman()) tgt.setHumanElement(String30_50.convertString(src.getHumanElement()));
     if (src.hasExpression()) tgt.setExpressionElement(String30_50.convertString(src.getExpressionElement()));
-    if (src.hasXpath()) tgt.setXpathElement(String30_50.convertString(src.getXpathElement()));
+//    if (src.hasXpath()) tgt.setXpathElement(String30_50.convertString(src.getXpathElement()));
     if (src.hasSource()) tgt.setSource(src.getSource());
     return tgt;
   }
@@ -572,7 +572,7 @@ public class ElementDefinition30_50 {
     if (src.hasSeverity()) tgt.setSeverityElement(convertConstraintSeverity(src.getSeverityElement()));
     if (src.hasHuman()) tgt.setHumanElement(String30_50.convertString(src.getHumanElement()));
     if (src.hasExpression()) tgt.setExpressionElement(String30_50.convertString(src.getExpressionElement()));
-    if (src.hasXpath()) tgt.setXpathElement(String30_50.convertString(src.getXpathElement()));
+//    if (src.hasXpath()) tgt.setXpathElement(String30_50.convertString(src.getXpathElement()));
     if (src.hasSource()) tgt.setSource(src.getSource());
     return tgt;
   }

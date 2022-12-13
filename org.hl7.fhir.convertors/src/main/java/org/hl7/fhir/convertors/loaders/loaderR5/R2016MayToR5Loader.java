@@ -101,7 +101,7 @@ public class R2016MayToR5Loader extends BaseLoaderR5 {
     for (BundleEntryComponent be : b.getEntry()) {
       if (be.hasResource() && be.getResource() instanceof StructureDefinition) {
         StructureDefinition sd = (StructureDefinition) be.getResource();
-        new ProfileUtilities(null, null, null).setIds(sd, false);
+        new ProfileUtilities(null, null, null, null).setIds(sd, false);
         if (patchUrls) {
           sd.setUrl(sd.getUrl().replace(URL_BASE, URL_DSTU2016MAY));
           sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));

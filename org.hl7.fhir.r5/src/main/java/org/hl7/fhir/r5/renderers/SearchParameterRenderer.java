@@ -7,6 +7,7 @@ import java.util.List;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations.AllResourceTypes;
 import org.hl7.fhir.r5.model.OperationDefinition;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.SearchParameter;
@@ -49,7 +50,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     XhtmlNode tr = tbl.tr();
     tr.td().tx(Utilities.pluralize("Resource", spd.getBase().size()));
     XhtmlNode td = tr.td();
-    for (CodeType t : spd.getBase()) {
+    for (Enumeration<AllResourceTypes> t : spd.getBase()) {
       StructureDefinition sd = context.getWorker().fetchTypeDefinition(t.toString());
       if (sd != null && sd.hasUserData("path")) {
         td.ah(sd.getUserString("path")).sep(", ").tx(t.getCode());

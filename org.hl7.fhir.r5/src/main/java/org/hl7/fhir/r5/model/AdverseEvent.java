@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,7 +48,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * An event (i.e. any change to current patient status) that may be related to unintended effects on a patient or research subject. The unintended effects may require additional monitoring, treatment, hospitalization, or may result in death. The AdverseEvent resource also extends to potential or avoided events that could have had such effects. There are two major domains where the AdverseEvent resource is expected to be used. One is in clinical care reported adverse events and the other is in reporting adverse events in clinical  research trial management. Given the differences between these two arenas, we recommend consulting the domain specific implementation guides when implementing the AdverseEvent Resource. The implementation guides include specific extensions, value sets and constraints.
+ * An event (i.e. any change to current patient status) that may be related to unintended effects on a patient or research subject. The unintended effects may require additional monitoring, treatment, hospitalization, or may result in death. The AdverseEvent resource also extends to potential or avoided events that could have had such effects. There are two major domains where the AdverseEvent resource is expected to be used. One is in clinical care reported adverse events and the other is in reporting adverse events in clinical  research trial management. Given the differences between these two concepts, we recommend consulting the domain specific implementation guides when implementing the AdverseEvent Resource. The implementation guides include specific extensions, value sets and constraints.
  */
 @ResourceDef(name="AdverseEvent", profile="http://hl7.org/fhir/StructureDefinition/AdverseEvent")
 public class AdverseEvent extends DomainResource {
@@ -1855,9 +1855,9 @@ public class AdverseEvent extends DomainResource {
     /**
      * Information about the condition that occurred as a result of the adverse event, such as hives due to the exposure to a substance (for example, a drug or a chemical) or a broken leg as a result of the fall.
      */
-    @Child(name = "resultingCondition", type = {Condition.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "resultingEffect", type = {Condition.class, Observation.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Effect on the subject due to this event", formalDefinition="Information about the condition that occurred as a result of the adverse event, such as hives due to the exposure to a substance (for example, a drug or a chemical) or a broken leg as a result of the fall." )
-    protected List<Reference> resultingCondition;
+    protected List<Reference> resultingEffect;
 
     /**
      * The information about where the adverse event occurred.
@@ -1952,7 +1952,7 @@ public class AdverseEvent extends DomainResource {
     @Description(shortDefinition="Comment on adverse event", formalDefinition="Comments made about the adverse event by the performer, subject or other participants." )
     protected List<Annotation> note;
 
-    private static final long serialVersionUID = 973851632L;
+    private static final long serialVersionUID = -1861590732L;
 
   /**
    * Constructor
@@ -2404,56 +2404,56 @@ public class AdverseEvent extends DomainResource {
     }
 
     /**
-     * @return {@link #resultingCondition} (Information about the condition that occurred as a result of the adverse event, such as hives due to the exposure to a substance (for example, a drug or a chemical) or a broken leg as a result of the fall.)
+     * @return {@link #resultingEffect} (Information about the condition that occurred as a result of the adverse event, such as hives due to the exposure to a substance (for example, a drug or a chemical) or a broken leg as a result of the fall.)
      */
-    public List<Reference> getResultingCondition() { 
-      if (this.resultingCondition == null)
-        this.resultingCondition = new ArrayList<Reference>();
-      return this.resultingCondition;
+    public List<Reference> getResultingEffect() { 
+      if (this.resultingEffect == null)
+        this.resultingEffect = new ArrayList<Reference>();
+      return this.resultingEffect;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public AdverseEvent setResultingCondition(List<Reference> theResultingCondition) { 
-      this.resultingCondition = theResultingCondition;
+    public AdverseEvent setResultingEffect(List<Reference> theResultingEffect) { 
+      this.resultingEffect = theResultingEffect;
       return this;
     }
 
-    public boolean hasResultingCondition() { 
-      if (this.resultingCondition == null)
+    public boolean hasResultingEffect() { 
+      if (this.resultingEffect == null)
         return false;
-      for (Reference item : this.resultingCondition)
+      for (Reference item : this.resultingEffect)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public Reference addResultingCondition() { //3
+    public Reference addResultingEffect() { //3
       Reference t = new Reference();
-      if (this.resultingCondition == null)
-        this.resultingCondition = new ArrayList<Reference>();
-      this.resultingCondition.add(t);
+      if (this.resultingEffect == null)
+        this.resultingEffect = new ArrayList<Reference>();
+      this.resultingEffect.add(t);
       return t;
     }
 
-    public AdverseEvent addResultingCondition(Reference t) { //3
+    public AdverseEvent addResultingEffect(Reference t) { //3
       if (t == null)
         return this;
-      if (this.resultingCondition == null)
-        this.resultingCondition = new ArrayList<Reference>();
-      this.resultingCondition.add(t);
+      if (this.resultingEffect == null)
+        this.resultingEffect = new ArrayList<Reference>();
+      this.resultingEffect.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #resultingCondition}, creating it if it does not already exist {3}
+     * @return The first repetition of repeating field {@link #resultingEffect}, creating it if it does not already exist {3}
      */
-    public Reference getResultingConditionFirstRep() { 
-      if (getResultingCondition().isEmpty()) {
-        addResultingCondition();
+    public Reference getResultingEffectFirstRep() { 
+      if (getResultingEffect().isEmpty()) {
+        addResultingEffect();
       }
-      return getResultingCondition().get(0);
+      return getResultingEffect().get(0);
     }
 
     /**
@@ -3062,7 +3062,7 @@ public class AdverseEvent extends DomainResource {
         children.add(new Property("occurrence[x]", "dateTime|Period|Timing", "The date (and perhaps time) when the adverse event occurred.", 0, 1, occurrence));
         children.add(new Property("detected", "dateTime", "Estimated or actual date the AdverseEvent began, in the opinion of the reporter.", 0, 1, detected));
         children.add(new Property("recordedDate", "dateTime", "The date on which the existence of the AdverseEvent was first recorded.", 0, 1, recordedDate));
-        children.add(new Property("resultingCondition", "Reference(Condition)", "Information about the condition that occurred as a result of the adverse event, such as hives due to the exposure to a substance (for example, a drug or a chemical) or a broken leg as a result of the fall.", 0, java.lang.Integer.MAX_VALUE, resultingCondition));
+        children.add(new Property("resultingEffect", "Reference(Condition|Observation)", "Information about the condition that occurred as a result of the adverse event, such as hives due to the exposure to a substance (for example, a drug or a chemical) or a broken leg as a result of the fall.", 0, java.lang.Integer.MAX_VALUE, resultingEffect));
         children.add(new Property("location", "Reference(Location)", "The information about where the adverse event occurred.", 0, 1, location));
         children.add(new Property("seriousness", "CodeableConcept", "Assessment whether this event, or averted event, was of clinical importance.", 0, 1, seriousness));
         children.add(new Property("outcome", "CodeableConcept", "Describes the type of outcome from the adverse event, such as resolved, recovering, ongoing, resolved-with-sequelae, or fatal.", 0, java.lang.Integer.MAX_VALUE, outcome));
@@ -3095,7 +3095,7 @@ public class AdverseEvent extends DomainResource {
         case 1515218299: /*occurrenceTiming*/  return new Property("occurrence[x]", "Timing", "The date (and perhaps time) when the adverse event occurred.", 0, 1, occurrence);
         case 1048254082: /*detected*/  return new Property("detected", "dateTime", "Estimated or actual date the AdverseEvent began, in the opinion of the reporter.", 0, 1, detected);
         case -1952893826: /*recordedDate*/  return new Property("recordedDate", "dateTime", "The date on which the existence of the AdverseEvent was first recorded.", 0, 1, recordedDate);
-        case -830261258: /*resultingCondition*/  return new Property("resultingCondition", "Reference(Condition)", "Information about the condition that occurred as a result of the adverse event, such as hives due to the exposure to a substance (for example, a drug or a chemical) or a broken leg as a result of the fall.", 0, java.lang.Integer.MAX_VALUE, resultingCondition);
+        case -2113579882: /*resultingEffect*/  return new Property("resultingEffect", "Reference(Condition|Observation)", "Information about the condition that occurred as a result of the adverse event, such as hives due to the exposure to a substance (for example, a drug or a chemical) or a broken leg as a result of the fall.", 0, java.lang.Integer.MAX_VALUE, resultingEffect);
         case 1901043637: /*location*/  return new Property("location", "Reference(Location)", "The information about where the adverse event occurred.", 0, 1, location);
         case -1551003909: /*seriousness*/  return new Property("seriousness", "CodeableConcept", "Assessment whether this event, or averted event, was of clinical importance.", 0, 1, seriousness);
         case -1106507950: /*outcome*/  return new Property("outcome", "CodeableConcept", "Describes the type of outcome from the adverse event, such as resolved, recovering, ongoing, resolved-with-sequelae, or fatal.", 0, java.lang.Integer.MAX_VALUE, outcome);
@@ -3127,7 +3127,7 @@ public class AdverseEvent extends DomainResource {
         case 1687874001: /*occurrence*/ return this.occurrence == null ? new Base[0] : new Base[] {this.occurrence}; // DataType
         case 1048254082: /*detected*/ return this.detected == null ? new Base[0] : new Base[] {this.detected}; // DateTimeType
         case -1952893826: /*recordedDate*/ return this.recordedDate == null ? new Base[0] : new Base[] {this.recordedDate}; // DateTimeType
-        case -830261258: /*resultingCondition*/ return this.resultingCondition == null ? new Base[0] : this.resultingCondition.toArray(new Base[this.resultingCondition.size()]); // Reference
+        case -2113579882: /*resultingEffect*/ return this.resultingEffect == null ? new Base[0] : this.resultingEffect.toArray(new Base[this.resultingEffect.size()]); // Reference
         case 1901043637: /*location*/ return this.location == null ? new Base[0] : new Base[] {this.location}; // Reference
         case -1551003909: /*seriousness*/ return this.seriousness == null ? new Base[0] : new Base[] {this.seriousness}; // CodeableConcept
         case -1106507950: /*outcome*/ return this.outcome == null ? new Base[0] : this.outcome.toArray(new Base[this.outcome.size()]); // CodeableConcept
@@ -3181,8 +3181,8 @@ public class AdverseEvent extends DomainResource {
         case -1952893826: // recordedDate
           this.recordedDate = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
-        case -830261258: // resultingCondition
-          this.getResultingCondition().add(TypeConvertor.castToReference(value)); // Reference
+        case -2113579882: // resultingEffect
+          this.getResultingEffect().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1901043637: // location
           this.location = TypeConvertor.castToReference(value); // Reference
@@ -3252,8 +3252,8 @@ public class AdverseEvent extends DomainResource {
           this.detected = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("recordedDate")) {
           this.recordedDate = TypeConvertor.castToDateTime(value); // DateTimeType
-        } else if (name.equals("resultingCondition")) {
-          this.getResultingCondition().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("resultingEffect")) {
+          this.getResultingEffect().add(TypeConvertor.castToReference(value));
         } else if (name.equals("location")) {
           this.location = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("seriousness")) {
@@ -3299,7 +3299,7 @@ public class AdverseEvent extends DomainResource {
         case 1687874001:  return getOccurrence();
         case 1048254082:  return getDetectedElement();
         case -1952893826:  return getRecordedDateElement();
-        case -830261258:  return addResultingCondition(); 
+        case -2113579882:  return addResultingEffect(); 
         case 1901043637:  return getLocation();
         case -1551003909:  return getSeriousness();
         case -1106507950:  return addOutcome(); 
@@ -3331,7 +3331,7 @@ public class AdverseEvent extends DomainResource {
         case 1687874001: /*occurrence*/ return new String[] {"dateTime", "Period", "Timing"};
         case 1048254082: /*detected*/ return new String[] {"dateTime"};
         case -1952893826: /*recordedDate*/ return new String[] {"dateTime"};
-        case -830261258: /*resultingCondition*/ return new String[] {"Reference"};
+        case -2113579882: /*resultingEffect*/ return new String[] {"Reference"};
         case 1901043637: /*location*/ return new String[] {"Reference"};
         case -1551003909: /*seriousness*/ return new String[] {"CodeableConcept"};
         case -1106507950: /*outcome*/ return new String[] {"CodeableConcept"};
@@ -3394,8 +3394,8 @@ public class AdverseEvent extends DomainResource {
         else if (name.equals("recordedDate")) {
           throw new FHIRException("Cannot call addChild on a primitive type AdverseEvent.recordedDate");
         }
-        else if (name.equals("resultingCondition")) {
-          return addResultingCondition();
+        else if (name.equals("resultingEffect")) {
+          return addResultingEffect();
         }
         else if (name.equals("location")) {
           this.location = new Reference();
@@ -3474,10 +3474,10 @@ public class AdverseEvent extends DomainResource {
         dst.occurrence = occurrence == null ? null : occurrence.copy();
         dst.detected = detected == null ? null : detected.copy();
         dst.recordedDate = recordedDate == null ? null : recordedDate.copy();
-        if (resultingCondition != null) {
-          dst.resultingCondition = new ArrayList<Reference>();
-          for (Reference i : resultingCondition)
-            dst.resultingCondition.add(i.copy());
+        if (resultingEffect != null) {
+          dst.resultingEffect = new ArrayList<Reference>();
+          for (Reference i : resultingEffect)
+            dst.resultingEffect.add(i.copy());
         };
         dst.location = location == null ? null : location.copy();
         dst.seriousness = seriousness == null ? null : seriousness.copy();
@@ -3544,7 +3544,7 @@ public class AdverseEvent extends DomainResource {
         return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(actuality, o.actuality, true)
            && compareDeep(category, o.category, true) && compareDeep(code, o.code, true) && compareDeep(subject, o.subject, true)
            && compareDeep(encounter, o.encounter, true) && compareDeep(occurrence, o.occurrence, true) && compareDeep(detected, o.detected, true)
-           && compareDeep(recordedDate, o.recordedDate, true) && compareDeep(resultingCondition, o.resultingCondition, true)
+           && compareDeep(recordedDate, o.recordedDate, true) && compareDeep(resultingEffect, o.resultingEffect, true)
            && compareDeep(location, o.location, true) && compareDeep(seriousness, o.seriousness, true) && compareDeep(outcome, o.outcome, true)
            && compareDeep(recorder, o.recorder, true) && compareDeep(participant, o.participant, true) && compareDeep(study, o.study, true)
            && compareDeep(expectedInResearchStudy, o.expectedInResearchStudy, true) && compareDeep(suspectEntity, o.suspectEntity, true)
@@ -3567,7 +3567,7 @@ public class AdverseEvent extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, actuality
-          , category, code, subject, encounter, occurrence, detected, recordedDate, resultingCondition
+          , category, code, subject, encounter, occurrence, detected, recordedDate, resultingEffect
           , location, seriousness, outcome, recorder, participant, study, expectedInResearchStudy
           , suspectEntity, contributingFactor, preventiveAction, mitigatingAction, supportingInfo
           , note);
@@ -3643,17 +3643,17 @@ public class AdverseEvent extends DomainResource {
    * <p>
    * Description: <b>When the event occurred</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>AdverseEvent.occurrence</b><br>
+   * Path: <b>AdverseEvent.occurrence.as(dateTime) | AdverseEvent.occurrence.as(Period) | AdverseEvent.occurrence.as(Timing)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="date", path="AdverseEvent.occurrence", description="When the event occurred", type="date" )
+  @SearchParamDefinition(name="date", path="AdverseEvent.occurrence.as(dateTime) | AdverseEvent.occurrence.as(Period) | AdverseEvent.occurrence.as(Timing)", description="When the event occurred", type="date" )
   public static final String SP_DATE = "date";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>date</b>
    * <p>
    * Description: <b>When the event occurred</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>AdverseEvent.occurrence</b><br>
+   * Path: <b>AdverseEvent.occurrence.as(dateTime) | AdverseEvent.occurrence.as(Period) | AdverseEvent.occurrence.as(Timing)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
@@ -3757,30 +3757,30 @@ public class AdverseEvent extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_RECORDER = new ca.uhn.fhir.model.api.Include("AdverseEvent:recorder").toLocked();
 
  /**
-   * Search parameter: <b>resultingcondition</b>
+   * Search parameter: <b>resultingeffect</b>
    * <p>
    * Description: <b>Effect on the subject due to this event</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AdverseEvent.resultingCondition</b><br>
+   * Path: <b>AdverseEvent.resultingEffect</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="resultingcondition", path="AdverseEvent.resultingCondition", description="Effect on the subject due to this event", type="reference", target={Condition.class } )
-  public static final String SP_RESULTINGCONDITION = "resultingcondition";
+  @SearchParamDefinition(name="resultingeffect", path="AdverseEvent.resultingEffect", description="Effect on the subject due to this event", type="reference", target={Condition.class, Observation.class } )
+  public static final String SP_RESULTINGEFFECT = "resultingeffect";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>resultingcondition</b>
+   * <b>Fluent Client</b> search parameter constant for <b>resultingeffect</b>
    * <p>
    * Description: <b>Effect on the subject due to this event</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AdverseEvent.resultingCondition</b><br>
+   * Path: <b>AdverseEvent.resultingEffect</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam RESULTINGCONDITION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_RESULTINGCONDITION);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam RESULTINGEFFECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_RESULTINGEFFECT);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>AdverseEvent:resultingcondition</b>".
+   * the path value of "<b>AdverseEvent:resultingeffect</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_RESULTINGCONDITION = new ca.uhn.fhir.model.api.Include("AdverseEvent:resultingcondition").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_RESULTINGEFFECT = new ca.uhn.fhir.model.api.Include("AdverseEvent:resultingeffect").toLocked();
 
  /**
    * Search parameter: <b>seriousness</b>

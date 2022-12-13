@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -622,6 +622,359 @@ public class SubstanceDefinition extends DomainResource {
   }
 
     @Block()
+    public static class SubstanceDefinitionCharacterizationComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * The method used to elucidate the characterization of the drug substance. Example: HPLC.
+         */
+        @Child(name = "technique", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="The method used to find the characterization e.g. HPLC", formalDefinition="The method used to elucidate the characterization of the drug substance. Example: HPLC." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/substance-structure-technique")
+        protected CodeableConcept technique;
+
+        /**
+         * The specific chemical entity of the substance being characterized, to distinguish for example salt or base.
+         */
+        @Child(name = "form", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="The specific chemical entity of the substance being characterized, to distinguish for example salt or base", formalDefinition="The specific chemical entity of the substance being characterized, to distinguish for example salt or base." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/substance-form")
+        protected CodeableConcept form;
+
+        /**
+         * Narrative text, data, tables about the characterization.
+         */
+        @Child(name = "description", type = {MarkdownType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Narrative text, data, tables about the characterization", formalDefinition="Narrative text, data, tables about the characterization." )
+        protected MarkdownType description;
+
+        /**
+         * An image or data file that characterizes this substance.
+         */
+        @Child(name = "file", type = {Attachment.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Description(shortDefinition="An image or data file that characterizes this substance", formalDefinition="An image or data file that characterizes this substance." )
+        protected List<Attachment> file;
+
+        private static final long serialVersionUID = -1561571166L;
+
+    /**
+     * Constructor
+     */
+      public SubstanceDefinitionCharacterizationComponent() {
+        super();
+      }
+
+        /**
+         * @return {@link #technique} (The method used to elucidate the characterization of the drug substance. Example: HPLC.)
+         */
+        public CodeableConcept getTechnique() { 
+          if (this.technique == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create SubstanceDefinitionCharacterizationComponent.technique");
+            else if (Configuration.doAutoCreate())
+              this.technique = new CodeableConcept(); // cc
+          return this.technique;
+        }
+
+        public boolean hasTechnique() { 
+          return this.technique != null && !this.technique.isEmpty();
+        }
+
+        /**
+         * @param value {@link #technique} (The method used to elucidate the characterization of the drug substance. Example: HPLC.)
+         */
+        public SubstanceDefinitionCharacterizationComponent setTechnique(CodeableConcept value) { 
+          this.technique = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #form} (The specific chemical entity of the substance being characterized, to distinguish for example salt or base.)
+         */
+        public CodeableConcept getForm() { 
+          if (this.form == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create SubstanceDefinitionCharacterizationComponent.form");
+            else if (Configuration.doAutoCreate())
+              this.form = new CodeableConcept(); // cc
+          return this.form;
+        }
+
+        public boolean hasForm() { 
+          return this.form != null && !this.form.isEmpty();
+        }
+
+        /**
+         * @param value {@link #form} (The specific chemical entity of the substance being characterized, to distinguish for example salt or base.)
+         */
+        public SubstanceDefinitionCharacterizationComponent setForm(CodeableConcept value) { 
+          this.form = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #description} (Narrative text, data, tables about the characterization.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+         */
+        public MarkdownType getDescriptionElement() { 
+          if (this.description == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create SubstanceDefinitionCharacterizationComponent.description");
+            else if (Configuration.doAutoCreate())
+              this.description = new MarkdownType(); // bb
+          return this.description;
+        }
+
+        public boolean hasDescriptionElement() { 
+          return this.description != null && !this.description.isEmpty();
+        }
+
+        public boolean hasDescription() { 
+          return this.description != null && !this.description.isEmpty();
+        }
+
+        /**
+         * @param value {@link #description} (Narrative text, data, tables about the characterization.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+         */
+        public SubstanceDefinitionCharacterizationComponent setDescriptionElement(MarkdownType value) { 
+          this.description = value;
+          return this;
+        }
+
+        /**
+         * @return Narrative text, data, tables about the characterization.
+         */
+        public String getDescription() { 
+          return this.description == null ? null : this.description.getValue();
+        }
+
+        /**
+         * @param value Narrative text, data, tables about the characterization.
+         */
+        public SubstanceDefinitionCharacterizationComponent setDescription(String value) { 
+          if (value == null)
+            this.description = null;
+          else {
+            if (this.description == null)
+              this.description = new MarkdownType();
+            this.description.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #file} (An image or data file that characterizes this substance.)
+         */
+        public List<Attachment> getFile() { 
+          if (this.file == null)
+            this.file = new ArrayList<Attachment>();
+          return this.file;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public SubstanceDefinitionCharacterizationComponent setFile(List<Attachment> theFile) { 
+          this.file = theFile;
+          return this;
+        }
+
+        public boolean hasFile() { 
+          if (this.file == null)
+            return false;
+          for (Attachment item : this.file)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public Attachment addFile() { //3
+          Attachment t = new Attachment();
+          if (this.file == null)
+            this.file = new ArrayList<Attachment>();
+          this.file.add(t);
+          return t;
+        }
+
+        public SubstanceDefinitionCharacterizationComponent addFile(Attachment t) { //3
+          if (t == null)
+            return this;
+          if (this.file == null)
+            this.file = new ArrayList<Attachment>();
+          this.file.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #file}, creating it if it does not already exist {3}
+         */
+        public Attachment getFileFirstRep() { 
+          if (getFile().isEmpty()) {
+            addFile();
+          }
+          return getFile().get(0);
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("technique", "CodeableConcept", "The method used to elucidate the characterization of the drug substance. Example: HPLC.", 0, 1, technique));
+          children.add(new Property("form", "CodeableConcept", "The specific chemical entity of the substance being characterized, to distinguish for example salt or base.", 0, 1, form));
+          children.add(new Property("description", "markdown", "Narrative text, data, tables about the characterization.", 0, 1, description));
+          children.add(new Property("file", "Attachment", "An image or data file that characterizes this substance.", 0, java.lang.Integer.MAX_VALUE, file));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 1469675088: /*technique*/  return new Property("technique", "CodeableConcept", "The method used to elucidate the characterization of the drug substance. Example: HPLC.", 0, 1, technique);
+          case 3148996: /*form*/  return new Property("form", "CodeableConcept", "The specific chemical entity of the substance being characterized, to distinguish for example salt or base.", 0, 1, form);
+          case -1724546052: /*description*/  return new Property("description", "markdown", "Narrative text, data, tables about the characterization.", 0, 1, description);
+          case 3143036: /*file*/  return new Property("file", "Attachment", "An image or data file that characterizes this substance.", 0, java.lang.Integer.MAX_VALUE, file);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 1469675088: /*technique*/ return this.technique == null ? new Base[0] : new Base[] {this.technique}; // CodeableConcept
+        case 3148996: /*form*/ return this.form == null ? new Base[0] : new Base[] {this.form}; // CodeableConcept
+        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // MarkdownType
+        case 3143036: /*file*/ return this.file == null ? new Base[0] : this.file.toArray(new Base[this.file.size()]); // Attachment
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 1469675088: // technique
+          this.technique = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 3148996: // form
+          this.form = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -1724546052: // description
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
+          return value;
+        case 3143036: // file
+          this.getFile().add(TypeConvertor.castToAttachment(value)); // Attachment
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("technique")) {
+          this.technique = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("form")) {
+          this.form = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("description")) {
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
+        } else if (name.equals("file")) {
+          this.getFile().add(TypeConvertor.castToAttachment(value));
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 1469675088:  return getTechnique();
+        case 3148996:  return getForm();
+        case -1724546052:  return getDescriptionElement();
+        case 3143036:  return addFile(); 
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 1469675088: /*technique*/ return new String[] {"CodeableConcept"};
+        case 3148996: /*form*/ return new String[] {"CodeableConcept"};
+        case -1724546052: /*description*/ return new String[] {"markdown"};
+        case 3143036: /*file*/ return new String[] {"Attachment"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("technique")) {
+          this.technique = new CodeableConcept();
+          return this.technique;
+        }
+        else if (name.equals("form")) {
+          this.form = new CodeableConcept();
+          return this.form;
+        }
+        else if (name.equals("description")) {
+          throw new FHIRException("Cannot call addChild on a primitive type SubstanceDefinition.characterization.description");
+        }
+        else if (name.equals("file")) {
+          return addFile();
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public SubstanceDefinitionCharacterizationComponent copy() {
+        SubstanceDefinitionCharacterizationComponent dst = new SubstanceDefinitionCharacterizationComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceDefinitionCharacterizationComponent dst) {
+        super.copyValues(dst);
+        dst.technique = technique == null ? null : technique.copy();
+        dst.form = form == null ? null : form.copy();
+        dst.description = description == null ? null : description.copy();
+        if (file != null) {
+          dst.file = new ArrayList<Attachment>();
+          for (Attachment i : file)
+            dst.file.add(i.copy());
+        };
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof SubstanceDefinitionCharacterizationComponent))
+          return false;
+        SubstanceDefinitionCharacterizationComponent o = (SubstanceDefinitionCharacterizationComponent) other_;
+        return compareDeep(technique, o.technique, true) && compareDeep(form, o.form, true) && compareDeep(description, o.description, true)
+           && compareDeep(file, o.file, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof SubstanceDefinitionCharacterizationComponent))
+          return false;
+        SubstanceDefinitionCharacterizationComponent o = (SubstanceDefinitionCharacterizationComponent) other_;
+        return compareValues(description, o.description, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(technique, form, description
+          , file);
+      }
+
+  public String fhirType() {
+    return "SubstanceDefinition.characterization";
+
+  }
+
+  }
+
+    @Block()
     public static class SubstanceDefinitionPropertyComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * A code expressing the type of property.
@@ -1203,10 +1556,10 @@ public class SubstanceDefinition extends DomainResource {
         protected CodeableConcept opticalActivity;
 
         /**
-         * Molecular formula of this substance, typically using the Hill system.
+         * An expression which states the number and type of atoms present in a molecule of a substance.
          */
         @Child(name = "molecularFormula", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Molecular formula (e.g. using the Hill system)", formalDefinition="Molecular formula of this substance, typically using the Hill system." )
+        @Description(shortDefinition="An expression which states the number and type of atoms present in a molecule of a substance", formalDefinition="An expression which states the number and type of atoms present in a molecule of a substance." )
         protected StringType molecularFormula;
 
         /**
@@ -1224,10 +1577,10 @@ public class SubstanceDefinition extends DomainResource {
         protected SubstanceDefinitionMolecularWeightComponent molecularWeight;
 
         /**
-         * The method used to elucidate the structure or characterization of the drug substance. Examples: X-ray, HPLC, NMR, Peptide mapping, Ligand binding assay.
+         * The method used to elucidate the structure of the drug substance. Examples: X-ray, NMR, Peptide mapping, Ligand binding assay.
          */
         @Child(name = "technique", type = {CodeableConcept.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="The method used to find the structure e.g. X-ray, NMR", formalDefinition="The method used to elucidate the structure or characterization of the drug substance. Examples: X-ray, HPLC, NMR, Peptide mapping, Ligand binding assay." )
+        @Description(shortDefinition="The method used to find the structure e.g. X-ray, NMR", formalDefinition="The method used to elucidate the structure of the drug substance. Examples: X-ray, NMR, Peptide mapping, Ligand binding assay." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/substance-structure-technique")
         protected List<CodeableConcept> technique;
 
@@ -1239,10 +1592,10 @@ public class SubstanceDefinition extends DomainResource {
         protected List<Reference> sourceDocument;
 
         /**
-         * A depiction of the structure or characterization of the substance.
+         * A depiction of the structure of the substance.
          */
         @Child(name = "representation", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="A depiction of the structure or characterization of the substance", formalDefinition="A depiction of the structure or characterization of the substance." )
+        @Description(shortDefinition="A depiction of the structure of the substance", formalDefinition="A depiction of the structure of the substance." )
         protected List<SubstanceDefinitionStructureRepresentationComponent> representation;
 
         private static final long serialVersionUID = -2137814144L;
@@ -1303,7 +1656,7 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #molecularFormula} (Molecular formula of this substance, typically using the Hill system.). This is the underlying object with id, value and extensions. The accessor "getMolecularFormula" gives direct access to the value
+         * @return {@link #molecularFormula} (An expression which states the number and type of atoms present in a molecule of a substance.). This is the underlying object with id, value and extensions. The accessor "getMolecularFormula" gives direct access to the value
          */
         public StringType getMolecularFormulaElement() { 
           if (this.molecularFormula == null)
@@ -1323,7 +1676,7 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         /**
-         * @param value {@link #molecularFormula} (Molecular formula of this substance, typically using the Hill system.). This is the underlying object with id, value and extensions. The accessor "getMolecularFormula" gives direct access to the value
+         * @param value {@link #molecularFormula} (An expression which states the number and type of atoms present in a molecule of a substance.). This is the underlying object with id, value and extensions. The accessor "getMolecularFormula" gives direct access to the value
          */
         public SubstanceDefinitionStructureComponent setMolecularFormulaElement(StringType value) { 
           this.molecularFormula = value;
@@ -1331,14 +1684,14 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         /**
-         * @return Molecular formula of this substance, typically using the Hill system.
+         * @return An expression which states the number and type of atoms present in a molecule of a substance.
          */
         public String getMolecularFormula() { 
           return this.molecularFormula == null ? null : this.molecularFormula.getValue();
         }
 
         /**
-         * @param value Molecular formula of this substance, typically using the Hill system.
+         * @param value An expression which states the number and type of atoms present in a molecule of a substance.
          */
         public SubstanceDefinitionStructureComponent setMolecularFormula(String value) { 
           if (Utilities.noString(value))
@@ -1425,7 +1778,7 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #technique} (The method used to elucidate the structure or characterization of the drug substance. Examples: X-ray, HPLC, NMR, Peptide mapping, Ligand binding assay.)
+         * @return {@link #technique} (The method used to elucidate the structure of the drug substance. Examples: X-ray, NMR, Peptide mapping, Ligand binding assay.)
          */
         public List<CodeableConcept> getTechnique() { 
           if (this.technique == null)
@@ -1531,7 +1884,7 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #representation} (A depiction of the structure or characterization of the substance.)
+         * @return {@link #representation} (A depiction of the structure of the substance.)
          */
         public List<SubstanceDefinitionStructureRepresentationComponent> getRepresentation() { 
           if (this.representation == null)
@@ -1587,12 +1940,12 @@ public class SubstanceDefinition extends DomainResource {
           super.listChildren(children);
           children.add(new Property("stereochemistry", "CodeableConcept", "Stereochemistry type.", 0, 1, stereochemistry));
           children.add(new Property("opticalActivity", "CodeableConcept", "Optical activity type.", 0, 1, opticalActivity));
-          children.add(new Property("molecularFormula", "string", "Molecular formula of this substance, typically using the Hill system.", 0, 1, molecularFormula));
+          children.add(new Property("molecularFormula", "string", "An expression which states the number and type of atoms present in a molecule of a substance.", 0, 1, molecularFormula));
           children.add(new Property("molecularFormulaByMoiety", "string", "Specified per moiety according to the Hill system, i.e. first C, then H, then alphabetical, each moiety separated by a dot.", 0, 1, molecularFormulaByMoiety));
           children.add(new Property("molecularWeight", "@SubstanceDefinition.molecularWeight", "The molecular weight or weight range (for proteins, polymers or nucleic acids).", 0, 1, molecularWeight));
-          children.add(new Property("technique", "CodeableConcept", "The method used to elucidate the structure or characterization of the drug substance. Examples: X-ray, HPLC, NMR, Peptide mapping, Ligand binding assay.", 0, java.lang.Integer.MAX_VALUE, technique));
+          children.add(new Property("technique", "CodeableConcept", "The method used to elucidate the structure of the drug substance. Examples: X-ray, NMR, Peptide mapping, Ligand binding assay.", 0, java.lang.Integer.MAX_VALUE, technique));
           children.add(new Property("sourceDocument", "Reference(DocumentReference)", "The source of information about the structure.", 0, java.lang.Integer.MAX_VALUE, sourceDocument));
-          children.add(new Property("representation", "", "A depiction of the structure or characterization of the substance.", 0, java.lang.Integer.MAX_VALUE, representation));
+          children.add(new Property("representation", "", "A depiction of the structure of the substance.", 0, java.lang.Integer.MAX_VALUE, representation));
         }
 
         @Override
@@ -1600,12 +1953,12 @@ public class SubstanceDefinition extends DomainResource {
           switch (_hash) {
           case 263475116: /*stereochemistry*/  return new Property("stereochemistry", "CodeableConcept", "Stereochemistry type.", 0, 1, stereochemistry);
           case 1420900135: /*opticalActivity*/  return new Property("opticalActivity", "CodeableConcept", "Optical activity type.", 0, 1, opticalActivity);
-          case 616660246: /*molecularFormula*/  return new Property("molecularFormula", "string", "Molecular formula of this substance, typically using the Hill system.", 0, 1, molecularFormula);
+          case 616660246: /*molecularFormula*/  return new Property("molecularFormula", "string", "An expression which states the number and type of atoms present in a molecule of a substance.", 0, 1, molecularFormula);
           case 1315452848: /*molecularFormulaByMoiety*/  return new Property("molecularFormulaByMoiety", "string", "Specified per moiety according to the Hill system, i.e. first C, then H, then alphabetical, each moiety separated by a dot.", 0, 1, molecularFormulaByMoiety);
           case 635625672: /*molecularWeight*/  return new Property("molecularWeight", "@SubstanceDefinition.molecularWeight", "The molecular weight or weight range (for proteins, polymers or nucleic acids).", 0, 1, molecularWeight);
-          case 1469675088: /*technique*/  return new Property("technique", "CodeableConcept", "The method used to elucidate the structure or characterization of the drug substance. Examples: X-ray, HPLC, NMR, Peptide mapping, Ligand binding assay.", 0, java.lang.Integer.MAX_VALUE, technique);
+          case 1469675088: /*technique*/  return new Property("technique", "CodeableConcept", "The method used to elucidate the structure of the drug substance. Examples: X-ray, NMR, Peptide mapping, Ligand binding assay.", 0, java.lang.Integer.MAX_VALUE, technique);
           case -501788074: /*sourceDocument*/  return new Property("sourceDocument", "Reference(DocumentReference)", "The source of information about the structure.", 0, java.lang.Integer.MAX_VALUE, sourceDocument);
-          case -671065907: /*representation*/  return new Property("representation", "", "A depiction of the structure or characterization of the substance.", 0, java.lang.Integer.MAX_VALUE, representation);
+          case -671065907: /*representation*/  return new Property("representation", "", "A depiction of the structure of the substance.", 0, java.lang.Integer.MAX_VALUE, representation);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1826,10 +2179,10 @@ public class SubstanceDefinition extends DomainResource {
         protected CodeableConcept type;
 
         /**
-         * The structural representation or characterization as a text string in a standard format.
+         * The structural representation as a text string in a standard format.
          */
         @Child(name = "representation", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="The structural representation or characterization as a text string in a standard format", formalDefinition="The structural representation or characterization as a text string in a standard format." )
+        @Description(shortDefinition="The structural representation as a text string in a standard format", formalDefinition="The structural representation as a text string in a standard format." )
         protected StringType representation;
 
         /**
@@ -1841,10 +2194,10 @@ public class SubstanceDefinition extends DomainResource {
         protected CodeableConcept format;
 
         /**
-         * An attached file with the structural representation or characterization e.g. a molecular structure graphic of the substance, a JCAMP or AnIML file.
+         * An attached file with the structural representation e.g. a molecular structure graphic of the substance, a JCAMP or AnIML file.
          */
         @Child(name = "document", type = {DocumentReference.class}, order=4, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="An attachment with the structural representation e.g. a structure graphic or AnIML file", formalDefinition="An attached file with the structural representation or characterization e.g. a molecular structure graphic of the substance, a JCAMP or AnIML file." )
+        @Description(shortDefinition="An attachment with the structural representation e.g. a structure graphic or AnIML file", formalDefinition="An attached file with the structural representation e.g. a molecular structure graphic of the substance, a JCAMP or AnIML file." )
         protected Reference document;
 
         private static final long serialVersionUID = 138704347L;
@@ -1881,7 +2234,7 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #representation} (The structural representation or characterization as a text string in a standard format.). This is the underlying object with id, value and extensions. The accessor "getRepresentation" gives direct access to the value
+         * @return {@link #representation} (The structural representation as a text string in a standard format.). This is the underlying object with id, value and extensions. The accessor "getRepresentation" gives direct access to the value
          */
         public StringType getRepresentationElement() { 
           if (this.representation == null)
@@ -1901,7 +2254,7 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         /**
-         * @param value {@link #representation} (The structural representation or characterization as a text string in a standard format.). This is the underlying object with id, value and extensions. The accessor "getRepresentation" gives direct access to the value
+         * @param value {@link #representation} (The structural representation as a text string in a standard format.). This is the underlying object with id, value and extensions. The accessor "getRepresentation" gives direct access to the value
          */
         public SubstanceDefinitionStructureRepresentationComponent setRepresentationElement(StringType value) { 
           this.representation = value;
@@ -1909,14 +2262,14 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         /**
-         * @return The structural representation or characterization as a text string in a standard format.
+         * @return The structural representation as a text string in a standard format.
          */
         public String getRepresentation() { 
           return this.representation == null ? null : this.representation.getValue();
         }
 
         /**
-         * @param value The structural representation or characterization as a text string in a standard format.
+         * @param value The structural representation as a text string in a standard format.
          */
         public SubstanceDefinitionStructureRepresentationComponent setRepresentation(String value) { 
           if (Utilities.noString(value))
@@ -1954,7 +2307,7 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #document} (An attached file with the structural representation or characterization e.g. a molecular structure graphic of the substance, a JCAMP or AnIML file.)
+         * @return {@link #document} (An attached file with the structural representation e.g. a molecular structure graphic of the substance, a JCAMP or AnIML file.)
          */
         public Reference getDocument() { 
           if (this.document == null)
@@ -1970,7 +2323,7 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         /**
-         * @param value {@link #document} (An attached file with the structural representation or characterization e.g. a molecular structure graphic of the substance, a JCAMP or AnIML file.)
+         * @param value {@link #document} (An attached file with the structural representation e.g. a molecular structure graphic of the substance, a JCAMP or AnIML file.)
          */
         public SubstanceDefinitionStructureRepresentationComponent setDocument(Reference value) { 
           this.document = value;
@@ -1980,18 +2333,18 @@ public class SubstanceDefinition extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "The kind of structural representation (e.g. full, partial).", 0, 1, type));
-          children.add(new Property("representation", "string", "The structural representation or characterization as a text string in a standard format.", 0, 1, representation));
+          children.add(new Property("representation", "string", "The structural representation as a text string in a standard format.", 0, 1, representation));
           children.add(new Property("format", "CodeableConcept", "The format of the representation e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF. The logical content type rather than the physical file format of a document.", 0, 1, format));
-          children.add(new Property("document", "Reference(DocumentReference)", "An attached file with the structural representation or characterization e.g. a molecular structure graphic of the substance, a JCAMP or AnIML file.", 0, 1, document));
+          children.add(new Property("document", "Reference(DocumentReference)", "An attached file with the structural representation e.g. a molecular structure graphic of the substance, a JCAMP or AnIML file.", 0, 1, document));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The kind of structural representation (e.g. full, partial).", 0, 1, type);
-          case -671065907: /*representation*/  return new Property("representation", "string", "The structural representation or characterization as a text string in a standard format.", 0, 1, representation);
+          case -671065907: /*representation*/  return new Property("representation", "string", "The structural representation as a text string in a standard format.", 0, 1, representation);
           case -1268779017: /*format*/  return new Property("format", "CodeableConcept", "The format of the representation e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF. The logical content type rather than the physical file format of a document.", 0, 1, format);
-          case 861720859: /*document*/  return new Property("document", "Reference(DocumentReference)", "An attached file with the structural representation or characterization e.g. a molecular structure graphic of the substance, a JCAMP or AnIML file.", 0, 1, document);
+          case 861720859: /*document*/  return new Property("document", "Reference(DocumentReference)", "An attached file with the structural representation e.g. a molecular structure graphic of the substance, a JCAMP or AnIML file.", 0, 1, document);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -4791,81 +5144,88 @@ public class SubstanceDefinition extends DomainResource {
     /**
      * General specifications for this substance.
      */
-    @Child(name = "property", type = {}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "characterization", type = {}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="General specifications for this substance", formalDefinition="General specifications for this substance." )
+    protected List<SubstanceDefinitionCharacterizationComponent> characterization;
+
+    /**
+     * General specifications for this substance.
+     */
+    @Child(name = "property", type = {}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="General specifications for this substance", formalDefinition="General specifications for this substance." )
     protected List<SubstanceDefinitionPropertyComponent> property;
 
     /**
      * General information detailing this substance.
      */
-    @Child(name = "referenceInformation", type = {SubstanceReferenceInformation.class}, order=13, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "referenceInformation", type = {SubstanceReferenceInformation.class}, order=14, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="General information detailing this substance", formalDefinition="General information detailing this substance." )
     protected Reference referenceInformation;
 
     /**
-     * The molecular weight or weight range (for proteins, polymers or nucleic acids).
+     * The average mass of a molecule of a compound compared to 1/12 the mass of carbon 12 and calculated as the sum of the atomic weights of the constituent atoms.
      */
-    @Child(name = "molecularWeight", type = {}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="The molecular weight or weight range", formalDefinition="The molecular weight or weight range (for proteins, polymers or nucleic acids)." )
+    @Child(name = "molecularWeight", type = {}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="The average mass of a molecule of a compound", formalDefinition="The average mass of a molecule of a compound compared to 1/12 the mass of carbon 12 and calculated as the sum of the atomic weights of the constituent atoms." )
     protected List<SubstanceDefinitionMolecularWeightComponent> molecularWeight;
 
     /**
      * Structural information.
      */
-    @Child(name = "structure", type = {}, order=15, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "structure", type = {}, order=16, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Structural information", formalDefinition="Structural information." )
     protected SubstanceDefinitionStructureComponent structure;
 
     /**
      * Codes associated with the substance.
      */
-    @Child(name = "code", type = {}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "code", type = {}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Codes associated with the substance", formalDefinition="Codes associated with the substance." )
     protected List<SubstanceDefinitionCodeComponent> code;
 
     /**
      * Names applicable to this substance.
      */
-    @Child(name = "name", type = {}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "name", type = {}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Names applicable to this substance", formalDefinition="Names applicable to this substance." )
     protected List<SubstanceDefinitionNameComponent> name;
 
     /**
      * A link between this substance and another, with details of the relationship.
      */
-    @Child(name = "relationship", type = {}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "relationship", type = {}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="A link between this substance and another", formalDefinition="A link between this substance and another, with details of the relationship." )
     protected List<SubstanceDefinitionRelationshipComponent> relationship;
 
     /**
      * Data items specific to nucleic acids.
      */
-    @Child(name = "nucleicAcid", type = {SubstanceNucleicAcid.class}, order=19, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "nucleicAcid", type = {SubstanceNucleicAcid.class}, order=20, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Data items specific to nucleic acids", formalDefinition="Data items specific to nucleic acids." )
     protected Reference nucleicAcid;
 
     /**
      * Data items specific to polymers.
      */
-    @Child(name = "polymer", type = {SubstancePolymer.class}, order=20, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "polymer", type = {SubstancePolymer.class}, order=21, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Data items specific to polymers", formalDefinition="Data items specific to polymers." )
     protected Reference polymer;
 
     /**
      * Data items specific to proteins.
      */
-    @Child(name = "protein", type = {SubstanceProtein.class}, order=21, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "protein", type = {SubstanceProtein.class}, order=22, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Data items specific to proteins", formalDefinition="Data items specific to proteins." )
     protected Reference protein;
 
     /**
      * Material or taxonomic/anatomical source for the substance.
      */
-    @Child(name = "sourceMaterial", type = {}, order=22, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "sourceMaterial", type = {}, order=23, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Material or taxonomic/anatomical source", formalDefinition="Material or taxonomic/anatomical source for the substance." )
     protected SubstanceDefinitionSourceMaterialComponent sourceMaterial;
 
-    private static final long serialVersionUID = 23576785L;
+    private static final long serialVersionUID = -206769887L;
 
   /**
    * Constructor
@@ -5445,6 +5805,59 @@ public class SubstanceDefinition extends DomainResource {
     }
 
     /**
+     * @return {@link #characterization} (General specifications for this substance.)
+     */
+    public List<SubstanceDefinitionCharacterizationComponent> getCharacterization() { 
+      if (this.characterization == null)
+        this.characterization = new ArrayList<SubstanceDefinitionCharacterizationComponent>();
+      return this.characterization;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public SubstanceDefinition setCharacterization(List<SubstanceDefinitionCharacterizationComponent> theCharacterization) { 
+      this.characterization = theCharacterization;
+      return this;
+    }
+
+    public boolean hasCharacterization() { 
+      if (this.characterization == null)
+        return false;
+      for (SubstanceDefinitionCharacterizationComponent item : this.characterization)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public SubstanceDefinitionCharacterizationComponent addCharacterization() { //3
+      SubstanceDefinitionCharacterizationComponent t = new SubstanceDefinitionCharacterizationComponent();
+      if (this.characterization == null)
+        this.characterization = new ArrayList<SubstanceDefinitionCharacterizationComponent>();
+      this.characterization.add(t);
+      return t;
+    }
+
+    public SubstanceDefinition addCharacterization(SubstanceDefinitionCharacterizationComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.characterization == null)
+        this.characterization = new ArrayList<SubstanceDefinitionCharacterizationComponent>();
+      this.characterization.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #characterization}, creating it if it does not already exist {3}
+     */
+    public SubstanceDefinitionCharacterizationComponent getCharacterizationFirstRep() { 
+      if (getCharacterization().isEmpty()) {
+        addCharacterization();
+      }
+      return getCharacterization().get(0);
+    }
+
+    /**
      * @return {@link #property} (General specifications for this substance.)
      */
     public List<SubstanceDefinitionPropertyComponent> getProperty() { 
@@ -5522,7 +5935,7 @@ public class SubstanceDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #molecularWeight} (The molecular weight or weight range (for proteins, polymers or nucleic acids).)
+     * @return {@link #molecularWeight} (The average mass of a molecule of a compound compared to 1/12 the mass of carbon 12 and calculated as the sum of the atomic weights of the constituent atoms.)
      */
     public List<SubstanceDefinitionMolecularWeightComponent> getMolecularWeight() { 
       if (this.molecularWeight == null)
@@ -5867,9 +6280,10 @@ public class SubstanceDefinition extends DomainResource {
         children.add(new Property("manufacturer", "Reference(Organization)", "The entity that creates, makes, produces or fabricates the substance. This is a set of potential manufacturers but is not necessarily comprehensive.", 0, java.lang.Integer.MAX_VALUE, manufacturer));
         children.add(new Property("supplier", "Reference(Organization)", "An entity that is the source for the substance. It may be different from the manufacturer. Supplier is synonymous to a distributor.", 0, java.lang.Integer.MAX_VALUE, supplier));
         children.add(new Property("moiety", "", "Moiety, for structural modifications.", 0, java.lang.Integer.MAX_VALUE, moiety));
+        children.add(new Property("characterization", "", "General specifications for this substance.", 0, java.lang.Integer.MAX_VALUE, characterization));
         children.add(new Property("property", "", "General specifications for this substance.", 0, java.lang.Integer.MAX_VALUE, property));
         children.add(new Property("referenceInformation", "Reference(SubstanceReferenceInformation)", "General information detailing this substance.", 0, 1, referenceInformation));
-        children.add(new Property("molecularWeight", "", "The molecular weight or weight range (for proteins, polymers or nucleic acids).", 0, java.lang.Integer.MAX_VALUE, molecularWeight));
+        children.add(new Property("molecularWeight", "", "The average mass of a molecule of a compound compared to 1/12 the mass of carbon 12 and calculated as the sum of the atomic weights of the constituent atoms.", 0, java.lang.Integer.MAX_VALUE, molecularWeight));
         children.add(new Property("structure", "", "Structural information.", 0, 1, structure));
         children.add(new Property("code", "", "Codes associated with the substance.", 0, java.lang.Integer.MAX_VALUE, code));
         children.add(new Property("name", "", "Names applicable to this substance.", 0, java.lang.Integer.MAX_VALUE, name));
@@ -5895,9 +6309,10 @@ public class SubstanceDefinition extends DomainResource {
         case -1969347631: /*manufacturer*/  return new Property("manufacturer", "Reference(Organization)", "The entity that creates, makes, produces or fabricates the substance. This is a set of potential manufacturers but is not necessarily comprehensive.", 0, java.lang.Integer.MAX_VALUE, manufacturer);
         case -1663305268: /*supplier*/  return new Property("supplier", "Reference(Organization)", "An entity that is the source for the substance. It may be different from the manufacturer. Supplier is synonymous to a distributor.", 0, java.lang.Integer.MAX_VALUE, supplier);
         case -1068650173: /*moiety*/  return new Property("moiety", "", "Moiety, for structural modifications.", 0, java.lang.Integer.MAX_VALUE, moiety);
+        case 23517467: /*characterization*/  return new Property("characterization", "", "General specifications for this substance.", 0, java.lang.Integer.MAX_VALUE, characterization);
         case -993141291: /*property*/  return new Property("property", "", "General specifications for this substance.", 0, java.lang.Integer.MAX_VALUE, property);
         case -2117930783: /*referenceInformation*/  return new Property("referenceInformation", "Reference(SubstanceReferenceInformation)", "General information detailing this substance.", 0, 1, referenceInformation);
-        case 635625672: /*molecularWeight*/  return new Property("molecularWeight", "", "The molecular weight or weight range (for proteins, polymers or nucleic acids).", 0, java.lang.Integer.MAX_VALUE, molecularWeight);
+        case 635625672: /*molecularWeight*/  return new Property("molecularWeight", "", "The average mass of a molecule of a compound compared to 1/12 the mass of carbon 12 and calculated as the sum of the atomic weights of the constituent atoms.", 0, java.lang.Integer.MAX_VALUE, molecularWeight);
         case 144518515: /*structure*/  return new Property("structure", "", "Structural information.", 0, 1, structure);
         case 3059181: /*code*/  return new Property("code", "", "Codes associated with the substance.", 0, java.lang.Integer.MAX_VALUE, code);
         case 3373707: /*name*/  return new Property("name", "", "Names applicable to this substance.", 0, java.lang.Integer.MAX_VALUE, name);
@@ -5926,6 +6341,7 @@ public class SubstanceDefinition extends DomainResource {
         case -1969347631: /*manufacturer*/ return this.manufacturer == null ? new Base[0] : this.manufacturer.toArray(new Base[this.manufacturer.size()]); // Reference
         case -1663305268: /*supplier*/ return this.supplier == null ? new Base[0] : this.supplier.toArray(new Base[this.supplier.size()]); // Reference
         case -1068650173: /*moiety*/ return this.moiety == null ? new Base[0] : this.moiety.toArray(new Base[this.moiety.size()]); // SubstanceDefinitionMoietyComponent
+        case 23517467: /*characterization*/ return this.characterization == null ? new Base[0] : this.characterization.toArray(new Base[this.characterization.size()]); // SubstanceDefinitionCharacterizationComponent
         case -993141291: /*property*/ return this.property == null ? new Base[0] : this.property.toArray(new Base[this.property.size()]); // SubstanceDefinitionPropertyComponent
         case -2117930783: /*referenceInformation*/ return this.referenceInformation == null ? new Base[0] : new Base[] {this.referenceInformation}; // Reference
         case 635625672: /*molecularWeight*/ return this.molecularWeight == null ? new Base[0] : this.molecularWeight.toArray(new Base[this.molecularWeight.size()]); // SubstanceDefinitionMolecularWeightComponent
@@ -5980,6 +6396,9 @@ public class SubstanceDefinition extends DomainResource {
           return value;
         case -1068650173: // moiety
           this.getMoiety().add((SubstanceDefinitionMoietyComponent) value); // SubstanceDefinitionMoietyComponent
+          return value;
+        case 23517467: // characterization
+          this.getCharacterization().add((SubstanceDefinitionCharacterizationComponent) value); // SubstanceDefinitionCharacterizationComponent
           return value;
         case -993141291: // property
           this.getProperty().add((SubstanceDefinitionPropertyComponent) value); // SubstanceDefinitionPropertyComponent
@@ -6045,6 +6464,8 @@ public class SubstanceDefinition extends DomainResource {
           this.getSupplier().add(TypeConvertor.castToReference(value));
         } else if (name.equals("moiety")) {
           this.getMoiety().add((SubstanceDefinitionMoietyComponent) value);
+        } else if (name.equals("characterization")) {
+          this.getCharacterization().add((SubstanceDefinitionCharacterizationComponent) value);
         } else if (name.equals("property")) {
           this.getProperty().add((SubstanceDefinitionPropertyComponent) value);
         } else if (name.equals("referenceInformation")) {
@@ -6087,6 +6508,7 @@ public class SubstanceDefinition extends DomainResource {
         case -1969347631:  return addManufacturer(); 
         case -1663305268:  return addSupplier(); 
         case -1068650173:  return addMoiety(); 
+        case 23517467:  return addCharacterization(); 
         case -993141291:  return addProperty(); 
         case -2117930783:  return getReferenceInformation();
         case 635625672:  return addMolecularWeight(); 
@@ -6118,6 +6540,7 @@ public class SubstanceDefinition extends DomainResource {
         case -1969347631: /*manufacturer*/ return new String[] {"Reference"};
         case -1663305268: /*supplier*/ return new String[] {"Reference"};
         case -1068650173: /*moiety*/ return new String[] {};
+        case 23517467: /*characterization*/ return new String[] {};
         case -993141291: /*property*/ return new String[] {};
         case -2117930783: /*referenceInformation*/ return new String[] {"Reference"};
         case 635625672: /*molecularWeight*/ return new String[] {};
@@ -6173,6 +6596,9 @@ public class SubstanceDefinition extends DomainResource {
         }
         else if (name.equals("moiety")) {
           return addMoiety();
+        }
+        else if (name.equals("characterization")) {
+          return addCharacterization();
         }
         else if (name.equals("property")) {
           return addProperty();
@@ -6274,6 +6700,11 @@ public class SubstanceDefinition extends DomainResource {
           for (SubstanceDefinitionMoietyComponent i : moiety)
             dst.moiety.add(i.copy());
         };
+        if (characterization != null) {
+          dst.characterization = new ArrayList<SubstanceDefinitionCharacterizationComponent>();
+          for (SubstanceDefinitionCharacterizationComponent i : characterization)
+            dst.characterization.add(i.copy());
+        };
         if (property != null) {
           dst.property = new ArrayList<SubstanceDefinitionPropertyComponent>();
           for (SubstanceDefinitionPropertyComponent i : property)
@@ -6322,7 +6753,8 @@ public class SubstanceDefinition extends DomainResource {
            && compareDeep(classification, o.classification, true) && compareDeep(domain, o.domain, true) && compareDeep(grade, o.grade, true)
            && compareDeep(description, o.description, true) && compareDeep(informationSource, o.informationSource, true)
            && compareDeep(note, o.note, true) && compareDeep(manufacturer, o.manufacturer, true) && compareDeep(supplier, o.supplier, true)
-           && compareDeep(moiety, o.moiety, true) && compareDeep(property, o.property, true) && compareDeep(referenceInformation, o.referenceInformation, true)
+           && compareDeep(moiety, o.moiety, true) && compareDeep(characterization, o.characterization, true)
+           && compareDeep(property, o.property, true) && compareDeep(referenceInformation, o.referenceInformation, true)
            && compareDeep(molecularWeight, o.molecularWeight, true) && compareDeep(structure, o.structure, true)
            && compareDeep(code, o.code, true) && compareDeep(name, o.name, true) && compareDeep(relationship, o.relationship, true)
            && compareDeep(nucleicAcid, o.nucleicAcid, true) && compareDeep(polymer, o.polymer, true) && compareDeep(protein, o.protein, true)
@@ -6342,8 +6774,9 @@ public class SubstanceDefinition extends DomainResource {
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, version, status
           , classification, domain, grade, description, informationSource, note, manufacturer
-          , supplier, moiety, property, referenceInformation, molecularWeight, structure, code
-          , name, relationship, nucleicAcid, polymer, protein, sourceMaterial);
+          , supplier, moiety, characterization, property, referenceInformation, molecularWeight
+          , structure, code, name, relationship, nucleicAcid, polymer, protein, sourceMaterial
+          );
       }
 
   @Override

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -3030,17 +3030,17 @@ public class Specimen extends DomainResource {
    * <p>
    * Description: <b>The date the specimen was collected</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>Specimen.collection.collected</b><br>
+   * Path: <b>Specimen.collection.collected.as(dateTime) | Specimen.collection.collected.as(Period)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="collected", path="Specimen.collection.collected", description="The date the specimen was collected", type="date" )
+  @SearchParamDefinition(name="collected", path="Specimen.collection.collected.as(dateTime) | Specimen.collection.collected.as(Period)", description="The date the specimen was collected", type="date" )
   public static final String SP_COLLECTED = "collected";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>collected</b>
    * <p>
    * Description: <b>The date the specimen was collected</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>Specimen.collection.collected</b><br>
+   * Path: <b>Specimen.collection.collected.as(dateTime) | Specimen.collection.collected.as(Period)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam COLLECTED = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_COLLECTED);
