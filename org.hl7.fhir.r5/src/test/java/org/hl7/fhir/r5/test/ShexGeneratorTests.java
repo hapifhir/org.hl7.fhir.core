@@ -178,6 +178,10 @@ public class ShexGeneratorTests {
   }
 
   @Test
+  public void testRatio() throws FHIRException, IOException, UcumException {
+    doTest("Ratio");
+  }
+  @Test
   public void testObservation() throws FHIRException, IOException, UcumException {
     doTest("Observation");
   }
