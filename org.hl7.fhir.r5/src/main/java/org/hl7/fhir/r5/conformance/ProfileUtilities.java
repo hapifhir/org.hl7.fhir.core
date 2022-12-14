@@ -331,7 +331,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       this.fpe = new FHIRPathEngine(context, this);
     }
   }
-  
+
   public static class UnusedTracker {
     private boolean used;
   }
@@ -1716,13 +1716,13 @@ public class ProfileUtilities extends TranslatingUtilities {
       if (webUrl != null) {
         // also, must touch up the markdown
         if (element.hasDefinition())
-          element.setDefinition(processRelativeUrls(element.getDefinition(), webUrl, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames, null, false));
+          element.setDefinition(processRelativeUrls(element.getDefinition(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, null, false));
         if (element.hasComment())
-          element.setComment(processRelativeUrls(element.getComment(), webUrl, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames, null, false));
+          element.setComment(processRelativeUrls(element.getComment(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, null, false));
         if (element.hasRequirements())
-          element.setRequirements(processRelativeUrls(element.getRequirements(), webUrl, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames, null, false));
+          element.setRequirements(processRelativeUrls(element.getRequirements(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, null, false));
         if (element.hasMeaningWhenMissing())
-          element.setMeaningWhenMissing(processRelativeUrls(element.getMeaningWhenMissing(), webUrl, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames, null, false));
+          element.setMeaningWhenMissing(processRelativeUrls(element.getMeaningWhenMissing(), webUrl, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, null, false));
       }
     }
     return element;
@@ -1839,28 +1839,6 @@ public class ProfileUtilities extends TranslatingUtilities {
         url.startsWith("patient-operation-match.html") ||
         (url.startsWith("extension-") && url.contains(".html")) || 
         url.startsWith("resource-definitions.html");
-  }
-
-  private String baseSpecUrl() {
-    if (VersionUtilities.isR5Ver(context.getVersion())) {
-      return "http://build.fhir.org/";
-    }
-    if (VersionUtilities.isR4Ver(context.getVersion())) {
-      return "http://hl7.org/fhir/R4/";
-    }
-    if (VersionUtilities.isR3Ver(context.getVersion())) {
-      return "http://hl7.org/fhir/STU3/";
-    }
-    if (VersionUtilities.isR2BVer(context.getVersion())) {
-      return "http://hl7.org/fhir/2016May/";
-    }
-    if (VersionUtilities.isR2Ver(context.getVersion())) {
-      return "http://hl7.org/fhir/DSTU2/";
-    }
-    if (VersionUtilities.isR4BVer(context.getVersion())) {
-      return "http://hl7.org/fhir/2021Mar/";
-    }
-    return "";
   }
 
   protected List<ElementDefinition> getSiblings(List<ElementDefinition> list, ElementDefinition current) {
@@ -2053,7 +2031,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       String webroot = profile.getUserString("webroot");
 
       if (e.hasDefinition()) {
-        base.setDefinition(processRelativeUrls(e.getDefinition(), webroot, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames, null, true));
+        base.setDefinition(processRelativeUrls(e.getDefinition(), webroot, context.getSpecUrl(), context.getResourceNames(), masterSourceFileNames, null, true));
       }
       base.setShort(e.getShort());
       if (e.hasCommentElement())
@@ -3554,7 +3532,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     }
     if (element != null && element.hasExtension(ToolingExtensions.EXT_STANDARDS_STATUS)) {
       StandardsStatus ss = StandardsStatus.fromCode(element.getExtensionString(ToolingExtensions.EXT_STANDARDS_STATUS));
-      gc.addStyledText("Standards Status = "+ss.toDisplay(), ss.getAbbrev(), "black", ss.getColor(), baseSpecUrl()+"versions.html#std-process", true);
+      gc.addStyledText("Standards Status = "+ss.toDisplay(), ss.getAbbrev(), "black", ss.getColor(), context.getSpecUrl()+"versions.html#std-process", true);
     }
 
     ExtensionContext extDefn = null;
@@ -5218,13 +5196,14 @@ public class ProfileUtilities extends TranslatingUtilities {
         }
       }
     }
-    for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
-      if (inv.hasXpath()) {
-        Section s = sch.section(ed.getPath());
-        Rule r = s.rule(xpath);
-        r.assrt(inv.getXpath(), (inv.hasId() ? inv.getId()+": " : "")+inv.getHuman()+(inv.hasUserData(IS_DERIVED) ? " (inherited)" : ""));
-      }
-    }
+/// xpath has been removed
+//    for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
+//      if (inv.hasXpath()) {
+//        Section s = sch.section(ed.getPath());
+//        Rule r = s.rule(xpath);
+//        r.assrt(inv.getXpath(), (inv.hasId() ? inv.getId()+": " : "")+inv.getHuman()+(inv.hasUserData(IS_DERIVED) ? " (inherited)" : ""));
+//      }
+//    }
     if (!ed.hasContentReference()) {
       for (ElementDefinition child : children) {
         String name = tail(child.getPath());

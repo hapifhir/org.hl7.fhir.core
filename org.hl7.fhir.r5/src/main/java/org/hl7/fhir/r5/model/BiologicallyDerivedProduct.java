@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -344,7 +344,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
          */
         @Child(name = "type", type = {Coding.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Code that specifies the property", formalDefinition="Code that specifies the property. It should reference an established coding system." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/biologicallyderivedproduct-property-type-codes")
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/biologicallyderived-product-property-type-codes")
         protected Coding type;
 
         /**

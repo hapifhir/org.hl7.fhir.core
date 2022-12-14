@@ -105,7 +105,23 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   /**
    * Constructor
    */
+  @Deprecated
   public FilesystemPackageCacheManager(boolean userMode, int toolsVersion) throws IOException {
+    addPackageServer(PackageClient.PRIMARY_SERVER);
+    addPackageServer(PackageClient.SECONDARY_SERVER);
+
+    if (userMode)
+      cacheFolder = Utilities.path(System.getProperty("user.home"), ".fhir", "packages");
+    else
+      cacheFolder = Utilities.path("var", "lib", ".fhir", "packages");
+    if (!(new File(cacheFolder).exists()))
+      Utilities.createDirectory(cacheFolder);
+    if (!(new File(Utilities.path(cacheFolder, "packages.ini")).exists()))
+      TextFile.stringToFile("[cache]\r\nversion=" + CACHE_VERSION + "\r\n\r\n[urls]\r\n\r\n[local]\r\n\r\n", Utilities.path(cacheFolder, "packages.ini"), false);
+    createIniFile();
+  }
+
+  public FilesystemPackageCacheManager(boolean userMode) throws IOException {
     addPackageServer(PackageClient.PRIMARY_SERVER);
     addPackageServer(PackageClient.SECONDARY_SERVER);
 
@@ -416,7 +432,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           if (progress)
             log(" done.");
         }
-        pck = loadPackageInfo(packRoot);
         if (!id.equals(npm.getNpm().asString("name")) || !v.equals(npm.getNpm().asString("version"))) {
           if (!id.equals(npm.getNpm().asString("name"))) {
             npm.getNpm().add("original-name", npm.getNpm().asString("name"));
@@ -430,6 +445,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           }
           TextFile.stringToFile(JsonParser.compose(npm.getNpm(), true), Utilities.path(cacheFolder, id + "#" + v, "package", "package.json"), false);
         }
+        pck = loadPackageInfo(packRoot);
       } catch (Exception e) {
         try {
           // don't leave a half extracted package behind

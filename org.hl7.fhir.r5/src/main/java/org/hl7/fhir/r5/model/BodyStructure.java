@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1306,6 +1306,26 @@ public class BodyStructure extends DomainResource {
    }
 
  /**
+   * Search parameter: <b>excluded_structure</b>
+   * <p>
+   * Description: <b>Body site excludedStructure structure</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BodyStructure.excludedStructure.structure</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="excluded_structure", path="BodyStructure.excludedStructure.structure", description="Body site excludedStructure structure", type="token" )
+  public static final String SP_EXCLUDEDSTRUCTURE = "excluded_structure";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>excluded_structure</b>
+   * <p>
+   * Description: <b>Body site excludedStructure structure</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BodyStructure.excludedStructure.structure</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam EXCLUDEDSTRUCTURE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EXCLUDEDSTRUCTURE);
+
+ /**
    * Search parameter: <b>identifier</b>
    * <p>
    * Description: <b>Bodystructure identifier</b><br>
@@ -1324,6 +1344,26 @@ public class BodyStructure extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>included_structure</b>
+   * <p>
+   * Description: <b>Body site includedStructure structure</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BodyStructure.includedStructure.structure</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="included_structure", path="BodyStructure.includedStructure.structure", description="Body site includedStructure structure", type="token" )
+  public static final String SP_INCLUDEDSTRUCTURE = "included_structure";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>included_structure</b>
+   * <p>
+   * Description: <b>Body site includedStructure structure</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BodyStructure.includedStructure.structure</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam INCLUDEDSTRUCTURE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_INCLUDEDSTRUCTURE);
 
  /**
    * Search parameter: <b>morphology</b>
@@ -1370,26 +1410,6 @@ public class BodyStructure extends DomainResource {
    * the path value of "<b>BodyStructure:patient</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("BodyStructure:patient").toLocked();
-
- /**
-   * Search parameter: <b>structure</b>
-   * <p>
-   * Description: <b>Body site excludedStructure structure</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>BodyStructure.excludedStructure.structure</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="structure", path="BodyStructure.excludedStructure.structure", description="Body site excludedStructure structure", type="token" )
-  public static final String SP_STRUCTURE = "structure";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>structure</b>
-   * <p>
-   * Description: <b>Body site excludedStructure structure</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>BodyStructure.excludedStructure.structure</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STRUCTURE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STRUCTURE);
 
 
 }

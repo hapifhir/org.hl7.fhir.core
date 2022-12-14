@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -731,22 +731,15 @@ public class Procedure extends DomainResource {
     /**
      * Any complications that occurred during the procedure, or in the immediate post-performance period. These are generally tracked separately from the notes, which will typically describe the procedure itself rather than any 'post procedure' issues.
      */
-    @Child(name = "complication", type = {CodeableConcept.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "complication", type = {CodeableReference.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Complication following the procedure", formalDefinition="Any complications that occurred during the procedure, or in the immediate post-performance period. These are generally tracked separately from the notes, which will typically describe the procedure itself rather than any 'post procedure' issues." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/condition-code")
-    protected List<CodeableConcept> complication;
-
-    /**
-     * Any complications that occurred during the procedure, or in the immediate post-performance period.
-     */
-    @Child(name = "complicationDetail", type = {Condition.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="A condition that is a result of the procedure", formalDefinition="Any complications that occurred during the procedure, or in the immediate post-performance period." )
-    protected List<Reference> complicationDetail;
+    protected List<CodeableReference> complication;
 
     /**
      * If the procedure required specific follow up - e.g. removal of sutures. The follow up may be represented as a simple note or could potentially be more complex, in which case the CarePlan resource can be used.
      */
-    @Child(name = "followUp", type = {CodeableConcept.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "followUp", type = {CodeableConcept.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Instructions for follow up", formalDefinition="If the procedure required specific follow up - e.g. removal of sutures. The follow up may be represented as a simple note or could potentially be more complex, in which case the CarePlan resource can be used." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/procedure-followup")
     protected List<CodeableConcept> followUp;
@@ -754,21 +747,21 @@ public class Procedure extends DomainResource {
     /**
      * Any other notes and comments about the procedure.
      */
-    @Child(name = "note", type = {Annotation.class}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "note", type = {Annotation.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Additional information about the procedure", formalDefinition="Any other notes and comments about the procedure." )
     protected List<Annotation> note;
 
     /**
      * A device that is implanted, removed or otherwise manipulated (calibration, battery replacement, fitting a prosthesis, attaching a wound-vac, etc.) as a focal portion of the Procedure.
      */
-    @Child(name = "focalDevice", type = {}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "focalDevice", type = {}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Manipulated, implanted, or removed device", formalDefinition="A device that is implanted, removed or otherwise manipulated (calibration, battery replacement, fitting a prosthesis, attaching a wound-vac, etc.) as a focal portion of the Procedure." )
     protected List<ProcedureFocalDeviceComponent> focalDevice;
 
     /**
      * Identifies medications, devices and any other substance used as part of the procedure.
      */
-    @Child(name = "used", type = {CodeableReference.class}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "used", type = {CodeableReference.class}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Items used during procedure", formalDefinition="Identifies medications, devices and any other substance used as part of the procedure." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/device-type")
     protected List<CodeableReference> used;
@@ -776,11 +769,11 @@ public class Procedure extends DomainResource {
     /**
      * Other resources from the patient record that may be relevant to the procedure.  The information from these resources was either used to create the instance or is provided to help with its interpretation. This extension should not be used if more specific inline elements or extensions are available.
      */
-    @Child(name = "supportingInfo", type = {Reference.class}, order=28, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "supportingInfo", type = {Reference.class}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Extra information relevant to the procedure", formalDefinition="Other resources from the patient record that may be relevant to the procedure.  The information from these resources was either used to create the instance or is provided to help with its interpretation. This extension should not be used if more specific inline elements or extensions are available." )
     protected List<Reference> supportingInfo;
 
-    private static final long serialVersionUID = -1682731069L;
+    private static final long serialVersionUID = 372127918L;
 
   /**
    * Constructor
@@ -1795,16 +1788,16 @@ public class Procedure extends DomainResource {
     /**
      * @return {@link #complication} (Any complications that occurred during the procedure, or in the immediate post-performance period. These are generally tracked separately from the notes, which will typically describe the procedure itself rather than any 'post procedure' issues.)
      */
-    public List<CodeableConcept> getComplication() { 
+    public List<CodeableReference> getComplication() { 
       if (this.complication == null)
-        this.complication = new ArrayList<CodeableConcept>();
+        this.complication = new ArrayList<CodeableReference>();
       return this.complication;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Procedure setComplication(List<CodeableConcept> theComplication) { 
+    public Procedure setComplication(List<CodeableReference> theComplication) { 
       this.complication = theComplication;
       return this;
     }
@@ -1812,25 +1805,25 @@ public class Procedure extends DomainResource {
     public boolean hasComplication() { 
       if (this.complication == null)
         return false;
-      for (CodeableConcept item : this.complication)
+      for (CodeableReference item : this.complication)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public CodeableConcept addComplication() { //3
-      CodeableConcept t = new CodeableConcept();
+    public CodeableReference addComplication() { //3
+      CodeableReference t = new CodeableReference();
       if (this.complication == null)
-        this.complication = new ArrayList<CodeableConcept>();
+        this.complication = new ArrayList<CodeableReference>();
       this.complication.add(t);
       return t;
     }
 
-    public Procedure addComplication(CodeableConcept t) { //3
+    public Procedure addComplication(CodeableReference t) { //3
       if (t == null)
         return this;
       if (this.complication == null)
-        this.complication = new ArrayList<CodeableConcept>();
+        this.complication = new ArrayList<CodeableReference>();
       this.complication.add(t);
       return this;
     }
@@ -1838,64 +1831,11 @@ public class Procedure extends DomainResource {
     /**
      * @return The first repetition of repeating field {@link #complication}, creating it if it does not already exist {3}
      */
-    public CodeableConcept getComplicationFirstRep() { 
+    public CodeableReference getComplicationFirstRep() { 
       if (getComplication().isEmpty()) {
         addComplication();
       }
       return getComplication().get(0);
-    }
-
-    /**
-     * @return {@link #complicationDetail} (Any complications that occurred during the procedure, or in the immediate post-performance period.)
-     */
-    public List<Reference> getComplicationDetail() { 
-      if (this.complicationDetail == null)
-        this.complicationDetail = new ArrayList<Reference>();
-      return this.complicationDetail;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public Procedure setComplicationDetail(List<Reference> theComplicationDetail) { 
-      this.complicationDetail = theComplicationDetail;
-      return this;
-    }
-
-    public boolean hasComplicationDetail() { 
-      if (this.complicationDetail == null)
-        return false;
-      for (Reference item : this.complicationDetail)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public Reference addComplicationDetail() { //3
-      Reference t = new Reference();
-      if (this.complicationDetail == null)
-        this.complicationDetail = new ArrayList<Reference>();
-      this.complicationDetail.add(t);
-      return t;
-    }
-
-    public Procedure addComplicationDetail(Reference t) { //3
-      if (t == null)
-        return this;
-      if (this.complicationDetail == null)
-        this.complicationDetail = new ArrayList<Reference>();
-      this.complicationDetail.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #complicationDetail}, creating it if it does not already exist {3}
-     */
-    public Reference getComplicationDetailFirstRep() { 
-      if (getComplicationDetail().isEmpty()) {
-        addComplicationDetail();
-      }
-      return getComplicationDetail().get(0);
     }
 
     /**
@@ -2187,8 +2127,7 @@ public class Procedure extends DomainResource {
         children.add(new Property("bodySite", "CodeableConcept", "Detailed and structured anatomical location information. Multiple locations are allowed - e.g. multiple punch biopsies of a lesion.", 0, java.lang.Integer.MAX_VALUE, bodySite));
         children.add(new Property("outcome", "CodeableConcept", "The outcome of the procedure - did it resolve the reasons for the procedure being performed?", 0, 1, outcome));
         children.add(new Property("report", "Reference(DiagnosticReport|DocumentReference|Composition)", "This could be a histology result, pathology report, surgical report, etc.", 0, java.lang.Integer.MAX_VALUE, report));
-        children.add(new Property("complication", "CodeableConcept", "Any complications that occurred during the procedure, or in the immediate post-performance period. These are generally tracked separately from the notes, which will typically describe the procedure itself rather than any 'post procedure' issues.", 0, java.lang.Integer.MAX_VALUE, complication));
-        children.add(new Property("complicationDetail", "Reference(Condition)", "Any complications that occurred during the procedure, or in the immediate post-performance period.", 0, java.lang.Integer.MAX_VALUE, complicationDetail));
+        children.add(new Property("complication", "CodeableReference(Condition)", "Any complications that occurred during the procedure, or in the immediate post-performance period. These are generally tracked separately from the notes, which will typically describe the procedure itself rather than any 'post procedure' issues.", 0, java.lang.Integer.MAX_VALUE, complication));
         children.add(new Property("followUp", "CodeableConcept", "If the procedure required specific follow up - e.g. removal of sutures. The follow up may be represented as a simple note or could potentially be more complex, in which case the CarePlan resource can be used.", 0, java.lang.Integer.MAX_VALUE, followUp));
         children.add(new Property("note", "Annotation", "Any other notes and comments about the procedure.", 0, java.lang.Integer.MAX_VALUE, note));
         children.add(new Property("focalDevice", "", "A device that is implanted, removed or otherwise manipulated (calibration, battery replacement, fitting a prosthesis, attaching a wound-vac, etc.) as a focal portion of the Procedure.", 0, java.lang.Integer.MAX_VALUE, focalDevice));
@@ -2231,8 +2170,7 @@ public class Procedure extends DomainResource {
         case 1702620169: /*bodySite*/  return new Property("bodySite", "CodeableConcept", "Detailed and structured anatomical location information. Multiple locations are allowed - e.g. multiple punch biopsies of a lesion.", 0, java.lang.Integer.MAX_VALUE, bodySite);
         case -1106507950: /*outcome*/  return new Property("outcome", "CodeableConcept", "The outcome of the procedure - did it resolve the reasons for the procedure being performed?", 0, 1, outcome);
         case -934521548: /*report*/  return new Property("report", "Reference(DiagnosticReport|DocumentReference|Composition)", "This could be a histology result, pathology report, surgical report, etc.", 0, java.lang.Integer.MAX_VALUE, report);
-        case -1644401602: /*complication*/  return new Property("complication", "CodeableConcept", "Any complications that occurred during the procedure, or in the immediate post-performance period. These are generally tracked separately from the notes, which will typically describe the procedure itself rather than any 'post procedure' issues.", 0, java.lang.Integer.MAX_VALUE, complication);
-        case -1685272017: /*complicationDetail*/  return new Property("complicationDetail", "Reference(Condition)", "Any complications that occurred during the procedure, or in the immediate post-performance period.", 0, java.lang.Integer.MAX_VALUE, complicationDetail);
+        case -1644401602: /*complication*/  return new Property("complication", "CodeableReference(Condition)", "Any complications that occurred during the procedure, or in the immediate post-performance period. These are generally tracked separately from the notes, which will typically describe the procedure itself rather than any 'post procedure' issues.", 0, java.lang.Integer.MAX_VALUE, complication);
         case 301801004: /*followUp*/  return new Property("followUp", "CodeableConcept", "If the procedure required specific follow up - e.g. removal of sutures. The follow up may be represented as a simple note or could potentially be more complex, in which case the CarePlan resource can be used.", 0, java.lang.Integer.MAX_VALUE, followUp);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Any other notes and comments about the procedure.", 0, java.lang.Integer.MAX_VALUE, note);
         case -1129235173: /*focalDevice*/  return new Property("focalDevice", "", "A device that is implanted, removed or otherwise manipulated (calibration, battery replacement, fitting a prosthesis, attaching a wound-vac, etc.) as a focal portion of the Procedure.", 0, java.lang.Integer.MAX_VALUE, focalDevice);
@@ -2268,8 +2206,7 @@ public class Procedure extends DomainResource {
         case 1702620169: /*bodySite*/ return this.bodySite == null ? new Base[0] : this.bodySite.toArray(new Base[this.bodySite.size()]); // CodeableConcept
         case -1106507950: /*outcome*/ return this.outcome == null ? new Base[0] : new Base[] {this.outcome}; // CodeableConcept
         case -934521548: /*report*/ return this.report == null ? new Base[0] : this.report.toArray(new Base[this.report.size()]); // Reference
-        case -1644401602: /*complication*/ return this.complication == null ? new Base[0] : this.complication.toArray(new Base[this.complication.size()]); // CodeableConcept
-        case -1685272017: /*complicationDetail*/ return this.complicationDetail == null ? new Base[0] : this.complicationDetail.toArray(new Base[this.complicationDetail.size()]); // Reference
+        case -1644401602: /*complication*/ return this.complication == null ? new Base[0] : this.complication.toArray(new Base[this.complication.size()]); // CodeableReference
         case 301801004: /*followUp*/ return this.followUp == null ? new Base[0] : this.followUp.toArray(new Base[this.followUp.size()]); // CodeableConcept
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
         case -1129235173: /*focalDevice*/ return this.focalDevice == null ? new Base[0] : this.focalDevice.toArray(new Base[this.focalDevice.size()]); // ProcedureFocalDeviceComponent
@@ -2351,10 +2288,7 @@ public class Procedure extends DomainResource {
           this.getReport().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1644401602: // complication
-          this.getComplication().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
-          return value;
-        case -1685272017: // complicationDetail
-          this.getComplicationDetail().add(TypeConvertor.castToReference(value)); // Reference
+          this.getComplication().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
         case 301801004: // followUp
           this.getFollowUp().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
@@ -2424,9 +2358,7 @@ public class Procedure extends DomainResource {
         } else if (name.equals("report")) {
           this.getReport().add(TypeConvertor.castToReference(value));
         } else if (name.equals("complication")) {
-          this.getComplication().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("complicationDetail")) {
-          this.getComplicationDetail().add(TypeConvertor.castToReference(value));
+          this.getComplication().add(TypeConvertor.castToCodeableReference(value));
         } else if (name.equals("followUp")) {
           this.getFollowUp().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("note")) {
@@ -2470,7 +2402,6 @@ public class Procedure extends DomainResource {
         case -1106507950:  return getOutcome();
         case -934521548:  return addReport(); 
         case -1644401602:  return addComplication(); 
-        case -1685272017:  return addComplicationDetail(); 
         case 301801004:  return addFollowUp(); 
         case 3387378:  return addNote(); 
         case -1129235173:  return addFocalDevice(); 
@@ -2506,8 +2437,7 @@ public class Procedure extends DomainResource {
         case 1702620169: /*bodySite*/ return new String[] {"CodeableConcept"};
         case -1106507950: /*outcome*/ return new String[] {"CodeableConcept"};
         case -934521548: /*report*/ return new String[] {"Reference"};
-        case -1644401602: /*complication*/ return new String[] {"CodeableConcept"};
-        case -1685272017: /*complicationDetail*/ return new String[] {"Reference"};
+        case -1644401602: /*complication*/ return new String[] {"CodeableReference"};
         case 301801004: /*followUp*/ return new String[] {"CodeableConcept"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
         case -1129235173: /*focalDevice*/ return new String[] {};
@@ -2623,9 +2553,6 @@ public class Procedure extends DomainResource {
         else if (name.equals("complication")) {
           return addComplication();
         }
-        else if (name.equals("complicationDetail")) {
-          return addComplicationDetail();
-        }
         else if (name.equals("followUp")) {
           return addFollowUp();
         }
@@ -2721,14 +2648,9 @@ public class Procedure extends DomainResource {
             dst.report.add(i.copy());
         };
         if (complication != null) {
-          dst.complication = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : complication)
+          dst.complication = new ArrayList<CodeableReference>();
+          for (CodeableReference i : complication)
             dst.complication.add(i.copy());
-        };
-        if (complicationDetail != null) {
-          dst.complicationDetail = new ArrayList<Reference>();
-          for (Reference i : complicationDetail)
-            dst.complicationDetail.add(i.copy());
         };
         if (followUp != null) {
           dst.followUp = new ArrayList<CodeableConcept>();
@@ -2776,9 +2698,9 @@ public class Procedure extends DomainResource {
            && compareDeep(recorded, o.recorded, true) && compareDeep(recorder, o.recorder, true) && compareDeep(reported, o.reported, true)
            && compareDeep(performer, o.performer, true) && compareDeep(location, o.location, true) && compareDeep(reason, o.reason, true)
            && compareDeep(bodySite, o.bodySite, true) && compareDeep(outcome, o.outcome, true) && compareDeep(report, o.report, true)
-           && compareDeep(complication, o.complication, true) && compareDeep(complicationDetail, o.complicationDetail, true)
-           && compareDeep(followUp, o.followUp, true) && compareDeep(note, o.note, true) && compareDeep(focalDevice, o.focalDevice, true)
-           && compareDeep(used, o.used, true) && compareDeep(supportingInfo, o.supportingInfo, true);
+           && compareDeep(complication, o.complication, true) && compareDeep(followUp, o.followUp, true) && compareDeep(note, o.note, true)
+           && compareDeep(focalDevice, o.focalDevice, true) && compareDeep(used, o.used, true) && compareDeep(supportingInfo, o.supportingInfo, true)
+          ;
       }
 
       @Override
@@ -2796,8 +2718,8 @@ public class Procedure extends DomainResource {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, instantiatesCanonical
           , instantiatesUri, basedOn, partOf, status, statusReason, category, code, subject
           , focus, encounter, occurrence, recorded, recorder, reported, performer, location
-          , reason, bodySite, outcome, report, complication, complicationDetail, followUp
-          , note, focalDevice, used, supportingInfo);
+          , reason, bodySite, outcome, report, complication, followUp, note, focalDevice
+          , used, supportingInfo);
       }
 
   @Override
@@ -3167,10 +3089,10 @@ public class Procedure extends DomainResource {
 * [SupplyRequest](supplyrequest.html): When the request was made
 </b><br>
    * Type: <b>date</b><br>
-   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
+   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.as(dateTime) | DiagnosticReport.effective.as(Period) | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective.as(dateTime) | Observation.effective.as(Period) | Observation.effective.as(Timing) | Observation.effective.as(instant) | Procedure.occurrence.as(dateTime) | Procedure.occurrence.as(Period) | Procedure.occurrence.as(Timing) | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="date", path="AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded\r\n* [CarePlan](careplan.html): Time period plan covers\r\n* [CareTeam](careteam.html): A date within the coverage time period.\r\n* [ClinicalImpression](clinicalimpression.html): When the assessment was documented\r\n* [Composition](composition.html): Composition editing time\r\n* [Consent](consent.html): When consent was agreed to\r\n* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report\r\n* [Encounter](encounter.html): A date within the actualPeriod the Encounter lasted\r\n* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period\r\n* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated\r\n* [Flag](flag.html): Time period when flag is active\r\n* [Immunization](immunization.html): Vaccination  (non)-Administration Date\r\n* [List](list.html): When the list was prepared\r\n* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period\r\n* [Procedure](procedure.html): When the procedure occurred or is occurring\r\n* [RiskAssessment](riskassessment.html): When was assessment made?\r\n* [SupplyRequest](supplyrequest.html): When the request was made\r\n", type="date" )
+  @SearchParamDefinition(name="date", path="AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.as(dateTime) | DiagnosticReport.effective.as(Period) | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective.as(dateTime) | Observation.effective.as(Period) | Observation.effective.as(Timing) | Observation.effective.as(instant) | Procedure.occurrence.as(dateTime) | Procedure.occurrence.as(Period) | Procedure.occurrence.as(Timing) | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded\r\n* [CarePlan](careplan.html): Time period plan covers\r\n* [CareTeam](careteam.html): A date within the coverage time period.\r\n* [ClinicalImpression](clinicalimpression.html): When the assessment was documented\r\n* [Composition](composition.html): Composition editing time\r\n* [Consent](consent.html): When consent was agreed to\r\n* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report\r\n* [Encounter](encounter.html): A date within the actualPeriod the Encounter lasted\r\n* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period\r\n* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated\r\n* [Flag](flag.html): Time period when flag is active\r\n* [Immunization](immunization.html): Vaccination  (non)-Administration Date\r\n* [List](list.html): When the list was prepared\r\n* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period\r\n* [Procedure](procedure.html): When the procedure occurred or is occurring\r\n* [RiskAssessment](riskassessment.html): When was assessment made?\r\n* [SupplyRequest](supplyrequest.html): When the request was made\r\n", type="date" )
   public static final String SP_DATE = "date";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>date</b>
@@ -3196,7 +3118,7 @@ public class Procedure extends DomainResource {
 * [SupplyRequest](supplyrequest.html): When the request was made
 </b><br>
    * Type: <b>date</b><br>
-   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
+   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.as(dateTime) | DiagnosticReport.effective.as(Period) | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective.as(dateTime) | Observation.effective.as(Period) | Observation.effective.as(Timing) | Observation.effective.as(instant) | Procedure.occurrence.as(dateTime) | Procedure.occurrence.as(Period) | Procedure.occurrence.as(Timing) | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
@@ -3373,13 +3295,14 @@ public class Procedure extends DomainResource {
 * [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
 * [ServiceRequest](servicerequest.html): Search by subject - a patient
 * [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
+* [SupplyRequest](supplyrequest.html): The patient or subject for whom the supply is destined
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | SupplyRequest.deliverFor | VisionPrescription.patient</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={BiologicallyDerivedProduct.class, Device.class, Group.class, Location.class, Medication.class, NutritionProduct.class, Organization.class, Patient.class, Practitioner.class, Procedure.class, Substance.class } )
+  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | SupplyRequest.deliverFor | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [SupplyRequest](supplyrequest.html): The patient or subject for whom the supply is destined\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={BiologicallyDerivedProduct.class, Device.class, Group.class, Location.class, Medication.class, NutritionProduct.class, Organization.class, Patient.class, Practitioner.class, Procedure.class, Substance.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
@@ -3417,10 +3340,11 @@ public class Procedure extends DomainResource {
 * [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
 * [ServiceRequest](servicerequest.html): Search by subject - a patient
 * [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
+* [SupplyRequest](supplyrequest.html): The patient or subject for whom the supply is destined
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | SupplyRequest.deliverFor | VisionPrescription.patient</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
