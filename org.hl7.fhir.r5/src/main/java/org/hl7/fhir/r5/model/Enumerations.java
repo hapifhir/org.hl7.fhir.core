@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 
 import org.hl7.fhir.instance.model.api.*;
@@ -77,9 +77,9 @@ public class Enumerations {
 //   PublicationStatus: The lifecycle status of an artifact.[ActivityDefinition, ActorDefinition, AdministrableProductDefinition, CanonicalResource, CapabilityStatement, ChargeItemDefinition, Citation, CodeSystem, CompartmentDefinition, ConceptMap, ConditionDefinition, EventDefinition, Evidence, EvidenceReport, EvidenceVariable, ExampleScenario, GraphDefinition, ImplementationGuide, Ingredient, InsurancePlan, Library, ManufacturedItemDefinition, Measure, MessageDefinition, MetadataResource, NamingSystem, ObservationDefinition, OperationDefinition, PlanDefinition, Questionnaire, RelatedArtifact, Requirements, ResearchStudy, ResearchSubject, SearchParameter, SpecimenDefinition, StructureDefinition, StructureMap, SubscriptionTopic, TerminologyCapabilities, TestScript, ValueSet]
 //   QuantityComparator: How the Quantity should be understood and represented.[Age, Count, Distance, Duration, Quantity]
 //   RequestIntent: Codes indicating the degree of authority/intentionality associated with a request.[ActivityDefinition, CommunicationRequest, DeviceRequest, NutritionOrder, RequestOrchestration, ServiceRequest]
-//   RequestPriority: Identifies the level of importance to be assigned to actioning the request.[ActivityDefinition, Communication, CommunicationRequest, DeviceRequest, MedicationRequest, NutritionOrder, PlanDefinition, RequestOrchestration, ServiceRequest, SupplyRequest, Task, Transport]
+//   RequestPriority: Identifies the level of importance to be assigned to actioning the request.[ActivityDefinition, Communication, CommunicationRequest, DeviceRequest, MedicationRequest, PlanDefinition, RequestOrchestration, ServiceRequest, SupplyRequest, Task, Transport]
 //   RequestStatus: Codes identifying the lifecycle stage of a request.[CarePlan, CommunicationRequest, DeviceRequest, NutritionOrder, RequestOrchestration, ServiceRequest]
-//   ResourceTypes: All fhir data types[CapabilityStatement, CompartmentDefinition, GraphDefinition, ImplementationGuide, MessageDefinition, OperationDefinition, Questionnaire, SearchParameter]
+//   ResourceTypeEnum: All fhir data types[CapabilityStatement, CompartmentDefinition, ImplementationGuide, MessageDefinition, OperationDefinition, Questionnaire, SearchParameter]
 //   SearchParamType: Data types allowed to be used for search parameters.[CapabilityStatement, OperationDefinition, SearchParameter]
 //   SubscriptionSearchModifier: FHIR search modifiers allowed for use in Subscriptions and SubscriptionTopics.[Subscription, SubscriptionTopic]
 //   SubscriptionStatusCodes: State values for FHIR Subscriptions.[Subscription, SubscriptionStatus]
@@ -1325,7 +1325,7 @@ public class Enumerations {
          */
         ADMINISTRABLEPRODUCTDEFINITION, 
         /**
-         * An event (i.e. any change to current patient status) that may be related to unintended effects on a patient or research subject. The unintended effects may require additional monitoring, treatment, hospitalization, or may result in death. The AdverseEvent resource also extends to potential or avoided events that could have had such effects. There are two major domains where the AdverseEvent resource is expected to be used. One is in clinical care reported adverse events and the other is in reporting adverse events in clinical  research trial management. Given the differences between these two arenas, we recommend consulting the domain specific implementation guides when implementing the AdverseEvent Resource. The implementation guides include specific extensions, value sets and constraints.
+         * An event (i.e. any change to current patient status) that may be related to unintended effects on a patient or research subject. The unintended effects may require additional monitoring, treatment, hospitalization, or may result in death. The AdverseEvent resource also extends to potential or avoided events that could have had such effects. There are two major domains where the AdverseEvent resource is expected to be used. One is in clinical care reported adverse events and the other is in reporting adverse events in clinical  research trial management. Given the differences between these two concepts, we recommend consulting the domain specific implementation guides when implementing the AdverseEvent Resource. The implementation guides include specific extensions, value sets and constraints.
          */
         ADVERSEEVENT, 
         /**
@@ -2601,7 +2601,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case ACTIVITYDEFINITION: return "This resource allows for the definition of some activity to be performed, independent of a particular patient, practitioner, or other performance context.";
             case ACTORDEFINITION: return "The ActorDefinition resource is used to describe an actor - a human or an application that plays a role in data exchange, and that may have obligations associated with the role the actor plays.";
             case ADMINISTRABLEPRODUCTDEFINITION: return "A medicinal product in the final form which is suitable for administering to a patient (after any mixing of multiple components, dissolution etc. has been performed).";
-            case ADVERSEEVENT: return "An event (i.e. any change to current patient status) that may be related to unintended effects on a patient or research subject. The unintended effects may require additional monitoring, treatment, hospitalization, or may result in death. The AdverseEvent resource also extends to potential or avoided events that could have had such effects. There are two major domains where the AdverseEvent resource is expected to be used. One is in clinical care reported adverse events and the other is in reporting adverse events in clinical  research trial management. Given the differences between these two arenas, we recommend consulting the domain specific implementation guides when implementing the AdverseEvent Resource. The implementation guides include specific extensions, value sets and constraints.";
+            case ADVERSEEVENT: return "An event (i.e. any change to current patient status) that may be related to unintended effects on a patient or research subject. The unintended effects may require additional monitoring, treatment, hospitalization, or may result in death. The AdverseEvent resource also extends to potential or avoided events that could have had such effects. There are two major domains where the AdverseEvent resource is expected to be used. One is in clinical care reported adverse events and the other is in reporting adverse events in clinical  research trial management. Given the differences between these two concepts, we recommend consulting the domain specific implementation guides when implementing the AdverseEvent Resource. The implementation guides include specific extensions, value sets and constraints.";
             case ALLERGYINTOLERANCE: return "Risk of harmful or undesirable, physiological response which is unique to an individual and associated with exposure to a substance.";
             case APPOINTMENT: return "A booking of a healthcare event among patient(s), practitioner(s), related person(s) and/or device(s) for a specific date/time. This may result in one or more Encounter(s).";
             case APPOINTMENTRESPONSE: return "A reply to an appointment request for a patient and/or practitioner(s), such as a confirmation or rejection.";
@@ -9080,7 +9080,7 @@ The ISO21090-codedString may be used to provide a coded representation of the co
          */
         ADMINISTRABLEPRODUCTDEFINITION, 
         /**
-         * An event (i.e. any change to current patient status) that may be related to unintended effects on a patient or research subject. The unintended effects may require additional monitoring, treatment, hospitalization, or may result in death. The AdverseEvent resource also extends to potential or avoided events that could have had such effects. There are two major domains where the AdverseEvent resource is expected to be used. One is in clinical care reported adverse events and the other is in reporting adverse events in clinical  research trial management. Given the differences between these two arenas, we recommend consulting the domain specific implementation guides when implementing the AdverseEvent Resource. The implementation guides include specific extensions, value sets and constraints.
+         * An event (i.e. any change to current patient status) that may be related to unintended effects on a patient or research subject. The unintended effects may require additional monitoring, treatment, hospitalization, or may result in death. The AdverseEvent resource also extends to potential or avoided events that could have had such effects. There are two major domains where the AdverseEvent resource is expected to be used. One is in clinical care reported adverse events and the other is in reporting adverse events in clinical  research trial management. Given the differences between these two concepts, we recommend consulting the domain specific implementation guides when implementing the AdverseEvent Resource. The implementation guides include specific extensions, value sets and constraints.
          */
         ADVERSEEVENT, 
         /**
@@ -10696,7 +10696,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case ACTIVITYDEFINITION: return "This resource allows for the definition of some activity to be performed, independent of a particular patient, practitioner, or other performance context.";
             case ACTORDEFINITION: return "The ActorDefinition resource is used to describe an actor - a human or an application that plays a role in data exchange, and that may have obligations associated with the role the actor plays.";
             case ADMINISTRABLEPRODUCTDEFINITION: return "A medicinal product in the final form which is suitable for administering to a patient (after any mixing of multiple components, dissolution etc. has been performed).";
-            case ADVERSEEVENT: return "An event (i.e. any change to current patient status) that may be related to unintended effects on a patient or research subject. The unintended effects may require additional monitoring, treatment, hospitalization, or may result in death. The AdverseEvent resource also extends to potential or avoided events that could have had such effects. There are two major domains where the AdverseEvent resource is expected to be used. One is in clinical care reported adverse events and the other is in reporting adverse events in clinical  research trial management. Given the differences between these two arenas, we recommend consulting the domain specific implementation guides when implementing the AdverseEvent Resource. The implementation guides include specific extensions, value sets and constraints.";
+            case ADVERSEEVENT: return "An event (i.e. any change to current patient status) that may be related to unintended effects on a patient or research subject. The unintended effects may require additional monitoring, treatment, hospitalization, or may result in death. The AdverseEvent resource also extends to potential or avoided events that could have had such effects. There are two major domains where the AdverseEvent resource is expected to be used. One is in clinical care reported adverse events and the other is in reporting adverse events in clinical  research trial management. Given the differences between these two concepts, we recommend consulting the domain specific implementation guides when implementing the AdverseEvent Resource. The implementation guides include specific extensions, value sets and constraints.";
             case ALLERGYINTOLERANCE: return "Risk of harmful or undesirable, physiological response which is unique to an individual and associated with exposure to a substance.";
             case APPOINTMENT: return "A booking of a healthcare event among patient(s), practitioner(s), related person(s) and/or device(s) for a specific date/time. This may result in one or more Encounter(s).";
             case APPOINTMENTRESPONSE: return "A reply to an appointment request for a patient and/or practitioner(s), such as a confirmation or rejection.";
@@ -11549,8 +11549,6 @@ The primary difference between a medicationusage and a medicationadministration 
           return FHIRTypes.PARAMETERS;
         if ("Any".equals(codeString))
           return FHIRTypes.RESOURCE;
-        if ("CapabilityStatement2".equals(codeString))
-          return FHIRTypes.CAPABILITYSTATEMENT;
         throw new IllegalArgumentException("Unknown FHIRTypes code '"+codeString+"'");
         }
         public Enumeration<FHIRTypes> fromType(Base code) throws FHIRException {
@@ -12632,8 +12630,6 @@ The primary difference between a medicationusage and a medicationadministration 
          * R4B Ballot #1 + Connectathon 27 (Virtual).
          */
         _4_1_0, 
-        _4_3_0_SNAPSHOT1,
-        _4_3_0_CIBUILD,
         /**
          * R5 Preview #1 version.
          */
@@ -12649,7 +12645,10 @@ The primary difference between a medicationusage and a medicationadministration 
         /**
          * FHIR Release 4B (Normative + STU).
          */
-        _4_3_0, 
+        _4_3_0,
+        _4_3_0_SNAPSHOT1,
+        _4_3_0_CIBUILD,
+
         /**
          * R5 Preview #2 version.
          */
@@ -12698,6 +12697,10 @@ The primary difference between a medicationusage and a medicationadministration 
          * R5 Ballot.
          */
         _5_0_0BALLOT, 
+        /**
+         * R5 January 2023 Staging Release + Connectathon 32.
+         */
+        _5_0_0SNAPSHOT3, 
         /**
          * added to help the parsers
          */
@@ -12779,10 +12782,6 @@ The primary difference between a medicationusage and a medicationadministration 
           return _4_1;
         if ("4.1.0".equals(codeString))
           return _4_1_0;
-        if ("4.3.0-snapshot1".equals(codeString))
-          return _4_3_0_SNAPSHOT1;
-        if ("4.3.0-cibuild".equals(codeString))
-          return _4_3_0_CIBUILD;
         if ("4.2".equals(codeString))
           return _4_2;
         if ("4.2.0".equals(codeString))
@@ -12791,6 +12790,10 @@ The primary difference between a medicationusage and a medicationadministration 
           return _4_3;
         if ("4.3.0".equals(codeString))
           return _4_3_0;
+        if ("4.3.0-snapshot1".equals(codeString))
+          return _4_3_0_SNAPSHOT1;
+        if ("4.3.0-cibuild".equals(codeString))
+          return _4_3_0_CIBUILD;
         if ("4.4".equals(codeString))
           return _4_4;
         if ("4.4.0".equals(codeString))
@@ -12815,120 +12818,10 @@ The primary difference between a medicationusage and a medicationadministration 
           return _5_0_0SNAPSHOT2;
         if ("5.0.0-ballot".equals(codeString))
           return _5_0_0BALLOT;
+        if ("5.0.0-snapshot3".equals(codeString))
+          return _5_0_0SNAPSHOT3;
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
-        public static boolean isValidCode(String codeString) {
-          if (codeString == null || "".equals(codeString))
-              return false;
-      if ("0.01".equals(codeString))
-        return true;
-      if ("0.05".equals(codeString))
-        return true;
-      if ("0.06".equals(codeString))
-        return true;
-      if ("0.11".equals(codeString))
-        return true;
-      if ("0.0".equals(codeString))
-        return true;
-      if ("0.0.80".equals(codeString))
-        return true;
-      if ("0.0.81".equals(codeString))
-        return true;
-      if ("0.0.82".equals(codeString))
-        return true;
-      if ("0.4".equals(codeString))
-        return true;
-      if ("0.4.0".equals(codeString))
-        return true;
-      if ("0.5".equals(codeString))
-        return true;
-      if ("0.5.0".equals(codeString))
-        return true;
-      if ("1.0".equals(codeString))
-        return true;
-      if ("1.0.0".equals(codeString))
-        return true;
-      if ("1.0.1".equals(codeString))
-        return true;
-      if ("1.0.2".equals(codeString))
-        return true;
-      if ("1.1".equals(codeString))
-        return true;
-      if ("1.1.0".equals(codeString))
-        return true;
-      if ("1.4".equals(codeString))
-        return true;
-      if ("1.4.0".equals(codeString))
-        return true;
-      if ("1.6".equals(codeString))
-        return true;
-      if ("1.6.0".equals(codeString))
-        return true;
-      if ("1.8".equals(codeString))
-        return true;
-      if ("1.8.0".equals(codeString))
-        return true;
-      if ("3.0".equals(codeString))
-        return true;
-      if ("3.0.0".equals(codeString))
-        return true;
-      if ("3.0.1".equals(codeString))
-        return true;
-      if ("3.0.2".equals(codeString))
-        return true;
-      if ("3.3".equals(codeString))
-        return true;
-      if ("3.3.0".equals(codeString))
-        return true;
-      if ("3.5".equals(codeString))
-        return true;
-      if ("3.5.0".equals(codeString))
-        return true;
-      if ("4.0".equals(codeString))
-        return true;
-      if ("4.0.0".equals(codeString))
-        return true;
-      if ("4.0.1".equals(codeString))
-        return true;
-      if ("4.1".equals(codeString))
-        return true;
-      if ("4.1.0".equals(codeString))
-        return true;
-      if ("4.2".equals(codeString))
-        return true;
-      if ("4.2.0".equals(codeString))
-        return true;
-      if ("4.3".equals(codeString))
-        return true;
-      if ("4.3.0".equals(codeString))
-        return true;
-      if ("4.4".equals(codeString))
-        return true;
-      if ("4.4.0".equals(codeString))
-        return true;
-      if ("4.5".equals(codeString))
-        return true;
-      if ("4.5.0".equals(codeString))
-        return true;
-      if ("4.6".equals(codeString))
-        return true;
-      if ("4.6.0".equals(codeString))
-        return true;
-      if ("5.0".equals(codeString))
-        return true;
-      if ("5.0.0".equals(codeString))
-        return true;
-      if ("5.0.0-cibuild".equals(codeString))
-        return true;
-      if ("5.0.0-snapshot1".equals(codeString))
-        return true;
-      if ("5.0.0-snapshot2".equals(codeString))
-        return true;
-      if ("5.0.0-ballot".equals(codeString))
-        return true;
-      return false;
-      }
-
         public String toCode() {
           switch (this) {
             case _0_01: return "0.01";
@@ -12968,12 +12861,12 @@ The primary difference between a medicationusage and a medicationadministration 
             case _4_0_1: return "4.0.1";
             case _4_1: return "4.1";
             case _4_1_0: return "4.1.0";
-            case _4_3_0_SNAPSHOT1: return "4.3.0-snapshot1";
-            case _4_3_0_CIBUILD: return "4.3.0-cibuild";
             case _4_2: return "4.2";
             case _4_2_0: return "4.2.0";
             case _4_3: return "4.3";
             case _4_3_0: return "4.3.0";
+            case _4_3_0_SNAPSHOT1: return "4.3.0-snapshot1";
+            case _4_3_0_CIBUILD: return "4.3.0-cibuild";
             case _4_4: return "4.4";
             case _4_4_0: return "4.4.0";
             case _4_5: return "4.5";
@@ -12986,6 +12879,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case _5_0_0SNAPSHOT1: return "5.0.0-snapshot1";
             case _5_0_0SNAPSHOT2: return "5.0.0-snapshot2";
             case _5_0_0BALLOT: return "5.0.0-ballot";
+            case _5_0_0SNAPSHOT3: return "5.0.0-snapshot3";
             case NULL: return null;
             default: return "?";
           }
@@ -13029,12 +12923,12 @@ The primary difference between a medicationusage and a medicationadministration 
             case _4_0_1: return "http://hl7.org/fhir/FHIR-version";
             case _4_1: return "http://hl7.org/fhir/FHIR-version";
             case _4_1_0: return "http://hl7.org/fhir/FHIR-version";
-            case _4_3_0_SNAPSHOT1: return "http://hl7.org/fhir/FHIR-version";
-            case _4_3_0_CIBUILD: return "http://hl7.org/fhir/FHIR-version";
             case _4_2: return "http://hl7.org/fhir/FHIR-version";
             case _4_2_0: return "http://hl7.org/fhir/FHIR-version";
             case _4_3: return "http://hl7.org/fhir/FHIR-version";
             case _4_3_0: return "http://hl7.org/fhir/FHIR-version";
+            case _4_3_0_SNAPSHOT1: return "http://hl7.org/fhir/FHIR-version";
+            case _4_3_0_CIBUILD: return "http://hl7.org/fhir/FHIR-version";
             case _4_4: return "http://hl7.org/fhir/FHIR-version";
             case _4_4_0: return "http://hl7.org/fhir/FHIR-version";
             case _4_5: return "http://hl7.org/fhir/FHIR-version";
@@ -13047,6 +12941,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case _5_0_0SNAPSHOT1: return "http://hl7.org/fhir/FHIR-version";
             case _5_0_0SNAPSHOT2: return "http://hl7.org/fhir/FHIR-version";
             case _5_0_0BALLOT: return "http://hl7.org/fhir/FHIR-version";
+            case _5_0_0SNAPSHOT3: return "http://hl7.org/fhir/FHIR-version";
             case NULL: return null;
             default: return "?";
           }
@@ -13092,10 +12987,10 @@ The primary difference between a medicationusage and a medicationadministration 
             case _4_1_0: return "R4B Ballot #1 + Connectathon 27 (Virtual).";
             case _4_2: return "R5 Preview #1 version.";
             case _4_2_0: return "R5 Preview #1 + Connectathon 23 (Sydney).";
-            case _4_3_0_SNAPSHOT1: return "FHIR Release 4B Snapshot #1";
-            case _4_3_0_CIBUILD: return "FHIR Release 4B CI-Builld";
             case _4_3: return "R4B version.";
             case _4_3_0: return "FHIR Release 4B (Normative + STU).";
+            case _4_3_0_SNAPSHOT1: return "FHIR Release 4B Snapshot #1";
+            case _4_3_0_CIBUILD: return "FHIR Release 4B CI-Builld";
             case _4_4: return "R5 Preview #2 version.";
             case _4_4_0: return "R5 Preview #2 + Connectathon 24 (Virtual).";
             case _4_5: return "R5 Preview #3 version.";
@@ -13108,6 +13003,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case _5_0_0SNAPSHOT1: return "R5 Preview #2.";
             case _5_0_0SNAPSHOT2: return "R5 Interim tooling stage.";
             case _5_0_0BALLOT: return "R5 Ballot.";
+            case _5_0_0SNAPSHOT3: return "R5 January 2023 Staging Release + Connectathon 32.";
             case NULL: return null;
             default: return "?";
           }
@@ -13154,9 +13050,9 @@ The primary difference between a medicationusage and a medicationadministration 
             case _4_2: return "4.2";
             case _4_2_0: return "4.2.0";
             case _4_3: return "4.3";
+            case _4_3_0: return "4.3.0";
             case _4_3_0_SNAPSHOT1: return "4.3.0-snapshot";
             case _4_3_0_CIBUILD: return "4.3.0-cibuild";
-            case _4_3_0: return "4.3.0";
             case _4_4: return "4.4";
             case _4_4_0: return "4.4.0";
             case _4_5: return "4.5";
@@ -13169,10 +13065,142 @@ The primary difference between a medicationusage and a medicationadministration 
             case _5_0_0SNAPSHOT1: return "5.0.0-snapshot1";
             case _5_0_0SNAPSHOT2: return "5.0.0-snapshot2";
             case _5_0_0BALLOT: return "5.0.0-ballot";
+            case _5_0_0SNAPSHOT3: return "5.0.0-snapshot3";
             case NULL: return null;
             default: return "?";
           }
         }
+        
+        public static boolean isValidCode(String codeString) { 
+          if (codeString == null || "".equals(codeString)) 
+              return false; 
+      if ("0.01".equals(codeString)) 
+        return true; 
+      if ("0.05".equals(codeString)) 
+        return true; 
+      if ("0.06".equals(codeString)) 
+        return true; 
+      if ("0.11".equals(codeString)) 
+        return true; 
+      if ("0.0".equals(codeString)) 
+        return true; 
+      if ("0.0.80".equals(codeString)) 
+        return true; 
+      if ("0.0.81".equals(codeString)) 
+        return true; 
+      if ("0.0.82".equals(codeString)) 
+        return true; 
+      if ("0.4".equals(codeString)) 
+        return true; 
+      if ("0.4.0".equals(codeString)) 
+        return true; 
+      if ("0.5".equals(codeString)) 
+        return true; 
+      if ("0.5.0".equals(codeString)) 
+        return true; 
+      if ("1.0".equals(codeString)) 
+        return true; 
+      if ("1.0.0".equals(codeString)) 
+        return true; 
+      if ("1.0.1".equals(codeString)) 
+        return true; 
+      if ("1.0.2".equals(codeString)) 
+        return true; 
+      if ("1.1".equals(codeString)) 
+        return true; 
+      if ("1.1.0".equals(codeString)) 
+        return true; 
+      if ("1.4".equals(codeString)) 
+        return true; 
+      if ("1.4.0".equals(codeString)) 
+        return true; 
+      if ("1.6".equals(codeString)) 
+        return true; 
+      if ("1.6.0".equals(codeString)) 
+        return true; 
+      if ("1.8".equals(codeString)) 
+        return true; 
+      if ("1.8.0".equals(codeString)) 
+        return true; 
+      if ("3.0".equals(codeString)) 
+        return true; 
+      if ("3.0.0".equals(codeString)) 
+        return true; 
+      if ("3.0.1".equals(codeString)) 
+        return true; 
+      if ("3.0.2".equals(codeString)) 
+        return true; 
+      if ("3.3".equals(codeString)) 
+        return true; 
+      if ("3.3.0".equals(codeString)) 
+        return true; 
+      if ("3.5".equals(codeString)) 
+        return true; 
+      if ("3.5.0".equals(codeString)) 
+        return true; 
+      if ("4.0".equals(codeString)) 
+        return true; 
+      if ("4.0.0".equals(codeString)) 
+        return true; 
+      if ("4.0.1".equals(codeString)) 
+        return true; 
+      if ("4.1".equals(codeString)) 
+        return true; 
+      if ("4.1.0".equals(codeString)) 
+        return true; 
+      if ("4.2".equals(codeString)) 
+        return true; 
+      if ("4.2.0".equals(codeString)) 
+        return true; 
+      if ("4.3".equals(codeString)) 
+        return true; 
+      if ("4.3.0".equals(codeString)) 
+        return true; 
+      if ("4.4".equals(codeString)) 
+        return true; 
+      if ("4.4.0".equals(codeString)) 
+        return true; 
+      if ("4.5".equals(codeString)) 
+        return true; 
+      if ("4.5.0".equals(codeString)) 
+        return true; 
+      if ("4.6".equals(codeString)) 
+        return true; 
+      if ("4.6.0".equals(codeString)) 
+        return true; 
+      if ("5.0".equals(codeString)) 
+        return true; 
+      if ("5.0.0".equals(codeString)) 
+        return true; 
+      if ("5.0.0-cibuild".equals(codeString)) 
+        return true; 
+      if ("5.0.0-snapshot1".equals(codeString)) 
+        return true; 
+      if ("5.0.0-snapshot2".equals(codeString)) 
+        return true; 
+      if ("5.0.0-ballot".equals(codeString)) 
+        return true; 
+      return false; 
+      } 
+ 
+
+// manual code from configuration.txt:
+//public String toCode(int len) {
+//          return toCode().substring(0, len);
+//        }
+//
+//     
+//        @Override
+//        public String toString() {
+//          return toCode();
+//        }
+//        
+//        
+//        public boolean isR4B() {
+//          return toCode().startsWith("4.1");
+//        }
+//        
+// end addition
     }
 
   public static class FHIRVersionEnumFactory implements EnumFactory<FHIRVersion> {
@@ -13258,14 +13286,14 @@ The primary difference between a medicationusage and a medicationadministration 
           return FHIRVersion._4_2;
         if ("4.2.0".equals(codeString))
           return FHIRVersion._4_2_0;
-        if ("4.3.0-snapshot1".equalsIgnoreCase(codeString))
-          return FHIRVersion._4_3_0_SNAPSHOT1;
-        if ("4.3.0-cibuild".equalsIgnoreCase(codeString))
-          return FHIRVersion._4_3_0_CIBUILD;
         if ("4.3".equals(codeString))
           return FHIRVersion._4_3;
         if ("4.3.0".equals(codeString))
           return FHIRVersion._4_3_0;
+        if ("4.3.0-snapshot1".equalsIgnoreCase(codeString))
+          return FHIRVersion._4_3_0_SNAPSHOT1;
+        if ("4.3.0-cibuild".equalsIgnoreCase(codeString))
+          return FHIRVersion._4_3_0_CIBUILD;
         if ("4.4".equals(codeString))
           return FHIRVersion._4_4;
         if ("4.4.0".equals(codeString))
@@ -13290,6 +13318,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return FHIRVersion._5_0_0SNAPSHOT2;
         if ("5.0.0-ballot".equals(codeString))
           return FHIRVersion._5_0_0BALLOT;
+        if ("5.0.0-snapshot3".equals(codeString))
+          return FHIRVersion._5_0_0SNAPSHOT3;
         throw new IllegalArgumentException("Unknown FHIRVersion code '"+codeString+"'");
         }
         public Enumeration<FHIRVersion> fromType(Base code) throws FHIRException {
@@ -13378,14 +13408,14 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<FHIRVersion>(this, FHIRVersion._4_2);
         if ("4.2.0".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._4_2_0);
-        if ("4.3.0-snapshot1".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0_SNAPSHOT1);
-        if ("4.3.0-cibuild".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0_CIBUILD);
         if ("4.3".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3);
         if ("4.3.0".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0);
+        if ("4.3.0-snapshot1".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0_SNAPSHOT1);
+        if ("4.3.0-cibuild".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0_CIBUILD);
         if ("4.4".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._4_4);
         if ("4.4.0".equals(codeString))
@@ -13410,6 +13440,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0SNAPSHOT2);
         if ("5.0.0-ballot".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0BALLOT);
+        if ("5.0.0-snapshot3".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0SNAPSHOT3);
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
     public String toCode(FHIRVersion code) {
@@ -13493,12 +13525,12 @@ The primary difference between a medicationusage and a medicationadministration 
         return "4.2.0";
       if (code == FHIRVersion._4_3)
         return "4.3";
+      if (code == FHIRVersion._4_3_0)
+        return "4.3.0";
       if (code == FHIRVersion._4_3_0_SNAPSHOT1)
         return "4.3.0-snapshot1";      
       if (code == FHIRVersion._4_3_0_CIBUILD)
         return "4.3.0-cibuild";      
-      if (code == FHIRVersion._4_3_0)
-        return "4.3.0";
       if (code == FHIRVersion._4_4)
         return "4.4";
       if (code == FHIRVersion._4_4_0)
@@ -13523,6 +13555,8 @@ The primary difference between a medicationusage and a medicationadministration 
         return "5.0.0-snapshot2";
       if (code == FHIRVersion._5_0_0BALLOT)
         return "5.0.0-ballot";
+      if (code == FHIRVersion._5_0_0SNAPSHOT3)
+        return "5.0.0-snapshot3";
       return "?";
       }
     public String toSystem(FHIRVersion code) {
@@ -14003,11 +14037,11 @@ The primary difference between a medicationusage and a medicationadministration 
 
     public enum MeasureImprovementNotation {
         /**
-         * Improvement is indicated as an increase in the score or measurement (e.g. Higher score indicates better quality).
+         * null
          */
         INCREASE, 
         /**
-         * Improvement is indicated as a decrease in the score or measurement (e.g. Lower score indicates better quality).
+         * null
          */
         DECREASE, 
         /**
@@ -14041,8 +14075,8 @@ The primary difference between a medicationusage and a medicationadministration 
         }
         public String getDefinition() {
           switch (this) {
-            case INCREASE: return "Improvement is indicated as an increase in the score or measurement (e.g. Higher score indicates better quality).";
-            case DECREASE: return "Improvement is indicated as a decrease in the score or measurement (e.g. Lower score indicates better quality).";
+            case INCREASE: return "";
+            case DECREASE: return "";
             case NULL: return null;
             default: return "?";
           }
@@ -14951,7 +14985,7 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         DIRECTIVE, 
         /**
-         * The request represents a request/demand and authorization for action by a Practitioner.
+         * The request represents a request/demand and authorization for action by the requestor.
          */
         ORDER, 
         /**
@@ -15036,7 +15070,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case PROPOSAL: return "The request is a suggestion made by someone/something that does not have an intention to ensure it occurs and without providing an authorization to act.";
             case PLAN: return "The request represents an intention to ensure something occurs without providing an authorization for others to act.";
             case DIRECTIVE: return "The request represents a legally binding instruction authored by a Patient or RelatedPerson.";
-            case ORDER: return "The request represents a request/demand and authorization for action by a Practitioner.";
+            case ORDER: return "The request represents a request/demand and authorization for action by the requestor.";
             case ORIGINALORDER: return "The request represents an original authorization for action.";
             case REFLEXORDER: return "The request represents an automatically generated supplemental authorization for action based on a parent authorization together with initial results of the action taken against that parent authorization.";
             case FILLERORDER: return "The request represents the view of an authorization instantiated by a fulfilling system representing the details of the fulfiller's intention to act upon a submitted order.";
@@ -15440,7 +15474,7 @@ The primary difference between a medicationusage and a medicationadministration 
       }
     }
 
-    public enum ResourceTypes {
+    public enum ResourceTypeEnum {
         /**
          * A financial tool for tracking value accrued for a particular purpose.  In the healthcare field, used to track charges for a patient, cost centers, etc.
          */
@@ -15458,7 +15492,7 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         ADMINISTRABLEPRODUCTDEFINITION, 
         /**
-         * An event (i.e. any change to current patient status) that may be related to unintended effects on a patient or research subject. The unintended effects may require additional monitoring, treatment, hospitalization, or may result in death. The AdverseEvent resource also extends to potential or avoided events that could have had such effects. There are two major domains where the AdverseEvent resource is expected to be used. One is in clinical care reported adverse events and the other is in reporting adverse events in clinical  research trial management. Given the differences between these two arenas, we recommend consulting the domain specific implementation guides when implementing the AdverseEvent Resource. The implementation guides include specific extensions, value sets and constraints.
+         * An event (i.e. any change to current patient status) that may be related to unintended effects on a patient or research subject. The unintended effects may require additional monitoring, treatment, hospitalization, or may result in death. The AdverseEvent resource also extends to potential or avoided events that could have had such effects. There are two major domains where the AdverseEvent resource is expected to be used. One is in clinical care reported adverse events and the other is in reporting adverse events in clinical  research trial management. Given the differences between these two concepts, we recommend consulting the domain specific implementation guides when implementing the AdverseEvent Resource. The implementation guides include specific extensions, value sets and constraints.
          */
         ADVERSEEVENT, 
         /**
@@ -16063,7 +16097,7 @@ The primary difference between a medicationusage and a medicationadministration 
          * added to help the parsers
          */
         NULL;
-        public static ResourceTypes fromCode(String codeString) throws FHIRException {
+        public static ResourceTypeEnum fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
         if ("Account".equals(codeString))
@@ -16374,7 +16408,7 @@ The primary difference between a medicationusage and a medicationadministration 
           return VERIFICATIONRESULT;
         if ("VisionPrescription".equals(codeString))
           return VISIONPRESCRIPTION;
-        throw new FHIRException("Unknown ResourceTypes code '"+codeString+"'");
+        throw new FHIRException("Unknown ResourceTypeEnum code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
@@ -16702,7 +16736,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case ACTIVITYDEFINITION: return "This resource allows for the definition of some activity to be performed, independent of a particular patient, practitioner, or other performance context.";
             case ACTORDEFINITION: return "The ActorDefinition resource is used to describe an actor - a human or an application that plays a role in data exchange, and that may have obligations associated with the role the actor plays.";
             case ADMINISTRABLEPRODUCTDEFINITION: return "A medicinal product in the final form which is suitable for administering to a patient (after any mixing of multiple components, dissolution etc. has been performed).";
-            case ADVERSEEVENT: return "An event (i.e. any change to current patient status) that may be related to unintended effects on a patient or research subject. The unintended effects may require additional monitoring, treatment, hospitalization, or may result in death. The AdverseEvent resource also extends to potential or avoided events that could have had such effects. There are two major domains where the AdverseEvent resource is expected to be used. One is in clinical care reported adverse events and the other is in reporting adverse events in clinical  research trial management. Given the differences between these two arenas, we recommend consulting the domain specific implementation guides when implementing the AdverseEvent Resource. The implementation guides include specific extensions, value sets and constraints.";
+            case ADVERSEEVENT: return "An event (i.e. any change to current patient status) that may be related to unintended effects on a patient or research subject. The unintended effects may require additional monitoring, treatment, hospitalization, or may result in death. The AdverseEvent resource also extends to potential or avoided events that could have had such effects. There are two major domains where the AdverseEvent resource is expected to be used. One is in clinical care reported adverse events and the other is in reporting adverse events in clinical  research trial management. Given the differences between these two concepts, we recommend consulting the domain specific implementation guides when implementing the AdverseEvent Resource. The implementation guides include specific extensions, value sets and constraints.";
             case ALLERGYINTOLERANCE: return "Risk of harmful or undesirable, physiological response which is unique to an individual and associated with exposure to a substance.";
             case APPOINTMENT: return "A booking of a healthcare event among patient(s), practitioner(s), related person(s) and/or device(s) for a specific date/time. This may result in one or more Encounter(s).";
             case APPOINTMENTRESPONSE: return "A reply to an appointment request for a patient and/or practitioner(s), such as a confirmation or rejection.";
@@ -17018,951 +17052,951 @@ The primary difference between a medicationusage and a medicationadministration 
         }
     }
 
-  public static class ResourceTypesEnumFactory implements EnumFactory<ResourceTypes> {
-    public ResourceTypes fromCode(String codeString) throws IllegalArgumentException {
+  public static class ResourceTypeEnumEnumFactory implements EnumFactory<ResourceTypeEnum> {
+    public ResourceTypeEnum fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
         if ("Account".equals(codeString))
-          return ResourceTypes.ACCOUNT;
+          return ResourceTypeEnum.ACCOUNT;
         if ("ActivityDefinition".equals(codeString))
-          return ResourceTypes.ACTIVITYDEFINITION;
+          return ResourceTypeEnum.ACTIVITYDEFINITION;
         if ("ActorDefinition".equals(codeString))
-          return ResourceTypes.ACTORDEFINITION;
+          return ResourceTypeEnum.ACTORDEFINITION;
         if ("AdministrableProductDefinition".equals(codeString))
-          return ResourceTypes.ADMINISTRABLEPRODUCTDEFINITION;
+          return ResourceTypeEnum.ADMINISTRABLEPRODUCTDEFINITION;
         if ("AdverseEvent".equals(codeString))
-          return ResourceTypes.ADVERSEEVENT;
+          return ResourceTypeEnum.ADVERSEEVENT;
         if ("AllergyIntolerance".equals(codeString))
-          return ResourceTypes.ALLERGYINTOLERANCE;
+          return ResourceTypeEnum.ALLERGYINTOLERANCE;
         if ("Appointment".equals(codeString))
-          return ResourceTypes.APPOINTMENT;
+          return ResourceTypeEnum.APPOINTMENT;
         if ("AppointmentResponse".equals(codeString))
-          return ResourceTypes.APPOINTMENTRESPONSE;
+          return ResourceTypeEnum.APPOINTMENTRESPONSE;
         if ("ArtifactAssessment".equals(codeString))
-          return ResourceTypes.ARTIFACTASSESSMENT;
+          return ResourceTypeEnum.ARTIFACTASSESSMENT;
         if ("AuditEvent".equals(codeString))
-          return ResourceTypes.AUDITEVENT;
+          return ResourceTypeEnum.AUDITEVENT;
         if ("Basic".equals(codeString))
-          return ResourceTypes.BASIC;
+          return ResourceTypeEnum.BASIC;
         if ("Binary".equals(codeString))
-          return ResourceTypes.BINARY;
+          return ResourceTypeEnum.BINARY;
         if ("BiologicallyDerivedProduct".equals(codeString))
-          return ResourceTypes.BIOLOGICALLYDERIVEDPRODUCT;
+          return ResourceTypeEnum.BIOLOGICALLYDERIVEDPRODUCT;
         if ("BodyStructure".equals(codeString))
-          return ResourceTypes.BODYSTRUCTURE;
+          return ResourceTypeEnum.BODYSTRUCTURE;
         if ("Bundle".equals(codeString))
-          return ResourceTypes.BUNDLE;
+          return ResourceTypeEnum.BUNDLE;
         if ("CapabilityStatement".equals(codeString))
-          return ResourceTypes.CAPABILITYSTATEMENT;
+          return ResourceTypeEnum.CAPABILITYSTATEMENT;
         if ("CarePlan".equals(codeString))
-          return ResourceTypes.CAREPLAN;
+          return ResourceTypeEnum.CAREPLAN;
         if ("CareTeam".equals(codeString))
-          return ResourceTypes.CARETEAM;
+          return ResourceTypeEnum.CARETEAM;
         if ("ChargeItem".equals(codeString))
-          return ResourceTypes.CHARGEITEM;
+          return ResourceTypeEnum.CHARGEITEM;
         if ("ChargeItemDefinition".equals(codeString))
-          return ResourceTypes.CHARGEITEMDEFINITION;
+          return ResourceTypeEnum.CHARGEITEMDEFINITION;
         if ("Citation".equals(codeString))
-          return ResourceTypes.CITATION;
+          return ResourceTypeEnum.CITATION;
         if ("Claim".equals(codeString))
-          return ResourceTypes.CLAIM;
+          return ResourceTypeEnum.CLAIM;
         if ("ClaimResponse".equals(codeString))
-          return ResourceTypes.CLAIMRESPONSE;
+          return ResourceTypeEnum.CLAIMRESPONSE;
         if ("ClinicalImpression".equals(codeString))
-          return ResourceTypes.CLINICALIMPRESSION;
+          return ResourceTypeEnum.CLINICALIMPRESSION;
         if ("ClinicalUseDefinition".equals(codeString))
-          return ResourceTypes.CLINICALUSEDEFINITION;
+          return ResourceTypeEnum.CLINICALUSEDEFINITION;
         if ("CodeSystem".equals(codeString))
-          return ResourceTypes.CODESYSTEM;
+          return ResourceTypeEnum.CODESYSTEM;
         if ("Communication".equals(codeString))
-          return ResourceTypes.COMMUNICATION;
+          return ResourceTypeEnum.COMMUNICATION;
         if ("CommunicationRequest".equals(codeString))
-          return ResourceTypes.COMMUNICATIONREQUEST;
+          return ResourceTypeEnum.COMMUNICATIONREQUEST;
         if ("CompartmentDefinition".equals(codeString))
-          return ResourceTypes.COMPARTMENTDEFINITION;
+          return ResourceTypeEnum.COMPARTMENTDEFINITION;
         if ("Composition".equals(codeString))
-          return ResourceTypes.COMPOSITION;
+          return ResourceTypeEnum.COMPOSITION;
         if ("ConceptMap".equals(codeString))
-          return ResourceTypes.CONCEPTMAP;
+          return ResourceTypeEnum.CONCEPTMAP;
         if ("Condition".equals(codeString))
-          return ResourceTypes.CONDITION;
+          return ResourceTypeEnum.CONDITION;
         if ("ConditionDefinition".equals(codeString))
-          return ResourceTypes.CONDITIONDEFINITION;
+          return ResourceTypeEnum.CONDITIONDEFINITION;
         if ("Consent".equals(codeString))
-          return ResourceTypes.CONSENT;
+          return ResourceTypeEnum.CONSENT;
         if ("Contract".equals(codeString))
-          return ResourceTypes.CONTRACT;
+          return ResourceTypeEnum.CONTRACT;
         if ("Coverage".equals(codeString))
-          return ResourceTypes.COVERAGE;
+          return ResourceTypeEnum.COVERAGE;
         if ("CoverageEligibilityRequest".equals(codeString))
-          return ResourceTypes.COVERAGEELIGIBILITYREQUEST;
+          return ResourceTypeEnum.COVERAGEELIGIBILITYREQUEST;
         if ("CoverageEligibilityResponse".equals(codeString))
-          return ResourceTypes.COVERAGEELIGIBILITYRESPONSE;
+          return ResourceTypeEnum.COVERAGEELIGIBILITYRESPONSE;
         if ("DetectedIssue".equals(codeString))
-          return ResourceTypes.DETECTEDISSUE;
+          return ResourceTypeEnum.DETECTEDISSUE;
         if ("Device".equals(codeString))
-          return ResourceTypes.DEVICE;
+          return ResourceTypeEnum.DEVICE;
         if ("DeviceDefinition".equals(codeString))
-          return ResourceTypes.DEVICEDEFINITION;
+          return ResourceTypeEnum.DEVICEDEFINITION;
         if ("DeviceDispense".equals(codeString))
-          return ResourceTypes.DEVICEDISPENSE;
+          return ResourceTypeEnum.DEVICEDISPENSE;
         if ("DeviceMetric".equals(codeString))
-          return ResourceTypes.DEVICEMETRIC;
+          return ResourceTypeEnum.DEVICEMETRIC;
         if ("DeviceRequest".equals(codeString))
-          return ResourceTypes.DEVICEREQUEST;
+          return ResourceTypeEnum.DEVICEREQUEST;
         if ("DeviceUsage".equals(codeString))
-          return ResourceTypes.DEVICEUSAGE;
+          return ResourceTypeEnum.DEVICEUSAGE;
         if ("DiagnosticReport".equals(codeString))
-          return ResourceTypes.DIAGNOSTICREPORT;
+          return ResourceTypeEnum.DIAGNOSTICREPORT;
         if ("DocumentManifest".equals(codeString))
-          return ResourceTypes.DOCUMENTMANIFEST;
+          return ResourceTypeEnum.DOCUMENTMANIFEST;
         if ("DocumentReference".equals(codeString))
-          return ResourceTypes.DOCUMENTREFERENCE;
+          return ResourceTypeEnum.DOCUMENTREFERENCE;
         if ("Encounter".equals(codeString))
-          return ResourceTypes.ENCOUNTER;
+          return ResourceTypeEnum.ENCOUNTER;
         if ("Endpoint".equals(codeString))
-          return ResourceTypes.ENDPOINT;
+          return ResourceTypeEnum.ENDPOINT;
         if ("EnrollmentRequest".equals(codeString))
-          return ResourceTypes.ENROLLMENTREQUEST;
+          return ResourceTypeEnum.ENROLLMENTREQUEST;
         if ("EnrollmentResponse".equals(codeString))
-          return ResourceTypes.ENROLLMENTRESPONSE;
+          return ResourceTypeEnum.ENROLLMENTRESPONSE;
         if ("EpisodeOfCare".equals(codeString))
-          return ResourceTypes.EPISODEOFCARE;
+          return ResourceTypeEnum.EPISODEOFCARE;
         if ("EventDefinition".equals(codeString))
-          return ResourceTypes.EVENTDEFINITION;
+          return ResourceTypeEnum.EVENTDEFINITION;
         if ("Evidence".equals(codeString))
-          return ResourceTypes.EVIDENCE;
+          return ResourceTypeEnum.EVIDENCE;
         if ("EvidenceReport".equals(codeString))
-          return ResourceTypes.EVIDENCEREPORT;
+          return ResourceTypeEnum.EVIDENCEREPORT;
         if ("EvidenceVariable".equals(codeString))
-          return ResourceTypes.EVIDENCEVARIABLE;
+          return ResourceTypeEnum.EVIDENCEVARIABLE;
         if ("ExampleScenario".equals(codeString))
-          return ResourceTypes.EXAMPLESCENARIO;
+          return ResourceTypeEnum.EXAMPLESCENARIO;
         if ("ExplanationOfBenefit".equals(codeString))
-          return ResourceTypes.EXPLANATIONOFBENEFIT;
+          return ResourceTypeEnum.EXPLANATIONOFBENEFIT;
         if ("FamilyMemberHistory".equals(codeString))
-          return ResourceTypes.FAMILYMEMBERHISTORY;
+          return ResourceTypeEnum.FAMILYMEMBERHISTORY;
         if ("Flag".equals(codeString))
-          return ResourceTypes.FLAG;
+          return ResourceTypeEnum.FLAG;
         if ("FormularyItem".equals(codeString))
-          return ResourceTypes.FORMULARYITEM;
+          return ResourceTypeEnum.FORMULARYITEM;
         if ("GenomicStudy".equals(codeString))
-          return ResourceTypes.GENOMICSTUDY;
+          return ResourceTypeEnum.GENOMICSTUDY;
         if ("Goal".equals(codeString))
-          return ResourceTypes.GOAL;
+          return ResourceTypeEnum.GOAL;
         if ("GraphDefinition".equals(codeString))
-          return ResourceTypes.GRAPHDEFINITION;
+          return ResourceTypeEnum.GRAPHDEFINITION;
         if ("Group".equals(codeString))
-          return ResourceTypes.GROUP;
+          return ResourceTypeEnum.GROUP;
         if ("GuidanceResponse".equals(codeString))
-          return ResourceTypes.GUIDANCERESPONSE;
+          return ResourceTypeEnum.GUIDANCERESPONSE;
         if ("HealthcareService".equals(codeString))
-          return ResourceTypes.HEALTHCARESERVICE;
+          return ResourceTypeEnum.HEALTHCARESERVICE;
         if ("ImagingSelection".equals(codeString))
-          return ResourceTypes.IMAGINGSELECTION;
+          return ResourceTypeEnum.IMAGINGSELECTION;
         if ("ImagingStudy".equals(codeString))
-          return ResourceTypes.IMAGINGSTUDY;
+          return ResourceTypeEnum.IMAGINGSTUDY;
         if ("Immunization".equals(codeString))
-          return ResourceTypes.IMMUNIZATION;
+          return ResourceTypeEnum.IMMUNIZATION;
         if ("ImmunizationEvaluation".equals(codeString))
-          return ResourceTypes.IMMUNIZATIONEVALUATION;
+          return ResourceTypeEnum.IMMUNIZATIONEVALUATION;
         if ("ImmunizationRecommendation".equals(codeString))
-          return ResourceTypes.IMMUNIZATIONRECOMMENDATION;
+          return ResourceTypeEnum.IMMUNIZATIONRECOMMENDATION;
         if ("ImplementationGuide".equals(codeString))
-          return ResourceTypes.IMPLEMENTATIONGUIDE;
+          return ResourceTypeEnum.IMPLEMENTATIONGUIDE;
         if ("Ingredient".equals(codeString))
-          return ResourceTypes.INGREDIENT;
+          return ResourceTypeEnum.INGREDIENT;
         if ("InsurancePlan".equals(codeString))
-          return ResourceTypes.INSURANCEPLAN;
+          return ResourceTypeEnum.INSURANCEPLAN;
         if ("InventoryReport".equals(codeString))
-          return ResourceTypes.INVENTORYREPORT;
+          return ResourceTypeEnum.INVENTORYREPORT;
         if ("Invoice".equals(codeString))
-          return ResourceTypes.INVOICE;
+          return ResourceTypeEnum.INVOICE;
         if ("Library".equals(codeString))
-          return ResourceTypes.LIBRARY;
+          return ResourceTypeEnum.LIBRARY;
         if ("Linkage".equals(codeString))
-          return ResourceTypes.LINKAGE;
+          return ResourceTypeEnum.LINKAGE;
         if ("List".equals(codeString))
-          return ResourceTypes.LIST;
+          return ResourceTypeEnum.LIST;
         if ("Location".equals(codeString))
-          return ResourceTypes.LOCATION;
+          return ResourceTypeEnum.LOCATION;
         if ("ManufacturedItemDefinition".equals(codeString))
-          return ResourceTypes.MANUFACTUREDITEMDEFINITION;
+          return ResourceTypeEnum.MANUFACTUREDITEMDEFINITION;
         if ("Measure".equals(codeString))
-          return ResourceTypes.MEASURE;
+          return ResourceTypeEnum.MEASURE;
         if ("MeasureReport".equals(codeString))
-          return ResourceTypes.MEASUREREPORT;
+          return ResourceTypeEnum.MEASUREREPORT;
         if ("Medication".equals(codeString))
-          return ResourceTypes.MEDICATION;
+          return ResourceTypeEnum.MEDICATION;
         if ("MedicationAdministration".equals(codeString))
-          return ResourceTypes.MEDICATIONADMINISTRATION;
+          return ResourceTypeEnum.MEDICATIONADMINISTRATION;
         if ("MedicationDispense".equals(codeString))
-          return ResourceTypes.MEDICATIONDISPENSE;
+          return ResourceTypeEnum.MEDICATIONDISPENSE;
         if ("MedicationKnowledge".equals(codeString))
-          return ResourceTypes.MEDICATIONKNOWLEDGE;
+          return ResourceTypeEnum.MEDICATIONKNOWLEDGE;
         if ("MedicationRequest".equals(codeString))
-          return ResourceTypes.MEDICATIONREQUEST;
+          return ResourceTypeEnum.MEDICATIONREQUEST;
         if ("MedicationUsage".equals(codeString))
-          return ResourceTypes.MEDICATIONUSAGE;
+          return ResourceTypeEnum.MEDICATIONUSAGE;
         if ("MedicinalProductDefinition".equals(codeString))
-          return ResourceTypes.MEDICINALPRODUCTDEFINITION;
+          return ResourceTypeEnum.MEDICINALPRODUCTDEFINITION;
         if ("MessageDefinition".equals(codeString))
-          return ResourceTypes.MESSAGEDEFINITION;
+          return ResourceTypeEnum.MESSAGEDEFINITION;
         if ("MessageHeader".equals(codeString))
-          return ResourceTypes.MESSAGEHEADER;
+          return ResourceTypeEnum.MESSAGEHEADER;
         if ("MolecularSequence".equals(codeString))
-          return ResourceTypes.MOLECULARSEQUENCE;
+          return ResourceTypeEnum.MOLECULARSEQUENCE;
         if ("NamingSystem".equals(codeString))
-          return ResourceTypes.NAMINGSYSTEM;
+          return ResourceTypeEnum.NAMINGSYSTEM;
         if ("NutritionIntake".equals(codeString))
-          return ResourceTypes.NUTRITIONINTAKE;
+          return ResourceTypeEnum.NUTRITIONINTAKE;
         if ("NutritionOrder".equals(codeString))
-          return ResourceTypes.NUTRITIONORDER;
+          return ResourceTypeEnum.NUTRITIONORDER;
         if ("NutritionProduct".equals(codeString))
-          return ResourceTypes.NUTRITIONPRODUCT;
+          return ResourceTypeEnum.NUTRITIONPRODUCT;
         if ("Observation".equals(codeString))
-          return ResourceTypes.OBSERVATION;
+          return ResourceTypeEnum.OBSERVATION;
         if ("ObservationDefinition".equals(codeString))
-          return ResourceTypes.OBSERVATIONDEFINITION;
+          return ResourceTypeEnum.OBSERVATIONDEFINITION;
         if ("OperationDefinition".equals(codeString))
-          return ResourceTypes.OPERATIONDEFINITION;
+          return ResourceTypeEnum.OPERATIONDEFINITION;
         if ("OperationOutcome".equals(codeString))
-          return ResourceTypes.OPERATIONOUTCOME;
+          return ResourceTypeEnum.OPERATIONOUTCOME;
         if ("Organization".equals(codeString))
-          return ResourceTypes.ORGANIZATION;
+          return ResourceTypeEnum.ORGANIZATION;
         if ("OrganizationAffiliation".equals(codeString))
-          return ResourceTypes.ORGANIZATIONAFFILIATION;
+          return ResourceTypeEnum.ORGANIZATIONAFFILIATION;
         if ("PackagedProductDefinition".equals(codeString))
-          return ResourceTypes.PACKAGEDPRODUCTDEFINITION;
+          return ResourceTypeEnum.PACKAGEDPRODUCTDEFINITION;
         if ("Parameters".equals(codeString))
-          return ResourceTypes.PARAMETERS;
+          return ResourceTypeEnum.PARAMETERS;
         if ("Patient".equals(codeString))
-          return ResourceTypes.PATIENT;
+          return ResourceTypeEnum.PATIENT;
         if ("PaymentNotice".equals(codeString))
-          return ResourceTypes.PAYMENTNOTICE;
+          return ResourceTypeEnum.PAYMENTNOTICE;
         if ("PaymentReconciliation".equals(codeString))
-          return ResourceTypes.PAYMENTRECONCILIATION;
+          return ResourceTypeEnum.PAYMENTRECONCILIATION;
         if ("Permission".equals(codeString))
-          return ResourceTypes.PERMISSION;
+          return ResourceTypeEnum.PERMISSION;
         if ("Person".equals(codeString))
-          return ResourceTypes.PERSON;
+          return ResourceTypeEnum.PERSON;
         if ("PlanDefinition".equals(codeString))
-          return ResourceTypes.PLANDEFINITION;
+          return ResourceTypeEnum.PLANDEFINITION;
         if ("Practitioner".equals(codeString))
-          return ResourceTypes.PRACTITIONER;
+          return ResourceTypeEnum.PRACTITIONER;
         if ("PractitionerRole".equals(codeString))
-          return ResourceTypes.PRACTITIONERROLE;
+          return ResourceTypeEnum.PRACTITIONERROLE;
         if ("Procedure".equals(codeString))
-          return ResourceTypes.PROCEDURE;
+          return ResourceTypeEnum.PROCEDURE;
         if ("Provenance".equals(codeString))
-          return ResourceTypes.PROVENANCE;
+          return ResourceTypeEnum.PROVENANCE;
         if ("Questionnaire".equals(codeString))
-          return ResourceTypes.QUESTIONNAIRE;
+          return ResourceTypeEnum.QUESTIONNAIRE;
         if ("QuestionnaireResponse".equals(codeString))
-          return ResourceTypes.QUESTIONNAIRERESPONSE;
+          return ResourceTypeEnum.QUESTIONNAIRERESPONSE;
         if ("RegulatedAuthorization".equals(codeString))
-          return ResourceTypes.REGULATEDAUTHORIZATION;
+          return ResourceTypeEnum.REGULATEDAUTHORIZATION;
         if ("RelatedPerson".equals(codeString))
-          return ResourceTypes.RELATEDPERSON;
+          return ResourceTypeEnum.RELATEDPERSON;
         if ("RequestOrchestration".equals(codeString))
-          return ResourceTypes.REQUESTORCHESTRATION;
+          return ResourceTypeEnum.REQUESTORCHESTRATION;
         if ("Requirements".equals(codeString))
-          return ResourceTypes.REQUIREMENTS;
+          return ResourceTypeEnum.REQUIREMENTS;
         if ("ResearchStudy".equals(codeString))
-          return ResourceTypes.RESEARCHSTUDY;
+          return ResourceTypeEnum.RESEARCHSTUDY;
         if ("ResearchSubject".equals(codeString))
-          return ResourceTypes.RESEARCHSUBJECT;
+          return ResourceTypeEnum.RESEARCHSUBJECT;
         if ("RiskAssessment".equals(codeString))
-          return ResourceTypes.RISKASSESSMENT;
+          return ResourceTypeEnum.RISKASSESSMENT;
         if ("Schedule".equals(codeString))
-          return ResourceTypes.SCHEDULE;
+          return ResourceTypeEnum.SCHEDULE;
         if ("SearchParameter".equals(codeString))
-          return ResourceTypes.SEARCHPARAMETER;
+          return ResourceTypeEnum.SEARCHPARAMETER;
         if ("ServiceRequest".equals(codeString))
-          return ResourceTypes.SERVICEREQUEST;
+          return ResourceTypeEnum.SERVICEREQUEST;
         if ("Slot".equals(codeString))
-          return ResourceTypes.SLOT;
+          return ResourceTypeEnum.SLOT;
         if ("Specimen".equals(codeString))
-          return ResourceTypes.SPECIMEN;
+          return ResourceTypeEnum.SPECIMEN;
         if ("SpecimenDefinition".equals(codeString))
-          return ResourceTypes.SPECIMENDEFINITION;
+          return ResourceTypeEnum.SPECIMENDEFINITION;
         if ("StructureDefinition".equals(codeString))
-          return ResourceTypes.STRUCTUREDEFINITION;
+          return ResourceTypeEnum.STRUCTUREDEFINITION;
         if ("StructureMap".equals(codeString))
-          return ResourceTypes.STRUCTUREMAP;
+          return ResourceTypeEnum.STRUCTUREMAP;
         if ("Subscription".equals(codeString))
-          return ResourceTypes.SUBSCRIPTION;
+          return ResourceTypeEnum.SUBSCRIPTION;
         if ("SubscriptionStatus".equals(codeString))
-          return ResourceTypes.SUBSCRIPTIONSTATUS;
+          return ResourceTypeEnum.SUBSCRIPTIONSTATUS;
         if ("SubscriptionTopic".equals(codeString))
-          return ResourceTypes.SUBSCRIPTIONTOPIC;
+          return ResourceTypeEnum.SUBSCRIPTIONTOPIC;
         if ("Substance".equals(codeString))
-          return ResourceTypes.SUBSTANCE;
+          return ResourceTypeEnum.SUBSTANCE;
         if ("SubstanceDefinition".equals(codeString))
-          return ResourceTypes.SUBSTANCEDEFINITION;
+          return ResourceTypeEnum.SUBSTANCEDEFINITION;
         if ("SubstanceNucleicAcid".equals(codeString))
-          return ResourceTypes.SUBSTANCENUCLEICACID;
+          return ResourceTypeEnum.SUBSTANCENUCLEICACID;
         if ("SubstancePolymer".equals(codeString))
-          return ResourceTypes.SUBSTANCEPOLYMER;
+          return ResourceTypeEnum.SUBSTANCEPOLYMER;
         if ("SubstanceProtein".equals(codeString))
-          return ResourceTypes.SUBSTANCEPROTEIN;
+          return ResourceTypeEnum.SUBSTANCEPROTEIN;
         if ("SubstanceReferenceInformation".equals(codeString))
-          return ResourceTypes.SUBSTANCEREFERENCEINFORMATION;
+          return ResourceTypeEnum.SUBSTANCEREFERENCEINFORMATION;
         if ("SubstanceSourceMaterial".equals(codeString))
-          return ResourceTypes.SUBSTANCESOURCEMATERIAL;
+          return ResourceTypeEnum.SUBSTANCESOURCEMATERIAL;
         if ("SupplyDelivery".equals(codeString))
-          return ResourceTypes.SUPPLYDELIVERY;
+          return ResourceTypeEnum.SUPPLYDELIVERY;
         if ("SupplyRequest".equals(codeString))
-          return ResourceTypes.SUPPLYREQUEST;
+          return ResourceTypeEnum.SUPPLYREQUEST;
         if ("Task".equals(codeString))
-          return ResourceTypes.TASK;
+          return ResourceTypeEnum.TASK;
         if ("TerminologyCapabilities".equals(codeString))
-          return ResourceTypes.TERMINOLOGYCAPABILITIES;
+          return ResourceTypeEnum.TERMINOLOGYCAPABILITIES;
         if ("TestReport".equals(codeString))
-          return ResourceTypes.TESTREPORT;
+          return ResourceTypeEnum.TESTREPORT;
         if ("TestScript".equals(codeString))
-          return ResourceTypes.TESTSCRIPT;
+          return ResourceTypeEnum.TESTSCRIPT;
         if ("Transport".equals(codeString))
-          return ResourceTypes.TRANSPORT;
+          return ResourceTypeEnum.TRANSPORT;
         if ("ValueSet".equals(codeString))
-          return ResourceTypes.VALUESET;
+          return ResourceTypeEnum.VALUESET;
         if ("VerificationResult".equals(codeString))
-          return ResourceTypes.VERIFICATIONRESULT;
+          return ResourceTypeEnum.VERIFICATIONRESULT;
         if ("VisionPrescription".equals(codeString))
-          return ResourceTypes.VISIONPRESCRIPTION;
-        throw new IllegalArgumentException("Unknown ResourceTypes code '"+codeString+"'");
+          return ResourceTypeEnum.VISIONPRESCRIPTION;
+        throw new IllegalArgumentException("Unknown ResourceTypeEnum code '"+codeString+"'");
         }
-        public Enumeration<ResourceTypes> fromType(Base code) throws FHIRException {
+        public Enumeration<ResourceTypeEnum> fromType(Base code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ResourceTypes>(this);
+            return new Enumeration<ResourceTypeEnum>(this);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("Account".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.ACCOUNT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ACCOUNT);
         if ("ActivityDefinition".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.ACTIVITYDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ACTIVITYDEFINITION);
         if ("ActorDefinition".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.ACTORDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ACTORDEFINITION);
         if ("AdministrableProductDefinition".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.ADMINISTRABLEPRODUCTDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ADMINISTRABLEPRODUCTDEFINITION);
         if ("AdverseEvent".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.ADVERSEEVENT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ADVERSEEVENT);
         if ("AllergyIntolerance".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.ALLERGYINTOLERANCE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ALLERGYINTOLERANCE);
         if ("Appointment".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.APPOINTMENT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.APPOINTMENT);
         if ("AppointmentResponse".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.APPOINTMENTRESPONSE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.APPOINTMENTRESPONSE);
         if ("ArtifactAssessment".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.ARTIFACTASSESSMENT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ARTIFACTASSESSMENT);
         if ("AuditEvent".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.AUDITEVENT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.AUDITEVENT);
         if ("Basic".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.BASIC);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.BASIC);
         if ("Binary".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.BINARY);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.BINARY);
         if ("BiologicallyDerivedProduct".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.BIOLOGICALLYDERIVEDPRODUCT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.BIOLOGICALLYDERIVEDPRODUCT);
         if ("BodyStructure".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.BODYSTRUCTURE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.BODYSTRUCTURE);
         if ("Bundle".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.BUNDLE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.BUNDLE);
         if ("CapabilityStatement".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.CAPABILITYSTATEMENT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CAPABILITYSTATEMENT);
         if ("CarePlan".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.CAREPLAN);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CAREPLAN);
         if ("CareTeam".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.CARETEAM);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CARETEAM);
         if ("ChargeItem".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.CHARGEITEM);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CHARGEITEM);
         if ("ChargeItemDefinition".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.CHARGEITEMDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CHARGEITEMDEFINITION);
         if ("Citation".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.CITATION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CITATION);
         if ("Claim".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.CLAIM);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CLAIM);
         if ("ClaimResponse".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.CLAIMRESPONSE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CLAIMRESPONSE);
         if ("ClinicalImpression".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.CLINICALIMPRESSION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CLINICALIMPRESSION);
         if ("ClinicalUseDefinition".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.CLINICALUSEDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CLINICALUSEDEFINITION);
         if ("CodeSystem".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.CODESYSTEM);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CODESYSTEM);
         if ("Communication".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.COMMUNICATION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.COMMUNICATION);
         if ("CommunicationRequest".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.COMMUNICATIONREQUEST);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.COMMUNICATIONREQUEST);
         if ("CompartmentDefinition".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.COMPARTMENTDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.COMPARTMENTDEFINITION);
         if ("Composition".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.COMPOSITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.COMPOSITION);
         if ("ConceptMap".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.CONCEPTMAP);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CONCEPTMAP);
         if ("Condition".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.CONDITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CONDITION);
         if ("ConditionDefinition".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.CONDITIONDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CONDITIONDEFINITION);
         if ("Consent".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.CONSENT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CONSENT);
         if ("Contract".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.CONTRACT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CONTRACT);
         if ("Coverage".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.COVERAGE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.COVERAGE);
         if ("CoverageEligibilityRequest".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.COVERAGEELIGIBILITYREQUEST);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.COVERAGEELIGIBILITYREQUEST);
         if ("CoverageEligibilityResponse".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.COVERAGEELIGIBILITYRESPONSE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.COVERAGEELIGIBILITYRESPONSE);
         if ("DetectedIssue".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.DETECTEDISSUE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.DETECTEDISSUE);
         if ("Device".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.DEVICE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.DEVICE);
         if ("DeviceDefinition".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.DEVICEDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.DEVICEDEFINITION);
         if ("DeviceDispense".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.DEVICEDISPENSE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.DEVICEDISPENSE);
         if ("DeviceMetric".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.DEVICEMETRIC);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.DEVICEMETRIC);
         if ("DeviceRequest".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.DEVICEREQUEST);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.DEVICEREQUEST);
         if ("DeviceUsage".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.DEVICEUSAGE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.DEVICEUSAGE);
         if ("DiagnosticReport".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.DIAGNOSTICREPORT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.DIAGNOSTICREPORT);
         if ("DocumentManifest".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.DOCUMENTMANIFEST);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.DOCUMENTMANIFEST);
         if ("DocumentReference".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.DOCUMENTREFERENCE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.DOCUMENTREFERENCE);
         if ("Encounter".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.ENCOUNTER);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ENCOUNTER);
         if ("Endpoint".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.ENDPOINT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ENDPOINT);
         if ("EnrollmentRequest".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.ENROLLMENTREQUEST);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ENROLLMENTREQUEST);
         if ("EnrollmentResponse".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.ENROLLMENTRESPONSE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ENROLLMENTRESPONSE);
         if ("EpisodeOfCare".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.EPISODEOFCARE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.EPISODEOFCARE);
         if ("EventDefinition".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.EVENTDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.EVENTDEFINITION);
         if ("Evidence".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.EVIDENCE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.EVIDENCE);
         if ("EvidenceReport".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.EVIDENCEREPORT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.EVIDENCEREPORT);
         if ("EvidenceVariable".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.EVIDENCEVARIABLE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.EVIDENCEVARIABLE);
         if ("ExampleScenario".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.EXAMPLESCENARIO);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.EXAMPLESCENARIO);
         if ("ExplanationOfBenefit".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.EXPLANATIONOFBENEFIT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.EXPLANATIONOFBENEFIT);
         if ("FamilyMemberHistory".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.FAMILYMEMBERHISTORY);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.FAMILYMEMBERHISTORY);
         if ("Flag".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.FLAG);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.FLAG);
         if ("FormularyItem".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.FORMULARYITEM);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.FORMULARYITEM);
         if ("GenomicStudy".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.GENOMICSTUDY);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.GENOMICSTUDY);
         if ("Goal".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.GOAL);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.GOAL);
         if ("GraphDefinition".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.GRAPHDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.GRAPHDEFINITION);
         if ("Group".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.GROUP);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.GROUP);
         if ("GuidanceResponse".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.GUIDANCERESPONSE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.GUIDANCERESPONSE);
         if ("HealthcareService".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.HEALTHCARESERVICE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.HEALTHCARESERVICE);
         if ("ImagingSelection".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.IMAGINGSELECTION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.IMAGINGSELECTION);
         if ("ImagingStudy".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.IMAGINGSTUDY);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.IMAGINGSTUDY);
         if ("Immunization".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.IMMUNIZATION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.IMMUNIZATION);
         if ("ImmunizationEvaluation".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.IMMUNIZATIONEVALUATION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.IMMUNIZATIONEVALUATION);
         if ("ImmunizationRecommendation".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.IMMUNIZATIONRECOMMENDATION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.IMMUNIZATIONRECOMMENDATION);
         if ("ImplementationGuide".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.IMPLEMENTATIONGUIDE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.IMPLEMENTATIONGUIDE);
         if ("Ingredient".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.INGREDIENT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.INGREDIENT);
         if ("InsurancePlan".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.INSURANCEPLAN);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.INSURANCEPLAN);
         if ("InventoryReport".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.INVENTORYREPORT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.INVENTORYREPORT);
         if ("Invoice".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.INVOICE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.INVOICE);
         if ("Library".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.LIBRARY);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.LIBRARY);
         if ("Linkage".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.LINKAGE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.LINKAGE);
         if ("List".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.LIST);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.LIST);
         if ("Location".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.LOCATION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.LOCATION);
         if ("ManufacturedItemDefinition".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.MANUFACTUREDITEMDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MANUFACTUREDITEMDEFINITION);
         if ("Measure".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.MEASURE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEASURE);
         if ("MeasureReport".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.MEASUREREPORT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEASUREREPORT);
         if ("Medication".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.MEDICATION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEDICATION);
         if ("MedicationAdministration".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.MEDICATIONADMINISTRATION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEDICATIONADMINISTRATION);
         if ("MedicationDispense".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.MEDICATIONDISPENSE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEDICATIONDISPENSE);
         if ("MedicationKnowledge".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.MEDICATIONKNOWLEDGE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEDICATIONKNOWLEDGE);
         if ("MedicationRequest".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.MEDICATIONREQUEST);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEDICATIONREQUEST);
         if ("MedicationUsage".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.MEDICATIONUSAGE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEDICATIONUSAGE);
         if ("MedicinalProductDefinition".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.MEDICINALPRODUCTDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEDICINALPRODUCTDEFINITION);
         if ("MessageDefinition".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.MESSAGEDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MESSAGEDEFINITION);
         if ("MessageHeader".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.MESSAGEHEADER);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MESSAGEHEADER);
         if ("MolecularSequence".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.MOLECULARSEQUENCE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MOLECULARSEQUENCE);
         if ("NamingSystem".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.NAMINGSYSTEM);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.NAMINGSYSTEM);
         if ("NutritionIntake".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.NUTRITIONINTAKE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.NUTRITIONINTAKE);
         if ("NutritionOrder".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.NUTRITIONORDER);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.NUTRITIONORDER);
         if ("NutritionProduct".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.NUTRITIONPRODUCT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.NUTRITIONPRODUCT);
         if ("Observation".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.OBSERVATION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.OBSERVATION);
         if ("ObservationDefinition".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.OBSERVATIONDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.OBSERVATIONDEFINITION);
         if ("OperationDefinition".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.OPERATIONDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.OPERATIONDEFINITION);
         if ("OperationOutcome".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.OPERATIONOUTCOME);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.OPERATIONOUTCOME);
         if ("Organization".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.ORGANIZATION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ORGANIZATION);
         if ("OrganizationAffiliation".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.ORGANIZATIONAFFILIATION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ORGANIZATIONAFFILIATION);
         if ("PackagedProductDefinition".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.PACKAGEDPRODUCTDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PACKAGEDPRODUCTDEFINITION);
         if ("Parameters".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.PARAMETERS);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PARAMETERS);
         if ("Patient".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.PATIENT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PATIENT);
         if ("PaymentNotice".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.PAYMENTNOTICE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PAYMENTNOTICE);
         if ("PaymentReconciliation".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.PAYMENTRECONCILIATION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PAYMENTRECONCILIATION);
         if ("Permission".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.PERMISSION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PERMISSION);
         if ("Person".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.PERSON);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PERSON);
         if ("PlanDefinition".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.PLANDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PLANDEFINITION);
         if ("Practitioner".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.PRACTITIONER);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PRACTITIONER);
         if ("PractitionerRole".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.PRACTITIONERROLE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PRACTITIONERROLE);
         if ("Procedure".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.PROCEDURE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PROCEDURE);
         if ("Provenance".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.PROVENANCE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PROVENANCE);
         if ("Questionnaire".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.QUESTIONNAIRE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.QUESTIONNAIRE);
         if ("QuestionnaireResponse".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.QUESTIONNAIRERESPONSE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.QUESTIONNAIRERESPONSE);
         if ("RegulatedAuthorization".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.REGULATEDAUTHORIZATION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.REGULATEDAUTHORIZATION);
         if ("RelatedPerson".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.RELATEDPERSON);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.RELATEDPERSON);
         if ("RequestOrchestration".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.REQUESTORCHESTRATION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.REQUESTORCHESTRATION);
         if ("Requirements".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.REQUIREMENTS);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.REQUIREMENTS);
         if ("ResearchStudy".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.RESEARCHSTUDY);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.RESEARCHSTUDY);
         if ("ResearchSubject".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.RESEARCHSUBJECT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.RESEARCHSUBJECT);
         if ("RiskAssessment".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.RISKASSESSMENT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.RISKASSESSMENT);
         if ("Schedule".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.SCHEDULE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SCHEDULE);
         if ("SearchParameter".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.SEARCHPARAMETER);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SEARCHPARAMETER);
         if ("ServiceRequest".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.SERVICEREQUEST);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SERVICEREQUEST);
         if ("Slot".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.SLOT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SLOT);
         if ("Specimen".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.SPECIMEN);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SPECIMEN);
         if ("SpecimenDefinition".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.SPECIMENDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SPECIMENDEFINITION);
         if ("StructureDefinition".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.STRUCTUREDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.STRUCTUREDEFINITION);
         if ("StructureMap".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.STRUCTUREMAP);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.STRUCTUREMAP);
         if ("Subscription".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.SUBSCRIPTION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUBSCRIPTION);
         if ("SubscriptionStatus".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.SUBSCRIPTIONSTATUS);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUBSCRIPTIONSTATUS);
         if ("SubscriptionTopic".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.SUBSCRIPTIONTOPIC);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUBSCRIPTIONTOPIC);
         if ("Substance".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.SUBSTANCE);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUBSTANCE);
         if ("SubstanceDefinition".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.SUBSTANCEDEFINITION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUBSTANCEDEFINITION);
         if ("SubstanceNucleicAcid".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.SUBSTANCENUCLEICACID);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUBSTANCENUCLEICACID);
         if ("SubstancePolymer".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.SUBSTANCEPOLYMER);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUBSTANCEPOLYMER);
         if ("SubstanceProtein".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.SUBSTANCEPROTEIN);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUBSTANCEPROTEIN);
         if ("SubstanceReferenceInformation".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.SUBSTANCEREFERENCEINFORMATION);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUBSTANCEREFERENCEINFORMATION);
         if ("SubstanceSourceMaterial".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.SUBSTANCESOURCEMATERIAL);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUBSTANCESOURCEMATERIAL);
         if ("SupplyDelivery".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.SUPPLYDELIVERY);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUPPLYDELIVERY);
         if ("SupplyRequest".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.SUPPLYREQUEST);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUPPLYREQUEST);
         if ("Task".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.TASK);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.TASK);
         if ("TerminologyCapabilities".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.TERMINOLOGYCAPABILITIES);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.TERMINOLOGYCAPABILITIES);
         if ("TestReport".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.TESTREPORT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.TESTREPORT);
         if ("TestScript".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.TESTSCRIPT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.TESTSCRIPT);
         if ("Transport".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.TRANSPORT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.TRANSPORT);
         if ("ValueSet".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.VALUESET);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.VALUESET);
         if ("VerificationResult".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.VERIFICATIONRESULT);
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.VERIFICATIONRESULT);
         if ("VisionPrescription".equals(codeString))
-          return new Enumeration<ResourceTypes>(this, ResourceTypes.VISIONPRESCRIPTION);
-        throw new FHIRException("Unknown ResourceTypes code '"+codeString+"'");
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.VISIONPRESCRIPTION);
+        throw new FHIRException("Unknown ResourceTypeEnum code '"+codeString+"'");
         }
-    public String toCode(ResourceTypes code) {
-      if (code == ResourceTypes.ACCOUNT)
+    public String toCode(ResourceTypeEnum code) {
+      if (code == ResourceTypeEnum.ACCOUNT)
         return "Account";
-      if (code == ResourceTypes.ACTIVITYDEFINITION)
+      if (code == ResourceTypeEnum.ACTIVITYDEFINITION)
         return "ActivityDefinition";
-      if (code == ResourceTypes.ACTORDEFINITION)
+      if (code == ResourceTypeEnum.ACTORDEFINITION)
         return "ActorDefinition";
-      if (code == ResourceTypes.ADMINISTRABLEPRODUCTDEFINITION)
+      if (code == ResourceTypeEnum.ADMINISTRABLEPRODUCTDEFINITION)
         return "AdministrableProductDefinition";
-      if (code == ResourceTypes.ADVERSEEVENT)
+      if (code == ResourceTypeEnum.ADVERSEEVENT)
         return "AdverseEvent";
-      if (code == ResourceTypes.ALLERGYINTOLERANCE)
+      if (code == ResourceTypeEnum.ALLERGYINTOLERANCE)
         return "AllergyIntolerance";
-      if (code == ResourceTypes.APPOINTMENT)
+      if (code == ResourceTypeEnum.APPOINTMENT)
         return "Appointment";
-      if (code == ResourceTypes.APPOINTMENTRESPONSE)
+      if (code == ResourceTypeEnum.APPOINTMENTRESPONSE)
         return "AppointmentResponse";
-      if (code == ResourceTypes.ARTIFACTASSESSMENT)
+      if (code == ResourceTypeEnum.ARTIFACTASSESSMENT)
         return "ArtifactAssessment";
-      if (code == ResourceTypes.AUDITEVENT)
+      if (code == ResourceTypeEnum.AUDITEVENT)
         return "AuditEvent";
-      if (code == ResourceTypes.BASIC)
+      if (code == ResourceTypeEnum.BASIC)
         return "Basic";
-      if (code == ResourceTypes.BINARY)
+      if (code == ResourceTypeEnum.BINARY)
         return "Binary";
-      if (code == ResourceTypes.BIOLOGICALLYDERIVEDPRODUCT)
+      if (code == ResourceTypeEnum.BIOLOGICALLYDERIVEDPRODUCT)
         return "BiologicallyDerivedProduct";
-      if (code == ResourceTypes.BODYSTRUCTURE)
+      if (code == ResourceTypeEnum.BODYSTRUCTURE)
         return "BodyStructure";
-      if (code == ResourceTypes.BUNDLE)
+      if (code == ResourceTypeEnum.BUNDLE)
         return "Bundle";
-      if (code == ResourceTypes.CAPABILITYSTATEMENT)
+      if (code == ResourceTypeEnum.CAPABILITYSTATEMENT)
         return "CapabilityStatement";
-      if (code == ResourceTypes.CAREPLAN)
+      if (code == ResourceTypeEnum.CAREPLAN)
         return "CarePlan";
-      if (code == ResourceTypes.CARETEAM)
+      if (code == ResourceTypeEnum.CARETEAM)
         return "CareTeam";
-      if (code == ResourceTypes.CHARGEITEM)
+      if (code == ResourceTypeEnum.CHARGEITEM)
         return "ChargeItem";
-      if (code == ResourceTypes.CHARGEITEMDEFINITION)
+      if (code == ResourceTypeEnum.CHARGEITEMDEFINITION)
         return "ChargeItemDefinition";
-      if (code == ResourceTypes.CITATION)
+      if (code == ResourceTypeEnum.CITATION)
         return "Citation";
-      if (code == ResourceTypes.CLAIM)
+      if (code == ResourceTypeEnum.CLAIM)
         return "Claim";
-      if (code == ResourceTypes.CLAIMRESPONSE)
+      if (code == ResourceTypeEnum.CLAIMRESPONSE)
         return "ClaimResponse";
-      if (code == ResourceTypes.CLINICALIMPRESSION)
+      if (code == ResourceTypeEnum.CLINICALIMPRESSION)
         return "ClinicalImpression";
-      if (code == ResourceTypes.CLINICALUSEDEFINITION)
+      if (code == ResourceTypeEnum.CLINICALUSEDEFINITION)
         return "ClinicalUseDefinition";
-      if (code == ResourceTypes.CODESYSTEM)
+      if (code == ResourceTypeEnum.CODESYSTEM)
         return "CodeSystem";
-      if (code == ResourceTypes.COMMUNICATION)
+      if (code == ResourceTypeEnum.COMMUNICATION)
         return "Communication";
-      if (code == ResourceTypes.COMMUNICATIONREQUEST)
+      if (code == ResourceTypeEnum.COMMUNICATIONREQUEST)
         return "CommunicationRequest";
-      if (code == ResourceTypes.COMPARTMENTDEFINITION)
+      if (code == ResourceTypeEnum.COMPARTMENTDEFINITION)
         return "CompartmentDefinition";
-      if (code == ResourceTypes.COMPOSITION)
+      if (code == ResourceTypeEnum.COMPOSITION)
         return "Composition";
-      if (code == ResourceTypes.CONCEPTMAP)
+      if (code == ResourceTypeEnum.CONCEPTMAP)
         return "ConceptMap";
-      if (code == ResourceTypes.CONDITION)
+      if (code == ResourceTypeEnum.CONDITION)
         return "Condition";
-      if (code == ResourceTypes.CONDITIONDEFINITION)
+      if (code == ResourceTypeEnum.CONDITIONDEFINITION)
         return "ConditionDefinition";
-      if (code == ResourceTypes.CONSENT)
+      if (code == ResourceTypeEnum.CONSENT)
         return "Consent";
-      if (code == ResourceTypes.CONTRACT)
+      if (code == ResourceTypeEnum.CONTRACT)
         return "Contract";
-      if (code == ResourceTypes.COVERAGE)
+      if (code == ResourceTypeEnum.COVERAGE)
         return "Coverage";
-      if (code == ResourceTypes.COVERAGEELIGIBILITYREQUEST)
+      if (code == ResourceTypeEnum.COVERAGEELIGIBILITYREQUEST)
         return "CoverageEligibilityRequest";
-      if (code == ResourceTypes.COVERAGEELIGIBILITYRESPONSE)
+      if (code == ResourceTypeEnum.COVERAGEELIGIBILITYRESPONSE)
         return "CoverageEligibilityResponse";
-      if (code == ResourceTypes.DETECTEDISSUE)
+      if (code == ResourceTypeEnum.DETECTEDISSUE)
         return "DetectedIssue";
-      if (code == ResourceTypes.DEVICE)
+      if (code == ResourceTypeEnum.DEVICE)
         return "Device";
-      if (code == ResourceTypes.DEVICEDEFINITION)
+      if (code == ResourceTypeEnum.DEVICEDEFINITION)
         return "DeviceDefinition";
-      if (code == ResourceTypes.DEVICEDISPENSE)
+      if (code == ResourceTypeEnum.DEVICEDISPENSE)
         return "DeviceDispense";
-      if (code == ResourceTypes.DEVICEMETRIC)
+      if (code == ResourceTypeEnum.DEVICEMETRIC)
         return "DeviceMetric";
-      if (code == ResourceTypes.DEVICEREQUEST)
+      if (code == ResourceTypeEnum.DEVICEREQUEST)
         return "DeviceRequest";
-      if (code == ResourceTypes.DEVICEUSAGE)
+      if (code == ResourceTypeEnum.DEVICEUSAGE)
         return "DeviceUsage";
-      if (code == ResourceTypes.DIAGNOSTICREPORT)
+      if (code == ResourceTypeEnum.DIAGNOSTICREPORT)
         return "DiagnosticReport";
-      if (code == ResourceTypes.DOCUMENTMANIFEST)
+      if (code == ResourceTypeEnum.DOCUMENTMANIFEST)
         return "DocumentManifest";
-      if (code == ResourceTypes.DOCUMENTREFERENCE)
+      if (code == ResourceTypeEnum.DOCUMENTREFERENCE)
         return "DocumentReference";
-      if (code == ResourceTypes.ENCOUNTER)
+      if (code == ResourceTypeEnum.ENCOUNTER)
         return "Encounter";
-      if (code == ResourceTypes.ENDPOINT)
+      if (code == ResourceTypeEnum.ENDPOINT)
         return "Endpoint";
-      if (code == ResourceTypes.ENROLLMENTREQUEST)
+      if (code == ResourceTypeEnum.ENROLLMENTREQUEST)
         return "EnrollmentRequest";
-      if (code == ResourceTypes.ENROLLMENTRESPONSE)
+      if (code == ResourceTypeEnum.ENROLLMENTRESPONSE)
         return "EnrollmentResponse";
-      if (code == ResourceTypes.EPISODEOFCARE)
+      if (code == ResourceTypeEnum.EPISODEOFCARE)
         return "EpisodeOfCare";
-      if (code == ResourceTypes.EVENTDEFINITION)
+      if (code == ResourceTypeEnum.EVENTDEFINITION)
         return "EventDefinition";
-      if (code == ResourceTypes.EVIDENCE)
+      if (code == ResourceTypeEnum.EVIDENCE)
         return "Evidence";
-      if (code == ResourceTypes.EVIDENCEREPORT)
+      if (code == ResourceTypeEnum.EVIDENCEREPORT)
         return "EvidenceReport";
-      if (code == ResourceTypes.EVIDENCEVARIABLE)
+      if (code == ResourceTypeEnum.EVIDENCEVARIABLE)
         return "EvidenceVariable";
-      if (code == ResourceTypes.EXAMPLESCENARIO)
+      if (code == ResourceTypeEnum.EXAMPLESCENARIO)
         return "ExampleScenario";
-      if (code == ResourceTypes.EXPLANATIONOFBENEFIT)
+      if (code == ResourceTypeEnum.EXPLANATIONOFBENEFIT)
         return "ExplanationOfBenefit";
-      if (code == ResourceTypes.FAMILYMEMBERHISTORY)
+      if (code == ResourceTypeEnum.FAMILYMEMBERHISTORY)
         return "FamilyMemberHistory";
-      if (code == ResourceTypes.FLAG)
+      if (code == ResourceTypeEnum.FLAG)
         return "Flag";
-      if (code == ResourceTypes.FORMULARYITEM)
+      if (code == ResourceTypeEnum.FORMULARYITEM)
         return "FormularyItem";
-      if (code == ResourceTypes.GENOMICSTUDY)
+      if (code == ResourceTypeEnum.GENOMICSTUDY)
         return "GenomicStudy";
-      if (code == ResourceTypes.GOAL)
+      if (code == ResourceTypeEnum.GOAL)
         return "Goal";
-      if (code == ResourceTypes.GRAPHDEFINITION)
+      if (code == ResourceTypeEnum.GRAPHDEFINITION)
         return "GraphDefinition";
-      if (code == ResourceTypes.GROUP)
+      if (code == ResourceTypeEnum.GROUP)
         return "Group";
-      if (code == ResourceTypes.GUIDANCERESPONSE)
+      if (code == ResourceTypeEnum.GUIDANCERESPONSE)
         return "GuidanceResponse";
-      if (code == ResourceTypes.HEALTHCARESERVICE)
+      if (code == ResourceTypeEnum.HEALTHCARESERVICE)
         return "HealthcareService";
-      if (code == ResourceTypes.IMAGINGSELECTION)
+      if (code == ResourceTypeEnum.IMAGINGSELECTION)
         return "ImagingSelection";
-      if (code == ResourceTypes.IMAGINGSTUDY)
+      if (code == ResourceTypeEnum.IMAGINGSTUDY)
         return "ImagingStudy";
-      if (code == ResourceTypes.IMMUNIZATION)
+      if (code == ResourceTypeEnum.IMMUNIZATION)
         return "Immunization";
-      if (code == ResourceTypes.IMMUNIZATIONEVALUATION)
+      if (code == ResourceTypeEnum.IMMUNIZATIONEVALUATION)
         return "ImmunizationEvaluation";
-      if (code == ResourceTypes.IMMUNIZATIONRECOMMENDATION)
+      if (code == ResourceTypeEnum.IMMUNIZATIONRECOMMENDATION)
         return "ImmunizationRecommendation";
-      if (code == ResourceTypes.IMPLEMENTATIONGUIDE)
+      if (code == ResourceTypeEnum.IMPLEMENTATIONGUIDE)
         return "ImplementationGuide";
-      if (code == ResourceTypes.INGREDIENT)
+      if (code == ResourceTypeEnum.INGREDIENT)
         return "Ingredient";
-      if (code == ResourceTypes.INSURANCEPLAN)
+      if (code == ResourceTypeEnum.INSURANCEPLAN)
         return "InsurancePlan";
-      if (code == ResourceTypes.INVENTORYREPORT)
+      if (code == ResourceTypeEnum.INVENTORYREPORT)
         return "InventoryReport";
-      if (code == ResourceTypes.INVOICE)
+      if (code == ResourceTypeEnum.INVOICE)
         return "Invoice";
-      if (code == ResourceTypes.LIBRARY)
+      if (code == ResourceTypeEnum.LIBRARY)
         return "Library";
-      if (code == ResourceTypes.LINKAGE)
+      if (code == ResourceTypeEnum.LINKAGE)
         return "Linkage";
-      if (code == ResourceTypes.LIST)
+      if (code == ResourceTypeEnum.LIST)
         return "List";
-      if (code == ResourceTypes.LOCATION)
+      if (code == ResourceTypeEnum.LOCATION)
         return "Location";
-      if (code == ResourceTypes.MANUFACTUREDITEMDEFINITION)
+      if (code == ResourceTypeEnum.MANUFACTUREDITEMDEFINITION)
         return "ManufacturedItemDefinition";
-      if (code == ResourceTypes.MEASURE)
+      if (code == ResourceTypeEnum.MEASURE)
         return "Measure";
-      if (code == ResourceTypes.MEASUREREPORT)
+      if (code == ResourceTypeEnum.MEASUREREPORT)
         return "MeasureReport";
-      if (code == ResourceTypes.MEDICATION)
+      if (code == ResourceTypeEnum.MEDICATION)
         return "Medication";
-      if (code == ResourceTypes.MEDICATIONADMINISTRATION)
+      if (code == ResourceTypeEnum.MEDICATIONADMINISTRATION)
         return "MedicationAdministration";
-      if (code == ResourceTypes.MEDICATIONDISPENSE)
+      if (code == ResourceTypeEnum.MEDICATIONDISPENSE)
         return "MedicationDispense";
-      if (code == ResourceTypes.MEDICATIONKNOWLEDGE)
+      if (code == ResourceTypeEnum.MEDICATIONKNOWLEDGE)
         return "MedicationKnowledge";
-      if (code == ResourceTypes.MEDICATIONREQUEST)
+      if (code == ResourceTypeEnum.MEDICATIONREQUEST)
         return "MedicationRequest";
-      if (code == ResourceTypes.MEDICATIONUSAGE)
+      if (code == ResourceTypeEnum.MEDICATIONUSAGE)
         return "MedicationUsage";
-      if (code == ResourceTypes.MEDICINALPRODUCTDEFINITION)
+      if (code == ResourceTypeEnum.MEDICINALPRODUCTDEFINITION)
         return "MedicinalProductDefinition";
-      if (code == ResourceTypes.MESSAGEDEFINITION)
+      if (code == ResourceTypeEnum.MESSAGEDEFINITION)
         return "MessageDefinition";
-      if (code == ResourceTypes.MESSAGEHEADER)
+      if (code == ResourceTypeEnum.MESSAGEHEADER)
         return "MessageHeader";
-      if (code == ResourceTypes.MOLECULARSEQUENCE)
+      if (code == ResourceTypeEnum.MOLECULARSEQUENCE)
         return "MolecularSequence";
-      if (code == ResourceTypes.NAMINGSYSTEM)
+      if (code == ResourceTypeEnum.NAMINGSYSTEM)
         return "NamingSystem";
-      if (code == ResourceTypes.NUTRITIONINTAKE)
+      if (code == ResourceTypeEnum.NUTRITIONINTAKE)
         return "NutritionIntake";
-      if (code == ResourceTypes.NUTRITIONORDER)
+      if (code == ResourceTypeEnum.NUTRITIONORDER)
         return "NutritionOrder";
-      if (code == ResourceTypes.NUTRITIONPRODUCT)
+      if (code == ResourceTypeEnum.NUTRITIONPRODUCT)
         return "NutritionProduct";
-      if (code == ResourceTypes.OBSERVATION)
+      if (code == ResourceTypeEnum.OBSERVATION)
         return "Observation";
-      if (code == ResourceTypes.OBSERVATIONDEFINITION)
+      if (code == ResourceTypeEnum.OBSERVATIONDEFINITION)
         return "ObservationDefinition";
-      if (code == ResourceTypes.OPERATIONDEFINITION)
+      if (code == ResourceTypeEnum.OPERATIONDEFINITION)
         return "OperationDefinition";
-      if (code == ResourceTypes.OPERATIONOUTCOME)
+      if (code == ResourceTypeEnum.OPERATIONOUTCOME)
         return "OperationOutcome";
-      if (code == ResourceTypes.ORGANIZATION)
+      if (code == ResourceTypeEnum.ORGANIZATION)
         return "Organization";
-      if (code == ResourceTypes.ORGANIZATIONAFFILIATION)
+      if (code == ResourceTypeEnum.ORGANIZATIONAFFILIATION)
         return "OrganizationAffiliation";
-      if (code == ResourceTypes.PACKAGEDPRODUCTDEFINITION)
+      if (code == ResourceTypeEnum.PACKAGEDPRODUCTDEFINITION)
         return "PackagedProductDefinition";
-      if (code == ResourceTypes.PARAMETERS)
+      if (code == ResourceTypeEnum.PARAMETERS)
         return "Parameters";
-      if (code == ResourceTypes.PATIENT)
+      if (code == ResourceTypeEnum.PATIENT)
         return "Patient";
-      if (code == ResourceTypes.PAYMENTNOTICE)
+      if (code == ResourceTypeEnum.PAYMENTNOTICE)
         return "PaymentNotice";
-      if (code == ResourceTypes.PAYMENTRECONCILIATION)
+      if (code == ResourceTypeEnum.PAYMENTRECONCILIATION)
         return "PaymentReconciliation";
-      if (code == ResourceTypes.PERMISSION)
+      if (code == ResourceTypeEnum.PERMISSION)
         return "Permission";
-      if (code == ResourceTypes.PERSON)
+      if (code == ResourceTypeEnum.PERSON)
         return "Person";
-      if (code == ResourceTypes.PLANDEFINITION)
+      if (code == ResourceTypeEnum.PLANDEFINITION)
         return "PlanDefinition";
-      if (code == ResourceTypes.PRACTITIONER)
+      if (code == ResourceTypeEnum.PRACTITIONER)
         return "Practitioner";
-      if (code == ResourceTypes.PRACTITIONERROLE)
+      if (code == ResourceTypeEnum.PRACTITIONERROLE)
         return "PractitionerRole";
-      if (code == ResourceTypes.PROCEDURE)
+      if (code == ResourceTypeEnum.PROCEDURE)
         return "Procedure";
-      if (code == ResourceTypes.PROVENANCE)
+      if (code == ResourceTypeEnum.PROVENANCE)
         return "Provenance";
-      if (code == ResourceTypes.QUESTIONNAIRE)
+      if (code == ResourceTypeEnum.QUESTIONNAIRE)
         return "Questionnaire";
-      if (code == ResourceTypes.QUESTIONNAIRERESPONSE)
+      if (code == ResourceTypeEnum.QUESTIONNAIRERESPONSE)
         return "QuestionnaireResponse";
-      if (code == ResourceTypes.REGULATEDAUTHORIZATION)
+      if (code == ResourceTypeEnum.REGULATEDAUTHORIZATION)
         return "RegulatedAuthorization";
-      if (code == ResourceTypes.RELATEDPERSON)
+      if (code == ResourceTypeEnum.RELATEDPERSON)
         return "RelatedPerson";
-      if (code == ResourceTypes.REQUESTORCHESTRATION)
+      if (code == ResourceTypeEnum.REQUESTORCHESTRATION)
         return "RequestOrchestration";
-      if (code == ResourceTypes.REQUIREMENTS)
+      if (code == ResourceTypeEnum.REQUIREMENTS)
         return "Requirements";
-      if (code == ResourceTypes.RESEARCHSTUDY)
+      if (code == ResourceTypeEnum.RESEARCHSTUDY)
         return "ResearchStudy";
-      if (code == ResourceTypes.RESEARCHSUBJECT)
+      if (code == ResourceTypeEnum.RESEARCHSUBJECT)
         return "ResearchSubject";
-      if (code == ResourceTypes.RISKASSESSMENT)
+      if (code == ResourceTypeEnum.RISKASSESSMENT)
         return "RiskAssessment";
-      if (code == ResourceTypes.SCHEDULE)
+      if (code == ResourceTypeEnum.SCHEDULE)
         return "Schedule";
-      if (code == ResourceTypes.SEARCHPARAMETER)
+      if (code == ResourceTypeEnum.SEARCHPARAMETER)
         return "SearchParameter";
-      if (code == ResourceTypes.SERVICEREQUEST)
+      if (code == ResourceTypeEnum.SERVICEREQUEST)
         return "ServiceRequest";
-      if (code == ResourceTypes.SLOT)
+      if (code == ResourceTypeEnum.SLOT)
         return "Slot";
-      if (code == ResourceTypes.SPECIMEN)
+      if (code == ResourceTypeEnum.SPECIMEN)
         return "Specimen";
-      if (code == ResourceTypes.SPECIMENDEFINITION)
+      if (code == ResourceTypeEnum.SPECIMENDEFINITION)
         return "SpecimenDefinition";
-      if (code == ResourceTypes.STRUCTUREDEFINITION)
+      if (code == ResourceTypeEnum.STRUCTUREDEFINITION)
         return "StructureDefinition";
-      if (code == ResourceTypes.STRUCTUREMAP)
+      if (code == ResourceTypeEnum.STRUCTUREMAP)
         return "StructureMap";
-      if (code == ResourceTypes.SUBSCRIPTION)
+      if (code == ResourceTypeEnum.SUBSCRIPTION)
         return "Subscription";
-      if (code == ResourceTypes.SUBSCRIPTIONSTATUS)
+      if (code == ResourceTypeEnum.SUBSCRIPTIONSTATUS)
         return "SubscriptionStatus";
-      if (code == ResourceTypes.SUBSCRIPTIONTOPIC)
+      if (code == ResourceTypeEnum.SUBSCRIPTIONTOPIC)
         return "SubscriptionTopic";
-      if (code == ResourceTypes.SUBSTANCE)
+      if (code == ResourceTypeEnum.SUBSTANCE)
         return "Substance";
-      if (code == ResourceTypes.SUBSTANCEDEFINITION)
+      if (code == ResourceTypeEnum.SUBSTANCEDEFINITION)
         return "SubstanceDefinition";
-      if (code == ResourceTypes.SUBSTANCENUCLEICACID)
+      if (code == ResourceTypeEnum.SUBSTANCENUCLEICACID)
         return "SubstanceNucleicAcid";
-      if (code == ResourceTypes.SUBSTANCEPOLYMER)
+      if (code == ResourceTypeEnum.SUBSTANCEPOLYMER)
         return "SubstancePolymer";
-      if (code == ResourceTypes.SUBSTANCEPROTEIN)
+      if (code == ResourceTypeEnum.SUBSTANCEPROTEIN)
         return "SubstanceProtein";
-      if (code == ResourceTypes.SUBSTANCEREFERENCEINFORMATION)
+      if (code == ResourceTypeEnum.SUBSTANCEREFERENCEINFORMATION)
         return "SubstanceReferenceInformation";
-      if (code == ResourceTypes.SUBSTANCESOURCEMATERIAL)
+      if (code == ResourceTypeEnum.SUBSTANCESOURCEMATERIAL)
         return "SubstanceSourceMaterial";
-      if (code == ResourceTypes.SUPPLYDELIVERY)
+      if (code == ResourceTypeEnum.SUPPLYDELIVERY)
         return "SupplyDelivery";
-      if (code == ResourceTypes.SUPPLYREQUEST)
+      if (code == ResourceTypeEnum.SUPPLYREQUEST)
         return "SupplyRequest";
-      if (code == ResourceTypes.TASK)
+      if (code == ResourceTypeEnum.TASK)
         return "Task";
-      if (code == ResourceTypes.TERMINOLOGYCAPABILITIES)
+      if (code == ResourceTypeEnum.TERMINOLOGYCAPABILITIES)
         return "TerminologyCapabilities";
-      if (code == ResourceTypes.TESTREPORT)
+      if (code == ResourceTypeEnum.TESTREPORT)
         return "TestReport";
-      if (code == ResourceTypes.TESTSCRIPT)
+      if (code == ResourceTypeEnum.TESTSCRIPT)
         return "TestScript";
-      if (code == ResourceTypes.TRANSPORT)
+      if (code == ResourceTypeEnum.TRANSPORT)
         return "Transport";
-      if (code == ResourceTypes.VALUESET)
+      if (code == ResourceTypeEnum.VALUESET)
         return "ValueSet";
-      if (code == ResourceTypes.VERIFICATIONRESULT)
+      if (code == ResourceTypeEnum.VERIFICATIONRESULT)
         return "VerificationResult";
-      if (code == ResourceTypes.VISIONPRESCRIPTION)
+      if (code == ResourceTypeEnum.VISIONPRESCRIPTION)
         return "VisionPrescription";
       return "?";
       }
-    public String toSystem(ResourceTypes code) {
+    public String toSystem(ResourceTypeEnum code) {
       return code.getSystem();
       }
     }
@@ -18295,21 +18329,21 @@ The primary difference between a medicationusage and a medicationadministration 
         }
         public String getSystem() {
           switch (this) {
-            case EQUAL: return "http://terminology.hl7.org/CodeSystem/subscription-search-modifier";
-            case EQ: return "http://terminology.hl7.org/CodeSystem/subscription-search-modifier";
-            case NE: return "http://terminology.hl7.org/CodeSystem/subscription-search-modifier";
-            case GT: return "http://terminology.hl7.org/CodeSystem/subscription-search-modifier";
-            case LT: return "http://terminology.hl7.org/CodeSystem/subscription-search-modifier";
-            case GE: return "http://terminology.hl7.org/CodeSystem/subscription-search-modifier";
-            case LE: return "http://terminology.hl7.org/CodeSystem/subscription-search-modifier";
-            case SA: return "http://terminology.hl7.org/CodeSystem/subscription-search-modifier";
-            case EB: return "http://terminology.hl7.org/CodeSystem/subscription-search-modifier";
-            case AP: return "http://terminology.hl7.org/CodeSystem/subscription-search-modifier";
-            case ABOVE: return "http://terminology.hl7.org/CodeSystem/subscription-search-modifier";
-            case BELOW: return "http://terminology.hl7.org/CodeSystem/subscription-search-modifier";
-            case IN: return "http://terminology.hl7.org/CodeSystem/subscription-search-modifier";
-            case NOTIN: return "http://terminology.hl7.org/CodeSystem/subscription-search-modifier";
-            case OFTYPE: return "http://terminology.hl7.org/CodeSystem/subscription-search-modifier";
+            case EQUAL: return "http://hl7.org/fhir/subscription-search-modifier";
+            case EQ: return "http://hl7.org/fhir/subscription-search-modifier";
+            case NE: return "http://hl7.org/fhir/subscription-search-modifier";
+            case GT: return "http://hl7.org/fhir/subscription-search-modifier";
+            case LT: return "http://hl7.org/fhir/subscription-search-modifier";
+            case GE: return "http://hl7.org/fhir/subscription-search-modifier";
+            case LE: return "http://hl7.org/fhir/subscription-search-modifier";
+            case SA: return "http://hl7.org/fhir/subscription-search-modifier";
+            case EB: return "http://hl7.org/fhir/subscription-search-modifier";
+            case AP: return "http://hl7.org/fhir/subscription-search-modifier";
+            case ABOVE: return "http://hl7.org/fhir/subscription-search-modifier";
+            case BELOW: return "http://hl7.org/fhir/subscription-search-modifier";
+            case IN: return "http://hl7.org/fhir/subscription-search-modifier";
+            case NOTIN: return "http://hl7.org/fhir/subscription-search-modifier";
+            case OFTYPE: return "http://hl7.org/fhir/subscription-search-modifier";
             case NULL: return null;
             default: return "?";
           }
@@ -18526,11 +18560,11 @@ The primary difference between a medicationusage and a medicationadministration 
         }
         public String getSystem() {
           switch (this) {
-            case REQUESTED: return "http://terminology.hl7.org/CodeSystem/subscription-status";
-            case ACTIVE: return "http://terminology.hl7.org/CodeSystem/subscription-status";
-            case ERROR: return "http://terminology.hl7.org/CodeSystem/subscription-status";
-            case OFF: return "http://terminology.hl7.org/CodeSystem/subscription-status";
-            case ENTEREDINERROR: return "http://terminology.hl7.org/CodeSystem/subscription-status";
+            case REQUESTED: return "http://hl7.org/fhir/subscription-status";
+            case ACTIVE: return "http://hl7.org/fhir/subscription-status";
+            case ERROR: return "http://hl7.org/fhir/subscription-status";
+            case OFF: return "http://hl7.org/fhir/subscription-status";
+            case ENTEREDINERROR: return "http://hl7.org/fhir/subscription-status";
             case NULL: return null;
             default: return "?";
           }

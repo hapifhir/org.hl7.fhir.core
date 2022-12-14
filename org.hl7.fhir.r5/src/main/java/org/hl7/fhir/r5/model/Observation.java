@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -4023,17 +4023,17 @@ Reflex | Repeat | Re-run.
    * <p>
    * Description: <b>The value or component value of the observation, if the value is a CodeableConcept</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>(Observation.value as CodeableConcept) | (Observation.component.value as CodeableConcept)</b><br>
+   * Path: <b>Observation.value.ofType(CodeableConcept) | Observation.component.value.ofType(CodeableConcept)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="combo-value-concept", path="(Observation.value as CodeableConcept) | (Observation.component.value as CodeableConcept)", description="The value or component value of the observation, if the value is a CodeableConcept", type="token" )
+  @SearchParamDefinition(name="combo-value-concept", path="Observation.value.ofType(CodeableConcept) | Observation.component.value.ofType(CodeableConcept)", description="The value or component value of the observation, if the value is a CodeableConcept", type="token" )
   public static final String SP_COMBO_VALUE_CONCEPT = "combo-value-concept";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>combo-value-concept</b>
    * <p>
    * Description: <b>The value or component value of the observation, if the value is a CodeableConcept</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>(Observation.value as CodeableConcept) | (Observation.component.value as CodeableConcept)</b><br>
+   * Path: <b>Observation.value.ofType(CodeableConcept) | Observation.component.value.ofType(CodeableConcept)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam COMBO_VALUE_CONCEPT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_COMBO_VALUE_CONCEPT);
@@ -4043,17 +4043,17 @@ Reflex | Repeat | Re-run.
    * <p>
    * Description: <b>The value or component value of the observation, if the value is a Quantity, or a SampledData (just search on the bounds of the values in sampled data)</b><br>
    * Type: <b>quantity</b><br>
-   * Path: <b>(Observation.value as Quantity) | (Observation.value as SampledData) | (Observation.component.value as Quantity) | (Observation.component.value as SampledData)</b><br>
+   * Path: <b>Observation.value.ofType(Quantity) | Observation.value.ofType(SampledData) | Observation.component.value.ofType(Quantity) | Observation.component.value.ofType(SampledData)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="combo-value-quantity", path="(Observation.value as Quantity) | (Observation.value as SampledData) | (Observation.component.value as Quantity) | (Observation.component.value as SampledData)", description="The value or component value of the observation, if the value is a Quantity, or a SampledData (just search on the bounds of the values in sampled data)", type="quantity" )
+  @SearchParamDefinition(name="combo-value-quantity", path="Observation.value.ofType(Quantity) | Observation.value.ofType(SampledData) | Observation.component.value.ofType(Quantity) | Observation.component.value.ofType(SampledData)", description="The value or component value of the observation, if the value is a Quantity, or a SampledData (just search on the bounds of the values in sampled data)", type="quantity" )
   public static final String SP_COMBO_VALUE_QUANTITY = "combo-value-quantity";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>combo-value-quantity</b>
    * <p>
    * Description: <b>The value or component value of the observation, if the value is a Quantity, or a SampledData (just search on the bounds of the values in sampled data)</b><br>
    * Type: <b>quantity</b><br>
-   * Path: <b>(Observation.value as Quantity) | (Observation.value as SampledData) | (Observation.component.value as Quantity) | (Observation.component.value as SampledData)</b><br>
+   * Path: <b>Observation.value.ofType(Quantity) | Observation.value.ofType(SampledData) | Observation.component.value.ofType(Quantity) | Observation.component.value.ofType(SampledData)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.QuantityClientParam COMBO_VALUE_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_COMBO_VALUE_QUANTITY);
@@ -4143,17 +4143,17 @@ Reflex | Repeat | Re-run.
    * <p>
    * Description: <b>The value of the component observation, if the value is a CodeableConcept</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>(Observation.component.value as CodeableConcept)</b><br>
+   * Path: <b>Observation.component.value.ofType(CodeableConcept)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="component-value-concept", path="(Observation.component.value as CodeableConcept)", description="The value of the component observation, if the value is a CodeableConcept", type="token" )
+  @SearchParamDefinition(name="component-value-concept", path="Observation.component.value.ofType(CodeableConcept)", description="The value of the component observation, if the value is a CodeableConcept", type="token" )
   public static final String SP_COMPONENT_VALUE_CONCEPT = "component-value-concept";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>component-value-concept</b>
    * <p>
    * Description: <b>The value of the component observation, if the value is a CodeableConcept</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>(Observation.component.value as CodeableConcept)</b><br>
+   * Path: <b>Observation.component.value.ofType(CodeableConcept)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam COMPONENT_VALUE_CONCEPT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_COMPONENT_VALUE_CONCEPT);
@@ -4163,17 +4163,17 @@ Reflex | Repeat | Re-run.
    * <p>
    * Description: <b>The value of the component observation, if the value is a Quantity, or a SampledData (just search on the bounds of the values in sampled data)</b><br>
    * Type: <b>quantity</b><br>
-   * Path: <b>(Observation.component.value as Quantity) | (Observation.component.value as SampledData)</b><br>
+   * Path: <b>Observation.component.value.ofType(Quantity) | Observation.component.value.ofType(SampledData)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="component-value-quantity", path="(Observation.component.value as Quantity) | (Observation.component.value as SampledData)", description="The value of the component observation, if the value is a Quantity, or a SampledData (just search on the bounds of the values in sampled data)", type="quantity" )
+  @SearchParamDefinition(name="component-value-quantity", path="Observation.component.value.ofType(Quantity) | Observation.component.value.ofType(SampledData)", description="The value of the component observation, if the value is a Quantity, or a SampledData (just search on the bounds of the values in sampled data)", type="quantity" )
   public static final String SP_COMPONENT_VALUE_QUANTITY = "component-value-quantity";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>component-value-quantity</b>
    * <p>
    * Description: <b>The value of the component observation, if the value is a Quantity, or a SampledData (just search on the bounds of the values in sampled data)</b><br>
    * Type: <b>quantity</b><br>
-   * Path: <b>(Observation.component.value as Quantity) | (Observation.component.value as SampledData)</b><br>
+   * Path: <b>Observation.component.value.ofType(Quantity) | Observation.component.value.ofType(SampledData)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.QuantityClientParam COMPONENT_VALUE_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_COMPONENT_VALUE_QUANTITY);
@@ -4451,17 +4451,17 @@ Reflex | Repeat | Re-run.
    * <p>
    * Description: <b>The value of the observation, if the value is a CodeableConcept</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>(Observation.value as CodeableConcept)</b><br>
+   * Path: <b>Observation.value.ofType(CodeableConcept)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="value-concept", path="(Observation.value as CodeableConcept)", description="The value of the observation, if the value is a CodeableConcept", type="token" )
+  @SearchParamDefinition(name="value-concept", path="Observation.value.ofType(CodeableConcept)", description="The value of the observation, if the value is a CodeableConcept", type="token" )
   public static final String SP_VALUE_CONCEPT = "value-concept";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>value-concept</b>
    * <p>
    * Description: <b>The value of the observation, if the value is a CodeableConcept</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>(Observation.value as CodeableConcept)</b><br>
+   * Path: <b>Observation.value.ofType(CodeableConcept)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VALUE_CONCEPT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VALUE_CONCEPT);
@@ -4471,17 +4471,17 @@ Reflex | Repeat | Re-run.
    * <p>
    * Description: <b>The value of the observation, if the value is a date or period of time</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>(Observation.value as dateTime) | (Observation.value as Period)</b><br>
+   * Path: <b>Observation.value.ofType(dateTime) | Observation.value.ofType(Period)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="value-date", path="(Observation.value as dateTime) | (Observation.value as Period)", description="The value of the observation, if the value is a date or period of time", type="date" )
+  @SearchParamDefinition(name="value-date", path="Observation.value.ofType(dateTime) | Observation.value.ofType(Period)", description="The value of the observation, if the value is a date or period of time", type="date" )
   public static final String SP_VALUE_DATE = "value-date";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>value-date</b>
    * <p>
    * Description: <b>The value of the observation, if the value is a date or period of time</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>(Observation.value as dateTime) | (Observation.value as Period)</b><br>
+   * Path: <b>Observation.value.ofType(dateTime) | Observation.value.ofType(Period)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam VALUE_DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_VALUE_DATE);
@@ -4491,17 +4491,17 @@ Reflex | Repeat | Re-run.
    * <p>
    * Description: <b>The value of the observation, if the value is a Quantity, or a SampledData (just search on the bounds of the values in sampled data)</b><br>
    * Type: <b>quantity</b><br>
-   * Path: <b>(Observation.value as Quantity) | (Observation.value as SampledData)</b><br>
+   * Path: <b>Observation.value.ofType(Quantity) | Observation.value.ofType(SampledData)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="value-quantity", path="(Observation.value as Quantity) | (Observation.value as SampledData)", description="The value of the observation, if the value is a Quantity, or a SampledData (just search on the bounds of the values in sampled data)", type="quantity" )
+  @SearchParamDefinition(name="value-quantity", path="Observation.value.ofType(Quantity) | Observation.value.ofType(SampledData)", description="The value of the observation, if the value is a Quantity, or a SampledData (just search on the bounds of the values in sampled data)", type="quantity" )
   public static final String SP_VALUE_QUANTITY = "value-quantity";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>value-quantity</b>
    * <p>
    * Description: <b>The value of the observation, if the value is a Quantity, or a SampledData (just search on the bounds of the values in sampled data)</b><br>
    * Type: <b>quantity</b><br>
-   * Path: <b>(Observation.value as Quantity) | (Observation.value as SampledData)</b><br>
+   * Path: <b>Observation.value.ofType(Quantity) | Observation.value.ofType(SampledData)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.QuantityClientParam VALUE_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_VALUE_QUANTITY);
@@ -4511,17 +4511,17 @@ Reflex | Repeat | Re-run.
    * <p>
    * Description: <b>The value of the observation, if the value is a string, and also searches in CodeableConcept.text</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>(Observation.value as string) | (Observation.value as CodeableConcept).text</b><br>
+   * Path: <b>Observation.value.ofType(string) | Observation.value.ofType(CodeableConcept).text</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="value-string", path="(Observation.value as string) | (Observation.value as CodeableConcept).text", description="The value of the observation, if the value is a string, and also searches in CodeableConcept.text", type="string" )
+  @SearchParamDefinition(name="value-string", path="Observation.value.ofType(string) | Observation.value.ofType(CodeableConcept).text", description="The value of the observation, if the value is a string, and also searches in CodeableConcept.text", type="string" )
   public static final String SP_VALUE_STRING = "value-string";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>value-string</b>
    * <p>
    * Description: <b>The value of the observation, if the value is a string, and also searches in CodeableConcept.text</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>(Observation.value as string) | (Observation.value as CodeableConcept).text</b><br>
+   * Path: <b>Observation.value.ofType(string) | Observation.value.ofType(CodeableConcept).text</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.StringClientParam VALUE_STRING = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_VALUE_STRING);
@@ -4600,10 +4600,10 @@ Reflex | Repeat | Re-run.
 * [SupplyRequest](supplyrequest.html): When the request was made
 </b><br>
    * Type: <b>date</b><br>
-   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
+   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.as(dateTime) | DiagnosticReport.effective.as(Period) | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective.as(dateTime) | Observation.effective.as(Period) | Observation.effective.as(Timing) | Observation.effective.as(instant) | Procedure.occurrence.as(dateTime) | Procedure.occurrence.as(Period) | Procedure.occurrence.as(Timing) | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="date", path="AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded\r\n* [CarePlan](careplan.html): Time period plan covers\r\n* [CareTeam](careteam.html): A date within the coverage time period.\r\n* [ClinicalImpression](clinicalimpression.html): When the assessment was documented\r\n* [Composition](composition.html): Composition editing time\r\n* [Consent](consent.html): When consent was agreed to\r\n* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report\r\n* [Encounter](encounter.html): A date within the actualPeriod the Encounter lasted\r\n* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period\r\n* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated\r\n* [Flag](flag.html): Time period when flag is active\r\n* [Immunization](immunization.html): Vaccination  (non)-Administration Date\r\n* [List](list.html): When the list was prepared\r\n* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period\r\n* [Procedure](procedure.html): When the procedure occurred or is occurring\r\n* [RiskAssessment](riskassessment.html): When was assessment made?\r\n* [SupplyRequest](supplyrequest.html): When the request was made\r\n", type="date" )
+  @SearchParamDefinition(name="date", path="AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.as(dateTime) | DiagnosticReport.effective.as(Period) | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective.as(dateTime) | Observation.effective.as(Period) | Observation.effective.as(Timing) | Observation.effective.as(instant) | Procedure.occurrence.as(dateTime) | Procedure.occurrence.as(Period) | Procedure.occurrence.as(Timing) | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded\r\n* [CarePlan](careplan.html): Time period plan covers\r\n* [CareTeam](careteam.html): A date within the coverage time period.\r\n* [ClinicalImpression](clinicalimpression.html): When the assessment was documented\r\n* [Composition](composition.html): Composition editing time\r\n* [Consent](consent.html): When consent was agreed to\r\n* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report\r\n* [Encounter](encounter.html): A date within the actualPeriod the Encounter lasted\r\n* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period\r\n* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated\r\n* [Flag](flag.html): Time period when flag is active\r\n* [Immunization](immunization.html): Vaccination  (non)-Administration Date\r\n* [List](list.html): When the list was prepared\r\n* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period\r\n* [Procedure](procedure.html): When the procedure occurred or is occurring\r\n* [RiskAssessment](riskassessment.html): When was assessment made?\r\n* [SupplyRequest](supplyrequest.html): When the request was made\r\n", type="date" )
   public static final String SP_DATE = "date";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>date</b>
@@ -4629,7 +4629,7 @@ Reflex | Repeat | Re-run.
 * [SupplyRequest](supplyrequest.html): When the request was made
 </b><br>
    * Type: <b>date</b><br>
-   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
+   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.as(dateTime) | DiagnosticReport.effective.as(Period) | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective.as(dateTime) | Observation.effective.as(Period) | Observation.effective.as(Timing) | Observation.effective.as(instant) | Procedure.occurrence.as(dateTime) | Procedure.occurrence.as(Period) | Procedure.occurrence.as(Timing) | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
@@ -4806,13 +4806,14 @@ Reflex | Repeat | Re-run.
 * [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
 * [ServiceRequest](servicerequest.html): Search by subject - a patient
 * [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
+* [SupplyRequest](supplyrequest.html): The patient or subject for whom the supply is destined
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | SupplyRequest.deliverFor | VisionPrescription.patient</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", target={BiologicallyDerivedProduct.class, Device.class, Group.class, Location.class, Medication.class, NutritionProduct.class, Organization.class, Patient.class, Practitioner.class, Procedure.class, Substance.class } )
+  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | SupplyRequest.deliverFor | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [SupplyRequest](supplyrequest.html): The patient or subject for whom the supply is destined\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", target={BiologicallyDerivedProduct.class, Device.class, Group.class, Location.class, Medication.class, NutritionProduct.class, Organization.class, Patient.class, Practitioner.class, Procedure.class, Substance.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
@@ -4850,10 +4851,11 @@ Reflex | Repeat | Re-run.
 * [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
 * [ServiceRequest](servicerequest.html): Search by subject - a patient
 * [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
+* [SupplyRequest](supplyrequest.html): The patient or subject for whom the supply is destined
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | SupplyRequest.deliverFor | VisionPrescription.patient</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);

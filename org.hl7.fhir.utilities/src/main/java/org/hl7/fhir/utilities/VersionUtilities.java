@@ -570,13 +570,20 @@ public class VersionUtilities {
   }
 
   public static String getSpecUrl(String v) {
+    if (v.contains("-cibuild")) {
+      return "http://build.fhir.org";
+    }
+    if (v.contains("-")) {
+      return "http://hl7.org/fhir/"+v;
+    }
+    
     switch (getMajMin(v)) {
     case "1.0" : return "http://hl7.org/fhir/DSTU1";
     case "1.4" : return "http://hl7.org/fhir/DSTU2";
     case "3.0" : return "http://hl7.org/fhir/STU3";
     case "4.0" : return "http://hl7.org/fhir/R4";
     case "4.3" : return "http://hl7.org/fhir/R4B";
-    case "5.0" : return "http://build.fhir.org";
+    case "5.0" : return "http://hl7.org/fhir/5.0.0-snapshot3";
     default:
       return "http://hl7.org/fhir";
     }

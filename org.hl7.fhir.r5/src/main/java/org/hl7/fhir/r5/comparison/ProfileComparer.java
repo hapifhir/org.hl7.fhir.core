@@ -849,7 +849,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
     for (ElementDefinitionConstraintComponent l : left) {
       boolean found = false;
       for (ElementDefinitionConstraintComponent r : right)
-        if (Utilities.equals(r.getId(), l.getId()) || (Utilities.equals(r.getXpath(), l.getXpath()) && r.getSeverity() == l.getSeverity()))
+        if (Utilities.equals(r.getId(), l.getId()) || (Utilities.equals(r.getExpression(), l.getExpression()) && r.getSeverity() == l.getSeverity()))
           found = true;
       if (found)
         result.add(l);
@@ -863,7 +863,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
     for (ElementDefinitionConstraintComponent l : left) {
       boolean found = false;
       for (ElementDefinitionConstraintComponent r : right)
-        if (Utilities.equals(r.getId(), l.getId()) || (Utilities.equals(r.getXpath(), l.getXpath()) && r.getSeverity() == l.getSeverity()))
+        if (Utilities.equals(r.getId(), l.getId()) || (Utilities.equals(r.getExpression(), l.getExpression()) && r.getSeverity() == l.getSeverity()))
           found = true;
       if (!found) {
         if (!Utilities.existsInList(l.getExpression(), "hasValue() or (children().count() > id.count())", "extension.exists() != value.exists()")) {
@@ -875,7 +875,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
     for (ElementDefinitionConstraintComponent r : right) {
       boolean found = false;
       for (ElementDefinitionConstraintComponent l : left)
-        if (Utilities.equals(r.getId(), l.getId()) || (Utilities.equals(r.getXpath(), l.getXpath()) && r.getSeverity() == l.getSeverity()))
+        if (Utilities.equals(r.getId(), l.getId()) || (Utilities.equals(r.getExpression(), l.getExpression()) && r.getSeverity() == l.getSeverity()))
           found = true;
       if (!found) {
         if (!Utilities.existsInList(r.getExpression(), "hasValue() or (children().count() > id.count())", "extension.exists() != value.exists()")) {

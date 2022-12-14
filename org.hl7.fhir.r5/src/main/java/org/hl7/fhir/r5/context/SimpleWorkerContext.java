@@ -756,6 +756,11 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
      return loadedPackages.toString();
   }
 
+  @Override
+  public String getSpecUrl() {
+    return VersionUtilities.getSpecUrl(getVersion())+"/";
+  }
+
   
 }
 

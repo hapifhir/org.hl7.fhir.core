@@ -295,9 +295,9 @@ public class ActivityDefinition43_50 {
       case SUPPLYREQUEST:
         tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.SUPPLYREQUEST);
         break;
-      case TASK:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.TASK);
-        break;
+//      case TASK:
+//        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.);
+//        break;
       case VISIONPRESCRIPTION:
         tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.VISIONPRESCRIPTION);
         break;
@@ -353,9 +353,9 @@ public class ActivityDefinition43_50 {
       case SUPPLYREQUEST:
         tgt.setValue(org.hl7.fhir.r4b.model.ActivityDefinition.RequestResourceType.SUPPLYREQUEST);
         break;
-      case TASK:
-        tgt.setValue(org.hl7.fhir.r4b.model.ActivityDefinition.RequestResourceType.TASK);
-        break;
+//      case TASK:
+//        tgt.setValue(org.hl7.fhir.r4b.model.ActivityDefinition.RequestResourceType.TASK);
+//        break;
       case VISIONPRESCRIPTION:
         tgt.setValue(org.hl7.fhir.r4b.model.ActivityDefinition.RequestResourceType.VISIONPRESCRIPTION);
         break;

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -67,7 +67,7 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
     @Description(shortDefinition="Additional content defined by implementations", formalDefinition="May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension." )
     protected List<Extension> extension;
 
-    private static final long serialVersionUID = -158027598L;
+    private static final long serialVersionUID = -1452745816L;
 
   /**
    * Constructor
@@ -180,14 +180,14 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
 
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("id", "id", "Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces.", 0, 1, id));
+        children.add(new Property("id", "string", "Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces.", 0, 1, id));
         children.add(new Property("extension", "Extension", "May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.", 0, java.lang.Integer.MAX_VALUE, extension));
       }
 
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case 3355: /*id*/  return new Property("id", "id", "Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces.", 0, 1, id);
+        case 3355: /*id*/  return new Property("id", "string", "Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces.", 0, 1, id);
         case -612557761: /*extension*/  return new Property("extension", "Extension", "May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.", 0, java.lang.Integer.MAX_VALUE, extension);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -197,7 +197,7 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 3355: /*id*/ return this.id == null ? new Base[0] : new Base[] {this.id}; // IdType
+        case 3355: /*id*/ return this.id == null ? new Base[0] : new Base[] {this.id}; // StringType
         case -612557761: /*extension*/ return this.extension == null ? new Base[0] : this.extension.toArray(new Base[this.extension.size()]); // Extension
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -208,7 +208,7 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3355: // id
-          this.id = TypeConvertor.castToString(value); // IdType
+          this.id = TypeConvertor.castToString(value); // StringType
           return value;
         case -612557761: // extension
           this.getExtension().add(TypeConvertor.castToExtension(value)); // Extension
@@ -221,7 +221,7 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("id")) {
-          this.id = TypeConvertor.castToString(value); // IdType
+          this.id = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("extension")) {
           this.getExtension().add(TypeConvertor.castToExtension(value));
         } else
@@ -242,7 +242,7 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3355: /*id*/ return new String[] {"id"};
+        case 3355: /*id*/ return new String[] {"string"};
         case -612557761: /*extension*/ return new String[] {"Extension"};
         default: return super.getTypesForProperty(hash, name);
         }
