@@ -219,7 +219,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   private void listSpecs(Map<String, String> specList, String server) throws IOException {
-    CachingPackageClient pc = new CachingPackageClient(server);
+    PackageClient pc = new PackageClient(server);
     List<PackageInfo> matches = pc.search(null, null, null, false);
     for (PackageInfo m : matches) {
       if (!specList.containsKey(m.getId())) {
@@ -247,7 +247,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     for (String nextPackageServer : getPackageServers()) {
       // special case:
       if (!(Utilities.existsInList(id,CommonPackages.ID_PUBPACK, "hl7.terminology.r5") && PackageClient.PRIMARY_SERVER.equals(nextPackageServer))) {
-        CachingPackageClient pc = new CachingPackageClient(nextPackageServer);
+        PackageClient pc = new PackageClient(nextPackageServer);
         try {
           return pc.getLatestVersion(id);
         } catch (IOException e) {
