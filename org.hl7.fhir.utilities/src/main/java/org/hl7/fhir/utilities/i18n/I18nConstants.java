@@ -767,6 +767,12 @@ public class I18nConstants {
   public static final String JSON_COMMA_MISSING = "JSON_COMMA_MISSING";
   public static final String JSON_COMMA_EXTRA = "JSON_COMMA_EXTRA";
   public static final String JSON_COMMENTS_NOT_ALLOWED = "JSON_COMMENTS_NOT_ALLOWED";
+  public static final String EXT_VER_URL_NO_MATCH = "EXT_VER_URL_NO_MATCH";
+  public static final String EXT_VER_URL_IGNORE = "EXT_VER_URL_IGNORE";
+  public static final String EXT_VER_URL_MISLEADING = "EXT_VER_URL_MISLEADING";
+  public static final String EXT_VER_URL_NOT_ALLOWED = "EXT_VER_URL_NOT_ALLOWED"; 
+  public static final String EXT_VER_URL_REVERSION = "EXT_VER_URL_REVERSION";
+  public static final String ILLEGAL_COMMENT_TYPE = "ILLEGAL_COMMENT_TYPE";
 }
 
 
