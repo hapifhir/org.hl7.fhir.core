@@ -23991,7 +23991,9 @@ public class JsonParser extends JsonParserBase {
     if (json.has("issue")) {
       JsonArray array = getJArray(json, "issue");
       for (int i = 0; i < array.size(); i++) {
-        res.getIssue().add(parseOperationOutcomeIssueComponent(array.get(i).getAsJsonObject()));
+        if (array.get(i).isJsonObject()) {
+          res.getIssue().add(parseOperationOutcomeIssueComponent(array.get(i).getAsJsonObject()));
+        }
       }
     };
   }
