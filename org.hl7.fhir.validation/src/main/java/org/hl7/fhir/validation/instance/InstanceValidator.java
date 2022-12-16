@@ -1833,7 +1833,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     long t = System.nanoTime();
     StructureDefinition ex = Utilities.isAbsoluteUrl(u) ? context.fetchResource(StructureDefinition.class, u) : null;
     if (ex == null) {
-      ex = getXverExt(errors, path, element, u);
+      ex = getXverExt(errors, path, element, url);
     }
     if (url.contains("|")) {
       if (ex == null) {
