@@ -109,6 +109,7 @@ import org.hl7.fhir.r5.model.Bundle.BundleType;
 import org.hl7.fhir.r5.model.Bundle.HTTPVerb;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent;
+import org.hl7.fhir.r5.profilemodel.ProfiledElement;
 import org.hl7.fhir.r5.renderers.OperationOutcomeRenderer;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
@@ -2393,5 +2394,4 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     this.packageTracker = packageTracker;
     return this;
   }
-  
 }
