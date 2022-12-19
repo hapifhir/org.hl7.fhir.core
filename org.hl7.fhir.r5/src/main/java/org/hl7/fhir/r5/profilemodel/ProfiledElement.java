@@ -60,7 +60,7 @@ public class ProfiledElement {
   /**
    * @return the short documentation of the definition (shown in the profile table view)
    */
-  public String shortDoco() {
+  public String shortDocumentation() {
     throw new NotImplementedException("Not done yet");
   }
   
