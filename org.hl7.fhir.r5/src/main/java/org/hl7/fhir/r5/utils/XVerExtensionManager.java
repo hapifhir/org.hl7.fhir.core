@@ -116,17 +116,10 @@ public class XVerExtensionManager {
       populateTypes(path, val, verSource, verTarget);
     } else if (path.has("elements")) {
       for (JsonElement i : path.forceArray("elements").getItems()) {
-        JsonObject elt = root.getJsonObject(e+"."+i.asString());
+        String apath = e+"."+i.asString();
+        JsonObject elt = root.getJsonObject(apath);
         if (elt != null) {
-        String s = i.asString().replace("[x]", "");
-        sd.getDifferential().addElement().setPath("Extension.extension").setSliceName(s);
-        sd.getDifferential().addElement().setPath("Extension.extension.extension").setMax("0");
-        sd.getDifferential().addElement().setPath("Extension.extension.url").setFixed(new UriType(s));
-        ElementDefinition val = sd.getDifferential().addElement().setPath("Extension.extension.value[x]").setMin(1);
-        if (!elt.has("types")) {
-          throw new FHIRException("Internal error - nested elements not supported yet");
-        }
-        populateTypes(elt, val, verSource, verTarget);
+          genExtensionContents(root, apath, verSource, verTarget, sd, i, elt, "Extension.extension");
         }
       }      
       sd.getDifferential().addElement().setPath("Extension.url").setFixed(new UriType(url));
@@ -140,6 +133,29 @@ public class XVerExtensionManager {
       baseDef.setIsModifier(true);
     }
     return sd;
+  }
+
+  private void genExtensionContents(JsonObject root, String apath, String verSource, String verTarget, StructureDefinition sd, JsonElement i, JsonObject elt, String epath) {
+    String s = i.asString().replace("[x]", "");
+    sd.getDifferential().addElement().setPath(epath).setSliceName(s);
+    if (elt.has("types")) {            
+      sd.getDifferential().addElement().setPath(epath+".extension").setMax("0");
+      sd.getDifferential().addElement().setPath(epath+".url").setFixed(new UriType(s));
+      ElementDefinition val = sd.getDifferential().addElement().setPath(epath+".value[x]").setMin(1);
+      populateTypes(elt, val, verSource, verTarget);
+    } else if (elt.has("elements")) {
+      for (JsonElement ic : elt.forceArray("elements").getItems()) { 
+        String apathC = apath+"."+ic.asString();
+        JsonObject eltC = root.getJsonObject(apathC);
+        if (eltC != null) {
+          genExtensionContents(root, apathC, verSource, verTarget, sd, ic, eltC, epath+".extension");
+        }
+      }
+      sd.getDifferential().addElement().setPath(epath+".url").setFixed(new UriType(s));
+      sd.getDifferential().addElement().setPath(epath+".value[x]").setMax("0");
+    } else {
+      throw new FHIRException("Internal error - unknown element "+apath);
+    }
   }
 
   public void populateTypes(JsonObject path, ElementDefinition val, String verSource, String verTarget) {
