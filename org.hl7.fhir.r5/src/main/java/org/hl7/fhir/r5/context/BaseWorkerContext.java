@@ -110,6 +110,7 @@ import org.hl7.fhir.r5.model.Bundle.HTTPVerb;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent;
 import org.hl7.fhir.r5.profilemodel.ProfiledElement;
+import org.hl7.fhir.r5.profilemodel.ProfiledElementBuilder;
 import org.hl7.fhir.r5.renderers.OperationOutcomeRenderer;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
@@ -2393,5 +2394,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public IWorkerContext setPackageTracker(IWorkerContextManager.IPackageLoadingTracker packageTracker) {
     this.packageTracker = packageTracker;
     return this;
+  }
+  
+
+  @Override
+  public ProfiledElementBuilder getProfiledElementBuilder() {
+    // TODO Auto-generated method stub
+    return new ProfiledElementBuilder(this);
   }
 }

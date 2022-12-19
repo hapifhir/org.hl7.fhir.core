@@ -68,6 +68,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapModelMode;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapStructureComponent;
 import org.hl7.fhir.r5.profilemodel.ProfiledElement;
+import org.hl7.fhir.r5.profilemodel.ProfiledElementBuilder;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
@@ -762,36 +763,5 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     return VersionUtilities.getSpecUrl(getVersion())+"/";
   }
 
-  @Override
-  public ProfiledElement buildProfileElement(String url) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public ProfiledElement buildProfileElement(String url, String version) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public ProfiledElement buildProfileElement(String url, Resource resource) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public ProfiledElement buildProfileElement(String url, String version, Resource resource) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public Resource makeProfileBase(String url) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  
 }
 
