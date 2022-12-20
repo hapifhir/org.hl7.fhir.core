@@ -654,6 +654,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
           for (ElementDefinition e : diff.getElement()) {
             if (!e.hasUserData(GENERATED_IN_SNAPSHOT) && e.getPath().contains(".")) {
+              //FIXME it looks like this is one of the only calls for updateURLs and the enclosing method is a candidate for moving to ProfilePathProcessor
               ElementDefinition outcome = updateURLs(url, webUrl, e.copy());
               e.setUserData(GENERATED_IN_SNAPSHOT, outcome);
               derived.getSnapshot().addElement(outcome);
@@ -810,6 +811,7 @@ public class ProfileUtilities extends TranslatingUtilities {
        // don't do this. should already be in snapshot ... addInheritedElementsForSpecialization(snapshot, focus, sd.getBaseDefinition(), path, url, weburl);
        for (ElementDefinition ed : sd.getSnapshot().getElement()) {
          if (ed.getPath().contains(".")) {
+           //FIXME it looks like this is one of the only calls for updateURLs and the enclosing method is a candidate for moving to ProfilePathProcessor
            ElementDefinition outcome = updateURLs(url, weburl, ed.copy());
            outcome.setPath(outcome.getPath().replace(sd.getTypeName(), path));
            snapshot.getElement().add(outcome);
