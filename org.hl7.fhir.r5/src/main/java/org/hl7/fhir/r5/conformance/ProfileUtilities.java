@@ -1297,7 +1297,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  protected String getWebUrl(StructureDefinition dt, String webUrl, String indent) {
+  protected String getWebUrl(StructureDefinition dt, String webUrl) {
     if (dt.hasUserData("path")) {
       // this is a hack, but it works for now, since we don't have deep folders
       String url = dt.getUserString("path");
