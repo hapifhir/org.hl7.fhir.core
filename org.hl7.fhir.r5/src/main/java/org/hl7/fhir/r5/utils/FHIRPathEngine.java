@@ -262,6 +262,7 @@ public class FHIRPathEngine {
   private String location; // for error messages
   private boolean allowPolymorphicNames;
   private boolean doImplicitStringConversion;
+  private boolean liquidMode; // in liquid mode, || terminates the expression and hands the parser back to the host
 
   // if the fhir path expressions are allowed to use constants beyond those defined in the specification
   // the application can implement them by providing a constant resolver 
@@ -6032,6 +6033,14 @@ public class FHIRPathEngine {
 
   public void setAllowPolymorphicNames(boolean allowPolymorphicNames) {
     this.allowPolymorphicNames = allowPolymorphicNames;
+  }
+
+  public boolean isLiquidMode() {
+    return liquidMode;
+  }
+
+  public void setLiquidMode(boolean liquidMode) {
+    this.liquidMode = liquidMode;
   }
 
 
