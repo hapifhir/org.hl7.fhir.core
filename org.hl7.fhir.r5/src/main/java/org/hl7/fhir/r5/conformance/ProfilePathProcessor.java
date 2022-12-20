@@ -203,18 +203,18 @@ public class ProfilePathProcessor {
               profileUtilities.replaceFromContentReference(outcome, tgt.getElement());
               if (tgt.getSource() != srcSD) {
                 cursors.base = tgt.getSource().getSnapshot();
-                int nbc = cursors.base.getElement().indexOf(tgt.getElement()) + 1;
-                int nbl = nbc;
-                while (nbl < cursors.base.getElement().size() && cursors.base.getElement().get(nbl).getPath().startsWith(tgt.getElement().getPath() + "."))
-                  nbl++;
-                processPaths(params.incrementDebugIndent().withBaseLimit(nbl - 1).withDiffLimit(cursors.diffCursor - 1), url, webUrl, profileName, tgt.getElement().getPath(), diffMatches.get(0).getPath(), trimDifferential, false, null, null, profileUtilities.redirectorStack(redirector, outcome, currentBasePath), tgt.getSource(), derived, new ProfilePathProcessorState(cursors.base, nbc, start - 1, cursors.contextName, cursors.resultPathBase));
+                int newBaseCursor = cursors.base.getElement().indexOf(tgt.getElement()) + 1;
+                int newBaseLimit = newBaseCursor;
+                while (newBaseLimit < cursors.base.getElement().size() && cursors.base.getElement().get(newBaseLimit).getPath().startsWith(tgt.getElement().getPath() + "."))
+                  newBaseLimit++;
+                processPaths(params.incrementDebugIndent().withBaseLimit(newBaseLimit - 1).withDiffLimit(cursors.diffCursor - 1), url, webUrl, profileName, tgt.getElement().getPath(), diffMatches.get(0).getPath(), trimDifferential, false, null, null, profileUtilities.redirectorStack(redirector, outcome, currentBasePath), tgt.getSource(), derived, new ProfilePathProcessorState(cursors.base, newBaseCursor, start - 1, cursors.contextName, cursors.resultPathBase));
               } else {
-                int nbc = cursors.base.getElement().indexOf(tgt.getElement()) + 1;
-                int nbl = nbc;
-                while (nbl < cursors.base.getElement().size() && cursors.base.getElement().get(nbl).getPath().startsWith(tgt.getElement().getPath() + "."))
-                  nbl++;
+                int newBaseCursor = cursors.base.getElement().indexOf(tgt.getElement()) + 1;
+                int newBaseLimit = newBaseCursor;
+                while (newBaseLimit < cursors.base.getElement().size() && cursors.base.getElement().get(newBaseLimit).getPath().startsWith(tgt.getElement().getPath() + "."))
+                  newBaseLimit++;
                 System.out.println("Test!");
-                processPaths(params.incrementDebugIndent().withBaseLimit(nbl - 1).withDiffLimit(cursors.diffCursor - 1), url, webUrl, profileName, tgt.getElement().getPath(), outcome.getPath(), trimDifferential, false, null, null, profileUtilities.redirectorStack(redirector, outcome, currentBasePath), srcSD, derived, new ProfilePathProcessorState(cursors.base, nbc, start, cursors.contextName, cursors.resultPathBase));
+                processPaths(params.incrementDebugIndent().withBaseLimit(newBaseLimit - 1).withDiffLimit(cursors.diffCursor - 1), url, webUrl, profileName, tgt.getElement().getPath(), outcome.getPath(), trimDifferential, false, null, null, profileUtilities.redirectorStack(redirector, outcome, currentBasePath), srcSD, derived, new ProfilePathProcessorState(cursors.base, newBaseCursor, start, cursors.contextName, cursors.resultPathBase));
               }
             } else {
               StructureDefinition dt = outcome.getType().size() > 1 ? profileUtilities.getContext().fetchTypeDefinition("Element") : profileUtilities.getProfileForDataType(outcome.getType().get(0), webUrl, derived);
@@ -378,17 +378,17 @@ public class ProfilePathProcessor {
               profileUtilities.replaceFromContentReference(outcome, tgt.getElement());
               if (tgt.getSource() != srcSD) {
                 cursors.base = tgt.getSource().getSnapshot();
-                int nbc = cursors.base.getElement().indexOf(tgt.getElement()) + 1;
-                int nbl = nbc;
-                while (nbl < cursors.base.getElement().size() && cursors.base.getElement().get(nbl).getPath().startsWith(tgt.getElement().getPath() + "."))
-                  nbl++;
-                processPaths(params.incrementDebugIndent().withBaseLimit(nbl - 1).withDiffLimit(cursors.diffCursor - 1), url, webUrl, profileName, tgt.getElement().getPath(), diffMatches.get(0).getPath(), trimDifferential, false, null, null, profileUtilities.redirectorStack(redirector, outcome, currentBasePath), tgt.getSource(), derived, new ProfilePathProcessorState(cursors.base, nbc, start - 1, cursors.contextName, cursors.resultPathBase));
+                int newBaseCursor = cursors.base.getElement().indexOf(tgt.getElement()) + 1;
+                int newBaseLimit = newBaseCursor;
+                while (newBaseLimit < cursors.base.getElement().size() && cursors.base.getElement().get(newBaseLimit).getPath().startsWith(tgt.getElement().getPath() + "."))
+                  newBaseLimit++;
+                processPaths(params.incrementDebugIndent().withBaseLimit(newBaseLimit - 1).withDiffLimit(cursors.diffCursor - 1), url, webUrl, profileName, tgt.getElement().getPath(), diffMatches.get(0).getPath(), trimDifferential, false, null, null, profileUtilities.redirectorStack(redirector, outcome, currentBasePath), tgt.getSource(), derived, new ProfilePathProcessorState(cursors.base, newBaseCursor, start - 1, cursors.contextName, cursors.resultPathBase));
               } else {
-                int nbc = cursors.base.getElement().indexOf(tgt.getElement()) + 1;
-                int nbl = nbc;
-                while (nbl < cursors.base.getElement().size() && cursors.base.getElement().get(nbl).getPath().startsWith(tgt.getElement().getPath() + "."))
-                  nbl++;
-                processPaths(params.incrementDebugIndent().withBaseLimit(nbl - 1) .withDiffLimit(cursors.diffCursor - 1), url, webUrl, profileName, tgt.getElement().getPath(), diffMatches.get(0).getPath(), trimDifferential, false, null, null, profileUtilities.redirectorStack(redirector, outcome, currentBasePath), srcSD, derived, new ProfilePathProcessorState(cursors.base, nbc, start - 1, cursors.contextName, cursors.resultPathBase));
+                final int newBaseCursor = cursors.base.getElement().indexOf(tgt.getElement()) + 1;
+                int newBaseLimit = newBaseCursor;
+                while (newBaseLimit < cursors.base.getElement().size() && cursors.base.getElement().get(newBaseLimit).getPath().startsWith(tgt.getElement().getPath() + "."))
+                  newBaseLimit++;
+                processPaths(params.incrementDebugIndent().withBaseLimit(newBaseLimit - 1) .withDiffLimit(cursors.diffCursor - 1), url, webUrl, profileName, tgt.getElement().getPath(), diffMatches.get(0).getPath(), trimDifferential, false, null, null, profileUtilities.redirectorStack(redirector, outcome, currentBasePath), srcSD, derived, new ProfilePathProcessorState(cursors.base, newBaseCursor, start - 1, cursors.contextName, cursors.resultPathBase));
               }
             } else {
               StructureDefinition dt = outcome.getType().size() == 1 ? profileUtilities.getProfileForDataType(outcome.getType().get(0), webUrl, derived) : profileUtilities.getProfileForDataType("Element");
@@ -914,8 +914,8 @@ public class ProfilePathProcessor {
 //          } else if (currentBase.getType().get(0).getCode().equals("BackboneElement") && diffMatches.size() > 0 && diffMatches.get(0).hasSliceName()) {
       } else if (currentBase.getType().get(0).getCode().equals("BackboneElement")) {
         // We need to copy children of the backbone element before we start messing around with slices
-        int nbl = profileUtilities.findEndOfElement(cursors.base, cursors.baseCursor);
-        for (int i = cursors.baseCursor + 1; i <= nbl; i++) {
+        int newBaseLimit = profileUtilities.findEndOfElement(cursors.base, cursors.baseCursor);
+        for (int i = cursors.baseCursor + 1; i <= newBaseLimit; i++) {
           outcome = profileUtilities.updateURLs(url, webUrl, cursors.base.getElement().get(i).copy());
           params.getResult().getElement().add(outcome);
         }
