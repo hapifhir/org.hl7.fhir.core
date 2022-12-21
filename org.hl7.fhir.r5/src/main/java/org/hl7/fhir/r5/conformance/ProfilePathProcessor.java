@@ -79,6 +79,11 @@ public class ProfilePathProcessor {
     @Getter
     @With
     final boolean trimDifferential;
+
+    @Getter
+    @With
+    final List<ElementRedirection> redirector;
+
       private ProfilePathProcessorParams(
         StructureDefinition.StructureDefinitionSnapshotComponent result,
         StructureDefinition.StructureDefinitionDifferentialComponent differential,
@@ -89,7 +94,8 @@ public class ProfilePathProcessor {
         String profileName,
         String contextPathSource,
         String contextPathTarget,
-        boolean trimDifferential) {
+        boolean trimDifferential,
+        List<ElementRedirection> redirector) {
 
         debugIndent = "";
         this.result = result;
@@ -102,6 +108,7 @@ public class ProfilePathProcessor {
         this.contextPathSource = contextPathSource;
         this.contextPathTarget = contextPathTarget;
         this.trimDifferential = trimDifferential;
+        this.redirector = redirector;
       }
       private ProfilePathProcessorParams incrementDebugIndent() {
         return this.withDebugIndent(this.debugIndent + " ".repeat(2));
@@ -148,7 +155,7 @@ public class ProfilePathProcessor {
         derived.present(),
         null,
       null,
-      false), new ArrayList<ElementRedirection>(), base, derived, new PathSlicingParams(),
+      false, new ArrayList<ElementRedirection>()), base, derived, new PathSlicingParams(),
       cursors);
   }
 
@@ -160,9 +167,9 @@ public class ProfilePathProcessor {
    * @throws Exception
    */
   private ElementDefinition processPaths(final ProfilePathProcessorParams params,
-                                         final List<ElementRedirection> redirector, final StructureDefinition sourceStructureDefinition, final StructureDefinition derived, final PathSlicingParams pathSlicingParams, final ProfilePathProcessorState cursors) throws FHIRException {
+                                          final StructureDefinition sourceStructureDefinition, final StructureDefinition derived, final PathSlicingParams pathSlicingParams, final ProfilePathProcessorState cursors) throws FHIRException {
     if (profileUtilities.isDebug()) {
-      System.out.println(params.getDebugIndent() + "PP @ " + cursors.resultPathBase + " / " + params.getContextPathSource() + " : base = " + cursors.baseCursor + " to " + params.getBaseLimit() + ", diff = " + cursors.diffCursor + " to " + params.getDiffLimit() + " (slicing = " + pathSlicingParams.isDone() + ", k " + (redirector == null ? "null" : redirector.toString()) + ")");
+      System.out.println(params.getDebugIndent() + "PP @ " + cursors.resultPathBase + " / " + params.getContextPathSource() + " : base = " + cursors.baseCursor + " to " + params.getBaseLimit() + ", diff = " + cursors.diffCursor + " to " + params.getDiffLimit() + " (slicing = " + pathSlicingParams.isDone() + ", k " + (params.getRedirector() == null ? "null" : params.getRedirector().toString()) + ")");
     }
     ElementDefinition res = null;
     List<TypeSlice> typeList = new ArrayList<>();
@@ -170,7 +177,7 @@ public class ProfilePathProcessor {
     while (cursors.baseCursor <= params.getBaseLimit()) {
       // get the current focus of the base, and decide what to do
       ElementDefinition currentBase = cursors.base.getElement().get(cursors.baseCursor);
-      String currentBasePath = profileUtilities.fixedPathSource(params.getContextPathSource(), currentBase.getPath(), redirector);
+      String currentBasePath = profileUtilities.fixedPathSource(params.getContextPathSource(), currentBase.getPath(), params.getRedirector());
       if (profileUtilities.isDebug()) {
         System.out.println(params.getDebugIndent() + " - " + currentBasePath + ": base = " + cursors.baseCursor + " (" + profileUtilities.descED(cursors.base.getElement(), cursors.baseCursor) + ") to " + params.getBaseLimit() + " (" + profileUtilities.descED(cursors.base.getElement(), params.getBaseLimit()) + "), diff = " + cursors.diffCursor + " (" + profileUtilities.descED(params.getDifferential().getElement(), cursors.diffCursor) + ") to " + params.getDiffLimit() + " (" + profileUtilities.descED(params.getDifferential().getElement(), params.getDiffLimit()) + ") " +
           "(slicingDone = " + pathSlicingParams.isDone() + ") (diffpath= " + (params.getDifferential().getElement().size() > cursors.diffCursor ? params.getDifferential().getElement().get(cursors.diffCursor).getPath() : "n/a") + ")");
@@ -181,7 +188,7 @@ public class ProfilePathProcessor {
       if (!currentBase.hasSlicing() || currentBasePath.equals(pathSlicingParams.getPath()))
       {
         ElementDefinition currentRes = processSimplePath(currentBase, currentBasePath, diffMatches, typeList,
-        params, redirector, sourceStructureDefinition, derived, pathSlicingParams,
+        params, sourceStructureDefinition, derived, pathSlicingParams,
           cursors
         );
         if (res == null) {
@@ -190,7 +197,7 @@ public class ProfilePathProcessor {
       }
       else {
         processPathWithSlicedBase(currentBase, currentBasePath, diffMatches, typeList,
-          params, redirector,  sourceStructureDefinition,
+          params, sourceStructureDefinition,
           derived, cursors
           );
       }
@@ -212,7 +219,7 @@ public class ProfilePathProcessor {
     List<ElementDefinition> diffMatches,
     List<TypeSlice> typeList,
     final ProfilePathProcessorParams params,
-    final List<ElementRedirection> redirector, final StructureDefinition sourceStructureDefinition, StructureDefinition derived, final PathSlicingParams pathSlicingParams,
+    final StructureDefinition sourceStructureDefinition, StructureDefinition derived, final PathSlicingParams pathSlicingParams,
     ProfilePathProcessorState cursors) throws FHIRException {
     ElementDefinition res = null;
 
@@ -220,7 +227,7 @@ public class ProfilePathProcessor {
       // so we just copy it in
       if (diffMatches.isEmpty()) {
         ElementDefinition outcome = profileUtilities.updateURLs(params.getUrl(), params.getWebUrl(), currentBase.copy());
-        outcome.setPath(profileUtilities.fixedPathDest(params.getContextPathTarget(), outcome.getPath(), redirector, params.getContextPathSource()));
+        outcome.setPath(profileUtilities.fixedPathDest(params.getContextPathTarget(), outcome.getPath(), params.getRedirector(), params.getContextPathSource()));
         profileUtilities.updateFromBase(outcome, currentBase, sourceStructureDefinition.getUrl());
         profileUtilities.updateConstraintSources(outcome, sourceStructureDefinition.getUrl());
         profileUtilities.markDerived(outcome);
@@ -235,7 +242,7 @@ public class ProfilePathProcessor {
           if (profileUtilities.baseHasChildren(cursors.base, currentBase)) { // not a new type here
             processPaths(
               params.incrementDebugIndent(),
-              redirector, sourceStructureDefinition, derived, new PathSlicingParams(), new ProfilePathProcessorState(cursors.base, cursors.baseCursor + 1, cursors.diffCursor, cursors.contextName, cursors.resultPathBase));
+              sourceStructureDefinition, derived, new PathSlicingParams(), new ProfilePathProcessorState(cursors.base, cursors.baseCursor + 1, cursors.diffCursor, cursors.contextName, cursors.resultPathBase));
             cursors.baseCursor = profileUtilities.indexOfFirstNonChild(cursors.base, currentBase, cursors.baseCursor + 1, params.getBaseLimit());
           } else {
             if (outcome.getType().size() == 0 && !outcome.hasContentReference()) {
@@ -276,8 +283,9 @@ public class ProfilePathProcessor {
                     .withBaseLimit(newBaseLimit - 1)
                     .withDiffLimit(cursors.diffCursor - 1)
                     .withContextPathSource(tgt.getElement().getPath())
-                    .withContextPathTarget(diffMatches.get(0).getPath()),
-                  profileUtilities.redirectorStack(redirector, outcome, currentBasePath), tgt.getSource(), derived, new PathSlicingParams(), new ProfilePathProcessorState(cursors.base, newBaseCursor, start - 1, cursors.contextName, cursors.resultPathBase));
+                    .withContextPathTarget(diffMatches.get(0).getPath())
+                    .withRedirector(profileUtilities.redirectorStack(params.getRedirector(), outcome, currentBasePath)),
+                  tgt.getSource(), derived, new PathSlicingParams(), new ProfilePathProcessorState(cursors.base, newBaseCursor, start - 1, cursors.contextName, cursors.resultPathBase));
               } else {
                 int newBaseCursor = cursors.base.getElement().indexOf(tgt.getElement()) + 1;
                 int newBaseLimit = newBaseCursor;
@@ -290,8 +298,9 @@ public class ProfilePathProcessor {
                     .withBaseLimit(newBaseLimit - 1)
                     .withDiffLimit(cursors.diffCursor - 1)
                     .withContextPathSource(tgt.getElement().getPath())
-                    .withContextPathTarget(outcome.getPath()),
-                  profileUtilities.redirectorStack(redirector, outcome, currentBasePath), sourceStructureDefinition, derived, new PathSlicingParams(), new ProfilePathProcessorState(cursors.base, newBaseCursor, start, cursors.contextName, cursors.resultPathBase));
+                    .withContextPathTarget(outcome.getPath())
+                    .withRedirector(profileUtilities.redirectorStack(params.getRedirector(), outcome, currentBasePath)),
+                  sourceStructureDefinition, derived, new PathSlicingParams(), new ProfilePathProcessorState(cursors.base, newBaseCursor, start, cursors.contextName, cursors.resultPathBase));
               }
             } else {
               StructureDefinition dt = outcome.getType().size() > 1 ? profileUtilities.getContext().fetchTypeDefinition("Element") : profileUtilities.getProfileForDataType(outcome.getType().get(0), params.getWebUrl(), derived);
@@ -299,7 +308,7 @@ public class ProfilePathProcessor {
                 throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.UNKNOWN_TYPE__AT_, outcome.getType().get(0), currentBasePath));
               }
               cursors.contextName = dt.getUrl();
-              if (redirector == null || redirector.isEmpty()) {
+              if (params.getRedirector() == null || params.getRedirector().isEmpty()) {
                 processPaths(
                   params
                     .incrementDebugIndent()
@@ -308,7 +317,7 @@ public class ProfilePathProcessor {
                     .withWebUrl(profileUtilities.getWebUrl(dt, params.getWebUrl()))
                     .withContextPathSource( currentBasePath)
                     .withContextPathTarget(outcome.getPath()),
-                  redirector, sourceStructureDefinition, derived, new PathSlicingParams(),     /* starting again on the data type, but skip the root */
+                  sourceStructureDefinition, derived, new PathSlicingParams(),     /* starting again on the data type, but skip the root */
                   new ProfilePathProcessorState(dt.getSnapshot(), 1 /* starting again on the data type, but skip the root */, start,
                     cursors.contextName, cursors.resultPathBase));
               } else {
@@ -319,8 +328,8 @@ public class ProfilePathProcessor {
                     .withDiffLimit(cursors.diffCursor - 1)
                     .withWebUrl(profileUtilities.getWebUrl(dt, params.getWebUrl()))
                     .withContextPathSource(currentBasePath)
-                      .withContextPathTarget( outcome.getPath()),
-                  profileUtilities.redirectorStack(redirector, currentBase, currentBasePath), sourceStructureDefinition, derived, new PathSlicingParams(),     /* starting again on the data type, but skip the root */
+                    .withContextPathTarget( outcome.getPath())
+                    .withRedirector(profileUtilities.redirectorStack(params.getRedirector(), currentBase, currentBasePath)), sourceStructureDefinition, derived, new PathSlicingParams(),     /* starting again on the data type, but skip the root */
                   new ProfilePathProcessorState(dt.getSnapshot(), 1 /* starting again on the data type, but skip the root */, start,
                     cursors.contextName, cursors.resultPathBase));
               }
@@ -408,7 +417,7 @@ public class ProfilePathProcessor {
           template = profileUtilities.fillOutFromBase(template, currentBase);
 
         ElementDefinition outcome = profileUtilities.updateURLs(params.getUrl(), params.getWebUrl(), template);
-        outcome.setPath(profileUtilities.fixedPathDest(params.getContextPathTarget(), outcome.getPath(), redirector, params.getContextPathSource()));
+        outcome.setPath(profileUtilities.fixedPathDest(params.getContextPathTarget(), outcome.getPath(), params.getRedirector(), params.getContextPathSource()));
         if (res == null)
           res = outcome;
         profileUtilities.updateFromBase(outcome, currentBase, sourceStructureDefinition.getUrl());
@@ -463,37 +472,38 @@ public class ProfilePathProcessor {
             while (cursors.diffCursor <= params.getDiffLimit() && params.getDifferential().getElement().size() > cursors.diffCursor && profileUtilities.pathStartsWith(params.getDifferential().getElement().get(cursors.diffCursor).getPath(), diffMatches.get(0).getPath() + "."))
               cursors.diffCursor++;
             if (outcome.hasContentReference()) {
-              ProfileUtilities.ElementDefinitionResolution tgt = profileUtilities.getElementById(sourceStructureDefinition, cursors.base.getElement(), outcome.getContentReference());
-              if (tgt == null)
+              ProfileUtilities.ElementDefinitionResolution target = profileUtilities.getElementById(sourceStructureDefinition, cursors.base.getElement(), outcome.getContentReference());
+              if (target == null)
                 throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.UNABLE_TO_RESOLVE_REFERENCE_TO_, outcome.getContentReference()));
-              profileUtilities.replaceFromContentReference(outcome, tgt.getElement());
-              if (tgt.getSource() != sourceStructureDefinition) {
-                cursors.base = tgt.getSource().getSnapshot();
-                int newBaseCursor = cursors.base.getElement().indexOf(tgt.getElement()) + 1;
+              profileUtilities.replaceFromContentReference(outcome, target.getElement());
+              if (target.getSource() != sourceStructureDefinition) {
+                cursors.base = target.getSource().getSnapshot();
+                int newBaseCursor = cursors.base.getElement().indexOf(target.getElement()) + 1;
                 int newBaseLimit = newBaseCursor;
-                while (newBaseLimit < cursors.base.getElement().size() && cursors.base.getElement().get(newBaseLimit).getPath().startsWith(tgt.getElement().getPath() + "."))
+                while (newBaseLimit < cursors.base.getElement().size() && cursors.base.getElement().get(newBaseLimit).getPath().startsWith(target.getElement().getPath() + "."))
                   newBaseLimit++;
                 processPaths(
                   params
                     .incrementDebugIndent()
                     .withBaseLimit(newBaseLimit - 1)
                     .withDiffLimit(cursors.diffCursor - 1)
-                    .withContextPathSource(tgt.getElement().getPath())
-                    .withContextPathTarget(diffMatches.get(0).getPath()),
-                  profileUtilities.redirectorStack(redirector, outcome, currentBasePath), tgt.getSource(), derived, new PathSlicingParams(), new ProfilePathProcessorState(cursors.base, newBaseCursor, start - 1, cursors.contextName, cursors.resultPathBase));
+                    .withContextPathSource(target.getElement().getPath())
+                    .withContextPathTarget(diffMatches.get(0).getPath()).withRedirector(profileUtilities.redirectorStack(params.getRedirector(), outcome, currentBasePath)),
+                  target.getSource(), derived, new PathSlicingParams(), new ProfilePathProcessorState(cursors.base, newBaseCursor, start - 1, cursors.contextName, cursors.resultPathBase));
               } else {
-                final int newBaseCursor = cursors.base.getElement().indexOf(tgt.getElement()) + 1;
+                final int newBaseCursor = cursors.base.getElement().indexOf(target.getElement()) + 1;
                 int newBaseLimit = newBaseCursor;
-                while (newBaseLimit < cursors.base.getElement().size() && cursors.base.getElement().get(newBaseLimit).getPath().startsWith(tgt.getElement().getPath() + "."))
+                while (newBaseLimit < cursors.base.getElement().size() && cursors.base.getElement().get(newBaseLimit).getPath().startsWith(target.getElement().getPath() + "."))
                   newBaseLimit++;
                 processPaths(
                   params
                     .incrementDebugIndent()
                     .withBaseLimit(newBaseLimit - 1)
                     .withDiffLimit(cursors.diffCursor - 1)
-                    .withContextPathSource(tgt.getElement().getPath())
-                    .withContextPathTarget(diffMatches.get(0).getPath()),
-                  profileUtilities.redirectorStack(redirector, outcome, currentBasePath), sourceStructureDefinition, derived, new PathSlicingParams(), new ProfilePathProcessorState(cursors.base, newBaseCursor, start - 1, cursors.contextName, cursors.resultPathBase));
+                    .withContextPathSource(target.getElement().getPath())
+                    .withContextPathTarget(diffMatches.get(0).getPath())
+                    .withRedirector(profileUtilities.redirectorStack(params.getRedirector(), outcome, currentBasePath)),
+                  sourceStructureDefinition, derived, new PathSlicingParams(), new ProfilePathProcessorState(cursors.base, newBaseCursor, start - 1, cursors.contextName, cursors.resultPathBase));
               }
             } else {
               StructureDefinition dt = outcome.getType().size() == 1 ? profileUtilities.getProfileForDataType(outcome.getType().get(0), params.getWebUrl(), derived) : profileUtilities.getProfileForDataType("Element");
@@ -507,8 +517,8 @@ public class ProfilePathProcessor {
                   .withDiffLimit(cursors.diffCursor - 1)
                   .withWebUrl( profileUtilities.getWebUrl(dt, params.getWebUrl()))
                   .withProfileName(params.getProfileName() + profileUtilities.pathTail(diffMatches, 0))
-                  .withContextPathSource(diffMatches.get(0).getPath()).withContextPathTarget(outcome.getPath()),
-                new ArrayList<ElementRedirection>(), sourceStructureDefinition, derived, new PathSlicingParams(),     /* starting again on the data type, but skip the root */
+                  .withContextPathSource(diffMatches.get(0).getPath()).withContextPathTarget(outcome.getPath()).withRedirector(new ArrayList<ElementRedirection>()),
+                sourceStructureDefinition, derived, new PathSlicingParams(),     /* starting again on the data type, but skip the root */
                 new ProfilePathProcessorState(dt.getSnapshot(), 1 /* starting again on the data type, but skip the root */, start,
                   cursors.contextName, cursors.resultPathBase));
             }
@@ -602,7 +612,7 @@ public class ProfilePathProcessor {
             .withBaseLimit(newBaseLimit)
             .withDiffLimit(newDiffLimit)
             .withProfileName(params.getProfileName() + profileUtilities.pathTail(diffMatches, 0)),
-          redirector, sourceStructureDefinition, derived, new PathSlicingParams(true, null, null),
+          sourceStructureDefinition, derived, new PathSlicingParams(true, null, null),
           new ProfilePathProcessorState(cursors.base, cursors.baseCursor, newDiffCursor,
             cursors.contextName, cursors.resultPathBase));
         if (elementDefinition == null)
@@ -636,7 +646,7 @@ public class ProfilePathProcessor {
               .withBaseLimit(newBaseLimit)
               .withDiffLimit(newDiffLimit)
               .withProfileName(params.getProfileName() + profileUtilities.pathTail(diffMatches, i)),
-            redirector, sourceStructureDefinition, derived, new PathSlicingParams(true, elementDefinition, null), new ProfilePathProcessorState(cursors.base, cursors.baseCursor, newDiffCursor, cursors.contextName, cursors.resultPathBase));
+            sourceStructureDefinition, derived, new PathSlicingParams(true, elementDefinition, null), new ProfilePathProcessorState(cursors.base, cursors.baseCursor, newDiffCursor, cursors.contextName, cursors.resultPathBase));
           if (typeList.size() > start + 1) {
             typeSliceElement.setMin(0);
           }
@@ -706,7 +716,7 @@ public class ProfilePathProcessor {
               .withBaseLimit(newBaseLimit)
               .withDiffLimit(newDiffLimit)
               .withProfileName(params.getProfileName() + profileUtilities.pathTail(diffMatches, 0)),
-            redirector, sourceStructureDefinition, derived, new PathSlicingParams(true, null, null),
+            sourceStructureDefinition, derived, new PathSlicingParams(true, null, null),
             new ProfilePathProcessorState(cursors.base, cursors.baseCursor, newDiffCursor,
               cursors.contextName, cursors.resultPathBase));
           if (e == null)
@@ -717,7 +727,7 @@ public class ProfilePathProcessor {
         } else {
           // we're just going to accept the differential slicing at face value
           ElementDefinition outcome = profileUtilities.updateURLs(params.getUrl(), params.getWebUrl(), currentBase.copy());
-          outcome.setPath(profileUtilities.fixedPathDest(params.getContextPathTarget(), outcome.getPath(), redirector, params.getContextPathSource()));
+          outcome.setPath(profileUtilities.fixedPathDest(params.getContextPathTarget(), outcome.getPath(), params.getRedirector(), params.getContextPathSource()));
           profileUtilities.updateFromBase(outcome, currentBase, sourceStructureDefinition.getUrl());
 
           if (!diffMatches.get(0).hasSlicing())
@@ -754,7 +764,7 @@ public class ProfilePathProcessor {
                     .withWebUrl(profileUtilities.getWebUrl(dt, params.getWebUrl()))
                     .withContextPathSource(currentBasePath)
                     .withContextPathTarget(outcome.getPath()),
-                  redirector, sourceStructureDefinition, derived, new PathSlicingParams(),     /* starting again on the data type, but skip the root */
+                  sourceStructureDefinition, derived, new PathSlicingParams(),     /* starting again on the data type, but skip the root */
                   new ProfilePathProcessorState(dt.getSnapshot(), 1 /* starting again on the data type, but skip the root */, start,
                     cursors.contextName, cursors.resultPathBase));
               }
@@ -780,7 +790,7 @@ public class ProfilePathProcessor {
               .withBaseLimit(newBaseLimit)
               .withDiffLimit(newDiffLimit)
               .withProfileName(params.getProfileName() + profileUtilities.pathTail(diffMatches, i)),
-            redirector, sourceStructureDefinition, derived, new PathSlicingParams(true, slicerElement, null), new ProfilePathProcessorState(cursors.base, cursors.baseCursor, newDiffCursor, cursors.contextName, cursors.resultPathBase));
+            sourceStructureDefinition, derived, new PathSlicingParams(true, slicerElement, null), new ProfilePathProcessorState(cursors.base, cursors.baseCursor, newDiffCursor, cursors.contextName, cursors.resultPathBase));
         }
         // ok, done with that - next in the base list
         cursors.baseCursor = newBaseLimit + 1;
@@ -795,7 +805,7 @@ public class ProfilePathProcessor {
     String currentBasePath,
     List<ElementDefinition> diffMatches, List<TypeSlice> typeList,
     final ProfilePathProcessorParams params,
-    final List<ElementRedirection> redirector, final StructureDefinition sourceStructureDefinition,
+    final StructureDefinition sourceStructureDefinition,
     StructureDefinition derived, ProfilePathProcessorState cursors
   ) {
     // the item is already sliced in the base profile.
@@ -812,7 +822,7 @@ public class ProfilePathProcessor {
       if (profileUtilities.hasInnerDiffMatches(params.getDifferential(), path, cursors.diffCursor, params.getDiffLimit(), cursors.base.getElement(), true)) {
         // so we just copy it in
         ElementDefinition outcome = profileUtilities.updateURLs(params.getUrl(), params.getWebUrl(), currentBase.copy());
-        outcome.setPath(profileUtilities.fixedPathDest(params.getContextPathTarget(), outcome.getPath(), redirector, params.getContextPathSource()));
+        outcome.setPath(profileUtilities.fixedPathDest(params.getContextPathTarget(), outcome.getPath(), params.getRedirector(), params.getContextPathSource()));
         profileUtilities.updateFromBase(outcome, currentBase, sourceStructureDefinition.getUrl());
         profileUtilities.markDerived(outcome);
         if (cursors.resultPathBase == null)
@@ -826,7 +836,7 @@ public class ProfilePathProcessor {
           processPaths(
             params
               .incrementDebugIndent(),
-            redirector, sourceStructureDefinition, derived, new PathSlicingParams(), new ProfilePathProcessorState(cursors.base, cursors.baseCursor + 1, cursors.diffCursor, cursors.contextName, cursors.resultPathBase));
+            sourceStructureDefinition, derived, new PathSlicingParams(), new ProfilePathProcessorState(cursors.base, cursors.baseCursor + 1, cursors.diffCursor, cursors.contextName, cursors.resultPathBase));
           cursors.baseCursor = profileUtilities.indexOfFirstNonChild(cursors.base, currentBase, cursors.baseCursor,params.getBaseLimit());
         } else {
           StructureDefinition dt = profileUtilities.getTypeForElement(params.getDifferential(), cursors.diffCursor, params.getProfileName(), diffMatches, outcome, params.getWebUrl(), derived);
@@ -847,7 +857,7 @@ public class ProfilePathProcessor {
                 .withWebUrl( profileUtilities.getWebUrl(dt, params.getWebUrl()))
                 .withContextPathSource(currentBasePath)
                 .withContextPathTarget(outcome.getPath()),
-              redirector, sourceStructureDefinition, derived, new PathSlicingParams(),     /* starting again on the data type, but skip the root */
+              sourceStructureDefinition, derived, new PathSlicingParams(),     /* starting again on the data type, but skip the root */
               new ProfilePathProcessorState(dt.getSnapshot(), 1 /* starting again on the data type, but skip the root */, start,
                 cursors.contextName, cursors.resultPathBase));
           }
@@ -858,7 +868,7 @@ public class ProfilePathProcessor {
         // copy across the currentbase, and all of its children and siblings
         while (cursors.baseCursor < cursors.base.getElement().size() && cursors.base.getElement().get(cursors.baseCursor).getPath().startsWith(path)) {
           ElementDefinition outcome = profileUtilities.updateURLs(params.getUrl(), params.getWebUrl(), cursors.base.getElement().get(cursors.baseCursor).copy());
-          outcome.setPath(profileUtilities.fixedPathDest(params.getContextPathTarget(), outcome.getPath(), redirector, params.getContextPathSource()));
+          outcome.setPath(profileUtilities.fixedPathDest(params.getContextPathTarget(), outcome.getPath(), params.getRedirector(), params.getContextPathSource()));
           if (!outcome.getPath().startsWith(cursors.resultPathBase))
             throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.ADDING_WRONG_PATH_IN_PROFILE___VS_, params.getProfileName(), outcome.getPath(), cursors.resultPathBase));
           params.getResult().getElement().add(outcome); // so we just copy it in
@@ -950,8 +960,7 @@ public class ProfilePathProcessor {
           .incrementDebugIndent()
           .withBaseLimit(newBaseLimit)
           .withDiffLimit(newDiffLimit)
-          .withProfileName(params.getProfileName() + profileUtilities.pathTail(diffMatches,0)),
-        redirector, sourceStructureDefinition, derived, new PathSlicingParams(true, null, currentBasePath),
+          .withProfileName(params.getProfileName() + profileUtilities.pathTail(diffMatches,0)), sourceStructureDefinition, derived, new PathSlicingParams(true, null, currentBasePath),
         new ProfilePathProcessorState(cursors.base, cursors.baseCursor, newDiffCursor,
           cursors.contextName, cursors.resultPathBase));
       if (e == null)
@@ -992,7 +1001,7 @@ public class ProfilePathProcessor {
             .withBaseLimit(sEnd)
             .withDiffLimit(newDiffLimit)
             .withProfileName(params.getProfileName() + profileUtilities.pathTail(diffMatches, i)),
-          redirector, sourceStructureDefinition, derived, new PathSlicingParams(true, e, currentBasePath), new ProfilePathProcessorState(cursors.base, sStart, newDiffCursor, cursors.contextName, cursors.resultPathBase));
+           sourceStructureDefinition, derived, new PathSlicingParams(true, e, currentBasePath), new ProfilePathProcessorState(cursors.base, sStart, newDiffCursor, cursors.contextName, cursors.resultPathBase));
       }
       if (elementToRemove != null) {
         params.getDifferential().getElement().remove(elementToRemove);
@@ -1018,7 +1027,7 @@ public class ProfilePathProcessor {
               .withBaseLimit(bs.getEnd())
               .withDiffLimit(0)
               .withProfileName(params.getProfileName() + profileUtilities.tail(bs.getDefn().getPath())),
-            redirector, sourceStructureDefinition, derived, new PathSlicingParams(true, e, currentBasePath), new ProfilePathProcessorState(cursors.base, bs.getStart(), 0, cursors.contextName, cursors.resultPathBase));
+            sourceStructureDefinition, derived, new PathSlicingParams(true, e, currentBasePath), new ProfilePathProcessorState(cursors.base, bs.getStart(), 0, cursors.contextName, cursors.resultPathBase));
 
         }
       }
@@ -1043,7 +1052,7 @@ public class ProfilePathProcessor {
           throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.SLICING_RULES_ON_DIFFERENTIAL__DO_NOT_MATCH_THOSE_ON_BASE___RULE___, profileUtilities.summarizeSlicing(dSlice), profileUtilities.summarizeSlicing(bSlice), path, cursors.contextName));
       }
       ElementDefinition outcome = profileUtilities.updateURLs(params.getUrl(), params.getWebUrl(), currentBase.copy());
-      outcome.setPath(profileUtilities.fixedPathDest(params.getContextPathTarget(), outcome.getPath(), redirector, params.getContextPathSource()));
+      outcome.setPath(profileUtilities.fixedPathDest(params.getContextPathTarget(), outcome.getPath(), params.getRedirector(), params.getContextPathSource()));
       profileUtilities.updateFromBase(outcome, currentBase, sourceStructureDefinition.getUrl());
       if (diffMatches.get(0).hasSlicing() || !diffMatches.get(0).hasSliceName()) {
         profileUtilities.updateFromSlicing(outcome.getSlicing(), diffMatches.get(0).getSlicing());
@@ -1081,7 +1090,7 @@ public class ProfilePathProcessor {
               .withDiffLimit(newDiffLimit)
               .withWebUrl(profileUtilities.getWebUrl(dt, params.getWebUrl()))
               .withContextPathSource(currentBasePath).withContextPathTarget(outcome.getPath()),
-            redirector, sourceStructureDefinition, derived, new PathSlicingParams(),
+             sourceStructureDefinition, derived, new PathSlicingParams(),
             new ProfilePathProcessorState(dt.getSnapshot(), 1, newDiffCursor,
               cursors.contextName, cursors.resultPathBase));
         } else {
@@ -1090,8 +1099,9 @@ public class ProfilePathProcessor {
               .incrementDebugIndent()
               .withBaseLimit(newBaseLimit)
               .withDiffLimit(newDiffLimit)
-              .withProfileName(params.getProfileName() + profileUtilities.pathTail(diffMatches, 0)),
-            null, sourceStructureDefinition, derived, new PathSlicingParams(),
+              .withProfileName(params.getProfileName() + profileUtilities.pathTail(diffMatches, 0))
+              .withRedirector(null),
+            sourceStructureDefinition, derived, new PathSlicingParams(),
             new ProfilePathProcessorState(cursors.base, cursors.baseCursor + 1, newDiffCursor,
               cursors.contextName, cursors.resultPathBase));
         }
@@ -1112,7 +1122,7 @@ public class ProfilePathProcessor {
         cursors.baseCursor = cursors.base.getElement().indexOf(baseItem);
         outcome = profileUtilities.updateURLs(params.getUrl(), params.getWebUrl(), baseItem.copy());
         profileUtilities.updateFromBase(outcome, currentBase, sourceStructureDefinition.getUrl());
-        outcome.setPath(profileUtilities.fixedPathDest(params.getContextPathTarget(), outcome.getPath(), redirector, params.getContextPathSource()));
+        outcome.setPath(profileUtilities.fixedPathDest(params.getContextPathTarget(), outcome.getPath(), params.getRedirector(), params.getContextPathSource()));
         outcome.setSlicing(null);
         if (!outcome.getPath().startsWith(cursors.resultPathBase))
           throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.ADDING_WRONG_PATH));
@@ -1131,7 +1141,7 @@ public class ProfilePathProcessor {
               .withDiffLimit(newDiffLimit)
               .withProfileName(params.getProfileName() + profileUtilities.pathTail(diffMatches, diffpos))
               .withTrimDifferential(closed),
-            redirector, sourceStructureDefinition, derived, new PathSlicingParams(true, null, null), new ProfilePathProcessorState(cursors.base, cursors.baseCursor, newDiffCursor, cursors.contextName, cursors.resultPathBase));
+             sourceStructureDefinition, derived, new PathSlicingParams(true, null, null), new ProfilePathProcessorState(cursors.base, cursors.baseCursor, newDiffCursor, cursors.contextName, cursors.resultPathBase));
           // ok, done with that - now set the cursors for if this is the end
           cursors.baseCursor = newBaseLimit;
           cursors.diffCursor = newDiffLimit + 1;
@@ -1142,7 +1152,7 @@ public class ProfilePathProcessor {
           // just copy any children on the base
           while (cursors.baseCursor < cursors.base.getElement().size() && cursors.base.getElement().get(cursors.baseCursor).getPath().startsWith(path) && !cursors.base.getElement().get(cursors.baseCursor).getPath().equals(path)) {
             outcome = profileUtilities.updateURLs(params.getUrl(), params.getWebUrl(), cursors.base.getElement().get(cursors.baseCursor).copy());
-            outcome.setPath(profileUtilities.fixedPathDest(params.getContextPathTarget(), outcome.getPath(), redirector, params.getContextPathSource()));
+            outcome.setPath(profileUtilities.fixedPathDest(params.getContextPathTarget(), outcome.getPath(), params.getRedirector(), params.getContextPathSource()));
             if (!outcome.getPath().startsWith(cursors.resultPathBase))
               throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.ADDING_WRONG_PATH));
             outcome.setUserData(profileUtilities.BASE_PATH, outcome.getPath());
@@ -1172,7 +1182,7 @@ public class ProfilePathProcessor {
               throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.NAMED_ITEMS_ARE_OUT_OF_ORDER_IN_THE_SLICE));
           outcome = profileUtilities.updateURLs(params.getUrl(), params.getWebUrl(), currentBase.copy());
           //            outcome = updateURLs(url, diffItem.copy());
-          outcome.setPath(profileUtilities.fixedPathDest(params.getContextPathTarget(), outcome.getPath(), redirector, params.getContextPathSource()));
+          outcome.setPath(profileUtilities.fixedPathDest(params.getContextPathTarget(), outcome.getPath(), params.getRedirector(), params.getContextPathSource()));
           profileUtilities.updateFromBase(outcome, currentBase, sourceStructureDefinition.getUrl());
           outcome.setSlicing(null);
           outcome.setMin(0); // we're in a slice, so it's only a mandatory if it's explicitly marked so
@@ -1206,7 +1216,7 @@ public class ProfilePathProcessor {
                       .withProfileName(params.getProfileName() + profileUtilities.pathTail(diffMatches, 0))
                       .withContextPathSource(cursors.base.getElement().get(0).getPath())
                       .withContextPathTarget(cursors.base.getElement().get(0).getPath()),
-                    redirector, sourceStructureDefinition, derived, new PathSlicingParams(),
+                    sourceStructureDefinition, derived, new PathSlicingParams(),
                     new ProfilePathProcessorState(cursors.base, baseStart, start - 1,
                       cursors.contextName, cursors.resultPathBase));
 
@@ -1229,7 +1239,7 @@ public class ProfilePathProcessor {
                       .withWebUrl(profileUtilities.getWebUrl(dt, params.getWebUrl()))
                       .withProfileName(params.getProfileName() + profileUtilities.pathTail(diffMatches, 0))
                       .withContextPathSource(diffMatches.get(0).getPath()).withContextPathTarget(outcome.getPath()),
-                    redirector, sourceStructureDefinition, derived, new PathSlicingParams(),     /* starting again on the data type, but skip the root */
+                    sourceStructureDefinition, derived, new PathSlicingParams(),     /* starting again on the data type, but skip the root */
                     new ProfilePathProcessorState(dt.getSnapshot(), 1 /* starting again on the data type, but skip the root */, start - 1,
                       cursors.contextName, cursors.resultPathBase));
                 }
