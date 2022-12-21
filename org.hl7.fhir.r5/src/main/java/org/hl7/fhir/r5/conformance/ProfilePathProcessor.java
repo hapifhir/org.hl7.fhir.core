@@ -178,9 +178,7 @@ public class ProfilePathProcessor {
   private ElementDefinition processPaths(final ProfilePathProcessorParams params,
                                          final PathSlicingParams pathSlicingParams,
                                          final ProfilePathProcessorState cursors) throws FHIRException {
-    if (profileUtilities.isDebug()) {
-      System.out.println(params.getDebugIndent() + "PP @ " + cursors.resultPathBase + " / " + params.getContextPathSource() + " : base = " + cursors.baseCursor + " to " + params.getBaseLimit() + ", diff = " + cursors.diffCursor + " to " + params.getDiffLimit() + " (slicing = " + pathSlicingParams.isDone() + ", k " + (params.getRedirector() == null ? "null" : params.getRedirector().toString()) + ")");
-    }
+    debugProcessPathsEntry(params, pathSlicingParams, cursors);
     ElementDefinition res = null;
     List<TypeSlice> typeList = new ArrayList<>();
     // just repeat processing entries until we run out of our allowed scope (1st entry, the allowed scope is all the entries)
@@ -188,10 +186,7 @@ public class ProfilePathProcessor {
       // get the current focus of the base, and decide what to do
       ElementDefinition currentBase = cursors.base.getElement().get(cursors.baseCursor);
       String currentBasePath = profileUtilities.fixedPathSource(params.getContextPathSource(), currentBase.getPath(), params.getRedirector());
-      if (profileUtilities.isDebug()) {
-        System.out.println(params.getDebugIndent() + " - " + currentBasePath + ": base = " + cursors.baseCursor + " (" + profileUtilities.descED(cursors.base.getElement(), cursors.baseCursor) + ") to " + params.getBaseLimit() + " (" + profileUtilities.descED(cursors.base.getElement(), params.getBaseLimit()) + "), diff = " + cursors.diffCursor + " (" + profileUtilities.descED(params.getDifferential().getElement(), cursors.diffCursor) + ") to " + params.getDiffLimit() + " (" + profileUtilities.descED(params.getDifferential().getElement(), params.getDiffLimit()) + ") " +
-          "(slicingDone = " + pathSlicingParams.isDone() + ") (diffpath= " + (params.getDifferential().getElement().size() > cursors.diffCursor ? params.getDifferential().getElement().get(cursors.diffCursor).getPath() : "n/a") + ")");
-      }
+      debugProcessPathsIteration(params, pathSlicingParams, cursors, currentBasePath);
       List<ElementDefinition> diffMatches = profileUtilities.getDiffMatches(params.getDifferential(), currentBasePath, cursors.diffCursor, params.getDiffLimit(), params.getProfileName()); // get a list of matching elements in scope
 
       // in the simple case, source is not sliced.
@@ -219,6 +214,19 @@ public class ProfilePathProcessor {
         throw new Error(profileUtilities.getContext().formatMessage(I18nConstants.NULL_MIN));
     }
     return res;
+  }
+
+  private void debugProcessPathsIteration(ProfilePathProcessorParams params, PathSlicingParams pathSlicingParams, ProfilePathProcessorState cursors, String currentBasePath) {
+    if (profileUtilities.isDebug()) {
+      System.out.println(params.getDebugIndent() + " - " + currentBasePath + ": base = " + cursors.baseCursor + " (" + profileUtilities.descED(cursors.base.getElement(), cursors.baseCursor) + ") to " + params.getBaseLimit() + " (" + profileUtilities.descED(cursors.base.getElement(), params.getBaseLimit()) + "), diff = " + cursors.diffCursor + " (" + profileUtilities.descED(params.getDifferential().getElement(), cursors.diffCursor) + ") to " + params.getDiffLimit() + " (" + profileUtilities.descED(params.getDifferential().getElement(), params.getDiffLimit()) + ") " +
+        "(slicingDone = " + pathSlicingParams.isDone() + ") (diffpath= " + (params.getDifferential().getElement().size() > cursors.diffCursor ? params.getDifferential().getElement().get(cursors.diffCursor).getPath() : "n/a") + ")");
+    }
+  }
+
+  private void debugProcessPathsEntry(ProfilePathProcessorParams params, PathSlicingParams pathSlicingParams, ProfilePathProcessorState cursors) {
+    if (profileUtilities.isDebug()) {
+      System.out.println(params.getDebugIndent() + "PP @ " + cursors.resultPathBase + " / " + params.getContextPathSource() + " : base = " + cursors.baseCursor + " to " + params.getBaseLimit() + ", diff = " + cursors.diffCursor + " to " + params.getDiffLimit() + " (slicing = " + pathSlicingParams.isDone() + ", k " + (params.getRedirector() == null ? "null" : params.getRedirector().toString()) + ")");
+    }
   }
 
 
@@ -428,7 +436,7 @@ public class ProfilePathProcessor {
 
         ElementDefinition outcome = profileUtilities.updateURLs(params.getUrl(), params.getWebUrl(), template);
         outcome.setPath(profileUtilities.fixedPathDest(params.getContextPathTarget(), outcome.getPath(), params.getRedirector(), params.getContextPathSource()));
-        if (res == null)
+
           res = outcome;
         profileUtilities.updateFromBase(outcome, currentBase, params.getSourceStructureDefinition().getUrl());
         if (diffMatches.get(0).hasSliceName()) {
@@ -535,7 +543,9 @@ public class ProfilePathProcessor {
             }
           }
         }
-      } else if (profileUtilities.diffsConstrainTypes(diffMatches, currentBasePath, typeList)) {
+      }
+      else if (profileUtilities.diffsConstrainTypes(diffMatches, currentBasePath, typeList))
+      {
         int start = 0;
         int newBaseLimit = profileUtilities.findEndOfElement(cursors.base, cursors.baseCursor);
         int newDiffCursor = params.getDifferential().getElement().indexOf(diffMatches.get(0));
@@ -704,7 +714,9 @@ public class ProfilePathProcessor {
         cursors.baseCursor = newBaseLimit + 1;
         cursors.diffCursor = newDiffLimit + 1;
 
-      } else {
+      }
+      else
+      {
         // ok, the differential slices the item. Let's check our pre-conditions to ensure that this is correct
         if (!profileUtilities.unbounded(currentBase) && !profileUtilities.isSlicedToOneOnly(diffMatches.get(0)))
           // you can only slice an element that doesn't repeat if the sum total of your slices is limited to 1
@@ -1182,10 +1194,7 @@ public class ProfilePathProcessor {
           throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.THE_BASE_SNAPSHOT_MARKS_A_SLICING_AS_CLOSED_BUT_THE_DIFFERENTIAL_TRIES_TO_EXTEND_IT_IN__AT__, params.getProfileName(), path, currentBasePath));
         }
       }
-      if (diffpos == diffMatches.size()) {
-//Lloyd This was causing problems w/ Telus
-//            diffCursor++;
-      } else {
+      if (diffpos != diffMatches.size()) {
         while (diffpos < diffMatches.size()) {
           ElementDefinition diffItem = diffMatches.get(diffpos);
           for (ElementDefinition baseItem : baseMatches)
