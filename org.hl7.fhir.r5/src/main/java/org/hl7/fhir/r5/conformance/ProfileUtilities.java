@@ -638,7 +638,8 @@ public class ProfileUtilities extends TranslatingUtilities {
 
         // we actually delegate the work to a subroutine so we can re-enter it with a different cursors
         StructureDefinitionDifferentialComponent diff = cloneDiff(derived.getDifferential()); // we make a copy here because we're sometimes going to hack the differential while processing it. Have to migrate user data back afterwards
-        StructureDefinitionSnapshotComponent baseSnapshot  = base.getSnapshot(); 
+        //FIXME we can probably move this logic to ProfilePathProcessor
+        StructureDefinitionSnapshotComponent baseSnapshot  = base.getSnapshot();
         if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
           String derivedType = derived.getTypeName();
 
