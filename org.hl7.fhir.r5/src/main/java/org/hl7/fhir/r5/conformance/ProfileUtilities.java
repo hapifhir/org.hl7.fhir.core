@@ -649,7 +649,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         //        debug = true;
         //      }
 
-        new ProfilePathProcessor(this).processPaths(base, derived, url, webUrl, diff, baseSnapshot);
+        ProfilePathProcessor.processPaths(this, base, derived, url, webUrl, diff, baseSnapshot);
 
         checkGroupConstraints(derived);
         if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
