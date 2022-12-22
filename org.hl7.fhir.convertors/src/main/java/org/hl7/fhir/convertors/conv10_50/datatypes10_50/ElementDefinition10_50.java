@@ -15,7 +15,7 @@ import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Stri
 import org.hl7.fhir.convertors.conv10_50.resources10_50.Enumerations10_50;
 import org.hl7.fhir.dstu2.utils.ToolingExtensions;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.utilities.Utilities;
 

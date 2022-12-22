@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.conformance;
+package org.hl7.fhir.r5.conformance.profile;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -48,7 +48,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider.BindingResolution;
+import org.hl7.fhir.r5.conformance.AdditionalBindingsRenderer;
+import org.hl7.fhir.r5.conformance.ElementRedirection;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ProfileKnowledgeProvider.BindingResolution;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
@@ -638,7 +640,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
         // we actually delegate the work to a subroutine so we can re-enter it with a different cursors
         StructureDefinitionDifferentialComponent diff = cloneDiff(derived.getDifferential()); // we make a copy here because we're sometimes going to hack the differential while processing it. Have to migrate user data back afterwards
-        //FIXME we can probably move this logic to ProfilePathProcessor
+
         StructureDefinitionSnapshotComponent baseSnapshot  = base.getSnapshot();
         if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
           String derivedType = derived.getTypeName();
@@ -655,7 +657,6 @@ public class ProfileUtilities extends TranslatingUtilities {
         if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
           for (ElementDefinition e : diff.getElement()) {
             if (!e.hasUserData(GENERATED_IN_SNAPSHOT) && e.getPath().contains(".")) {
-              //FIXME it looks like this is one of the only calls for updateURLs and the enclosing method is a candidate for moving to ProfilePathProcessor
               ElementDefinition outcome = updateURLs(url, webUrl, e.copy());
               e.setUserData(GENERATED_IN_SNAPSHOT, outcome);
               derived.getSnapshot().addElement(outcome);
@@ -812,7 +813,6 @@ public class ProfileUtilities extends TranslatingUtilities {
        // don't do this. should already be in snapshot ... addInheritedElementsForSpecialization(snapshot, focus, sd.getBaseDefinition(), path, url, weburl);
        for (ElementDefinition ed : sd.getSnapshot().getElement()) {
          if (ed.getPath().contains(".")) {
-           //FIXME it looks like this is one of the only calls for updateURLs and the enclosing method is a candidate for moving to ProfilePathProcessor
            ElementDefinition outcome = updateURLs(url, weburl, ed.copy());
            outcome.setPath(outcome.getPath().replace(sd.getTypeName(), path));
            snapshot.getElement().add(outcome);
