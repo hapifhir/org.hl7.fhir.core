@@ -83,7 +83,7 @@ public class ShExGenerator {
           "$comment$\n<$id$> CLOSED { $fhirType$ " +
                   "\n    $resourceDecl$" +
                   "\n    $elements$" +
-                  //"\n    fhir:index xsd:integer?                 # Relative position in a list"
+                  "\n    $contextOfUse$" +
                   "\n} $constraints$ \n";
 
   // Base DataTypes
@@ -94,7 +94,8 @@ public class ShExGenerator {
 
   private List<String> mappedFunctions = Arrays.asList(
         "empty",
-        "exists"
+        "exists",
+        "hasValue"
   );
 
   private static String ONE_OR_MORE_PREFIX = "OneOrMore_";
@@ -110,7 +111,7 @@ public class ShExGenerator {
   private static String RESOURCE_SHAPE_TEMPLATE =
           "$comment$\n<Resource> {a .+;" +
                   "\n    $elements$" +
-                  //"\n    fhir:index xsd:integer?" +
+                  "\n    $contextOfUse$" +
                   "\n} $constraints$ \n";
 
   // If we have knowledge of all of the possible resources available to us (completeModel = true), we can build
@@ -319,9 +320,8 @@ public class ShExGenerator {
     }
 
     for (StructureDefinition sd : uniq_structures) {
+      System.out.println("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   Generating ShEx for : " + sd.getName() + "  [ " + sd.getUrl() + " ] <<<<<<<<<<<<<<<<<<<<<<<<<<<");
       shapeDefinitions.append(genShapeDefinition(sd, true));
-      //StructureDefinition sdprof = sd.getgetProfile(sd, null);
-      //System.out.println("SdProf:" + sdprof.getName());
     }
 
     shapeDefinitions.append(emitInnerTypes());
@@ -551,10 +551,27 @@ public class ShExGenerator {
     String constraintStr = "";
 
     if (!constraintsList.isEmpty()) {
-      constraintStr = "AND {\n\n" + StringUtils.join(constraintsList, "\n\n} AND {\n\n") + "\n\n}\n";
+      constraintStr = "AND (\n\n" + StringUtils.join(constraintsList, "\n\n) AND (\n\n") + "\n\n)\n";
     }
 
     shape_defn.add("constraints", constraintStr);
+
+    String contextOfUseStr = "";
+    ArrayList<String> contextOfUse = new ArrayList<String>();
+    if (!sd.getContext().isEmpty()) {
+      for (StructureDefinition.StructureDefinitionContextComponent uc : sd.getContext()) {
+        if (!uc.getExpression().isEmpty()) {
+          String toStore = "@<" + uc.getExpression() + ">" ;
+          if (!contextOfUse.contains(toStore)) {
+            contextOfUse.add(toStore);
+          }
+        }
+      }
+      contextOfUseStr = "^fhir:type {" + StringUtils.join(contextOfUse, " OR \n\t\t\t") + "};";
+    }
+
+    shape_defn.add("contextOfUse", contextOfUseStr);
+
     return shape_defn.render();
   }
 
@@ -574,6 +591,7 @@ public class ShExGenerator {
         translated = "# Constraint: UniqueKey:" + constraint.getKey() + "\n# Human readable:" + constraint.getHuman() + "\n# XPath:" + constraint.getXpath() + "\n# Constraint:" + constraint.getExpression() + "\n# ShEx:\n";
         ExpressionNode expr = fpe.parse(ce);
         String shexConstraint = processExpressionNode(expr, false, 0);
+        shexConstraint = shexConstraint.replaceAll("CALLER", "");
         System.out.print("Parsed to ShEx Constraint:" + shexConstraint);
         if (!shexConstraint.isEmpty())
             translated += "\n" + shexConstraint;
@@ -615,6 +633,7 @@ public class ShExGenerator {
 
     String translatedShEx = "";
 
+    boolean treatBothOpsSame = false;
     // Figure out if there are any operations defined on this node
     String ops = "";
     String endOps = "";
@@ -622,18 +641,36 @@ public class ShExGenerator {
       String opName = node.getOperation().name();
         switch (opName) {
         case "Or":
-          ops = " | ";
+          ops = " OR ";
           break;
         case "Union":
           ops = " | ";
           break;
-        case "In":
+        case "In" :
+        case "Equals":
           ops = " [";
           endOps = "] ";
           toQuote = true;
           break;
+        case "NotEquals":
+            ops = " [ . -";
+            endOps = "] ";
+            toQuote = true;
+            break;
+        case "Greater":
+            ops = " MinExclusive ";
+            break;
+        case "GreaterOrEqual":
+            ops = " MinInclusive ";
+            break;
+        case "Less":
+            ops = " MaxExclusive ";
+            break;
+        case "LessOrEqual":
+            ops = " MaxInclusive ";
+            break;
         case "And":
-          ops = " ; ";
+          ops = " AND ";
           break;
         default:
           String toStore = "UNMAPPED_OPERATOR_" + opName;
@@ -653,7 +690,7 @@ public class ShExGenerator {
       String funcName = node.getName();
       if (!mappedFunctions.contains(funcName)) {
         if (node.parameterCount() == 0) {
-          fExp = " " + funcName + "(CALLER)" ;
+          fExp = " " + funcName + "( CALLER )" ;
         }
       }
 
@@ -663,6 +700,7 @@ public class ShExGenerator {
             fExp = " .?";
             break;
           case "exists":
+          case "hasValue":
             fExp = " .";
             break;
           default:
@@ -689,38 +727,75 @@ public class ShExGenerator {
       else
         translatedShEx += fExp;
 
-      translatedShEx = positionParts(innerShEx, translatedShEx, ops + processExpressionNode(node.getOpNext(), toQuote, 0) + endOps, depth);
+      translatedShEx = positionParts(innerShEx, translatedShEx,
+                                    getNextOps(ops , processExpressionNode(node.getOpNext(), toQuote, 0), endOps, treatBothOpsSame),
+                                    depth, false);
 
     } else  if (kind == ExpressionNode.Kind.Name) {
-        translatedShEx += positionParts(innerShEx, "fhir:" + node.getName(), ops + processExpressionNode(node.getOpNext(), toQuote, 0) + endOps, depth);
+          translatedShEx += positionParts(innerShEx, "fhir:" + node.getName(),
+                            getNextOps(ops, processExpressionNode(node.getOpNext(), toQuote, 0), endOps, treatBothOpsSame),
+                            depth, true);
     }else if (kind == ExpressionNode.Kind.Group) {
-        translatedShEx += positionParts(innerShEx, processExpressionNode(node.getGroup(), toQuote, depth), ops + processExpressionNode(node.getOpNext(), toQuote, 0) + endOps, depth);
+        translatedShEx += positionParts(innerShEx, processExpressionNode(node.getGroup(), toQuote, depth),
+                          getNextOps(ops , processExpressionNode(node.getOpNext(), toQuote, 0), endOps, treatBothOpsSame),
+                          depth, true);
         toQuote = false;
     } else if (kind == ExpressionNode.Kind.Constant) {
-        translatedShEx += positionParts(innerShEx, quoteThis(node.getConstant().primitiveValue(), true), ops + processExpressionNode(node.getOpNext(), toQuote, 0) + endOps, depth);
+        boolean toQt = (node.getConstant() instanceof StringType) || (!node.getConstant().isPrimitive());
+        translatedShEx += positionParts(innerShEx, quoteThis(node.getConstant().primitiveValue(), toQt),
+                          getNextOps(ops , processExpressionNode(node.getOpNext(), toQuote, 0), endOps, treatBothOpsSame),
+                          depth, false);
         //translatedShEx += positionParts(innerShEx, node.getConstant().primitiveValue(), ops + processExpressionNode(node.getOpNext(), toQuote, 0) + endOps, depth);
     } else if (kind == ExpressionNode.Kind.Unary) {
-        translatedShEx += positionParts(innerShEx, node.getName(), ops + processExpressionNode(node.getOpNext(), toQuote, 0) + endOps, depth);
+        translatedShEx += positionParts(innerShEx, node.getName(),
+                          getNextOps(ops,processExpressionNode(node.getOpNext(), toQuote, 0), endOps, treatBothOpsSame),
+                          depth, false);
     } else {
-      translatedShEx += positionParts(innerShEx, node.toString(), ops + processExpressionNode(node.getOpNext(), toQuote, 0) + endOps, depth);
+      translatedShEx += positionParts(innerShEx, node.toString(),
+                        getNextOps(ops, processExpressionNode(node.getOpNext(), toQuote, 0), endOps, treatBothOpsSame),
+                        depth, false);
     }
+
+    //if ((depth == 0)&&((kind == ExpressionNode.Kind.Name)))
+      //return "{ " + translatedShEx + " }";
 
     return translatedShEx;
   }
 
-  private String positionParts(String funCall, String mainTxt, String nextText, int depth){
+  private String getNextOps(String startOp, String opNext, String endOp, boolean treatBothOps){
+      if (treatBothOps)
+        return startOp + opNext + " " + endOp + opNext;
+
+      return startOp + opNext + endOp;
+  }
+
+  private String positionParts(String funCall, String mainTxt, String nextText, int depth, boolean complete){
     if (funCall.indexOf("CALLER") != -1) {
       if (depth == 0) {
-        String toReturn =  funCall.replaceFirst("CALLER", mainTxt) + nextText;
+        String toReturn = funCall.replaceFirst("CALLER", mainTxt);
+        if (complete)
+          toReturn = " { " + toReturn + " } ";
+
+        toReturn += nextText;
         return toReturn.replaceAll("CALLER", "");
       }
-      else
-          return funCall.replaceFirst("CALLER", "CALLER " + mainTxt ) + nextText ;
+      else{
+        return  funCall.replaceFirst("CALLER", "CALLER " + mainTxt ) + nextText ;
+      }
     }
     else {
         String fc = funCall;
         if (fc.startsWith("fhir:"))
             fc = "." + fc.split("fhir:")[1];
+
+        if ((depth == 0)&&(complete)) {
+          if ("".equals(funCall)) {
+            if (!"".equals(nextText))
+              return " { " + mainTxt + nextText + " } ";
+          }
+          else
+            return " { " + mainTxt + fc + " } " + nextText;
+          }
 
         return mainTxt + fc + nextText;
     }
@@ -1294,7 +1369,6 @@ public class ShExGenerator {
     element_reference.add("fhirType", " ");
     String comment = ed.getShort();
     element_reference.add("comment", comment == null? " " : "# " + comment);
-    //element_reference.add("constraints", "");
 
     List<String> elements = new ArrayList<String>();
     for (ElementDefinition child: profileUtilities.getChildList(sd, path, null))
@@ -1333,10 +1407,13 @@ public class ShExGenerator {
     String constraintStr = "";
 
     if (!innerConstraintsList.isEmpty()) {
-      constraintStr = "AND {\n\n" + StringUtils.join(constraintsList, "\n\n} AND {\n\n") + "\n\n}\n";
+      constraintStr = "AND (\n\n" + StringUtils.join(constraintsList, "\n\n) AND (\n\n") + "\n\n)\n";
     }
 
     element_reference.add("constraints", constraintStr);
+
+    // TODO: See if we need to process contexts
+    element_reference.add("contextOfUse", "");
 
     return element_reference.render();
   }

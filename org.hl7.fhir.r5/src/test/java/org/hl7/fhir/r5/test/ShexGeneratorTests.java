@@ -60,8 +60,18 @@ public class ShexGeneratorTests {
     System.out.println("************************************************************************");
     System.out.println("Processing " + title);
     System.out.println("************************************************************************");
+    List<String> skipSDs = new ArrayList<String>();
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/StructureDefinition");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/TerminologyCapabilities");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/SearchParameter");
+
     items.forEach((String item) -> {
       String name = item;
+      if (skipSDs.contains(name)) {
+        System.out.println("SKIPPING Generating ShEx for '" + name + "' ...");
+        return;
+      }
+
       if (item.indexOf("/") != -1) {
         String els[] = item.split("/");
         name = els[els.length - 1];
@@ -173,6 +183,11 @@ public class ShexGeneratorTests {
   }
 
   @Test
+  public void testAge() throws FHIRException, IOException, UcumException {
+    doTest("Age");
+  }
+
+  @Test
   public void testUri() throws FHIRException, IOException, UcumException {
     doTest("uri");
   }
@@ -189,6 +204,11 @@ public class ShexGeneratorTests {
   @Test
   public void testCapabilityStatement() throws FHIRException, IOException, UcumException {
     doTest("CapabilityStatement");
+  }
+
+  @Test
+  public void testCapabilities() throws FHIRException, IOException, UcumException {
+    doTest("http://fhir-registry.smarthealthit.org/StructureDefinition/capabilities");
   }
 
   @Test
