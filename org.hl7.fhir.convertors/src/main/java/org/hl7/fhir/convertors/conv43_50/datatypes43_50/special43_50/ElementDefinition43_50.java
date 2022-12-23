@@ -519,7 +519,7 @@ public class ElementDefinition43_50 {
     if (src.hasSeverity()) tgt.setSeverityElement(convertConstraintSeverity(src.getSeverityElement()));
     if (src.hasHuman()) tgt.setHumanElement(String43_50.convertString(src.getHumanElement()));
     if (src.hasExpression()) tgt.setExpressionElement(String43_50.convertString(src.getExpressionElement()));
-//    if (src.hasXpath()) tgt.setXpathElement(String43_50.convertString(src.getXpathElement()));
+    if (src.hasXpath()) tgt.setXpathElement(String43_50.convertString(src.getXpathElement()));
     if (src.hasSource()) tgt.setSourceElement(Canonical43_50.convertCanonical(src.getSourceElement()));
     return tgt;
   }
@@ -527,13 +527,13 @@ public class ElementDefinition43_50 {
   public static org.hl7.fhir.r4b.model.ElementDefinition.ElementDefinitionConstraintComponent convertElementDefinitionConstraintComponent(org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r4b.model.ElementDefinition.ElementDefinitionConstraintComponent tgt = new org.hl7.fhir.r4b.model.ElementDefinition.ElementDefinitionConstraintComponent();
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
+    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt, org.hl7.fhir.r5.utils.ToolingExtensions.EXT_XPATH_CONSTRAINT);
     if (src.hasKey()) tgt.setKeyElement(Id43_50.convertId(src.getKeyElement()));
     if (src.hasRequirements()) tgt.setRequirementsElement(String43_50.convertString(src.getRequirementsElement()));
     if (src.hasSeverity()) tgt.setSeverityElement(convertConstraintSeverity(src.getSeverityElement()));
     if (src.hasHuman()) tgt.setHumanElement(String43_50.convertString(src.getHumanElement()));
     if (src.hasExpression()) tgt.setExpressionElement(String43_50.convertString(src.getExpressionElement()));
-//    if (src.hasXpath()) tgt.setXpathElement(String43_50.convertString(src.getXpathElement()));
+    if (src.hasXpath()) tgt.setXpathElement(String43_50.convertString(src.getXpathElement()));
     if (src.hasSource()) tgt.setSourceElement(Canonical43_50.convertCanonical(src.getSourceElement()));
     return tgt;
   }

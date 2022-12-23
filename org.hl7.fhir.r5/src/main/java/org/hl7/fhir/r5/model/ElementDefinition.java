@@ -4497,12 +4497,30 @@ public boolean hasTarget() {
           , suppress, human, expression, source);
       }
 
-  public String fhirType() {
-    return "ElementDefinition.constraint";
+      public String fhirType() {
+        return "ElementDefinition.constraint";
+      }
 
-  }
-
-  }
+      public boolean hasXpathElement() {
+        return hasExtension(ToolingExtensions.EXT_XPATH_CONSTRAINT);
+     }
+     
+      public boolean hasXpath() {
+        return hasExtension(ToolingExtensions.EXT_XPATH_CONSTRAINT);
+     }
+     
+      public StringType getXpathElement() {
+        return hasXpathElement() ? getExtensionByUrl(ToolingExtensions.EXT_XPATH_CONSTRAINT).getValueStringType() : new StringType();
+      }
+      
+      public void setXpathElement(StringType value) {
+        if (hasXpath()) {
+          getExtensionByUrl(ToolingExtensions.EXT_XPATH_CONSTRAINT).setValue(value);
+        } else {
+          addExtension(ToolingExtensions.EXT_XPATH_CONSTRAINT, value);
+        }
+      }
+    }
 
     @Block()
     public static class ElementDefinitionObligationComponent extends Element implements IBaseDatatypeElement {
