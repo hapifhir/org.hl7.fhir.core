@@ -9,6 +9,7 @@ import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.ElementDefinition.SlicingRules;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ResourceFactory;
@@ -38,8 +39,8 @@ public class ProfiledElementBuilder {
    * 
    * When built with this method, the profile element can't have instance data
    * 
-   * Warning: profiles and resources can be recursive; you can't iterate this tree until it you get 
-   * to the leaves because you will never get to a child that doesn't have children
+   * Warning: profiles and resources are recursive; you can't iterate this tree until it you get 
+   * to the leaves because there are nodes that don't terminate (extensions have extensions)
    * 
    */
   public ProfiledElement buildProfileElement(String url) {
@@ -154,14 +155,27 @@ public class ProfiledElementBuilder {
   protected List<ProfiledElement> listChildren(StructureDefinition baseStructure, ElementDefinition baseDefinition, StructureDefinition profileStructure, ElementDefinition profileDefinition, TypeRefComponent t) {
     if (profileDefinition.getType().size() == 1 || (!profileDefinition.getPath().contains("."))) {
       assert profileDefinition.getType().size() != 1 || profileDefinition.getType().contains(t);
-      List<ElementDefinition> list = pu.getChildList(profileStructure, profileDefinition);
-      if (list != null && list.size() > 0) {
+      List<ProfiledElement> res = new ArrayList<>();
+      StructureDefinition profile = profileStructure;
+      List<ElementDefinition> list = pu.getChildList(profile, profileDefinition);
+      if (list.size() == 0) {
+        profile = t.hasProfile() ? context.fetchResource(StructureDefinition.class, t.getProfile().get(0).getValue()) : context.fetchTypeDefinition(t.getWorkingCode());
+        list = pu.getChildList(profile, profile.getSnapshot().getElementFirstRep());
+      }
+      if (list.size() > 0) {
+        StructureDefinition base = baseStructure;
         List<ElementDefinition> blist = pu.getChildList(baseStructure, baseDefinition);
-        List<ProfiledElement> res = new ArrayList<>();
+        if (blist.size() == 0) {
+          base = context.fetchTypeDefinition(t.getWorkingCode());
+          blist = pu.getChildList(base, base.getSnapshot().getElementFirstRep());
+        }
         int i = 0;
         while (i < list.size()) {
           ElementDefinition defn = list.get(i);
           if (defn.hasSlicing()) {
+            if (defn.getSlicing().getRules() != SlicingRules.CLOSED) {
+              res.add(new PEElement(this, base, getByName(blist, defn), profileStructure, defn));
+            }
             i++;
             while (i < list.size() && list.get(i).getPath().equals(defn.getPath())) {
               StructureDefinition ext = getExtensionDefinition(list.get(i));
@@ -173,14 +187,12 @@ public class ProfiledElementBuilder {
               i++;
             }
           } else {
-            res.add(new PEElement(this, baseStructure, getByName(blist, defn), profileStructure, defn));
+            res.add(new PEElement(this, base, getByName(blist, defn), profileStructure, defn));
             i++;
           }
         }
-        return res;
-      } else {
-        throw new DefinitionException("not done yet");
       }
+      return res;
     } else {
       throw new DefinitionException("not done yet");
     }
@@ -198,11 +210,12 @@ public class ProfiledElementBuilder {
 
   private ElementDefinition getByName(List<ElementDefinition> blist, ElementDefinition defn) {
     for (ElementDefinition ed : blist) {
-      if (ed.getPath().equals(defn.getPath())) {
+      if (ed.getName().equals(defn.getName())) {
         return ed;
       }
     }
     return null;
   }
  
+  
 }

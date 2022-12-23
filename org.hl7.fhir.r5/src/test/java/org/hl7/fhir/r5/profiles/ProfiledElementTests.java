@@ -36,9 +36,9 @@ public class ProfiledElementTests {
     Assertions.assertEquals("\\-", pe.documentation());
 
     List<ProfiledElement> children = pe.children("Patient");
-    Assertions.assertEquals(27, children.size());
+    Assertions.assertEquals(28, children.size());
     
-    pe = children.get(8);
+    pe = children.get(9);
     Assertions.assertEquals("birthsex", pe.name());
     Assertions.assertEquals("extension", pe.schemaName());
     Assertions.assertEquals(0, pe.min());
@@ -49,7 +49,7 @@ public class ProfiledElementTests {
     Assertions.assertEquals("Extension", pe.shortDocumentation());
     Assertions.assertEquals("A code classifying the person's sex assigned at birth  as specified by the [Office of the National Coordinator for Health IT (ONC)](https://www.healthit.gov/newsroom/about-onc).", pe.documentation());
 
-    pe = children.get(7);
+    pe = children.get(8);
     
     Assertions.assertEquals("ethnicity", pe.name());
     Assertions.assertEquals("extension", pe.schemaName());
@@ -61,6 +61,98 @@ public class ProfiledElementTests {
     Assertions.assertEquals("US Core ethnicity Extension", pe.shortDocumentation());
     Assertions.assertEquals("Concepts classifying the person into a named category of humans sharing common history, traits, geographical origin or nationality.  The ethnicity codes used to represent these concepts are based upon the [CDC ethnicity and Ethnicity Code Set Version 1.0](http://www.cdc.gov/phin/resources/vocabulary/index.html) which includes over 900 concepts for representing race and ethnicity of which 43 reference ethnicity.  The ethnicity concepts are grouped by and pre-mapped to the 2 OMB ethnicity categories: - Hispanic or Latino - Not Hispanic or Latino.", pe.documentation());
 
+    pe = children.get(12);
     
+    Assertions.assertEquals("identifier", pe.name());
+    Assertions.assertEquals("identifier", pe.schemaName());
+    Assertions.assertEquals(1, pe.min());
+    Assertions.assertEquals(Integer.MAX_VALUE, pe.max());
+    Assertions.assertEquals("Identifier", pe.types().get(0));
+    Assertions.assertNotNull(pe.definition());
+    Assertions.assertNotNull(pe.baseDefinition());
+    Assertions.assertEquals("An identifier for this patient", pe.shortDocumentation());
+    Assertions.assertEquals("An identifier for this patient.", pe.documentation());
+
+
+    List<ProfiledElement> iChildren = pe.children("Identifier");
+    Assertions.assertEquals(8, iChildren.size());
+    
+
+    pe = iChildren.get(2);
+    
+    Assertions.assertEquals("use", pe.name());
+    Assertions.assertEquals("use", pe.schemaName());
+    Assertions.assertEquals(0, pe.min());
+    Assertions.assertEquals(1, pe.max());
+    Assertions.assertEquals("code", pe.types().get(0));
+    Assertions.assertNotNull(pe.definition());
+    Assertions.assertNotNull(pe.baseDefinition());
+    Assertions.assertEquals("usual | official | temp | secondary | old (If known)", pe.shortDocumentation());
+    Assertions.assertEquals("The purpose of this identifier.", pe.documentation());
+
+    iChildren = pe.children("code");
+    Assertions.assertEquals(3, iChildren.size());
+
+    pe = iChildren.get(2);
+    Assertions.assertEquals("value", pe.name());
+    Assertions.assertEquals("value", pe.schemaName());
+    Assertions.assertEquals(0, pe.min());
+    Assertions.assertEquals(1, pe.max());
+    Assertions.assertEquals(0, pe.types().size());
+    Assertions.assertNotNull(pe.definition());
+    Assertions.assertNotNull(pe.baseDefinition());
+    Assertions.assertEquals("Primitive value for code", pe.shortDocumentation());
+    Assertions.assertEquals("Primitive value for code", pe.documentation());
+
+    pe = iChildren.get(0);
+    Assertions.assertEquals("id", pe.name());
+    Assertions.assertEquals("id", pe.schemaName());
+    Assertions.assertEquals(0, pe.min());
+    Assertions.assertEquals(1, pe.max());
+    Assertions.assertEquals(0, pe.types().size());
+    Assertions.assertNotNull(pe.definition());
+    Assertions.assertNotNull(pe.baseDefinition());
+    Assertions.assertEquals("xml:id (or equivalent in JSON)", pe.shortDocumentation());
+    Assertions.assertEquals("unique id for the element within a resource (for internal references)", pe.documentation());
+
+    // let's go down the rabbit hole
+    pe = iChildren.get(1);
+    Assertions.assertEquals("extension", pe.name());
+    Assertions.assertEquals("extension", pe.schemaName());
+    Assertions.assertEquals(0, pe.min());
+    Assertions.assertEquals(Integer.MAX_VALUE, pe.max());
+    Assertions.assertEquals("Extension", pe.types().get(0));
+    Assertions.assertNotNull(pe.definition());
+    Assertions.assertNotNull(pe.baseDefinition());
+    Assertions.assertEquals("Additional content defined by implementations", pe.shortDocumentation());
+    Assertions.assertEquals("May be used to represent additional information that is not part of the basic definition of the resource. To make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.", pe.documentation());
+
+    iChildren = pe.children("Extension");
+    Assertions.assertEquals(4, iChildren.size());
+    pe = iChildren.get(1);
+    Assertions.assertEquals("extension", pe.name());
+    Assertions.assertEquals("extension", pe.schemaName());
+    Assertions.assertEquals(0, pe.min());
+    Assertions.assertEquals(Integer.MAX_VALUE, pe.max());
+    Assertions.assertEquals("Extension", pe.types().get(0));
+    Assertions.assertNotNull(pe.definition());
+    Assertions.assertNotNull(pe.baseDefinition());
+    Assertions.assertEquals("Additional content defined by implementations", pe.shortDocumentation());
+    Assertions.assertEquals("May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.", pe.documentation());
+
+
+    iChildren = pe.children("Extension");
+    Assertions.assertEquals(4, iChildren.size());
+    pe = iChildren.get(1);
+    Assertions.assertEquals("extension", pe.name());
+    Assertions.assertEquals("extension", pe.schemaName());
+    Assertions.assertEquals(0, pe.min());
+    Assertions.assertEquals(Integer.MAX_VALUE, pe.max());
+    Assertions.assertEquals("Extension", pe.types().get(0));
+    Assertions.assertNotNull(pe.definition());
+    Assertions.assertNotNull(pe.baseDefinition());
+    Assertions.assertEquals("Additional content defined by implementations", pe.shortDocumentation());
+    Assertions.assertEquals("May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.", pe.documentation());
+
   }
 }
