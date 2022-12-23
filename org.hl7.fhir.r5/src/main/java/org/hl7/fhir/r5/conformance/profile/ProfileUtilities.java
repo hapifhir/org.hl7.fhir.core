@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.conformance;
+package org.hl7.fhir.r5.conformance.profile;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -48,7 +48,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider.BindingResolution;
+import org.hl7.fhir.r5.conformance.AdditionalBindingsRenderer;
+import org.hl7.fhir.r5.conformance.ElementRedirection;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ProfileKnowledgeProvider.BindingResolution;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
@@ -638,7 +640,8 @@ public class ProfileUtilities extends TranslatingUtilities {
 
         // we actually delegate the work to a subroutine so we can re-enter it with a different cursors
         StructureDefinitionDifferentialComponent diff = cloneDiff(derived.getDifferential()); // we make a copy here because we're sometimes going to hack the differential while processing it. Have to migrate user data back afterwards
-        StructureDefinitionSnapshotComponent baseSnapshot  = base.getSnapshot(); 
+
+        StructureDefinitionSnapshotComponent baseSnapshot  = base.getSnapshot();
         if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
           String derivedType = derived.getTypeName();
 
@@ -648,7 +651,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         //        debug = true;
         //      }
 
-        new ProfilePathProcessor(this).processPaths(base, derived, url, webUrl, diff, baseSnapshot);
+        ProfilePathProcessor.processPaths(this, base, derived, url, webUrl, diff, baseSnapshot);
 
         checkGroupConstraints(derived);
         if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
@@ -1297,7 +1300,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  protected String getWebUrl(StructureDefinition dt, String webUrl, String indent) {
+  protected String getWebUrl(StructureDefinition dt, String webUrl) {
     if (dt.hasUserData("path")) {
       // this is a hack, but it works for now, since we don't have deep folders
       String url = dt.getUserString("path");
