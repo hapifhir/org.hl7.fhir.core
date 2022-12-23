@@ -4147,7 +4147,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             if (!useTableForFixedValues || !allowSubRows || definition.getFixed().isPrimitive()) {
               String s = buildJson(definition.getFixed());
               String link = null;
-              if (Utilities.isAbsoluteUrl(s))
+              if (Utilities.isAbsoluteUrl(s) && pkp != null)
                 link = pkp.getLinkForUrl(corePath, s);
               c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(link, s, null).addStyle("color: darkgreen")));
             } else {
