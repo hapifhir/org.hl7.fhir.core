@@ -3,36 +3,22 @@ package org.hl7.fhir.r5.elementmodel;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.Map.Entry;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
-import org.hl7.fhir.r5.elementmodel.ParserBase.NamedElement;
-import org.hl7.fhir.r5.elementmodel.ParserBase.ValidationPolicy;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
-import org.hl7.fhir.utilities.json.JsonTrackingParser;
-import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
-import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
-import org.hl7.fhir.utilities.xhtml.XhtmlParser;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 
 public class ResourceParser extends ParserBase {
 

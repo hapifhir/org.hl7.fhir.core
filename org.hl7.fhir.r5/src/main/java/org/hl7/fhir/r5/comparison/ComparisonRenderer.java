@@ -21,7 +21,7 @@ import org.hl7.fhir.r5.comparison.ResourceComparer.PlaceHolderComparison;
 import org.hl7.fhir.r5.comparison.ResourceComparer.ResourceComparison;
 import org.hl7.fhir.r5.comparison.ValueSetComparer.ValueSetComparison;
 
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Base;
