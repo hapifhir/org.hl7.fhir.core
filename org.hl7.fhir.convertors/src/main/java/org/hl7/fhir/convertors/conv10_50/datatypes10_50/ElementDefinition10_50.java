@@ -381,14 +381,14 @@ public class ElementDefinition10_50 {
     if (src.hasSeverity()) tgt.setSeverityElement(convertConstraintSeverity(src.getSeverityElement()));
     if (src.hasHumanElement()) tgt.setHumanElement(String10_50.convertString(src.getHumanElement()));
     tgt.setExpression(ToolingExtensions.readStringExtension(src, ToolingExtensions.EXT_EXPRESSION));
-//    if (src.hasXpathElement()) tgt.setXpathElement(String10_50.convertString(src.getXpathElement()));
+    if (src.hasXpathElement()) tgt.setXpathElement(String10_50.convertString(src.getXpathElement()));
     return tgt;
   }
 
   public static org.hl7.fhir.dstu2.model.ElementDefinition.ElementDefinitionConstraintComponent convertElementDefinitionConstraintComponent(ElementDefinition.ElementDefinitionConstraintComponent src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.dstu2.model.ElementDefinition.ElementDefinitionConstraintComponent tgt = new org.hl7.fhir.dstu2.model.ElementDefinition.ElementDefinitionConstraintComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt, org.hl7.fhir.r5.utils.ToolingExtensions.EXT_XPATH_CONSTRAINT);
     if (src.hasKeyElement()) tgt.setKeyElement(Id10_50.convertId(src.getKeyElement()));
     if (src.hasRequirementsElement())
       tgt.setRequirementsElement(String10_50.convertString(src.getRequirementsElement()));
@@ -396,7 +396,7 @@ public class ElementDefinition10_50 {
     if (src.hasHumanElement()) tgt.setHumanElement(String10_50.convertString(src.getHumanElement()));
     if (src.hasExpression())
       ToolingExtensions.addStringExtension(tgt, ToolingExtensions.EXT_EXPRESSION, src.getExpression());
-//    if (src.hasXpathElement()) tgt.setXpathElement(String10_50.convertString(src.getXpathElement()));
+    if (src.hasXpathElement()) tgt.setXpathElement(String10_50.convertString(src.getXpathElement()));
     return tgt;
   }
 

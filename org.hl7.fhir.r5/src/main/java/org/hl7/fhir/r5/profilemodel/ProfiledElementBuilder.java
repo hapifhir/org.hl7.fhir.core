@@ -1,17 +1,29 @@
 package org.hl7.fhir.r5.profilemodel;
 
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.model.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
-import kotlin.NotImplementedError;
+import org.apache.commons.lang3.NotImplementedException;
+import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.context.ContextUtilities;
+import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.model.CanonicalType;
+import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.ResourceFactory;
+import org.hl7.fhir.r5.model.StructureDefinition;
 
 public class ProfiledElementBuilder {
 
   private IWorkerContext context;
+  private ProfileUtilities pu;
 
   public ProfiledElementBuilder(IWorkerContext context) {
     super();
     this.context = context;
+    pu = new ProfileUtilities(context, null, null);
   }
   
 
@@ -32,7 +44,15 @@ public class ProfiledElementBuilder {
    * 
    */
   public ProfiledElement buildProfileElement(String url) {
-    throw new NotImplementedError("NOt done yet");
+    StructureDefinition profile = getProfile(url);
+    if (profile == null) {
+      throw new DefinitionException("Unable to find profile for URL '"+url+"'");
+    }
+    StructureDefinition base = context.fetchTypeDefinition(profile.getType());
+    if (base == null) {
+      throw new DefinitionException("Unable to find base type '"+profile.getType()+"' for URL '"+url+"'");
+    }
+    return new ProfiledElement(this, profile.getName(), base, base.getSnapshot().getElementFirstRep(), profile, profile.getSnapshot().getElementFirstRep());
   }
   
   /**
@@ -52,7 +72,15 @@ public class ProfiledElementBuilder {
    * 
    */
   public ProfiledElement buildProfileElement(String url, String version) {
-    throw new NotImplementedError("NOt done yet");
+    StructureDefinition profile = getProfile(url, version);
+    if (profile == null) {
+      throw new DefinitionException("Unable to find profile for URL '"+url+"'");
+    }
+    StructureDefinition base = context.fetchTypeDefinition(profile.getType());
+    if (base == null) {
+      throw new DefinitionException("Unable to find base type '"+profile.getType()+"' for URL '"+url+"'");
+    }
+    return new ProfiledElement(this, profile.getName(), base, base.getSnapshot().getElementFirstRep(), profile, profile.getSnapshot().getElementFirstRep());
   }
   
   /**
@@ -73,7 +101,7 @@ public class ProfiledElementBuilder {
    * 
    */
   public ProfiledElement buildProfileElement(String url, Resource resource) {
-    throw new NotImplementedError("NOt done yet");
+    throw new NotImplementedException("NOt done yet");
   }
   
   /**
@@ -91,7 +119,7 @@ public class ProfiledElementBuilder {
    * 
    */
   public ProfiledElement buildProfileElement(String url, String version, Resource resource) {
-    throw new NotImplementedError("NOt done yet");
+    throw new NotImplementedException("NOt done yet");
   }
   
   /**
@@ -101,7 +129,67 @@ public class ProfiledElementBuilder {
    * No version, because the version doesn't change the type of the resource
    */
   public Resource makeProfileBase(String url) {
-    throw new NotImplementedError("NOt done yet");
+    StructureDefinition profile = getProfile(url);
+    return ResourceFactory.createResource(profile.getType());
+  }
+
+
+  // -- methods below here are only used internally to the package
+
+  private StructureDefinition getProfile(String url) {
+    return context.fetchResource(StructureDefinition.class, url);
+  }
+
+
+  private StructureDefinition getProfile(String url, String version) {
+    return context.fetchResource(StructureDefinition.class, url, version);
+  }
+
+  protected List<ProfiledElement> listChildren(StructureDefinition baseStructure, ElementDefinition baseDefinition,
+      StructureDefinition profileStructure, ElementDefinition profiledDefinition, TypeRefComponent t, CanonicalType u) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+
+  protected List<ProfiledElement> listChildren(StructureDefinition baseStructure, ElementDefinition baseDefinition, StructureDefinition profileStructure, ElementDefinition profileDefinition, TypeRefComponent t) {
+    if (profileDefinition.getType().size() == 1 || (!profileDefinition.getPath().contains("."))) {
+      assert profileDefinition.getType().size() != 1 || profileDefinition.getType().contains(t);
+      List<ElementDefinition> list = pu.getChildList(profileStructure, profileDefinition);
+      if (list != null && list.size() > 0) {
+        List<ElementDefinition> blist = pu.getChildList(baseStructure, baseDefinition);
+        List<ProfiledElement> res = new ArrayList<>();
+        int i = 0;
+        while (i < list.size()) {
+          ElementDefinition defn = list.get(i);
+          if (defn.hasSlicing()) {
+            i++;
+            while (i < list.size() && list.get(i).getPath().equals(defn.getPath())) {
+              res.add(new ProfiledElement(this, list.get(i).getSliceName(), baseStructure, getByName(blist, defn), profileStructure, list.get(i), defn));
+              i++;
+            }
+          } else {
+            res.add(new ProfiledElement(this, defn.getName(), baseStructure, getByName(blist, defn), profileStructure, defn));
+            i++;
+          }
+        }
+        return res;
+      } else {
+        throw new DefinitionException("not done yet");
+      }
+    } else {
+      throw new DefinitionException("not done yet");
+    }
+  }
+
+
+  private ElementDefinition getByName(List<ElementDefinition> blist, ElementDefinition defn) {
+    for (ElementDefinition ed : blist) {
+      if (ed.getPath().equals(defn.getPath())) {
+        return ed;
+      }
+    }
+    return null;
   }
  
 }
