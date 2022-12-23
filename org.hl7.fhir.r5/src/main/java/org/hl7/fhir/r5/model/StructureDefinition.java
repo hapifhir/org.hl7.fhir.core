@@ -1231,6 +1231,15 @@ public class StructureDefinition extends CanonicalResource {
 
   }
 
+  public ElementDefinition getElementByPath(String path) {
+    for (ElementDefinition ed : getElement()) {
+      if (path.equals(ed.getPath())) {
+        return ed;
+      }
+    }
+    return null;
+  }
+
   }
 
     @Block()

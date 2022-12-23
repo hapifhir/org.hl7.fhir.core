@@ -5,8 +5,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.DefinitionException;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
-import org.hl7.fhir.r5.context.ContextUtilities;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.ElementDefinition;
@@ -52,7 +51,7 @@ public class ProfiledElementBuilder {
     if (base == null) {
       throw new DefinitionException("Unable to find base type '"+profile.getType()+"' for URL '"+url+"'");
     }
-    return new ProfiledElement(this, profile.getName(), base, base.getSnapshot().getElementFirstRep(), profile, profile.getSnapshot().getElementFirstRep());
+    return new PEResource(this, base, profile);
   }
   
   /**
@@ -80,7 +79,7 @@ public class ProfiledElementBuilder {
     if (base == null) {
       throw new DefinitionException("Unable to find base type '"+profile.getType()+"' for URL '"+url+"'");
     }
-    return new ProfiledElement(this, profile.getName(), base, base.getSnapshot().getElementFirstRep(), profile, profile.getSnapshot().getElementFirstRep());
+    return new PEResource(this, base, profile);
   }
   
   /**
@@ -165,11 +164,16 @@ public class ProfiledElementBuilder {
           if (defn.hasSlicing()) {
             i++;
             while (i < list.size() && list.get(i).getPath().equals(defn.getPath())) {
-              res.add(new ProfiledElement(this, list.get(i).getSliceName(), baseStructure, getByName(blist, defn), profileStructure, list.get(i), defn));
+              StructureDefinition ext = getExtensionDefinition(list.get(i));
+              if (ext != null) {
+                res.add(new PEExtension(this, list.get(i).getSliceName(), baseStructure, getByName(blist, defn), profileStructure, list.get(i), defn, ext));
+              } else {
+                res.add(new PESlice(this, list.get(i).getSliceName(), baseStructure, getByName(blist, defn), profileStructure, list.get(i), defn));
+              }
               i++;
             }
           } else {
-            res.add(new ProfiledElement(this, defn.getName(), baseStructure, getByName(blist, defn), profileStructure, defn));
+            res.add(new PEElement(this, baseStructure, getByName(blist, defn), profileStructure, defn));
             i++;
           }
         }
@@ -179,6 +183,15 @@ public class ProfiledElementBuilder {
       }
     } else {
       throw new DefinitionException("not done yet");
+    }
+  }
+
+
+  private StructureDefinition getExtensionDefinition(ElementDefinition ed) {
+    if ("Extension".equals(ed.getTypeFirstRep().getWorkingCode()) && ed.getTypeFirstRep().getProfile().size() == 1) {
+      return context.fetchResource(StructureDefinition.class, ed.getTypeFirstRep().getProfile().get(0).asStringValue());
+    } else {
+      return null;
     }
   }
 
