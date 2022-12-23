@@ -25,7 +25,7 @@ public class PEElement extends ProfiledElement {
         for (CanonicalType u : t.getProfile()) {
           res.add(t.getWorkingCode()+"["+u.getValue()+"]");
         }
-      } else {
+      } else if (!t.getCode().startsWith("http://hl7.org/fhirpath/")) {
         res.add(t.getWorkingCode());
       }
     }

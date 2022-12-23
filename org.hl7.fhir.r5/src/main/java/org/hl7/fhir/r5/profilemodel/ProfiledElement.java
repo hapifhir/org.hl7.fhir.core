@@ -74,7 +74,9 @@ public abstract class ProfiledElement {
   }
   
   /**
-   * @return a list of types. There is always at least one type; it might be Element, Type, BackboneElement or BackboneType
+   * @return a list of types. There is usually at least one type; it might be Element, Type, BackboneElement or BackboneType
+   * 
+   * The following elements don't have types (true primitives): Element.id. Extension.url, PrimitiveType.value
    */
   public abstract List<String> types();
   
@@ -206,7 +208,7 @@ public abstract class ProfiledElement {
 
   @Override
   public String toString() {
-    return name+"("+schemaName()+"):"+types().toString()+" ["+min()+":"+max()+"] \""+shortDocumentation()+"\"";
+    return name+"("+schemaName()+"):"+types().toString()+" ["+min()+":"+(max() == Integer.MAX_VALUE ? "*" : max() )+"] \""+shortDocumentation()+"\"";
   }
   
 }
