@@ -39,15 +39,15 @@ public class ProfiledElementTests {
     Assertions.assertEquals(27, children.size());
     
     pe = children.get(8);
-    Assertions.assertEquals("us-core-birthsex", pe.name());
+    Assertions.assertEquals("birthsex", pe.name());
     Assertions.assertEquals("extension", pe.schemaName());
     Assertions.assertEquals(0, pe.min());
     Assertions.assertEquals(1, pe.max());
     Assertions.assertEquals("code", pe.types().get(0));
     Assertions.assertNotNull(pe.definition());
     Assertions.assertNotNull(pe.baseDefinition());
-    Assertions.assertEquals("Information about an individual or animal receiving health care services", pe.shortDocumentation());
-    Assertions.assertEquals("\\-", pe.documentation());
+    Assertions.assertEquals("Extension", pe.shortDocumentation());
+    Assertions.assertEquals("A code classifying the person's sex assigned at birth  as specified by the [Office of the National Coordinator for Health IT (ONC)](https://www.healthit.gov/newsroom/about-onc).", pe.documentation());
 
     pe = children.get(7);
     
@@ -55,11 +55,11 @@ public class ProfiledElementTests {
     Assertions.assertEquals("extension", pe.schemaName());
     Assertions.assertEquals(0, pe.min());
     Assertions.assertEquals(1, pe.max());
-    Assertions.assertEquals("extension", pe.types().get(0));
+    Assertions.assertEquals("Extension", pe.types().get(0));
     Assertions.assertNotNull(pe.definition());
     Assertions.assertNotNull(pe.baseDefinition());
-    Assertions.assertEquals("Information about an individual or animal receiving health care services", pe.shortDocumentation());
-    Assertions.assertEquals("\\-", pe.documentation());
+    Assertions.assertEquals("US Core ethnicity Extension", pe.shortDocumentation());
+    Assertions.assertEquals("Concepts classifying the person into a named category of humans sharing common history, traits, geographical origin or nationality.  The ethnicity codes used to represent these concepts are based upon the [CDC ethnicity and Ethnicity Code Set Version 1.0](http://www.cdc.gov/phin/resources/vocabulary/index.html) which includes over 900 concepts for representing race and ethnicity of which 43 reference ethnicity.  The ethnicity concepts are grouped by and pre-mapped to the 2 OMB ethnicity categories: - Hispanic or Latino - Not Hispanic or Latino.", pe.documentation());
 
     
   }
