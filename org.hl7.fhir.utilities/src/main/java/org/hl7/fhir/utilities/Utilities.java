@@ -65,6 +65,8 @@ import org.apache.commons.io.FileUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.FileNotifier.FileNotifier2;
 
+import javax.annotation.Nullable;
+
 public class Utilities {
 
   private static final String UUID_REGEX = "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}";
@@ -1799,4 +1801,18 @@ public class Utilities {
     }
   }
 
+  /**
+   * Appends a text from a derived element to its base element.
+   *
+   * @param baseText The text set in the base element, or {@code null}.
+   * @param derivedText The text set in the derived element, starting with "...".
+   * @return The resulting text.
+   */
+  public static String appendDerivedTextToBase(@Nullable final String baseText,
+                                               final String derivedText) {
+    if (baseText == null) {
+      return derivedText.substring(3);
+    }
+    return baseText + "\r\n" + derivedText.substring(3);
+  }
 }
