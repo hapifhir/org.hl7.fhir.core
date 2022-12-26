@@ -1,5 +1,6 @@
 package org.hl7.fhir.r4b.utils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -37,6 +38,7 @@ import java.util.Map;
  */
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r4b.context.IWorkerContext;
 import org.hl7.fhir.r4b.model.Base;
@@ -53,6 +55,10 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class LiquidEngine implements IEvaluationContext {
 
+  public interface ILiquidRenderingSupport {
+    String renderForLiquid(Object appContext, Base i) throws FHIRException;
+  }
+
   public interface ILiquidEngineIncludeResolver {
     public String fetchInclude(LiquidEngine engine, String name);
   }
@@ -60,6 +66,7 @@ public class LiquidEngine implements IEvaluationContext {
   private IEvaluationContext externalHostServices;
   private FHIRPathEngine engine;
   private ILiquidEngineIncludeResolver includeResolver;
+  private ILiquidRenderingSupport renderingSupport;
 
   private class LiquidEngineContext {
     private Object externalContext;
@@ -82,6 +89,7 @@ public class LiquidEngine implements IEvaluationContext {
     this.externalHostServices = hostServices;
     engine = new FHIRPathEngine(context);
     engine.setHostServices(this);
+    engine.setLiquidMode(true);
   }
 
   public ILiquidEngineIncludeResolver getIncludeResolver() {
@@ -90,6 +98,14 @@ public class LiquidEngine implements IEvaluationContext {
 
   public void setIncludeResolver(ILiquidEngineIncludeResolver includeResolver) {
     this.includeResolver = includeResolver;
+  }
+
+  public ILiquidRenderingSupport getRenderingSupport() {
+    return renderingSupport;
+  }
+
+  public void setRenderingSupport(ILiquidRenderingSupport renderingSupport) {
+    this.renderingSupport = renderingSupport;
   }
 
   public LiquidDocument parse(String source, String sourceName) throws FHIRException {
@@ -130,17 +146,84 @@ public class LiquidEngine implements IEvaluationContext {
     public void evaluate(StringBuilder b, Base resource, LiquidEngineContext ctxt) {
       b.append(constant);
     }
+
+  }
+  
+  private enum LiquidFilter {
+    PREPEND;
+    
+    public static LiquidFilter fromCode(String code) {
+      if ("prepend".equals(code)) {
+        return PREPEND;
+      }
+      return null;
+    }
   }
 
+  private class LiquidExpressionNode {
+    private LiquidFilter filter; // null at root
+    private ExpressionNode expression; // null for some filters
+    public LiquidExpressionNode(LiquidFilter filter, ExpressionNode expression) {
+      super();
+      this.filter = filter;
+      this.expression = expression;
+    }
+    
+  }
+  
   private class LiquidStatement extends LiquidNode {
     private String statement;
-    private ExpressionNode compiled;
+    private List<LiquidExpressionNode> compiled = new ArrayList<>();
 
     @Override
     public void evaluate(StringBuilder b, Base resource, LiquidEngineContext ctxt) throws FHIRException {
-      if (compiled == null)
-        compiled = engine.parse(statement);
-      b.append(engine.evaluateToString(ctxt, resource, resource, resource, compiled));
+      if (compiled.size() == 0) {
+        FHIRLexer lexer = new FHIRLexer(statement, "liquid statement");
+        lexer.setLiquidMode(true);
+        compiled.add(new LiquidExpressionNode(null, engine.parse(lexer)));
+        while (!lexer.done()) {
+          if (lexer.getCurrent().equals("||")) {
+            lexer.next();
+            String f = lexer.getCurrent();
+            LiquidFilter filter = LiquidFilter.fromCode(f);
+            if (filter == null) {
+              lexer.error("Unknown Liquid filter '"+f+"'");
+            }
+            lexer.next();
+            if (!lexer.done() && lexer.getCurrent().equals(":")) {
+              lexer.next();
+              compiled.add(new LiquidExpressionNode(filter, engine.parse(lexer)));
+            } else {
+              compiled.add(new LiquidExpressionNode(filter, null));
+            }
+          } else {
+            lexer.error("Unexpected syntax parsing liquid statement");
+          }
+        }
+      }
+      
+      String t = null;
+      for (LiquidExpressionNode i : compiled) {
+        if (i.filter == null) { // first
+          t = stmtToString(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression));
+        } else switch (i.filter) {
+        case PREPEND:
+          t = stmtToString(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression)) + t;
+          break;
+        }
+      }
+      b.append(t);
+    }
+
+    private String stmtToString(LiquidEngineContext ctxt, List<Base> items) {
+      StringBuilder b = new StringBuilder();
+      boolean first = true;
+      for (Base i : items) {
+        if (first) first = false; else b.append(", ");
+        String s = renderingSupport != null ? renderingSupport.renderForLiquid(ctxt.externalContext, i) : null;
+        b.append(s != null ? s : engine.convertToString(i));
+      }
+      return b.toString();
     }
   }
 
