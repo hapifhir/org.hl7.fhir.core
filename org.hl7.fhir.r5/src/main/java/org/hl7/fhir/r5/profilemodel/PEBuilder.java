@@ -17,12 +17,65 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.utilities.Utilities;
 
+/**
+ * Factory class for the ProfiledElement sub-system
+ * 
+ * This subsystem takes a profile and creates a view of the profile that stitches
+ * all the parts together, and presents it as a seemless tree. There's two views:
+ * 
+ *  - definition: A logical view of the contents of the profile 
+ *  - instance: a logical view of a resource that conforms to the profile
+ *  
+ * The tree of elements in the profile model is different to the the base resource:
+ *  - some elements are removed (max = 0)
+ *  - extensions are turned into named elements 
+ *  - slices are turned into named elements 
+ *  - element properties - doco, cardinality, binding etc is updated for what the profile says
+ * 
+ * Definition
+ * ----------
+ * This presents a single view of the contents of a resource as specified by 
+ * the profile. It's suitable for use in any kind of tree view. 
+ * 
+ * Each node has a unique name amongst it's siblings, but this name may not be 
+ * the name in the instance, since slicing splits up a single named element into 
+ * different definitions.
+ * 
+ * Each node has:
+ *   - name (unique amongst siblings)
+ *   - schema name (the actual name in the instance)
+ *   - min cardinality 
+ *   - max cardinality 
+ *   - short documentation (for the tree view)
+ *   - full documentation (markdown source)
+ *   - profile definition - the full definition in the profile
+ *   - base definition - the full definition at the resource level
+ *   - types() - a list of possible types
+ *   - children(type) - a list of child nodes for the provided type 
+ *   - expansion - if there's a binding, the codes in the expansion based on the binding
+ *   
+ * Note that the tree may not have leaves; the trees recurse indefinitely because 
+ * extensions have extensions etc. So you can't do a depth-first search of the tree
+ * without some kind of decision to stop at a given point. 
+ * 
+ * Instance
+ * --------
+ * 
+ * todo
+ * 
+ * @author grahamegrieve
+ *
+ */
 public class PEBuilder {
 
   private IWorkerContext context;
   private ProfileUtilities pu;
   private boolean elementProps;
 
+  /**
+   * @param context - must be loaded with R5 definitions
+   * @param elementProps - whether to include Element.id and Element.extension in the tree
+   */
   public PEBuilder(IWorkerContext context, boolean elementProps) {
     super();
     this.context = context;
@@ -30,7 +83,6 @@ public class PEBuilder {
     pu = new ProfileUtilities(context, null, null);
   }
   
-
   /**
    * Given a profile, return a tree of the elements defined in the profile model. This builds the profile model
    * for the latest version of the nominated profile
@@ -98,7 +150,8 @@ public class PEBuilder {
    * 
    */
   public PEInstance buildPEInstance(String url, Resource resource) {
-    throw new NotImplementedException("NOt done yet");
+    PEDefinition defn = buildPEDefinition(url);
+    return loadInstance(defn, resource);
   }
   
   /**
@@ -115,7 +168,8 @@ public class PEBuilder {
    * longer part of the resource 
    */
   public PEInstance buildPEInstance(String url, String version, Resource resource) {
-    throw new NotImplementedException("Not done yet");
+    PEDefinition defn = buildPEDefinition(url, version);
+    return loadInstance(defn, resource);
   }
   
   /**
@@ -291,5 +345,10 @@ public class PEBuilder {
   public List<ElementDefinition> getChildren(StructureDefinition profileStructure, ElementDefinition profiledDefinition) {
     return pu.getChildList(profileStructure, profiledDefinition);
   }
- 
+
+  private PEInstance loadInstance(PEDefinition defn, Resource resource) {
+    throw new NotImplementedException("Not done yet");
+  }
+
+
 }

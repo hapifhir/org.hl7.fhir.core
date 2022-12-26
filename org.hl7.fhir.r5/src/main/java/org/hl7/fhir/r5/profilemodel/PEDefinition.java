@@ -5,11 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.ValueSet;
 
 public abstract class PEDefinition {
 
@@ -129,7 +127,7 @@ public abstract class PEDefinition {
   }
   
 //  /**
-//   * @return if the profiled definition has a value set 
+//   * @return if the profiled definition has a value set, get the expansion 
 //   */
 //  public ValueSet expansion() {
 //    throw new NotImplementedException("Not done yet");
@@ -160,11 +158,16 @@ public abstract class PEDefinition {
     return name+"("+schemaName()+"):"+types().toString()+" ["+min()+":"+(max() == Integer.MAX_VALUE ? "*" : max() )+"] \""+shortDocumentation()+"\"";
   }
 
+  /**
+   * @return true if the builder observes that this element is recursing (extensions have extensions)
+   * 
+   * Note that this is unreliable and may be withdrawn if it can't be fixed
+   */
   public boolean isRecursing() {
     return recursing;
   }
 
-  public void setRecursing(boolean recursing) {
+  protected void setRecursing(boolean recursing) {
     this.recursing = recursing;
   }
   
