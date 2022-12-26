@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<StructureDefinition xmlns="http://hl7.org/fhir">
+  <id value="us-core-patient"/>
+  <url value="http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient"/>
+  <version value="6.0.0-preview"/>
+  <name value="USCorePatientProfile"/>
+  <title value="US Core Patient Profile"/>
+  <status value="active"/>
+  <experimental value="false"/>
+  <date value="2022-09-30"/>
+  <publisher value="HL7 International - Cross-Group Projects"/>
+  <fhirVersion value="4.0.1"/>
+  <kind value="resource"/>
+  <abstract value="false"/>
+  <type value="Patient"/>
+  <baseDefinition value="http://hl7.org/fhir/StructureDefinition/Patient"/>
+  <derivation value="constraint"/>
+  <differential>
+    <element id="Patient">
+      <path value="Patient"/>
+      <definition value="\-"/>
+      <comment value="\-"/>
+      <mustSupport value="false"/>
+    </element>
+    <element id="Patient.name">
+      <path value="Patient.name"/>
+      <min value="1"/>
+      <constraint>
+        <extension url="http://hl7.org/fhir/4.0/StructureDefinition/extension-ElementDefinition.constraint.xpath">
+          <valueString value="(/f:extension/@url='http://hl7.org/fhir/StructureDefinition/data-absent-reason' and not(/f:family or /f:given)) or (not(/f:extension/@url='http://hl7.org/fhir/StructureDefinition/data-absent-reason') and (/f:family or /f:given))"/>
+        </extension>
+        <key value="us-core-6"/>
+        <severity value="error"/>
+        <human value="At least name.given and/or name.family are present or, if neither is available, the Data Absent Reason Extension is present."/>
+        <expression value="(family.exists() or given.exists()) xor extension.where(url='http://hl7.org/fhir/StructureDefinition/data-absent-reason').exists()"/>
+      </constraint>
+      <mustSupport value="true"/>
+      <mapping>
+        <identity value="argonaut-dq-dstu2"/>
+        <map value="Patient.name"/>
+      </mapping>
+    </element>
+  </differential>
+</StructureDefinition>

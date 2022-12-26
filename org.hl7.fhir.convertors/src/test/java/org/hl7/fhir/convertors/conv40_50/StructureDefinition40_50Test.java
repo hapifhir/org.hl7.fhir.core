@@ -22,8 +22,8 @@ public class StructureDefinition40_50Test {
   @Test
   @DisplayName("Test r5 -> r4 AuditEvent conversion.")
   public void testR5_R4() throws IOException {
-    byte[] r4_input = TestingUtilities.loadTestResourceBytes("conversion", "sd-xpath-constraint-r4.xml");
-    byte[] r5_input = TestingUtilities.loadTestResourceBytes("conversion", "sd-xpath-constraint-r5.xml");
+    byte[] r4_input = TextFile.streamToBytes(this.getClass().getResourceAsStream("/sd-xpath-constraint-r4.xml"));
+    byte[] r5_input = TextFile.streamToBytes(this.getClass().getResourceAsStream("/sd-xpath-constraint-r5.xml"));
 
     org.hl7.fhir.r5.model.StructureDefinition r5_actual = (org.hl7.fhir.r5.model.StructureDefinition) new org.hl7.fhir.r5.formats.XmlParser().parse(r5_input);
     org.hl7.fhir.r4.model.StructureDefinition r4_conv = (org.hl7.fhir.r4.model.StructureDefinition) VersionConvertorFactory_40_50.convertResource(r5_actual);
@@ -40,8 +40,8 @@ public class StructureDefinition40_50Test {
   @Test
   @DisplayName("Test r4 -> r5 AuditEvent conversion.")
   public void testR4_R5() throws IOException {
-    byte[] r4_input = TestingUtilities.loadTestResourceBytes("conversion", "sd-xpath-constraint-r4.xml");
-    byte[] r5_input = TestingUtilities.loadTestResourceBytes("conversion", "sd-xpath-constraint-r5.xml");
+    byte[] r4_input = TextFile.streamToBytes(this.getClass().getResourceAsStream("/sd-xpath-constraint-r4.xml"));
+    byte[] r5_input = TextFile.streamToBytes(this.getClass().getResourceAsStream("/sd-xpath-constraint-r5.xml"));
 
     org.hl7.fhir.r4.model.StructureDefinition r4_actual = (org.hl7.fhir.r4.model.StructureDefinition) new org.hl7.fhir.r4.formats.XmlParser().parse(r4_input);
     org.hl7.fhir.r5.model.StructureDefinition r5_conv = (org.hl7.fhir.r5.model.StructureDefinition) VersionConvertorFactory_40_50.convertResource(r4_actual);
