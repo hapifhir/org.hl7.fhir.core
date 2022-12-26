@@ -20,6 +20,8 @@ import org.hl7.fhir.utilities.Utilities;
 /**
  * Factory class for the ProfiledElement sub-system
  * 
+ * *** NOTE: This sub-system is still under development ***
+ * 
  * This subsystem takes a profile and creates a view of the profile that stitches
  * all the parts together, and presents it as a seemless tree. There's two views:
  * 
