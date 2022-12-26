@@ -2,7 +2,6 @@ package org.hl7.fhir.r5.profilemodel;
 
 import java.util.List;
 
-import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
 
