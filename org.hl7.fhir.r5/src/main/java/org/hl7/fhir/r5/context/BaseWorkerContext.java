@@ -105,6 +105,7 @@ import org.hl7.fhir.r5.model.Bundle.HTTPVerb;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent;
 import org.hl7.fhir.r5.profilemodel.PEDefinition;
+import org.hl7.fhir.r5.profilemodel.PEBuilder.PEElementPropertiesPolicy;
 import org.hl7.fhir.r5.profilemodel.PEBuilder;
 import org.hl7.fhir.r5.renderers.OperationOutcomeRenderer;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
@@ -2391,7 +2392,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   
 
   @Override
-  public PEBuilder getProfiledElementBuilder(boolean elementProps) {
+  public PEBuilder getProfiledElementBuilder(PEElementPropertiesPolicy elementProps) {
     // TODO Auto-generated method stub
     return new PEBuilder(this, elementProps);
   }

@@ -9,12 +9,15 @@ import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.ElementDefinition.DiscriminatorType;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.SlicingRules;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ResourceFactory;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
+import org.hl7.fhir.r5.profilemodel.PEBuilder.PEElementPropertiesPolicy;
 import org.hl7.fhir.utilities.Utilities;
 
 /**
@@ -70,15 +73,20 @@ import org.hl7.fhir.utilities.Utilities;
  */
 public class PEBuilder {
 
+
+  public enum PEElementPropertiesPolicy {
+    NONE, EXTENSION, EXTENSION_ID
+  }
+
   private IWorkerContext context;
   private ProfileUtilities pu;
-  private boolean elementProps;
+  private PEElementPropertiesPolicy elementProps;
 
   /**
    * @param context - must be loaded with R5 definitions
-   * @param elementProps - whether to include Element.id and Element.extension in the tree
+   * @param elementProps - whether to include Element.id and Element.extension in the tree. Recommended choice: Extension
    */
-  public PEBuilder(IWorkerContext context, boolean elementProps) {
+  public PEBuilder(IWorkerContext context, PEElementPropertiesPolicy elementProps) {
     super();
     this.context = context;
     this.elementProps = elementProps;
@@ -103,6 +111,9 @@ public class PEBuilder {
     StructureDefinition profile = getProfile(url);
     if (profile == null) {
       throw new DefinitionException("Unable to find profile for URL '"+url+"'");
+    }
+    if (!profile.hasSnapshot()) {
+      throw new DefinitionException("Profile '"+url+"' does not have a snapshot");      
     }
     StructureDefinition base = context.fetchTypeDefinition(profile.getType());
     if (base == null) {
@@ -129,6 +140,9 @@ public class PEBuilder {
     StructureDefinition profile = getProfile(url, version);
     if (profile == null) {
       throw new DefinitionException("Unable to find profile for URL '"+url+"'");
+    }
+    if (!profile.hasSnapshot()) {
+      throw new DefinitionException("Profile '"+url+"' does not have a snapshot");      
     }
     StructureDefinition base = context.fetchTypeDefinition(profile.getType());
     if (base == null) {
@@ -203,7 +217,7 @@ public class PEBuilder {
     return null;
   }
 
-  protected List<PEDefinition> listChildren(StructureDefinition baseStructure, ElementDefinition baseDefinition, StructureDefinition profileStructure, ElementDefinition profileDefinition, String url) {
+  protected List<PEDefinition> listChildren(StructureDefinition baseStructure, ElementDefinition baseDefinition, StructureDefinition profileStructure, ElementDefinition profileDefinition, String url, String... omitList) {
     StructureDefinition profile = profileStructure;
     List<ElementDefinition> list = pu.getChildList(profile, profileDefinition);
     if (profileDefinition.getType().size() == 1 || (!profileDefinition.getPath().contains(".")) || list.isEmpty()) {
@@ -223,31 +237,37 @@ public class PEBuilder {
         int i = 0;
         while (i < list.size()) {
           ElementDefinition defn = list.get(i);
-          ElementDefinition bdefn = getByName(blist, defn);
-          if (bdefn == null) {
-            throw new Error("no base definition for "+defn.getId());
-          }
-          if (elementProps || (!Utilities.existsInList(bdefn.getBase().getPath(), "Element.id", "Element.extension"))) {
-            PEDefinitionElement pe = new PEDefinitionElement(this, base, bdefn, profileStructure, defn);
-            pe.setRecursing(profileDefinition == defn || (profile.getDerivation() == TypeDerivationRule.SPECIALIZATION && profile.getType().equals("Extension")));
-            if (defn.hasSlicing()) {
-              if (defn.getSlicing().getRules() != SlicingRules.CLOSED) {
-                res.add(pe);
-              }
-              i++;
-              while (i < list.size() && list.get(i).getPath().equals(defn.getPath())) {
-                StructureDefinition ext = getExtensionDefinition(list.get(i));
-                if (ext != null) {
-                  res.add(new PEDefinitionExtension(this, list.get(i).getSliceName(), baseStructure, getByName(blist, defn), profileStructure, list.get(i), defn, ext));
-                } else {
-                  res.add(new PEDefinitionSlice(this, list.get(i).getSliceName(), baseStructure, getByName(blist, defn), profileStructure, list.get(i), defn));
+          if (include(defn)) {
+            ElementDefinition bdefn = getByName(blist, defn);
+            if (bdefn == null) {
+              throw new Error("no base definition for "+defn.getId());
+            }
+            if (passElementPropsCheck(bdefn) && !Utilities.existsInList(bdefn.getName(), omitList)) {
+              PEDefinitionElement pe = new PEDefinitionElement(this, base, bdefn, profileStructure, defn);
+              pe.setRecursing(profileDefinition == defn || (profile.getDerivation() == TypeDerivationRule.SPECIALIZATION && profile.getType().equals("Extension")));
+              if (defn.hasSlicing()) {
+                if (defn.getSlicing().getRules() != SlicingRules.CLOSED) {
+                  res.add(pe);
                 }
+                i++;
+                while (i < list.size() && list.get(i).getPath().equals(defn.getPath())) {
+                  StructureDefinition ext = getExtensionDefinition(list.get(i));
+                  if (ext != null) {
+                    res.add(new PEDefinitionExtension(this, list.get(i).getSliceName(), baseStructure, getByName(blist, defn), profileStructure, list.get(i), defn, ext));
+                  } else if (isTypeSlicing(defn)) {
+                    res.add(new PEDefinitionTypeSlice(this, list.get(i).getSliceName(), baseStructure, getByName(blist, defn), profileStructure, list.get(i), defn));
+                  } else {
+                    res.add(new PEDefinitionSlice(this, list.get(i).getSliceName(), baseStructure, getByName(blist, defn), profileStructure, list.get(i), defn));
+                  }
+                  i++;
+                }
+              } else {
+                res.add(pe);
                 i++;
               }
             } else {
-              res.add(pe);
               i++;
-            }
+            } 
           } else {
             i++;
           }
@@ -261,6 +281,34 @@ public class PEBuilder {
     }
   }
 
+
+  private boolean passElementPropsCheck(ElementDefinition bdefn) {
+    switch (elementProps) {
+    case EXTENSION:
+      return !Utilities.existsInList(bdefn.getBase().getPath(), "Element.id");
+    case NONE:
+      return !Utilities.existsInList(bdefn.getBase().getPath(), "Element.id", "Element.extension");
+    case EXTENSION_ID:
+    default:
+      return true;
+    }
+  }
+
+  private boolean isTypeSlicing(ElementDefinition defn) {
+    ElementDefinitionSlicingComponent sl = defn.getSlicing();
+    return sl.getRules() == SlicingRules.CLOSED && sl.getDiscriminator().size() == 1 &&
+        sl.getDiscriminatorFirstRep().getType() == DiscriminatorType.TYPE && "$this".equals(sl.getDiscriminatorFirstRep().getPath());
+  }
+
+  private boolean include(ElementDefinition defn) {
+    if (defn.getMax().equals("0")) {
+      return false;
+    }
+    if (defn.hasFixed() || defn.hasPattern()) {
+      return false;
+    }
+    return true;
+  }
 
   protected List<PEDefinition> listSlices(StructureDefinition baseStructure, ElementDefinition baseDefinition, StructureDefinition profileStructure, ElementDefinition profileDefinition) {
     List<ElementDefinition> list = pu.getSliceList(profileStructure, profileDefinition);

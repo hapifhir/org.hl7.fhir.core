@@ -91,7 +91,7 @@ public abstract class PEDefinition {
    * @return the maximum number of repeats allowed
    */
   public int max() {
-    return "*".equals(profiledDefinition.getMax()) ? Integer.MAX_VALUE : Integer.parseInt(profiledDefinition.getMax());
+    return profiledDefinition.getMax() == null || "*".equals(profiledDefinition.getMax()) ? Integer.MAX_VALUE : Integer.parseInt(profiledDefinition.getMax());
   }
   
   /**
@@ -170,6 +170,12 @@ public abstract class PEDefinition {
   protected void setRecursing(boolean recursing) {
     this.recursing = recursing;
   }
+  
+  /** 
+   *  
+   * @return used in the instance processor to differentiate slices
+   */
+  public abstract String fhirpath();
   
 }
 

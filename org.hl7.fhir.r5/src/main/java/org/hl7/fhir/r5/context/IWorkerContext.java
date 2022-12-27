@@ -66,6 +66,7 @@ import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.profilemodel.PEDefinition;
+import org.hl7.fhir.r5.profilemodel.PEBuilder.PEElementPropertiesPolicy;
 import org.hl7.fhir.r5.profilemodel.PEBuilder;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
@@ -803,6 +804,6 @@ public interface IWorkerContext {
 
   public String getSpecUrl();
 
-  public PEBuilder getProfiledElementBuilder(boolean elementProps);
+  public PEBuilder getProfiledElementBuilder(PEElementPropertiesPolicy elementProps);
   
 }

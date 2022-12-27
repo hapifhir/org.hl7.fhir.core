@@ -33,4 +33,9 @@ public class PEDefinitionElement extends PEDefinition {
     children.addAll(builder.listChildren(baseStructure, baseDefinition, profileStructure, profiledDefinition, typeUrl));            
   }
 
+  @Override
+  public String fhirpath() {
+    return baseDefinition.getName();
+  }
+
 }
