@@ -20,4 +20,10 @@ public class PEDefinitionResource extends PEDefinition {
     children.addAll(builder.listChildren(baseStructure, baseDefinition, profileStructure, profiledDefinition, null));
   }
 
+  @Override
+  public String fhirpath() {
+    return profileStructure.getType();
+  }
+
+  
 }

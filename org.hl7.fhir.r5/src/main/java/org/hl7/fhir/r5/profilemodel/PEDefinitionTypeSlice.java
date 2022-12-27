@@ -7,11 +7,11 @@ import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 
-public class PEDefinitionSlice extends PEDefinition {
+public class PEDefinitionTypeSlice extends PEDefinition {
 
   protected ElementDefinition sliceDefinition;
 
-  public PEDefinitionSlice(PEBuilder builder, String name, StructureDefinition baseStructure,
+  public PEDefinitionTypeSlice(PEBuilder builder, String name, StructureDefinition baseStructure,
       ElementDefinition baseDefinition, StructureDefinition profileStructure, ElementDefinition profileDefinition,
       ElementDefinition sliceDefinition) {
     super(builder, name, baseStructure, baseDefinition, profileStructure, profileDefinition);
@@ -33,7 +33,7 @@ public class PEDefinitionSlice extends PEDefinition {
 
   @Override
   protected void makeChildren(String typeUrl, List<PEDefinition> children) {
-    throw new Error("Not done yet");
+    children.addAll(builder.listChildren(baseStructure, baseDefinition, profileStructure, profiledDefinition, typeUrl));            
   }
 
   @Override
