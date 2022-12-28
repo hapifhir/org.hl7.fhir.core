@@ -6,18 +6,17 @@ import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 
 public class PEDefinitionElement extends PEDefinition {
 
-  public PEDefinitionElement(PEBuilder builder, 
-      StructureDefinition baseStructure, ElementDefinition baseDefinition, 
-      StructureDefinition profileStructure, ElementDefinition profileDefinition) {
-    super(builder, baseDefinition.getName(), baseStructure, baseDefinition, profileStructure, profileDefinition);
+  public PEDefinitionElement(PEBuilder builder, StructureDefinition profile, ElementDefinition definition) {
+    super(builder, definition.getName(), profile, definition);
   }
 
   @Override
   public void listTypes(List<PEType> types) {
-    for (TypeRefComponent t : profiledDefinition.getType()) {
+    for (TypeRefComponent t : definition.getType()) {
       if (t.hasProfile()) {
         for (CanonicalType u : t.getProfile()) {
           types.add(builder.makeType(t, u));
@@ -29,13 +28,28 @@ public class PEDefinitionElement extends PEDefinition {
   }
 
   @Override
-  protected void makeChildren(String typeUrl, List<PEDefinition> children) {
-    children.addAll(builder.listChildren(baseStructure, baseDefinition, profileStructure, profiledDefinition, typeUrl));            
+  protected void makeChildren(String typeUrl, List<PEDefinition> children, boolean allFixed) {
+    children.addAll(builder.listChildren(allFixed, this, profile, definition, typeUrl));            
   }
 
   @Override
   public String fhirpath() {
-    return baseDefinition.getName();
+    String base = definition.getName().replace("[x]", "");
+    if (definition.hasSlicing()) {
+      // get all the slices 
+      CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(" or ");
+      List<PEDefinition> slices = builder.listSlices(profile, definition);
+      // list all the fhirpaths
+      for (PEDefinition slice : slices) {
+        b.append("("+builder.makeSliceExpression(profile, definition.getSlicing(), slice.definition())+")");
+      }
+      if (b.count() == 0)
+        return base;
+      else
+        return base+".where(("+b.toString()+").not())";
+    } else {
+      return base;
+    }
   }
 
 }

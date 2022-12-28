@@ -11,16 +11,14 @@ public class PEDefinitionSlice extends PEDefinition {
 
   protected ElementDefinition sliceDefinition;
 
-  public PEDefinitionSlice(PEBuilder builder, String name, StructureDefinition baseStructure,
-      ElementDefinition baseDefinition, StructureDefinition profileStructure, ElementDefinition profileDefinition,
-      ElementDefinition sliceDefinition) {
-    super(builder, name, baseStructure, baseDefinition, profileStructure, profileDefinition);
+  public PEDefinitionSlice(PEBuilder builder, String name, StructureDefinition profile, ElementDefinition profileDefinition, ElementDefinition sliceDefinition) {
+    super(builder, name, profile, profileDefinition);
     this.sliceDefinition = sliceDefinition;
   }
 
   @Override
   public void listTypes(List<PEType> types) {
-    for (TypeRefComponent t : profiledDefinition.getType()) {
+    for (TypeRefComponent t : definition.getType()) {
       if (t.hasProfile()) {
         for (CanonicalType u : t.getProfile()) {
           types.add(builder.makeType(t, u));
@@ -32,13 +30,15 @@ public class PEDefinitionSlice extends PEDefinition {
   }
 
   @Override
-  protected void makeChildren(String typeUrl, List<PEDefinition> children) {
-    throw new Error("Not done yet");
+  protected void makeChildren(String typeUrl, List<PEDefinition> children, boolean allFixed) {
+    children.addAll(builder.listChildren(allFixed, this, profile, definition, typeUrl));            
   }
 
   @Override
   public String fhirpath() {
-    throw new Error("Not done yet");
+    String base = schemaName().replace("[x]", "");
+    String filter = builder.makeSliceExpression(profile, sliceDefinition.getSlicing(), definition);
+    return base+".where("+filter+")";
   }
 
 }

@@ -14,9 +14,9 @@ public class PEDefinitionSubExtension extends PEDefinition {
   private ElementDefinition ved;
   private ElementDefinition ued;
 
-  public PEDefinitionSubExtension(PEBuilder builder, StructureDefinition baseStructure, ElementDefinition baseDefinition, StructureDefinition profileStructure, ElementDefinition profileDefinition) {
-    super(builder, profileDefinition.getSliceName(), baseStructure, baseDefinition, profileStructure, profileDefinition);
-    List<ElementDefinition> childDefs = builder.getChildren(profileStructure, profiledDefinition);    
+  public PEDefinitionSubExtension(PEBuilder builder, StructureDefinition profile, ElementDefinition definition) {
+    super(builder, definition.getSliceName(), profile, definition);
+    List<ElementDefinition> childDefs = builder.getChildren(profile, definition);    
     eed = getElementByName(childDefs, "extension");
     ved = getElementByName(childDefs, "value[x]"); 
     ued = getElementByName(childDefs, "url");
@@ -49,14 +49,14 @@ public class PEDefinitionSubExtension extends PEDefinition {
   }
 
   @Override
-  protected void makeChildren(String typeUrl, List<PEDefinition> children) {
+  protected void makeChildren(String typeUrl, List<PEDefinition> children, boolean allFixed) {
     if (ved.isRequired() || eed.isProhibited()) {
-      children.addAll(builder.listChildren(baseStructure, baseDefinition, profileStructure, ved, typeUrl));
+      children.addAll(builder.listChildren(allFixed, this, profile, ved, typeUrl));
     } else {
       if (eed.getSlicing().getRules() != SlicingRules.CLOSED) {
-        children.addAll(builder.listChildren(baseStructure, baseDefinition, profileStructure, eed, "http://hl7.org/fhir/StructureDefinition/Extension", "value[x]", "url"));
+        children.addAll(builder.listChildren(allFixed, this, profile, eed, "http://hl7.org/fhir/StructureDefinition/Extension", "value[x]", "url"));
       } 
-      children.addAll(builder.listSlices(baseStructure, baseDefinition, profileStructure, eed));
+      children.addAll(builder.listSlices(profile, eed));
     }
   }
 
