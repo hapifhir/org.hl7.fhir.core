@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
@@ -16,9 +17,47 @@ import org.hl7.fhir.r5.conformance.ShExGenerator.HTMLLinkPolicy;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TextFile;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class ShexGeneratorTests {
+
+  public static List<String> skipSDs = new ArrayList<String>();
+  @BeforeAll
+  public static void setup() {
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/ActivityDefinition");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/AdministrableProductDefinition");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/ChargeItemDefinition");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/ClinicalUseDefinition");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/CodeSystem");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/ConceptMap");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/DeviceDefinition");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/ElementDefinition");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/EventDefinition");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/GraphDefinition");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/GuidanceResponse");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/Library");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/ManufacturedItemDefinition");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/Measure");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/MeasureReport");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/MedicinalProductDefinition");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/MessageDefinition");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/NamingSystem");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/ObservationDefinition");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/OperationDefinition");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/PackagedProductDefinition");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/ParameterDefinition");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/PlanDefinition");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/SearchParameter");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/SpecimenDefinition");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/StructureDefinition");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/SubstanceDefinition");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/Task");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/TerminologyCapabilities");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/TriggerDefinition");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/ValueSet");
+  }
+
 
   private void doTest(String name) throws FileNotFoundException, IOException, FHIRException, UcumException {
     StructureDefinition sd = TestingUtilities.getSharedWorkerContext().fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null));
@@ -60,10 +99,6 @@ public class ShexGeneratorTests {
     System.out.println("************************************************************************");
     System.out.println("Processing " + title);
     System.out.println("************************************************************************");
-    List<String> skipSDs = new ArrayList<String>();
-    skipSDs.add("http://hl7.org/fhir/StructureDefinition/StructureDefinition");
-    skipSDs.add("http://hl7.org/fhir/StructureDefinition/TerminologyCapabilities");
-    skipSDs.add("http://hl7.org/fhir/StructureDefinition/SearchParameter");
 
     items.forEach((String item) -> {
       String name = item;
@@ -154,6 +189,9 @@ public class ShexGeneratorTests {
     System.out.println("Total Extensions: " + extNames.size());
     System.out.println("Total Logical: " + logicalNames.size());
     System.out.println("Total Other: " + otherNames.size());
+    System.out.println("Skipped SDS: " + skipSDs.size());
+    System.out.println("Net SDS Translated: " + (sdNames.size() - skipSDs.size()));
+    System.out.println("\n\nSkipped SDs are \n" + StringUtils.join(skipSDs, "\n"));
     System.out.println("************************************************************************");
   }
 
