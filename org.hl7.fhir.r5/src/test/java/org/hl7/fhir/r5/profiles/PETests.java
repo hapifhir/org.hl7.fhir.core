@@ -6,12 +6,15 @@ import java.util.List;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
+import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Observation;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.profilemodel.PEDefinition;
+import org.hl7.fhir.r5.profilemodel.PEInstance;
 import org.hl7.fhir.r5.profilemodel.PEType;
 import org.hl7.fhir.r5.profilemodel.PEBuilder;
 import org.hl7.fhir.r5.profilemodel.PEBuilder.PEElementPropertiesPolicy;
+import org.hl7.fhir.r5.profilemodel.PEInstance.PEInstanceDataKind;
 import org.hl7.fhir.r5.test.utils.TestPackageLoader;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
@@ -66,7 +69,7 @@ public class PETests {
     checkElement(children.get(4), "contained", "contained", 0, Integer.MAX_VALUE, false, "http://hl7.org/fhir/StructureDefinition/Resource", 4, "contained");
     checkElement(children.get(5), "extension", "extension", 0, Integer.MAX_VALUE, false, "http://hl7.org/fhir/StructureDefinition/Extension", 3, "extension.where(((url = 'http://hl7.org/fhir/test/StructureDefinition/pe-extension-simple') or (url = 'http://hl7.org/fhir/test/StructureDefinition/pe-extension-complex')).not())");
     checkElement(children.get(6), "extension", "simple", 0, 1, false, "http://hl7.org/fhir/StructureDefinition/code", 2, "extension('http://hl7.org/fhir/test/StructureDefinition/pe-extension-simple').value");
-    checkElement(children.get(7), "extension", "complex", 0, 1, false, "http://hl7.org/fhir/StructureDefinition/Extension", 4, "extension('http://hl7.org/fhir/test/StructureDefinition/pe-extension-complex').extension");
+    checkElement(children.get(7), "extension", "complex", 0, 1, false, "http://hl7.org/fhir/StructureDefinition/Extension", 4, "extension('http://hl7.org/fhir/test/StructureDefinition/pe-extension-complex')");
     checkElement(children.get(8), "identifier", "identifier", 0, 1, false, "http://hl7.org/fhir/StructureDefinition/Identifier", 7, "identifier");
     checkElement(children.get(9), "status", "status", 1, 1, true, "http://hl7.org/fhir/StructureDefinition/code", 2, "status");
     checkElement(children.get(10), "category", "category", 0, Integer.MAX_VALUE, false, "http://hl7.org/fhir/StructureDefinition/CodeableConcept", 3, "category");
@@ -285,8 +288,7 @@ public class PETests {
         }
       }
     }
-  }    
-
+  }   
 
   @Test
   public void testCreate() throws IOException {
@@ -301,4 +303,50 @@ public class PETests {
     System.out.println(json);
   }
 
+
+  @Test
+  public void testLoad() throws IOException {
+    load();
+    
+    Resource res = new JsonParser().parse(TestingUtilities.loadTestResource("R5", "pe-observation-1.json"));
+    PEInstance obs = new PEBuilder(ctxt, PEElementPropertiesPolicy.EXTENSION, true).buildPEInstance("http://hl7.org/fhir/test/StructureDefinition/pe-profile1", res);
+    
+    PEInstance status = obs.child("status");
+    Assertions.assertNotNull(status);
+    Assertions.assertEquals("TestProfile.status", status.getPath());
+    Assertions.assertEquals(PEInstanceDataKind.Primitive, status.getDataKind());
+    Assertions.assertEquals("final", status.asDataType().primitiveValue());
+    Assertions.assertEquals("final", status.getPrimitiveAsString());
+
+    PEInstance code = obs.child("code");
+    Assertions.assertNotNull(code);
+    Assertions.assertEquals("TestProfile.code", code.getPath());
+    Assertions.assertEquals(PEInstanceDataKind.DataType, code.getDataKind());
+    Assertions.assertEquals("76690-7", code.asCodeableConcept().getCodingFirstRep().getCode());
+
+    PEInstance simple = obs.child("simple");
+    Assertions.assertNotNull(simple);
+    Assertions.assertEquals("TestProfile.simple", simple.getPath());
+    Assertions.assertEquals(PEInstanceDataKind.Primitive, simple.getDataKind());
+    Assertions.assertEquals("14647-2", simple.getPrimitiveAsString());
+
+    PEInstance complex = obs.child("complex");
+    Assertions.assertNotNull(complex);
+    Assertions.assertEquals("TestProfile.complex", complex.getPath());
+    Assertions.assertEquals(PEInstanceDataKind.DataType, complex.getDataKind());
+
+    PEInstance slice1 = complex.child("slice1");
+    Assertions.assertNotNull(slice1);
+    Assertions.assertEquals("TestProfile.complex.slice1[0]", slice1.getPath());
+    Assertions.assertEquals(PEInstanceDataKind.DataType, slice1.getDataKind());
+    Assertions.assertEquals("18767-4", ((Coding) slice1.asDataType()).getCode());
+    
+    PEInstance slice2 = complex.child("slice2");
+    Assertions.assertNotNull(slice2);
+    Assertions.assertEquals("TestProfile.complex.slice2[0]", slice2.getPath());
+    Assertions.assertEquals(PEInstanceDataKind.Primitive, slice2.getDataKind());
+    Assertions.assertEquals("A string value", slice2.getPrimitiveAsString());
+  }
+
+  
 }
