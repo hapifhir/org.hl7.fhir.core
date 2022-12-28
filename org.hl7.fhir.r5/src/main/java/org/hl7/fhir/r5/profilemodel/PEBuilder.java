@@ -20,6 +20,7 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ResourceFactory;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
+import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -85,6 +86,7 @@ public class PEBuilder {
   private ContextUtilities cu;
   private PEElementPropertiesPolicy elementProps;
   private boolean fixedPropsDefault;
+  private FHIRPathEngine fpe;
 
   /**
    * @param context - must be loaded with R5 definitions
@@ -97,6 +99,28 @@ public class PEBuilder {
     this.fixedPropsDefault = fixedPropsDefault;
     pu = new ProfileUtilities(context, null, null);
     cu = new ContextUtilities(context);
+    fpe = new FHIRPathEngine(context, pu);
+  }
+  
+  /**
+   * Given a profile, return a tree of the elements defined in the profile model. This builds the profile model
+   * for the provided version of the nominated profile
+   * 
+   * The tree of elements in the profile model is different to those defined in the base resource:
+   *  - some elements are removed (max = 0)
+   *  - extensions are turned into named elements 
+   *  - slices are turned into named elements 
+   *  - element properties - doco, cardinality, binding etc is updated for what the profile says
+   * 
+   * Warning: profiles and resources are recursive; you can't iterate this tree until it you get 
+   * to the leaves because there are nodes that don't terminate (extensions have extensions)
+   * 
+   */
+  public PEDefinition buildPEDefinition(StructureDefinition profile) {
+    if (!profile.hasSnapshot()) {
+      throw new DefinitionException("Profile '"+profile.getVersionedUrl()+"' does not have a snapshot");      
+    }
+    return new PEDefinitionResource(this, profile);
   }
   
   /**
@@ -170,6 +194,25 @@ public class PEBuilder {
   
   /**
    * Given a resource and a profile, return a tree of instance data as defined by the profile model 
+   * using the provided version of the profile
+   * 
+   * The tree is a facade to the underlying resource - all actual data is stored against the resource,
+   * and retrieved on the fly from the resource, so that applications can work at either level, as 
+   * convenient. 
+   * 
+   * Note that there's a risk that deleting something through the resource while holding 
+   * a handle to a PEInstance that is a facade on what is deleted leaves an orphan facade 
+   * that will continue to function, but is making changes to resource content that is no 
+   * longer part of the resource 
+   * 
+   */
+  public PEInstance buildPEInstance(StructureDefinition profile, Resource resource) {
+    PEDefinition defn = buildPEDefinition(profile);
+    return loadInstance(defn, resource);
+  }
+  
+  /**
+   * Given a resource and a profile, return a tree of instance data as defined by the profile model 
    * using the nominated version of the profile
    * 
    * The tree is a facade to the underlying resource - all actual data is stored against the resource,
@@ -198,6 +241,25 @@ public class PEBuilder {
    */
   public Resource createResource(String url, String version, boolean meta) {
     PEDefinition definition = buildPEDefinition(url, version);
+    Resource res = ResourceFactory.createResource(definition.types().get(0).getType());
+    populateByProfile(res, definition);
+    if (meta) {
+      res.getMeta().addProfile(definition.profile.getUrl());
+    }
+    return res;
+  }
+
+  /**
+   * For the provided version of a profile, construct a resource and fill out any fixed or required elements
+   * 
+   * Note that fixed values are filled out irrespective of the value of fixedProps when the builder is created
+   * 
+   * @param profile  the profile
+   * @param meta whether to mark the profile in Resource.meta.profile 
+   * @return constructed resource
+   */
+  public Resource createResource(StructureDefinition profile, boolean meta) {
+    PEDefinition definition = buildPEDefinition(profile);
     Resource res = ResourceFactory.createResource(definition.types().get(0).getType());
     populateByProfile(res, definition);
     if (meta) {
@@ -414,7 +476,7 @@ public class PEBuilder {
   }
 
   private PEInstance loadInstance(PEDefinition defn, Resource resource) {
-    throw new NotImplementedException("Not done yet");
+    return new PEInstance(this, defn, resource, resource, defn.name());
   }
 
   public IWorkerContext getContext() {
@@ -495,5 +557,9 @@ public class PEBuilder {
       elements = pu.getChildList(profile, profile.getSnapshot().getElementFirstRep());
     }
     return getByName(elements, path);
+  }
+
+  public List<Base> exec(Resource resource, Base data, String fhirpath) {
+    return fpe.evaluate(this, resource, resource, data, fhirpath);
   }
 }

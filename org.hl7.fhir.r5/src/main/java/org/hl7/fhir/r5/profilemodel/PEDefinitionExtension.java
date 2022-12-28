@@ -57,7 +57,7 @@ public class PEDefinitionExtension extends PEDefinition {
     if (ved.isRequired() || eed.isProhibited()) {
       return "extension('"+extension.getUrl()+"').value";
     } else {
-      return "extension('"+extension.getUrl()+"').extension";      
+      return "extension('"+extension.getUrl()+"')";      
     }
   }
 

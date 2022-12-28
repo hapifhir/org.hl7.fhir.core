@@ -228,6 +228,16 @@ public abstract class PEDefinition {
    * @return used in the instance processor to differentiate slices
    */
   public abstract String fhirpath();
+
+
+  public boolean isList() {
+    return "*".equals(definition.getBase().getMax());
+  }
+
+
+  public boolean repeats() {
+    return max() > 1;
+  }
   
 }
 
