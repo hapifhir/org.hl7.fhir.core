@@ -15,11 +15,8 @@ public class PEDefinitionExtension extends PEDefinition {
   private ElementDefinition eed;
   private ElementDefinition ved;
 
-  public PEDefinitionExtension(PEBuilder builder, String name, 
-      StructureDefinition baseStructure, ElementDefinition baseDefinition, 
-      StructureDefinition profileStructure, ElementDefinition profileDefinition,
-      ElementDefinition sliceDefinition, StructureDefinition extension) {
-    super(builder, name, baseStructure, baseDefinition, profileStructure, profileDefinition);
+  public PEDefinitionExtension(PEBuilder builder, String name, StructureDefinition profile, ElementDefinition definition, ElementDefinition sliceDefinition, StructureDefinition extension) {
+    super(builder, name, profile, definition);
     this.sliceDefinition = sliceDefinition;
     this.extension= extension;
     eed = extension.getSnapshot().getElementByPath("Extension.extension");
@@ -44,14 +41,14 @@ public class PEDefinitionExtension extends PEDefinition {
   }
 
   @Override
-  protected void makeChildren(String typeUrl, List<PEDefinition> children) {
+  protected void makeChildren(String typeUrl, List<PEDefinition> children, boolean allFixed) {
     if (ved.isRequired() || eed.isProhibited()) {
-      children.addAll(builder.listChildren(extension, ved, extension, ved, typeUrl));
+      children.addAll(builder.listChildren(allFixed, this, extension, ved, typeUrl));
     } else {
       if (eed.getSlicing().getRules() != SlicingRules.CLOSED) {
-        children.addAll(builder.listChildren(extension, eed, extension, eed, "http://hl7.org/fhir/StructureDefinition/Extension", "value[x]", "url"));
+        children.addAll(builder.listChildren(allFixed, this, extension, eed, "http://hl7.org/fhir/StructureDefinition/Extension", "value[x]", "url"));
       }      
-      children.addAll(builder.listSlices(extension, eed, extension, eed));
+      children.addAll(builder.listSlices(extension, eed));
     }
   }
 

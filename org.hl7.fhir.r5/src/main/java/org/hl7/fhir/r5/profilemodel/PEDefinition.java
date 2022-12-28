@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.xmlbeans.impl.xb.xsdschema.All;
+import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -13,40 +15,36 @@ public abstract class PEDefinition {
 
   protected PEBuilder builder;
   protected String name;
-  protected StructureDefinition baseStructure;
-  protected ElementDefinition baseDefinition;
-  protected StructureDefinition profileStructure;
-  protected ElementDefinition profiledDefinition;
+  protected StructureDefinition profile;
+  protected ElementDefinition definition;
   protected List<PEType> types;
   protected Map<String, List<PEDefinition>> children = new HashMap<>();
   private boolean recursing;
+  private boolean mustHaveValue;
+  private boolean inFixedValue;
   
-  /**
-   * Don't create one of these directly - always use the public methods on ProfiledElementBuilder
-   *  
-   * @param builder
-   * @param baseElement
-   * @param profiledElement
-   * @param data
-   */
-  protected PEDefinition(PEBuilder builder, String name, ElementDefinition baseDefinition,
-      ElementDefinition profiledDefinition, Base data) {
-    super();
-    this.builder = builder;
-    this.name = name;
-    this.baseDefinition = baseDefinition;
-    this.profiledDefinition = profiledDefinition;
-//    this.data = data;
-  }
+//  /**
+//   * Don't create one of these directly - always use the public methods on ProfiledElementBuilder
+//   *  
+//   * @param builder
+//   * @param baseElement
+//   * @param profiledElement
+//   * @param data
+//   */
+//  protected PEDefinition(PEBuilder builder, String name, 
+//      ElementDefinition definition, Base data) {
+//    super();
+//    this.builder = builder;
+//    this.name = name;
+//    this.definition = definition;
+////    this.data = data;
+//  }
 
-  protected PEDefinition(PEBuilder builder, String name, StructureDefinition base, ElementDefinition baseDefinition, 
-      StructureDefinition profile, ElementDefinition profiledDefinition) {
+  protected PEDefinition(PEBuilder builder, String name, StructureDefinition profile, ElementDefinition definition) {
     this.builder = builder;
     this.name = name;
-    this.baseStructure = base;
-    this.baseDefinition = baseDefinition;
-    this.profileStructure = profile;
-    this.profiledDefinition = profiledDefinition;
+    this.profile = profile;
+    this.definition = definition;
   }
 
 
@@ -61,7 +59,7 @@ public abstract class PEDefinition {
    * @return The name of the element in the resource (may be different to the slice name)
    */
   public String schemaName() {
-    return baseDefinition.getName();
+    return definition.getName();
   }
   
   /**
@@ -84,14 +82,14 @@ public abstract class PEDefinition {
    * @return The minimum number of repeats allowed
    */
   public int min() {
-    return profiledDefinition.getMin();
+    return mustHaveValue ? 1 : definition.getMin();
   }
   
   /**
    * @return the maximum number of repeats allowed
    */
   public int max() {
-    return profiledDefinition.getMax() == null || "*".equals(profiledDefinition.getMax()) ? Integer.MAX_VALUE : Integer.parseInt(profiledDefinition.getMax());
+    return definition.getMax() == null || "*".equals(definition.getMax()) ? Integer.MAX_VALUE : Integer.parseInt(definition.getMax());
   }
   
   /**
@@ -100,7 +98,7 @@ public abstract class PEDefinition {
    * Note that the profile definition might be the same as a base definition, when the tree runs off the end of what's profiled
    */
   public ElementDefinition definition() {
-    return profiledDefinition;
+    return definition;
   }
   
   /**
@@ -109,21 +107,26 @@ public abstract class PEDefinition {
    * Note that the profile definition might be the same as a base definition, when the tree runs off the end of what's profiled
    */
   public ElementDefinition baseDefinition() {
-    return baseDefinition;
+    String type = definition.getBase().getPath();
+    if (type.contains(".")) {
+      type= type.substring(0, type.indexOf("."));
+    }
+    StructureDefinition sd = builder.getContext().fetchTypeDefinition(type);
+    return sd.getSnapshot().getElementByPath(definition.getBase().getPath());
   }
   
   /**
    * @return the short documentation of the definition (shown in the profile table view)
    */
   public String shortDocumentation() {
-    return profiledDefinition.getShort();
+    return definition.getShort();
   }
   
   /**
    * @return the full definition of the element (markdown syntax)
    */
   public String documentation() {
-    return profiledDefinition.getDefinition();
+    return definition.getDefinition();
   }
   
 //  /**
@@ -142,16 +145,43 @@ public abstract class PEDefinition {
    * 
    */
   public List<PEDefinition> children(String typeUrl) {
-    if (children.containsKey(typeUrl)) {
-      return children.get(typeUrl);      
-    } 
-    List<PEDefinition> res = new ArrayList<>();
-    makeChildren(typeUrl, res);
-    children.put(typeUrl, res);
-    return res;
+    return children(typeUrl, false);
   }
   
-  protected abstract void makeChildren(String typeUrl, List<PEDefinition> children);
+  public List<PEDefinition> children(String typeUrl, boolean allFixed) {
+    if (children.containsKey(typeUrl+"$"+allFixed)) {
+      return children.get(typeUrl+"$"+allFixed);      
+    } 
+    List<PEDefinition> res = new ArrayList<>();
+    makeChildren(typeUrl, res, allFixed);
+    children.put(typeUrl+"$"+allFixed, res);
+    return res;    
+  }
+  
+  public List<PEDefinition> children() {
+    if (types().size() == 1) {
+      return children(types.get(0).getUrl(), false);
+    } else {
+      throw new DefinitionException("Attempt to get children for an element that doesn't have a single type (types = "+types()+")");
+    }
+  }
+  
+  public List<PEDefinition> children(boolean allFixed) {
+    if (types().size() == 1) {
+      return children(types.get(0).getUrl(), allFixed);
+    } else {
+      throw new DefinitionException("Attempt to get children for an element that doesn't have a single type (types = "+types()+")");
+    }
+  }
+  
+  /**
+   * @return True if the element has a fixed value. This will always be false if fixedProps = false when the builder is created
+   */
+  public boolean fixedValue() {
+    return definition.hasFixed() || definition.hasPattern();
+  }
+  
+  protected abstract void makeChildren(String typeUrl, List<PEDefinition> children, boolean allFixed);
 
   @Override
   public String toString() {
@@ -171,8 +201,30 @@ public abstract class PEDefinition {
     this.recursing = recursing;
   }
   
+  protected boolean isMustHaveValue() {
+    return mustHaveValue;
+  }
+
+  protected void setMustHaveValue(boolean mustHaveValue) {
+    this.mustHaveValue = mustHaveValue;
+  }
+
+  /**
+   * @return true if this property is inside an element that has an assigned fixed value
+   */
+  public boolean isInFixedValue() {
+    return inFixedValue;
+  }
+
+
+  protected void setInFixedValue(boolean inFixedValue) {
+    this.inFixedValue = inFixedValue;
+  }
+
+
   /** 
-   *  
+   * This is public to support unit testing - there's no reason to use it otherwise
+   * 
    * @return used in the instance processor to differentiate slices
    */
   public abstract String fhirpath();

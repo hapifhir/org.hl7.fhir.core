@@ -1497,6 +1497,8 @@ public class ProfileUtilities extends TranslatingUtilities {
       res.setMaxLength(usage.getMaxLength());
     if (!res.hasMustSupport() && usage.hasMustSupport())
       res.setMustSupport(usage.getMustSupport());
+    if (!res.hasMustHaveValue() && usage.hasMustHaveValue())
+      res.setMustHaveValue(usage.getMustHaveValue());
     if (!res.hasBinding() && usage.hasBinding())
       res.setBinding(usage.getBinding().copy());
     for (ElementDefinitionConstraintComponent c : usage.getConstraint())
@@ -2216,6 +2218,18 @@ public class ProfileUtilities extends TranslatingUtilities {
           derived.setMustSupportElement(null);
         else
           derived.getMustSupportElement().setUserData(DERIVATION_EQUALS, true);
+      }
+      
+      if (derived.hasMustHaveValueElement()) {
+        if (!(base.hasMustHaveValueElement() && Base.compareDeep(derived.getMustHaveValueElement(), base.getMustHaveValueElement(), false))) {
+          if (base.hasMustHaveValue() && base.getMustHaveValue() && !derived.getMustHaveValue()) {
+            messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "Illegal constraint [must-have-value = false] when [must-have-value = true] in the base profile", ValidationMessage.IssueSeverity.ERROR));
+          }
+          base.setMustHaveValueElement(derived.getMustHaveValueElement().copy());
+        } else if (trimDifferential)
+          derived.setMustHaveValueElement(null);
+        else
+          derived.getMustHaveValueElement().setUserData(DERIVATION_EQUALS, true);
       }
 
 

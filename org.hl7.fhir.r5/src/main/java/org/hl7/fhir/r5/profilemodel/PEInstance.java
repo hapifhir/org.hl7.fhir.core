@@ -1,5 +1,6 @@
 package org.hl7.fhir.r5.profilemodel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hl7.fhir.r5.model.Base;
@@ -20,22 +21,36 @@ public abstract class PEInstance {
   /**
    * @return definition information about this instance data 
    */
-  public abstract PEDefinition definition();
+  public PEDefinition definition() {
+    return definition;
+  }
   
   /**
    * @return the type of this element
    */
-  public abstract PEType type();
+  public PEType type() {
+    return definition.types().get(0);
+  }
   
   /**
    * @return all the children of this instance data
    */
-  public abstract List<PEInstance> children();
+  public List<PEInstance> children() {
+    List<PEInstance> res = new ArrayList<>();
+    
+    return res;
+  }
 
   /**
    * @return all the children of this instance data for the named property
    */
-  public abstract List<PEInstance> children(String name);
+  public List<PEInstance> children(String name) {
+//    PEDefinition child = definition.childByName(name);
+//    if (child = null) {
+//      
+//    }
+    return null;
+  }
 
   /**
    * @return all the children of this instance data with the named property and the named type (for polymorphic

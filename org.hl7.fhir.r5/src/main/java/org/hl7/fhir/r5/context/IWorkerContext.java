@@ -804,6 +804,6 @@ public interface IWorkerContext {
 
   public String getSpecUrl();
 
-  public PEBuilder getProfiledElementBuilder(PEElementPropertiesPolicy elementProps);
+  public PEBuilder getProfiledElementBuilder(PEElementPropertiesPolicy elementProps, boolean fixedProps);
   
 }

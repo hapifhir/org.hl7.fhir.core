@@ -6,21 +6,20 @@ import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 
 public class PEDefinitionTypeSlice extends PEDefinition {
 
   protected ElementDefinition sliceDefinition;
 
-  public PEDefinitionTypeSlice(PEBuilder builder, String name, StructureDefinition baseStructure,
-      ElementDefinition baseDefinition, StructureDefinition profileStructure, ElementDefinition profileDefinition,
-      ElementDefinition sliceDefinition) {
-    super(builder, name, baseStructure, baseDefinition, profileStructure, profileDefinition);
+  public PEDefinitionTypeSlice(PEBuilder builder, String name, StructureDefinition profile, ElementDefinition definition, ElementDefinition sliceDefinition) {
+    super(builder, name, profile, definition);
     this.sliceDefinition = sliceDefinition;
   }
 
   @Override
   public void listTypes(List<PEType> types) {
-    for (TypeRefComponent t : profiledDefinition.getType()) {
+    for (TypeRefComponent t : definition.getType()) {
       if (t.hasProfile()) {
         for (CanonicalType u : t.getProfile()) {
           types.add(builder.makeType(t, u));
@@ -32,13 +31,18 @@ public class PEDefinitionTypeSlice extends PEDefinition {
   }
 
   @Override
-  protected void makeChildren(String typeUrl, List<PEDefinition> children) {
-    children.addAll(builder.listChildren(baseStructure, baseDefinition, profileStructure, profiledDefinition, typeUrl));            
+  protected void makeChildren(String typeUrl, List<PEDefinition> children, boolean allFixed) {
+    children.addAll(builder.listChildren(allFixed, this, profile, definition, typeUrl));            
   }
 
   @Override
   public String fhirpath() {
-    throw new Error("Not done yet");
+    String base = definition.getName().replace("[x]", "");
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(" | ");
+    for (TypeRefComponent t : definition.getType()) {
+      b.append(base+".ofType("+t.getWorkingCode()+")");
+    }
+    return b.toString();
   }
 
 }

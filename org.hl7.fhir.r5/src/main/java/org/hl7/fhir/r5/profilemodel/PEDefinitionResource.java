@@ -6,23 +6,23 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 
 public class PEDefinitionResource extends PEDefinition {
 
-  public PEDefinitionResource(PEBuilder builder, StructureDefinition base, StructureDefinition profile) {
-    super(builder, profile.getName(), base, base.getSnapshot().getElementFirstRep(), profile, profile.getSnapshot().getElementFirstRep());
+  public PEDefinitionResource(PEBuilder builder, StructureDefinition profile) {
+    super(builder, profile.getName(), profile, profile.getSnapshot().getElementFirstRep());
   }
 
   @Override
   public void listTypes(List<PEType> types) {
-    types.add(new PEType(profileStructure.getName(), profileStructure.getType(), profileStructure.getUrl()));
+    types.add(new PEType(profile.getName(), profile.getType(), profile.getUrl()));
   }
 
   @Override
-  protected void makeChildren(String typeUrl, List<PEDefinition> children) {
-    children.addAll(builder.listChildren(baseStructure, baseDefinition, profileStructure, profiledDefinition, null));
+  protected void makeChildren(String typeUrl, List<PEDefinition> children, boolean allFixed) {
+    children.addAll(builder.listChildren(allFixed, this, profile, definition, null));
   }
 
   @Override
   public String fhirpath() {
-    return profileStructure.getType();
+    return profile.getType();
   }
 
   

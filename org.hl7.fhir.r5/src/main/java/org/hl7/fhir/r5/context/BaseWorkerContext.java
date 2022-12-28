@@ -2392,8 +2392,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   
 
   @Override
-  public PEBuilder getProfiledElementBuilder(PEElementPropertiesPolicy elementProps) {
+  public PEBuilder getProfiledElementBuilder(PEElementPropertiesPolicy elementProps, boolean fixedProps) {
     // TODO Auto-generated method stub
-    return new PEBuilder(this, elementProps);
+    return new PEBuilder(this, elementProps, fixedProps);
   }
 }
