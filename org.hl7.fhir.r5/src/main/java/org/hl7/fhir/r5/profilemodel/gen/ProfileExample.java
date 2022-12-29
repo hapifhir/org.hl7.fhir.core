@@ -1,5 +1,8 @@
 package org.hl7.fhir.r5.profilemodel.gen;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.CodeableConcept;
@@ -60,37 +63,103 @@ public class ProfileExample extends PEGeneratedBase {
     }
   }
 
+  
+  public static class ProfileExampleComplexSlice3 extends PEGeneratedBase {
+    private ProfileExampleComplexSlice3(PEInstance instance) {
+      super();
+      this.instance = instance;
+    }
+
+    public List<Coding> getSlice3a() {
+      List<Coding> res = new ArrayList<>();
+      for (PEInstance pe : instance.children("slice3a")) {
+        res.add((Coding) pe.asDataType());
+      }
+      return res;
+    }
+    
+    public boolean hasSlice3a() {
+      return instance.children("slice3a").size() > 0;    
+    }
+    
+    public ProfileExampleComplexSlice3 clearSlice3a() {
+      removeChildren("slice3a");
+      return this;
+    }
+    
+
+    public List<StringType> getSlice3b() {
+      List<StringType> res = new ArrayList<>();
+      for (PEInstance pe : instance.children("slice3b")) {
+        res.add((StringType) pe.asDataType());
+      }
+      return res;
+    }
+    
+    public boolean hasSlice3b() {
+      return instance.children("slice3b").size() > 0;    
+    }
+    
+    public ProfileExampleComplexSlice3 clearSlice3b() {
+      removeChildren("slice3b");
+      return this;
+    }
+  }
+  
   public static class ProfileExampleComplex extends PEGeneratedBase {
     private ProfileExampleComplex(PEInstance instance) {
       super();
       this.instance = instance;
     }
     
-    public Coding getSlice1() {
-      return (Coding) instance.forceChild("slice1").asDataType();
+    public List<Coding> getSlice1() {
+      List<Coding> res = new ArrayList<>();
+      for (PEInstance pe : instance.children("slice1")) {
+        res.add((Coding) pe.asDataType());
+      }
+      return res;
     }
     
     public boolean hasSlice1() {
-      return instance.child("slice1") != null;    
+      return instance.children("slice1").size() > 0;    
     }
     
     public ProfileExampleComplex clearSlice1() {
-      removeChild("slice1x`");
+      removeChildren("slice1");
       return this;
     }
     
-    public StringType getSlice2() {
-      return (StringType) instance.forceChild("slice2").asDataType();
+    public List<StringType> getSlice2() {
+      List<StringType> res = new ArrayList<>();
+      for (PEInstance pe : instance.children("slice2")) {
+        res.add((StringType) pe.asDataType());
+      }
+      return res;
     }
     
     public boolean hasSlice2() {
-      return instance.child("slice1") != null;    
+      return instance.children("slice2").size() > 0;    
     }
     
     public ProfileExampleComplex clearSlice2() {
-      removeChild("slice1");
+      removeChildren("slice1");
       return this;
     }
+    
+    public ProfileExampleComplexSlice3 getSlice3() {
+      PEInstance pe = instance.forceChild("slice3");
+      return new ProfileExampleComplexSlice3(pe);
+    }
+    
+    public boolean hasComplex() {
+      return instance.child("slice3") != null;
+    }
+    
+    public ProfileExampleComplex clearComplex() {
+      removeChild("slice3");
+      return this;
+    }
+    
   }
   
   public ProfileExample(IWorkerContext context, Observation observation) {
