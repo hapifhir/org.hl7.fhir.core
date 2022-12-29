@@ -15,6 +15,7 @@ import org.hl7.fhir.r5.profilemodel.PEInstance;
 import org.hl7.fhir.r5.profilemodel.PEType;
 import org.hl7.fhir.r5.profilemodel.gen.ProfileExample;
 import org.hl7.fhir.r5.profilemodel.gen.ProfileExample.LOINCCodesForCholesterolInSerumPlasma;
+import org.hl7.fhir.r5.profilemodel.gen.ProfileExample.ProfileExampleComplex;
 import org.hl7.fhir.r5.profilemodel.PEBuilder;
 import org.hl7.fhir.r5.profilemodel.PEBuilder.PEElementPropertiesPolicy;
 import org.hl7.fhir.r5.profilemodel.PEInstance.PEInstanceDataKind;
@@ -350,10 +351,14 @@ public class PETests {
     Assertions.assertEquals(PEInstanceDataKind.Primitive, slice2.getDataKind());
     Assertions.assertEquals("A string value", slice2.getPrimitiveAsString());
     
-    
     ProfileExample ex = new ProfileExample(obs);
     Assertions.assertEquals(ObservationStatus.FINAL, ex.getStatus());
+    Assertions.assertEquals("76690-7", ex.getCode().getCodingFirstRep().getCode());
     Assertions.assertEquals(LOINCCodesForCholesterolInSerumPlasma.L14647_2, ex.getSimple());
+    ProfileExampleComplex cplx = ex.getComplex();
+    Assertions.assertNotNull(cplx);
+    Assertions.assertEquals("18767-4", cplx.getSlice1().getCode());
+    Assertions.assertEquals("A string value", cplx.getSlice2().primitiveValue());
   }
 
   

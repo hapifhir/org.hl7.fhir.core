@@ -2,8 +2,11 @@ package org.hl7.fhir.r5.profilemodel.gen;
 
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.CodeableConcept;
+import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Enumerations.ObservationStatus;
 import org.hl7.fhir.r5.model.Observation;
+import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.profilemodel.PEBuilder;
 import org.hl7.fhir.r5.profilemodel.PEBuilder.PEElementPropertiesPolicy;
 import org.hl7.fhir.r5.profilemodel.PEInstance;
@@ -57,6 +60,39 @@ public class ProfileExample extends PEGeneratedBase {
     }
   }
 
+  public static class ProfileExampleComplex extends PEGeneratedBase {
+    private ProfileExampleComplex(PEInstance instance) {
+      super();
+      this.instance = instance;
+    }
+    
+    public Coding getSlice1() {
+      return (Coding) instance.forceChild("slice1").asDataType();
+    }
+    
+    public boolean hasSlice1() {
+      return instance.child("slice1") != null;    
+    }
+    
+    public ProfileExampleComplex clearSlice1() {
+      removeChild("slice1x`");
+      return this;
+    }
+    
+    public StringType getSlice2() {
+      return (StringType) instance.forceChild("slice2").asDataType();
+    }
+    
+    public boolean hasSlice2() {
+      return instance.child("slice1") != null;    
+    }
+    
+    public ProfileExampleComplex clearSlice2() {
+      removeChild("slice1");
+      return this;
+    }
+  }
+  
   public ProfileExample(IWorkerContext context, Observation observation) {
     super();
     PEBuilder builder = new PEBuilder(context, PEElementPropertiesPolicy.EXTENSION_ID, true);
@@ -80,6 +116,10 @@ public class ProfileExample extends PEGeneratedBase {
   public ObservationStatus getStatus() {
     return ObservationStatus.FINAL;
   }
+
+  public CodeableConcept getCode() {
+    return instance.forceChild("code").asCodeableConcept();
+  }
   
   /**
    * Extension http://hl7.org/fhir/test/StructureDefinition/pe-extension-simple, type code
@@ -98,6 +138,20 @@ public class ProfileExample extends PEGeneratedBase {
     return this;
   }
 
+  public ProfileExampleComplex getComplex() {
+    PEInstance pe = instance.child("complex");
+    return new ProfileExampleComplex(pe);
+  }
+  
+  public boolean hasComplex() {
+    return instance.child("complex") != null;
+  }
+  
+  public ProfileExample clearComplex() {
+    removeChild("complex");
+    return this;
+  }
+  
   /*
    * this doesn't exist, because of the way infrastructure works.
    * You get the value and set the properties
@@ -105,4 +159,5 @@ public class ProfileExample extends PEGeneratedBase {
 //  public void setSimple() {
 //    return (CodeType) instance.forceChild("simple").asDataType();
 //  }
+  
 }
