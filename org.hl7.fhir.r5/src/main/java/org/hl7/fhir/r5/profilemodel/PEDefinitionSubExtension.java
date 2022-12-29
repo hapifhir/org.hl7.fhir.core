@@ -65,7 +65,7 @@ public class PEDefinitionSubExtension extends PEDefinition {
     if (ved.isRequired() || eed.isProhibited()) {
       return "extension('"+ued.getFixed().primitiveValue()+"').value";
     } else {
-      return "extension('"+ued.getFixed().primitiveValue()+"').extension";
+      return "extension('"+ued.getFixed().primitiveValue()+"')";
     }
   }
 

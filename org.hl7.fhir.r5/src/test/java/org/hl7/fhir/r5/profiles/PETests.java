@@ -16,6 +16,7 @@ import org.hl7.fhir.r5.profilemodel.PEType;
 import org.hl7.fhir.r5.profilemodel.gen.ProfileExample;
 import org.hl7.fhir.r5.profilemodel.gen.ProfileExample.LOINCCodesForCholesterolInSerumPlasma;
 import org.hl7.fhir.r5.profilemodel.gen.ProfileExample.ProfileExampleComplex;
+import org.hl7.fhir.r5.profilemodel.gen.ProfileExample.ProfileExampleComplexSlice3;
 import org.hl7.fhir.r5.profilemodel.PEBuilder;
 import org.hl7.fhir.r5.profilemodel.PEBuilder.PEElementPropertiesPolicy;
 import org.hl7.fhir.r5.profilemodel.PEInstance.PEInstanceDataKind;
@@ -351,14 +352,21 @@ public class PETests {
     Assertions.assertEquals(PEInstanceDataKind.Primitive, slice2.getDataKind());
     Assertions.assertEquals("A string value", slice2.getPrimitiveAsString());
     
+    PEInstance slice3 = complex.child("slice3");
+    Assertions.assertNotNull(slice3);
+    Assertions.assertEquals("TestProfile.complex.slice3", slice3.getPath());
+    
     ProfileExample ex = new ProfileExample(obs);
     Assertions.assertEquals(ObservationStatus.FINAL, ex.getStatus());
     Assertions.assertEquals("76690-7", ex.getCode().getCodingFirstRep().getCode());
     Assertions.assertEquals(LOINCCodesForCholesterolInSerumPlasma.L14647_2, ex.getSimple());
     ProfileExampleComplex cplx = ex.getComplex();
     Assertions.assertNotNull(cplx);
-    Assertions.assertEquals("18767-4", cplx.getSlice1().getCode());
-    Assertions.assertEquals("A string value", cplx.getSlice2().primitiveValue());
+    Assertions.assertEquals("18767-4", cplx.getSlice1().get(0).getCode());
+    Assertions.assertEquals("A string value", cplx.getSlice2().get(0).primitiveValue());
+    ProfileExampleComplexSlice3 sl3 = cplx.getSlice3();
+    Assertions.assertEquals("56874-1", sl3.getSlice3a().get(0).getCode());
+    Assertions.assertEquals("Another string value", sl3.getSlice3b().get(0).primitiveValue());
   }
 
   
