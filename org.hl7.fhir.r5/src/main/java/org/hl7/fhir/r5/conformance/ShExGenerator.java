@@ -409,9 +409,24 @@ public class ShExGenerator {
       }
     }
 
+    boolean isShapeDefinitionEmpty = true;
     for (StructureDefinition sd : uniq_structures) {
       printBuildMessage(" ---- Generating ShEx for : " + sd.getName() + "  [ " + sd.getUrl() + " ] ...");
-      shapeDefinitions.append(genShapeDefinition(sd, true));
+      String shapeDefinitionStr = genShapeDefinition(sd, true);
+
+      if (!shapeDefinitionStr.isEmpty()) {
+        isShapeDefinitionEmpty = false;
+        shapeDefinitions.append(shapeDefinitionStr);
+      }
+      else {
+        printBuildMessage(" ---- EMPTY/No ShEx SCHEMA generated for : " + sd.getName() + "  [ " + sd.getUrl() + " ].");
+      }
+    }
+
+    // There was not shape generated. return empty.
+    // No need to generate data types, references and valuesets
+    if (isShapeDefinitionEmpty) {
+      return "";
     }
 
     shapeDefinitions.append(emitInnerTypes());
@@ -457,6 +472,7 @@ public class ShExGenerator {
         debug(um);
       }
     }
+
     return shex_def.render();
   }
 
@@ -658,7 +674,7 @@ public class ShExGenerator {
       String ce = constraint.getExpression();
       String constItem = "FHIR-SD-Path:" + ed.getPath() + " Expression: " + ce;
       try {
-        translated = "# Constraint: UniqueKey:" + constraint.getKey() + "\n# Human readable:" + constraint.getHuman() + "\n# XPath:" + constraint.getXpath() + "\n# Constraint:" + constraint.getExpression() + "\n# ShEx:\n";
+        translated = "# Constraint: UniqueKey:" + constraint.getKey() + "\n# Human readable:" + constraint.getHuman() + "\n# Constraint:" + constraint.getExpression() + "\n# ShEx:\n";
 
         ExpressionNode expr = fpe.parse(ce);
         String shexConstraint = processExpressionNode(expr, false, 0);
@@ -667,7 +683,7 @@ public class ShExGenerator {
         if (!shexConstraint.isEmpty())
             translated += "\n" + shexConstraint;
 
-        debug("        TRANSLATED\t"+ed.getPath()+"\t"+constraint.getXpath()+"\t"+constraint.getExpression()+"\t"+shexConstraint+"\t"+constraint.getHuman());
+        debug("        TRANSLATED\t"+ed.getPath()+"\t"+constraint.getHuman()+"\t"+constraint.getExpression()+"\t"+shexConstraint);
 
       } catch (Exception e) {
         String message = "        FAILED to parse the constraint: " + constItem + " [ " + e.getMessage() + " ]";
