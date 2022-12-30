@@ -289,7 +289,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     if (i.hasDefinition()) {
       if (!defn.getPieces().isEmpty()) defn.addPiece(gen.new Piece("br"));
       defn.getPieces().add(gen.new Piece(null, "Definition: ", null));
-      genDefinitionLink(gen, i, defn);      
+      genDefinitionLink(gen, i, defn, q);      
     }
     if (i.hasEnableWhen()) {
       if (!defn.getPieces().isEmpty()) defn.addPiece(gen.new Piece("br"));
@@ -318,7 +318,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
           defn.getPieces().add(gen.new Piece(vs.getUserString("path"), vs.present(), null));                              
         }
       } else {
-        ValueSet vs = context.getWorker().fetchResource(ValueSet.class, i.getAnswerValueSet());
+        ValueSet vs = context.getWorker().fetchResource(ValueSet.class, i.getAnswerValueSet(), q);
         if (vs == null  || !vs.hasUserData("path")) {
           defn.getPieces().add(gen.new Piece(null, i.getAnswerValueSet(), null));                    
         } else {
@@ -390,7 +390,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     return hasExt;    
   }
 
-  public void genDefinitionLink(HierarchicalTableGenerator gen, QuestionnaireItemComponent i, Cell defn) {
+  public void genDefinitionLink(HierarchicalTableGenerator gen, QuestionnaireItemComponent i, Cell defn, Questionnaire q) {
     // can we resolve the definition? 
     String path = null;
     String d = i.getDefinition();
@@ -398,7 +398,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       path = d.substring(d.indexOf("#")+1);
       d = d.substring(0, d.indexOf("#"));
     }
-    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d);
+    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d, q);
     if (sd != null) {
       String url = sd.getUserString("path");
       if (url != null) {
@@ -411,7 +411,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     }
   }
 
-  public void genDefinitionLink(XhtmlNode x, QuestionnaireItemComponent i) {
+  public void genDefinitionLink(XhtmlNode x, QuestionnaireItemComponent i, Questionnaire q) {
     // can we resolve the definition? 
     String path = null;
     String d = i.getDefinition();
@@ -419,7 +419,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       path = d.substring(d.indexOf("#")+1);
       d = d.substring(0, d.indexOf("#"));
     }
-    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d);
+    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d, q);
     if (sd != null) {
       String url = sd.getUserString("path");
       if (url != null) {
@@ -479,7 +479,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     if (i.hasDefinition()) {
       if (!defn.getPieces().isEmpty()) defn.addPiece(gen.new Piece("br"));
       defn.getPieces().add(gen.new Piece(null, "Definition: ", null));
-      genDefinitionLink(gen, i, defn);            
+      genDefinitionLink(gen, i, defn, q);            
     }
     if (i.hasEnableWhen()) {
       if (!defn.getPieces().isEmpty()) defn.addPiece(gen.new Piece("br"));
@@ -497,7 +497,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
           defn.getPieces().add(gen.new Piece(vs.getUserString("path"), vs.present(), null));                              
         }
       } else {
-        ValueSet vs = context.getWorker().fetchResource(ValueSet.class, i.getAnswerValueSet());
+        ValueSet vs = context.getWorker().fetchResource(ValueSet.class, i.getAnswerValueSet(), q);
         if (vs == null  || !vs.hasUserData("path")) {
           defn.getPieces().add(gen.new Piece(null, i.getAnswerValueSet(), null));                    
         } else {
@@ -716,7 +716,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       item(ul, "Max Length", Integer.toString(i.getMaxLength()));
     }
     if (i.hasDefinition()) {
-      genDefinitionLink(item(ul, "Definition"), i);      
+      genDefinitionLink(item(ul, "Definition"), i, q);      
     }
     if (i.hasEnableWhen()) {
       item(ul, "Enable When", "todo");
@@ -731,7 +731,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
           ans.ah(vs.getUserString("path")).tx(vs.present());                              
         }
       } else {
-        ValueSet vs = context.getWorker().fetchResource(ValueSet.class, i.getAnswerValueSet());
+        ValueSet vs = context.getWorker().fetchResource(ValueSet.class, i.getAnswerValueSet(), q);
         if (vs == null  || !vs.hasUserData("path")) {
           ans.tx(i.getAnswerValueSet());                    
         } else {
@@ -819,7 +819,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
           vs.setUrl(q.getUrl()+"--"+q.getContained(i.getAnswerValueSet().substring(1)));
         }
       } else {
-        vs = context.getContext().fetchResource(ValueSet.class, i.getAnswerValueSet());
+        vs = context.getContext().fetchResource(ValueSet.class, i.getAnswerValueSet(), q);
       }
       if (vs != null) {
         ValueSetExpansionOutcome exp = context.getContext().expandVS(vs, true, false);
@@ -940,7 +940,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     // content control
     defn(tbl, "Max Length", qi.getMaxLength());
     if (qi.hasAnswerValueSet()) {
-      defn(tbl, "Value Set", qi.getDefinition(), context.getWorker().fetchResource(ValueSet.class,  qi.getAnswerValueSet()));
+      defn(tbl, "Value Set", qi.getDefinition(), context.getWorker().fetchResource(ValueSet.class,  qi.getAnswerValueSet(), q));
     }
     if (qi.hasAnswerOption()) {
       XhtmlNode tr = tbl.tr();
@@ -983,7 +983,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     
     // formal definitions
     if (qi.hasDefinition()) {
-      genDefinitionLink(defn(tbl, "Definition"), qi);
+      genDefinitionLink(defn(tbl, "Definition"), qi, q);
     }
       
     if (qi.hasCode()) {

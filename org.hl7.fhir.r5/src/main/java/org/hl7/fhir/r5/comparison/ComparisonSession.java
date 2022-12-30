@@ -13,8 +13,8 @@ import org.hl7.fhir.r5.comparison.CodeSystemComparer.CodeSystemComparison;
 import org.hl7.fhir.r5.comparison.ProfileComparer.ProfileComparison;
 import org.hl7.fhir.r5.comparison.ResourceComparer.ResourceComparison;
 import org.hl7.fhir.r5.comparison.ValueSetComparer.ValueSetComparison;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
-import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CapabilityStatement;
@@ -22,7 +22,6 @@ import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.utilities.Utilities;
 
 public class ComparisonSession {
 
@@ -60,12 +59,12 @@ public class ComparisonSession {
     return title;
   }
 
-  public ResourceComparison compare(String left, String right) throws DefinitionException, FHIRFormatError, IOException {
-    CanonicalResource l = (CanonicalResource) contextLeft.fetchResource(Resource.class, left);
+  public ResourceComparison compare(String left, Resource leftSource, String right, Resource rightSource) throws DefinitionException, FHIRFormatError, IOException {
+    CanonicalResource l = (CanonicalResource) contextLeft.fetchResource(Resource.class, left, leftSource);
     if (l == null) {
       throw new DefinitionException("Unable to resolve "+left);
     }
-    CanonicalResource r = (CanonicalResource) contextRight.fetchResource(Resource.class, right);
+    CanonicalResource r = (CanonicalResource) contextRight.fetchResource(Resource.class, right, rightSource);
     if (r == null) {
       throw new DefinitionException("Unable to resolve "+right);
     }

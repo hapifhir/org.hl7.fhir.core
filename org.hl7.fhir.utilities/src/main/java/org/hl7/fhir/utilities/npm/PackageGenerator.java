@@ -39,14 +39,9 @@ import java.util.List;
 
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSyntaxException;
+import org.hl7.fhir.utilities.json.model.JsonArray;
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
 
 public class PackageGenerator {
 
@@ -94,11 +89,10 @@ public class PackageGenerator {
     object = new JsonObject();
   }
   
-  public PackageGenerator(OutputStream stream, InputStream template) throws JsonSyntaxException, IOException {
+  public PackageGenerator(OutputStream stream, InputStream template) throws IOException {
     super();
     this.stream = stream;
-    JsonParser parser = new com.google.gson.JsonParser();
-    object = parser.parse(TextFile.streamToString(template)).getAsJsonObject();
+    object = JsonParser.parseObject(TextFile.streamToString(template));
 
   }
 
@@ -107,8 +101,7 @@ public class PackageGenerator {
   }
 
   public void commit() throws IOException {
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    String json = gson.toJson(object);
+    String json = JsonParser.compose(object, true);
     OutputStreamWriter sw = new OutputStreamWriter(stream, "UTF-8");
     sw.write('\ufeff');  // Unicode BOM, translates to UTF-8 with the configured outputstreamwriter
     sw.write(json);
@@ -118,17 +111,17 @@ public class PackageGenerator {
   
   public PackageGenerator name(String value) {
     // NOTE: I removed a prefix of "@fhir/" here. What was this for? -JA
-    object.addProperty("name", value);
+    object.add("name", value);
     return this;
   }
    
   public PackageGenerator version(String value) {
-    object.addProperty("version", value);
+    object.add("version", value);
     return this;
   }
 
   public PackageGenerator toolsVersion(int value) {
-    object.addProperty("tools-version", value);
+    object.add("tools-version", value);
     return this;
   }
 
@@ -142,44 +135,44 @@ public class PackageGenerator {
   }
   
   public PackageGenerator description(String value) {
-    object.addProperty("description", value);
+    object.add("description", value);
     return this;
   }
   
   public PackageGenerator license(String value) {
-    object.addProperty("license", value);
+    object.add("license", value);
     return this;
   }
   
   public PackageGenerator homepage(String value) {
-    object.addProperty("homepage", value);
+    object.add("homepage", value);
     return this;            
   }
   
   public PackageGenerator bugs(String value) {
-    object.addProperty("bugs", value);
+    object.add("bugs", value);
     return this;            
   }
   
   public PackageGenerator author(String name, String email, String url) {
     JsonObject person = new JsonObject();
-    person.addProperty("name", name);
+    person.add("name", name);
     if (!Utilities.noString(email))
-      person.addProperty("email", email);
+      person.add("email", email);
     if (!Utilities.noString(url))
-      person.addProperty("url", url);
+      person.add("url", url);
     object.add("author", person);
     return this;            
   }
   
   public PackageGenerator contributor(String name, String email, String url) {
     JsonObject person = new JsonObject();
-    person.addProperty("name", name);
+    person.add("name", name);
     if (!Utilities.noString(email))
-      person.addProperty("email", email);
+      person.add("email", email);
     if (!Utilities.noString(url))
-      person.addProperty("url", url);
-    JsonArray c = object.getAsJsonArray("contributors");
+      person.add("url", url);
+    JsonArray c = object.getJsonArray("contributors");
     if (c == null) {
       c = new JsonArray();
       object.add("contributors", c);
@@ -189,27 +182,23 @@ public class PackageGenerator {
   }
   
   public PackageGenerator dependency(String name, String version) {
-    JsonObject dep = object.getAsJsonObject("dependencies");
+    JsonObject dep = object.getJsonObject("dependencies");
     if (dep == null) {
       dep = new JsonObject();
       object.add("dependencies", dep);
     }
-    dep.addProperty(name, version);
+    dep.add(name, version);
     return this;
   }
   
   public PackageGenerator file(String name) {
-    JsonArray files = object.getAsJsonArray("files");
-    if (files == null) {
-      files = new JsonArray();
-      object.add("files", files);
-    }
-    files.add(new JsonPrimitive(name));
+    JsonArray files = object.forceArray("files");
+    files.add(name);
     return this;
   }
 
   public PackageGenerator kind(PackageType kind) {
-    object.addProperty("type", kind.getCode());
+    object.add("type", kind.getCode());
     return this;     
   }
   

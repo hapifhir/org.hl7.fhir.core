@@ -22,8 +22,8 @@ import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
-import org.hl7.fhir.r5.conformance.ProfileUtilities.SourcedChildDefinitions;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.SourcedChildDefinitions;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
@@ -209,10 +209,12 @@ public class FHIRPathEngine {
   public static class TypedElementDefinition {
     private ElementDefinition element;
     private String type;
-    public TypedElementDefinition(ElementDefinition element, String type) {
+    private StructureDefinition src;
+    public TypedElementDefinition(StructureDefinition src, ElementDefinition element, String type) {
       super();
       this.element = element;
       this.type = type;
+      this.src = src;
     }
     public TypedElementDefinition(ElementDefinition element) {
       super();
@@ -245,6 +247,9 @@ public class FHIRPathEngine {
         return false;
       }
     }
+    public StructureDefinition getSrc() {
+      return src;
+    }
   }
   private IWorkerContext worker;
   private IEvaluationContext hostServices;
@@ -257,6 +262,7 @@ public class FHIRPathEngine {
   private String location; // for error messages
   private boolean allowPolymorphicNames;
   private boolean doImplicitStringConversion;
+  private boolean liquidMode; // in liquid mode, || terminates the expression and hands the parser back to the host
 
   // if the fhir path expressions are allowed to use constants beyond those defined in the specification
   // the application can implement them by providing a constant resolver 
@@ -1812,7 +1818,7 @@ public class FHIRPathEngine {
             if (tn.equals(sd.getType())) {
               return makeBoolean(true);
             }
-            sd = worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+            sd = worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
           }
           return makeBoolean(false);
         }      
@@ -2992,7 +2998,7 @@ public class FHIRPathEngine {
             result.add(item);
             break;
           }
-          sd = worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+          sd = worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
         }
       }
     } else {
@@ -4528,7 +4534,7 @@ public class FHIRPathEngine {
           if (n.equals(sd.getType())) {
             return makeBoolean(true);
           }
-          sd = worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+          sd = worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
         }
         return makeBoolean(false);
       }
@@ -4565,7 +4571,7 @@ public class FHIRPathEngine {
               result.add(b);
               break;
             }
-            sd = worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+            sd = worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
           }
         }
       }
@@ -4756,7 +4762,11 @@ public class FHIRPathEngine {
             }
           }
         } else if (hostServices != null) {
-          res = hostServices.resolveReference(context.appInfo, s, refContext);
+          try {
+            res = hostServices.resolveReference(context.appInfo, s, refContext);
+          } catch (Exception e) {
+            res = null;
+          }
         }
         if (res != null) {
           result.add(res);
@@ -5530,7 +5540,7 @@ public class FHIRPathEngine {
         m = getElementDefinition(sd, type.substring(type.indexOf("#")+1), false, expr);
       if (m != null && hasDataType(m.definition)) {
         if (m.fixedType != null)  {
-          StructureDefinition dt = worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(m.fixedType, null));
+          StructureDefinition dt = worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(m.fixedType, null), sd);
           if (dt == null) {
             throw makeException(expr, I18nConstants.FHIRPATH_NO_TYPE, ProfileUtilities.sdNs(m.fixedType, null), "getChildTypesByName");
           }
@@ -5689,7 +5699,7 @@ public class FHIRPathEngine {
         if (ed.getType().size() > 1) { // if there's more than one type, the test above would fail this
           throw new Error("Internal typing issue....");
         }
-        StructureDefinition nsd = worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(ed.getType().get(0).getCode(), null));
+        StructureDefinition nsd = worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(ed.getType().get(0).getCode(), null), sd);
         if (nsd == null) { 
           throw makeException(expr, I18nConstants.FHIRPATH_NO_TYPE, ed.getType().get(0).getCode(), "getElementDefinition");
         }
@@ -5804,7 +5814,7 @@ public class FHIRPathEngine {
         if (element.getTypes().get(0).getTargetProfile().size() > 1) {
           throw makeExceptionPlural(element.getTypes().get(0).getTargetProfile().size(), expr, I18nConstants.FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET, element.getElement().getId());
         }
-        sd = worker.fetchResource(StructureDefinition.class, element.getTypes().get(0).getTargetProfile().get(0).getValue());
+        sd = worker.fetchResource(StructureDefinition.class, element.getTypes().get(0).getTargetProfile().get(0).getValue(), profile);
         if (sd == null) {
           throw makeException(expr, I18nConstants.FHIRPATH_RESOLVE_DISCRIMINATOR_CANT_FIND, element.getTypes().get(0).getTargetProfile(), element.getElement().getId());
         }
@@ -5816,9 +5826,9 @@ public class FHIRPathEngine {
           if (t.getPath().endsWith(".extension") && t.hasSliceName()) {
             System.out.println("t: "+t.getId());
             StructureDefinition exsd = (t.getType() == null || t.getType().isEmpty() || t.getType().get(0).getProfile().isEmpty()) ?
-                null : worker.fetchResource(StructureDefinition.class, t.getType().get(0).getProfile().get(0).getValue());
+                null : worker.fetchResource(StructureDefinition.class, t.getType().get(0).getProfile().get(0).getValue(), profile);
             while (exsd != null && !exsd.getBaseDefinition().equals("http://hl7.org/fhir/StructureDefinition/Extension")) {
-              exsd = worker.fetchResource(StructureDefinition.class, exsd.getBaseDefinition());
+              exsd = worker.fetchResource(StructureDefinition.class, exsd.getBaseDefinition(), exsd);
             }
             if (exsd != null && exsd.getUrl().equals(targetUrl)) {
               if (profileUtilities.getChildMap(sd, t).getList().isEmpty()) {
@@ -5847,7 +5857,7 @@ public class FHIRPathEngine {
         okToNotResolve = true;
         if ((atn.contains(stn))) {
           if (element.getTypes().size() > 1) {
-            focus = new TypedElementDefinition(element.getElement(), stn);
+            focus = new TypedElementDefinition( element.getSrc(), element.getElement(), stn);
           } else {
             focus = element;
           }
@@ -5905,9 +5915,9 @@ public class FHIRPathEngine {
       throw makeExceptionPlural(ed.getTypes().get(0).getProfile().size(), expr, I18nConstants.FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES, ed.getElement().getId());
     }
     if (ed.getTypes().get(0).hasProfile()) { 
-      return worker.fetchResource(StructureDefinition.class, ed.getTypes().get(0).getProfile().get(0).getValue());
+      return worker.fetchResource(StructureDefinition.class, ed.getTypes().get(0).getProfile().get(0).getValue(), ed.getSrc());
     } else {
-      return worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(ed.getTypes().get(0).getCode(), null));
+      return worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(ed.getTypes().get(0).getCode(), null), ed.getSrc());
     }
   }
 
@@ -6023,6 +6033,14 @@ public class FHIRPathEngine {
 
   public void setAllowPolymorphicNames(boolean allowPolymorphicNames) {
     this.allowPolymorphicNames = allowPolymorphicNames;
+  }
+
+  public boolean isLiquidMode() {
+    return liquidMode;
+  }
+
+  public void setLiquidMode(boolean liquidMode) {
+    this.liquidMode = liquidMode;
   }
 
 

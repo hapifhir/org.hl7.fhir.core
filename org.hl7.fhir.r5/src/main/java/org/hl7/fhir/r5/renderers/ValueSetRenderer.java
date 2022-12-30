@@ -44,7 +44,9 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.LoincLinker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
@@ -105,7 +107,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           re = new ConceptMapRenderInstructions(cm.present(), cm.getUrl(), false);
         }
         if (re != null) {
-          ValueSet vst = cm.hasTargetScope() ? getContext().getWorker().fetchResource(ValueSet.class, cm.hasTargetScopeCanonicalType() ? cm.getTargetScopeCanonicalType().getValue() : cm.getTargetScopeUriType().asStringValue()) : null;
+          ValueSet vst = cm.hasTargetScope() ? getContext().getWorker().fetchResource(ValueSet.class, cm.hasTargetScopeCanonicalType() ? cm.getTargetScopeCanonicalType().getValue() : cm.getTargetScopeUriType().asStringValue(), cm) : null;
           res.add(new UsedConceptMap(re, vst == null ? cm.getUserString("path") : vst.getUserString("path"), cm));
         }
       }
@@ -193,8 +195,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
         x.para().tx("This value set contains "+count.toString()+" concepts");
     }
     
-    generateContentModeNotices(x, vs.getExpansion());
-    generateVersionNotice(x, vs.getExpansion());
+    generateContentModeNotices(x, vs.getExpansion(), vs);
+    generateVersionNotice(x, vs.getExpansion(), vs);
 
     CodeSystem allCS = null;
     boolean doLevel = false;
@@ -248,7 +250,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     
     addMapHeaders(tr, maps);
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
-      addExpansionRowToTable(t, c, 1, doLevel, true, doDefinition, maps, allCS, langs, designations, doDesignations, properties);
+      addExpansionRowToTable(t, vs, c, 1, doLevel, true, doDefinition, maps, allCS, langs, designations, doDesignations, properties);
     }
 
     // now, build observed languages
@@ -303,12 +305,12 @@ public class ValueSetRenderer extends TerminologyRenderer {
     return false;
   }
 
-  private void generateContentModeNotices(XhtmlNode x, ValueSetExpansionComponent expansion) {
-    generateContentModeNotice(x, expansion, "example", "Expansion based on example code system"); 
-    generateContentModeNotice(x, expansion, "fragment", "Expansion based on code system fragment"); 
+  private void generateContentModeNotices(XhtmlNode x, ValueSetExpansionComponent expansion, Resource vs) {
+    generateContentModeNotice(x, expansion, "example", "Expansion based on example code system", vs); 
+    generateContentModeNotice(x, expansion, "fragment", "Expansion based on code system fragment", vs); 
   }
   
-  private void generateContentModeNotice(XhtmlNode x, ValueSetExpansionComponent expansion, String mode, String text) {
+  private void generateContentModeNotice(XhtmlNode x, ValueSetExpansionComponent expansion, String mode, String text, Resource vs) {
     Multimap<String, String> versions = HashMultimap.create();
     for (ValueSetExpansionParameterComponent p : expansion.getParameter()) {
       if (p.getName().equals(mode)) {
@@ -326,7 +328,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           for (String v : versions.get(s)) { // though there'll only be one
             XhtmlNode p = x.para().style("border: black 1px dotted; background-color: #ffcccc; padding: 8px; margin-bottom: 8px");
             p.tx(text+" ");
-            expRef(p, s, v);
+            expRef(p, s, v, vs);
           }
         } else {
           for (String v : versions.get(s)) {
@@ -336,7 +338,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
               ul = div.ul();
               first = false;
             }
-            expRef(ul.li(), s, v);
+            expRef(ul.li(), s, v, vs);
           }
         }
       }
@@ -434,7 +436,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
   }
 
   @SuppressWarnings("rawtypes")
-  private void generateVersionNotice(XhtmlNode x, ValueSetExpansionComponent expansion) {
+  private void generateVersionNotice(XhtmlNode x, ValueSetExpansionComponent expansion, Resource vs) {
     Multimap<String, String> versions = HashMultimap.create();
     for (ValueSetExpansionParameterComponent p : expansion.getParameter()) {
       if (p.getName().equals("version")) {
@@ -452,7 +454,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           for (String v : versions.get(s)) { // though there'll only be one
             XhtmlNode p = x.para().style("border: black 1px dotted; background-color: #EEEEEE; padding: 8px; margin-bottom: 8px");
             p.tx("Expansion based on ");
-            expRef(p, s, v);
+            expRef(p, s, v, vs);
           }
         } else {
           for (String v : versions.get(s)) {
@@ -462,14 +464,14 @@ public class ValueSetRenderer extends TerminologyRenderer {
               ul = div.ul();
               first = false;
             }
-            expRef(ul.li(), s, v);
+            expRef(ul.li(), s, v, vs);
           }
         }
       }
     }
   }
 
-  private void expRef(XhtmlNode x, String u, String v) {
+  private void expRef(XhtmlNode x, String u, String v, Resource source) {
     // TODO Auto-generated method stub
     if (u.equals("http://snomed.info/sct")) {
       String[] parts = v.split("\\/");
@@ -491,7 +493,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
         x.tx("Loinc v"+v);        
       }
     } else {
-      CanonicalResource cr = (CanonicalResource) getContext().getWorker().fetchResource(Resource.class, u+"|"+v);
+      CanonicalResource cr = (CanonicalResource) getContext().getWorker().fetchResource(Resource.class, u+"|"+v, source);
       if (cr != null) {
         if (cr.hasUserData("path")) {
           x.ah(cr.getUserString("path")).tx(cr.present()+" v"+v+" ("+cr.fhirType()+")");          
@@ -741,8 +743,12 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }    
   }
 
-  private void addExpansionRowToTable(XhtmlNode t, ValueSetExpansionContainsComponent c, int i, boolean doLevel, boolean doSystem, boolean doDefinition, List<UsedConceptMap> maps, CodeSystem allCS, List<String> langs, Map<String, String> designations, boolean doDesignations, Map<String, String> properties) throws FHIRFormatError, DefinitionException, IOException {
+  private void addExpansionRowToTable(XhtmlNode t, ValueSet vs, ValueSetExpansionContainsComponent c, int i, boolean doLevel, boolean doSystem, boolean doDefinition, List<UsedConceptMap> maps, CodeSystem allCS, List<String> langs, Map<String, String> designations, boolean doDesignations, Map<String, String> properties) throws FHIRFormatError, DefinitionException, IOException {
     XhtmlNode tr = t.tr();
+    if (ValueSetUtilities.isDeprecated(vs, c)) {
+      tr.setAttribute("style", "background-color: #ffeeee");
+    }
+      
     XhtmlNode td = tr.td();
 
     String tgt = makeAnchor(c.getSystem(), c.getCode());
@@ -800,7 +806,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       addLangaugesToRow(c, langs, tr);
     }
     for (ValueSetExpansionContainsComponent cc : c.getContains()) {
-      addExpansionRowToTable(t, cc, i+1, doLevel, doSystem, doDefinition, maps, allCS, langs, designations, doDesignations, properties);
+      addExpansionRowToTable(t, vs, cc, i+1, doLevel, doSystem, doDefinition, maps, allCS, langs, designations, doDesignations, properties);
     }
   }
 
@@ -835,7 +841,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       else if ("http://snomed.info/sct".equals(system)) {
         td.ah(sctLink(code)).addText(code);
       } else if ("http://loinc.org".equals(system)) {
-          td.ah("http://details.loinc.org/LOINC/"+code+".html").addText(code);
+          td.ah(LoincLinker.getLinkForCode(code)).addText(code);
       } else        
         td.addText(code);
     } else {
@@ -891,13 +897,13 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }
     int index = 0;
     if (vs.getCompose().getInclude().size() == 1 && vs.getCompose().getExclude().size() == 0) {
-      hasExtensions = genInclude(x.ul(), vs.getCompose().getInclude().get(0), "Include", langs, doDesignations, maps, designations, index) || hasExtensions;
+      hasExtensions = genInclude(x.ul(), vs.getCompose().getInclude().get(0), "Include", langs, doDesignations, maps, designations, index, vs) || hasExtensions;
     } else {
       XhtmlNode p = x.para();
       p.tx("This value set includes codes based on the following rules:");
       XhtmlNode ul = x.ul();
       for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
-        hasExtensions = genInclude(ul, inc, "Include", langs, doDesignations, maps, designations, index) || hasExtensions;
+        hasExtensions = genInclude(ul, inc, "Include", langs, doDesignations, maps, designations, index, vs) || hasExtensions;
         index++;
       }
       if (vs.getCompose().hasExclude()) {
@@ -905,7 +911,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
         p.tx("This value set excludes codes based on the following rules:");
         ul = x.ul();
         for (ConceptSetComponent exc : vs.getCompose().getExclude()) {
-          hasExtensions = genInclude(ul, exc, "Exclude", langs, doDesignations, maps, designations, index) || hasExtensions;
+          hasExtensions = genInclude(ul, exc, "Exclude", langs, doDesignations, maps, designations, index, vs) || hasExtensions;
           index++;
         }
       }
@@ -1093,7 +1099,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }
   }
 
-  private boolean genInclude(XhtmlNode ul, ConceptSetComponent inc, String type, List<String> langs, boolean doDesignations, List<UsedConceptMap> maps, Map<String, String> designations, int index) throws FHIRException, IOException {
+  private boolean genInclude(XhtmlNode ul, ConceptSetComponent inc, String type, List<String> langs, boolean doDesignations, List<UsedConceptMap> maps, Map<String, String> designations, int index, Resource vsRes) throws FHIRException, IOException {
     boolean hasExtensions = false;
     XhtmlNode li;
     li = ul.li();
@@ -1227,7 +1233,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
             first = false;
           else
             li.tx(", ");
-          AddVsRef(vs.asStringValue(), li);
+          AddVsRef(vs.asStringValue(), li, vsRes);
         }
       }
       if (inc.hasExtension(ToolingExtensions.EXT_EXPAND_RULES) || inc.hasExtension(ToolingExtensions.EXT_EXPAND_GROUP)) {
@@ -1243,12 +1249,12 @@ public class ValueSetRenderer extends TerminologyRenderer {
             first = false;
           else
             li.tx(", ");
-          AddVsRef(vs.asStringValue(), li);
+          AddVsRef(vs.asStringValue(), li, vsRes);
         }
       } else {
         XhtmlNode xul = li.ul();
         for (UriType vs : inc.getValueSet()) {
-          AddVsRef(vs.asStringValue(), xul.li());
+          AddVsRef(vs.asStringValue(), xul.li(), vsRes);
         }
         
       }

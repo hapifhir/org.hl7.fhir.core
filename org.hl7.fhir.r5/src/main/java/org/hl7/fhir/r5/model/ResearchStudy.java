@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -274,312 +274,6 @@ public class ResearchStudy extends DomainResource {
 
   public String fhirType() {
     return "ResearchStudy.label";
-
-  }
-
-  }
-
-    @Block()
-    public static class ResearchStudyFocusComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * Identification of product under study.  This may be any combination of code and/or name.
-         */
-        @Child(name = "productCode", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Identification of product under study", formalDefinition="Identification of product under study.  This may be any combination of code and/or name." )
-        protected CodeableConcept productCode;
-
-        /**
-         * Indicates whether the focus is a medication, a device, a procedure, a specific factor or some other intervention or characteristic.
-         */
-        @Child(name = "focusType", type = {CodeableConcept.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="medication | device | intervention | factor", formalDefinition="Indicates whether the focus is a medication, a device, a procedure, a specific factor or some other intervention or characteristic." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/research-study-focus-type")
-        protected List<CodeableConcept> focusType;
-
-        /**
-         * A factor corresponds to an independent variable manipulated by the experimentalist with the intention to affect biological systems in a way that can be measured by an assay.
-         */
-        @Child(name = "factor", type = {MarkdownType.class}, order=3, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="An independent variable manipulated by the experimentalist", formalDefinition="A factor corresponds to an independent variable manipulated by the experimentalist with the intention to affect biological systems in a way that can be measured by an assay." )
-        protected MarkdownType factor;
-
-        private static final long serialVersionUID = 1526347182L;
-
-    /**
-     * Constructor
-     */
-      public ResearchStudyFocusComponent() {
-        super();
-      }
-
-        /**
-         * @return {@link #productCode} (Identification of product under study.  This may be any combination of code and/or name.)
-         */
-        public CodeableConcept getProductCode() { 
-          if (this.productCode == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ResearchStudyFocusComponent.productCode");
-            else if (Configuration.doAutoCreate())
-              this.productCode = new CodeableConcept(); // cc
-          return this.productCode;
-        }
-
-        public boolean hasProductCode() { 
-          return this.productCode != null && !this.productCode.isEmpty();
-        }
-
-        /**
-         * @param value {@link #productCode} (Identification of product under study.  This may be any combination of code and/or name.)
-         */
-        public ResearchStudyFocusComponent setProductCode(CodeableConcept value) { 
-          this.productCode = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #focusType} (Indicates whether the focus is a medication, a device, a procedure, a specific factor or some other intervention or characteristic.)
-         */
-        public List<CodeableConcept> getFocusType() { 
-          if (this.focusType == null)
-            this.focusType = new ArrayList<CodeableConcept>();
-          return this.focusType;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public ResearchStudyFocusComponent setFocusType(List<CodeableConcept> theFocusType) { 
-          this.focusType = theFocusType;
-          return this;
-        }
-
-        public boolean hasFocusType() { 
-          if (this.focusType == null)
-            return false;
-          for (CodeableConcept item : this.focusType)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public CodeableConcept addFocusType() { //3
-          CodeableConcept t = new CodeableConcept();
-          if (this.focusType == null)
-            this.focusType = new ArrayList<CodeableConcept>();
-          this.focusType.add(t);
-          return t;
-        }
-
-        public ResearchStudyFocusComponent addFocusType(CodeableConcept t) { //3
-          if (t == null)
-            return this;
-          if (this.focusType == null)
-            this.focusType = new ArrayList<CodeableConcept>();
-          this.focusType.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #focusType}, creating it if it does not already exist {3}
-         */
-        public CodeableConcept getFocusTypeFirstRep() { 
-          if (getFocusType().isEmpty()) {
-            addFocusType();
-          }
-          return getFocusType().get(0);
-        }
-
-        /**
-         * @return {@link #factor} (A factor corresponds to an independent variable manipulated by the experimentalist with the intention to affect biological systems in a way that can be measured by an assay.). This is the underlying object with id, value and extensions. The accessor "getFactor" gives direct access to the value
-         */
-        public MarkdownType getFactorElement() { 
-          if (this.factor == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ResearchStudyFocusComponent.factor");
-            else if (Configuration.doAutoCreate())
-              this.factor = new MarkdownType(); // bb
-          return this.factor;
-        }
-
-        public boolean hasFactorElement() { 
-          return this.factor != null && !this.factor.isEmpty();
-        }
-
-        public boolean hasFactor() { 
-          return this.factor != null && !this.factor.isEmpty();
-        }
-
-        /**
-         * @param value {@link #factor} (A factor corresponds to an independent variable manipulated by the experimentalist with the intention to affect biological systems in a way that can be measured by an assay.). This is the underlying object with id, value and extensions. The accessor "getFactor" gives direct access to the value
-         */
-        public ResearchStudyFocusComponent setFactorElement(MarkdownType value) { 
-          this.factor = value;
-          return this;
-        }
-
-        /**
-         * @return A factor corresponds to an independent variable manipulated by the experimentalist with the intention to affect biological systems in a way that can be measured by an assay.
-         */
-        public String getFactor() { 
-          return this.factor == null ? null : this.factor.getValue();
-        }
-
-        /**
-         * @param value A factor corresponds to an independent variable manipulated by the experimentalist with the intention to affect biological systems in a way that can be measured by an assay.
-         */
-        public ResearchStudyFocusComponent setFactor(String value) { 
-          if (value == null)
-            this.factor = null;
-          else {
-            if (this.factor == null)
-              this.factor = new MarkdownType();
-            this.factor.setValue(value);
-          }
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("productCode", "CodeableConcept", "Identification of product under study.  This may be any combination of code and/or name.", 0, 1, productCode));
-          children.add(new Property("focusType", "CodeableConcept", "Indicates whether the focus is a medication, a device, a procedure, a specific factor or some other intervention or characteristic.", 0, java.lang.Integer.MAX_VALUE, focusType));
-          children.add(new Property("factor", "markdown", "A factor corresponds to an independent variable manipulated by the experimentalist with the intention to affect biological systems in a way that can be measured by an assay.", 0, 1, factor));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case -1492131972: /*productCode*/  return new Property("productCode", "CodeableConcept", "Identification of product under study.  This may be any combination of code and/or name.", 0, 1, productCode);
-          case 1628646450: /*focusType*/  return new Property("focusType", "CodeableConcept", "Indicates whether the focus is a medication, a device, a procedure, a specific factor or some other intervention or characteristic.", 0, java.lang.Integer.MAX_VALUE, focusType);
-          case -1282148017: /*factor*/  return new Property("factor", "markdown", "A factor corresponds to an independent variable manipulated by the experimentalist with the intention to affect biological systems in a way that can be measured by an assay.", 0, 1, factor);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case -1492131972: /*productCode*/ return this.productCode == null ? new Base[0] : new Base[] {this.productCode}; // CodeableConcept
-        case 1628646450: /*focusType*/ return this.focusType == null ? new Base[0] : this.focusType.toArray(new Base[this.focusType.size()]); // CodeableConcept
-        case -1282148017: /*factor*/ return this.factor == null ? new Base[0] : new Base[] {this.factor}; // MarkdownType
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case -1492131972: // productCode
-          this.productCode = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case 1628646450: // focusType
-          this.getFocusType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
-          return value;
-        case -1282148017: // factor
-          this.factor = TypeConvertor.castToMarkdown(value); // MarkdownType
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("productCode")) {
-          this.productCode = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("focusType")) {
-          this.getFocusType().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("factor")) {
-          this.factor = TypeConvertor.castToMarkdown(value); // MarkdownType
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1492131972:  return getProductCode();
-        case 1628646450:  return addFocusType(); 
-        case -1282148017:  return getFactorElement();
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1492131972: /*productCode*/ return new String[] {"CodeableConcept"};
-        case 1628646450: /*focusType*/ return new String[] {"CodeableConcept"};
-        case -1282148017: /*factor*/ return new String[] {"markdown"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("productCode")) {
-          this.productCode = new CodeableConcept();
-          return this.productCode;
-        }
-        else if (name.equals("focusType")) {
-          return addFocusType();
-        }
-        else if (name.equals("factor")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.focus.factor");
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public ResearchStudyFocusComponent copy() {
-        ResearchStudyFocusComponent dst = new ResearchStudyFocusComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(ResearchStudyFocusComponent dst) {
-        super.copyValues(dst);
-        dst.productCode = productCode == null ? null : productCode.copy();
-        if (focusType != null) {
-          dst.focusType = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : focusType)
-            dst.focusType.add(i.copy());
-        };
-        dst.factor = factor == null ? null : factor.copy();
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof ResearchStudyFocusComponent))
-          return false;
-        ResearchStudyFocusComponent o = (ResearchStudyFocusComponent) other_;
-        return compareDeep(productCode, o.productCode, true) && compareDeep(focusType, o.focusType, true)
-           && compareDeep(factor, o.factor, true);
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof ResearchStudyFocusComponent))
-          return false;
-        ResearchStudyFocusComponent o = (ResearchStudyFocusComponent) other_;
-        return compareValues(factor, o.factor, true);
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(productCode, focusType, factor
-          );
-      }
-
-  public String fhirType() {
-    return "ResearchStudy.focus";
 
   }
 
@@ -1643,9 +1337,9 @@ public class ResearchStudy extends DomainResource {
         /**
          * Allows the comparisonGroup for the study and the comparisonGroup for the subject to be linked easily.
          */
-        @Child(name = "identifier", type = {UriType.class, Identifier.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "identifier", type = {Identifier.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Allows the comparisonGroup for the study and the comparisonGroup for the subject to be linked easily", formalDefinition="Allows the comparisonGroup for the study and the comparisonGroup for the subject to be linked easily." )
-        protected DataType identifier;
+        protected List<Identifier> identifier;
 
         /**
          * Unique, human-readable label for this comparisonGroup of the study.
@@ -1683,7 +1377,7 @@ public class ResearchStudy extends DomainResource {
         @Description(shortDefinition="Group of participants who were enrolled in study comparisonGroup", formalDefinition="Group of participants who were enrolled in study comparisonGroup." )
         protected Reference observedGroup;
 
-        private static final long serialVersionUID = -600196662L;
+        private static final long serialVersionUID = -1154017097L;
 
     /**
      * Constructor
@@ -1703,52 +1397,54 @@ public class ResearchStudy extends DomainResource {
         /**
          * @return {@link #identifier} (Allows the comparisonGroup for the study and the comparisonGroup for the subject to be linked easily.)
          */
-        public DataType getIdentifier() { 
+        public List<Identifier> getIdentifier() { 
+          if (this.identifier == null)
+            this.identifier = new ArrayList<Identifier>();
           return this.identifier;
         }
 
         /**
-         * @return {@link #identifier} (Allows the comparisonGroup for the study and the comparisonGroup for the subject to be linked easily.)
+         * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public UriType getIdentifierUriType() throws FHIRException { 
-          if (this.identifier == null)
-            this.identifier = new UriType();
-          if (!(this.identifier instanceof UriType))
-            throw new FHIRException("Type mismatch: the type UriType was expected, but "+this.identifier.getClass().getName()+" was encountered");
-          return (UriType) this.identifier;
-        }
-
-        public boolean hasIdentifierUriType() { 
-          return this != null && this.identifier instanceof UriType;
-        }
-
-        /**
-         * @return {@link #identifier} (Allows the comparisonGroup for the study and the comparisonGroup for the subject to be linked easily.)
-         */
-        public Identifier getIdentifierIdentifier() throws FHIRException { 
-          if (this.identifier == null)
-            this.identifier = new Identifier();
-          if (!(this.identifier instanceof Identifier))
-            throw new FHIRException("Type mismatch: the type Identifier was expected, but "+this.identifier.getClass().getName()+" was encountered");
-          return (Identifier) this.identifier;
-        }
-
-        public boolean hasIdentifierIdentifier() { 
-          return this != null && this.identifier instanceof Identifier;
+        public ResearchStudyComparisonGroupComponent setIdentifier(List<Identifier> theIdentifier) { 
+          this.identifier = theIdentifier;
+          return this;
         }
 
         public boolean hasIdentifier() { 
-          return this.identifier != null && !this.identifier.isEmpty();
+          if (this.identifier == null)
+            return false;
+          for (Identifier item : this.identifier)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public Identifier addIdentifier() { //3
+          Identifier t = new Identifier();
+          if (this.identifier == null)
+            this.identifier = new ArrayList<Identifier>();
+          this.identifier.add(t);
+          return t;
+        }
+
+        public ResearchStudyComparisonGroupComponent addIdentifier(Identifier t) { //3
+          if (t == null)
+            return this;
+          if (this.identifier == null)
+            this.identifier = new ArrayList<Identifier>();
+          this.identifier.add(t);
+          return this;
         }
 
         /**
-         * @param value {@link #identifier} (Allows the comparisonGroup for the study and the comparisonGroup for the subject to be linked easily.)
+         * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
          */
-        public ResearchStudyComparisonGroupComponent setIdentifier(DataType value) { 
-          if (value != null && !(value instanceof UriType || value instanceof Identifier))
-            throw new Error("Not the right type for ResearchStudy.comparisonGroup.identifier[x]: "+value.fhirType());
-          this.identifier = value;
-          return this;
+        public Identifier getIdentifierFirstRep() { 
+          if (getIdentifier().isEmpty()) {
+            addIdentifier();
+          }
+          return getIdentifier().get(0);
         }
 
         /**
@@ -1948,7 +1644,7 @@ public class ResearchStudy extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("identifier[x]", "uri|Identifier", "Allows the comparisonGroup for the study and the comparisonGroup for the subject to be linked easily.", 0, 1, identifier));
+          children.add(new Property("identifier", "Identifier", "Allows the comparisonGroup for the study and the comparisonGroup for the subject to be linked easily.", 0, java.lang.Integer.MAX_VALUE, identifier));
           children.add(new Property("name", "string", "Unique, human-readable label for this comparisonGroup of the study.", 0, 1, name));
           children.add(new Property("type", "CodeableConcept", "Categorization of study comparisonGroup, e.g. experimental, active comparator, placebo comparater.", 0, 1, type));
           children.add(new Property("description", "markdown", "A succinct description of the path through the study that would be followed by a subject adhering to this comparisonGroup.", 0, 1, description));
@@ -1959,10 +1655,7 @@ public class ResearchStudy extends DomainResource {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 569772855: /*identifier[x]*/  return new Property("identifier[x]", "uri|Identifier", "Allows the comparisonGroup for the study and the comparisonGroup for the subject to be linked easily.", 0, 1, identifier);
-          case -1618432855: /*identifier*/  return new Property("identifier[x]", "uri|Identifier", "Allows the comparisonGroup for the study and the comparisonGroup for the subject to be linked easily.", 0, 1, identifier);
-          case 569766915: /*identifierUri*/  return new Property("identifier[x]", "uri", "Allows the comparisonGroup for the study and the comparisonGroup for the subject to be linked easily.", 0, 1, identifier);
-          case -554289614: /*identifierIdentifier*/  return new Property("identifier[x]", "Identifier", "Allows the comparisonGroup for the study and the comparisonGroup for the subject to be linked easily.", 0, 1, identifier);
+          case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Allows the comparisonGroup for the study and the comparisonGroup for the subject to be linked easily.", 0, java.lang.Integer.MAX_VALUE, identifier);
           case 3373707: /*name*/  return new Property("name", "string", "Unique, human-readable label for this comparisonGroup of the study.", 0, 1, name);
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Categorization of study comparisonGroup, e.g. experimental, active comparator, placebo comparater.", 0, 1, type);
           case -1724546052: /*description*/  return new Property("description", "markdown", "A succinct description of the path through the study that would be followed by a subject adhering to this comparisonGroup.", 0, 1, description);
@@ -1976,7 +1669,7 @@ public class ResearchStudy extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : new Base[] {this.identifier}; // DataType
+        case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // MarkdownType
@@ -1991,7 +1684,7 @@ public class ResearchStudy extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.identifier = TypeConvertor.castToType(value); // DataType
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 3373707: // name
           this.name = TypeConvertor.castToString(value); // StringType
@@ -2015,8 +1708,8 @@ public class ResearchStudy extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("identifier[x]")) {
-          this.identifier = TypeConvertor.castToType(value); // DataType
+        if (name.equals("identifier")) {
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("name")) {
           this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("type")) {
@@ -2035,8 +1728,7 @@ public class ResearchStudy extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 569772855:  return getIdentifier();
-        case -1618432855:  return getIdentifier();
+        case -1618432855:  return addIdentifier(); 
         case 3373707:  return getNameElement();
         case 3575610:  return getType();
         case -1724546052:  return getDescriptionElement();
@@ -2050,7 +1742,7 @@ public class ResearchStudy extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1618432855: /*identifier*/ return new String[] {"uri", "Identifier"};
+        case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case 3373707: /*name*/ return new String[] {"string"};
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
         case -1724546052: /*description*/ return new String[] {"markdown"};
@@ -2063,13 +1755,8 @@ public class ResearchStudy extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("identifierUri")) {
-          this.identifier = new UriType();
-          return this.identifier;
-        }
-        else if (name.equals("identifierIdentifier")) {
-          this.identifier = new Identifier();
-          return this.identifier;
+        if (name.equals("identifier")) {
+          return addIdentifier();
         }
         else if (name.equals("name")) {
           throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.comparisonGroup.name");
@@ -2100,7 +1787,11 @@ public class ResearchStudy extends DomainResource {
 
       public void copyValues(ResearchStudyComparisonGroupComponent dst) {
         super.copyValues(dst);
-        dst.identifier = identifier == null ? null : identifier.copy();
+        if (identifier != null) {
+          dst.identifier = new ArrayList<Identifier>();
+          for (Identifier i : identifier)
+            dst.identifier.add(i.copy());
+        };
         dst.name = name == null ? null : name.copy();
         dst.type = type == null ? null : type.copy();
         dst.description = description == null ? null : description.copy();
@@ -2820,236 +2511,6 @@ public class ResearchStudy extends DomainResource {
 
   }
 
-    @Block()
-    public static class ResearchStudyWebLocationComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * Describes the nature of the location being specified.
-         */
-        @Child(name = "classifier", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="registry-page|recruitment-page|contact-page", formalDefinition="Describes the nature of the location being specified." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/artifact-url-classifier")
-        protected CodeableConcept classifier;
-
-        /**
-         * The location address.
-         */
-        @Child(name = "url", type = {UriType.class}, order=2, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The location address", formalDefinition="The location address." )
-        protected UriType url;
-
-        private static final long serialVersionUID = -1718812997L;
-
-    /**
-     * Constructor
-     */
-      public ResearchStudyWebLocationComponent() {
-        super();
-      }
-
-    /**
-     * Constructor
-     */
-      public ResearchStudyWebLocationComponent(String url) {
-        super();
-        this.setUrl(url);
-      }
-
-        /**
-         * @return {@link #classifier} (Describes the nature of the location being specified.)
-         */
-        public CodeableConcept getClassifier() { 
-          if (this.classifier == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ResearchStudyWebLocationComponent.classifier");
-            else if (Configuration.doAutoCreate())
-              this.classifier = new CodeableConcept(); // cc
-          return this.classifier;
-        }
-
-        public boolean hasClassifier() { 
-          return this.classifier != null && !this.classifier.isEmpty();
-        }
-
-        /**
-         * @param value {@link #classifier} (Describes the nature of the location being specified.)
-         */
-        public ResearchStudyWebLocationComponent setClassifier(CodeableConcept value) { 
-          this.classifier = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #url} (The location address.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
-         */
-        public UriType getUrlElement() { 
-          if (this.url == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ResearchStudyWebLocationComponent.url");
-            else if (Configuration.doAutoCreate())
-              this.url = new UriType(); // bb
-          return this.url;
-        }
-
-        public boolean hasUrlElement() { 
-          return this.url != null && !this.url.isEmpty();
-        }
-
-        public boolean hasUrl() { 
-          return this.url != null && !this.url.isEmpty();
-        }
-
-        /**
-         * @param value {@link #url} (The location address.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
-         */
-        public ResearchStudyWebLocationComponent setUrlElement(UriType value) { 
-          this.url = value;
-          return this;
-        }
-
-        /**
-         * @return The location address.
-         */
-        public String getUrl() { 
-          return this.url == null ? null : this.url.getValue();
-        }
-
-        /**
-         * @param value The location address.
-         */
-        public ResearchStudyWebLocationComponent setUrl(String value) { 
-            if (this.url == null)
-              this.url = new UriType();
-            this.url.setValue(value);
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("classifier", "CodeableConcept", "Describes the nature of the location being specified.", 0, 1, classifier));
-          children.add(new Property("url", "uri", "The location address.", 0, 1, url));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case -281470431: /*classifier*/  return new Property("classifier", "CodeableConcept", "Describes the nature of the location being specified.", 0, 1, classifier);
-          case 116079: /*url*/  return new Property("url", "uri", "The location address.", 0, 1, url);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case -281470431: /*classifier*/ return this.classifier == null ? new Base[0] : new Base[] {this.classifier}; // CodeableConcept
-        case 116079: /*url*/ return this.url == null ? new Base[0] : new Base[] {this.url}; // UriType
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case -281470431: // classifier
-          this.classifier = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case 116079: // url
-          this.url = TypeConvertor.castToUri(value); // UriType
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("classifier")) {
-          this.classifier = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("url")) {
-          this.url = TypeConvertor.castToUri(value); // UriType
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -281470431:  return getClassifier();
-        case 116079:  return getUrlElement();
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -281470431: /*classifier*/ return new String[] {"CodeableConcept"};
-        case 116079: /*url*/ return new String[] {"uri"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("classifier")) {
-          this.classifier = new CodeableConcept();
-          return this.classifier;
-        }
-        else if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.webLocation.url");
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public ResearchStudyWebLocationComponent copy() {
-        ResearchStudyWebLocationComponent dst = new ResearchStudyWebLocationComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(ResearchStudyWebLocationComponent dst) {
-        super.copyValues(dst);
-        dst.classifier = classifier == null ? null : classifier.copy();
-        dst.url = url == null ? null : url.copy();
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof ResearchStudyWebLocationComponent))
-          return false;
-        ResearchStudyWebLocationComponent o = (ResearchStudyWebLocationComponent) other_;
-        return compareDeep(classifier, o.classifier, true) && compareDeep(url, o.url, true);
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof ResearchStudyWebLocationComponent))
-          return false;
-        ResearchStudyWebLocationComponent o = (ResearchStudyWebLocationComponent) other_;
-        return compareValues(url, o.url, true);
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(classifier, url);
-      }
-
-  public String fhirType() {
-    return "ResearchStudy.webLocation";
-
-  }
-
-  }
-
     /**
      * Canonical identifier for this study resource, represented as a globally unique URI.
      */
@@ -3107,17 +2568,17 @@ public class ResearchStudy extends DomainResource {
     protected List<Reference> partOf;
 
     /**
-     * Citations, references and other related documents.
+     * Citations, references, URLs and other related documents.  When using relatedArtifact to share URLs, the relatedArtifact.type will often be set to one of "documentation" or "supported-with" and the URL value will often be in relatedArtifact.document.url but another possible location is relatedArtifact.resource when it is a canonical URL.
      */
     @Child(name = "relatedArtifact", type = {RelatedArtifact.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="References and dependencies", formalDefinition="Citations, references and other related documents." )
+    @Description(shortDefinition="References, URLs, and attachments", formalDefinition="Citations, references, URLs and other related documents.  When using relatedArtifact to share URLs, the relatedArtifact.type will often be set to one of \"documentation\" or \"supported-with\" and the URL value will often be in relatedArtifact.document.url but another possible location is relatedArtifact.resource when it is a canonical URL." )
     protected List<RelatedArtifact> relatedArtifact;
 
     /**
-     * The date (and optionally time) when the ResearchStudy Resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ResearchStudy Resource changes.
+     * The date (and optionally time) when the ResearchStudy Resource was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ResearchStudy Resource changes.
      */
     @Child(name = "date", type = {DateTimeType.class}, order=9, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Date the resource last changed", formalDefinition="The date (and optionally time) when the ResearchStudy Resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ResearchStudy Resource changes." )
+    @Description(shortDefinition="Date the resource last changed", formalDefinition="The date (and optionally time) when the ResearchStudy Resource was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ResearchStudy Resource changes." )
     protected DateTimeType date;
 
     /**
@@ -3155,9 +2616,10 @@ public class ResearchStudy extends DomainResource {
     /**
      * The medication(s), food(s), therapy(ies), device(s) or other concerns or interventions that the study is seeking to gain more information about.
      */
-    @Child(name = "focus", type = {}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "focus", type = {CodeableReference.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Drugs, devices, etc. under study", formalDefinition="The medication(s), food(s), therapy(ies), device(s) or other concerns or interventions that the study is seeking to gain more information about." )
-    protected List<ResearchStudyFocusComponent> focus;
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/research-study-focus-type")
+    protected List<CodeableReference> focus;
 
     /**
      * The condition that is the focus of the study.  For example, In a study to examine risk factors for Lupus, might have as an inclusion criterion "healthy volunteer", but the target condition code would be a Lupus SNOMED code.
@@ -3255,10 +2717,10 @@ public class ResearchStudy extends DomainResource {
     protected ResearchStudyRecruitmentComponent recruitment;
 
     /**
-     * Describes an expected sequence of events for one of the participants of a study.  E.g. Exposure to drug A, wash-out, exposure to drug B, wash-out, follow-up.
+     * Describes an expected event or sequence of events for one of the subjects of a study. E.g. for a living subject: exposure to drug A, wash-out, exposure to drug B, wash-out, follow-up. E.g. for a stability study: {store sample from lot A at 25 degrees for 1 month}, {store sample from lot A at 40 degrees for 1 month}.
      */
     @Child(name = "comparisonGroup", type = {}, order=28, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Defined path through the study for a subject", formalDefinition="Describes an expected sequence of events for one of the participants of a study.  E.g. Exposure to drug A, wash-out, exposure to drug B, wash-out, follow-up." )
+    @Description(shortDefinition="Defined path through the study for a subject", formalDefinition="Describes an expected event or sequence of events for one of the subjects of a study. E.g. for a living subject: exposure to drug A, wash-out, exposure to drug B, wash-out, follow-up. E.g. for a stability study: {store sample from lot A at 25 degrees for 1 month}, {store sample from lot A at 40 degrees for 1 month}." )
     protected List<ResearchStudyComparisonGroupComponent> comparisonGroup;
 
     /**
@@ -3269,10 +2731,10 @@ public class ResearchStudy extends DomainResource {
     protected List<ResearchStudyObjectiveComponent> objective;
 
     /**
-     * An outcome or planned variable to measure during the study.
+     * An "outcome measure", "endpoint", "effect measure" or "measure of effect" is a specific measurement or observation used to quantify the effect of experimental variables on the participants in a study, or for observational studies, to describe patterns of diseases or traits or associations with exposures, risk factors or treatment.
      */
     @Child(name = "outcomeMeasure", type = {}, order=30, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="An outcome or planned variable to measure during the study", formalDefinition="An outcome or planned variable to measure during the study." )
+    @Description(shortDefinition="A variable measured during the study", formalDefinition="An \"outcome measure\", \"endpoint\", \"effect measure\" or \"measure of effect\" is a specific measurement or observation used to quantify the effect of experimental variables on the participants in a study, or for observational studies, to describe patterns of diseases or traits or associations with exposures, risk factors or treatment." )
     protected List<ResearchStudyOutcomeMeasureComponent> outcomeMeasure;
 
     /**
@@ -3282,14 +2744,7 @@ public class ResearchStudy extends DomainResource {
     @Description(shortDefinition="Link to results generated during the study", formalDefinition="Link to one or more sets of results generated by the study.  Could also link to a research registry holding the results such as ClinicalTrials.gov." )
     protected List<Reference> result;
 
-    /**
-     * A general storage or archive location for the study.  This may contain an assortment of content which is not specified in advance.
-     */
-    @Child(name = "webLocation", type = {}, order=32, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Archive location for the study", formalDefinition="A general storage or archive location for the study.  This may contain an assortment of content which is not specified in advance." )
-    protected List<ResearchStudyWebLocationComponent> webLocation;
-
-    private static final long serialVersionUID = 1995353917L;
+    private static final long serialVersionUID = -1217395129L;
 
   /**
    * Constructor
@@ -3715,7 +3170,7 @@ public class ResearchStudy extends DomainResource {
     }
 
     /**
-     * @return {@link #relatedArtifact} (Citations, references and other related documents.)
+     * @return {@link #relatedArtifact} (Citations, references, URLs and other related documents.  When using relatedArtifact to share URLs, the relatedArtifact.type will often be set to one of "documentation" or "supported-with" and the URL value will often be in relatedArtifact.document.url but another possible location is relatedArtifact.resource when it is a canonical URL.)
      */
     public List<RelatedArtifact> getRelatedArtifact() { 
       if (this.relatedArtifact == null)
@@ -3768,7 +3223,7 @@ public class ResearchStudy extends DomainResource {
     }
 
     /**
-     * @return {@link #date} (The date (and optionally time) when the ResearchStudy Resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ResearchStudy Resource changes.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
+     * @return {@link #date} (The date (and optionally time) when the ResearchStudy Resource was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ResearchStudy Resource changes.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
      */
     public DateTimeType getDateElement() { 
       if (this.date == null)
@@ -3788,7 +3243,7 @@ public class ResearchStudy extends DomainResource {
     }
 
     /**
-     * @param value {@link #date} (The date (and optionally time) when the ResearchStudy Resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ResearchStudy Resource changes.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
+     * @param value {@link #date} (The date (and optionally time) when the ResearchStudy Resource was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ResearchStudy Resource changes.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
      */
     public ResearchStudy setDateElement(DateTimeType value) { 
       this.date = value;
@@ -3796,14 +3251,14 @@ public class ResearchStudy extends DomainResource {
     }
 
     /**
-     * @return The date (and optionally time) when the ResearchStudy Resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ResearchStudy Resource changes.
+     * @return The date (and optionally time) when the ResearchStudy Resource was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ResearchStudy Resource changes.
      */
     public Date getDate() { 
       return this.date == null ? null : this.date.getValue();
     }
 
     /**
-     * @param value The date (and optionally time) when the ResearchStudy Resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ResearchStudy Resource changes.
+     * @param value The date (and optionally time) when the ResearchStudy Resource was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ResearchStudy Resource changes.
      */
     public ResearchStudy setDate(Date value) { 
       if (value == null)
@@ -3965,16 +3420,16 @@ public class ResearchStudy extends DomainResource {
     /**
      * @return {@link #focus} (The medication(s), food(s), therapy(ies), device(s) or other concerns or interventions that the study is seeking to gain more information about.)
      */
-    public List<ResearchStudyFocusComponent> getFocus() { 
+    public List<CodeableReference> getFocus() { 
       if (this.focus == null)
-        this.focus = new ArrayList<ResearchStudyFocusComponent>();
+        this.focus = new ArrayList<CodeableReference>();
       return this.focus;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public ResearchStudy setFocus(List<ResearchStudyFocusComponent> theFocus) { 
+    public ResearchStudy setFocus(List<CodeableReference> theFocus) { 
       this.focus = theFocus;
       return this;
     }
@@ -3982,25 +3437,25 @@ public class ResearchStudy extends DomainResource {
     public boolean hasFocus() { 
       if (this.focus == null)
         return false;
-      for (ResearchStudyFocusComponent item : this.focus)
+      for (CodeableReference item : this.focus)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public ResearchStudyFocusComponent addFocus() { //3
-      ResearchStudyFocusComponent t = new ResearchStudyFocusComponent();
+    public CodeableReference addFocus() { //3
+      CodeableReference t = new CodeableReference();
       if (this.focus == null)
-        this.focus = new ArrayList<ResearchStudyFocusComponent>();
+        this.focus = new ArrayList<CodeableReference>();
       this.focus.add(t);
       return t;
     }
 
-    public ResearchStudy addFocus(ResearchStudyFocusComponent t) { //3
+    public ResearchStudy addFocus(CodeableReference t) { //3
       if (t == null)
         return this;
       if (this.focus == null)
-        this.focus = new ArrayList<ResearchStudyFocusComponent>();
+        this.focus = new ArrayList<CodeableReference>();
       this.focus.add(t);
       return this;
     }
@@ -4008,7 +3463,7 @@ public class ResearchStudy extends DomainResource {
     /**
      * @return The first repetition of repeating field {@link #focus}, creating it if it does not already exist {3}
      */
-    public ResearchStudyFocusComponent getFocusFirstRep() { 
+    public CodeableReference getFocusFirstRep() { 
       if (getFocus().isEmpty()) {
         addFocus();
       }
@@ -4610,7 +4065,7 @@ public class ResearchStudy extends DomainResource {
     }
 
     /**
-     * @return {@link #comparisonGroup} (Describes an expected sequence of events for one of the participants of a study.  E.g. Exposure to drug A, wash-out, exposure to drug B, wash-out, follow-up.)
+     * @return {@link #comparisonGroup} (Describes an expected event or sequence of events for one of the subjects of a study. E.g. for a living subject: exposure to drug A, wash-out, exposure to drug B, wash-out, follow-up. E.g. for a stability study: {store sample from lot A at 25 degrees for 1 month}, {store sample from lot A at 40 degrees for 1 month}.)
      */
     public List<ResearchStudyComparisonGroupComponent> getComparisonGroup() { 
       if (this.comparisonGroup == null)
@@ -4716,7 +4171,7 @@ public class ResearchStudy extends DomainResource {
     }
 
     /**
-     * @return {@link #outcomeMeasure} (An outcome or planned variable to measure during the study.)
+     * @return {@link #outcomeMeasure} (An "outcome measure", "endpoint", "effect measure" or "measure of effect" is a specific measurement or observation used to quantify the effect of experimental variables on the participants in a study, or for observational studies, to describe patterns of diseases or traits or associations with exposures, risk factors or treatment.)
      */
     public List<ResearchStudyOutcomeMeasureComponent> getOutcomeMeasure() { 
       if (this.outcomeMeasure == null)
@@ -4821,59 +4276,6 @@ public class ResearchStudy extends DomainResource {
       return getResult().get(0);
     }
 
-    /**
-     * @return {@link #webLocation} (A general storage or archive location for the study.  This may contain an assortment of content which is not specified in advance.)
-     */
-    public List<ResearchStudyWebLocationComponent> getWebLocation() { 
-      if (this.webLocation == null)
-        this.webLocation = new ArrayList<ResearchStudyWebLocationComponent>();
-      return this.webLocation;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public ResearchStudy setWebLocation(List<ResearchStudyWebLocationComponent> theWebLocation) { 
-      this.webLocation = theWebLocation;
-      return this;
-    }
-
-    public boolean hasWebLocation() { 
-      if (this.webLocation == null)
-        return false;
-      for (ResearchStudyWebLocationComponent item : this.webLocation)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public ResearchStudyWebLocationComponent addWebLocation() { //3
-      ResearchStudyWebLocationComponent t = new ResearchStudyWebLocationComponent();
-      if (this.webLocation == null)
-        this.webLocation = new ArrayList<ResearchStudyWebLocationComponent>();
-      this.webLocation.add(t);
-      return t;
-    }
-
-    public ResearchStudy addWebLocation(ResearchStudyWebLocationComponent t) { //3
-      if (t == null)
-        return this;
-      if (this.webLocation == null)
-        this.webLocation = new ArrayList<ResearchStudyWebLocationComponent>();
-      this.webLocation.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #webLocation}, creating it if it does not already exist {3}
-     */
-    public ResearchStudyWebLocationComponent getWebLocationFirstRep() { 
-      if (getWebLocation().isEmpty()) {
-        addWebLocation();
-      }
-      return getWebLocation().get(0);
-    }
-
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("url", "uri", "Canonical identifier for this study resource, represented as a globally unique URI.", 0, 1, url));
@@ -4884,13 +4286,13 @@ public class ResearchStudy extends DomainResource {
         children.add(new Property("label", "", "Additional names for the study.", 0, java.lang.Integer.MAX_VALUE, label));
         children.add(new Property("protocol", "Reference(PlanDefinition)", "The set of steps expected to be performed as part of the execution of the study.", 0, java.lang.Integer.MAX_VALUE, protocol));
         children.add(new Property("partOf", "Reference(ResearchStudy)", "A larger research study of which this particular study is a component or step.", 0, java.lang.Integer.MAX_VALUE, partOf));
-        children.add(new Property("relatedArtifact", "RelatedArtifact", "Citations, references and other related documents.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact));
-        children.add(new Property("date", "dateTime", "The date (and optionally time) when the ResearchStudy Resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ResearchStudy Resource changes.", 0, 1, date));
+        children.add(new Property("relatedArtifact", "RelatedArtifact", "Citations, references, URLs and other related documents.  When using relatedArtifact to share URLs, the relatedArtifact.type will often be set to one of \"documentation\" or \"supported-with\" and the URL value will often be in relatedArtifact.document.url but another possible location is relatedArtifact.resource when it is a canonical URL.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact));
+        children.add(new Property("date", "dateTime", "The date (and optionally time) when the ResearchStudy Resource was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ResearchStudy Resource changes.", 0, 1, date));
         children.add(new Property("status", "code", "The publication state of the resource (not of the study).", 0, 1, status));
         children.add(new Property("primaryPurposeType", "CodeableConcept", "The type of study based upon the intent of the study activities. A classification of the intent of the study.", 0, 1, primaryPurposeType));
         children.add(new Property("phase", "CodeableConcept", "The stage in the progression of a therapy from initial experimental use in humans in clinical trials to post-market evaluation.", 0, 1, phase));
         children.add(new Property("studyDesign", "CodeableConcept", "Codes categorizing the type of study such as investigational vs. observational, type of blinding, type of randomization, safety vs. efficacy, etc.", 0, java.lang.Integer.MAX_VALUE, studyDesign));
-        children.add(new Property("focus", "", "The medication(s), food(s), therapy(ies), device(s) or other concerns or interventions that the study is seeking to gain more information about.", 0, java.lang.Integer.MAX_VALUE, focus));
+        children.add(new Property("focus", "CodeableReference(Medication|MedicinalProductDefinition|SubstanceDefinition|EvidenceVariable)", "The medication(s), food(s), therapy(ies), device(s) or other concerns or interventions that the study is seeking to gain more information about.", 0, java.lang.Integer.MAX_VALUE, focus));
         children.add(new Property("condition", "CodeableConcept", "The condition that is the focus of the study.  For example, In a study to examine risk factors for Lupus, might have as an inclusion criterion \"healthy volunteer\", but the target condition code would be a Lupus SNOMED code.", 0, java.lang.Integer.MAX_VALUE, condition));
         children.add(new Property("keyword", "CodeableConcept", "Key terms to aid in searching for or filtering the study.", 0, java.lang.Integer.MAX_VALUE, keyword));
         children.add(new Property("region", "CodeableConcept", "A country, state or other area where the study is taking place rather than its precise geographic location or address.", 0, java.lang.Integer.MAX_VALUE, region));
@@ -4904,11 +4306,10 @@ public class ResearchStudy extends DomainResource {
         children.add(new Property("progressStatus", "", "Status of study with time for that status.", 0, java.lang.Integer.MAX_VALUE, progressStatus));
         children.add(new Property("whyStopped", "CodeableConcept", "A description and/or code explaining the premature termination of the study.", 0, 1, whyStopped));
         children.add(new Property("recruitment", "", "Target or actual group of participants enrolled in study.", 0, 1, recruitment));
-        children.add(new Property("comparisonGroup", "", "Describes an expected sequence of events for one of the participants of a study.  E.g. Exposure to drug A, wash-out, exposure to drug B, wash-out, follow-up.", 0, java.lang.Integer.MAX_VALUE, comparisonGroup));
+        children.add(new Property("comparisonGroup", "", "Describes an expected event or sequence of events for one of the subjects of a study. E.g. for a living subject: exposure to drug A, wash-out, exposure to drug B, wash-out, follow-up. E.g. for a stability study: {store sample from lot A at 25 degrees for 1 month}, {store sample from lot A at 40 degrees for 1 month}.", 0, java.lang.Integer.MAX_VALUE, comparisonGroup));
         children.add(new Property("objective", "", "A goal that the study is aiming to achieve in terms of a scientific question to be answered by the analysis of data collected during the study.", 0, java.lang.Integer.MAX_VALUE, objective));
-        children.add(new Property("outcomeMeasure", "", "An outcome or planned variable to measure during the study.", 0, java.lang.Integer.MAX_VALUE, outcomeMeasure));
+        children.add(new Property("outcomeMeasure", "", "An \"outcome measure\", \"endpoint\", \"effect measure\" or \"measure of effect\" is a specific measurement or observation used to quantify the effect of experimental variables on the participants in a study, or for observational studies, to describe patterns of diseases or traits or associations with exposures, risk factors or treatment.", 0, java.lang.Integer.MAX_VALUE, outcomeMeasure));
         children.add(new Property("result", "Reference(EvidenceReport|Citation|DiagnosticReport)", "Link to one or more sets of results generated by the study.  Could also link to a research registry holding the results such as ClinicalTrials.gov.", 0, java.lang.Integer.MAX_VALUE, result));
-        children.add(new Property("webLocation", "", "A general storage or archive location for the study.  This may contain an assortment of content which is not specified in advance.", 0, java.lang.Integer.MAX_VALUE, webLocation));
       }
 
       @Override
@@ -4922,13 +4323,13 @@ public class ResearchStudy extends DomainResource {
         case 102727412: /*label*/  return new Property("label", "", "Additional names for the study.", 0, java.lang.Integer.MAX_VALUE, label);
         case -989163880: /*protocol*/  return new Property("protocol", "Reference(PlanDefinition)", "The set of steps expected to be performed as part of the execution of the study.", 0, java.lang.Integer.MAX_VALUE, protocol);
         case -995410646: /*partOf*/  return new Property("partOf", "Reference(ResearchStudy)", "A larger research study of which this particular study is a component or step.", 0, java.lang.Integer.MAX_VALUE, partOf);
-        case 666807069: /*relatedArtifact*/  return new Property("relatedArtifact", "RelatedArtifact", "Citations, references and other related documents.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact);
-        case 3076014: /*date*/  return new Property("date", "dateTime", "The date (and optionally time) when the ResearchStudy Resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ResearchStudy Resource changes.", 0, 1, date);
+        case 666807069: /*relatedArtifact*/  return new Property("relatedArtifact", "RelatedArtifact", "Citations, references, URLs and other related documents.  When using relatedArtifact to share URLs, the relatedArtifact.type will often be set to one of \"documentation\" or \"supported-with\" and the URL value will often be in relatedArtifact.document.url but another possible location is relatedArtifact.resource when it is a canonical URL.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact);
+        case 3076014: /*date*/  return new Property("date", "dateTime", "The date (and optionally time) when the ResearchStudy Resource was last significantly changed. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ResearchStudy Resource changes.", 0, 1, date);
         case -892481550: /*status*/  return new Property("status", "code", "The publication state of the resource (not of the study).", 0, 1, status);
         case -2132842986: /*primaryPurposeType*/  return new Property("primaryPurposeType", "CodeableConcept", "The type of study based upon the intent of the study activities. A classification of the intent of the study.", 0, 1, primaryPurposeType);
         case 106629499: /*phase*/  return new Property("phase", "CodeableConcept", "The stage in the progression of a therapy from initial experimental use in humans in clinical trials to post-market evaluation.", 0, 1, phase);
         case 1709211879: /*studyDesign*/  return new Property("studyDesign", "CodeableConcept", "Codes categorizing the type of study such as investigational vs. observational, type of blinding, type of randomization, safety vs. efficacy, etc.", 0, java.lang.Integer.MAX_VALUE, studyDesign);
-        case 97604824: /*focus*/  return new Property("focus", "", "The medication(s), food(s), therapy(ies), device(s) or other concerns or interventions that the study is seeking to gain more information about.", 0, java.lang.Integer.MAX_VALUE, focus);
+        case 97604824: /*focus*/  return new Property("focus", "CodeableReference(Medication|MedicinalProductDefinition|SubstanceDefinition|EvidenceVariable)", "The medication(s), food(s), therapy(ies), device(s) or other concerns or interventions that the study is seeking to gain more information about.", 0, java.lang.Integer.MAX_VALUE, focus);
         case -861311717: /*condition*/  return new Property("condition", "CodeableConcept", "The condition that is the focus of the study.  For example, In a study to examine risk factors for Lupus, might have as an inclusion criterion \"healthy volunteer\", but the target condition code would be a Lupus SNOMED code.", 0, java.lang.Integer.MAX_VALUE, condition);
         case -814408215: /*keyword*/  return new Property("keyword", "CodeableConcept", "Key terms to aid in searching for or filtering the study.", 0, java.lang.Integer.MAX_VALUE, keyword);
         case -934795532: /*region*/  return new Property("region", "CodeableConcept", "A country, state or other area where the study is taking place rather than its precise geographic location or address.", 0, java.lang.Integer.MAX_VALUE, region);
@@ -4942,11 +4343,10 @@ public class ResearchStudy extends DomainResource {
         case -1897502593: /*progressStatus*/  return new Property("progressStatus", "", "Status of study with time for that status.", 0, java.lang.Integer.MAX_VALUE, progressStatus);
         case -699986715: /*whyStopped*/  return new Property("whyStopped", "CodeableConcept", "A description and/or code explaining the premature termination of the study.", 0, 1, whyStopped);
         case 780783004: /*recruitment*/  return new Property("recruitment", "", "Target or actual group of participants enrolled in study.", 0, 1, recruitment);
-        case -138266634: /*comparisonGroup*/  return new Property("comparisonGroup", "", "Describes an expected sequence of events for one of the participants of a study.  E.g. Exposure to drug A, wash-out, exposure to drug B, wash-out, follow-up.", 0, java.lang.Integer.MAX_VALUE, comparisonGroup);
+        case -138266634: /*comparisonGroup*/  return new Property("comparisonGroup", "", "Describes an expected event or sequence of events for one of the subjects of a study. E.g. for a living subject: exposure to drug A, wash-out, exposure to drug B, wash-out, follow-up. E.g. for a stability study: {store sample from lot A at 25 degrees for 1 month}, {store sample from lot A at 40 degrees for 1 month}.", 0, java.lang.Integer.MAX_VALUE, comparisonGroup);
         case -1489585863: /*objective*/  return new Property("objective", "", "A goal that the study is aiming to achieve in terms of a scientific question to be answered by the analysis of data collected during the study.", 0, java.lang.Integer.MAX_VALUE, objective);
-        case -1510689364: /*outcomeMeasure*/  return new Property("outcomeMeasure", "", "An outcome or planned variable to measure during the study.", 0, java.lang.Integer.MAX_VALUE, outcomeMeasure);
+        case -1510689364: /*outcomeMeasure*/  return new Property("outcomeMeasure", "", "An \"outcome measure\", \"endpoint\", \"effect measure\" or \"measure of effect\" is a specific measurement or observation used to quantify the effect of experimental variables on the participants in a study, or for observational studies, to describe patterns of diseases or traits or associations with exposures, risk factors or treatment.", 0, java.lang.Integer.MAX_VALUE, outcomeMeasure);
         case -934426595: /*result*/  return new Property("result", "Reference(EvidenceReport|Citation|DiagnosticReport)", "Link to one or more sets of results generated by the study.  Could also link to a research registry holding the results such as ClinicalTrials.gov.", 0, java.lang.Integer.MAX_VALUE, result);
-        case -828032215: /*webLocation*/  return new Property("webLocation", "", "A general storage or archive location for the study.  This may contain an assortment of content which is not specified in advance.", 0, java.lang.Integer.MAX_VALUE, webLocation);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -4969,7 +4369,7 @@ public class ResearchStudy extends DomainResource {
         case -2132842986: /*primaryPurposeType*/ return this.primaryPurposeType == null ? new Base[0] : new Base[] {this.primaryPurposeType}; // CodeableConcept
         case 106629499: /*phase*/ return this.phase == null ? new Base[0] : new Base[] {this.phase}; // CodeableConcept
         case 1709211879: /*studyDesign*/ return this.studyDesign == null ? new Base[0] : this.studyDesign.toArray(new Base[this.studyDesign.size()]); // CodeableConcept
-        case 97604824: /*focus*/ return this.focus == null ? new Base[0] : this.focus.toArray(new Base[this.focus.size()]); // ResearchStudyFocusComponent
+        case 97604824: /*focus*/ return this.focus == null ? new Base[0] : this.focus.toArray(new Base[this.focus.size()]); // CodeableReference
         case -861311717: /*condition*/ return this.condition == null ? new Base[0] : this.condition.toArray(new Base[this.condition.size()]); // CodeableConcept
         case -814408215: /*keyword*/ return this.keyword == null ? new Base[0] : this.keyword.toArray(new Base[this.keyword.size()]); // CodeableConcept
         case -934795532: /*region*/ return this.region == null ? new Base[0] : this.region.toArray(new Base[this.region.size()]); // CodeableConcept
@@ -4987,7 +4387,6 @@ public class ResearchStudy extends DomainResource {
         case -1489585863: /*objective*/ return this.objective == null ? new Base[0] : this.objective.toArray(new Base[this.objective.size()]); // ResearchStudyObjectiveComponent
         case -1510689364: /*outcomeMeasure*/ return this.outcomeMeasure == null ? new Base[0] : this.outcomeMeasure.toArray(new Base[this.outcomeMeasure.size()]); // ResearchStudyOutcomeMeasureComponent
         case -934426595: /*result*/ return this.result == null ? new Base[0] : this.result.toArray(new Base[this.result.size()]); // Reference
-        case -828032215: /*webLocation*/ return this.webLocation == null ? new Base[0] : this.webLocation.toArray(new Base[this.webLocation.size()]); // ResearchStudyWebLocationComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -5040,7 +4439,7 @@ public class ResearchStudy extends DomainResource {
           this.getStudyDesign().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 97604824: // focus
-          this.getFocus().add((ResearchStudyFocusComponent) value); // ResearchStudyFocusComponent
+          this.getFocus().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
         case -861311717: // condition
           this.getCondition().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
@@ -5093,9 +4492,6 @@ public class ResearchStudy extends DomainResource {
         case -934426595: // result
           this.getResult().add(TypeConvertor.castToReference(value)); // Reference
           return value;
-        case -828032215: // webLocation
-          this.getWebLocation().add((ResearchStudyWebLocationComponent) value); // ResearchStudyWebLocationComponent
-          return value;
         default: return super.setProperty(hash, name, value);
         }
 
@@ -5133,7 +4529,7 @@ public class ResearchStudy extends DomainResource {
         } else if (name.equals("studyDesign")) {
           this.getStudyDesign().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("focus")) {
-          this.getFocus().add((ResearchStudyFocusComponent) value);
+          this.getFocus().add(TypeConvertor.castToCodeableReference(value));
         } else if (name.equals("condition")) {
           this.getCondition().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("keyword")) {
@@ -5168,8 +4564,6 @@ public class ResearchStudy extends DomainResource {
           this.getOutcomeMeasure().add((ResearchStudyOutcomeMeasureComponent) value);
         } else if (name.equals("result")) {
           this.getResult().add(TypeConvertor.castToReference(value));
-        } else if (name.equals("webLocation")) {
-          this.getWebLocation().add((ResearchStudyWebLocationComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -5210,7 +4604,6 @@ public class ResearchStudy extends DomainResource {
         case -1489585863:  return addObjective(); 
         case -1510689364:  return addOutcomeMeasure(); 
         case -934426595:  return addResult(); 
-        case -828032215:  return addWebLocation(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -5233,7 +4626,7 @@ public class ResearchStudy extends DomainResource {
         case -2132842986: /*primaryPurposeType*/ return new String[] {"CodeableConcept"};
         case 106629499: /*phase*/ return new String[] {"CodeableConcept"};
         case 1709211879: /*studyDesign*/ return new String[] {"CodeableConcept"};
-        case 97604824: /*focus*/ return new String[] {};
+        case 97604824: /*focus*/ return new String[] {"CodeableReference"};
         case -861311717: /*condition*/ return new String[] {"CodeableConcept"};
         case -814408215: /*keyword*/ return new String[] {"CodeableConcept"};
         case -934795532: /*region*/ return new String[] {"CodeableConcept"};
@@ -5251,7 +4644,6 @@ public class ResearchStudy extends DomainResource {
         case -1489585863: /*objective*/ return new String[] {};
         case -1510689364: /*outcomeMeasure*/ return new String[] {};
         case -934426595: /*result*/ return new String[] {"Reference"};
-        case -828032215: /*webLocation*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -5360,9 +4752,6 @@ public class ResearchStudy extends DomainResource {
         else if (name.equals("result")) {
           return addResult();
         }
-        else if (name.equals("webLocation")) {
-          return addWebLocation();
-        }
         else
           return super.addChild(name);
       }
@@ -5419,8 +4808,8 @@ public class ResearchStudy extends DomainResource {
             dst.studyDesign.add(i.copy());
         };
         if (focus != null) {
-          dst.focus = new ArrayList<ResearchStudyFocusComponent>();
-          for (ResearchStudyFocusComponent i : focus)
+          dst.focus = new ArrayList<CodeableReference>();
+          for (CodeableReference i : focus)
             dst.focus.add(i.copy());
         };
         if (condition != null) {
@@ -5488,11 +4877,6 @@ public class ResearchStudy extends DomainResource {
           for (Reference i : result)
             dst.result.add(i.copy());
         };
-        if (webLocation != null) {
-          dst.webLocation = new ArrayList<ResearchStudyWebLocationComponent>();
-          for (ResearchStudyWebLocationComponent i : webLocation)
-            dst.webLocation.add(i.copy());
-        };
       }
 
       protected ResearchStudy typedCopy() {
@@ -5518,7 +4902,7 @@ public class ResearchStudy extends DomainResource {
            && compareDeep(progressStatus, o.progressStatus, true) && compareDeep(whyStopped, o.whyStopped, true)
            && compareDeep(recruitment, o.recruitment, true) && compareDeep(comparisonGroup, o.comparisonGroup, true)
            && compareDeep(objective, o.objective, true) && compareDeep(outcomeMeasure, o.outcomeMeasure, true)
-           && compareDeep(result, o.result, true) && compareDeep(webLocation, o.webLocation, true);
+           && compareDeep(result, o.result, true);
       }
 
       @Override
@@ -5539,7 +4923,7 @@ public class ResearchStudy extends DomainResource {
           , name, title, label, protocol, partOf, relatedArtifact, date, status, primaryPurposeType
           , phase, studyDesign, focus, condition, keyword, region, descriptionSummary, description
           , period, site, note, classifier, associatedParty, progressStatus, whyStopped
-          , recruitment, comparisonGroup, objective, outcomeMeasure, result, webLocation);
+          , recruitment, comparisonGroup, objective, outcomeMeasure, result);
       }
 
   @Override

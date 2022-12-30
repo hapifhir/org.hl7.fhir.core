@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -287,7 +287,7 @@ public class Narrative extends BaseNarrative implements INarrative {
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("status", "code", "The status of the narrative - whether it's entirely generated (from just the defined data or the extensions too), or whether a human authored it and it may contain additional data.", 0, 1, status));
-        children.add(new Property("div", "xhtml", "he actual narrative content, a stripped down version of XHTML", 0, 1, new XhtmlType(this)));
+        children.add(new Property("div", "xhtml", "he actual narrative content, a stripped down version of XHTML", 0, 1, new XhtmlType(this))); 
       }
 
       @Override

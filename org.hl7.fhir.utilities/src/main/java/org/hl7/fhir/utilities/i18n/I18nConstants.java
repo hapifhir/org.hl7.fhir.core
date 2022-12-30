@@ -2,7 +2,6 @@ package org.hl7.fhir.utilities.i18n;
 
 public class I18nConstants {
 
-  
   public static final String ADDING_WRONG_PATH = "Adding_wrong_path";
   public static final String ADDING_WRONG_PATH_IN_PROFILE___VS_ = "Adding_wrong_path_in_profile___vs_";
   public static final String ADDING_WRONG_PATH__OUTCOMEGETPATH___RESULTPATHBASE__ = "Adding_wrong_path__outcomegetPath___resultPathBase__";
@@ -30,8 +29,11 @@ public class I18nConstants {
   public static final String BUNDLE_BUNDLE_ENTRY_NOPROFILE_TYPE = "Bundle_BUNDLE_Entry_NoProfile_TYPE";
   public static final String BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES = "BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES";
   public static final String BUNDLE_BUNDLE_ENTRY_NOTFOUND = "Bundle_BUNDLE_Entry_NotFound";
-  public static final String BUNDLE_BUNDLE_ENTRY_ORPHAN = "Bundle_BUNDLE_Entry_Orphan";
-  public static final String BUNDLE_BUNDLE_ENTRY_REVERSE = "BUNDLE_BUNDLE_ENTRY_REVERSE";
+  public static final String BUNDLE_BUNDLE_ENTRY_ORPHAN_DOCUMENT = "Bundle_BUNDLE_Entry_Orphan_DOCUMENT";
+  public static final String BUNDLE_BUNDLE_ENTRY_ORPHAN_MESSAGE = "Bundle_BUNDLE_Entry_Orphan_MESSAGE";
+  public static final String BUNDLE_BUNDLE_ENTRY_REVERSE_R4 = "BUNDLE_BUNDLE_ENTRY_REVERSE_R4";
+  public static final String BUNDLE_BUNDLE_ENTRY_REVERSE_R5 = "BUNDLE_BUNDLE_ENTRY_REVERSE_R5";
+  public static final String BUNDLE_BUNDLE_ENTRY_REVERSE_MSG = "BUNDLE_BUNDLE_ENTRY_REVERSE_MSG";
   public static final String BUNDLE_BUNDLE_ENTRY_TYPE = "Bundle_BUNDLE_Entry_Type";
   public static final String BUNDLE_BUNDLE_ENTRY_TYPE2 = "Bundle_BUNDLE_Entry_Type2";
   public static final String BUNDLE_BUNDLE_ENTRY_TYPE3 = "Bundle_BUNDLE_Entry_Type3";
@@ -39,6 +41,13 @@ public class I18nConstants {
   public static final String BUNDLE_BUNDLE_FULLURL_NEEDVERSION = "Bundle_BUNDLE_FullUrl_NeedVersion";
   public static final String BUNDLE_BUNDLE_MULTIPLEMATCHES = "Bundle_BUNDLE_MultipleMatches";
   public static final String BUNDLE_BUNDLE_NOT_LOCAL = "Bundle_BUNDLE_Not_Local";
+  public static final String BUNDLE_LINK_UNKNOWN = "BUNDLE_LINK_UNKNOWN";
+  public static final String BUNDLE_LINK_SEARCH_PROHIBITED = "BUNDLE_LINK_SEARCH_PROHIBITED";
+  public static final String BUNDLE_LINK_SEARCH_NO_DUPLICATES = "BUNDLE_LINK_SEARCH_NO_DUPLICATES";
+  public static final String BUNDLE_LINK_STYELSHEET_EXTERNAL = "BUNDLE_LINK_STYELSHEET_EXTERNAL";
+  public static final String BUNDLE_LINK_STYELSHEET_INSECURE = "BUNDLE_LINK_STYELSHEET_INSECURE";
+  public static final String BUNDLE_LINK_STYELSHEET_LINKABLE = "BUNDLE_LINK_STYELSHEET_LINKABLE";
+  public static final String BUNDLE_LINK_STYELSHEET_NOT_FOUND = "BUNDLE_LINK_STYELSHEET_NOT_FOUND";
   public static final String BUNDLE_MSG_EVENT_COUNT = "Bundle_MSG_Event_Count";
   public static final String CANT_HAVE_CHILDREN_ON_AN_ELEMENT_WITH_A_POLYMORPHIC_TYPE__YOU_MUST_SLICE_AND_CONSTRAIN_THE_TYPES_FIRST_SORTELEMENTS_ = "Cant_have_children_on_an_element_with_a_polymorphic_type__you_must_slice_and_constrain_the_types_first_sortElements_";
   public static final String CAN_ONLY_SPECIFY_PROFILE_IN_THE_CONTEXT = "Can_only_specify_profile_in_the_context";
@@ -543,6 +552,7 @@ public class I18nConstants {
   public static final String UNABLE_TO_FIND_ELEMENT__IN_ = "Unable_to_find_element__in_";
   public static final String UNABLE_TO_FIND_PROFILE__AT_ = "Unable_to_find_profile__at_";
   public static final String UNABLE_TO_FIND_RESOURCETYPE_PROPERTY = "Unable_to_find_resourceType_property";
+  public static final String RESOURCETYPE_PROPERTY_WRONG_TYPE = "RESOURCETYPE_PROPERTY_WRONG_TYPE";
   public static final String UNABLE_TO_FIND_RESOURCE__AT__RESOLVING_DISCRIMINATOR__FROM_ = "Unable_to_find_resource__at__resolving_discriminator__from_";
   public static final String UNABLE_TO_FIND__RESOLVING_DISCRIMINATOR__FROM_ = "Unable_to_find__resolving_discriminator__from_";
   public static final String UNABLE_TO_HANDLE_SYSTEM__CONCEPT_FILTER_WITH_OP__ = "Unable_to_handle_system__concept_filter_with_op__";
@@ -746,6 +756,23 @@ public class I18nConstants {
   public static final String SD_SPECIALIZED_TYPE_MATCHES = "SD_SPECIALIZED_TYPE_MATCHES";
   public static final String SD_CONSTRAINED_KIND_NO_MATCH = "SD_CONSTRAINED_KIND_NO_MATCH";
   public static final String SD_PATH_TYPE_MISMATCH = "SD_PATH_TYPE_MISMATCH";
+  public static final String XHTML_XHTML_Image_Reference_Illegal = "XHTML_XHTML_Image_Reference_Illegal";
+  public static final String XHTML_XHTML_Entity_Illegal = "XHTML_XHTML_Entity_Illegal";
+  public static final String UNABLE_TO_RESOLVE_CONTENT_REFERENCE = "UNABLE_TO_RESOLVE_CONTENT_REFERENCE";
+  public static final String UNABLE_TO_RESOLVE_CONTENT_REFERENCE_IN_THIS_CONTEXT = "UNABLE_TO_RESOLVE_CONTENT_REFERENCE_IN_THIS_CONTEXT";
+  public static final String DUPLICATE_JSON_PROPERTY = "DUPLICATE_JSON_PROPERTY";
+  public static final String DUPLICATE_JSON_PROPERTY_KEY = "DUPLICATE_JSON_PROPERTY_KEY";
+  public static final String JSON_PROPERTY_NO_QUOTES = "JSON_PROPERTY_NO_QUOTES";
+  public static final String JSON_PROPERTY_VALUE_NO_QUOTES = "JSON_PROPERTY_VALUE_NO_QUOTES";
+  public static final String JSON_COMMA_MISSING = "JSON_COMMA_MISSING";
+  public static final String JSON_COMMA_EXTRA = "JSON_COMMA_EXTRA";
+  public static final String JSON_COMMENTS_NOT_ALLOWED = "JSON_COMMENTS_NOT_ALLOWED";
+  public static final String EXT_VER_URL_NO_MATCH = "EXT_VER_URL_NO_MATCH";
+  public static final String EXT_VER_URL_IGNORE = "EXT_VER_URL_IGNORE";
+  public static final String EXT_VER_URL_MISLEADING = "EXT_VER_URL_MISLEADING";
+  public static final String EXT_VER_URL_NOT_ALLOWED = "EXT_VER_URL_NOT_ALLOWED"; 
+  public static final String EXT_VER_URL_REVERSION = "EXT_VER_URL_REVERSION";
+  public static final String ILLEGAL_COMMENT_TYPE = "ILLEGAL_COMMENT_TYPE";
 }
 
 

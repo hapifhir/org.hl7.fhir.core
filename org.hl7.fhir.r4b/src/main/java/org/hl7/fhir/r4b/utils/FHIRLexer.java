@@ -76,6 +76,7 @@ public class FHIRLexer {
   private SourceLocation currentStartLocation;
   private int id;
   private String name;
+  private boolean liquidMode; // in liquid mode, || terminates the expression and hands the parser back to the host
 
   public FHIRLexer(String source, String name) throws FHIRLexerException {
     this.source = source == null ? "" : source;
@@ -201,7 +202,7 @@ public class FHIRLexer {
         cursor++;
         if (cursor < source.length() && (source.charAt(cursor) == '/')) {
           // this is en error - should already have been skipped
-          error("This shoudn't happen?");
+          error("This shouldn't happen?");
         }
         current = source.substring(currentStart, cursor);
       } else if (ch == '$') {
@@ -274,6 +275,12 @@ public class FHIRLexer {
           throw error("Unterminated string");
         cursor++;
         current = "`"+source.substring(currentStart+1, cursor-1)+"`";
+      } else if (ch == '|' && liquidMode) {
+        cursor++;
+        ch = source.charAt(cursor);
+        if (ch == '|')
+          cursor++;
+        current = source.substring(currentStart, cursor);
       } else if (ch == '@'){
         int start = cursor;
         cursor++;
@@ -518,6 +525,15 @@ public class FHIRLexer {
   
   public int getCurrentStart() {
     return currentStart;
+  }
+  public String getSource() {
+    return source;
+  }
+  public boolean isLiquidMode() {
+    return liquidMode;
+  }
+  public void setLiquidMode(boolean liquidMode) {
+    this.liquidMode = liquidMode;
   }
 
 }

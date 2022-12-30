@@ -26,10 +26,9 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.context.IWorkerContextManager;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.context.SystemOutLoggingService;
@@ -52,6 +51,7 @@ import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ExpressionNode;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -313,6 +313,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     @With
     private final IWorkerContext.ILoggingService loggingService;
 
+    @With
+    private boolean THO = true;
+
 
     public ValidationEngineBuilder() {
       terminologyCachePath = null;
@@ -326,7 +329,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       loggingService = new SystemOutLoggingService();
     }
 
-    public ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, IWorkerContext.ILoggingService loggingService) {
+    public ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, IWorkerContext.ILoggingService loggingService, boolean THO) {
       this.terminologyCachePath = terminologyCachePath;
       this.userAgent = userAgent;
       this.version = version;
@@ -336,10 +339,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       this.timeTracker = timeTracker;
       this.canRunWithoutTerminologyServer = canRunWithoutTerminologyServer;
       this.loggingService = loggingService;
+      this.THO = THO;
     }
 
     public ValidationEngineBuilder withTxServer(String txServer, String txLog, FhirPublication txVersion) {
-      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, txServer, txLog, txVersion,timeTracker, canRunWithoutTerminologyServer, loggingService);
+      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, txServer, txLog, txVersion, timeTracker, canRunWithoutTerminologyServer, loggingService, THO);
     }
 
     public ValidationEngine fromNothing() throws IOException {
@@ -364,7 +368,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       }
       engine.setVersion(version);
       engine.setIgLoader(new IgLoader(engine.getPcm(), engine.getContext(), engine.getVersion(), engine.isDebug()));
-      loadTx(engine);
+      if (THO) {
+        loadTx(engine);
+      }
       return engine;
     }
 
@@ -423,7 +429,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       if (userAgent != null) {
         contextBuilder.withUserAgent(userAgent);
       }
-      context = contextBuilder.fromDefinitions(source, ValidatorUtils.loaderForVersion(version), new PackageVersion(src, new Date()));
+      context = contextBuilder.fromDefinitions(source, ValidatorUtils.loaderForVersion(version), new PackageInformation(src, new Date()));
       ValidatorUtils.grabNatives(getBinaries(), source, "http://hl7.org/fhir");
     }
     // ucum-essence.xml should be in the class path. if it's not, ask about how to sort this out 
@@ -1022,6 +1028,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         resolvedUrls.put(type+"|"+url, ok);
         return ok;
       } catch (Exception e) {
+        e.printStackTrace();
         resolvedUrls.put(type+"|"+url, false);
         return false;
       }

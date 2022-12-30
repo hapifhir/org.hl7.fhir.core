@@ -1,19 +1,15 @@
 package org.hl7.fhir.utilities.npm;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.net.URISyntaxException;
+
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PackageClientTest implements ResourceLoaderTests {
 
@@ -32,7 +28,7 @@ public class PackageClientTest implements ResourceLoaderTests {
   @Test
   @DisplayName("test getting package from JSON works")
   public void getPackageInfoFromJSONTest() throws java.io.IOException, URISyntaxException {
-    final JsonObject jsonObject = new Gson().fromJson(new InputStreamReader(getResourceAsInputStream("npm","PackageClient-baseTestCase.json")), JsonObject.class);
+    final JsonObject jsonObject = JsonParser.parseObject(getResourceAsInputStream("npm","PackageClient-baseTestCase.json"));
     final PackageInfo packageInfo = packageClient.getPackageInfoFromJSON(jsonObject, null, null, null);
 
     assertExpectedFields(packageInfo);
@@ -41,7 +37,7 @@ public class PackageClientTest implements ResourceLoaderTests {
   @Test
   @DisplayName("test getting package from JSON works")
   public void getPackageInfoWithIdFromJSONTest() throws java.io.IOException {
-    final JsonObject jsonObject = new Gson().fromJson(new InputStreamReader(getResourceAsInputStream("npm", "PackageClient-testCaseWithId.json")), JsonObject.class);
+    final JsonObject jsonObject = JsonParser.parseObject(getResourceAsInputStream("npm", "PackageClient-testCaseWithId.json"));
     final PackageInfo packageInfo = packageClient.getPackageInfoFromJSON(jsonObject, null, null, null);
 
     assertExpectedFields(packageInfo);

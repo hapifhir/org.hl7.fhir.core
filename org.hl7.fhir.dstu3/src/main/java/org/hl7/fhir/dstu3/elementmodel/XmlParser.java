@@ -62,6 +62,7 @@ import org.hl7.fhir.dstu3.utils.formats.XmlLocationData;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -283,7 +284,13 @@ public class XmlParser extends ParserBase {
     		Property property = getElementProp(properties, child.getLocalName());
     		if (property != null) {
     			if (!property.isChoice() && "xhtml".equals(property.getType())) {
-          	XhtmlNode xhtml = new XhtmlParser().setValidatorMode(true).parseHtmlNode((org.w3c.dom.Element) child);
+          	XhtmlParser xp = new XhtmlParser();
+            XhtmlNode xhtml = xp.parseHtmlNode((org.w3c.dom.Element) child);
+            if (policy == ValidationPolicy.EVERYTHING) {
+              for (StringPair s : xp.getValidationIssues()) {
+                logError(line(child), col(child), path, IssueType.INVALID, s.getName() + " "+s.getValue(), IssueSeverity.ERROR);                
+              }
+            }
 						context.getChildren().add(new Element("div", property, "xhtml", new XhtmlComposer(XhtmlComposer.XML).compose(xhtml)).setXhtml(xhtml).markLocation(line(child), col(child)));
     			} else {
     			  String npath = path+"/"+pathPrefix(child.getNamespaceURI())+child.getLocalName();

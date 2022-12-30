@@ -6,11 +6,9 @@ import java.io.IOException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.json.JsonTrackingParser;
-
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import org.hl7.fhir.utilities.json.model.JsonArray;
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
 
 /**
  * This class builds the .index.json for a package 
@@ -20,12 +18,13 @@ import com.google.gson.JsonObject;
  */
 public class NpmPackageIndexBuilder {
   
+  public static final Integer CURRENT_INDEX_VERSION = 2;
   private JsonObject index;
   private JsonArray files;
   
   public void start() {
     index = new JsonObject();
-    index.addProperty("index-version", 1);
+    index.add("index-version", CURRENT_INDEX_VERSION);
     files = new JsonArray();
     index.add("files", files);
   }
@@ -33,30 +32,33 @@ public class NpmPackageIndexBuilder {
   public boolean seeFile(String name, byte[] content) {
     if (name.endsWith(".json")) {
       try {
-        JsonObject json = JsonTrackingParser.parseJson(content);
+        JsonObject json = JsonParser.parseObject(content);
         if (json.has("resourceType")) {
           // ok we treat it as a resource
           JsonObject fi = new JsonObject();
           files.add(fi);
-          fi.addProperty("filename", name);
-          fi.addProperty("resourceType", json.get("resourceType").getAsString()); 
-          if (json.has("id") && json.get("id").isJsonPrimitive()) {
-            fi.addProperty("id", json.get("id").getAsString());
+          fi.add("filename", name);
+          fi.add("resourceType", json.asString("resourceType")); 
+          if (json.hasPrimitive("id")) {
+            fi.add("id", json.asString("id"));
           }
-          if (json.has("url") && json.get("url").isJsonPrimitive()) {
-            fi.addProperty("url", json.get("url").getAsString());
+          if (json.hasPrimitive("url")) {
+            fi.add("url", json.asString("url"));
           }
-          if (json.has("version") && json.get("version").isJsonPrimitive()) {
-            fi.addProperty("version", json.get("version").getAsString());
+          if (json.hasPrimitive("version")) {
+            fi.add("version", json.asString("version"));
           }
-          if (json.has("kind") && json.get("kind").isJsonPrimitive()) {
-            fi.addProperty("kind", json.get("kind").getAsString());
+          if (json.hasPrimitive("kind")) {
+            fi.add("kind", json.asString("kind"));
           }
-          if (json.has("type") && json.get("type").isJsonPrimitive()) {
-            fi.addProperty("type", json.get("type").getAsString());
+          if (json.hasPrimitive("type")) {
+            fi.add("type", json.asString("type"));
           }
-          if (json.has("supplements") && json.get("supplements").isJsonPrimitive()) {
-            fi.addProperty("supplements", json.get("supplements").getAsString());
+          if (json.hasPrimitive("supplements")) {
+            fi.add("supplements", json.asString("supplements"));
+          }
+          if (json.hasPrimitive("content")) {
+            fi.add("content", json.asString("content"));
           }
         }
       } catch (Exception e) {
@@ -70,7 +72,7 @@ public class NpmPackageIndexBuilder {
   }
   
   public String build() {
-    String res = new GsonBuilder().setPrettyPrinting().create().toJson(index);
+    String res = JsonParser.compose(index, true);
     index = null;
     files = null;
     return res;

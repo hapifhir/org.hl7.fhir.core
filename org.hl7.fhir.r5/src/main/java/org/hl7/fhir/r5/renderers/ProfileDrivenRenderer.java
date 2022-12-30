@@ -430,7 +430,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
         renderContactPoint(x, c);
       }
     } else if (e instanceof UriType) {
-      renderUri(x, (UriType) e, defn.getPath(), rcontext != null && rcontext.getResource() != null ? rcontext.getResource().getId() : null);
+      renderUri(x, (UriType) e, defn.getPath(), rcontext != null && rcontext.getResource() != null ? rcontext.getResource().getId() : null, res.getResource());
     } else if (e instanceof Timing) {
       renderTiming(x, (Timing) e);
     } else if (e instanceof Range) {
@@ -790,12 +790,19 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     if ("DomainResource.contained".equals(child.getBase().getPath())) {
       if (round2) {
         for (BaseWrapper v : p.getValues()) {
-          if (!RendererFactory.hasSpecificRenderer(v.fhirType())) {
+          if (v.getBase() != null && !RendererFactory.hasSpecificRenderer(v.fhirType())) {
             x.hr();
             RenderingContext ctxt = context.copy();
             ctxt.setContained(true);
             ResourceRenderer rnd = RendererFactory.factory(v.fhirType(), ctxt);
-            ResourceWrapper rw = new ElementWrappers.ResourceWrapperMetaElement(ctxt, (org.hl7.fhir.r5.elementmodel.Element) v.getBase());
+            ResourceWrapper rw = null;
+            if (v.getBase() instanceof org.hl7.fhir.r5.elementmodel.Element) {
+              rw = new ElementWrappers.ResourceWrapperMetaElement(ctxt, (org.hl7.fhir.r5.elementmodel.Element) v.getBase());
+            } else if (v.getBase() instanceof Resource){
+              rw = new DirectWrappers.ResourceWrapperDirect(ctxt,  (Resource) v.getBase());
+            } else {
+              throw new FHIRException("Not handled: base = "+v.getBase().getClass().getName()); 
+            }
             rnd.render(x.blockquote(), rw);
           }
         }

@@ -61,8 +61,8 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
-import org.hl7.fhir.r5.conformance.ProfileUtilities.SourcedChildDefinitions;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.SourcedChildDefinitions;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
@@ -172,6 +172,7 @@ import org.hl7.fhir.utilities.Utilities.DecimalStatus;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.VersionUtilities.VersionURLInfo;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -198,9 +199,6 @@ import org.hl7.fhir.validation.instance.utils.ResolvedReference;
 import org.hl7.fhir.validation.instance.utils.ResourceValidationTracker;
 import org.hl7.fhir.validation.instance.utils.ValidatorHostContext;
 import org.w3c.dom.Document;
-
-import com.google.gson.JsonObject;
-
 
 /**
  * Thinking of using this in a java program? Don't!
@@ -429,6 +427,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean wantCheckSnapshotUnchanged;
   private boolean noUnicodeBiDiControlChars;
   private HtmlInMarkdownCheck htmlInMarkdownCheck;
+  private boolean allowComments;
  
   private List<ImplementationGuide> igs = new ArrayList<>();
   private List<String> extensionDomains = new ArrayList<String>();
@@ -580,6 +579,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     this.allowExamples = value;
   }
 
+  public boolean isAllowComments() {
+    return allowComments;
+  }
+
+  public void setAllowComments(boolean allowComments) {
+    this.allowComments = allowComments;
+  }
+
   public boolean isCrumbTrails() {
     return crumbTrails;
   }
@@ -622,13 +629,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (bpWarnings != null) {
       switch (bpWarnings) {
         case Error:
-          rule(errors, invalid, line, col, literalPath, test, message, theMessageArguments);
+          rule(errors, NO_RULE_DATE, invalid, line, col, literalPath, test, message, theMessageArguments);
           return test;
         case Warning:
-          warning(errors, invalid, line, col, literalPath, test, message, theMessageArguments);
+          warning(errors, NO_RULE_DATE, invalid, line, col, literalPath, test, message, theMessageArguments);
           return true;
         case Hint:
-          hint(errors, invalid, line, col, literalPath, test, message, theMessageArguments);
+          hint(errors, NO_RULE_DATE, invalid, line, col, literalPath, test, message, theMessageArguments);
           return true;
         default: // do nothing
           break;
@@ -669,7 +676,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     if (logicals.size() > 0) {
-      if (rulePlural(errors, IssueType.BUSINESSRULE, "Configuration", logicals.size() == 1, logicals.size(), I18nConstants.MULTIPLE_LOGICAL_MODELS, ResourceUtilities.listUrls(logicals))) {
+      if (rulePlural(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, "Configuration", logicals.size() == 1, logicals.size(), I18nConstants.MULTIPLE_LOGICAL_MODELS, ResourceUtilities.listUrls(logicals))) {
         parser.setLogical(logicals.get(0));              
       }
     }
@@ -677,6 +684,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       ((XmlParser) parser).setAllowXsiLocation(allowXsiLocation);
     }
     parser.setupValidation(ValidationPolicy.EVERYTHING, errors);
+    if (parser instanceof XmlParser) {
+      ((XmlParser) parser).setAllowXsiLocation(allowXsiLocation);
+    }
+    if (parser instanceof JsonParser) {
+      ((JsonParser) parser).setAllowComments(allowComments);
+    }
     long t = System.nanoTime();
     List<NamedElement> list = null;
     try {
@@ -690,7 +703,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (url != null) {
         StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
         if (sd == null) {
-          rule(errors, IssueType.NOTFOUND, "Payload", false, "Implied profile "+url+" not known to validator");          
+          rule(errors, NO_RULE_DATE, IssueType.NOTFOUND, "Payload", false, "Implied profile "+url+" not known to validator");          
         } else {
           profiles.add(sd);
         }
@@ -851,9 +864,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         StructureDefinition sd = profiles.get(i);
         if (sd.hasExtension(ToolingExtensions.EXT_SD_DEPENDENCY)) {
           for (Extension ext : sd.getExtensionsByUrl(ToolingExtensions.EXT_SD_DEPENDENCY)) {
-            StructureDefinition dep = context.fetchResource( StructureDefinition.class, ext.getValue().primitiveValue());
+            StructureDefinition dep = context.fetchResource( StructureDefinition.class, ext.getValue().primitiveValue(), sd);
             if (dep == null) {
-              warning(errors, IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_DEPENDS_NOT_RESOLVED, ext.getValue().primitiveValue(), sd.getVersionedUrl());                
+              warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_DEPENDS_NOT_RESOLVED, ext.getValue().primitiveValue(), sd.getVersionedUrl());                
             } else if (!profiles.contains(dep)) {
               profiles.add(dep);
             }
@@ -878,7 +891,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private void checkElementUsage(List<ValidationMessage> errors, Element element, NodeStack stack) {
     String elementUsage = element.getUserString("elementSupported");
-    hint(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), elementUsage == null || elementUsage.equals("Y"), I18nConstants.MUSTSUPPORT_VAL_MUSTSUPPORT, element.getName(), element.getProperty().getStructure().getVersionedUrl());
+    hint(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), elementUsage == null || elementUsage.equals("Y"), I18nConstants.MUSTSUPPORT_VAL_MUSTSUPPORT, element.getName(), element.getProperty().getStructure().getVersionedUrl());
 
     if (element.hasChildren()) {
       String prevName = "";
@@ -914,7 +927,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     
     if (pattern) {
       lineSizeCheck = lines.size() >= fixed.getLine().size();
-      if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, lineSizeCheck, I18nConstants.FIXED_TYPE_CHECKS_DT_ADDRESS_LINE, Integer.toString(fixed.getLine().size()),
+      if (rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, lineSizeCheck, I18nConstants.FIXED_TYPE_CHECKS_DT_ADDRESS_LINE, Integer.toString(fixed.getLine().size()),
         Integer.toString(lines.size()))) {
         for (int i = 0; i < fixed.getLine().size(); i++) {
           StringType fixedLine = fixed.getLine().get(i);
@@ -931,13 +944,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             }
           }
           if (!found) {
-            ok = rule(errorsFixed, IssueType.VALUE, focus.line(), focus.col(), path, false, I18nConstants.PATTERN_CHECK_STRING, fixedLine.getValue(), fixedSource, allErrorsFixed) && ok;
+            ok = rule(errorsFixed, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, false, I18nConstants.PATTERN_CHECK_STRING, fixedLine.getValue(), fixedSource, allErrorsFixed) && ok;
           }
         }
       }
     } else if (!pattern) {
       lineSizeCheck = lines.size() == fixed.getLine().size();
-      if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, lineSizeCheck, I18nConstants.FIXED_TYPE_CHECKS_DT_ADDRESS_LINE,
+      if (rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, lineSizeCheck, I18nConstants.FIXED_TYPE_CHECKS_DT_ADDRESS_LINE,
         Integer.toString(fixed.getLine().size()), Integer.toString(lines.size()))) {
         for (int i = 0; i < lines.size(); i++) {
           ok = checkFixedValue(errors, path + ".line", lines.get(i), fixed.getLine().get(i), fixedSource, "line", focus, pattern) && ok;
@@ -973,20 +986,20 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         return true;
       if (s.isOk()) {
         if (s.getMessage() != null)
-          txWarning(errors, s.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, s == null, I18nConstants.TERMINOLOGY_PASSTHROUGH_TX_MESSAGE, s.getMessage(), system, code);
+          txWarning(errors, NO_RULE_DATE, s.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, s == null, I18nConstants.TERMINOLOGY_PASSTHROUGH_TX_MESSAGE, s.getMessage(), system, code);
         return true;
       }
       if (s.getErrorClass() != null && s.getErrorClass().isInfrastructure())
-        txWarning(errors, s.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, s == null, s.getMessage());
+        txWarning(errors, NO_RULE_DATE, s.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, s == null, s.getMessage());
       else if (s.getSeverity() == IssueSeverity.INFORMATION)
-        txHint(errors, s.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, s == null, s.getMessage());
+        txHint(errors, NO_RULE_DATE, s.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, s == null, s.getMessage());
       else if (s.getSeverity() == IssueSeverity.WARNING)
-        txWarning(errors, s.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, s == null, s.getMessage());
+        txWarning(errors, NO_RULE_DATE, s.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, s == null, s.getMessage());
       else
-        return txRule(errors, s.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, s == null, I18nConstants.TERMINOLOGY_PASSTHROUGH_TX_MESSAGE, s.getMessage(), system, code);
+        return txRule(errors, NO_RULE_DATE, s.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, s == null, I18nConstants.TERMINOLOGY_PASSTHROUGH_TX_MESSAGE, s.getMessage(), system, code);
       return true;
     } else if (system.startsWith("http://build.fhir.org") || system.startsWith("https://build.fhir.org")) {
-      rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_SYSTEM_WRONG_BUILD, system, suggestSystemForBuild(system));        
+      rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_SYSTEM_WRONG_BUILD, system, suggestSystemForBuild(system));        
       return false;
     } else if (system.startsWith("http://hl7.org/fhir") || system.startsWith("https://hl7.org/fhir") || system.startsWith("http://www.hl7.org/fhir") || system.startsWith("https://www.hl7.org/fhir")) {
       if (SIDUtilities.isknownCodeSystem(system)) {
@@ -994,26 +1007,26 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } else if (system.startsWith("http://hl7.org/fhir/test")) {
         return true; // we don't validate these
       } else if (system.endsWith(".html")) {
-        rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_SYSTEM_WRONG_HTML, system, suggestSystemForPage(system));        
+        rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_SYSTEM_WRONG_HTML, system, suggestSystemForPage(system));        
         return false;
       } else {
         CodeSystem cs = getCodeSystem(system);
-        if (rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, cs != null, I18nConstants.TERMINOLOGY_TX_SYSTEM_UNKNOWN, system)) {
+        if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, cs != null, I18nConstants.TERMINOLOGY_TX_SYSTEM_UNKNOWN, system)) {
           ConceptDefinitionComponent def = getCodeDefinition(cs, code);
-          if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, def != null, I18nConstants.TERMINOLOGY_TX_CODE_UNKNOWN, system, code))
-            return warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, display == null || display.equals(def.getDisplay()), I18nConstants.TERMINOLOGY_TX_DISPLAY_WRONG, def.getDisplay());
+          if (warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, def != null, I18nConstants.TERMINOLOGY_TX_CODE_UNKNOWN, system, code))
+            return warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, display == null || display.equals(def.getDisplay()), I18nConstants.TERMINOLOGY_TX_DISPLAY_WRONG, def.getDisplay());
         }
         return false;
       }
     } else if (context.isNoTerminologyServer() && Utilities.existsInList(system, "http://loinc.org", "http://unitsofmeasure.org", "http://hl7.org/fhir/sid/icd-9-cm", "http://snomed.info/sct", "http://www.nlm.nih.gov/research/umls/rxnorm")) {
       return true; // no checks in this case
     } else if (startsWithButIsNot(system, "http://snomed.info/sct", "http://loinc.org", "http://unitsofmeasure.org", "http://www.nlm.nih.gov/research/umls/rxnorm")) {
-      rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_SYSTEM_INVALID, system);
+      rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_SYSTEM_INVALID, system);
       return false;
     } else {
       try {
-        if (context.fetchResourceWithException(ValueSet.class, system) != null) {
-          rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_SYSTEM_VALUESET, system);
+        if (context.fetchResourceWithException(ValueSet.class, system, element.getProperty().getStructure()) != null) {
+          rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_SYSTEM_VALUESET, system);
           // Lloyd: This error used to prohibit checking for downstream issues, but there are some cases where that checking needs to occur.  Please talk to me before changing the code back.
         }
         boolean done = false;
@@ -1021,12 +1034,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           String ns = "http:"+system.substring(6);
           CodeSystem cs = getCodeSystem(ns);
           if (cs != null || Utilities.existsInList(system, "https://loinc.org", "https://unitsofmeasure.org", "https://snomed.info/sct", "https://www.nlm.nih.gov/research/umls/rxnorm")) {
-            rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_SYSTEM_HTTPS, system);
+            rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_SYSTEM_HTTPS, system);
             done = true;
           }           
         } 
         if (!isAllowExamples() || !Utilities.startsWithInList(system, "http://example.org", "https://example.org")) {
-          hint(errors, IssueType.UNKNOWN, element.line(), element.col(), path, done, I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, system);
+          hint(errors, NO_RULE_DATE, IssueType.UNKNOWN, element.line(), element.col(), path, done, I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, system);
         }
         return true;
       } catch (Exception e) {
@@ -1113,7 +1126,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     List<Element> codings = new ArrayList<Element>();
     focus.getNamedChildren("coding", codings);
     if (pattern) {
-      if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, codings.size() >= fixed.getCoding().size(), I18nConstants.TERMINOLOGY_TX_CODING_COUNT, Integer.toString(fixed.getCoding().size()), Integer.toString(codings.size()))) {
+      if (rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, codings.size() >= fixed.getCoding().size(), I18nConstants.TERMINOLOGY_TX_CODING_COUNT, Integer.toString(fixed.getCoding().size()), Integer.toString(codings.size()))) {
         for (int i = 0; i < fixed.getCoding().size(); i++) {
           Coding fixedCoding = fixed.getCoding().get(i);
           boolean found = false;
@@ -1148,12 +1161,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 //            TYPE_CHECKS_FIXED_CC_US = The pattern [system {0}, code {1}, display "{2}" and userSelected {5}] defined in the profile {3} not found. Issues: {4} 
 
             if (fixedCoding.hasUserSelected()) {
-              ok = rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, false, pattern ? I18nConstants.TYPE_CHECKS_PATTERN_CC_US : I18nConstants.TYPE_CHECKS_FIXED_CC_US, 
+              ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, false, pattern ? I18nConstants.TYPE_CHECKS_PATTERN_CC_US : I18nConstants.TYPE_CHECKS_FIXED_CC_US, 
                   fixedCoding.getSystemElement().asStringValue(), fixedCoding.getCodeElement().asStringValue(), fixedCoding.getDisplayElement().asStringValue(),
                   fixedSource, allErrorsFixed, fixedCoding.getUserSelected()) && ok;
               
             } else {
-              ok = rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, false, pattern ? I18nConstants.TYPE_CHECKS_PATTERN_CC : I18nConstants.TYPE_CHECKS_FIXED_CC, 
+              ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, false, pattern ? I18nConstants.TYPE_CHECKS_PATTERN_CC : I18nConstants.TYPE_CHECKS_FIXED_CC, 
                   fixedCoding.getSystemElement().asStringValue(), fixedCoding.getCodeElement().asStringValue(), fixedCoding.getDisplayElement().asStringValue(),
                   fixedSource, allErrorsFixed) && ok;
             }
@@ -1163,7 +1176,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         ok = false;
       }      
     } else {
-      if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, codings.size() == fixed.getCoding().size(), I18nConstants.TERMINOLOGY_TX_CODING_COUNT, Integer.toString(fixed.getCoding().size()), Integer.toString(codings.size()))) {
+      if (rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, codings.size() == fixed.getCoding().size(), I18nConstants.TERMINOLOGY_TX_CODING_COUNT, Integer.toString(fixed.getCoding().size()), Integer.toString(codings.size()))) {
         for (int i = 0; i < codings.size(); i++)
           ok = checkFixedValue(errors, path + ".coding", codings.get(i), fixed.getCoding().get(i), fixedSource, "coding", focus, false) && ok;
       } else {
@@ -1177,25 +1190,25 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     boolean res = true;
     if (!noTerminologyChecks && theElementCntext != null && theElementCntext.hasBinding()) {
       ElementDefinitionBindingComponent binding = theElementCntext.getBinding();
-      if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, I18nConstants.TERMINOLOGY_TX_BINDING_MISSING, path)) {
+      if (warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, I18nConstants.TERMINOLOGY_TX_BINDING_MISSING, path)) {
         if (binding.hasValueSet()) {
-          ValueSet valueset = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl());
+          ValueSet valueset = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl(), profile);
           if (valueset == null) {
             CodeSystem cs = context.fetchCodeSystem(binding.getValueSet());
-            if (rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(binding.getValueSet()))) {
-              warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(binding.getValueSet()));
+            if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(binding.getValueSet()))) {
+              warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(binding.getValueSet()));
             }
           } else {
             try {
               CodeableConcept cc = ObjectConverter.readAsCodeableConcept(element);
               if (!cc.hasCoding()) {
                 if (binding.getStrength() == BindingStrength.REQUIRED)
-                  rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CODE_VALUESET, describeReference(binding.getValueSet(), valueset));
+                  rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CODE_VALUESET, describeReference(binding.getValueSet(), valueset));
                 else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
                   if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET))
-                    rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CODE_VALUESETMAX, describeReference(ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MAX_VALUESET)), valueset.getVersionedUrl());
+                    rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CODE_VALUESETMAX, describeReference(ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MAX_VALUESET)), valueset.getVersionedUrl());
                   else
-                    warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CODE_VALUESET_EXT, describeReference(binding.getValueSet(), valueset));
+                    warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CODE_VALUESET_EXT, describeReference(binding.getValueSet(), valueset));
                 }
               } else {
                 long t = System.nanoTime();
@@ -1223,40 +1236,40 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                       bindingsOk = false;
                       if (vr.getErrorClass() != null && vr.getErrorClass() == TerminologyServiceErrorClass.NOSERVICE) { 
                         if (binding.getStrength() == BindingStrength.REQUIRED || (binding.getStrength() == BindingStrength.EXTENSIBLE && binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET))) {
-                          txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOSVC_BOUND_REQ, describeReference(binding.getValueSet()));
+                          txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOSVC_BOUND_REQ, describeReference(binding.getValueSet()));
                         } else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
-                          txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOSVC_BOUND_EXT, describeReference(binding.getValueSet()));
+                          txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOSVC_BOUND_EXT, describeReference(binding.getValueSet()));
                         }
                       } else if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure()) {
                         if (binding.getStrength() == BindingStrength.REQUIRED)
-                          txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_1_CC, describeReference(binding.getValueSet()), vr.getErrorClass().toString());
+                          txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_1_CC, describeReference(binding.getValueSet()), vr.getErrorClass().toString());
                         else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
                           if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET))
                             checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MAX_VALUESET), cc, stack);
                           else if (!noExtensibleWarnings)
-                            txWarningForLaterRemoval(element, errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_2_CC, describeReference(binding.getValueSet()), vr.getErrorClass().toString());
+                            txWarningForLaterRemoval(element, errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_2_CC, describeReference(binding.getValueSet()), vr.getErrorClass().toString());
                         } else if (binding.getStrength() == BindingStrength.PREFERRED) {
                           if (baseOnly) {
-                            txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_3_CC, describeReference(binding.getValueSet()), vr.getErrorClass().toString());
+                            txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_3_CC, describeReference(binding.getValueSet()), vr.getErrorClass().toString());
                           }
                         }
                       } else {
                         if (binding.getStrength() == BindingStrength.REQUIRED) {
-                          txRule(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_1_CC, describeReference(binding.getValueSet(), valueset), ccSummary(cc));
+                          txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_1_CC, describeReference(binding.getValueSet(), valueset), ccSummary(cc));
                         } else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
                           if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET))
                             checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MAX_VALUESET), cc, stack);
                           if (!noExtensibleWarnings)
-                            txWarningForLaterRemoval(element, errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_2_CC, describeReference(binding.getValueSet(), valueset), ccSummary(cc));
+                            txWarningForLaterRemoval(element, errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_2_CC, describeReference(binding.getValueSet(), valueset), ccSummary(cc));
                         } else if (binding.getStrength() == BindingStrength.PREFERRED) {
                           if (baseOnly) {
-                            txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_3_CC, describeReference(binding.getValueSet(), valueset), ccSummary(cc));
+                            txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_3_CC, describeReference(binding.getValueSet(), valueset), ccSummary(cc));
                           }
                         }
                       }
                     } else if (vr.getMessage() != null) {
                       res = false;
-                      txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
+                      txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
                     } else {
                       if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
                         removeTrackedMessagesForLocation(errors, element, path);
@@ -1276,13 +1289,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               }
             } catch (Exception e) {
               if (STACK_TRACE) e.printStackTrace();
-              warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODEABLECONCEPT, e.getMessage());
+              warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODEABLECONCEPT, e.getMessage());
             }
           }
         } else if (binding.hasValueSet()) {
-          hint(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_CANTCHECK);
+          hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_CANTCHECK);
         } else if (!noBindingMsgSuppressed) {
-          hint(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE, path);
+          hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE, path);
         }
       }
     }
@@ -1294,11 +1307,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       ValidationResult vr = checkCodeOnServer(stack, valueset, nextCoding, false);
       if (vr.getSeverity() != null/* && vr.hasMessage()*/) {
         if (vr.getSeverity() == IssueSeverity.INFORMATION) {
-          txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
+          txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
         } else if (vr.getSeverity() == IssueSeverity.WARNING) {
-          txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
+          txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
         } else {
-          txRule(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
+          txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
         }
       }
     }
@@ -1309,25 +1322,25 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     boolean res = true;
     if (!noTerminologyChecks && theElementCntext != null && theElementCntext.hasBinding()) {
       ElementDefinitionBindingComponent binding = theElementCntext.getBinding();
-      if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, I18nConstants.TERMINOLOGY_TX_BINDING_MISSING, path)) {
+      if (warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, I18nConstants.TERMINOLOGY_TX_BINDING_MISSING, path)) {
         if (binding.hasValueSet()) {
-          ValueSet valueset = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl());
+          ValueSet valueset = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl(), profile);
           if (valueset == null) {
             CodeSystem cs = context.fetchCodeSystem(binding.getValueSet());
-            if (rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(binding.getValueSet()))) {
-              warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(binding.getValueSet()));
+            if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(binding.getValueSet()))) {
+              warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(binding.getValueSet()));
             }
           } else {
             try {
               CodeableConcept cc = convertToCodeableConcept(element, logical);
               if (!cc.hasCoding()) {
                 if (binding.getStrength() == BindingStrength.REQUIRED)
-                  rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, "No code provided, and a code is required from the value set " + describeReference(binding.getValueSet()) + " (" + valueset.getVersionedUrl());
+                  rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, "No code provided, and a code is required from the value set " + describeReference(binding.getValueSet()) + " (" + valueset.getVersionedUrl());
                 else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
                   if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET))
-                    rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CODE_VALUESETMAX, describeReference(ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MAX_VALUESET)), valueset.getVersionedUrl());
+                    rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CODE_VALUESETMAX, describeReference(ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MAX_VALUESET)), valueset.getVersionedUrl());
                   else
-                    warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CODE_VALUESET_EXT, describeReference(binding.getValueSet(), valueset));
+                    warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CODE_VALUESET_EXT, describeReference(binding.getValueSet(), valueset));
                 }
               } else {
                 long t = System.nanoTime();
@@ -1356,34 +1369,34 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                       bindingsOk = false;
                       if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure()) {
                         if (binding.getStrength() == BindingStrength.REQUIRED)
-                          txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_1_CC, describeReference(binding.getValueSet()), vr.getErrorClass().toString());
+                          txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_1_CC, describeReference(binding.getValueSet()), vr.getErrorClass().toString());
                         else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
                           if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET))
                             checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MAX_VALUESET), cc, stack);
                           else if (!noExtensibleWarnings)
-                            txWarningForLaterRemoval(element, errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_2_CC, describeReference(binding.getValueSet()), vr.getErrorClass().toString());
+                            txWarningForLaterRemoval(element, errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_2_CC, describeReference(binding.getValueSet()), vr.getErrorClass().toString());
                         } else if (binding.getStrength() == BindingStrength.PREFERRED) {
                           if (baseOnly) {
-                            txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_3_CC, describeReference(binding.getValueSet()), vr.getErrorClass().toString());
+                            txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_3_CC, describeReference(binding.getValueSet()), vr.getErrorClass().toString());
                           }
                         }
                       } else {
                         if (binding.getStrength() == BindingStrength.REQUIRED)
-                          txRule(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_1_CC, describeReference(binding.getValueSet()), valueset, ccSummary(cc));
+                          txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_1_CC, describeReference(binding.getValueSet()), valueset, ccSummary(cc));
                         else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
                           if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET))
                             checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MAX_VALUESET), cc, stack);
                           if (!noExtensibleWarnings)
-                            txWarningForLaterRemoval(element, errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_2_CC, describeReference(binding.getValueSet(), valueset), ccSummary(cc));
+                            txWarningForLaterRemoval(element, errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_2_CC, describeReference(binding.getValueSet(), valueset), ccSummary(cc));
                         } else if (binding.getStrength() == BindingStrength.PREFERRED) {
                           if (baseOnly) {
-                            txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_3_CC, describeReference(binding.getValueSet(), valueset), ccSummary(cc));
+                            txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_3_CC, describeReference(binding.getValueSet(), valueset), ccSummary(cc));
                           }
                         }
                       }
                     } else if (vr.getMessage() != null) {
                       res = false;
-                      txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
+                      txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
                     } else {
                       res = false;
                     }
@@ -1398,7 +1411,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                       if (isNotBlank(nextCode) && isNotBlank(nextSystem) && context.supportsSystem(nextSystem)) {
                         ValidationResult vr = checkCodeOnServer(stack, nextCode, nextSystem, nextVersion, null, false);
                         if (!vr.isOk()) {
-                          txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CODE_NOTVALID, nextCode, nextSystem);
+                          txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CODE_NOTVALID, nextCode, nextSystem);
                         }
                       }
                     }
@@ -1408,7 +1421,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               }
             } catch (Exception e) {
               if (STACK_TRACE) e.printStackTrace();
-              warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODEABLECONCEPT, e.getMessage());
+              warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODEABLECONCEPT, e.getMessage());
             }
             // special case: if the logical model has both CodeableConcept and Coding mappings, we'll also check the first coding.
             if (getMapping("http://hl7.org/fhir/terminology-pattern", logical, logical.getSnapshot().getElementFirstRep()).contains("Coding")) {
@@ -1416,9 +1429,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             }
           }
         } else if (binding.hasValueSet()) {
-          hint(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_CANTCHECK);
+          hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_CANTCHECK);
         } else if (!noBindingMsgSuppressed) {
-          hint(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE, path);
+          hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE, path);
         }
       }
     }
@@ -1432,21 +1445,21 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     String system = c.getSystem();
     String display = c.getDisplay();
     String version = c.getVersion();
-    ok = rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, system == null || isCodeSystemReferenceValid(system), I18nConstants.TERMINOLOGY_TX_SYSTEM_RELATIVE) && ok;
+    ok = rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, system == null || isCodeSystemReferenceValid(system), I18nConstants.TERMINOLOGY_TX_SYSTEM_RELATIVE) && ok;
 
     if (system != null && code != null && !noTerminologyChecks) {
-      ok = rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, !isValueSet(system), I18nConstants.TERMINOLOGY_TX_SYSTEM_VALUESET2, system) && ok;
+      ok = rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, !isValueSet(system), I18nConstants.TERMINOLOGY_TX_SYSTEM_VALUESET2, system) && ok;
       try {
         if (checkCode(errors, element, path, code, system, version, display, checkDisplay, stack)) {
           if (theElementCntext != null && theElementCntext.hasBinding()) {
             ElementDefinitionBindingComponent binding = theElementCntext.getBinding();
-            if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, I18nConstants.TERMINOLOGY_TX_BINDING_MISSING2, path)) {
+            if (warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, I18nConstants.TERMINOLOGY_TX_BINDING_MISSING2, path)) {
               if (binding.hasValueSet()) {
-                ValueSet valueset = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl());
+                ValueSet valueset = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl(), profile);
                 if (valueset == null) {
                   CodeSystem cs = context.fetchCodeSystem(binding.getValueSet());
-                  if (rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(binding.getValueSet()))) {
-                    warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(binding.getValueSet()));
+                  if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(binding.getValueSet()))) {
+                    warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(binding.getValueSet()));
                   } else {
                     ok = false;
                   }
@@ -1464,42 +1477,42 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                     timeTracker.tx(t, "vc "+system+"#"+code+" '"+display+"'");
                     if (vr != null && !vr.isOk()) {
                       if (vr.IsNoService())
-                        txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSERVER);
+                        txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSERVER);
                       else if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure()) {
                         if (binding.getStrength() == BindingStrength.REQUIRED)
-                          txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_4a, describeReference(binding.getValueSet(), valueset), vr.getMessage(), system+"#"+code);
+                          txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_4a, describeReference(binding.getValueSet(), valueset), vr.getMessage(), system+"#"+code);
                         else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
                           if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET))
                             checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MAX_VALUESET), c, stack);
                           else if (!noExtensibleWarnings)
-                            txWarningForLaterRemoval(element, errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_5, describeReference(binding.getValueSet(), valueset));
+                            txWarningForLaterRemoval(element, errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_5, describeReference(binding.getValueSet(), valueset));
                         } else if (binding.getStrength() == BindingStrength.PREFERRED) {
                           if (baseOnly) {
-                            txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_6, describeReference(binding.getValueSet(), valueset));
+                            txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_6, describeReference(binding.getValueSet(), valueset));
                           }
                         }
                       } else if (binding.getStrength() == BindingStrength.REQUIRED)
-                        ok= txRule(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_4, describeReference(binding.getValueSet(), valueset), (vr.getMessage() != null ? " (error message = " + vr.getMessage() + ")" : ""), system+"#"+code) && ok;
+                        ok= txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_4, describeReference(binding.getValueSet(), valueset), (vr.getMessage() != null ? " (error message = " + vr.getMessage() + ")" : ""), system+"#"+code) && ok;
                       else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
                         if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET))
                           ok = checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MAX_VALUESET), c, stack) && ok;
                         else
-                          txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_5, describeReference(binding.getValueSet(), valueset), (vr.getMessage() != null ? " (error message = " + vr.getMessage() + ")" : ""), system+"#"+code);
+                          txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_5, describeReference(binding.getValueSet(), valueset), (vr.getMessage() != null ? " (error message = " + vr.getMessage() + ")" : ""), system+"#"+code);
                       } else if (binding.getStrength() == BindingStrength.PREFERRED) {
                         if (baseOnly) {
-                          txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_6, describeReference(binding.getValueSet(), valueset), (vr.getMessage() != null ? " (error message = " + vr.getMessage() + ")" : ""), system+"#"+code);
+                          txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_6, describeReference(binding.getValueSet(), valueset), (vr.getMessage() != null ? " (error message = " + vr.getMessage() + ")" : ""), system+"#"+code);
                         }
                       }
                     }
                   } catch (Exception e) {
                     if (STACK_TRACE) e.printStackTrace();
-                    warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODING1, e.getMessage());
+                    warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODING1, e.getMessage());
                   }
                 }
               } else if (binding.hasValueSet()) {
-                hint(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_CANTCHECK);
+                hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_CANTCHECK);
               } else if (!inCodeableConcept && !noBindingMsgSuppressed) {
-                hint(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE, path);
+                hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE, path);
               }
             }
           }
@@ -1508,7 +1521,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       } catch (Exception e) {
         if (STACK_TRACE) e.printStackTrace();
-        rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODING2, e.getMessage(), e.toString());
+        rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODING2, e.getMessage(), e.toString());
         ok = false;
       }
     }
@@ -1587,11 +1600,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private void checkMaxValueSet(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, String maxVSUrl, CodeableConcept cc, NodeStack stack) {
-    ValueSet valueset = resolveBindingReference(profile, maxVSUrl, profile.getUrl());
+    ValueSet valueset = resolveBindingReference(profile, maxVSUrl, profile.getUrl(), profile);
     if (valueset == null) {
       CodeSystem cs = context.fetchCodeSystem(maxVSUrl);
-      if (rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(maxVSUrl))) {
-        warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(maxVSUrl));
+      if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(maxVSUrl))) {
+        warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(maxVSUrl));
       }
     } else {
       try {
@@ -1600,13 +1613,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         timeTracker.tx(t, "vc "+cc.toString());
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
-            txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_7, describeReference(maxVSUrl, valueset), vr.getMessage());
+            txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_7, describeReference(maxVSUrl, valueset), vr.getMessage());
           else
-            txRule(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_8, describeReference(maxVSUrl, valueset), ccSummary(cc));
+            txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_8, describeReference(maxVSUrl, valueset), ccSummary(cc));
         }
       } catch (Exception e) {
         if (STACK_TRACE) e.printStackTrace();
-        warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODEABLECONCEPT_MAX, e.getMessage());
+        warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODEABLECONCEPT_MAX, e.getMessage());
       }
     }
   }
@@ -1622,11 +1635,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean checkMaxValueSet(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, String maxVSUrl, Coding c, NodeStack stack) {
     boolean ok = true;
-    ValueSet valueset = resolveBindingReference(profile, maxVSUrl, profile.getUrl());
+    ValueSet valueset = resolveBindingReference(profile, maxVSUrl, profile.getUrl(), profile);
     if (valueset == null) {
       CodeSystem cs = context.fetchCodeSystem(maxVSUrl);
-      if (rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(maxVSUrl))) {
-        warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(maxVSUrl));
+      if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(maxVSUrl))) {
+        warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(maxVSUrl));
       } else {
         ok = false;
       }
@@ -1637,13 +1650,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         timeTracker.tx(t, "vc "+c.getSystem()+"#"+c.getCode()+" '"+c.getDisplay()+"'");
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
-            txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_9, describeReference(maxVSUrl, valueset), vr.getMessage());
+            txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_9, describeReference(maxVSUrl, valueset), vr.getMessage());
           else
-            ok = txRule(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_10, describeReference(maxVSUrl, valueset), c.getSystem(), c.getCode()) && ok;
+            ok = txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_10, describeReference(maxVSUrl, valueset), c.getSystem(), c.getCode()) && ok;
         }
       } catch (Exception e) {
         if (STACK_TRACE) e.printStackTrace();
-        warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODEABLECONCEPT_MAX, e.getMessage());
+        warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODEABLECONCEPT_MAX, e.getMessage());
       }
     }
     return ok;
@@ -1651,11 +1664,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean checkMaxValueSet(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, String maxVSUrl, String value, NodeStack stack) {
     boolean ok = true;
-    ValueSet valueset = resolveBindingReference(profile, maxVSUrl, profile.getUrl());
+    ValueSet valueset = resolveBindingReference(profile, maxVSUrl, profile.getUrl(), profile);
     if (valueset == null) {
       CodeSystem cs = context.fetchCodeSystem(maxVSUrl);
-      if (rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(maxVSUrl))) {
-        warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(maxVSUrl));
+      if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(maxVSUrl))) {
+        warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(maxVSUrl));
       } else {
         ok = false;
       }
@@ -1666,14 +1679,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         timeTracker.tx(t, "vc "+value);
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
-            txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_9, describeReference(maxVSUrl, valueset), vr.getMessage());
+            txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_9, describeReference(maxVSUrl, valueset), vr.getMessage());
           else {
-            ok = txRule(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_11, describeReference(maxVSUrl, valueset), vr.getMessage()) && ok;
+            ok = txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_11, describeReference(maxVSUrl, valueset), vr.getMessage()) && ok;
           }
         }
       } catch (Exception e) {
         if (STACK_TRACE) e.printStackTrace();
-          warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODEABLECONCEPT_MAX, e.getMessage());
+          warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODEABLECONCEPT_MAX, e.getMessage());
       }
     }
     return ok;
@@ -1708,22 +1721,22 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       String theCode, String theSystem, String theVersion, String theDisplay) {
     boolean ok = true;
     
-    ok = rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, theSystem == null || isCodeSystemReferenceValid(theSystem), I18nConstants.TERMINOLOGY_TX_SYSTEM_RELATIVE) && ok;
-    warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, Utilities.noString(theCode) || !Utilities.noString(theSystem), I18nConstants.TERMINOLOGY_TX_SYSTEM_NO_CODE);
+    ok = rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, theSystem == null || isCodeSystemReferenceValid(theSystem), I18nConstants.TERMINOLOGY_TX_SYSTEM_RELATIVE) && ok;
+    warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, Utilities.noString(theCode) || !Utilities.noString(theSystem), I18nConstants.TERMINOLOGY_TX_SYSTEM_NO_CODE);
 
     if (theSystem != null && theCode != null && !noTerminologyChecks) {
-      ok = rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, !isValueSet(theSystem), I18nConstants.TERMINOLOGY_TX_SYSTEM_VALUESET2, theSystem) && ok;
+      ok = rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, !isValueSet(theSystem), I18nConstants.TERMINOLOGY_TX_SYSTEM_VALUESET2, theSystem) && ok;
       try {
         if (checkCode(errors, element, path, theCode, theSystem, theVersion, theDisplay, checkDisplay, stack))
           if (theElementCntext != null && theElementCntext.hasBinding()) {
             ElementDefinitionBindingComponent binding = theElementCntext.getBinding();
-            if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, I18nConstants.TERMINOLOGY_TX_BINDING_MISSING2, path)) {
+            if (warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, I18nConstants.TERMINOLOGY_TX_BINDING_MISSING2, path)) {
               if (binding.hasValueSet()) {
-                ValueSet valueset = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl());
+                ValueSet valueset = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl(), profile);
                 if (valueset == null) {
                   CodeSystem cs = context.fetchCodeSystem(binding.getValueSet());
-                  if (rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(binding.getValueSet()))) {
-                    warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(binding.getValueSet()));
+                  if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(binding.getValueSet()))) {
+                    warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(binding.getValueSet()));
                   } else {
                     ok = false;
                   }
@@ -1742,51 +1755,51 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
                     if (vr != null && !vr.isOk()) {
                       if (vr.IsNoService())
-                        txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSERVER);
+                        txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSERVER);
                       else if (vr.getErrorClass() != null && !vr.getErrorClass().isInfrastructure()) {
                         if (binding.getStrength() == BindingStrength.REQUIRED)
-                          ok = txRule(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_4a, describeReference(binding.getValueSet(), valueset), vr.getMessage(), theSystem+"#"+theCode) && ok;
+                          ok = txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_4a, describeReference(binding.getValueSet(), valueset), vr.getMessage(), theSystem+"#"+theCode) && ok;
                         else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
                           if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET))
                             checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MAX_VALUESET), c, stack);
                           else if (!noExtensibleWarnings)
-                            txWarningForLaterRemoval(element, errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_5, describeReference(binding.getValueSet(), valueset));
+                            txWarningForLaterRemoval(element, errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_5, describeReference(binding.getValueSet(), valueset));
                         } else if (binding.getStrength() == BindingStrength.PREFERRED) {
                           if (baseOnly) {
-                            txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_6, describeReference(binding.getValueSet(), valueset));
+                            txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_6, describeReference(binding.getValueSet(), valueset));
                           }
                         }
                       } else if (binding.getStrength() == BindingStrength.REQUIRED)
-                        ok = txRule(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_12, describeReference(binding.getValueSet(), valueset), getErrorMessage(vr.getMessage()), theSystem+"#"+theCode) && ok;
+                        ok = txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_12, describeReference(binding.getValueSet(), valueset), getErrorMessage(vr.getMessage()), theSystem+"#"+theCode) && ok;
                       else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
                         if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET))
                           ok = checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MAX_VALUESET), c, stack) && ok;
                         else if (!noExtensibleWarnings) {
-                          txWarningForLaterRemoval(element, errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_13, describeReference(binding.getValueSet(), valueset), getErrorMessage(vr.getMessage()), c.getSystem()+"#"+c.getCode());
+                          txWarningForLaterRemoval(element, errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_13, describeReference(binding.getValueSet(), valueset), getErrorMessage(vr.getMessage()), c.getSystem()+"#"+c.getCode());
                         }
                       } else if (binding.getStrength() == BindingStrength.PREFERRED) {
                         if (baseOnly) {
-                          txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_14, describeReference(binding.getValueSet(), valueset), getErrorMessage(vr.getMessage()), theSystem+"#"+theCode);
+                          txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_14, describeReference(binding.getValueSet(), valueset), getErrorMessage(vr.getMessage()), theSystem+"#"+theCode);
                         }
                       }
                     } else if (vr != null && vr.getMessage() != null) {
-                      txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
+                      txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
                     }
                   } catch (Exception e) {
                     if (STACK_TRACE) e.printStackTrace();
-                    warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODING1, e.getMessage());
+                    warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODING1, e.getMessage());
                   }
                 }
               } else if (binding.hasValueSet()) {
-                hint(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_CANTCHECK);
+                hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_CANTCHECK);
               } else if (!inCodeableConcept && !noBindingMsgSuppressed) {
-                hint(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE, path);
+                hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE, path);
               }
             }
           }
       } catch (Exception e) {
         if (STACK_TRACE) e.printStackTrace();
-        rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODING2, e.getMessage(), e.toString());
+        rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODING2, e.getMessage(), e.toString());
         ok = false;
       }
     }
@@ -1813,54 +1826,74 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private StructureDefinition checkExtension(ValidatorHostContext hostContext, List<ValidationMessage> errors, String path, Element resource, Element container, Element element, ElementDefinition def, StructureDefinition profile, NodeStack stack, NodeStack containerStack, String extensionUrl, PercentageTracker pct, ValidationMode mode) throws FHIRException {
     String url = element.getNamedChildValue("url");
+    String u = url.contains("|") ? url.substring(0, url.indexOf("|")) : url;
     boolean isModifier = element.getName().equals("modifierExtension");
     assert def.getIsModifier() == isModifier;
     
     long t = System.nanoTime();
-    StructureDefinition ex = Utilities.isAbsoluteUrl(url) ? context.fetchResource(StructureDefinition.class, url) : null;
-    timeTracker.sd(t);
+    StructureDefinition ex = Utilities.isAbsoluteUrl(u) ? context.fetchResource(StructureDefinition.class, u) : null;
     if (ex == null) {
       ex = getXverExt(errors, path, element, url);
     }
+    if (url.contains("|")) {
+      if (ex == null) {
+        ex = Utilities.isAbsoluteUrl(url) ? context.fetchResource(StructureDefinition.class, url) : null;
+        if (ex == null) {
+          warning(errors, "2022-12-17", IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXT_VER_URL_NO_MATCH);
+        } else {
+          rule(errors, "2022-12-17", IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXT_VER_URL_IGNORE);
+        }      
+      } else {
+        if (url.equals(ex.getUrl())) { 
+          warning(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXT_VER_URL_MISLEADING);
+        } else if (url.equals(ex.getVersionedUrl())) {
+          rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXT_VER_URL_NOT_ALLOWED);
+        } else { // 
+          rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXT_VER_URL_REVERSION, ex.getVersion());
+        }
+      }
+    }
+        
+    timeTracker.sd(t);
     if (ex == null) {
       if (extensionUrl != null && !isAbsolute(url)) {
         if (extensionUrl.equals(profile.getUrl())) {
-          rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", hasExtensionSlice(profile, url), I18nConstants.EXTENSION_EXT_SUBEXTENSION_INVALID, url, profile.getVersionedUrl());
+          rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", hasExtensionSlice(profile, url), I18nConstants.EXTENSION_EXT_SUBEXTENSION_INVALID, url, profile.getVersionedUrl());
         }
       } else if (SpecialExtensions.isKnownExtension(url)) {
         ex = SpecialExtensions.getDefinition(url);
       } else if (Utilities.existsInList(url, BuildExtensions.allConsts())) {
         // nothing
-      } else if (rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, allowUnknownExtension(url), I18nConstants.EXTENSION_EXT_UNKNOWN_NOTHERE, url)) {
-        hint(errors, IssueType.STRUCTURE, element.line(), element.col(), path, isKnownExtension(url), I18nConstants.EXTENSION_EXT_UNKNOWN, url);
+      } else if (rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, allowUnknownExtension(url), I18nConstants.EXTENSION_EXT_UNKNOWN_NOTHERE, url)) {
+        hint(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, isKnownExtension(url), I18nConstants.EXTENSION_EXT_UNKNOWN, url);
       }
     }
     if (ex != null) {
       trackUsage(ex, hostContext, element);
       // check internal definitions are coherent
       if (isModifier) {
-        rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path + "[url='" + url + "']", def.getIsModifier() == isModifier, I18nConstants.EXTENSION_EXT_MODIFIER_MISMATCHY);
+        rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path + "[url='" + url + "']", def.getIsModifier() == isModifier, I18nConstants.EXTENSION_EXT_MODIFIER_MISMATCHY);
       } else {
-        rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path + "[url='" + url + "']", def.getIsModifier() == isModifier, I18nConstants.EXTENSION_EXT_MODIFIER_MISMATCHN);
+        rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path + "[url='" + url + "']", def.getIsModifier() == isModifier, I18nConstants.EXTENSION_EXT_MODIFIER_MISMATCHN);
       }
       // two questions
       // 1. can this extension be used here?
       checkExtensionContext(errors, resource, container, ex, containerStack, hostContext, isModifier);
 
       if (isModifier)
-        rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path + "[url='" + url + "']", ex.getSnapshot().getElement().get(0).getIsModifier(), I18nConstants.EXTENSION_EXT_MODIFIER_Y, url);
+        rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path + "[url='" + url + "']", ex.getSnapshot().getElement().get(0).getIsModifier(), I18nConstants.EXTENSION_EXT_MODIFIER_Y, url);
       else
-        rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path + "[url='" + url + "']", !ex.getSnapshot().getElement().get(0).getIsModifier(), I18nConstants.EXTENSION_EXT_MODIFIER_N, url);
+        rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path + "[url='" + url + "']", !ex.getSnapshot().getElement().get(0).getIsModifier(), I18nConstants.EXTENSION_EXT_MODIFIER_N, url);
 
       // check the type of the extension:
       Set<String> allowedTypes = listExtensionTypes(ex);
       String actualType = getExtensionType(element);
       if (actualType != null)
-        rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, allowedTypes.contains(actualType), I18nConstants.EXTENSION_EXT_TYPE, url, allowedTypes.toString(), actualType);
+        rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, allowedTypes.contains(actualType), I18nConstants.EXTENSION_EXT_TYPE, url, allowedTypes.toString(), actualType);
       else if (element.hasChildren("extension"))
-        rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, allowedTypes.isEmpty(), I18nConstants.EXTENSION_EXT_SIMPLE_WRONG, url);
+        rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, allowedTypes.isEmpty(), I18nConstants.EXTENSION_EXT_SIMPLE_WRONG, url);
       else
-        rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, allowedTypes.isEmpty(), I18nConstants.EXTENSION_EXT_SIMPLE_ABSENT, url);
+        rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, allowedTypes.isEmpty(), I18nConstants.EXTENSION_EXT_SIMPLE_ABSENT, url);
 
       // 3. is the content of the extension valid?
       validateElement(hostContext, errors, ex, ex.getSnapshot().getElement().get(0), null, null, resource, element, "Extension", stack, false, true, url, pct, mode);
@@ -1964,7 +1997,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 break;
               }
               if (sd.getBaseDefinition() != null) {
-                sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+                sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
               } else {
                 sd = null;
               }
@@ -1993,10 +2026,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     if (!ok) {
       if (definition.hasUserData(XVerExtensionManager.XVER_EXT_MARKER)) {
-        warning(errors, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false,
+        warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false,
             modifier ? I18nConstants.EXTENSION_EXTP_CONTEXT_WRONG_XVER : I18nConstants.EXTENSION_EXTM_CONTEXT_WRONG_XVER, extUrl, contexts.toString(), plist.toString());
       } else {
-        rule(errors, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false,
+        rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false,
             modifier ? I18nConstants.EXTENSION_EXTP_CONTEXT_WRONG : I18nConstants.EXTENSION_EXTM_CONTEXT_WRONG, extUrl, contexts.toString(), plist.toString());        
       }
       return false;
@@ -2005,10 +2038,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         for (StringType s : definition.getContextInvariant()) {
           if (!fpe.evaluateToBoolean(hostContext, resource, hostContext.getRootResource(), container, fpe.parse(s.getValue()))) {
             if (definition.hasUserData(XVerExtensionManager.XVER_EXT_MARKER)) {
-              warning(errors, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false, I18nConstants.PROFILE_EXT_NOT_HERE, extUrl, s.getValue());              
+              warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false, I18nConstants.PROFILE_EXT_NOT_HERE, extUrl, s.getValue());              
               return true;
             } else {
-              rule(errors, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false, I18nConstants.PROFILE_EXT_NOT_HERE, extUrl, s.getValue());
+              rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false, I18nConstants.PROFILE_EXT_NOT_HERE, extUrl, s.getValue());
               return false;
             }
           }
@@ -2069,39 +2102,39 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if ((fixed == null || fixed.isEmpty()) && focus == null) {
       ; // this is all good
     } else if ((fixed == null || fixed.isEmpty()) && focus != null) {
-      ok = rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, pattern, I18nConstants.PROFILE_VAL_NOTALLOWED, focus.getName(), (pattern ? "pattern" : "fixed value"));
+      ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, pattern, I18nConstants.PROFILE_VAL_NOTALLOWED, focus.getName(), (pattern ? "pattern" : "fixed value"));
     } else if (fixed != null && !fixed.isEmpty() && focus == null) {
-      ok = rule(errors, IssueType.VALUE, parent == null ? -1 : parent.line(), parent == null ? -1 : parent.col(), path, false, I18nConstants.PROFILE_VAL_MISSINGELEMENT, propName, fixedSource);
+      ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, parent == null ? -1 : parent.line(), parent == null ? -1 : parent.col(), path, false, I18nConstants.PROFILE_VAL_MISSINGELEMENT, propName, fixedSource);
     } else {
       String value = focus.primitiveValue();
       if (fixed instanceof org.hl7.fhir.r5.model.BooleanType)
-        ok = rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.BooleanType) fixed).asStringValue(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.BooleanType) fixed).asStringValue());
+        ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.BooleanType) fixed).asStringValue(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.BooleanType) fixed).asStringValue());
       else if (fixed instanceof org.hl7.fhir.r5.model.IntegerType)
-        ok = rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.IntegerType) fixed).asStringValue(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.IntegerType) fixed).asStringValue());
+        ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.IntegerType) fixed).asStringValue(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.IntegerType) fixed).asStringValue());
       else if (fixed instanceof org.hl7.fhir.r5.model.DecimalType)
-        ok = rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.DecimalType) fixed).asStringValue(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.DecimalType) fixed).asStringValue());
+        ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.DecimalType) fixed).asStringValue(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.DecimalType) fixed).asStringValue());
       else if (fixed instanceof org.hl7.fhir.r5.model.Base64BinaryType)
-        ok = rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.Base64BinaryType) fixed).asStringValue(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.Base64BinaryType) fixed).asStringValue());
+        ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.Base64BinaryType) fixed).asStringValue(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.Base64BinaryType) fixed).asStringValue());
       else if (fixed instanceof org.hl7.fhir.r5.model.InstantType)
-        ok = rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.InstantType) fixed).getValue().toString(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.InstantType) fixed).asStringValue());
+        ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.InstantType) fixed).getValue().toString(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.InstantType) fixed).asStringValue());
       else if (fixed instanceof org.hl7.fhir.r5.model.CodeType)
-        ok = rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.CodeType) fixed).getValue(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.CodeType) fixed).getValue());
+        ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.CodeType) fixed).getValue(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.CodeType) fixed).getValue());
       else if (fixed instanceof org.hl7.fhir.r5.model.Enumeration)
-        ok = rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.Enumeration) fixed).asStringValue(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.Enumeration) fixed).asStringValue());
+        ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.Enumeration) fixed).asStringValue(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.Enumeration) fixed).asStringValue());
       else if (fixed instanceof org.hl7.fhir.r5.model.StringType)
-        ok = rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.StringType) fixed).getValue(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.StringType) fixed).getValue());
+        ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.StringType) fixed).getValue(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.StringType) fixed).getValue());
       else if (fixed instanceof org.hl7.fhir.r5.model.UriType)
-        ok = rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.UriType) fixed).getValue(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.UriType) fixed).getValue());
+        ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.UriType) fixed).getValue(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.UriType) fixed).getValue());
       else if (fixed instanceof org.hl7.fhir.r5.model.DateType)
-        ok = rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.DateType) fixed).getValue().toString(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.DateType) fixed).getValue());
+        ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.DateType) fixed).getValue().toString(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.DateType) fixed).getValue());
       else if (fixed instanceof org.hl7.fhir.r5.model.DateTimeType)
-        ok = rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.DateTimeType) fixed).getValue().toString(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.DateTimeType) fixed).getValue());
+        ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.DateTimeType) fixed).getValue().toString(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.DateTimeType) fixed).getValue());
       else if (fixed instanceof org.hl7.fhir.r5.model.OidType)
-        ok = rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.OidType) fixed).getValue(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.OidType) fixed).getValue());
+        ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.OidType) fixed).getValue(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.OidType) fixed).getValue());
       else if (fixed instanceof org.hl7.fhir.r5.model.UuidType)
-        ok = rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.UuidType) fixed).getValue(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.UuidType) fixed).getValue());
+        ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.UuidType) fixed).getValue(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.UuidType) fixed).getValue());
       else if (fixed instanceof org.hl7.fhir.r5.model.IdType)
-        ok =  rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.IdType) fixed).getValue(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.IdType) fixed).getValue());
+        ok =  rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.IdType) fixed).getValue(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.IdType) fixed).getValue());
       else if (fixed instanceof Quantity)
         checkQuantity(errors, path, focus, (Quantity) fixed, fixedSource, pattern);
       else if (fixed instanceof Address)
@@ -2131,15 +2164,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       else if (fixed instanceof Reference)
         ok = checkReference(errors, path, focus, (Reference) fixed, fixedSource, pattern);
       else
-        ok = rule(errors, IssueType.EXCEPTION, focus.line(), focus.col(), path, false, I18nConstants.INTERNAL_INT_BAD_TYPE, fixed.fhirType());
+        ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, focus.line(), focus.col(), path, false, I18nConstants.INTERNAL_INT_BAD_TYPE, fixed.fhirType());
       List<Element> extensions = new ArrayList<Element>();
       focus.getNamedChildren("extension", extensions);
       if (fixed.getExtension().size() == 0) {
-        ok = rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, extensions.size() == 0 || pattern == true, I18nConstants.EXTENSION_EXT_FIXED_BANNED) && ok;
-      } else if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, extensions.size() == fixed.getExtension().size(), I18nConstants.EXTENSION_EXT_COUNT_MISMATCH, Integer.toString(fixed.getExtension().size()), Integer.toString(extensions.size()))) {
+        ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, extensions.size() == 0 || pattern == true, I18nConstants.EXTENSION_EXT_FIXED_BANNED) && ok;
+      } else if (rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, extensions.size() == fixed.getExtension().size(), I18nConstants.EXTENSION_EXT_COUNT_MISMATCH, Integer.toString(fixed.getExtension().size()), Integer.toString(extensions.size()))) {
         for (Extension e : fixed.getExtension()) {
           Element ex = getExtensionByUrl(extensions, e.getUrl());
-          if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, ex != null, I18nConstants.EXTENSION_EXT_COUNT_NOTFOUND, e.getUrl())) {
+          if (rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, ex != null, I18nConstants.EXTENSION_EXT_COUNT_NOTFOUND, e.getUrl())) {
             ok = checkFixedValue(errors, path, ex.getNamedChild("extension").getNamedChild("value"), e.getValue(), fixedSource, "extension.value", ex.getNamedChild("extension"), false) && ok;
           }
         }
@@ -2157,28 +2190,28 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     List<Element> parts = new ArrayList<Element>();
     if (!pattern || fixed.hasFamily()) {
       focus.getNamedChildren("family", parts);
-      if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, parts.size() > 0 == fixed.hasFamily(), I18nConstants.FIXED_TYPE_CHECKS_DT_NAME_FAMILY, (fixed.hasFamily() ? "1" : "0"), Integer.toString(parts.size()))) {
+      if (rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, parts.size() > 0 == fixed.hasFamily(), I18nConstants.FIXED_TYPE_CHECKS_DT_NAME_FAMILY, (fixed.hasFamily() ? "1" : "0"), Integer.toString(parts.size()))) {
         for (int i = 0; i < parts.size(); i++)
           ok = checkFixedValue(errors, path + ".family", parts.get(i), fixed.getFamilyElement(), fixedSource, "family", focus, pattern) && ok;
       }
     }
     if (!pattern || fixed.hasGiven()) {
       focus.getNamedChildren("given", parts);
-      if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, parts.size() == fixed.getGiven().size(), I18nConstants.FIXED_TYPE_CHECKS_DT_NAME_GIVEN, Integer.toString(fixed.getGiven().size()), Integer.toString(parts.size()))) {
+      if (rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, parts.size() == fixed.getGiven().size(), I18nConstants.FIXED_TYPE_CHECKS_DT_NAME_GIVEN, Integer.toString(fixed.getGiven().size()), Integer.toString(parts.size()))) {
         for (int i = 0; i < parts.size(); i++)
           ok = checkFixedValue(errors, path + ".given", parts.get(i), fixed.getGiven().get(i), fixedSource, "given", focus, pattern) && ok;
       }
     }
     if (!pattern || fixed.hasPrefix()) {
       focus.getNamedChildren("prefix", parts);
-      if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, parts.size() == fixed.getPrefix().size(), I18nConstants.FIXED_TYPE_CHECKS_DT_NAME_PREFIX, Integer.toString(fixed.getPrefix().size()), Integer.toString(parts.size()))) {
+      if (rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, parts.size() == fixed.getPrefix().size(), I18nConstants.FIXED_TYPE_CHECKS_DT_NAME_PREFIX, Integer.toString(fixed.getPrefix().size()), Integer.toString(parts.size()))) {
         for (int i = 0; i < parts.size(); i++)
           ok = checkFixedValue(errors, path + ".prefix", parts.get(i), fixed.getPrefix().get(i), fixedSource, "prefix", focus, pattern) && ok;
       }
     }
     if (!pattern || fixed.hasSuffix()) {
       focus.getNamedChildren("suffix", parts);
-      if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, parts.size() == fixed.getSuffix().size(), I18nConstants.FIXED_TYPE_CHECKS_DT_NAME_SUFFIX, Integer.toString(fixed.getSuffix().size()), Integer.toString(parts.size()))) {
+      if (rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, parts.size() == fixed.getSuffix().size(), I18nConstants.FIXED_TYPE_CHECKS_DT_NAME_SUFFIX, Integer.toString(fixed.getSuffix().size()), Integer.toString(parts.size()))) {
         for (int i = 0; i < parts.size(); i++)
           ok = checkFixedValue(errors, path + ".suffix", parts.get(i), fixed.getSuffix().get(i), fixedSource, "suffix", focus, pattern) && ok;
       }
@@ -2189,10 +2222,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean checkIdentifier(List<ValidationMessage> errors, String path, Element element, ElementDefinition context) {
     boolean ok = true;
     String system = element.getNamedChildValue("system");
-    ok = rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, system == null || isIdentifierSystemReferenceValid(system), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_SYSTEM) && ok;
+    ok = rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, system == null || isIdentifierSystemReferenceValid(system), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_SYSTEM) && ok;
     if ("urn:ietf:rfc:3986".equals(system)) {
       String value = element.getNamedChildValue("value");
-      ok = rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, value == null || isAbsolute(value), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_VALUE) && ok; 
+      ok = rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, value == null || isAbsolute(value), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_VALUE) && ok; 
     }
     return ok;
   }
@@ -2219,21 +2252,21 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     boolean ok = true;
     if (isBlank(e.primitiveValue())) {
       if (e.primitiveValue() == null)
-        ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, e.hasChildren(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_VALUEEXT) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.hasChildren(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_VALUEEXT) && ok;
       else if (e.primitiveValue().length() == 0)
-        ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, e.hasChildren(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_NOTEMPTY) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.hasChildren(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_NOTEMPTY) && ok;
       else if (StringUtils.isWhitespace(e.primitiveValue()))
-        warning(errors, IssueType.INVALID, e.line(), e.col(), path, e.hasChildren(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_WS);
+        warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.hasChildren(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_WS);
       if (context.hasBinding()) {
-        ok = rule(errors, IssueType.CODEINVALID, e.line(), e.col(), path, context.getBinding().getStrength() != BindingStrength.REQUIRED, I18nConstants.Terminology_TX_Code_ValueSet_MISSING) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, e.line(), e.col(), path, context.getBinding().getStrength() != BindingStrength.REQUIRED, I18nConstants.Terminology_TX_Code_ValueSet_MISSING) && ok;
       }
       return ok;
     } else {
       boolean hasBiDiControls = UnicodeUtilities.hasBiDiChars(e.primitiveValue());
       if (hasBiDiControls) {
-        if (rule(errors, IssueType.CODEINVALID, e.line(), e.col(), path, !noUnicodeBiDiControlChars, I18nConstants.UNICODE_BIDI_CONTROLS_CHARS_DISALLOWED, UnicodeUtilities.replaceBiDiChars(e.primitiveValue()))) {
+        if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, e.line(), e.col(), path, !noUnicodeBiDiControlChars, I18nConstants.UNICODE_BIDI_CONTROLS_CHARS_DISALLOWED, UnicodeUtilities.replaceBiDiChars(e.primitiveValue()))) {
           String msg = UnicodeUtilities.checkUnicodeWellFormed(e.primitiveValue());
-          warning(errors, IssueType.INVALID, e.line(), e.col(), path, msg == null, I18nConstants.UNICODE_BIDI_CONTROLS_CHARS_MATCH, msg);
+          warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, msg == null, I18nConstants.UNICODE_BIDI_CONTROLS_CHARS_MATCH, msg);
         } else {
           ok = false;
         }
@@ -2251,54 +2284,54 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }      
     }
     if (regex != null) {
-      ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue().matches(regex), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX, e.primitiveValue(), regex) && ok;
+      ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue().matches(regex), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX, e.primitiveValue(), regex) && ok;
     }
     if (!"xhtml".equals(type)) {
       if (securityChecks) {
-        ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, !containsHtmlTags(e.primitiveValue()), I18nConstants.SECURITY_STRING_CONTENT_ERROR) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !containsHtmlTags(e.primitiveValue()), I18nConstants.SECURITY_STRING_CONTENT_ERROR) && ok;
       } else if (!"markdown".equals(type)){
-        hint(errors, IssueType.INVALID, e.line(), e.col(), path, !containsHtmlTags(e.primitiveValue()), I18nConstants.SECURITY_STRING_CONTENT_WARNING);
+        hint(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !containsHtmlTags(e.primitiveValue()), I18nConstants.SECURITY_STRING_CONTENT_WARNING);
       }
     }
     
     
     if (type.equals("boolean")) {
-      ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, "true".equals(e.primitiveValue()) || "false".equals(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BOOLEAN_VALUE) && ok;
+      ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, "true".equals(e.primitiveValue()) || "false".equals(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BOOLEAN_VALUE) && ok;
     }
     if (type.equals("uri") || type.equals("oid") || type.equals("uuid") || type.equals("url") || type.equals("canonical")) {
       String url = e.primitiveValue();
-      ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, !url.startsWith("oid:"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URI_OID) && ok;
-      ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, !url.startsWith("uuid:"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URI_UUID) && ok;
-      rule(errors, IssueType.INVALID, e.line(), e.col(), path, url.equals(url.trim().replace(" ", ""))
+      ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !url.startsWith("oid:"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URI_OID) && ok;
+      ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !url.startsWith("uuid:"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URI_UUID) && ok;
+      rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, url.equals(url.trim().replace(" ", ""))
         // work around an old invalid example in a core package
         || "http://www.acme.com/identifiers/patient or urn:ietf:rfc:3986 if the Identifier.value itself is a full uri".equals(url), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URI_WS, url);
-      ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || url.length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && ok;
-      ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || e.primitiveValue().length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && ok;
+      ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || url.length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && ok;
+      ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || e.primitiveValue().length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && ok;
 
       if (type.equals("oid")) {
-        ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, url.startsWith("urn:oid:"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_OID_START) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, url.startsWith("urn:oid:"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_OID_START) && ok;
       }
       if (type.equals("uuid")) {
-        ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, url.startsWith("urn:uuid:"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_UUID_STRAT) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, url.startsWith("urn:uuid:"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_UUID_STRAT) && ok;
       }
       if (type.equals("canonical")) {
-        ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, url.startsWith("#") || Utilities.isAbsoluteUrl(url), I18nConstants.TYPE_SPECIFIC_CHECKS_CANONICAL_ABSOLUTE, url) && ok;        
+        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, url.startsWith("#") || Utilities.isAbsoluteUrl(url), I18nConstants.TYPE_SPECIFIC_CHECKS_CANONICAL_ABSOLUTE, url) && ok;        
       }
 
       if (url != null && url.startsWith("urn:uuid:")) {
-        ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isValidUUID(url.substring(9)), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_UUID_VALID) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, Utilities.isValidUUID(url.substring(9)), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_UUID_VALID) && ok;
       }
       if (url != null && url.startsWith("urn:oid:")) {
         String cc = url.substring(8);
         // OIDs shorter than 5 chars are almost never valid for namespaces, except for the special OIDs 1.3.88 and 1.3.160
-        ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isOid(cc) && (cc.lastIndexOf('.') >= 5 ||
+        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, Utilities.isOid(cc) && (cc.lastIndexOf('.') >= 5 ||
             Utilities.existsInList(cc, "1.3.160", "1.3.88")), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_OID_VALID, cc) && ok;
       }
 
       if (isCanonicalURLElement(e)) {
         // we get to here if this is a defining canonical URL (e.g. CodeSystem.url)
         // the URL must be an IRI if present
-        ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isAbsoluteUrl(url), 
+        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, Utilities.isAbsoluteUrl(url), 
             node.isContained() ? I18nConstants.TYPE_SPECIFIC_CHECKS_CANONICAL_CONTAINED : I18nConstants.TYPE_SPECIFIC_CHECKS_CANONICAL_ABSOLUTE, url) && ok;                  
       } else if (!e.getProperty().getDefinition().getPath().equals("Bundle.entry.fullUrl")) { // we don't check fullUrl here; it's not a reference, it's a definition. It'll get checked as part of checking the bundle
         ok = validateReference(hostContext, errors, path, type, context, e, url) && ok;
@@ -2307,14 +2340,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (type.equals(ID) && !"Resource.id".equals(context.getBase().getPath())) {
       // work around an old issue with ElementDefinition.id
       if (!context.getPath().equals("ElementDefinition.id")) {
-        ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, FormatUtilities.isValidId(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ID_VALID, e.primitiveValue()) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, FormatUtilities.isValidId(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ID_VALID, e.primitiveValue()) && ok;
       }
     }
     if (type.equalsIgnoreCase("string") && e.hasPrimitiveValue()) {
-      if (rule(errors, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue() == null || e.primitiveValue().length() > 0, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_NOTEMPTY)) {
-        warning(errors, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue() == null || e.primitiveValue().trim().equals(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_STRING_WS, prepWSPresentation(e.primitiveValue()));
-        if (rule(errors, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue().length() <= 1048576, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_STRING_LENGTH)) {
-          ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || e.primitiveValue().length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && ok;
+      if (rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue() == null || e.primitiveValue().length() > 0, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_NOTEMPTY)) {
+        warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue() == null || e.primitiveValue().trim().equals(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_STRING_WS, prepWSPresentation(e.primitiveValue()));
+        if (rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue().length() <= 1048576, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_STRING_LENGTH)) {
+          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || e.primitiveValue().length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && ok;
         } else {
           ok = false;
         }
@@ -2323,38 +2356,38 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     if (type.equals("dateTime")) {
-      warning(errors, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REASONABLE, e.primitiveValue());
-      ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path,
+      warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REASONABLE, e.primitiveValue());
+      ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path,
         e.primitiveValue()
           .matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_VALID, e.primitiveValue()) && ok;
-      ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, !hasTime(e.primitiveValue()) || hasTimeZone(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_TZ) && ok;
-      ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || e.primitiveValue().length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && ok;
+      ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !hasTime(e.primitiveValue()) || hasTimeZone(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_TZ) && ok;
+      ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || e.primitiveValue().length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && ok;
       try {
         DateTimeType dt = new DateTimeType(e.primitiveValue());
       } catch (Exception ex) {
-        rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_VALID, ex.getMessage());
+        rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_VALID, ex.getMessage());
         ok = false;
       }
     }
     if (type.equals("time")) {
-      ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path,
+      ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path,
         e.primitiveValue()
           .matches("([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_TIME_VALID) && ok;
       try {
         TimeType dt = new TimeType(e.primitiveValue());
       } catch (Exception ex) {
-        rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_TIME_VALID, ex.getMessage());
+        rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_TIME_VALID, ex.getMessage());
         ok = false;
       }
     }
     if (type.equals("date")) {
-      warning(errors, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REASONABLE, e.primitiveValue());
-      ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue().matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1]))?)?"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATE_VALID) && ok;
-      ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || e.primitiveValue().length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && ok;
+      warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REASONABLE, e.primitiveValue());
+      ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue().matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1]))?)?"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATE_VALID) && ok;
+      ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || e.primitiveValue().length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && ok;
       try {
         DateType dt = new DateType(e.primitiveValue());
       } catch (Exception ex) {
-        rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATE_VALID, ex.getMessage());
+        rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATE_VALID, ex.getMessage());
         ok = false;
       }
     }
@@ -2364,43 +2397,43 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         boolean bok = isValidBase64(encoded);
         if (!bok) {
           String value = encoded.length() < 100 ? encoded : "(snip)";
-          ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_VALID, value) && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_VALID, value) && ok;
         } else {
           boolean wsok = !base64HasWhitespace(encoded);
           if (VersionUtilities.isR5VerOrLater(this.context.getVersion())) {
-            ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, wsok, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_ERROR) && ok;            
+            ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, wsok, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_ERROR) && ok;            
           } else {
-            warning(errors, IssueType.INVALID, e.line(), e.col(), path, wsok, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_WARNING);            
+            warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, wsok, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_WARNING);            
           }
         }
         if (bok && context.hasExtension(ToolingExtensions.EXT_MAX_SIZE)) {
           int size = countBase64DecodedBytes(encoded);
           long def = Long.parseLong(ToolingExtensions.readStringExtension(context, ToolingExtensions.EXT_MAX_SIZE));
-          ok = rule(errors, IssueType.STRUCTURE, e.line(), e.col(), path, size <= def, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_TOO_LONG, size, def) && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, e.line(), e.col(), path, size <= def, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_TOO_LONG, size, def) && ok;
         }
 
       }
     }
     if (type.equals("integer") || type.equals("unsignedInt") || type.equals("positiveInt")) {
-      if (rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isInteger(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_VALID, e.primitiveValue())) {
+      if (rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, Utilities.isInteger(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_VALID, e.primitiveValue())) {
         Integer v = new Integer(e.getValue()).intValue();
-        ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxValueIntegerType() || !context.getMaxValueIntegerType().hasValue() || (context.getMaxValueIntegerType().getValue() >= v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_GT, (context.hasMaxValueIntegerType() ? context.getMaxValueIntegerType() : "")) && ok;
-        ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, !context.hasMinValueIntegerType() || !context.getMinValueIntegerType().hasValue() || (context.getMinValueIntegerType().getValue() <= v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT, (context.hasMinValueIntegerType() ? context.getMinValueIntegerType() : "")) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxValueIntegerType() || !context.getMaxValueIntegerType().hasValue() || (context.getMaxValueIntegerType().getValue() >= v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_GT, (context.hasMaxValueIntegerType() ? context.getMaxValueIntegerType() : "")) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMinValueIntegerType() || !context.getMinValueIntegerType().hasValue() || (context.getMinValueIntegerType().getValue() <= v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT, (context.hasMinValueIntegerType() ? context.getMinValueIntegerType() : "")) && ok;
         if (type.equals("unsignedInt"))
-          ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, v >= 0, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT0) && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, v >= 0, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT0) && ok;
         if (type.equals("positiveInt"))
-          ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, v > 0, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT1) && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, v > 0, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT1) && ok;
       }
     }
     if (type.equals("integer64")) {
-      if (rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isLong(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER64_VALID, e.primitiveValue())) {
+      if (rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, Utilities.isLong(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER64_VALID, e.primitiveValue())) {
         Long v = new Long(e.getValue()).longValue();
-        ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxValueInteger64Type() || !context.getMaxValueInteger64Type().hasValue() || (context.getMaxValueInteger64Type().getValue() >= v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_GT, (context.hasMaxValueInteger64Type() ? context.getMaxValueInteger64Type() : "")) && ok;
-        ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, !context.hasMinValueInteger64Type() || !context.getMinValueInteger64Type().hasValue() || (context.getMinValueInteger64Type().getValue() <= v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT, (context.hasMinValueInteger64Type() ? context.getMinValueInteger64Type() : "")) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxValueInteger64Type() || !context.getMaxValueInteger64Type().hasValue() || (context.getMaxValueInteger64Type().getValue() >= v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_GT, (context.hasMaxValueInteger64Type() ? context.getMaxValueInteger64Type() : "")) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMinValueInteger64Type() || !context.getMinValueInteger64Type().hasValue() || (context.getMinValueInteger64Type().getValue() <= v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT, (context.hasMinValueInteger64Type() ? context.getMinValueInteger64Type() : "")) && ok;
         if (type.equals("unsignedInt"))
-          ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, v >= 0, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT0) && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, v >= 0, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT0) && ok;
         if (type.equals("positiveInt"))
-          ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, v > 0, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT1) && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, v > 0, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT1) && ok;
       } else {
         ok = false;
       }
@@ -2408,21 +2441,21 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (type.equals("decimal")) {
       if (e.primitiveValue() != null) {
         DecimalStatus ds = Utilities.checkDecimal(e.primitiveValue(), true, false);
-        if (rule(errors, IssueType.INVALID, e.line(), e.col(), path, ds == DecimalStatus.OK || ds == DecimalStatus.RANGE, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_VALID, e.primitiveValue())) {
-          warning(errors, IssueType.VALUE, e.line(), e.col(), path, ds != DecimalStatus.RANGE, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_RANGE, e.primitiveValue());
+        if (rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, ds == DecimalStatus.OK || ds == DecimalStatus.RANGE, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_VALID, e.primitiveValue())) {
+          warning(errors, NO_RULE_DATE, IssueType.VALUE, e.line(), e.col(), path, ds != DecimalStatus.RANGE, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_RANGE, e.primitiveValue());
           try {            
             Decimal v = new Decimal(e.getValue());
             if (context.hasMaxValueDecimalType() && context.getMaxValueDecimalType().hasValue()) {
-              ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, checkDecimalMaxValue(v, context.getMaxValueDecimalType().getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_GT, context.getMaxValueDecimalType()) && ok;
+              ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, checkDecimalMaxValue(v, context.getMaxValueDecimalType().getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_GT, context.getMaxValueDecimalType()) && ok;
             } else if (context.hasMaxValueIntegerType() && context.getMaxValueIntegerType().hasValue()) {
               // users can also provide a max integer type. It's not clear whether that's actually valid, but we'll check for it anyway
-              ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, checkDecimalMaxValue(v, new BigDecimal(context.getMaxValueIntegerType().getValue())), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_GT, context.getMaxValueIntegerType()) && ok;
+              ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, checkDecimalMaxValue(v, new BigDecimal(context.getMaxValueIntegerType().getValue())), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_GT, context.getMaxValueIntegerType()) && ok;
             }
             
             if (context.hasMinValueDecimalType() && context.getMaxValueDecimalType().hasValue()) {
-              ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, checkDecimalMinValue(v, context.getMaxValueDecimalType().getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_LT, context.getMaxValueDecimalType()) && ok;
+              ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, checkDecimalMinValue(v, context.getMaxValueDecimalType().getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_LT, context.getMaxValueDecimalType()) && ok;
             } else if (context.hasMinValueIntegerType() && context.getMaxValueIntegerType().hasValue()) {
-              ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, checkDecimalMinValue(v, new BigDecimal(context.getMaxValueIntegerType().getValue())), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_LT, context.getMaxValueIntegerType()) && ok;
+              ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, checkDecimalMinValue(v, new BigDecimal(context.getMaxValueIntegerType().getValue())), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_LT, context.getMaxValueIntegerType()) && ok;
             }
           } catch (Exception ex) {
             // should never happen?
@@ -2434,17 +2467,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (context.hasExtension(ToolingExtensions.EXT_MAX_DECIMALS)) {
         int dp = e.primitiveValue().contains(".") ? e.primitiveValue().substring(e.primitiveValue().indexOf(".")+1).length() : 0;
         int def = Integer.parseInt(ToolingExtensions.readStringExtension(context, ToolingExtensions.EXT_MAX_DECIMALS));
-        ok = rule(errors, IssueType.STRUCTURE, e.line(), e.col(), path, dp <= def, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_CHARS, dp, def) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, e.line(), e.col(), path, dp <= def, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_CHARS, dp, def) && ok;
       }
     }
     if (type.equals("instant")) {
-      ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path,
+      ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path,
         e.primitiveValue().matches("-?[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REGEX, e.primitiveValue()) && ok;
-      warning(errors, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REASONABLE, e.primitiveValue());
+      warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REASONABLE, e.primitiveValue());
       try {
         InstantType dt = new InstantType(e.primitiveValue());
       } catch (Exception ex) {
-        rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INSTANT_VALID, ex.getMessage());
+        rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INSTANT_VALID, ex.getMessage());
         ok = false;
       }
     }
@@ -2452,8 +2485,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (type.equals("code") && e.primitiveValue() != null) {
       // Technically, a code is restricted to string which has at least one character and no leading or trailing whitespace, and where there is no whitespace
       // other than single spaces in the contents
-      ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, passesCodeWhitespaceRules(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CODE_WS, e.primitiveValue()) && ok;
-      ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || e.primitiveValue().length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && ok;
+      ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, passesCodeWhitespaceRules(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CODE_WS, e.primitiveValue()) && ok;
+      ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || e.primitiveValue().length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && ok;
     }
 
     if (context.hasBinding() && e.primitiveValue() != null) {
@@ -2474,9 +2507,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           i++;
         }
         if (i < raw.length()-1 ) {
-          ok = warningOrError(htmlInMarkdownCheck == HtmlInMarkdownCheck.ERROR, errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_MARKDOWN_HTML, raw.subSequence(i, i+2)) && ok;
+          ok = warningOrError(htmlInMarkdownCheck == HtmlInMarkdownCheck.ERROR, errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_MARKDOWN_HTML, raw.subSequence(i, i+2)) && ok;
         } else {
-          ok = warningOrError(htmlInMarkdownCheck == HtmlInMarkdownCheck.ERROR, errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_MARKDOWN_HTML, raw) && ok;
+          ok = warningOrError(htmlInMarkdownCheck == HtmlInMarkdownCheck.ERROR, errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_MARKDOWN_HTML, raw) && ok;
         }
       }
     }
@@ -2485,10 +2518,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (xhtml != null) { // if it is null, this is an error already noted in the parsers
         // check that the namespace is there and correct.
         String ns = xhtml.getNsDecl();
-        ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, FormatUtilities.XHTML_NS.equals(ns), I18nConstants.XHTML_XHTML_NS_INVALID, ns, FormatUtilities.XHTML_NS) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, FormatUtilities.XHTML_NS.equals(ns), I18nConstants.XHTML_XHTML_NS_INVALID, ns, FormatUtilities.XHTML_NS) && ok;
         // check that inner namespaces are all correct
         checkInnerNS(errors, e, path, xhtml.getChildNodes());
-        ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, "div".equals(xhtml.getName()), I18nConstants.XHTML_XHTML_NAME_INVALID, ns) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, "div".equals(xhtml.getName()), I18nConstants.XHTML_XHTML_NAME_INVALID, ns) && ok;
         // check that no illegal elements and attributes have been used
         ok = checkInnerNames(errors, e, path, xhtml.getChildNodes(), false) && ok;
         ok = checkUrls(errors, e, path, xhtml.getChildNodes()) && ok;
@@ -2509,29 +2542,29 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean checkTypeValue(List<ValidationMessage> errors, String path, Element e, Element sd) {
     String v = e.primitiveValue();
     if (v == null) {
-      return rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.SD_TYPE_MISSING);
+      return rule(errors, "2022-11-02", IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.SD_TYPE_MISSING);
     }
     String url = sd.getChildValue("url");
     String d = sd.getChildValue("derivation"); 
     String k = sd.getChildValue("kind"); 
     if (Utilities.isAbsoluteUrl(v)) {
-      warning(errors, IssueType.INVALID, e.line(), e.col(), path, ns(v).equals(ns(url)) || ns(v).equals(ns(url).replace("StructureDefinition/", "")), I18nConstants.SD_TYPE_NOT_MATCH_NS, v, url);
-      return rule(errors, IssueType.INVALID, e.line(), e.col(), path, "logical".equals(k), I18nConstants.SD_TYPE_NOT_LOGICAL, v, k);
+      warning(errors, "2022-11-02", IssueType.INVALID, e.line(), e.col(), path, ns(v).equals(ns(url)) || ns(v).equals(ns(url).replace("StructureDefinition/", "")), I18nConstants.SD_TYPE_NOT_MATCH_NS, v, url);
+      return rule(errors, "2022-11-02", IssueType.INVALID, e.line(), e.col(), path, "logical".equals(k), I18nConstants.SD_TYPE_NOT_LOGICAL, v, k);
     } else {
       boolean tok = false;
       for (StructureDefinition t : context.fetchResourcesByType(StructureDefinition.class)) {
-        if (t.hasUserData("package") && t.getUserString("package").startsWith("hl7.fhir.r") && v.equals(t.getType())) {
+        if (t.hasSourcePackage() && t.getSourcePackage().getId().startsWith("hl7.fhir.r") && v.equals(t.getType())) {
           tok = true;
         }
       }
       if (tok) {
         if (!(("http://hl7.org/fhir/StructureDefinition/"+v).equals(url))) {
-          return rule(errors, IssueType.INVALID, e.line(), e.col(), path, "constraint".equals(d), I18nConstants.SD_TYPE_NOT_DERIVED, v);
+          return rule(errors, "2022-11-02", IssueType.INVALID, e.line(), e.col(), path, "constraint".equals(d), I18nConstants.SD_TYPE_NOT_DERIVED, v);
         } else {
           return true;
         }
       } else {
-        return rule(errors, IssueType.INVALID, e.line(), e.col(), path, tok, I18nConstants.SD_TYPE_NOT_LOCAL, v);
+        return rule(errors, "2022-11-02", IssueType.INVALID, e.line(), e.col(), path, tok, I18nConstants.SD_TYPE_NOT_LOCAL, v);
       }
     }
   }
@@ -2582,17 +2615,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (type.equals("canonical")) {
           ReferenceValidationPolicy rp = policyAdvisor == null ? ReferenceValidationPolicy.CHECK_VALID : policyAdvisor.policyForReference(this, hostContext, path, url);
           if (rp == ReferenceValidationPolicy.CHECK_EXISTS || rp == ReferenceValidationPolicy.CHECK_EXISTS_AND_TYPE) {
-            ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE, url) && ok;
+            ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE, url) && ok;
           } else {
-            hint(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE, url);
+            hint(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE, url);
           }
         } else {
           if (url.contains("hl7.org") || url.contains("fhir.org")) {
-            ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url) && ok;;
+            ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url) && ok;;
           } else if (url.contains("example.org") || url.contains("acme.com")) {
-            ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_EXAMPLE, url) && ok;;
+            ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_EXAMPLE, url) && ok;;
           } else {
-            warning(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url);
+            warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url);
           }
         }
       } else {
@@ -2611,8 +2644,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 r = this.context.fetchResource(Resource.class, url);
               }
               if (r == null) {
-                warning(errors, IssueType.INVALID, e.line(), e.col(), path, rp != ReferenceValidationPolicy.CHECK_VALID, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE_NC, url);                    
-              } else if (rule(errors, IssueType.INVALID, e.line(), e.col(), path, isCorrectCanonicalType(r, context), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_TYPE, url, r.fhirType(), listExpectedCanonicalTypes(context))) {
+                warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, rp != ReferenceValidationPolicy.CHECK_VALID, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE_NC, url);                    
+              } else if (rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, isCorrectCanonicalType(r, context), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_TYPE, url, r.fhirType(), listExpectedCanonicalTypes(context))) {
                 if (rp == ReferenceValidationPolicy.CHECK_VALID) {
                   // todo....
                 }
@@ -2782,10 +2815,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     boolean ok = true;
     for (XhtmlNode node : list) {
       if (node.getNodeType() == NodeType.Comment) {
-        rule(errors, IssueType.INVALID, e.line(), e.col(), path, !node.getContent().startsWith("DOCTYPE"), I18nConstants.XHTML_XHTML_DOCTYPE_ILLEGAL);
+        rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !node.getContent().startsWith("DOCTYPE"), I18nConstants.XHTML_XHTML_DOCTYPE_ILLEGAL);
       }
       if (node.getNodeType() == NodeType.Element) {
-        rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.existsInList(node.getName(),
+        rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, Utilities.existsInList(node.getName(),
           "p", "br", "div", "h1", "h2", "h3", "h4", "h5", "h6", "a", "span", "b", "em", "i", "strong",
           "small", "big", "tt", "small", "dfn", "q", "var", "abbr", "acronym", "cite", "blockquote", "hr", "address", "bdo", "kbd", "q", "sub", "sup",
           "ul", "ol", "li", "dl", "dt", "dd", "pre", "table", "caption", "colgroup", "col", "thead", "tr", "tfoot", "tbody", "th", "td",
@@ -2804,11 +2837,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               "table.frame", "table.rules", "table.cellspacing", "table.cellpadding", "pre.space", "td.nowrap"
             );          
           if (!bok) {
-            rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.XHTML_XHTML_ATTRIBUTE_ILLEGAL, an, node.getName());
+            rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.XHTML_XHTML_ATTRIBUTE_ILLEGAL, an, node.getName());
           }
         }
         
-        ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, !(inPara && Utilities.existsInList(node.getName(), "div",  "blockquote", "table", "ol", "ul", "p")) , I18nConstants.XHTML_XHTML_ELEMENT_ILLEGAL_IN_PARA, node.getName()) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !(inPara && Utilities.existsInList(node.getName(), "div",  "blockquote", "table", "ol", "ul", "p")) , I18nConstants.XHTML_XHTML_ELEMENT_ILLEGAL_IN_PARA, node.getName()) && ok;
         
         ok = checkInnerNames(errors, e, path, node.getChildNodes(), inPara || "p".equals(node.getName())) && ok;
       }
@@ -2822,10 +2855,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (node.getNodeType() == NodeType.Element) {
         if ("a".equals(node.getName())) {
           String msg = checkValidUrl(node.getAttribute("href"));
-          ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, msg == null, I18nConstants.XHTML_URL_INVALID, node.getAttribute("href"), msg) && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, msg == null, I18nConstants.XHTML_URL_INVALID, node.getAttribute("href"), msg) && ok;
         } else if ("img".equals(node.getName())) {
           String msg = checkValidUrl(node.getAttribute("src"));
-          ok = rule(errors, IssueType.INVALID, e.line(), e.col(), path, msg == null, I18nConstants.XHTML_URL_INVALID, node.getAttribute("src"), msg) && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, msg == null, I18nConstants.XHTML_URL_INVALID, node.getAttribute("src"), msg) && ok;
         }
         ok = checkUrls(errors, e, path, node.getChildNodes()) && ok;
       }
@@ -2887,7 +2920,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     for (XhtmlNode node : list) {
       if (node.getNodeType() == NodeType.Element) {
         String ns = node.getNsDecl();
-        rule(errors, IssueType.INVALID, e.line(), e.col(), path, ns == null || FormatUtilities.XHTML_NS.equals(ns), I18nConstants.XHTML_XHTML_NS_INVALID, ns, FormatUtilities.XHTML_NS);
+        rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, ns == null || FormatUtilities.XHTML_NS.equals(ns), I18nConstants.XHTML_XHTML_NS_INVALID, ns, FormatUtilities.XHTML_NS);
         checkInnerNS(errors, e, path, node.getChildNodes());
       }
     }
@@ -2908,11 +2941,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     // firstly, resolve the value set
     ElementDefinitionBindingComponent binding = elementContext.getBinding();
     if (binding.hasValueSet()) {
-      ValueSet vs = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl());
+      ValueSet vs = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl(), profile);
       if (vs == null) { 
         CodeSystem cs = context.fetchCodeSystem(binding.getValueSet());
-        if (rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(binding.getValueSet()))) {
-          warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, vs != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(binding.getValueSet()));
+        if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(binding.getValueSet()))) {
+          warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, vs != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(binding.getValueSet()));
         } else {
           ok = false;
         }
@@ -2936,24 +2969,24 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           }
           if (vr != null && !vr.isOk()) {
             if (vr.IsNoService())
-              txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_15, value);
+              txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_15, value);
             else if (binding.getStrength() == BindingStrength.REQUIRED)
-              ok = txRule(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_16, value, describeReference(binding.getValueSet(), vs), getErrorMessage(vr.getMessage())) && ok;
+              ok = txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_16, value, describeReference(binding.getValueSet(), vs), getErrorMessage(vr.getMessage())) && ok;
             else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
               if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET))
                 ok = checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MAX_VALUESET), value, stack) && ok;
               else if (!noExtensibleWarnings && !isOkExtension(value, vs))
-                txWarningForLaterRemoval(element, errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_17, value, describeReference(binding.getValueSet(), vs), getErrorMessage(vr.getMessage()));
+                txWarningForLaterRemoval(element, errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_17, value, describeReference(binding.getValueSet(), vs), getErrorMessage(vr.getMessage()));
             } else if (binding.getStrength() == BindingStrength.PREFERRED) {
               if (baseOnly) {
-                txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_18, value, describeReference(binding.getValueSet(), vs), getErrorMessage(vr.getMessage()));
+                txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_18, value, describeReference(binding.getValueSet(), vs), getErrorMessage(vr.getMessage()));
               }
             }
           }
         }
       }
     } else if (!noBindingMsgSuppressed) {
-      hint(errors, IssueType.CODEINVALID, element.line(), element.col(), path, !type.equals("code"), I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE2);
+      hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, !type.equals("code"), I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE2);
     }
     return ok;
   }
@@ -2986,7 +3019,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (!Utilities.noString(value) && definition.hasExtension(ToolingExtensions.EXT_MAX_DECIMALS)) {
       int dp = value.contains(".") ? value.substring(value.indexOf(".")+1).length() : 0;
       int def = Integer.parseInt(ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_MAX_DECIMALS));
-      ok = rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, dp <= def, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_CHARS, dp, def) && ok;
+      ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, dp <= def, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_CHARS, dp, def) && ok;
     }
 
     if (system != null || code != null ) {
@@ -3002,29 +3035,29 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
 
     if (definition.hasMinValue()) {
-      if (warning(errors, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(value), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_VALUE_NO_VALUE)) {
-        if (rule(errors, IssueType.INVALID, element.line(), element.col(), path, definition.getMinValue() instanceof Quantity, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_NO_QTY, definition.getMinValue().fhirType())) {
+      if (warning(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(value), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_VALUE_NO_VALUE)) {
+        if (rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, definition.getMinValue() instanceof Quantity, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_NO_QTY, definition.getMinValue().fhirType())) {
           Quantity min = definition.getMinValueQuantity();
-          if (warning(errors, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(min.getSystem()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_MIN_NO_SYSTEM) &&
-              warning(errors, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(system), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_VALUE_NO_SYSTEM) && 
-              warning(errors, IssueType.INVALID, element.line(), element.col(), path, system.equals(min.getSystem()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_SYSTEM_MISMATCH, system, min.getSystem()) &&
-              warning(errors, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(min.getCode()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_MIN_NO_CODE) &&
-              warning(errors, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(code), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_VALUE_NO_CODE)) {
-            if (rule(errors, IssueType.INVALID, element.line(), element.col(), path, definition.getMinValueQuantity().hasValue(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_MIN_NO_VALUE)) {
+          if (warning(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(min.getSystem()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_MIN_NO_SYSTEM) &&
+              warning(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(system), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_VALUE_NO_SYSTEM) && 
+              warning(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, system.equals(min.getSystem()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_SYSTEM_MISMATCH, system, min.getSystem()) &&
+              warning(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(min.getCode()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_MIN_NO_CODE) &&
+              warning(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(code), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_VALUE_NO_CODE)) {
+            if (rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, definition.getMinValueQuantity().hasValue(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_MIN_NO_VALUE)) {
               if (code.equals(min.getCode())) {
                 // straight value comparison
-                ok = rule(errors, IssueType.INVALID, element.line(), element.col(), path, checkDecimalMinValue(value, min.getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_VALUE_WRONG, value, min.getValue().toString()) && ok;
+                ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, checkDecimalMinValue(value, min.getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_VALUE_WRONG, value, min.getValue().toString()) && ok;
               } else if ("http://unitsofmeasure.org".equals(system)) {
-                if (warning(errors, IssueType.INVALID, element.line(), element.col(), path, context.getUcumService() != null, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_NO_UCUM_SVC)) {
+                if (warning(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, context.getUcumService() != null, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_NO_UCUM_SVC)) {
                   Decimal v = convertUcumValue(value, code, min.getCode());
-                  if (rule(errors, IssueType.INVALID, element.line(), element.col(), path, v != null, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_MIN_NO_CONVERT, value, code, min.getCode())) {
-                    ok = rule(errors, IssueType.INVALID, element.line(), element.col(), path, checkDecimalMinValue(v, min.getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_VALUE_WRONG_UCUM, value, code, min.getValue().toString(), min.getCode()) && ok;
+                  if (rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, v != null, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_MIN_NO_CONVERT, value, code, min.getCode())) {
+                    ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, checkDecimalMinValue(v, min.getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_VALUE_WRONG_UCUM, value, code, min.getValue().toString(), min.getCode()) && ok;
                   } else {
                     ok = false;
                   }
                 }
               } else {
-                warning(errors, IssueType.INVALID, element.line(), element.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_CODE_MISMATCH, code, min.getCode());
+                warning(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_CODE_MISMATCH, code, min.getCode());
               }
             } else {
               ok = false;
@@ -3037,29 +3070,29 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     
     if (definition.hasMaxValue()) {
-      if (warning(errors, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(value), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_NO_VALUE)) {
-        if (rule(errors, IssueType.INVALID, element.line(), element.col(), path, definition.getMaxValue() instanceof Quantity, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_NO_QTY, definition.getMaxValue().fhirType())) {
+      if (warning(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(value), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_NO_VALUE)) {
+        if (rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, definition.getMaxValue() instanceof Quantity, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_NO_QTY, definition.getMaxValue().fhirType())) {
           Quantity max = definition.getMaxValueQuantity();
-          if (warning(errors, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(max.getSystem()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_SYSTEM) &&
-              warning(errors, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(system), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_NO_SYSTEM) && 
-              warning(errors, IssueType.INVALID, element.line(), element.col(), path, system.equals(max.getSystem()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_SYSTEM_MISMATCH, system, max.getSystem()) &&
-              warning(errors, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(max.getCode()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_CODE) &&
-              warning(errors, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(code), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_NO_CODE)) {
-            if (rule(errors, IssueType.INVALID, element.line(), element.col(), path, definition.getMaxValueQuantity().hasValue(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_VALUE)) {
+          if (warning(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(max.getSystem()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_SYSTEM) &&
+              warning(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(system), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_NO_SYSTEM) && 
+              warning(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, system.equals(max.getSystem()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_SYSTEM_MISMATCH, system, max.getSystem()) &&
+              warning(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(max.getCode()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_CODE) &&
+              warning(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(code), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_NO_CODE)) {
+            if (rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, definition.getMaxValueQuantity().hasValue(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_VALUE)) {
               if (code.equals(max.getCode())) {
                 // straight value comparison
-                ok = rule(errors, IssueType.INVALID, element.line(), element.col(), path, checkDecimalMaxValue(value, max.getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_WRONG, value, max.getValue().toString()) && ok;
+                ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, checkDecimalMaxValue(value, max.getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_WRONG, value, max.getValue().toString()) && ok;
               } else if ("http://unitsofmeasure.org".equals(system)) {
-                if (warning(errors, IssueType.INVALID, element.line(), element.col(), path, context.getUcumService() != null, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_NO_UCUM_SVC)) {
+                if (warning(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, context.getUcumService() != null, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_NO_UCUM_SVC)) {
                   Decimal v = convertUcumValue(value, code, max.getCode());
-                  if (rule(errors, IssueType.INVALID, element.line(), element.col(), path, v != null, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_CONVERT, value, code, max.getCode())) {
-                    ok = rule(errors, IssueType.INVALID, element.line(), element.col(), path, checkDecimalMaxValue(v, max.getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_WRONG_UCUM, value, code, max.getValue().toString(), max.getCode()) && ok;
+                  if (rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, v != null, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_CONVERT, value, code, max.getCode())) {
+                    ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, checkDecimalMaxValue(v, max.getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_WRONG_UCUM, value, code, max.getValue().toString(), max.getCode()) && ok;
                   } else {
                     ok = false;
                   }
                 }
               } else {
-                warning(errors, IssueType.INVALID, element.line(), element.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_CODE_MISMATCH, code, max.getCode());
+                warning(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_CODE_MISMATCH, code, max.getCode());
               }
             } else {
               ok = false;
@@ -3131,13 +3164,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (bok && element.hasChild("size")) {
         size = countBase64DecodedBytes(b64);
         String sz = element.getChildValue("size");
-        ok = rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, Long.toString(size).equals(sz), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_CORRECT, sz, size) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, Long.toString(size).equals(sz), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_CORRECT, sz, size) && ok;
       }
     } else if (element.hasChild("size")) {
       String sz = element.getChildValue("size");
-      if (rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, Utilities.isLong(sz), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_INVALID, sz)) {
+      if (rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, Utilities.isLong(sz), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_INVALID, sz)) {
         size = Long.parseLong(sz);
-        ok = rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, size >= 0, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_INVALID, sz) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, size >= 0, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_INVALID, sz) && ok;
       }
     } else if (element.hasChild("url")) {
       String url = element.getChildValue("url"); 
@@ -3161,12 +3194,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     if (definition.hasExtension(ToolingExtensions.EXT_MAX_SIZE)) {
-      if (warning(errors, IssueType.STRUCTURE, element.line(), element.col(), path, size >= 0, fetchError)) {
+      if (warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, size >= 0, fetchError)) {
         long def = Long.parseLong(ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_MAX_SIZE));
-        ok = rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, size <= def, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_TOO_LONG, size, def) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, size <= def, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_TOO_LONG, size, def) && ok;
       }
     }
-    warning(errors, IssueType.STRUCTURE, element.line(), element.col(), path, (element.hasChild("data") || element.hasChild("url")) || (element.hasChild("contentType") || element.hasChild("language")), 
+    warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, (element.hasChild("data") || element.hasChild("url")) || (element.hasChild("contentType") || element.hasChild("language")), 
           I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_NO_CONTENT);
     return ok;
   }
@@ -3202,7 +3235,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (Utilities.noString(ref)) {
       if (!path.contains("element.pattern")) { // this business rule doesn't apply to patterns
         if (Utilities.noString(reference.getIdentifier().getSystem()) && Utilities.noString(reference.getIdentifier().getValue())) {
-          warning(errors, IssueType.STRUCTURE, element.line(), element.col(), path,
+          warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path,
             !Utilities.noString(element.getNamedChildValue("display")), I18nConstants.REFERENCE_REF_NODISPLAY);
         }
       }
@@ -3211,7 +3244,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       // special known URLs that can't be validated but are known to be valid
       return true;
     }
-    warning(errors, IssueType.STRUCTURE, element.line(), element.col(), path, !isSuspiciousReference(ref), I18nConstants.REFERENCE_REF_SUSPICIOUS, ref);      
+    warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, !isSuspiciousReference(ref), I18nConstants.REFERENCE_REF_SUSPICIOUS, ref);      
 
     ResolvedReference we = localResolve(ref, stack, errors, path, hostContext.getRootResource(), hostContext.getGroupingResource(), element);
     String refType;
@@ -3262,7 +3295,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       boolean rok = (allowExamples && (ref.contains("example.org") || ref.contains("acme.com")))
         || (we != null || pol == ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS);
-      ok = rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, rok, I18nConstants.REFERENCE_REF_CANTRESOLVE, ref) && ok;
+      ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, rok, I18nConstants.REFERENCE_REF_CANTRESOLVE, ref) && ok;
     }
 
     String ft;
@@ -3283,7 +3316,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         boolean matchingResource = false;
         for (CanonicalType target : containerType.getTargetProfile()) {
           StructureDefinition sd = resolveProfile(profile, target.asStringValue());
-          if (rule(errors, IssueType.NOTFOUND, element.line(), element.col(), path, sd != null,
+          if (rule(errors, NO_RULE_DATE, IssueType.NOTFOUND, element.line(), element.col(), path, sd != null,
               I18nConstants.REFERENCE_REF_CANTRESOLVEPROFILE, target.asStringValue())) {
             if (("http://hl7.org/fhir/StructureDefinition/" + sd.getType()).equals(tu)) {
               matchingResource = true;
@@ -3293,17 +3326,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             ok = false;
           }
         }
-        ok = rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, matchingResource,
+        ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, matchingResource,
           I18nConstants.REFERENCE_REF_WRONGTARGET, reference.getType(), container.getType("Reference").getTargetProfile()) && ok;
 
       }
       // the type has to match the actual
-      ok = rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path,
+      ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path,
         ft == null || ft.equals(reference.getType()), I18nConstants.REFERENCE_REF_BADTARGETTYPE, reference.getType(), ft) && ok;
     }
 
     if (we != null && pol.checkType()) {
-      if (warning(errors, IssueType.STRUCTURE, element.line(), element.col(), path, ft != null,
+      if (warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, ft != null,
         I18nConstants.REFERENCE_REF_NOTYPE)) {
         // we validate as much as we can. First, can we infer a type from the profile?
         boolean rok = false;
@@ -3313,7 +3346,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           List<StructureDefinition> profiles = new ArrayList<>();
           for (UriType u : type.getTargetProfile()) {
             StructureDefinition sd = resolveProfile(profile, u.getValue());
-            if (rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, sd != null,
+            if (rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, sd != null,
               I18nConstants.REFERENCE_REF_CANTRESOLVEPROFILE, u.getValue())) {
               types.add(sd.getType());
               if (ft.equals(sd.getType())) {
@@ -3325,7 +3358,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             }
           }
           if (!pol.checkValid()) {
-            ok = rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, profiles.size() > 0,
+            ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, profiles.size() > 0,
               I18nConstants.REFERENCE_REF_CANTMATCHTYPE, ref, StringUtils.join("; ", type.getTargetProfile())) && ok;
           } else {
             Map<StructureDefinition, List<ValidationMessage>> badProfiles = new HashMap<>();
@@ -3355,15 +3388,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
             } else if (goodProfiles.size() == 0) {
               if (!isShowMessagesFromReferences()) {
-                ok = rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, areAllBaseProfiles(profiles),
+                ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, areAllBaseProfiles(profiles),
                   I18nConstants.REFERENCE_REF_CANTMATCHCHOICE, ref, asList(type.getTargetProfile())) && ok;
                 for (StructureDefinition sd : badProfiles.keySet()) {
-                  slicingHint(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false, false, 
+                  slicingHint(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, false, false, 
                     context.formatMessage(I18nConstants.DETAILS_FOR__MATCHING_AGAINST_PROFILE_, ref, sd.getVersionedUrl()), 
                     errorSummaryForSlicingAsHtml(badProfiles.get(sd)), errorSummaryForSlicingAsText(badProfiles.get(sd)));
                 }
               } else {
-                ok = rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, profiles.size() == 1,
+                ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, profiles.size() == 1,
                   I18nConstants.REFERENCE_REF_CANTMATCHCHOICE, ref, asList(type.getTargetProfile())) && ok;
                 for (List<ValidationMessage> messages : badProfiles.values()) {
                   for (ValidationMessage vm : messages) {
@@ -3376,15 +3409,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               }
             } else {
               if (!isShowMessagesFromReferences()) {
-                warning(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false,
+                warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, false,
                   I18nConstants.REFERENCE_REF_MULTIPLEMATCHES, ref, asListByUrl(goodProfiles.keySet()));
                 for (StructureDefinition sd : badProfiles.keySet()) {
-                  slicingHint(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false,
+                  slicingHint(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, false,
                     false,  context.formatMessage(I18nConstants.DETAILS_FOR__MATCHING_AGAINST_PROFILE_, ref, sd.getVersionedUrl()),
                       errorSummaryForSlicingAsHtml(badProfiles.get(sd)), errorSummaryForSlicingAsText(badProfiles.get(sd)));
                 }
               } else {
-                warning(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false,
+                warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, false,
                   I18nConstants.REFERENCE_REF_MULTIPLEMATCHES, ref, asListByUrl(goodProfiles.keySet()));
                 for (List<ValidationMessage> messages : goodProfiles.values()) {
                   for (ValidationMessage vm : messages) {
@@ -3397,7 +3430,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               }
             }
           }
-          ok = rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, rok,
+          ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, rok,
             I18nConstants.REFERENCE_REF_BADTARGETTYPE, ft, types.toString()) && ok;
         }
         if (type.hasAggregation() && !noCheckAggregation) {
@@ -3412,7 +3445,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             else if (mode.getValue().equals(AggregationMode.REFERENCED) && (refType.equals("bundled") || refType.equals("remote")))
               modeOk = true;
           }
-          ok = rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, modeOk,
+          ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, modeOk,
             I18nConstants.REFERENCE_REF_AGGREGATION, refType, b.toString()) && ok;
         }
       }
@@ -3420,7 +3453,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (we == null) {
       TypeRefComponent type = getReferenceTypeRef(container.getType());
       boolean okToRef = !type.hasAggregation() || type.hasAggregation(AggregationMode.REFERENCED);
-      ok = rule(errors, IssueType.REQUIRED, -1, -1, path, okToRef, I18nConstants.REFERENCE_REF_NOTFOUND_BUNDLE, ref) && ok;
+      ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, -1, -1, path, okToRef, I18nConstants.REFERENCE_REF_NOTFOUND_BUNDLE, ref) && ok;
     }
     if (we == null && ft != null && assumeValidRestReferences) {
       // if we == null, we inferred ft from the reference. if we are told to treat this as gospel
@@ -3429,7 +3462,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       StructureDefinition sdFT = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/"+ft);
       boolean rok = false;
       for (CanonicalType tp : type.getTargetProfile()) {
-        StructureDefinition sd = context.fetchResource(StructureDefinition.class, tp.getValue());
+        StructureDefinition sd = context.fetchResource(StructureDefinition.class, tp.getValue(), profile);
         if (sd != null) {
           types.add(sd.getType());
         }
@@ -3439,10 +3472,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             rok = true;
             break;
           }
-          sdF = sdF.hasBaseDefinition() ? context.fetchResource(StructureDefinition.class, sdF.getBaseDefinition()) : null;
+          sdF = sdF.hasBaseDefinition() ? context.fetchResource(StructureDefinition.class, sdF.getBaseDefinition(), sdF) : null;
         }
       }
-      ok = rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, types.isEmpty() || rok,
+      ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, types.isEmpty() || rok,
         I18nConstants.REFERENCE_REF_BADTARGETTYPE2, ft, ref, types) && ok;
 
     }
@@ -3601,7 +3634,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     List<Element> events = new ArrayList<Element>();
     focus.getNamedChildren("event", events);
-    if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, events.size() == fixed.getEvent().size(), I18nConstants.BUNDLE_MSG_EVENT_COUNT, Integer.toString(fixed.getEvent().size()), Integer.toString(events.size()))) {
+    if (rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, events.size() == fixed.getEvent().size(), I18nConstants.BUNDLE_MSG_EVENT_COUNT, Integer.toString(fixed.getEvent().size()), Integer.toString(events.size()))) {
       for (int i = 0; i < events.size(); i++)
         ok = checkFixedValue(errors, path + ".event", events.get(i), fixed.getEvent().get(i), fixedSource, "event", focus, pattern) && ok;
     }
@@ -3745,7 +3778,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     for (TypeRefComponent type : element.getType()) {
       for (CanonicalType p : type.getProfile()) {
         String id = p.hasExtension(ToolingExtensions.EXT_PROFILE_ELEMENT) ? p.getExtensionString(ToolingExtensions.EXT_PROFILE_ELEMENT) : null;
-        StructureDefinition sd = context.fetchResource(StructureDefinition.class, p.getValue());
+        StructureDefinition sd = context.fetchResource(StructureDefinition.class, p.getValue(), profile);
         if (sd == null)
           throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_PROFILE_, p));
         profile = sd;
@@ -3788,13 +3821,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return igs;
   }
 
-  private StructureDefinition getProfileForType(String type, List<TypeRefComponent> list) {
+  private StructureDefinition getProfileForType(String type, List<TypeRefComponent> list, Resource src) {
     for (TypeRefComponent tr : list) {
       String url = tr.getWorkingCode();
       if (!Utilities.isAbsoluteUrl(url))
         url = "http://hl7.org/fhir/StructureDefinition/" + url;
       long t = System.nanoTime();
-      StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
+      StructureDefinition sd = context.fetchResource(StructureDefinition.class, url, src);
       timeTracker.sd(t);
       if (sd != null && (sd.getType().equals(type) || sd.getUrl().equals(type)) && sd.hasSnapshot()) {
         return sd;
@@ -4035,7 +4068,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           String type = stack.getParent().getParent().getElement().getChildValue(TYPE);
           fullUrl = stack.getParent().getElement().getChildValue(FULL_URL); // we don't try to resolve contained references across this boundary
           if (fullUrl == null)
-            rule(errors, IssueType.REQUIRED, stack.getParent().getElement().line(), stack.getParent().getElement().col(), stack.getParent().getLiteralPath(),
+            rule(errors, NO_RULE_DATE, IssueType.REQUIRED, stack.getParent().getElement().line(), stack.getParent().getElement().col(), stack.getParent().getLiteralPath(),
               Utilities.existsInList(type, "batch-response", "transaction-response") || fullUrl != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOFULLURL);
         }
         if (BUNDLE.equals(stack.getElement().getType())) {
@@ -4183,7 +4216,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return null;
     } else {
       long t = System.nanoTime();
-      StructureDefinition fr = context.fetchResource(StructureDefinition.class, pr);
+      StructureDefinition fr = context.fetchResource(StructureDefinition.class, pr, profile);
       timeTracker.sd(t);
       return fr;
     }
@@ -4359,10 +4392,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     ValidatorHostContext shc = hostContext.forSlicing();
     boolean pass = evaluateSlicingExpression(shc, element, path, profile, n);
     if (!pass) {
-      slicingHint(sliceInfo, IssueType.STRUCTURE, element.line(), element.col(), path, false, isProfile(slicer), (context.formatMessage(I18nConstants.DOES_NOT_MATCH_SLICE_, ed.getSliceName(), n.toString().substring(8).trim())), "discriminator = " + Utilities.escapeXml(n.toString()), null);
+      slicingHint(sliceInfo, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, false, isProfile(slicer), (context.formatMessage(I18nConstants.DOES_NOT_MATCH_SLICE_, ed.getSliceName(), n.toString().substring(8).trim())), "discriminator = " + Utilities.escapeXml(n.toString()), null);
       for (String url : shc.getSliceRecords().keySet()) {
         StructureDefinition sdt = context.fetchResource(StructureDefinition.class, url);
-        slicingHint(sliceInfo, IssueType.STRUCTURE, element.line(), element.col(), path, false, isProfile(slicer), 
+        slicingHint(sliceInfo, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, false, isProfile(slicer), 
          context.formatMessage(I18nConstants.DETAILS_FOR__MATCHING_AGAINST_PROFILE_, stack.getLiteralPath(), sdt == null ?  url : sdt.getVersionedUrl()),
           context.formatMessage(I18nConstants.PROFILE__DOES_NOT_MATCH_FOR__BECAUSE_OF_THE_FOLLOWING_PROFILE_ISSUES__,
               url,
@@ -4694,7 +4727,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     
     checkLang(resource, stack);
     if (crumbTrails) {
-      element.addMessage(signpost(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST, defn.getVersionedUrl()));
+      element.addMessage(signpost(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST, defn.getVersionedUrl()));
     }
     boolean pctOwned = false;
     if (pct == null) { 
@@ -4726,27 +4759,27 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           VersionURLInfo vu = VersionUtilities.parseVersionUrl(profile.primitiveValue());
           if (vu != null) {
             if (!VersionUtilities.versionsCompatible(vu.getVersion(),  context.getVersion())) {
-              hint(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_OTHER_VERSION, vu.getVersion());
+              hint(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_OTHER_VERSION, vu.getVersion());
             } else if (vu.getUrl().equals(defn.getUrl())) {
-              hint(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_THIS_VERSION_OK);              
+              hint(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_THIS_VERSION_OK);              
             } else {
               StructureDefinition sdt = context.fetchResource(StructureDefinition.class, vu.getUrl());
-              ok = rule(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_THIS_VERSION_OTHER, sdt == null ? "null" : sdt.getType()) && ok;                            
+              ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_THIS_VERSION_OTHER, sdt == null ? "null" : sdt.getType()) && ok;                            
             }
           } else {
             if (sd == null) {
               // we'll try fetching it directly from it's source, but this is likely to fail later even if the resolution succeeds
               if (fetcher == null) {
-                warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN, profile.primitiveValue());
+                warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN, profile.primitiveValue());
               } else if (!fetcher.fetchesCanonicalResource(this, profile.primitiveValue())) {
-                warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_NOT_POLICY, profile.primitiveValue());                
+                warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_NOT_POLICY, profile.primitiveValue());                
               } else {
                 sd = lookupProfileReference(errors, element, stack, i, profile, sd);
               }
             }
             if (sd != null) {
               if (crumbTrails) {
-                element.addMessage(signpost(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_META, sd.getVersionedUrl()));
+                element.addMessage(signpost(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_META, sd.getVersionedUrl()));
               }
               stack.resetIds();
               if (pctOwned) {
@@ -4760,10 +4793,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 for (Extension ext : sd.getExtensionsByUrl(ToolingExtensions.EXT_SD_DEPENDENCY)) {
                   StructureDefinition sdi = context.fetchResource(StructureDefinition.class, ext.getValue().primitiveValue());
                   if (sdi == null) {
-                    warning(errors, IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_DEPENDS_NOT_RESOLVED, ext.getValue().primitiveValue(), sd.getVersionedUrl());                
+                    warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_DEPENDS_NOT_RESOLVED, ext.getValue().primitiveValue(), sd.getVersionedUrl());                
                   } else {
                     if (crumbTrails) {
-                      element.addMessage(signpost(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_DEP, sdi.getUrl(), sd.getVersionedUrl()));
+                      element.addMessage(signpost(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_DEP, sdi.getUrl(), sd.getVersionedUrl()));
                     }
                     stack.resetIds();
                     if (pctOwned) {
@@ -4787,10 +4820,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     for (ImplementationGuide ig : igs) {
       for (ImplementationGuideGlobalComponent gl : ig.getGlobal()) {
         if (rt.equals(gl.getType())) {
-          StructureDefinition sd = context.fetchResource(StructureDefinition.class, gl.getProfile());
-          if (warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), sd != null, I18nConstants.VALIDATION_VAL_GLOBAL_PROFILE_UNKNOWN, gl.getProfile())) {
+          StructureDefinition sd = context.fetchResource(StructureDefinition.class, gl.getProfile(), ig);
+          if (warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), sd != null, I18nConstants.VALIDATION_VAL_GLOBAL_PROFILE_UNKNOWN, gl.getProfile(), ig.getVersionedUrl())) {
             if (crumbTrails) {
-              element.addMessage(signpost(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_GLOBAL, sd.getVersionedUrl(), ig.getVersionedUrl()));
+              element.addMessage(signpost(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_GLOBAL, sd.getVersionedUrl(), ig.getVersionedUrl()));
             }
             stack.resetIds();
             if (pctOwned) {
@@ -4814,7 +4847,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     CanonicalResourceLookupResult cr = crLookups.get(url);
     if (cr != null) {
       if (cr.error != null) {
-        warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_ERROR, url, cr.error);                
+        warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_ERROR, url, cr.error);                
       } else {
         sd = (StructureDefinition) cr.resource;
       }
@@ -4825,14 +4858,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } catch (Exception e) {
         if (STACK_TRACE) { e.printStackTrace(); }
         crLookups.put(url, new CanonicalResourceLookupResult(e.getMessage()));
-        if (e.getMessage().startsWith("java.net.UnknownHostException:")) {
+        if (e.getMessage() != null && e.getMessage().startsWith("java.net.UnknownHostException:")) {
           try {
-            warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_ERROR_NETWORK, profile.primitiveValue(), new URI(url).getHost());
+            warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_ERROR_NETWORK, profile.primitiveValue(), new URI(url).getHost());
           } catch (URISyntaxException e1) {
-            warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_ERROR_NETWORK, profile.primitiveValue(), "??");
+            warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_ERROR_NETWORK, profile.primitiveValue(), "??");
           }
         } else {
-          warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_ERROR, profile.primitiveValue(), e.getMessage());
+          warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_ERROR, profile.primitiveValue(), e.getMessage());
         }
       }
       if (sd != null) {
@@ -4912,7 +4945,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       return ok;
     }
-    if (rule(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), defn.hasSnapshot(), I18nConstants.VALIDATION_VAL_PROFILE_NOSNAPSHOT, defn.getVersionedUrl())) {
+    if (rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), defn.hasSnapshot(), I18nConstants.VALIDATION_VAL_PROFILE_NOSNAPSHOT, defn.getVersionedUrl())) {
       List<ValidationMessage> localErrors = new ArrayList<ValidationMessage>();
       resTracker.startValidating(defn);
       trackUsage(defn, hostContext, element);
@@ -4988,17 +5021,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         String l = xhtml.getAttribute("lang");
         String xl = xhtml.getAttribute("xml:lang");
         if (l == null && xl == null) {
-          warning(errors, IssueType.BUSINESSRULE, div.line(), div.col(), stack.getLiteralPath(), false, I18nConstants.LANGUAGE_XHTML_LANG_MISSING1);
+          warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, div.line(), div.col(), stack.getLiteralPath(), false, I18nConstants.LANGUAGE_XHTML_LANG_MISSING1);
         } else {
           if (l == null) {
-            warning(errors, IssueType.BUSINESSRULE, div.line(), div.col(), stack.getLiteralPath(), false, I18nConstants.LANGUAGE_XHTML_LANG_MISSING2);
+            warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, div.line(), div.col(), stack.getLiteralPath(), false, I18nConstants.LANGUAGE_XHTML_LANG_MISSING2);
           } else if (!l.equals(lang)) {
-            warning(errors, IssueType.BUSINESSRULE, div.line(), div.col(), stack.getLiteralPath(), false, I18nConstants.LANGUAGE_XHTML_LANG_DIFFERENT1, lang, l);
+            warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, div.line(), div.col(), stack.getLiteralPath(), false, I18nConstants.LANGUAGE_XHTML_LANG_DIFFERENT1, lang, l);
           }
           if (xl == null) {
-            warning(errors, IssueType.BUSINESSRULE, div.line(), div.col(), stack.getLiteralPath(), false, I18nConstants.LANGUAGE_XHTML_LANG_MISSING3);
+            warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, div.line(), div.col(), stack.getLiteralPath(), false, I18nConstants.LANGUAGE_XHTML_LANG_MISSING3);
           } else if (!xl.equals(lang)) {
-            warning(errors, IssueType.BUSINESSRULE, div.line(), div.col(), stack.getLiteralPath(), false, I18nConstants.LANGUAGE_XHTML_LANG_DIFFERENT2, lang, xl);
+            warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, div.line(), div.col(), stack.getLiteralPath(), false, I18nConstants.LANGUAGE_XHTML_LANG_DIFFERENT2, lang, xl);
           }
         }
       }
@@ -5012,7 +5045,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       int i = 0;
       for (Element e : list) {
         String s = e.getNamedChildValue("system") + "#" + e.getNamedChildValue("code");
-        ok = rule(errors, IssueType.BUSINESSRULE, e.line(), e.col(), stack.getLiteralPath() + ".meta.profile[" + Integer.toString(i) + "]", !tags.contains(s), I18nConstants.META_RES_SECURITY_DUPLICATE, s) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, e.line(), e.col(), stack.getLiteralPath() + ".meta.profile[" + Integer.toString(i) + "]", !tags.contains(s), I18nConstants.META_RES_SECURITY_DUPLICATE, s) && ok;
         tags.add(s);
         i++;
       }
@@ -5033,7 +5066,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           if (!Utilities.noString(ref)) {
             SearchParameter sp = context.fetchResource(SearchParameter.class, ref);
             if (sp != null) {
-              ok = rule(errors, IssueType.INVALID, searchParam.line(), searchParam.col(), stack.getLiteralPath() + ".rest[" + iRest + "].resource[" + iResource + "].searchParam[" + iSP + "]",
+              ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, searchParam.line(), searchParam.col(), stack.getLiteralPath() + ".rest[" + iRest + "].resource[" + iResource + "].searchParam[" + iSP + "]",
                 sp.getType().toCode().equals(type), I18nConstants.CAPABALITYSTATEMENT_CS_SP_WRONGTYPE, sp.getVersionedUrl(), sp.getType().toCode(), type) && ok;
             }
           }
@@ -5052,7 +5085,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     boolean ok = true;
 
     if (element.isNull()) {
-      if (rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), ToolingExtensions.readBooleanExtension(child, ToolingExtensions.EXT_JSON_NULLABLE),
+      if (rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), ToolingExtensions.readBooleanExtension(child, ToolingExtensions.EXT_JSON_NULLABLE),
           I18nConstants.ELEMENT_CANNOT_BE_NULL)) {
         // nothing else to validate?
       } else {
@@ -5086,7 +5119,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       stack.qualifyPath(".ofType("+resourceName+")");
 
       if (typeForResource == null) {
-        ok = rule(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(),
+        ok = rule(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(),
             false, I18nConstants.BUNDLE_BUNDLE_ENTRY_TYPE, resourceName, bt.toString()) && ok;
       } else if (isValidResourceType(resourceName, typeForResource)) {
         if (containedValidationPolicy.checkValid()) {
@@ -5119,10 +5152,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
           if (typeForResource.getProfile().size() == 1) {
             long t = System.nanoTime();
-            StructureDefinition profile = this.context.fetchResource(StructureDefinition.class, typeForResource.getProfile().get(0).asStringValue());
+            StructureDefinition profile = this.context.fetchResource(StructureDefinition.class, typeForResource.getProfile().get(0).asStringValue(), parentProfile);
             timeTracker.sd(t);
             trackUsage(profile, hostContext, element);
-            if (rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(),
+            if (rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(),
                 profile != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOPROFILE_EXPL, special.toHuman(), resourceName, typeForResource.getProfile().get(0).asStringValue())) {
               ok = validateResource(hc, errors, resource, element, profile, idstatus, stack, pct, mode) && ok;
             } else {
@@ -5134,7 +5167,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 "http://hl7.org/fhir/StructureDefinition/" + resourceName);
             timeTracker.sd(t);
             trackUsage(profile, hostContext, element);
-            if (rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(),
+            if (rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(),
                 profile != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOPROFILE_TYPE, special == null ? "??" : special.toHuman(), resourceName)) {
               ok = validateResource(hc, errors, resource, element, profile, idstatus, stack, pct, mode) && ok;
             } else {
@@ -5145,24 +5178,24 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             for (CanonicalType u : typeForResource.getProfile()) {
               b.append(u.asStringValue());
             }
-            ok = rulePlural(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(),
+            ok = rulePlural(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(),
                 false, typeForResource.getProfile().size(), I18nConstants.BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES, special.toHuman(), typeForResource.getCode(), b.toString()) && ok;
           }
         }
       } else {
         List<String> types = new ArrayList<>();
         for (UriType u : typeForResource.getProfile()) {
-          StructureDefinition sd = this.context.fetchResource(StructureDefinition.class, u.getValue());
+          StructureDefinition sd = this.context.fetchResource(StructureDefinition.class, u.getValue(), parentProfile);
           if (sd != null && !types.contains(sd.getType())) {
             types.add(sd.getType());
           }
         }
         if (types.size() == 1) {
-          ok = rule(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(),
+          ok = rule(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(),
               false, I18nConstants.BUNDLE_BUNDLE_ENTRY_TYPE2, resourceName, types.get(0)) && ok;
           
         } else {
-          ok = rulePlural(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(),
+          ok = rulePlural(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(),
               false, types.size(), I18nConstants.BUNDLE_BUNDLE_ENTRY_TYPE3, resourceName, types) && ok;
         }
       }
@@ -5197,7 +5230,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           }
         }
       }
-      sdt = context.fetchResource(StructureDefinition.class, sdt.getBaseDefinition());
+      sdt = context.fetchResource(StructureDefinition.class, sdt.getBaseDefinition(), sdt);
     }
     return false;
   }
@@ -5211,7 +5244,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     String id = element.getChildValue("id");
     if (!Utilities.noString(id)) {
       if (stack.getIds().containsKey(id) && stack.getIds().get(id) != element) {
-        rule(errors, IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.DUPLICATE_ID, id);
+        rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.DUPLICATE_ID, id);
       }
       if (!stack.isResetPoint()) {
         stack.getIds().put(id, element);
@@ -5347,12 +5380,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (!stype.equals(type)) {
         if (checkDefn.isChoice()) {
           if (extensionUrl != null && !isAbsolute(extensionUrl)) {
-            ok = rule(errors, IssueType.STRUCTURE, element.line(), element.col(), ei.getPath(), false, I18nConstants.EXTENSION_PROF_TYPE, profile.getVersionedUrl(), type, stype) && ok;
+            ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), ei.getPath(), false, I18nConstants.EXTENSION_PROF_TYPE, profile.getVersionedUrl(), type, stype) && ok;
           } else if (!isAbstractType(type) && !"Extension".equals(profile.getType())) {
-            ok = rule(errors, IssueType.STRUCTURE, element.line(), element.col(), ei.getPath(), stype.equals(type), I18nConstants.EXTENSION_PROF_TYPE, profile.getVersionedUrl(), type, stype) && ok;                  
+            ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), ei.getPath(), stype.equals(type), I18nConstants.EXTENSION_PROF_TYPE, profile.getVersionedUrl(), type, stype) && ok;                  
          }
         } else if (!isAbstractType(type)) {
-          ok = rule(errors, IssueType.STRUCTURE, element.line(), element.col(), ei.getPath(), stype.equals(type) || 
+          ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), ei.getPath(), stype.equals(type) || 
             (Utilities.existsInList(type, "string", "id") && Utilities.existsInList(stype, "string", "id")), // work around a r4 problem with id/string
             I18nConstants.EXTENSION_PROF_TYPE, profile.getVersionedUrl(), type, stype) && ok;
         } else if (!isResource(type)) {
@@ -5404,7 +5437,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (trc.getWorkingCode().equals("Reference"))
           type = "Reference";
         else
-          ok = rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), stack.getLiteralPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_NOTYPE, ei.getName(), describeTypes(checkDefn.getType())) && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, ei.line(), ei.col(), stack.getLiteralPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_NOTYPE, ei.getName(), describeTypes(checkDefn.getType())) && ok;
       }
     } else if (checkDefn.getContentReference() != null) {
       typeDefn = resolveNameReference(profile.getSnapshot(), checkDefn.getContentReference());
@@ -5479,11 +5512,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         // We only check extensions if we're not in a complex extension or if the element we're dealing with is not defined as part of that complex extension
       } else if (type.equals("Extension")) {
         Element eurl = ei.getElement().getNamedChild("url");
-        if (rule(errors, IssueType.INVALID, ei.getPath(), eurl != null, I18nConstants.EXTENSION_EXT_URL_NOTFOUND)) {
+        if (rule(errors, NO_RULE_DATE, IssueType.INVALID, ei.getPath(), eurl != null, I18nConstants.EXTENSION_EXT_URL_NOTFOUND)) {
           String url = eurl.primitiveValue();
           thisExtension = url;
-          if (rule(errors, IssueType.INVALID, ei.getPath(), !Utilities.noString(url), I18nConstants.EXTENSION_EXT_URL_NOTFOUND)) {
-            if (rule(errors, IssueType.INVALID, ei.getPath(), (extensionUrl != null) || Utilities.isAbsoluteUrl(url), I18nConstants.EXTENSION_EXT_URL_ABSOLUTE)) {
+          if (rule(errors, NO_RULE_DATE, IssueType.INVALID, ei.getPath(), !Utilities.noString(url), I18nConstants.EXTENSION_EXT_URL_NOTFOUND)) {
+            if (rule(errors, NO_RULE_DATE, IssueType.INVALID, ei.getPath(), (extensionUrl != null) || Utilities.isAbsoluteUrl(url), I18nConstants.EXTENSION_EXT_URL_ABSOLUTE)) {
               checkExtension(hostContext, errors, ei.getPath(), resource, element, ei.getElement(), checkDefn, profile, localStack, stack, extensionUrl, pct, mode);
             } else {
               ok = false;
@@ -5510,7 +5543,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       }
     } else {
-      if (rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), stack.getLiteralPath(), checkDefn != null, I18nConstants.VALIDATION_VAL_CONTENT_UNKNOWN, ei.getName())) {
+      if (rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, ei.line(), ei.col(), stack.getLiteralPath(), checkDefn != null, I18nConstants.VALIDATION_VAL_CONTENT_UNKNOWN, ei.getName())) {
         ok = validateElement(hostContext, errors, profile, checkDefn, null, null, resource, ei.getElement(), type, localStack, false, true, null, pct, mode) && ok;
       } else {
         ok = false;
@@ -5520,7 +5553,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     String tail = null;
     if (profiles.isEmpty()) {
       if (type != null) {
-        p = getProfileForType(type, checkDefn.getType());
+        p = getProfileForType(type, checkDefn.getType(), profile);
 
         // If dealing with a primitive type, then we need to check the current child against
         // the invariants (constraints) on the current element, because otherwise it only gets
@@ -5529,7 +5562,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         //  checkInvariants(hostContext, errors, ei.path, profile, ei.definition, null, null, resource, ei.element);
         //}
 
-        ok = rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.getPath(), p != null, I18nConstants.VALIDATION_VAL_NOTYPE, type) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, ei.line(), ei.col(), ei.getPath(), p != null, I18nConstants.VALIDATION_VAL_NOTYPE, type) && ok;
       }
     } else if (profiles.size() == 1) {
       String url = profiles.get(0);
@@ -5537,8 +5570,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         tail = url.substring(url.indexOf("#") + 1);
         url = url.substring(0, url.indexOf("#"));
       }
-      p = this.context.fetchResource(StructureDefinition.class, url);
-      ok = rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.getPath(), p != null, I18nConstants.VALIDATION_VAL_UNKNOWN_PROFILE, profiles.get(0)) && ok;
+      p = this.context.fetchResource(StructureDefinition.class, url, profile);
+      ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, ei.line(), ei.col(), ei.getPath(), p != null, I18nConstants.VALIDATION_VAL_UNKNOWN_PROFILE, profiles.get(0)) && ok;
     } else {
       elementValidated = true;
       HashMap<String, List<ValidationMessage>> goodProfiles = new HashMap<String, List<ValidationMessage>>();
@@ -5551,7 +5584,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           url = url.substring(0, url.indexOf("#"));
         }
         p = this.context.fetchResource(StructureDefinition.class, typeProfile);
-        if (rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.getPath(), p != null, I18nConstants.VALIDATION_VAL_UNKNOWN_PROFILE, typeProfile)) {
+        if (rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, ei.line(), ei.col(), ei.getPath(), p != null, I18nConstants.VALIDATION_VAL_UNKNOWN_PROFILE, typeProfile)) {
           List<ValidationMessage> profileErrors = new ArrayList<ValidationMessage>();
           ok = validateElement(hostContext, profileErrors, p, getElementByTail(p, tail), profile, checkDefn, resource, ei.getElement(), type, localStack, thisIsCodeableConcept, checkDisplay, thisExtension, pct, mode) && ok;
           if (hasErrors(profileErrors))
@@ -5563,7 +5596,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (goodProfiles.size() == 1) {
         errors.addAll(goodProfiles.values().iterator().next());
       } else if (goodProfiles.size() == 0) {
-        ok = rule(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.getPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_NOMATCH, StringUtils.join("; ", profiles)) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, ei.line(), ei.col(), ei.getPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_NOMATCH, StringUtils.join("; ", profiles)) && ok;
         for (String m : badProfiles.keySet()) {
           p = this.context.fetchResource(StructureDefinition.class, m);
           for (ValidationMessage message : badProfiles.get(m)) {
@@ -5572,7 +5605,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           }
         }
       } else {
-        warningPlural(errors, IssueType.STRUCTURE, ei.line(), ei.col(), ei.getPath(), false, goodProfiles.size(), I18nConstants.VALIDATION_VAL_PROFILE_MULTIPLEMATCHES, ResourceUtilities.listStrings(goodProfiles.keySet()));
+        warningPlural(errors, NO_RULE_DATE, IssueType.STRUCTURE, ei.line(), ei.col(), ei.getPath(), false, goodProfiles.size(), I18nConstants.VALIDATION_VAL_PROFILE_MULTIPLEMATCHES, ResourceUtilities.listStrings(goodProfiles.keySet()));
         for (String m : goodProfiles.keySet()) {
           p = this.context.fetchResource(StructureDefinition.class, m);
           for (ValidationMessage message : goodProfiles.get(m)) {
@@ -5711,18 +5744,18 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           }
         if (ed.getMin() > 0) {
           if (problematicPaths.contains(ed.getPath()))
-            hintPlural(errors, IssueType.NOTSUPPORTED, element.line(), element.col(), stack.getLiteralPath(), count >= ed.getMin(), count, I18nConstants.VALIDATION_VAL_PROFILE_NOCHECKMIN, profile.getVersionedUrl(), ed.getPath(), ed.getId(), ed.getSliceName(),ed.getLabel(), stack.getLiteralPath(), Integer.toString(ed.getMin()));
+            hintPlural(errors, NO_RULE_DATE, IssueType.NOTSUPPORTED, element.line(), element.col(), stack.getLiteralPath(), count >= ed.getMin(), count, I18nConstants.VALIDATION_VAL_PROFILE_NOCHECKMIN, profile.getVersionedUrl(), ed.getPath(), ed.getId(), ed.getSliceName(),ed.getLabel(), stack.getLiteralPath(), Integer.toString(ed.getMin()));
           else {
             if (count < ed.getMin()) {
-              ok = rulePlural(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), false, count, I18nConstants.VALIDATION_VAL_PROFILE_MINIMUM, profile.getVersionedUrl(), ed.getPath(), ed.getId(), ed.getSliceName(),ed.getLabel(), stack.getLiteralPath(), Integer.toString(ed.getMin())) && ok;
+              ok = rulePlural(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), false, count, I18nConstants.VALIDATION_VAL_PROFILE_MINIMUM, profile.getVersionedUrl(), ed.getPath(), ed.getId(), ed.getSliceName(),ed.getLabel(), stack.getLiteralPath(), Integer.toString(ed.getMin())) && ok;
             }
           }
         }
         if (ed.hasMax() && !ed.getMax().equals("*")) {
           if (problematicPaths.contains(ed.getPath()))
-            hintPlural(errors, IssueType.NOTSUPPORTED, element.line(), element.col(), stack.getLiteralPath(), count <= Integer.parseInt(ed.getMax()), count, I18nConstants.VALIDATION_VAL_PROFILE_NOCHECKMAX, profile.getVersionedUrl(), ed.getPath(), ed.getId(), ed.getSliceName(),ed.getLabel(), stack.getLiteralPath(), ed.getMax());
+            hintPlural(errors, NO_RULE_DATE, IssueType.NOTSUPPORTED, element.line(), element.col(), stack.getLiteralPath(), count <= Integer.parseInt(ed.getMax()), count, I18nConstants.VALIDATION_VAL_PROFILE_NOCHECKMAX, profile.getVersionedUrl(), ed.getPath(), ed.getId(), ed.getSliceName(),ed.getLabel(), stack.getLiteralPath(), ed.getMax());
           else if (count > Integer.parseInt(ed.getMax())) {
-            ok = rulePlural(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), false, count, I18nConstants.VALIDATION_VAL_PROFILE_MAXIMUM, profile.getVersionedUrl(), ed.getPath(), ed.getId(), ed.getSliceName(),ed.getLabel(), stack.getLiteralPath(), ed.getMax(), Integer.toString(count)) && ok;
+            ok = rulePlural(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), false, count, I18nConstants.VALIDATION_VAL_PROFILE_MAXIMUM, profile.getVersionedUrl(), ed.getPath(), ed.getId(), ed.getSliceName(),ed.getLabel(), stack.getLiteralPath(), ed.getMax(), Integer.toString(count)) && ok;
           }
         }
       }
@@ -5784,18 +5817,18 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (ei.additionalSlice && ei.definition != null) {
           if (ei.definition.getSlicing().getRules().equals(ElementDefinition.SlicingRules.OPEN) ||
             ei.definition.getSlicing().getRules().equals(ElementDefinition.SlicingRules.OPENATEND) && true /* TODO: replace "true" with condition to check that this element is at "end" */) {
-            slicingHint(errors, IssueType.INFORMATIONAL, ei.line(), ei.col(), ei.getPath(), false, isProfile(slicer) || isCritical(ei.sliceInfo), 
+            slicingHint(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, ei.line(), ei.col(), ei.getPath(), false, isProfile(slicer) || isCritical(ei.sliceInfo), 
               context.formatMessage(I18nConstants.THIS_ELEMENT_DOES_NOT_MATCH_ANY_KNOWN_SLICE_,
-                profile == null ? "" : " defined in the profile " + profile.getVersionedUrl()),
-              context.formatMessage(I18nConstants.THIS_ELEMENT_DOES_NOT_MATCH_ANY_KNOWN_SLICE_, profile == null ? "" : I18nConstants.DEFINED_IN_THE_PROFILE + profile.getVersionedUrl()) + errorSummaryForSlicingAsHtml(ei.sliceInfo),
+                profile == null ? "" : "defined in the profile " + profile.getVersionedUrl()),
+              context.formatMessage(I18nConstants.THIS_ELEMENT_DOES_NOT_MATCH_ANY_KNOWN_SLICE_, profile == null ? "" : context.formatMessage(I18nConstants.DEFINED_IN_THE_PROFILE) + " "+profile.getVersionedUrl()) + errorSummaryForSlicingAsHtml(ei.sliceInfo),
               errorSummaryForSlicingAsText(ei.sliceInfo));
           } else if (ei.definition.getSlicing().getRules().equals(ElementDefinition.SlicingRules.CLOSED)) {
-            rule(errors, IssueType.INVALID, ei.line(), ei.col(), ei.getPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_NOTSLICE, (profile == null ? "" : " defined in the profile " + profile.getVersionedUrl()), errorSummaryForSlicing(ei.sliceInfo));
+            rule(errors, NO_RULE_DATE, IssueType.INVALID, ei.line(), ei.col(), ei.getPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_NOTSLICE, (profile == null ? "" : " defined in the profile " + profile.getVersionedUrl()), errorSummaryForSlicing(ei.sliceInfo));
           }
         } else {
           // Don't raise this if we're in an abstract profile, like Resource
           if (!childDefinitions.getSource().getAbstract()) {
-            rule(errors, IssueType.NOTSUPPORTED, ei.line(), ei.col(), ei.getPath(), (ei.definition != null), I18nConstants.VALIDATION_VAL_PROFILE_NOTALLOWED, profile.getVersionedUrl());
+            rule(errors, NO_RULE_DATE, IssueType.NOTSUPPORTED, ei.line(), ei.col(), ei.getPath(), (ei.definition != null), I18nConstants.VALIDATION_VAL_PROFILE_NOTALLOWED, profile.getVersionedUrl());
           }
         }
       }
@@ -5812,10 +5845,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
       if (!ToolingExtensions.readBoolExtension(profile, "http://hl7.org/fhir/StructureDefinition/structuredefinition-xml-no-order")) {
         boolean ok = (ei.definition == null) || (ei.index >= last) || isXmlAttr;
-        rule(errors, IssueType.INVALID, ei.line(), ei.col(), ei.getPath(), ok, I18nConstants.VALIDATION_VAL_PROFILE_OUTOFORDER, profile.getVersionedUrl(), ei.getName(), lastei == null ? "(null)" : lastei.getName());
+        rule(errors, NO_RULE_DATE, IssueType.INVALID, ei.line(), ei.col(), ei.getPath(), ok, I18nConstants.VALIDATION_VAL_PROFILE_OUTOFORDER, profile.getVersionedUrl(), ei.getName(), lastei == null ? "(null)" : lastei.getName());
       }
       if (ei.slice != null && ei.index == last && ei.slice.getSlicing().getOrdered()) {
-        rule(errors, IssueType.INVALID, ei.line(), ei.col(), ei.getPath(), (ei.definition == null) || (ei.sliceindex >= lastSlice) || isXmlAttr, I18nConstants.VALIDATION_VAL_PROFILE_SLICEORDER, profile.getVersionedUrl(), ei.getName());
+        rule(errors, NO_RULE_DATE, IssueType.INVALID, ei.line(), ei.col(), ei.getPath(), (ei.definition == null) || (ei.sliceindex >= lastSlice) || isXmlAttr, I18nConstants.VALIDATION_VAL_PROFILE_SLICEORDER, profile.getVersionedUrl(), ei.getName());
       }
       if (ei.definition == null || !isXmlAttr) {
         last = ei.index;
@@ -5866,14 +5899,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             ei.additionalSlice = true;
           }
         } catch (FHIRException e) {
-          rule(errors, IssueType.PROCESSING, ei.line(), ei.col(), ei.getPath(), false,  I18nConstants.SLICING_CANNOT_BE_EVALUATED, e.getMessage());
+          rule(errors, NO_RULE_DATE, IssueType.PROCESSING, ei.line(), ei.col(), ei.getPath(), false,  I18nConstants.SLICING_CANNOT_BE_EVALUATED, e.getMessage());
           unsupportedSlicing = true;
           childUnsupportedSlicing = true;
         }
     }
     if (match) {
       boolean isOk = ei.definition == null || ei.definition == slicer || (ei.definition.getPath().endsWith("[x]") && ed.getPath().startsWith(ei.definition.getPath().replace("[x]", "")));
-      if (rule(errors, IssueType.INVALID, ei.line(), ei.col(), ei.getPath(), isOk, I18nConstants.VALIDATION_VAL_PROFILE_MATCHMULTIPLE, profile.getVersionedUrl(), (ei.definition == null || !ei.definition.hasSliceName() ? "" : ei.definition.getSliceName()), (ed.hasSliceName() ? ed.getSliceName() : ""))) {
+      if (rule(errors, NO_RULE_DATE, IssueType.INVALID, ei.line(), ei.col(), ei.getPath(), isOk, I18nConstants.VALIDATION_VAL_PROFILE_MATCHMULTIPLE, profile.getVersionedUrl(), (ei.definition == null || !ei.definition.hasSliceName() ? "" : ei.definition.getSliceName()), (ed.hasSliceName() ? ed.getSliceName() : ""))) {
         ei.definition = ed;
         if (ei.slice == null) {
           ei.index = i;
@@ -6007,7 +6040,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return false;
     }
     while (profile != null) {
-      profile = context.fetchResource(StructureDefinition.class, profile.getBaseDefinition());
+      profile = context.fetchResource(StructureDefinition.class, profile.getBaseDefinition(), profile);
       if (profile != null) {
         if (source.equals(profile.getUrl())) {
           return true;
@@ -6028,7 +6061,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         String expr = FHIRPathExpressionFixer.fixExpr(inv.getExpression(), inv.getKey());
         n = fpe.parse(expr);
       } catch (FHIRException e) {
-        rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, false, I18nConstants.PROBLEM_PROCESSING_EXPRESSION__IN_PROFILE__PATH__, inv.getExpression(), profile.getVersionedUrl(), path, e.getMessage());
+        rule(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, false, I18nConstants.PROBLEM_PROCESSING_EXPRESSION__IN_PROFILE__PATH__, inv.getExpression(), profile.getVersionedUrl(), path, e.getMessage());
         return false;
       }
       timeTracker.fpe(t);
@@ -6059,15 +6092,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (inv.hasExtension(ToolingExtensions.EXT_BEST_PRACTICE) &&
         ToolingExtensions.readBooleanExtension(inv, ToolingExtensions.EXT_BEST_PRACTICE)) {
         if (bpWarnings == BestPracticeWarningLevel.Hint)
-          hint(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, msg);
+          hint(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, ok, msg);
         else if (bpWarnings == BestPracticeWarningLevel.Warning)
-          warning(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, msg);
+          warning(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, ok, msg);
         else if (bpWarnings == BestPracticeWarningLevel.Error)
-          rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, msg);
+          rule(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, ok, msg);
       } else if (inv.getSeverity() == ConstraintSeverity.ERROR) {
-        rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, msg);
+        rule(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, ok, msg);
       } else if (inv.getSeverity() == ConstraintSeverity.WARNING) {
-        warning(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, msg);
+        warning(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, ok, msg);
       }
     }
     return ok;
@@ -6107,7 +6140,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         defn = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/" + resourceName);
       timeTracker.sd(t);
       //check exists
-      rok = rule(errors, IssueType.INVALID, element.line(), element.col(), stack.addToLiteralPath(resourceName),
+      rok = rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), stack.addToLiteralPath(resourceName),
         defn != null, I18nConstants.VALIDATION_VAL_PROFILE_NODEFINITION, resourceName);
       ok = rok && ok;
     }
@@ -6125,23 +6158,23 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     if (rok) {
       if (idstatus == IdStatus.REQUIRED && (element.getNamedChild(ID) == null)) {
-        ok = rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.RESOURCE_RES_ID_MISSING) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.RESOURCE_RES_ID_MISSING) && ok;
       } else if (idstatus == IdStatus.PROHIBITED && (element.getNamedChild(ID) != null)) {
-        ok = rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.RESOURCE_RES_ID_PROHIBITED) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.RESOURCE_RES_ID_PROHIBITED) && ok;
       }
       if (element.getNamedChild(ID) != null) {
         Element eid = element.getNamedChild(ID);
         if (eid.getProperty() != null && eid.getProperty().getDefinition() != null && eid.getProperty().getDefinition().getBase().getPath().equals("Resource.id")) {
           NodeStack ns = stack.push(eid, -1, eid.getProperty().getDefinition(), null);
           if (eid.primitiveValue() != null && eid.primitiveValue().length() > 64) {
-            ok = rule(errors, IssueType.INVALID, eid.line(), eid.col(), ns.getLiteralPath(), false, I18nConstants.RESOURCE_RES_ID_MALFORMED_LENGTH) && ok;
+            ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, eid.line(), eid.col(), ns.getLiteralPath(), false, I18nConstants.RESOURCE_RES_ID_MALFORMED_LENGTH) && ok;
           } else {
-            ok = rule(errors, IssueType.INVALID, eid.line(), eid.col(), ns.getLiteralPath(), FormatUtilities.isValidId(eid.primitiveValue()), I18nConstants.RESOURCE_RES_ID_MALFORMED_CHARS) && ok;
+            ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, eid.line(), eid.col(), ns.getLiteralPath(), FormatUtilities.isValidId(eid.primitiveValue()), I18nConstants.RESOURCE_RES_ID_MALFORMED_CHARS) && ok;
           }
         }
       }
       // validate
-      if (rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), resourceName.equals(defn.getType()), I18nConstants.VALIDATION_VAL_PROFILE_WRONGTYPE,
+      if (rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), resourceName.equals(defn.getType()), I18nConstants.VALIDATION_VAL_PROFILE_WRONGTYPE,
           defn.getType(), resourceName, defn.getVersionedUrl())) {
         ok = start(hostContext, errors, element, element, defn, stack, pct, mode); // root is both definition and type
       } else {

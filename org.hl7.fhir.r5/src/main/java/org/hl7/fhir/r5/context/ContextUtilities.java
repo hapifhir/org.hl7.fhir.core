@@ -10,8 +10,8 @@ import java.util.Set;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
-import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.ElementDefinition;
@@ -239,7 +239,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
     if ((!p.hasSnapshot() || isProfileNeedsRegenerate(p) ) && (ifLogical || p.getKind() != StructureDefinitionKind.LOGICAL)) {
       if (!p.hasBaseDefinition())
         throw new DefinitionException(context.formatMessage(I18nConstants.PROFILE___HAS_NO_BASE_AND_NO_SNAPSHOT, p.getName(), p.getUrl()));
-      StructureDefinition sd = context.fetchResource(StructureDefinition.class, p.getBaseDefinition());
+      StructureDefinition sd = context.fetchResource(StructureDefinition.class, p.getBaseDefinition(), p);
       if (sd == null && "http://hl7.org/fhir/StructureDefinition/Base".equals(p.getBaseDefinition())) {
         sd = ProfileUtilities.makeBaseDefinition(p.getFhirVersion());
       }

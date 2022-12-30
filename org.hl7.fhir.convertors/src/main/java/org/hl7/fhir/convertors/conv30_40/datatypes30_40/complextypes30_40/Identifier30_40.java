@@ -78,6 +78,9 @@ public class Identifier30_40 {
         case TEMP:
           tgt.setValue(org.hl7.fhir.dstu3.model.Identifier.IdentifierUse.TEMP);
           break;
+        case OLD:
+          tgt.setValue(org.hl7.fhir.dstu3.model.Identifier.IdentifierUse.SECONDARY);
+          break;
         case SECONDARY:
           tgt.setValue(org.hl7.fhir.dstu3.model.Identifier.IdentifierUse.SECONDARY);
           break;

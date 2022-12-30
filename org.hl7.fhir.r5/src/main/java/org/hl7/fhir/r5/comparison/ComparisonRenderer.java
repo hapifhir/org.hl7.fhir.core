@@ -21,7 +21,7 @@ import org.hl7.fhir.r5.comparison.ResourceComparer.PlaceHolderComparison;
 import org.hl7.fhir.r5.comparison.ResourceComparer.ResourceComparison;
 import org.hl7.fhir.r5.comparison.ValueSetComparer.ValueSetComparison;
 
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Base;
@@ -211,7 +211,8 @@ public class ComparisonRenderer implements IEvaluationContext {
   private void renderProfile(String id, ProfileComparison comp) throws IOException {
     String template = templates.get("Profile");
     Map<String, Base> vars = new HashMap<>();
-    ProfileComparer cs = new ProfileComparer(session, new ProfileUtilities(session.getContextLeft(), null, session.getPkpLeft()), new ProfileUtilities(session.getContextRight(), null, session.getPkpRight()));
+    ProfileComparer cs = new ProfileComparer(session, new ProfileUtilities(session.getContextLeft(), null, session.getPkpLeft()), 
+        new ProfileUtilities(session.getContextRight(), null, session.getPkpRight()));
     vars.put("left", new StringType(comp.getLeft().present()));
     vars.put("right", new StringType(comp.getRight().present()));
     vars.put("leftId", new StringType(comp.getLeft().getId()));

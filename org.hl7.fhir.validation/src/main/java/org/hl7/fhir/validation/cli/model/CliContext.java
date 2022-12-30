@@ -284,7 +284,7 @@ public class CliContext {
   }
 
   public CliContext setLocale(Locale locale) {
-    this.locale = locale.getDisplayLanguage();
+    this.locale = locale.getLanguage();
     return this;
   }
 

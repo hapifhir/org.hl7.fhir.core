@@ -37,11 +37,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -52,21 +50,19 @@ import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
-import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
 import org.hl7.fhir.r5.context.IWorkerContext.ILoggingService.LogCategory;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.formats.ParserType;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
-import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapModelMode;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapStructureComponent;
+import org.hl7.fhir.r5.profilemodel.PEDefinition;
+import org.hl7.fhir.r5.profilemodel.PEBuilder;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
@@ -82,9 +78,6 @@ import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
-import org.hl7.fhir.utilities.validation.ValidationMessage;
-import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
-import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 
 import ca.uhn.fhir.parser.DataFormatException;
 
@@ -102,7 +95,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     private final IContextResourceLoader loader;
 
     public PackageResourceLoader(PackageResourceInformation pri, IContextResourceLoader loader) {
-      super(pri.getType(), pri.getId(), pri.getUrl(),pri.getVersion());
+      super(pri.getResourceType(), pri.getId(), pri.getUrl(),pri.getVersion());
       this.filename = pri.getFilename();
       this.loader = loader;
     }
@@ -250,7 +243,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     public SimpleWorkerContext fromPackage(NpmPackage pi, IContextResourceLoader loader) throws IOException, FHIRException {
       SimpleWorkerContext context = getSimpleWorkerContextInstance();
       context.setAllowLoadingDuplicates(allowLoadingDuplicates);
-      context.version = pi.getNpm().get("version").getAsString();
+      context.version = pi.getNpm().asString("version");
       context.loadFromPackage(pi, loader);
       context.finishLoading();
       return build(context);
@@ -294,7 +287,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       return build(context);
     }
 
-    public SimpleWorkerContext fromDefinitions(Map<String, byte[]> source, IContextResourceLoader loader, PackageVersion pi) throws IOException, FHIRException  {
+    public SimpleWorkerContext fromDefinitions(Map<String, byte[]> source, IContextResourceLoader loader, PackageInformation pi) throws IOException, FHIRException  {
       SimpleWorkerContext context = getSimpleWorkerContextInstance();
       for (String name : source.keySet()) {
         try {
@@ -311,7 +304,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     }
   }
 
-  private void loadDefinitionItem(String name, InputStream stream, IContextResourceLoader loader, ILoadFilter filter, PackageVersion pi) throws IOException, FHIRException {
+  private void loadDefinitionItem(String name, InputStream stream, IContextResourceLoader loader, ILoadFilter filter, PackageInformation pi) throws IOException, FHIRException {
     if (name.endsWith(".xml"))
       loadFromFile(stream, name, loader, filter);
     else if (name.endsWith(".json"))
@@ -390,7 +383,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 		}
 	}
 
-  private void loadFromFileJson(InputStream stream, String name, IContextResourceLoader loader, ILoadFilter filter, PackageVersion pi) throws IOException, FHIRException {
+  private void loadFromFileJson(InputStream stream, String name, IContextResourceLoader loader, ILoadFilter filter, PackageInformation pi) throws IOException, FHIRException {
     Bundle f = null;
     try {
       if (loader != null)
@@ -487,7 +480,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       }
       for (String s : pi.listResources(types)) {
         try {
-          loadDefinitionItem(s, pi.load("package", s), loader, null, new PackageVersion(pi.id(), pi.version(), pi.dateAsDate()));
+          loadDefinitionItem(s, pi.load("package", s), loader, null, new PackageInformation(pi));
           t++;
         } catch (Exception e) {
           throw new FHIRException(formatMessage(I18nConstants.ERROR_READING__FROM_PACKAGE__, s, pi.name(), pi.version(), e.getMessage()), e);
@@ -500,7 +493,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       for (PackageResourceInformation pri : pi.listIndexedResources(types)) {
         if (!pri.getFilename().contains("ig-r4")) {
           try {
-            registerResourceFromPackage(new PackageResourceLoader(pri, loader), new PackageVersion(pi.id(), pi.version(), pi.dateAsDate()));
+            registerResourceFromPackage(new PackageResourceLoader(pri, loader), new PackageInformation(pi));
             t++;
           } catch (FHIRException e) {
             throw new FHIRException(formatMessage(I18nConstants.ERROR_READING__FROM_PACKAGE__, pri.getFilename(), pi.name(), pi.version(), e.getMessage()), e);
@@ -672,6 +665,21 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     return r;
   }
 
+  @Override
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, Resource source) {
+    T r = super.fetchResource(class_, uri, source);
+    if (r instanceof StructureDefinition) {
+      StructureDefinition p = (StructureDefinition)r;
+      try {
+        new ContextUtilities(this).generateSnapshot(p);
+      } catch (Exception e) {
+        // not sure what to do in this case?
+        System.out.println("Unable to generate snapshot for "+uri+": "+e.getMessage());
+      }
+    }
+    return r;
+  }
+
 
 
 
@@ -706,7 +714,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
    return xverManager;
   }
   
-  public void cachePackage(PackageVersion packageDetails, List<PackageVersion> dependencies) {
+  public void cachePackage(PackageInformation packageInfo) {
     // nothing yet
   }
 
@@ -720,17 +728,12 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
   @Override
-  public void cachePackage(PackageDetails packageDetails, List<PackageVersion> dependencies) {
-    // TODO Auto-generated method stub    
-  }
-
-  @Override
-  public boolean hasPackage(PackageVersion pack) {
+  public boolean hasPackage(PackageInformation pack) {
     return false;
   }
 
   @Override
-  public PackageDetails getPackage(PackageVersion pack) {
+  public PackageInformation getPackage(String id, String ver) {
     return null;
   }
 
@@ -746,6 +749,10 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
      return loadedPackages.toString();
   }
 
-  
+  @Override
+  public String getSpecUrl() {
+    return VersionUtilities.getSpecUrl(getVersion())+"/";
+  }
+
 }
 

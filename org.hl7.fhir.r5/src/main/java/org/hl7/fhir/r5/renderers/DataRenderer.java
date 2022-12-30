@@ -763,7 +763,7 @@ public class DataRenderer extends Renderer {
     }
   }
   
-  protected void renderUri(XhtmlNode x, UriType uri, String path, String id) {
+  protected void renderUri(XhtmlNode x, UriType uri, String path, String id, Resource src) {
     if (isCanonical(path)) {
       x.code().tx(uri.getValue());
     } else {
@@ -773,7 +773,7 @@ public class DataRenderer extends Renderer {
       } else if (uri.getValue().startsWith("mailto:")) {
         x.ah(uri.getValue()).addText(uri.getValue().substring(7));
       } else {
-        Resource target = context.getContext().fetchResource(Resource.class, uri.getValue());
+        Resource target = context.getContext().fetchResource(Resource.class, uri.getValue(), src);
         if (target != null && target.hasUserData("path")) {
           String title = target instanceof CanonicalResource ? ((CanonicalResource) target).present() : uri.getValue();
           x.ah(target.getUserString("path")).addText(title);
@@ -1129,25 +1129,25 @@ public class DataRenderer extends Renderer {
 
     if (ii.hasType()) {
       if (ii.getType().hasText())
-        s = ii.getType().getText()+": "+s;
+        s = ii.getType().getText()+":\u00A0"+s;
       else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasDisplay())
         s = ii.getType().getCoding().get(0).getDisplay()+": "+s;
       else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasCode())
         s = lookupCode(ii.getType().getCoding().get(0).getSystem(), ii.getType().getCoding().get(0).getVersion(), ii.getType().getCoding().get(0).getCode())+": "+s;
     } else {
-      s = "id: "+s;      
+      s = "id:\u00A0"+s;      
     }
 
     if (ii.hasUse() || ii.hasPeriod()) {
-      s = s + "(";
+      s = s + "\u00A0(";
       if (ii.hasUse()) {
-        s = s + "use: "+ii.getUse().toString();
+        s = s + "use:\u00A0"+ii.getUse().toString();
       }
       if (ii.hasUse() && ii.hasPeriod()) {
-        s = s + ", ";
+        s = s + ",\u00A0";
       }
       if (ii.hasPeriod()) {
-        s = s + "period: "+displayPeriod(ii.getPeriod());
+        s = s + "period:\u00A0"+displayPeriod(ii.getPeriod());
       }
       s = s + ")";
     }    
@@ -1574,7 +1574,7 @@ public class DataRenderer extends Renderer {
         if (rep.hasOffset()) {
           st = Integer.toString(rep.getOffset())+"min ";
         }
-        b.append("Do "+st);
+        b.append(st);
         for (Enumeration<EventTiming> wh : rep.getWhen())
           b.append(displayEventCode(wh.getValue()));
       } else {
@@ -1592,7 +1592,7 @@ public class DataRenderer extends Renderer {
             st = st + "-"+rep.getPeriodMax().toPlainString();
           st = st + " "+displayTimeUnits(rep.getPeriodUnit());
         }
-        b.append("Do "+st);
+        b.append(st);
       }
       if (rep.hasBoundsPeriod() && rep.getBoundsPeriod().hasEnd())
         b.append("Until "+displayDateTime(rep.getBoundsPeriod().getEndElement()));

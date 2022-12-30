@@ -15,7 +15,7 @@ import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Stri
 import org.hl7.fhir.convertors.conv10_50.resources10_50.Enumerations10_50;
 import org.hl7.fhir.dstu2.utils.ToolingExtensions;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -388,7 +388,7 @@ public class ElementDefinition10_50 {
   public static org.hl7.fhir.dstu2.model.ElementDefinition.ElementDefinitionConstraintComponent convertElementDefinitionConstraintComponent(ElementDefinition.ElementDefinitionConstraintComponent src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.dstu2.model.ElementDefinition.ElementDefinitionConstraintComponent tgt = new org.hl7.fhir.dstu2.model.ElementDefinition.ElementDefinitionConstraintComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt, org.hl7.fhir.r5.utils.ToolingExtensions.EXT_XPATH_CONSTRAINT);
     if (src.hasKeyElement()) tgt.setKeyElement(Id10_50.convertId(src.getKeyElement()));
     if (src.hasRequirementsElement())
       tgt.setRequirementsElement(String10_50.convertString(src.getRequirementsElement()));

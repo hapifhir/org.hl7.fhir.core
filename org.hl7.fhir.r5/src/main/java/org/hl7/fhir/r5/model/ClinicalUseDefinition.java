@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -231,13 +231,20 @@ public class ClinicalUseDefinition extends DomainResource {
         protected List<Reference> indication;
 
         /**
+         * An expression that returns true or false, indicating whether the indication is applicable or not, after having applied its other elements.
+         */
+        @Child(name = "applicability", type = {Expression.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="An expression that returns true or false, indicating whether the indication is applicable or not, after having applied its other elements", formalDefinition="An expression that returns true or false, indicating whether the indication is applicable or not, after having applied its other elements." )
+        protected Expression applicability;
+
+        /**
          * Information about the use of the medicinal product in relation to other therapies described as part of the contraindication.
          */
-        @Child(name = "otherTherapy", type = {}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Child(name = "otherTherapy", type = {}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="Information about use of the product in relation to other therapies described as part of the contraindication", formalDefinition="Information about the use of the medicinal product in relation to other therapies described as part of the contraindication." )
         protected List<ClinicalUseDefinitionContraindicationOtherTherapyComponent> otherTherapy;
 
-        private static final long serialVersionUID = 832395863L;
+        private static final long serialVersionUID = 1942194420L;
 
     /**
      * Constructor
@@ -401,6 +408,30 @@ public class ClinicalUseDefinition extends DomainResource {
         }
 
         /**
+         * @return {@link #applicability} (An expression that returns true or false, indicating whether the indication is applicable or not, after having applied its other elements.)
+         */
+        public Expression getApplicability() { 
+          if (this.applicability == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ClinicalUseDefinitionContraindicationComponent.applicability");
+            else if (Configuration.doAutoCreate())
+              this.applicability = new Expression(); // cc
+          return this.applicability;
+        }
+
+        public boolean hasApplicability() { 
+          return this.applicability != null && !this.applicability.isEmpty();
+        }
+
+        /**
+         * @param value {@link #applicability} (An expression that returns true or false, indicating whether the indication is applicable or not, after having applied its other elements.)
+         */
+        public ClinicalUseDefinitionContraindicationComponent setApplicability(Expression value) { 
+          this.applicability = value;
+          return this;
+        }
+
+        /**
          * @return {@link #otherTherapy} (Information about the use of the medicinal product in relation to other therapies described as part of the contraindication.)
          */
         public List<ClinicalUseDefinitionContraindicationOtherTherapyComponent> getOtherTherapy() { 
@@ -459,6 +490,7 @@ public class ClinicalUseDefinition extends DomainResource {
           children.add(new Property("diseaseStatus", "CodeableReference(ObservationDefinition)", "The status of the disease or symptom for the contraindication, for example \"chronic\" or \"metastatic\".", 0, 1, diseaseStatus));
           children.add(new Property("comorbidity", "CodeableReference(ObservationDefinition)", "A comorbidity (concurrent condition) or coinfection.", 0, java.lang.Integer.MAX_VALUE, comorbidity));
           children.add(new Property("indication", "Reference(ClinicalUseDefinition)", "The indication which this is a contraidication for.", 0, java.lang.Integer.MAX_VALUE, indication));
+          children.add(new Property("applicability", "Expression", "An expression that returns true or false, indicating whether the indication is applicable or not, after having applied its other elements.", 0, 1, applicability));
           children.add(new Property("otherTherapy", "", "Information about the use of the medicinal product in relation to other therapies described as part of the contraindication.", 0, java.lang.Integer.MAX_VALUE, otherTherapy));
         }
 
@@ -469,6 +501,7 @@ public class ClinicalUseDefinition extends DomainResource {
           case -505503602: /*diseaseStatus*/  return new Property("diseaseStatus", "CodeableReference(ObservationDefinition)", "The status of the disease or symptom for the contraindication, for example \"chronic\" or \"metastatic\".", 0, 1, diseaseStatus);
           case -406395211: /*comorbidity*/  return new Property("comorbidity", "CodeableReference(ObservationDefinition)", "A comorbidity (concurrent condition) or coinfection.", 0, java.lang.Integer.MAX_VALUE, comorbidity);
           case -597168804: /*indication*/  return new Property("indication", "Reference(ClinicalUseDefinition)", "The indication which this is a contraidication for.", 0, java.lang.Integer.MAX_VALUE, indication);
+          case -1526770491: /*applicability*/  return new Property("applicability", "Expression", "An expression that returns true or false, indicating whether the indication is applicable or not, after having applied its other elements.", 0, 1, applicability);
           case -544509127: /*otherTherapy*/  return new Property("otherTherapy", "", "Information about the use of the medicinal product in relation to other therapies described as part of the contraindication.", 0, java.lang.Integer.MAX_VALUE, otherTherapy);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -482,6 +515,7 @@ public class ClinicalUseDefinition extends DomainResource {
         case -505503602: /*diseaseStatus*/ return this.diseaseStatus == null ? new Base[0] : new Base[] {this.diseaseStatus}; // CodeableReference
         case -406395211: /*comorbidity*/ return this.comorbidity == null ? new Base[0] : this.comorbidity.toArray(new Base[this.comorbidity.size()]); // CodeableReference
         case -597168804: /*indication*/ return this.indication == null ? new Base[0] : this.indication.toArray(new Base[this.indication.size()]); // Reference
+        case -1526770491: /*applicability*/ return this.applicability == null ? new Base[0] : new Base[] {this.applicability}; // Expression
         case -544509127: /*otherTherapy*/ return this.otherTherapy == null ? new Base[0] : this.otherTherapy.toArray(new Base[this.otherTherapy.size()]); // ClinicalUseDefinitionContraindicationOtherTherapyComponent
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -503,6 +537,9 @@ public class ClinicalUseDefinition extends DomainResource {
         case -597168804: // indication
           this.getIndication().add(TypeConvertor.castToReference(value)); // Reference
           return value;
+        case -1526770491: // applicability
+          this.applicability = TypeConvertor.castToExpression(value); // Expression
+          return value;
         case -544509127: // otherTherapy
           this.getOtherTherapy().add((ClinicalUseDefinitionContraindicationOtherTherapyComponent) value); // ClinicalUseDefinitionContraindicationOtherTherapyComponent
           return value;
@@ -521,6 +558,8 @@ public class ClinicalUseDefinition extends DomainResource {
           this.getComorbidity().add(TypeConvertor.castToCodeableReference(value));
         } else if (name.equals("indication")) {
           this.getIndication().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("applicability")) {
+          this.applicability = TypeConvertor.castToExpression(value); // Expression
         } else if (name.equals("otherTherapy")) {
           this.getOtherTherapy().add((ClinicalUseDefinitionContraindicationOtherTherapyComponent) value);
         } else
@@ -535,6 +574,7 @@ public class ClinicalUseDefinition extends DomainResource {
         case -505503602:  return getDiseaseStatus();
         case -406395211:  return addComorbidity(); 
         case -597168804:  return addIndication(); 
+        case -1526770491:  return getApplicability();
         case -544509127:  return addOtherTherapy(); 
         default: return super.makeProperty(hash, name);
         }
@@ -548,6 +588,7 @@ public class ClinicalUseDefinition extends DomainResource {
         case -505503602: /*diseaseStatus*/ return new String[] {"CodeableReference"};
         case -406395211: /*comorbidity*/ return new String[] {"CodeableReference"};
         case -597168804: /*indication*/ return new String[] {"Reference"};
+        case -1526770491: /*applicability*/ return new String[] {"Expression"};
         case -544509127: /*otherTherapy*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -569,6 +610,10 @@ public class ClinicalUseDefinition extends DomainResource {
         }
         else if (name.equals("indication")) {
           return addIndication();
+        }
+        else if (name.equals("applicability")) {
+          this.applicability = new Expression();
+          return this.applicability;
         }
         else if (name.equals("otherTherapy")) {
           return addOtherTherapy();
@@ -597,6 +642,7 @@ public class ClinicalUseDefinition extends DomainResource {
           for (Reference i : indication)
             dst.indication.add(i.copy());
         };
+        dst.applicability = applicability == null ? null : applicability.copy();
         if (otherTherapy != null) {
           dst.otherTherapy = new ArrayList<ClinicalUseDefinitionContraindicationOtherTherapyComponent>();
           for (ClinicalUseDefinitionContraindicationOtherTherapyComponent i : otherTherapy)
@@ -613,7 +659,8 @@ public class ClinicalUseDefinition extends DomainResource {
         ClinicalUseDefinitionContraindicationComponent o = (ClinicalUseDefinitionContraindicationComponent) other_;
         return compareDeep(diseaseSymptomProcedure, o.diseaseSymptomProcedure, true) && compareDeep(diseaseStatus, o.diseaseStatus, true)
            && compareDeep(comorbidity, o.comorbidity, true) && compareDeep(indication, o.indication, true)
-           && compareDeep(otherTherapy, o.otherTherapy, true);
+           && compareDeep(applicability, o.applicability, true) && compareDeep(otherTherapy, o.otherTherapy, true)
+          ;
       }
 
       @Override
@@ -628,7 +675,7 @@ public class ClinicalUseDefinition extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(diseaseSymptomProcedure, diseaseStatus
-          , comorbidity, indication, otherTherapy);
+          , comorbidity, indication, applicability, otherTherapy);
       }
 
   public String fhirType() {
@@ -901,13 +948,20 @@ public class ClinicalUseDefinition extends DomainResource {
         protected List<Reference> undesirableEffect;
 
         /**
+         * An expression that returns true or false, indicating whether the indication is applicable or not, after having applied its other elements.
+         */
+        @Child(name = "applicability", type = {Expression.class}, order=7, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="An expression that returns true or false, indicating whether the indication is applicable or not, after having applied its other elements", formalDefinition="An expression that returns true or false, indicating whether the indication is applicable or not, after having applied its other elements." )
+        protected Expression applicability;
+
+        /**
          * Information about the use of the medicinal product in relation to other therapies described as part of the indication.
          */
-        @Child(name = "otherTherapy", type = {ClinicalUseDefinitionContraindicationOtherTherapyComponent.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Child(name = "otherTherapy", type = {ClinicalUseDefinitionContraindicationOtherTherapyComponent.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="The use of the medicinal product in relation to other therapies described as part of the indication", formalDefinition="Information about the use of the medicinal product in relation to other therapies described as part of the indication." )
         protected List<ClinicalUseDefinitionContraindicationOtherTherapyComponent> otherTherapy;
 
-        private static final long serialVersionUID = 975137264L;
+        private static final long serialVersionUID = 809598459L;
 
     /**
      * Constructor
@@ -1146,6 +1200,30 @@ public class ClinicalUseDefinition extends DomainResource {
         }
 
         /**
+         * @return {@link #applicability} (An expression that returns true or false, indicating whether the indication is applicable or not, after having applied its other elements.)
+         */
+        public Expression getApplicability() { 
+          if (this.applicability == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ClinicalUseDefinitionIndicationComponent.applicability");
+            else if (Configuration.doAutoCreate())
+              this.applicability = new Expression(); // cc
+          return this.applicability;
+        }
+
+        public boolean hasApplicability() { 
+          return this.applicability != null && !this.applicability.isEmpty();
+        }
+
+        /**
+         * @param value {@link #applicability} (An expression that returns true or false, indicating whether the indication is applicable or not, after having applied its other elements.)
+         */
+        public ClinicalUseDefinitionIndicationComponent setApplicability(Expression value) { 
+          this.applicability = value;
+          return this;
+        }
+
+        /**
          * @return {@link #otherTherapy} (Information about the use of the medicinal product in relation to other therapies described as part of the indication.)
          */
         public List<ClinicalUseDefinitionContraindicationOtherTherapyComponent> getOtherTherapy() { 
@@ -1206,6 +1284,7 @@ public class ClinicalUseDefinition extends DomainResource {
           children.add(new Property("intendedEffect", "CodeableReference(ObservationDefinition)", "The intended effect, aim or strategy to be achieved.", 0, 1, intendedEffect));
           children.add(new Property("duration[x]", "Range|string", "Timing or duration information, that may be associated with use with the indicated condition e.g. Adult patients suffering from myocardial infarction (from a few days until less than 35 days), ischaemic stroke (from 7 days until less than 6 months).", 0, 1, duration));
           children.add(new Property("undesirableEffect", "Reference(ClinicalUseDefinition)", "An unwanted side effect or negative outcome that may happen if you use the drug (or other subject of this resource) for this indication.", 0, java.lang.Integer.MAX_VALUE, undesirableEffect));
+          children.add(new Property("applicability", "Expression", "An expression that returns true or false, indicating whether the indication is applicable or not, after having applied its other elements.", 0, 1, applicability));
           children.add(new Property("otherTherapy", "@ClinicalUseDefinition.contraindication.otherTherapy", "Information about the use of the medicinal product in relation to other therapies described as part of the indication.", 0, java.lang.Integer.MAX_VALUE, otherTherapy));
         }
 
@@ -1221,6 +1300,7 @@ public class ClinicalUseDefinition extends DomainResource {
           case 128079881: /*durationRange*/  return new Property("duration[x]", "Range", "Timing or duration information, that may be associated with use with the indicated condition e.g. Adult patients suffering from myocardial infarction (from a few days until less than 35 days), ischaemic stroke (from 7 days until less than 6 months).", 0, 1, duration);
           case -278193467: /*durationString*/  return new Property("duration[x]", "string", "Timing or duration information, that may be associated with use with the indicated condition e.g. Adult patients suffering from myocardial infarction (from a few days until less than 35 days), ischaemic stroke (from 7 days until less than 6 months).", 0, 1, duration);
           case 444367565: /*undesirableEffect*/  return new Property("undesirableEffect", "Reference(ClinicalUseDefinition)", "An unwanted side effect or negative outcome that may happen if you use the drug (or other subject of this resource) for this indication.", 0, java.lang.Integer.MAX_VALUE, undesirableEffect);
+          case -1526770491: /*applicability*/  return new Property("applicability", "Expression", "An expression that returns true or false, indicating whether the indication is applicable or not, after having applied its other elements.", 0, 1, applicability);
           case -544509127: /*otherTherapy*/  return new Property("otherTherapy", "@ClinicalUseDefinition.contraindication.otherTherapy", "Information about the use of the medicinal product in relation to other therapies described as part of the indication.", 0, java.lang.Integer.MAX_VALUE, otherTherapy);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -1236,6 +1316,7 @@ public class ClinicalUseDefinition extends DomainResource {
         case 1587112348: /*intendedEffect*/ return this.intendedEffect == null ? new Base[0] : new Base[] {this.intendedEffect}; // CodeableReference
         case -1992012396: /*duration*/ return this.duration == null ? new Base[0] : new Base[] {this.duration}; // DataType
         case 444367565: /*undesirableEffect*/ return this.undesirableEffect == null ? new Base[0] : this.undesirableEffect.toArray(new Base[this.undesirableEffect.size()]); // Reference
+        case -1526770491: /*applicability*/ return this.applicability == null ? new Base[0] : new Base[] {this.applicability}; // Expression
         case -544509127: /*otherTherapy*/ return this.otherTherapy == null ? new Base[0] : this.otherTherapy.toArray(new Base[this.otherTherapy.size()]); // ClinicalUseDefinitionContraindicationOtherTherapyComponent
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -1263,6 +1344,9 @@ public class ClinicalUseDefinition extends DomainResource {
         case 444367565: // undesirableEffect
           this.getUndesirableEffect().add(TypeConvertor.castToReference(value)); // Reference
           return value;
+        case -1526770491: // applicability
+          this.applicability = TypeConvertor.castToExpression(value); // Expression
+          return value;
         case -544509127: // otherTherapy
           this.getOtherTherapy().add((ClinicalUseDefinitionContraindicationOtherTherapyComponent) value); // ClinicalUseDefinitionContraindicationOtherTherapyComponent
           return value;
@@ -1285,6 +1369,8 @@ public class ClinicalUseDefinition extends DomainResource {
           this.duration = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("undesirableEffect")) {
           this.getUndesirableEffect().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("applicability")) {
+          this.applicability = TypeConvertor.castToExpression(value); // Expression
         } else if (name.equals("otherTherapy")) {
           this.getOtherTherapy().add((ClinicalUseDefinitionContraindicationOtherTherapyComponent) value);
         } else
@@ -1302,6 +1388,7 @@ public class ClinicalUseDefinition extends DomainResource {
         case -478069140:  return getDuration();
         case -1992012396:  return getDuration();
         case 444367565:  return addUndesirableEffect(); 
+        case -1526770491:  return getApplicability();
         case -544509127:  return addOtherTherapy(); 
         default: return super.makeProperty(hash, name);
         }
@@ -1317,6 +1404,7 @@ public class ClinicalUseDefinition extends DomainResource {
         case 1587112348: /*intendedEffect*/ return new String[] {"CodeableReference"};
         case -1992012396: /*duration*/ return new String[] {"Range", "string"};
         case 444367565: /*undesirableEffect*/ return new String[] {"Reference"};
+        case -1526770491: /*applicability*/ return new String[] {"Expression"};
         case -544509127: /*otherTherapy*/ return new String[] {"@ClinicalUseDefinition.contraindication.otherTherapy"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -1351,6 +1439,10 @@ public class ClinicalUseDefinition extends DomainResource {
         else if (name.equals("undesirableEffect")) {
           return addUndesirableEffect();
         }
+        else if (name.equals("applicability")) {
+          this.applicability = new Expression();
+          return this.applicability;
+        }
         else if (name.equals("otherTherapy")) {
           return addOtherTherapy();
         }
@@ -1380,6 +1472,7 @@ public class ClinicalUseDefinition extends DomainResource {
           for (Reference i : undesirableEffect)
             dst.undesirableEffect.add(i.copy());
         };
+        dst.applicability = applicability == null ? null : applicability.copy();
         if (otherTherapy != null) {
           dst.otherTherapy = new ArrayList<ClinicalUseDefinitionContraindicationOtherTherapyComponent>();
           for (ClinicalUseDefinitionContraindicationOtherTherapyComponent i : otherTherapy)
@@ -1397,7 +1490,8 @@ public class ClinicalUseDefinition extends DomainResource {
         return compareDeep(diseaseSymptomProcedure, o.diseaseSymptomProcedure, true) && compareDeep(diseaseStatus, o.diseaseStatus, true)
            && compareDeep(comorbidity, o.comorbidity, true) && compareDeep(intendedEffect, o.intendedEffect, true)
            && compareDeep(duration, o.duration, true) && compareDeep(undesirableEffect, o.undesirableEffect, true)
-           && compareDeep(otherTherapy, o.otherTherapy, true);
+           && compareDeep(applicability, o.applicability, true) && compareDeep(otherTherapy, o.otherTherapy, true)
+          ;
       }
 
       @Override
@@ -1412,7 +1506,8 @@ public class ClinicalUseDefinition extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(diseaseSymptomProcedure, diseaseStatus
-          , comorbidity, intendedEffect, duration, undesirableEffect, otherTherapy);
+          , comorbidity, intendedEffect, duration, undesirableEffect, applicability, otherTherapy
+          );
       }
 
   public String fhirType() {
@@ -2575,20 +2670,27 @@ public class ClinicalUseDefinition extends DomainResource {
     protected List<Reference> population;
 
     /**
+     * Logic used by the clinical use definition.
+     */
+    @Child(name = "library", type = {CanonicalType.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Logic used by the clinical use definition", formalDefinition="Logic used by the clinical use definition." )
+    protected List<CanonicalType> library;
+
+    /**
      * Describe the possible undesirable effects (negative outcomes) from the use of the medicinal product as treatment.
      */
-    @Child(name = "undesirableEffect", type = {}, order=9, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "undesirableEffect", type = {}, order=10, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="A possible negative outcome from the use of this treatment", formalDefinition="Describe the possible undesirable effects (negative outcomes) from the use of the medicinal product as treatment." )
     protected ClinicalUseDefinitionUndesirableEffectComponent undesirableEffect;
 
     /**
      * A critical piece of information about environmental, health or physical risks or hazards that serve as caution to the user. For example 'Do not operate heavy machinery', 'May cause drowsiness', or 'Get medical advice/attention if you feel unwell'.
      */
-    @Child(name = "warning", type = {}, order=10, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "warning", type = {}, order=11, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Critical environmental, health or physical risks or hazards. For example 'Do not operate heavy machinery', 'May cause drowsiness'", formalDefinition="A critical piece of information about environmental, health or physical risks or hazards that serve as caution to the user. For example 'Do not operate heavy machinery', 'May cause drowsiness', or 'Get medical advice/attention if you feel unwell'." )
     protected ClinicalUseDefinitionWarningComponent warning;
 
-    private static final long serialVersionUID = -634107389L;
+    private static final long serialVersionUID = -539149948L;
 
   /**
    * Constructor
@@ -2959,6 +3061,67 @@ public class ClinicalUseDefinition extends DomainResource {
     }
 
     /**
+     * @return {@link #library} (Logic used by the clinical use definition.)
+     */
+    public List<CanonicalType> getLibrary() { 
+      if (this.library == null)
+        this.library = new ArrayList<CanonicalType>();
+      return this.library;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ClinicalUseDefinition setLibrary(List<CanonicalType> theLibrary) { 
+      this.library = theLibrary;
+      return this;
+    }
+
+    public boolean hasLibrary() { 
+      if (this.library == null)
+        return false;
+      for (CanonicalType item : this.library)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    /**
+     * @return {@link #library} (Logic used by the clinical use definition.)
+     */
+    public CanonicalType addLibraryElement() {//2 
+      CanonicalType t = new CanonicalType();
+      if (this.library == null)
+        this.library = new ArrayList<CanonicalType>();
+      this.library.add(t);
+      return t;
+    }
+
+    /**
+     * @param value {@link #library} (Logic used by the clinical use definition.)
+     */
+    public ClinicalUseDefinition addLibrary(String value) { //1
+      CanonicalType t = new CanonicalType();
+      t.setValue(value);
+      if (this.library == null)
+        this.library = new ArrayList<CanonicalType>();
+      this.library.add(t);
+      return this;
+    }
+
+    /**
+     * @param value {@link #library} (Logic used by the clinical use definition.)
+     */
+    public boolean hasLibrary(String value) { 
+      if (this.library == null)
+        return false;
+      for (CanonicalType v : this.library)
+        if (v.getValue().equals(value)) // canonical
+          return true;
+      return false;
+    }
+
+    /**
      * @return {@link #undesirableEffect} (Describe the possible undesirable effects (negative outcomes) from the use of the medicinal product as treatment.)
      */
     public ClinicalUseDefinitionUndesirableEffectComponent getUndesirableEffect() { 
@@ -3017,6 +3180,7 @@ public class ClinicalUseDefinition extends DomainResource {
         children.add(new Property("indication", "", "Specifics for when this is an indication.", 0, 1, indication));
         children.add(new Property("interaction", "", "Specifics for when this is an interaction.", 0, 1, interaction));
         children.add(new Property("population", "Reference(Group)", "The population group to which this applies.", 0, java.lang.Integer.MAX_VALUE, population));
+        children.add(new Property("library", "canonical(Library)", "Logic used by the clinical use definition.", 0, java.lang.Integer.MAX_VALUE, library));
         children.add(new Property("undesirableEffect", "", "Describe the possible undesirable effects (negative outcomes) from the use of the medicinal product as treatment.", 0, 1, undesirableEffect));
         children.add(new Property("warning", "", "A critical piece of information about environmental, health or physical risks or hazards that serve as caution to the user. For example 'Do not operate heavy machinery', 'May cause drowsiness', or 'Get medical advice/attention if you feel unwell'.", 0, 1, warning));
       }
@@ -3033,6 +3197,7 @@ public class ClinicalUseDefinition extends DomainResource {
         case -597168804: /*indication*/  return new Property("indication", "", "Specifics for when this is an indication.", 0, 1, indication);
         case 1844104722: /*interaction*/  return new Property("interaction", "", "Specifics for when this is an interaction.", 0, 1, interaction);
         case -2023558323: /*population*/  return new Property("population", "Reference(Group)", "The population group to which this applies.", 0, java.lang.Integer.MAX_VALUE, population);
+        case 166208699: /*library*/  return new Property("library", "canonical(Library)", "Logic used by the clinical use definition.", 0, java.lang.Integer.MAX_VALUE, library);
         case 444367565: /*undesirableEffect*/  return new Property("undesirableEffect", "", "Describe the possible undesirable effects (negative outcomes) from the use of the medicinal product as treatment.", 0, 1, undesirableEffect);
         case 1124446108: /*warning*/  return new Property("warning", "", "A critical piece of information about environmental, health or physical risks or hazards that serve as caution to the user. For example 'Do not operate heavy machinery', 'May cause drowsiness', or 'Get medical advice/attention if you feel unwell'.", 0, 1, warning);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -3052,6 +3217,7 @@ public class ClinicalUseDefinition extends DomainResource {
         case -597168804: /*indication*/ return this.indication == null ? new Base[0] : new Base[] {this.indication}; // ClinicalUseDefinitionIndicationComponent
         case 1844104722: /*interaction*/ return this.interaction == null ? new Base[0] : new Base[] {this.interaction}; // ClinicalUseDefinitionInteractionComponent
         case -2023558323: /*population*/ return this.population == null ? new Base[0] : this.population.toArray(new Base[this.population.size()]); // Reference
+        case 166208699: /*library*/ return this.library == null ? new Base[0] : this.library.toArray(new Base[this.library.size()]); // CanonicalType
         case 444367565: /*undesirableEffect*/ return this.undesirableEffect == null ? new Base[0] : new Base[] {this.undesirableEffect}; // ClinicalUseDefinitionUndesirableEffectComponent
         case 1124446108: /*warning*/ return this.warning == null ? new Base[0] : new Base[] {this.warning}; // ClinicalUseDefinitionWarningComponent
         default: return super.getProperty(hash, name, checkValid);
@@ -3090,6 +3256,9 @@ public class ClinicalUseDefinition extends DomainResource {
         case -2023558323: // population
           this.getPopulation().add(TypeConvertor.castToReference(value)); // Reference
           return value;
+        case 166208699: // library
+          this.getLibrary().add(TypeConvertor.castToCanonical(value)); // CanonicalType
+          return value;
         case 444367565: // undesirableEffect
           this.undesirableEffect = (ClinicalUseDefinitionUndesirableEffectComponent) value; // ClinicalUseDefinitionUndesirableEffectComponent
           return value;
@@ -3122,6 +3291,8 @@ public class ClinicalUseDefinition extends DomainResource {
           this.interaction = (ClinicalUseDefinitionInteractionComponent) value; // ClinicalUseDefinitionInteractionComponent
         } else if (name.equals("population")) {
           this.getPopulation().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("library")) {
+          this.getLibrary().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("undesirableEffect")) {
           this.undesirableEffect = (ClinicalUseDefinitionUndesirableEffectComponent) value; // ClinicalUseDefinitionUndesirableEffectComponent
         } else if (name.equals("warning")) {
@@ -3143,6 +3314,7 @@ public class ClinicalUseDefinition extends DomainResource {
         case -597168804:  return getIndication();
         case 1844104722:  return getInteraction();
         case -2023558323:  return addPopulation(); 
+        case 166208699:  return addLibraryElement();
         case 444367565:  return getUndesirableEffect();
         case 1124446108:  return getWarning();
         default: return super.makeProperty(hash, name);
@@ -3162,6 +3334,7 @@ public class ClinicalUseDefinition extends DomainResource {
         case -597168804: /*indication*/ return new String[] {};
         case 1844104722: /*interaction*/ return new String[] {};
         case -2023558323: /*population*/ return new String[] {"Reference"};
+        case 166208699: /*library*/ return new String[] {"canonical"};
         case 444367565: /*undesirableEffect*/ return new String[] {};
         case 1124446108: /*warning*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
@@ -3201,6 +3374,9 @@ public class ClinicalUseDefinition extends DomainResource {
         }
         else if (name.equals("population")) {
           return addPopulation();
+        }
+        else if (name.equals("library")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ClinicalUseDefinition.library");
         }
         else if (name.equals("undesirableEffect")) {
           this.undesirableEffect = new ClinicalUseDefinitionUndesirableEffectComponent();
@@ -3252,6 +3428,11 @@ public class ClinicalUseDefinition extends DomainResource {
           for (Reference i : population)
             dst.population.add(i.copy());
         };
+        if (library != null) {
+          dst.library = new ArrayList<CanonicalType>();
+          for (CanonicalType i : library)
+            dst.library.add(i.copy());
+        };
         dst.undesirableEffect = undesirableEffect == null ? null : undesirableEffect.copy();
         dst.warning = warning == null ? null : warning.copy();
       }
@@ -3270,7 +3451,7 @@ public class ClinicalUseDefinition extends DomainResource {
         return compareDeep(identifier, o.identifier, true) && compareDeep(type, o.type, true) && compareDeep(category, o.category, true)
            && compareDeep(subject, o.subject, true) && compareDeep(status, o.status, true) && compareDeep(contraindication, o.contraindication, true)
            && compareDeep(indication, o.indication, true) && compareDeep(interaction, o.interaction, true)
-           && compareDeep(population, o.population, true) && compareDeep(undesirableEffect, o.undesirableEffect, true)
+           && compareDeep(population, o.population, true) && compareDeep(library, o.library, true) && compareDeep(undesirableEffect, o.undesirableEffect, true)
            && compareDeep(warning, o.warning, true);
       }
 
@@ -3281,13 +3462,13 @@ public class ClinicalUseDefinition extends DomainResource {
         if (!(other_ instanceof ClinicalUseDefinition))
           return false;
         ClinicalUseDefinition o = (ClinicalUseDefinition) other_;
-        return compareValues(type, o.type, true);
+        return compareValues(type, o.type, true) && compareValues(library, o.library, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, type, category
-          , subject, status, contraindication, indication, interaction, population, undesirableEffect
-          , warning);
+          , subject, status, contraindication, indication, interaction, population, library
+          , undesirableEffect, warning);
       }
 
   @Override

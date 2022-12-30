@@ -47,7 +47,7 @@ public class SpecimenDefinition40_50 {
     org.hl7.fhir.r5.model.SpecimenDefinition tgt = new org.hl7.fhir.r5.model.SpecimenDefinition();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     if (src.hasIdentifier())
-      tgt.addIdentifier(Identifier40_50.convertIdentifier(src.getIdentifier()));
+      tgt.setIdentifier(Identifier40_50.convertIdentifier(src.getIdentifier()));
     if (src.hasTypeCollected())
       tgt.setTypeCollected(CodeableConcept40_50.convertCodeableConcept(src.getTypeCollected()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getPatientPreparation())
@@ -67,7 +67,7 @@ public class SpecimenDefinition40_50 {
     org.hl7.fhir.r4.model.SpecimenDefinition tgt = new org.hl7.fhir.r4.model.SpecimenDefinition();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     if (src.hasIdentifier())
-      tgt.setIdentifier(Identifier40_50.convertIdentifier(src.getIdentifierFirstRep()));
+      tgt.setIdentifier(Identifier40_50.convertIdentifier(src.getIdentifier()));
     if (src.hasTypeCollected())
       tgt.setTypeCollected(CodeableConcept40_50.convertCodeableConcept(src.getTypeCollected()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getPatientPreparation())

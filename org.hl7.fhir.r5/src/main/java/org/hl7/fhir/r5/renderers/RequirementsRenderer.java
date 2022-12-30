@@ -43,7 +43,7 @@ public class RequirementsRenderer extends ResourceRenderer {
   public boolean render(XhtmlNode x, Requirements req) throws FHIRFormatError, DefinitionException, IOException {
     if (req.hasActor()) {
       if (req.getActor().size() == 1) {
-        ActorDefinition acd = context.getWorker().fetchResource(ActorDefinition.class, req.getActor().get(0).getValue());
+        ActorDefinition acd = context.getWorker().fetchResource(ActorDefinition.class, req.getActor().get(0).getValue(), req);
         XhtmlNode p = x.para();
         p.tx("These requirements apply to the actor ");
         if (acd == null) {
@@ -55,7 +55,7 @@ public class RequirementsRenderer extends ResourceRenderer {
         x.para().tx("These requirements apply to the following actors:");
         XhtmlNode ul = x.ul();
         for (CanonicalType a : req.getActor()) {
-          ActorDefinition acd = context.getWorker().fetchResource(ActorDefinition.class, a.getValue());
+          ActorDefinition acd = context.getWorker().fetchResource(ActorDefinition.class, a.getValue(), req);
           if (acd == null) {
             ul.li().code(a.getValue());
           } else {
@@ -66,7 +66,7 @@ public class RequirementsRenderer extends ResourceRenderer {
     }
     if (req.hasDerivedFrom()) {
       if (req.getDerivedFrom().size() == 1) {
-        Requirements reqd = context.getWorker().fetchResource(Requirements.class, req.getDerivedFrom().get(0).getValue());
+        Requirements reqd = context.getWorker().fetchResource(Requirements.class, req.getDerivedFrom().get(0).getValue(), req);
         XhtmlNode p = x.para();
         p.tx("These requirements derive from ");
         if (reqd == null) {
@@ -78,7 +78,7 @@ public class RequirementsRenderer extends ResourceRenderer {
         x.para().tx("These requirements are derived from the following requirements:");
         XhtmlNode ul = x.ul();
         for (CanonicalType a : req.getDerivedFrom()) {
-          Requirements reqd = context.getWorker().fetchResource(Requirements.class, a.getValue());
+          Requirements reqd = context.getWorker().fetchResource(Requirements.class, a.getValue(), req);
           if (reqd == null) {
             ul.li().code(a.getValue());
           } else {
@@ -118,7 +118,7 @@ public class RequirementsRenderer extends ResourceRenderer {
           String url = stmt.getDerivedFrom();
           String key = url.contains("#") ? url.substring(url.indexOf("#")+1) : "";
           if (url.contains("#")) { url = url.substring(0, url.indexOf("#")); };
-          Requirements reqr = context.getWorker().fetchResource(Requirements.class, url);
+          Requirements reqr = context.getWorker().fetchResource(Requirements.class, url, req);
           if (reqr != null) {
             RequirementsStatementComponent stmtr = reqr.findStatement(key);
             if (stmtr != null) {
@@ -140,7 +140,7 @@ public class RequirementsRenderer extends ResourceRenderer {
             if (url.contains("#")) {
               url = url.substring(0, url.indexOf("#"));
             }
-            Resource r = context.getWorker().fetchResource(Resource.class, url);
+            Resource r = context.getWorker().fetchResource(Resource.class, url, req);
             if (r != null) {
               String desc = getResourceDescription(r, null);
               li.ah(c.getValue()).tx(desc);
@@ -174,7 +174,7 @@ public class RequirementsRenderer extends ResourceRenderer {
               if (url.contains("#")) {
                 url = url.substring(0, url.indexOf("#"));
               }
-              Resource r = context.getWorker().fetchResource(Resource.class, url);
+              Resource r = context.getWorker().fetchResource(Resource.class, url, req);
               ResourceWithReference t = null;
               if (r == null) {
                 t = context.getResolver().resolve(context, url);                

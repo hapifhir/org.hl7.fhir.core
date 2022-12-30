@@ -98,7 +98,7 @@ import org.slf4j.LoggerFactory;
 public abstract class JsonParserBase extends ParserBase implements IParser {
 
   static {
-    LoggerFactory.getLogger("org.hl7.fhir.r5.formats.JsonParserBase").debug("JSON Parser is being loaded");
+//    LoggerFactory.getLogger("org.hl7.fhir.r5.formats.JsonParserBase").debug("JSON Parser is being loaded");
     ClassesLoadedFlags.ourJsonParserBaseLoaded = true;
   }
 
@@ -183,11 +183,13 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
   @Override
   public void compose(OutputStream stream, Resource resource) throws IOException {
     OutputStreamWriter osw = new OutputStreamWriter(stream, "UTF-8");
-    if (style == OutputStyle.CANONICAL)
+    if (style == OutputStyle.CANONICAL) {
       json = new JsonCreatorCanonical(osw);
-    else
-      json = new JsonCreatorDirect(osw); // use this instead of Gson because this preserves decimal formatting
-    json.setIndent(style == OutputStyle.PRETTY ? "  " : "");
+    } else if (style == OutputStyle.PRETTY) {
+      json = new JsonCreatorDirect(osw, true, false);
+    } else {
+      json = new JsonCreatorDirect(osw, false, false); // use this instead of Gson because this preserves decimal formatting
+    }
     json.beginObject();
     composeResource(resource);
     json.endObject();
@@ -207,19 +209,19 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
   @Override
   public void compose(OutputStream stream, DataType type, String rootName) throws IOException {
     OutputStreamWriter osw = new OutputStreamWriter(stream, "UTF-8");
-    if (style == OutputStyle.CANONICAL)
+    if (style == OutputStyle.CANONICAL) {
       json = new JsonCreatorCanonical(osw);
-    else
-      json = new JsonCreatorDirect(osw);// use this instead of Gson because this preserves decimal formatting
-    json.setIndent(style == OutputStyle.PRETTY ? "  " : "");
+    } else if (style == OutputStyle.PRETTY) {
+      json = new JsonCreatorDirect(osw, true, false);
+    } else {
+      json = new JsonCreatorDirect(osw, false, false); // use this instead of Gson because this preserves decimal formatting
+    }
     json.beginObject();
     composeTypeInner(type);
     json.endObject();
     json.finish();
     osw.flush();
   }
-    
-
   
   /* -- json routines --------------------------------------------------- */
 
@@ -227,14 +229,14 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
   private boolean htmlPretty;
   
   private JsonObject loadJson(InputStream input) throws JsonSyntaxException, IOException {
-    return JsonTrackingParser.parse(TextFile.streamToString(input), null, allowUnknownContent, allowComments);
-    // return parser.parse(TextFile.streamToString(input)).getAsJsonObject();
+    // the GSON parser is the fastest, but the least robust 
+    if (allowComments || allowUnknownContent) {
+      return JsonTrackingParser.parse(TextFile.streamToString(input), null, allowUnknownContent, allowComments);      
+    } else {
+      return (JsonObject) com.google.gson.JsonParser.parseString(TextFile.streamToString(input));
+    }
   }
   
-//  private JsonObject loadJson(String input) {
-//    return parser.parse(input).getAsJsonObject();
-//  }
-//  
   protected void parseElementProperties(JsonObject json, Element e) throws IOException, FHIRFormatError {
     if (json != null && json.has("id"))
       e.setId(json.get("id").getAsString());

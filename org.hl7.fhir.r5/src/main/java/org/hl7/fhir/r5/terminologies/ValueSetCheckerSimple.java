@@ -43,7 +43,6 @@ import java.util.Set;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeSystem;
@@ -53,6 +52,7 @@ import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionDesignationComponent;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
+import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
@@ -240,7 +240,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         return new ValidationResult(IssueSeverity.ERROR, context.formatMessage(I18nConstants.CODESYSTEM_CS_NO_SUPPLEMENT, cs.getUrl()));        
       }
       if (cs!=null && cs.getContent() != CodeSystemContentMode.COMPLETE) {
-        warningMessage = "Resolved system "+system+", but the definition is not complete";
+        warningMessage = "Resolved system "+system+(cs.hasVersion() ? " (v"+cs.getVersion()+")" : "")+", but the definition is not complete";
         if (!inExpansion && cs.getContent() != CodeSystemContentMode.FRAGMENT) { // we're going to give it a go if it's a fragment
           throw new FHIRException(warningMessage);
         }
@@ -751,7 +751,13 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       ValidationResult res = context.validateCode(options.noClient(), new Coding(system, code, null), vs);
       if (res.getErrorClass() == TerminologyServiceErrorClass.UNKNOWN || res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED || res.getErrorClass() == TerminologyServiceErrorClass.VALUESET_UNSUPPORTED) {
         if (info != null && res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
+       // server didn't know the code system either - we'll take it face value
           info.getWarnings().add(context.formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, system));
+          for (ConceptReferenceComponent cc : vsi.getConcept()) {
+            if (cc.getCode().equals(code)) {
+              return true;
+            }
+          }
           info.setErr(TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED);
         }
         return null;
@@ -786,7 +792,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
   }
 
   protected boolean isValueSetUnionImports() {
-    PackageVersion p = (PackageVersion) valueset.getUserData("package");
+    PackageInformation p = (PackageInformation) valueset.getSourcePackage();
     if (p != null) {
       return p.getDate().before(new GregorianCalendar(2022, Calendar.MARCH, 31).getTime());
     } else {
@@ -853,7 +859,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     if (inner.containsKey(url)) {
       return inner.get(url);
     }
-    ValueSet vs = context.fetchResource(ValueSet.class, url);
+    ValueSet vs = context.fetchResource(ValueSet.class, url, valueset);
     ValueSetCheckerSimple vsc = new ValueSetCheckerSimple(options, vs, context, localContext);
     inner.put(url, vsc);
     return vsc;

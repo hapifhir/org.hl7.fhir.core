@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -4211,17 +4211,17 @@ public class MedicinalProductDefinition extends DomainResource {
    * <p>
    * Description: <b>Allows the key product features to be recorded, such as "sugar free", "modified release", "parallel import"</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>MedicinalProductDefinition.characteristic.value</b><br>
+   * Path: <b>MedicinalProductDefinition.characteristic.value.as(Quantity) | MedicinalProductDefinition.characteristic.value.as(CodeableConcept)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="characteristic", path="MedicinalProductDefinition.characteristic.value", description="Allows the key product features to be recorded, such as \"sugar free\", \"modified release\", \"parallel import\"", type="token" )
+  @SearchParamDefinition(name="characteristic", path="MedicinalProductDefinition.characteristic.value.as(Quantity) | MedicinalProductDefinition.characteristic.value.as(CodeableConcept)", description="Allows the key product features to be recorded, such as \"sugar free\", \"modified release\", \"parallel import\"", type="token" )
   public static final String SP_CHARACTERISTIC = "characteristic";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>characteristic</b>
    * <p>
    * Description: <b>Allows the key product features to be recorded, such as "sugar free", "modified release", "parallel import"</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>MedicinalProductDefinition.characteristic.value</b><br>
+   * Path: <b>MedicinalProductDefinition.characteristic.value.as(Quantity) | MedicinalProductDefinition.characteristic.value.as(CodeableConcept)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CHARACTERISTIC = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CHARACTERISTIC);

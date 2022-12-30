@@ -74,6 +74,7 @@ import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r4.utils.LiquidEngine.LiquidDocument;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.LoincLinker;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
@@ -3263,7 +3264,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
       else if ("http://snomed.info/sct".equals(system)) {
         td.ah(sctLink(code)).addText(code);
       } else if ("http://loinc.org".equals(system)) {
-          td.ah("http://details.loinc.org/LOINC/"+code+".html").addText(code);
+          td.ah(LoincLinker.getLinkForCode(code)).addText(code);
       } else        
         td.addText(code);
     } else {
@@ -3500,7 +3501,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
     if (cc.getSystem().equals("http://snomed.info/sct"))
       return "http://snomed.info/sct/"+cc.getCode();
     if (cc.getSystem().equals("http://loinc.org"))
-      return "http://s.details.loinc.org/LOINC/"+cc.getCode()+".html";
+      return LoincLinker.getLinkForCode(cc.getCode());
     return null;
   }
 

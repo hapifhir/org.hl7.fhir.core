@@ -13,6 +13,7 @@ import org.hl7.fhir.r4b.utils.client.EFhirClientException;
 import org.hl7.fhir.r4b.utils.client.ResourceFormat;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -154,12 +155,7 @@ public class FhirRequestBuilder {
       okHttpClient = new OkHttpClient();
     }
 
-    Authenticator proxyAuthenticator = (route, response) -> {
-      String credential = Credentials.basic(System.getProperty(HTTP_PROXY_USER), System.getProperty(HTTP_PROXY_PASS));
-      return response.request().newBuilder()
-        .header(HEADER_PROXY_AUTH, credential)
-        .build();
-    };
+    Authenticator proxyAuthenticator = getAuthenticator();
 
     OkHttpClient.Builder builder = okHttpClient.newBuilder();
     if (logger != null) builder.addInterceptor(logger);
@@ -170,6 +166,21 @@ public class FhirRequestBuilder {
       .readTimeout(timeout, timeoutUnit)
       .proxyAuthenticator(proxyAuthenticator)
       .build();
+  }
+
+  @Nonnull
+  private static Authenticator getAuthenticator() {
+    return (route, response) -> {
+      final String httpProxyUser = System.getProperty(HTTP_PROXY_USER);
+      final String httpProxyPass = System.getProperty(HTTP_PROXY_PASS);
+      if (httpProxyUser != null && httpProxyPass != null) {
+        String credential = Credentials.basic(httpProxyUser, httpProxyPass);
+        return response.request().newBuilder()
+          .header(HEADER_PROXY_AUTH, credential)
+          .build();
+      }
+      return response.request().newBuilder().build();
+    };
   }
 
   public FhirRequestBuilder withResourceFormat(String resourceFormat) {

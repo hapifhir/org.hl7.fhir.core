@@ -17,12 +17,10 @@ import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.json.JsonTrackingParser;
-import org.hl7.fhir.utilities.json.JsonUtilities;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import org.hl7.fhir.utilities.json.model.JsonArray;
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.model.JsonProperty;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
 
 public class PackageClient {
 
@@ -77,25 +75,26 @@ public class PackageClient {
   }
 
   public List<PackageInfo> getVersions(String id) throws IOException {
+    String url = Utilities.pathURL(address, id);
     List<PackageInfo> res = new ArrayList<>();
     JsonObject json;
     try {
-      json = fetchJson(Utilities.pathURL(address, id));
-      JsonObject versions = json.getAsJsonObject("versions");
+      json = fetchJson(url);
+      JsonObject versions = json.getJsonObject("versions");
       boolean hasDates = true;
       if (versions != null) {
-        for (String v : versions.keySet()) {
-          JsonObject obj = versions.getAsJsonObject(v);
-          Instant d = obj.has("date") ? JsonUtilities.parseDate(obj, "date") : null;
+        for (JsonProperty v : versions.getProperties()) {
+          JsonObject obj = versions.getJsonObject(v.getName());
+          Instant d = obj.hasString("date") ? obj.asDate("date") : null;
           if (d == null) {
             hasDates = false;
           }
-          res.add(new PackageInfo(JsonUtilities.str(obj, "Name", "name"),
-            JsonUtilities.str(obj, "Version", "version"),
-            JsonUtilities.str(obj, "FhirVersion", "fhirVersion"),
-            JsonUtilities.str(obj, "Description", "description"),
-            JsonUtilities.str(obj, "url"),
-            JsonUtilities.str(obj, "canonical"),
+          res.add(new PackageInfo(obj.asString("Name", "name"),
+            obj.asString("Version", "version"),
+            obj.asString("FhirVersion", "fhirVersion"),
+            obj.asString("Description", "description"),
+            obj.asString("url"),
+            obj.asString("canonical"),
             address, d));
         }
       }
@@ -105,6 +104,7 @@ public class PackageClient {
         Collections.sort(res, new PackageInfo.PackageInfoSorter(false));
       }
     } catch (Exception e) {
+      System.out.println("Error fetching "+url+": "+e.getMessage());
     }
     return res;    
   }
@@ -127,18 +127,17 @@ public class PackageClient {
     try {
       JsonArray json = fetchJsonArray(Utilities.pathURL(address, "catalog?")+params.toString());
       boolean hasDates = true;
-      for (JsonElement e : json) {
-        JsonObject obj = (JsonObject) e;
-        Instant d = obj.has("date") ? JsonUtilities.parseDate(obj, "date") : null;
+      for (JsonObject obj : json.asJsonObjects()) {
+        Instant d = obj.has("date") ? obj.asDate("date") : null;
         if (d == null) {
           hasDates = false;
         }
-        res.add(new PackageInfo(JsonUtilities.str(obj, "Name", "name"),
-          JsonUtilities.str(obj, "Version", "version"),
-          JsonUtilities.str(obj, "FhirVersion", "fhirVersion"),
-          JsonUtilities.str(obj, "Description", "description"),
-          JsonUtilities.str(obj, "url"),
-          JsonUtilities.str(obj, "canonical"),
+        res.add(new PackageInfo(obj.asString("Name", "name"),
+          obj.asString("Version", "version"),
+          obj.asString("FhirVersion", "fhirVersion"),
+          obj.asString("Description", "description"),
+          obj.asString("url"),
+          obj.asString("canonical"),
           address, d));
       }
       if (hasDates) {
@@ -165,13 +164,13 @@ public class PackageClient {
   private JsonObject fetchJson(String source) throws IOException {
     String src = TextFile.streamToString(fetchUrl(source, "application/json"));
     //System.out.println(src);
-    return (JsonObject) new com.google.gson.JsonParser().parse(src);
+    return JsonParser.parseObject(src);
   }
   
   private JsonArray fetchJsonArray(String source) throws IOException {
     String src = TextFile.streamToString(fetchUrl(source, "application/json"));
     //System.out.println(src);
-    return (JsonArray) new com.google.gson.JsonParser().parse(src);
+    return (JsonArray) JsonParser.parse(src);
   }
 
   public String url(String id, String v) {
@@ -209,11 +208,11 @@ public class PackageClient {
   }
 
   protected PackageInfo getPackageInfoFromJSON(JsonObject o, String name, String canonical, String fhirVersion) {
-      String id = JsonUtilities.str(o, "npm-name");
-      String pname = JsonUtilities.str(o, "name");
-      String pcanonical = JsonUtilities.str(o, "canonical");
-      String description = JsonUtilities.str(o, "description");
-      Instant d = o.has("date") ? JsonUtilities.parseDate(o, "date") : null;
+      String id = o.asString("npm-name");
+      String pname = o.asString("name");
+      String pcanonical = o.asString("canonical");
+      String description = o.asString("description");
+      Instant d = o.has("date") ? o.asDate("date") : null;
       boolean ok = true;
       if (ok && !Utilities.noString(name)) {
         ok = (pname != null && pname.contains(name)) || (description != null && description.contains(name)) || (id != null && id.contains(name));
@@ -227,15 +226,15 @@ public class PackageClient {
 
       if (ok) {
         // if we can find something...
-        for (JsonObject e : JsonUtilities.objects(o, "editions")) {
-          if (fhirVersion == null || fhirVersion.equals(JsonUtilities.str(e, "fhir-version"))) {
-            String v = JsonUtilities.str(e, "ig-version");
+        for (JsonObject e : o.getJsonObjects("editions")) {
+          if (fhirVersion == null || fhirVersion.equals(e.asString("fhir-version"))) {
+            String v = e.asString("ig-version");
             if (version == null || VersionUtilities.isThisOrLater(version, v)) {
               version = v;
-              fVersion = e.getAsJsonArray("fhir-version").get(0).getAsString();
-              url = JsonUtilities.str(e, "url");
+              fVersion = e.getJsonArray("fhir-version").get(0).asString();
+              url = e.asString("url");
 
-              String npmPackage = JsonUtilities.str(e, "package");
+              String npmPackage = e.asString("package");
               if (npmPackage != null && id == null) {
                 id = npmPackage.substring(0, npmPackage.indexOf("#"));
               }
@@ -248,8 +247,8 @@ public class PackageClient {
   
   public List<PackageInfo> listFromRegistry(String name, String canonical, String fhirVersion) throws IOException {
     List<PackageInfo> result = new ArrayList<>();
-    JsonObject packages = JsonTrackingParser.fetchJson("https://raw.githubusercontent.com/FHIR/ig-registry/master/fhir-ig-list.json?nocache=" + System.currentTimeMillis());
-    for (JsonObject o : JsonUtilities.objects(packages, "guides")) {
+    JsonObject packages = JsonParser.parseObjectFromUrl("https://raw.githubusercontent.com/FHIR/ig-registry/master/fhir-ig-list.json?nocache=" + System.currentTimeMillis());
+    for (JsonObject o : packages.getJsonObjects("guides")) {
       if (o.has("canonical")) {
       final PackageInfo packageInfo = getPackageInfoFromJSON(o, name, canonical, fhirVersion);
         if (packageInfo.getVersion() != null) {
@@ -265,9 +264,8 @@ public class PackageClient {
     params.append("dependency="+id.replace("#", "|"));
     try {
       JsonArray json = fetchJsonArray(Utilities.pathURL(address, "catalog?")+params.toString());
-      for (JsonElement e : json) {
-        JsonObject obj = (JsonObject) e;
-        list.add(JsonUtilities.str(obj, "Name", "name"));
+      for (JsonObject obj : json.asJsonObjects()) {
+        list.add(obj.asString("Name", "name"));
       }
     } catch (IOException e1) {
     }

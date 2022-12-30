@@ -15,4 +15,25 @@ public class Integer40_50 {
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     return tgt;
   }
+  
+  public static org.hl7.fhir.r5.model.Integer64Type convertInteger64(org.hl7.fhir.r4.model.IntegerType src) throws FHIRException {
+    org.hl7.fhir.r5.model.Integer64Type tgt = src.hasValue() ? new org.hl7.fhir.r5.model.Integer64Type(src.getValueAsString()) : new org.hl7.fhir.r5.model.Integer64Type();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    return tgt;
+  }
+
+  public static org.hl7.fhir.r4.model.IntegerType convertInteger64(org.hl7.fhir.r5.model.Integer64Type src) throws FHIRException {
+    org.hl7.fhir.r4.model.IntegerType tgt = new org.hl7.fhir.r4.model.IntegerType();
+    if (src.hasValue()) {
+      try {
+        tgt.setValueAsString(src.getValueAsString());
+      } catch (Exception e) {
+        // nothing?
+        tgt.setValueAsString("0");
+      }
+    }
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    return tgt;
+  }
+
 }

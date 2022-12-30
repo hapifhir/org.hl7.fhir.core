@@ -631,7 +631,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     
     model.setAlternating(alternating);
     model.setDocoImg(Utilities.pathURL(prefix, "help16.png"));
-    model.setDocoRef(Utilities.pathURL(prefix, "formats.html#table"));
+    model.setDocoRef(Utilities.pathURL("https://build.fhir.org/ig/FHIR/ig-guidance", "readingIgs.html#table-views"));
     model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Name"), translate("sd.hint", "The logical name of the element"), null, 0));
     model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Flags"), translate("sd.hint", "Information about the use of the element"), null, 0));
     model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Card."), translate("sd.hint", "Minimum and Maximum # of times the the element can appear in the instance"), null, 0));

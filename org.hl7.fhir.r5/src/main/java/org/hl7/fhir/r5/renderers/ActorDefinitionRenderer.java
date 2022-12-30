@@ -50,7 +50,7 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
     if (acd.hasCapabilities()) {
       tbl.tr().td().tx("Capabilities:");
       td = tr.td().colspan("2");
-      CapabilityStatement cs = context.getWorker().fetchResource(CapabilityStatement.class, acd.getCapabilities());
+      CapabilityStatement cs = context.getWorker().fetchResource(CapabilityStatement.class, acd.getCapabilities(), acd);
       if (cs != null) {
         td.ah(cs.getUserString("path")).tx(cs.present());
       } else {
@@ -63,7 +63,7 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
       boolean first = true;
       for (UrlType t : acd.getReference()) {
         if (first) first = false; else x.br();
-        ActorDefinition df = context.getWorker().fetchResource(ActorDefinition.class, t.getValue());
+        ActorDefinition df = context.getWorker().fetchResource(ActorDefinition.class, t.getValue(), acd);
         if (df != null) {
           td.ah(df.getUserString("path")).tx(df.present());
         } else {

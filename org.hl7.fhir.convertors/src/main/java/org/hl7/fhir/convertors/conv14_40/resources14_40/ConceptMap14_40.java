@@ -320,7 +320,7 @@ public class ConceptMap14_40 {
 
   static public ConceptMapGroupComponent getGroup(ConceptMap map, String srcs, String tgts) {
     for (ConceptMapGroupComponent grp : map.getGroup()) {
-      if (grp.getSource().equals(srcs) && grp.getTarget().equals(tgts))
+      if (grp.hasSource() && grp.getSource().equals(srcs) && grp.getTarget().equals(tgts))
         return grp;
     }
     ConceptMapGroupComponent grp = map.addGroup();

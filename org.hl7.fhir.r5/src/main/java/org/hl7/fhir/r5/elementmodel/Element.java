@@ -43,7 +43,7 @@ import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DataType;
@@ -55,7 +55,6 @@ import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.TypeConvertor;
-import org.hl7.fhir.r5.model.Base.ValidationInfo;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.utilities.ElementDecoration;
@@ -942,7 +941,7 @@ public class Element extends Base {
         return null;
       ICodingImpl c = new ICodingImpl(true, true, false, false);
       c.code = primitiveValue();
-      ValueSetExpansionOutcome vse = property.getContext().expandVS(property.getDefinition().getBinding(), true, false);
+      ValueSetExpansionOutcome vse = property.getContext().expandVS(property.getStructure(), property.getDefinition().getBinding(), true, false);
       if (vse.getValueset() == null)
         return null;
       for (ValueSetExpansionContainsComponent cc : vse.getValueset().getExpansion().getContains()) {
@@ -1250,6 +1249,14 @@ public class Element extends Base {
       }
     }
     
+  }
+
+  public String fhirTypeRoot() {
+    if (fhirType().contains("/")) {
+      return fhirType().substring(fhirType().lastIndexOf("/")+1);
+    } else {
+      return fhirType();
+    }
   }
   
 }

@@ -12577,7 +12577,7 @@ public class RdfParser extends RdfParserBase {
     }
     composeBackboneElement(t, "parameter", name, element, index);
     if (element.hasCodeElement()) {
-      composeEnum(t, "ImplementationGuideDefinitionParameterComponent", "code", element.getCodeElement(), -1);
+      composeString(t, "ImplementationGuideDefinitionParameterComponent", "code", element.getCodeElement(), -1);
     }
     if (element.hasValueElement()) {
       composeString(t, "ImplementationGuideDefinitionParameterComponent", "value", element.getValueElement(), -1);

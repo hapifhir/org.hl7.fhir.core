@@ -138,10 +138,11 @@ public abstract class ParserBase {
 	public abstract void compose(Element e, OutputStream destination, OutputStyle style, String base)  throws FHIRException, IOException;
 
 	//FIXME: i18n should be done here
-	public void logError(int line, int col, String path, IssueType type, String message, IssueSeverity level) throws FHIRFormatError {
+	public void logError(String ruleDate, int line, int col, String path, IssueType type, String message, IssueSeverity level) throws FHIRFormatError {
 	  if (errors != null) {
 	    if (policy == ValidationPolicy.EVERYTHING) {
 	      ValidationMessage msg = new ValidationMessage(Source.InstanceValidator, type, line, col, path, message, level);
+	      msg.setRuleDate(ruleDate);
 	      errors.add(msg);
 	    } else if (level == IssueSeverity.FATAL || (level == IssueSeverity.ERROR && policy == ValidationPolicy.QUICK))
 	      throw new FHIRFormatError(message+String.format(" at line %d col %d", line, col));
@@ -151,11 +152,11 @@ public abstract class ParserBase {
 	
 	protected StructureDefinition getDefinition(int line, int col, String ns, String name) throws FHIRFormatError {
     if (ns == null) {
-      logError(line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS__CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAMESPACE, name), IssueSeverity.FATAL);
+      logError(ValidationMessage.NO_RULE_DATE, line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS__CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAMESPACE, name), IssueSeverity.FATAL);
       return null;
     }
     if (name == null) {
-      logError(line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS_CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAME), IssueSeverity.FATAL);
+      logError(ValidationMessage.NO_RULE_DATE, line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS_CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAME), IssueSeverity.FATAL);
       return null;
   	}
 	  for (StructureDefinition sd : new ContextUtilities(context).allStructures()) {
@@ -167,13 +168,13 @@ public abstract class ParserBase {
 	        return sd;
 	    }
 	  }
-	  logError(line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAMESPACENAME_, ns, name), IssueSeverity.FATAL);
+	  logError(ValidationMessage.NO_RULE_DATE, line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAMESPACENAME_, ns, name), IssueSeverity.FATAL);
 	  return null;
   }
 
   protected StructureDefinition getDefinition(int line, int col, String name) throws FHIRFormatError {
     if (name == null) {
-      logError(line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS_CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAME), IssueSeverity.FATAL);
+      logError(ValidationMessage.NO_RULE_DATE, line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS_CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAME), IssueSeverity.FATAL);
       return null;
   	}
     // first pass: only look at base definitions
@@ -189,7 +190,7 @@ public abstract class ParserBase {
         return sd;
       }
     }
-	  logError(line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAME_, name), IssueSeverity.FATAL);
+	  logError(ValidationMessage.NO_RULE_DATE, line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAME_, name), IssueSeverity.FATAL);
 	  return null;
   }
 
@@ -227,7 +228,7 @@ public abstract class ParserBase {
     if (!"id".equals(e.getName())) {
       return true;
     }
-    if (path.contains(".")) {
+    if (path!=null && path.contains(".")) {
       return idPolicy.forInner();
     } else {
       return idPolicy.forRoot();

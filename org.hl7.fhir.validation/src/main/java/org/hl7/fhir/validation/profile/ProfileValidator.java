@@ -76,7 +76,7 @@ public class ProfileValidator extends BaseValidator {
 
   protected boolean rule(List<ValidationMessage> errors, IssueType type, String path, boolean b, String msg) {
     String rn = path.contains(".") ? path.substring(0, path.indexOf(".")) : path;
-    return super.ruleHtml(errors, type, path, b, msg, "<a href=\""+(rn.toLowerCase())+".html\">"+rn+"</a>: "+Utilities.escapeXml(msg));
+    return super.ruleHtml(errors, NO_RULE_DATE, type, path, b, msg, "<a href=\""+(rn.toLowerCase())+".html\">"+rn+"</a>: "+Utilities.escapeXml(msg));
   }
 
   public List<ValidationMessage> validate(StructureDefinition profile, boolean forBuild) {
@@ -84,30 +84,30 @@ public class ProfileValidator extends BaseValidator {
     
     // must have a FHIR version- GF#3160
     String s = (profile.getKind() == StructureDefinitionKind.LOGICAL) ? "Logical Models" : "Profiles";
-    warning(errors, IssueType.BUSINESSRULE, profile.getUrl(), profile.hasFhirVersion(), s+" SHOULD state the FHIR Version on which they are based");
-    warning(errors, IssueType.BUSINESSRULE, profile.getUrl(), profile.hasVersion(), s+" SHOULD state their own version");
+    warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, profile.getUrl(), profile.hasFhirVersion(), s+" SHOULD state the FHIR Version on which they are based");
+    warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, profile.getUrl(), profile.hasVersion(), s+" SHOULD state their own version");
     
     // extensions must be defined
     for (ElementDefinition ec : profile.getDifferential().getElement())
       checkExtensions(profile, errors, "differential", ec);
-    rule(errors, IssueType.STRUCTURE, profile.getId(), profile.hasSnapshot(), "missing Snapshot at "+profile.getName()+"."+profile.getName());
+    rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, profile.getId(), profile.hasSnapshot(), "missing Snapshot at "+profile.getName()+"."+profile.getName());
     for (ElementDefinition ec : profile.getSnapshot().getElement()) 
       checkExtensions(profile, errors, "snapshot", ec);
 
-    if (rule(errors, IssueType.STRUCTURE, profile.getId(), profile.hasSnapshot(), "A snapshot is required")) {
+    if (rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, profile.getId(), profile.hasSnapshot(), "A snapshot is required")) {
       Hashtable<String, ElementDefinition> snapshotElements = new Hashtable<String, ElementDefinition>();
       for (ElementDefinition ed : profile.getSnapshot().getElement()) {
         snapshotElements.put(ed.getId(), ed);
         for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
           if (forBuild) {
             if (!inExemptList(inv.getKey())) {
-              if (rule(errors, IssueType.BUSINESSRULE, profile.getId()+"::"+ed.getPath()+"::"+inv.getKey(), inv.hasExpression(), "The invariant has no FHIR Path expression ("+inv.getXpath()+")")) {
+//              if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, profile.getId()+"::"+ed.getPath()+"::"+inv.getKey(), inv.hasExpression(), "The invariant has no FHIR Path expression ("+inv.getXpath()+")")) {
 //                try {
 //                  fpe.check(null, profile.getType(), ed.getPath(), inv.getExpression()); // , inv.hasXpath() && inv.getXpath().startsWith("@value")
 //                } catch (Exception e) {
-//                  // rule(errors, IssueType.STRUCTURE, profile.getId()+"::"+ed.getPath()+"::"+inv.getId(), false, e.getMessage());
+//                  // rule(errors, UNKNOWN_DATE_TIME, IssueType.STRUCTURE, profile.getId()+"::"+ed.getPath()+"::"+inv.getId(), false, e.getMessage());
 //                }
-              } 
+//              } 
             }
           }
         }
@@ -118,11 +118,11 @@ public class ProfileValidator extends BaseValidator {
             throw new Error("Diff Element is null - this is not an expected thing");
           ElementDefinition snapElement = snapshotElements.get(diffElement.getId());
           if (snapElement!=null) { // Happens with profiles in the main build - should be able to fix once snapshot generation is fixed - Lloyd
-            warning(errors, IssueType.BUSINESSRULE, diffElement.getId(), !checkMustSupport || snapElement.hasMustSupport(), "Elements included in the differential should declare mustSupport");
+            warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, diffElement.getId(), !checkMustSupport || snapElement.hasMustSupport(), "Elements included in the differential should declare mustSupport");
             if (checkAggregation) {
               for (TypeRefComponent type : snapElement.getType()) {
                 if ("http://hl7.org/fhir/Reference".equals(type.getWorkingCode()) || "http://hl7.org/fhir/canonical".equals(type.getWorkingCode())) {
-                  warning(errors, IssueType.BUSINESSRULE, diffElement.getId(), type.hasAggregation(), "Elements with type Reference or canonical should declare aggregation");
+                  warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, diffElement.getId(), type.hasAggregation(), "Elements with type Reference or canonical should declare aggregation");
                 }
               }
             }
@@ -145,7 +145,7 @@ public class ProfileValidator extends BaseValidator {
       if (defn == null) {
         defn = getXverExt(profile, errors, url);
       }
-      rule(errors, IssueType.BUSINESSRULE, profile.getId(), defn != null, "Unable to find Extension '"+url+"' referenced at "+profile.getUrl()+" "+kind+" "+ec.getPath()+" ("+ec.getSliceName()+")");
+      rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, profile.getId(), defn != null, "Unable to find Extension '"+url+"' referenced at "+profile.getUrl()+" "+kind+" "+ec.getPath()+" ("+ec.getSliceName()+")");
     }
   }
 

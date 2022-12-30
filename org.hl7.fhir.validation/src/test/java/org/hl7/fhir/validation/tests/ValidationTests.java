@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintStream;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -33,10 +32,9 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.PathEngineException;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
@@ -72,7 +70,6 @@ import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
-import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.model.HtmlInMarkdownCheck;
@@ -88,7 +85,6 @@ import org.junit.runners.Parameterized.Parameters;
 
 import com.google.common.base.Charsets;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -265,6 +261,9 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (content.has("best-practice")) {
       val.setBestPracticeWarningLevel(BestPracticeWarningLevel.valueOf(content.get("best-practice").getAsString()));
     }
+    if (content.has("allow-comments")) {
+      val.setAllowComments(content.get("allow-comments").getAsBoolean());
+    }
     if (content.has("examples")) {
       val.setAllowExamples(content.get("examples").getAsBoolean());
     } else {
@@ -368,9 +367,6 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       checkOutcomes(errorsLogical, logical, "logical", name);
     }
     logger.verifyHasNoRequests();
-    if (BUILD_NEW) {
-      JsonTrackingParser.write(manifest, new File(Utilities.path("[tmp]", "validator", "manifest.new.json")));
-    }
   }
 
 
@@ -444,6 +440,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     OperationOutcome actual = OperationOutcomeUtilities.createOutcomeSimple(errors);
     actual.setText(null);
     String json = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(actual);
+    
 
     List<String> fails = new ArrayList<>();
     
@@ -482,7 +479,32 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       logOutput(json);
       logOutput("");
       logOutput("========================================================");
-      logOutput("");      
+      logOutput("");  
+      if (BUILD_NEW && actual.getIssue().size() > 0) {
+        if (java.has("output")) {
+          java.remove("output");
+        }
+        if (java.has("error-locations")) {
+          java.remove("error-locations");
+        }
+        if (java.has("warningCount")) {
+          java.remove("warningCount");
+        }
+        if (java.has("infoCount")) {
+          java.remove("infoCount");
+        }
+        if (java.has("errorCount")) {
+          java.remove("errorCount");
+        }
+        if (java.has("outcome")) {
+          java.remove("outcome");
+        }
+        if (actual.hasIssue()) {
+          JsonObject oj = JsonTrackingParser.parse(json, null);
+          java.add("outcome", oj);
+        }
+        JsonTrackingParser.write(manifest, new File(Utilities.path("[tmp]", "validator", "manifest.new.json")));
+      }
       Assertions.fail("\r\n"+String.join("\r\n", fails));
     }
 //    int ec = 0;
@@ -526,30 +548,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 //        Assert.assertEquals("Location should be " + el.get(i).getAsString() + ", but was " + errLocs.get(i), errLocs.get(i), el.get(i).getAsString());
 //      }
 //    }
-    if (BUILD_NEW) {
-      if (java.has("output")) {
-        java.remove("output");
-      }
-      if (java.has("error-locations")) {
-        java.remove("error-locations");
-      }
-      if (java.has("warningCount")) {
-        java.remove("warningCount");
-      }
-      if (java.has("infoCount")) {
-        java.remove("infoCount");
-      }
-      if (java.has("errorCount")) {
-        java.remove("errorCount");
-      }
-      if (java.has("outcome")) {
-        java.remove("outcome");
-      }
-      if (actual.hasIssue()) {
-        JsonObject oj = JsonTrackingParser.parse(json, null);
-        java.add("outcome", oj);
-      }
-    }
+    
   }
 
   private void logOutput(String msg) {
