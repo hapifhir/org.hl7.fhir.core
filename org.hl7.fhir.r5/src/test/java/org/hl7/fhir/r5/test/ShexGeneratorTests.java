@@ -23,6 +23,7 @@ import org.junit.jupiter.api.Test;
 public class ShexGeneratorTests {
 
   public static List<String> skipSDs = new ArrayList<String>();
+  public ShExGenerator shexGenerator;
   @BeforeAll
   public static void setup() {
     skipSDs.add("http://hl7.org/fhir/StructureDefinition/ActivityDefinition");
@@ -31,6 +32,8 @@ public class ShexGeneratorTests {
     skipSDs.add("http://hl7.org/fhir/StructureDefinition/ClinicalUseDefinition");
     skipSDs.add("http://hl7.org/fhir/StructureDefinition/CodeSystem");
     skipSDs.add("http://hl7.org/fhir/StructureDefinition/ConceptMap");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/CompartmentDefinition");
+    skipSDs.add("http://hl7.org/fhir/StructureDefinition/CompartmentDefinition");
     skipSDs.add("http://hl7.org/fhir/StructureDefinition/DeviceDefinition");
     skipSDs.add("http://hl7.org/fhir/StructureDefinition/ElementDefinition");
     skipSDs.add("http://hl7.org/fhir/StructureDefinition/EventDefinition");
@@ -60,25 +63,20 @@ public class ShexGeneratorTests {
 
 
   private void doTest(String name) throws FileNotFoundException, IOException, FHIRException, UcumException {
-    StructureDefinition sd = TestingUtilities.getSharedWorkerContext().fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null));
-    if (sd == null) {
-      throw new FHIRException("StructuredDefinition for " + name + " was null");
-    }
-    //Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), name.toLowerCase() + ".shex");
-    Path outPath = FileSystems.getDefault().getPath(System.getProperty("user.home")+"/runtime_environments/ShExSchemas", name.toLowerCase() + ".shex");
-    TextFile.stringToFile(new ShExGenerator(TestingUtilities.getSharedWorkerContext()).generate(HTMLLinkPolicy.NONE, sd), outPath.toString());
+    this.doTestThis(name.toLowerCase(), name);
   }
 
   private void doTestThis(String shortName, String name){
     StructureDefinition sd = TestingUtilities.getSharedWorkerContext().fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null));
     if (sd == null) {
-      //throw new FHIRException("ERROR! ERROR! ERROR! StructuredDefinition for " + name + "was null");
-      System.out.println("ERROR! ERROR! ERROR! StructuredDefinition for " + name + " was null");
-      return;
+      throw new FHIRException("StructuredDefinition for " + name + " was null");
     }
     Path outPath = FileSystems.getDefault().getPath(System.getProperty("user.home") + "/runtime_environments/ShExSchemas", shortName + ".shex");
     try {
-      TextFile.stringToFile(new ShExGenerator(TestingUtilities.getSharedWorkerContext()).generate(HTMLLinkPolicy.NONE, sd), outPath.toString());
+      this.shexGenerator = new ShExGenerator(TestingUtilities.getSharedWorkerContext());
+      this.shexGenerator.setExcludedStructureDefinitionUrls(skipSDs);
+      this.shexGenerator.debugMode = true;
+      TextFile.stringToFile(this.shexGenerator.generate(HTMLLinkPolicy.NONE, sd), outPath.toString());
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -102,10 +100,10 @@ public class ShexGeneratorTests {
 
     items.forEach((String item) -> {
       String name = item;
-      if (skipSDs.contains(name)) {
-        System.out.println("SKIPPING Generating ShEx for '" + name + "' ...");
-        return;
-      }
+//      if (skipSDs.contains(name)) {
+//        System.out.println("SKIPPING Generating ShEx for '" + name + "' ...");
+//        return;
+//      }
 
       if (item.indexOf("/") != -1) {
         String els[] = item.split("/");
@@ -166,11 +164,6 @@ public class ShexGeneratorTests {
     printList("Extensions", extNamesPrint);
     printList("Logical", logicalNamesPrint);
     printList("Profiles", otherNamesPrint);
-
-    //processList("StructureDefinitions", sdNames);
-    //processList("Extensions", extNames);
-    //processList("Logical", logicalNames);
-    //processList("Profiles", otherNames);
 
     System.out.println("************************************************************************");
     System.out.println("************************ BEGIN PROCESSING ******************************");
