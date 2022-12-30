@@ -84,7 +84,6 @@ public class ShexGeneratorTests {
       this.shexGenerator.debugMode = true;
       this.shexGenerator.constraintPolicy = policy;
 
-
       if (useSelectedExtensions){
         List<StructureDefinition> selExtns = new ArrayList<StructureDefinition>();
 
@@ -97,7 +96,10 @@ public class ShexGeneratorTests {
         this.shexGenerator.setSelectedExtension(selExtns);
       }
 
-      TextFile.stringToFile(this.shexGenerator.generate(HTMLLinkPolicy.NONE, sd), outPath.toString());
+      String schema = this.shexGenerator.generate(HTMLLinkPolicy.NONE, sd);
+      if (!schema.isEmpty())
+          TextFile.stringToFile(schema, outPath.toString());
+
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

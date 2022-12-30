@@ -2,7 +2,7 @@ package org.hl7.fhir.r5.test;
 
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.LDContextGenerator;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
