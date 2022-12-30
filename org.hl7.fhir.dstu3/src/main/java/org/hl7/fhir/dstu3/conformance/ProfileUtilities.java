@@ -1214,7 +1214,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
       if (derived.hasDefinitionElement()) {
         if (derived.getDefinition().startsWith("..."))
-          base.setDefinition(base.getDefinition()+"\r\n"+derived.getDefinition().substring(3));
+          base.setDefinition(Utilities.appendDerivedTextToBase(base.getDefinition(), derived.getDefinition()));
         else if (!Base.compareDeep(derived.getDefinitionElement(), base.getDefinitionElement(), false))
           base.setDefinitionElement(derived.getDefinitionElement().copy());
         else if (trimDifferential)
@@ -1225,7 +1225,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
       if (derived.hasCommentElement()) {
         if (derived.getComment().startsWith("..."))
-          base.setComment(base.getComment()+"\r\n"+derived.getComment().substring(3));
+          base.setComment(Utilities.appendDerivedTextToBase(base.getComment(), derived.getComment()));
         else if (derived.hasCommentElement()!= base.hasCommentElement() || !Base.compareDeep(derived.getCommentElement(), base.getCommentElement(), false))
           base.setCommentElement(derived.getCommentElement().copy());
         else if (trimDifferential)
@@ -1236,7 +1236,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
       if (derived.hasLabelElement()) {
         if (derived.getLabel().startsWith("..."))
-          base.setLabel(base.getLabel()+"\r\n"+derived.getLabel().substring(3));
+          base.setLabel(Utilities.appendDerivedTextToBase(base.getLabel(), derived.getLabel()));
         else if (!base.hasLabelElement() || !Base.compareDeep(derived.getLabelElement(), base.getLabelElement(), false))
           base.setLabelElement(derived.getLabelElement().copy());
         else if (trimDifferential)
@@ -1247,7 +1247,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
       if (derived.hasRequirementsElement()) {
         if (derived.getRequirements().startsWith("..."))
-          base.setRequirements(base.getRequirements()+"\r\n"+derived.getRequirements().substring(3));
+          base.setRequirements(Utilities.appendDerivedTextToBase(base.getRequirements(), derived.getRequirements()));
         else if (!base.hasRequirementsElement() || !Base.compareDeep(derived.getRequirementsElement(), base.getRequirementsElement(), false))
           base.setRequirementsElement(derived.getRequirementsElement().copy());
         else if (trimDifferential)
