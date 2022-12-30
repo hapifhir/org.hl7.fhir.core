@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1080,7 +1080,7 @@ public class Group extends DomainResource {
     /**
      * Indicates whether the record for the group is available for use or is merely being retained for historical purposes.
      */
-    @Child(name = "active", type = {BooleanType.class}, order=1, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "active", type = {BooleanType.class}, order=1, min=0, max=1, modifier=true, summary=true)
     @Description(shortDefinition="Whether this group's record is in active use", formalDefinition="Indicates whether the record for the group is available for use or is merely being retained for historical purposes." )
     protected BooleanType active;
 

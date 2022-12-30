@@ -52,33 +52,67 @@ public class ValueSetValidator extends BaseValidator {
 
   }
   
-  public void validateValueSet(List<ValidationMessage> errors, Element vs, NodeStack stack) {
+  public boolean validateValueSet(List<ValidationMessage> errors, Element vs, NodeStack stack) {
+    boolean ok = true;
     if (!VersionUtilities.isR2Ver(context.getVersion())) {
       List<Element> composes = vs.getChildrenByName("compose");
       int cc = 0;
       for (Element compose : composes) {
-        validateValueSetCompose(errors, compose, stack.push(compose, cc, null, null), vs.getNamedChildValue("url"), "retired".equals(vs.getNamedChildValue("url")));
+        ok = validateValueSetCompose(errors, compose, stack.push(compose, cc, null, null), vs.getNamedChildValue("url"), "retired".equals(vs.getNamedChildValue("url"))) & ok;
         cc++;
       }
     }
+    if (!stack.isContained()) {
+      ok = checkShareableValueSet(errors, vs, stack) && ok;
+    }
+    return ok;
   }
 
-  private void validateValueSetCompose(List<ValidationMessage> errors, Element compose, NodeStack stack, String vsid, boolean retired) {
+  private boolean checkShareableValueSet(List<ValidationMessage> errors, Element vs, NodeStack stack) {
+    if (parent.isForPublication()) { 
+      if (isHL7(vs)) {
+        boolean ok = true;
+        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("url"), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "url") && ok;                      
+        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("version"), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "version") && ok;                      
+        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("title"), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "title") && ok;                      
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("name"), I18nConstants.VALUESET_SHAREABLE_EXTRA_MISSING_HL7, "name");                      
+        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("status"), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "status") && ok;                      
+        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("experimental"), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "experimental") && ok;                      
+        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("description"), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "description") && ok;
+        return ok;
+      } else {
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("url"), I18nConstants.VALUESET_SHAREABLE_MISSING, "url");                      
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("version"), I18nConstants.VALUESET_SHAREABLE_MISSING, "version");                      
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("title"), I18nConstants.VALUESET_SHAREABLE_MISSING, "title");                      
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("name"), I18nConstants.VALUESET_SHAREABLE_EXTRA_MISSING, "name");                      
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("status"), I18nConstants.VALUESET_SHAREABLE_MISSING, "status");                      
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("experimental"), I18nConstants.VALUESET_SHAREABLE_MISSING, "experimental");                      
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("description"), I18nConstants.VALUESET_SHAREABLE_MISSING, "description");
+      }
+    }
+    return true;
+  }
+
+
+  private boolean validateValueSetCompose(List<ValidationMessage> errors, Element compose, NodeStack stack, String vsid, boolean retired) {
+    boolean ok = true;
     List<Element> includes = compose.getChildrenByName("include");
     int ci = 0;
     for (Element include : includes) {
-      validateValueSetInclude(errors, include, stack.push(include, ci, null, null), vsid, retired);
+      ok = validateValueSetInclude(errors, include, stack.push(include, ci, null, null), vsid, retired) && ok;
       ci++;
     }    
     List<Element> excludes = compose.getChildrenByName("exclude");
     int ce = 0;
     for (Element exclude : excludes) {
-      validateValueSetInclude(errors, exclude, stack.push(exclude, ce, null, null), vsid, retired);
+      ok = validateValueSetInclude(errors, exclude, stack.push(exclude, ce, null, null), vsid, retired) && ok;
       ce++;
     }    
+    return ok;
   }
   
-  private void validateValueSetInclude(List<ValidationMessage> errors, Element include, NodeStack stack, String vsid, boolean retired) {
+  private boolean validateValueSetInclude(List<ValidationMessage> errors, Element include, NodeStack stack, String vsid, boolean retired) {
+    boolean ok = true;
     String system = include.getChildValue("system");
     String version = include.getChildValue("version");
     List<Element> valuesets = include.getChildrenByName("valueSet");
@@ -91,17 +125,17 @@ public class ValueSetValidator extends BaseValidator {
 
         Resource rs = context.fetchResource(Resource.class, v);
         if (rs != null) {
-          warning(errors, IssueType.BUSINESSRULE, ns.getLiteralPath(), false, I18nConstants.VALUESET_REFERENCE_INVALID_TYPE, v, rs.fhirType());                      
+          warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, ns.getLiteralPath(), false, I18nConstants.VALUESET_REFERENCE_INVALID_TYPE, v, rs.fhirType());                      
         } else { 
           // todo: it's possible, at this point, that the txx server knows the value set, but it's not in scope
           // should we handle this case?
-          warning(errors, IssueType.BUSINESSRULE, ns.getLiteralPath(), false, I18nConstants.VALUESET_REFERENCE_UNKNOWN, v);            
+          warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, ns.getLiteralPath(), false, I18nConstants.VALUESET_REFERENCE_UNKNOWN, v);            
         }
       }
       i++;
     }
     if (valuesets.size() > 1) {
-      warning(errors, IssueType.INFORMATIONAL, stack.getLiteralPath(), false, I18nConstants.VALUESET_IMPORT_UNION_INTERSECTION);                  
+      warning(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, stack.getLiteralPath(), false, I18nConstants.VALUESET_IMPORT_UNION_INTERSECTION);                  
     }
     List<Element> concepts = include.getChildrenByName("concept");
     List<Element> filters = include.getChildrenByName("filter");
@@ -113,7 +147,7 @@ public class ValueSetValidator extends BaseValidator {
       for (Element concept : concepts) {
         // we treat the first differently because we want to know if tbe system is worth validating. if it is, then we batch the rest
         if (first) {
-          systemOk = validateValueSetIncludeConcept(errors, concept, stack.push(concept, cc, null, null), system, version);
+          systemOk = validateValueSetIncludeConcept(errors, concept, stack, stack.push(concept, cc, null, null), system, version);
           first = false;
         } else if (systemOk) {
           batch.add(prepareValidateValueSetIncludeConcept(errors, concept, stack.push(concept, cc, null, null), system, version));
@@ -131,9 +165,9 @@ public class ValueSetValidator extends BaseValidator {
         }
         for (VSCodingValidationRequest cv : batch) {
           if (version == null) {
-            warningOrHint(errors, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), !retired, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE, system, cv.getCoding().getCode());
+            ok = warningOrHint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), !retired, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE, system, cv.getCoding().getCode()) && ok;
           } else {
-            warningOrHint(errors, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), !retired, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER, system, version, cv.getCoding().getCode());
+            ok = warningOrHint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), !retired, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER, system, version, cv.getCoding().getCode()) && ok;
           }
         }
       }
@@ -145,29 +179,31 @@ public class ValueSetValidator extends BaseValidator {
         }
         cf++;
       }    
-      warning(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), systemOk, version == null ? I18nConstants.VALUESET_UNC_SYSTEM_WARNING :  I18nConstants.VALUESET_UNC_SYSTEM_WARNING_VER);            
     } else {
-      warning(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), filters.size() == 0 && concepts.size() == 0, I18nConstants.VALUESET_NO_SYSTEM_WARNING);      
+      warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), filters.size() == 0 && concepts.size() == 0, I18nConstants.VALUESET_NO_SYSTEM_WARNING);      
     }
+    return ok;
   }
 
-  private boolean validateValueSetIncludeConcept(List<ValidationMessage> errors, Element concept, NodeStack stack, String system, String version) {
+  private boolean validateValueSetIncludeConcept(List<ValidationMessage> errors, Element concept, NodeStack stackInc, NodeStack stack, String system, String version) {
     String code = concept.getChildValue("code");
     if (version == null) {
       ValidationResult vv = context.validateCode(ValidationOptions.defaults(), new Coding(system, code, null), null);
       if (vv.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
+        warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stackInc.getLiteralPath(), false, I18nConstants.VALUESET_UNC_SYSTEM_WARNING, system, vv.getMessage());                      
         return false;
       } else {
         boolean ok = vv.isOk();
-        warning(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), ok, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE, system, code);
+        warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), ok, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE, system, code);
       }
     } else {
       ValidationResult vv = context.validateCode(ValidationOptions.defaults(), new Coding(system, code, null).setVersion(version), null);
       if (vv.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
+        warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stackInc.getLiteralPath(), false, I18nConstants.VALUESET_UNC_SYSTEM_WARNING_VER, system+"#"+version, vv.getMessage());            
         return false;        
       } else {
         boolean ok = vv.isOk();
-        warning(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), ok, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER, system, version, code);
+        warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), ok, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER, system, version, code);
       }
     }
     return true;

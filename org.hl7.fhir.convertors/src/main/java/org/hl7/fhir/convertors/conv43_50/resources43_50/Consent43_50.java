@@ -58,7 +58,7 @@ public class Consent43_50 {
     if (src.hasPatient())
       tgt.setSubject(Reference43_50.convertReference(src.getPatient()));
     if (src.hasDateTime())
-      tgt.setDateTimeElement(DateTime43_50.convertDateTime(src.getDateTimeElement()));
+      tgt.setDateElement(DateTime43_50.convertDateTimeToDate(src.getDateTimeElement()));
     for (org.hl7.fhir.r4b.model.Reference t : src.getPerformer()) tgt.addGrantee(Reference43_50.convertReference(t));
     for (org.hl7.fhir.r4b.model.Reference t : src.getOrganization()) tgt.addManager(Reference43_50.convertReference(t));
     if (src.hasSourceAttachment())
@@ -91,8 +91,8 @@ public class Consent43_50 {
       tgt.addCategory(CodeableConcept43_50.convertCodeableConcept(t));
     if (src.hasSubject())
       tgt.setPatient(Reference43_50.convertReference(src.getSubject()));
-    if (src.hasDateTime())
-      tgt.setDateTimeElement(DateTime43_50.convertDateTime(src.getDateTimeElement()));
+    if (src.hasDate())
+      tgt.setDateTimeElement(DateTime43_50.convertDateToDateTime(src.getDateElement()));
     for (org.hl7.fhir.r5.model.Reference t : src.getGrantee()) tgt.addPerformer(Reference43_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getManager()) tgt.addOrganization(Reference43_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getController())
@@ -235,7 +235,7 @@ public class Consent43_50 {
       tgt.addAction(CodeableConcept43_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r4b.model.Coding t : src.getSecurityLabel()) tgt.addSecurityLabel(Coding43_50.convertCoding(t));
     for (org.hl7.fhir.r4b.model.Coding t : src.getPurpose()) tgt.addPurpose(Coding43_50.convertCoding(t));
-    for (org.hl7.fhir.r4b.model.Coding t : src.getClass_()) tgt.addClass_(Coding43_50.convertCoding(t));
+//    for (org.hl7.fhir.r4b.model.Coding t : src.getClass_()) tgt.addClass_(Coding43_50.convertCoding(t));
     for (org.hl7.fhir.r4b.model.CodeableConcept t : src.getCode())
       tgt.addCode(CodeableConcept43_50.convertCodeableConcept(t));
     if (src.hasDataPeriod())
@@ -262,7 +262,7 @@ public class Consent43_50 {
       tgt.addAction(CodeableConcept43_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r5.model.Coding t : src.getSecurityLabel()) tgt.addSecurityLabel(Coding43_50.convertCoding(t));
     for (org.hl7.fhir.r5.model.Coding t : src.getPurpose()) tgt.addPurpose(Coding43_50.convertCoding(t));
-    for (org.hl7.fhir.r5.model.Coding t : src.getClass_()) tgt.addClass_(Coding43_50.convertCoding(t));
+//    for (org.hl7.fhir.r5.model.Coding t : src.getClass_()) tgt.addClass_(Coding43_50.convertCoding(t));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCode())
       tgt.addCode(CodeableConcept43_50.convertCodeableConcept(t));
     if (src.hasDataPeriod())

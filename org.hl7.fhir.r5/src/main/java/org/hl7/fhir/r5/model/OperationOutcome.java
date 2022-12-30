@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1299,6 +1299,16 @@ For resource issues, this will be a simple XPath limited to element names, repet
 
   }
 
+// added from java-adornments.txt:
+@Override 
+public String toString() { 
+  if (getExpression().size() == 1) { 
+    return getExpression().get(0)+" "+getDiagnostics()+" "+getSeverity().toCode()+"/"+getCode().toCode()+": "+getDetails().getText(); 
+  } else { 
+    return getExpression()+" "+getDiagnostics()+" "+getSeverity().toCode()+"/"+getCode().toCode()+": "+getDetails().getText(); 
+  } 
+} 
+// end addition
   }
 
     /**

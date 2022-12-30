@@ -1,9 +1,6 @@
 package org.hl7.fhir.utilities;
 
-import org.apache.commons.lang3.SystemUtils;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +8,10 @@ import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.apache.commons.lang3.SystemUtils;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 class UtilitiesTest {
 

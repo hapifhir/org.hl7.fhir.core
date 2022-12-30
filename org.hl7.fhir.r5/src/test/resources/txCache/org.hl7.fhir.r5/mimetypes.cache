@@ -9,16 +9,16 @@
   }
 }}####
 e: {
-  "error" : "java.lang.NullPointerException"
+  "error" : "Cannot invoke \"org.hl7.fhir.r5.terminologies.TerminologyClient.expandValueset(org.hl7.fhir.r5.model.ValueSet, org.hl7.fhir.r5.model.Parameters, java.util.Map)\" because \"this.txClient\" is null"
 }
 -------------------------------------------------------------------------------------
-{"hierarchical" : false, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1"}####
+{"hierarchical" : false, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "5.0.0-ballot"}####
 e: {
-  "error" : "java.lang.NullPointerException"
+  "error" : "Cannot invoke \"org.hl7.fhir.r5.terminologies.TerminologyClient.expandValueset(org.hl7.fhir.r5.model.ValueSet, org.hl7.fhir.r5.model.Parameters, java.util.Map)\" because \"this.txClient\" is null"
 }
 -------------------------------------------------------------------------------------
-{"hierarchical" : false, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.6.0"}####
+{"hierarchical" : false, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "5.0.0-snapshot3"}####
 e: {
-  "error" : "java.lang.NullPointerException"
+  "error" : "Cannot invoke \"org.hl7.fhir.r5.terminologies.TerminologyClient.expandValueset(org.hl7.fhir.r5.model.ValueSet, org.hl7.fhir.r5.model.Parameters, java.util.Map)\" because \"this.txClient\" is null"
 }
 -------------------------------------------------------------------------------------

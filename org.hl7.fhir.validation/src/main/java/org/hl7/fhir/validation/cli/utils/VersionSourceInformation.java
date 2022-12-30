@@ -1,10 +1,10 @@
 package org.hl7.fhir.validation.cli.utils;
 
-import org.hl7.fhir.utilities.VersionUtilities;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import org.hl7.fhir.utilities.VersionUtilities;
 
 public class VersionSourceInformation {
 

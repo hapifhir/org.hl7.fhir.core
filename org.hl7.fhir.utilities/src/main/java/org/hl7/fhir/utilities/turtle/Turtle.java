@@ -77,10 +77,10 @@ public class Turtle {
 			return predicate(predicate, new StringType(object));
 		}
 
-    public Complex linkedPredicate(String predicate, String object, String link) {
+    public Complex linkedPredicate(String predicate, String object, String link, String comment) {
       predicateSet.add(predicate);
       objectSet.add(object);
-      return linkedPredicate(predicate, new StringType(object), link);
+      return linkedPredicate(predicate, new StringType(object), link, comment);
     }
 
 		public Complex predicate(String predicate, Triple object) {
@@ -104,12 +104,13 @@ public class Turtle {
       return null;
     }
 
-    public Complex linkedPredicate(String predicate, Triple object, String link) {
+    public Complex linkedPredicate(String predicate, Triple object, String link, String comment) {
       Predicate p = getPredicate(predicate);
       if (p == null) {
         p = new Predicate();
       p.predicate = predicate;
       p.link = link;
+      p.comment = comment;
       predicateSet.add(predicate);
         predicates.add(p);
       }
@@ -126,10 +127,10 @@ public class Turtle {
 			return c;
 		}
 
-    public Complex linkedPredicate(String predicate, String link) {
+    public Complex linkedPredicate(String predicate, String link, String comment) {
       predicateSet.add(predicate);
       Complex c = complex();
-      linkedPredicate(predicate, c, link);
+      linkedPredicate(predicate, c, link, comment);
       return c;
     }
 
@@ -197,6 +198,7 @@ public class Turtle {
 	}
 
 	public class Section {
+	  private List<String> comments = new ArrayList<>();
 		private String name;
 		private List<Subject> subjects = new ArrayList<Subject>();
 
@@ -243,6 +245,10 @@ public class Turtle {
         if (ss.id.equals(subject))
           return true;
       return false;
+    }
+
+    public void stringComment(String cnt) {
+      comments.add(cnt);
     }
 	}
 
@@ -435,8 +441,14 @@ public class Turtle {
 	//  private String lastComment = "";
 
 	private void commitSection(LineOutputStreamWriter writer, Section section) throws IOException {
-		writer.ln("# - "+section.name+" "+Utilities.padLeft("", '-', 75-section.name.length()));
-		writer.ln();
+	  writer.ln("# - "+section.name+" "+Utilities.padLeft("", '-', 75-section.name.length()));
+	  writer.ln();
+	  if (!section.comments.isEmpty()) {
+	    for (String s : section.comments) {
+	      writer.ln("# "+s);		  
+	    }
+	    writer.ln();
+	  }
 		for (Subject sbj : section.subjects) {
       if (Utilities.noString(sbj.id)) {
         writer.write("[");
@@ -447,6 +459,7 @@ public class Turtle {
 			int i = 0;
 
 			for (Predicate p : sbj.predicates) {
+			  //
 				writer.write(p.getPredicate());
 				writer.write(" ");
         boolean first = true;
@@ -481,12 +494,19 @@ public class Turtle {
   private void commitSection(StringBuilder b, Section section) throws Exception {
     b.append("# - "+section.name+" "+Utilities.padLeft("", '-', 75-section.name.length())+"\r\n");
     b.append("\r\n");
+    if (!section.comments.isEmpty()) {
+      for (String s : section.comments) {
+        b.append("# "+s+"\r\n");      
+      }
+      b.append("\r\n");
+    }
     for (Subject sbj : section.subjects) {
       b.append(Utilities.escapeXml(sbj.id));
       b.append(" ");
       int i = 0;
 
       for (Predicate p : sbj.predicates) {
+        //        b.append("# test\r\n ");      
         b.append(p.makelink());
         b.append(" ");
         boolean first = true;
@@ -497,13 +517,13 @@ public class Turtle {
             b.append(", ");
           if (o instanceof StringType)
             b.append(Utilities.escapeXml(((StringType) o).value));
-        else {
-          b.append("[");
+          else {
+            b.append("[");
             if (write((Complex) o, b, 4))
-            b.append("\r\n  ]");
-          else
-            b.append("]");
-        }
+              b.append("\r\n  ]");
+            else
+              b.append("]");
+          }
         }
         String comment = p.comment == null? "" : " # "+p.comment;
         i++;

@@ -1,7 +1,26 @@
 package org.hl7.fhir.validation;
 
-import lombok.Getter;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.ImplementationGuide;
@@ -9,6 +28,7 @@ import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.utilities.SimpleHTTPClient;
@@ -20,11 +40,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.validation.cli.model.ScanOutputItem;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 
-import java.io.*;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
+import lombok.Getter;
 
 public class Scanner {
 
@@ -62,7 +78,7 @@ public class Scanner {
     List<String> refs = new ArrayList<>();
     ValidatorUtils.parseSources(sources, refs, getContext());
 
-    List<ScanOutputItem> res = new ArrayList();
+    List<ScanOutputItem> res = new ArrayList<>();
 
     for (String ref : refs) {
       Content cnt = getIgLoader().loadContent(ref, "validate", false);
@@ -94,7 +110,7 @@ public class Scanner {
             }
           }
           Set<String> done = new HashSet<>();
-          for (StructureDefinition sd : getContext().allStructures()) {
+          for (StructureDefinition sd : new ContextUtilities(getContext()).allStructures()) {
             if (!done.contains(sd.getUrl())) {
               done.add(sd.getUrl());
               if (sd.getUrl().startsWith(canonical) && rt.equals(sd.getType())) {
@@ -240,7 +256,7 @@ public class Scanner {
   }
 
   protected void genScanOutputItem(ScanOutputItem item, String filename) throws IOException, FHIRException, EOperationOutcome {
-    RenderingContext rc = new RenderingContext(getContext(), null, null, "http://hl7.org/fhir", "", null, RenderingContext.ResourceRendererMode.END_USER);
+    RenderingContext rc = new RenderingContext(getContext(), null, null, "http://hl7.org/fhir", "", null, RenderingContext.ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     rc.setNoSlowLookup(true);
     RendererFactory.factory(item.getOutcome(), rc).render(item.getOutcome());
     String s = new XhtmlComposer(XhtmlComposer.HTML).compose(item.getOutcome().getText().getDiv());
@@ -294,7 +310,7 @@ public class Scanner {
   protected OperationOutcome exceptionToOutcome(Exception ex) throws IOException, FHIRException, EOperationOutcome {
     OperationOutcome op = new OperationOutcome();
     op.addIssue().setCode(OperationOutcome.IssueType.EXCEPTION).setSeverity(OperationOutcome.IssueSeverity.FATAL).getDetails().setText(ex.getMessage());
-    RenderingContext rc = new RenderingContext(getContext(), null, null, "http://hl7.org/fhir", "", null, RenderingContext.ResourceRendererMode.END_USER);
+    RenderingContext rc = new RenderingContext(getContext(), null, null, "http://hl7.org/fhir", "", null, RenderingContext.ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     RendererFactory.factory(op, rc).render(op);
     return op;
   }

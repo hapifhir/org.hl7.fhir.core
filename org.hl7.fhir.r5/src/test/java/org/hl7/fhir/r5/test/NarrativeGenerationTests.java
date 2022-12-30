@@ -11,8 +11,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
-import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
@@ -25,9 +25,9 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.ElementWrappers;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ITypeParser;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
-import org.hl7.fhir.r5.test.NarrativeGenerationTests.TestProfileKnowledgeProvider;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
@@ -57,6 +57,10 @@ public class NarrativeGenerationTests {
 
     @Override
     public boolean isDatatype(String typeSimple) {
+      throw new NotImplementedException();      
+    }
+    @Override
+    public boolean isPrimitiveType(String typeSimple) {
       throw new NotImplementedException();      
     }
 
@@ -173,13 +177,13 @@ public class NarrativeGenerationTests {
 
   @BeforeAll
   public static void setUp() {
-    context = TestingUtilities.getSharedWorkerContext("5.0.0-ballot");
+    context = TestingUtilities.getSharedWorkerContext("5.0.0");
   }
 
   @ParameterizedTest(name = "{index}: file {0}")
   @MethodSource("data")
   public void test(String id, TestDetails test) throws Exception {
-    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER);
+    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     rc.setDestDir(Utilities.path("[tmp]", "narrative"));
     rc.setHeader(test.isHeader());
     rc.setDefinitionsTarget("test.html");

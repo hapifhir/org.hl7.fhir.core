@@ -54,6 +54,7 @@ import org.hl7.fhir.dstu3.model.StructureDefinition;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
@@ -266,7 +267,13 @@ public class JsonParser extends ParserBase {
 					n.setValue(p.getAsString());
 					if (!n.getProperty().isChoice() && n.getType().equals("xhtml")) {
 						try {
-          	  n.setXhtml(new XhtmlParser().setValidatorMode(policy == ValidationPolicy.EVERYTHING).parse(n.getValue(), null).getDocumentElement());
+          	  XhtmlParser xp = new XhtmlParser();
+              n.setXhtml(xp.parse(n.getValue(), null).getDocumentElement());
+              if (policy == ValidationPolicy.EVERYTHING) {
+                for (StringPair s : xp.getValidationIssues()) {
+                  logError(line(main), col(main), npath, IssueType.INVALID, s.getName()+ " "+ s.getValue(), IssueSeverity.ERROR);                
+                }
+              }
 						} catch (Exception e) {
 							logError(line(main), col(main), npath, IssueType.INVALID, "Error parsing XHTML: "+e.getMessage(), IssueSeverity.ERROR);
 						}

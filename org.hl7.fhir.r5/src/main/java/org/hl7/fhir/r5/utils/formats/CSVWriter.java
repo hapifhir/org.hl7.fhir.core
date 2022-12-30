@@ -150,6 +150,51 @@ public class CSVWriter  extends TextStreamWriter  {
     }
   }
   
+  public CSVWriter(OutputStream out, boolean asXml) throws UnsupportedEncodingException {
+    super(out);
+    this.asXml = asXml;
+    this.def = null;
+    CSVLine header = new CSVLine();
+    lines.add(header);
+    header.addString("Profile");              // 
+    header.addString("Id");                   // 
+    header.addString("Path");                 //A
+    header.addString("Slice Name");           //B
+    header.addString("Alias(s)");             //C
+    header.addString("Label");                //D
+    header.addString("Min");                  //E
+    header.addString("Max");                  //F
+    header.addString("Must Support?");        //G
+    header.addString("Is Modifier?");         //H
+    header.addString("Is Summary?");          //I
+    header.addString("Type(s)");              //J
+    header.addString("Short");                //K
+    header.addString("Definition");           //L
+    header.addString("Comments");             //M
+    header.addString("Requirements");         //N
+    header.addString("Default Value");        //O
+    header.addString("Meaning When Missing"); //P
+    header.addString("Fixed Value");          //Q
+    header.addString("Pattern");              //R
+    header.addString("Example");              //S
+    header.addString("Minimum Value");        //T
+    header.addString("Maximum Value");        //U
+    header.addString("Maximum Length");       //V
+    header.addString("Binding Strength");     //W
+    header.addString("Binding Description");  //X
+    header.addString("Binding Value Set");    //Y
+    header.addString("Code");                 //Z
+    header.addString("Slicing Discriminator");//AA
+    header.addString("Slicing Description");  //AB
+    header.addString("Slicing Ordered");      //AC
+    header.addString("Slicing Rules");        //AD
+    header.addString("Base Path");            //AE
+    header.addString("Base Min");             //AF
+    header.addString("Base Max");             //AG
+    header.addString("Condition(s)");         //AH
+    header.addString("Constraint(s)");        //AI
+  }
+  
 /*  private void findMapKeys(StructureDefinition def, List<StructureDefinitionMappingComponent> maps, IWorkerContext context) {
   	maps.addAll(def.getMapping());
   	if (def.getBaseDefinition()!=null) {
@@ -158,9 +203,12 @@ public class CSVWriter  extends TextStreamWriter  {
   	}
   }*/
 
-  public void processElement(ElementDefinition ed) throws Exception {
+  public void processElement(StructureDefinition sd, ElementDefinition ed) throws Exception {
     CSVLine line = new CSVLine();
     lines.add(line);
+    if (def == null) {
+      line.addString(sd.getId());      
+    }
     line.addString(ed.getId());
     line.addString(ed.getPath());
     line.addString(ed.getSliceName());
@@ -218,10 +266,12 @@ public class CSVWriter  extends TextStreamWriter  {
     }
     line.addString(itemList(ed.getCondition()));
     line.addString(itemList(ed.getConstraint()));
-    for (StructureDefinitionMappingComponent mapKey : def.getMapping()) {
-      for (ElementDefinitionMappingComponent map : ed.getMapping()) {
-        if (map.getIdentity().equals(mapKey.getIdentity()))
-        	line.addString(map.getMap());
+    if (def != null) {
+      for (StructureDefinitionMappingComponent mapKey : def.getMapping()) {
+        for (ElementDefinitionMappingComponent map : ed.getMapping()) {
+          if (map.getIdentity().equals(mapKey.getIdentity()))
+            line.addString(map.getMap());
+        }
       }
     }
   }

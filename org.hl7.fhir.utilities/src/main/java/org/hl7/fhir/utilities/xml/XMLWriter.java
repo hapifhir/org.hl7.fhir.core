@@ -480,9 +480,9 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
 			writePretty();
 		}
 		if (levels.inComment())
-			write("<!-- "+comment+" -- >");
+			write("  <!-- "+comment+" -- >");
 		else
-			write("<!-- "+comment+" -->");
+			write("  <!-- "+comment+" -->");
 		if (doPretty && !isPretty())
 			writePretty();
 	}

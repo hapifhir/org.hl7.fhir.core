@@ -1,13 +1,13 @@
 package org.hl7.fhir.utilities.npm;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.json.JsonUtilities;
-import org.hl7.fhir.utilities.json.JsonTrackingParser;
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
 
-import com.google.gson.JsonObject;
 
 public class ResourceRenamer {
 
@@ -24,13 +24,13 @@ public class ResourceRenamer {
   }
 
   private void unbundle(File f) throws IOException {
-    JsonObject j = JsonTrackingParser.parseJson(f);
-    for (JsonObject e : JsonUtilities.objects(j, "entry")) {
-      JsonObject r = e.getAsJsonObject("resource");
-      String rt = r.get("resourceType").getAsString();
-      String id = r.get("id").getAsString();
+    JsonObject j = JsonParser.parseObject(f);
+    for (JsonObject e : j.getJsonObjects("entry")) {
+      JsonObject r = e.getJsonObject("resource");
+      String rt = r.asString("resourceType");
+      String id = r.asString("id");
       String nn = Utilities.path(Utilities.getDirectoryForFile(f.getAbsolutePath()), rt+"-"+id+".json");
-      JsonTrackingParser.write(r, new File(nn), true); 
+      JsonParser.compose(r, new FileOutputStream(nn), true); 
     } 
   }
 
@@ -39,9 +39,9 @@ public class ResourceRenamer {
     for (File f : dir.listFiles()) {
       if (f.getName().endsWith(".json")) {
         try {
-          JsonObject j = JsonTrackingParser.parseJson(f);
-          String rt = j.get("resourceType").getAsString();
-          String id = j.get("id").getAsString();
+          JsonObject j = JsonParser.parseObject(f);
+          String rt = j.asString("resourceType");
+          String id = j.asString("id");
           String nn = Utilities.path(Utilities.getDirectoryForFile(f.getAbsolutePath()), rt+"-"+id+".json");
           File nf = new File(nn);
           if (!nn.equals(f.getAbsolutePath())) {

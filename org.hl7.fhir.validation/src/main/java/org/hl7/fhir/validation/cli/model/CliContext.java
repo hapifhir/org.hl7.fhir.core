@@ -7,13 +7,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.validation.cli.utils.EngineMode;
 import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.cli.utils.ValidationLevel;
-import org.hl7.fhir.validation.cli.utils.EngineMode;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -48,11 +47,15 @@ public class CliContext {
   private boolean wantInvariantsInMessages = false;
   @JsonProperty("doImplicitFHIRPathStringConversion")
   private boolean doImplicitFHIRPathStringConversion = false;
+  @JsonProperty("htmlInMarkdownCheck")
+  private HtmlInMarkdownCheck htmlInMarkdownCheck = HtmlInMarkdownCheck.WARNING;
 
   @JsonProperty("map")
   private String map = null;
   @JsonProperty("output")
   private String output = null;
+  @JsonProperty("outputSuffix")
+  private String outputSuffix;
   @JsonProperty("htmlOutput")
   private String htmlOutput = null;
   @JsonProperty("txServer")
@@ -97,6 +100,9 @@ public class CliContext {
   @JsonProperty("crumbTrails")
   private boolean crumbTrails = false;
   
+  @JsonProperty("forPublication")
+  private boolean forPublication = false;
+  
   @JsonProperty("allowExampleUrls")
   private boolean allowExampleUrls = false;
   
@@ -117,7 +123,8 @@ public class CliContext {
 
   @JsonProperty("jurisdiction")
   private String jurisdiction = JurisdictionUtilities.getJurisdictionFromLocale(Locale.getDefault().getCountry());
-  
+
+
   @JsonProperty("map")
   public String getMap() {
     return map;
@@ -202,6 +209,12 @@ public class CliContext {
     return extensions;
   }
 
+  @JsonProperty("extensions")
+  public CliContext setExtensions(List<String> extensions) {
+    this.extensions = extensions;
+    return this;
+  }
+
   @JsonProperty("hintAboutNonMustSupport")
   public boolean isHintAboutNonMustSupport() {
     return hintAboutNonMustSupport;
@@ -245,6 +258,16 @@ public class CliContext {
     this.doImplicitFHIRPathStringConversion = doImplicitFHIRPathStringConversion;
   }
 
+  @JsonProperty("htmlInMarkdownCheck")
+  public HtmlInMarkdownCheck getHtmlInMarkdownCheck() {
+    return htmlInMarkdownCheck;
+  }
+
+  @JsonProperty("htmlInMarkdownCheck")
+  public void setHtmlInMarkdownCheck(HtmlInMarkdownCheck htmlInMarkdownCheck) {
+    this.htmlInMarkdownCheck = htmlInMarkdownCheck;
+  }
+
   @JsonProperty("locale")
   public String getLanguageCode() {
     return locale;
@@ -261,7 +284,7 @@ public class CliContext {
   }
 
   public CliContext setLocale(Locale locale) {
-    this.locale = locale.getDisplayLanguage();
+    this.locale = locale.getLanguage();
     return this;
   }
 
@@ -303,6 +326,17 @@ public class CliContext {
   @JsonProperty("output")
   public CliContext setOutput(String output) {
     this.output = output;
+    return this;
+  }
+
+  @JsonProperty("outputSuffix")
+  public String getOutputSuffix() {
+    return outputSuffix;
+  }
+
+  @JsonProperty("outputSuffix")
+  public CliContext setOutputSuffix(String outputSuffix) {
+    this.outputSuffix = outputSuffix;
     return this;
   }
 
@@ -548,6 +582,14 @@ public class CliContext {
     this.crumbTrails = crumbTrails;
   }
 
+  public boolean isForPublication() {
+    return forPublication;
+  }
+
+  public void setForPublication(boolean forPublication) {
+    this.forPublication = forPublication;
+  }
+
   public boolean isAllowExampleUrls() {
     return allowExampleUrls;
   }
@@ -607,6 +649,7 @@ public class CliContext {
       Objects.equals(extensions, that.extensions) &&
       Objects.equals(map, that.map) &&
       Objects.equals(output, that.output) &&
+      Objects.equals(outputSuffix, that.outputSuffix) &&
       Objects.equals(htmlOutput, that.htmlOutput) &&
       Objects.equals(txServer, that.txServer) &&
       Objects.equals(sv, that.sv) &&
@@ -623,6 +666,7 @@ public class CliContext {
       Objects.equals(profiles, that.profiles) &&
       Objects.equals(sources, that.sources) &&
       Objects.equals(crumbTrails, that.crumbTrails) &&
+      Objects.equals(forPublication, that.forPublication) &&
       Objects.equals(allowExampleUrls, that.allowExampleUrls) &&
       Objects.equals(showTimes, that.showTimes) &&
       mode == that.mode &&
@@ -635,8 +679,8 @@ public class CliContext {
   @Override
   public int hashCode() {
     return Objects.hash(doNative, extensions, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, 
-            noExtensibleBindingMessages, noInvariants, wantInvariantsInMessages, map, output, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, fhirpath, snomedCT,
-            targetVer, igs, questionnaireMode, level, profiles, sources, mode, locale, locations, crumbTrails, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars);
+            noExtensibleBindingMessages, noInvariants, wantInvariantsInMessages, map, output, outputSuffix, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, fhirpath, snomedCT,
+            targetVer, igs, questionnaireMode, level, profiles, sources, mode, locale, locations, crumbTrails, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars);
   }
 
   @Override
@@ -656,6 +700,7 @@ public class CliContext {
       ", wantInvariantsInMessages=" + wantInvariantsInMessages +
       ", map='" + map + '\'' +
       ", output='" + output + '\'' +
+      ", outputSuffix='" + output + '\'' +
       ", htmlOutput='" + htmlOutput + '\'' +
       ", txServer='" + txServer + '\'' +
       ", sv='" + sv + '\'' +
@@ -674,6 +719,7 @@ public class CliContext {
       ", mode=" + mode +
       ", securityChecks=" + securityChecks +
       ", crumbTrails=" + crumbTrails +
+      ", forPublication=" + forPublication +
       ", outputStyle=" + outputStyle +
       ", jurisdiction=" + jurisdiction +
       ", allowExampleUrls=" + allowExampleUrls +

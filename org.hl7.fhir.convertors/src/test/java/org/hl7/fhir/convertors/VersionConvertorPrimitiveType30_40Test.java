@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors;
 
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Type30_40;
+import java.util.stream.Stream;
+
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.dstu3.model.Base64BinaryType;
 import org.hl7.fhir.dstu3.model.BooleanType;
@@ -23,8 +24,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import java.util.stream.Stream;
 
 public class VersionConvertorPrimitiveType30_40Test {
 

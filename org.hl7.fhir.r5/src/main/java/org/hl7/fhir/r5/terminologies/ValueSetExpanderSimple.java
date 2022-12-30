@@ -81,7 +81,6 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode;
@@ -95,6 +94,7 @@ import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.Factory;
+import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.PrimitiveType;
@@ -508,9 +508,9 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
   private ValueSet importValueSet(String value, ValueSetExpansionComponent exp, Parameters expParams, boolean noInactive, ValueSet valueSet) throws ETooCostly, TerminologyServiceException, FileNotFoundException, IOException, FHIRFormatError {
     if (value == null)
       throw fail("unable to find value set with no identity");
-    ValueSet vs = context.fetchResource(ValueSet.class, value);
+    ValueSet vs = context.fetchResource(ValueSet.class, value, valueSet);
     if (vs == null) {
-      if (context.fetchResource(CodeSystem.class, value) != null) {
+      if (context.fetchResource(CodeSystem.class, value, valueSet) != null) {
         throw fail("Cannot include value set "+value+" because it's actually a code system");
       } else {
         throw fail("Unable to find imported value set " + value);
@@ -550,7 +550,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
   
 
   protected boolean isValueSetUnionImports(ValueSet valueSet) {
-    PackageVersion p = (PackageVersion) valueSet.getUserData("package");
+    PackageInformation p = valueSet.getSourcePackage();
     if (p != null) {
       return p.getDate().before(new GregorianCalendar(2022, Calendar.MARCH, 31).getTime());
     } else {

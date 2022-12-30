@@ -72,6 +72,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
+import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.Parameters;
@@ -99,7 +100,7 @@ public class ValueSetExpansionCache implements ValueSetExpanderFactory {
 	  		vso = context.expandVS(source, false, expParams == null || !expParams.getParameterBool("excludeNested"));
 	  		if (cacheFolder != null) {
 	  		  FileOutputStream s = new FileOutputStream(Utilities.path(cacheFolder, makeFileName(source.getUrl())));
-	  		  context.newXmlParser().setOutputStyle(OutputStyle.PRETTY).compose(s, vso.getValueset());
+	  		  new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(s, vso.getValueset());
 	  		  s.close();
 	  		}
 	  	}
@@ -153,7 +154,7 @@ public class ValueSetExpansionCache implements ValueSetExpanderFactory {
       if (f.getName().endsWith(".xml")) {
         final FileInputStream is = new FileInputStream(f);
         try {	   
-          Resource r = context.newXmlParser().setOutputStyle(OutputStyle.PRETTY).parse(is);
+          Resource r = new XmlParser().setOutputStyle(OutputStyle.PRETTY).parse(is);
           if (r instanceof OperationOutcome) {
             OperationOutcome oo = (OperationOutcome) r;
             expansions.put(ToolingExtensions.getExtension(oo,VS_ID_EXT).getValue().toString(),
@@ -200,7 +201,7 @@ public class ValueSetExpansionCache implements ValueSetExpanderFactory {
     }
     if (cacheFolder != null) {
       FileOutputStream s = new FileOutputStream(Utilities.path(cacheFolder, makeFileName(md.getUrl()+"|"+md.getVersion())));
-      context.newXmlParser().setOutputStyle(OutputStyle.PRETTY).compose(s, md);
+      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(s, md);
       s.close();
     }
   }

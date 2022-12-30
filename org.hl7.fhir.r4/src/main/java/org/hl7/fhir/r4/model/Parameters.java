@@ -877,6 +877,14 @@ public class Parameters extends Resource implements IBaseParameters {
     return this;
   }
 
+  public boolean hasParameterValue(String name) {
+    for (ParametersParameterComponent p : getParameter()) {
+      if (p.getName().equals(name) && p.hasValue())
+        return true;
+    }
+    return false;
+  }
+
   public boolean hasParameter(String name) {
     for (ParametersParameterComponent p : getParameter()) {
       if (p.getName().equals(name))
@@ -885,7 +893,7 @@ public class Parameters extends Resource implements IBaseParameters {
     return false;
   }
 
-  public Type getParameter(String name) {
+  public Type getParameterValue(String name) {
     for (ParametersParameterComponent p : getParameter()) {
       if (p.getName().equals(name))
         return p.getValue();
@@ -893,7 +901,15 @@ public class Parameters extends Resource implements IBaseParameters {
     return null;
   }
 
-  public List<Type> getParameters(String name) {
+  public ParametersParameterComponent getParameter(String name) {
+    for (ParametersParameterComponent p : getParameter()) {
+      if (p.getName().equals(name))
+        return p;
+    }
+    return null;
+  }
+
+  public List<Type> getParameterValues(String name) {
     List<Type> res = new ArrayList<Type>();
     for (ParametersParameterComponent p : getParameter()) {
       if (p.getName().equals(name))
@@ -902,7 +918,15 @@ public class Parameters extends Resource implements IBaseParameters {
     return res;
   }
   
-  
+  public List<ParametersParameterComponent> getParameters(String name) {
+    List<ParametersParameterComponent> res = new ArrayList<ParametersParameterComponent>();
+    for (ParametersParameterComponent p : getParameter()) {
+      if (p.getName().equals(name))
+        res.add(p);
+    }
+    return res;
+  }
+    
   public boolean getParameterBool(String name) {
     for (ParametersParameterComponent p : getParameter()) {
       if (p.getName().equals(name)) {

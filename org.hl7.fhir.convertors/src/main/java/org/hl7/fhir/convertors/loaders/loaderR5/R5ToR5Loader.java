@@ -47,10 +47,12 @@ import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.UriType;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 
 public class R5ToR5Loader extends BaseLoaderR5 {
 
@@ -149,4 +151,11 @@ public class R5ToR5Loader extends BaseLoaderR5 {
       }
     }
   }
+  
+  @Override
+  public List<CodeSystem> getCodeSystems() {
+    return new ArrayList<>();
+  }
+
+
 }

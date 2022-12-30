@@ -3,32 +3,29 @@ package org.hl7.fhir.r5.renderers;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
+import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.DomainResource;
+import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.Narrative;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.PropertyWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.DirectWrappers.ResourceWrapperDirect;
 import org.hl7.fhir.r5.renderers.utils.ElementWrappers.ResourceWrapperMetaElement;
-import org.hl7.fhir.r5.renderers.ResourceRenderer.RendererType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceWithReference;
@@ -49,7 +46,6 @@ public abstract class ResourceRenderer extends DataRenderer {
 
   protected ResourceContext rcontext;
   protected XVerExtensionManager xverManager;
-  protected boolean forResource;
   
   
   public ResourceRenderer(RenderingContext context) {
@@ -59,6 +55,15 @@ public abstract class ResourceRenderer extends DataRenderer {
   public ResourceRenderer(RenderingContext context, ResourceContext rcontext) {
     super(context);
     this.rcontext = rcontext;
+  }
+
+  public ResourceContext getRcontext() {
+    return rcontext;
+  }
+
+  public ResourceRenderer setRcontext(ResourceContext rcontext) {
+    this.rcontext = rcontext;
+    return this;
   }
 
   public XhtmlNode build(Resource dr) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
@@ -78,14 +83,8 @@ public abstract class ResourceRenderer extends DataRenderer {
   
   public void render(DomainResource r) throws IOException, FHIRException, EOperationOutcome {  
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
-    boolean ofr = forResource;
     boolean hasExtensions;
-    try {
-      forResource = true;
-      hasExtensions = render(x, r);
-    } finally {
-      forResource = ofr;
-    }
+    hasExtensions = render(x, r);
     inject(r, x, hasExtensions ? NarrativeStatus.EXTENSIONS :  NarrativeStatus.GENERATED);
   }
 
@@ -143,14 +142,14 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
 
   public void renderCanonical(ResourceWrapper rw, XhtmlNode x, String url) throws UnsupportedEncodingException, IOException {
-    renderCanonical(rw, x, url, true); 
+    renderCanonical(rw, x, url, true, rw.getResource()); 
   }
   
-  public void renderCanonical(ResourceWrapper rw, XhtmlNode x, String url, boolean allowLinks) throws UnsupportedEncodingException, IOException {
+  public void renderCanonical(ResourceWrapper rw, XhtmlNode x, String url, boolean allowLinks, Resource src) throws UnsupportedEncodingException, IOException {
     if (url == null) {
       return;
     }
-    Resource target = context.getWorker().fetchResource(Resource.class, url);
+    Resource target = context.getWorker().fetchResource(Resource.class, url, src);
     if (target == null || !(target instanceof CanonicalResource)) {
       x.code().tx(url);
     } else {
@@ -249,7 +248,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       if (display != null) {
         c.addText(": "+display);
       }
-      if ((tr == null || !tr.getReference().startsWith("#")) && name != null) {
+      if ((tr == null || (tr.getReference() != null && !tr.getReference().startsWith("#"))) && name != null) {
         x.addText(" \""+name+"\"");
       }
       if (r.hasExtension(ToolingExtensions.EXT_TARGET_ID)) {
@@ -324,7 +323,11 @@ public abstract class ResourceRenderer extends DataRenderer {
     if (rcontext != null) {
       BundleEntryComponent bundleResource = rcontext.resolve(url);
       if (bundleResource != null) {
-        String bundleUrl = "#" + bundleResource.getResource().getResourceType().name() + "_" + bundleResource.getResource().getId(); 
+        String id = bundleResource.getResource().getId();
+        if (id == null) {
+          id = makeIdFromBundleEntry(bundleResource.getFullUrl());
+        }
+        String bundleUrl = "#" + bundleResource.getResource().getResourceType().name() + "_" + id; 
         return new ResourceWithReference(bundleUrl, new ResourceWrapperDirect(this.context, bundleResource.getResource()));
       }
       org.hl7.fhir.r5.elementmodel.Element bundleElement = rcontext.resolveElement(url, version);
@@ -350,6 +353,16 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
   
   
+  protected String makeIdFromBundleEntry(String url) {
+    if (url == null) {
+      return null;
+    }
+    if (url.startsWith("urn:uuid:")) {
+      return url.substring(9).toLowerCase();
+    }
+    return fullUrlToAnchor(url);    
+  }
+
   private String fullUrlToAnchor(String url) {
     return url.replace(":", "").replace("/", "_");
   }

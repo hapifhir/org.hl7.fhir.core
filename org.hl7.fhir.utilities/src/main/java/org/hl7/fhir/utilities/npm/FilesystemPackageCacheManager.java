@@ -1,5 +1,46 @@
 package org.hl7.fhir.utilities.npm;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.RandomAccessFile;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.apache.commons.io.FileUtils;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.IniFile;
+import org.hl7.fhir.utilities.SimpleHTTPClient;
+import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
+import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.json.model.JsonArray;
+import org.hl7.fhir.utilities.json.model.JsonElement;
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
+import org.hl7.fhir.utilities.npm.NpmPackage.NpmPackageFolder;
+import org.hl7.fhir.utilities.npm.PackageList.PackageListEntry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -28,44 +69,6 @@ package org.hl7.fhir.utilities.npm;
   POSSIBILITY OF SUCH DAMAGE.
   
  */
-
-
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import org.apache.commons.io.FileUtils;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.SimpleHTTPClient;
-import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
-import org.hl7.fhir.utilities.IniFile;
-import org.hl7.fhir.utilities.TextFile;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.json.JsonUtilities;
-import org.hl7.fhir.utilities.json.JsonTrackingParser;
-import org.hl7.fhir.utilities.npm.NpmPackage.NpmPackageFolder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.net.ssl.*;
-
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.RandomAccessFile;
-import java.net.URL;
-import java.nio.channels.FileChannel;
-import java.nio.channels.FileLock;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.util.*;
-import java.util.Map.Entry;
 
 /**
  * This is a package cache manager implementation that uses a local disk cache
@@ -102,7 +105,23 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   /**
    * Constructor
    */
+  @Deprecated
   public FilesystemPackageCacheManager(boolean userMode, int toolsVersion) throws IOException {
+    addPackageServer(PackageClient.PRIMARY_SERVER);
+    addPackageServer(PackageClient.SECONDARY_SERVER);
+
+    if (userMode)
+      cacheFolder = Utilities.path(System.getProperty("user.home"), ".fhir", "packages");
+    else
+      cacheFolder = Utilities.path("var", "lib", ".fhir", "packages");
+    if (!(new File(cacheFolder).exists()))
+      Utilities.createDirectory(cacheFolder);
+    if (!(new File(Utilities.path(cacheFolder, "packages.ini")).exists()))
+      TextFile.stringToFile("[cache]\r\nversion=" + CACHE_VERSION + "\r\n\r\n[urls]\r\n\r\n[local]\r\n\r\n", Utilities.path(cacheFolder, "packages.ini"), false);
+    createIniFile();
+  }
+
+  public FilesystemPackageCacheManager(boolean userMode) throws IOException {
     addPackageServer(PackageClient.PRIMARY_SERVER);
     addPackageServer(PackageClient.SECONDARY_SERVER);
 
@@ -200,7 +219,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   private void listSpecs(Map<String, String> specList, String server) throws IOException {
-    CachingPackageClient pc = new CachingPackageClient(server);
+    PackageClient pc = new PackageClient(server);
     List<PackageInfo> matches = pc.search(null, null, null, false);
     for (PackageInfo m : matches) {
       if (!specList.containsKey(m.getId())) {
@@ -227,8 +246,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   public String getLatestVersion(String id) throws IOException {
     for (String nextPackageServer : getPackageServers()) {
       // special case:
-      if (!(CommonPackages.ID_PUBPACK.equals(id) && PackageClient.PRIMARY_SERVER.equals(nextPackageServer))) {
-        CachingPackageClient pc = new CachingPackageClient(nextPackageServer);
+      if (!(Utilities.existsInList(id,CommonPackages.ID_PUBPACK, "hl7.terminology.r5") && PackageClient.PRIMARY_SERVER.equals(nextPackageServer))) {
+        PackageClient pc = new PackageClient(nextPackageServer);
         try {
           return pc.getLatestVersion(id);
         } catch (IOException e) {
@@ -321,7 +340,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         if (f.equals(id + "#" + version) || (Utilities.noString(version) && f.startsWith(id + "#"))) {
           return loadPackageInfo(Utilities.path(cacheFolder, f));
         }
-        if (version != null && version.endsWith(".x") && f.contains("#")) {
+        if (version != null && !version.equals("current") && (version.endsWith(".x") || Utilities.charCount(version, '.') < 2) && f.contains("#")) {
           String[] parts = f.split("#");
           if (parts[0].equals(id) && VersionUtilities.isMajMinOrLaterPatch((foundVersion!=null ? foundVersion : version),parts[1])) {
             foundVersion = parts[1];
@@ -413,20 +432,20 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           if (progress)
             log(" done.");
         }
-        pck = loadPackageInfo(packRoot);
-        if (!id.equals(JsonUtilities.str(npm.getNpm(), "name")) || !v.equals(JsonUtilities.str(npm.getNpm(), "version"))) {
-          if (!id.equals(JsonUtilities.str(npm.getNpm(), "name"))) {
-            npm.getNpm().addProperty("original-name", JsonUtilities.str(npm.getNpm(), "name"));
+        if (!id.equals(npm.getNpm().asString("name")) || !v.equals(npm.getNpm().asString("version"))) {
+          if (!id.equals(npm.getNpm().asString("name"))) {
+            npm.getNpm().add("original-name", npm.getNpm().asString("name"));
             npm.getNpm().remove("name");
-            npm.getNpm().addProperty("name", id);
+            npm.getNpm().add("name", id);
           }
-          if (!v.equals(JsonUtilities.str(npm.getNpm(), "version"))) {
-            npm.getNpm().addProperty("original-version", JsonUtilities.str(npm.getNpm(), "version"));
+          if (!v.equals(npm.getNpm().asString("version"))) {
+            npm.getNpm().add("original-version", npm.getNpm().asString("version"));
             npm.getNpm().remove("version");
-            npm.getNpm().addProperty("version", v);
+            npm.getNpm().add("version", v);
           }
-          TextFile.stringToFile(new GsonBuilder().setPrettyPrinting().create().toJson(npm.getNpm()), Utilities.path(cacheFolder, id + "#" + v, "package", "package.json"), false);
+          TextFile.stringToFile(JsonParser.compose(npm.getNpm(), true), Utilities.path(cacheFolder, id + "#" + v, "package", "package.json"), false);
         }
+        pck = loadPackageInfo(packRoot);
       } catch (Exception e) {
         try {
           // don't leave a half extracted package behind
@@ -522,7 +541,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     if (source == null) {
       throw new FHIRException("Unable to find package "+id+"#"+version);
     }
-    return addPackageToCache(id, version == null ? source.version : version, source.stream, source.url);
+    return addPackageToCache(id, source.version, source.stream, source.url);
   }
 
   private InputStream fetchFromUrlSpecific(String source, boolean optional) throws FHIRException {
@@ -564,10 +583,9 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   private String getPackageUrlFromBuildList(String packageId) throws IOException {
     checkBuildLoaded();
-    for (JsonElement n : buildInfo) {
-      JsonObject o = (JsonObject) n;
-      if (packageId.equals(JsonUtilities.str(o, "package-id"))) {
-        return JsonUtilities.str(o, "url");
+    for (JsonObject o : buildInfo.asJsonObjects()) {
+      if (packageId.equals(o.asString("package-id"))) {
+        return o.asString("url");
       }
     }
     return null;
@@ -577,8 +595,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     checkBuildLoaded();
     for (JsonElement n : buildInfo) {
       JsonObject o = (JsonObject) n;
-      if (!specList.containsKey(JsonUtilities.str(o, "package-id"))) {
-        specList.put(JsonUtilities.str(o, "package-id"), JsonUtilities.str(o, "url"));
+      if (!specList.containsKey(o.asString("package-id"))) {
+        specList.put(o.asString("package-id"), o.asString("url"));
       }
     }
   }
@@ -603,9 +621,9 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     try {
       for (String pf : listPackages()) {
         if (new File(Utilities.path(cacheFolder, pf, "package", "package.json")).exists()) {
-          JsonObject npm = JsonTrackingParser.parseJsonFile(Utilities.path(cacheFolder, pf, "package", "package.json"));
-          if (canonicalUrl.equals(JsonUtilities.str(npm, "canonical"))) {
-            return JsonUtilities.str(npm, "name");
+          JsonObject npm = JsonParser.parseObjectFromFile(Utilities.path(cacheFolder, pf, "package", "package.json"));
+          if (canonicalUrl.equals(npm.asString("canonical"))) {
+            return npm.asString("name");
           }
         }
       }
@@ -624,14 +642,14 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     if (buildInfo != null) {
       for (JsonElement n : buildInfo) {
         JsonObject o = (JsonObject) n;
-        if (canonical.equals(JsonUtilities.str(o, "url"))) {
-          return JsonUtilities.str(o, "package-id");
+        if (canonical.equals(o.asString("url"))) {
+          return o.asString("package-id");
         }
       }
       for (JsonElement n : buildInfo) {
         JsonObject o = (JsonObject) n;
-        if (JsonUtilities.str(o, "url").startsWith(canonical + "/ImplementationGuide/")) {
-          return JsonUtilities.str(o, "package-id");
+        if (o.asString("url").startsWith(canonical + "/ImplementationGuide/")) {
+          return o.asString("package-id");
         }
       }
     }
@@ -643,8 +661,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     // special case: current versions roll over, and we have to check their currency
     try {
       String url = ciList.get(id);
-      JsonObject json = JsonTrackingParser.fetchJson(Utilities.pathURL(url, "package.manifest.json"));
-      String currDate = JsonUtilities.str(json, "date");
+      JsonObject json = JsonParser.parseObjectFromUrl(Utilities.pathURL(url, "package.manifest.json"));
+      String currDate = json.asString("date");
       String packDate = p.date();
       if (!currDate.equals(packDate)) {
         return null; // nup, we need a new copy
@@ -672,17 +690,17 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     HTTPResult res = http.get("https://build.fhir.org/ig/qas.json?nocache=" + System.currentTimeMillis());
     res.checkThrowException();
 
-    buildInfo = (JsonArray) new com.google.gson.JsonParser().parse(TextFile.bytesToString(res.getContent()));
+    buildInfo = (JsonArray) JsonParser.parse(TextFile.bytesToString(res.getContent()));
 
     List<BuildRecord> builds = new ArrayList<>();
 
     for (JsonElement n : buildInfo) {
       JsonObject o = (JsonObject) n;
-      if (o.has("url") && o.has("package-id") && o.get("package-id").getAsString().contains(".")) {
-        String u = o.get("url").getAsString();
+      if (o.has("url") && o.has("package-id") && o.asString("package-id").contains(".")) {
+        String u = o.asString("url");
         if (u.contains("/ImplementationGuide/"))
           u = u.substring(0, u.indexOf("/ImplementationGuide/"));
-        builds.add(new BuildRecord(u, o.get("package-id").getAsString(), getRepo(o.get("repo").getAsString()), readDate(o.get("date").getAsString())));
+        builds.add(new BuildRecord(u, o.asString("package-id"), getRepo(o.asString("repo")), readDate(o.asString("date"))));
       }
     }
     Collections.sort(builds, new BuildRecordSorter());
@@ -727,9 +745,9 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
     String pu = Utilities.pathURL(url, "package-list.json");
     String aurl = pu;
-    JsonObject json;
+    PackageList pl;
     try {
-      json = JsonTrackingParser.fetchJson(pu);
+      pl = PackageList.fromUrl(pu);
     } catch (Exception e) {
       String pv = Utilities.pathURL(url, v, "package.tgz");
       try {
@@ -740,13 +758,12 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         throw new FHIRException("Error fetching package directly (" + pv + "), or fetching package list for " + id + " from " + pu + ": " + e1.getMessage(), e1);
       }
     }
-    if (!id.equals(JsonUtilities.str(json, "package-id")))
-      throw new FHIRException("Package ids do not match in " + pu + ": " + id + " vs " + JsonUtilities.str(json, "package-id"));
-    for (JsonElement e : json.getAsJsonArray("list")) {
-      JsonObject vo = (JsonObject) e;
-      if (v.equals(JsonUtilities.str(vo, "version"))) {
-        aurl = Utilities.pathURL(JsonUtilities.str(vo, "path"), "package.tgz");
-        String u = Utilities.pathURL(JsonUtilities.str(vo, "path"), "package.tgz");
+    if (!id.equals(pl.pid()))
+      throw new FHIRException("Package ids do not match in " + pu + ": " + id + " vs " + pl.pid());
+    for (PackageListEntry vo : pl.versions()) {
+      if (v.equals(vo.version())) {
+        aurl = Utilities.pathURL(vo.path(), "package.tgz");
+        String u = Utilities.pathURL(vo.path(), "package.tgz");
         return new InputStreamWithSrc(fetchFromUrlSpecific(u, true), u, v);
       }
     }
@@ -769,14 +786,12 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     if (url == null) {
       throw new FHIRException("Unable to resolve package id " + id);
     }
-    String pu = Utilities.pathURL(url, "package-list.json");
-    JsonObject json = JsonTrackingParser.fetchJson(pu);
-    if (!id.equals(JsonUtilities.str(json, "package-id")))
-      throw new FHIRException("Package ids do not match in " + pu + ": " + id + " vs " + JsonUtilities.str(json, "package-id"));
-    for (JsonElement e : json.getAsJsonArray("list")) {
-      JsonObject vo = (JsonObject) e;
-      if (JsonUtilities.bool(vo, "current")) {
-        return JsonUtilities.str(vo, "version");
+    PackageList pl = PackageList.fromUrl(Utilities.pathURL(url, "package-list.json"));
+    if (!id.equals(pl.pid()))
+      throw new FHIRException("Package ids do not match in " + pl.source() + ": " + id + " vs " + pl.pid());
+    for (PackageListEntry vo : pl.versions()) {
+      if (vo.current()) {
+        return vo.version();
       }
     }
 

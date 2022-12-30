@@ -63,6 +63,7 @@ import java.util.zip.ZipInputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.FileNotifier.FileNotifier2;
 
 public class Utilities {
 
@@ -252,6 +253,10 @@ public class Utilities {
     return new Inflector().camelCase(value.trim().replace(" ", "_"), false);
   }
 
+  public static String upperCamelCase(String value) {
+    return new Inflector().upperCamelCase(value.trim().replace(" ", "_"));
+  }
+
   public static String escapeXml(String doco) {
     if (doco == null)
       return "";
@@ -302,12 +307,38 @@ public class Utilities {
     String[] files = src.list();
     for (String f : files) {
       if (new CSFile(sourceFolder + File.separator + f).isDirectory()) {
-        if (!f.startsWith(".")) // ignore .git files...
+        if (!f.startsWith(".")) { // ignore .git files...
           copyDirectory(sourceFolder + File.separator + f, destFolder + File.separator + f, notifier);
+        }
       } else {
         if (notifier != null)
           notifier.copyFile(sourceFolder + File.separator + f, destFolder + File.separator + f);
         copyFile(new CSFile(sourceFolder + File.separator + f), new CSFile(destFolder + File.separator + f));
+      }
+    }
+  }
+
+
+  public static void copyDirectory2(String sourceFolder, String destFolder, FileNotifier2 notifier) throws IOException, FHIRException {
+    CSFile src = new CSFile(sourceFolder);
+    if (!src.exists())
+      throw new FHIRException("Folder " + sourceFolder + " not found");
+    createDirectory(destFolder);
+
+    String[] files = src.list();
+    for (String f : files) {
+      if (new CSFile(sourceFolder + File.separator + f).isDirectory()) {
+        if (!f.startsWith(".")) { // ignore .git files...
+          boolean doCopy = notifier != null ? notifier.copyFolder(sourceFolder + File.separator + f, destFolder + File.separator + f) : true;
+          if (doCopy) {
+            copyDirectory2(sourceFolder + File.separator + f, destFolder + File.separator + f, notifier);
+          }
+        }
+      } else {
+        boolean doCopy = notifier != null ? notifier.copyFile(sourceFolder + File.separator + f, destFolder + File.separator + f) : true;
+        if (doCopy) {
+          copyFile(new CSFile(sourceFolder + File.separator + f), new CSFile(destFolder + File.separator + f));
+        }
       }
     }
   }
@@ -446,6 +477,9 @@ public class Utilities {
   }
 
   public static String appendForwardSlash(String definitions) {
+    if (definitions == null) {
+      return "/";
+    }
     return definitions.endsWith("/") ? definitions : definitions + "/";
   }
 
@@ -686,7 +720,10 @@ public class Utilities {
     return result;
   }
 
-
+  public static boolean isTokenChar(char ch) {
+    return isAlphabetic(ch) || (ch == '_'); 
+  }
+  
   public static boolean isDigit(char c) {
     return (c >= '0') && (c <= '9');
   }
@@ -1752,6 +1789,14 @@ public class Utilities {
       text = text.replace("  ", " ");
     }
     return text;
+  }
+
+  public static int parseInt(String value, int def) {
+    if (isInteger(value)) {
+      return Integer.parseInt(value);
+    } else {
+      return def;
+    }
   }
 
 }

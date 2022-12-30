@@ -50,6 +50,7 @@ import org.hl7.fhir.r5.model.ContactPoint;
 import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.r5.model.CapabilityStatement.RestfulCapabilityMode;
 import org.hl7.fhir.r5.model.Enumerations.SearchParamType;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.openapi.ParameterWriter.ParameterLocation;
 import org.hl7.fhir.r5.openapi.ParameterWriter.ParameterStyle;
@@ -84,7 +85,7 @@ public class OpenApiGenerator {
 
     for (CapabilityStatementRestComponent csr : source.getRest()) {
       if (csr.getMode() == RestfulCapabilityMode.SERVER) {
-        generatePaths(csr);
+        generatePaths(csr, source);
       }
     }
     writeBaseParameters(dest.components());
@@ -115,21 +116,21 @@ public class OpenApiGenerator {
     .schema().type(SchemaType.number);
   }
 
-  private void generatePaths(CapabilityStatementRestComponent csr) {
+  private void generatePaths(CapabilityStatementRestComponent csr, Resource cs) {
     generateMetadata();
     for (CapabilityStatementRestResourceComponent r : csr.getResource())
-      generateResource(r);
+      generateResource(r, cs);
     if (hasOp(csr, SystemRestfulInteraction.HISTORYSYSTEM))
       generateHistorySystem(csr);
     if (hasOp(csr, SystemRestfulInteraction.SEARCHSYSTEM))
-      generateSearchSystem(csr);
+      generateSearchSystem(csr, cs);
     if (hasOp(csr, SystemRestfulInteraction.BATCH) || hasOp(csr, SystemRestfulInteraction.TRANSACTION) )
       generateBatchTransaction(csr);
   }
 
-  private void generateResource(CapabilityStatementRestResourceComponent r) {
+  private void generateResource(CapabilityStatementRestResourceComponent r, Resource cs) {
     if (hasOp(r, TypeRestfulInteraction.SEARCHTYPE)) 
-      generateSearch(r);
+      generateSearch(r, cs);
     if (hasOp(r, TypeRestfulInteraction.READ))
       generateRead(r);
     if (hasOp(r, TypeRestfulInteraction.CREATE)) 
@@ -189,7 +190,7 @@ public class OpenApiGenerator {
     op.paramRef("#/components/parameters/elements");
   }
 
-  private void generateSearch(CapabilityStatementRestResourceComponent r) {
+  private void generateSearch(CapabilityStatementRestResourceComponent r, Resource cs) {
     OperationWriter op = makePathResType(r).operation("get");
     op.summary("Search all resources of type "+r.getType()+" based on a set of criteria");
     op.operationId("search"+r.getType());
@@ -213,7 +214,7 @@ public class OpenApiGenerator {
         p.in(ParameterLocation.query).description(spc.getDocumentation());
         p.schema().type(getSchemaType(spc.getType()));
         if (spc.hasDefinition()) {
-          SearchParameter sp = context.fetchResource(SearchParameter.class, spc.getDefinition());
+          SearchParameter sp = context.fetchResource(SearchParameter.class, spc.getDefinition(), cs);
           if (sp != null) {
             p.description(sp.getDescription());
           }
@@ -222,7 +223,7 @@ public class OpenApiGenerator {
     }
   }
 
-  private void generateSearchSystem(CapabilityStatementRestComponent csr) {
+  private void generateSearchSystem(CapabilityStatementRestComponent csr, Resource cs) {
     OperationWriter op = makePathSystem().operation("get");
     op.summary("Search all resources of all types based on a set of criteria");
     op.operationId("searchAll");
@@ -250,7 +251,7 @@ public class OpenApiGenerator {
         p.in(ParameterLocation.query).description(spc.getDocumentation());
         p.schema().type(getSchemaType(spc.getType()));
         if (spc.hasDefinition()) {
-          SearchParameter sp = context.fetchResource(SearchParameter.class, spc.getDefinition());
+          SearchParameter sp = context.fetchResource(SearchParameter.class, spc.getDefinition(), cs);
           if (sp != null) {
             p.description(sp.getDescription());
           }

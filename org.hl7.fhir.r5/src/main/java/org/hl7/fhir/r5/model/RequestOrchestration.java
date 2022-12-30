@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -5634,17 +5634,17 @@ public class RequestOrchestration extends DomainResource {
    * <p>
    * Description: <b>The participant in the requests in the orchestration</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>RequestOrchestration.action.participant.actor</b><br>
+   * Path: <b>RequestOrchestration.action.participant.actor.as(Reference) | RequestOrchestration.action.participant.actor.as(canonical)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="participant", path="RequestOrchestration.action.participant.actor", description="The participant in the requests in the orchestration", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={CapabilityStatement.class, CareTeam.class, Device.class, DeviceDefinition.class, Endpoint.class, Group.class, HealthcareService.class, Location.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  @SearchParamDefinition(name="participant", path="RequestOrchestration.action.participant.actor.as(Reference) | RequestOrchestration.action.participant.actor.as(canonical)", description="The participant in the requests in the orchestration", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={CapabilityStatement.class, CareTeam.class, Device.class, DeviceDefinition.class, Endpoint.class, Group.class, HealthcareService.class, Location.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
   public static final String SP_PARTICIPANT = "participant";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>participant</b>
    * <p>
    * Description: <b>The participant in the requests in the orchestration</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>RequestOrchestration.action.participant.actor</b><br>
+   * Path: <b>RequestOrchestration.action.participant.actor.as(Reference) | RequestOrchestration.action.participant.actor.as(canonical)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PARTICIPANT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PARTICIPANT);

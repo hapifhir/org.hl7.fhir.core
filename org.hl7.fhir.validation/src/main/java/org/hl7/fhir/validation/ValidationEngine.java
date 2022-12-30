@@ -1,7 +1,22 @@
 package org.hl7.fhir.validation;
 
-import lombok.*;
-import lombok.experimental.Accessors;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
 
 import org.fhir.ucum.UcumEssenceService;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
@@ -11,11 +26,10 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.IWorkerContext.ICanonicalResourceLocator;
-import org.hl7.fhir.r5.context.IWorkerContext.IPackageLoadingTracker;
-import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
+import org.hl7.fhir.r5.context.IWorkerContextManager;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.context.SystemOutLoggingService;
 import org.hl7.fhir.r5.elementmodel.Element;
@@ -27,25 +41,50 @@ import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
-import org.hl7.fhir.r5.model.NamingSystem.NamingSystemIdentifierType;
-import org.hl7.fhir.r5.model.NamingSystem.NamingSystemUniqueIdComponent;
+import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.DomainResource;
+import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.ExpressionNode;
+import org.hl7.fhir.r5.model.ImplementationGuide;
+import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.r5.model.PackageInformation;
+import org.hl7.fhir.r5.model.Parameters;
+import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.StructureMap;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
-import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
-import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
+import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
+import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
-import org.hl7.fhir.r5.utils.validation.constants.*;
-import org.hl7.fhir.utilities.TimeTracker;
-import org.hl7.fhir.utilities.*;
+import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
+import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
+import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
+import org.hl7.fhir.r5.utils.validation.constants.CodedContentValidationPolicy;
+import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
+import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
+import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
+import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.IniFile;
+import org.hl7.fhir.utilities.SIDUtilities;
+import org.hl7.fhir.utilities.SimpleHTTPClient;
 import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
+import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.TimeTracker;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -53,15 +92,20 @@ import org.hl7.fhir.utilities.npm.ToolsVersion;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.validation.BaseValidator.ValidationControl;
+import org.hl7.fhir.validation.cli.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.cli.services.IPackageInstaller;
-import org.hl7.fhir.validation.cli.utils.*;
+import org.hl7.fhir.validation.cli.utils.ProfileLoader;
+import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
+import org.hl7.fhir.validation.cli.utils.SchemaValidator;
+import org.hl7.fhir.validation.cli.utils.ValidationLevel;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.validation.instance.utils.ValidatorHostContext;
 import org.xml.sax.SAXException;
 
-import java.io.*;
-import java.net.URISyntaxException;
-import java.util.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.With;
+import lombok.experimental.Accessors;
 
 /*
 Copyright (c) 2011+, HL7, Inc
@@ -134,7 +178,7 @@ POSSIBILITY OF SUCH DAMAGE.
  * @author Grahame Grieve
  */
 @Accessors(chain = true)
-public class ValidationEngine implements IValidatorResourceFetcher, IValidationPolicyAdvisor, IPackageInstaller, IPackageLoadingTracker {
+public class ValidationEngine implements IValidatorResourceFetcher, IValidationPolicyAdvisor, IPackageInstaller, IWorkerContextManager.IPackageLoadingTracker {
 
   @Getter @Setter private SimpleWorkerContext context;
   @Getter @Setter private Map<String, byte[]> binaries = new HashMap<>();
@@ -150,15 +194,17 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private boolean debug = false;
   @Getter @Setter private IValidatorResourceFetcher fetcher;
   @Getter @Setter private IValidationPolicyAdvisor policyAdvisor;
-  @Getter @Setter private ICanonicalResourceLocator locator;
+  @Getter @Setter private IWorkerContextManager.ICanonicalResourceLocator locator;
   @Getter @Setter private boolean assumeValidRestReferences;
   @Getter @Setter private boolean noExtensibleBindingMessages;
   @Getter @Setter private boolean noUnicodeBiDiControlChars;
   @Getter @Setter private boolean securityChecks;
   @Getter @Setter private boolean crumbTrails;
+  @Getter @Setter private boolean forPublication;
   @Getter @Setter private boolean allowExampleUrls;
   @Getter @Setter private boolean showMessagesFromReferences;
   @Getter @Setter private boolean doImplicitFHIRPathStringConversion;
+  @Getter @Setter private HtmlInMarkdownCheck htmlInMarkdownCheck;
   @Getter @Setter private Locale locale;
   @Getter @Setter private List<ImplementationGuide> igs = new ArrayList<>();
   @Getter @Setter private List<String> extensionDomains = new ArrayList<>();
@@ -171,6 +217,55 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private IgLoader igLoader;
   @Getter @Setter private Coding jurisdiction;
 
+
+  /**
+   * Creating a validation engine is an expensive operation - takes seconds. 
+   * Once you have a validation engine created, you can quickly clone it to 
+   * get one that can load packages without affecting other uses
+   * 
+   * @param other
+   * @throws FHIRException
+   * @throws IOException
+   */
+  public ValidationEngine(ValidationEngine other) throws FHIRException, IOException {
+    super();
+    context = new SimpleWorkerContext(other.context);
+    binaries.putAll(other.binaries);
+    doNative = other.doNative;
+    noInvariantChecks = other.noInvariantChecks;
+    wantInvariantInMessage = other.wantInvariantInMessage;
+    hintAboutNonMustSupport = other.hintAboutNonMustSupport;
+    anyExtensionsAllowed = other.anyExtensionsAllowed;
+    version = other.version;
+    language = other.language;
+    pcm = other.pcm;
+    mapLog = other.mapLog;
+    debug = other.debug;
+    fetcher = other.fetcher;
+    policyAdvisor = other.policyAdvisor;
+    locator = other.locator;
+    assumeValidRestReferences = other.assumeValidRestReferences;
+    noExtensibleBindingMessages = other.noExtensibleBindingMessages;
+    noUnicodeBiDiControlChars = other.noUnicodeBiDiControlChars;
+    securityChecks = other.securityChecks;
+    crumbTrails = other.crumbTrails;
+    forPublication = other.forPublication;
+    allowExampleUrls = other.allowExampleUrls;
+    showMessagesFromReferences = other.showMessagesFromReferences;
+    doImplicitFHIRPathStringConversion = other.doImplicitFHIRPathStringConversion;
+    htmlInMarkdownCheck = other.htmlInMarkdownCheck;
+    locale = other.locale;
+    igs.addAll(other.igs);
+    extensionDomains.addAll(other.extensionDomains);
+    showTimes = other.showTimes;
+    bundleValidationRules.addAll(other.bundleValidationRules);
+    questionnaireMode = other.questionnaireMode;
+    level = other.level;
+    fhirPathEngine = other.fhirPathEngine;
+    igLoader = other.igLoader;
+    jurisdiction = other.jurisdiction;
+  }
+  
   /**
    * Systems that host the ValidationEngine can use this to control what validation the validator performs.
    * <p>
@@ -218,6 +313,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     @With
     private final IWorkerContext.ILoggingService loggingService;
 
+    @With
+    private boolean THO = true;
+
 
     public ValidationEngineBuilder() {
       terminologyCachePath = null;
@@ -231,7 +329,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       loggingService = new SystemOutLoggingService();
     }
 
-    public ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, IWorkerContext.ILoggingService loggingService) {
+    public ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, IWorkerContext.ILoggingService loggingService, boolean THO) {
       this.terminologyCachePath = terminologyCachePath;
       this.userAgent = userAgent;
       this.version = version;
@@ -241,10 +339,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       this.timeTracker = timeTracker;
       this.canRunWithoutTerminologyServer = canRunWithoutTerminologyServer;
       this.loggingService = loggingService;
+      this.THO = THO;
     }
 
     public ValidationEngineBuilder withTxServer(String txServer, String txLog, FhirPublication txVersion) {
-      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, txServer, txLog, txVersion,timeTracker, canRunWithoutTerminologyServer, loggingService);
+      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, txServer, txLog, txVersion, timeTracker, canRunWithoutTerminologyServer, loggingService, THO);
     }
 
     public ValidationEngine fromNothing() throws IOException {
@@ -255,6 +354,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       engine.setContext(contextBuilder.build());
       engine.initContext(timeTracker);
       engine.setIgLoader(new IgLoader(engine.getPcm(), engine.getContext(), engine.getVersion(), engine.isDebug()));
+      loadTx(engine);
       return engine;
     }
 
@@ -268,7 +368,29 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       }
       engine.setVersion(version);
       engine.setIgLoader(new IgLoader(engine.getPcm(), engine.getContext(), engine.getVersion(), engine.isDebug()));
+      if (THO) {
+        loadTx(engine);
+      }
       return engine;
+    }
+
+    private void loadTx(ValidationEngine engine) throws FHIRException, IOException {
+      String pid = null;
+      if (VersionUtilities.isR3Ver(version)) {
+        pid =  "hl7.terminology.r3";
+      }
+      if (VersionUtilities.isR4Ver(version)) {
+        pid =  "hl7.terminology.r4";
+      }
+      if (VersionUtilities.isR4BVer(version)) {
+        pid =  "hl7.terminology.r4";
+      }
+      if (VersionUtilities.isR5Ver(version)) {
+        pid =  "hl7.terminology.r5";
+      }
+      if (pid != null) {
+        engine.loadPackage(pid, null);
+      }
     }
   }
 
@@ -307,7 +429,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       if (userAgent != null) {
         contextBuilder.withUserAgent(userAgent);
       }
-      context = contextBuilder.fromDefinitions(source, ValidatorUtils.loaderForVersion(version), new PackageVersion(src, new Date()));
+      context = contextBuilder.fromDefinitions(source, ValidatorUtils.loaderForVersion(version), new PackageInformation(src, new Date()));
       ValidatorUtils.grabNatives(getBinaries(), source, "http://hl7.org/fhir");
     }
     // ucum-essence.xml should be in the class path. if it's not, ask about how to sort this out 
@@ -494,7 +616,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   public StructureMap compile(String mapUri) throws FHIRException, IOException {
-    StructureMap map = context.getTransform(mapUri);
+    StructureMap map = context.fetchResource(StructureMap.class, mapUri);
     return map;
   }
 
@@ -502,10 +624,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     List<Base> outputs = new ArrayList<>();
     StructureMapUtilities scu = new StructureMapUtilities(context, new TransformSupportServices(outputs, mapLog, context));
     org.hl7.fhir.r5.elementmodel.Element src = Manager.parseSingle(context, new ByteArrayInputStream(source), cntType);
-    StructureMap map = context.getTransform(mapUri);
+    StructureMap map = context.fetchResource(StructureMap.class, mapUri);
     if (map == null) throw new Error("Unable to find map " + mapUri + " (Known Maps = " + context.listMapUrls() + ")");
     org.hl7.fhir.r5.elementmodel.Element resource = getTargetResourceFromStructureMap(map);
     scu.transform(null, src, map, resource);
+    resource.populatePaths(null);
     return resource;
   }
 
@@ -521,7 +644,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     if (targetTypeUrl == null) throw new FHIRException("Unable to determine resource URL for target type");
 
     StructureDefinition structureDefinition = null;
-    for (StructureDefinition sd : this.context.getStructures()) {
+    for (StructureDefinition sd : this.context.fetchResourcesByType(StructureDefinition.class)) {
       if (sd.getUrl().equalsIgnoreCase(targetTypeUrl)) {
         structureDefinition = sd;
         break;
@@ -536,7 +659,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   public Resource generate(String source, String version) throws FHIRException, IOException, EOperationOutcome {
     Content cnt = igLoader.loadContent(source, "validate", false);
     Resource res = igLoader.loadResourceByVersion(version, cnt.focus, source);
-    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER);
+    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     genResource(res, rc);
     return (Resource) res;
   }
@@ -614,6 +737,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     validator.setNoExtensibleWarnings(noExtensibleBindingMessages);
     validator.setSecurityChecks(securityChecks);
     validator.setCrumbTrails(crumbTrails);
+    validator.setForPublication(forPublication);
     validator.setAllowExamples(allowExampleUrls);
     validator.setShowMessagesFromReferences(showMessagesFromReferences);
     validator.getContext().setLocale(locale);
@@ -623,6 +747,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     validator.getValidationControl().putAll(validationControl);
     validator.setQuestionnaireMode(questionnaireMode);
     validator.setLevel(level);
+    validator.setHtmlInMarkdownCheck(htmlInMarkdownCheck);
     validator.setNoUnicodeBiDiControlChars(noUnicodeBiDiControlChars);
     validator.setDoImplicitFHIRPathStringConversion(doImplicitFHIRPathStringConversion);
     if (format == FhirFormat.SHC) {
@@ -634,7 +759,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   public void prepare() {
-    for (StructureDefinition sd : context.allStructures()) {
+    for (StructureDefinition sd : new ContextUtilities(context).allStructures()) {
       try {
         makeSnapshot(sd);
       } catch (Exception e) {
@@ -752,7 +877,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     String url = getMapId(type, targetVer);
     List<Base> outputs = new ArrayList<Base>();
     StructureMapUtilities scu = new StructureMapUtilities(context, new TransformSupportServices(outputs, mapLog, context));
-    StructureMap map = context.getTransform(url);
+    StructureMap map = context.fetchResource(StructureMap.class, url);
     if (map == null)
       throw new Error("Unable to find map " + url + " (Known Maps = " + context.listMapUrls() + ")");
     org.hl7.fhir.r5.elementmodel.Element resource = getTargetResourceFromStructureMap(map);
@@ -903,6 +1028,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         resolvedUrls.put(type+"|"+url, ok);
         return ok;
       } catch (Exception e) {
+        e.printStackTrace();
         resolvedUrls.put(type+"|"+url, false);
         return false;
       }

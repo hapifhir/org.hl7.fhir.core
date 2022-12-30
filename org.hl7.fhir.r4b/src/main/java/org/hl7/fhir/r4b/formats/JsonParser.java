@@ -15842,7 +15842,7 @@ public class JsonParser extends JsonParserBase {
   protected void parseImplementationGuideDefinitionParameterComponentProperties(JsonObject json, ImplementationGuide.ImplementationGuideDefinitionParameterComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
     if (json.has("code"))
-      res.setCodeElement(parseEnumeration(json.get("code").getAsString(), ImplementationGuide.GuideParameterCode.NULL, new ImplementationGuide.GuideParameterCodeEnumFactory()));
+      res.setCodeElement(parseString(json.get("code").getAsString()));
     if (json.has("_code"))
       parseElementProperties(getJObject(json, "_code"), res.getCodeElement());
     if (json.has("value"))
@@ -46799,8 +46799,8 @@ public class JsonParser extends JsonParserBase {
   protected void composeImplementationGuideDefinitionParameterComponentProperties(ImplementationGuide.ImplementationGuideDefinitionParameterComponent element) throws IOException {
     composeBackboneElementProperties(element);
       if (element.hasCodeElement()) {
-        composeEnumerationCore("code", element.getCodeElement(), new ImplementationGuide.GuideParameterCodeEnumFactory(), false);
-        composeEnumerationExtras("code", element.getCodeElement(), new ImplementationGuide.GuideParameterCodeEnumFactory(), false);
+        composeStringCore("code", element.getCodeElement(), false);
+        composeStringExtras("code", element.getCodeElement(), false);
       }
       if (element.hasValueElement()) {
         composeStringCore("value", element.getValueElement(), false);

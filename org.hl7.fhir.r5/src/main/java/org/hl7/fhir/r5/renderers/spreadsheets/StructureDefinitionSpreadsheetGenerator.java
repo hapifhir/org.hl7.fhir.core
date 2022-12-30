@@ -38,6 +38,7 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.checkerframework.common.reflection.qual.ForName;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
@@ -76,7 +77,7 @@ public class StructureDefinitionSpreadsheetGenerator extends CanonicalSpreadshee
   private List<StructureDefinitionMappingComponent> mapKeys = new ArrayList<StructureDefinitionMappingComponent>();
 
   private static String[] titles = {
-      "Path", "Slice Name", "Alias(s)", "Label", "Min", "Max", "Must Support?", "Is Modifier?", "Is Summary?", "Type(s)", "Short", 
+      "ID", "Path", "Slice Name", "Alias(s)", "Label", "Min", "Max", "Must Support?", "Is Modifier?", "Is Summary?", "Type(s)", "Short", 
       "Definition", "Comments", "Requirements", "Default Value", "Meaning When Missing", "Fixed Value", "Pattern", "Example",
       "Minimum Value", "Maximum Value", "Maximum Length", "Binding Strength", "Binding Description", "Binding Value Set", "Code",
       "Slicing Discriminator", "Slicing Description", "Slicing Ordered", "Slicing Rules", "Base Path", "Base Min", "Base Max",
@@ -88,28 +89,34 @@ public class StructureDefinitionSpreadsheetGenerator extends CanonicalSpreadshee
     this.hideMustSupportFalse = hideMustSupportFalse;
   }
 
-  public StructureDefinitionSpreadsheetGenerator renderStructureDefinition(StructureDefinition sd) throws Exception {
+  public StructureDefinitionSpreadsheetGenerator renderStructureDefinition(StructureDefinition sd, boolean forMultiple) throws Exception {
     if (sd == null) {
       System.out.println("no structure!");
     }
     if (!sd.hasSnapshot()) {
       throw new DefinitionException(context.formatMessage(I18nConstants.NEEDS_A_SNAPSHOT));
     }
-    addStructureDefinitionMetadata(renderCanonicalResource(sd), sd);
-    Sheet sheet = makeSheet("Elements");
+    addStructureDefinitionMetadata(renderCanonicalResource(sd, forMultiple), sd);
+    Sheet sheet = forMultiple && hasSheet("Elements") ? getSheet("Elements") : makeSheet("Elements");
 
-    Row headerRow = sheet.createRow(0);
-    for (int i = 0; i < titles.length; i++) {
-      addCell(headerRow, i, titles[i], styles.get("header"));
+    if (sheet.getLastRowNum() == 0) {
+      Row headerRow = sheet.createRow(0);
+      int coffset = forMultiple ? 1 : 0;
+      for (int i = 0; i < titles.length; i++) {
+        if (forMultiple) {
+          addCell(headerRow, 0, "Structure.ID", styles.get("header"));        
+        }
+        addCell(headerRow, i+coffset, titles[i], styles.get("header"));
+      }
+      int i = titles.length - 1;
+      for (StructureDefinitionMappingComponent map : sd.getMapping()) {
+        i++;
+        addCell(headerRow, i+coffset, "Mapping: " + map.getName(), styles.get("header"));
+      }
     }
-    int i = titles.length - 1;
-    for (StructureDefinitionMappingComponent map : sd.getMapping()) {
-      i++;
-      addCell(headerRow, i, "Mapping: " + map.getName(), styles.get("header"));
-    }    
 
     for (ElementDefinition child : sd.getSnapshot().getElement()) {
-      processElement(sheet, sd, child);
+      processElement(sheet, sd, child, forMultiple);
     }
     configureSheet(sheet, sd);
     return this;
@@ -136,10 +143,14 @@ public class StructureDefinitionSpreadsheetGenerator extends CanonicalSpreadshee
     
   }
 
-  public void processElement(Sheet sheet, StructureDefinition sd, ElementDefinition ed) throws Exception {
+  public void processElement(Sheet sheet, StructureDefinition sd, ElementDefinition ed, boolean forMultiple) throws Exception {
     Row row = sheet.createRow(sheet.getLastRowNum()+1);
     int i = 0;
-    addCell(row, i++, ed.getPath(), styles.get("body"));
+    if (forMultiple) {
+      addCell(row, i++, sd.getId(), styles.get("body"));
+    }
+    addCell(row, i++, ed.getId(), styles.get("body"));
+    addCell(row, i++, ed.getPath());
     addCell(row, i++, ed.getSliceName());
     addCell(row, i++, itemList(ed.getAlias()));
     addCell(row, i++, ed.getLabel());

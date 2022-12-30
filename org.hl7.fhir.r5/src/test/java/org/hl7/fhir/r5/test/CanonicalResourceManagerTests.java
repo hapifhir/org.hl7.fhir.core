@@ -1,11 +1,13 @@
 package org.hl7.fhir.r5.test;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.hl7.fhir.r5.context.CanonicalResourceManager;
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
-import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -428,12 +430,12 @@ public class CanonicalResourceManagerTests {
     vs2.setVersion("2000.0.0");
     vs2.setName("2");
 
-    mrm.see(vs1, new PackageVersion("hl7.fhir.r4.core", "4.0.1", new Date()));
+    mrm.see(vs1, new PackageInformation("hl7.fhir.r4.core", "4.0.1", new Date()));
     Assertions.assertNotNull(mrm.get("http://terminology.hl7.org/ValueSet/234"));
     Assertions.assertNotNull(mrm.get("http://terminology.hl7.org/ValueSet/234", "2.0.0"));
     Assertions.assertTrue(mrm.get("http://terminology.hl7.org/ValueSet/234").getName().equals("1"));
 
-    mrm.see(vs2, new PackageVersion("hl7.terminology.r4", "4.0.1", new Date()));   
+    mrm.see(vs2, new PackageInformation("hl7.terminology.r4", "4.0.1", new Date()));   
     Assertions.assertNotNull(mrm.get("http://terminology.hl7.org/ValueSet/234"));
     Assertions.assertTrue(mrm.get("http://terminology.hl7.org/ValueSet/234").getName().equals("2"));
     Assertions.assertNull(mrm.get("http://terminology.hl7.org/ValueSet/234", "2.0.0")); // this will get dropped completely because of UTG rules
@@ -809,5 +811,46 @@ public class CanonicalResourceManagerTests {
     Assertions.assertNull(mrm.get("http://url/ValueSet/234", "4.1"));
   }
 
+  @Test
+  public void testPackageSpecificResolution1() {
+    // we add 2 canonicals to the cache with the same identification, but different package information
+    CanonicalResourceManager<ValueSet> mrm = new CanonicalResourceManager<>(false);
+    ValueSet vs1 = new ValueSet();
+    vs1.setId("2345");
+    vs1.setUrl("http://url/ValueSet/234");
+    vs1.setVersion("4.0.1");
+    vs1.setName("1");
+    DeferredLoadTestResource vs1d = new DeferredLoadTestResource(vs1);
+    mrm.see(vs1, new PackageInformation("pid.one", "1.0.0", new Date()));
+
+    ValueSet vs2 = new ValueSet();
+    vs2.setId("2346");
+    vs2.setUrl("http://url/ValueSet/234");
+    vs2.setVersion("4.0.1");
+    vs2.setName("2");
+    mrm.see(vs2, new PackageInformation("pid.two", "1.0.0", new Date()));
+
+    List<String> pvl1 = new ArrayList<>();
+    pvl1.add("pid.one#1.0.0");
+    
+    List<String> pvl2 = new ArrayList<>();
+    pvl1.add("pid.two#1.0.0");
+    
+    Assertions.assertEquals("2", mrm.get("http://url/ValueSet/234").getName());
+    Assertions.assertEquals("1", mrm.get("http://url/ValueSet/234", pvl1).getName());
+    Assertions.assertEquals("2", mrm.get("http://url/ValueSet/234", pvl2).getName());
+
+    Assertions.assertEquals("2", mrm.get("http://url/ValueSet/234", "4.0.1").getName());
+    Assertions.assertEquals("1", mrm.get("http://url/ValueSet/234", "4.0.1", pvl1).getName());
+    Assertions.assertEquals("2", mrm.get("http://url/ValueSet/234", "4.0.1", pvl2).getName());
+
+    Assertions.assertEquals("2", mrm.get("http://url/ValueSet/234", "4.0").getName());
+    Assertions.assertEquals("1", mrm.get("http://url/ValueSet/234", "4.0", pvl1).getName());
+    Assertions.assertEquals("2", mrm.get("http://url/ValueSet/234", "4.0", pvl2).getName());
+    
+    Assertions.assertEquals("2", mrm.get("http://url/ValueSet/234", "4.0.2").getName());
+    Assertions.assertEquals("1", mrm.get("http://url/ValueSet/234", "4.0.2", pvl1).getName());
+    Assertions.assertEquals("2", mrm.get("http://url/ValueSet/234", "4.0.2", pvl2).getName());
+  }
 
 }
