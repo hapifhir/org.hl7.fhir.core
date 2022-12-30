@@ -9,6 +9,8 @@ import org.hl7.fhir.r5.test.CanonicalResourceManagerTester.DeferredLoadTestResou
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.Date;
+
 public class CanonicalResourceManagerTester {
 
   public class DeferredLoadTestResource extends CanonicalResourceProxy {
@@ -428,12 +430,15 @@ public class CanonicalResourceManagerTester {
     vs2.setName("2");
     
 
-    mrm.see(vs1, new PackageVersion("hl7.fhir.r4.core", "4.0.1"));
+    //mrm.see(vs1, new PackageVersion("hl7.fhir.r4.core", "4.0.1"));
+    mrm.see(vs1, new PackageVersion("hl7.fhir.r4.core", new Date()));
+
     Assertions.assertNotNull(mrm.get("http://terminology.hl7.org/ValueSet/234"));
     Assertions.assertNotNull(mrm.get("http://terminology.hl7.org/ValueSet/234", "2.0.0"));
     Assertions.assertTrue(mrm.get("http://terminology.hl7.org/ValueSet/234").getName().equals("1"));
 
-    mrm.see(vs2, new PackageVersion("hl7.terminology.r4", "4.0.1"));   
+    //mrm.see(vs2, new PackageVersion("hl7.terminology.r4", "4.0.1"));
+    mrm.see(vs2, new PackageVersion("hl7.terminology.r4", new Date()));
     Assertions.assertNotNull(mrm.get("http://terminology.hl7.org/ValueSet/234"));
     Assertions.assertTrue(mrm.get("http://terminology.hl7.org/ValueSet/234").getName().equals("2"));
     Assertions.assertNull(mrm.get("http://terminology.hl7.org/ValueSet/234", "2.0.0")); // this will get dropped completely because of UTG rules
