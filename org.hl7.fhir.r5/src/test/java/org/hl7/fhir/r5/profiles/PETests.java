@@ -39,10 +39,10 @@ public class PETests {
       NpmPackage npm = pc.loadPackage("hl7.fhir.us.core", "5.0.0");
       ctxt.loadFromPackage(npm, new TestPackageLoader(new String[] { "StructureDefinition" }));
       
-      ctxt.cacheResource(new JsonParser().parse(TestingUtilities.loadTestResource("R5", "profiles", "pe-extension-simple.json")));
-      ctxt.cacheResource(new JsonParser().parse(TestingUtilities.loadTestResource("R5", "profiles", "pe-extension-complex.json")));
-      ctxt.cacheResource(new JsonParser().parse(TestingUtilities.loadTestResource("R5", "profiles", "pe-profile2.json")));
-      ctxt.cacheResource(new JsonParser().parse(TestingUtilities.loadTestResource("R5", "profiles", "pe-profile1.json")));
+      ctxt.cacheResource(new JsonParser().parse(TestingUtilities.loadTestResource("r5", "profiles", "pe-extension-simple.json")));
+      ctxt.cacheResource(new JsonParser().parse(TestingUtilities.loadTestResource("r5", "profiles", "pe-extension-complex.json")));
+      ctxt.cacheResource(new JsonParser().parse(TestingUtilities.loadTestResource("r5", "profiles", "pe-profile2.json")));
+      ctxt.cacheResource(new JsonParser().parse(TestingUtilities.loadTestResource("r5", "profiles", "pe-profile1.json")));
     }
   }
 
@@ -312,7 +312,7 @@ public class PETests {
   public void testLoad() throws IOException {
     load();
     
-    Resource res = new JsonParser().parse(TestingUtilities.loadTestResource("R5", "pe-observation-1.json"));
+    Resource res = new JsonParser().parse(TestingUtilities.loadTestResource("r5", "pe-observation-1.json"));
     PEInstance obs = new PEBuilder(ctxt, PEElementPropertiesPolicy.EXTENSION, true).buildPEInstance("http://hl7.org/fhir/test/StructureDefinition/pe-profile1", res);
     
     PEInstance status = obs.child("status");
