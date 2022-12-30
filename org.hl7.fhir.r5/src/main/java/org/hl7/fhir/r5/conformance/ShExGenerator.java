@@ -47,11 +47,21 @@ public class ShExGenerator {
   public enum HTMLLinkPolicy {
     NONE, EXTERNAL, INTERNAL
   }
+
+  public enum ConstraintTranslationPolicy {
+    ALL, // Translate all Extensions found; Default (or when no policy defined)
+    GENERIC_ONLY, // Translate all Extensions except constraints with context-of-use
+    CONTEXT_OF_USE_ONLY  // Translate only Extensions with context-of-use
+  }
+
   public boolean doDatatypes = true;                 // add data types
   public boolean withComments = true;                // include comments
   public boolean completeModel = false;              // doing complete build (fhir.shex)
 
   public boolean debugMode = false;
+
+  public ConstraintTranslationPolicy constraintPolicy = ConstraintTranslationPolicy.ALL;
+
   private static String SHEX_TEMPLATE = "$header$\n\n" +
 
     "$shapeDefinitions$";
@@ -238,7 +248,13 @@ public class ShExGenerator {
   private HashSet<ValueSet> required_value_sets;
   private HashSet<String> known_resources;          // Used when generating a full definition
 
+  // List of URLs of Excluded Structure Definitions from ShEx Schema generation.
   private List<String> excludedSDUrls;
+
+  // List of URLs of selected Structure Definitions of Extensions from ShEx Schema generation.
+  // Extensions are Structure Definitions with type as "Extension".
+  private List<StructureDefinition> selectedExtensions;
+  private List<String> selectedExtensionUrls;
   private FHIRPathEngine fpe;
 
   public ShExGenerator(IWorkerContext context) {
@@ -256,6 +272,8 @@ public class ShExGenerator {
     required_value_sets = new HashSet<ValueSet>();
     known_resources = new HashSet<String>();
     excludedSDUrls = new ArrayList<String>();
+    selectedExtensions = new ArrayList<StructureDefinition>();
+    selectedExtensionUrls = new ArrayList<String>();
     fpe = new FHIRPathEngine(context);
   }
 
@@ -283,6 +301,21 @@ public class ShExGenerator {
     this.excludedSDUrls = excludedSDs;
   }
 
+  public List<StructureDefinition> getSelectedExtensions(){
+    return this.selectedExtensions;
+  }
+
+  public void setSelectedExtension(List<StructureDefinition> selectedExtensions){
+    this.selectedExtensions = selectedExtensions;
+
+    selectedExtensionUrls.clear();
+
+    for (StructureDefinition eSD : selectedExtensions){
+      if (!selectedExtensionUrls.contains(eSD.getUrl()))
+        selectedExtensionUrls.add(eSD.getUrl());
+    }
+  }
+
   public class SortById implements Comparator<StructureDefinition> {
 
     @Override
@@ -306,6 +339,11 @@ public class ShExGenerator {
    */
   public String generate(HTMLLinkPolicy links, List<StructureDefinition> structures, List<String> excludedSDUrls) {
       this.excludedSDUrls = excludedSDUrls;
+
+      if ((structures != null )&&(this.selectedExtensions != null)){
+        structures.addAll(this.selectedExtensions);
+      }
+
       return generate(links, structures, excludedSDUrls);
   }
 
@@ -340,13 +378,31 @@ public class ShExGenerator {
     uniq_structures = new LinkedList<StructureDefinition>();
     uniq_structure_urls = new HashSet<String>();
     for (StructureDefinition sd : structures) {
-      // skip if SD is in excluded SDs list for generation.
-      if ((excludedSDUrls != null) &&
-          (excludedSDUrls.contains(sd.getUrl()))) {
-        printBuildMessage("SKIPPED Generating ShEx for '" + sd.getUrl() + "'! It is in excluded list of structures.");
-        continue;
-      }
-      if (!uniq_structure_urls.contains(sd.getUrl())) {
+        // skip if SD is in excluded SDs list for generation.
+        if ((excludedSDUrls != null) &&
+            (excludedSDUrls.contains(sd.getUrl()))) {
+          printBuildMessage("SKIPPED-Type1 Generating ShEx for '" + sd.getUrl() + "'! It is in excluded list of structures.");
+          continue;
+        }
+
+        if ("Extension".equals(sd.getType())) {
+          if ((!this.selectedExtensionUrls.isEmpty()) && (!this.selectedExtensionUrls.contains(sd.getUrl()))) {
+            printBuildMessage("SKIPPED-Type2 Generating ShEx for '" + sd.getUrl() + "'! It is Not included in the list of selected extensions.");
+            continue;
+          }
+
+          if ((this.constraintPolicy == ConstraintTranslationPolicy.GENERIC_ONLY) && (sd.hasContext())) {
+            printBuildMessage("SKIPPED-Type3 Generating ShEx for '" + sd.getUrl() + "'! ConstraintTranslationPolicy is set to GENERIC_ONLY, and this Structure has Context of Use.");
+            continue;
+          }
+
+          if ((this.constraintPolicy == ConstraintTranslationPolicy.CONTEXT_OF_USE_ONLY) && (!sd.hasContext())) {
+            printBuildMessage("SKIPPED-Type4 Generating ShEx for '" + sd.getUrl() + "'! ConstraintTranslationPolicy is set to CONTEXT_OF_USE_ONLY, and this Structure has no Context of Use.");
+            continue;
+          }
+        }
+
+        if (!uniq_structure_urls.contains(sd.getUrl())) {
         uniq_structures.add(sd);
         uniq_structure_urls.add(sd.getUrl());
       }
