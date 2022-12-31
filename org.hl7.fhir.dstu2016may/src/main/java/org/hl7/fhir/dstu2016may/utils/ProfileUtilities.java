@@ -892,7 +892,7 @@ public class ProfileUtilities {
 
       if (derived.hasDefinitionElement()) {
         if (derived.getDefinition().startsWith("..."))
-          base.setDefinition(base.getDefinition()+"\r\n"+derived.getDefinition().substring(3));
+          base.setDefinition(Utilities.appendDerivedTextToBase(base.getDefinition(), derived.getDefinition()));
         else if (!Base.compareDeep(derived.getDefinitionElement(), base.getDefinitionElement(), false))
           base.setDefinitionElement(derived.getDefinitionElement().copy());
         else if (trimDifferential)
@@ -903,7 +903,7 @@ public class ProfileUtilities {
 
       if (derived.hasCommentsElement()) {
         if (derived.getComments().startsWith("..."))
-          base.setComments(base.getComments()+"\r\n"+derived.getComments().substring(3));
+          base.setComments(Utilities.appendDerivedTextToBase(base.getComments(), derived.getComments()));
         else if (!Base.compareDeep(derived.getCommentsElement(), base.getCommentsElement(), false))
           base.setCommentsElement(derived.getCommentsElement().copy());
         else if (trimDifferential)
@@ -914,7 +914,7 @@ public class ProfileUtilities {
 
       if (derived.hasLabelElement()) {
         if (derived.getLabel().startsWith("..."))
-          base.setLabel(base.getLabel()+"\r\n"+derived.getLabel().substring(3));
+          base.setLabel(Utilities.appendDerivedTextToBase(base.getLabel(), derived.getLabel()));
         else if (!Base.compareDeep(derived.getLabelElement(), base.getLabelElement(), false))
           base.setLabelElement(derived.getLabelElement().copy());
         else if (trimDifferential)
@@ -925,7 +925,7 @@ public class ProfileUtilities {
 
       if (derived.hasRequirementsElement()) {
         if (derived.getRequirements().startsWith("..."))
-          base.setRequirements(base.getRequirements()+"\r\n"+derived.getRequirements().substring(3));
+          base.setRequirements(Utilities.appendDerivedTextToBase(base.getRequirements(), derived.getRequirements()));
         else if (!Base.compareDeep(derived.getRequirementsElement(), base.getRequirementsElement(), false))
           base.setRequirementsElement(derived.getRequirementsElement().copy());
         else if (trimDifferential)
