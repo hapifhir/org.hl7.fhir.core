@@ -11,8 +11,8 @@ import java.util.Map;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
-import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Base;
@@ -356,6 +356,9 @@ public class RenderingContext {
 
   public RenderingContext setProfileUtilities(ProfileUtilities profileUtilities) {
     this.profileUtilitiesR = profileUtilities;
+    if (pkp == null && profileUtilities.getPkp() != null) {
+      pkp = profileUtilities.getPkp();
+    }
     return this;
   }
 

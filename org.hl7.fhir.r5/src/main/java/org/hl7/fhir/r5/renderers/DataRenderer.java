@@ -15,7 +15,6 @@ import java.time.format.FormatStyle;
 import java.time.format.SignStyle;
 import java.util.Currency;
 import java.util.List;
-import java.util.Set;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;

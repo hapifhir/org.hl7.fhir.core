@@ -7,9 +7,9 @@ import java.util.List;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.conformance.profile.BindingResolution;
+import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
-import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ProfileKnowledgeProvider;
-import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ProfileKnowledgeProvider.BindingResolution;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.UsageContext;
@@ -106,7 +106,7 @@ public class AdditionalBindingsRenderer {
       abr.compare = new AdditionalBindingDetail();
       abr.compare.valueSet = compExt==null ? null : compExt.getValue().primitiveValue();
     } else {
-      abr.isUnchanged = ext.hasUserData(ProfileUtilities.DERIVATION_EQUALS);
+      abr.isUnchanged = ext.hasUserData(ProfileUtilities.UD_DERIVATION_EQUALS);
     }
     bindings.add(abr);
   }
@@ -166,7 +166,7 @@ public class AdditionalBindingsRenderer {
       abr.docoShort =  ext.getExtensionString("shortDoco");
     abr.usage =  (ext.hasExtension("usage")) && ext.getExtensionByUrl("usage").hasValueUsageContext() ? ext.getExtensionByUrl("usage").getValueUsageContext() : null;
     abr.any = "any".equals(ext.getExtensionString("scope"));
-    abr.isUnchanged = ext.hasUserData(ProfileUtilities.DERIVATION_EQUALS);
+    abr.isUnchanged = ext.hasUserData(ProfileUtilities.UD_DERIVATION_EQUALS);
     return abr;
   }
 
@@ -309,8 +309,11 @@ public class AdditionalBindingsRenderer {
     case "minimum": 
       td.ah(corePath+"extension-elementdefinition-minvalueset.html", "The minimum allowable value set - any conformant system SHALL support all these codes").tx("Min Binding");
       break;
-    case "conformance" :
+    case "required" :
       td.ah(corePath+"terminologies.html#strength", "Validators will check this binding (strength = required)").tx("Validation Binding");
+      break;
+    case "extensible" :
+      td.ah(corePath+"terminologies.html#strength", "Validators will check this binding (strength = extensible)").tx("Validation Binding");
       break;
     case "candidate" :
       td.ah(corePath+"terminologies.html#strength", "This is a candidate binding that constraints on this profile may consider (see doco)").tx("Candidate Validation Binding");
@@ -318,7 +321,7 @@ public class AdditionalBindingsRenderer {
     case "current" :
       td.span(null, "New records are required to use this value set, but legacy records may use other codes").tx("Required");
       break;
-    case "recommended" :
+    case "preferred" :
       td.span(null, "This is the value set that is recommended (documentation should explain why)").tx("Recommended");
       break;
     case "ui" :
