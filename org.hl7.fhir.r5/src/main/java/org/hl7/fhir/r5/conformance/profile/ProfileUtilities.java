@@ -1604,7 +1604,7 @@ public class ProfileUtilities extends TranslatingUtilities {
    * @param element - the Element to update
    * @return - the updated Element
    */
-  ElementDefinition updateURLs(String url, String webUrl, ElementDefinition element) {
+  public ElementDefinition updateURLs(String url, String webUrl, ElementDefinition element) {
     if (element != null) {
       ElementDefinition defn = element;
       if (defn.hasBinding() && defn.getBinding().hasValueSet() && defn.getBinding().getValueSet().startsWith("#"))
@@ -1634,7 +1634,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     return element;
   }
 
-  private static String processRelativeUrls(String markdown, String webUrl, String basePath, List<String> resourceNames, Set<String> baseFilenames, Set<String> localFilenames, boolean processRelatives) {
+  public static String processRelativeUrls(String markdown, String webUrl, String basePath, List<String> resourceNames, Set<String> baseFilenames, Set<String> localFilenames, boolean processRelatives) {
     if (markdown == null) {
       return "";
     }
@@ -2437,95 +2437,91 @@ public class ProfileUtilities extends TranslatingUtilities {
     return false;
   }
   
-// there was some proposal that this be surfaced in the IG publisher, but it is not currently available
-//  private void closeDifferential(StructureDefinition base, StructureDefinition derived) throws FHIRException {
-//    for (ElementDefinition edb : base.getSnapshot().getElement()) {
-//      if (isImmediateChild(edb) && !edb.getPath().endsWith(".id")) {
-//        ElementDefinition edm = getMatchInDerived(edb, derived.getDifferential().getElement());
-//        if (edm == null) {
-//          ElementDefinition edd = derived.getDifferential().addElement();
-//          edd.setPath(edb.getPath());
-//          edd.setMax("0");
-//        } else if (edb.hasSlicing()) {
-//          closeChildren(base, edb, derived, edm);
-//        }
-//      }
-//    }
-//    sortDifferential(base, derived, derived.getName(), new ArrayList<String>(), false);
-//  }
+  public void closeDifferential(StructureDefinition base, StructureDefinition derived) throws FHIRException {
+    for (ElementDefinition edb : base.getSnapshot().getElement()) {
+      if (isImmediateChild(edb) && !edb.getPath().endsWith(".id")) {
+        ElementDefinition edm = getMatchInDerived(edb, derived.getDifferential().getElement());
+        if (edm == null) {
+          ElementDefinition edd = derived.getDifferential().addElement();
+          edd.setPath(edb.getPath());
+          edd.setMax("0");
+        } else if (edb.hasSlicing()) {
+          closeChildren(base, edb, derived, edm);
+        }
+      }
+    }
+    sortDifferential(base, derived, derived.getName(), new ArrayList<String>(), false);
+  }
 
-//  private void closeChildren(StructureDefinition base, ElementDefinition edb, StructureDefinition derived, ElementDefinition edm) {
-////    String path = edb.getPath()+".";
-//    int baseStart = base.getSnapshot().getElement().indexOf(edb);
-//    int baseEnd = findEnd(base.getSnapshot().getElement(), edb, baseStart+1);
-//    int diffStart = derived.getDifferential().getElement().indexOf(edm);
-//    int diffEnd = findEnd(derived.getDifferential().getElement(), edm, diffStart+1);
-//    
-//    for (int cBase = baseStart; cBase < baseEnd; cBase++) {
-//      ElementDefinition edBase = base.getSnapshot().getElement().get(cBase);
-//      if (isImmediateChild(edBase, edb)) {
-//        ElementDefinition edMatch = getMatchInDerived(edBase, derived.getDifferential().getElement(), diffStart, diffEnd);
-//        if (edMatch == null) {
-//          ElementDefinition edd = derived.getDifferential().addElement();
-//          edd.setPath(edBase.getPath());
-//          edd.setMax("0");
-//        } else {
-//          closeChildren(base, edBase, derived, edMatch);
-//        }        
-//      }
-//    }
-//  }
+  private void closeChildren(StructureDefinition base, ElementDefinition edb, StructureDefinition derived, ElementDefinition edm) {
+//    String path = edb.getPath()+".";
+    int baseStart = base.getSnapshot().getElement().indexOf(edb);
+    int baseEnd = findEnd(base.getSnapshot().getElement(), edb, baseStart+1);
+    int diffStart = derived.getDifferential().getElement().indexOf(edm);
+    int diffEnd = findEnd(derived.getDifferential().getElement(), edm, diffStart+1);
+    
+    for (int cBase = baseStart; cBase < baseEnd; cBase++) {
+      ElementDefinition edBase = base.getSnapshot().getElement().get(cBase);
+      if (isImmediateChild(edBase, edb)) {
+        ElementDefinition edMatch = getMatchInDerived(edBase, derived.getDifferential().getElement(), diffStart, diffEnd);
+        if (edMatch == null) {
+          ElementDefinition edd = derived.getDifferential().addElement();
+          edd.setPath(edBase.getPath());
+          edd.setMax("0");
+        } else {
+          closeChildren(base, edBase, derived, edMatch);
+        }        
+      }
+    }
+  }
 
-//
-//
-//
-//  private int findEnd(List<ElementDefinition> list, ElementDefinition ed, int cursor) {
-//    String path = ed.getPath()+".";
-//    while (cursor < list.size() && list.get(cursor).getPath().startsWith(path)) {
-//      cursor++;
-//    }
-//    return cursor;
-//  }
-//
-//
-//  private ElementDefinition getMatchInDerived(ElementDefinition ed, List<ElementDefinition> list) {
-//    for (ElementDefinition t : list) {
-//      if (t.getPath().equals(ed.getPath())) {
-//        return t;
-//      }
-//    }
-//    return null;
-//  }
-//
-//  private ElementDefinition getMatchInDerived(ElementDefinition ed, List<ElementDefinition> list, int start, int end) {
-//    for (int i = start; i < end; i++) {
-//      ElementDefinition t = list.get(i);
-//      if (t.getPath().equals(ed.getPath())) {
-//        return t;
-//      }
-//    }
-//    return null;
-//  }
-//
-//
-//  private boolean isImmediateChild(ElementDefinition ed) {
-//    String p = ed.getPath();
-//    if (!p.contains(".")) {
-//      return false;
-//    }
-//    p = p.substring(p.indexOf(".")+1);
-//    return !p.contains(".");
-//  }
-//
-//  private boolean isImmediateChild(ElementDefinition candidate, ElementDefinition base) {
-//    String p = candidate.getPath();
-//    if (!p.contains("."))
-//      return false;
-//    if (!p.startsWith(base.getPath()+"."))
-//      return false;
-//    p = p.substring(base.getPath().length()+1);
-//    return !p.contains(".");
-//  }
+  private int findEnd(List<ElementDefinition> list, ElementDefinition ed, int cursor) {
+    String path = ed.getPath()+".";
+    while (cursor < list.size() && list.get(cursor).getPath().startsWith(path)) {
+      cursor++;
+    }
+    return cursor;
+  }
+
+
+  private ElementDefinition getMatchInDerived(ElementDefinition ed, List<ElementDefinition> list) {
+    for (ElementDefinition t : list) {
+      if (t.getPath().equals(ed.getPath())) {
+        return t;
+      }
+    }
+    return null;
+  }
+
+  private ElementDefinition getMatchInDerived(ElementDefinition ed, List<ElementDefinition> list, int start, int end) {
+    for (int i = start; i < end; i++) {
+      ElementDefinition t = list.get(i);
+      if (t.getPath().equals(ed.getPath())) {
+        return t;
+      }
+    }
+    return null;
+  }
+
+
+  private boolean isImmediateChild(ElementDefinition ed) {
+    String p = ed.getPath();
+    if (!p.contains(".")) {
+      return false;
+    }
+    p = p.substring(p.indexOf(".")+1);
+    return !p.contains(".");
+  }
+
+  private boolean isImmediateChild(ElementDefinition candidate, ElementDefinition base) {
+    String p = candidate.getPath();
+    if (!p.contains("."))
+      return false;
+    if (!p.startsWith(base.getPath()+"."))
+      return false;
+    p = p.substring(base.getPath().length()+1);
+    return !p.contains(".");
+  }
 
 //  public XhtmlNode generateExtensionTable(String defFile, StructureDefinition ed, String imageFolder, boolean inlineGraphics, boolean full, String corePath, String imagePath, Set<String> outputTracker, RenderingContext rc) throws IOException, FHIRException {
 //    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(imageFolder, inlineGraphics, true);
@@ -3980,4 +3976,5 @@ public class ProfileUtilities extends TranslatingUtilities {
       return null;
   }
 
+  
 }

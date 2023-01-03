@@ -134,7 +134,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     private String hint;
     private String style;
     private Map<String, String> attributes;
-    private List<XhtmlNode> children;
+    private XhtmlNodeList children;
     
     public Piece(String tag) {
       super();
@@ -205,9 +205,9 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       return children != null && !children.isEmpty();
     }
 
-    public List<XhtmlNode> getChildren() {
+    public XhtmlNodeList getChildren() {
       if (children == null)
-        children = new ArrayList<XhtmlNode>();
+        children = new XhtmlNodeList();
       return children;
     }
 
@@ -853,8 +853,9 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
         } else if (p.getStyle() != null) {
           XhtmlNode s = addStyle(tc.addTag("span"), p);
           s.addText(p.getText());
-        } else
+        } else {
           tc.addText(p.getText());
+        }
         if (p.hasChildren()) {
           tc.getChildNodes().addAll(p.getChildren());
         }

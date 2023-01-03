@@ -120,7 +120,7 @@ public class PEBuilder {
     if (!profile.hasSnapshot()) {
       throw new DefinitionException("Profile '"+profile.getVersionedUrl()+"' does not have a snapshot");      
     }
-    return new PEDefinitionResource(this, profile);
+    return new PEDefinitionResource(this, profile, profile.getName());
   }
   
   /**
@@ -145,7 +145,7 @@ public class PEBuilder {
     if (!profile.hasSnapshot()) {
       throw new DefinitionException("Profile '"+url+"' does not have a snapshot");      
     }
-    return new PEDefinitionResource(this, profile);
+    return new PEDefinitionResource(this, profile, profile.getName());
   }
   
   /**
@@ -170,7 +170,7 @@ public class PEBuilder {
     if (!profile.hasSnapshot()) {
       throw new DefinitionException("Profile '"+url+"' does not have a snapshot");      
     }
-    return new PEDefinitionResource(this, profile);
+    return new PEDefinitionResource(this, profile, profile.getName());
   }
   
   /**
@@ -321,7 +321,7 @@ public class PEBuilder {
           ElementDefinition defn = list.get(i);
           if (!defn.getMax().equals("0") && (allFixed || include(defn))) {
             if (passElementPropsCheck(defn) && !Utilities.existsInList(defn.getName(), omitList)) {
-              PEDefinitionElement pe = new PEDefinitionElement(this, profile, defn);
+              PEDefinitionElement pe = new PEDefinitionElement(this, profile, defn, parent.path());
               pe.setRecursing(definition == defn || (profile.getDerivation() == TypeDerivationRule.SPECIALIZATION && profile.getType().equals("Extension")));
               if (cu.isPrimitiveDatatype(definition.getTypeFirstRep().getWorkingCode()) && "value".equals(pe.name())) {
                 pe.setMustHaveValue(definition.getMustHaveValue());
@@ -335,11 +335,11 @@ public class PEBuilder {
                 while (i < list.size() && list.get(i).getPath().equals(defn.getPath())) {
                   StructureDefinition ext = getExtensionDefinition(list.get(i));
                   if (ext != null) {
-                    res.add(new PEDefinitionExtension(this, list.get(i).getSliceName(), profile, list.get(i), defn, ext));
+                    res.add(new PEDefinitionExtension(this, list.get(i).getSliceName(), profile, list.get(i), defn, ext, parent.path()));
                   } else if (isTypeSlicing(defn)) {
-                    res.add(new PEDefinitionTypeSlice(this, list.get(i).getSliceName(), profile, list.get(i), defn));
+                    res.add(new PEDefinitionTypeSlice(this, list.get(i).getSliceName(), profile, list.get(i), defn, parent.path()));
                   } else {
-                    res.add(new PEDefinitionSlice(this, list.get(i).getSliceName(), profile, list.get(i), defn));
+                    res.add(new PEDefinitionSlice(this, list.get(i).getSliceName(), profile, list.get(i), defn, parent.path()));
                   }
                   i++;
                 }
@@ -362,7 +362,6 @@ public class PEBuilder {
       throw new DefinitionException("not done yet");
     }
   }
-
 
   private boolean passElementPropsCheck(ElementDefinition bdefn) {
     switch (elementProps) {
@@ -390,14 +389,14 @@ public class PEBuilder {
     }
   }
 
-  protected List<PEDefinition> listSlices(StructureDefinition profileStructure, ElementDefinition definition) {
+  protected List<PEDefinition> listSlices(StructureDefinition profileStructure, ElementDefinition definition, PEDefinition parent) {
     List<ElementDefinition> list = pu.getSliceList(profileStructure, definition);
     List<PEDefinition> res = new ArrayList<>();
     for (ElementDefinition ed : list) {
       if (profileStructure.getDerivation() == TypeDerivationRule.CONSTRAINT && profileStructure.getType().equals("Extension")) {
-        res.add(new PEDefinitionSubExtension(this, profileStructure, ed));
+        res.add(new PEDefinitionSubExtension(this, profileStructure, ed, parent.path()));
       } else {
-        PEDefinitionElement pe = new PEDefinitionElement(this, profileStructure, ed);
+        PEDefinitionElement pe = new PEDefinitionElement(this, profileStructure, ed, parent.path());
         pe.setRecursing(definition == ed || (profileStructure.getDerivation() == TypeDerivationRule.SPECIALIZATION && profileStructure.getType().equals("Extension")));
         res.add(pe);
       }
@@ -561,5 +560,9 @@ public class PEBuilder {
 
   public List<Base> exec(Resource resource, Base data, String fhirpath) {
     return fpe.evaluate(this, resource, resource, data, fhirpath);
+  }
+
+  public boolean isResource(String name) {
+    return cu.isResource(name);
   }
 }

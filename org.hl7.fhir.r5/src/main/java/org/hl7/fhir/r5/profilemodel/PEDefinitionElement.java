@@ -10,8 +10,8 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 
 public class PEDefinitionElement extends PEDefinition {
 
-  public PEDefinitionElement(PEBuilder builder, StructureDefinition profile, ElementDefinition definition) {
-    super(builder, definition.getName(), profile, definition);
+  public PEDefinitionElement(PEBuilder builder, StructureDefinition profile, ElementDefinition definition, String ppath) {
+    super(builder, definition.getName(), profile, definition, ppath);
   }
 
   @Override
@@ -38,7 +38,7 @@ public class PEDefinitionElement extends PEDefinition {
     if (definition.hasSlicing()) {
       // get all the slices 
       CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(" or ");
-      List<PEDefinition> slices = builder.listSlices(profile, definition);
+      List<PEDefinition> slices = builder.listSlices(profile, definition, this);
       // list all the fhirpaths
       for (PEDefinition slice : slices) {
         b.append("("+builder.makeSliceExpression(profile, definition.getSlicing(), slice.definition())+")");
@@ -51,5 +51,6 @@ public class PEDefinitionElement extends PEDefinition {
       return base;
     }
   }
+
 
 }
