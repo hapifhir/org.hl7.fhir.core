@@ -6,8 +6,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-public class XhtmlNodeList extends XhtmlFluent implements List<XhtmlNode> {
+public class XhtmlNodeList extends XhtmlFluent implements List<XhtmlNode>, java.io.Serializable {
 
+  private static final long serialVersionUID = 1L;
   private List<XhtmlNode> list = new ArrayList<>();
   private boolean inPara;
   private boolean inLink;
