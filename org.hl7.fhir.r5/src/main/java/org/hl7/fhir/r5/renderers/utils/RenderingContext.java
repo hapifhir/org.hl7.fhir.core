@@ -74,6 +74,12 @@ public class RenderingContext {
     IG_PUBLISHER
   }
   
+  public enum StructureDefinitionRendererMode {
+    SUMMARY, // 5 cells: tree/name | flags | cardinality | type | details
+    BINDINGS, // tree/name + column for each kind of binding found, cells are lists of bindings 
+    OBLIGATIONS, // tree/name + column for each actor that has obligations
+  }
+  
   public enum QuestionnaireRendererMode {
     /**
      * A visual presentation of the questionnaire, with a set of property panes that can be toggled on and off.
@@ -139,6 +145,8 @@ public class RenderingContext {
   private boolean inlineGraphics;
 
   private QuestionnaireRendererMode questionnaireMode = QuestionnaireRendererMode.FORM;
+  private StructureDefinitionRendererMode structureMode = StructureDefinitionRendererMode.SUMMARY;
+  
   private boolean addGeneratedNarrativeHeader = true;
   private boolean showComments = false;
 
@@ -201,6 +209,7 @@ public class RenderingContext {
     res.destDir = destDir;
     res.addGeneratedNarrativeHeader = addGeneratedNarrativeHeader;
     res.questionnaireMode = questionnaireMode;
+    res.structureMode = structureMode;
     res.header = header;
     res.links.putAll(links);
     res.inlineGraphics = inlineGraphics;
@@ -433,6 +442,15 @@ public class RenderingContext {
 
   public RenderingContext setQuestionnaireMode(QuestionnaireRendererMode questionnaireMode) {
     this.questionnaireMode = questionnaireMode;
+    return this;
+  }
+  
+  public StructureDefinitionRendererMode getStructureMode() {
+    return structureMode;
+  }
+
+  public RenderingContext setStructureMode(StructureDefinitionRendererMode structureMode) {
+    this.structureMode = structureMode;
     return this;
   }
 

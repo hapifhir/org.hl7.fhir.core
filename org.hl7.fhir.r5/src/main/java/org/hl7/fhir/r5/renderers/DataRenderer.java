@@ -70,9 +70,11 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
+import org.hl7.fhir.r5.renderers.CodeResolver.CodeResolution;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
+import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -84,7 +86,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 
-public class DataRenderer extends Renderer {
+public class DataRenderer extends Renderer implements CodeResolver {
   
   // -- 1. context --------------------------------------------------------------
     
@@ -301,6 +303,9 @@ public class DataRenderer extends Renderer {
   }
 
   private String lookupCode(String system, String version, String code) {
+    if (JurisdictionUtilities.isJurisdiction(system)) {
+      return JurisdictionUtilities.displayJurisdiction(system+"#"+code);
+    }
     ValidationResult t = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions().setVersionFlexible(true), system, version, code, null);
 
     if (t != null && t.getDisplay() != null)
@@ -947,6 +952,12 @@ public class DataRenderer extends Renderer {
       } else {
         return "https://www.nlm.nih.gov/research/umls/rxnorm/index.html";
       }
+    } else if ("urn:iso:std:iso:3166".equals(system)) {
+      if (!Utilities.noString(code)) {
+        return "https://en.wikipedia.org/wiki/ISO_3166-2:"+code;        
+      } else {
+        return "https://en.wikipedia.org/wiki/ISO_3166-2";
+      }
     } else {
       CodeSystem cs = context.getWorker().fetchCodeSystem(system, version);
       if (cs != null && cs.hasUserData("path")) {
@@ -960,6 +971,41 @@ public class DataRenderer extends Renderer {
     return null;
   }
   
+  public CodeResolution resolveCode(String system, String code) {
+    return resolveCode(new Coding().setSystem(system).setCode(code));
+  }
+
+  public CodeResolution resolveCode(Coding c) {
+    String systemName;
+    String systemLink;
+    String link;
+    String display = null;
+    String hint;
+    
+    if (c.hasDisplayElement())
+      display = c.getDisplay();
+    if (Utilities.noString(display))
+      display = lookupCode(c.getSystem(), c.getVersion(), c.getCode());
+    if (Utilities.noString(display)) {
+      display = c.getCode();
+    }
+    
+    CodeSystem cs = context.getWorker().fetchCodeSystem(c.getSystem());
+    systemLink = cs != null ? cs.getUserString("path") : null;
+    systemName = cs != null ? cs.present() : describeSystem(c.getSystem());
+    link = getLinkForCode(c.getSystem(), c.getVersion(), c.getCode());
+
+    hint = systemName+": "+display+(c.hasVersion() ? " (version = "+c.getVersion()+")" : "");
+    return new CodeResolution(systemName, systemLink, link, display, hint);
+  }
+  
+  public CodeResolution resolveCode(CodeableConcept code) {
+    if (code.hasCoding()) {
+      return resolveCode(code.getCodingFirstRep());
+    } else {
+      return new CodeResolution(null, null, null, code.getText(), code.getText());
+    }
+  }
   protected void renderCodingWithDetails(XhtmlNode x, Coding c) {
     String s = "";
     if (c.hasDisplayElement())

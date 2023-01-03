@@ -5996,5 +5996,9 @@ public class JurisdictionUtilities {
     }
     return "Unknown region code '"+c.getCode()+"'";
   }
+
+  public static boolean isJurisdiction(String system) {
+    return Utilities.existsInList(system, "http://unstats.un.org/unsd/methods/m49/m49.htm", "urn:iso:std:iso:3166", "urn:iso:std:iso:3166:-2");
+  }
 }
 

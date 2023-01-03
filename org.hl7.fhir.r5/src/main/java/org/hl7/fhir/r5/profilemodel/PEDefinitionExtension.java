@@ -6,6 +6,8 @@ import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.SlicingRules;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.r5.profilemodel.PEDefinition.PEDefinitionElementMode;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.StructureDefinition;
 
 public class PEDefinitionExtension extends PEDefinition {
@@ -15,8 +17,8 @@ public class PEDefinitionExtension extends PEDefinition {
   private ElementDefinition eed;
   private ElementDefinition ved;
 
-  public PEDefinitionExtension(PEBuilder builder, String name, StructureDefinition profile, ElementDefinition definition, ElementDefinition sliceDefinition, StructureDefinition extension) {
-    super(builder, name, profile, definition);
+  public PEDefinitionExtension(PEBuilder builder, String name, StructureDefinition profile, ElementDefinition definition, ElementDefinition sliceDefinition, StructureDefinition extension, String ppath) {
+    super(builder, name, profile, definition, ppath);
     this.sliceDefinition = sliceDefinition;
     this.extension= extension;
     eed = extension.getSnapshot().getElementByPath("Extension.extension");
@@ -48,7 +50,7 @@ public class PEDefinitionExtension extends PEDefinition {
       if (eed.getSlicing().getRules() != SlicingRules.CLOSED) {
         children.addAll(builder.listChildren(allFixed, this, extension, eed, "http://hl7.org/fhir/StructureDefinition/Extension", "value[x]", "url"));
       }      
-      children.addAll(builder.listSlices(extension, eed));
+      children.addAll(builder.listSlices(extension, eed, this));
     }
   }
 
@@ -61,4 +63,7 @@ public class PEDefinitionExtension extends PEDefinition {
     }
   }
 
+  public PEDefinitionElementMode mode() {
+    return PEDefinitionElementMode.Extension;
+  }
 }

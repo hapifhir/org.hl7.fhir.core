@@ -12,8 +12,8 @@ public class PEDefinitionTypeSlice extends PEDefinition {
 
   protected ElementDefinition sliceDefinition;
 
-  public PEDefinitionTypeSlice(PEBuilder builder, String name, StructureDefinition profile, ElementDefinition definition, ElementDefinition sliceDefinition) {
-    super(builder, name, profile, definition);
+  public PEDefinitionTypeSlice(PEBuilder builder, String name, StructureDefinition profile, ElementDefinition definition, ElementDefinition sliceDefinition, String ppath) {
+    super(builder, name, profile, definition, ppath);
     this.sliceDefinition = sliceDefinition;
   }
 

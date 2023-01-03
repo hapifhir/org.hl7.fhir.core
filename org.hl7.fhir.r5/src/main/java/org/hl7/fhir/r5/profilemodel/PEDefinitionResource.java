@@ -6,8 +6,8 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 
 public class PEDefinitionResource extends PEDefinition {
 
-  public PEDefinitionResource(PEBuilder builder, StructureDefinition profile) {
-    super(builder, profile.getName(), profile, profile.getSnapshot().getElementFirstRep());
+  public PEDefinitionResource(PEBuilder builder, StructureDefinition profile, String ppath) {
+    super(builder, profile.getName(), profile, profile.getSnapshot().getElementFirstRep(), ppath);
   }
 
   @Override
