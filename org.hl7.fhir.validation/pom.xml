@@ -5,7 +5,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>org.hl7.fhir.core</artifactId>
-        <version>5.6.87-SNAPSHOT</version>
+        <version>5.6.89-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -317,7 +317,7 @@
                 </configuration>
             </plugin>
             <!--duplicated from parent pom trying 
-             to force r4.model to by optional -->
+             to force r4.model to be optional -->
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
