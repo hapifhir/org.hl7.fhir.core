@@ -39,7 +39,7 @@ public class TestPackageLoader implements IContextResourceLoader {
 
   @Override
   public String getResourcePath(Resource resource) {
-    return null;
+    return resource.fhirType().toLowerCase()+"-"+resource.getId()+".html";
   }
 
   @Override

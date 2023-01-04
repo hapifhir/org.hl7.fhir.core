@@ -1,9 +1,10 @@
 package org.hl7.fhir.r5.conformance.profile;
 
+import org.hl7.fhir.r5.model.ElementDefinition;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.hl7.fhir.r5.model.ElementDefinition;
 
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class PathSlicingParams {

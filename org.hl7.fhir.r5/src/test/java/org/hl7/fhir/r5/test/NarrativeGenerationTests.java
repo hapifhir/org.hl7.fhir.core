@@ -11,8 +11,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.conformance.profile.BindingResolution;
+import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
-import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
@@ -22,17 +23,22 @@ import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.ElementWrappers;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ITypeParser;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.StructureDefinitionRendererMode;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
+import org.hl7.fhir.r5.test.utils.TestPackageLoader;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xml.XMLUtil;
@@ -86,6 +92,14 @@ public class NarrativeGenerationTests {
 
     @Override
     public BindingResolution resolveBinding(StructureDefinition def, String url, String path) throws FHIRException {
+      ValueSet vs = context.fetchResource(ValueSet.class, url);
+      if (vs != null) {
+        if (vs.hasUserData("path")) {
+          return new BindingResolution(vs.present(), vs.getUserString("path"));
+        } else {
+          return new BindingResolution(vs.present(), "valueset-"+vs.getIdBase()+".html");
+        }
+      }
       throw new NotImplementedException();      
     }
 
@@ -99,7 +113,7 @@ public class NarrativeGenerationTests {
 
     @Override
     public boolean prependLinks() {
-      throw new NotImplementedException();      
+      return false;      
     }
 
     @Override
@@ -137,13 +151,23 @@ public class NarrativeGenerationTests {
 
   public static class TestDetails {
     private String id;
+    private String sdmode;
     private boolean header;
     private boolean meta;
     private boolean technical;
+    private String register;
 
     public TestDetails(Element test) {
       super();
       id = test.getAttribute("id");
+      sdmode = test.getAttribute("sdmode");
+      if ("".equals(sdmode)) {
+        sdmode = null;
+      }
+      register = test.getAttribute("register");
+      if ("".equals(register)) {
+        register = null;
+      }
       header = "true".equals(test.getAttribute("header"));
       meta = "true".equals(test.getAttribute("meta"));
       technical = "technical".equals(test.getAttribute("mode"));
@@ -153,12 +177,20 @@ public class NarrativeGenerationTests {
       return id;
     }
 
+    public String getSDMode() {
+      return sdmode;
+    }
+
     public boolean isHeader() {
       return header;
     }
 
     public boolean isMeta() {
       return meta;
+    }
+
+    public String getRegister() {
+      return register;
     } 
     
   }
@@ -176,13 +208,23 @@ public class NarrativeGenerationTests {
   }
 
   @BeforeAll
-  public static void setUp() {
+  public static void setUp() throws IOException {
     context = TestingUtilities.getSharedWorkerContext("5.0.0");
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true);
+    NpmPackage ips = pcm.loadPackage("hl7.fhir.uv.ips#1.1.0");
+    context.loadFromPackage(ips,  new TestPackageLoader(new String[] { "StructureDefinition", "ValueSet" }));
   }
 
   @ParameterizedTest(name = "{index}: file {0}")
   @MethodSource("data")
   public void test(String id, TestDetails test) throws Exception {
+    if (test.getRegister() != null) {
+      if (test.getRegister().endsWith(".json")) {
+        context.cacheResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getRegister())));
+      } else {
+        context.cacheResource(new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getRegister())));
+      }
+    }
     RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     rc.setDestDir(Utilities.path("[tmp]", "narrative"));
     rc.setHeader(test.isHeader());
@@ -198,6 +240,9 @@ public class NarrativeGenerationTests {
     rc.setMode(test.technical ? ResourceRendererMode.TECHNICAL : ResourceRendererMode.END_USER);
     rc.setProfileUtilities(new ProfileUtilities(rc.getContext(), null, new TestProfileKnowledgeProvider(rc.getContext())));
         
+    if (test.getSDMode() != null) {
+      rc.setStructureMode(StructureDefinitionRendererMode.valueOf(test.getSDMode().toUpperCase()));
+    }
     
     Resource source;
     if (TestingUtilities.findTestResource("r5", "narrative", test.getId() + ".json")) {
@@ -208,7 +253,7 @@ public class NarrativeGenerationTests {
     
     XhtmlNode x = RendererFactory.factory(source, rc).build(source);
     String expected = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".html"));
-    String actual = HEADER+new XhtmlComposer(true, true).compose(x)+FOOTER;
+    String actual = HEADER+new XhtmlComposer(true, false).compose(x)+FOOTER;
     String expectedFileName = CompareUtilities.tempFile("narrative", test.getId() + ".expected.html");
     String actualFileName = CompareUtilities.tempFile("narrative", test.getId() + ".actual.html");
     TextFile.stringToFile(expected, expectedFileName);

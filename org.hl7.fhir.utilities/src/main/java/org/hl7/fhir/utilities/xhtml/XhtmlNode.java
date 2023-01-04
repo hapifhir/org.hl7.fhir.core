@@ -35,7 +35,6 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +49,7 @@ import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.primitive.XhtmlDt;
 
 @ca.uhn.fhir.model.api.annotation.DatatypeDef(name="xhtml")
-public class XhtmlNode implements IBaseXhtml {
+public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   private static final long serialVersionUID = -4362547161441436492L;
 
 
@@ -83,11 +82,9 @@ public class XhtmlNode implements IBaseXhtml {
   private NodeType nodeType;
   private String name;
   private Map<String, String> attributes = new HashMap<String, String>();
-  private List<XhtmlNode> childNodes = new ArrayList<XhtmlNode>();
+  private XhtmlNodeList childNodes = new XhtmlNodeList();
   private String content;
   private boolean notPretty;
-  private boolean inPara;
-  private boolean inLink;
   private boolean seperated;  
   private Boolean emptyExpanded;
 
@@ -129,7 +126,7 @@ public class XhtmlNode implements IBaseXhtml {
     return attributes;
   }
 
-  public List<XhtmlNode> getChildNodes() {
+  public XhtmlNodeList getChildNodes() {
     return childNodes;
   }
 
@@ -205,11 +202,11 @@ public class XhtmlNode implements IBaseXhtml {
 //    }
     XhtmlNode node = new XhtmlNode(NodeType.Element);
     node.setName(name);
-    if (inPara || name.equals("p")) {
-      node.inPara = true;
+    if (childNodes.isInPara() || name.equals("p")) {
+      node.getChildNodes().setInPara(true);
     }
-    if (inLink || name.equals("a")) {
-      node.inLink = true;
+    if (childNodes.isInLink() || name.equals("a")) {
+      node.getChildNodes().setInLink(true);
     }
     childNodes.add(node);
     return node;
@@ -221,11 +218,11 @@ public class XhtmlNode implements IBaseXhtml {
     if (!(nodeType == NodeType.Element || nodeType == NodeType.Document)) 
       throw new Error("Wrong node type. is "+nodeType.toString());
     XhtmlNode node = new XhtmlNode(NodeType.Element);
-    if (inPara || name.equals("p")) {
-      node.inPara = true;
+    if (childNodes.isInPara() || name.equals("p")) {
+      node.getChildNodes().setInPara(true);
     }
-    if (inLink || name.equals("a")) {
-      node.inLink = true;
+    if (childNodes.isInLink() || name.equals("a")) {
+      node.getChildNodes().setInLink(true);
     }
     node.setName(name);
     childNodes.add(index, node);
@@ -554,159 +551,7 @@ public class XhtmlNode implements IBaseXhtml {
   }
 
   // xhtml easy adders -----------------------------------------------
-  public XhtmlNode h1() {
-    return addTag("h1");
-  }
   
-  public XhtmlNode h2() {
-    return addTag("h2");
-  }
-  
-  public XhtmlNode h(int level) {
-    if (level < 1 || level > 6) {
-      throw new FHIRException("Illegal Header level "+level);
-    }
-    return addTag("h"+Integer.toString(level));
-  }
-  
-  public XhtmlNode h3() {
-    return addTag("h3");
-  }
-  
-  public XhtmlNode h4() {
-    return addTag("h4");
-  }
-  
-  public XhtmlNode table(String clss) {
-    XhtmlNode res = addTag("table");
-    if (!Utilities.noString(clss))
-      res.setAttribute("class", clss);
-    return res;
-  }
-  
-  public XhtmlNode tr() {
-    return addTag("tr");
-  }
-  
-  public XhtmlNode th() {
-    return addTag("th");
-  }
-  
-  public XhtmlNode td() {
-    return addTag("td");
-  }
-  
-  public XhtmlNode td(String clss) {
-    return addTag("td").attribute("class", clss);
-  }
-  
-  public XhtmlNode colspan(String n) {
-    return setAttribute("colspan", n);
-  }
-  
-  public XhtmlNode div() {
-    return addTag("div");
-  }
-
-  public XhtmlNode para() {
-    return addTag("p");
-  }
-
-  public XhtmlNode pre() {
-    return addTag("pre");
-  }
-
-  public XhtmlNode pre(String clss) {
-    return addTag("pre").setAttribute("class", clss);
-  }
-
-  public void br() {
-    addTag("br");
-  }
-
-  public void hr() {
-    addTag("hr");
-  }
-
-  public XhtmlNode ul() {
-    return addTag("ul");
-  }
-
-  public XhtmlNode li() {
-    return addTag("li");
-  }
-
-  public XhtmlNode b() {
-    return addTag("b");
-  }
-
-  public XhtmlNode i() {
-    return addTag("i");
-  }
-  
-  public XhtmlNode tx(String cnt) {
-    return addText(cnt);
-  }
-
-  // differs from tx because it returns the owner node, not the created text
-  public XhtmlNode txN(String cnt) {
-    addText(cnt);
-    return this;
-  }
-
-  public XhtmlNode tx(int cnt) {
-    return addText(Integer.toString(cnt));
-  }
-
-  public XhtmlNode ah(String href) {
-    return addTag("a").attribute("href", href);
-  }
-
-  public XhtmlNode ah(String href, String title) {
-    return addTag("a").attribute("href", href).attribute("title", title);
-  }
-
-  public XhtmlNode img(String src, String alt) {
-    return addTag("img").attribute("src", src).attribute("alt", alt);    
-  }
-
-  public XhtmlNode img(String src, String alt, String title) {
-    return addTag("img").attribute("src", src).attribute("alt", alt).attribute("title", title);    
-  }
-
-  public XhtmlNode an(String href) {
-    return an(href, " ");
-  }
-  
-  public XhtmlNode an(String href, String tx) {
-    XhtmlNode a = addTag("a").attribute("name", href);
-    a.tx(tx);
-    return a;
-  }
-
-  public XhtmlNode span(String style, String title) {
-    XhtmlNode res = addTag("span");
-    if (!Utilities.noString(style))
-      res.attribute("style", style);
-    if (!Utilities.noString(title))
-      res.attribute("title", title);
-    return res;
-  }
-
-
-  public XhtmlNode code(String text) {
-    return addTag("code").tx(text);
-  }
-
-  public XhtmlNode code() {
-    return addTag("code");
-  }
-
-
-  public XhtmlNode blockquote() {
-    return addTag("blockquote");
-  }
-
 
   @Override
   public String toString() {
@@ -847,36 +692,6 @@ public class XhtmlNode implements IBaseXhtml {
     return "p".equals(name);
   }
 
-
-  public void markdown(String md, String source) throws IOException {
-   if (md != null) {
-      String s = new MarkDownProcessor(Dialect.COMMON_MARK).process(md, source);
-      XhtmlParser p = new XhtmlParser();
-      XhtmlNode m;
-      try {
-        m = p.parse("<div>"+s+"</div>", "div");
-      } catch (org.hl7.fhir.exceptions.FHIRFormatError e) {
-        throw new FHIRFormatError(e.getMessage(), e);
-      }
-      getChildNodes().addAll(m.getChildNodes());
-   }        
-  }
-
-  public void innerHTML(String html) throws IOException {
-    if (html != null) {
-       XhtmlParser p = new XhtmlParser();
-       XhtmlNode m;
-       try {
-         m = p.parse("<div>"+html+"</div>", "div");
-       } catch (org.hl7.fhir.exceptions.FHIRFormatError e) {
-         throw new FHIRFormatError(e.getMessage(), e);
-       }
-       getChildNodes().addAll(m.getChildNodes());
-    }        
-   }
-
-
-
   public XhtmlNode sep(String separator) {
     // if there's already text, add the separator. otherwise, we'll add it next time
     if (!seperated) {
@@ -887,8 +702,23 @@ public class XhtmlNode implements IBaseXhtml {
   }
 
 
-
+  // more fluent
   
+  public XhtmlNode colspan(String n) {
+    return setAttribute("colspan", n);
+  }
+  
+  // differs from tx because it returns the owner node, not the created text
+  public XhtmlNode txN(String cnt) {
+    addText(cnt);
+    return this;
+  }
+
+
+  @Override
+  protected void addChildren(XhtmlNodeList childNodes) {
+    this.childNodes.addAll(childNodes);    
+  }
 
   
   

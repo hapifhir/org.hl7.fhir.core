@@ -236,4 +236,8 @@ public class PEInstance {
   public String getPath() {
     return path;
   }
+
+  public Base getBase() {
+    return data;
+  }
 }

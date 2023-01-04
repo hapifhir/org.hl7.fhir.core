@@ -6,6 +6,7 @@ import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.SlicingRules;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.r5.profilemodel.PEDefinition.PEDefinitionElementMode;
 import org.hl7.fhir.r5.model.StructureDefinition;
 
 public class PEDefinitionSubExtension extends PEDefinition {
@@ -14,8 +15,8 @@ public class PEDefinitionSubExtension extends PEDefinition {
   private ElementDefinition ved;
   private ElementDefinition ued;
 
-  public PEDefinitionSubExtension(PEBuilder builder, StructureDefinition profile, ElementDefinition definition) {
-    super(builder, definition.getSliceName(), profile, definition);
+  public PEDefinitionSubExtension(PEBuilder builder, StructureDefinition profile, ElementDefinition definition, String ppath) {
+    super(builder, definition.getSliceName(), profile, definition, ppath);
     List<ElementDefinition> childDefs = builder.getChildren(profile, definition);    
     eed = getElementByName(childDefs, "extension");
     ved = getElementByName(childDefs, "value[x]"); 
@@ -56,7 +57,7 @@ public class PEDefinitionSubExtension extends PEDefinition {
       if (eed.getSlicing().getRules() != SlicingRules.CLOSED) {
         children.addAll(builder.listChildren(allFixed, this, profile, eed, "http://hl7.org/fhir/StructureDefinition/Extension", "value[x]", "url"));
       } 
-      children.addAll(builder.listSlices(profile, eed));
+      children.addAll(builder.listSlices(profile, eed, this));
     }
   }
 
@@ -65,8 +66,12 @@ public class PEDefinitionSubExtension extends PEDefinition {
     if (ved.isRequired() || eed.isProhibited()) {
       return "extension('"+ued.getFixed().primitiveValue()+"').value";
     } else {
-      return "extension('"+ued.getFixed().primitiveValue()+"').extension";
+      return "extension('"+ued.getFixed().primitiveValue()+"')";
     }
+  }
+
+  public PEDefinitionElementMode mode() {
+    return PEDefinitionElementMode.Extension;
   }
 
 }

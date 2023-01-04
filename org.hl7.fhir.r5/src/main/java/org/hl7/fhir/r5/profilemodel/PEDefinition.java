@@ -7,14 +7,23 @@ import java.util.Map;
 
 import org.apache.xmlbeans.impl.xb.xsdschema.All;
 import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.profilemodel.PEDefinition.PEDefinitionElementMode;
+import org.hl7.fhir.utilities.Utilities;
 
 public abstract class PEDefinition {
 
+  public enum PEDefinitionElementMode {
+    Resource, Element, DataType, Extension
+  }
+
   protected PEBuilder builder;
   protected String name;
+  protected String path;
   protected StructureDefinition profile;
   protected ElementDefinition definition;
   protected List<PEType> types;
@@ -40,11 +49,12 @@ public abstract class PEDefinition {
 ////    this.data = data;
 //  }
 
-  protected PEDefinition(PEBuilder builder, String name, StructureDefinition profile, ElementDefinition definition) {
+  protected PEDefinition(PEBuilder builder, String name, StructureDefinition profile, ElementDefinition definition, String ppath) {
     this.builder = builder;
     this.name = name;
     this.profile = profile;
     this.definition = definition;
+    this.path = path == null ? name : ppath+"."+name;
   }
 
 
@@ -53,6 +63,13 @@ public abstract class PEDefinition {
    */
   public String name() {
     return name;
+  }
+
+  /** 
+   * @return The path of the element or slice in the profile (name.name.name...)
+   */
+  public String path() {
+    return path;
   }
 
   /**
@@ -239,6 +256,28 @@ public abstract class PEDefinition {
     return max() > 1;
   }
   
+  public PEDefinitionElementMode mode() {
+    if (builder.isResource(definition.getBase().getPath())) {
+      return PEDefinitionElementMode.Resource;
+    }
+    for (TypeRefComponent tr : definition.getType()) {
+      if ("Extension".equals(tr.getWorkingCode())) {
+        return PEDefinitionElementMode.Extension;
+      }
+      if (!Utilities.existsInList(tr.getWorkingCode(), "Element", "BackboneElement")) {
+        return PEDefinitionElementMode.DataType;
+      }
+    }
+    return PEDefinitionElementMode.Element;
+  }
+
+  /**
+   * @return true if this element is profiled one way or another
+   */
+  public boolean isProfiled() {
+    return !profile.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition");
+  }
+
 }
 
 
