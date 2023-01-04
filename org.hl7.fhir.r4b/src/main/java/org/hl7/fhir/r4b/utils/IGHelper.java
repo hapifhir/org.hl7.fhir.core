@@ -40,12 +40,12 @@ public class IGHelper {
   public static final String EXT_MAPPING_CSV = ToolingExtensions.EXT_IGP_MAPPING_CSV;
   public static final String EXT_BUNDLE = ToolingExtensions.EXT_IGP_BUNDLE;
   public static final String EXT_RESOURCE_INFO = ToolingExtensions.EXT_IGP_RESOURCE_INFO;
-  public static final String EXT_CONTAINED_RESOURCE_INFO = ToolingExtensions.EXT_IGP_CONTAINED_RESOURCE_INFO;
+//  public static final String EXT_CONTAINED_RESOURCE_INFO = ToolingExtensions.EXT_IGP_CONTAINED_RESOURCE_INFO;
   public static final String EXT_PRIVATE_BASE = ToolingExtensions.EXT_PRIVATE_BASE;
 
   public static String readStringParameter(ImplementationGuideDefinitionComponent ig, String name) {
     for (ImplementationGuideDefinitionParameterComponent p : ig.getParameter()) {
-      if (name == p.getCode().toCode()) {
+      if (name == p.getCode()) {
         return p.getValue();
       }
     }
@@ -59,19 +59,19 @@ public class IGHelper {
 
   public static void setParameter(ImplementationGuideDefinitionComponent ig, String name, String value) {
     for (ImplementationGuideDefinitionParameterComponent p : ig.getParameter()) {
-      if (name == p.getCode().toCode()) {
+      if (name == p.getCode()) {
         p.setValue(value);
         return;
       }
     }
     ImplementationGuideDefinitionParameterComponent p = ig.addParameter();
-    p.setCode(org.hl7.fhir.r4b.model.ImplementationGuide.GuideParameterCode.fromCode(name));
+    p.setCode(name);
     p.setValue(value);
   }
   
   public static void addParameter(ImplementationGuideDefinitionComponent ig, String name, String value) {
     ImplementationGuideDefinitionParameterComponent p = ig.addParameter();
-    p.setCode(org.hl7.fhir.r4b.model.ImplementationGuide.GuideParameterCode.fromCode(name));
+    p.setCode(name);
     p.setValue(value);
   }
   

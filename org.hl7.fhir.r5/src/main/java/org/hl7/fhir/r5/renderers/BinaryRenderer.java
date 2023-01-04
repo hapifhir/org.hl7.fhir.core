@@ -1,7 +1,6 @@
 package org.hl7.fhir.r5.renderers;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +80,7 @@ public class BinaryRenderer {
       String fn = "Binary-Native-"+bin.getId()+ext;
       TextFile.bytesToFile(bin.getContent(), Utilities.path(folder, fn));
       filenames.add(fn);
-      x.img("Binary-Native-"+bin.getId()+ext);
+      x.img("Binary-Native-"+bin.getId()+ext, "binary");
     }
   }
 

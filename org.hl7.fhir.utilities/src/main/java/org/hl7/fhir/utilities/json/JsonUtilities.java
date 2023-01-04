@@ -2,11 +2,15 @@ package org.hl7.fhir.utilities.json;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map.Entry;
 
 import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.Utilities;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -166,4 +170,17 @@ public class JsonUtilities {
     return res;
   }
 
+  public static Instant parseDate(JsonObject obj, String name) {
+    String source = str(obj, name);
+    if (Utilities.noString(source)) {
+      return null;
+    } else {
+      OffsetDateTime odt = OffsetDateTime.parse( source );
+      return odt.toInstant();
+    }
+  }
+
+  public static void setProperty(JsonObject json, String name, String value) {
+    json.addProperty(name, value);    
+  }
 }

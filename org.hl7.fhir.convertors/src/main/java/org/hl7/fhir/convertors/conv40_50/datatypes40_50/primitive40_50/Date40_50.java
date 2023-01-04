@@ -1,10 +1,7 @@
 package org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50;
 
-import org.hl7.fhir.convertors.context.ConversionContext10_50;
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4.model.DateType;
-import org.hl7.fhir.r5.model.DateTimeType;
 
 public class Date40_50 {
   public static org.hl7.fhir.r5.model.DateType convertDate(org.hl7.fhir.r4.model.DateType src) throws FHIRException {

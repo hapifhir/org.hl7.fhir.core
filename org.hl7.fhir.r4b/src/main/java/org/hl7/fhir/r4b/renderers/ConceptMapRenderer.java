@@ -59,7 +59,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       p.addText(Utilities.capitalize(cm.getStatus().toString())+" (not intended for production usage). ");
     else
       p.addText(Utilities.capitalize(cm.getStatus().toString())+". ");
-    p.tx("Published on "+(cm.hasDate() ? cm.getDateElement().toHumanDisplay() : "?ngen-10?")+" by "+cm.getPublisher());
+    p.tx("Published on "+(cm.hasDate() ? display(cm.getDateElement()) : "?ngen-10?")+" by "+cm.getPublisher());
     if (!cm.getContact().isEmpty()) {
       p.tx(" (");
       boolean firsti = true;
@@ -129,14 +129,28 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         XhtmlNode tr = tbl.tr();
         tr.td().b().tx("Source Code");
         tr.td().b().tx("Relationship");
-        tr.td().b().tx("Destination Code");
+        tr.td().b().tx("Target Code");
         if (comment)
           tr.td().b().tx("Comment");
+        tr = tbl.tr();
+        XhtmlNode td = tr.td().colspan(comment ? "4" : "3");
+        td.tx("Mapping from ");
+        if (grp.hasSource()) {
+          renderCanonical(cm, td, grp.getSource());
+        } else {
+          td.code("unspecified code system");
+        }
+        td.tx(" to ");
+        if (grp.hasTarget()) {
+          renderCanonical(cm, td, grp.getTarget());
+        } else {
+          td.code("unspecified code system");
+        }
         for (SourceElementComponent ccl : grp.getElement()) {
           tr = tbl.tr();
-          XhtmlNode td = tr.td();
+          td = tr.td();
           td.addText(ccl.getCode());
-          display = getDisplayForConcept(systemFromCanonical(grp.getSource()), versionFromCanonical(grp.getSource()), ccl.getCode());
+          display = ccl.hasDisplay() ? ccl.getDisplay() : getDisplayForConcept(systemFromCanonical(grp.getSource()), versionFromCanonical(grp.getSource()), ccl.getCode());
           if (display != null && !isSameCodeAndDisplay(ccl.getCode(), display))
             td.tx(" ("+display+")");
           TargetElementComponent ccm = ccl.getTarget().get(0);
@@ -148,7 +162,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
           }
           td = tr.td();
           td.addText(ccm.getCode());
-          display = getDisplayForConcept(systemFromCanonical(grp.getTarget()), versionFromCanonical(grp.getTarget()), ccm.getCode());
+          display = ccm.hasDisplay() ? ccm.getDisplay() : getDisplayForConcept(systemFromCanonical(grp.getTarget()), versionFromCanonical(grp.getTarget()), ccm.getCode());
           if (display != null && !isSameCodeAndDisplay(ccm.getCode(), display))
             td.tx(" ("+display+")");
           if (comment)
@@ -174,7 +188,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         if (hasRelationships) {
           tr.td().b().tx("Relationship");
         }
-        tr.td().colspan(Integer.toString(1+targets.size())).b().tx("Destination Concept Details");
+        tr.td().colspan(Integer.toString(1+targets.size())).b().tx("Target Concept Details");
         if (comment) {
           tr.td().b().tx("Comment");
         }
@@ -403,7 +417,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     for (OtherElementComponent c : list) {
       if (s.equals(c.getProperty()))
         if (withSystem)
-          return c.getSystem()+" / "+c.getValue();
+          return /*c.getSystem()+" / "+*/c.getValue();
         else
           return c.getValue();
     }
@@ -412,8 +426,9 @@ public class ConceptMapRenderer extends TerminologyRenderer {
 
   private String getDisplay(List<OtherElementComponent> list, String s) {
     for (OtherElementComponent c : list) {
-      if (s.equals(c.getProperty()))
-        return getDisplayForConcept(systemFromCanonical(c.getSystem()), versionFromCanonical(c.getSystem()), c.getValue());
+      if (s.equals(c.getProperty())) {
+        // return getDisplayForConcept(systemFromCanonical(c.getSystem()), versionFromCanonical(c.getSystem()), c.getValue());
+      }
     }
     return null;
   }

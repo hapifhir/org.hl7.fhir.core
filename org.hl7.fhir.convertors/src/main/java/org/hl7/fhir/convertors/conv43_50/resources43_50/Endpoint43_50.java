@@ -1,7 +1,11 @@
 package org.hl7.fhir.convertors.conv43_50.resources43_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.*;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableConcept43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Coding43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.ContactPoint43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Identifier43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Period43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Code43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Url43_50;
@@ -49,7 +53,7 @@ public class Endpoint43_50 {
     if (src.hasStatus())
       tgt.setStatusElement(convertEndpointStatus(src.getStatusElement()));
     if (src.hasConnectionType())
-      tgt.addConnectionType(Coding43_50.convertCoding(src.getConnectionType()));
+      tgt.addConnectionType(Coding43_50.convertCodingToCodeableConcept(src.getConnectionType()));
     if (src.hasName())
       tgt.setNameElement(String43_50.convertString(src.getNameElement()));
     if (src.hasManagingOrganization())
@@ -118,9 +122,6 @@ public class Endpoint43_50 {
       case ENTEREDINERROR:
         tgt.setValue(org.hl7.fhir.r5.model.Endpoint.EndpointStatus.ENTEREDINERROR);
         break;
-      case TEST:
-        tgt.setValue(org.hl7.fhir.r5.model.Endpoint.EndpointStatus.TEST);
-        break;
       default:
         tgt.setValue(org.hl7.fhir.r5.model.Endpoint.EndpointStatus.NULL);
         break;
@@ -148,9 +149,6 @@ public class Endpoint43_50 {
         break;
       case ENTEREDINERROR:
         tgt.setValue(org.hl7.fhir.r4b.model.Endpoint.EndpointStatus.ENTEREDINERROR);
-        break;
-      case TEST:
-        tgt.setValue(org.hl7.fhir.r4b.model.Endpoint.EndpointStatus.TEST);
         break;
       default:
         tgt.setValue(org.hl7.fhir.r4b.model.Endpoint.EndpointStatus.NULL);

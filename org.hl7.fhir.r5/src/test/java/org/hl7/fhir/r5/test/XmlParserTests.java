@@ -3,6 +3,7 @@ package org.hl7.fhir.r5.test;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -36,10 +37,10 @@ public class XmlParserTests {
     context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "ed.xml"), "ed.xml", null);
     context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "st.xml"), "st.xml", null);
     context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "cda.xml"), "cda.xml", null);
-    for (StructureDefinition sd : context.getStructures()) {
+    for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
       if (!sd.hasSnapshot()) {
         System.out.println("generate snapshot for " + sd.getUrl());
-        context.generateSnapshot(sd, true);
+        new ContextUtilities(context).generateSnapshot(sd, true);
       }
     }
   }

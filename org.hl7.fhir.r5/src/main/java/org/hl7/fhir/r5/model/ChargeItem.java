@@ -29,12 +29,11 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.math.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -243,7 +242,7 @@ public class ChargeItem extends DomainResource {
         /**
          * The device, practitioner, etc. who performed or participated in the service.
          */
-        @Child(name = "actor", type = {Practitioner.class, PractitionerRole.class, Organization.class, CareTeam.class, Patient.class, Device.class, RelatedPerson.class}, order=2, min=1, max=1, modifier=false, summary=false)
+        @Child(name = "actor", type = {Practitioner.class, PractitionerRole.class, Organization.class, HealthcareService.class, CareTeam.class, Patient.class, Device.class, RelatedPerson.class}, order=2, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Individual who was performing", formalDefinition="The device, practitioner, etc. who performed or participated in the service." )
         protected Reference actor;
 
@@ -315,14 +314,14 @@ public class ChargeItem extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("function", "CodeableConcept", "Describes the type of performance or participation(e.g. primary surgeon, anesthesiologiest, etc.).", 0, 1, function));
-          children.add(new Property("actor", "Reference(Practitioner|PractitionerRole|Organization|CareTeam|Patient|Device|RelatedPerson)", "The device, practitioner, etc. who performed or participated in the service.", 0, 1, actor));
+          children.add(new Property("actor", "Reference(Practitioner|PractitionerRole|Organization|HealthcareService|CareTeam|Patient|Device|RelatedPerson)", "The device, practitioner, etc. who performed or participated in the service.", 0, 1, actor));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 1380938712: /*function*/  return new Property("function", "CodeableConcept", "Describes the type of performance or participation(e.g. primary surgeon, anesthesiologiest, etc.).", 0, 1, function);
-          case 92645877: /*actor*/  return new Property("actor", "Reference(Practitioner|PractitionerRole|Organization|CareTeam|Patient|Device|RelatedPerson)", "The device, practitioner, etc. who performed or participated in the service.", 0, 1, actor);
+          case 92645877: /*actor*/  return new Property("actor", "Reference(Practitioner|PractitionerRole|Organization|HealthcareService|CareTeam|Patient|Device|RelatedPerson)", "The device, practitioner, etc. who performed or participated in the service.", 0, 1, actor);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -492,11 +491,11 @@ public class ChargeItem extends DomainResource {
     protected Reference subject;
 
     /**
-     * The encounter or episode of care that establishes the context for this event.
+     * This ChargeItem has the details of how the associated Encounter should be billed or otherwise be handled by finance systems.
      */
-    @Child(name = "context", type = {Encounter.class, EpisodeOfCare.class}, order=7, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Encounter / Episode associated with event", formalDefinition="The encounter or episode of care that establishes the context for this event." )
-    protected Reference context;
+    @Child(name = "encounter", type = {Encounter.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Encounter associated with this ChargeItem", formalDefinition="This ChargeItem has the details of how the associated Encounter should be billed or otherwise be handled by finance systems." )
+    protected Reference encounter;
 
     /**
      * Date/time(s) or duration when the charged service was applied.
@@ -513,17 +512,17 @@ public class ChargeItem extends DomainResource {
     protected List<ChargeItemPerformerComponent> performer;
 
     /**
-     * The organization requesting the service.
+     * The organization performing the service.
      */
     @Child(name = "performingOrganization", type = {Organization.class}, order=10, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Organization providing the charged service", formalDefinition="The organization requesting the service." )
+    @Description(shortDefinition="Organization providing the charged service", formalDefinition="The organization performing the service." )
     protected Reference performingOrganization;
 
     /**
-     * The organization performing the service.
+     * The organization requesting the service.
      */
     @Child(name = "requestingOrganization", type = {Organization.class}, order=11, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Organization requesting the charged service", formalDefinition="The organization performing the service." )
+    @Description(shortDefinition="Organization requesting the charged service", formalDefinition="The organization requesting the service." )
     protected Reference requestingOrganization;
 
     /**
@@ -549,25 +548,25 @@ public class ChargeItem extends DomainResource {
     protected List<CodeableConcept> bodysite;
 
     /**
-     * Factor overriding the factor determined by the rules associated with the code.
+     * The unit price of the chargable item.
      */
-    @Child(name = "factorOverride", type = {DecimalType.class}, order=15, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Factor overriding the associated rules", formalDefinition="Factor overriding the factor determined by the rules associated with the code." )
-    protected DecimalType factorOverride;
+    @Child(name = "unitPriceComponent", type = {MonetaryComponent.class}, order=15, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Unit price overriding the associated rules", formalDefinition="The unit price of the chargable item." )
+    protected MonetaryComponent unitPriceComponent;
 
     /**
-     * Total price of the charge overriding the list price associated with the code.
+     * The total price for the chargable item, accounting for the quantity.
      */
-    @Child(name = "priceOverride", type = {Money.class}, order=16, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Price overriding the associated rules", formalDefinition="Total price of the charge overriding the list price associated with the code." )
-    protected Money priceOverride;
+    @Child(name = "totalPriceComponent", type = {MonetaryComponent.class}, order=16, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Total price overriding the associated rules", formalDefinition="The total price for the chargable item, accounting for the quantity." )
+    protected MonetaryComponent totalPriceComponent;
 
     /**
      * If the list price or the rule-based factor associated with the code is overridden, this attribute can capture a text to indicate the  reason for this action.
      */
-    @Child(name = "overrideReason", type = {StringType.class}, order=17, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "overrideReason", type = {CodeableConcept.class}, order=17, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Reason for overriding the list price/factor", formalDefinition="If the list price or the rule-based factor associated with the code is overridden, this attribute can capture a text to indicate the  reason for this action." )
-    protected StringType overrideReason;
+    protected CodeableConcept overrideReason;
 
     /**
      * The device, practitioner, etc. who entered the charge item.
@@ -594,9 +593,9 @@ public class ChargeItem extends DomainResource {
     /**
      * Indicated the rendered service that caused this charge.
      */
-    @Child(name = "service", type = {DiagnosticReport.class, ImagingStudy.class, Immunization.class, MedicationAdministration.class, MedicationDispense.class, Observation.class, Procedure.class, SupplyDelivery.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "service", type = {CodeableReference.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Which rendered service is being charged?", formalDefinition="Indicated the rendered service that caused this charge." )
-    protected List<Reference> service;
+    protected List<CodeableReference> service;
 
     /**
      * Identifies the device, food, drug or other product being charged either by type code or reference to an instance.
@@ -627,7 +626,7 @@ public class ChargeItem extends DomainResource {
     @Description(shortDefinition="Further information supporting this charge", formalDefinition="Further information supporting this charge." )
     protected List<Reference> supportingInformation;
 
-    private static final long serialVersionUID = 244289087L;
+    private static final long serialVersionUID = -766813613L;
 
   /**
    * Constructor
@@ -968,26 +967,26 @@ public class ChargeItem extends DomainResource {
     }
 
     /**
-     * @return {@link #context} (The encounter or episode of care that establishes the context for this event.)
+     * @return {@link #encounter} (This ChargeItem has the details of how the associated Encounter should be billed or otherwise be handled by finance systems.)
      */
-    public Reference getContext() { 
-      if (this.context == null)
+    public Reference getEncounter() { 
+      if (this.encounter == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ChargeItem.context");
+          throw new Error("Attempt to auto-create ChargeItem.encounter");
         else if (Configuration.doAutoCreate())
-          this.context = new Reference(); // cc
-      return this.context;
+          this.encounter = new Reference(); // cc
+      return this.encounter;
     }
 
-    public boolean hasContext() { 
-      return this.context != null && !this.context.isEmpty();
+    public boolean hasEncounter() { 
+      return this.encounter != null && !this.encounter.isEmpty();
     }
 
     /**
-     * @param value {@link #context} (The encounter or episode of care that establishes the context for this event.)
+     * @param value {@link #encounter} (This ChargeItem has the details of how the associated Encounter should be billed or otherwise be handled by finance systems.)
      */
-    public ChargeItem setContext(Reference value) { 
-      this.context = value;
+    public ChargeItem setEncounter(Reference value) { 
+      this.encounter = value;
       return this;
     }
 
@@ -1111,7 +1110,7 @@ public class ChargeItem extends DomainResource {
     }
 
     /**
-     * @return {@link #performingOrganization} (The organization requesting the service.)
+     * @return {@link #performingOrganization} (The organization performing the service.)
      */
     public Reference getPerformingOrganization() { 
       if (this.performingOrganization == null)
@@ -1127,7 +1126,7 @@ public class ChargeItem extends DomainResource {
     }
 
     /**
-     * @param value {@link #performingOrganization} (The organization requesting the service.)
+     * @param value {@link #performingOrganization} (The organization performing the service.)
      */
     public ChargeItem setPerformingOrganization(Reference value) { 
       this.performingOrganization = value;
@@ -1135,7 +1134,7 @@ public class ChargeItem extends DomainResource {
     }
 
     /**
-     * @return {@link #requestingOrganization} (The organization performing the service.)
+     * @return {@link #requestingOrganization} (The organization requesting the service.)
      */
     public Reference getRequestingOrganization() { 
       if (this.requestingOrganization == null)
@@ -1151,7 +1150,7 @@ public class ChargeItem extends DomainResource {
     }
 
     /**
-     * @param value {@link #requestingOrganization} (The organization performing the service.)
+     * @param value {@link #requestingOrganization} (The organization requesting the service.)
      */
     public ChargeItem setRequestingOrganization(Reference value) { 
       this.requestingOrganization = value;
@@ -1260,110 +1259,63 @@ public class ChargeItem extends DomainResource {
     }
 
     /**
-     * @return {@link #factorOverride} (Factor overriding the factor determined by the rules associated with the code.). This is the underlying object with id, value and extensions. The accessor "getFactorOverride" gives direct access to the value
+     * @return {@link #unitPriceComponent} (The unit price of the chargable item.)
      */
-    public DecimalType getFactorOverrideElement() { 
-      if (this.factorOverride == null)
+    public MonetaryComponent getUnitPriceComponent() { 
+      if (this.unitPriceComponent == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ChargeItem.factorOverride");
+          throw new Error("Attempt to auto-create ChargeItem.unitPriceComponent");
         else if (Configuration.doAutoCreate())
-          this.factorOverride = new DecimalType(); // bb
-      return this.factorOverride;
+          this.unitPriceComponent = new MonetaryComponent(); // cc
+      return this.unitPriceComponent;
     }
 
-    public boolean hasFactorOverrideElement() { 
-      return this.factorOverride != null && !this.factorOverride.isEmpty();
-    }
-
-    public boolean hasFactorOverride() { 
-      return this.factorOverride != null && !this.factorOverride.isEmpty();
+    public boolean hasUnitPriceComponent() { 
+      return this.unitPriceComponent != null && !this.unitPriceComponent.isEmpty();
     }
 
     /**
-     * @param value {@link #factorOverride} (Factor overriding the factor determined by the rules associated with the code.). This is the underlying object with id, value and extensions. The accessor "getFactorOverride" gives direct access to the value
+     * @param value {@link #unitPriceComponent} (The unit price of the chargable item.)
      */
-    public ChargeItem setFactorOverrideElement(DecimalType value) { 
-      this.factorOverride = value;
+    public ChargeItem setUnitPriceComponent(MonetaryComponent value) { 
+      this.unitPriceComponent = value;
       return this;
     }
 
     /**
-     * @return Factor overriding the factor determined by the rules associated with the code.
+     * @return {@link #totalPriceComponent} (The total price for the chargable item, accounting for the quantity.)
      */
-    public BigDecimal getFactorOverride() { 
-      return this.factorOverride == null ? null : this.factorOverride.getValue();
-    }
-
-    /**
-     * @param value Factor overriding the factor determined by the rules associated with the code.
-     */
-    public ChargeItem setFactorOverride(BigDecimal value) { 
-      if (value == null)
-        this.factorOverride = null;
-      else {
-        if (this.factorOverride == null)
-          this.factorOverride = new DecimalType();
-        this.factorOverride.setValue(value);
-      }
-      return this;
-    }
-
-    /**
-     * @param value Factor overriding the factor determined by the rules associated with the code.
-     */
-    public ChargeItem setFactorOverride(long value) { 
-          this.factorOverride = new DecimalType();
-        this.factorOverride.setValue(value);
-      return this;
-    }
-
-    /**
-     * @param value Factor overriding the factor determined by the rules associated with the code.
-     */
-    public ChargeItem setFactorOverride(double value) { 
-          this.factorOverride = new DecimalType();
-        this.factorOverride.setValue(value);
-      return this;
-    }
-
-    /**
-     * @return {@link #priceOverride} (Total price of the charge overriding the list price associated with the code.)
-     */
-    public Money getPriceOverride() { 
-      if (this.priceOverride == null)
+    public MonetaryComponent getTotalPriceComponent() { 
+      if (this.totalPriceComponent == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ChargeItem.priceOverride");
+          throw new Error("Attempt to auto-create ChargeItem.totalPriceComponent");
         else if (Configuration.doAutoCreate())
-          this.priceOverride = new Money(); // cc
-      return this.priceOverride;
+          this.totalPriceComponent = new MonetaryComponent(); // cc
+      return this.totalPriceComponent;
     }
 
-    public boolean hasPriceOverride() { 
-      return this.priceOverride != null && !this.priceOverride.isEmpty();
+    public boolean hasTotalPriceComponent() { 
+      return this.totalPriceComponent != null && !this.totalPriceComponent.isEmpty();
     }
 
     /**
-     * @param value {@link #priceOverride} (Total price of the charge overriding the list price associated with the code.)
+     * @param value {@link #totalPriceComponent} (The total price for the chargable item, accounting for the quantity.)
      */
-    public ChargeItem setPriceOverride(Money value) { 
-      this.priceOverride = value;
+    public ChargeItem setTotalPriceComponent(MonetaryComponent value) { 
+      this.totalPriceComponent = value;
       return this;
     }
 
     /**
-     * @return {@link #overrideReason} (If the list price or the rule-based factor associated with the code is overridden, this attribute can capture a text to indicate the  reason for this action.). This is the underlying object with id, value and extensions. The accessor "getOverrideReason" gives direct access to the value
+     * @return {@link #overrideReason} (If the list price or the rule-based factor associated with the code is overridden, this attribute can capture a text to indicate the  reason for this action.)
      */
-    public StringType getOverrideReasonElement() { 
+    public CodeableConcept getOverrideReason() { 
       if (this.overrideReason == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ChargeItem.overrideReason");
         else if (Configuration.doAutoCreate())
-          this.overrideReason = new StringType(); // bb
+          this.overrideReason = new CodeableConcept(); // cc
       return this.overrideReason;
-    }
-
-    public boolean hasOverrideReasonElement() { 
-      return this.overrideReason != null && !this.overrideReason.isEmpty();
     }
 
     public boolean hasOverrideReason() { 
@@ -1371,31 +1323,10 @@ public class ChargeItem extends DomainResource {
     }
 
     /**
-     * @param value {@link #overrideReason} (If the list price or the rule-based factor associated with the code is overridden, this attribute can capture a text to indicate the  reason for this action.). This is the underlying object with id, value and extensions. The accessor "getOverrideReason" gives direct access to the value
+     * @param value {@link #overrideReason} (If the list price or the rule-based factor associated with the code is overridden, this attribute can capture a text to indicate the  reason for this action.)
      */
-    public ChargeItem setOverrideReasonElement(StringType value) { 
+    public ChargeItem setOverrideReason(CodeableConcept value) { 
       this.overrideReason = value;
-      return this;
-    }
-
-    /**
-     * @return If the list price or the rule-based factor associated with the code is overridden, this attribute can capture a text to indicate the  reason for this action.
-     */
-    public String getOverrideReason() { 
-      return this.overrideReason == null ? null : this.overrideReason.getValue();
-    }
-
-    /**
-     * @param value If the list price or the rule-based factor associated with the code is overridden, this attribute can capture a text to indicate the  reason for this action.
-     */
-    public ChargeItem setOverrideReason(String value) { 
-      if (Utilities.noString(value))
-        this.overrideReason = null;
-      else {
-        if (this.overrideReason == null)
-          this.overrideReason = new StringType();
-        this.overrideReason.setValue(value);
-      }
       return this;
     }
 
@@ -1528,16 +1459,16 @@ public class ChargeItem extends DomainResource {
     /**
      * @return {@link #service} (Indicated the rendered service that caused this charge.)
      */
-    public List<Reference> getService() { 
+    public List<CodeableReference> getService() { 
       if (this.service == null)
-        this.service = new ArrayList<Reference>();
+        this.service = new ArrayList<CodeableReference>();
       return this.service;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public ChargeItem setService(List<Reference> theService) { 
+    public ChargeItem setService(List<CodeableReference> theService) { 
       this.service = theService;
       return this;
     }
@@ -1545,25 +1476,25 @@ public class ChargeItem extends DomainResource {
     public boolean hasService() { 
       if (this.service == null)
         return false;
-      for (Reference item : this.service)
+      for (CodeableReference item : this.service)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public Reference addService() { //3
-      Reference t = new Reference();
+    public CodeableReference addService() { //3
+      CodeableReference t = new CodeableReference();
       if (this.service == null)
-        this.service = new ArrayList<Reference>();
+        this.service = new ArrayList<CodeableReference>();
       this.service.add(t);
       return t;
     }
 
-    public ChargeItem addService(Reference t) { //3
+    public ChargeItem addService(CodeableReference t) { //3
       if (t == null)
         return this;
       if (this.service == null)
-        this.service = new ArrayList<Reference>();
+        this.service = new ArrayList<CodeableReference>();
       this.service.add(t);
       return this;
     }
@@ -1571,7 +1502,7 @@ public class ChargeItem extends DomainResource {
     /**
      * @return The first repetition of repeating field {@link #service}, creating it if it does not already exist {3}
      */
-    public Reference getServiceFirstRep() { 
+    public CodeableReference getServiceFirstRep() { 
       if (getService().isEmpty()) {
         addService();
       }
@@ -1799,21 +1730,21 @@ public class ChargeItem extends DomainResource {
         children.add(new Property("partOf", "Reference(ChargeItem)", "ChargeItems can be grouped to larger ChargeItems covering the whole set.", 0, java.lang.Integer.MAX_VALUE, partOf));
         children.add(new Property("code", "CodeableConcept", "A code that identifies the charge, like a billing code.", 0, 1, code));
         children.add(new Property("subject", "Reference(Patient|Group)", "The individual or set of individuals the action is being or was performed on.", 0, 1, subject));
-        children.add(new Property("context", "Reference(Encounter|EpisodeOfCare)", "The encounter or episode of care that establishes the context for this event.", 0, 1, context));
+        children.add(new Property("encounter", "Reference(Encounter)", "This ChargeItem has the details of how the associated Encounter should be billed or otherwise be handled by finance systems.", 0, 1, encounter));
         children.add(new Property("occurrence[x]", "dateTime|Period|Timing", "Date/time(s) or duration when the charged service was applied.", 0, 1, occurrence));
         children.add(new Property("performer", "", "Indicates who or what performed or participated in the charged service.", 0, java.lang.Integer.MAX_VALUE, performer));
-        children.add(new Property("performingOrganization", "Reference(Organization)", "The organization requesting the service.", 0, 1, performingOrganization));
-        children.add(new Property("requestingOrganization", "Reference(Organization)", "The organization performing the service.", 0, 1, requestingOrganization));
+        children.add(new Property("performingOrganization", "Reference(Organization)", "The organization performing the service.", 0, 1, performingOrganization));
+        children.add(new Property("requestingOrganization", "Reference(Organization)", "The organization requesting the service.", 0, 1, requestingOrganization));
         children.add(new Property("costCenter", "Reference(Organization)", "The financial cost center permits the tracking of charge attribution.", 0, 1, costCenter));
         children.add(new Property("quantity", "Quantity", "Quantity of which the charge item has been serviced.", 0, 1, quantity));
         children.add(new Property("bodysite", "CodeableConcept", "The anatomical location where the related service has been applied.", 0, java.lang.Integer.MAX_VALUE, bodysite));
-        children.add(new Property("factorOverride", "decimal", "Factor overriding the factor determined by the rules associated with the code.", 0, 1, factorOverride));
-        children.add(new Property("priceOverride", "Money", "Total price of the charge overriding the list price associated with the code.", 0, 1, priceOverride));
-        children.add(new Property("overrideReason", "string", "If the list price or the rule-based factor associated with the code is overridden, this attribute can capture a text to indicate the  reason for this action.", 0, 1, overrideReason));
+        children.add(new Property("unitPriceComponent", "MonetaryComponent", "The unit price of the chargable item.", 0, 1, unitPriceComponent));
+        children.add(new Property("totalPriceComponent", "MonetaryComponent", "The total price for the chargable item, accounting for the quantity.", 0, 1, totalPriceComponent));
+        children.add(new Property("overrideReason", "CodeableConcept", "If the list price or the rule-based factor associated with the code is overridden, this attribute can capture a text to indicate the  reason for this action.", 0, 1, overrideReason));
         children.add(new Property("enterer", "Reference(Practitioner|PractitionerRole|Organization|Patient|Device|RelatedPerson)", "The device, practitioner, etc. who entered the charge item.", 0, 1, enterer));
         children.add(new Property("enteredDate", "dateTime", "Date the charge item was entered.", 0, 1, enteredDate));
         children.add(new Property("reason", "CodeableConcept", "Describes why the event occurred in coded or textual form.", 0, java.lang.Integer.MAX_VALUE, reason));
-        children.add(new Property("service", "Reference(DiagnosticReport|ImagingStudy|Immunization|MedicationAdministration|MedicationDispense|Observation|Procedure|SupplyDelivery)", "Indicated the rendered service that caused this charge.", 0, java.lang.Integer.MAX_VALUE, service));
+        children.add(new Property("service", "CodeableReference(DiagnosticReport|ImagingStudy|Immunization|MedicationAdministration|MedicationDispense|MedicationRequest|Observation|Procedure|ServiceRequest|SupplyDelivery)", "Indicated the rendered service that caused this charge.", 0, java.lang.Integer.MAX_VALUE, service));
         children.add(new Property("product", "CodeableReference(Device|Medication|Substance)", "Identifies the device, food, drug or other product being charged either by type code or reference to an instance.", 0, java.lang.Integer.MAX_VALUE, product));
         children.add(new Property("account", "Reference(Account)", "Account into which this ChargeItems belongs.", 0, java.lang.Integer.MAX_VALUE, account));
         children.add(new Property("note", "Annotation", "Comments made about the event by the performer, subject or other participants.", 0, java.lang.Integer.MAX_VALUE, note));
@@ -1830,25 +1761,25 @@ public class ChargeItem extends DomainResource {
         case -995410646: /*partOf*/  return new Property("partOf", "Reference(ChargeItem)", "ChargeItems can be grouped to larger ChargeItems covering the whole set.", 0, java.lang.Integer.MAX_VALUE, partOf);
         case 3059181: /*code*/  return new Property("code", "CodeableConcept", "A code that identifies the charge, like a billing code.", 0, 1, code);
         case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Group)", "The individual or set of individuals the action is being or was performed on.", 0, 1, subject);
-        case 951530927: /*context*/  return new Property("context", "Reference(Encounter|EpisodeOfCare)", "The encounter or episode of care that establishes the context for this event.", 0, 1, context);
+        case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "This ChargeItem has the details of how the associated Encounter should be billed or otherwise be handled by finance systems.", 0, 1, encounter);
         case -2022646513: /*occurrence[x]*/  return new Property("occurrence[x]", "dateTime|Period|Timing", "Date/time(s) or duration when the charged service was applied.", 0, 1, occurrence);
         case 1687874001: /*occurrence*/  return new Property("occurrence[x]", "dateTime|Period|Timing", "Date/time(s) or duration when the charged service was applied.", 0, 1, occurrence);
         case -298443636: /*occurrenceDateTime*/  return new Property("occurrence[x]", "dateTime", "Date/time(s) or duration when the charged service was applied.", 0, 1, occurrence);
         case 1397156594: /*occurrencePeriod*/  return new Property("occurrence[x]", "Period", "Date/time(s) or duration when the charged service was applied.", 0, 1, occurrence);
         case 1515218299: /*occurrenceTiming*/  return new Property("occurrence[x]", "Timing", "Date/time(s) or duration when the charged service was applied.", 0, 1, occurrence);
         case 481140686: /*performer*/  return new Property("performer", "", "Indicates who or what performed or participated in the charged service.", 0, java.lang.Integer.MAX_VALUE, performer);
-        case 1273192628: /*performingOrganization*/  return new Property("performingOrganization", "Reference(Organization)", "The organization requesting the service.", 0, 1, performingOrganization);
-        case 1279054790: /*requestingOrganization*/  return new Property("requestingOrganization", "Reference(Organization)", "The organization performing the service.", 0, 1, requestingOrganization);
+        case 1273192628: /*performingOrganization*/  return new Property("performingOrganization", "Reference(Organization)", "The organization performing the service.", 0, 1, performingOrganization);
+        case 1279054790: /*requestingOrganization*/  return new Property("requestingOrganization", "Reference(Organization)", "The organization requesting the service.", 0, 1, requestingOrganization);
         case -593192318: /*costCenter*/  return new Property("costCenter", "Reference(Organization)", "The financial cost center permits the tracking of charge attribution.", 0, 1, costCenter);
         case -1285004149: /*quantity*/  return new Property("quantity", "Quantity", "Quantity of which the charge item has been serviced.", 0, 1, quantity);
         case 1703573481: /*bodysite*/  return new Property("bodysite", "CodeableConcept", "The anatomical location where the related service has been applied.", 0, java.lang.Integer.MAX_VALUE, bodysite);
-        case -451233221: /*factorOverride*/  return new Property("factorOverride", "decimal", "Factor overriding the factor determined by the rules associated with the code.", 0, 1, factorOverride);
-        case -216803275: /*priceOverride*/  return new Property("priceOverride", "Money", "Total price of the charge overriding the list price associated with the code.", 0, 1, priceOverride);
-        case -742878928: /*overrideReason*/  return new Property("overrideReason", "string", "If the list price or the rule-based factor associated with the code is overridden, this attribute can capture a text to indicate the  reason for this action.", 0, 1, overrideReason);
+        case -925197224: /*unitPriceComponent*/  return new Property("unitPriceComponent", "MonetaryComponent", "The unit price of the chargable item.", 0, 1, unitPriceComponent);
+        case 1731497496: /*totalPriceComponent*/  return new Property("totalPriceComponent", "MonetaryComponent", "The total price for the chargable item, accounting for the quantity.", 0, 1, totalPriceComponent);
+        case -742878928: /*overrideReason*/  return new Property("overrideReason", "CodeableConcept", "If the list price or the rule-based factor associated with the code is overridden, this attribute can capture a text to indicate the  reason for this action.", 0, 1, overrideReason);
         case -1591951995: /*enterer*/  return new Property("enterer", "Reference(Practitioner|PractitionerRole|Organization|Patient|Device|RelatedPerson)", "The device, practitioner, etc. who entered the charge item.", 0, 1, enterer);
         case 555978181: /*enteredDate*/  return new Property("enteredDate", "dateTime", "Date the charge item was entered.", 0, 1, enteredDate);
         case -934964668: /*reason*/  return new Property("reason", "CodeableConcept", "Describes why the event occurred in coded or textual form.", 0, java.lang.Integer.MAX_VALUE, reason);
-        case 1984153269: /*service*/  return new Property("service", "Reference(DiagnosticReport|ImagingStudy|Immunization|MedicationAdministration|MedicationDispense|Observation|Procedure|SupplyDelivery)", "Indicated the rendered service that caused this charge.", 0, java.lang.Integer.MAX_VALUE, service);
+        case 1984153269: /*service*/  return new Property("service", "CodeableReference(DiagnosticReport|ImagingStudy|Immunization|MedicationAdministration|MedicationDispense|MedicationRequest|Observation|Procedure|ServiceRequest|SupplyDelivery)", "Indicated the rendered service that caused this charge.", 0, java.lang.Integer.MAX_VALUE, service);
         case -309474065: /*product*/  return new Property("product", "CodeableReference(Device|Medication|Substance)", "Identifies the device, food, drug or other product being charged either by type code or reference to an instance.", 0, java.lang.Integer.MAX_VALUE, product);
         case -1177318867: /*account*/  return new Property("account", "Reference(Account)", "Account into which this ChargeItems belongs.", 0, java.lang.Integer.MAX_VALUE, account);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Comments made about the event by the performer, subject or other participants.", 0, java.lang.Integer.MAX_VALUE, note);
@@ -1868,7 +1799,7 @@ public class ChargeItem extends DomainResource {
         case -995410646: /*partOf*/ return this.partOf == null ? new Base[0] : this.partOf.toArray(new Base[this.partOf.size()]); // Reference
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Reference
-        case 951530927: /*context*/ return this.context == null ? new Base[0] : new Base[] {this.context}; // Reference
+        case 1524132147: /*encounter*/ return this.encounter == null ? new Base[0] : new Base[] {this.encounter}; // Reference
         case 1687874001: /*occurrence*/ return this.occurrence == null ? new Base[0] : new Base[] {this.occurrence}; // DataType
         case 481140686: /*performer*/ return this.performer == null ? new Base[0] : this.performer.toArray(new Base[this.performer.size()]); // ChargeItemPerformerComponent
         case 1273192628: /*performingOrganization*/ return this.performingOrganization == null ? new Base[0] : new Base[] {this.performingOrganization}; // Reference
@@ -1876,13 +1807,13 @@ public class ChargeItem extends DomainResource {
         case -593192318: /*costCenter*/ return this.costCenter == null ? new Base[0] : new Base[] {this.costCenter}; // Reference
         case -1285004149: /*quantity*/ return this.quantity == null ? new Base[0] : new Base[] {this.quantity}; // Quantity
         case 1703573481: /*bodysite*/ return this.bodysite == null ? new Base[0] : this.bodysite.toArray(new Base[this.bodysite.size()]); // CodeableConcept
-        case -451233221: /*factorOverride*/ return this.factorOverride == null ? new Base[0] : new Base[] {this.factorOverride}; // DecimalType
-        case -216803275: /*priceOverride*/ return this.priceOverride == null ? new Base[0] : new Base[] {this.priceOverride}; // Money
-        case -742878928: /*overrideReason*/ return this.overrideReason == null ? new Base[0] : new Base[] {this.overrideReason}; // StringType
+        case -925197224: /*unitPriceComponent*/ return this.unitPriceComponent == null ? new Base[0] : new Base[] {this.unitPriceComponent}; // MonetaryComponent
+        case 1731497496: /*totalPriceComponent*/ return this.totalPriceComponent == null ? new Base[0] : new Base[] {this.totalPriceComponent}; // MonetaryComponent
+        case -742878928: /*overrideReason*/ return this.overrideReason == null ? new Base[0] : new Base[] {this.overrideReason}; // CodeableConcept
         case -1591951995: /*enterer*/ return this.enterer == null ? new Base[0] : new Base[] {this.enterer}; // Reference
         case 555978181: /*enteredDate*/ return this.enteredDate == null ? new Base[0] : new Base[] {this.enteredDate}; // DateTimeType
         case -934964668: /*reason*/ return this.reason == null ? new Base[0] : this.reason.toArray(new Base[this.reason.size()]); // CodeableConcept
-        case 1984153269: /*service*/ return this.service == null ? new Base[0] : this.service.toArray(new Base[this.service.size()]); // Reference
+        case 1984153269: /*service*/ return this.service == null ? new Base[0] : this.service.toArray(new Base[this.service.size()]); // CodeableReference
         case -309474065: /*product*/ return this.product == null ? new Base[0] : this.product.toArray(new Base[this.product.size()]); // CodeableReference
         case -1177318867: /*account*/ return this.account == null ? new Base[0] : this.account.toArray(new Base[this.account.size()]); // Reference
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
@@ -1917,8 +1848,8 @@ public class ChargeItem extends DomainResource {
         case -1867885268: // subject
           this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
-        case 951530927: // context
-          this.context = TypeConvertor.castToReference(value); // Reference
+        case 1524132147: // encounter
+          this.encounter = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1687874001: // occurrence
           this.occurrence = TypeConvertor.castToType(value); // DataType
@@ -1941,14 +1872,14 @@ public class ChargeItem extends DomainResource {
         case 1703573481: // bodysite
           this.getBodysite().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
-        case -451233221: // factorOverride
-          this.factorOverride = TypeConvertor.castToDecimal(value); // DecimalType
+        case -925197224: // unitPriceComponent
+          this.unitPriceComponent = TypeConvertor.castToMonetaryComponent(value); // MonetaryComponent
           return value;
-        case -216803275: // priceOverride
-          this.priceOverride = TypeConvertor.castToMoney(value); // Money
+        case 1731497496: // totalPriceComponent
+          this.totalPriceComponent = TypeConvertor.castToMonetaryComponent(value); // MonetaryComponent
           return value;
         case -742878928: // overrideReason
-          this.overrideReason = TypeConvertor.castToString(value); // StringType
+          this.overrideReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1591951995: // enterer
           this.enterer = TypeConvertor.castToReference(value); // Reference
@@ -1960,7 +1891,7 @@ public class ChargeItem extends DomainResource {
           this.getReason().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1984153269: // service
-          this.getService().add(TypeConvertor.castToReference(value)); // Reference
+          this.getService().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
         case -309474065: // product
           this.getProduct().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
@@ -1996,8 +1927,8 @@ public class ChargeItem extends DomainResource {
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("subject")) {
           this.subject = TypeConvertor.castToReference(value); // Reference
-        } else if (name.equals("context")) {
-          this.context = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("encounter")) {
+          this.encounter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("occurrence[x]")) {
           this.occurrence = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("performer")) {
@@ -2012,12 +1943,12 @@ public class ChargeItem extends DomainResource {
           this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("bodysite")) {
           this.getBodysite().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("factorOverride")) {
-          this.factorOverride = TypeConvertor.castToDecimal(value); // DecimalType
-        } else if (name.equals("priceOverride")) {
-          this.priceOverride = TypeConvertor.castToMoney(value); // Money
+        } else if (name.equals("unitPriceComponent")) {
+          this.unitPriceComponent = TypeConvertor.castToMonetaryComponent(value); // MonetaryComponent
+        } else if (name.equals("totalPriceComponent")) {
+          this.totalPriceComponent = TypeConvertor.castToMonetaryComponent(value); // MonetaryComponent
         } else if (name.equals("overrideReason")) {
-          this.overrideReason = TypeConvertor.castToString(value); // StringType
+          this.overrideReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("enterer")) {
           this.enterer = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("enteredDate")) {
@@ -2025,7 +1956,7 @@ public class ChargeItem extends DomainResource {
         } else if (name.equals("reason")) {
           this.getReason().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("service")) {
-          this.getService().add(TypeConvertor.castToReference(value));
+          this.getService().add(TypeConvertor.castToCodeableReference(value));
         } else if (name.equals("product")) {
           this.getProduct().add(TypeConvertor.castToCodeableReference(value));
         } else if (name.equals("account")) {
@@ -2049,7 +1980,7 @@ public class ChargeItem extends DomainResource {
         case -995410646:  return addPartOf(); 
         case 3059181:  return getCode();
         case -1867885268:  return getSubject();
-        case 951530927:  return getContext();
+        case 1524132147:  return getEncounter();
         case -2022646513:  return getOccurrence();
         case 1687874001:  return getOccurrence();
         case 481140686:  return addPerformer(); 
@@ -2058,9 +1989,9 @@ public class ChargeItem extends DomainResource {
         case -593192318:  return getCostCenter();
         case -1285004149:  return getQuantity();
         case 1703573481:  return addBodysite(); 
-        case -451233221:  return getFactorOverrideElement();
-        case -216803275:  return getPriceOverride();
-        case -742878928:  return getOverrideReasonElement();
+        case -925197224:  return getUnitPriceComponent();
+        case 1731497496:  return getTotalPriceComponent();
+        case -742878928:  return getOverrideReason();
         case -1591951995:  return getEnterer();
         case 555978181:  return getEnteredDateElement();
         case -934964668:  return addReason(); 
@@ -2084,7 +2015,7 @@ public class ChargeItem extends DomainResource {
         case -995410646: /*partOf*/ return new String[] {"Reference"};
         case 3059181: /*code*/ return new String[] {"CodeableConcept"};
         case -1867885268: /*subject*/ return new String[] {"Reference"};
-        case 951530927: /*context*/ return new String[] {"Reference"};
+        case 1524132147: /*encounter*/ return new String[] {"Reference"};
         case 1687874001: /*occurrence*/ return new String[] {"dateTime", "Period", "Timing"};
         case 481140686: /*performer*/ return new String[] {};
         case 1273192628: /*performingOrganization*/ return new String[] {"Reference"};
@@ -2092,13 +2023,13 @@ public class ChargeItem extends DomainResource {
         case -593192318: /*costCenter*/ return new String[] {"Reference"};
         case -1285004149: /*quantity*/ return new String[] {"Quantity"};
         case 1703573481: /*bodysite*/ return new String[] {"CodeableConcept"};
-        case -451233221: /*factorOverride*/ return new String[] {"decimal"};
-        case -216803275: /*priceOverride*/ return new String[] {"Money"};
-        case -742878928: /*overrideReason*/ return new String[] {"string"};
+        case -925197224: /*unitPriceComponent*/ return new String[] {"MonetaryComponent"};
+        case 1731497496: /*totalPriceComponent*/ return new String[] {"MonetaryComponent"};
+        case -742878928: /*overrideReason*/ return new String[] {"CodeableConcept"};
         case -1591951995: /*enterer*/ return new String[] {"Reference"};
         case 555978181: /*enteredDate*/ return new String[] {"dateTime"};
         case -934964668: /*reason*/ return new String[] {"CodeableConcept"};
-        case 1984153269: /*service*/ return new String[] {"Reference"};
+        case 1984153269: /*service*/ return new String[] {"CodeableReference"};
         case -309474065: /*product*/ return new String[] {"CodeableReference"};
         case -1177318867: /*account*/ return new String[] {"Reference"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
@@ -2133,9 +2064,9 @@ public class ChargeItem extends DomainResource {
           this.subject = new Reference();
           return this.subject;
         }
-        else if (name.equals("context")) {
-          this.context = new Reference();
-          return this.context;
+        else if (name.equals("encounter")) {
+          this.encounter = new Reference();
+          return this.encounter;
         }
         else if (name.equals("occurrenceDateTime")) {
           this.occurrence = new DateTimeType();
@@ -2171,15 +2102,17 @@ public class ChargeItem extends DomainResource {
         else if (name.equals("bodysite")) {
           return addBodysite();
         }
-        else if (name.equals("factorOverride")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItem.factorOverride");
+        else if (name.equals("unitPriceComponent")) {
+          this.unitPriceComponent = new MonetaryComponent();
+          return this.unitPriceComponent;
         }
-        else if (name.equals("priceOverride")) {
-          this.priceOverride = new Money();
-          return this.priceOverride;
+        else if (name.equals("totalPriceComponent")) {
+          this.totalPriceComponent = new MonetaryComponent();
+          return this.totalPriceComponent;
         }
         else if (name.equals("overrideReason")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ChargeItem.overrideReason");
+          this.overrideReason = new CodeableConcept();
+          return this.overrideReason;
         }
         else if (name.equals("enterer")) {
           this.enterer = new Reference();
@@ -2246,7 +2179,7 @@ public class ChargeItem extends DomainResource {
         };
         dst.code = code == null ? null : code.copy();
         dst.subject = subject == null ? null : subject.copy();
-        dst.context = context == null ? null : context.copy();
+        dst.encounter = encounter == null ? null : encounter.copy();
         dst.occurrence = occurrence == null ? null : occurrence.copy();
         if (performer != null) {
           dst.performer = new ArrayList<ChargeItemPerformerComponent>();
@@ -2262,8 +2195,8 @@ public class ChargeItem extends DomainResource {
           for (CodeableConcept i : bodysite)
             dst.bodysite.add(i.copy());
         };
-        dst.factorOverride = factorOverride == null ? null : factorOverride.copy();
-        dst.priceOverride = priceOverride == null ? null : priceOverride.copy();
+        dst.unitPriceComponent = unitPriceComponent == null ? null : unitPriceComponent.copy();
+        dst.totalPriceComponent = totalPriceComponent == null ? null : totalPriceComponent.copy();
         dst.overrideReason = overrideReason == null ? null : overrideReason.copy();
         dst.enterer = enterer == null ? null : enterer.copy();
         dst.enteredDate = enteredDate == null ? null : enteredDate.copy();
@@ -2273,8 +2206,8 @@ public class ChargeItem extends DomainResource {
             dst.reason.add(i.copy());
         };
         if (service != null) {
-          dst.service = new ArrayList<Reference>();
-          for (Reference i : service)
+          dst.service = new ArrayList<CodeableReference>();
+          for (CodeableReference i : service)
             dst.service.add(i.copy());
         };
         if (product != null) {
@@ -2313,10 +2246,10 @@ public class ChargeItem extends DomainResource {
         return compareDeep(identifier, o.identifier, true) && compareDeep(definitionUri, o.definitionUri, true)
            && compareDeep(definitionCanonical, o.definitionCanonical, true) && compareDeep(status, o.status, true)
            && compareDeep(partOf, o.partOf, true) && compareDeep(code, o.code, true) && compareDeep(subject, o.subject, true)
-           && compareDeep(context, o.context, true) && compareDeep(occurrence, o.occurrence, true) && compareDeep(performer, o.performer, true)
+           && compareDeep(encounter, o.encounter, true) && compareDeep(occurrence, o.occurrence, true) && compareDeep(performer, o.performer, true)
            && compareDeep(performingOrganization, o.performingOrganization, true) && compareDeep(requestingOrganization, o.requestingOrganization, true)
            && compareDeep(costCenter, o.costCenter, true) && compareDeep(quantity, o.quantity, true) && compareDeep(bodysite, o.bodysite, true)
-           && compareDeep(factorOverride, o.factorOverride, true) && compareDeep(priceOverride, o.priceOverride, true)
+           && compareDeep(unitPriceComponent, o.unitPriceComponent, true) && compareDeep(totalPriceComponent, o.totalPriceComponent, true)
            && compareDeep(overrideReason, o.overrideReason, true) && compareDeep(enterer, o.enterer, true)
            && compareDeep(enteredDate, o.enteredDate, true) && compareDeep(reason, o.reason, true) && compareDeep(service, o.service, true)
            && compareDeep(product, o.product, true) && compareDeep(account, o.account, true) && compareDeep(note, o.note, true)
@@ -2331,15 +2264,14 @@ public class ChargeItem extends DomainResource {
           return false;
         ChargeItem o = (ChargeItem) other_;
         return compareValues(definitionUri, o.definitionUri, true) && compareValues(definitionCanonical, o.definitionCanonical, true)
-           && compareValues(status, o.status, true) && compareValues(factorOverride, o.factorOverride, true) && compareValues(overrideReason, o.overrideReason, true)
-           && compareValues(enteredDate, o.enteredDate, true);
+           && compareValues(status, o.status, true) && compareValues(enteredDate, o.enteredDate, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, definitionUri
-          , definitionCanonical, status, partOf, code, subject, context, occurrence, performer
-          , performingOrganization, requestingOrganization, costCenter, quantity, bodysite, factorOverride
-          , priceOverride, overrideReason, enterer, enteredDate, reason, service, product
+          , definitionCanonical, status, partOf, code, subject, encounter, occurrence, performer
+          , performingOrganization, requestingOrganization, costCenter, quantity, bodysite, unitPriceComponent
+          , totalPriceComponent, overrideReason, enterer, enteredDate, reason, service, product
           , account, note, supportingInformation);
       }
 
@@ -2395,30 +2327,30 @@ public class ChargeItem extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
 
  /**
-   * Search parameter: <b>context</b>
+   * Search parameter: <b>encounter</b>
    * <p>
-   * Description: <b>Encounter / Episode associated with event</b><br>
+   * Description: <b>Encounter associated with event</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.context</b><br>
+   * Path: <b>ChargeItem.encounter</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="context", path="ChargeItem.context", description="Encounter / Episode associated with event", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Encounter") }, target={Encounter.class, EpisodeOfCare.class } )
-  public static final String SP_CONTEXT = "context";
+  @SearchParamDefinition(name="encounter", path="ChargeItem.encounter", description="Encounter associated with event", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Encounter") }, target={Encounter.class } )
+  public static final String SP_ENCOUNTER = "encounter";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>context</b>
+   * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
    * <p>
-   * Description: <b>Encounter / Episode associated with event</b><br>
+   * Description: <b>Encounter associated with event</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.context</b><br>
+   * Path: <b>ChargeItem.encounter</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_CONTEXT);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENCOUNTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENCOUNTER);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ChargeItem:context</b>".
+   * the path value of "<b>ChargeItem:encounter</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_CONTEXT = new ca.uhn.fhir.model.api.Include("ChargeItem:context").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("ChargeItem:encounter").toLocked();
 
  /**
    * Search parameter: <b>entered-date</b>
@@ -2471,17 +2403,17 @@ public class ChargeItem extends DomainResource {
    * <p>
    * Description: <b>Factor overriding the associated rules</b><br>
    * Type: <b>number</b><br>
-   * Path: <b>ChargeItem.factorOverride</b><br>
+   * Path: <b>ChargeItem.totalPriceComponent.factor</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="factor-override", path="ChargeItem.factorOverride", description="Factor overriding the associated rules", type="number" )
+  @SearchParamDefinition(name="factor-override", path="ChargeItem.totalPriceComponent.factor", description="Factor overriding the associated rules", type="number" )
   public static final String SP_FACTOR_OVERRIDE = "factor-override";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>factor-override</b>
    * <p>
    * Description: <b>Factor overriding the associated rules</b><br>
    * Type: <b>number</b><br>
-   * Path: <b>ChargeItem.factorOverride</b><br>
+   * Path: <b>ChargeItem.totalPriceComponent.factor</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.NumberClientParam FACTOR_OVERRIDE = new ca.uhn.fhir.rest.gclient.NumberClientParam(SP_FACTOR_OVERRIDE);
@@ -2511,17 +2443,17 @@ public class ChargeItem extends DomainResource {
    * <p>
    * Description: <b>When the charged service was applied</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>ChargeItem.occurrence</b><br>
+   * Path: <b>ChargeItem.occurrence.as(dateTime) | ChargeItem.occurrence.as(Period) | ChargeItem.occurrence.as(Timing)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="occurrence", path="ChargeItem.occurrence", description="When the charged service was applied", type="date" )
+  @SearchParamDefinition(name="occurrence", path="ChargeItem.occurrence.as(dateTime) | ChargeItem.occurrence.as(Period) | ChargeItem.occurrence.as(Timing)", description="When the charged service was applied", type="date" )
   public static final String SP_OCCURRENCE = "occurrence";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>occurrence</b>
    * <p>
    * Description: <b>When the charged service was applied</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>ChargeItem.occurrence</b><br>
+   * Path: <b>ChargeItem.occurrence.as(dateTime) | ChargeItem.occurrence.as(Period) | ChargeItem.occurrence.as(Timing)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam OCCURRENCE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_OCCURRENCE);
@@ -2560,7 +2492,7 @@ public class ChargeItem extends DomainResource {
    * Path: <b>ChargeItem.performer.actor</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="performer-actor", path="ChargeItem.performer.actor", description="Individual who was performing", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={CareTeam.class, Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  @SearchParamDefinition(name="performer-actor", path="ChargeItem.performer.actor", description="Individual who was performing", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={CareTeam.class, Device.class, HealthcareService.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
   public static final String SP_PERFORMER_ACTOR = "performer-actor";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>performer-actor</b>
@@ -2629,17 +2561,17 @@ public class ChargeItem extends DomainResource {
    * <p>
    * Description: <b>Price overriding the associated rules</b><br>
    * Type: <b>quantity</b><br>
-   * Path: <b>ChargeItem.priceOverride</b><br>
+   * Path: <b>ChargeItem.totalPriceComponent.amount</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="price-override", path="ChargeItem.priceOverride", description="Price overriding the associated rules", type="quantity" )
+  @SearchParamDefinition(name="price-override", path="ChargeItem.totalPriceComponent.amount", description="Price overriding the associated rules", type="quantity" )
   public static final String SP_PRICE_OVERRIDE = "price-override";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>price-override</b>
    * <p>
    * Description: <b>Price overriding the associated rules</b><br>
    * Type: <b>quantity</b><br>
-   * Path: <b>ChargeItem.priceOverride</b><br>
+   * Path: <b>ChargeItem.totalPriceComponent.amount</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.QuantityClientParam PRICE_OVERRIDE = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_PRICE_OVERRIDE);
@@ -2695,17 +2627,17 @@ public class ChargeItem extends DomainResource {
    * <p>
    * Description: <b>Which rendered service is being charged?</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.service</b><br>
+   * Path: <b>ChargeItem.service.reference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="service", path="ChargeItem.service", description="Which rendered service is being charged?", type="reference", target={DiagnosticReport.class, ImagingStudy.class, Immunization.class, MedicationAdministration.class, MedicationDispense.class, Observation.class, Procedure.class, SupplyDelivery.class } )
+  @SearchParamDefinition(name="service", path="ChargeItem.service.reference", description="Which rendered service is being charged?", type="reference" )
   public static final String SP_SERVICE = "service";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>service</b>
    * <p>
    * Description: <b>Which rendered service is being charged?</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.service</b><br>
+   * Path: <b>ChargeItem.service.reference</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SERVICE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SERVICE);

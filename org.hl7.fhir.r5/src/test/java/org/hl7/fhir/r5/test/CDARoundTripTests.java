@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -38,10 +39,10 @@ public class CDARoundTripTests {
 		context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "ed.xml"), "ed.xml", null);
 		context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "st.xml"), "st.xml", null);
 		context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "cda.xml"), "cda.xml", null);
-		for (StructureDefinition sd : context.getStructures()) {
+		for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
 			if (!sd.hasSnapshot()) {
 //				System.out.println("generate snapshot for " + sd.getUrl());
-				context.generateSnapshot(sd, true);
+				new ContextUtilities(context).generateSnapshot(sd, true);
 			}
 		}
 	}
@@ -120,9 +121,9 @@ public class CDARoundTripTests {
 //
 //      assertEquals("Skin Exam", fp.evaluateToString(e, "component.structuredBody.component.section.component.section.where(code.code='8709-8' and code.codeSystem='2.16.840.1.113883.6.1').title.dataString"));
 //      // <div>Erythematous rash, palmar surface, left index finger.
-//      // <img src="MM1"/></div>
+//      // <img src="MM1" alt=\"img\"/></div>
 //      String text = fp.evaluateToString(e, "component.structuredBody.component.section.component.section.where(code.code='8709-8' and code.codeSystem='2.16.840.1.113883.6.1').text");
-//      assertTrue(text.contains("<img src=\"MM1\"/>"));
+//      assertTrue(text.contains("<img src=\"MM1\" alt=\"img\"/>"));
 //    } catch (Exception e) {
 //      System.out.println(e.getMessage());
 //      e.printStackTrace();

@@ -42,8 +42,8 @@ import java.math.BigDecimal;
  */
 public interface JsonCreator {
 
-  void setIndent(String string);
-
+  void comment(String comment);
+  
   void beginObject() throws IOException;
 
   void endObject() throws IOException;

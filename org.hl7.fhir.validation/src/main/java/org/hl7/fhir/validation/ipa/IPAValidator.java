@@ -1,12 +1,10 @@
 package org.hl7.fhir.validation.ipa;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.JsonParser;
 import org.hl7.fhir.utilities.SimpleHTTPClient;
@@ -16,7 +14,6 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.validation.instance.InstanceValidator;
-import org.hl7.fhir.validation.ipa.IPAValidator.ValidationNode;
 
 /**
  * You give this validator three parameters:

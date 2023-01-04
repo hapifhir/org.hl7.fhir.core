@@ -2,10 +2,10 @@ package org.hl7.fhir.convertors.conv30_40;
 
 import java.util.List;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 public class AllergyIntolerance30_40Test {
     @Test

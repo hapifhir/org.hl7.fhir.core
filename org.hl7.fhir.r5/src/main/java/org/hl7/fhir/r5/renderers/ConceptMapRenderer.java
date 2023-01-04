@@ -16,7 +16,6 @@ import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent;
 import org.hl7.fhir.r5.model.ContactDetail;
 import org.hl7.fhir.r5.model.ContactPoint;
-import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
@@ -45,12 +44,12 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     XhtmlNode p = x.para();
     p.tx("Mapping from ");
     if (cm.hasSourceScope())
-      AddVsRef(cm.getSourceScope().primitiveValue(), p);
+      AddVsRef(cm.getSourceScope().primitiveValue(), p, cm);
     else
       p.tx("(not specified)");
     p.tx(" to ");
     if (cm.hasTargetScope())
-      AddVsRef(cm.getTargetScope().primitiveValue(), p);
+      AddVsRef(cm.getTargetScope().primitiveValue(), p, cm);
     else 
       p.tx("(not specified)");
 
@@ -87,6 +86,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       addMarkdown(x, cm.getDescription());
 
     x.br();
+    int gc = 0;
     
     CodeSystem cs = getContext().getWorker().fetchCodeSystem("http://hl7.org/fhir/concept-map-relationship");
     if (cs == null)
@@ -106,7 +106,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       sources.get("code").add(grp.getSource());
       targets.get("code").add(grp.getTarget());
       for (SourceElementComponent ccl : grp.getElement()) {
-        ok = ok && ccl.getTarget().size() == 1 && ccl.getTarget().get(0).getDependsOn().isEmpty() && ccl.getTarget().get(0).getProduct().isEmpty();
+        ok = ok && (ccl.getNoMap() || (ccl.getTarget().size() == 1 && ccl.getTarget().get(0).getDependsOn().isEmpty() && ccl.getTarget().get(0).getProduct().isEmpty()));
         for (TargetElementComponent ccm : ccl.getTarget()) {
           comment = comment || !Utilities.noString(ccm.getComment());
           for (OtherElementComponent d : ccm.getDependsOn()) {
@@ -122,6 +122,25 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         }
       }
 
+      gc++;
+      if (gc > 1) {
+        x.hr();
+      }
+      XhtmlNode pp = x.para();
+      pp.b().tx("Group "+gc);
+      pp.tx("Mapping from ");
+      if (grp.hasSource()) {
+        renderCanonical(cm, pp, grp.getSource());
+      } else {
+        pp.code("unspecified code system");
+      }
+      pp.tx(" to ");
+      if (grp.hasTarget()) {
+        renderCanonical(cm, pp, grp.getTarget());
+      } else {
+        pp.code("unspecified code system");
+      }
+      
       String display;
       if (ok) {
         // simple
@@ -132,45 +151,35 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         tr.td().b().tx("Target Code");
         if (comment)
           tr.td().b().tx("Comment");
-        tr = tbl.tr();
-        XhtmlNode td = tr.td().colspan(comment ? "4" : "3");
-        td.tx("Mapping from ");
-        if (grp.hasSource()) {
-          renderCanonical(cm, td, grp.getSource());
-        } else {
-          td.code("unspecified code system");
-        }
-        td.tx(" to ");
-        if (grp.hasTarget()) {
-          renderCanonical(cm, td, grp.getTarget());
-        } else {
-          td.code("unspecified code system");
-        }
         for (SourceElementComponent ccl : grp.getElement()) {
           tr = tbl.tr();
-          td = tr.td();
+          XhtmlNode td = tr.td();
           td.addText(ccl.getCode());
           display = ccl.hasDisplay() ? ccl.getDisplay() : getDisplayForConcept(systemFromCanonical(grp.getSource()), versionFromCanonical(grp.getSource()), ccl.getCode());
           if (display != null && !isSameCodeAndDisplay(ccl.getCode(), display))
             td.tx(" ("+display+")");
-          TargetElementComponent ccm = ccl.getTarget().get(0);
-          if (!ccm.hasRelationship())
-            tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");
-          else {
-            if (ccm.getRelationshipElement().hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
-              String code = ToolingExtensions.readStringExtension(ccm.getRelationshipElement(), ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
-              tr.td().ah(eqpath+"#"+code, code).tx(presentEquivalenceCode(code));                
-            } else {
-              tr.td().ah(eqpath+"#"+ccm.getRelationship().toCode(), ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
+          if (ccl.getNoMap()) {
+            tr.td().colspan(comment ? "3" : "2").style("background-color: #efefef").tx("(not mapped)");
+          } else {
+            TargetElementComponent ccm = ccl.getTarget().get(0);
+            if (!ccm.hasRelationship())
+              tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");
+            else {
+              if (ccm.getRelationshipElement().hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
+                String code = ToolingExtensions.readStringExtension(ccm.getRelationshipElement(), ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
+                tr.td().ah(eqpath+"#"+code, code).tx(presentEquivalenceCode(code));                
+              } else {
+                tr.td().ah(eqpath+"#"+ccm.getRelationship().toCode(), ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
+              }
             }
+            td = tr.td();
+            td.addText(ccm.getCode());
+            display = ccm.hasDisplay() ? ccm.getDisplay() : getDisplayForConcept(systemFromCanonical(grp.getTarget()), versionFromCanonical(grp.getTarget()), ccm.getCode());
+            if (display != null && !isSameCodeAndDisplay(ccm.getCode(), display))
+              td.tx(" ("+display+")");
+            if (comment)
+              tr.td().addText(ccm.getComment());
           }
-          td = tr.td();
-          td.addText(ccm.getCode());
-          display = ccm.hasDisplay() ? ccm.getDisplay() : getDisplayForConcept(systemFromCanonical(grp.getTarget()), versionFromCanonical(grp.getTarget()), ccm.getCode());
-          if (display != null && !isSameCodeAndDisplay(ccm.getCode(), display))
-            td.tx(" ("+display+")");
-          if (comment)
-            tr.td().addText(ccm.getComment());
           addUnmapped(tbl, grp);
         }
       } else {
@@ -246,7 +255,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
               td.addText(ccl.getCode());
             else
               td.addText(grp.getSource()+" / "+ccl.getCode());
-            display = getDisplayForConcept(systemFromCanonical(grp.getSource()), versionFromCanonical(grp.getSource()), ccl.getCode());
+            display = ccl.hasDisplay() ? ccl.getDisplay() : getDisplayForConcept(systemFromCanonical(grp.getSource()), versionFromCanonical(grp.getSource()), ccl.getCode());
             tr.td().style("border-left-width: 0px").tx(display == null ? "" : display);
             tr.td().colspan("4").style("background-color: #efefef").tx("(not mapped)");
 
@@ -398,7 +407,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     if (span2) {
       td.colspan("2");
     }
-    td.b().tx("Code");
+    td.b().tx("Codes");
     td.tx(" from ");
     if (cs == null)
       td.tx(url);

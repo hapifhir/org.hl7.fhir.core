@@ -65,7 +65,7 @@ public class SpreadsheetGenerator {
   protected Map<String, CellStyle> styles;
 
   protected DataRenderer dr;
-  private List<String> sheetNames = new ArrayList<>();
+  private Map<String, Sheet> sheetNames = new HashMap<>();
   
   public SpreadsheetGenerator(IWorkerContext context) {
     super();
@@ -80,20 +80,37 @@ public class SpreadsheetGenerator {
     outStream.close();
   }
   
+  protected boolean hasSheet(String name) {
+    if (name.length() > MAX_SENSITIVE_SHEET_NAME_LEN - 2) {
+      name = name.substring(0, MAX_SENSITIVE_SHEET_NAME_LEN - 2);
+    }
+    String s = fixSheetNameChars(name);
+    return sheetNames.containsKey(s);
+  }
+
+  protected Sheet getSheet(String name) {
+    if (name.length() > MAX_SENSITIVE_SHEET_NAME_LEN - 2) {
+      name = name.substring(0, MAX_SENSITIVE_SHEET_NAME_LEN - 2);
+    }
+    String s = fixSheetNameChars(name);
+    return sheetNames.get(s);
+  }
+
   protected Sheet makeSheet(String name) {
     if (name.length() > MAX_SENSITIVE_SHEET_NAME_LEN - 2) {
       name = name.substring(0, MAX_SENSITIVE_SHEET_NAME_LEN - 2);
     }
     String s = fixSheetNameChars(name);
-    if (sheetNames.contains(s)) {
+    if (sheetNames.containsKey(s)) {
       int i = 1;
       do {
         i++;
         s = name+" "+Integer.toString(i);
-      } while (sheetNames.contains(s));
+      } while (sheetNames.containsKey(s));
     }
-    sheetNames.add(s);
-    return wb.createSheet(s);
+    Sheet res = wb.createSheet(s); 
+    sheetNames.put(s, res);
+    return res;
   }
 
   private String fixSheetNameChars(String name) {

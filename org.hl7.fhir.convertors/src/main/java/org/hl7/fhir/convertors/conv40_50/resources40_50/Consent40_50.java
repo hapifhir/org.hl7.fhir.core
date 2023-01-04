@@ -1,7 +1,11 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.*;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Attachment40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Coding40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Period40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Boolean40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
@@ -54,7 +58,7 @@ public class Consent40_50 {
     if (src.hasPatient())
       tgt.setSubject(Reference40_50.convertReference(src.getPatient()));
     if (src.hasDateTime())
-      tgt.setDateTimeElement(DateTime40_50.convertDateTime(src.getDateTimeElement()));
+      tgt.setDateElement(DateTime40_50.convertDateTimeToDate(src.getDateTimeElement()));
     for (org.hl7.fhir.r4.model.Reference t : src.getPerformer()) tgt.addGrantee(Reference40_50.convertReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getOrganization()) tgt.addManager(Reference40_50.convertReference(t));
     if (src.hasSourceAttachment())
@@ -87,8 +91,8 @@ public class Consent40_50 {
       tgt.addCategory(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasSubject())
       tgt.setPatient(Reference40_50.convertReference(src.getSubject()));
-    if (src.hasDateTime())
-      tgt.setDateTimeElement(DateTime40_50.convertDateTime(src.getDateTimeElement()));
+    if (src.hasDate())
+      tgt.setDateTimeElement(DateTime40_50.convertDateToDateTime(src.getDateElement()));
     for (org.hl7.fhir.r5.model.Reference t : src.getGrantee()) tgt.addPerformer(Reference40_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getManager()) tgt.addOrganization(Reference40_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getController())
@@ -231,7 +235,7 @@ public class Consent40_50 {
       tgt.addAction(CodeableConcept40_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r4.model.Coding t : src.getSecurityLabel()) tgt.addSecurityLabel(Coding40_50.convertCoding(t));
     for (org.hl7.fhir.r4.model.Coding t : src.getPurpose()) tgt.addPurpose(Coding40_50.convertCoding(t));
-    for (org.hl7.fhir.r4.model.Coding t : src.getClass_()) tgt.addClass_(Coding40_50.convertCoding(t));
+//    for (org.hl7.fhir.r4.model.Coding t : src.getClass_()) tgt.addClass_(Coding40_50.convertCoding(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode())
       tgt.addCode(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasDataPeriod())
@@ -258,7 +262,7 @@ public class Consent40_50 {
       tgt.addAction(CodeableConcept40_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r5.model.Coding t : src.getSecurityLabel()) tgt.addSecurityLabel(Coding40_50.convertCoding(t));
     for (org.hl7.fhir.r5.model.Coding t : src.getPurpose()) tgt.addPurpose(Coding40_50.convertCoding(t));
-    for (org.hl7.fhir.r5.model.Coding t : src.getClass_()) tgt.addClass_(Coding40_50.convertCoding(t));
+//    for (org.hl7.fhir.r5.model.Coding t : src.getClass_()) tgt.addClass_(Coding40_50.convertCoding(t));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCode())
       tgt.addCode(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasDataPeriod())
@@ -270,26 +274,26 @@ public class Consent40_50 {
     return tgt;
   }
 
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Consent.ConsentProvisionType> convertConsentProvisionType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Consent.ConsentProvisionType> src) throws FHIRException {
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ConsentProvisionType> convertConsentProvisionType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Consent.ConsentProvisionType> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Consent.ConsentProvisionType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Consent.ConsentProvisionTypeEnumFactory());
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ConsentProvisionType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.ConsentProvisionTypeEnumFactory());
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case DENY:
-        tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentProvisionType.DENY);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConsentProvisionType.DENY);
         break;
       case PERMIT:
-        tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentProvisionType.PERMIT);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConsentProvisionType.PERMIT);
         break;
       default:
-        tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentProvisionType.NULL);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConsentProvisionType.NULL);
         break;
     }
     return tgt;
   }
 
-  static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Consent.ConsentProvisionType> convertConsentProvisionType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Consent.ConsentProvisionType> src) throws FHIRException {
+  static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Consent.ConsentProvisionType> convertConsentProvisionType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ConsentProvisionType> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Consent.ConsentProvisionType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Consent.ConsentProvisionTypeEnumFactory());
@@ -356,32 +360,32 @@ public class Consent40_50 {
     return tgt;
   }
 
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Consent.ConsentDataMeaning> convertConsentDataMeaning(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Consent.ConsentDataMeaning> src) throws FHIRException {
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ConsentDataMeaning> convertConsentDataMeaning(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Consent.ConsentDataMeaning> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Consent.ConsentDataMeaning> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Consent.ConsentDataMeaningEnumFactory());
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ConsentDataMeaning> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.ConsentDataMeaningEnumFactory());
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case INSTANCE:
-        tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentDataMeaning.INSTANCE);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConsentDataMeaning.INSTANCE);
         break;
       case RELATED:
-        tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentDataMeaning.RELATED);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConsentDataMeaning.RELATED);
         break;
       case DEPENDENTS:
-        tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentDataMeaning.DEPENDENTS);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConsentDataMeaning.DEPENDENTS);
         break;
       case AUTHOREDBY:
-        tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentDataMeaning.AUTHOREDBY);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConsentDataMeaning.AUTHOREDBY);
         break;
       default:
-        tgt.setValue(org.hl7.fhir.r5.model.Consent.ConsentDataMeaning.NULL);
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConsentDataMeaning.NULL);
         break;
     }
     return tgt;
   }
 
-  static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Consent.ConsentDataMeaning> convertConsentDataMeaning(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Consent.ConsentDataMeaning> src) throws FHIRException {
+  static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Consent.ConsentDataMeaning> convertConsentDataMeaning(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ConsentDataMeaning> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Consent.ConsentDataMeaning> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Consent.ConsentDataMeaningEnumFactory());

@@ -1,32 +1,36 @@
 package org.hl7.fhir.convertors.misc;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.hl7.fhir.r4.formats.IParser.OutputStyle;
 import org.hl7.fhir.r4.formats.XmlParser;
 import org.hl7.fhir.r4.formats.XmlParserBase.XmlVersion;
-import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.BooleanType;
+import org.hl7.fhir.r4.model.CodeSystem;
 import org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode;
 import org.hl7.fhir.r4.model.CodeSystem.CodeSystemHierarchyMeaning;
 import org.hl7.fhir.r4.model.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.r4.model.CodeSystem.PropertyType;
+import org.hl7.fhir.r4.model.CodeType;
+import org.hl7.fhir.r4.model.Coding;
+import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Enumerations.PublicationStatus;
+import org.hl7.fhir.r4.model.StringType;
+import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.r4.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r4.model.ValueSet.FilterOperator;
 import org.hl7.fhir.r4.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r4.utils.ToolingExtensions;
-import org.hl7.fhir.utilities.TextFile;
-import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.SimpleHTTPClient;
 import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
-import org.hl7.fhir.utilities.json.JsonTrackingParser;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.json.model.JsonElement;
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
 
 public class ICD11Generator {
 
@@ -37,12 +41,12 @@ public class ICD11Generator {
   private void execute(String base, String dest) throws IOException {
     CodeSystem cs = makeMMSCodeSystem();
     JsonObject version = fetchJson(Utilities.pathURL(base, "/icd/release/11/mms"));
-    String[] p = version.get("latestRelease").getAsString().split("\\/");
+    String[] p = version.asString("latestRelease").split("\\/");
     cs.setVersion(p[6]);
-    JsonObject root = fetchJson(url(base, version.get("latestRelease").getAsString()));
-    cs.setDateElement(new DateTimeType(root.get("releaseDate").getAsString()));
-    for (JsonElement child : root.getAsJsonArray("child")) {
-      processMMSEntity(cs, base, child.getAsString(), cs.addConcept(), dest);
+    JsonObject root = fetchJson(url(base, version.asString("latestRelease")));
+    cs.setDateElement(new DateTimeType(root.asString("releaseDate")));
+    for (JsonElement child : root.getJsonArray("child")) {
+      processMMSEntity(cs, base, child.asString(), cs.addConcept(), dest);
       System.out.println();
     }
     new XmlParser(XmlVersion.V1_1).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "icd-11-mms.xml")), cs);
@@ -50,12 +54,12 @@ public class ICD11Generator {
 
     cs = makeEntityCodeSystem();
     root = fetchJson(Utilities.pathURL(base, "/icd/entity"));
-    cs.setVersion(root.get("releaseId").getAsString());
-    cs.setDateElement(new DateTimeType(root.get("releaseDate").getAsString()));
+    cs.setVersion(root.asString("releaseId"));
+    cs.setDateElement(new DateTimeType(root.asString("releaseDate")));
     cs.setTitle(readString(root, "title"));
     Set<String> ids = new HashSet<>();
-    for (JsonElement child : root.getAsJsonArray("child")) {
-      processEntity(cs, ids, base, tail(child.getAsString()), dest);
+    for (JsonElement child : root.getJsonArray("child")) {
+      processEntity(cs, ids, base, tail(child.asString()), dest);
       System.out.println();
     }
     new XmlParser(XmlVersion.V1_1).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "icd-11-foundation.xml")), cs);
@@ -75,34 +79,34 @@ public class ICD11Generator {
         cc.setDefinition(d);
       }
       if (entity.has("inclusion")) {
-        for (JsonElement child : entity.getAsJsonArray("inclusion")) {
+        for (JsonElement child : entity.getJsonArray("inclusion")) {
           JsonObject co = (JsonObject) child;
           String v = readString(co, "label");
           if (v != null) {
             if (co.has("foundationReference")) {
-              cc.addProperty().setValue(new Coding().setSystem("http://id.who.int/icd11/foundation").setCode(tail(co.get("foundationReference").getAsString())).setDisplay(v)).setCode("inclusion");
+              cc.addProperty().setValue(new Coding().setSystem("http://id.who.int/icd11/foundation").setCode(tail(co.asString("foundationReference"))).setDisplay(v)).setCode("inclusion");
             }
           }
         }
       }
       if (entity.has("exclusion")) {
-        for (JsonElement child : entity.getAsJsonArray("exclusion")) {
+        for (JsonElement child : entity.getJsonArray("exclusion")) {
           JsonObject co = (JsonObject) child;
           String v = readString(co, "label");
           if (v != null) {
             if (co.has("foundationReference")) {
-              cc.addProperty().setValue(new Coding().setSystem("http://id.who.int/icd11/foundation").setCode(tail(co.get("foundationReference").getAsString())).setDisplay(v)).setCode("exclusion");
+              cc.addProperty().setValue(new Coding().setSystem("http://id.who.int/icd11/foundation").setCode(tail(co.asString("foundationReference"))).setDisplay(v)).setCode("exclusion");
             }
           }
         }
       }
       if (entity.has("narrowerTerm")) {
-        for (JsonElement child : entity.getAsJsonArray("narrowerTerm")) {
+        for (JsonElement child : entity.getJsonArray("narrowerTerm")) {
           JsonObject co = (JsonObject) child;
           String v = readString(co, "label");
           if (v != null) {
             if (co.has("narrowerTerm")) {
-              cc.addProperty().setValue(new Coding().setSystem("http://id.who.int/icd11/foundation").setCode(tail(co.get("foundationReference").getAsString())).setDisplay(v)).setCode("narrowerTerm");
+              cc.addProperty().setValue(new Coding().setSystem("http://id.who.int/icd11/foundation").setCode(tail(co.asString("foundationReference"))).setDisplay(v)).setCode("narrowerTerm");
             }
           }
         }
@@ -110,22 +114,22 @@ public class ICD11Generator {
       addDesignation(readString(entity, "longDefinition"), cc, "http://id.who.int/icd11/mms/designation", "longDefinition");
       addDesignation(readString(entity, "fullySpecifiedName"), cc, "http://snomed.info/sct", "900000000000003001");
       if (entity.has("synonym")) {
-        for (JsonElement j : entity.getAsJsonArray("synonym")) {
+        for (JsonElement j : entity.getJsonArray("synonym")) {
           String v = readString((JsonObject) j, "label");
           if (v != null && !v.equals(cc.getDisplay())) {
             addDesignation(v, cc, "http://id.who.int/icd11/mms/designation", "synonym");
           }
         }
       }
-      for (JsonElement j : entity.getAsJsonArray("parent")) {
-        String v = j.getAsString();
+      for (JsonElement j : entity.getJsonArray("parent")) {
+        String v = j.asString();
         if (!"http://id.who.int/icd/entity".equals(v)) {
           cc.addProperty().setValue(new CodeType(tail(v))).setCode("narrowerTerm");
         }
       }
       if (entity.has("child")) {
-        for (JsonElement j : entity.getAsJsonArray("child")) {
-          String v = j.getAsString();
+        for (JsonElement j : entity.getJsonArray("child")) {
+          String v = j.asString();
           cc.addProperty().setValue(new CodeType(tail(v))).setCode("child");
           processEntity(cs, ids, base, tail(v), dest);
         }
@@ -175,16 +179,16 @@ public class ICD11Generator {
     System.out.print(".");
     JsonObject entity = fetchJson(url(base, ref));
     cc.setId(tail(ref));
-    if (entity.has("code") && !Utilities.noString(entity.get("code").getAsString())) {
-      cc.setCode(entity.get("code").getAsString());
-    } else if (entity.has("blockId") && !Utilities.noString(entity.get("blockId").getAsString())) {
-      cc.setCode(entity.get("blockId").getAsString());
+    if (entity.has("code") && !Utilities.noString(entity.asString("code"))) {
+      cc.setCode(entity.asString("code"));
+    } else if (entity.has("blockId") && !Utilities.noString(entity.asString("blockId"))) {
+      cc.setCode(entity.asString("blockId"));
     } else {
       cc.setCode(cc.getId());
       cc.addProperty().setCode("abstract").setValue(new BooleanType(true));
     }
-    if (entity.has("classKind") && !Utilities.noString(entity.get("classKind").getAsString()) && !"category".equals(entity.get("classKind").getAsString())) {
-      cc.addProperty().setCode("kind").setValue(new CodeType(entity.get("classKind").getAsString()));
+    if (entity.has("classKind") && !Utilities.noString(entity.asString("classKind")) && !"category".equals(entity.asString("classKind"))) {
+      cc.addProperty().setCode("kind").setValue(new CodeType(entity.asString("classKind")));
     }
     cc.setDisplay(readString(entity, "title"));
     StringBuilder defn = new StringBuilder();
@@ -198,7 +202,7 @@ public class ICD11Generator {
     if (entity.has("inclusion")) {
       defn.append(". Includes: ");
       boolean first = true;
-      for (JsonElement child : entity.getAsJsonArray("inclusion")) {
+      for (JsonElement child : entity.getJsonArray("inclusion")) {
         if (first) first = false;
         else defn.append(", ");
         defn.append(readString((JsonObject) child, "label"));
@@ -207,7 +211,7 @@ public class ICD11Generator {
     if (entity.has("exclusion")) {
       defn.append(". Excludes: ");
       boolean first = true;
-      for (JsonElement child : entity.getAsJsonArray("exclusion")) {
+      for (JsonElement child : entity.getJsonArray("exclusion")) {
         if (first) first = false;
         else defn.append(", ");
         JsonObject co = (JsonObject) child;
@@ -215,7 +219,7 @@ public class ICD11Generator {
         if (v != null) {
           defn.append(v);
           if (co.has("linearizationReference")) {
-            cc.addProperty().setValue(new Coding().setSystem("http://id.who.int/icd11/mms").setCode(tail(co.get("linearizationReference").getAsString())).setDisplay(v)).setCode("exclusion");
+            cc.addProperty().setValue(new Coding().setSystem("http://id.who.int/icd11/mms").setCode(tail(co.asString("linearizationReference"))).setDisplay(v)).setCode("exclusion");
           }
         }
       }
@@ -226,33 +230,33 @@ public class ICD11Generator {
     addProperty(readString(entity, "codingNote"), cc, "codingNote");
     if (entity.has("indexTerm")) {
 //      CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("; ");
-//      for (JsonElement child : entity.getAsJsonArray("indexTerm")) {
+//      for (JsonElement child : entity.getJsonArray("indexTerm")) {
 //        processIndexTerm(cc, b, (JsonObject) child);    
 //      }
 //      if (b.length() > 0) {
 //        cc.addProperty().setCode("terms").setValue(new StringType(b.toString()));        
 //      }
-      for (JsonElement child : entity.getAsJsonArray("indexTerm")) {
+      for (JsonElement child : entity.getJsonArray("indexTerm")) {
         processIndexTerm(cc, (JsonObject) child);
       }
     }
     if (entity.has("postcoordinationScale")) {
-      for (JsonElement child : entity.getAsJsonArray("postcoordinationScale")) {
+      for (JsonElement child : entity.getJsonArray("postcoordinationScale")) {
         JsonObject o = (JsonObject) child;
-        String name = tail(o.get("axisName").getAsString());
+        String name = tail(o.asString("axisName"));
         ConceptPropertyComponent prop = cc.addProperty();
         prop.setCode("postcoordinationScale");
         prop.setValue(new CodeType(name));
-        ToolingExtensions.addBooleanExtension(prop, "http://id.who.int/icd11/extensions/required", o.get("requiredPostcoordination").getAsBoolean());
-        ToolingExtensions.addBooleanExtension(prop, "http://id.who.int/icd11/extensions/repeats", o.get("allowMultipleValues").getAsBoolean());
+        ToolingExtensions.addBooleanExtension(prop, "http://id.who.int/icd11/extensions/required", o.asBoolean("requiredPostcoordination"));
+        ToolingExtensions.addBooleanExtension(prop, "http://id.who.int/icd11/extensions/repeats", o.asBoolean("allowMultipleValues"));
         if (o.has("scaleEntity")) {
           ToolingExtensions.addUriExtension(prop, "http://id.who.int/icd11/extensions/valueSet", buildValueSet(cs, cc.getCode(), name, o, dest));
         }
       }
     }
     if (entity.has("child")) {
-      for (JsonElement child : entity.getAsJsonArray("child")) {
-        processMMSEntity(cs, base, child.getAsString(), cc.addConcept(), dest);
+      for (JsonElement child : entity.getJsonArray("child")) {
+        processMMSEntity(cs, base, child.asString(), cc.addConcept(), dest);
       }
     }
   }
@@ -274,8 +278,8 @@ public class ICD11Generator {
     vs.setStatus(cs.getStatus());
     ConceptSetComponent inc = vs.getCompose().addInclude();
     inc.setSystem(cs.getUrl());
-    for (JsonElement e : o.getAsJsonArray("scaleEntity")) {
-      inc.addFilter().setProperty("concept").setOp(FilterOperator.ISA).setValue(tail(e.getAsString()));
+    for (JsonElement e : o.getJsonArray("scaleEntity")) {
+      inc.addFilter().setProperty("concept").setOp(FilterOperator.ISA).setValue(tail(e.asString()));
     }
     new XmlParser(XmlVersion.V1_1).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "vs-" + id + ".xml")), vs);
     return url;
@@ -323,12 +327,12 @@ public class ICD11Generator {
   }
 
   private String readString(JsonObject obj, String name) {
-    JsonObject p = obj.getAsJsonObject(name);
+    JsonObject p = obj.getJsonObject(name);
     if (p == null) {
       return null;
     }
     if (p.has("@value")) {
-      return p.get("@value").getAsString();
+      return p.get("@value").asString();
     }
     return null;
   }
@@ -395,7 +399,7 @@ public class ICD11Generator {
     http.addHeader("Accept-Language", "en");
     HTTPResult res = http.get(source, "application/json");
     res.checkThrowException();
-    return JsonTrackingParser.parseJson(res.getContent());
+    return JsonParser.parseObject(res.getContent());
   }
 
 

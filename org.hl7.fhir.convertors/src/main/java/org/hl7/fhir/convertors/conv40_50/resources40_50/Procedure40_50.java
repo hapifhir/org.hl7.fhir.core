@@ -86,9 +86,9 @@ public class Procedure40_50 {
       tgt.setOutcome(CodeableConcept40_50.convertCodeableConcept(src.getOutcome()));
     for (org.hl7.fhir.r4.model.Reference t : src.getReport()) tgt.addReport(Reference40_50.convertReference(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getComplication())
-      tgt.addComplication(CodeableConcept40_50.convertCodeableConcept(t));
+      tgt.addComplication().setConcept(CodeableConcept40_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getComplicationDetail())
-      tgt.addComplicationDetail(Reference40_50.convertReference(t));
+      tgt.addComplication().setReference(Reference40_50.convertReference(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getFollowUp())
       tgt.addFollowUp(CodeableConcept40_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
@@ -147,10 +147,14 @@ public class Procedure40_50 {
     if (src.hasOutcome())
       tgt.setOutcome(CodeableConcept40_50.convertCodeableConcept(src.getOutcome()));
     for (org.hl7.fhir.r5.model.Reference t : src.getReport()) tgt.addReport(Reference40_50.convertReference(t));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getComplication())
-      tgt.addComplication(CodeableConcept40_50.convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getComplicationDetail())
-      tgt.addComplicationDetail(Reference40_50.convertReference(t));
+    for (CodeableReference t : src.getComplication()) {
+      if (t.hasConcept()) {
+        tgt.addComplication(CodeableConcept40_50.convertCodeableConcept(t.getConcept()));
+      }
+      if (t.hasReference()) {
+        tgt.addComplicationDetail(Reference40_50.convertReference(t.getReference()));
+      }
+    }
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getFollowUp())
       tgt.addFollowUp(CodeableConcept40_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));

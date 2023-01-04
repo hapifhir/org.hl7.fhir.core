@@ -1,14 +1,15 @@
 package org.hl7.fhir.convertors.advisors.impl;
 
-import org.hl7.fhir.convertors.advisors.interfaces.BaseAdvisor40;
-import org.hl7.fhir.r4.model.Expression;
-import org.hl7.fhir.r4.model.Type;
-
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.hl7.fhir.convertors.advisors.interfaces.BaseAdvisor40;
+import org.hl7.fhir.r4.model.Expression;
+import org.hl7.fhir.r4.model.Type;
 
 public class BaseAdvisor_10_40 extends BaseAdvisor40<org.hl7.fhir.dstu2.model.Extension> {
 
@@ -25,8 +26,9 @@ public class BaseAdvisor_10_40 extends BaseAdvisor40<org.hl7.fhir.dstu2.model.Ex
   @Override
   public boolean ignoreExtension(@Nonnull String path,
                                  @Nonnull String url) {
-    List<String> paths = Arrays.asList(path.split(","));
-    return (paths.get(paths.size() - 1).equals("Conformance")) && (conformanceIgnoredUrls.contains(url));
+    final List<String> paths = Arrays.asList(path.split(","));
+    final String lastPath = paths.get(paths.size() - 1);
+    return (lastPath.equals("Conformance")) && (conformanceIgnoredUrls.contains(url));
   }
 
   @Override

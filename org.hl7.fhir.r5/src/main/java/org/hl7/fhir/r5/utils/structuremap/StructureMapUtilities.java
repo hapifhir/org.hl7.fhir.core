@@ -36,8 +36,9 @@ package org.hl7.fhir.r5.utils.structuremap;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
-import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider;
+import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.elementmodel.Element;
@@ -570,8 +571,6 @@ public class StructureMapUtilities {
         b.append(rtp.getValueDecimalType().asStringValue());
       else if (rtp.hasValueIdType())
         b.append(rtp.getValueIdType().asStringValue());
-      else if (rtp.hasValueDecimalType())
-        b.append(rtp.getValueDecimalType().asStringValue());
       else if (rtp.hasValueIntegerType())
         b.append(rtp.getValueIntegerType().asStringValue());
       else
@@ -1315,13 +1314,13 @@ public class StructureMapUtilities {
   private List<StructureMap> findMatchingMaps(String value) {
     List<StructureMap> res = new ArrayList<StructureMap>();
     if (value.contains("*")) {
-      for (StructureMap sm : worker.listTransforms()) {
+      for (StructureMap sm : worker.fetchResourcesByType(StructureMap.class)) {
         if (urlMatches(value, sm.getUrl())) {
           res.add(sm);
         }
       }
     } else {
-      StructureMap sm = worker.getTransform(value);
+      StructureMap sm = worker.fetchResource(StructureMap.class, value);
       if (sm != null)
         res.add(sm);
     }
@@ -1681,7 +1680,7 @@ public class StructureMapUtilities {
         case EVALUATE:
           ExpressionNode expr = (ExpressionNode) tgt.getUserData(MAP_EXPRESSION);
           if (expr == null) {
-            expr = fpe.parse(getParamStringNoNull(vars, tgt.getParameter().get(1), tgt.toString()));
+            expr = fpe.parse(getParamStringNoNull(vars, tgt.getParameter().get(tgt.getParameter().size() - 1), tgt.toString()));
             tgt.setUserData(MAP_EXPRESSION, expr);
           }
           List<Base> v = fpe.evaluate(vars, null, null, tgt.getParameter().size() == 2 ? getParam(vars, tgt.getParameter().get(0)) : new BooleanType(false), expr);
@@ -1708,10 +1707,49 @@ public class StructureMapUtilities {
           if (tgt.getParameter().size() == 1)
             throw new FHIRException("Implicit type parameters on cast not yet supported");
           String t = getParamString(vars, tgt.getParameter().get(1));
-          if (t.equals("string"))
-            return new StringType(src);
-          else
-            throw new FHIRException("cast to " + t + " not yet supported");
+          switch(t) {
+            case "boolean":
+              return new BooleanType(src);
+            case "integer":
+              return new IntegerType(src);
+            case  "integer64":
+              return new Integer64Type(src);
+            case  "string":
+              return new StringType(src);
+            case  "decimal":
+              return new DecimalType(src);
+            case  "uri":
+              return new UriType(src);
+            case  "base64Binary":
+              return new Base64BinaryType(src);
+            case  "instant":
+              return new InstantType(src);
+            case  "date":
+              return new DateType(src);
+            case  "dateTime":
+              return new DateTimeType(src);
+            case  "time":
+              return new TimeType(src);
+            case  "code":
+              return new CodeType(src);
+            case  "oid":
+              return new OidType(src);
+            case  "id":
+              return new IdType(src);
+            case  "markdown":
+              return new MarkdownType(src);
+            case  "unsignedInt":
+              return new UnsignedIntType(src);
+            case  "positiveInt":
+              return new PositiveIntType(src);
+            case  "uuid":
+              return new UuidType(src);
+            case  "url":
+              return new UrlType(src);
+            case  "canonical":
+              return new CanonicalType(src);
+          }
+          throw new FHIRException("cast to " + t + " not yet supported");
         case APPEND:
           StringBuilder sb = new StringBuilder(getParamString(vars, tgt.getParameter().get(0)));
           for (int i = 1; i < tgt.getParameter().size(); i++)
@@ -1861,7 +1899,7 @@ public class StructureMapUtilities {
 
     String su = conceptMapUrl;
     if (conceptMapUrl.equals("http://hl7.org/fhir/ConceptMap/special-oid2uri")) {
-      String uri = worker.oid2Uri(src.getCode());
+      String uri = new ContextUtilities(worker).oid2Uri(src.getCode());
       if (uri == null)
         uri = "urn:oid:" + src.getCode();
       if ("uri".equals(fieldToReturn))
@@ -2408,7 +2446,7 @@ public class StructureMapUtilities {
   private TypeDetails getParam(VariablesForProfiling vars, StructureMapGroupRuleTargetParameterComponent parameter) throws DefinitionException {
     DataType p = parameter.getValue();
     if (!(p instanceof IdType))
-      return new TypeDetails(CollectionStatus.SINGLETON, ProfileUtilities.sdNs(p.fhirType(), worker.getOverrideVersionNs()));
+      return new TypeDetails(CollectionStatus.SINGLETON, ProfileUtilities.sdNs(p.fhirType(), null));
     else {
       String n = ((IdType) p).asStringValue();
       VariableForProfiling b = vars.get(VariableMode.INPUT, n);
@@ -2517,7 +2555,7 @@ public class StructureMapUtilities {
 
   private void addChildMappings(StringBuilder b, String id, String indent, StructureDefinition sd, ElementDefinition ed, boolean inner) throws DefinitionException {
     boolean first = true;
-    List<ElementDefinition> children = profileUtilities.getChildMap(sd, ed);
+    List<ElementDefinition> children = profileUtilities.getChildMap(sd, ed).getList();
     for (ElementDefinition child : children) {
       if (first && inner) {
         b.append(" then {\r\n");

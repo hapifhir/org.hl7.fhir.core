@@ -7,7 +7,6 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.Annotation;
 import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.ListResource;
 import org.hl7.fhir.r5.model.ListResource.ListResourceEntryComponent;
 import org.hl7.fhir.r5.model.Reference;

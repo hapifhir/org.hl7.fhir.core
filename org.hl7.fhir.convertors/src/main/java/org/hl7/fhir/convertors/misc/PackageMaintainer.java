@@ -1,5 +1,15 @@
 package org.hl7.fhir.convertors.misc;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -28,19 +38,6 @@ package org.hl7.fhir.convertors.misc;
   POSSIBILITY OF SUCH DAMAGE.
   
  */
-
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import org.hl7.fhir.utilities.TextFile;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.json.JsonTrackingParser;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class PackageMaintainer {
 
@@ -95,11 +92,10 @@ public class PackageMaintainer {
       if (f.isDirectory())
         strip(f);
       else if (f.getName().endsWith(".json")) {
-        JsonObject json = JsonTrackingParser.parseJson(f);
+        JsonObject json = JsonParser.parseObject(f);
         if (json.has("resourceType") && json.has("text")) {
           json.remove("text");
-          Gson gson = new GsonBuilder().create();
-          String src = gson.toJson(json);
+          String src = JsonParser.compose(json);
           TextFile.stringToFile(src, f.getAbsolutePath());
         }
       }

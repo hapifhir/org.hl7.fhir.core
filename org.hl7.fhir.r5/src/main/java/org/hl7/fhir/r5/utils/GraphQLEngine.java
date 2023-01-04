@@ -41,6 +41,7 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleLinkComponent;
+import org.hl7.fhir.r5.model.Bundle.LinkRelationTypes;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.graphql.Argument;
 import org.hl7.fhir.utilities.graphql.Argument.ArgumentListStatus;
@@ -117,7 +118,7 @@ public class GraphQLEngine implements IGraphQLEngine {
       this.type = type;
       this.bnd = bnd;
       for (BundleLinkComponent bl : bnd.getLink()) 
-        if (bl.getRelation().equals("self"))
+        if (bl.getRelation().equals(LinkRelationTypes.SELF))
           map = parseURL(bl.getUrl());
     }
 
@@ -186,7 +187,7 @@ public class GraphQLEngine implements IGraphQLEngine {
 
     private Base extractLink(String _name) throws FHIRException {
       for (BundleLinkComponent bl : bnd.getLink()) {
-        if (bl.getRelation().equals(_name)) {
+        if (bl.getRelation().toCode().equals(_name)) {
           Map<String, String> map = parseURL(bl.getUrl());
           return new StringType(map.get("search-id")+':'+map.get("search-offset"));
         }
@@ -696,7 +697,7 @@ public class GraphQLEngine implements IGraphQLEngine {
     Argument arg = new Argument();
     params.add(arg);
     arg.setName(getSingleValue(parg));
-    arg.addValue(new StringValue(source.fhirType()+"/"+source.getId()));
+    arg.addValue(new StringValue(source.fhirType()+"/"+source.getIdPart()));
     Bundle bnd = (Bundle) services.search(appInfo, field.getName().substring(0, field.getName().length()-10), params);
     Base bndWrapper = new SearchWrapper(field.getName(), bnd);
     arg = target.addField(field.getAlias()+suffix, listStatus(field, false));

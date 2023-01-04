@@ -3,7 +3,11 @@ package org.hl7.fhir.convertors.conv10_30.resources10_30;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_30;
 import org.hl7.fhir.convertors.context.ConversionContext10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.Signature10_30;
-import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.*;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.Decimal10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.Instant10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.String10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.UnsignedInt10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.Uri10_30;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.FhirPublication;
 

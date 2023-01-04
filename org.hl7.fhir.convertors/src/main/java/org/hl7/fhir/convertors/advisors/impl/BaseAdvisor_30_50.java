@@ -1,12 +1,13 @@
 package org.hl7.fhir.convertors.advisors.impl;
 
-import org.hl7.fhir.convertors.advisors.interfaces.BaseAdvisor50;
-import org.hl7.fhir.exceptions.FHIRException;
-
-import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.hl7.fhir.convertors.advisors.interfaces.BaseAdvisor50;
+import org.hl7.fhir.exceptions.FHIRException;
 
 public class BaseAdvisor_30_50 extends BaseAdvisor50<org.hl7.fhir.dstu3.model.Extension> {
 
@@ -24,10 +25,15 @@ public class BaseAdvisor_30_50 extends BaseAdvisor50<org.hl7.fhir.dstu3.model.Ex
   @Override
   public boolean ignoreExtension(@Nonnull String path,
                                  @Nonnull String url) throws FHIRException {
-    List<String> paths = Arrays.asList(path.split(","));
-    if ((paths.get(paths.size() - 1).equals("ValueSet")) && (valueSetIgnoredUrls.contains(url))) {
+    final List<String> paths = Arrays.asList(path.split(","));
+    final String lastPath = paths.get(paths.size() - 1);
+    if ((lastPath.equals("ValueSet")) && (valueSetIgnoredUrls.contains(url))) {
+      return true;
+    } else if (lastPath.equals("Basic") && url.startsWith("http://hl7.org/fhir/5.0/StructureDefinition/extension-ActorDefinition.")) {
+      return true;
+    } else if (lastPath.equals("Basic") && url.startsWith("http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.")) {
       return true;
     } else
-      return (paths.get(paths.size() - 1).equals("CapabilityStatement")) && (capabilityStatementIgnoredUrls.contains(url));
+      return (lastPath.equals("CapabilityStatement")) && (capabilityStatementIgnoredUrls.contains(url));
   }
 }

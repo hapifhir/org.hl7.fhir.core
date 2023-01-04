@@ -56,6 +56,7 @@ import org.hl7.fhir.r4b.formats.JsonCreatorGson;
 import org.hl7.fhir.r4b.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r4b.utils.FHIRPathEngine;
 import org.hl7.fhir.r4b.model.StructureDefinition;
+import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -347,7 +348,13 @@ public class JsonParser extends ParserBase {
         }
         if (!n.getProperty().isChoice() && n.getType().equals("xhtml")) {
           try {
-            n.setXhtml(new XhtmlParser().setValidatorMode(policy == ValidationPolicy.EVERYTHING).parse(n.getValue(), null).getDocumentElement());
+            XhtmlParser xp = new XhtmlParser();
+            n.setXhtml(xp.parse(n.getValue(), null).getDocumentElement());
+            if (policy == ValidationPolicy.EVERYTHING) {
+              for (StringPair s : xp.getValidationIssues()) {
+                logError(line(main), col(main), npath, IssueType.INVALID, context.formatMessage(s.getName(), s.getValue()), IssueSeverity.ERROR);                
+              }
+            }
           } catch (Exception e) {
             logError(line(main), col(main), npath, IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_XHTML_, e.getMessage()), IssueSeverity.ERROR);
           }

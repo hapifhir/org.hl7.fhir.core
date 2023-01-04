@@ -1,5 +1,8 @@
 package org.hl7.fhir.convertors.conv10_30.resources10_30;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hl7.fhir.convertors.context.ConversionContext10_30;
 import org.hl7.fhir.convertors.conv10_30.VersionConvertor_10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.ElementDefinition10_30;
@@ -7,14 +10,16 @@ import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.Codeab
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.Coding10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.ContactPoint10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.Identifier10_30;
-import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.*;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.Boolean10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.Code10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.DateTime10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.Id10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.String10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.Uri10_30;
 import org.hl7.fhir.dstu3.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.dstu3.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class StructureDefinition10_30 {
 

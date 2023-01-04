@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -82,15 +82,15 @@ public class ImagingSelection extends DomainResource {
         public static ImagingSelection2DGraphicType fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("POINT".equals(codeString))
+        if ("point".equals(codeString))
           return POINT;
-        if ("POLYLINE".equals(codeString))
+        if ("polyline".equals(codeString))
           return POLYLINE;
-        if ("INTERPOLATED".equals(codeString))
+        if ("interpolated".equals(codeString))
           return INTERPOLATED;
-        if ("CIRCLE".equals(codeString))
+        if ("circle".equals(codeString))
           return CIRCLE;
-        if ("ELLIPSE".equals(codeString))
+        if ("ellipse".equals(codeString))
           return ELLIPSE;
         if (Configuration.isAcceptInvalidEnums())
           return null;
@@ -99,11 +99,11 @@ public class ImagingSelection extends DomainResource {
         }
         public String toCode() {
           switch (this) {
-            case POINT: return "POINT";
-            case POLYLINE: return "POLYLINE";
-            case INTERPOLATED: return "INTERPOLATED";
-            case CIRCLE: return "CIRCLE";
-            case ELLIPSE: return "ELLIPSE";
+            case POINT: return "point";
+            case POLYLINE: return "polyline";
+            case INTERPOLATED: return "interpolated";
+            case CIRCLE: return "circle";
+            case ELLIPSE: return "ellipse";
             case NULL: return null;
             default: return "?";
           }
@@ -148,15 +148,15 @@ public class ImagingSelection extends DomainResource {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("POINT".equals(codeString))
+        if ("point".equals(codeString))
           return ImagingSelection2DGraphicType.POINT;
-        if ("POLYLINE".equals(codeString))
+        if ("polyline".equals(codeString))
           return ImagingSelection2DGraphicType.POLYLINE;
-        if ("INTERPOLATED".equals(codeString))
+        if ("interpolated".equals(codeString))
           return ImagingSelection2DGraphicType.INTERPOLATED;
-        if ("CIRCLE".equals(codeString))
+        if ("circle".equals(codeString))
           return ImagingSelection2DGraphicType.CIRCLE;
-        if ("ELLIPSE".equals(codeString))
+        if ("ellipse".equals(codeString))
           return ImagingSelection2DGraphicType.ELLIPSE;
         throw new IllegalArgumentException("Unknown ImagingSelection2DGraphicType code '"+codeString+"'");
         }
@@ -168,29 +168,29 @@ public class ImagingSelection extends DomainResource {
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
-        if ("POINT".equals(codeString))
+        if ("point".equals(codeString))
           return new Enumeration<ImagingSelection2DGraphicType>(this, ImagingSelection2DGraphicType.POINT);
-        if ("POLYLINE".equals(codeString))
+        if ("polyline".equals(codeString))
           return new Enumeration<ImagingSelection2DGraphicType>(this, ImagingSelection2DGraphicType.POLYLINE);
-        if ("INTERPOLATED".equals(codeString))
+        if ("interpolated".equals(codeString))
           return new Enumeration<ImagingSelection2DGraphicType>(this, ImagingSelection2DGraphicType.INTERPOLATED);
-        if ("CIRCLE".equals(codeString))
+        if ("circle".equals(codeString))
           return new Enumeration<ImagingSelection2DGraphicType>(this, ImagingSelection2DGraphicType.CIRCLE);
-        if ("ELLIPSE".equals(codeString))
+        if ("ellipse".equals(codeString))
           return new Enumeration<ImagingSelection2DGraphicType>(this, ImagingSelection2DGraphicType.ELLIPSE);
         throw new FHIRException("Unknown ImagingSelection2DGraphicType code '"+codeString+"'");
         }
     public String toCode(ImagingSelection2DGraphicType code) {
       if (code == ImagingSelection2DGraphicType.POINT)
-        return "POINT";
+        return "point";
       if (code == ImagingSelection2DGraphicType.POLYLINE)
-        return "POLYLINE";
+        return "polyline";
       if (code == ImagingSelection2DGraphicType.INTERPOLATED)
-        return "INTERPOLATED";
+        return "interpolated";
       if (code == ImagingSelection2DGraphicType.CIRCLE)
-        return "CIRCLE";
+        return "circle";
       if (code == ImagingSelection2DGraphicType.ELLIPSE)
-        return "ELLIPSE";
+        return "ellipse";
       return "?";
       }
     public String toSystem(ImagingSelection2DGraphicType code) {
@@ -230,17 +230,17 @@ public class ImagingSelection extends DomainResource {
         public static ImagingSelection3DGraphicType fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("POINT".equals(codeString))
+        if ("point".equals(codeString))
           return POINT;
-        if ("MULTIPOINT".equals(codeString))
+        if ("multipoint".equals(codeString))
           return MULTIPOINT;
-        if ("POLYLINE".equals(codeString))
+        if ("polyline".equals(codeString))
           return POLYLINE;
-        if ("POLYGON".equals(codeString))
+        if ("polygon".equals(codeString))
           return POLYGON;
-        if ("ELLIPSE".equals(codeString))
+        if ("ellipse".equals(codeString))
           return ELLIPSE;
-        if ("ELLIPSOID".equals(codeString))
+        if ("ellipsoid".equals(codeString))
           return ELLIPSOID;
         if (Configuration.isAcceptInvalidEnums())
           return null;
@@ -249,12 +249,12 @@ public class ImagingSelection extends DomainResource {
         }
         public String toCode() {
           switch (this) {
-            case POINT: return "POINT";
-            case MULTIPOINT: return "MULTIPOINT";
-            case POLYLINE: return "POLYLINE";
-            case POLYGON: return "POLYGON";
-            case ELLIPSE: return "ELLIPSE";
-            case ELLIPSOID: return "ELLIPSOID";
+            case POINT: return "point";
+            case MULTIPOINT: return "multipoint";
+            case POLYLINE: return "polyline";
+            case POLYGON: return "polygon";
+            case ELLIPSE: return "ellipse";
+            case ELLIPSOID: return "ellipsoid";
             case NULL: return null;
             default: return "?";
           }
@@ -302,17 +302,17 @@ public class ImagingSelection extends DomainResource {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("POINT".equals(codeString))
+        if ("point".equals(codeString))
           return ImagingSelection3DGraphicType.POINT;
-        if ("MULTIPOINT".equals(codeString))
+        if ("multipoint".equals(codeString))
           return ImagingSelection3DGraphicType.MULTIPOINT;
-        if ("POLYLINE".equals(codeString))
+        if ("polyline".equals(codeString))
           return ImagingSelection3DGraphicType.POLYLINE;
-        if ("POLYGON".equals(codeString))
+        if ("polygon".equals(codeString))
           return ImagingSelection3DGraphicType.POLYGON;
-        if ("ELLIPSE".equals(codeString))
+        if ("ellipse".equals(codeString))
           return ImagingSelection3DGraphicType.ELLIPSE;
-        if ("ELLIPSOID".equals(codeString))
+        if ("ellipsoid".equals(codeString))
           return ImagingSelection3DGraphicType.ELLIPSOID;
         throw new IllegalArgumentException("Unknown ImagingSelection3DGraphicType code '"+codeString+"'");
         }
@@ -324,33 +324,33 @@ public class ImagingSelection extends DomainResource {
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
-        if ("POINT".equals(codeString))
+        if ("point".equals(codeString))
           return new Enumeration<ImagingSelection3DGraphicType>(this, ImagingSelection3DGraphicType.POINT);
-        if ("MULTIPOINT".equals(codeString))
+        if ("multipoint".equals(codeString))
           return new Enumeration<ImagingSelection3DGraphicType>(this, ImagingSelection3DGraphicType.MULTIPOINT);
-        if ("POLYLINE".equals(codeString))
+        if ("polyline".equals(codeString))
           return new Enumeration<ImagingSelection3DGraphicType>(this, ImagingSelection3DGraphicType.POLYLINE);
-        if ("POLYGON".equals(codeString))
+        if ("polygon".equals(codeString))
           return new Enumeration<ImagingSelection3DGraphicType>(this, ImagingSelection3DGraphicType.POLYGON);
-        if ("ELLIPSE".equals(codeString))
+        if ("ellipse".equals(codeString))
           return new Enumeration<ImagingSelection3DGraphicType>(this, ImagingSelection3DGraphicType.ELLIPSE);
-        if ("ELLIPSOID".equals(codeString))
+        if ("ellipsoid".equals(codeString))
           return new Enumeration<ImagingSelection3DGraphicType>(this, ImagingSelection3DGraphicType.ELLIPSOID);
         throw new FHIRException("Unknown ImagingSelection3DGraphicType code '"+codeString+"'");
         }
     public String toCode(ImagingSelection3DGraphicType code) {
       if (code == ImagingSelection3DGraphicType.POINT)
-        return "POINT";
+        return "point";
       if (code == ImagingSelection3DGraphicType.MULTIPOINT)
-        return "MULTIPOINT";
+        return "multipoint";
       if (code == ImagingSelection3DGraphicType.POLYLINE)
-        return "POLYLINE";
+        return "polyline";
       if (code == ImagingSelection3DGraphicType.POLYGON)
-        return "POLYGON";
+        return "polygon";
       if (code == ImagingSelection3DGraphicType.ELLIPSE)
-        return "ELLIPSE";
+        return "ellipse";
       if (code == ImagingSelection3DGraphicType.ELLIPSOID)
-        return "ELLIPSOID";
+        return "ellipsoid";
       return "?";
       }
     public String toSystem(ImagingSelection3DGraphicType code) {
@@ -682,9 +682,16 @@ public class ImagingSelection extends DomainResource {
         protected IdType uid;
 
         /**
+         * The Instance Number for the selected DICOM instance.
+         */
+        @Child(name = "number", type = {UnsignedIntType.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="DICOM Instance Number", formalDefinition="The Instance Number for the selected DICOM instance." )
+        protected UnsignedIntType number;
+
+        /**
          * The SOP Class UID for the selected DICOM instance.
          */
-        @Child(name = "sopClass", type = {Coding.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "sopClass", type = {Coding.class}, order=3, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="DICOM SOP Class UID", formalDefinition="The SOP Class UID for the selected DICOM instance." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://dicom.nema.org/medical/dicom/current/output/chtml/part04/sect_B.5.html#table_B.5-1")
         protected Coding sopClass;
@@ -697,7 +704,7 @@ public class ImagingSelection extends DomainResource {
        - A list of segment numbers selected from a segmentation SOP Instance.
        - A list of Region of Interest (ROI) numbers selected from a radiotherapy structure set SOP Instance.
          */
-        @Child(name = "subset", type = {StringType.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "subset", type = {StringType.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="The selected subset of the SOP Instance", formalDefinition="Selected subset of the SOP Instance. The content and format of the subset item is determined by the SOP Class of the selected instance.\n       May be one of:\n       - A list of frame numbers selected from a multiframe SOP Instance.\n       - A list of Content Item Observation UID values selected from a DICOM SR or other structured document SOP Instance.\n       - A list of segment numbers selected from a segmentation SOP Instance.\n       - A list of Region of Interest (ROI) numbers selected from a radiotherapy structure set SOP Instance." )
         protected List<StringType> subset;
 
@@ -705,11 +712,11 @@ public class ImagingSelection extends DomainResource {
          * Each imaging selection instance or frame list might includes an image region, specified by a region type and a set of 2D coordinates.
        If the parent imagingSelection.instance contains a subset element of type frame, the image region applies to all frames in the subset list.
          */
-        @Child(name = "imageRegion", type = {}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "imageRegion", type = {}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="A specific 2D region in a DICOM image / frame", formalDefinition="Each imaging selection instance or frame list might includes an image region, specified by a region type and a set of 2D coordinates.\n       If the parent imagingSelection.instance contains a subset element of type frame, the image region applies to all frames in the subset list." )
-        protected List<ImagingSelectionInstanceImageRegionComponent> imageRegion;
+        protected List<ImageRegion2DComponent> imageRegion;
 
-        private static final long serialVersionUID = 445509632L;
+        private static final long serialVersionUID = -1352866506L;
 
     /**
      * Constructor
@@ -768,6 +775,51 @@ public class ImagingSelection extends DomainResource {
             if (this.uid == null)
               this.uid = new IdType();
             this.uid.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #number} (The Instance Number for the selected DICOM instance.). This is the underlying object with id, value and extensions. The accessor "getNumber" gives direct access to the value
+         */
+        public UnsignedIntType getNumberElement() { 
+          if (this.number == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ImagingSelectionInstanceComponent.number");
+            else if (Configuration.doAutoCreate())
+              this.number = new UnsignedIntType(); // bb
+          return this.number;
+        }
+
+        public boolean hasNumberElement() { 
+          return this.number != null && !this.number.isEmpty();
+        }
+
+        public boolean hasNumber() { 
+          return this.number != null && !this.number.isEmpty();
+        }
+
+        /**
+         * @param value {@link #number} (The Instance Number for the selected DICOM instance.). This is the underlying object with id, value and extensions. The accessor "getNumber" gives direct access to the value
+         */
+        public ImagingSelectionInstanceComponent setNumberElement(UnsignedIntType value) { 
+          this.number = value;
+          return this;
+        }
+
+        /**
+         * @return The Instance Number for the selected DICOM instance.
+         */
+        public int getNumber() { 
+          return this.number == null || this.number.isEmpty() ? 0 : this.number.getValue();
+        }
+
+        /**
+         * @param value The Instance Number for the selected DICOM instance.
+         */
+        public ImagingSelectionInstanceComponent setNumber(int value) { 
+            if (this.number == null)
+              this.number = new UnsignedIntType();
+            this.number.setValue(value);
           return this;
         }
 
@@ -880,16 +932,16 @@ public class ImagingSelection extends DomainResource {
          * @return {@link #imageRegion} (Each imaging selection instance or frame list might includes an image region, specified by a region type and a set of 2D coordinates.
        If the parent imagingSelection.instance contains a subset element of type frame, the image region applies to all frames in the subset list.)
          */
-        public List<ImagingSelectionInstanceImageRegionComponent> getImageRegion() { 
+        public List<ImageRegion2DComponent> getImageRegion() { 
           if (this.imageRegion == null)
-            this.imageRegion = new ArrayList<ImagingSelectionInstanceImageRegionComponent>();
+            this.imageRegion = new ArrayList<ImageRegion2DComponent>();
           return this.imageRegion;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public ImagingSelectionInstanceComponent setImageRegion(List<ImagingSelectionInstanceImageRegionComponent> theImageRegion) { 
+        public ImagingSelectionInstanceComponent setImageRegion(List<ImageRegion2DComponent> theImageRegion) { 
           this.imageRegion = theImageRegion;
           return this;
         }
@@ -897,25 +949,25 @@ public class ImagingSelection extends DomainResource {
         public boolean hasImageRegion() { 
           if (this.imageRegion == null)
             return false;
-          for (ImagingSelectionInstanceImageRegionComponent item : this.imageRegion)
+          for (ImageRegion2DComponent item : this.imageRegion)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public ImagingSelectionInstanceImageRegionComponent addImageRegion() { //3
-          ImagingSelectionInstanceImageRegionComponent t = new ImagingSelectionInstanceImageRegionComponent();
+        public ImageRegion2DComponent addImageRegion() { //3
+          ImageRegion2DComponent t = new ImageRegion2DComponent();
           if (this.imageRegion == null)
-            this.imageRegion = new ArrayList<ImagingSelectionInstanceImageRegionComponent>();
+            this.imageRegion = new ArrayList<ImageRegion2DComponent>();
           this.imageRegion.add(t);
           return t;
         }
 
-        public ImagingSelectionInstanceComponent addImageRegion(ImagingSelectionInstanceImageRegionComponent t) { //3
+        public ImagingSelectionInstanceComponent addImageRegion(ImageRegion2DComponent t) { //3
           if (t == null)
             return this;
           if (this.imageRegion == null)
-            this.imageRegion = new ArrayList<ImagingSelectionInstanceImageRegionComponent>();
+            this.imageRegion = new ArrayList<ImageRegion2DComponent>();
           this.imageRegion.add(t);
           return this;
         }
@@ -923,7 +975,7 @@ public class ImagingSelection extends DomainResource {
         /**
          * @return The first repetition of repeating field {@link #imageRegion}, creating it if it does not already exist {3}
          */
-        public ImagingSelectionInstanceImageRegionComponent getImageRegionFirstRep() { 
+        public ImageRegion2DComponent getImageRegionFirstRep() { 
           if (getImageRegion().isEmpty()) {
             addImageRegion();
           }
@@ -933,6 +985,7 @@ public class ImagingSelection extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("uid", "id", "The SOP Instance UID for the selected DICOM instance.", 0, 1, uid));
+          children.add(new Property("number", "unsignedInt", "The Instance Number for the selected DICOM instance.", 0, 1, number));
           children.add(new Property("sopClass", "Coding", "The SOP Class UID for the selected DICOM instance.", 0, 1, sopClass));
           children.add(new Property("subset", "string", "Selected subset of the SOP Instance. The content and format of the subset item is determined by the SOP Class of the selected instance.\n       May be one of:\n       - A list of frame numbers selected from a multiframe SOP Instance.\n       - A list of Content Item Observation UID values selected from a DICOM SR or other structured document SOP Instance.\n       - A list of segment numbers selected from a segmentation SOP Instance.\n       - A list of Region of Interest (ROI) numbers selected from a radiotherapy structure set SOP Instance.", 0, java.lang.Integer.MAX_VALUE, subset));
           children.add(new Property("imageRegion", "", "Each imaging selection instance or frame list might includes an image region, specified by a region type and a set of 2D coordinates.\n       If the parent imagingSelection.instance contains a subset element of type frame, the image region applies to all frames in the subset list.", 0, java.lang.Integer.MAX_VALUE, imageRegion));
@@ -942,6 +995,7 @@ public class ImagingSelection extends DomainResource {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 115792: /*uid*/  return new Property("uid", "id", "The SOP Instance UID for the selected DICOM instance.", 0, 1, uid);
+          case -1034364087: /*number*/  return new Property("number", "unsignedInt", "The Instance Number for the selected DICOM instance.", 0, 1, number);
           case 1560041540: /*sopClass*/  return new Property("sopClass", "Coding", "The SOP Class UID for the selected DICOM instance.", 0, 1, sopClass);
           case -891529694: /*subset*/  return new Property("subset", "string", "Selected subset of the SOP Instance. The content and format of the subset item is determined by the SOP Class of the selected instance.\n       May be one of:\n       - A list of frame numbers selected from a multiframe SOP Instance.\n       - A list of Content Item Observation UID values selected from a DICOM SR or other structured document SOP Instance.\n       - A list of segment numbers selected from a segmentation SOP Instance.\n       - A list of Region of Interest (ROI) numbers selected from a radiotherapy structure set SOP Instance.", 0, java.lang.Integer.MAX_VALUE, subset);
           case 2132544559: /*imageRegion*/  return new Property("imageRegion", "", "Each imaging selection instance or frame list might includes an image region, specified by a region type and a set of 2D coordinates.\n       If the parent imagingSelection.instance contains a subset element of type frame, the image region applies to all frames in the subset list.", 0, java.lang.Integer.MAX_VALUE, imageRegion);
@@ -954,9 +1008,10 @@ public class ImagingSelection extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 115792: /*uid*/ return this.uid == null ? new Base[0] : new Base[] {this.uid}; // IdType
+        case -1034364087: /*number*/ return this.number == null ? new Base[0] : new Base[] {this.number}; // UnsignedIntType
         case 1560041540: /*sopClass*/ return this.sopClass == null ? new Base[0] : new Base[] {this.sopClass}; // Coding
         case -891529694: /*subset*/ return this.subset == null ? new Base[0] : this.subset.toArray(new Base[this.subset.size()]); // StringType
-        case 2132544559: /*imageRegion*/ return this.imageRegion == null ? new Base[0] : this.imageRegion.toArray(new Base[this.imageRegion.size()]); // ImagingSelectionInstanceImageRegionComponent
+        case 2132544559: /*imageRegion*/ return this.imageRegion == null ? new Base[0] : this.imageRegion.toArray(new Base[this.imageRegion.size()]); // ImageRegion2DComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -968,6 +1023,9 @@ public class ImagingSelection extends DomainResource {
         case 115792: // uid
           this.uid = TypeConvertor.castToId(value); // IdType
           return value;
+        case -1034364087: // number
+          this.number = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
+          return value;
         case 1560041540: // sopClass
           this.sopClass = TypeConvertor.castToCoding(value); // Coding
           return value;
@@ -975,7 +1033,7 @@ public class ImagingSelection extends DomainResource {
           this.getSubset().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case 2132544559: // imageRegion
-          this.getImageRegion().add((ImagingSelectionInstanceImageRegionComponent) value); // ImagingSelectionInstanceImageRegionComponent
+          this.getImageRegion().add((ImageRegion2DComponent) value); // ImageRegion2DComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -986,12 +1044,14 @@ public class ImagingSelection extends DomainResource {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("uid")) {
           this.uid = TypeConvertor.castToId(value); // IdType
+        } else if (name.equals("number")) {
+          this.number = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
         } else if (name.equals("sopClass")) {
           this.sopClass = TypeConvertor.castToCoding(value); // Coding
         } else if (name.equals("subset")) {
           this.getSubset().add(TypeConvertor.castToString(value));
         } else if (name.equals("imageRegion")) {
-          this.getImageRegion().add((ImagingSelectionInstanceImageRegionComponent) value);
+          this.getImageRegion().add((ImageRegion2DComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -1001,6 +1061,7 @@ public class ImagingSelection extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 115792:  return getUidElement();
+        case -1034364087:  return getNumberElement();
         case 1560041540:  return getSopClass();
         case -891529694:  return addSubsetElement();
         case 2132544559:  return addImageRegion(); 
@@ -1013,6 +1074,7 @@ public class ImagingSelection extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 115792: /*uid*/ return new String[] {"id"};
+        case -1034364087: /*number*/ return new String[] {"unsignedInt"};
         case 1560041540: /*sopClass*/ return new String[] {"Coding"};
         case -891529694: /*subset*/ return new String[] {"string"};
         case 2132544559: /*imageRegion*/ return new String[] {};
@@ -1025,6 +1087,9 @@ public class ImagingSelection extends DomainResource {
       public Base addChild(String name) throws FHIRException {
         if (name.equals("uid")) {
           throw new FHIRException("Cannot call addChild on a primitive type ImagingSelection.instance.uid");
+        }
+        else if (name.equals("number")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ImagingSelection.instance.number");
         }
         else if (name.equals("sopClass")) {
           this.sopClass = new Coding();
@@ -1049,6 +1114,7 @@ public class ImagingSelection extends DomainResource {
       public void copyValues(ImagingSelectionInstanceComponent dst) {
         super.copyValues(dst);
         dst.uid = uid == null ? null : uid.copy();
+        dst.number = number == null ? null : number.copy();
         dst.sopClass = sopClass == null ? null : sopClass.copy();
         if (subset != null) {
           dst.subset = new ArrayList<StringType>();
@@ -1056,8 +1122,8 @@ public class ImagingSelection extends DomainResource {
             dst.subset.add(i.copy());
         };
         if (imageRegion != null) {
-          dst.imageRegion = new ArrayList<ImagingSelectionInstanceImageRegionComponent>();
-          for (ImagingSelectionInstanceImageRegionComponent i : imageRegion)
+          dst.imageRegion = new ArrayList<ImageRegion2DComponent>();
+          for (ImageRegion2DComponent i : imageRegion)
             dst.imageRegion.add(i.copy());
         };
       }
@@ -1069,8 +1135,8 @@ public class ImagingSelection extends DomainResource {
         if (!(other_ instanceof ImagingSelectionInstanceComponent))
           return false;
         ImagingSelectionInstanceComponent o = (ImagingSelectionInstanceComponent) other_;
-        return compareDeep(uid, o.uid, true) && compareDeep(sopClass, o.sopClass, true) && compareDeep(subset, o.subset, true)
-           && compareDeep(imageRegion, o.imageRegion, true);
+        return compareDeep(uid, o.uid, true) && compareDeep(number, o.number, true) && compareDeep(sopClass, o.sopClass, true)
+           && compareDeep(subset, o.subset, true) && compareDeep(imageRegion, o.imageRegion, true);
       }
 
       @Override
@@ -1080,12 +1146,13 @@ public class ImagingSelection extends DomainResource {
         if (!(other_ instanceof ImagingSelectionInstanceComponent))
           return false;
         ImagingSelectionInstanceComponent o = (ImagingSelectionInstanceComponent) other_;
-        return compareValues(uid, o.uid, true) && compareValues(subset, o.subset, true);
+        return compareValues(uid, o.uid, true) && compareValues(number, o.number, true) && compareValues(subset, o.subset, true)
+          ;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(uid, sopClass, subset, imageRegion
-          );
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(uid, number, sopClass, subset
+          , imageRegion);
       }
 
   public String fhirType() {
@@ -1096,12 +1163,12 @@ public class ImagingSelection extends DomainResource {
   }
 
     @Block()
-    public static class ImagingSelectionInstanceImageRegionComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class ImageRegion2DComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * Specifies the type of image region.
          */
         @Child(name = "regionType", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="POINT | POLYLINE | INTERPOLATED | CIRCLE | ELLIPSE", formalDefinition="Specifies the type of image region." )
+        @Description(shortDefinition="point | polyline | interpolated | circle | ellipse", formalDefinition="Specifies the type of image region." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/imagingselection-2dgraphictype")
         protected Enumeration<ImagingSelection2DGraphicType> regionType;
 
@@ -1118,14 +1185,14 @@ public class ImagingSelection extends DomainResource {
     /**
      * Constructor
      */
-      public ImagingSelectionInstanceImageRegionComponent() {
+      public ImageRegion2DComponent() {
         super();
       }
 
     /**
      * Constructor
      */
-      public ImagingSelectionInstanceImageRegionComponent(ImagingSelection2DGraphicType regionType, BigDecimal coordinate) {
+      public ImageRegion2DComponent(ImagingSelection2DGraphicType regionType, BigDecimal coordinate) {
         super();
         this.setRegionType(regionType);
         this.addCoordinate(coordinate);
@@ -1137,7 +1204,7 @@ public class ImagingSelection extends DomainResource {
         public Enumeration<ImagingSelection2DGraphicType> getRegionTypeElement() { 
           if (this.regionType == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ImagingSelectionInstanceImageRegionComponent.regionType");
+              throw new Error("Attempt to auto-create ImageRegion2DComponent.regionType");
             else if (Configuration.doAutoCreate())
               this.regionType = new Enumeration<ImagingSelection2DGraphicType>(new ImagingSelection2DGraphicTypeEnumFactory()); // bb
           return this.regionType;
@@ -1154,7 +1221,7 @@ public class ImagingSelection extends DomainResource {
         /**
          * @param value {@link #regionType} (Specifies the type of image region.). This is the underlying object with id, value and extensions. The accessor "getRegionType" gives direct access to the value
          */
-        public ImagingSelectionInstanceImageRegionComponent setRegionTypeElement(Enumeration<ImagingSelection2DGraphicType> value) { 
+        public ImageRegion2DComponent setRegionTypeElement(Enumeration<ImagingSelection2DGraphicType> value) { 
           this.regionType = value;
           return this;
         }
@@ -1169,7 +1236,7 @@ public class ImagingSelection extends DomainResource {
         /**
          * @param value Specifies the type of image region.
          */
-        public ImagingSelectionInstanceImageRegionComponent setRegionType(ImagingSelection2DGraphicType value) { 
+        public ImageRegion2DComponent setRegionType(ImagingSelection2DGraphicType value) { 
             if (this.regionType == null)
               this.regionType = new Enumeration<ImagingSelection2DGraphicType>(new ImagingSelection2DGraphicTypeEnumFactory());
             this.regionType.setValue(value);
@@ -1189,7 +1256,7 @@ public class ImagingSelection extends DomainResource {
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public ImagingSelectionInstanceImageRegionComponent setCoordinate(List<DecimalType> theCoordinate) { 
+        public ImageRegion2DComponent setCoordinate(List<DecimalType> theCoordinate) { 
           this.coordinate = theCoordinate;
           return this;
         }
@@ -1219,7 +1286,7 @@ public class ImagingSelection extends DomainResource {
          * @param value {@link #coordinate} (The coordinates describing the image region. Encoded as a set of (column, row) pairs that denote positions in the selected image / frames specified with sub-pixel resolution.
        The origin at the TLHC of the TLHC pixel is 0.0\0.0, the BRHC of the TLHC pixel is 1.0\1.0, and the BRHC of the BRHC pixel is the number of columns\rows in the image / frames. The values must be within the range 0\0 to the number of columns\rows in the image / frames.)
          */
-        public ImagingSelectionInstanceImageRegionComponent addCoordinate(BigDecimal value) { //1
+        public ImageRegion2DComponent addCoordinate(BigDecimal value) { //1
           DecimalType t = new DecimalType();
           t.setValue(value);
           if (this.coordinate == null)
@@ -1326,13 +1393,13 @@ public class ImagingSelection extends DomainResource {
           return super.addChild(name);
       }
 
-      public ImagingSelectionInstanceImageRegionComponent copy() {
-        ImagingSelectionInstanceImageRegionComponent dst = new ImagingSelectionInstanceImageRegionComponent();
+      public ImageRegion2DComponent copy() {
+        ImageRegion2DComponent dst = new ImageRegion2DComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(ImagingSelectionInstanceImageRegionComponent dst) {
+      public void copyValues(ImageRegion2DComponent dst) {
         super.copyValues(dst);
         dst.regionType = regionType == null ? null : regionType.copy();
         if (coordinate != null) {
@@ -1346,9 +1413,9 @@ public class ImagingSelection extends DomainResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof ImagingSelectionInstanceImageRegionComponent))
+        if (!(other_ instanceof ImageRegion2DComponent))
           return false;
-        ImagingSelectionInstanceImageRegionComponent o = (ImagingSelectionInstanceImageRegionComponent) other_;
+        ImageRegion2DComponent o = (ImageRegion2DComponent) other_;
         return compareDeep(regionType, o.regionType, true) && compareDeep(coordinate, o.coordinate, true)
           ;
       }
@@ -1357,9 +1424,9 @@ public class ImagingSelection extends DomainResource {
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof ImagingSelectionInstanceImageRegionComponent))
+        if (!(other_ instanceof ImageRegion2DComponent))
           return false;
-        ImagingSelectionInstanceImageRegionComponent o = (ImagingSelectionInstanceImageRegionComponent) other_;
+        ImageRegion2DComponent o = (ImageRegion2DComponent) other_;
         return compareValues(regionType, o.regionType, true) && compareValues(coordinate, o.coordinate, true)
           ;
       }
@@ -1376,12 +1443,12 @@ public class ImagingSelection extends DomainResource {
   }
 
     @Block()
-    public static class ImagingSelectionImageRegionComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class ImageRegion3DComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * Specifies the type of image region.
          */
         @Child(name = "regionType", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="POINT | MULTIPOINT | POLYLINE | POLYGON | ELLIPSE | ELLIPSOID", formalDefinition="Specifies the type of image region." )
+        @Description(shortDefinition="point | multipoint | polyline | polygon | ellipse | ellipsoid", formalDefinition="Specifies the type of image region." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/imagingselection-3dgraphictype")
         protected Enumeration<ImagingSelection3DGraphicType> regionType;
 
@@ -1397,14 +1464,14 @@ public class ImagingSelection extends DomainResource {
     /**
      * Constructor
      */
-      public ImagingSelectionImageRegionComponent() {
+      public ImageRegion3DComponent() {
         super();
       }
 
     /**
      * Constructor
      */
-      public ImagingSelectionImageRegionComponent(ImagingSelection3DGraphicType regionType, BigDecimal coordinate) {
+      public ImageRegion3DComponent(ImagingSelection3DGraphicType regionType, BigDecimal coordinate) {
         super();
         this.setRegionType(regionType);
         this.addCoordinate(coordinate);
@@ -1416,7 +1483,7 @@ public class ImagingSelection extends DomainResource {
         public Enumeration<ImagingSelection3DGraphicType> getRegionTypeElement() { 
           if (this.regionType == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ImagingSelectionImageRegionComponent.regionType");
+              throw new Error("Attempt to auto-create ImageRegion3DComponent.regionType");
             else if (Configuration.doAutoCreate())
               this.regionType = new Enumeration<ImagingSelection3DGraphicType>(new ImagingSelection3DGraphicTypeEnumFactory()); // bb
           return this.regionType;
@@ -1433,7 +1500,7 @@ public class ImagingSelection extends DomainResource {
         /**
          * @param value {@link #regionType} (Specifies the type of image region.). This is the underlying object with id, value and extensions. The accessor "getRegionType" gives direct access to the value
          */
-        public ImagingSelectionImageRegionComponent setRegionTypeElement(Enumeration<ImagingSelection3DGraphicType> value) { 
+        public ImageRegion3DComponent setRegionTypeElement(Enumeration<ImagingSelection3DGraphicType> value) { 
           this.regionType = value;
           return this;
         }
@@ -1448,7 +1515,7 @@ public class ImagingSelection extends DomainResource {
         /**
          * @param value Specifies the type of image region.
          */
-        public ImagingSelectionImageRegionComponent setRegionType(ImagingSelection3DGraphicType value) { 
+        public ImageRegion3DComponent setRegionType(ImagingSelection3DGraphicType value) { 
             if (this.regionType == null)
               this.regionType = new Enumeration<ImagingSelection3DGraphicType>(new ImagingSelection3DGraphicTypeEnumFactory());
             this.regionType.setValue(value);
@@ -1467,7 +1534,7 @@ public class ImagingSelection extends DomainResource {
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public ImagingSelectionImageRegionComponent setCoordinate(List<DecimalType> theCoordinate) { 
+        public ImageRegion3DComponent setCoordinate(List<DecimalType> theCoordinate) { 
           this.coordinate = theCoordinate;
           return this;
         }
@@ -1495,7 +1562,7 @@ public class ImagingSelection extends DomainResource {
         /**
          * @param value {@link #coordinate} (The coordinates describing the image region. Encoded as an ordered set of (x,y,z) triplets (in mm and may be negative) that define a region of interest in the patient-relative Reference Coordinate System defined by ImagingSelection.frameOfReferenceUid element.)
          */
-        public ImagingSelectionImageRegionComponent addCoordinate(BigDecimal value) { //1
+        public ImageRegion3DComponent addCoordinate(BigDecimal value) { //1
           DecimalType t = new DecimalType();
           t.setValue(value);
           if (this.coordinate == null)
@@ -1601,13 +1668,13 @@ public class ImagingSelection extends DomainResource {
           return super.addChild(name);
       }
 
-      public ImagingSelectionImageRegionComponent copy() {
-        ImagingSelectionImageRegionComponent dst = new ImagingSelectionImageRegionComponent();
+      public ImageRegion3DComponent copy() {
+        ImageRegion3DComponent dst = new ImageRegion3DComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(ImagingSelectionImageRegionComponent dst) {
+      public void copyValues(ImageRegion3DComponent dst) {
         super.copyValues(dst);
         dst.regionType = regionType == null ? null : regionType.copy();
         if (coordinate != null) {
@@ -1621,9 +1688,9 @@ public class ImagingSelection extends DomainResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof ImagingSelectionImageRegionComponent))
+        if (!(other_ instanceof ImageRegion3DComponent))
           return false;
-        ImagingSelectionImageRegionComponent o = (ImagingSelectionImageRegionComponent) other_;
+        ImageRegion3DComponent o = (ImageRegion3DComponent) other_;
         return compareDeep(regionType, o.regionType, true) && compareDeep(coordinate, o.coordinate, true)
           ;
       }
@@ -1632,9 +1699,9 @@ public class ImagingSelection extends DomainResource {
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof ImagingSelectionImageRegionComponent))
+        if (!(other_ instanceof ImageRegion3DComponent))
           return false;
-        ImagingSelectionImageRegionComponent o = (ImagingSelectionImageRegionComponent) other_;
+        ImageRegion3DComponent o = (ImageRegion3DComponent) other_;
         return compareValues(regionType, o.regionType, true) && compareValues(coordinate, o.coordinate, true)
           ;
       }
@@ -1738,35 +1805,49 @@ public class ImagingSelection extends DomainResource {
     protected IdType seriesUid;
 
     /**
+     * The Series Number for the DICOM Series from which the images were selected.
+     */
+    @Child(name = "seriesNumber", type = {UnsignedIntType.class}, order=12, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="DICOM Series Number", formalDefinition="The Series Number for the DICOM Series from which the images were selected." )
+    protected UnsignedIntType seriesNumber;
+
+    /**
      * The Frame of Reference UID identifying the coordinate system that conveys spatial and/or temporal information for the selected images or frames.
      */
-    @Child(name = "frameOfReferenceUid", type = {IdType.class}, order=12, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "frameOfReferenceUid", type = {IdType.class}, order=13, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The Frame of Reference UID for the selected images", formalDefinition="The Frame of Reference UID identifying the coordinate system that conveys spatial and/or temporal information for the selected images or frames." )
     protected IdType frameOfReferenceUid;
 
     /**
      * The anatomic structures examined. See DICOM Part 16 Annex L (http://dicom.nema.org/medical/dicom/current/output/chtml/part16/chapter_L.html) for DICOM to SNOMED-CT mappings.
      */
-    @Child(name = "bodySite", type = {CodeableReference.class}, order=13, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "bodySite", type = {CodeableReference.class}, order=14, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Body part examined", formalDefinition="The anatomic structures examined. See DICOM Part 16 Annex L (http://dicom.nema.org/medical/dicom/current/output/chtml/part16/chapter_L.html) for DICOM to SNOMED-CT mappings." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/body-site")
     protected CodeableReference bodySite;
 
     /**
+     * The actual focus of an observation when it is not the patient of record representing something or someone associated with the patient such as a spouse, parent, fetus, or donor. For example, fetus observations in a mother's record.  The focus of an observation could also be an existing condition,  an intervention, the subject's diet,  another observation of the subject,  or a body structure such as tumor or implanted device.   An example use case would be using the Observation resource to capture whether the mother is trained to change her child's tracheostomy tube. In this example, the child is the patient of record and the mother is the focus.
+     */
+    @Child(name = "focus", type = {ImagingSelection.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Related resource that is the focus for the imaging selection", formalDefinition="The actual focus of an observation when it is not the patient of record representing something or someone associated with the patient such as a spouse, parent, fetus, or donor. For example, fetus observations in a mother's record.  The focus of an observation could also be an existing condition,  an intervention, the subject's diet,  another observation of the subject,  or a body structure such as tumor or implanted device.   An example use case would be using the Observation resource to capture whether the mother is trained to change her child's tracheostomy tube. In this example, the child is the patient of record and the mother is the focus." )
+    protected List<Reference> focus;
+
+    /**
      * Each imaging selection includes one or more selected DICOM SOP instances.
      */
-    @Child(name = "instance", type = {}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "instance", type = {}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The selected instances", formalDefinition="Each imaging selection includes one or more selected DICOM SOP instances." )
     protected List<ImagingSelectionInstanceComponent> instance;
 
     /**
      * Each imaging selection might includes a 3D image region, specified by a region type and a set of 3D coordinates.
      */
-    @Child(name = "imageRegion", type = {}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "imageRegion", type = {}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="A specific 3D region in a DICOM frame of reference", formalDefinition="Each imaging selection might includes a 3D image region, specified by a region type and a set of 3D coordinates." )
-    protected List<ImagingSelectionImageRegionComponent> imageRegion;
+    protected List<ImageRegion3DComponent> imageRegion;
 
-    private static final long serialVersionUID = 1828736494L;
+    private static final long serialVersionUID = 1594179578L;
 
   /**
    * Constructor
@@ -2343,6 +2424,51 @@ public class ImagingSelection extends DomainResource {
     }
 
     /**
+     * @return {@link #seriesNumber} (The Series Number for the DICOM Series from which the images were selected.). This is the underlying object with id, value and extensions. The accessor "getSeriesNumber" gives direct access to the value
+     */
+    public UnsignedIntType getSeriesNumberElement() { 
+      if (this.seriesNumber == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create ImagingSelection.seriesNumber");
+        else if (Configuration.doAutoCreate())
+          this.seriesNumber = new UnsignedIntType(); // bb
+      return this.seriesNumber;
+    }
+
+    public boolean hasSeriesNumberElement() { 
+      return this.seriesNumber != null && !this.seriesNumber.isEmpty();
+    }
+
+    public boolean hasSeriesNumber() { 
+      return this.seriesNumber != null && !this.seriesNumber.isEmpty();
+    }
+
+    /**
+     * @param value {@link #seriesNumber} (The Series Number for the DICOM Series from which the images were selected.). This is the underlying object with id, value and extensions. The accessor "getSeriesNumber" gives direct access to the value
+     */
+    public ImagingSelection setSeriesNumberElement(UnsignedIntType value) { 
+      this.seriesNumber = value;
+      return this;
+    }
+
+    /**
+     * @return The Series Number for the DICOM Series from which the images were selected.
+     */
+    public int getSeriesNumber() { 
+      return this.seriesNumber == null || this.seriesNumber.isEmpty() ? 0 : this.seriesNumber.getValue();
+    }
+
+    /**
+     * @param value The Series Number for the DICOM Series from which the images were selected.
+     */
+    public ImagingSelection setSeriesNumber(int value) { 
+        if (this.seriesNumber == null)
+          this.seriesNumber = new UnsignedIntType();
+        this.seriesNumber.setValue(value);
+      return this;
+    }
+
+    /**
      * @return {@link #frameOfReferenceUid} (The Frame of Reference UID identifying the coordinate system that conveys spatial and/or temporal information for the selected images or frames.). This is the underlying object with id, value and extensions. The accessor "getFrameOfReferenceUid" gives direct access to the value
      */
     public IdType getFrameOfReferenceUidElement() { 
@@ -2416,6 +2542,59 @@ public class ImagingSelection extends DomainResource {
     }
 
     /**
+     * @return {@link #focus} (The actual focus of an observation when it is not the patient of record representing something or someone associated with the patient such as a spouse, parent, fetus, or donor. For example, fetus observations in a mother's record.  The focus of an observation could also be an existing condition,  an intervention, the subject's diet,  another observation of the subject,  or a body structure such as tumor or implanted device.   An example use case would be using the Observation resource to capture whether the mother is trained to change her child's tracheostomy tube. In this example, the child is the patient of record and the mother is the focus.)
+     */
+    public List<Reference> getFocus() { 
+      if (this.focus == null)
+        this.focus = new ArrayList<Reference>();
+      return this.focus;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ImagingSelection setFocus(List<Reference> theFocus) { 
+      this.focus = theFocus;
+      return this;
+    }
+
+    public boolean hasFocus() { 
+      if (this.focus == null)
+        return false;
+      for (Reference item : this.focus)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public Reference addFocus() { //3
+      Reference t = new Reference();
+      if (this.focus == null)
+        this.focus = new ArrayList<Reference>();
+      this.focus.add(t);
+      return t;
+    }
+
+    public ImagingSelection addFocus(Reference t) { //3
+      if (t == null)
+        return this;
+      if (this.focus == null)
+        this.focus = new ArrayList<Reference>();
+      this.focus.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #focus}, creating it if it does not already exist {3}
+     */
+    public Reference getFocusFirstRep() { 
+      if (getFocus().isEmpty()) {
+        addFocus();
+      }
+      return getFocus().get(0);
+    }
+
+    /**
      * @return {@link #instance} (Each imaging selection includes one or more selected DICOM SOP instances.)
      */
     public List<ImagingSelectionInstanceComponent> getInstance() { 
@@ -2471,16 +2650,16 @@ public class ImagingSelection extends DomainResource {
     /**
      * @return {@link #imageRegion} (Each imaging selection might includes a 3D image region, specified by a region type and a set of 3D coordinates.)
      */
-    public List<ImagingSelectionImageRegionComponent> getImageRegion() { 
+    public List<ImageRegion3DComponent> getImageRegion() { 
       if (this.imageRegion == null)
-        this.imageRegion = new ArrayList<ImagingSelectionImageRegionComponent>();
+        this.imageRegion = new ArrayList<ImageRegion3DComponent>();
       return this.imageRegion;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public ImagingSelection setImageRegion(List<ImagingSelectionImageRegionComponent> theImageRegion) { 
+    public ImagingSelection setImageRegion(List<ImageRegion3DComponent> theImageRegion) { 
       this.imageRegion = theImageRegion;
       return this;
     }
@@ -2488,25 +2667,25 @@ public class ImagingSelection extends DomainResource {
     public boolean hasImageRegion() { 
       if (this.imageRegion == null)
         return false;
-      for (ImagingSelectionImageRegionComponent item : this.imageRegion)
+      for (ImageRegion3DComponent item : this.imageRegion)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public ImagingSelectionImageRegionComponent addImageRegion() { //3
-      ImagingSelectionImageRegionComponent t = new ImagingSelectionImageRegionComponent();
+    public ImageRegion3DComponent addImageRegion() { //3
+      ImageRegion3DComponent t = new ImageRegion3DComponent();
       if (this.imageRegion == null)
-        this.imageRegion = new ArrayList<ImagingSelectionImageRegionComponent>();
+        this.imageRegion = new ArrayList<ImageRegion3DComponent>();
       this.imageRegion.add(t);
       return t;
     }
 
-    public ImagingSelection addImageRegion(ImagingSelectionImageRegionComponent t) { //3
+    public ImagingSelection addImageRegion(ImageRegion3DComponent t) { //3
       if (t == null)
         return this;
       if (this.imageRegion == null)
-        this.imageRegion = new ArrayList<ImagingSelectionImageRegionComponent>();
+        this.imageRegion = new ArrayList<ImageRegion3DComponent>();
       this.imageRegion.add(t);
       return this;
     }
@@ -2514,7 +2693,7 @@ public class ImagingSelection extends DomainResource {
     /**
      * @return The first repetition of repeating field {@link #imageRegion}, creating it if it does not already exist {3}
      */
-    public ImagingSelectionImageRegionComponent getImageRegionFirstRep() { 
+    public ImageRegion3DComponent getImageRegionFirstRep() { 
       if (getImageRegion().isEmpty()) {
         addImageRegion();
       }
@@ -2535,8 +2714,10 @@ public class ImagingSelection extends DomainResource {
         children.add(new Property("derivedFrom", "Reference(ImagingStudy)", "The imaging study from which the imaging selection is made.", 0, java.lang.Integer.MAX_VALUE, derivedFrom));
         children.add(new Property("endpoint", "Reference(Endpoint)", "The network service providing retrieval access to the selected images, frames, etc. See implementation notes for information about using DICOM endpoints.", 0, java.lang.Integer.MAX_VALUE, endpoint));
         children.add(new Property("seriesUid", "id", "The Series Instance UID for the DICOM Series from which the images were selected.", 0, 1, seriesUid));
+        children.add(new Property("seriesNumber", "unsignedInt", "The Series Number for the DICOM Series from which the images were selected.", 0, 1, seriesNumber));
         children.add(new Property("frameOfReferenceUid", "id", "The Frame of Reference UID identifying the coordinate system that conveys spatial and/or temporal information for the selected images or frames.", 0, 1, frameOfReferenceUid));
         children.add(new Property("bodySite", "CodeableReference(BodyStructure)", "The anatomic structures examined. See DICOM Part 16 Annex L (http://dicom.nema.org/medical/dicom/current/output/chtml/part16/chapter_L.html) for DICOM to SNOMED-CT mappings.", 0, 1, bodySite));
+        children.add(new Property("focus", "Reference(ImagingSelection)", "The actual focus of an observation when it is not the patient of record representing something or someone associated with the patient such as a spouse, parent, fetus, or donor. For example, fetus observations in a mother's record.  The focus of an observation could also be an existing condition,  an intervention, the subject's diet,  another observation of the subject,  or a body structure such as tumor or implanted device.   An example use case would be using the Observation resource to capture whether the mother is trained to change her child's tracheostomy tube. In this example, the child is the patient of record and the mother is the focus.", 0, java.lang.Integer.MAX_VALUE, focus));
         children.add(new Property("instance", "", "Each imaging selection includes one or more selected DICOM SOP instances.", 0, java.lang.Integer.MAX_VALUE, instance));
         children.add(new Property("imageRegion", "", "Each imaging selection might includes a 3D image region, specified by a region type and a set of 3D coordinates.", 0, java.lang.Integer.MAX_VALUE, imageRegion));
       }
@@ -2556,8 +2737,10 @@ public class ImagingSelection extends DomainResource {
         case 1077922663: /*derivedFrom*/  return new Property("derivedFrom", "Reference(ImagingStudy)", "The imaging study from which the imaging selection is made.", 0, java.lang.Integer.MAX_VALUE, derivedFrom);
         case 1741102485: /*endpoint*/  return new Property("endpoint", "Reference(Endpoint)", "The network service providing retrieval access to the selected images, frames, etc. See implementation notes for information about using DICOM endpoints.", 0, java.lang.Integer.MAX_VALUE, endpoint);
         case -569596327: /*seriesUid*/  return new Property("seriesUid", "id", "The Series Instance UID for the DICOM Series from which the images were selected.", 0, 1, seriesUid);
+        case 382652576: /*seriesNumber*/  return new Property("seriesNumber", "unsignedInt", "The Series Number for the DICOM Series from which the images were selected.", 0, 1, seriesNumber);
         case 828378953: /*frameOfReferenceUid*/  return new Property("frameOfReferenceUid", "id", "The Frame of Reference UID identifying the coordinate system that conveys spatial and/or temporal information for the selected images or frames.", 0, 1, frameOfReferenceUid);
         case 1702620169: /*bodySite*/  return new Property("bodySite", "CodeableReference(BodyStructure)", "The anatomic structures examined. See DICOM Part 16 Annex L (http://dicom.nema.org/medical/dicom/current/output/chtml/part16/chapter_L.html) for DICOM to SNOMED-CT mappings.", 0, 1, bodySite);
+        case 97604824: /*focus*/  return new Property("focus", "Reference(ImagingSelection)", "The actual focus of an observation when it is not the patient of record representing something or someone associated with the patient such as a spouse, parent, fetus, or donor. For example, fetus observations in a mother's record.  The focus of an observation could also be an existing condition,  an intervention, the subject's diet,  another observation of the subject,  or a body structure such as tumor or implanted device.   An example use case would be using the Observation resource to capture whether the mother is trained to change her child's tracheostomy tube. In this example, the child is the patient of record and the mother is the focus.", 0, java.lang.Integer.MAX_VALUE, focus);
         case 555127957: /*instance*/  return new Property("instance", "", "Each imaging selection includes one or more selected DICOM SOP instances.", 0, java.lang.Integer.MAX_VALUE, instance);
         case 2132544559: /*imageRegion*/  return new Property("imageRegion", "", "Each imaging selection might includes a 3D image region, specified by a region type and a set of 3D coordinates.", 0, java.lang.Integer.MAX_VALUE, imageRegion);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -2580,10 +2763,12 @@ public class ImagingSelection extends DomainResource {
         case 1077922663: /*derivedFrom*/ return this.derivedFrom == null ? new Base[0] : this.derivedFrom.toArray(new Base[this.derivedFrom.size()]); // Reference
         case 1741102485: /*endpoint*/ return this.endpoint == null ? new Base[0] : this.endpoint.toArray(new Base[this.endpoint.size()]); // Reference
         case -569596327: /*seriesUid*/ return this.seriesUid == null ? new Base[0] : new Base[] {this.seriesUid}; // IdType
+        case 382652576: /*seriesNumber*/ return this.seriesNumber == null ? new Base[0] : new Base[] {this.seriesNumber}; // UnsignedIntType
         case 828378953: /*frameOfReferenceUid*/ return this.frameOfReferenceUid == null ? new Base[0] : new Base[] {this.frameOfReferenceUid}; // IdType
         case 1702620169: /*bodySite*/ return this.bodySite == null ? new Base[0] : new Base[] {this.bodySite}; // CodeableReference
+        case 97604824: /*focus*/ return this.focus == null ? new Base[0] : this.focus.toArray(new Base[this.focus.size()]); // Reference
         case 555127957: /*instance*/ return this.instance == null ? new Base[0] : this.instance.toArray(new Base[this.instance.size()]); // ImagingSelectionInstanceComponent
-        case 2132544559: /*imageRegion*/ return this.imageRegion == null ? new Base[0] : this.imageRegion.toArray(new Base[this.imageRegion.size()]); // ImagingSelectionImageRegionComponent
+        case 2132544559: /*imageRegion*/ return this.imageRegion == null ? new Base[0] : this.imageRegion.toArray(new Base[this.imageRegion.size()]); // ImageRegion3DComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -2629,17 +2814,23 @@ public class ImagingSelection extends DomainResource {
         case -569596327: // seriesUid
           this.seriesUid = TypeConvertor.castToId(value); // IdType
           return value;
+        case 382652576: // seriesNumber
+          this.seriesNumber = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
+          return value;
         case 828378953: // frameOfReferenceUid
           this.frameOfReferenceUid = TypeConvertor.castToId(value); // IdType
           return value;
         case 1702620169: // bodySite
           this.bodySite = TypeConvertor.castToCodeableReference(value); // CodeableReference
           return value;
+        case 97604824: // focus
+          this.getFocus().add(TypeConvertor.castToReference(value)); // Reference
+          return value;
         case 555127957: // instance
           this.getInstance().add((ImagingSelectionInstanceComponent) value); // ImagingSelectionInstanceComponent
           return value;
         case 2132544559: // imageRegion
-          this.getImageRegion().add((ImagingSelectionImageRegionComponent) value); // ImagingSelectionImageRegionComponent
+          this.getImageRegion().add((ImageRegion3DComponent) value); // ImageRegion3DComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2673,14 +2864,18 @@ public class ImagingSelection extends DomainResource {
           this.getEndpoint().add(TypeConvertor.castToReference(value));
         } else if (name.equals("seriesUid")) {
           this.seriesUid = TypeConvertor.castToId(value); // IdType
+        } else if (name.equals("seriesNumber")) {
+          this.seriesNumber = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
         } else if (name.equals("frameOfReferenceUid")) {
           this.frameOfReferenceUid = TypeConvertor.castToId(value); // IdType
         } else if (name.equals("bodySite")) {
           this.bodySite = TypeConvertor.castToCodeableReference(value); // CodeableReference
+        } else if (name.equals("focus")) {
+          this.getFocus().add(TypeConvertor.castToReference(value));
         } else if (name.equals("instance")) {
           this.getInstance().add((ImagingSelectionInstanceComponent) value);
         } else if (name.equals("imageRegion")) {
-          this.getImageRegion().add((ImagingSelectionImageRegionComponent) value);
+          this.getImageRegion().add((ImageRegion3DComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -2701,8 +2896,10 @@ public class ImagingSelection extends DomainResource {
         case 1077922663:  return addDerivedFrom(); 
         case 1741102485:  return addEndpoint(); 
         case -569596327:  return getSeriesUidElement();
+        case 382652576:  return getSeriesNumberElement();
         case 828378953:  return getFrameOfReferenceUidElement();
         case 1702620169:  return getBodySite();
+        case 97604824:  return addFocus(); 
         case 555127957:  return addInstance(); 
         case 2132544559:  return addImageRegion(); 
         default: return super.makeProperty(hash, name);
@@ -2725,8 +2922,10 @@ public class ImagingSelection extends DomainResource {
         case 1077922663: /*derivedFrom*/ return new String[] {"Reference"};
         case 1741102485: /*endpoint*/ return new String[] {"Reference"};
         case -569596327: /*seriesUid*/ return new String[] {"id"};
+        case 382652576: /*seriesNumber*/ return new String[] {"unsignedInt"};
         case 828378953: /*frameOfReferenceUid*/ return new String[] {"id"};
         case 1702620169: /*bodySite*/ return new String[] {"CodeableReference"};
+        case 97604824: /*focus*/ return new String[] {"Reference"};
         case 555127957: /*instance*/ return new String[] {};
         case 2132544559: /*imageRegion*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
@@ -2774,12 +2973,18 @@ public class ImagingSelection extends DomainResource {
         else if (name.equals("seriesUid")) {
           throw new FHIRException("Cannot call addChild on a primitive type ImagingSelection.seriesUid");
         }
+        else if (name.equals("seriesNumber")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ImagingSelection.seriesNumber");
+        }
         else if (name.equals("frameOfReferenceUid")) {
           throw new FHIRException("Cannot call addChild on a primitive type ImagingSelection.frameOfReferenceUid");
         }
         else if (name.equals("bodySite")) {
           this.bodySite = new CodeableReference();
           return this.bodySite;
+        }
+        else if (name.equals("focus")) {
+          return addFocus();
         }
         else if (name.equals("instance")) {
           return addInstance();
@@ -2840,16 +3045,22 @@ public class ImagingSelection extends DomainResource {
             dst.endpoint.add(i.copy());
         };
         dst.seriesUid = seriesUid == null ? null : seriesUid.copy();
+        dst.seriesNumber = seriesNumber == null ? null : seriesNumber.copy();
         dst.frameOfReferenceUid = frameOfReferenceUid == null ? null : frameOfReferenceUid.copy();
         dst.bodySite = bodySite == null ? null : bodySite.copy();
+        if (focus != null) {
+          dst.focus = new ArrayList<Reference>();
+          for (Reference i : focus)
+            dst.focus.add(i.copy());
+        };
         if (instance != null) {
           dst.instance = new ArrayList<ImagingSelectionInstanceComponent>();
           for (ImagingSelectionInstanceComponent i : instance)
             dst.instance.add(i.copy());
         };
         if (imageRegion != null) {
-          dst.imageRegion = new ArrayList<ImagingSelectionImageRegionComponent>();
-          for (ImagingSelectionImageRegionComponent i : imageRegion)
+          dst.imageRegion = new ArrayList<ImageRegion3DComponent>();
+          for (ImageRegion3DComponent i : imageRegion)
             dst.imageRegion.add(i.copy());
         };
       }
@@ -2869,8 +3080,9 @@ public class ImagingSelection extends DomainResource {
            && compareDeep(issued, o.issued, true) && compareDeep(performer, o.performer, true) && compareDeep(basedOn, o.basedOn, true)
            && compareDeep(category, o.category, true) && compareDeep(code, o.code, true) && compareDeep(studyUid, o.studyUid, true)
            && compareDeep(derivedFrom, o.derivedFrom, true) && compareDeep(endpoint, o.endpoint, true) && compareDeep(seriesUid, o.seriesUid, true)
-           && compareDeep(frameOfReferenceUid, o.frameOfReferenceUid, true) && compareDeep(bodySite, o.bodySite, true)
-           && compareDeep(instance, o.instance, true) && compareDeep(imageRegion, o.imageRegion, true);
+           && compareDeep(seriesNumber, o.seriesNumber, true) && compareDeep(frameOfReferenceUid, o.frameOfReferenceUid, true)
+           && compareDeep(bodySite, o.bodySite, true) && compareDeep(focus, o.focus, true) && compareDeep(instance, o.instance, true)
+           && compareDeep(imageRegion, o.imageRegion, true);
       }
 
       @Override
@@ -2881,14 +3093,15 @@ public class ImagingSelection extends DomainResource {
           return false;
         ImagingSelection o = (ImagingSelection) other_;
         return compareValues(status, o.status, true) && compareValues(issued, o.issued, true) && compareValues(studyUid, o.studyUid, true)
-           && compareValues(seriesUid, o.seriesUid, true) && compareValues(frameOfReferenceUid, o.frameOfReferenceUid, true)
-          ;
+           && compareValues(seriesUid, o.seriesUid, true) && compareValues(seriesNumber, o.seriesNumber, true)
+           && compareValues(frameOfReferenceUid, o.frameOfReferenceUid, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, subject
           , issued, performer, basedOn, category, code, studyUid, derivedFrom, endpoint
-          , seriesUid, frameOfReferenceUid, bodySite, instance, imageRegion);
+          , seriesUid, seriesNumber, frameOfReferenceUid, bodySite, focus, instance, imageRegion
+          );
       }
 
   @Override
@@ -2945,19 +3158,19 @@ public class ImagingSelection extends DomainResource {
  /**
    * Search parameter: <b>code</b>
    * <p>
-   * Description: <b>The imaging selection description text or code</b><br>
+   * Description: <b>The imaging selection status</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ImagingSelection.code</b><br>
+   * Path: <b>ImagingSelection.status</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="code", path="ImagingSelection.code", description="The imaging selection description text or code", type="token" )
+  @SearchParamDefinition(name="code", path="ImagingSelection.status", description="The imaging selection status", type="token" )
   public static final String SP_CODE = "code";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>code</b>
    * <p>
-   * Description: <b>The imaging selection description text or code</b><br>
+   * Description: <b>The imaging selection status</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ImagingSelection.code</b><br>
+   * Path: <b>ImagingSelection.status</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);

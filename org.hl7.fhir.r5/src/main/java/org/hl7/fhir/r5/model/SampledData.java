@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,7 +47,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * Base StructureDefinition for SampledData Type: A series of measurements taken by a device, with upper and lower limits. There may be more than one dimension in the data.
+ * SampledData Type: A series of measurements taken by a device, with upper and lower limits. There may be more than one dimension in the data.
  */
 @DatatypeDef(name="SampledData")
 public class SampledData extends DataType implements ICompositeType {
@@ -60,48 +60,56 @@ public class SampledData extends DataType implements ICompositeType {
     protected Quantity origin;
 
     /**
-     * The length of time between sampling times, measured in milliseconds.
+     * Amount of intervalUnits between samples, eg. milliseconds for time-based sampling.
      */
-    @Child(name = "period", type = {DecimalType.class}, order=1, min=1, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Number of milliseconds between samples", formalDefinition="The length of time between sampling times, measured in milliseconds." )
-    protected DecimalType period;
+    @Child(name = "interval", type = {DecimalType.class}, order=1, min=1, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Number of intervalUnits between samples", formalDefinition="Amount of intervalUnits between samples, eg. milliseconds for time-based sampling." )
+    protected DecimalType interval;
+
+    /**
+     * The measurement unit in which the sample interval is expressed.
+     */
+    @Child(name = "intervalUnit", type = {CodeType.class}, order=2, min=1, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="The measurement unit of the interval between samples", formalDefinition="The measurement unit in which the sample interval is expressed." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ucum-units")
+    protected CodeType intervalUnit;
 
     /**
      * A correction factor that is applied to the sampled data points before they are added to the origin.
      */
-    @Child(name = "factor", type = {DecimalType.class}, order=2, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "factor", type = {DecimalType.class}, order=3, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Multiply data by this before adding to origin", formalDefinition="A correction factor that is applied to the sampled data points before they are added to the origin." )
     protected DecimalType factor;
 
     /**
      * The lower limit of detection of the measured points. This is needed if any of the data points have the value "L" (lower than detection limit).
      */
-    @Child(name = "lowerLimit", type = {DecimalType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "lowerLimit", type = {DecimalType.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Lower limit of detection", formalDefinition="The lower limit of detection of the measured points. This is needed if any of the data points have the value \"L\" (lower than detection limit)." )
     protected DecimalType lowerLimit;
 
     /**
      * The upper limit of detection of the measured points. This is needed if any of the data points have the value "U" (higher than detection limit).
      */
-    @Child(name = "upperLimit", type = {DecimalType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "upperLimit", type = {DecimalType.class}, order=5, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Upper limit of detection", formalDefinition="The upper limit of detection of the measured points. This is needed if any of the data points have the value \"U\" (higher than detection limit)." )
     protected DecimalType upperLimit;
 
     /**
      * The number of sample points at each time point. If this value is greater than one, then the dimensions will be interlaced - all the sample points for a point in time will be recorded at once.
      */
-    @Child(name = "dimensions", type = {PositiveIntType.class}, order=5, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "dimensions", type = {PositiveIntType.class}, order=6, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Number of sample points at each time point", formalDefinition="The number of sample points at each time point. If this value is greater than one, then the dimensions will be interlaced - all the sample points for a point in time will be recorded at once." )
     protected PositiveIntType dimensions;
 
     /**
      * A series of data points which are decimal values separated by a single space (character u20). The special values "E" (error), "L" (below detection limit) and "U" (above detection limit) can also be used in place of a decimal value.
      */
-    @Child(name = "data", type = {StringType.class}, order=6, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "data", type = {StringType.class}, order=7, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Decimal values with spaces, or \"E\" | \"U\" | \"L\"", formalDefinition="A series of data points which are decimal values separated by a single space (character u20). The special values \"E\" (error), \"L\" (below detection limit) and \"U\" (above detection limit) can also be used in place of a decimal value." )
     protected StringType data;
 
-    private static final long serialVersionUID = -1984181262L;
+    private static final long serialVersionUID = -1635523658L;
 
   /**
    * Constructor
@@ -113,10 +121,11 @@ public class SampledData extends DataType implements ICompositeType {
   /**
    * Constructor
    */
-    public SampledData(Quantity origin, BigDecimal period, int dimensions) {
+    public SampledData(Quantity origin, BigDecimal interval, String intervalUnit, int dimensions) {
       super();
       this.setOrigin(origin);
-      this.setPeriod(period);
+      this.setInterval(interval);
+      this.setIntervalUnit(intervalUnit);
       this.setDimensions(dimensions);
     }
 
@@ -145,65 +154,110 @@ public class SampledData extends DataType implements ICompositeType {
     }
 
     /**
-     * @return {@link #period} (The length of time between sampling times, measured in milliseconds.). This is the underlying object with id, value and extensions. The accessor "getPeriod" gives direct access to the value
+     * @return {@link #interval} (Amount of intervalUnits between samples, eg. milliseconds for time-based sampling.). This is the underlying object with id, value and extensions. The accessor "getInterval" gives direct access to the value
      */
-    public DecimalType getPeriodElement() { 
-      if (this.period == null)
+    public DecimalType getIntervalElement() { 
+      if (this.interval == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create SampledData.period");
+          throw new Error("Attempt to auto-create SampledData.interval");
         else if (Configuration.doAutoCreate())
-          this.period = new DecimalType(); // bb
-      return this.period;
+          this.interval = new DecimalType(); // bb
+      return this.interval;
     }
 
-    public boolean hasPeriodElement() { 
-      return this.period != null && !this.period.isEmpty();
+    public boolean hasIntervalElement() { 
+      return this.interval != null && !this.interval.isEmpty();
     }
 
-    public boolean hasPeriod() { 
-      return this.period != null && !this.period.isEmpty();
+    public boolean hasInterval() { 
+      return this.interval != null && !this.interval.isEmpty();
     }
 
     /**
-     * @param value {@link #period} (The length of time between sampling times, measured in milliseconds.). This is the underlying object with id, value and extensions. The accessor "getPeriod" gives direct access to the value
+     * @param value {@link #interval} (Amount of intervalUnits between samples, eg. milliseconds for time-based sampling.). This is the underlying object with id, value and extensions. The accessor "getInterval" gives direct access to the value
      */
-    public SampledData setPeriodElement(DecimalType value) { 
-      this.period = value;
+    public SampledData setIntervalElement(DecimalType value) { 
+      this.interval = value;
       return this;
     }
 
     /**
-     * @return The length of time between sampling times, measured in milliseconds.
+     * @return Amount of intervalUnits between samples, eg. milliseconds for time-based sampling.
      */
-    public BigDecimal getPeriod() { 
-      return this.period == null ? null : this.period.getValue();
+    public BigDecimal getInterval() { 
+      return this.interval == null ? null : this.interval.getValue();
     }
 
     /**
-     * @param value The length of time between sampling times, measured in milliseconds.
+     * @param value Amount of intervalUnits between samples, eg. milliseconds for time-based sampling.
      */
-    public SampledData setPeriod(BigDecimal value) { 
-        if (this.period == null)
-          this.period = new DecimalType();
-        this.period.setValue(value);
+    public SampledData setInterval(BigDecimal value) { 
+        if (this.interval == null)
+          this.interval = new DecimalType();
+        this.interval.setValue(value);
       return this;
     }
 
     /**
-     * @param value The length of time between sampling times, measured in milliseconds.
+     * @param value Amount of intervalUnits between samples, eg. milliseconds for time-based sampling.
      */
-    public SampledData setPeriod(long value) { 
-          this.period = new DecimalType();
-        this.period.setValue(value);
+    public SampledData setInterval(long value) { 
+          this.interval = new DecimalType();
+        this.interval.setValue(value);
       return this;
     }
 
     /**
-     * @param value The length of time between sampling times, measured in milliseconds.
+     * @param value Amount of intervalUnits between samples, eg. milliseconds for time-based sampling.
      */
-    public SampledData setPeriod(double value) { 
-          this.period = new DecimalType();
-        this.period.setValue(value);
+    public SampledData setInterval(double value) { 
+          this.interval = new DecimalType();
+        this.interval.setValue(value);
+      return this;
+    }
+
+    /**
+     * @return {@link #intervalUnit} (The measurement unit in which the sample interval is expressed.). This is the underlying object with id, value and extensions. The accessor "getIntervalUnit" gives direct access to the value
+     */
+    public CodeType getIntervalUnitElement() { 
+      if (this.intervalUnit == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create SampledData.intervalUnit");
+        else if (Configuration.doAutoCreate())
+          this.intervalUnit = new CodeType(); // bb
+      return this.intervalUnit;
+    }
+
+    public boolean hasIntervalUnitElement() { 
+      return this.intervalUnit != null && !this.intervalUnit.isEmpty();
+    }
+
+    public boolean hasIntervalUnit() { 
+      return this.intervalUnit != null && !this.intervalUnit.isEmpty();
+    }
+
+    /**
+     * @param value {@link #intervalUnit} (The measurement unit in which the sample interval is expressed.). This is the underlying object with id, value and extensions. The accessor "getIntervalUnit" gives direct access to the value
+     */
+    public SampledData setIntervalUnitElement(CodeType value) { 
+      this.intervalUnit = value;
+      return this;
+    }
+
+    /**
+     * @return The measurement unit in which the sample interval is expressed.
+     */
+    public String getIntervalUnit() { 
+      return this.intervalUnit == null ? null : this.intervalUnit.getValue();
+    }
+
+    /**
+     * @param value The measurement unit in which the sample interval is expressed.
+     */
+    public SampledData setIntervalUnit(String value) { 
+        if (this.intervalUnit == null)
+          this.intervalUnit = new CodeType();
+        this.intervalUnit.setValue(value);
       return this;
     }
 
@@ -505,7 +559,8 @@ public class SampledData extends DataType implements ICompositeType {
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("origin", "Quantity", "The base quantity that a measured value of zero represents. In addition, this provides the units of the entire measurement series.", 0, 1, origin));
-        children.add(new Property("period", "decimal", "The length of time between sampling times, measured in milliseconds.", 0, 1, period));
+        children.add(new Property("interval", "decimal", "Amount of intervalUnits between samples, eg. milliseconds for time-based sampling.", 0, 1, interval));
+        children.add(new Property("intervalUnit", "code", "The measurement unit in which the sample interval is expressed.", 0, 1, intervalUnit));
         children.add(new Property("factor", "decimal", "A correction factor that is applied to the sampled data points before they are added to the origin.", 0, 1, factor));
         children.add(new Property("lowerLimit", "decimal", "The lower limit of detection of the measured points. This is needed if any of the data points have the value \"L\" (lower than detection limit).", 0, 1, lowerLimit));
         children.add(new Property("upperLimit", "decimal", "The upper limit of detection of the measured points. This is needed if any of the data points have the value \"U\" (higher than detection limit).", 0, 1, upperLimit));
@@ -517,7 +572,8 @@ public class SampledData extends DataType implements ICompositeType {
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case -1008619738: /*origin*/  return new Property("origin", "Quantity", "The base quantity that a measured value of zero represents. In addition, this provides the units of the entire measurement series.", 0, 1, origin);
-        case -991726143: /*period*/  return new Property("period", "decimal", "The length of time between sampling times, measured in milliseconds.", 0, 1, period);
+        case 570418373: /*interval*/  return new Property("interval", "decimal", "Amount of intervalUnits between samples, eg. milliseconds for time-based sampling.", 0, 1, interval);
+        case -1569830935: /*intervalUnit*/  return new Property("intervalUnit", "code", "The measurement unit in which the sample interval is expressed.", 0, 1, intervalUnit);
         case -1282148017: /*factor*/  return new Property("factor", "decimal", "A correction factor that is applied to the sampled data points before they are added to the origin.", 0, 1, factor);
         case 1209133370: /*lowerLimit*/  return new Property("lowerLimit", "decimal", "The lower limit of detection of the measured points. This is needed if any of the data points have the value \"L\" (lower than detection limit).", 0, 1, lowerLimit);
         case -1681713095: /*upperLimit*/  return new Property("upperLimit", "decimal", "The upper limit of detection of the measured points. This is needed if any of the data points have the value \"U\" (higher than detection limit).", 0, 1, upperLimit);
@@ -532,7 +588,8 @@ public class SampledData extends DataType implements ICompositeType {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -1008619738: /*origin*/ return this.origin == null ? new Base[0] : new Base[] {this.origin}; // Quantity
-        case -991726143: /*period*/ return this.period == null ? new Base[0] : new Base[] {this.period}; // DecimalType
+        case 570418373: /*interval*/ return this.interval == null ? new Base[0] : new Base[] {this.interval}; // DecimalType
+        case -1569830935: /*intervalUnit*/ return this.intervalUnit == null ? new Base[0] : new Base[] {this.intervalUnit}; // CodeType
         case -1282148017: /*factor*/ return this.factor == null ? new Base[0] : new Base[] {this.factor}; // DecimalType
         case 1209133370: /*lowerLimit*/ return this.lowerLimit == null ? new Base[0] : new Base[] {this.lowerLimit}; // DecimalType
         case -1681713095: /*upperLimit*/ return this.upperLimit == null ? new Base[0] : new Base[] {this.upperLimit}; // DecimalType
@@ -549,8 +606,11 @@ public class SampledData extends DataType implements ICompositeType {
         case -1008619738: // origin
           this.origin = TypeConvertor.castToQuantity(value); // Quantity
           return value;
-        case -991726143: // period
-          this.period = TypeConvertor.castToDecimal(value); // DecimalType
+        case 570418373: // interval
+          this.interval = TypeConvertor.castToDecimal(value); // DecimalType
+          return value;
+        case -1569830935: // intervalUnit
+          this.intervalUnit = TypeConvertor.castToCode(value); // CodeType
           return value;
         case -1282148017: // factor
           this.factor = TypeConvertor.castToDecimal(value); // DecimalType
@@ -576,8 +636,10 @@ public class SampledData extends DataType implements ICompositeType {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("origin")) {
           this.origin = TypeConvertor.castToQuantity(value); // Quantity
-        } else if (name.equals("period")) {
-          this.period = TypeConvertor.castToDecimal(value); // DecimalType
+        } else if (name.equals("interval")) {
+          this.interval = TypeConvertor.castToDecimal(value); // DecimalType
+        } else if (name.equals("intervalUnit")) {
+          this.intervalUnit = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("factor")) {
           this.factor = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("lowerLimit")) {
@@ -597,7 +659,8 @@ public class SampledData extends DataType implements ICompositeType {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1008619738:  return getOrigin();
-        case -991726143:  return getPeriodElement();
+        case 570418373:  return getIntervalElement();
+        case -1569830935:  return getIntervalUnitElement();
         case -1282148017:  return getFactorElement();
         case 1209133370:  return getLowerLimitElement();
         case -1681713095:  return getUpperLimitElement();
@@ -612,7 +675,8 @@ public class SampledData extends DataType implements ICompositeType {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1008619738: /*origin*/ return new String[] {"Quantity"};
-        case -991726143: /*period*/ return new String[] {"decimal"};
+        case 570418373: /*interval*/ return new String[] {"decimal"};
+        case -1569830935: /*intervalUnit*/ return new String[] {"code"};
         case -1282148017: /*factor*/ return new String[] {"decimal"};
         case 1209133370: /*lowerLimit*/ return new String[] {"decimal"};
         case -1681713095: /*upperLimit*/ return new String[] {"decimal"};
@@ -629,8 +693,11 @@ public class SampledData extends DataType implements ICompositeType {
           this.origin = new Quantity();
           return this.origin;
         }
-        else if (name.equals("period")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SampledData.period");
+        else if (name.equals("interval")) {
+          throw new FHIRException("Cannot call addChild on a primitive type SampledData.interval");
+        }
+        else if (name.equals("intervalUnit")) {
+          throw new FHIRException("Cannot call addChild on a primitive type SampledData.intervalUnit");
         }
         else if (name.equals("factor")) {
           throw new FHIRException("Cannot call addChild on a primitive type SampledData.factor");
@@ -665,7 +732,8 @@ public class SampledData extends DataType implements ICompositeType {
       public void copyValues(SampledData dst) {
         super.copyValues(dst);
         dst.origin = origin == null ? null : origin.copy();
-        dst.period = period == null ? null : period.copy();
+        dst.interval = interval == null ? null : interval.copy();
+        dst.intervalUnit = intervalUnit == null ? null : intervalUnit.copy();
         dst.factor = factor == null ? null : factor.copy();
         dst.lowerLimit = lowerLimit == null ? null : lowerLimit.copy();
         dst.upperLimit = upperLimit == null ? null : upperLimit.copy();
@@ -684,9 +752,9 @@ public class SampledData extends DataType implements ICompositeType {
         if (!(other_ instanceof SampledData))
           return false;
         SampledData o = (SampledData) other_;
-        return compareDeep(origin, o.origin, true) && compareDeep(period, o.period, true) && compareDeep(factor, o.factor, true)
-           && compareDeep(lowerLimit, o.lowerLimit, true) && compareDeep(upperLimit, o.upperLimit, true) && compareDeep(dimensions, o.dimensions, true)
-           && compareDeep(data, o.data, true);
+        return compareDeep(origin, o.origin, true) && compareDeep(interval, o.interval, true) && compareDeep(intervalUnit, o.intervalUnit, true)
+           && compareDeep(factor, o.factor, true) && compareDeep(lowerLimit, o.lowerLimit, true) && compareDeep(upperLimit, o.upperLimit, true)
+           && compareDeep(dimensions, o.dimensions, true) && compareDeep(data, o.data, true);
       }
 
       @Override
@@ -696,14 +764,14 @@ public class SampledData extends DataType implements ICompositeType {
         if (!(other_ instanceof SampledData))
           return false;
         SampledData o = (SampledData) other_;
-        return compareValues(period, o.period, true) && compareValues(factor, o.factor, true) && compareValues(lowerLimit, o.lowerLimit, true)
-           && compareValues(upperLimit, o.upperLimit, true) && compareValues(dimensions, o.dimensions, true) && compareValues(data, o.data, true)
-          ;
+        return compareValues(interval, o.interval, true) && compareValues(intervalUnit, o.intervalUnit, true)
+           && compareValues(factor, o.factor, true) && compareValues(lowerLimit, o.lowerLimit, true) && compareValues(upperLimit, o.upperLimit, true)
+           && compareValues(dimensions, o.dimensions, true) && compareValues(data, o.data, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(origin, period, factor, lowerLimit
-          , upperLimit, dimensions, data);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(origin, interval, intervalUnit
+          , factor, lowerLimit, upperLimit, dimensions, data);
       }
 
 

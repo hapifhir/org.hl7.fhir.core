@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -165,6 +165,118 @@ public class DeviceDefinition extends DomainResource {
       }
     }
 
+    public enum DeviceDefinitionRegulatoryIdentifierType {
+        /**
+         * EUDAMED's basic UDI-DI identifier.
+         */
+        BASIC, 
+        /**
+         * EUDAMED's master UDI-DI identifier.
+         */
+        MASTER, 
+        /**
+         * The identifier is a license number.
+         */
+        LICENSE, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static DeviceDefinitionRegulatoryIdentifierType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("basic".equals(codeString))
+          return BASIC;
+        if ("master".equals(codeString))
+          return MASTER;
+        if ("license".equals(codeString))
+          return LICENSE;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown DeviceDefinitionRegulatoryIdentifierType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case BASIC: return "basic";
+            case MASTER: return "master";
+            case LICENSE: return "license";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case BASIC: return "http://hl7.org/fhir/devicedefinition-regulatory-identifier-type";
+            case MASTER: return "http://hl7.org/fhir/devicedefinition-regulatory-identifier-type";
+            case LICENSE: return "http://hl7.org/fhir/devicedefinition-regulatory-identifier-type";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case BASIC: return "EUDAMED's basic UDI-DI identifier.";
+            case MASTER: return "EUDAMED's master UDI-DI identifier.";
+            case LICENSE: return "The identifier is a license number.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case BASIC: return "Basic";
+            case MASTER: return "Master";
+            case LICENSE: return "License";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+    }
+
+  public static class DeviceDefinitionRegulatoryIdentifierTypeEnumFactory implements EnumFactory<DeviceDefinitionRegulatoryIdentifierType> {
+    public DeviceDefinitionRegulatoryIdentifierType fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("basic".equals(codeString))
+          return DeviceDefinitionRegulatoryIdentifierType.BASIC;
+        if ("master".equals(codeString))
+          return DeviceDefinitionRegulatoryIdentifierType.MASTER;
+        if ("license".equals(codeString))
+          return DeviceDefinitionRegulatoryIdentifierType.LICENSE;
+        throw new IllegalArgumentException("Unknown DeviceDefinitionRegulatoryIdentifierType code '"+codeString+"'");
+        }
+        public Enumeration<DeviceDefinitionRegulatoryIdentifierType> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<DeviceDefinitionRegulatoryIdentifierType>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("basic".equals(codeString))
+          return new Enumeration<DeviceDefinitionRegulatoryIdentifierType>(this, DeviceDefinitionRegulatoryIdentifierType.BASIC);
+        if ("master".equals(codeString))
+          return new Enumeration<DeviceDefinitionRegulatoryIdentifierType>(this, DeviceDefinitionRegulatoryIdentifierType.MASTER);
+        if ("license".equals(codeString))
+          return new Enumeration<DeviceDefinitionRegulatoryIdentifierType>(this, DeviceDefinitionRegulatoryIdentifierType.LICENSE);
+        throw new FHIRException("Unknown DeviceDefinitionRegulatoryIdentifierType code '"+codeString+"'");
+        }
+    public String toCode(DeviceDefinitionRegulatoryIdentifierType code) {
+      if (code == DeviceDefinitionRegulatoryIdentifierType.BASIC)
+        return "basic";
+      if (code == DeviceDefinitionRegulatoryIdentifierType.MASTER)
+        return "master";
+      if (code == DeviceDefinitionRegulatoryIdentifierType.LICENSE)
+        return "license";
+      return "?";
+      }
+    public String toSystem(DeviceDefinitionRegulatoryIdentifierType code) {
+      return code.getSystem();
+      }
+    }
+
     public enum DeviceProductionIdentifierInUDI {
         /**
          * The label includes the lot number.
@@ -228,12 +340,12 @@ public class DeviceDefinition extends DomainResource {
         }
         public String getSystem() {
           switch (this) {
-            case LOTNUMBER: return "http://terminology.hl7.org/CodeSystem/device-productidentifierinudi";
-            case MANUFACTUREDDATE: return "http://terminology.hl7.org/CodeSystem/device-productidentifierinudi";
-            case SERIALNUMBER: return "http://terminology.hl7.org/CodeSystem/device-productidentifierinudi";
-            case EXPIRATIONDATE: return "http://terminology.hl7.org/CodeSystem/device-productidentifierinudi";
-            case BIOLOGICALSOURCE: return "http://terminology.hl7.org/CodeSystem/device-productidentifierinudi";
-            case SOFTWAREVERSION: return "http://terminology.hl7.org/CodeSystem/device-productidentifierinudi";
+            case LOTNUMBER: return "http://hl7.org/fhir/device-productidentifierinudi";
+            case MANUFACTUREDDATE: return "http://hl7.org/fhir/device-productidentifierinudi";
+            case SERIALNUMBER: return "http://hl7.org/fhir/device-productidentifierinudi";
+            case EXPIRATIONDATE: return "http://hl7.org/fhir/device-productidentifierinudi";
+            case BIOLOGICALSOURCE: return "http://hl7.org/fhir/device-productidentifierinudi";
+            case SOFTWAREVERSION: return "http://hl7.org/fhir/device-productidentifierinudi";
             case NULL: return null;
             default: return "?";
           }
@@ -353,9 +465,9 @@ public class DeviceDefinition extends DomainResource {
          */
         @Child(name = "marketDistribution", type = {}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Indicates whether and when the device is available on the market", formalDefinition="Indicates where and when the device is available on the market." )
-        protected List<DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent> marketDistribution;
+        protected List<UdiDeviceIdentifierMarketDistributionComponent> marketDistribution;
 
-        private static final long serialVersionUID = -1659077973L;
+        private static final long serialVersionUID = -1819796108L;
 
     /**
      * Constructor
@@ -512,16 +624,16 @@ public class DeviceDefinition extends DomainResource {
         /**
          * @return {@link #marketDistribution} (Indicates where and when the device is available on the market.)
          */
-        public List<DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent> getMarketDistribution() { 
+        public List<UdiDeviceIdentifierMarketDistributionComponent> getMarketDistribution() { 
           if (this.marketDistribution == null)
-            this.marketDistribution = new ArrayList<DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent>();
+            this.marketDistribution = new ArrayList<UdiDeviceIdentifierMarketDistributionComponent>();
           return this.marketDistribution;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public DeviceDefinitionUdiDeviceIdentifierComponent setMarketDistribution(List<DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent> theMarketDistribution) { 
+        public DeviceDefinitionUdiDeviceIdentifierComponent setMarketDistribution(List<UdiDeviceIdentifierMarketDistributionComponent> theMarketDistribution) { 
           this.marketDistribution = theMarketDistribution;
           return this;
         }
@@ -529,25 +641,25 @@ public class DeviceDefinition extends DomainResource {
         public boolean hasMarketDistribution() { 
           if (this.marketDistribution == null)
             return false;
-          for (DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent item : this.marketDistribution)
+          for (UdiDeviceIdentifierMarketDistributionComponent item : this.marketDistribution)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent addMarketDistribution() { //3
-          DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent t = new DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent();
+        public UdiDeviceIdentifierMarketDistributionComponent addMarketDistribution() { //3
+          UdiDeviceIdentifierMarketDistributionComponent t = new UdiDeviceIdentifierMarketDistributionComponent();
           if (this.marketDistribution == null)
-            this.marketDistribution = new ArrayList<DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent>();
+            this.marketDistribution = new ArrayList<UdiDeviceIdentifierMarketDistributionComponent>();
           this.marketDistribution.add(t);
           return t;
         }
 
-        public DeviceDefinitionUdiDeviceIdentifierComponent addMarketDistribution(DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent t) { //3
+        public DeviceDefinitionUdiDeviceIdentifierComponent addMarketDistribution(UdiDeviceIdentifierMarketDistributionComponent t) { //3
           if (t == null)
             return this;
           if (this.marketDistribution == null)
-            this.marketDistribution = new ArrayList<DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent>();
+            this.marketDistribution = new ArrayList<UdiDeviceIdentifierMarketDistributionComponent>();
           this.marketDistribution.add(t);
           return this;
         }
@@ -555,7 +667,7 @@ public class DeviceDefinition extends DomainResource {
         /**
          * @return The first repetition of repeating field {@link #marketDistribution}, creating it if it does not already exist {3}
          */
-        public DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent getMarketDistributionFirstRep() { 
+        public UdiDeviceIdentifierMarketDistributionComponent getMarketDistributionFirstRep() { 
           if (getMarketDistribution().isEmpty()) {
             addMarketDistribution();
           }
@@ -588,7 +700,7 @@ public class DeviceDefinition extends DomainResource {
         case 1322005407: /*deviceIdentifier*/ return this.deviceIdentifier == null ? new Base[0] : new Base[] {this.deviceIdentifier}; // StringType
         case -1179159879: /*issuer*/ return this.issuer == null ? new Base[0] : new Base[] {this.issuer}; // UriType
         case -507075711: /*jurisdiction*/ return this.jurisdiction == null ? new Base[0] : new Base[] {this.jurisdiction}; // UriType
-        case 530037984: /*marketDistribution*/ return this.marketDistribution == null ? new Base[0] : this.marketDistribution.toArray(new Base[this.marketDistribution.size()]); // DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent
+        case 530037984: /*marketDistribution*/ return this.marketDistribution == null ? new Base[0] : this.marketDistribution.toArray(new Base[this.marketDistribution.size()]); // UdiDeviceIdentifierMarketDistributionComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -607,7 +719,7 @@ public class DeviceDefinition extends DomainResource {
           this.jurisdiction = TypeConvertor.castToUri(value); // UriType
           return value;
         case 530037984: // marketDistribution
-          this.getMarketDistribution().add((DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent) value); // DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent
+          this.getMarketDistribution().add((UdiDeviceIdentifierMarketDistributionComponent) value); // UdiDeviceIdentifierMarketDistributionComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -623,7 +735,7 @@ public class DeviceDefinition extends DomainResource {
         } else if (name.equals("jurisdiction")) {
           this.jurisdiction = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("marketDistribution")) {
-          this.getMarketDistribution().add((DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent) value);
+          this.getMarketDistribution().add((UdiDeviceIdentifierMarketDistributionComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -683,8 +795,8 @@ public class DeviceDefinition extends DomainResource {
         dst.issuer = issuer == null ? null : issuer.copy();
         dst.jurisdiction = jurisdiction == null ? null : jurisdiction.copy();
         if (marketDistribution != null) {
-          dst.marketDistribution = new ArrayList<DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent>();
-          for (DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent i : marketDistribution)
+          dst.marketDistribution = new ArrayList<UdiDeviceIdentifierMarketDistributionComponent>();
+          for (UdiDeviceIdentifierMarketDistributionComponent i : marketDistribution)
             dst.marketDistribution.add(i.copy());
         };
       }
@@ -725,7 +837,7 @@ public class DeviceDefinition extends DomainResource {
   }
 
     @Block()
-    public static class DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class UdiDeviceIdentifierMarketDistributionComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * Begin and end dates for the commercial distribution of the device.
          */
@@ -745,14 +857,14 @@ public class DeviceDefinition extends DomainResource {
     /**
      * Constructor
      */
-      public DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent() {
+      public UdiDeviceIdentifierMarketDistributionComponent() {
         super();
       }
 
     /**
      * Constructor
      */
-      public DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent(Period marketPeriod, String subJurisdiction) {
+      public UdiDeviceIdentifierMarketDistributionComponent(Period marketPeriod, String subJurisdiction) {
         super();
         this.setMarketPeriod(marketPeriod);
         this.setSubJurisdiction(subJurisdiction);
@@ -764,7 +876,7 @@ public class DeviceDefinition extends DomainResource {
         public Period getMarketPeriod() { 
           if (this.marketPeriod == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent.marketPeriod");
+              throw new Error("Attempt to auto-create UdiDeviceIdentifierMarketDistributionComponent.marketPeriod");
             else if (Configuration.doAutoCreate())
               this.marketPeriod = new Period(); // cc
           return this.marketPeriod;
@@ -777,7 +889,7 @@ public class DeviceDefinition extends DomainResource {
         /**
          * @param value {@link #marketPeriod} (Begin and end dates for the commercial distribution of the device.)
          */
-        public DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent setMarketPeriod(Period value) { 
+        public UdiDeviceIdentifierMarketDistributionComponent setMarketPeriod(Period value) { 
           this.marketPeriod = value;
           return this;
         }
@@ -788,7 +900,7 @@ public class DeviceDefinition extends DomainResource {
         public UriType getSubJurisdictionElement() { 
           if (this.subJurisdiction == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent.subJurisdiction");
+              throw new Error("Attempt to auto-create UdiDeviceIdentifierMarketDistributionComponent.subJurisdiction");
             else if (Configuration.doAutoCreate())
               this.subJurisdiction = new UriType(); // bb
           return this.subJurisdiction;
@@ -805,7 +917,7 @@ public class DeviceDefinition extends DomainResource {
         /**
          * @param value {@link #subJurisdiction} (National state or territory to which the marketDistribution recers, typically where the device is commercialized.). This is the underlying object with id, value and extensions. The accessor "getSubJurisdiction" gives direct access to the value
          */
-        public DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent setSubJurisdictionElement(UriType value) { 
+        public UdiDeviceIdentifierMarketDistributionComponent setSubJurisdictionElement(UriType value) { 
           this.subJurisdiction = value;
           return this;
         }
@@ -820,7 +932,7 @@ public class DeviceDefinition extends DomainResource {
         /**
          * @param value National state or territory to which the marketDistribution recers, typically where the device is commercialized.
          */
-        public DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent setSubJurisdiction(String value) { 
+        public UdiDeviceIdentifierMarketDistributionComponent setSubJurisdiction(String value) { 
             if (this.subJurisdiction == null)
               this.subJurisdiction = new UriType();
             this.subJurisdiction.setValue(value);
@@ -911,13 +1023,13 @@ public class DeviceDefinition extends DomainResource {
           return super.addChild(name);
       }
 
-      public DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent copy() {
-        DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent dst = new DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent();
+      public UdiDeviceIdentifierMarketDistributionComponent copy() {
+        UdiDeviceIdentifierMarketDistributionComponent dst = new UdiDeviceIdentifierMarketDistributionComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent dst) {
+      public void copyValues(UdiDeviceIdentifierMarketDistributionComponent dst) {
         super.copyValues(dst);
         dst.marketPeriod = marketPeriod == null ? null : marketPeriod.copy();
         dst.subJurisdiction = subJurisdiction == null ? null : subJurisdiction.copy();
@@ -927,9 +1039,9 @@ public class DeviceDefinition extends DomainResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent))
+        if (!(other_ instanceof UdiDeviceIdentifierMarketDistributionComponent))
           return false;
-        DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent o = (DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent) other_;
+        UdiDeviceIdentifierMarketDistributionComponent o = (UdiDeviceIdentifierMarketDistributionComponent) other_;
         return compareDeep(marketPeriod, o.marketPeriod, true) && compareDeep(subJurisdiction, o.subJurisdiction, true)
           ;
       }
@@ -938,9 +1050,9 @@ public class DeviceDefinition extends DomainResource {
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent))
+        if (!(other_ instanceof UdiDeviceIdentifierMarketDistributionComponent))
           return false;
-        DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent o = (DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent) other_;
+        UdiDeviceIdentifierMarketDistributionComponent o = (UdiDeviceIdentifierMarketDistributionComponent) other_;
         return compareValues(subJurisdiction, o.subJurisdiction, true);
       }
 
@@ -951,6 +1063,396 @@ public class DeviceDefinition extends DomainResource {
 
   public String fhirType() {
     return "DeviceDefinition.udiDeviceIdentifier.marketDistribution";
+
+  }
+
+  }
+
+    @Block()
+    public static class DeviceDefinitionRegulatoryIdentifierComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * The type of identifier itself.
+         */
+        @Child(name = "type", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="basic | master | license", formalDefinition="The type of identifier itself." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/devicedefinition-regulatory-identifier-type")
+        protected Enumeration<DeviceDefinitionRegulatoryIdentifierType> type;
+
+        /**
+         * The identifier itself.
+         */
+        @Child(name = "deviceIdentifier", type = {StringType.class}, order=2, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The identifier itself", formalDefinition="The identifier itself." )
+        protected StringType deviceIdentifier;
+
+        /**
+         * The organization that issued this identifier.
+         */
+        @Child(name = "issuer", type = {UriType.class}, order=3, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The organization that issued this identifier", formalDefinition="The organization that issued this identifier." )
+        protected UriType issuer;
+
+        /**
+         * The jurisdiction to which the deviceIdentifier applies.
+         */
+        @Child(name = "jurisdiction", type = {UriType.class}, order=4, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The jurisdiction to which the deviceIdentifier applies", formalDefinition="The jurisdiction to which the deviceIdentifier applies." )
+        protected UriType jurisdiction;
+
+        private static final long serialVersionUID = 1438058623L;
+
+    /**
+     * Constructor
+     */
+      public DeviceDefinitionRegulatoryIdentifierComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public DeviceDefinitionRegulatoryIdentifierComponent(DeviceDefinitionRegulatoryIdentifierType type, String deviceIdentifier, String issuer, String jurisdiction) {
+        super();
+        this.setType(type);
+        this.setDeviceIdentifier(deviceIdentifier);
+        this.setIssuer(issuer);
+        this.setJurisdiction(jurisdiction);
+      }
+
+        /**
+         * @return {@link #type} (The type of identifier itself.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
+         */
+        public Enumeration<DeviceDefinitionRegulatoryIdentifierType> getTypeElement() { 
+          if (this.type == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create DeviceDefinitionRegulatoryIdentifierComponent.type");
+            else if (Configuration.doAutoCreate())
+              this.type = new Enumeration<DeviceDefinitionRegulatoryIdentifierType>(new DeviceDefinitionRegulatoryIdentifierTypeEnumFactory()); // bb
+          return this.type;
+        }
+
+        public boolean hasTypeElement() { 
+          return this.type != null && !this.type.isEmpty();
+        }
+
+        public boolean hasType() { 
+          return this.type != null && !this.type.isEmpty();
+        }
+
+        /**
+         * @param value {@link #type} (The type of identifier itself.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
+         */
+        public DeviceDefinitionRegulatoryIdentifierComponent setTypeElement(Enumeration<DeviceDefinitionRegulatoryIdentifierType> value) { 
+          this.type = value;
+          return this;
+        }
+
+        /**
+         * @return The type of identifier itself.
+         */
+        public DeviceDefinitionRegulatoryIdentifierType getType() { 
+          return this.type == null ? null : this.type.getValue();
+        }
+
+        /**
+         * @param value The type of identifier itself.
+         */
+        public DeviceDefinitionRegulatoryIdentifierComponent setType(DeviceDefinitionRegulatoryIdentifierType value) { 
+            if (this.type == null)
+              this.type = new Enumeration<DeviceDefinitionRegulatoryIdentifierType>(new DeviceDefinitionRegulatoryIdentifierTypeEnumFactory());
+            this.type.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #deviceIdentifier} (The identifier itself.). This is the underlying object with id, value and extensions. The accessor "getDeviceIdentifier" gives direct access to the value
+         */
+        public StringType getDeviceIdentifierElement() { 
+          if (this.deviceIdentifier == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create DeviceDefinitionRegulatoryIdentifierComponent.deviceIdentifier");
+            else if (Configuration.doAutoCreate())
+              this.deviceIdentifier = new StringType(); // bb
+          return this.deviceIdentifier;
+        }
+
+        public boolean hasDeviceIdentifierElement() { 
+          return this.deviceIdentifier != null && !this.deviceIdentifier.isEmpty();
+        }
+
+        public boolean hasDeviceIdentifier() { 
+          return this.deviceIdentifier != null && !this.deviceIdentifier.isEmpty();
+        }
+
+        /**
+         * @param value {@link #deviceIdentifier} (The identifier itself.). This is the underlying object with id, value and extensions. The accessor "getDeviceIdentifier" gives direct access to the value
+         */
+        public DeviceDefinitionRegulatoryIdentifierComponent setDeviceIdentifierElement(StringType value) { 
+          this.deviceIdentifier = value;
+          return this;
+        }
+
+        /**
+         * @return The identifier itself.
+         */
+        public String getDeviceIdentifier() { 
+          return this.deviceIdentifier == null ? null : this.deviceIdentifier.getValue();
+        }
+
+        /**
+         * @param value The identifier itself.
+         */
+        public DeviceDefinitionRegulatoryIdentifierComponent setDeviceIdentifier(String value) { 
+            if (this.deviceIdentifier == null)
+              this.deviceIdentifier = new StringType();
+            this.deviceIdentifier.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #issuer} (The organization that issued this identifier.). This is the underlying object with id, value and extensions. The accessor "getIssuer" gives direct access to the value
+         */
+        public UriType getIssuerElement() { 
+          if (this.issuer == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create DeviceDefinitionRegulatoryIdentifierComponent.issuer");
+            else if (Configuration.doAutoCreate())
+              this.issuer = new UriType(); // bb
+          return this.issuer;
+        }
+
+        public boolean hasIssuerElement() { 
+          return this.issuer != null && !this.issuer.isEmpty();
+        }
+
+        public boolean hasIssuer() { 
+          return this.issuer != null && !this.issuer.isEmpty();
+        }
+
+        /**
+         * @param value {@link #issuer} (The organization that issued this identifier.). This is the underlying object with id, value and extensions. The accessor "getIssuer" gives direct access to the value
+         */
+        public DeviceDefinitionRegulatoryIdentifierComponent setIssuerElement(UriType value) { 
+          this.issuer = value;
+          return this;
+        }
+
+        /**
+         * @return The organization that issued this identifier.
+         */
+        public String getIssuer() { 
+          return this.issuer == null ? null : this.issuer.getValue();
+        }
+
+        /**
+         * @param value The organization that issued this identifier.
+         */
+        public DeviceDefinitionRegulatoryIdentifierComponent setIssuer(String value) { 
+            if (this.issuer == null)
+              this.issuer = new UriType();
+            this.issuer.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #jurisdiction} (The jurisdiction to which the deviceIdentifier applies.). This is the underlying object with id, value and extensions. The accessor "getJurisdiction" gives direct access to the value
+         */
+        public UriType getJurisdictionElement() { 
+          if (this.jurisdiction == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create DeviceDefinitionRegulatoryIdentifierComponent.jurisdiction");
+            else if (Configuration.doAutoCreate())
+              this.jurisdiction = new UriType(); // bb
+          return this.jurisdiction;
+        }
+
+        public boolean hasJurisdictionElement() { 
+          return this.jurisdiction != null && !this.jurisdiction.isEmpty();
+        }
+
+        public boolean hasJurisdiction() { 
+          return this.jurisdiction != null && !this.jurisdiction.isEmpty();
+        }
+
+        /**
+         * @param value {@link #jurisdiction} (The jurisdiction to which the deviceIdentifier applies.). This is the underlying object with id, value and extensions. The accessor "getJurisdiction" gives direct access to the value
+         */
+        public DeviceDefinitionRegulatoryIdentifierComponent setJurisdictionElement(UriType value) { 
+          this.jurisdiction = value;
+          return this;
+        }
+
+        /**
+         * @return The jurisdiction to which the deviceIdentifier applies.
+         */
+        public String getJurisdiction() { 
+          return this.jurisdiction == null ? null : this.jurisdiction.getValue();
+        }
+
+        /**
+         * @param value The jurisdiction to which the deviceIdentifier applies.
+         */
+        public DeviceDefinitionRegulatoryIdentifierComponent setJurisdiction(String value) { 
+            if (this.jurisdiction == null)
+              this.jurisdiction = new UriType();
+            this.jurisdiction.setValue(value);
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("type", "code", "The type of identifier itself.", 0, 1, type));
+          children.add(new Property("deviceIdentifier", "string", "The identifier itself.", 0, 1, deviceIdentifier));
+          children.add(new Property("issuer", "uri", "The organization that issued this identifier.", 0, 1, issuer));
+          children.add(new Property("jurisdiction", "uri", "The jurisdiction to which the deviceIdentifier applies.", 0, 1, jurisdiction));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3575610: /*type*/  return new Property("type", "code", "The type of identifier itself.", 0, 1, type);
+          case 1322005407: /*deviceIdentifier*/  return new Property("deviceIdentifier", "string", "The identifier itself.", 0, 1, deviceIdentifier);
+          case -1179159879: /*issuer*/  return new Property("issuer", "uri", "The organization that issued this identifier.", 0, 1, issuer);
+          case -507075711: /*jurisdiction*/  return new Property("jurisdiction", "uri", "The jurisdiction to which the deviceIdentifier applies.", 0, 1, jurisdiction);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<DeviceDefinitionRegulatoryIdentifierType>
+        case 1322005407: /*deviceIdentifier*/ return this.deviceIdentifier == null ? new Base[0] : new Base[] {this.deviceIdentifier}; // StringType
+        case -1179159879: /*issuer*/ return this.issuer == null ? new Base[0] : new Base[] {this.issuer}; // UriType
+        case -507075711: /*jurisdiction*/ return this.jurisdiction == null ? new Base[0] : new Base[] {this.jurisdiction}; // UriType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3575610: // type
+          value = new DeviceDefinitionRegulatoryIdentifierTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<DeviceDefinitionRegulatoryIdentifierType>
+          return value;
+        case 1322005407: // deviceIdentifier
+          this.deviceIdentifier = TypeConvertor.castToString(value); // StringType
+          return value;
+        case -1179159879: // issuer
+          this.issuer = TypeConvertor.castToUri(value); // UriType
+          return value;
+        case -507075711: // jurisdiction
+          this.jurisdiction = TypeConvertor.castToUri(value); // UriType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          value = new DeviceDefinitionRegulatoryIdentifierTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<DeviceDefinitionRegulatoryIdentifierType>
+        } else if (name.equals("deviceIdentifier")) {
+          this.deviceIdentifier = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("issuer")) {
+          this.issuer = TypeConvertor.castToUri(value); // UriType
+        } else if (name.equals("jurisdiction")) {
+          this.jurisdiction = TypeConvertor.castToUri(value); // UriType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3575610:  return getTypeElement();
+        case 1322005407:  return getDeviceIdentifierElement();
+        case -1179159879:  return getIssuerElement();
+        case -507075711:  return getJurisdictionElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3575610: /*type*/ return new String[] {"code"};
+        case 1322005407: /*deviceIdentifier*/ return new String[] {"string"};
+        case -1179159879: /*issuer*/ return new String[] {"uri"};
+        case -507075711: /*jurisdiction*/ return new String[] {"uri"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("type")) {
+          throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.regulatoryIdentifier.type");
+        }
+        else if (name.equals("deviceIdentifier")) {
+          throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.regulatoryIdentifier.deviceIdentifier");
+        }
+        else if (name.equals("issuer")) {
+          throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.regulatoryIdentifier.issuer");
+        }
+        else if (name.equals("jurisdiction")) {
+          throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.regulatoryIdentifier.jurisdiction");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public DeviceDefinitionRegulatoryIdentifierComponent copy() {
+        DeviceDefinitionRegulatoryIdentifierComponent dst = new DeviceDefinitionRegulatoryIdentifierComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DeviceDefinitionRegulatoryIdentifierComponent dst) {
+        super.copyValues(dst);
+        dst.type = type == null ? null : type.copy();
+        dst.deviceIdentifier = deviceIdentifier == null ? null : deviceIdentifier.copy();
+        dst.issuer = issuer == null ? null : issuer.copy();
+        dst.jurisdiction = jurisdiction == null ? null : jurisdiction.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof DeviceDefinitionRegulatoryIdentifierComponent))
+          return false;
+        DeviceDefinitionRegulatoryIdentifierComponent o = (DeviceDefinitionRegulatoryIdentifierComponent) other_;
+        return compareDeep(type, o.type, true) && compareDeep(deviceIdentifier, o.deviceIdentifier, true)
+           && compareDeep(issuer, o.issuer, true) && compareDeep(jurisdiction, o.jurisdiction, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof DeviceDefinitionRegulatoryIdentifierComponent))
+          return false;
+        DeviceDefinitionRegulatoryIdentifierComponent o = (DeviceDefinitionRegulatoryIdentifierComponent) other_;
+        return compareValues(type, o.type, true) && compareValues(deviceIdentifier, o.deviceIdentifier, true)
+           && compareValues(issuer, o.issuer, true) && compareValues(jurisdiction, o.jurisdiction, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, deviceIdentifier, issuer
+          , jurisdiction);
+      }
+
+  public String fhirType() {
+    return "DeviceDefinition.regulatoryIdentifier";
 
   }
 
@@ -1713,14 +2215,14 @@ RegisteredName | UserFriendlyName | PatientReportedName.
          */
         @Child(name = "distributor", type = {}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="An organization that distributes the packaged device", formalDefinition="An organization that distributes the packaged device." )
-        protected List<DeviceDefinitionPackagingDistributorComponent> distributor;
+        protected List<PackagingDistributorComponent> distributor;
 
         /**
          * Unique Device Identifier (UDI) Barcode string on the packaging.
          */
-        @Child(name = "udiDeviceIdentifier", type = {}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "udiDeviceIdentifier", type = {DeviceDefinitionUdiDeviceIdentifierComponent.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Unique Device Identifier (UDI) Barcode string on the packaging", formalDefinition="Unique Device Identifier (UDI) Barcode string on the packaging." )
-        protected List<DeviceDefinitionPackagingUdiDeviceIdentifierComponent> udiDeviceIdentifier;
+        protected List<DeviceDefinitionUdiDeviceIdentifierComponent> udiDeviceIdentifier;
 
         /**
          * Allows packages within packages.
@@ -1729,7 +2231,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         @Description(shortDefinition="Allows packages within packages", formalDefinition="Allows packages within packages." )
         protected List<DeviceDefinitionPackagingComponent> packaging;
 
-        private static final long serialVersionUID = 1491079286L;
+        private static final long serialVersionUID = 1022373074L;
 
     /**
      * Constructor
@@ -1834,16 +2336,16 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         /**
          * @return {@link #distributor} (An organization that distributes the packaged device.)
          */
-        public List<DeviceDefinitionPackagingDistributorComponent> getDistributor() { 
+        public List<PackagingDistributorComponent> getDistributor() { 
           if (this.distributor == null)
-            this.distributor = new ArrayList<DeviceDefinitionPackagingDistributorComponent>();
+            this.distributor = new ArrayList<PackagingDistributorComponent>();
           return this.distributor;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public DeviceDefinitionPackagingComponent setDistributor(List<DeviceDefinitionPackagingDistributorComponent> theDistributor) { 
+        public DeviceDefinitionPackagingComponent setDistributor(List<PackagingDistributorComponent> theDistributor) { 
           this.distributor = theDistributor;
           return this;
         }
@@ -1851,25 +2353,25 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         public boolean hasDistributor() { 
           if (this.distributor == null)
             return false;
-          for (DeviceDefinitionPackagingDistributorComponent item : this.distributor)
+          for (PackagingDistributorComponent item : this.distributor)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public DeviceDefinitionPackagingDistributorComponent addDistributor() { //3
-          DeviceDefinitionPackagingDistributorComponent t = new DeviceDefinitionPackagingDistributorComponent();
+        public PackagingDistributorComponent addDistributor() { //3
+          PackagingDistributorComponent t = new PackagingDistributorComponent();
           if (this.distributor == null)
-            this.distributor = new ArrayList<DeviceDefinitionPackagingDistributorComponent>();
+            this.distributor = new ArrayList<PackagingDistributorComponent>();
           this.distributor.add(t);
           return t;
         }
 
-        public DeviceDefinitionPackagingComponent addDistributor(DeviceDefinitionPackagingDistributorComponent t) { //3
+        public DeviceDefinitionPackagingComponent addDistributor(PackagingDistributorComponent t) { //3
           if (t == null)
             return this;
           if (this.distributor == null)
-            this.distributor = new ArrayList<DeviceDefinitionPackagingDistributorComponent>();
+            this.distributor = new ArrayList<PackagingDistributorComponent>();
           this.distributor.add(t);
           return this;
         }
@@ -1877,7 +2379,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         /**
          * @return The first repetition of repeating field {@link #distributor}, creating it if it does not already exist {3}
          */
-        public DeviceDefinitionPackagingDistributorComponent getDistributorFirstRep() { 
+        public PackagingDistributorComponent getDistributorFirstRep() { 
           if (getDistributor().isEmpty()) {
             addDistributor();
           }
@@ -1887,16 +2389,16 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         /**
          * @return {@link #udiDeviceIdentifier} (Unique Device Identifier (UDI) Barcode string on the packaging.)
          */
-        public List<DeviceDefinitionPackagingUdiDeviceIdentifierComponent> getUdiDeviceIdentifier() { 
+        public List<DeviceDefinitionUdiDeviceIdentifierComponent> getUdiDeviceIdentifier() { 
           if (this.udiDeviceIdentifier == null)
-            this.udiDeviceIdentifier = new ArrayList<DeviceDefinitionPackagingUdiDeviceIdentifierComponent>();
+            this.udiDeviceIdentifier = new ArrayList<DeviceDefinitionUdiDeviceIdentifierComponent>();
           return this.udiDeviceIdentifier;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public DeviceDefinitionPackagingComponent setUdiDeviceIdentifier(List<DeviceDefinitionPackagingUdiDeviceIdentifierComponent> theUdiDeviceIdentifier) { 
+        public DeviceDefinitionPackagingComponent setUdiDeviceIdentifier(List<DeviceDefinitionUdiDeviceIdentifierComponent> theUdiDeviceIdentifier) { 
           this.udiDeviceIdentifier = theUdiDeviceIdentifier;
           return this;
         }
@@ -1904,25 +2406,25 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         public boolean hasUdiDeviceIdentifier() { 
           if (this.udiDeviceIdentifier == null)
             return false;
-          for (DeviceDefinitionPackagingUdiDeviceIdentifierComponent item : this.udiDeviceIdentifier)
+          for (DeviceDefinitionUdiDeviceIdentifierComponent item : this.udiDeviceIdentifier)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public DeviceDefinitionPackagingUdiDeviceIdentifierComponent addUdiDeviceIdentifier() { //3
-          DeviceDefinitionPackagingUdiDeviceIdentifierComponent t = new DeviceDefinitionPackagingUdiDeviceIdentifierComponent();
+        public DeviceDefinitionUdiDeviceIdentifierComponent addUdiDeviceIdentifier() { //3
+          DeviceDefinitionUdiDeviceIdentifierComponent t = new DeviceDefinitionUdiDeviceIdentifierComponent();
           if (this.udiDeviceIdentifier == null)
-            this.udiDeviceIdentifier = new ArrayList<DeviceDefinitionPackagingUdiDeviceIdentifierComponent>();
+            this.udiDeviceIdentifier = new ArrayList<DeviceDefinitionUdiDeviceIdentifierComponent>();
           this.udiDeviceIdentifier.add(t);
           return t;
         }
 
-        public DeviceDefinitionPackagingComponent addUdiDeviceIdentifier(DeviceDefinitionPackagingUdiDeviceIdentifierComponent t) { //3
+        public DeviceDefinitionPackagingComponent addUdiDeviceIdentifier(DeviceDefinitionUdiDeviceIdentifierComponent t) { //3
           if (t == null)
             return this;
           if (this.udiDeviceIdentifier == null)
-            this.udiDeviceIdentifier = new ArrayList<DeviceDefinitionPackagingUdiDeviceIdentifierComponent>();
+            this.udiDeviceIdentifier = new ArrayList<DeviceDefinitionUdiDeviceIdentifierComponent>();
           this.udiDeviceIdentifier.add(t);
           return this;
         }
@@ -1930,7 +2432,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         /**
          * @return The first repetition of repeating field {@link #udiDeviceIdentifier}, creating it if it does not already exist {3}
          */
-        public DeviceDefinitionPackagingUdiDeviceIdentifierComponent getUdiDeviceIdentifierFirstRep() { 
+        public DeviceDefinitionUdiDeviceIdentifierComponent getUdiDeviceIdentifierFirstRep() { 
           if (getUdiDeviceIdentifier().isEmpty()) {
             addUdiDeviceIdentifier();
           }
@@ -1996,7 +2498,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
           children.add(new Property("type", "CodeableConcept", "A code that defines the specific type of packaging.", 0, 1, type));
           children.add(new Property("count", "integer", "The number of items contained in the package (devices or sub-packages).", 0, 1, count));
           children.add(new Property("distributor", "", "An organization that distributes the packaged device.", 0, java.lang.Integer.MAX_VALUE, distributor));
-          children.add(new Property("udiDeviceIdentifier", "", "Unique Device Identifier (UDI) Barcode string on the packaging.", 0, java.lang.Integer.MAX_VALUE, udiDeviceIdentifier));
+          children.add(new Property("udiDeviceIdentifier", "@DeviceDefinition.udiDeviceIdentifier", "Unique Device Identifier (UDI) Barcode string on the packaging.", 0, java.lang.Integer.MAX_VALUE, udiDeviceIdentifier));
           children.add(new Property("packaging", "@DeviceDefinition.packaging", "Allows packages within packages.", 0, java.lang.Integer.MAX_VALUE, packaging));
         }
 
@@ -2007,7 +2509,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "A code that defines the specific type of packaging.", 0, 1, type);
           case 94851343: /*count*/  return new Property("count", "integer", "The number of items contained in the package (devices or sub-packages).", 0, 1, count);
           case 1334482919: /*distributor*/  return new Property("distributor", "", "An organization that distributes the packaged device.", 0, java.lang.Integer.MAX_VALUE, distributor);
-          case -99121287: /*udiDeviceIdentifier*/  return new Property("udiDeviceIdentifier", "", "Unique Device Identifier (UDI) Barcode string on the packaging.", 0, java.lang.Integer.MAX_VALUE, udiDeviceIdentifier);
+          case -99121287: /*udiDeviceIdentifier*/  return new Property("udiDeviceIdentifier", "@DeviceDefinition.udiDeviceIdentifier", "Unique Device Identifier (UDI) Barcode string on the packaging.", 0, java.lang.Integer.MAX_VALUE, udiDeviceIdentifier);
           case 1802065795: /*packaging*/  return new Property("packaging", "@DeviceDefinition.packaging", "Allows packages within packages.", 0, java.lang.Integer.MAX_VALUE, packaging);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -2020,8 +2522,8 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : new Base[] {this.identifier}; // Identifier
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
         case 94851343: /*count*/ return this.count == null ? new Base[0] : new Base[] {this.count}; // IntegerType
-        case 1334482919: /*distributor*/ return this.distributor == null ? new Base[0] : this.distributor.toArray(new Base[this.distributor.size()]); // DeviceDefinitionPackagingDistributorComponent
-        case -99121287: /*udiDeviceIdentifier*/ return this.udiDeviceIdentifier == null ? new Base[0] : this.udiDeviceIdentifier.toArray(new Base[this.udiDeviceIdentifier.size()]); // DeviceDefinitionPackagingUdiDeviceIdentifierComponent
+        case 1334482919: /*distributor*/ return this.distributor == null ? new Base[0] : this.distributor.toArray(new Base[this.distributor.size()]); // PackagingDistributorComponent
+        case -99121287: /*udiDeviceIdentifier*/ return this.udiDeviceIdentifier == null ? new Base[0] : this.udiDeviceIdentifier.toArray(new Base[this.udiDeviceIdentifier.size()]); // DeviceDefinitionUdiDeviceIdentifierComponent
         case 1802065795: /*packaging*/ return this.packaging == null ? new Base[0] : this.packaging.toArray(new Base[this.packaging.size()]); // DeviceDefinitionPackagingComponent
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -2041,10 +2543,10 @@ RegisteredName | UserFriendlyName | PatientReportedName.
           this.count = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case 1334482919: // distributor
-          this.getDistributor().add((DeviceDefinitionPackagingDistributorComponent) value); // DeviceDefinitionPackagingDistributorComponent
+          this.getDistributor().add((PackagingDistributorComponent) value); // PackagingDistributorComponent
           return value;
         case -99121287: // udiDeviceIdentifier
-          this.getUdiDeviceIdentifier().add((DeviceDefinitionPackagingUdiDeviceIdentifierComponent) value); // DeviceDefinitionPackagingUdiDeviceIdentifierComponent
+          this.getUdiDeviceIdentifier().add((DeviceDefinitionUdiDeviceIdentifierComponent) value); // DeviceDefinitionUdiDeviceIdentifierComponent
           return value;
         case 1802065795: // packaging
           this.getPackaging().add((DeviceDefinitionPackagingComponent) value); // DeviceDefinitionPackagingComponent
@@ -2063,9 +2565,9 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         } else if (name.equals("count")) {
           this.count = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("distributor")) {
-          this.getDistributor().add((DeviceDefinitionPackagingDistributorComponent) value);
+          this.getDistributor().add((PackagingDistributorComponent) value);
         } else if (name.equals("udiDeviceIdentifier")) {
-          this.getUdiDeviceIdentifier().add((DeviceDefinitionPackagingUdiDeviceIdentifierComponent) value);
+          this.getUdiDeviceIdentifier().add((DeviceDefinitionUdiDeviceIdentifierComponent) value);
         } else if (name.equals("packaging")) {
           this.getPackaging().add((DeviceDefinitionPackagingComponent) value);
         } else
@@ -2094,7 +2596,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
         case 94851343: /*count*/ return new String[] {"integer"};
         case 1334482919: /*distributor*/ return new String[] {};
-        case -99121287: /*udiDeviceIdentifier*/ return new String[] {};
+        case -99121287: /*udiDeviceIdentifier*/ return new String[] {"@DeviceDefinition.udiDeviceIdentifier"};
         case 1802065795: /*packaging*/ return new String[] {"@DeviceDefinition.packaging"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -2139,13 +2641,13 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         dst.type = type == null ? null : type.copy();
         dst.count = count == null ? null : count.copy();
         if (distributor != null) {
-          dst.distributor = new ArrayList<DeviceDefinitionPackagingDistributorComponent>();
-          for (DeviceDefinitionPackagingDistributorComponent i : distributor)
+          dst.distributor = new ArrayList<PackagingDistributorComponent>();
+          for (PackagingDistributorComponent i : distributor)
             dst.distributor.add(i.copy());
         };
         if (udiDeviceIdentifier != null) {
-          dst.udiDeviceIdentifier = new ArrayList<DeviceDefinitionPackagingUdiDeviceIdentifierComponent>();
-          for (DeviceDefinitionPackagingUdiDeviceIdentifierComponent i : udiDeviceIdentifier)
+          dst.udiDeviceIdentifier = new ArrayList<DeviceDefinitionUdiDeviceIdentifierComponent>();
+          for (DeviceDefinitionUdiDeviceIdentifierComponent i : udiDeviceIdentifier)
             dst.udiDeviceIdentifier.add(i.copy());
         };
         if (packaging != null) {
@@ -2190,7 +2692,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
   }
 
     @Block()
-    public static class DeviceDefinitionPackagingDistributorComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class PackagingDistributorComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * Distributor's human-readable name.
          */
@@ -2210,7 +2712,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
     /**
      * Constructor
      */
-      public DeviceDefinitionPackagingDistributorComponent() {
+      public PackagingDistributorComponent() {
         super();
       }
 
@@ -2220,7 +2722,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         public StringType getNameElement() { 
           if (this.name == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create DeviceDefinitionPackagingDistributorComponent.name");
+              throw new Error("Attempt to auto-create PackagingDistributorComponent.name");
             else if (Configuration.doAutoCreate())
               this.name = new StringType(); // bb
           return this.name;
@@ -2237,7 +2739,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         /**
          * @param value {@link #name} (Distributor's human-readable name.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
          */
-        public DeviceDefinitionPackagingDistributorComponent setNameElement(StringType value) { 
+        public PackagingDistributorComponent setNameElement(StringType value) { 
           this.name = value;
           return this;
         }
@@ -2252,7 +2754,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         /**
          * @param value Distributor's human-readable name.
          */
-        public DeviceDefinitionPackagingDistributorComponent setName(String value) { 
+        public PackagingDistributorComponent setName(String value) { 
           if (Utilities.noString(value))
             this.name = null;
           else {
@@ -2275,7 +2777,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public DeviceDefinitionPackagingDistributorComponent setOrganizationReference(List<Reference> theOrganizationReference) { 
+        public PackagingDistributorComponent setOrganizationReference(List<Reference> theOrganizationReference) { 
           this.organizationReference = theOrganizationReference;
           return this;
         }
@@ -2297,7 +2799,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
           return t;
         }
 
-        public DeviceDefinitionPackagingDistributorComponent addOrganizationReference(Reference t) { //3
+        public PackagingDistributorComponent addOrganizationReference(Reference t) { //3
           if (t == null)
             return this;
           if (this.organizationReference == null)
@@ -2399,13 +2901,13 @@ RegisteredName | UserFriendlyName | PatientReportedName.
           return super.addChild(name);
       }
 
-      public DeviceDefinitionPackagingDistributorComponent copy() {
-        DeviceDefinitionPackagingDistributorComponent dst = new DeviceDefinitionPackagingDistributorComponent();
+      public PackagingDistributorComponent copy() {
+        PackagingDistributorComponent dst = new PackagingDistributorComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(DeviceDefinitionPackagingDistributorComponent dst) {
+      public void copyValues(PackagingDistributorComponent dst) {
         super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         if (organizationReference != null) {
@@ -2419,9 +2921,9 @@ RegisteredName | UserFriendlyName | PatientReportedName.
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof DeviceDefinitionPackagingDistributorComponent))
+        if (!(other_ instanceof PackagingDistributorComponent))
           return false;
-        DeviceDefinitionPackagingDistributorComponent o = (DeviceDefinitionPackagingDistributorComponent) other_;
+        PackagingDistributorComponent o = (PackagingDistributorComponent) other_;
         return compareDeep(name, o.name, true) && compareDeep(organizationReference, o.organizationReference, true)
           ;
       }
@@ -2430,9 +2932,9 @@ RegisteredName | UserFriendlyName | PatientReportedName.
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof DeviceDefinitionPackagingDistributorComponent))
+        if (!(other_ instanceof PackagingDistributorComponent))
           return false;
-        DeviceDefinitionPackagingDistributorComponent o = (DeviceDefinitionPackagingDistributorComponent) other_;
+        PackagingDistributorComponent o = (PackagingDistributorComponent) other_;
         return compareValues(name, o.name, true);
       }
 
@@ -2443,600 +2945,6 @@ RegisteredName | UserFriendlyName | PatientReportedName.
 
   public String fhirType() {
     return "DeviceDefinition.packaging.distributor";
-
-  }
-
-  }
-
-    @Block()
-    public static class DeviceDefinitionPackagingUdiDeviceIdentifierComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * Identifier to be associated with every instance for issuer and jurisdiction.
-         */
-        @Child(name = "deviceIdentifier", type = {StringType.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Identifier to be associated with every instance for issuer and jurisdiction", formalDefinition="Identifier to be associated with every instance for issuer and jurisdiction." )
-        protected StringType deviceIdentifier;
-
-        /**
-         * The organization that assigns the identifier algorithm.
-         */
-        @Child(name = "issuer", type = {UriType.class}, order=2, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The organization that assigns the identifier algorithm", formalDefinition="The organization that assigns the identifier algorithm." )
-        protected UriType issuer;
-
-        /**
-         * The jurisdiction to which the deviceIdentifier applies.
-         */
-        @Child(name = "jurisdiction", type = {UriType.class}, order=3, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The jurisdiction to which the deviceIdentifier applies", formalDefinition="The jurisdiction to which the deviceIdentifier applies." )
-        protected UriType jurisdiction;
-
-        /**
-         * The organization that assigns the identifier algorithm.
-         */
-        @Child(name = "marketDistribution", type = {}, order=4, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Indicates whether and when the device is available on the market", formalDefinition="The organization that assigns the identifier algorithm." )
-        protected DeviceDefinitionPackagingUdiDeviceIdentifierMarketDistributionComponent marketDistribution;
-
-        private static final long serialVersionUID = 1994089622L;
-
-    /**
-     * Constructor
-     */
-      public DeviceDefinitionPackagingUdiDeviceIdentifierComponent() {
-        super();
-      }
-
-    /**
-     * Constructor
-     */
-      public DeviceDefinitionPackagingUdiDeviceIdentifierComponent(String deviceIdentifier, String issuer, String jurisdiction) {
-        super();
-        this.setDeviceIdentifier(deviceIdentifier);
-        this.setIssuer(issuer);
-        this.setJurisdiction(jurisdiction);
-      }
-
-        /**
-         * @return {@link #deviceIdentifier} (Identifier to be associated with every instance for issuer and jurisdiction.). This is the underlying object with id, value and extensions. The accessor "getDeviceIdentifier" gives direct access to the value
-         */
-        public StringType getDeviceIdentifierElement() { 
-          if (this.deviceIdentifier == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create DeviceDefinitionPackagingUdiDeviceIdentifierComponent.deviceIdentifier");
-            else if (Configuration.doAutoCreate())
-              this.deviceIdentifier = new StringType(); // bb
-          return this.deviceIdentifier;
-        }
-
-        public boolean hasDeviceIdentifierElement() { 
-          return this.deviceIdentifier != null && !this.deviceIdentifier.isEmpty();
-        }
-
-        public boolean hasDeviceIdentifier() { 
-          return this.deviceIdentifier != null && !this.deviceIdentifier.isEmpty();
-        }
-
-        /**
-         * @param value {@link #deviceIdentifier} (Identifier to be associated with every instance for issuer and jurisdiction.). This is the underlying object with id, value and extensions. The accessor "getDeviceIdentifier" gives direct access to the value
-         */
-        public DeviceDefinitionPackagingUdiDeviceIdentifierComponent setDeviceIdentifierElement(StringType value) { 
-          this.deviceIdentifier = value;
-          return this;
-        }
-
-        /**
-         * @return Identifier to be associated with every instance for issuer and jurisdiction.
-         */
-        public String getDeviceIdentifier() { 
-          return this.deviceIdentifier == null ? null : this.deviceIdentifier.getValue();
-        }
-
-        /**
-         * @param value Identifier to be associated with every instance for issuer and jurisdiction.
-         */
-        public DeviceDefinitionPackagingUdiDeviceIdentifierComponent setDeviceIdentifier(String value) { 
-            if (this.deviceIdentifier == null)
-              this.deviceIdentifier = new StringType();
-            this.deviceIdentifier.setValue(value);
-          return this;
-        }
-
-        /**
-         * @return {@link #issuer} (The organization that assigns the identifier algorithm.). This is the underlying object with id, value and extensions. The accessor "getIssuer" gives direct access to the value
-         */
-        public UriType getIssuerElement() { 
-          if (this.issuer == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create DeviceDefinitionPackagingUdiDeviceIdentifierComponent.issuer");
-            else if (Configuration.doAutoCreate())
-              this.issuer = new UriType(); // bb
-          return this.issuer;
-        }
-
-        public boolean hasIssuerElement() { 
-          return this.issuer != null && !this.issuer.isEmpty();
-        }
-
-        public boolean hasIssuer() { 
-          return this.issuer != null && !this.issuer.isEmpty();
-        }
-
-        /**
-         * @param value {@link #issuer} (The organization that assigns the identifier algorithm.). This is the underlying object with id, value and extensions. The accessor "getIssuer" gives direct access to the value
-         */
-        public DeviceDefinitionPackagingUdiDeviceIdentifierComponent setIssuerElement(UriType value) { 
-          this.issuer = value;
-          return this;
-        }
-
-        /**
-         * @return The organization that assigns the identifier algorithm.
-         */
-        public String getIssuer() { 
-          return this.issuer == null ? null : this.issuer.getValue();
-        }
-
-        /**
-         * @param value The organization that assigns the identifier algorithm.
-         */
-        public DeviceDefinitionPackagingUdiDeviceIdentifierComponent setIssuer(String value) { 
-            if (this.issuer == null)
-              this.issuer = new UriType();
-            this.issuer.setValue(value);
-          return this;
-        }
-
-        /**
-         * @return {@link #jurisdiction} (The jurisdiction to which the deviceIdentifier applies.). This is the underlying object with id, value and extensions. The accessor "getJurisdiction" gives direct access to the value
-         */
-        public UriType getJurisdictionElement() { 
-          if (this.jurisdiction == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create DeviceDefinitionPackagingUdiDeviceIdentifierComponent.jurisdiction");
-            else if (Configuration.doAutoCreate())
-              this.jurisdiction = new UriType(); // bb
-          return this.jurisdiction;
-        }
-
-        public boolean hasJurisdictionElement() { 
-          return this.jurisdiction != null && !this.jurisdiction.isEmpty();
-        }
-
-        public boolean hasJurisdiction() { 
-          return this.jurisdiction != null && !this.jurisdiction.isEmpty();
-        }
-
-        /**
-         * @param value {@link #jurisdiction} (The jurisdiction to which the deviceIdentifier applies.). This is the underlying object with id, value and extensions. The accessor "getJurisdiction" gives direct access to the value
-         */
-        public DeviceDefinitionPackagingUdiDeviceIdentifierComponent setJurisdictionElement(UriType value) { 
-          this.jurisdiction = value;
-          return this;
-        }
-
-        /**
-         * @return The jurisdiction to which the deviceIdentifier applies.
-         */
-        public String getJurisdiction() { 
-          return this.jurisdiction == null ? null : this.jurisdiction.getValue();
-        }
-
-        /**
-         * @param value The jurisdiction to which the deviceIdentifier applies.
-         */
-        public DeviceDefinitionPackagingUdiDeviceIdentifierComponent setJurisdiction(String value) { 
-            if (this.jurisdiction == null)
-              this.jurisdiction = new UriType();
-            this.jurisdiction.setValue(value);
-          return this;
-        }
-
-        /**
-         * @return {@link #marketDistribution} (The organization that assigns the identifier algorithm.)
-         */
-        public DeviceDefinitionPackagingUdiDeviceIdentifierMarketDistributionComponent getMarketDistribution() { 
-          if (this.marketDistribution == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create DeviceDefinitionPackagingUdiDeviceIdentifierComponent.marketDistribution");
-            else if (Configuration.doAutoCreate())
-              this.marketDistribution = new DeviceDefinitionPackagingUdiDeviceIdentifierMarketDistributionComponent(); // cc
-          return this.marketDistribution;
-        }
-
-        public boolean hasMarketDistribution() { 
-          return this.marketDistribution != null && !this.marketDistribution.isEmpty();
-        }
-
-        /**
-         * @param value {@link #marketDistribution} (The organization that assigns the identifier algorithm.)
-         */
-        public DeviceDefinitionPackagingUdiDeviceIdentifierComponent setMarketDistribution(DeviceDefinitionPackagingUdiDeviceIdentifierMarketDistributionComponent value) { 
-          this.marketDistribution = value;
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("deviceIdentifier", "string", "Identifier to be associated with every instance for issuer and jurisdiction.", 0, 1, deviceIdentifier));
-          children.add(new Property("issuer", "uri", "The organization that assigns the identifier algorithm.", 0, 1, issuer));
-          children.add(new Property("jurisdiction", "uri", "The jurisdiction to which the deviceIdentifier applies.", 0, 1, jurisdiction));
-          children.add(new Property("marketDistribution", "", "The organization that assigns the identifier algorithm.", 0, 1, marketDistribution));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case 1322005407: /*deviceIdentifier*/  return new Property("deviceIdentifier", "string", "Identifier to be associated with every instance for issuer and jurisdiction.", 0, 1, deviceIdentifier);
-          case -1179159879: /*issuer*/  return new Property("issuer", "uri", "The organization that assigns the identifier algorithm.", 0, 1, issuer);
-          case -507075711: /*jurisdiction*/  return new Property("jurisdiction", "uri", "The jurisdiction to which the deviceIdentifier applies.", 0, 1, jurisdiction);
-          case 530037984: /*marketDistribution*/  return new Property("marketDistribution", "", "The organization that assigns the identifier algorithm.", 0, 1, marketDistribution);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case 1322005407: /*deviceIdentifier*/ return this.deviceIdentifier == null ? new Base[0] : new Base[] {this.deviceIdentifier}; // StringType
-        case -1179159879: /*issuer*/ return this.issuer == null ? new Base[0] : new Base[] {this.issuer}; // UriType
-        case -507075711: /*jurisdiction*/ return this.jurisdiction == null ? new Base[0] : new Base[] {this.jurisdiction}; // UriType
-        case 530037984: /*marketDistribution*/ return this.marketDistribution == null ? new Base[0] : new Base[] {this.marketDistribution}; // DeviceDefinitionPackagingUdiDeviceIdentifierMarketDistributionComponent
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case 1322005407: // deviceIdentifier
-          this.deviceIdentifier = TypeConvertor.castToString(value); // StringType
-          return value;
-        case -1179159879: // issuer
-          this.issuer = TypeConvertor.castToUri(value); // UriType
-          return value;
-        case -507075711: // jurisdiction
-          this.jurisdiction = TypeConvertor.castToUri(value); // UriType
-          return value;
-        case 530037984: // marketDistribution
-          this.marketDistribution = (DeviceDefinitionPackagingUdiDeviceIdentifierMarketDistributionComponent) value; // DeviceDefinitionPackagingUdiDeviceIdentifierMarketDistributionComponent
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("deviceIdentifier")) {
-          this.deviceIdentifier = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("issuer")) {
-          this.issuer = TypeConvertor.castToUri(value); // UriType
-        } else if (name.equals("jurisdiction")) {
-          this.jurisdiction = TypeConvertor.castToUri(value); // UriType
-        } else if (name.equals("marketDistribution")) {
-          this.marketDistribution = (DeviceDefinitionPackagingUdiDeviceIdentifierMarketDistributionComponent) value; // DeviceDefinitionPackagingUdiDeviceIdentifierMarketDistributionComponent
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 1322005407:  return getDeviceIdentifierElement();
-        case -1179159879:  return getIssuerElement();
-        case -507075711:  return getJurisdictionElement();
-        case 530037984:  return getMarketDistribution();
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 1322005407: /*deviceIdentifier*/ return new String[] {"string"};
-        case -1179159879: /*issuer*/ return new String[] {"uri"};
-        case -507075711: /*jurisdiction*/ return new String[] {"uri"};
-        case 530037984: /*marketDistribution*/ return new String[] {};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("deviceIdentifier")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.packaging.udiDeviceIdentifier.deviceIdentifier");
-        }
-        else if (name.equals("issuer")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.packaging.udiDeviceIdentifier.issuer");
-        }
-        else if (name.equals("jurisdiction")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.packaging.udiDeviceIdentifier.jurisdiction");
-        }
-        else if (name.equals("marketDistribution")) {
-          this.marketDistribution = new DeviceDefinitionPackagingUdiDeviceIdentifierMarketDistributionComponent();
-          return this.marketDistribution;
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public DeviceDefinitionPackagingUdiDeviceIdentifierComponent copy() {
-        DeviceDefinitionPackagingUdiDeviceIdentifierComponent dst = new DeviceDefinitionPackagingUdiDeviceIdentifierComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(DeviceDefinitionPackagingUdiDeviceIdentifierComponent dst) {
-        super.copyValues(dst);
-        dst.deviceIdentifier = deviceIdentifier == null ? null : deviceIdentifier.copy();
-        dst.issuer = issuer == null ? null : issuer.copy();
-        dst.jurisdiction = jurisdiction == null ? null : jurisdiction.copy();
-        dst.marketDistribution = marketDistribution == null ? null : marketDistribution.copy();
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof DeviceDefinitionPackagingUdiDeviceIdentifierComponent))
-          return false;
-        DeviceDefinitionPackagingUdiDeviceIdentifierComponent o = (DeviceDefinitionPackagingUdiDeviceIdentifierComponent) other_;
-        return compareDeep(deviceIdentifier, o.deviceIdentifier, true) && compareDeep(issuer, o.issuer, true)
-           && compareDeep(jurisdiction, o.jurisdiction, true) && compareDeep(marketDistribution, o.marketDistribution, true)
-          ;
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof DeviceDefinitionPackagingUdiDeviceIdentifierComponent))
-          return false;
-        DeviceDefinitionPackagingUdiDeviceIdentifierComponent o = (DeviceDefinitionPackagingUdiDeviceIdentifierComponent) other_;
-        return compareValues(deviceIdentifier, o.deviceIdentifier, true) && compareValues(issuer, o.issuer, true)
-           && compareValues(jurisdiction, o.jurisdiction, true);
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(deviceIdentifier, issuer, jurisdiction
-          , marketDistribution);
-      }
-
-  public String fhirType() {
-    return "DeviceDefinition.packaging.udiDeviceIdentifier";
-
-  }
-
-  }
-
-    @Block()
-    public static class DeviceDefinitionPackagingUdiDeviceIdentifierMarketDistributionComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * Begin and end dates for the commercial distribution of the device.
-         */
-        @Child(name = "marketPeriod", type = {Period.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Begin and end dates for the commercial distribution of the device", formalDefinition="Begin and end dates for the commercial distribution of the device." )
-        protected Period marketPeriod;
-
-        /**
-         * National state or territory to which the marketDistribution refers, typically where the device is commercialized.
-         */
-        @Child(name = "subJurisdiction", type = {UriType.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="National state or territory where the device is commercialized", formalDefinition="National state or territory to which the marketDistribution refers, typically where the device is commercialized." )
-        protected UriType subJurisdiction;
-
-        private static final long serialVersionUID = -1459036847L;
-
-    /**
-     * Constructor
-     */
-      public DeviceDefinitionPackagingUdiDeviceIdentifierMarketDistributionComponent() {
-        super();
-      }
-
-        /**
-         * @return {@link #marketPeriod} (Begin and end dates for the commercial distribution of the device.)
-         */
-        public Period getMarketPeriod() { 
-          if (this.marketPeriod == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create DeviceDefinitionPackagingUdiDeviceIdentifierMarketDistributionComponent.marketPeriod");
-            else if (Configuration.doAutoCreate())
-              this.marketPeriod = new Period(); // cc
-          return this.marketPeriod;
-        }
-
-        public boolean hasMarketPeriod() { 
-          return this.marketPeriod != null && !this.marketPeriod.isEmpty();
-        }
-
-        /**
-         * @param value {@link #marketPeriod} (Begin and end dates for the commercial distribution of the device.)
-         */
-        public DeviceDefinitionPackagingUdiDeviceIdentifierMarketDistributionComponent setMarketPeriod(Period value) { 
-          this.marketPeriod = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #subJurisdiction} (National state or territory to which the marketDistribution refers, typically where the device is commercialized.). This is the underlying object with id, value and extensions. The accessor "getSubJurisdiction" gives direct access to the value
-         */
-        public UriType getSubJurisdictionElement() { 
-          if (this.subJurisdiction == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create DeviceDefinitionPackagingUdiDeviceIdentifierMarketDistributionComponent.subJurisdiction");
-            else if (Configuration.doAutoCreate())
-              this.subJurisdiction = new UriType(); // bb
-          return this.subJurisdiction;
-        }
-
-        public boolean hasSubJurisdictionElement() { 
-          return this.subJurisdiction != null && !this.subJurisdiction.isEmpty();
-        }
-
-        public boolean hasSubJurisdiction() { 
-          return this.subJurisdiction != null && !this.subJurisdiction.isEmpty();
-        }
-
-        /**
-         * @param value {@link #subJurisdiction} (National state or territory to which the marketDistribution refers, typically where the device is commercialized.). This is the underlying object with id, value and extensions. The accessor "getSubJurisdiction" gives direct access to the value
-         */
-        public DeviceDefinitionPackagingUdiDeviceIdentifierMarketDistributionComponent setSubJurisdictionElement(UriType value) { 
-          this.subJurisdiction = value;
-          return this;
-        }
-
-        /**
-         * @return National state or territory to which the marketDistribution refers, typically where the device is commercialized.
-         */
-        public String getSubJurisdiction() { 
-          return this.subJurisdiction == null ? null : this.subJurisdiction.getValue();
-        }
-
-        /**
-         * @param value National state or territory to which the marketDistribution refers, typically where the device is commercialized.
-         */
-        public DeviceDefinitionPackagingUdiDeviceIdentifierMarketDistributionComponent setSubJurisdiction(String value) { 
-          if (Utilities.noString(value))
-            this.subJurisdiction = null;
-          else {
-            if (this.subJurisdiction == null)
-              this.subJurisdiction = new UriType();
-            this.subJurisdiction.setValue(value);
-          }
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("marketPeriod", "Period", "Begin and end dates for the commercial distribution of the device.", 0, 1, marketPeriod));
-          children.add(new Property("subJurisdiction", "uri", "National state or territory to which the marketDistribution refers, typically where the device is commercialized.", 0, 1, subJurisdiction));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case -183772899: /*marketPeriod*/  return new Property("marketPeriod", "Period", "Begin and end dates for the commercial distribution of the device.", 0, 1, marketPeriod);
-          case -777497119: /*subJurisdiction*/  return new Property("subJurisdiction", "uri", "National state or territory to which the marketDistribution refers, typically where the device is commercialized.", 0, 1, subJurisdiction);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case -183772899: /*marketPeriod*/ return this.marketPeriod == null ? new Base[0] : new Base[] {this.marketPeriod}; // Period
-        case -777497119: /*subJurisdiction*/ return this.subJurisdiction == null ? new Base[0] : new Base[] {this.subJurisdiction}; // UriType
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case -183772899: // marketPeriod
-          this.marketPeriod = TypeConvertor.castToPeriod(value); // Period
-          return value;
-        case -777497119: // subJurisdiction
-          this.subJurisdiction = TypeConvertor.castToUri(value); // UriType
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("marketPeriod")) {
-          this.marketPeriod = TypeConvertor.castToPeriod(value); // Period
-        } else if (name.equals("subJurisdiction")) {
-          this.subJurisdiction = TypeConvertor.castToUri(value); // UriType
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -183772899:  return getMarketPeriod();
-        case -777497119:  return getSubJurisdictionElement();
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -183772899: /*marketPeriod*/ return new String[] {"Period"};
-        case -777497119: /*subJurisdiction*/ return new String[] {"uri"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("marketPeriod")) {
-          this.marketPeriod = new Period();
-          return this.marketPeriod;
-        }
-        else if (name.equals("subJurisdiction")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.packaging.udiDeviceIdentifier.marketDistribution.subJurisdiction");
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public DeviceDefinitionPackagingUdiDeviceIdentifierMarketDistributionComponent copy() {
-        DeviceDefinitionPackagingUdiDeviceIdentifierMarketDistributionComponent dst = new DeviceDefinitionPackagingUdiDeviceIdentifierMarketDistributionComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(DeviceDefinitionPackagingUdiDeviceIdentifierMarketDistributionComponent dst) {
-        super.copyValues(dst);
-        dst.marketPeriod = marketPeriod == null ? null : marketPeriod.copy();
-        dst.subJurisdiction = subJurisdiction == null ? null : subJurisdiction.copy();
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof DeviceDefinitionPackagingUdiDeviceIdentifierMarketDistributionComponent))
-          return false;
-        DeviceDefinitionPackagingUdiDeviceIdentifierMarketDistributionComponent o = (DeviceDefinitionPackagingUdiDeviceIdentifierMarketDistributionComponent) other_;
-        return compareDeep(marketPeriod, o.marketPeriod, true) && compareDeep(subJurisdiction, o.subJurisdiction, true)
-          ;
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof DeviceDefinitionPackagingUdiDeviceIdentifierMarketDistributionComponent))
-          return false;
-        DeviceDefinitionPackagingUdiDeviceIdentifierMarketDistributionComponent o = (DeviceDefinitionPackagingUdiDeviceIdentifierMarketDistributionComponent) other_;
-        return compareValues(subJurisdiction, o.subJurisdiction, true);
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(marketPeriod, subJurisdiction
-          );
-      }
-
-  public String fhirType() {
-    return "DeviceDefinition.packaging.udiDeviceIdentifier.marketDistribution";
 
   }
 
@@ -5480,72 +5388,79 @@ RegisteredName | UserFriendlyName | PatientReportedName.
     protected List<DeviceDefinitionUdiDeviceIdentifierComponent> udiDeviceIdentifier;
 
     /**
+     * Identifier associated with the regulatory documentation (certificates, technical documentation, post-market surveillance documentation and reports) of a set of device models sharing the same intended purpose, risk class and essential design and manufacturing characteristics. One example is the Basic UDI-DI in Europe.
+     */
+    @Child(name = "regulatoryIdentifier", type = {}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Regulatory identifier(s) associated with this device", formalDefinition="Identifier associated with the regulatory documentation (certificates, technical documentation, post-market surveillance documentation and reports) of a set of device models sharing the same intended purpose, risk class and essential design and manufacturing characteristics. One example is the Basic UDI-DI in Europe." )
+    protected List<DeviceDefinitionRegulatoryIdentifierComponent> regulatoryIdentifier;
+
+    /**
      * The part number or catalog number of the device.
      */
-    @Child(name = "partNumber", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "partNumber", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="The part number or catalog number of the device", formalDefinition="The part number or catalog number of the device." )
     protected StringType partNumber;
 
     /**
      * A name of the manufacturer  or legal representative e.g. labeler. Whether this is the actual manufacturer or the labeler or responsible depends on implementation and jurisdiction.
      */
-    @Child(name = "manufacturer", type = {Organization.class}, order=4, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "manufacturer", type = {Organization.class}, order=5, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Name of device manufacturer", formalDefinition="A name of the manufacturer  or legal representative e.g. labeler. Whether this is the actual manufacturer or the labeler or responsible depends on implementation and jurisdiction." )
     protected Reference manufacturer;
 
     /**
      * The name or names of the device as given by the manufacturer.
      */
-    @Child(name = "deviceName", type = {}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "deviceName", type = {}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The name or names of the device as given by the manufacturer", formalDefinition="The name or names of the device as given by the manufacturer." )
     protected List<DeviceDefinitionDeviceNameComponent> deviceName;
 
     /**
      * The model number for the device for example as defined by the manufacturer or labeler, or other agency.
      */
-    @Child(name = "modelNumber", type = {StringType.class}, order=6, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "modelNumber", type = {StringType.class}, order=7, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="The catalog or model number for the device for example as defined by the manufacturer", formalDefinition="The model number for the device for example as defined by the manufacturer or labeler, or other agency." )
     protected StringType modelNumber;
 
     /**
      * What kind of device or device system this is.
      */
-    @Child(name = "classification", type = {}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "classification", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="What kind of device or device system this is", formalDefinition="What kind of device or device system this is." )
     protected List<DeviceDefinitionClassificationComponent> classification;
 
     /**
      * The capabilities supported on a  device, the standards to which the device conforms for a particular purpose, and used for the communication.
      */
-    @Child(name = "specialization", type = {RelatedArtifact.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "specialization", type = {RelatedArtifact.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The capabilities supported on a  device, the standards to which the device conforms for a particular purpose, and used for the communication", formalDefinition="The capabilities supported on a  device, the standards to which the device conforms for a particular purpose, and used for the communication." )
     protected List<RelatedArtifact> specialization;
 
     /**
      * A device that is part (for example a component) of the present device.
      */
-    @Child(name = "hasPart", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "hasPart", type = {}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="A device, part of the current one", formalDefinition="A device that is part (for example a component) of the present device." )
     protected List<DeviceDefinitionHasPartComponent> hasPart;
 
     /**
      * Information about the packaging of the device, i.e. how the device is packaged.
      */
-    @Child(name = "packaging", type = {}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "packaging", type = {}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Information about the packaging of the device, i.e. how the device is packaged", formalDefinition="Information about the packaging of the device, i.e. how the device is packaged." )
     protected List<DeviceDefinitionPackagingComponent> packaging;
 
     /**
      * The version of the device or software.
      */
-    @Child(name = "version", type = {}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "version", type = {}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The version of the device or software", formalDefinition="The version of the device or software." )
     protected List<DeviceDefinitionVersionComponent> version;
 
     /**
      * Safety characteristics of the device.
      */
-    @Child(name = "safety", type = {CodeableConcept.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "safety", type = {CodeableConcept.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Safety characteristics of the device", formalDefinition="Safety characteristics of the device." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/device-safety")
     protected List<CodeableConcept> safety;
@@ -5553,70 +5468,70 @@ RegisteredName | UserFriendlyName | PatientReportedName.
     /**
      * Shelf Life and storage information.
      */
-    @Child(name = "shelfLifeStorage", type = {ProductShelfLife.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "shelfLifeStorage", type = {ProductShelfLife.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Shelf Life and storage information", formalDefinition="Shelf Life and storage information." )
     protected List<ProductShelfLife> shelfLifeStorage;
 
     /**
      * Language code for the human-readable text strings produced by the device (all supported).
      */
-    @Child(name = "languageCode", type = {CodeableConcept.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "languageCode", type = {CodeableConcept.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Language code for the human-readable text strings produced by the device (all supported)", formalDefinition="Language code for the human-readable text strings produced by the device (all supported)." )
     protected List<CodeableConcept> languageCode;
 
     /**
      * The potential, valid configuration settings of a device, e.g., regulation status, time properties.
      */
-    @Child(name = "property", type = {}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "property", type = {}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The potential, valid configuration settings of a device, e.g., regulation status, time properties", formalDefinition="The potential, valid configuration settings of a device, e.g., regulation status, time properties." )
     protected List<DeviceDefinitionPropertyComponent> property;
 
     /**
      * An organization that is responsible for the provision and ongoing maintenance of the device.
      */
-    @Child(name = "owner", type = {Organization.class}, order=16, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "owner", type = {Organization.class}, order=17, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Organization responsible for device", formalDefinition="An organization that is responsible for the provision and ongoing maintenance of the device." )
     protected Reference owner;
 
     /**
      * Contact details for an organization or a particular human that is responsible for the device.
      */
-    @Child(name = "contact", type = {ContactPoint.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "contact", type = {ContactPoint.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Details for human/organization for support", formalDefinition="Contact details for an organization or a particular human that is responsible for the device." )
     protected List<ContactPoint> contact;
 
     /**
      * An associated device, attached to, used with, communicating with or linking a previous or new device model to the focal device.
      */
-    @Child(name = "link", type = {}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "link", type = {}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="An associated device, attached to, used with, communicating with or linking a previous or new device model to the focal device", formalDefinition="An associated device, attached to, used with, communicating with or linking a previous or new device model to the focal device." )
     protected List<DeviceDefinitionLinkComponent> link;
 
     /**
      * Descriptive information, usage information or implantation information that is not captured in an existing element.
      */
-    @Child(name = "note", type = {Annotation.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "note", type = {Annotation.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Device notes and comments", formalDefinition="Descriptive information, usage information or implantation information that is not captured in an existing element." )
     protected List<Annotation> note;
 
     /**
      * The parent device it can be part of.
      */
-    @Child(name = "parentDevice", type = {DeviceDefinition.class}, order=20, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "parentDevice", type = {DeviceDefinition.class}, order=21, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The parent device it can be part of", formalDefinition="The parent device it can be part of." )
     protected Reference parentDevice;
 
     /**
      * A substance used to create the material(s) of which the device is made.
      */
-    @Child(name = "material", type = {}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "material", type = {}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="A substance used to create the material(s) of which the device is made", formalDefinition="A substance used to create the material(s) of which the device is made." )
     protected List<DeviceDefinitionMaterialComponent> material;
 
     /**
      * Indicates the production identifier(s) that are expected to appear in the UDI carrier on the device label.
      */
-    @Child(name = "productionIdentifierInUDI", type = {CodeType.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "productionIdentifierInUDI", type = {CodeType.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="lot-number | manufactured-date | serial-number | expiration-date | biological-source | software-version", formalDefinition="Indicates the production identifier(s) that are expected to appear in the UDI carrier on the device label." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/device-productidentifierinudi")
     protected List<Enumeration<DeviceProductionIdentifierInUDI>> productionIdentifierInUDI;
@@ -5624,25 +5539,25 @@ RegisteredName | UserFriendlyName | PatientReportedName.
     /**
      * Information aimed at providing directions for the usage of this model of device.
      */
-    @Child(name = "guideline", type = {}, order=23, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "guideline", type = {}, order=24, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Information aimed at providing directions for the usage of this model of device", formalDefinition="Information aimed at providing directions for the usage of this model of device." )
     protected DeviceDefinitionGuidelineComponent guideline;
 
     /**
      * Tracking of latest field safety corrective action.
      */
-    @Child(name = "correctiveAction", type = {}, order=24, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "correctiveAction", type = {}, order=25, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Tracking of latest field safety corrective action", formalDefinition="Tracking of latest field safety corrective action." )
     protected DeviceDefinitionCorrectiveActionComponent correctiveAction;
 
     /**
      * Billing code or reference associated with the device.
      */
-    @Child(name = "chargeItem", type = {}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "chargeItem", type = {}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Billing code or reference associated with the device", formalDefinition="Billing code or reference associated with the device." )
     protected List<DeviceDefinitionChargeItemComponent> chargeItem;
 
-    private static final long serialVersionUID = -1006753471L;
+    private static final long serialVersionUID = 1343213621L;
 
   /**
    * Constructor
@@ -5804,6 +5719,59 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         addUdiDeviceIdentifier();
       }
       return getUdiDeviceIdentifier().get(0);
+    }
+
+    /**
+     * @return {@link #regulatoryIdentifier} (Identifier associated with the regulatory documentation (certificates, technical documentation, post-market surveillance documentation and reports) of a set of device models sharing the same intended purpose, risk class and essential design and manufacturing characteristics. One example is the Basic UDI-DI in Europe.)
+     */
+    public List<DeviceDefinitionRegulatoryIdentifierComponent> getRegulatoryIdentifier() { 
+      if (this.regulatoryIdentifier == null)
+        this.regulatoryIdentifier = new ArrayList<DeviceDefinitionRegulatoryIdentifierComponent>();
+      return this.regulatoryIdentifier;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public DeviceDefinition setRegulatoryIdentifier(List<DeviceDefinitionRegulatoryIdentifierComponent> theRegulatoryIdentifier) { 
+      this.regulatoryIdentifier = theRegulatoryIdentifier;
+      return this;
+    }
+
+    public boolean hasRegulatoryIdentifier() { 
+      if (this.regulatoryIdentifier == null)
+        return false;
+      for (DeviceDefinitionRegulatoryIdentifierComponent item : this.regulatoryIdentifier)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public DeviceDefinitionRegulatoryIdentifierComponent addRegulatoryIdentifier() { //3
+      DeviceDefinitionRegulatoryIdentifierComponent t = new DeviceDefinitionRegulatoryIdentifierComponent();
+      if (this.regulatoryIdentifier == null)
+        this.regulatoryIdentifier = new ArrayList<DeviceDefinitionRegulatoryIdentifierComponent>();
+      this.regulatoryIdentifier.add(t);
+      return t;
+    }
+
+    public DeviceDefinition addRegulatoryIdentifier(DeviceDefinitionRegulatoryIdentifierComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.regulatoryIdentifier == null)
+        this.regulatoryIdentifier = new ArrayList<DeviceDefinitionRegulatoryIdentifierComponent>();
+      this.regulatoryIdentifier.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #regulatoryIdentifier}, creating it if it does not already exist {3}
+     */
+    public DeviceDefinitionRegulatoryIdentifierComponent getRegulatoryIdentifierFirstRep() { 
+      if (getRegulatoryIdentifier().isEmpty()) {
+        addRegulatoryIdentifier();
+      }
+      return getRegulatoryIdentifier().get(0);
     }
 
     /**
@@ -6885,6 +6853,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         children.add(new Property("description", "markdown", "Additional information to describe the device.", 0, 1, description));
         children.add(new Property("identifier", "Identifier", "Unique instance identifiers assigned to a device by the software, manufacturers, other organizations or owners. For example: handle ID. The identifier is typically valued if the udiDeviceIdentifier, partNumber or modelNumber is not valued and represents a different type of identifier.  However, it is permissible to still include those identifiers in DeviceDefinition.identifier with the appropriate identifier.type.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("udiDeviceIdentifier", "", "Unique device identifier (UDI) assigned to device label or package.  Note that the Device may include multiple udiCarriers as it either may include just the udiCarrier for the jurisdiction it is sold, or for multiple jurisdictions it could have been sold.", 0, java.lang.Integer.MAX_VALUE, udiDeviceIdentifier));
+        children.add(new Property("regulatoryIdentifier", "", "Identifier associated with the regulatory documentation (certificates, technical documentation, post-market surveillance documentation and reports) of a set of device models sharing the same intended purpose, risk class and essential design and manufacturing characteristics. One example is the Basic UDI-DI in Europe.", 0, java.lang.Integer.MAX_VALUE, regulatoryIdentifier));
         children.add(new Property("partNumber", "string", "The part number or catalog number of the device.", 0, 1, partNumber));
         children.add(new Property("manufacturer", "Reference(Organization)", "A name of the manufacturer  or legal representative e.g. labeler. Whether this is the actual manufacturer or the labeler or responsible depends on implementation and jurisdiction.", 0, 1, manufacturer));
         children.add(new Property("deviceName", "", "The name or names of the device as given by the manufacturer.", 0, java.lang.Integer.MAX_VALUE, deviceName));
@@ -6916,6 +6885,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         case -1724546052: /*description*/  return new Property("description", "markdown", "Additional information to describe the device.", 0, 1, description);
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Unique instance identifiers assigned to a device by the software, manufacturers, other organizations or owners. For example: handle ID. The identifier is typically valued if the udiDeviceIdentifier, partNumber or modelNumber is not valued and represents a different type of identifier.  However, it is permissible to still include those identifiers in DeviceDefinition.identifier with the appropriate identifier.type.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case -99121287: /*udiDeviceIdentifier*/  return new Property("udiDeviceIdentifier", "", "Unique device identifier (UDI) assigned to device label or package.  Note that the Device may include multiple udiCarriers as it either may include just the udiCarrier for the jurisdiction it is sold, or for multiple jurisdictions it could have been sold.", 0, java.lang.Integer.MAX_VALUE, udiDeviceIdentifier);
+        case 455683425: /*regulatoryIdentifier*/  return new Property("regulatoryIdentifier", "", "Identifier associated with the regulatory documentation (certificates, technical documentation, post-market surveillance documentation and reports) of a set of device models sharing the same intended purpose, risk class and essential design and manufacturing characteristics. One example is the Basic UDI-DI in Europe.", 0, java.lang.Integer.MAX_VALUE, regulatoryIdentifier);
         case -731502308: /*partNumber*/  return new Property("partNumber", "string", "The part number or catalog number of the device.", 0, 1, partNumber);
         case -1969347631: /*manufacturer*/  return new Property("manufacturer", "Reference(Organization)", "A name of the manufacturer  or legal representative e.g. labeler. Whether this is the actual manufacturer or the labeler or responsible depends on implementation and jurisdiction.", 0, 1, manufacturer);
         case 780988929: /*deviceName*/  return new Property("deviceName", "", "The name or names of the device as given by the manufacturer.", 0, java.lang.Integer.MAX_VALUE, deviceName);
@@ -6950,6 +6920,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // MarkdownType
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case -99121287: /*udiDeviceIdentifier*/ return this.udiDeviceIdentifier == null ? new Base[0] : this.udiDeviceIdentifier.toArray(new Base[this.udiDeviceIdentifier.size()]); // DeviceDefinitionUdiDeviceIdentifierComponent
+        case 455683425: /*regulatoryIdentifier*/ return this.regulatoryIdentifier == null ? new Base[0] : this.regulatoryIdentifier.toArray(new Base[this.regulatoryIdentifier.size()]); // DeviceDefinitionRegulatoryIdentifierComponent
         case -731502308: /*partNumber*/ return this.partNumber == null ? new Base[0] : new Base[] {this.partNumber}; // StringType
         case -1969347631: /*manufacturer*/ return this.manufacturer == null ? new Base[0] : new Base[] {this.manufacturer}; // Reference
         case 780988929: /*deviceName*/ return this.deviceName == null ? new Base[0] : this.deviceName.toArray(new Base[this.deviceName.size()]); // DeviceDefinitionDeviceNameComponent
@@ -6989,6 +6960,9 @@ RegisteredName | UserFriendlyName | PatientReportedName.
           return value;
         case -99121287: // udiDeviceIdentifier
           this.getUdiDeviceIdentifier().add((DeviceDefinitionUdiDeviceIdentifierComponent) value); // DeviceDefinitionUdiDeviceIdentifierComponent
+          return value;
+        case 455683425: // regulatoryIdentifier
+          this.getRegulatoryIdentifier().add((DeviceDefinitionRegulatoryIdentifierComponent) value); // DeviceDefinitionRegulatoryIdentifierComponent
           return value;
         case -731502308: // partNumber
           this.partNumber = TypeConvertor.castToString(value); // StringType
@@ -7073,6 +7047,8 @@ RegisteredName | UserFriendlyName | PatientReportedName.
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("udiDeviceIdentifier")) {
           this.getUdiDeviceIdentifier().add((DeviceDefinitionUdiDeviceIdentifierComponent) value);
+        } else if (name.equals("regulatoryIdentifier")) {
+          this.getRegulatoryIdentifier().add((DeviceDefinitionRegulatoryIdentifierComponent) value);
         } else if (name.equals("partNumber")) {
           this.partNumber = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("manufacturer")) {
@@ -7131,6 +7107,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         case -1724546052:  return getDescriptionElement();
         case -1618432855:  return addIdentifier(); 
         case -99121287:  return addUdiDeviceIdentifier(); 
+        case 455683425:  return addRegulatoryIdentifier(); 
         case -731502308:  return getPartNumberElement();
         case -1969347631:  return getManufacturer();
         case 780988929:  return addDeviceName(); 
@@ -7165,6 +7142,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         case -1724546052: /*description*/ return new String[] {"markdown"};
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case -99121287: /*udiDeviceIdentifier*/ return new String[] {};
+        case 455683425: /*regulatoryIdentifier*/ return new String[] {};
         case -731502308: /*partNumber*/ return new String[] {"string"};
         case -1969347631: /*manufacturer*/ return new String[] {"Reference"};
         case 780988929: /*deviceName*/ return new String[] {};
@@ -7203,6 +7181,9 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         }
         else if (name.equals("udiDeviceIdentifier")) {
           return addUdiDeviceIdentifier();
+        }
+        else if (name.equals("regulatoryIdentifier")) {
+          return addRegulatoryIdentifier();
         }
         else if (name.equals("partNumber")) {
           throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.partNumber");
@@ -7306,6 +7287,11 @@ RegisteredName | UserFriendlyName | PatientReportedName.
           for (DeviceDefinitionUdiDeviceIdentifierComponent i : udiDeviceIdentifier)
             dst.udiDeviceIdentifier.add(i.copy());
         };
+        if (regulatoryIdentifier != null) {
+          dst.regulatoryIdentifier = new ArrayList<DeviceDefinitionRegulatoryIdentifierComponent>();
+          for (DeviceDefinitionRegulatoryIdentifierComponent i : regulatoryIdentifier)
+            dst.regulatoryIdentifier.add(i.copy());
+        };
         dst.partNumber = partNumber == null ? null : partNumber.copy();
         dst.manufacturer = manufacturer == null ? null : manufacturer.copy();
         if (deviceName != null) {
@@ -7407,15 +7393,15 @@ RegisteredName | UserFriendlyName | PatientReportedName.
           return false;
         DeviceDefinition o = (DeviceDefinition) other_;
         return compareDeep(description, o.description, true) && compareDeep(identifier, o.identifier, true)
-           && compareDeep(udiDeviceIdentifier, o.udiDeviceIdentifier, true) && compareDeep(partNumber, o.partNumber, true)
-           && compareDeep(manufacturer, o.manufacturer, true) && compareDeep(deviceName, o.deviceName, true)
-           && compareDeep(modelNumber, o.modelNumber, true) && compareDeep(classification, o.classification, true)
-           && compareDeep(specialization, o.specialization, true) && compareDeep(hasPart, o.hasPart, true)
-           && compareDeep(packaging, o.packaging, true) && compareDeep(version, o.version, true) && compareDeep(safety, o.safety, true)
-           && compareDeep(shelfLifeStorage, o.shelfLifeStorage, true) && compareDeep(languageCode, o.languageCode, true)
-           && compareDeep(property, o.property, true) && compareDeep(owner, o.owner, true) && compareDeep(contact, o.contact, true)
-           && compareDeep(link, o.link, true) && compareDeep(note, o.note, true) && compareDeep(parentDevice, o.parentDevice, true)
-           && compareDeep(material, o.material, true) && compareDeep(productionIdentifierInUDI, o.productionIdentifierInUDI, true)
+           && compareDeep(udiDeviceIdentifier, o.udiDeviceIdentifier, true) && compareDeep(regulatoryIdentifier, o.regulatoryIdentifier, true)
+           && compareDeep(partNumber, o.partNumber, true) && compareDeep(manufacturer, o.manufacturer, true)
+           && compareDeep(deviceName, o.deviceName, true) && compareDeep(modelNumber, o.modelNumber, true)
+           && compareDeep(classification, o.classification, true) && compareDeep(specialization, o.specialization, true)
+           && compareDeep(hasPart, o.hasPart, true) && compareDeep(packaging, o.packaging, true) && compareDeep(version, o.version, true)
+           && compareDeep(safety, o.safety, true) && compareDeep(shelfLifeStorage, o.shelfLifeStorage, true)
+           && compareDeep(languageCode, o.languageCode, true) && compareDeep(property, o.property, true) && compareDeep(owner, o.owner, true)
+           && compareDeep(contact, o.contact, true) && compareDeep(link, o.link, true) && compareDeep(note, o.note, true)
+           && compareDeep(parentDevice, o.parentDevice, true) && compareDeep(material, o.material, true) && compareDeep(productionIdentifierInUDI, o.productionIdentifierInUDI, true)
            && compareDeep(guideline, o.guideline, true) && compareDeep(correctiveAction, o.correctiveAction, true)
            && compareDeep(chargeItem, o.chargeItem, true);
       }
@@ -7434,9 +7420,9 @@ RegisteredName | UserFriendlyName | PatientReportedName.
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(description, identifier, udiDeviceIdentifier
-          , partNumber, manufacturer, deviceName, modelNumber, classification, specialization
-          , hasPart, packaging, version, safety, shelfLifeStorage, languageCode, property
-          , owner, contact, link, note, parentDevice, material, productionIdentifierInUDI
+          , regulatoryIdentifier, partNumber, manufacturer, deviceName, modelNumber, classification
+          , specialization, hasPart, packaging, version, safety, shelfLifeStorage, languageCode
+          , property, owner, contact, link, note, parentDevice, material, productionIdentifierInUDI
           , guideline, correctiveAction, chargeItem);
       }
 

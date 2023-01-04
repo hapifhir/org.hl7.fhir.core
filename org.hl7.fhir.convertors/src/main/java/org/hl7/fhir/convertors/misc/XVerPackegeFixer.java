@@ -12,10 +12,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.naming.ldap.StartTlsRequest;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.hl7.fhir.convertors.misc.XVerPackegeFixer.References;
 import org.hl7.fhir.dstu2.model.ElementDefinition;
 import org.hl7.fhir.dstu2.model.StructureDefinition;
 import org.hl7.fhir.dstu2.model.StructureDefinition.StructureDefinitionSnapshotComponent;

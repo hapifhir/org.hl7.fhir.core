@@ -38,6 +38,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,7 +54,7 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
   // -- implementation of variant type methods from the interface --------------------------------
   
   public Resource parse(String input) throws FHIRFormatError, IOException {
-  	return parse(input.getBytes("UTF-8"));
+  	return parse(input.getBytes(StandardCharsets.UTF_8));
   }
   
   public Resource parse(byte[] bytes) throws FHIRFormatError, IOException {
@@ -63,7 +64,7 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
 
 
   public Type parseType(String input, String typeName) throws FHIRFormatError, IOException {
-    return parseType(input.getBytes("UTF-8"), typeName);
+    return parseType(input.getBytes(StandardCharsets.UTF_8), typeName);
   }
   
   public Type parseType(byte[] bytes, String typeName) throws FHIRFormatError, IOException {
@@ -72,7 +73,7 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
   }
 
   public String composeString(Resource resource) throws IOException {
-    return new String(composeBytes(resource));
+    return new String(composeBytes(resource), StandardCharsets.UTF_8);
   }
 
   public byte[] composeBytes(Resource resource) throws IOException {
@@ -83,7 +84,7 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
   }
 
   public String composeString(Type type, String typeName) throws IOException {
-    return new String(composeBytes(type, typeName));
+    return new String(composeBytes(type, typeName), StandardCharsets.UTF_8);
   }
 
   public byte[] composeBytes(Type type, String typeName) throws IOException {

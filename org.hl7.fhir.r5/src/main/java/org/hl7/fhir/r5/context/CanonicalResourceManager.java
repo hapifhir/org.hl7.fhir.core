@@ -3,9 +3,9 @@ package org.hl7.fhir.r5.context;
 import java.util.*;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 
@@ -110,15 +110,15 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   private class CachedCanonicalResource<T1 extends CanonicalResource> {
     private T1 resource;
     private CanonicalResourceProxy proxy;
-    private PackageVersion packageInfo;
+    private PackageInformation packageInfo;
     
-    public CachedCanonicalResource(T1 resource, PackageVersion packageInfo) {
+    public CachedCanonicalResource(T1 resource, PackageInformation packageInfo) {
       super();
       this.resource = resource;
       this.packageInfo = packageInfo;
     }
     
-    public CachedCanonicalResource(CanonicalResourceProxy proxy, PackageVersion packageInfo) {
+    public CachedCanonicalResource(CanonicalResourceProxy proxy, PackageInformation packageInfo) {
       super();
       this.proxy = proxy;
       this.packageInfo = packageInfo;
@@ -134,13 +134,13 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
         synchronized (this) {
           resource = res;
         }
-        resource.setUserData("package", packageInfo);
+        resource.setSourcePackage(packageInfo);
         proxy = null;
       }
       return resource;
     }
     
-    public PackageVersion getPackageInfo() {
+    public PackageInformation getPackageInfo() {
       return packageInfo;
     }
     public String getUrl() {
@@ -158,7 +158,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     
     @Override
     public String toString() {
-      return resource != null ? resource.fhirType()+"/"+resource.getId()+": "+resource.getUrl()+"|"+resource.getVersion() : proxy.toString();
+      return resource != null ? resource.fhirType()+"/"+resource.getId()+"["+resource.getUrl()+"|"+resource.getVersion()+"]" : proxy.toString();
     }  
 
   }
@@ -188,13 +188,27 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
 
   private boolean enforceUniqueId; 
   private List<CachedCanonicalResource<T>> list = new ArrayList<>();
+  private Map<String, List<CachedCanonicalResource<T>>> listForId = new HashMap<>();
+  private Map<String, List<CachedCanonicalResource<T>>> listForUrl = new HashMap<>();
   private Map<String, CachedCanonicalResource<T>> map = new HashMap<>();
+  private String version; // for debugging purposes
   
   
   public CanonicalResourceManager(boolean enforceUniqueId) {
     super();
     this.enforceUniqueId = enforceUniqueId;
   }
+
+  
+  public String getVersion() {
+    return version;
+  }
+
+
+  public void setVersion(String version) {
+    this.version = version;
+  }
+
 
   public void copy(CanonicalResourceManager<T> source) {
     list.clear();
@@ -203,7 +217,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     map.putAll(source.map);
   }
   
-  public void register(CanonicalResourceProxy r, PackageVersion packgeInfo) {
+  public void register(CanonicalResourceProxy r, PackageInformation packgeInfo) {
     if (!r.hasId()) {
       throw new FHIRException("An id is required for a deferred load resource");
     }
@@ -211,7 +225,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     see(cr);
   }
 
-  public void see(T r, PackageVersion packgeInfo) {
+  public void see(T r, PackageInformation packgeInfo) {
     if (r != null) {
       if (!r.hasId()) {
         r.setId(UUID.randomUUID().toString());
@@ -222,21 +236,27 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   }
 
   public void see(CachedCanonicalResource<T> cr) {
+    // -- 1. exit conditions -----------------------------------------------------------------------------
+    
     // ignore UTG NUCC erroneous code system
     if (cr.getPackageInfo() != null
       && cr.getPackageInfo().getId() != null
       && cr.getPackageInfo().getId().startsWith("hl7.terminology")
-      && Arrays.stream(INVALID_TERMINOLOGY_URLS).anyMatch((it)->it.equals(cr.getUrl()))
-    ) {
+      && Arrays.stream(INVALID_TERMINOLOGY_URLS).anyMatch((it)->it.equals(cr.getUrl()))) {
+      return;
+    }  
+    if (map.get(cr.getUrl()) != null && (cr.getPackageInfo() != null && cr.getPackageInfo().isExamplesPackage())) {
       return;
     }
-        
+    
+    // -- 2. preparation -----------------------------------------------------------------------------
+    if (cr.resource != null) {
+      cr.resource.setSourcePackage(cr.getPackageInfo());
+    }      
+
+    // -- 3. deleting existing content ---------------------------------------------------------------
     if (enforceUniqueId && map.containsKey(cr.getId())) {
       drop(cr.getId());      
-    }
-    
-    if (cr.resource != null) {
-      cr.resource.setUserData("package", cr.getPackageInfo());
     }
     
     // special case logic for UTG support prior to version 5
@@ -248,33 +268,104 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
         }
       }
       for (CachedCanonicalResource<T> n : toDrop) {
-        drop(n.getId());
+        drop(n);
       }
     }
-    CachedCanonicalResource<T> existing = cr.hasVersion() ? map.get(cr.getUrl()+"|"+cr.getVersion()) : map.get(cr.getUrl()+"|#0");
-    if (map.get(cr.getUrl()) != null && (cr.getPackageInfo() != null && cr.getPackageInfo().isExamplesPackage())) {
-      return;
-    }
-    if (existing != null) {
-      list.remove(existing);
-    }
+//    CachedCanonicalResource<T> existing = cr.hasVersion() ? map.get(cr.getUrl()+"|"+cr.getVersion()) : map.get(cr.getUrl()+"|#0");
+//    if (existing != null) {
+//      drop(existing); // was list.remove(existing)
+//    }
     
+    // -- 4. ok we add it to the list ---------------------------------------------------------------
+    if (!enforceUniqueId) {
+      if (!listForId.containsKey(cr.getId())) {
+        listForId.put(cr.getId(), new ArrayList<>());
+      }    
+      List<CachedCanonicalResource<T>> set = listForId.get(cr.getId());
+      set.add(cr);      
+    }
     list.add(cr);
-    map.put(cr.getId(), cr); // we do this so we can drop by id
-    map.put(cr.getUrl(), cr);
+    if (!listForUrl.containsKey(cr.getUrl())) {
+      listForUrl.put(cr.getUrl(), new ArrayList<>());
+    }    
+    List<CachedCanonicalResource<T>> set = listForUrl.get(cr.getUrl());
+    set.add(cr);
+    Collections.sort(set, new MetadataResourceVersionComparator<CachedCanonicalResource<T>>());
 
-    if (cr.getUrl() != null) {
-      // first, this is the correct reosurce for this version (if it has a version)
-      if (cr.hasVersion()) {
-        map.put(cr.getUrl()+"|"+cr.getVersion(), cr);
-      } else {
-        map.put(cr.getUrl()+"|#0", cr);
+    // -- 4. add to the map all the ways ---------------------------------------------------------------
+    String pv = cr.getPackageInfo() != null ? cr.getPackageInfo().getVID() : null;
+    map.put(cr.getId(), cr); // we do this so we can drop by id - if not enforcing id, it's just the most recent resource with this id      
+    map.put(cr.hasVersion() ? cr.getUrl()+"|"+cr.getVersion() : cr.getUrl()+"|#0", cr);
+    if (pv != null) {
+      map.put(pv+":"+(cr.hasVersion() ? cr.getUrl()+"|"+cr.getVersion() : cr.getUrl()+"|#0"), cr);      
+    }
+    int ndx = set.indexOf(cr);
+    if (ndx == set.size()-1) {
+      map.put(cr.getUrl(), cr);
+      if (pv != null) {
+        map.put(pv+":"+cr.getUrl(), cr);
       }
-      updateList(cr.getUrl(), cr.getVersion());
+    }
+    String mm = VersionUtilities.getMajMin(cr.getVersion());
+    if (mm != null) {
+      if (pv != null) {
+        map.put(pv+":"+cr.getUrl()+"|"+mm, cr);                
+      }
+      if (set.size() - 1 == ndx) {
+        map.put(cr.getUrl()+"|"+mm, cr);        
+      } else {
+        for (int i = set.size() - 1; i > ndx; i--) {
+          if (mm.equals(VersionUtilities.getMajMin(set.get(i).getVersion()))) {
+            return;
+          }
+          map.put(cr.getUrl()+"|"+mm, cr);
+        }
+      }
     }
   }
 
-  private boolean isBasePackage(PackageVersion packageInfo) {
+  public void drop(CachedCanonicalResource<T> cr) {
+    while (map.values().remove(cr)); 
+    list.remove(cr);
+    List<CachedCanonicalResource<T>> set = listForUrl.get(cr.getUrl());
+    if (set != null) { // it really should be
+      boolean last = set.indexOf(cr) == set.size()-1;
+      set.remove(cr);
+      if (!set.isEmpty()) {
+        CachedCanonicalResource<T> crl = set.get(set.size()-1);
+        if (last) {
+          map.put(crl.getUrl(), crl);
+        }
+        String mm = VersionUtilities.getMajMin(cr.getVersion());
+        if (mm != null) {
+          for (int i = set.size()-1; i >= 0; i--) {
+            if (mm.equals(VersionUtilities.getMajMin(set.get(i).getVersion()))) {
+              map.put(cr.getUrl()+"|"+mm, set.get(i));
+              break;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  public void drop(String id) {
+    if (enforceUniqueId) {
+      CachedCanonicalResource<T> cr = map.get(id);
+      if (cr != null) {
+        drop(cr);
+      }
+    } else {
+      List<CachedCanonicalResource<T>> set = listForId.get(id);
+      if (set != null) { // it really should be
+        for (CachedCanonicalResource<T> i : set) {
+          drop(i);
+        }
+      }
+    }
+  }  
+
+  private boolean isBasePackage(PackageInformation packageInfo) {
     return packageInfo == null ? false : VersionUtilities.isCorePackage(packageInfo.getId());
   }
 
@@ -287,7 +378,6 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     }
     if (rl.size() > 0) {
       // sort by version as much as we are able
-      Collections.sort(rl, new MetadataResourceVersionComparator<CachedCanonicalResource<T>>());
       // the current is the latest
       map.put(url, rl.get(rl.size()-1));
       // now, also, the latest for major/minor
@@ -308,26 +398,22 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   }
  
 
-  public T get(String url) {
-    return map.containsKey(url) ? map.get(url).getResource() : null;
-  }
-  
-  public PackageVersion getPackageInfo(String system, String version) {
-    if (version == null) {
-      return map.containsKey(system) ? map.get(system).getPackageInfo() : null;
-    } else {
-      if (map.containsKey(system+"|"+version))
-        return map.get(system+"|"+version).getPackageInfo();
-      String mm = VersionUtilities.getMajMin(version);
-      if (mm != null && map.containsKey(system+"|"+mm))
-        return map.get(system+"|"+mm).getPackageInfo();
-      else
-        return null;
-    }
-  }
-  
   public boolean has(String url) {
     return map.containsKey(url);
+  }
+
+  public boolean has(String system, String version) {
+    if (map.containsKey(system+"|"+version))
+      return true;
+    String mm = VersionUtilities.getMajMin(version);
+    if (mm != null)
+      return map.containsKey(system+"|"+mm);
+    else
+      return false;
+  }
+  
+  public T get(String url) {
+    return map.containsKey(url) ? map.get(url).getResource() : null;
   }
   
   public T get(String system, String version) {
@@ -344,45 +430,75 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     }
   }
   
-  public boolean has(String system, String version) {
-    if (map.containsKey(system+"|"+version))
-      return true;
-    String mm = VersionUtilities.getMajMin(version);
-    if (mm != null)
-      return map.containsKey(system+"|"+mm);
-    else
-      return false;
+  
+  /**
+   * This is asking for a packaged version aware resolution
+   * 
+   * if we can resolve the reference in the package dependencies, we will. if we can't
+   * then we fall back to the non-package approach
+   * 
+   *  The context has to prepare the pvlist based on the original package
+   * @param url
+   * @param srcInfo
+   * @return
+   */
+  public T get(String url, List<String> pvlist) {
+    for (String pv : pvlist) {
+      if (map.containsKey(pv+":"+url)) {
+        return map.get(pv+":"+url).getResource();
+      }      
+    }
+    return map.containsKey(url) ? map.get(url).getResource() : null;
   }
+  
+  public T get(String system, String version, List<String> pvlist) {
+    if (version == null) {
+      return get(system, pvlist);
+    } else {
+      for (String pv : pvlist) {
+        if (map.containsKey(pv+":"+system+"|"+version))
+          return map.get(pv+":"+system+"|"+version).getResource();
+      }
+      String mm = VersionUtilities.getMajMin(version);
+      if (mm != null && map.containsKey(system+"|"+mm))
+        for (String pv : pvlist) {
+          if (map.containsKey(pv+":"+system+"|"+mm))
+            return map.get(pv+":"+system+"|"+mm).getResource();
+      }
+
+      if (map.containsKey(system+"|"+version))
+        return map.get(system+"|"+version).getResource();
+      if (mm != null && map.containsKey(system+"|"+mm))
+        return map.get(system+"|"+mm).getResource();
+      else
+        return null;
+    }
+  }
+  
+  
+ 
+  public PackageInformation getPackageInfo(String system, String version) {
+    if (version == null) {
+      return map.containsKey(system) ? map.get(system).getPackageInfo() : null;
+    } else {
+      if (map.containsKey(system+"|"+version))
+        return map.get(system+"|"+version).getPackageInfo();
+      String mm = VersionUtilities.getMajMin(version);
+      if (mm != null && map.containsKey(system+"|"+mm))
+        return map.get(system+"|"+mm).getPackageInfo();
+      else
+        return null;
+    }
+  }
+  
+ 
+  
   
   public int size() {
     return list.size();
   }
   
-  public void drop(String id) {
-    CachedCanonicalResource<T> res = null;
-    do {
-      res = null;
-      for (CachedCanonicalResource<T> t : list) {
-        if (t.getId().equals(id)) {
-          res = t;
-        }
-      }
-      if (res != null) {
-        list.remove(res);
-        map.remove(id);
-        map.remove(res.getUrl());
-        if (res.hasVersion()) {
-          map.remove(res.getUrl()+"|"+res.getVersion());
-          String mm = VersionUtilities.getMajMin(res.getVersion());
-          if (mm != null) {
-            map.remove(res.getUrl()+"|"+mm);
-          }
-        }
-        updateList(res.getUrl(), res.getVersion()); 
-      }
-    } while (res != null);
-  }
-  
+
   
   public void listAll(List<T> result) {
     for (CachedCanonicalResource<T>  t : list) {
@@ -425,5 +541,6 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   public boolean isEnforceUniqueId() {
     return enforceUniqueId;
   }
-  
+
+
 }

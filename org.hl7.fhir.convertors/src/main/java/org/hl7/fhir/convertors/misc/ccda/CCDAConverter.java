@@ -4,6 +4,12 @@ package org.hl7.fhir.convertors.misc.ccda;
 
 
 
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -38,28 +44,52 @@ import org.fhir.ucum.UcumService;
 import org.hl7.fhir.convertors.misc.CDAUtilities;
 import org.hl7.fhir.convertors.misc.Convert;
 import org.hl7.fhir.dstu3.context.IWorkerContext;
-import org.hl7.fhir.dstu3.model.*;
-import org.hl7.fhir.dstu3.model.AllergyIntolerance.*;
+import org.hl7.fhir.dstu3.model.AllergyIntolerance;
+import org.hl7.fhir.dstu3.model.AllergyIntolerance.AllergyIntoleranceClinicalStatus;
+import org.hl7.fhir.dstu3.model.AllergyIntolerance.AllergyIntoleranceCriticality;
+import org.hl7.fhir.dstu3.model.AllergyIntolerance.AllergyIntoleranceReactionComponent;
+import org.hl7.fhir.dstu3.model.AllergyIntolerance.AllergyIntoleranceSeverity;
+import org.hl7.fhir.dstu3.model.AllergyIntolerance.AllergyIntoleranceType;
+import org.hl7.fhir.dstu3.model.AllergyIntolerance.AllergyIntoleranceVerificationStatus;
+import org.hl7.fhir.dstu3.model.Bundle;
 import org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent;
+import org.hl7.fhir.dstu3.model.CodeableConcept;
+import org.hl7.fhir.dstu3.model.Coding;
+import org.hl7.fhir.dstu3.model.Comparison;
+import org.hl7.fhir.dstu3.model.Composition;
 import org.hl7.fhir.dstu3.model.Composition.CompositionAttestationMode;
 import org.hl7.fhir.dstu3.model.Composition.CompositionAttesterComponent;
 import org.hl7.fhir.dstu3.model.Composition.DocumentConfidentiality;
 import org.hl7.fhir.dstu3.model.Composition.SectionComponent;
+import org.hl7.fhir.dstu3.model.ContactPoint;
+import org.hl7.fhir.dstu3.model.Device;
+import org.hl7.fhir.dstu3.model.DomainResource;
+import org.hl7.fhir.dstu3.model.Encounter;
+import org.hl7.fhir.dstu3.model.Extension;
+import org.hl7.fhir.dstu3.model.Factory;
+import org.hl7.fhir.dstu3.model.Identifier;
+import org.hl7.fhir.dstu3.model.InstantType;
+import org.hl7.fhir.dstu3.model.ListResource;
 import org.hl7.fhir.dstu3.model.ListResource.ListEntryComponent;
+import org.hl7.fhir.dstu3.model.Location;
+import org.hl7.fhir.dstu3.model.Meta;
+import org.hl7.fhir.dstu3.model.Narrative;
 import org.hl7.fhir.dstu3.model.Narrative.NarrativeStatus;
+import org.hl7.fhir.dstu3.model.Observation;
 import org.hl7.fhir.dstu3.model.Observation.ObservationRelatedComponent;
 import org.hl7.fhir.dstu3.model.Observation.ObservationRelationshipType;
 import org.hl7.fhir.dstu3.model.Observation.ObservationStatus;
+import org.hl7.fhir.dstu3.model.Organization;
+import org.hl7.fhir.dstu3.model.Patient;
+import org.hl7.fhir.dstu3.model.Period;
+import org.hl7.fhir.dstu3.model.Practitioner;
+import org.hl7.fhir.dstu3.model.Procedure;
 import org.hl7.fhir.dstu3.model.Procedure.ProcedurePerformerComponent;
+import org.hl7.fhir.dstu3.model.Reference;
+import org.hl7.fhir.dstu3.model.ResourceFactory;
 import org.hl7.fhir.dstu3.utils.NarrativeGenerator;
 import org.hl7.fhir.dstu3.utils.ToolingExtensions;
 import org.w3c.dom.Element;
-
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * Advance Directives Section 42348-3 :

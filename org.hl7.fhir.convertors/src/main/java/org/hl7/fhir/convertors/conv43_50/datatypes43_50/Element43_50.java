@@ -1,10 +1,10 @@
 package org.hl7.fhir.convertors.conv43_50.datatypes43_50;
 
+import java.util.Arrays;
+
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Extension43_50;
 import org.hl7.fhir.exceptions.FHIRException;
-
-import java.util.Arrays;
 
 public class Element43_50 {
 

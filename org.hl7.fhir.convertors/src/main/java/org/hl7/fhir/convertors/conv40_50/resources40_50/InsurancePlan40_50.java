@@ -1,7 +1,14 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.*;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Address40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.ContactPoint40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.HumanName40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Money40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Period40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Quantity40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.PositiveInt40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
@@ -113,7 +120,7 @@ public class InsurancePlan40_50 {
     if (src.hasPurpose())
       tgt.setPurpose(CodeableConcept40_50.convertCodeableConcept(src.getPurpose()));
     if (src.hasName())
-      tgt.setName(HumanName40_50.convertHumanName(src.getName()));
+      tgt.addName(HumanName40_50.convertHumanName(src.getName()));
     for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom())
       tgt.addTelecom(ContactPoint40_50.convertContactPoint(t));
     if (src.hasAddress())
@@ -129,7 +136,7 @@ public class InsurancePlan40_50 {
     if (src.hasPurpose())
       tgt.setPurpose(CodeableConcept40_50.convertCodeableConcept(src.getPurpose()));
     if (src.hasName())
-      tgt.setName(HumanName40_50.convertHumanName(src.getName()));
+      tgt.setName(HumanName40_50.convertHumanName(src.getNameFirstRep()));
     for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom())
       tgt.addTelecom(ContactPoint40_50.convertContactPoint(t));
     if (src.hasAddress())

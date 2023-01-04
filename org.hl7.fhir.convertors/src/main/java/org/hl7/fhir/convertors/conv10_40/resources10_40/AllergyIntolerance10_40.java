@@ -1,7 +1,6 @@
 package org.hl7.fhir.convertors.conv10_40.resources10_40;
 
 import org.hl7.fhir.convertors.context.ConversionContext10_40;
-import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Extension10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Reference10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Annotation10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.CodeableConcept10_40;

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,7 +45,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * Base StructureDefinition for ExtendedContactDetail Type: Specifies contact information for a specific purpose over a period of time, might be handled/monitored by a specific named person or organization.
+ * ExtendedContactDetail Type: Specifies contact information for a specific purpose over a period of time, might be handled/monitored by a specific named person or organization.
  */
 @DatatypeDef(name="ExtendedContactDetail")
 public class ExtendedContactDetail extends DataType implements ICompositeType {
@@ -55,14 +55,15 @@ public class ExtendedContactDetail extends DataType implements ICompositeType {
      */
     @Child(name = "purpose", type = {CodeableConcept.class}, order=0, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The type of contact", formalDefinition="The purpose/type of contact." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/contactentity-type")
     protected CodeableConcept purpose;
 
     /**
      * The name of an individual to contact, some types of contact detail are usually blank.
      */
-    @Child(name = "name", type = {HumanName.class}, order=1, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "name", type = {HumanName.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Name of an individual to contact", formalDefinition="The name of an individual to contact, some types of contact detail are usually blank." )
-    protected HumanName name;
+    protected List<HumanName> name;
 
     /**
      * The contact details application for the purpose defined.
@@ -79,10 +80,10 @@ public class ExtendedContactDetail extends DataType implements ICompositeType {
     protected Address address;
 
     /**
-     * This contact detail is handled/monitored by a specific organization.
+     * This contact detail is handled/monitored by a specific organization. If the name is provided in the contact, then it is referring to the named individual within this organization.
      */
     @Child(name = "organization", type = {Organization.class}, order=4, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Organization", formalDefinition="This contact detail is handled/monitored by a specific organization." )
+    @Description(shortDefinition="This contact detail is handled/monitored by a specific organization", formalDefinition="This contact detail is handled/monitored by a specific organization. If the name is provided in the contact, then it is referring to the named individual within this organization." )
     protected Reference organization;
 
     /**
@@ -92,7 +93,7 @@ public class ExtendedContactDetail extends DataType implements ICompositeType {
     @Description(shortDefinition="Period that this contact was valid for usage", formalDefinition="Period that this contact was valid for usage." )
     protected Period period;
 
-    private static final long serialVersionUID = -763470577L;
+    private static final long serialVersionUID = 154672475L;
 
   /**
    * Constructor
@@ -128,25 +129,54 @@ public class ExtendedContactDetail extends DataType implements ICompositeType {
     /**
      * @return {@link #name} (The name of an individual to contact, some types of contact detail are usually blank.)
      */
-    public HumanName getName() { 
+    public List<HumanName> getName() { 
       if (this.name == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ExtendedContactDetail.name");
-        else if (Configuration.doAutoCreate())
-          this.name = new HumanName(); // cc
+        this.name = new ArrayList<HumanName>();
       return this.name;
     }
 
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ExtendedContactDetail setName(List<HumanName> theName) { 
+      this.name = theName;
+      return this;
+    }
+
     public boolean hasName() { 
-      return this.name != null && !this.name.isEmpty();
+      if (this.name == null)
+        return false;
+      for (HumanName item : this.name)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public HumanName addName() { //3
+      HumanName t = new HumanName();
+      if (this.name == null)
+        this.name = new ArrayList<HumanName>();
+      this.name.add(t);
+      return t;
+    }
+
+    public ExtendedContactDetail addName(HumanName t) { //3
+      if (t == null)
+        return this;
+      if (this.name == null)
+        this.name = new ArrayList<HumanName>();
+      this.name.add(t);
+      return this;
     }
 
     /**
-     * @param value {@link #name} (The name of an individual to contact, some types of contact detail are usually blank.)
+     * @return The first repetition of repeating field {@link #name}, creating it if it does not already exist {3}
      */
-    public ExtendedContactDetail setName(HumanName value) { 
-      this.name = value;
-      return this;
+    public HumanName getNameFirstRep() { 
+      if (getName().isEmpty()) {
+        addName();
+      }
+      return getName().get(0);
     }
 
     /**
@@ -227,7 +257,7 @@ public class ExtendedContactDetail extends DataType implements ICompositeType {
     }
 
     /**
-     * @return {@link #organization} (This contact detail is handled/monitored by a specific organization.)
+     * @return {@link #organization} (This contact detail is handled/monitored by a specific organization. If the name is provided in the contact, then it is referring to the named individual within this organization.)
      */
     public Reference getOrganization() { 
       if (this.organization == null)
@@ -243,7 +273,7 @@ public class ExtendedContactDetail extends DataType implements ICompositeType {
     }
 
     /**
-     * @param value {@link #organization} (This contact detail is handled/monitored by a specific organization.)
+     * @param value {@link #organization} (This contact detail is handled/monitored by a specific organization. If the name is provided in the contact, then it is referring to the named individual within this organization.)
      */
     public ExtendedContactDetail setOrganization(Reference value) { 
       this.organization = value;
@@ -277,10 +307,10 @@ public class ExtendedContactDetail extends DataType implements ICompositeType {
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("purpose", "CodeableConcept", "The purpose/type of contact.", 0, 1, purpose));
-        children.add(new Property("name", "HumanName", "The name of an individual to contact, some types of contact detail are usually blank.", 0, 1, name));
+        children.add(new Property("name", "HumanName", "The name of an individual to contact, some types of contact detail are usually blank.", 0, java.lang.Integer.MAX_VALUE, name));
         children.add(new Property("telecom", "ContactPoint", "The contact details application for the purpose defined.", 0, java.lang.Integer.MAX_VALUE, telecom));
         children.add(new Property("address", "Address", "Address for the contact.", 0, 1, address));
-        children.add(new Property("organization", "Reference(Organization)", "This contact detail is handled/monitored by a specific organization.", 0, 1, organization));
+        children.add(new Property("organization", "Reference(Organization)", "This contact detail is handled/monitored by a specific organization. If the name is provided in the contact, then it is referring to the named individual within this organization.", 0, 1, organization));
         children.add(new Property("period", "Period", "Period that this contact was valid for usage.", 0, 1, period));
       }
 
@@ -288,10 +318,10 @@ public class ExtendedContactDetail extends DataType implements ICompositeType {
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case -220463842: /*purpose*/  return new Property("purpose", "CodeableConcept", "The purpose/type of contact.", 0, 1, purpose);
-        case 3373707: /*name*/  return new Property("name", "HumanName", "The name of an individual to contact, some types of contact detail are usually blank.", 0, 1, name);
+        case 3373707: /*name*/  return new Property("name", "HumanName", "The name of an individual to contact, some types of contact detail are usually blank.", 0, java.lang.Integer.MAX_VALUE, name);
         case -1429363305: /*telecom*/  return new Property("telecom", "ContactPoint", "The contact details application for the purpose defined.", 0, java.lang.Integer.MAX_VALUE, telecom);
         case -1147692044: /*address*/  return new Property("address", "Address", "Address for the contact.", 0, 1, address);
-        case 1178922291: /*organization*/  return new Property("organization", "Reference(Organization)", "This contact detail is handled/monitored by a specific organization.", 0, 1, organization);
+        case 1178922291: /*organization*/  return new Property("organization", "Reference(Organization)", "This contact detail is handled/monitored by a specific organization. If the name is provided in the contact, then it is referring to the named individual within this organization.", 0, 1, organization);
         case -991726143: /*period*/  return new Property("period", "Period", "Period that this contact was valid for usage.", 0, 1, period);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -302,7 +332,7 @@ public class ExtendedContactDetail extends DataType implements ICompositeType {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -220463842: /*purpose*/ return this.purpose == null ? new Base[0] : new Base[] {this.purpose}; // CodeableConcept
-        case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // HumanName
+        case 3373707: /*name*/ return this.name == null ? new Base[0] : this.name.toArray(new Base[this.name.size()]); // HumanName
         case -1429363305: /*telecom*/ return this.telecom == null ? new Base[0] : this.telecom.toArray(new Base[this.telecom.size()]); // ContactPoint
         case -1147692044: /*address*/ return this.address == null ? new Base[0] : new Base[] {this.address}; // Address
         case 1178922291: /*organization*/ return this.organization == null ? new Base[0] : new Base[] {this.organization}; // Reference
@@ -319,7 +349,7 @@ public class ExtendedContactDetail extends DataType implements ICompositeType {
           this.purpose = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3373707: // name
-          this.name = TypeConvertor.castToHumanName(value); // HumanName
+          this.getName().add(TypeConvertor.castToHumanName(value)); // HumanName
           return value;
         case -1429363305: // telecom
           this.getTelecom().add(TypeConvertor.castToContactPoint(value)); // ContactPoint
@@ -343,7 +373,7 @@ public class ExtendedContactDetail extends DataType implements ICompositeType {
         if (name.equals("purpose")) {
           this.purpose = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("name")) {
-          this.name = TypeConvertor.castToHumanName(value); // HumanName
+          this.getName().add(TypeConvertor.castToHumanName(value));
         } else if (name.equals("telecom")) {
           this.getTelecom().add(TypeConvertor.castToContactPoint(value));
         } else if (name.equals("address")) {
@@ -361,7 +391,7 @@ public class ExtendedContactDetail extends DataType implements ICompositeType {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -220463842:  return getPurpose();
-        case 3373707:  return getName();
+        case 3373707:  return addName(); 
         case -1429363305:  return addTelecom(); 
         case -1147692044:  return getAddress();
         case 1178922291:  return getOrganization();
@@ -392,8 +422,7 @@ public class ExtendedContactDetail extends DataType implements ICompositeType {
           return this.purpose;
         }
         else if (name.equals("name")) {
-          this.name = new HumanName();
-          return this.name;
+          return addName();
         }
         else if (name.equals("telecom")) {
           return addTelecom();
@@ -428,7 +457,11 @@ public class ExtendedContactDetail extends DataType implements ICompositeType {
       public void copyValues(ExtendedContactDetail dst) {
         super.copyValues(dst);
         dst.purpose = purpose == null ? null : purpose.copy();
-        dst.name = name == null ? null : name.copy();
+        if (name != null) {
+          dst.name = new ArrayList<HumanName>();
+          for (HumanName i : name)
+            dst.name.add(i.copy());
+        };
         if (telecom != null) {
           dst.telecom = new ArrayList<ContactPoint>();
           for (ContactPoint i : telecom)

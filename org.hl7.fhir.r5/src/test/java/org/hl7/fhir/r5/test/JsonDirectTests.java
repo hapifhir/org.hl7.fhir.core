@@ -41,7 +41,7 @@ public class JsonDirectTests {
   @Test
   public void testEmptyObject() throws FHIRFormatError, FileNotFoundException, IOException {
     ByteArrayOutputStream bs = new ByteArrayOutputStream();
-    JsonCreatorDirect json = new JsonCreatorDirect(new OutputStreamWriter(bs, "UTF-8"));
+    JsonCreatorDirect json = new JsonCreatorDirect(new OutputStreamWriter(bs, "UTF-8"), false, false);
     json.beginObject();
     json.name("a");
     json.beginObject();

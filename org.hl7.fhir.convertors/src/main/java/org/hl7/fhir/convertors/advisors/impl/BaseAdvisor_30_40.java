@@ -1,16 +1,19 @@
 package org.hl7.fhir.convertors.advisors.impl;
 
-import org.hl7.fhir.convertors.advisors.interfaces.BaseAdvisor40;
-import org.hl7.fhir.exceptions.FHIRException;
-
-import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
+import org.hl7.fhir.convertors.advisors.interfaces.BaseAdvisor40;
+import org.hl7.fhir.exceptions.FHIRException;
+
 public class BaseAdvisor_30_40 extends BaseAdvisor40<org.hl7.fhir.dstu3.model.Extension> {
 
   final List<String> capabilityStatementIgnoredUrls = Collections.singletonList("http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown");
+
+  final List<String> immunizationIgnoredUrls = Collections.singletonList("http://hl7.org/fhir/3.0/StructureDefinition/extension-Immunization.notGiven");
 
   public BaseAdvisor_30_40() {
   }
@@ -22,7 +25,13 @@ public class BaseAdvisor_30_40 extends BaseAdvisor40<org.hl7.fhir.dstu3.model.Ex
   @Override
   public boolean ignoreExtension(@Nonnull String path,
                                  @Nonnull String url) throws FHIRException {
-    List<String> paths = Arrays.asList(path.split(","));
-    return (paths.get(paths.size() - 1).equals("CapabilityStatement")) && (capabilityStatementIgnoredUrls.contains(url));
+    final List<String> paths = Arrays.asList(path.split(","));
+    final String lastPath = paths.get(paths.size() - 1);
+    if (lastPath.equals("CapabilityStatement")) {
+      return capabilityStatementIgnoredUrls.contains(url);
+    } else if (lastPath.equals("Immunization")) {
+      return immunizationIgnoredUrls.contains(url);
+    }
+    return false;
   }
 }

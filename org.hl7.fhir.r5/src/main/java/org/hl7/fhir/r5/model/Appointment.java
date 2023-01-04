@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -295,10 +295,10 @@ public class Appointment extends DomainResource {
         protected Period period;
 
         /**
-         * A Person, Location/HealthcareService or Device that is participating in the appointment.
+         * The individual, device, location, or service participating in the appointment.
          */
         @Child(name = "actor", type = {Patient.class, Group.class, Practitioner.class, PractitionerRole.class, CareTeam.class, RelatedPerson.class, Device.class, HealthcareService.class, Location.class}, order=3, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Person, Location/HealthcareService or Device", formalDefinition="A Person, Location/HealthcareService or Device that is participating in the appointment." )
+        @Description(shortDefinition="The individual, device, location, or service participating in the appointment", formalDefinition="The individual, device, location, or service participating in the appointment." )
         protected Reference actor;
 
         /**
@@ -411,7 +411,7 @@ public class Appointment extends DomainResource {
         }
 
         /**
-         * @return {@link #actor} (A Person, Location/HealthcareService or Device that is participating in the appointment.)
+         * @return {@link #actor} (The individual, device, location, or service participating in the appointment.)
          */
         public Reference getActor() { 
           if (this.actor == null)
@@ -427,7 +427,7 @@ public class Appointment extends DomainResource {
         }
 
         /**
-         * @param value {@link #actor} (A Person, Location/HealthcareService or Device that is participating in the appointment.)
+         * @param value {@link #actor} (The individual, device, location, or service participating in the appointment.)
          */
         public AppointmentParticipantComponent setActor(Reference value) { 
           this.actor = value;
@@ -528,7 +528,7 @@ public class Appointment extends DomainResource {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "Role of participant in the appointment.", 0, java.lang.Integer.MAX_VALUE, type));
           children.add(new Property("period", "Period", "Participation period of the actor.", 0, 1, period));
-          children.add(new Property("actor", "Reference(Patient|Group|Practitioner|PractitionerRole|CareTeam|RelatedPerson|Device|HealthcareService|Location)", "A Person, Location/HealthcareService or Device that is participating in the appointment.", 0, 1, actor));
+          children.add(new Property("actor", "Reference(Patient|Group|Practitioner|PractitionerRole|CareTeam|RelatedPerson|Device|HealthcareService|Location)", "The individual, device, location, or service participating in the appointment.", 0, 1, actor));
           children.add(new Property("required", "boolean", "Whether this participant is required to be present at the meeting. If false, the participant is optional.", 0, 1, required));
           children.add(new Property("status", "code", "Participation status of the actor.", 0, 1, status));
         }
@@ -538,7 +538,7 @@ public class Appointment extends DomainResource {
           switch (_hash) {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Role of participant in the appointment.", 0, java.lang.Integer.MAX_VALUE, type);
           case -991726143: /*period*/  return new Property("period", "Period", "Participation period of the actor.", 0, 1, period);
-          case 92645877: /*actor*/  return new Property("actor", "Reference(Patient|Group|Practitioner|PractitionerRole|CareTeam|RelatedPerson|Device|HealthcareService|Location)", "A Person, Location/HealthcareService or Device that is participating in the appointment.", 0, 1, actor);
+          case 92645877: /*actor*/  return new Property("actor", "Reference(Patient|Group|Practitioner|PractitionerRole|CareTeam|RelatedPerson|Device|HealthcareService|Location)", "The individual, device, location, or service participating in the appointment.", 0, 1, actor);
           case -393139297: /*required*/  return new Property("required", "boolean", "Whether this participant is required to be present at the meeting. If false, the participant is optional.", 0, 1, required);
           case -892481550: /*status*/  return new Property("status", "code", "Participation status of the actor.", 0, 1, status);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -702,6 +702,1930 @@ public class Appointment extends DomainResource {
 
   }
 
+    @Block()
+    public static class AppointmentRecurrenceTemplateComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * The timezone of the recurring appointment occurrences.
+         */
+        @Child(name = "timezone", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The timezone of the occurrences", formalDefinition="The timezone of the recurring appointment occurrences." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/timezones")
+        protected CodeableConcept timezone;
+
+        /**
+         * How often the appointment series should recur.
+         */
+        @Child(name = "recurrenceType", type = {CodeableConcept.class}, order=2, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The frequency of the recurrence", formalDefinition="How often the appointment series should recur." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/appointment-recurrrence-type")
+        protected CodeableConcept recurrenceType;
+
+        /**
+         * Recurring appointments will not occur after this date.
+         */
+        @Child(name = "lastOccurrenceDate", type = {DateType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The date when the recurrence should end", formalDefinition="Recurring appointments will not occur after this date." )
+        protected DateType lastOccurrenceDate;
+
+        /**
+         * How many appointments are planned in the recurrence.
+         */
+        @Child(name = "occurrenceCount", type = {PositiveIntType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The number of planned occurrences", formalDefinition="How many appointments are planned in the recurrence." )
+        protected PositiveIntType occurrenceCount;
+
+        /**
+         * The list of specific dates that will have appointments generated.
+         */
+        @Child(name = "occurrenceDate", type = {DateType.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Specific dates for a recurring set of appointments (no template)", formalDefinition="The list of specific dates that will have appointments generated." )
+        protected List<DateType> occurrenceDate;
+
+        /**
+         * Information about weekly recurring appointments.
+         */
+        @Child(name = "weeklyTemplate", type = {}, order=6, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Information about weekly recurring appointments", formalDefinition="Information about weekly recurring appointments." )
+        protected AppointmentRecurrenceTemplateWeeklyTemplateComponent weeklyTemplate;
+
+        /**
+         * Information about monthly recurring appointments.
+         */
+        @Child(name = "monthlyTemplate", type = {}, order=7, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Information about monthly recurring appointments", formalDefinition="Information about monthly recurring appointments." )
+        protected AppointmentRecurrenceTemplateMonthlyTemplateComponent monthlyTemplate;
+
+        /**
+         * Information about yearly recurring appointments.
+         */
+        @Child(name = "yearlyTemplate", type = {}, order=8, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Information about yearly recurring appointments", formalDefinition="Information about yearly recurring appointments." )
+        protected AppointmentRecurrenceTemplateYearlyTemplateComponent yearlyTemplate;
+
+        /**
+         * Any dates, such as holidays, that should be excluded from the recurrence.
+         */
+        @Child(name = "excludingDate", type = {DateType.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Any dates that should be excluded from the series", formalDefinition="Any dates, such as holidays, that should be excluded from the recurrence." )
+        protected List<DateType> excludingDate;
+
+        /**
+         * Any dates, such as holidays, that should be excluded from the recurrence.
+         */
+        @Child(name = "excludingRecurrenceId", type = {PositiveIntType.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Any recurrence IDs that should be excluded from the recurrence", formalDefinition="Any dates, such as holidays, that should be excluded from the recurrence." )
+        protected List<PositiveIntType> excludingRecurrenceId;
+
+        private static final long serialVersionUID = -1582999176L;
+
+    /**
+     * Constructor
+     */
+      public AppointmentRecurrenceTemplateComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public AppointmentRecurrenceTemplateComponent(CodeableConcept recurrenceType) {
+        super();
+        this.setRecurrenceType(recurrenceType);
+      }
+
+        /**
+         * @return {@link #timezone} (The timezone of the recurring appointment occurrences.)
+         */
+        public CodeableConcept getTimezone() { 
+          if (this.timezone == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AppointmentRecurrenceTemplateComponent.timezone");
+            else if (Configuration.doAutoCreate())
+              this.timezone = new CodeableConcept(); // cc
+          return this.timezone;
+        }
+
+        public boolean hasTimezone() { 
+          return this.timezone != null && !this.timezone.isEmpty();
+        }
+
+        /**
+         * @param value {@link #timezone} (The timezone of the recurring appointment occurrences.)
+         */
+        public AppointmentRecurrenceTemplateComponent setTimezone(CodeableConcept value) { 
+          this.timezone = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #recurrenceType} (How often the appointment series should recur.)
+         */
+        public CodeableConcept getRecurrenceType() { 
+          if (this.recurrenceType == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AppointmentRecurrenceTemplateComponent.recurrenceType");
+            else if (Configuration.doAutoCreate())
+              this.recurrenceType = new CodeableConcept(); // cc
+          return this.recurrenceType;
+        }
+
+        public boolean hasRecurrenceType() { 
+          return this.recurrenceType != null && !this.recurrenceType.isEmpty();
+        }
+
+        /**
+         * @param value {@link #recurrenceType} (How often the appointment series should recur.)
+         */
+        public AppointmentRecurrenceTemplateComponent setRecurrenceType(CodeableConcept value) { 
+          this.recurrenceType = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #lastOccurrenceDate} (Recurring appointments will not occur after this date.). This is the underlying object with id, value and extensions. The accessor "getLastOccurrenceDate" gives direct access to the value
+         */
+        public DateType getLastOccurrenceDateElement() { 
+          if (this.lastOccurrenceDate == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AppointmentRecurrenceTemplateComponent.lastOccurrenceDate");
+            else if (Configuration.doAutoCreate())
+              this.lastOccurrenceDate = new DateType(); // bb
+          return this.lastOccurrenceDate;
+        }
+
+        public boolean hasLastOccurrenceDateElement() { 
+          return this.lastOccurrenceDate != null && !this.lastOccurrenceDate.isEmpty();
+        }
+
+        public boolean hasLastOccurrenceDate() { 
+          return this.lastOccurrenceDate != null && !this.lastOccurrenceDate.isEmpty();
+        }
+
+        /**
+         * @param value {@link #lastOccurrenceDate} (Recurring appointments will not occur after this date.). This is the underlying object with id, value and extensions. The accessor "getLastOccurrenceDate" gives direct access to the value
+         */
+        public AppointmentRecurrenceTemplateComponent setLastOccurrenceDateElement(DateType value) { 
+          this.lastOccurrenceDate = value;
+          return this;
+        }
+
+        /**
+         * @return Recurring appointments will not occur after this date.
+         */
+        public Date getLastOccurrenceDate() { 
+          return this.lastOccurrenceDate == null ? null : this.lastOccurrenceDate.getValue();
+        }
+
+        /**
+         * @param value Recurring appointments will not occur after this date.
+         */
+        public AppointmentRecurrenceTemplateComponent setLastOccurrenceDate(Date value) { 
+          if (value == null)
+            this.lastOccurrenceDate = null;
+          else {
+            if (this.lastOccurrenceDate == null)
+              this.lastOccurrenceDate = new DateType();
+            this.lastOccurrenceDate.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #occurrenceCount} (How many appointments are planned in the recurrence.). This is the underlying object with id, value and extensions. The accessor "getOccurrenceCount" gives direct access to the value
+         */
+        public PositiveIntType getOccurrenceCountElement() { 
+          if (this.occurrenceCount == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AppointmentRecurrenceTemplateComponent.occurrenceCount");
+            else if (Configuration.doAutoCreate())
+              this.occurrenceCount = new PositiveIntType(); // bb
+          return this.occurrenceCount;
+        }
+
+        public boolean hasOccurrenceCountElement() { 
+          return this.occurrenceCount != null && !this.occurrenceCount.isEmpty();
+        }
+
+        public boolean hasOccurrenceCount() { 
+          return this.occurrenceCount != null && !this.occurrenceCount.isEmpty();
+        }
+
+        /**
+         * @param value {@link #occurrenceCount} (How many appointments are planned in the recurrence.). This is the underlying object with id, value and extensions. The accessor "getOccurrenceCount" gives direct access to the value
+         */
+        public AppointmentRecurrenceTemplateComponent setOccurrenceCountElement(PositiveIntType value) { 
+          this.occurrenceCount = value;
+          return this;
+        }
+
+        /**
+         * @return How many appointments are planned in the recurrence.
+         */
+        public int getOccurrenceCount() { 
+          return this.occurrenceCount == null || this.occurrenceCount.isEmpty() ? 0 : this.occurrenceCount.getValue();
+        }
+
+        /**
+         * @param value How many appointments are planned in the recurrence.
+         */
+        public AppointmentRecurrenceTemplateComponent setOccurrenceCount(int value) { 
+            if (this.occurrenceCount == null)
+              this.occurrenceCount = new PositiveIntType();
+            this.occurrenceCount.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #occurrenceDate} (The list of specific dates that will have appointments generated.)
+         */
+        public List<DateType> getOccurrenceDate() { 
+          if (this.occurrenceDate == null)
+            this.occurrenceDate = new ArrayList<DateType>();
+          return this.occurrenceDate;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public AppointmentRecurrenceTemplateComponent setOccurrenceDate(List<DateType> theOccurrenceDate) { 
+          this.occurrenceDate = theOccurrenceDate;
+          return this;
+        }
+
+        public boolean hasOccurrenceDate() { 
+          if (this.occurrenceDate == null)
+            return false;
+          for (DateType item : this.occurrenceDate)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        /**
+         * @return {@link #occurrenceDate} (The list of specific dates that will have appointments generated.)
+         */
+        public DateType addOccurrenceDateElement() {//2 
+          DateType t = new DateType();
+          if (this.occurrenceDate == null)
+            this.occurrenceDate = new ArrayList<DateType>();
+          this.occurrenceDate.add(t);
+          return t;
+        }
+
+        /**
+         * @param value {@link #occurrenceDate} (The list of specific dates that will have appointments generated.)
+         */
+        public AppointmentRecurrenceTemplateComponent addOccurrenceDate(Date value) { //1
+          DateType t = new DateType();
+          t.setValue(value);
+          if (this.occurrenceDate == null)
+            this.occurrenceDate = new ArrayList<DateType>();
+          this.occurrenceDate.add(t);
+          return this;
+        }
+
+        /**
+         * @param value {@link #occurrenceDate} (The list of specific dates that will have appointments generated.)
+         */
+        public boolean hasOccurrenceDate(Date value) { 
+          if (this.occurrenceDate == null)
+            return false;
+          for (DateType v : this.occurrenceDate)
+            if (v.getValue().equals(value)) // date
+              return true;
+          return false;
+        }
+
+        /**
+         * @return {@link #weeklyTemplate} (Information about weekly recurring appointments.)
+         */
+        public AppointmentRecurrenceTemplateWeeklyTemplateComponent getWeeklyTemplate() { 
+          if (this.weeklyTemplate == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AppointmentRecurrenceTemplateComponent.weeklyTemplate");
+            else if (Configuration.doAutoCreate())
+              this.weeklyTemplate = new AppointmentRecurrenceTemplateWeeklyTemplateComponent(); // cc
+          return this.weeklyTemplate;
+        }
+
+        public boolean hasWeeklyTemplate() { 
+          return this.weeklyTemplate != null && !this.weeklyTemplate.isEmpty();
+        }
+
+        /**
+         * @param value {@link #weeklyTemplate} (Information about weekly recurring appointments.)
+         */
+        public AppointmentRecurrenceTemplateComponent setWeeklyTemplate(AppointmentRecurrenceTemplateWeeklyTemplateComponent value) { 
+          this.weeklyTemplate = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #monthlyTemplate} (Information about monthly recurring appointments.)
+         */
+        public AppointmentRecurrenceTemplateMonthlyTemplateComponent getMonthlyTemplate() { 
+          if (this.monthlyTemplate == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AppointmentRecurrenceTemplateComponent.monthlyTemplate");
+            else if (Configuration.doAutoCreate())
+              this.monthlyTemplate = new AppointmentRecurrenceTemplateMonthlyTemplateComponent(); // cc
+          return this.monthlyTemplate;
+        }
+
+        public boolean hasMonthlyTemplate() { 
+          return this.monthlyTemplate != null && !this.monthlyTemplate.isEmpty();
+        }
+
+        /**
+         * @param value {@link #monthlyTemplate} (Information about monthly recurring appointments.)
+         */
+        public AppointmentRecurrenceTemplateComponent setMonthlyTemplate(AppointmentRecurrenceTemplateMonthlyTemplateComponent value) { 
+          this.monthlyTemplate = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #yearlyTemplate} (Information about yearly recurring appointments.)
+         */
+        public AppointmentRecurrenceTemplateYearlyTemplateComponent getYearlyTemplate() { 
+          if (this.yearlyTemplate == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AppointmentRecurrenceTemplateComponent.yearlyTemplate");
+            else if (Configuration.doAutoCreate())
+              this.yearlyTemplate = new AppointmentRecurrenceTemplateYearlyTemplateComponent(); // cc
+          return this.yearlyTemplate;
+        }
+
+        public boolean hasYearlyTemplate() { 
+          return this.yearlyTemplate != null && !this.yearlyTemplate.isEmpty();
+        }
+
+        /**
+         * @param value {@link #yearlyTemplate} (Information about yearly recurring appointments.)
+         */
+        public AppointmentRecurrenceTemplateComponent setYearlyTemplate(AppointmentRecurrenceTemplateYearlyTemplateComponent value) { 
+          this.yearlyTemplate = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #excludingDate} (Any dates, such as holidays, that should be excluded from the recurrence.)
+         */
+        public List<DateType> getExcludingDate() { 
+          if (this.excludingDate == null)
+            this.excludingDate = new ArrayList<DateType>();
+          return this.excludingDate;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public AppointmentRecurrenceTemplateComponent setExcludingDate(List<DateType> theExcludingDate) { 
+          this.excludingDate = theExcludingDate;
+          return this;
+        }
+
+        public boolean hasExcludingDate() { 
+          if (this.excludingDate == null)
+            return false;
+          for (DateType item : this.excludingDate)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        /**
+         * @return {@link #excludingDate} (Any dates, such as holidays, that should be excluded from the recurrence.)
+         */
+        public DateType addExcludingDateElement() {//2 
+          DateType t = new DateType();
+          if (this.excludingDate == null)
+            this.excludingDate = new ArrayList<DateType>();
+          this.excludingDate.add(t);
+          return t;
+        }
+
+        /**
+         * @param value {@link #excludingDate} (Any dates, such as holidays, that should be excluded from the recurrence.)
+         */
+        public AppointmentRecurrenceTemplateComponent addExcludingDate(Date value) { //1
+          DateType t = new DateType();
+          t.setValue(value);
+          if (this.excludingDate == null)
+            this.excludingDate = new ArrayList<DateType>();
+          this.excludingDate.add(t);
+          return this;
+        }
+
+        /**
+         * @param value {@link #excludingDate} (Any dates, such as holidays, that should be excluded from the recurrence.)
+         */
+        public boolean hasExcludingDate(Date value) { 
+          if (this.excludingDate == null)
+            return false;
+          for (DateType v : this.excludingDate)
+            if (v.getValue().equals(value)) // date
+              return true;
+          return false;
+        }
+
+        /**
+         * @return {@link #excludingRecurrenceId} (Any dates, such as holidays, that should be excluded from the recurrence.)
+         */
+        public List<PositiveIntType> getExcludingRecurrenceId() { 
+          if (this.excludingRecurrenceId == null)
+            this.excludingRecurrenceId = new ArrayList<PositiveIntType>();
+          return this.excludingRecurrenceId;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public AppointmentRecurrenceTemplateComponent setExcludingRecurrenceId(List<PositiveIntType> theExcludingRecurrenceId) { 
+          this.excludingRecurrenceId = theExcludingRecurrenceId;
+          return this;
+        }
+
+        public boolean hasExcludingRecurrenceId() { 
+          if (this.excludingRecurrenceId == null)
+            return false;
+          for (PositiveIntType item : this.excludingRecurrenceId)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        /**
+         * @return {@link #excludingRecurrenceId} (Any dates, such as holidays, that should be excluded from the recurrence.)
+         */
+        public PositiveIntType addExcludingRecurrenceIdElement() {//2 
+          PositiveIntType t = new PositiveIntType();
+          if (this.excludingRecurrenceId == null)
+            this.excludingRecurrenceId = new ArrayList<PositiveIntType>();
+          this.excludingRecurrenceId.add(t);
+          return t;
+        }
+
+        /**
+         * @param value {@link #excludingRecurrenceId} (Any dates, such as holidays, that should be excluded from the recurrence.)
+         */
+        public AppointmentRecurrenceTemplateComponent addExcludingRecurrenceId(int value) { //1
+          PositiveIntType t = new PositiveIntType();
+          t.setValue(value);
+          if (this.excludingRecurrenceId == null)
+            this.excludingRecurrenceId = new ArrayList<PositiveIntType>();
+          this.excludingRecurrenceId.add(t);
+          return this;
+        }
+
+        /**
+         * @param value {@link #excludingRecurrenceId} (Any dates, such as holidays, that should be excluded from the recurrence.)
+         */
+        public boolean hasExcludingRecurrenceId(int value) { 
+          if (this.excludingRecurrenceId == null)
+            return false;
+          for (PositiveIntType v : this.excludingRecurrenceId)
+            if (v.getValue().equals(value)) // positiveInt
+              return true;
+          return false;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("timezone", "CodeableConcept", "The timezone of the recurring appointment occurrences.", 0, 1, timezone));
+          children.add(new Property("recurrenceType", "CodeableConcept", "How often the appointment series should recur.", 0, 1, recurrenceType));
+          children.add(new Property("lastOccurrenceDate", "date", "Recurring appointments will not occur after this date.", 0, 1, lastOccurrenceDate));
+          children.add(new Property("occurrenceCount", "positiveInt", "How many appointments are planned in the recurrence.", 0, 1, occurrenceCount));
+          children.add(new Property("occurrenceDate", "date", "The list of specific dates that will have appointments generated.", 0, java.lang.Integer.MAX_VALUE, occurrenceDate));
+          children.add(new Property("weeklyTemplate", "", "Information about weekly recurring appointments.", 0, 1, weeklyTemplate));
+          children.add(new Property("monthlyTemplate", "", "Information about monthly recurring appointments.", 0, 1, monthlyTemplate));
+          children.add(new Property("yearlyTemplate", "", "Information about yearly recurring appointments.", 0, 1, yearlyTemplate));
+          children.add(new Property("excludingDate", "date", "Any dates, such as holidays, that should be excluded from the recurrence.", 0, java.lang.Integer.MAX_VALUE, excludingDate));
+          children.add(new Property("excludingRecurrenceId", "positiveInt", "Any dates, such as holidays, that should be excluded from the recurrence.", 0, java.lang.Integer.MAX_VALUE, excludingRecurrenceId));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case -2076227591: /*timezone*/  return new Property("timezone", "CodeableConcept", "The timezone of the recurring appointment occurrences.", 0, 1, timezone);
+          case -381221238: /*recurrenceType*/  return new Property("recurrenceType", "CodeableConcept", "How often the appointment series should recur.", 0, 1, recurrenceType);
+          case -1262346923: /*lastOccurrenceDate*/  return new Property("lastOccurrenceDate", "date", "Recurring appointments will not occur after this date.", 0, 1, lastOccurrenceDate);
+          case 1834480062: /*occurrenceCount*/  return new Property("occurrenceCount", "positiveInt", "How many appointments are planned in the recurrence.", 0, 1, occurrenceCount);
+          case 1721761055: /*occurrenceDate*/  return new Property("occurrenceDate", "date", "The list of specific dates that will have appointments generated.", 0, java.lang.Integer.MAX_VALUE, occurrenceDate);
+          case 887136283: /*weeklyTemplate*/  return new Property("weeklyTemplate", "", "Information about weekly recurring appointments.", 0, 1, weeklyTemplate);
+          case 2142528423: /*monthlyTemplate*/  return new Property("monthlyTemplate", "", "Information about monthly recurring appointments.", 0, 1, monthlyTemplate);
+          case -334069468: /*yearlyTemplate*/  return new Property("yearlyTemplate", "", "Information about yearly recurring appointments.", 0, 1, yearlyTemplate);
+          case 596601957: /*excludingDate*/  return new Property("excludingDate", "date", "Any dates, such as holidays, that should be excluded from the recurrence.", 0, java.lang.Integer.MAX_VALUE, excludingDate);
+          case -797577694: /*excludingRecurrenceId*/  return new Property("excludingRecurrenceId", "positiveInt", "Any dates, such as holidays, that should be excluded from the recurrence.", 0, java.lang.Integer.MAX_VALUE, excludingRecurrenceId);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case -2076227591: /*timezone*/ return this.timezone == null ? new Base[0] : new Base[] {this.timezone}; // CodeableConcept
+        case -381221238: /*recurrenceType*/ return this.recurrenceType == null ? new Base[0] : new Base[] {this.recurrenceType}; // CodeableConcept
+        case -1262346923: /*lastOccurrenceDate*/ return this.lastOccurrenceDate == null ? new Base[0] : new Base[] {this.lastOccurrenceDate}; // DateType
+        case 1834480062: /*occurrenceCount*/ return this.occurrenceCount == null ? new Base[0] : new Base[] {this.occurrenceCount}; // PositiveIntType
+        case 1721761055: /*occurrenceDate*/ return this.occurrenceDate == null ? new Base[0] : this.occurrenceDate.toArray(new Base[this.occurrenceDate.size()]); // DateType
+        case 887136283: /*weeklyTemplate*/ return this.weeklyTemplate == null ? new Base[0] : new Base[] {this.weeklyTemplate}; // AppointmentRecurrenceTemplateWeeklyTemplateComponent
+        case 2142528423: /*monthlyTemplate*/ return this.monthlyTemplate == null ? new Base[0] : new Base[] {this.monthlyTemplate}; // AppointmentRecurrenceTemplateMonthlyTemplateComponent
+        case -334069468: /*yearlyTemplate*/ return this.yearlyTemplate == null ? new Base[0] : new Base[] {this.yearlyTemplate}; // AppointmentRecurrenceTemplateYearlyTemplateComponent
+        case 596601957: /*excludingDate*/ return this.excludingDate == null ? new Base[0] : this.excludingDate.toArray(new Base[this.excludingDate.size()]); // DateType
+        case -797577694: /*excludingRecurrenceId*/ return this.excludingRecurrenceId == null ? new Base[0] : this.excludingRecurrenceId.toArray(new Base[this.excludingRecurrenceId.size()]); // PositiveIntType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case -2076227591: // timezone
+          this.timezone = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -381221238: // recurrenceType
+          this.recurrenceType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -1262346923: // lastOccurrenceDate
+          this.lastOccurrenceDate = TypeConvertor.castToDate(value); // DateType
+          return value;
+        case 1834480062: // occurrenceCount
+          this.occurrenceCount = TypeConvertor.castToPositiveInt(value); // PositiveIntType
+          return value;
+        case 1721761055: // occurrenceDate
+          this.getOccurrenceDate().add(TypeConvertor.castToDate(value)); // DateType
+          return value;
+        case 887136283: // weeklyTemplate
+          this.weeklyTemplate = (AppointmentRecurrenceTemplateWeeklyTemplateComponent) value; // AppointmentRecurrenceTemplateWeeklyTemplateComponent
+          return value;
+        case 2142528423: // monthlyTemplate
+          this.monthlyTemplate = (AppointmentRecurrenceTemplateMonthlyTemplateComponent) value; // AppointmentRecurrenceTemplateMonthlyTemplateComponent
+          return value;
+        case -334069468: // yearlyTemplate
+          this.yearlyTemplate = (AppointmentRecurrenceTemplateYearlyTemplateComponent) value; // AppointmentRecurrenceTemplateYearlyTemplateComponent
+          return value;
+        case 596601957: // excludingDate
+          this.getExcludingDate().add(TypeConvertor.castToDate(value)); // DateType
+          return value;
+        case -797577694: // excludingRecurrenceId
+          this.getExcludingRecurrenceId().add(TypeConvertor.castToPositiveInt(value)); // PositiveIntType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("timezone")) {
+          this.timezone = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("recurrenceType")) {
+          this.recurrenceType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("lastOccurrenceDate")) {
+          this.lastOccurrenceDate = TypeConvertor.castToDate(value); // DateType
+        } else if (name.equals("occurrenceCount")) {
+          this.occurrenceCount = TypeConvertor.castToPositiveInt(value); // PositiveIntType
+        } else if (name.equals("occurrenceDate")) {
+          this.getOccurrenceDate().add(TypeConvertor.castToDate(value));
+        } else if (name.equals("weeklyTemplate")) {
+          this.weeklyTemplate = (AppointmentRecurrenceTemplateWeeklyTemplateComponent) value; // AppointmentRecurrenceTemplateWeeklyTemplateComponent
+        } else if (name.equals("monthlyTemplate")) {
+          this.monthlyTemplate = (AppointmentRecurrenceTemplateMonthlyTemplateComponent) value; // AppointmentRecurrenceTemplateMonthlyTemplateComponent
+        } else if (name.equals("yearlyTemplate")) {
+          this.yearlyTemplate = (AppointmentRecurrenceTemplateYearlyTemplateComponent) value; // AppointmentRecurrenceTemplateYearlyTemplateComponent
+        } else if (name.equals("excludingDate")) {
+          this.getExcludingDate().add(TypeConvertor.castToDate(value));
+        } else if (name.equals("excludingRecurrenceId")) {
+          this.getExcludingRecurrenceId().add(TypeConvertor.castToPositiveInt(value));
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -2076227591:  return getTimezone();
+        case -381221238:  return getRecurrenceType();
+        case -1262346923:  return getLastOccurrenceDateElement();
+        case 1834480062:  return getOccurrenceCountElement();
+        case 1721761055:  return addOccurrenceDateElement();
+        case 887136283:  return getWeeklyTemplate();
+        case 2142528423:  return getMonthlyTemplate();
+        case -334069468:  return getYearlyTemplate();
+        case 596601957:  return addExcludingDateElement();
+        case -797577694:  return addExcludingRecurrenceIdElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -2076227591: /*timezone*/ return new String[] {"CodeableConcept"};
+        case -381221238: /*recurrenceType*/ return new String[] {"CodeableConcept"};
+        case -1262346923: /*lastOccurrenceDate*/ return new String[] {"date"};
+        case 1834480062: /*occurrenceCount*/ return new String[] {"positiveInt"};
+        case 1721761055: /*occurrenceDate*/ return new String[] {"date"};
+        case 887136283: /*weeklyTemplate*/ return new String[] {};
+        case 2142528423: /*monthlyTemplate*/ return new String[] {};
+        case -334069468: /*yearlyTemplate*/ return new String[] {};
+        case 596601957: /*excludingDate*/ return new String[] {"date"};
+        case -797577694: /*excludingRecurrenceId*/ return new String[] {"positiveInt"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("timezone")) {
+          this.timezone = new CodeableConcept();
+          return this.timezone;
+        }
+        else if (name.equals("recurrenceType")) {
+          this.recurrenceType = new CodeableConcept();
+          return this.recurrenceType;
+        }
+        else if (name.equals("lastOccurrenceDate")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Appointment.recurrenceTemplate.lastOccurrenceDate");
+        }
+        else if (name.equals("occurrenceCount")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Appointment.recurrenceTemplate.occurrenceCount");
+        }
+        else if (name.equals("occurrenceDate")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Appointment.recurrenceTemplate.occurrenceDate");
+        }
+        else if (name.equals("weeklyTemplate")) {
+          this.weeklyTemplate = new AppointmentRecurrenceTemplateWeeklyTemplateComponent();
+          return this.weeklyTemplate;
+        }
+        else if (name.equals("monthlyTemplate")) {
+          this.monthlyTemplate = new AppointmentRecurrenceTemplateMonthlyTemplateComponent();
+          return this.monthlyTemplate;
+        }
+        else if (name.equals("yearlyTemplate")) {
+          this.yearlyTemplate = new AppointmentRecurrenceTemplateYearlyTemplateComponent();
+          return this.yearlyTemplate;
+        }
+        else if (name.equals("excludingDate")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Appointment.recurrenceTemplate.excludingDate");
+        }
+        else if (name.equals("excludingRecurrenceId")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Appointment.recurrenceTemplate.excludingRecurrenceId");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public AppointmentRecurrenceTemplateComponent copy() {
+        AppointmentRecurrenceTemplateComponent dst = new AppointmentRecurrenceTemplateComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AppointmentRecurrenceTemplateComponent dst) {
+        super.copyValues(dst);
+        dst.timezone = timezone == null ? null : timezone.copy();
+        dst.recurrenceType = recurrenceType == null ? null : recurrenceType.copy();
+        dst.lastOccurrenceDate = lastOccurrenceDate == null ? null : lastOccurrenceDate.copy();
+        dst.occurrenceCount = occurrenceCount == null ? null : occurrenceCount.copy();
+        if (occurrenceDate != null) {
+          dst.occurrenceDate = new ArrayList<DateType>();
+          for (DateType i : occurrenceDate)
+            dst.occurrenceDate.add(i.copy());
+        };
+        dst.weeklyTemplate = weeklyTemplate == null ? null : weeklyTemplate.copy();
+        dst.monthlyTemplate = monthlyTemplate == null ? null : monthlyTemplate.copy();
+        dst.yearlyTemplate = yearlyTemplate == null ? null : yearlyTemplate.copy();
+        if (excludingDate != null) {
+          dst.excludingDate = new ArrayList<DateType>();
+          for (DateType i : excludingDate)
+            dst.excludingDate.add(i.copy());
+        };
+        if (excludingRecurrenceId != null) {
+          dst.excludingRecurrenceId = new ArrayList<PositiveIntType>();
+          for (PositiveIntType i : excludingRecurrenceId)
+            dst.excludingRecurrenceId.add(i.copy());
+        };
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof AppointmentRecurrenceTemplateComponent))
+          return false;
+        AppointmentRecurrenceTemplateComponent o = (AppointmentRecurrenceTemplateComponent) other_;
+        return compareDeep(timezone, o.timezone, true) && compareDeep(recurrenceType, o.recurrenceType, true)
+           && compareDeep(lastOccurrenceDate, o.lastOccurrenceDate, true) && compareDeep(occurrenceCount, o.occurrenceCount, true)
+           && compareDeep(occurrenceDate, o.occurrenceDate, true) && compareDeep(weeklyTemplate, o.weeklyTemplate, true)
+           && compareDeep(monthlyTemplate, o.monthlyTemplate, true) && compareDeep(yearlyTemplate, o.yearlyTemplate, true)
+           && compareDeep(excludingDate, o.excludingDate, true) && compareDeep(excludingRecurrenceId, o.excludingRecurrenceId, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof AppointmentRecurrenceTemplateComponent))
+          return false;
+        AppointmentRecurrenceTemplateComponent o = (AppointmentRecurrenceTemplateComponent) other_;
+        return compareValues(lastOccurrenceDate, o.lastOccurrenceDate, true) && compareValues(occurrenceCount, o.occurrenceCount, true)
+           && compareValues(occurrenceDate, o.occurrenceDate, true) && compareValues(excludingDate, o.excludingDate, true)
+           && compareValues(excludingRecurrenceId, o.excludingRecurrenceId, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(timezone, recurrenceType, lastOccurrenceDate
+          , occurrenceCount, occurrenceDate, weeklyTemplate, monthlyTemplate, yearlyTemplate
+          , excludingDate, excludingRecurrenceId);
+      }
+
+  public String fhirType() {
+    return "Appointment.recurrenceTemplate";
+
+  }
+
+  }
+
+    @Block()
+    public static class AppointmentRecurrenceTemplateWeeklyTemplateComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Indicates that recurring appointments should occur on Mondays.
+         */
+        @Child(name = "monday", type = {BooleanType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Recurs on Mondays", formalDefinition="Indicates that recurring appointments should occur on Mondays." )
+        protected BooleanType monday;
+
+        /**
+         * Indicates that recurring appointments should occur on Tuesdays.
+         */
+        @Child(name = "tuesday", type = {BooleanType.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Recurs on Tuesday", formalDefinition="Indicates that recurring appointments should occur on Tuesdays." )
+        protected BooleanType tuesday;
+
+        /**
+         * Indicates that recurring appointments should occur on Wednesdays.
+         */
+        @Child(name = "wednesday", type = {BooleanType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Recurs on Wednesday", formalDefinition="Indicates that recurring appointments should occur on Wednesdays." )
+        protected BooleanType wednesday;
+
+        /**
+         * Indicates that recurring appointments should occur on Thursdays.
+         */
+        @Child(name = "thursday", type = {BooleanType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Recurs on Thursday", formalDefinition="Indicates that recurring appointments should occur on Thursdays." )
+        protected BooleanType thursday;
+
+        /**
+         * Indicates that recurring appointments should occur on Fridays.
+         */
+        @Child(name = "friday", type = {BooleanType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Recurs on Friday", formalDefinition="Indicates that recurring appointments should occur on Fridays." )
+        protected BooleanType friday;
+
+        /**
+         * Indicates that recurring appointments should occur on Saturdays.
+         */
+        @Child(name = "saturday", type = {BooleanType.class}, order=6, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Recurs on Saturday", formalDefinition="Indicates that recurring appointments should occur on Saturdays." )
+        protected BooleanType saturday;
+
+        /**
+         * Indicates that recurring appointments should occur on Sundays.
+         */
+        @Child(name = "sunday", type = {BooleanType.class}, order=7, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Recurs on Sunday", formalDefinition="Indicates that recurring appointments should occur on Sundays." )
+        protected BooleanType sunday;
+
+        /**
+         * The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.
+         */
+        @Child(name = "weekInterval", type = {PositiveIntType.class}, order=8, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Recurs every nth week", formalDefinition="The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.\r\re.g. For recurring every second week this interval would be 2, or every third week the interval would be 3." )
+        protected PositiveIntType weekInterval;
+
+        private static final long serialVersionUID = 588795188L;
+
+    /**
+     * Constructor
+     */
+      public AppointmentRecurrenceTemplateWeeklyTemplateComponent() {
+        super();
+      }
+
+        /**
+         * @return {@link #monday} (Indicates that recurring appointments should occur on Mondays.). This is the underlying object with id, value and extensions. The accessor "getMonday" gives direct access to the value
+         */
+        public BooleanType getMondayElement() { 
+          if (this.monday == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AppointmentRecurrenceTemplateWeeklyTemplateComponent.monday");
+            else if (Configuration.doAutoCreate())
+              this.monday = new BooleanType(); // bb
+          return this.monday;
+        }
+
+        public boolean hasMondayElement() { 
+          return this.monday != null && !this.monday.isEmpty();
+        }
+
+        public boolean hasMonday() { 
+          return this.monday != null && !this.monday.isEmpty();
+        }
+
+        /**
+         * @param value {@link #monday} (Indicates that recurring appointments should occur on Mondays.). This is the underlying object with id, value and extensions. The accessor "getMonday" gives direct access to the value
+         */
+        public AppointmentRecurrenceTemplateWeeklyTemplateComponent setMondayElement(BooleanType value) { 
+          this.monday = value;
+          return this;
+        }
+
+        /**
+         * @return Indicates that recurring appointments should occur on Mondays.
+         */
+        public boolean getMonday() { 
+          return this.monday == null || this.monday.isEmpty() ? false : this.monday.getValue();
+        }
+
+        /**
+         * @param value Indicates that recurring appointments should occur on Mondays.
+         */
+        public AppointmentRecurrenceTemplateWeeklyTemplateComponent setMonday(boolean value) { 
+            if (this.monday == null)
+              this.monday = new BooleanType();
+            this.monday.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #tuesday} (Indicates that recurring appointments should occur on Tuesdays.). This is the underlying object with id, value and extensions. The accessor "getTuesday" gives direct access to the value
+         */
+        public BooleanType getTuesdayElement() { 
+          if (this.tuesday == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AppointmentRecurrenceTemplateWeeklyTemplateComponent.tuesday");
+            else if (Configuration.doAutoCreate())
+              this.tuesday = new BooleanType(); // bb
+          return this.tuesday;
+        }
+
+        public boolean hasTuesdayElement() { 
+          return this.tuesday != null && !this.tuesday.isEmpty();
+        }
+
+        public boolean hasTuesday() { 
+          return this.tuesday != null && !this.tuesday.isEmpty();
+        }
+
+        /**
+         * @param value {@link #tuesday} (Indicates that recurring appointments should occur on Tuesdays.). This is the underlying object with id, value and extensions. The accessor "getTuesday" gives direct access to the value
+         */
+        public AppointmentRecurrenceTemplateWeeklyTemplateComponent setTuesdayElement(BooleanType value) { 
+          this.tuesday = value;
+          return this;
+        }
+
+        /**
+         * @return Indicates that recurring appointments should occur on Tuesdays.
+         */
+        public boolean getTuesday() { 
+          return this.tuesday == null || this.tuesday.isEmpty() ? false : this.tuesday.getValue();
+        }
+
+        /**
+         * @param value Indicates that recurring appointments should occur on Tuesdays.
+         */
+        public AppointmentRecurrenceTemplateWeeklyTemplateComponent setTuesday(boolean value) { 
+            if (this.tuesday == null)
+              this.tuesday = new BooleanType();
+            this.tuesday.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #wednesday} (Indicates that recurring appointments should occur on Wednesdays.). This is the underlying object with id, value and extensions. The accessor "getWednesday" gives direct access to the value
+         */
+        public BooleanType getWednesdayElement() { 
+          if (this.wednesday == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AppointmentRecurrenceTemplateWeeklyTemplateComponent.wednesday");
+            else if (Configuration.doAutoCreate())
+              this.wednesday = new BooleanType(); // bb
+          return this.wednesday;
+        }
+
+        public boolean hasWednesdayElement() { 
+          return this.wednesday != null && !this.wednesday.isEmpty();
+        }
+
+        public boolean hasWednesday() { 
+          return this.wednesday != null && !this.wednesday.isEmpty();
+        }
+
+        /**
+         * @param value {@link #wednesday} (Indicates that recurring appointments should occur on Wednesdays.). This is the underlying object with id, value and extensions. The accessor "getWednesday" gives direct access to the value
+         */
+        public AppointmentRecurrenceTemplateWeeklyTemplateComponent setWednesdayElement(BooleanType value) { 
+          this.wednesday = value;
+          return this;
+        }
+
+        /**
+         * @return Indicates that recurring appointments should occur on Wednesdays.
+         */
+        public boolean getWednesday() { 
+          return this.wednesday == null || this.wednesday.isEmpty() ? false : this.wednesday.getValue();
+        }
+
+        /**
+         * @param value Indicates that recurring appointments should occur on Wednesdays.
+         */
+        public AppointmentRecurrenceTemplateWeeklyTemplateComponent setWednesday(boolean value) { 
+            if (this.wednesday == null)
+              this.wednesday = new BooleanType();
+            this.wednesday.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #thursday} (Indicates that recurring appointments should occur on Thursdays.). This is the underlying object with id, value and extensions. The accessor "getThursday" gives direct access to the value
+         */
+        public BooleanType getThursdayElement() { 
+          if (this.thursday == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AppointmentRecurrenceTemplateWeeklyTemplateComponent.thursday");
+            else if (Configuration.doAutoCreate())
+              this.thursday = new BooleanType(); // bb
+          return this.thursday;
+        }
+
+        public boolean hasThursdayElement() { 
+          return this.thursday != null && !this.thursday.isEmpty();
+        }
+
+        public boolean hasThursday() { 
+          return this.thursday != null && !this.thursday.isEmpty();
+        }
+
+        /**
+         * @param value {@link #thursday} (Indicates that recurring appointments should occur on Thursdays.). This is the underlying object with id, value and extensions. The accessor "getThursday" gives direct access to the value
+         */
+        public AppointmentRecurrenceTemplateWeeklyTemplateComponent setThursdayElement(BooleanType value) { 
+          this.thursday = value;
+          return this;
+        }
+
+        /**
+         * @return Indicates that recurring appointments should occur on Thursdays.
+         */
+        public boolean getThursday() { 
+          return this.thursday == null || this.thursday.isEmpty() ? false : this.thursday.getValue();
+        }
+
+        /**
+         * @param value Indicates that recurring appointments should occur on Thursdays.
+         */
+        public AppointmentRecurrenceTemplateWeeklyTemplateComponent setThursday(boolean value) { 
+            if (this.thursday == null)
+              this.thursday = new BooleanType();
+            this.thursday.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #friday} (Indicates that recurring appointments should occur on Fridays.). This is the underlying object with id, value and extensions. The accessor "getFriday" gives direct access to the value
+         */
+        public BooleanType getFridayElement() { 
+          if (this.friday == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AppointmentRecurrenceTemplateWeeklyTemplateComponent.friday");
+            else if (Configuration.doAutoCreate())
+              this.friday = new BooleanType(); // bb
+          return this.friday;
+        }
+
+        public boolean hasFridayElement() { 
+          return this.friday != null && !this.friday.isEmpty();
+        }
+
+        public boolean hasFriday() { 
+          return this.friday != null && !this.friday.isEmpty();
+        }
+
+        /**
+         * @param value {@link #friday} (Indicates that recurring appointments should occur on Fridays.). This is the underlying object with id, value and extensions. The accessor "getFriday" gives direct access to the value
+         */
+        public AppointmentRecurrenceTemplateWeeklyTemplateComponent setFridayElement(BooleanType value) { 
+          this.friday = value;
+          return this;
+        }
+
+        /**
+         * @return Indicates that recurring appointments should occur on Fridays.
+         */
+        public boolean getFriday() { 
+          return this.friday == null || this.friday.isEmpty() ? false : this.friday.getValue();
+        }
+
+        /**
+         * @param value Indicates that recurring appointments should occur on Fridays.
+         */
+        public AppointmentRecurrenceTemplateWeeklyTemplateComponent setFriday(boolean value) { 
+            if (this.friday == null)
+              this.friday = new BooleanType();
+            this.friday.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #saturday} (Indicates that recurring appointments should occur on Saturdays.). This is the underlying object with id, value and extensions. The accessor "getSaturday" gives direct access to the value
+         */
+        public BooleanType getSaturdayElement() { 
+          if (this.saturday == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AppointmentRecurrenceTemplateWeeklyTemplateComponent.saturday");
+            else if (Configuration.doAutoCreate())
+              this.saturday = new BooleanType(); // bb
+          return this.saturday;
+        }
+
+        public boolean hasSaturdayElement() { 
+          return this.saturday != null && !this.saturday.isEmpty();
+        }
+
+        public boolean hasSaturday() { 
+          return this.saturday != null && !this.saturday.isEmpty();
+        }
+
+        /**
+         * @param value {@link #saturday} (Indicates that recurring appointments should occur on Saturdays.). This is the underlying object with id, value and extensions. The accessor "getSaturday" gives direct access to the value
+         */
+        public AppointmentRecurrenceTemplateWeeklyTemplateComponent setSaturdayElement(BooleanType value) { 
+          this.saturday = value;
+          return this;
+        }
+
+        /**
+         * @return Indicates that recurring appointments should occur on Saturdays.
+         */
+        public boolean getSaturday() { 
+          return this.saturday == null || this.saturday.isEmpty() ? false : this.saturday.getValue();
+        }
+
+        /**
+         * @param value Indicates that recurring appointments should occur on Saturdays.
+         */
+        public AppointmentRecurrenceTemplateWeeklyTemplateComponent setSaturday(boolean value) { 
+            if (this.saturday == null)
+              this.saturday = new BooleanType();
+            this.saturday.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #sunday} (Indicates that recurring appointments should occur on Sundays.). This is the underlying object with id, value and extensions. The accessor "getSunday" gives direct access to the value
+         */
+        public BooleanType getSundayElement() { 
+          if (this.sunday == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AppointmentRecurrenceTemplateWeeklyTemplateComponent.sunday");
+            else if (Configuration.doAutoCreate())
+              this.sunday = new BooleanType(); // bb
+          return this.sunday;
+        }
+
+        public boolean hasSundayElement() { 
+          return this.sunday != null && !this.sunday.isEmpty();
+        }
+
+        public boolean hasSunday() { 
+          return this.sunday != null && !this.sunday.isEmpty();
+        }
+
+        /**
+         * @param value {@link #sunday} (Indicates that recurring appointments should occur on Sundays.). This is the underlying object with id, value and extensions. The accessor "getSunday" gives direct access to the value
+         */
+        public AppointmentRecurrenceTemplateWeeklyTemplateComponent setSundayElement(BooleanType value) { 
+          this.sunday = value;
+          return this;
+        }
+
+        /**
+         * @return Indicates that recurring appointments should occur on Sundays.
+         */
+        public boolean getSunday() { 
+          return this.sunday == null || this.sunday.isEmpty() ? false : this.sunday.getValue();
+        }
+
+        /**
+         * @param value Indicates that recurring appointments should occur on Sundays.
+         */
+        public AppointmentRecurrenceTemplateWeeklyTemplateComponent setSunday(boolean value) { 
+            if (this.sunday == null)
+              this.sunday = new BooleanType();
+            this.sunday.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #weekInterval} (The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.). This is the underlying object with id, value and extensions. The accessor "getWeekInterval" gives direct access to the value
+         */
+        public PositiveIntType getWeekIntervalElement() { 
+          if (this.weekInterval == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AppointmentRecurrenceTemplateWeeklyTemplateComponent.weekInterval");
+            else if (Configuration.doAutoCreate())
+              this.weekInterval = new PositiveIntType(); // bb
+          return this.weekInterval;
+        }
+
+        public boolean hasWeekIntervalElement() { 
+          return this.weekInterval != null && !this.weekInterval.isEmpty();
+        }
+
+        public boolean hasWeekInterval() { 
+          return this.weekInterval != null && !this.weekInterval.isEmpty();
+        }
+
+        /**
+         * @param value {@link #weekInterval} (The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.). This is the underlying object with id, value and extensions. The accessor "getWeekInterval" gives direct access to the value
+         */
+        public AppointmentRecurrenceTemplateWeeklyTemplateComponent setWeekIntervalElement(PositiveIntType value) { 
+          this.weekInterval = value;
+          return this;
+        }
+
+        /**
+         * @return The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.
+         */
+        public int getWeekInterval() { 
+          return this.weekInterval == null || this.weekInterval.isEmpty() ? 0 : this.weekInterval.getValue();
+        }
+
+        /**
+         * @param value The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.
+         */
+        public AppointmentRecurrenceTemplateWeeklyTemplateComponent setWeekInterval(int value) { 
+            if (this.weekInterval == null)
+              this.weekInterval = new PositiveIntType();
+            this.weekInterval.setValue(value);
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("monday", "boolean", "Indicates that recurring appointments should occur on Mondays.", 0, 1, monday));
+          children.add(new Property("tuesday", "boolean", "Indicates that recurring appointments should occur on Tuesdays.", 0, 1, tuesday));
+          children.add(new Property("wednesday", "boolean", "Indicates that recurring appointments should occur on Wednesdays.", 0, 1, wednesday));
+          children.add(new Property("thursday", "boolean", "Indicates that recurring appointments should occur on Thursdays.", 0, 1, thursday));
+          children.add(new Property("friday", "boolean", "Indicates that recurring appointments should occur on Fridays.", 0, 1, friday));
+          children.add(new Property("saturday", "boolean", "Indicates that recurring appointments should occur on Saturdays.", 0, 1, saturday));
+          children.add(new Property("sunday", "boolean", "Indicates that recurring appointments should occur on Sundays.", 0, 1, sunday));
+          children.add(new Property("weekInterval", "positiveInt", "The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.\r\re.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.", 0, 1, weekInterval));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case -1068502768: /*monday*/  return new Property("monday", "boolean", "Indicates that recurring appointments should occur on Mondays.", 0, 1, monday);
+          case -977343923: /*tuesday*/  return new Property("tuesday", "boolean", "Indicates that recurring appointments should occur on Tuesdays.", 0, 1, tuesday);
+          case 1393530710: /*wednesday*/  return new Property("wednesday", "boolean", "Indicates that recurring appointments should occur on Wednesdays.", 0, 1, wednesday);
+          case 1572055514: /*thursday*/  return new Property("thursday", "boolean", "Indicates that recurring appointments should occur on Thursdays.", 0, 1, thursday);
+          case -1266285217: /*friday*/  return new Property("friday", "boolean", "Indicates that recurring appointments should occur on Fridays.", 0, 1, friday);
+          case -2114201671: /*saturday*/  return new Property("saturday", "boolean", "Indicates that recurring appointments should occur on Saturdays.", 0, 1, saturday);
+          case -891186736: /*sunday*/  return new Property("sunday", "boolean", "Indicates that recurring appointments should occur on Sundays.", 0, 1, sunday);
+          case -784550695: /*weekInterval*/  return new Property("weekInterval", "positiveInt", "The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.\r\re.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.", 0, 1, weekInterval);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case -1068502768: /*monday*/ return this.monday == null ? new Base[0] : new Base[] {this.monday}; // BooleanType
+        case -977343923: /*tuesday*/ return this.tuesday == null ? new Base[0] : new Base[] {this.tuesday}; // BooleanType
+        case 1393530710: /*wednesday*/ return this.wednesday == null ? new Base[0] : new Base[] {this.wednesday}; // BooleanType
+        case 1572055514: /*thursday*/ return this.thursday == null ? new Base[0] : new Base[] {this.thursday}; // BooleanType
+        case -1266285217: /*friday*/ return this.friday == null ? new Base[0] : new Base[] {this.friday}; // BooleanType
+        case -2114201671: /*saturday*/ return this.saturday == null ? new Base[0] : new Base[] {this.saturday}; // BooleanType
+        case -891186736: /*sunday*/ return this.sunday == null ? new Base[0] : new Base[] {this.sunday}; // BooleanType
+        case -784550695: /*weekInterval*/ return this.weekInterval == null ? new Base[0] : new Base[] {this.weekInterval}; // PositiveIntType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case -1068502768: // monday
+          this.monday = TypeConvertor.castToBoolean(value); // BooleanType
+          return value;
+        case -977343923: // tuesday
+          this.tuesday = TypeConvertor.castToBoolean(value); // BooleanType
+          return value;
+        case 1393530710: // wednesday
+          this.wednesday = TypeConvertor.castToBoolean(value); // BooleanType
+          return value;
+        case 1572055514: // thursday
+          this.thursday = TypeConvertor.castToBoolean(value); // BooleanType
+          return value;
+        case -1266285217: // friday
+          this.friday = TypeConvertor.castToBoolean(value); // BooleanType
+          return value;
+        case -2114201671: // saturday
+          this.saturday = TypeConvertor.castToBoolean(value); // BooleanType
+          return value;
+        case -891186736: // sunday
+          this.sunday = TypeConvertor.castToBoolean(value); // BooleanType
+          return value;
+        case -784550695: // weekInterval
+          this.weekInterval = TypeConvertor.castToPositiveInt(value); // PositiveIntType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("monday")) {
+          this.monday = TypeConvertor.castToBoolean(value); // BooleanType
+        } else if (name.equals("tuesday")) {
+          this.tuesday = TypeConvertor.castToBoolean(value); // BooleanType
+        } else if (name.equals("wednesday")) {
+          this.wednesday = TypeConvertor.castToBoolean(value); // BooleanType
+        } else if (name.equals("thursday")) {
+          this.thursday = TypeConvertor.castToBoolean(value); // BooleanType
+        } else if (name.equals("friday")) {
+          this.friday = TypeConvertor.castToBoolean(value); // BooleanType
+        } else if (name.equals("saturday")) {
+          this.saturday = TypeConvertor.castToBoolean(value); // BooleanType
+        } else if (name.equals("sunday")) {
+          this.sunday = TypeConvertor.castToBoolean(value); // BooleanType
+        } else if (name.equals("weekInterval")) {
+          this.weekInterval = TypeConvertor.castToPositiveInt(value); // PositiveIntType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -1068502768:  return getMondayElement();
+        case -977343923:  return getTuesdayElement();
+        case 1393530710:  return getWednesdayElement();
+        case 1572055514:  return getThursdayElement();
+        case -1266285217:  return getFridayElement();
+        case -2114201671:  return getSaturdayElement();
+        case -891186736:  return getSundayElement();
+        case -784550695:  return getWeekIntervalElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -1068502768: /*monday*/ return new String[] {"boolean"};
+        case -977343923: /*tuesday*/ return new String[] {"boolean"};
+        case 1393530710: /*wednesday*/ return new String[] {"boolean"};
+        case 1572055514: /*thursday*/ return new String[] {"boolean"};
+        case -1266285217: /*friday*/ return new String[] {"boolean"};
+        case -2114201671: /*saturday*/ return new String[] {"boolean"};
+        case -891186736: /*sunday*/ return new String[] {"boolean"};
+        case -784550695: /*weekInterval*/ return new String[] {"positiveInt"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("monday")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Appointment.recurrenceTemplate.weeklyTemplate.monday");
+        }
+        else if (name.equals("tuesday")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Appointment.recurrenceTemplate.weeklyTemplate.tuesday");
+        }
+        else if (name.equals("wednesday")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Appointment.recurrenceTemplate.weeklyTemplate.wednesday");
+        }
+        else if (name.equals("thursday")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Appointment.recurrenceTemplate.weeklyTemplate.thursday");
+        }
+        else if (name.equals("friday")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Appointment.recurrenceTemplate.weeklyTemplate.friday");
+        }
+        else if (name.equals("saturday")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Appointment.recurrenceTemplate.weeklyTemplate.saturday");
+        }
+        else if (name.equals("sunday")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Appointment.recurrenceTemplate.weeklyTemplate.sunday");
+        }
+        else if (name.equals("weekInterval")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Appointment.recurrenceTemplate.weeklyTemplate.weekInterval");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public AppointmentRecurrenceTemplateWeeklyTemplateComponent copy() {
+        AppointmentRecurrenceTemplateWeeklyTemplateComponent dst = new AppointmentRecurrenceTemplateWeeklyTemplateComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AppointmentRecurrenceTemplateWeeklyTemplateComponent dst) {
+        super.copyValues(dst);
+        dst.monday = monday == null ? null : monday.copy();
+        dst.tuesday = tuesday == null ? null : tuesday.copy();
+        dst.wednesday = wednesday == null ? null : wednesday.copy();
+        dst.thursday = thursday == null ? null : thursday.copy();
+        dst.friday = friday == null ? null : friday.copy();
+        dst.saturday = saturday == null ? null : saturday.copy();
+        dst.sunday = sunday == null ? null : sunday.copy();
+        dst.weekInterval = weekInterval == null ? null : weekInterval.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof AppointmentRecurrenceTemplateWeeklyTemplateComponent))
+          return false;
+        AppointmentRecurrenceTemplateWeeklyTemplateComponent o = (AppointmentRecurrenceTemplateWeeklyTemplateComponent) other_;
+        return compareDeep(monday, o.monday, true) && compareDeep(tuesday, o.tuesday, true) && compareDeep(wednesday, o.wednesday, true)
+           && compareDeep(thursday, o.thursday, true) && compareDeep(friday, o.friday, true) && compareDeep(saturday, o.saturday, true)
+           && compareDeep(sunday, o.sunday, true) && compareDeep(weekInterval, o.weekInterval, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof AppointmentRecurrenceTemplateWeeklyTemplateComponent))
+          return false;
+        AppointmentRecurrenceTemplateWeeklyTemplateComponent o = (AppointmentRecurrenceTemplateWeeklyTemplateComponent) other_;
+        return compareValues(monday, o.monday, true) && compareValues(tuesday, o.tuesday, true) && compareValues(wednesday, o.wednesday, true)
+           && compareValues(thursday, o.thursday, true) && compareValues(friday, o.friday, true) && compareValues(saturday, o.saturday, true)
+           && compareValues(sunday, o.sunday, true) && compareValues(weekInterval, o.weekInterval, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(monday, tuesday, wednesday
+          , thursday, friday, saturday, sunday, weekInterval);
+      }
+
+  public String fhirType() {
+    return "Appointment.recurrenceTemplate.weeklyTemplate";
+
+  }
+
+  }
+
+    @Block()
+    public static class AppointmentRecurrenceTemplateMonthlyTemplateComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Indicates that appointments in the series of recurring appointments should occur on a specific day of the month.
+         */
+        @Child(name = "dayOfMonth", type = {PositiveIntType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Recurs on a specific day of the month", formalDefinition="Indicates that appointments in the series of recurring appointments should occur on a specific day of the month." )
+        protected PositiveIntType dayOfMonth;
+
+        /**
+         * Indicates which week within a month the appointments in the series of recurring appointments should occur on.
+         */
+        @Child(name = "nthWeekOfMonth", type = {Coding.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Indicates which week of the month the appointment should occur", formalDefinition="Indicates which week within a month the appointments in the series of recurring appointments should occur on." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/week-of-month")
+        protected Coding nthWeekOfMonth;
+
+        /**
+         * Indicates which day of the week the recurring appointments should occur each nth week.
+         */
+        @Child(name = "dayOfWeek", type = {Coding.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Indicates which day of the week the appointment should occur", formalDefinition="Indicates which day of the week the recurring appointments should occur each nth week." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/days-of-week")
+        protected Coding dayOfWeek;
+
+        /**
+         * Indicates that recurring appointments should occur every nth month.
+         */
+        @Child(name = "monthInterval", type = {PositiveIntType.class}, order=4, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Recurs every nth month", formalDefinition="Indicates that recurring appointments should occur every nth month." )
+        protected PositiveIntType monthInterval;
+
+        private static final long serialVersionUID = -1234046272L;
+
+    /**
+     * Constructor
+     */
+      public AppointmentRecurrenceTemplateMonthlyTemplateComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public AppointmentRecurrenceTemplateMonthlyTemplateComponent(int monthInterval) {
+        super();
+        this.setMonthInterval(monthInterval);
+      }
+
+        /**
+         * @return {@link #dayOfMonth} (Indicates that appointments in the series of recurring appointments should occur on a specific day of the month.). This is the underlying object with id, value and extensions. The accessor "getDayOfMonth" gives direct access to the value
+         */
+        public PositiveIntType getDayOfMonthElement() { 
+          if (this.dayOfMonth == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AppointmentRecurrenceTemplateMonthlyTemplateComponent.dayOfMonth");
+            else if (Configuration.doAutoCreate())
+              this.dayOfMonth = new PositiveIntType(); // bb
+          return this.dayOfMonth;
+        }
+
+        public boolean hasDayOfMonthElement() { 
+          return this.dayOfMonth != null && !this.dayOfMonth.isEmpty();
+        }
+
+        public boolean hasDayOfMonth() { 
+          return this.dayOfMonth != null && !this.dayOfMonth.isEmpty();
+        }
+
+        /**
+         * @param value {@link #dayOfMonth} (Indicates that appointments in the series of recurring appointments should occur on a specific day of the month.). This is the underlying object with id, value and extensions. The accessor "getDayOfMonth" gives direct access to the value
+         */
+        public AppointmentRecurrenceTemplateMonthlyTemplateComponent setDayOfMonthElement(PositiveIntType value) { 
+          this.dayOfMonth = value;
+          return this;
+        }
+
+        /**
+         * @return Indicates that appointments in the series of recurring appointments should occur on a specific day of the month.
+         */
+        public int getDayOfMonth() { 
+          return this.dayOfMonth == null || this.dayOfMonth.isEmpty() ? 0 : this.dayOfMonth.getValue();
+        }
+
+        /**
+         * @param value Indicates that appointments in the series of recurring appointments should occur on a specific day of the month.
+         */
+        public AppointmentRecurrenceTemplateMonthlyTemplateComponent setDayOfMonth(int value) { 
+            if (this.dayOfMonth == null)
+              this.dayOfMonth = new PositiveIntType();
+            this.dayOfMonth.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #nthWeekOfMonth} (Indicates which week within a month the appointments in the series of recurring appointments should occur on.)
+         */
+        public Coding getNthWeekOfMonth() { 
+          if (this.nthWeekOfMonth == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AppointmentRecurrenceTemplateMonthlyTemplateComponent.nthWeekOfMonth");
+            else if (Configuration.doAutoCreate())
+              this.nthWeekOfMonth = new Coding(); // cc
+          return this.nthWeekOfMonth;
+        }
+
+        public boolean hasNthWeekOfMonth() { 
+          return this.nthWeekOfMonth != null && !this.nthWeekOfMonth.isEmpty();
+        }
+
+        /**
+         * @param value {@link #nthWeekOfMonth} (Indicates which week within a month the appointments in the series of recurring appointments should occur on.)
+         */
+        public AppointmentRecurrenceTemplateMonthlyTemplateComponent setNthWeekOfMonth(Coding value) { 
+          this.nthWeekOfMonth = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #dayOfWeek} (Indicates which day of the week the recurring appointments should occur each nth week.)
+         */
+        public Coding getDayOfWeek() { 
+          if (this.dayOfWeek == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AppointmentRecurrenceTemplateMonthlyTemplateComponent.dayOfWeek");
+            else if (Configuration.doAutoCreate())
+              this.dayOfWeek = new Coding(); // cc
+          return this.dayOfWeek;
+        }
+
+        public boolean hasDayOfWeek() { 
+          return this.dayOfWeek != null && !this.dayOfWeek.isEmpty();
+        }
+
+        /**
+         * @param value {@link #dayOfWeek} (Indicates which day of the week the recurring appointments should occur each nth week.)
+         */
+        public AppointmentRecurrenceTemplateMonthlyTemplateComponent setDayOfWeek(Coding value) { 
+          this.dayOfWeek = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #monthInterval} (Indicates that recurring appointments should occur every nth month.). This is the underlying object with id, value and extensions. The accessor "getMonthInterval" gives direct access to the value
+         */
+        public PositiveIntType getMonthIntervalElement() { 
+          if (this.monthInterval == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AppointmentRecurrenceTemplateMonthlyTemplateComponent.monthInterval");
+            else if (Configuration.doAutoCreate())
+              this.monthInterval = new PositiveIntType(); // bb
+          return this.monthInterval;
+        }
+
+        public boolean hasMonthIntervalElement() { 
+          return this.monthInterval != null && !this.monthInterval.isEmpty();
+        }
+
+        public boolean hasMonthInterval() { 
+          return this.monthInterval != null && !this.monthInterval.isEmpty();
+        }
+
+        /**
+         * @param value {@link #monthInterval} (Indicates that recurring appointments should occur every nth month.). This is the underlying object with id, value and extensions. The accessor "getMonthInterval" gives direct access to the value
+         */
+        public AppointmentRecurrenceTemplateMonthlyTemplateComponent setMonthIntervalElement(PositiveIntType value) { 
+          this.monthInterval = value;
+          return this;
+        }
+
+        /**
+         * @return Indicates that recurring appointments should occur every nth month.
+         */
+        public int getMonthInterval() { 
+          return this.monthInterval == null || this.monthInterval.isEmpty() ? 0 : this.monthInterval.getValue();
+        }
+
+        /**
+         * @param value Indicates that recurring appointments should occur every nth month.
+         */
+        public AppointmentRecurrenceTemplateMonthlyTemplateComponent setMonthInterval(int value) { 
+            if (this.monthInterval == null)
+              this.monthInterval = new PositiveIntType();
+            this.monthInterval.setValue(value);
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("dayOfMonth", "positiveInt", "Indicates that appointments in the series of recurring appointments should occur on a specific day of the month.", 0, 1, dayOfMonth));
+          children.add(new Property("nthWeekOfMonth", "Coding", "Indicates which week within a month the appointments in the series of recurring appointments should occur on.", 0, 1, nthWeekOfMonth));
+          children.add(new Property("dayOfWeek", "Coding", "Indicates which day of the week the recurring appointments should occur each nth week.", 0, 1, dayOfWeek));
+          children.add(new Property("monthInterval", "positiveInt", "Indicates that recurring appointments should occur every nth month.", 0, 1, monthInterval));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case -1181204563: /*dayOfMonth*/  return new Property("dayOfMonth", "positiveInt", "Indicates that appointments in the series of recurring appointments should occur on a specific day of the month.", 0, 1, dayOfMonth);
+          case 724728723: /*nthWeekOfMonth*/  return new Property("nthWeekOfMonth", "Coding", "Indicates which week within a month the appointments in the series of recurring appointments should occur on.", 0, 1, nthWeekOfMonth);
+          case -730552025: /*dayOfWeek*/  return new Property("dayOfWeek", "Coding", "Indicates which day of the week the recurring appointments should occur each nth week.", 0, 1, dayOfWeek);
+          case -251401371: /*monthInterval*/  return new Property("monthInterval", "positiveInt", "Indicates that recurring appointments should occur every nth month.", 0, 1, monthInterval);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case -1181204563: /*dayOfMonth*/ return this.dayOfMonth == null ? new Base[0] : new Base[] {this.dayOfMonth}; // PositiveIntType
+        case 724728723: /*nthWeekOfMonth*/ return this.nthWeekOfMonth == null ? new Base[0] : new Base[] {this.nthWeekOfMonth}; // Coding
+        case -730552025: /*dayOfWeek*/ return this.dayOfWeek == null ? new Base[0] : new Base[] {this.dayOfWeek}; // Coding
+        case -251401371: /*monthInterval*/ return this.monthInterval == null ? new Base[0] : new Base[] {this.monthInterval}; // PositiveIntType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case -1181204563: // dayOfMonth
+          this.dayOfMonth = TypeConvertor.castToPositiveInt(value); // PositiveIntType
+          return value;
+        case 724728723: // nthWeekOfMonth
+          this.nthWeekOfMonth = TypeConvertor.castToCoding(value); // Coding
+          return value;
+        case -730552025: // dayOfWeek
+          this.dayOfWeek = TypeConvertor.castToCoding(value); // Coding
+          return value;
+        case -251401371: // monthInterval
+          this.monthInterval = TypeConvertor.castToPositiveInt(value); // PositiveIntType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("dayOfMonth")) {
+          this.dayOfMonth = TypeConvertor.castToPositiveInt(value); // PositiveIntType
+        } else if (name.equals("nthWeekOfMonth")) {
+          this.nthWeekOfMonth = TypeConvertor.castToCoding(value); // Coding
+        } else if (name.equals("dayOfWeek")) {
+          this.dayOfWeek = TypeConvertor.castToCoding(value); // Coding
+        } else if (name.equals("monthInterval")) {
+          this.monthInterval = TypeConvertor.castToPositiveInt(value); // PositiveIntType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -1181204563:  return getDayOfMonthElement();
+        case 724728723:  return getNthWeekOfMonth();
+        case -730552025:  return getDayOfWeek();
+        case -251401371:  return getMonthIntervalElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -1181204563: /*dayOfMonth*/ return new String[] {"positiveInt"};
+        case 724728723: /*nthWeekOfMonth*/ return new String[] {"Coding"};
+        case -730552025: /*dayOfWeek*/ return new String[] {"Coding"};
+        case -251401371: /*monthInterval*/ return new String[] {"positiveInt"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("dayOfMonth")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Appointment.recurrenceTemplate.monthlyTemplate.dayOfMonth");
+        }
+        else if (name.equals("nthWeekOfMonth")) {
+          this.nthWeekOfMonth = new Coding();
+          return this.nthWeekOfMonth;
+        }
+        else if (name.equals("dayOfWeek")) {
+          this.dayOfWeek = new Coding();
+          return this.dayOfWeek;
+        }
+        else if (name.equals("monthInterval")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Appointment.recurrenceTemplate.monthlyTemplate.monthInterval");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public AppointmentRecurrenceTemplateMonthlyTemplateComponent copy() {
+        AppointmentRecurrenceTemplateMonthlyTemplateComponent dst = new AppointmentRecurrenceTemplateMonthlyTemplateComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AppointmentRecurrenceTemplateMonthlyTemplateComponent dst) {
+        super.copyValues(dst);
+        dst.dayOfMonth = dayOfMonth == null ? null : dayOfMonth.copy();
+        dst.nthWeekOfMonth = nthWeekOfMonth == null ? null : nthWeekOfMonth.copy();
+        dst.dayOfWeek = dayOfWeek == null ? null : dayOfWeek.copy();
+        dst.monthInterval = monthInterval == null ? null : monthInterval.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof AppointmentRecurrenceTemplateMonthlyTemplateComponent))
+          return false;
+        AppointmentRecurrenceTemplateMonthlyTemplateComponent o = (AppointmentRecurrenceTemplateMonthlyTemplateComponent) other_;
+        return compareDeep(dayOfMonth, o.dayOfMonth, true) && compareDeep(nthWeekOfMonth, o.nthWeekOfMonth, true)
+           && compareDeep(dayOfWeek, o.dayOfWeek, true) && compareDeep(monthInterval, o.monthInterval, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof AppointmentRecurrenceTemplateMonthlyTemplateComponent))
+          return false;
+        AppointmentRecurrenceTemplateMonthlyTemplateComponent o = (AppointmentRecurrenceTemplateMonthlyTemplateComponent) other_;
+        return compareValues(dayOfMonth, o.dayOfMonth, true) && compareValues(monthInterval, o.monthInterval, true)
+          ;
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(dayOfMonth, nthWeekOfMonth
+          , dayOfWeek, monthInterval);
+      }
+
+  public String fhirType() {
+    return "Appointment.recurrenceTemplate.monthlyTemplate";
+
+  }
+
+  }
+
+    @Block()
+    public static class AppointmentRecurrenceTemplateYearlyTemplateComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Appointment recurs every nth year.
+         */
+        @Child(name = "yearInterval", type = {PositiveIntType.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Recurs every nth year", formalDefinition="Appointment recurs every nth year." )
+        protected PositiveIntType yearInterval;
+
+        private static final long serialVersionUID = -120794476L;
+
+    /**
+     * Constructor
+     */
+      public AppointmentRecurrenceTemplateYearlyTemplateComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public AppointmentRecurrenceTemplateYearlyTemplateComponent(int yearInterval) {
+        super();
+        this.setYearInterval(yearInterval);
+      }
+
+        /**
+         * @return {@link #yearInterval} (Appointment recurs every nth year.). This is the underlying object with id, value and extensions. The accessor "getYearInterval" gives direct access to the value
+         */
+        public PositiveIntType getYearIntervalElement() { 
+          if (this.yearInterval == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create AppointmentRecurrenceTemplateYearlyTemplateComponent.yearInterval");
+            else if (Configuration.doAutoCreate())
+              this.yearInterval = new PositiveIntType(); // bb
+          return this.yearInterval;
+        }
+
+        public boolean hasYearIntervalElement() { 
+          return this.yearInterval != null && !this.yearInterval.isEmpty();
+        }
+
+        public boolean hasYearInterval() { 
+          return this.yearInterval != null && !this.yearInterval.isEmpty();
+        }
+
+        /**
+         * @param value {@link #yearInterval} (Appointment recurs every nth year.). This is the underlying object with id, value and extensions. The accessor "getYearInterval" gives direct access to the value
+         */
+        public AppointmentRecurrenceTemplateYearlyTemplateComponent setYearIntervalElement(PositiveIntType value) { 
+          this.yearInterval = value;
+          return this;
+        }
+
+        /**
+         * @return Appointment recurs every nth year.
+         */
+        public int getYearInterval() { 
+          return this.yearInterval == null || this.yearInterval.isEmpty() ? 0 : this.yearInterval.getValue();
+        }
+
+        /**
+         * @param value Appointment recurs every nth year.
+         */
+        public AppointmentRecurrenceTemplateYearlyTemplateComponent setYearInterval(int value) { 
+            if (this.yearInterval == null)
+              this.yearInterval = new PositiveIntType();
+            this.yearInterval.setValue(value);
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("yearInterval", "positiveInt", "Appointment recurs every nth year.", 0, 1, yearInterval));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 492389410: /*yearInterval*/  return new Property("yearInterval", "positiveInt", "Appointment recurs every nth year.", 0, 1, yearInterval);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 492389410: /*yearInterval*/ return this.yearInterval == null ? new Base[0] : new Base[] {this.yearInterval}; // PositiveIntType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 492389410: // yearInterval
+          this.yearInterval = TypeConvertor.castToPositiveInt(value); // PositiveIntType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("yearInterval")) {
+          this.yearInterval = TypeConvertor.castToPositiveInt(value); // PositiveIntType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 492389410:  return getYearIntervalElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 492389410: /*yearInterval*/ return new String[] {"positiveInt"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("yearInterval")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Appointment.recurrenceTemplate.yearlyTemplate.yearInterval");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public AppointmentRecurrenceTemplateYearlyTemplateComponent copy() {
+        AppointmentRecurrenceTemplateYearlyTemplateComponent dst = new AppointmentRecurrenceTemplateYearlyTemplateComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AppointmentRecurrenceTemplateYearlyTemplateComponent dst) {
+        super.copyValues(dst);
+        dst.yearInterval = yearInterval == null ? null : yearInterval.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof AppointmentRecurrenceTemplateYearlyTemplateComponent))
+          return false;
+        AppointmentRecurrenceTemplateYearlyTemplateComponent o = (AppointmentRecurrenceTemplateYearlyTemplateComponent) other_;
+        return compareDeep(yearInterval, o.yearInterval, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof AppointmentRecurrenceTemplateYearlyTemplateComponent))
+          return false;
+        AppointmentRecurrenceTemplateYearlyTemplateComponent o = (AppointmentRecurrenceTemplateYearlyTemplateComponent) other_;
+        return compareValues(yearInterval, o.yearInterval, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(yearInterval);
+      }
+
+  public String fhirType() {
+    return "Appointment.recurrenceTemplate.yearlyTemplate";
+
+  }
+
+  }
+
     /**
      * This records identifiers associated with this appointment concern that are defined by business processes and/or used to refer to it when a direct URL reference to the resource itself is not appropriate (e.g. in CDA documents, or in written / printed documentation).
      */
@@ -726,9 +2650,17 @@ public class Appointment extends DomainResource {
     protected CodeableConcept cancellationReason;
 
     /**
+     * Concepts representing classification of patient encounter such as ambulatory (outpatient), inpatient, emergency, home health or others due to local variations.
+     */
+    @Child(name = "class", type = {CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Classification when becoming an encounter", formalDefinition="Concepts representing classification of patient encounter such as ambulatory (outpatient), inpatient, emergency, home health or others due to local variations." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/EncounterClass")
+    protected List<CodeableConcept> class_;
+
+    /**
      * A broad categorization of the service that is to be performed during this appointment.
      */
-    @Child(name = "serviceCategory", type = {CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "serviceCategory", type = {CodeableConcept.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="A broad categorization of the service that is to be performed during this appointment", formalDefinition="A broad categorization of the service that is to be performed during this appointment." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-category")
     protected List<CodeableConcept> serviceCategory;
@@ -736,7 +2668,7 @@ public class Appointment extends DomainResource {
     /**
      * The specific service that is to be performed during this appointment.
      */
-    @Child(name = "serviceType", type = {CodeableReference.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "serviceType", type = {CodeableReference.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The specific service that is to be performed during this appointment", formalDefinition="The specific service that is to be performed during this appointment." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-type")
     protected List<CodeableReference> serviceType;
@@ -744,7 +2676,7 @@ public class Appointment extends DomainResource {
     /**
      * The specialty of a practitioner that would be required to perform the service requested in this appointment.
      */
-    @Child(name = "specialty", type = {CodeableConcept.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "specialty", type = {CodeableConcept.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The specialty of a practitioner that would be required to perform the service requested in this appointment", formalDefinition="The specialty of a practitioner that would be required to perform the service requested in this appointment." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/c80-practice-codes")
     protected List<CodeableConcept> specialty;
@@ -752,7 +2684,7 @@ public class Appointment extends DomainResource {
     /**
      * The style of appointment or patient that has been booked in the slot (not service type).
      */
-    @Child(name = "appointmentType", type = {CodeableConcept.class}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "appointmentType", type = {CodeableConcept.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The style of appointment or patient that has been booked in the slot (not service type)", formalDefinition="The style of appointment or patient that has been booked in the slot (not service type)." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/v2-0276")
     protected CodeableConcept appointmentType;
@@ -760,7 +2692,7 @@ public class Appointment extends DomainResource {
     /**
      * The reason that this appointment is being scheduled. This is more clinical than administrative. This can be coded, or as specified using information from another resource. When the patient arrives and the encounter begins it may be used as the admission diagnosis. The indication will typically be a Condition (with other resources referenced in the evidence.detail), or a Procedure.
      */
-    @Child(name = "reason", type = {CodeableReference.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "reason", type = {CodeableReference.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Reason this appointment is scheduled", formalDefinition="The reason that this appointment is being scheduled. This is more clinical than administrative. This can be coded, or as specified using information from another resource. When the patient arrives and the encounter begins it may be used as the admission diagnosis. The indication will typically be a Condition (with other resources referenced in the evidence.detail), or a Procedure." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/encounter-reason")
     protected List<CodeableReference> reason;
@@ -768,7 +2700,7 @@ public class Appointment extends DomainResource {
     /**
      * The priority of the appointment. Can be used to make informed decisions if needing to re-prioritize appointments. (The iCal Standard specifies 0 as undefined, 1 as highest, 9 as lowest priority).
      */
-    @Child(name = "priority", type = {CodeableConcept.class}, order=8, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "priority", type = {CodeableConcept.class}, order=9, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Used to make informed decisions if needing to re-prioritize", formalDefinition="The priority of the appointment. Can be used to make informed decisions if needing to re-prioritize appointments. (The iCal Standard specifies 0 as undefined, 1 as highest, 9 as lowest priority)." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/v3-ActPriority")
     protected CodeableConcept priority;
@@ -776,98 +2708,119 @@ public class Appointment extends DomainResource {
     /**
      * The brief description of the appointment as would be shown on a subject line in a meeting request, or appointment list. Detailed or expanded information should be put in the comment field.
      */
-    @Child(name = "description", type = {StringType.class}, order=9, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "description", type = {StringType.class}, order=10, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Shown on a subject line in a meeting request, or appointment list", formalDefinition="The brief description of the appointment as would be shown on a subject line in a meeting request, or appointment list. Detailed or expanded information should be put in the comment field." )
     protected StringType description;
 
     /**
      * Appointment replaced by this Appointment in cases where there is a cancellation, the details of the cancellation can be found in the cancellationReason property (on the referenced resource).
      */
-    @Child(name = "replaces", type = {Appointment.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "replaces", type = {Appointment.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Appointment replaced by this Appointment", formalDefinition="Appointment replaced by this Appointment in cases where there is a cancellation, the details of the cancellation can be found in the cancellationReason property (on the referenced resource)." )
     protected List<Reference> replaces;
 
     /**
+     * Connection details of a virtual service (e.g. conference call).
+     */
+    @Child(name = "virtualService", type = {VirtualServiceDetail.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Connection details of a virtual service (e.g. conference call)", formalDefinition="Connection details of a virtual service (e.g. conference call)." )
+    protected List<VirtualServiceDetail> virtualService;
+
+    /**
      * Additional information to support the appointment provided when making the appointment.
      */
-    @Child(name = "supportingInformation", type = {Reference.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "supportingInformation", type = {Reference.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Additional information to support the appointment", formalDefinition="Additional information to support the appointment provided when making the appointment." )
     protected List<Reference> supportingInformation;
 
     /**
+     * The previous appointment in a series of related appointments.
+     */
+    @Child(name = "previousAppointment", type = {Appointment.class}, order=14, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="The previous appointment in a series", formalDefinition="The previous appointment in a series of related appointments." )
+    protected Reference previousAppointment;
+
+    /**
+     * The originating appointment in a recurring set of related appointments.
+     */
+    @Child(name = "originatingAppointment", type = {Appointment.class}, order=15, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="The originating appointment in a recurring set of appointments", formalDefinition="The originating appointment in a recurring set of related appointments." )
+    protected Reference originatingAppointment;
+
+    /**
      * Date/Time that the appointment is to take place.
      */
-    @Child(name = "start", type = {InstantType.class}, order=12, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "start", type = {InstantType.class}, order=16, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When appointment is to take place", formalDefinition="Date/Time that the appointment is to take place." )
     protected InstantType start;
 
     /**
      * Date/Time that the appointment is to conclude.
      */
-    @Child(name = "end", type = {InstantType.class}, order=13, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "end", type = {InstantType.class}, order=17, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When appointment is to conclude", formalDefinition="Date/Time that the appointment is to conclude." )
     protected InstantType end;
 
     /**
      * Number of minutes that the appointment is to take. This can be less than the duration between the start and end times.  For example, where the actual time of appointment is only an estimate or if a 30 minute appointment is being requested, but any time would work.  Also, if there is, for example, a planned 15 minute break in the middle of a long appointment, the duration may be 15 minutes less than the difference between the start and end.
      */
-    @Child(name = "minutesDuration", type = {PositiveIntType.class}, order=14, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "minutesDuration", type = {PositiveIntType.class}, order=18, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Can be less than start/end (e.g. estimate)", formalDefinition="Number of minutes that the appointment is to take. This can be less than the duration between the start and end times.  For example, where the actual time of appointment is only an estimate or if a 30 minute appointment is being requested, but any time would work.  Also, if there is, for example, a planned 15 minute break in the middle of a long appointment, the duration may be 15 minutes less than the difference between the start and end." )
     protected PositiveIntType minutesDuration;
 
     /**
      * The slots from the participants' schedules that will be filled by the appointment.
      */
-    @Child(name = "slot", type = {Slot.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "slot", type = {Slot.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The slots that this appointment is filling", formalDefinition="The slots from the participants' schedules that will be filled by the appointment." )
     protected List<Reference> slot;
 
     /**
      * The set of accounts that is expected to be used for billing the activities that result from this Appointment.
      */
-    @Child(name = "account", type = {Account.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "account", type = {Account.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The set of accounts that may be used for billing for this Appointment", formalDefinition="The set of accounts that is expected to be used for billing the activities that result from this Appointment." )
     protected List<Reference> account;
 
     /**
      * The date that this appointment was initially created. This could be different to the meta.lastModified value on the initial entry, as this could have been before the resource was created on the FHIR server, and should remain unchanged over the lifespan of the appointment.
      */
-    @Child(name = "created", type = {DateTimeType.class}, order=17, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "created", type = {DateTimeType.class}, order=21, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="The date that this appointment was initially created", formalDefinition="The date that this appointment was initially created. This could be different to the meta.lastModified value on the initial entry, as this could have been before the resource was created on the FHIR server, and should remain unchanged over the lifespan of the appointment." )
     protected DateTimeType created;
 
     /**
      * Additional notes/comments about the appointment.
      */
-    @Child(name = "note", type = {Annotation.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "note", type = {Annotation.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Additional comments", formalDefinition="Additional notes/comments about the appointment." )
     protected List<Annotation> note;
 
     /**
      * While Appointment.note contains information for internal use, Appointment.patientInstructions is used to capture patient facing information about the Appointment (e.g. please bring your referral or fast from 8pm night before).
      */
-    @Child(name = "patientInstruction", type = {CodeableReference.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "patientInstruction", type = {CodeableReference.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Detailed information and instructions for the patient", formalDefinition="While Appointment.note contains information for internal use, Appointment.patientInstructions is used to capture patient facing information about the Appointment (e.g. please bring your referral or fast from 8pm night before)." )
     protected List<CodeableReference> patientInstruction;
 
     /**
      * The request this appointment is allocated to assess (e.g. incoming referral or procedure request).
      */
-    @Child(name = "basedOn", type = {CarePlan.class, DeviceRequest.class, MedicationRequest.class, ServiceRequest.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "basedOn", type = {CarePlan.class, DeviceRequest.class, MedicationRequest.class, ServiceRequest.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The request this appointment is allocated to assess", formalDefinition="The request this appointment is allocated to assess (e.g. incoming referral or procedure request)." )
     protected List<Reference> basedOn;
 
     /**
      * The patient or group associated with the appointment, if they are to be present (usually) then they should also be included in the participant backbone element.
      */
-    @Child(name = "subject", type = {Patient.class, Group.class}, order=21, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "subject", type = {Patient.class, Group.class}, order=25, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The patient or group associated with the appointment", formalDefinition="The patient or group associated with the appointment, if they are to be present (usually) then they should also be included in the participant backbone element." )
     protected Reference subject;
 
     /**
      * List of participants involved in the appointment.
      */
-    @Child(name = "participant", type = {}, order=22, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "participant", type = {}, order=26, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Participants involved in appointment", formalDefinition="List of participants involved in the appointment." )
     protected List<AppointmentParticipantComponent> participant;
 
@@ -876,11 +2829,32 @@ public class Appointment extends DomainResource {
 
 The duration (usually in minutes) could also be provided to indicate the length of the appointment to fill and populate the start/end times for the actual allocated time. However, in other situations the duration may be calculated by the scheduling system.
      */
-    @Child(name = "requestedPeriod", type = {Period.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "requestedPeriod", type = {Period.class}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Potential date/time interval(s) requested to allocate the appointment within", formalDefinition="A set of date ranges (potentially including times) that the appointment is preferred to be scheduled within.\n\nThe duration (usually in minutes) could also be provided to indicate the length of the appointment to fill and populate the start/end times for the actual allocated time. However, in other situations the duration may be calculated by the scheduling system." )
     protected List<Period> requestedPeriod;
 
-    private static final long serialVersionUID = -1643708854L;
+    /**
+     * The sequence number that identifies a specific appointment in a recurring pattern.
+     */
+    @Child(name = "recurrenceId", type = {PositiveIntType.class}, order=28, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="The sequence number in the recurrence", formalDefinition="The sequence number that identifies a specific appointment in a recurring pattern." )
+    protected PositiveIntType recurrenceId;
+
+    /**
+     * This appointment varies from the recurring pattern.
+     */
+    @Child(name = "occurrenceChanged", type = {BooleanType.class}, order=29, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Indicates that this appointment varies from a recurrence pattern", formalDefinition="This appointment varies from the recurring pattern." )
+    protected BooleanType occurrenceChanged;
+
+    /**
+     * The details of the recurrence pattern or template that is used to generate recurring appointments.
+     */
+    @Child(name = "recurrenceTemplate", type = {}, order=30, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Details of the recurrence pattern/template used to generate occurrences", formalDefinition="The details of the recurrence pattern or template that is used to generate recurring appointments." )
+    protected List<AppointmentRecurrenceTemplateComponent> recurrenceTemplate;
+
+    private static final long serialVersionUID = 621636241L;
 
   /**
    * Constructor
@@ -1018,6 +2992,59 @@ The duration (usually in minutes) could also be provided to indicate the length 
     public Appointment setCancellationReason(CodeableConcept value) { 
       this.cancellationReason = value;
       return this;
+    }
+
+    /**
+     * @return {@link #class_} (Concepts representing classification of patient encounter such as ambulatory (outpatient), inpatient, emergency, home health or others due to local variations.)
+     */
+    public List<CodeableConcept> getClass_() { 
+      if (this.class_ == null)
+        this.class_ = new ArrayList<CodeableConcept>();
+      return this.class_;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public Appointment setClass_(List<CodeableConcept> theClass_) { 
+      this.class_ = theClass_;
+      return this;
+    }
+
+    public boolean hasClass_() { 
+      if (this.class_ == null)
+        return false;
+      for (CodeableConcept item : this.class_)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public CodeableConcept addClass_() { //3
+      CodeableConcept t = new CodeableConcept();
+      if (this.class_ == null)
+        this.class_ = new ArrayList<CodeableConcept>();
+      this.class_.add(t);
+      return t;
+    }
+
+    public Appointment addClass_(CodeableConcept t) { //3
+      if (t == null)
+        return this;
+      if (this.class_ == null)
+        this.class_ = new ArrayList<CodeableConcept>();
+      this.class_.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #class_}, creating it if it does not already exist {3}
+     */
+    public CodeableConcept getClass_FirstRep() { 
+      if (getClass_().isEmpty()) {
+        addClass_();
+      }
+      return getClass_().get(0);
     }
 
     /**
@@ -1383,6 +3410,59 @@ The duration (usually in minutes) could also be provided to indicate the length 
     }
 
     /**
+     * @return {@link #virtualService} (Connection details of a virtual service (e.g. conference call).)
+     */
+    public List<VirtualServiceDetail> getVirtualService() { 
+      if (this.virtualService == null)
+        this.virtualService = new ArrayList<VirtualServiceDetail>();
+      return this.virtualService;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public Appointment setVirtualService(List<VirtualServiceDetail> theVirtualService) { 
+      this.virtualService = theVirtualService;
+      return this;
+    }
+
+    public boolean hasVirtualService() { 
+      if (this.virtualService == null)
+        return false;
+      for (VirtualServiceDetail item : this.virtualService)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public VirtualServiceDetail addVirtualService() { //3
+      VirtualServiceDetail t = new VirtualServiceDetail();
+      if (this.virtualService == null)
+        this.virtualService = new ArrayList<VirtualServiceDetail>();
+      this.virtualService.add(t);
+      return t;
+    }
+
+    public Appointment addVirtualService(VirtualServiceDetail t) { //3
+      if (t == null)
+        return this;
+      if (this.virtualService == null)
+        this.virtualService = new ArrayList<VirtualServiceDetail>();
+      this.virtualService.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #virtualService}, creating it if it does not already exist {3}
+     */
+    public VirtualServiceDetail getVirtualServiceFirstRep() { 
+      if (getVirtualService().isEmpty()) {
+        addVirtualService();
+      }
+      return getVirtualService().get(0);
+    }
+
+    /**
      * @return {@link #supportingInformation} (Additional information to support the appointment provided when making the appointment.)
      */
     public List<Reference> getSupportingInformation() { 
@@ -1433,6 +3513,54 @@ The duration (usually in minutes) could also be provided to indicate the length 
         addSupportingInformation();
       }
       return getSupportingInformation().get(0);
+    }
+
+    /**
+     * @return {@link #previousAppointment} (The previous appointment in a series of related appointments.)
+     */
+    public Reference getPreviousAppointment() { 
+      if (this.previousAppointment == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Appointment.previousAppointment");
+        else if (Configuration.doAutoCreate())
+          this.previousAppointment = new Reference(); // cc
+      return this.previousAppointment;
+    }
+
+    public boolean hasPreviousAppointment() { 
+      return this.previousAppointment != null && !this.previousAppointment.isEmpty();
+    }
+
+    /**
+     * @param value {@link #previousAppointment} (The previous appointment in a series of related appointments.)
+     */
+    public Appointment setPreviousAppointment(Reference value) { 
+      this.previousAppointment = value;
+      return this;
+    }
+
+    /**
+     * @return {@link #originatingAppointment} (The originating appointment in a recurring set of related appointments.)
+     */
+    public Reference getOriginatingAppointment() { 
+      if (this.originatingAppointment == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Appointment.originatingAppointment");
+        else if (Configuration.doAutoCreate())
+          this.originatingAppointment = new Reference(); // cc
+      return this.originatingAppointment;
+    }
+
+    public boolean hasOriginatingAppointment() { 
+      return this.originatingAppointment != null && !this.originatingAppointment.isEmpty();
+    }
+
+    /**
+     * @param value {@link #originatingAppointment} (The originating appointment in a recurring set of related appointments.)
+     */
+    public Appointment setOriginatingAppointment(Reference value) { 
+      this.originatingAppointment = value;
+      return this;
     }
 
     /**
@@ -2024,11 +4152,155 @@ The duration (usually in minutes) could also be provided to indicate the length 
       return getRequestedPeriod().get(0);
     }
 
+    /**
+     * @return {@link #recurrenceId} (The sequence number that identifies a specific appointment in a recurring pattern.). This is the underlying object with id, value and extensions. The accessor "getRecurrenceId" gives direct access to the value
+     */
+    public PositiveIntType getRecurrenceIdElement() { 
+      if (this.recurrenceId == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Appointment.recurrenceId");
+        else if (Configuration.doAutoCreate())
+          this.recurrenceId = new PositiveIntType(); // bb
+      return this.recurrenceId;
+    }
+
+    public boolean hasRecurrenceIdElement() { 
+      return this.recurrenceId != null && !this.recurrenceId.isEmpty();
+    }
+
+    public boolean hasRecurrenceId() { 
+      return this.recurrenceId != null && !this.recurrenceId.isEmpty();
+    }
+
+    /**
+     * @param value {@link #recurrenceId} (The sequence number that identifies a specific appointment in a recurring pattern.). This is the underlying object with id, value and extensions. The accessor "getRecurrenceId" gives direct access to the value
+     */
+    public Appointment setRecurrenceIdElement(PositiveIntType value) { 
+      this.recurrenceId = value;
+      return this;
+    }
+
+    /**
+     * @return The sequence number that identifies a specific appointment in a recurring pattern.
+     */
+    public int getRecurrenceId() { 
+      return this.recurrenceId == null || this.recurrenceId.isEmpty() ? 0 : this.recurrenceId.getValue();
+    }
+
+    /**
+     * @param value The sequence number that identifies a specific appointment in a recurring pattern.
+     */
+    public Appointment setRecurrenceId(int value) { 
+        if (this.recurrenceId == null)
+          this.recurrenceId = new PositiveIntType();
+        this.recurrenceId.setValue(value);
+      return this;
+    }
+
+    /**
+     * @return {@link #occurrenceChanged} (This appointment varies from the recurring pattern.). This is the underlying object with id, value and extensions. The accessor "getOccurrenceChanged" gives direct access to the value
+     */
+    public BooleanType getOccurrenceChangedElement() { 
+      if (this.occurrenceChanged == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Appointment.occurrenceChanged");
+        else if (Configuration.doAutoCreate())
+          this.occurrenceChanged = new BooleanType(); // bb
+      return this.occurrenceChanged;
+    }
+
+    public boolean hasOccurrenceChangedElement() { 
+      return this.occurrenceChanged != null && !this.occurrenceChanged.isEmpty();
+    }
+
+    public boolean hasOccurrenceChanged() { 
+      return this.occurrenceChanged != null && !this.occurrenceChanged.isEmpty();
+    }
+
+    /**
+     * @param value {@link #occurrenceChanged} (This appointment varies from the recurring pattern.). This is the underlying object with id, value and extensions. The accessor "getOccurrenceChanged" gives direct access to the value
+     */
+    public Appointment setOccurrenceChangedElement(BooleanType value) { 
+      this.occurrenceChanged = value;
+      return this;
+    }
+
+    /**
+     * @return This appointment varies from the recurring pattern.
+     */
+    public boolean getOccurrenceChanged() { 
+      return this.occurrenceChanged == null || this.occurrenceChanged.isEmpty() ? false : this.occurrenceChanged.getValue();
+    }
+
+    /**
+     * @param value This appointment varies from the recurring pattern.
+     */
+    public Appointment setOccurrenceChanged(boolean value) { 
+        if (this.occurrenceChanged == null)
+          this.occurrenceChanged = new BooleanType();
+        this.occurrenceChanged.setValue(value);
+      return this;
+    }
+
+    /**
+     * @return {@link #recurrenceTemplate} (The details of the recurrence pattern or template that is used to generate recurring appointments.)
+     */
+    public List<AppointmentRecurrenceTemplateComponent> getRecurrenceTemplate() { 
+      if (this.recurrenceTemplate == null)
+        this.recurrenceTemplate = new ArrayList<AppointmentRecurrenceTemplateComponent>();
+      return this.recurrenceTemplate;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public Appointment setRecurrenceTemplate(List<AppointmentRecurrenceTemplateComponent> theRecurrenceTemplate) { 
+      this.recurrenceTemplate = theRecurrenceTemplate;
+      return this;
+    }
+
+    public boolean hasRecurrenceTemplate() { 
+      if (this.recurrenceTemplate == null)
+        return false;
+      for (AppointmentRecurrenceTemplateComponent item : this.recurrenceTemplate)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public AppointmentRecurrenceTemplateComponent addRecurrenceTemplate() { //3
+      AppointmentRecurrenceTemplateComponent t = new AppointmentRecurrenceTemplateComponent();
+      if (this.recurrenceTemplate == null)
+        this.recurrenceTemplate = new ArrayList<AppointmentRecurrenceTemplateComponent>();
+      this.recurrenceTemplate.add(t);
+      return t;
+    }
+
+    public Appointment addRecurrenceTemplate(AppointmentRecurrenceTemplateComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.recurrenceTemplate == null)
+        this.recurrenceTemplate = new ArrayList<AppointmentRecurrenceTemplateComponent>();
+      this.recurrenceTemplate.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #recurrenceTemplate}, creating it if it does not already exist {3}
+     */
+    public AppointmentRecurrenceTemplateComponent getRecurrenceTemplateFirstRep() { 
+      if (getRecurrenceTemplate().isEmpty()) {
+        addRecurrenceTemplate();
+      }
+      return getRecurrenceTemplate().get(0);
+    }
+
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "This records identifiers associated with this appointment concern that are defined by business processes and/or used to refer to it when a direct URL reference to the resource itself is not appropriate (e.g. in CDA documents, or in written / printed documentation).", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("status", "code", "The overall status of the Appointment. Each of the participants has their own participation status which indicates their involvement in the process, however this status indicates the shared status.", 0, 1, status));
         children.add(new Property("cancellationReason", "CodeableConcept", "The coded reason for the appointment being cancelled. This is often used in reporting/billing/futher processing to determine if further actions are required, or specific fees apply.", 0, 1, cancellationReason));
+        children.add(new Property("class", "CodeableConcept", "Concepts representing classification of patient encounter such as ambulatory (outpatient), inpatient, emergency, home health or others due to local variations.", 0, java.lang.Integer.MAX_VALUE, class_));
         children.add(new Property("serviceCategory", "CodeableConcept", "A broad categorization of the service that is to be performed during this appointment.", 0, java.lang.Integer.MAX_VALUE, serviceCategory));
         children.add(new Property("serviceType", "CodeableReference(HealthcareService)", "The specific service that is to be performed during this appointment.", 0, java.lang.Integer.MAX_VALUE, serviceType));
         children.add(new Property("specialty", "CodeableConcept", "The specialty of a practitioner that would be required to perform the service requested in this appointment.", 0, java.lang.Integer.MAX_VALUE, specialty));
@@ -2037,7 +4309,10 @@ The duration (usually in minutes) could also be provided to indicate the length 
         children.add(new Property("priority", "CodeableConcept", "The priority of the appointment. Can be used to make informed decisions if needing to re-prioritize appointments. (The iCal Standard specifies 0 as undefined, 1 as highest, 9 as lowest priority).", 0, 1, priority));
         children.add(new Property("description", "string", "The brief description of the appointment as would be shown on a subject line in a meeting request, or appointment list. Detailed or expanded information should be put in the comment field.", 0, 1, description));
         children.add(new Property("replaces", "Reference(Appointment)", "Appointment replaced by this Appointment in cases where there is a cancellation, the details of the cancellation can be found in the cancellationReason property (on the referenced resource).", 0, java.lang.Integer.MAX_VALUE, replaces));
+        children.add(new Property("virtualService", "VirtualServiceDetail", "Connection details of a virtual service (e.g. conference call).", 0, java.lang.Integer.MAX_VALUE, virtualService));
         children.add(new Property("supportingInformation", "Reference(Any)", "Additional information to support the appointment provided when making the appointment.", 0, java.lang.Integer.MAX_VALUE, supportingInformation));
+        children.add(new Property("previousAppointment", "Reference(Appointment)", "The previous appointment in a series of related appointments.", 0, 1, previousAppointment));
+        children.add(new Property("originatingAppointment", "Reference(Appointment)", "The originating appointment in a recurring set of related appointments.", 0, 1, originatingAppointment));
         children.add(new Property("start", "instant", "Date/Time that the appointment is to take place.", 0, 1, start));
         children.add(new Property("end", "instant", "Date/Time that the appointment is to conclude.", 0, 1, end));
         children.add(new Property("minutesDuration", "positiveInt", "Number of minutes that the appointment is to take. This can be less than the duration between the start and end times.  For example, where the actual time of appointment is only an estimate or if a 30 minute appointment is being requested, but any time would work.  Also, if there is, for example, a planned 15 minute break in the middle of a long appointment, the duration may be 15 minutes less than the difference between the start and end.", 0, 1, minutesDuration));
@@ -2050,6 +4325,9 @@ The duration (usually in minutes) could also be provided to indicate the length 
         children.add(new Property("subject", "Reference(Patient|Group)", "The patient or group associated with the appointment, if they are to be present (usually) then they should also be included in the participant backbone element.", 0, 1, subject));
         children.add(new Property("participant", "", "List of participants involved in the appointment.", 0, java.lang.Integer.MAX_VALUE, participant));
         children.add(new Property("requestedPeriod", "Period", "A set of date ranges (potentially including times) that the appointment is preferred to be scheduled within.\n\nThe duration (usually in minutes) could also be provided to indicate the length of the appointment to fill and populate the start/end times for the actual allocated time. However, in other situations the duration may be calculated by the scheduling system.", 0, java.lang.Integer.MAX_VALUE, requestedPeriod));
+        children.add(new Property("recurrenceId", "positiveInt", "The sequence number that identifies a specific appointment in a recurring pattern.", 0, 1, recurrenceId));
+        children.add(new Property("occurrenceChanged", "boolean", "This appointment varies from the recurring pattern.", 0, 1, occurrenceChanged));
+        children.add(new Property("recurrenceTemplate", "", "The details of the recurrence pattern or template that is used to generate recurring appointments.", 0, java.lang.Integer.MAX_VALUE, recurrenceTemplate));
       }
 
       @Override
@@ -2058,6 +4336,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "This records identifiers associated with this appointment concern that are defined by business processes and/or used to refer to it when a direct URL reference to the resource itself is not appropriate (e.g. in CDA documents, or in written / printed documentation).", 0, java.lang.Integer.MAX_VALUE, identifier);
         case -892481550: /*status*/  return new Property("status", "code", "The overall status of the Appointment. Each of the participants has their own participation status which indicates their involvement in the process, however this status indicates the shared status.", 0, 1, status);
         case 2135095591: /*cancellationReason*/  return new Property("cancellationReason", "CodeableConcept", "The coded reason for the appointment being cancelled. This is often used in reporting/billing/futher processing to determine if further actions are required, or specific fees apply.", 0, 1, cancellationReason);
+        case 94742904: /*class*/  return new Property("class", "CodeableConcept", "Concepts representing classification of patient encounter such as ambulatory (outpatient), inpatient, emergency, home health or others due to local variations.", 0, java.lang.Integer.MAX_VALUE, class_);
         case 1281188563: /*serviceCategory*/  return new Property("serviceCategory", "CodeableConcept", "A broad categorization of the service that is to be performed during this appointment.", 0, java.lang.Integer.MAX_VALUE, serviceCategory);
         case -1928370289: /*serviceType*/  return new Property("serviceType", "CodeableReference(HealthcareService)", "The specific service that is to be performed during this appointment.", 0, java.lang.Integer.MAX_VALUE, serviceType);
         case -1694759682: /*specialty*/  return new Property("specialty", "CodeableConcept", "The specialty of a practitioner that would be required to perform the service requested in this appointment.", 0, java.lang.Integer.MAX_VALUE, specialty);
@@ -2066,7 +4345,10 @@ The duration (usually in minutes) could also be provided to indicate the length 
         case -1165461084: /*priority*/  return new Property("priority", "CodeableConcept", "The priority of the appointment. Can be used to make informed decisions if needing to re-prioritize appointments. (The iCal Standard specifies 0 as undefined, 1 as highest, 9 as lowest priority).", 0, 1, priority);
         case -1724546052: /*description*/  return new Property("description", "string", "The brief description of the appointment as would be shown on a subject line in a meeting request, or appointment list. Detailed or expanded information should be put in the comment field.", 0, 1, description);
         case -430332865: /*replaces*/  return new Property("replaces", "Reference(Appointment)", "Appointment replaced by this Appointment in cases where there is a cancellation, the details of the cancellation can be found in the cancellationReason property (on the referenced resource).", 0, java.lang.Integer.MAX_VALUE, replaces);
+        case 1420774698: /*virtualService*/  return new Property("virtualService", "VirtualServiceDetail", "Connection details of a virtual service (e.g. conference call).", 0, java.lang.Integer.MAX_VALUE, virtualService);
         case -1248768647: /*supportingInformation*/  return new Property("supportingInformation", "Reference(Any)", "Additional information to support the appointment provided when making the appointment.", 0, java.lang.Integer.MAX_VALUE, supportingInformation);
+        case -1676044248: /*previousAppointment*/  return new Property("previousAppointment", "Reference(Appointment)", "The previous appointment in a series of related appointments.", 0, 1, previousAppointment);
+        case 1841882230: /*originatingAppointment*/  return new Property("originatingAppointment", "Reference(Appointment)", "The originating appointment in a recurring set of related appointments.", 0, 1, originatingAppointment);
         case 109757538: /*start*/  return new Property("start", "instant", "Date/Time that the appointment is to take place.", 0, 1, start);
         case 100571: /*end*/  return new Property("end", "instant", "Date/Time that the appointment is to conclude.", 0, 1, end);
         case -413630573: /*minutesDuration*/  return new Property("minutesDuration", "positiveInt", "Number of minutes that the appointment is to take. This can be less than the duration between the start and end times.  For example, where the actual time of appointment is only an estimate or if a 30 minute appointment is being requested, but any time would work.  Also, if there is, for example, a planned 15 minute break in the middle of a long appointment, the duration may be 15 minutes less than the difference between the start and end.", 0, 1, minutesDuration);
@@ -2079,6 +4361,9 @@ The duration (usually in minutes) could also be provided to indicate the length 
         case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Group)", "The patient or group associated with the appointment, if they are to be present (usually) then they should also be included in the participant backbone element.", 0, 1, subject);
         case 767422259: /*participant*/  return new Property("participant", "", "List of participants involved in the appointment.", 0, java.lang.Integer.MAX_VALUE, participant);
         case -897241393: /*requestedPeriod*/  return new Property("requestedPeriod", "Period", "A set of date ranges (potentially including times) that the appointment is preferred to be scheduled within.\n\nThe duration (usually in minutes) could also be provided to indicate the length of the appointment to fill and populate the start/end times for the actual allocated time. However, in other situations the duration may be calculated by the scheduling system.", 0, java.lang.Integer.MAX_VALUE, requestedPeriod);
+        case -362407829: /*recurrenceId*/  return new Property("recurrenceId", "positiveInt", "The sequence number that identifies a specific appointment in a recurring pattern.", 0, 1, recurrenceId);
+        case 1779864483: /*occurrenceChanged*/  return new Property("occurrenceChanged", "boolean", "This appointment varies from the recurring pattern.", 0, 1, occurrenceChanged);
+        case 597629898: /*recurrenceTemplate*/  return new Property("recurrenceTemplate", "", "The details of the recurrence pattern or template that is used to generate recurring appointments.", 0, java.lang.Integer.MAX_VALUE, recurrenceTemplate);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -2090,6 +4375,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<AppointmentStatus>
         case 2135095591: /*cancellationReason*/ return this.cancellationReason == null ? new Base[0] : new Base[] {this.cancellationReason}; // CodeableConcept
+        case 94742904: /*class*/ return this.class_ == null ? new Base[0] : this.class_.toArray(new Base[this.class_.size()]); // CodeableConcept
         case 1281188563: /*serviceCategory*/ return this.serviceCategory == null ? new Base[0] : this.serviceCategory.toArray(new Base[this.serviceCategory.size()]); // CodeableConcept
         case -1928370289: /*serviceType*/ return this.serviceType == null ? new Base[0] : this.serviceType.toArray(new Base[this.serviceType.size()]); // CodeableReference
         case -1694759682: /*specialty*/ return this.specialty == null ? new Base[0] : this.specialty.toArray(new Base[this.specialty.size()]); // CodeableConcept
@@ -2098,7 +4384,10 @@ The duration (usually in minutes) could also be provided to indicate the length 
         case -1165461084: /*priority*/ return this.priority == null ? new Base[0] : new Base[] {this.priority}; // CodeableConcept
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
         case -430332865: /*replaces*/ return this.replaces == null ? new Base[0] : this.replaces.toArray(new Base[this.replaces.size()]); // Reference
+        case 1420774698: /*virtualService*/ return this.virtualService == null ? new Base[0] : this.virtualService.toArray(new Base[this.virtualService.size()]); // VirtualServiceDetail
         case -1248768647: /*supportingInformation*/ return this.supportingInformation == null ? new Base[0] : this.supportingInformation.toArray(new Base[this.supportingInformation.size()]); // Reference
+        case -1676044248: /*previousAppointment*/ return this.previousAppointment == null ? new Base[0] : new Base[] {this.previousAppointment}; // Reference
+        case 1841882230: /*originatingAppointment*/ return this.originatingAppointment == null ? new Base[0] : new Base[] {this.originatingAppointment}; // Reference
         case 109757538: /*start*/ return this.start == null ? new Base[0] : new Base[] {this.start}; // InstantType
         case 100571: /*end*/ return this.end == null ? new Base[0] : new Base[] {this.end}; // InstantType
         case -413630573: /*minutesDuration*/ return this.minutesDuration == null ? new Base[0] : new Base[] {this.minutesDuration}; // PositiveIntType
@@ -2111,6 +4400,9 @@ The duration (usually in minutes) could also be provided to indicate the length 
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Reference
         case 767422259: /*participant*/ return this.participant == null ? new Base[0] : this.participant.toArray(new Base[this.participant.size()]); // AppointmentParticipantComponent
         case -897241393: /*requestedPeriod*/ return this.requestedPeriod == null ? new Base[0] : this.requestedPeriod.toArray(new Base[this.requestedPeriod.size()]); // Period
+        case -362407829: /*recurrenceId*/ return this.recurrenceId == null ? new Base[0] : new Base[] {this.recurrenceId}; // PositiveIntType
+        case 1779864483: /*occurrenceChanged*/ return this.occurrenceChanged == null ? new Base[0] : new Base[] {this.occurrenceChanged}; // BooleanType
+        case 597629898: /*recurrenceTemplate*/ return this.recurrenceTemplate == null ? new Base[0] : this.recurrenceTemplate.toArray(new Base[this.recurrenceTemplate.size()]); // AppointmentRecurrenceTemplateComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -2128,6 +4420,9 @@ The duration (usually in minutes) could also be provided to indicate the length 
           return value;
         case 2135095591: // cancellationReason
           this.cancellationReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 94742904: // class
+          this.getClass_().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 1281188563: // serviceCategory
           this.getServiceCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
@@ -2153,8 +4448,17 @@ The duration (usually in minutes) could also be provided to indicate the length 
         case -430332865: // replaces
           this.getReplaces().add(TypeConvertor.castToReference(value)); // Reference
           return value;
+        case 1420774698: // virtualService
+          this.getVirtualService().add(TypeConvertor.castToVirtualServiceDetail(value)); // VirtualServiceDetail
+          return value;
         case -1248768647: // supportingInformation
           this.getSupportingInformation().add(TypeConvertor.castToReference(value)); // Reference
+          return value;
+        case -1676044248: // previousAppointment
+          this.previousAppointment = TypeConvertor.castToReference(value); // Reference
+          return value;
+        case 1841882230: // originatingAppointment
+          this.originatingAppointment = TypeConvertor.castToReference(value); // Reference
           return value;
         case 109757538: // start
           this.start = TypeConvertor.castToInstant(value); // InstantType
@@ -2192,6 +4496,15 @@ The duration (usually in minutes) could also be provided to indicate the length 
         case -897241393: // requestedPeriod
           this.getRequestedPeriod().add(TypeConvertor.castToPeriod(value)); // Period
           return value;
+        case -362407829: // recurrenceId
+          this.recurrenceId = TypeConvertor.castToPositiveInt(value); // PositiveIntType
+          return value;
+        case 1779864483: // occurrenceChanged
+          this.occurrenceChanged = TypeConvertor.castToBoolean(value); // BooleanType
+          return value;
+        case 597629898: // recurrenceTemplate
+          this.getRecurrenceTemplate().add((AppointmentRecurrenceTemplateComponent) value); // AppointmentRecurrenceTemplateComponent
+          return value;
         default: return super.setProperty(hash, name, value);
         }
 
@@ -2206,6 +4519,8 @@ The duration (usually in minutes) could also be provided to indicate the length 
           this.status = (Enumeration) value; // Enumeration<AppointmentStatus>
         } else if (name.equals("cancellationReason")) {
           this.cancellationReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("class")) {
+          this.getClass_().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("serviceCategory")) {
           this.getServiceCategory().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("serviceType")) {
@@ -2222,8 +4537,14 @@ The duration (usually in minutes) could also be provided to indicate the length 
           this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("replaces")) {
           this.getReplaces().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("virtualService")) {
+          this.getVirtualService().add(TypeConvertor.castToVirtualServiceDetail(value));
         } else if (name.equals("supportingInformation")) {
           this.getSupportingInformation().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("previousAppointment")) {
+          this.previousAppointment = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("originatingAppointment")) {
+          this.originatingAppointment = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("start")) {
           this.start = TypeConvertor.castToInstant(value); // InstantType
         } else if (name.equals("end")) {
@@ -2248,6 +4569,12 @@ The duration (usually in minutes) could also be provided to indicate the length 
           this.getParticipant().add((AppointmentParticipantComponent) value);
         } else if (name.equals("requestedPeriod")) {
           this.getRequestedPeriod().add(TypeConvertor.castToPeriod(value));
+        } else if (name.equals("recurrenceId")) {
+          this.recurrenceId = TypeConvertor.castToPositiveInt(value); // PositiveIntType
+        } else if (name.equals("occurrenceChanged")) {
+          this.occurrenceChanged = TypeConvertor.castToBoolean(value); // BooleanType
+        } else if (name.equals("recurrenceTemplate")) {
+          this.getRecurrenceTemplate().add((AppointmentRecurrenceTemplateComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -2259,6 +4586,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
         case 2135095591:  return getCancellationReason();
+        case 94742904:  return addClass_(); 
         case 1281188563:  return addServiceCategory(); 
         case -1928370289:  return addServiceType(); 
         case -1694759682:  return addSpecialty(); 
@@ -2267,7 +4595,10 @@ The duration (usually in minutes) could also be provided to indicate the length 
         case -1165461084:  return getPriority();
         case -1724546052:  return getDescriptionElement();
         case -430332865:  return addReplaces(); 
+        case 1420774698:  return addVirtualService(); 
         case -1248768647:  return addSupportingInformation(); 
+        case -1676044248:  return getPreviousAppointment();
+        case 1841882230:  return getOriginatingAppointment();
         case 109757538:  return getStartElement();
         case 100571:  return getEndElement();
         case -413630573:  return getMinutesDurationElement();
@@ -2280,6 +4611,9 @@ The duration (usually in minutes) could also be provided to indicate the length 
         case -1867885268:  return getSubject();
         case 767422259:  return addParticipant(); 
         case -897241393:  return addRequestedPeriod(); 
+        case -362407829:  return getRecurrenceIdElement();
+        case 1779864483:  return getOccurrenceChangedElement();
+        case 597629898:  return addRecurrenceTemplate(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -2291,6 +4625,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case -892481550: /*status*/ return new String[] {"code"};
         case 2135095591: /*cancellationReason*/ return new String[] {"CodeableConcept"};
+        case 94742904: /*class*/ return new String[] {"CodeableConcept"};
         case 1281188563: /*serviceCategory*/ return new String[] {"CodeableConcept"};
         case -1928370289: /*serviceType*/ return new String[] {"CodeableReference"};
         case -1694759682: /*specialty*/ return new String[] {"CodeableConcept"};
@@ -2299,7 +4634,10 @@ The duration (usually in minutes) could also be provided to indicate the length 
         case -1165461084: /*priority*/ return new String[] {"CodeableConcept"};
         case -1724546052: /*description*/ return new String[] {"string"};
         case -430332865: /*replaces*/ return new String[] {"Reference"};
+        case 1420774698: /*virtualService*/ return new String[] {"VirtualServiceDetail"};
         case -1248768647: /*supportingInformation*/ return new String[] {"Reference"};
+        case -1676044248: /*previousAppointment*/ return new String[] {"Reference"};
+        case 1841882230: /*originatingAppointment*/ return new String[] {"Reference"};
         case 109757538: /*start*/ return new String[] {"instant"};
         case 100571: /*end*/ return new String[] {"instant"};
         case -413630573: /*minutesDuration*/ return new String[] {"positiveInt"};
@@ -2312,6 +4650,9 @@ The duration (usually in minutes) could also be provided to indicate the length 
         case -1867885268: /*subject*/ return new String[] {"Reference"};
         case 767422259: /*participant*/ return new String[] {};
         case -897241393: /*requestedPeriod*/ return new String[] {"Period"};
+        case -362407829: /*recurrenceId*/ return new String[] {"positiveInt"};
+        case 1779864483: /*occurrenceChanged*/ return new String[] {"boolean"};
+        case 597629898: /*recurrenceTemplate*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -2328,6 +4669,9 @@ The duration (usually in minutes) could also be provided to indicate the length 
         else if (name.equals("cancellationReason")) {
           this.cancellationReason = new CodeableConcept();
           return this.cancellationReason;
+        }
+        else if (name.equals("class")) {
+          return addClass_();
         }
         else if (name.equals("serviceCategory")) {
           return addServiceCategory();
@@ -2355,8 +4699,19 @@ The duration (usually in minutes) could also be provided to indicate the length 
         else if (name.equals("replaces")) {
           return addReplaces();
         }
+        else if (name.equals("virtualService")) {
+          return addVirtualService();
+        }
         else if (name.equals("supportingInformation")) {
           return addSupportingInformation();
+        }
+        else if (name.equals("previousAppointment")) {
+          this.previousAppointment = new Reference();
+          return this.previousAppointment;
+        }
+        else if (name.equals("originatingAppointment")) {
+          this.originatingAppointment = new Reference();
+          return this.originatingAppointment;
         }
         else if (name.equals("start")) {
           throw new FHIRException("Cannot call addChild on a primitive type Appointment.start");
@@ -2395,6 +4750,15 @@ The duration (usually in minutes) could also be provided to indicate the length 
         else if (name.equals("requestedPeriod")) {
           return addRequestedPeriod();
         }
+        else if (name.equals("recurrenceId")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Appointment.recurrenceId");
+        }
+        else if (name.equals("occurrenceChanged")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Appointment.occurrenceChanged");
+        }
+        else if (name.equals("recurrenceTemplate")) {
+          return addRecurrenceTemplate();
+        }
         else
           return super.addChild(name);
       }
@@ -2419,6 +4783,11 @@ The duration (usually in minutes) could also be provided to indicate the length 
         };
         dst.status = status == null ? null : status.copy();
         dst.cancellationReason = cancellationReason == null ? null : cancellationReason.copy();
+        if (class_ != null) {
+          dst.class_ = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : class_)
+            dst.class_.add(i.copy());
+        };
         if (serviceCategory != null) {
           dst.serviceCategory = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : serviceCategory)
@@ -2447,11 +4816,18 @@ The duration (usually in minutes) could also be provided to indicate the length 
           for (Reference i : replaces)
             dst.replaces.add(i.copy());
         };
+        if (virtualService != null) {
+          dst.virtualService = new ArrayList<VirtualServiceDetail>();
+          for (VirtualServiceDetail i : virtualService)
+            dst.virtualService.add(i.copy());
+        };
         if (supportingInformation != null) {
           dst.supportingInformation = new ArrayList<Reference>();
           for (Reference i : supportingInformation)
             dst.supportingInformation.add(i.copy());
         };
+        dst.previousAppointment = previousAppointment == null ? null : previousAppointment.copy();
+        dst.originatingAppointment = originatingAppointment == null ? null : originatingAppointment.copy();
         dst.start = start == null ? null : start.copy();
         dst.end = end == null ? null : end.copy();
         dst.minutesDuration = minutesDuration == null ? null : minutesDuration.copy();
@@ -2492,6 +4868,13 @@ The duration (usually in minutes) could also be provided to indicate the length 
           for (Period i : requestedPeriod)
             dst.requestedPeriod.add(i.copy());
         };
+        dst.recurrenceId = recurrenceId == null ? null : recurrenceId.copy();
+        dst.occurrenceChanged = occurrenceChanged == null ? null : occurrenceChanged.copy();
+        if (recurrenceTemplate != null) {
+          dst.recurrenceTemplate = new ArrayList<AppointmentRecurrenceTemplateComponent>();
+          for (AppointmentRecurrenceTemplateComponent i : recurrenceTemplate)
+            dst.recurrenceTemplate.add(i.copy());
+        };
       }
 
       protected Appointment typedCopy() {
@@ -2506,15 +4889,18 @@ The duration (usually in minutes) could also be provided to indicate the length 
           return false;
         Appointment o = (Appointment) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(cancellationReason, o.cancellationReason, true)
-           && compareDeep(serviceCategory, o.serviceCategory, true) && compareDeep(serviceType, o.serviceType, true)
-           && compareDeep(specialty, o.specialty, true) && compareDeep(appointmentType, o.appointmentType, true)
+           && compareDeep(class_, o.class_, true) && compareDeep(serviceCategory, o.serviceCategory, true)
+           && compareDeep(serviceType, o.serviceType, true) && compareDeep(specialty, o.specialty, true) && compareDeep(appointmentType, o.appointmentType, true)
            && compareDeep(reason, o.reason, true) && compareDeep(priority, o.priority, true) && compareDeep(description, o.description, true)
-           && compareDeep(replaces, o.replaces, true) && compareDeep(supportingInformation, o.supportingInformation, true)
-           && compareDeep(start, o.start, true) && compareDeep(end, o.end, true) && compareDeep(minutesDuration, o.minutesDuration, true)
-           && compareDeep(slot, o.slot, true) && compareDeep(account, o.account, true) && compareDeep(created, o.created, true)
-           && compareDeep(note, o.note, true) && compareDeep(patientInstruction, o.patientInstruction, true)
-           && compareDeep(basedOn, o.basedOn, true) && compareDeep(subject, o.subject, true) && compareDeep(participant, o.participant, true)
-           && compareDeep(requestedPeriod, o.requestedPeriod, true);
+           && compareDeep(replaces, o.replaces, true) && compareDeep(virtualService, o.virtualService, true)
+           && compareDeep(supportingInformation, o.supportingInformation, true) && compareDeep(previousAppointment, o.previousAppointment, true)
+           && compareDeep(originatingAppointment, o.originatingAppointment, true) && compareDeep(start, o.start, true)
+           && compareDeep(end, o.end, true) && compareDeep(minutesDuration, o.minutesDuration, true) && compareDeep(slot, o.slot, true)
+           && compareDeep(account, o.account, true) && compareDeep(created, o.created, true) && compareDeep(note, o.note, true)
+           && compareDeep(patientInstruction, o.patientInstruction, true) && compareDeep(basedOn, o.basedOn, true)
+           && compareDeep(subject, o.subject, true) && compareDeep(participant, o.participant, true) && compareDeep(requestedPeriod, o.requestedPeriod, true)
+           && compareDeep(recurrenceId, o.recurrenceId, true) && compareDeep(occurrenceChanged, o.occurrenceChanged, true)
+           && compareDeep(recurrenceTemplate, o.recurrenceTemplate, true);
       }
 
       @Override
@@ -2526,15 +4912,17 @@ The duration (usually in minutes) could also be provided to indicate the length 
         Appointment o = (Appointment) other_;
         return compareValues(status, o.status, true) && compareValues(description, o.description, true) && compareValues(start, o.start, true)
            && compareValues(end, o.end, true) && compareValues(minutesDuration, o.minutesDuration, true) && compareValues(created, o.created, true)
+           && compareValues(recurrenceId, o.recurrenceId, true) && compareValues(occurrenceChanged, o.occurrenceChanged, true)
           ;
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, cancellationReason
-          , serviceCategory, serviceType, specialty, appointmentType, reason, priority, description
-          , replaces, supportingInformation, start, end, minutesDuration, slot, account
-          , created, note, patientInstruction, basedOn, subject, participant, requestedPeriod
-          );
+          , class_, serviceCategory, serviceType, specialty, appointmentType, reason, priority
+          , description, replaces, virtualService, supportingInformation, previousAppointment
+          , originatingAppointment, start, end, minutesDuration, slot, account, created
+          , note, patientInstruction, basedOn, subject, participant, requestedPeriod, recurrenceId
+          , occurrenceChanged, recurrenceTemplate);
       }
 
   @Override
@@ -3010,7 +5398,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
    * Path: <b>Appointment.supportingInformation</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="supporting-info", path="Appointment.supportingInformation", description="Additional information to support the appointment", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="supporting-info", path="Appointment.supportingInformation", description="Additional information to support the appointment", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_SUPPORTING_INFO = "supporting-info";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>supporting-info</b>

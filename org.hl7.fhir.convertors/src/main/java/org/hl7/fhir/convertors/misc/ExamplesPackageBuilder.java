@@ -3,29 +3,15 @@ package org.hl7.fhir.convertors.misc;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r4b.formats.JsonParser;
-import org.hl7.fhir.r4b.model.Bundle;
-import org.hl7.fhir.r4b.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.utilities.TextFile;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.json.JsonTrackingParser;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-
-import org.hl7.fhir.r4b.model.SearchParameter;
-import org.hl7.fhir.r4b.utils.NPMPackageGenerator;
-import org.hl7.fhir.r4b.utils.NPMPackageGenerator.Category;
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
 
 public class ExamplesPackageBuilder {
 
@@ -38,10 +24,10 @@ public class ExamplesPackageBuilder {
     Set<String> set = new HashSet<>();
     for (File f : new File(source).listFiles()) {
       if (f.getName().endsWith(".json")) {
-        JsonObject obj = JsonTrackingParser.parseJson(new FileInputStream(f));
+        JsonObject obj = JsonParser.parseObject(new FileInputStream(f));
         if (obj.has("resourceType") && obj.has("id")) {
-          String type = obj.get("resourceType").getAsString();
-          String id = obj.get("id").getAsString();
+          String type = obj.asString("resourceType");
+          String id = obj.asString("id");
           byte[] content = TextFile.fileToBytes(f);
           if (type.equals("ConceptMap")) {
             System.out.println("convert "+f.getName());

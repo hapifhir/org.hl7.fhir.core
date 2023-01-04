@@ -1,7 +1,11 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.*;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Annotation40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.ContactPoint40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Quantity40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Base64Binary40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
@@ -53,8 +57,8 @@ public class Device40_50 {
       tgt.addUdiCarrier(convertDeviceUdiCarrierComponent(t));
     if (src.hasStatus())
       tgt.setStatusElement(convertFHIRDeviceStatus(src.getStatusElement()));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getStatusReason())
-      tgt.addStatusReason(CodeableConcept40_50.convertCodeableConcept(t));
+//    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getStatusReason())
+//      tgt.addStatusReason(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasDistinctIdentifier())
       tgt.getBiologicalSourceEvent().setValueElement(String40_50.convertString(src.getDistinctIdentifierElement()));
     if (src.hasManufacturer())
@@ -82,7 +86,7 @@ public class Device40_50 {
     for (org.hl7.fhir.r4.model.Device.DevicePropertyComponent t : src.getProperty())
       tgt.addProperty(convertDevicePropertyComponent(t));
     if (src.hasPatient())
-      tgt.setSubject(Reference40_50.convertReference(src.getPatient()));
+      tgt.getAssociationFirstRep().setHumanSubject(Reference40_50.convertReference(src.getPatient()));
     if (src.hasOwner())
       tgt.setOwner(Reference40_50.convertReference(src.getOwner()));
     for (org.hl7.fhir.r4.model.ContactPoint t : src.getContact())
@@ -112,8 +116,8 @@ public class Device40_50 {
       tgt.addUdiCarrier(convertDeviceUdiCarrierComponent(t));
     if (src.hasStatus())
       tgt.setStatusElement(convertFHIRDeviceStatus(src.getStatusElement()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getStatusReason())
-      tgt.addStatusReason(CodeableConcept40_50.convertCodeableConcept(t));
+//    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getStatusReason())
+//      tgt.addStatusReason(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasBiologicalSourceEvent())
       tgt.setDistinctIdentifierElement(String40_50.convertString(src.getBiologicalSourceEvent().getValueElement()));
     if (src.hasManufacturer())
@@ -140,8 +144,8 @@ public class Device40_50 {
       tgt.addVersion(convertDeviceVersionComponent(t));
     for (org.hl7.fhir.r5.model.Device.DevicePropertyComponent t : src.getProperty())
       tgt.addProperty(convertDevicePropertyComponent(t));
-    if (src.hasSubject())
-      tgt.setPatient(Reference40_50.convertReference(src.getSubject()));
+    if (src.getAssociationFirstRep().hasHumanSubject())
+      tgt.setPatient(Reference40_50.convertReference(src.getAssociationFirstRep().getHumanSubject()));
     if (src.hasOwner())
       tgt.setOwner(Reference40_50.convertReference(src.getOwner()));
     for (org.hl7.fhir.r5.model.ContactPoint t : src.getContact())

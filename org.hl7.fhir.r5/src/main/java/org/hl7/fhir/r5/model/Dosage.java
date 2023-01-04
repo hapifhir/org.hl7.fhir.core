@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,7 +46,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * Base StructureDefinition for Dosage Type: Indicates how the medication is/was taken or should be taken by the patient.
+ * Dosage Type: Indicates how the medication is/was taken or should be taken by the patient.
  */
 @DatatypeDef(name="Dosage")
 public class Dosage extends BackboneType implements ICompositeType {
@@ -58,7 +58,7 @@ public class Dosage extends BackboneType implements ICompositeType {
          */
         @Child(name = "type", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="The kind of dose or rate specified", formalDefinition="The kind of dose or rate specified, for example, ordered or calculated." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/dose-rate-type")
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/recommendation-strength")
         protected CodeableConcept type;
 
         /**

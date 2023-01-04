@@ -1,12 +1,13 @@
 package org.hl7.fhir.convertors.loaders.loaderR3;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
+import javax.annotation.Nonnull;
+
 import org.hl7.fhir.dstu3.context.SimpleWorkerContext.IContextResourceLoader;
 import org.hl7.fhir.dstu3.model.Resource;
 
-import javax.annotation.Nonnull;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 @Accessors(chain = true)
 public abstract class BaseLoaderR3 implements IContextResourceLoader {
