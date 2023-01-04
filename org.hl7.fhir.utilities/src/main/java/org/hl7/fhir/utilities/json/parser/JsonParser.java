@@ -181,7 +181,7 @@ public class JsonParser {
   }
 
   public static byte[] composeBytes(JsonElement element, boolean pretty) {
-    String s = compose(element); 
+    String s = compose(element, pretty); 
     return s.getBytes(StandardCharsets.UTF_8);
   }
   
