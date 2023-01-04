@@ -179,4 +179,21 @@ public abstract class FormatUtilities {
   }
 
 
+  public static Resource loadFileTight(String path) throws FileNotFoundException, IOException, FHIRException {
+    byte[] src = TextFile.fileToBytes(path);
+    FhirFormat fmt = determineFormat(src);
+    ParserBase parser = makeParser(fmt);
+    parser.setAllowUnknownContent(false);
+    return parser.parse(src);
+  }
+
+  public static Resource loadFileTight(InputStream source) throws FileNotFoundException, IOException, FHIRException {
+    byte[] src = TextFile.streamToBytes(source);
+    FhirFormat fmt = determineFormat(src);
+    ParserBase parser = makeParser(fmt);
+    parser.setAllowUnknownContent(false);
+    return parser.parse(src);
+  }
+
+
 }

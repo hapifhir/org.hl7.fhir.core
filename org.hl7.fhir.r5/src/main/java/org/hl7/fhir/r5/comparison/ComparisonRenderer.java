@@ -21,7 +21,7 @@ import org.hl7.fhir.r5.comparison.ResourceComparer.PlaceHolderComparison;
 import org.hl7.fhir.r5.comparison.ResourceComparer.ResourceComparison;
 import org.hl7.fhir.r5.comparison.ValueSetComparer.ValueSetComparison;
 
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Base;
@@ -45,6 +45,7 @@ public class ComparisonRenderer implements IEvaluationContext {
   private ComparisonSession session;
   private Map<String, String> templates = new HashMap<>();
   private String folder;
+  private String preamble;
 
   public ComparisonRenderer(IWorkerContext contextLeft, IWorkerContext contextRight, String folder, ComparisonSession session) {
     super();
@@ -52,6 +53,14 @@ public class ComparisonRenderer implements IEvaluationContext {
     this.contextRight = contextRight;       
     this.folder = folder;
     this.session = session;
+  }
+  
+  public String getPreamble() {
+    return preamble;
+  }
+
+  public void setPreamble(String preamble) {
+    this.preamble = preamble;
   }
 
   public Map<String, String> getTemplates() {
@@ -61,6 +70,9 @@ public class ComparisonRenderer implements IEvaluationContext {
   public File render(String leftName, String rightName) throws IOException {
     dumpBinaries();
     StringBuilder b = new StringBuilder();
+    if (preamble != null) {
+      b.append(preamble);
+    }
     b.append("<table class=\"grid\">\r\n");
     b.append(" <tr>\r\n");
     b.append("  <td width=\"260\"><b>"+Utilities.escapeXml(leftName)+"</b></td>\r\n");
@@ -199,7 +211,8 @@ public class ComparisonRenderer implements IEvaluationContext {
   private void renderProfile(String id, ProfileComparison comp) throws IOException {
     String template = templates.get("Profile");
     Map<String, Base> vars = new HashMap<>();
-    ProfileComparer cs = new ProfileComparer(session, new ProfileUtilities(session.getContextLeft(), null, session.getPkpLeft()), new ProfileUtilities(session.getContextRight(), null, session.getPkpRight()));
+    ProfileComparer cs = new ProfileComparer(session, new ProfileUtilities(session.getContextLeft(), null, session.getPkpLeft()), 
+        new ProfileUtilities(session.getContextRight(), null, session.getPkpRight()));
     vars.put("left", new StringType(comp.getLeft().present()));
     vars.put("right", new StringType(comp.getRight().present()));
     vars.put("leftId", new StringType(comp.getLeft().getId()));

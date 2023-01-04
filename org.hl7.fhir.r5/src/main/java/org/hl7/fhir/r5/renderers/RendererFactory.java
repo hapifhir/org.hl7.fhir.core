@@ -85,6 +85,12 @@ public class RendererFactory {
     if ("Bundle".equals(resourceName)) {
       return new BundleRenderer(context);
     }
+    if ("ActorDefinition".equals(resourceName)) {
+      return new ActorDefinitionRenderer(context);
+    }
+    if ("Requirements".equals(resourceName)) {
+      return new RequirementsRenderer(context);
+    }
     return new ProfileDrivenRenderer(context);    
   }
 
@@ -136,7 +142,20 @@ public class RendererFactory {
     
     return Utilities.existsInList(rt, 
         "CodeSystem", "ValueSet", "ConceptMap", 
-        "CapabilityStatement", "CompartmentDefinition", "ImplementationGuide", "Library", "NamingSystem", "OperationDefinition", "Questionnaire", "SearchParameter", "StructureDefinition");
+        "CapabilityStatement", "CompartmentDefinition", "ImplementationGuide", "Library", "NamingSystem", "OperationDefinition", 
+        "Questionnaire", "SearchParameter", "StructureDefinition", "ActorDefinition", "Requirements");
+  }
+
+  /**
+   * This is a list of renderers that return something different in IG mode, and the implementation guide 
+   * publisher will regenerate the narrative for the IG mode 
+   * @param rt
+   * @return
+   */
+  public static boolean hasIGSpecificRenderer(String rt) {
+    
+    return Utilities.existsInList(rt, "ValueSet", "CapabilityStatement", "Questionnaire");
   }
   
+
 }

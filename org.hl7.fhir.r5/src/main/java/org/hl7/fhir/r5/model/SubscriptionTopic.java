@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -275,7 +275,7 @@ public class SubscriptionTopic extends CanonicalResource {
          */
         @Child(name = "resource", type = {UriType.class}, order=2, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Data Type or Resource (reference to definition) for this trigger definition", formalDefinition="URL of the Resource that is the type used in this resource trigger.  Relative URLs are relative to the StructureDefinition root of the implemented FHIR version (e.g., http://hl7.org/fhir/StructureDefinition). For example, \"Patient\" maps to http://hl7.org/fhir/StructureDefinition/Patient.  For more information, see <a href=\"elementdefinition-definitions.html#ElementDefinition.type.code\">ElementDefinition.type.code</a>." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/defined-types")
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/fhir-types")
         protected UriType resource;
 
         /**
@@ -1213,7 +1213,7 @@ public class SubscriptionTopic extends CanonicalResource {
          */
         @Child(name = "resource", type = {UriType.class}, order=3, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Data Type or Resource (reference to definition) for this trigger definition", formalDefinition="URL of the Resource that is the focus type used in this event trigger.  Relative URLs are relative to the StructureDefinition root of the implemented FHIR version (e.g., http://hl7.org/fhir/StructureDefinition). For example, \"Patient\" maps to http://hl7.org/fhir/StructureDefinition/Patient.  For more information, see <a href=\"elementdefinition-definitions.html#ElementDefinition.type.code\">ElementDefinition.type.code</a>." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/defined-types")
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/fhir-types")
         protected UriType resource;
 
         private static final long serialVersionUID = 1818872110L;
@@ -1510,7 +1510,7 @@ public class SubscriptionTopic extends CanonicalResource {
          */
         @Child(name = "resource", type = {UriType.class}, order=2, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="URL of the triggering Resource that this filter applies to", formalDefinition="URL of the Resource that is the type used in this filter. This is the \"focus\" of the topic (or one of them if there are more than one). It will be the same, a generality, or a specificity of SubscriptionTopic.resourceTrigger.resource or SubscriptionTopic.eventTrigger.resource when they are present." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/defined-types")
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/fhir-types")
         protected UriType resource;
 
         /**
@@ -1991,7 +1991,7 @@ public class SubscriptionTopic extends CanonicalResource {
          */
         @Child(name = "resource", type = {UriType.class}, order=1, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="URL of the Resource that is the focus (main) resource in a notification shape", formalDefinition="URL of the Resource that is the type used in this shape. This is the \"focus\" of the topic (or one of them if there are more than one) and the root resource for this shape definition. It will be the same, a generality, or a specificity of SubscriptionTopic.resourceTrigger.resource or SubscriptionTopic.eventTrigger.resource when they are present." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/defined-types")
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/fhir-types")
         protected UriType resource;
 
         /**
@@ -2344,10 +2344,10 @@ public class SubscriptionTopic extends CanonicalResource {
   }
 
     /**
-     * An absolute URI that is used to identify this subscription topic when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this subscription topic is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the subscription topic is stored on different servers.
+     * An absolute URI that is used to identify this subscription topic when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this subscription topic is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the subscription topic is stored on different servers.
      */
     @Child(name = "url", type = {UriType.class}, order=0, min=1, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Canonical identifier for this subscription topic definition, represented as a URI (globally unique)", formalDefinition="An absolute URI that is used to identify this subscription topic when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this subscription topic is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the subscription topic is stored on different servers." )
+    @Description(shortDefinition="Canonical identifier for this subscription topic definition, represented as a URI (globally unique)", formalDefinition="An absolute URI that is used to identify this subscription topic when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this subscription topic is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the subscription topic is stored on different servers." )
     protected UriType url;
 
     /**
@@ -2389,7 +2389,7 @@ public class SubscriptionTopic extends CanonicalResource {
     /**
      * A flag to indicate that this TopSubscriptionTopicic is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage.
      */
-    @Child(name = "experimental", type = {BooleanType.class}, order=6, min=0, max=1, modifier=true, summary=true)
+    @Child(name = "experimental", type = {BooleanType.class}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="If for testing purposes, not real usage", formalDefinition="A flag to indicate that this TopSubscriptionTopicic is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage." )
     protected BooleanType experimental;
 
@@ -2451,55 +2451,62 @@ public class SubscriptionTopic extends CanonicalResource {
     protected MarkdownType copyright;
 
     /**
+     * A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    @Child(name = "copyrightLabel", type = {StringType.class}, order=15, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Copyright holder and year(s)", formalDefinition="A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved')." )
+    protected StringType copyrightLabel;
+
+    /**
      * The date on which the asset content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
-    @Child(name = "approvalDate", type = {DateType.class}, order=15, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "approvalDate", type = {DateType.class}, order=16, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When SubscriptionTopic is/was approved by publisher", formalDefinition="The date on which the asset content was approved by the publisher. Approval happens once when the content is officially approved for usage." )
     protected DateType approvalDate;
 
     /**
      * The date on which the asset content was last reviewed. Review happens periodically after that, but doesn't change the original approval date.
      */
-    @Child(name = "lastReviewDate", type = {DateType.class}, order=16, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "lastReviewDate", type = {DateType.class}, order=17, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Date the Subscription Topic was last reviewed by the publisher", formalDefinition="The date on which the asset content was last reviewed. Review happens periodically after that, but doesn't change the original approval date." )
     protected DateType lastReviewDate;
 
     /**
      * The period during which the SubscriptionTopic content was or is planned to be effective.
      */
-    @Child(name = "effectivePeriod", type = {Period.class}, order=17, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "effectivePeriod", type = {Period.class}, order=18, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The effective date range for the SubscriptionTopic", formalDefinition="The period during which the SubscriptionTopic content was or is planned to be effective." )
     protected Period effectivePeriod;
 
     /**
      * A definition of a resource-based event that triggers a notification based on the SubscriptionTopic. The criteria may be just a human readable description and/or a full FHIR search string or FHIRPath expression. Multiple triggers are considered OR joined (e.g., a resource update matching ANY of the definitions will trigger a notification).
      */
-    @Child(name = "resourceTrigger", type = {}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "resourceTrigger", type = {}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Definition of a resource-based trigger for the subscription topic", formalDefinition="A definition of a resource-based event that triggers a notification based on the SubscriptionTopic. The criteria may be just a human readable description and/or a full FHIR search string or FHIRPath expression. Multiple triggers are considered OR joined (e.g., a resource update matching ANY of the definitions will trigger a notification)." )
     protected List<SubscriptionTopicResourceTriggerComponent> resourceTrigger;
 
     /**
      * Event definition which can be used to trigger the SubscriptionTopic.
      */
-    @Child(name = "eventTrigger", type = {}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "eventTrigger", type = {}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Event definitions the SubscriptionTopic", formalDefinition="Event definition which can be used to trigger the SubscriptionTopic." )
     protected List<SubscriptionTopicEventTriggerComponent> eventTrigger;
 
     /**
      * List of properties by which Subscriptions on the SubscriptionTopic can be filtered. May be defined Search Parameters (e.g., Encounter.patient) or parameters defined within this SubscriptionTopic context (e.g., hub.event).
      */
-    @Child(name = "canFilterBy", type = {}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "canFilterBy", type = {}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Properties by which a Subscription can filter notifications from the SubscriptionTopic", formalDefinition="List of properties by which Subscriptions on the SubscriptionTopic can be filtered. May be defined Search Parameters (e.g., Encounter.patient) or parameters defined within this SubscriptionTopic context (e.g., hub.event)." )
     protected List<SubscriptionTopicCanFilterByComponent> canFilterBy;
 
     /**
      * List of properties to describe the shape (e.g., resources) included in notifications from this Subscription Topic.
      */
-    @Child(name = "notificationShape", type = {}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "notificationShape", type = {}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Properties for describing the shape of notifications generated by this topic", formalDefinition="List of properties to describe the shape (e.g., resources) included in notifications from this Subscription Topic." )
     protected List<SubscriptionTopicNotificationShapeComponent> notificationShape;
 
-    private static final long serialVersionUID = -1726252832L;
+    private static final long serialVersionUID = -117076104L;
 
   /**
    * Constructor
@@ -2518,7 +2525,7 @@ public class SubscriptionTopic extends CanonicalResource {
     }
 
     /**
-     * @return {@link #url} (An absolute URI that is used to identify this subscription topic when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this subscription topic is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the subscription topic is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @return {@link #url} (An absolute URI that is used to identify this subscription topic when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this subscription topic is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the subscription topic is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public UriType getUrlElement() { 
       if (this.url == null)
@@ -2538,7 +2545,7 @@ public class SubscriptionTopic extends CanonicalResource {
     }
 
     /**
-     * @param value {@link #url} (An absolute URI that is used to identify this subscription topic when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this subscription topic is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the subscription topic is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @param value {@link #url} (An absolute URI that is used to identify this subscription topic when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this subscription topic is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the subscription topic is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public SubscriptionTopic setUrlElement(UriType value) { 
       this.url = value;
@@ -2546,14 +2553,14 @@ public class SubscriptionTopic extends CanonicalResource {
     }
 
     /**
-     * @return An absolute URI that is used to identify this subscription topic when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this subscription topic is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the subscription topic is stored on different servers.
+     * @return An absolute URI that is used to identify this subscription topic when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this subscription topic is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the subscription topic is stored on different servers.
      */
     public String getUrl() { 
       return this.url == null ? null : this.url.getValue();
     }
 
     /**
-     * @param value An absolute URI that is used to identify this subscription topic when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this subscription topic is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the subscription topic is stored on different servers.
+     * @param value An absolute URI that is used to identify this subscription topic when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this subscription topic is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the subscription topic is stored on different servers.
      */
     public SubscriptionTopic setUrl(String value) { 
         if (this.url == null)
@@ -3269,6 +3276,55 @@ public class SubscriptionTopic extends CanonicalResource {
     }
 
     /**
+     * @return {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public StringType getCopyrightLabelElement() { 
+      if (this.copyrightLabel == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create SubscriptionTopic.copyrightLabel");
+        else if (Configuration.doAutoCreate())
+          this.copyrightLabel = new StringType(); // bb
+      return this.copyrightLabel;
+    }
+
+    public boolean hasCopyrightLabelElement() { 
+      return this.copyrightLabel != null && !this.copyrightLabel.isEmpty();
+    }
+
+    public boolean hasCopyrightLabel() { 
+      return this.copyrightLabel != null && !this.copyrightLabel.isEmpty();
+    }
+
+    /**
+     * @param value {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public SubscriptionTopic setCopyrightLabelElement(StringType value) { 
+      this.copyrightLabel = value;
+      return this;
+    }
+
+    /**
+     * @return A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    public String getCopyrightLabel() { 
+      return this.copyrightLabel == null ? null : this.copyrightLabel.getValue();
+    }
+
+    /**
+     * @param value A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    public SubscriptionTopic setCopyrightLabel(String value) { 
+      if (Utilities.noString(value))
+        this.copyrightLabel = null;
+      else {
+        if (this.copyrightLabel == null)
+          this.copyrightLabel = new StringType();
+        this.copyrightLabel.setValue(value);
+      }
+      return this;
+    }
+
+    /**
      * @return {@link #approvalDate} (The date on which the asset content was approved by the publisher. Approval happens once when the content is officially approved for usage.). This is the underlying object with id, value and extensions. The accessor "getApprovalDate" gives direct access to the value
      */
     public DateType getApprovalDateElement() { 
@@ -3606,6 +3662,47 @@ public class SubscriptionTopic extends CanonicalResource {
      * not supported on this implementation
      */
     @Override
+    public int getVersionAlgorithmMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public DataType getVersionAlgorithm() { 
+      throw new Error("The resource type \"SubscriptionTopic\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public StringType getVersionAlgorithmStringType() { 
+      throw new Error("The resource type \"SubscriptionTopic\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    public boolean hasVersionAlgorithmStringType() { 
+      return false;////K 
+    }
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public Coding getVersionAlgorithmCoding() { 
+      throw new Error("The resource type \"SubscriptionTopic\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    public boolean hasVersionAlgorithmCoding() { 
+      return false;////K 
+    }
+    public boolean hasVersionAlgorithm() { 
+      return false;
+    }
+    /**
+     * @param value {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public SubscriptionTopic setVersionAlgorithm(DataType value) { 
+      throw new Error("The resource type \"SubscriptionTopic\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+
+    /**
+     * not supported on this implementation
+     */
+    @Override
     public int getNameMax() { 
       return 0;
     }
@@ -3627,20 +3724,20 @@ public class SubscriptionTopic extends CanonicalResource {
      * @param value {@link #name} (A natural language name identifying the subscription topic. This name should be usable as an identifier for the module by machine processing applications such as code generation.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
      */
     public SubscriptionTopic setNameElement(StringType value) { 
-      throw new Error("The resource type \"SubscriptionTopic\" does not implement the property \"name\"");
+      throw new Error("The resource type \"SubscriptionTopic\" does not implement the property \"name\""); 
     }
     public String getName() { 
-      throw new Error("The resource type \"SubscriptionTopic\" does not implement the property \"name\"");
+      throw new Error("The resource type \"SubscriptionTopic\" does not implement the property \"name\""); 
     }
     /**
      * @param value A natural language name identifying the subscription topic. This name should be usable as an identifier for the module by machine processing applications such as code generation.
      */
     public SubscriptionTopic setName(String value) { 
-      throw new Error("The resource type \"SubscriptionTopic\" does not implement the property \"name\"");
+      throw new Error("The resource type \"SubscriptionTopic\" does not implement the property \"name\""); 
     }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("url", "uri", "An absolute URI that is used to identify this subscription topic when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this subscription topic is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the subscription topic is stored on different servers.", 0, 1, url));
+        children.add(new Property("url", "uri", "An absolute URI that is used to identify this subscription topic when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this subscription topic is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the subscription topic is stored on different servers.", 0, 1, url));
         children.add(new Property("identifier", "Identifier", "Business identifiers assigned to this subscription topic by the performer and/or other systems.  These identifiers remain constant as the resource is updated and propagates from server to server.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("version", "string", "The identifier that is used to identify this version of the subscription topic when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the Topic author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions are orderable.", 0, 1, version));
         children.add(new Property("title", "string", "A short, descriptive, user-friendly title for the SubscriptionTopic, for example, \"admission\".", 0, 1, title));
@@ -3655,6 +3752,7 @@ public class SubscriptionTopic extends CanonicalResource {
         children.add(new Property("jurisdiction", "CodeableConcept", "A jurisdiction in which the Topic is intended to be used.", 0, java.lang.Integer.MAX_VALUE, jurisdiction));
         children.add(new Property("purpose", "markdown", "Explains why this Topic is needed and why it has been designed as it has.", 0, 1, purpose));
         children.add(new Property("copyright", "markdown", "A copyright statement relating to the SubscriptionTopic and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the SubscriptionTopic.", 0, 1, copyright));
+        children.add(new Property("copyrightLabel", "string", "A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').", 0, 1, copyrightLabel));
         children.add(new Property("approvalDate", "date", "The date on which the asset content was approved by the publisher. Approval happens once when the content is officially approved for usage.", 0, 1, approvalDate));
         children.add(new Property("lastReviewDate", "date", "The date on which the asset content was last reviewed. Review happens periodically after that, but doesn't change the original approval date.", 0, 1, lastReviewDate));
         children.add(new Property("effectivePeriod", "Period", "The period during which the SubscriptionTopic content was or is planned to be effective.", 0, 1, effectivePeriod));
@@ -3667,7 +3765,7 @@ public class SubscriptionTopic extends CanonicalResource {
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this subscription topic when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this subscription topic is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the subscription topic is stored on different servers.", 0, 1, url);
+        case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this subscription topic when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this subscription topic is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the subscription topic is stored on different servers.", 0, 1, url);
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Business identifiers assigned to this subscription topic by the performer and/or other systems.  These identifiers remain constant as the resource is updated and propagates from server to server.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case 351608024: /*version*/  return new Property("version", "string", "The identifier that is used to identify this version of the subscription topic when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the Topic author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions are orderable.", 0, 1, version);
         case 110371416: /*title*/  return new Property("title", "string", "A short, descriptive, user-friendly title for the SubscriptionTopic, for example, \"admission\".", 0, 1, title);
@@ -3682,6 +3780,7 @@ public class SubscriptionTopic extends CanonicalResource {
         case -507075711: /*jurisdiction*/  return new Property("jurisdiction", "CodeableConcept", "A jurisdiction in which the Topic is intended to be used.", 0, java.lang.Integer.MAX_VALUE, jurisdiction);
         case -220463842: /*purpose*/  return new Property("purpose", "markdown", "Explains why this Topic is needed and why it has been designed as it has.", 0, 1, purpose);
         case 1522889671: /*copyright*/  return new Property("copyright", "markdown", "A copyright statement relating to the SubscriptionTopic and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the SubscriptionTopic.", 0, 1, copyright);
+        case 765157229: /*copyrightLabel*/  return new Property("copyrightLabel", "string", "A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').", 0, 1, copyrightLabel);
         case 223539345: /*approvalDate*/  return new Property("approvalDate", "date", "The date on which the asset content was approved by the publisher. Approval happens once when the content is officially approved for usage.", 0, 1, approvalDate);
         case -1687512484: /*lastReviewDate*/  return new Property("lastReviewDate", "date", "The date on which the asset content was last reviewed. Review happens periodically after that, but doesn't change the original approval date.", 0, 1, lastReviewDate);
         case -403934648: /*effectivePeriod*/  return new Property("effectivePeriod", "Period", "The period during which the SubscriptionTopic content was or is planned to be effective.", 0, 1, effectivePeriod);
@@ -3712,6 +3811,7 @@ public class SubscriptionTopic extends CanonicalResource {
         case -507075711: /*jurisdiction*/ return this.jurisdiction == null ? new Base[0] : this.jurisdiction.toArray(new Base[this.jurisdiction.size()]); // CodeableConcept
         case -220463842: /*purpose*/ return this.purpose == null ? new Base[0] : new Base[] {this.purpose}; // MarkdownType
         case 1522889671: /*copyright*/ return this.copyright == null ? new Base[0] : new Base[] {this.copyright}; // MarkdownType
+        case 765157229: /*copyrightLabel*/ return this.copyrightLabel == null ? new Base[0] : new Base[] {this.copyrightLabel}; // StringType
         case 223539345: /*approvalDate*/ return this.approvalDate == null ? new Base[0] : new Base[] {this.approvalDate}; // DateType
         case -1687512484: /*lastReviewDate*/ return this.lastReviewDate == null ? new Base[0] : new Base[] {this.lastReviewDate}; // DateType
         case -403934648: /*effectivePeriod*/ return this.effectivePeriod == null ? new Base[0] : new Base[] {this.effectivePeriod}; // Period
@@ -3773,6 +3873,9 @@ public class SubscriptionTopic extends CanonicalResource {
         case 1522889671: // copyright
           this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
+        case 765157229: // copyrightLabel
+          this.copyrightLabel = TypeConvertor.castToString(value); // StringType
+          return value;
         case 223539345: // approvalDate
           this.approvalDate = TypeConvertor.castToDate(value); // DateType
           return value;
@@ -3832,6 +3935,8 @@ public class SubscriptionTopic extends CanonicalResource {
           this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("copyright")) {
           this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
+        } else if (name.equals("copyrightLabel")) {
+          this.copyrightLabel = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("approvalDate")) {
           this.approvalDate = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("lastReviewDate")) {
@@ -3869,6 +3974,7 @@ public class SubscriptionTopic extends CanonicalResource {
         case -507075711:  return addJurisdiction(); 
         case -220463842:  return getPurposeElement();
         case 1522889671:  return getCopyrightElement();
+        case 765157229:  return getCopyrightLabelElement();
         case 223539345:  return getApprovalDateElement();
         case -1687512484:  return getLastReviewDateElement();
         case -403934648:  return getEffectivePeriod();
@@ -3899,6 +4005,7 @@ public class SubscriptionTopic extends CanonicalResource {
         case -507075711: /*jurisdiction*/ return new String[] {"CodeableConcept"};
         case -220463842: /*purpose*/ return new String[] {"markdown"};
         case 1522889671: /*copyright*/ return new String[] {"markdown"};
+        case 765157229: /*copyrightLabel*/ return new String[] {"string"};
         case 223539345: /*approvalDate*/ return new String[] {"date"};
         case -1687512484: /*lastReviewDate*/ return new String[] {"date"};
         case -403934648: /*effectivePeriod*/ return new String[] {"Period"};
@@ -3957,6 +4064,9 @@ public class SubscriptionTopic extends CanonicalResource {
         }
         else if (name.equals("copyright")) {
           throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.copyright");
+        }
+        else if (name.equals("copyrightLabel")) {
+          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.copyrightLabel");
         }
         else if (name.equals("approvalDate")) {
           throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.approvalDate");
@@ -4032,6 +4142,7 @@ public class SubscriptionTopic extends CanonicalResource {
         };
         dst.purpose = purpose == null ? null : purpose.copy();
         dst.copyright = copyright == null ? null : copyright.copy();
+        dst.copyrightLabel = copyrightLabel == null ? null : copyrightLabel.copy();
         dst.approvalDate = approvalDate == null ? null : approvalDate.copy();
         dst.lastReviewDate = lastReviewDate == null ? null : lastReviewDate.copy();
         dst.effectivePeriod = effectivePeriod == null ? null : effectivePeriod.copy();
@@ -4073,10 +4184,11 @@ public class SubscriptionTopic extends CanonicalResource {
            && compareDeep(experimental, o.experimental, true) && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true)
            && compareDeep(contact, o.contact, true) && compareDeep(description, o.description, true) && compareDeep(useContext, o.useContext, true)
            && compareDeep(jurisdiction, o.jurisdiction, true) && compareDeep(purpose, o.purpose, true) && compareDeep(copyright, o.copyright, true)
-           && compareDeep(approvalDate, o.approvalDate, true) && compareDeep(lastReviewDate, o.lastReviewDate, true)
-           && compareDeep(effectivePeriod, o.effectivePeriod, true) && compareDeep(resourceTrigger, o.resourceTrigger, true)
-           && compareDeep(eventTrigger, o.eventTrigger, true) && compareDeep(canFilterBy, o.canFilterBy, true)
-           && compareDeep(notificationShape, o.notificationShape, true);
+           && compareDeep(copyrightLabel, o.copyrightLabel, true) && compareDeep(approvalDate, o.approvalDate, true)
+           && compareDeep(lastReviewDate, o.lastReviewDate, true) && compareDeep(effectivePeriod, o.effectivePeriod, true)
+           && compareDeep(resourceTrigger, o.resourceTrigger, true) && compareDeep(eventTrigger, o.eventTrigger, true)
+           && compareDeep(canFilterBy, o.canFilterBy, true) && compareDeep(notificationShape, o.notificationShape, true)
+          ;
       }
 
       @Override
@@ -4089,15 +4201,16 @@ public class SubscriptionTopic extends CanonicalResource {
         return compareValues(url, o.url, true) && compareValues(version, o.version, true) && compareValues(title, o.title, true)
            && compareValues(derivedFrom, o.derivedFrom, true) && compareValues(status, o.status, true) && compareValues(experimental, o.experimental, true)
            && compareValues(date, o.date, true) && compareValues(publisher, o.publisher, true) && compareValues(description, o.description, true)
-           && compareValues(purpose, o.purpose, true) && compareValues(copyright, o.copyright, true) && compareValues(approvalDate, o.approvalDate, true)
-           && compareValues(lastReviewDate, o.lastReviewDate, true);
+           && compareValues(purpose, o.purpose, true) && compareValues(copyright, o.copyright, true) && compareValues(copyrightLabel, o.copyrightLabel, true)
+           && compareValues(approvalDate, o.approvalDate, true) && compareValues(lastReviewDate, o.lastReviewDate, true)
+          ;
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, identifier, version
           , title, derivedFrom, status, experimental, date, publisher, contact, description
-          , useContext, jurisdiction, purpose, copyright, approvalDate, lastReviewDate, effectivePeriod
-          , resourceTrigger, eventTrigger, canFilterBy, notificationShape);
+          , useContext, jurisdiction, purpose, copyright, copyrightLabel, approvalDate, lastReviewDate
+          , effectivePeriod, resourceTrigger, eventTrigger, canFilterBy, notificationShape);
       }
 
   @Override
@@ -4108,22 +4221,510 @@ public class SubscriptionTopic extends CanonicalResource {
  /**
    * Search parameter: <b>date</b>
    * <p>
-   * Description: <b>Date status first applied</b><br>
+   * Description: <b>Multiple Resources: 
+
+* [ActivityDefinition](activitydefinition.html): The activity definition publication date
+* [ActorDefinition](actordefinition.html): The Actor Definition publication date
+* [CapabilityStatement](capabilitystatement.html): The capability statement publication date
+* [ChargeItemDefinition](chargeitemdefinition.html): The charge item definition publication date
+* [Citation](citation.html): The citation publication date
+* [CodeSystem](codesystem.html): The code system publication date
+* [CompartmentDefinition](compartmentdefinition.html): The compartment definition publication date
+* [ConceptMap](conceptmap.html): The concept map publication date
+* [ConditionDefinition](conditiondefinition.html): The condition definition publication date
+* [EventDefinition](eventdefinition.html): The event definition publication date
+* [Evidence](evidence.html): The evidence publication date
+* [EvidenceVariable](evidencevariable.html): The evidence variable publication date
+* [ExampleScenario](examplescenario.html): The example scenario publication date
+* [GraphDefinition](graphdefinition.html): The graph definition publication date
+* [ImplementationGuide](implementationguide.html): The implementation guide publication date
+* [Library](library.html): The library publication date
+* [Measure](measure.html): The measure publication date
+* [MessageDefinition](messagedefinition.html): The message definition publication date
+* [NamingSystem](namingsystem.html): The naming system publication date
+* [OperationDefinition](operationdefinition.html): The operation definition publication date
+* [PlanDefinition](plandefinition.html): The plan definition publication date
+* [Questionnaire](questionnaire.html): The questionnaire publication date
+* [Requirements](requirements.html): The requirements publication date
+* [SearchParameter](searchparameter.html): The search parameter publication date
+* [StructureDefinition](structuredefinition.html): The structure definition publication date
+* [StructureMap](structuremap.html): The structure map publication date
+* [SubscriptionTopic](subscriptiontopic.html): Date status first applied
+* [TerminologyCapabilities](terminologycapabilities.html): The terminology capabilities publication date
+* [TestScript](testscript.html): The test script publication date
+* [ValueSet](valueset.html): The value set publication date
+</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>SubscriptionTopic.date</b><br>
+   * Path: <b>ActivityDefinition.date | ActorDefinition.date | CapabilityStatement.date | ChargeItemDefinition.date | Citation.date | CodeSystem.date | CompartmentDefinition.date | ConceptMap.date | ConditionDefinition.date | EventDefinition.date | Evidence.date | EvidenceVariable.date | ExampleScenario.date | GraphDefinition.date | ImplementationGuide.date | Library.date | Measure.date | MessageDefinition.date | NamingSystem.date | OperationDefinition.date | PlanDefinition.date | Questionnaire.date | Requirements.date | SearchParameter.date | StructureDefinition.date | StructureMap.date | SubscriptionTopic.date | TerminologyCapabilities.date | TestScript.date | ValueSet.date</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="date", path="SubscriptionTopic.date", description="Date status first applied", type="date" )
+  @SearchParamDefinition(name="date", path="ActivityDefinition.date | ActorDefinition.date | CapabilityStatement.date | ChargeItemDefinition.date | Citation.date | CodeSystem.date | CompartmentDefinition.date | ConceptMap.date | ConditionDefinition.date | EventDefinition.date | Evidence.date | EvidenceVariable.date | ExampleScenario.date | GraphDefinition.date | ImplementationGuide.date | Library.date | Measure.date | MessageDefinition.date | NamingSystem.date | OperationDefinition.date | PlanDefinition.date | Questionnaire.date | Requirements.date | SearchParameter.date | StructureDefinition.date | StructureMap.date | SubscriptionTopic.date | TerminologyCapabilities.date | TestScript.date | ValueSet.date", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): The activity definition publication date\r\n* [ActorDefinition](actordefinition.html): The Actor Definition publication date\r\n* [CapabilityStatement](capabilitystatement.html): The capability statement publication date\r\n* [ChargeItemDefinition](chargeitemdefinition.html): The charge item definition publication date\r\n* [Citation](citation.html): The citation publication date\r\n* [CodeSystem](codesystem.html): The code system publication date\r\n* [CompartmentDefinition](compartmentdefinition.html): The compartment definition publication date\r\n* [ConceptMap](conceptmap.html): The concept map publication date\r\n* [ConditionDefinition](conditiondefinition.html): The condition definition publication date\r\n* [EventDefinition](eventdefinition.html): The event definition publication date\r\n* [Evidence](evidence.html): The evidence publication date\r\n* [EvidenceVariable](evidencevariable.html): The evidence variable publication date\r\n* [ExampleScenario](examplescenario.html): The example scenario publication date\r\n* [GraphDefinition](graphdefinition.html): The graph definition publication date\r\n* [ImplementationGuide](implementationguide.html): The implementation guide publication date\r\n* [Library](library.html): The library publication date\r\n* [Measure](measure.html): The measure publication date\r\n* [MessageDefinition](messagedefinition.html): The message definition publication date\r\n* [NamingSystem](namingsystem.html): The naming system publication date\r\n* [OperationDefinition](operationdefinition.html): The operation definition publication date\r\n* [PlanDefinition](plandefinition.html): The plan definition publication date\r\n* [Questionnaire](questionnaire.html): The questionnaire publication date\r\n* [Requirements](requirements.html): The requirements publication date\r\n* [SearchParameter](searchparameter.html): The search parameter publication date\r\n* [StructureDefinition](structuredefinition.html): The structure definition publication date\r\n* [StructureMap](structuremap.html): The structure map publication date\r\n* [SubscriptionTopic](subscriptiontopic.html): Date status first applied\r\n* [TerminologyCapabilities](terminologycapabilities.html): The terminology capabilities publication date\r\n* [TestScript](testscript.html): The test script publication date\r\n* [ValueSet](valueset.html): The value set publication date\r\n", type="date" )
   public static final String SP_DATE = "date";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>date</b>
    * <p>
-   * Description: <b>Date status first applied</b><br>
+   * Description: <b>Multiple Resources: 
+
+* [ActivityDefinition](activitydefinition.html): The activity definition publication date
+* [ActorDefinition](actordefinition.html): The Actor Definition publication date
+* [CapabilityStatement](capabilitystatement.html): The capability statement publication date
+* [ChargeItemDefinition](chargeitemdefinition.html): The charge item definition publication date
+* [Citation](citation.html): The citation publication date
+* [CodeSystem](codesystem.html): The code system publication date
+* [CompartmentDefinition](compartmentdefinition.html): The compartment definition publication date
+* [ConceptMap](conceptmap.html): The concept map publication date
+* [ConditionDefinition](conditiondefinition.html): The condition definition publication date
+* [EventDefinition](eventdefinition.html): The event definition publication date
+* [Evidence](evidence.html): The evidence publication date
+* [EvidenceVariable](evidencevariable.html): The evidence variable publication date
+* [ExampleScenario](examplescenario.html): The example scenario publication date
+* [GraphDefinition](graphdefinition.html): The graph definition publication date
+* [ImplementationGuide](implementationguide.html): The implementation guide publication date
+* [Library](library.html): The library publication date
+* [Measure](measure.html): The measure publication date
+* [MessageDefinition](messagedefinition.html): The message definition publication date
+* [NamingSystem](namingsystem.html): The naming system publication date
+* [OperationDefinition](operationdefinition.html): The operation definition publication date
+* [PlanDefinition](plandefinition.html): The plan definition publication date
+* [Questionnaire](questionnaire.html): The questionnaire publication date
+* [Requirements](requirements.html): The requirements publication date
+* [SearchParameter](searchparameter.html): The search parameter publication date
+* [StructureDefinition](structuredefinition.html): The structure definition publication date
+* [StructureMap](structuremap.html): The structure map publication date
+* [SubscriptionTopic](subscriptiontopic.html): Date status first applied
+* [TerminologyCapabilities](terminologycapabilities.html): The terminology capabilities publication date
+* [TestScript](testscript.html): The test script publication date
+* [ValueSet](valueset.html): The value set publication date
+</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>SubscriptionTopic.date</b><br>
+   * Path: <b>ActivityDefinition.date | ActorDefinition.date | CapabilityStatement.date | ChargeItemDefinition.date | Citation.date | CodeSystem.date | CompartmentDefinition.date | ConceptMap.date | ConditionDefinition.date | EventDefinition.date | Evidence.date | EvidenceVariable.date | ExampleScenario.date | GraphDefinition.date | ImplementationGuide.date | Library.date | Measure.date | MessageDefinition.date | NamingSystem.date | OperationDefinition.date | PlanDefinition.date | Questionnaire.date | Requirements.date | SearchParameter.date | StructureDefinition.date | StructureMap.date | SubscriptionTopic.date | TerminologyCapabilities.date | TestScript.date | ValueSet.date</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [ActivityDefinition](activitydefinition.html): External identifier for the activity definition
+* [ActorDefinition](actordefinition.html): External identifier for the Actor Definition
+* [ChargeItemDefinition](chargeitemdefinition.html): External identifier for the charge item definition
+* [Citation](citation.html): External identifier for the citation
+* [CodeSystem](codesystem.html): External identifier for the code system
+* [ConceptMap](conceptmap.html): External identifier for the concept map
+* [ConditionDefinition](conditiondefinition.html): External identifier for the condition definition
+* [EventDefinition](eventdefinition.html): External identifier for the event definition
+* [Evidence](evidence.html): External identifier for the evidence
+* [EvidenceReport](evidencereport.html): External identifier for the evidence report
+* [EvidenceVariable](evidencevariable.html): External identifier for the evidence variable
+* [ExampleScenario](examplescenario.html): External identifier for the example scenario
+* [Library](library.html): External identifier for the library
+* [Measure](measure.html): External identifier for the measure
+* [MedicationKnowledge](medicationknowledge.html): Business identifier for this medication
+* [MessageDefinition](messagedefinition.html): External identifier for the message definition
+* [NamingSystem](namingsystem.html): External identifier for the naming system
+* [ObservationDefinition](observationdefinition.html): The unique identifier associated with the specimen definition
+* [PlanDefinition](plandefinition.html): External identifier for the plan definition
+* [Questionnaire](questionnaire.html): External identifier for the questionnaire
+* [Requirements](requirements.html): External identifier for the requirements
+* [SpecimenDefinition](specimendefinition.html): The unique identifier associated with the SpecimenDefinition
+* [StructureDefinition](structuredefinition.html): External identifier for the structure definition
+* [StructureMap](structuremap.html): External identifier for the structure map
+* [SubscriptionTopic](subscriptiontopic.html): Business Identifier for SubscriptionTopic
+* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities
+* [TestScript](testscript.html): External identifier for the test script
+* [ValueSet](valueset.html): External identifier for the value set
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ActivityDefinition.identifier | ActorDefinition.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestScript.identifier | ValueSet.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="ActivityDefinition.identifier | ActorDefinition.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestScript.identifier | ValueSet.identifier", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): External identifier for the activity definition\r\n* [ActorDefinition](actordefinition.html): External identifier for the Actor Definition\r\n* [ChargeItemDefinition](chargeitemdefinition.html): External identifier for the charge item definition\r\n* [Citation](citation.html): External identifier for the citation\r\n* [CodeSystem](codesystem.html): External identifier for the code system\r\n* [ConceptMap](conceptmap.html): External identifier for the concept map\r\n* [ConditionDefinition](conditiondefinition.html): External identifier for the condition definition\r\n* [EventDefinition](eventdefinition.html): External identifier for the event definition\r\n* [Evidence](evidence.html): External identifier for the evidence\r\n* [EvidenceReport](evidencereport.html): External identifier for the evidence report\r\n* [EvidenceVariable](evidencevariable.html): External identifier for the evidence variable\r\n* [ExampleScenario](examplescenario.html): External identifier for the example scenario\r\n* [Library](library.html): External identifier for the library\r\n* [Measure](measure.html): External identifier for the measure\r\n* [MedicationKnowledge](medicationknowledge.html): Business identifier for this medication\r\n* [MessageDefinition](messagedefinition.html): External identifier for the message definition\r\n* [NamingSystem](namingsystem.html): External identifier for the naming system\r\n* [ObservationDefinition](observationdefinition.html): The unique identifier associated with the specimen definition\r\n* [PlanDefinition](plandefinition.html): External identifier for the plan definition\r\n* [Questionnaire](questionnaire.html): External identifier for the questionnaire\r\n* [Requirements](requirements.html): External identifier for the requirements\r\n* [SpecimenDefinition](specimendefinition.html): The unique identifier associated with the SpecimenDefinition\r\n* [StructureDefinition](structuredefinition.html): External identifier for the structure definition\r\n* [StructureMap](structuremap.html): External identifier for the structure map\r\n* [SubscriptionTopic](subscriptiontopic.html): Business Identifier for SubscriptionTopic\r\n* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities\r\n* [TestScript](testscript.html): External identifier for the test script\r\n* [ValueSet](valueset.html): External identifier for the value set\r\n", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [ActivityDefinition](activitydefinition.html): External identifier for the activity definition
+* [ActorDefinition](actordefinition.html): External identifier for the Actor Definition
+* [ChargeItemDefinition](chargeitemdefinition.html): External identifier for the charge item definition
+* [Citation](citation.html): External identifier for the citation
+* [CodeSystem](codesystem.html): External identifier for the code system
+* [ConceptMap](conceptmap.html): External identifier for the concept map
+* [ConditionDefinition](conditiondefinition.html): External identifier for the condition definition
+* [EventDefinition](eventdefinition.html): External identifier for the event definition
+* [Evidence](evidence.html): External identifier for the evidence
+* [EvidenceReport](evidencereport.html): External identifier for the evidence report
+* [EvidenceVariable](evidencevariable.html): External identifier for the evidence variable
+* [ExampleScenario](examplescenario.html): External identifier for the example scenario
+* [Library](library.html): External identifier for the library
+* [Measure](measure.html): External identifier for the measure
+* [MedicationKnowledge](medicationknowledge.html): Business identifier for this medication
+* [MessageDefinition](messagedefinition.html): External identifier for the message definition
+* [NamingSystem](namingsystem.html): External identifier for the naming system
+* [ObservationDefinition](observationdefinition.html): The unique identifier associated with the specimen definition
+* [PlanDefinition](plandefinition.html): External identifier for the plan definition
+* [Questionnaire](questionnaire.html): External identifier for the questionnaire
+* [Requirements](requirements.html): External identifier for the requirements
+* [SpecimenDefinition](specimendefinition.html): The unique identifier associated with the SpecimenDefinition
+* [StructureDefinition](structuredefinition.html): External identifier for the structure definition
+* [StructureMap](structuremap.html): External identifier for the structure map
+* [SubscriptionTopic](subscriptiontopic.html): Business Identifier for SubscriptionTopic
+* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities
+* [TestScript](testscript.html): External identifier for the test script
+* [ValueSet](valueset.html): External identifier for the value set
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ActivityDefinition.identifier | ActorDefinition.identifier | ChargeItemDefinition.identifier | Citation.identifier | CodeSystem.identifier | ConceptMap.identifier | ConditionDefinition.identifier | EventDefinition.identifier | Evidence.identifier | EvidenceReport.identifier | EvidenceVariable.identifier | ExampleScenario.identifier | Library.identifier | Measure.identifier | MedicationKnowledge.identifier | MessageDefinition.identifier | NamingSystem.identifier | ObservationDefinition.identifier | PlanDefinition.identifier | Questionnaire.identifier | Requirements.identifier | SpecimenDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | SubscriptionTopic.identifier | TerminologyCapabilities.identifier | TestScript.identifier | ValueSet.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [ActivityDefinition](activitydefinition.html): The current status of the activity definition
+* [ActorDefinition](actordefinition.html): The current status of the Actor Definition
+* [CapabilityStatement](capabilitystatement.html): The current status of the capability statement
+* [ChargeItemDefinition](chargeitemdefinition.html): The current status of the charge item definition
+* [Citation](citation.html): The current status of the citation
+* [CodeSystem](codesystem.html): The current status of the code system
+* [CompartmentDefinition](compartmentdefinition.html): The current status of the compartment definition
+* [ConceptMap](conceptmap.html): The current status of the concept map
+* [ConditionDefinition](conditiondefinition.html): The current status of the condition definition
+* [EventDefinition](eventdefinition.html): The current status of the event definition
+* [Evidence](evidence.html): The current status of the evidence
+* [EvidenceReport](evidencereport.html): The current status of the evidence report
+* [EvidenceVariable](evidencevariable.html): The current status of the evidence variable
+* [ExampleScenario](examplescenario.html): The current status of the example scenario
+* [GraphDefinition](graphdefinition.html): The current status of the graph definition
+* [ImplementationGuide](implementationguide.html): The current status of the implementation guide
+* [Library](library.html): The current status of the library
+* [Measure](measure.html): The current status of the measure
+* [MedicationKnowledge](medicationknowledge.html): active | inactive | entered-in-error
+* [MessageDefinition](messagedefinition.html): The current status of the message definition
+* [NamingSystem](namingsystem.html): The current status of the naming system
+* [ObservationDefinition](observationdefinition.html): Publication status of the ObservationDefinition: draft, active, retired, unknown
+* [OperationDefinition](operationdefinition.html): The current status of the operation definition
+* [PlanDefinition](plandefinition.html): The current status of the plan definition
+* [Questionnaire](questionnaire.html): The current status of the questionnaire
+* [Requirements](requirements.html): The current status of the requirements
+* [SearchParameter](searchparameter.html): The current status of the search parameter
+* [SpecimenDefinition](specimendefinition.html): Publication status of the SpecimenDefinition: draft, active, retired, unknown
+* [StructureDefinition](structuredefinition.html): The current status of the structure definition
+* [StructureMap](structuremap.html): The current status of the structure map
+* [SubscriptionTopic](subscriptiontopic.html): draft | active | retired | unknown
+* [TerminologyCapabilities](terminologycapabilities.html): The current status of the terminology capabilities
+* [TestScript](testscript.html): The current status of the test script
+* [ValueSet](valueset.html): The current status of the value set
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ActivityDefinition.status | ActorDefinition.status | CapabilityStatement.status | ChargeItemDefinition.status | Citation.status | CodeSystem.status | CompartmentDefinition.status | ConceptMap.status | ConditionDefinition.status | EventDefinition.status | Evidence.status | EvidenceReport.status | EvidenceVariable.status | ExampleScenario.status | GraphDefinition.status | ImplementationGuide.status | Library.status | Measure.status | MedicationKnowledge.status | MessageDefinition.status | NamingSystem.status | ObservationDefinition.status | OperationDefinition.status | PlanDefinition.status | Questionnaire.status | Requirements.status | SearchParameter.status | SpecimenDefinition.status | StructureDefinition.status | StructureMap.status | SubscriptionTopic.status | TerminologyCapabilities.status | TestScript.status | ValueSet.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="ActivityDefinition.status | ActorDefinition.status | CapabilityStatement.status | ChargeItemDefinition.status | Citation.status | CodeSystem.status | CompartmentDefinition.status | ConceptMap.status | ConditionDefinition.status | EventDefinition.status | Evidence.status | EvidenceReport.status | EvidenceVariable.status | ExampleScenario.status | GraphDefinition.status | ImplementationGuide.status | Library.status | Measure.status | MedicationKnowledge.status | MessageDefinition.status | NamingSystem.status | ObservationDefinition.status | OperationDefinition.status | PlanDefinition.status | Questionnaire.status | Requirements.status | SearchParameter.status | SpecimenDefinition.status | StructureDefinition.status | StructureMap.status | SubscriptionTopic.status | TerminologyCapabilities.status | TestScript.status | ValueSet.status", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): The current status of the activity definition\r\n* [ActorDefinition](actordefinition.html): The current status of the Actor Definition\r\n* [CapabilityStatement](capabilitystatement.html): The current status of the capability statement\r\n* [ChargeItemDefinition](chargeitemdefinition.html): The current status of the charge item definition\r\n* [Citation](citation.html): The current status of the citation\r\n* [CodeSystem](codesystem.html): The current status of the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): The current status of the compartment definition\r\n* [ConceptMap](conceptmap.html): The current status of the concept map\r\n* [ConditionDefinition](conditiondefinition.html): The current status of the condition definition\r\n* [EventDefinition](eventdefinition.html): The current status of the event definition\r\n* [Evidence](evidence.html): The current status of the evidence\r\n* [EvidenceReport](evidencereport.html): The current status of the evidence report\r\n* [EvidenceVariable](evidencevariable.html): The current status of the evidence variable\r\n* [ExampleScenario](examplescenario.html): The current status of the example scenario\r\n* [GraphDefinition](graphdefinition.html): The current status of the graph definition\r\n* [ImplementationGuide](implementationguide.html): The current status of the implementation guide\r\n* [Library](library.html): The current status of the library\r\n* [Measure](measure.html): The current status of the measure\r\n* [MedicationKnowledge](medicationknowledge.html): active | inactive | entered-in-error\r\n* [MessageDefinition](messagedefinition.html): The current status of the message definition\r\n* [NamingSystem](namingsystem.html): The current status of the naming system\r\n* [ObservationDefinition](observationdefinition.html): Publication status of the ObservationDefinition: draft, active, retired, unknown\r\n* [OperationDefinition](operationdefinition.html): The current status of the operation definition\r\n* [PlanDefinition](plandefinition.html): The current status of the plan definition\r\n* [Questionnaire](questionnaire.html): The current status of the questionnaire\r\n* [Requirements](requirements.html): The current status of the requirements\r\n* [SearchParameter](searchparameter.html): The current status of the search parameter\r\n* [SpecimenDefinition](specimendefinition.html): Publication status of the SpecimenDefinition: draft, active, retired, unknown\r\n* [StructureDefinition](structuredefinition.html): The current status of the structure definition\r\n* [StructureMap](structuremap.html): The current status of the structure map\r\n* [SubscriptionTopic](subscriptiontopic.html): draft | active | retired | unknown\r\n* [TerminologyCapabilities](terminologycapabilities.html): The current status of the terminology capabilities\r\n* [TestScript](testscript.html): The current status of the test script\r\n* [ValueSet](valueset.html): The current status of the value set\r\n", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [ActivityDefinition](activitydefinition.html): The current status of the activity definition
+* [ActorDefinition](actordefinition.html): The current status of the Actor Definition
+* [CapabilityStatement](capabilitystatement.html): The current status of the capability statement
+* [ChargeItemDefinition](chargeitemdefinition.html): The current status of the charge item definition
+* [Citation](citation.html): The current status of the citation
+* [CodeSystem](codesystem.html): The current status of the code system
+* [CompartmentDefinition](compartmentdefinition.html): The current status of the compartment definition
+* [ConceptMap](conceptmap.html): The current status of the concept map
+* [ConditionDefinition](conditiondefinition.html): The current status of the condition definition
+* [EventDefinition](eventdefinition.html): The current status of the event definition
+* [Evidence](evidence.html): The current status of the evidence
+* [EvidenceReport](evidencereport.html): The current status of the evidence report
+* [EvidenceVariable](evidencevariable.html): The current status of the evidence variable
+* [ExampleScenario](examplescenario.html): The current status of the example scenario
+* [GraphDefinition](graphdefinition.html): The current status of the graph definition
+* [ImplementationGuide](implementationguide.html): The current status of the implementation guide
+* [Library](library.html): The current status of the library
+* [Measure](measure.html): The current status of the measure
+* [MedicationKnowledge](medicationknowledge.html): active | inactive | entered-in-error
+* [MessageDefinition](messagedefinition.html): The current status of the message definition
+* [NamingSystem](namingsystem.html): The current status of the naming system
+* [ObservationDefinition](observationdefinition.html): Publication status of the ObservationDefinition: draft, active, retired, unknown
+* [OperationDefinition](operationdefinition.html): The current status of the operation definition
+* [PlanDefinition](plandefinition.html): The current status of the plan definition
+* [Questionnaire](questionnaire.html): The current status of the questionnaire
+* [Requirements](requirements.html): The current status of the requirements
+* [SearchParameter](searchparameter.html): The current status of the search parameter
+* [SpecimenDefinition](specimendefinition.html): Publication status of the SpecimenDefinition: draft, active, retired, unknown
+* [StructureDefinition](structuredefinition.html): The current status of the structure definition
+* [StructureMap](structuremap.html): The current status of the structure map
+* [SubscriptionTopic](subscriptiontopic.html): draft | active | retired | unknown
+* [TerminologyCapabilities](terminologycapabilities.html): The current status of the terminology capabilities
+* [TestScript](testscript.html): The current status of the test script
+* [ValueSet](valueset.html): The current status of the value set
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ActivityDefinition.status | ActorDefinition.status | CapabilityStatement.status | ChargeItemDefinition.status | Citation.status | CodeSystem.status | CompartmentDefinition.status | ConceptMap.status | ConditionDefinition.status | EventDefinition.status | Evidence.status | EvidenceReport.status | EvidenceVariable.status | ExampleScenario.status | GraphDefinition.status | ImplementationGuide.status | Library.status | Measure.status | MedicationKnowledge.status | MessageDefinition.status | NamingSystem.status | ObservationDefinition.status | OperationDefinition.status | PlanDefinition.status | Questionnaire.status | Requirements.status | SearchParameter.status | SpecimenDefinition.status | StructureDefinition.status | StructureMap.status | SubscriptionTopic.status | TerminologyCapabilities.status | TestScript.status | ValueSet.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>title</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [ActivityDefinition](activitydefinition.html): The human-friendly name of the activity definition
+* [ActorDefinition](actordefinition.html): The human-friendly name of the Actor Definition
+* [CapabilityStatement](capabilitystatement.html): The human-friendly name of the capability statement
+* [ChargeItemDefinition](chargeitemdefinition.html): The human-friendly name of the charge item definition
+* [Citation](citation.html): The human-friendly name of the citation
+* [CodeSystem](codesystem.html): The human-friendly name of the code system
+* [ConceptMap](conceptmap.html): The human-friendly name of the concept map
+* [ConditionDefinition](conditiondefinition.html): The human-friendly name of the condition definition
+* [EventDefinition](eventdefinition.html): The human-friendly name of the event definition
+* [Evidence](evidence.html): The human-friendly name of the evidence
+* [EvidenceVariable](evidencevariable.html): The human-friendly name of the evidence variable
+* [ImplementationGuide](implementationguide.html): The human-friendly name of the implementation guide
+* [Library](library.html): The human-friendly name of the library
+* [Measure](measure.html): The human-friendly name of the measure
+* [MessageDefinition](messagedefinition.html): The human-friendly name of the message definition
+* [ObservationDefinition](observationdefinition.html): Human-friendly name of the ObservationDefinition
+* [OperationDefinition](operationdefinition.html): The human-friendly name of the operation definition
+* [PlanDefinition](plandefinition.html): The human-friendly name of the plan definition
+* [Questionnaire](questionnaire.html): The human-friendly name of the questionnaire
+* [Requirements](requirements.html): The human-friendly name of the requirements
+* [SpecimenDefinition](specimendefinition.html): Human-friendly name of the SpecimenDefinition
+* [StructureDefinition](structuredefinition.html): The human-friendly name of the structure definition
+* [StructureMap](structuremap.html): The human-friendly name of the structure map
+* [SubscriptionTopic](subscriptiontopic.html): Name for this SubscriptionTopic (Human friendly)
+* [TerminologyCapabilities](terminologycapabilities.html): The human-friendly name of the terminology capabilities
+* [TestScript](testscript.html): The human-friendly name of the test script
+* [ValueSet](valueset.html): The human-friendly name of the value set
+</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>ActivityDefinition.title | ActorDefinition.title | CapabilityStatement.title | ChargeItemDefinition.title | Citation.title | CodeSystem.title | ConceptMap.title | ConditionDefinition.title | EventDefinition.title | Evidence.title | EvidenceVariable.title | ImplementationGuide.title | Library.title | Measure.title | MessageDefinition.title | ObservationDefinition.title | OperationDefinition.title | PlanDefinition.title | Questionnaire.title | Requirements.title | SpecimenDefinition.title | StructureDefinition.title | StructureMap.title | SubscriptionTopic.title | TerminologyCapabilities.title | TestScript.title | ValueSet.title</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="title", path="ActivityDefinition.title | ActorDefinition.title | CapabilityStatement.title | ChargeItemDefinition.title | Citation.title | CodeSystem.title | ConceptMap.title | ConditionDefinition.title | EventDefinition.title | Evidence.title | EvidenceVariable.title | ImplementationGuide.title | Library.title | Measure.title | MessageDefinition.title | ObservationDefinition.title | OperationDefinition.title | PlanDefinition.title | Questionnaire.title | Requirements.title | SpecimenDefinition.title | StructureDefinition.title | StructureMap.title | SubscriptionTopic.title | TerminologyCapabilities.title | TestScript.title | ValueSet.title", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): The human-friendly name of the activity definition\r\n* [ActorDefinition](actordefinition.html): The human-friendly name of the Actor Definition\r\n* [CapabilityStatement](capabilitystatement.html): The human-friendly name of the capability statement\r\n* [ChargeItemDefinition](chargeitemdefinition.html): The human-friendly name of the charge item definition\r\n* [Citation](citation.html): The human-friendly name of the citation\r\n* [CodeSystem](codesystem.html): The human-friendly name of the code system\r\n* [ConceptMap](conceptmap.html): The human-friendly name of the concept map\r\n* [ConditionDefinition](conditiondefinition.html): The human-friendly name of the condition definition\r\n* [EventDefinition](eventdefinition.html): The human-friendly name of the event definition\r\n* [Evidence](evidence.html): The human-friendly name of the evidence\r\n* [EvidenceVariable](evidencevariable.html): The human-friendly name of the evidence variable\r\n* [ImplementationGuide](implementationguide.html): The human-friendly name of the implementation guide\r\n* [Library](library.html): The human-friendly name of the library\r\n* [Measure](measure.html): The human-friendly name of the measure\r\n* [MessageDefinition](messagedefinition.html): The human-friendly name of the message definition\r\n* [ObservationDefinition](observationdefinition.html): Human-friendly name of the ObservationDefinition\r\n* [OperationDefinition](operationdefinition.html): The human-friendly name of the operation definition\r\n* [PlanDefinition](plandefinition.html): The human-friendly name of the plan definition\r\n* [Questionnaire](questionnaire.html): The human-friendly name of the questionnaire\r\n* [Requirements](requirements.html): The human-friendly name of the requirements\r\n* [SpecimenDefinition](specimendefinition.html): Human-friendly name of the SpecimenDefinition\r\n* [StructureDefinition](structuredefinition.html): The human-friendly name of the structure definition\r\n* [StructureMap](structuremap.html): The human-friendly name of the structure map\r\n* [SubscriptionTopic](subscriptiontopic.html): Name for this SubscriptionTopic (Human friendly)\r\n* [TerminologyCapabilities](terminologycapabilities.html): The human-friendly name of the terminology capabilities\r\n* [TestScript](testscript.html): The human-friendly name of the test script\r\n* [ValueSet](valueset.html): The human-friendly name of the value set\r\n", type="string" )
+  public static final String SP_TITLE = "title";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>title</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [ActivityDefinition](activitydefinition.html): The human-friendly name of the activity definition
+* [ActorDefinition](actordefinition.html): The human-friendly name of the Actor Definition
+* [CapabilityStatement](capabilitystatement.html): The human-friendly name of the capability statement
+* [ChargeItemDefinition](chargeitemdefinition.html): The human-friendly name of the charge item definition
+* [Citation](citation.html): The human-friendly name of the citation
+* [CodeSystem](codesystem.html): The human-friendly name of the code system
+* [ConceptMap](conceptmap.html): The human-friendly name of the concept map
+* [ConditionDefinition](conditiondefinition.html): The human-friendly name of the condition definition
+* [EventDefinition](eventdefinition.html): The human-friendly name of the event definition
+* [Evidence](evidence.html): The human-friendly name of the evidence
+* [EvidenceVariable](evidencevariable.html): The human-friendly name of the evidence variable
+* [ImplementationGuide](implementationguide.html): The human-friendly name of the implementation guide
+* [Library](library.html): The human-friendly name of the library
+* [Measure](measure.html): The human-friendly name of the measure
+* [MessageDefinition](messagedefinition.html): The human-friendly name of the message definition
+* [ObservationDefinition](observationdefinition.html): Human-friendly name of the ObservationDefinition
+* [OperationDefinition](operationdefinition.html): The human-friendly name of the operation definition
+* [PlanDefinition](plandefinition.html): The human-friendly name of the plan definition
+* [Questionnaire](questionnaire.html): The human-friendly name of the questionnaire
+* [Requirements](requirements.html): The human-friendly name of the requirements
+* [SpecimenDefinition](specimendefinition.html): Human-friendly name of the SpecimenDefinition
+* [StructureDefinition](structuredefinition.html): The human-friendly name of the structure definition
+* [StructureMap](structuremap.html): The human-friendly name of the structure map
+* [SubscriptionTopic](subscriptiontopic.html): Name for this SubscriptionTopic (Human friendly)
+* [TerminologyCapabilities](terminologycapabilities.html): The human-friendly name of the terminology capabilities
+* [TestScript](testscript.html): The human-friendly name of the test script
+* [ValueSet](valueset.html): The human-friendly name of the value set
+</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>ActivityDefinition.title | ActorDefinition.title | CapabilityStatement.title | ChargeItemDefinition.title | Citation.title | CodeSystem.title | ConceptMap.title | ConditionDefinition.title | EventDefinition.title | Evidence.title | EvidenceVariable.title | ImplementationGuide.title | Library.title | Measure.title | MessageDefinition.title | ObservationDefinition.title | OperationDefinition.title | PlanDefinition.title | Questionnaire.title | Requirements.title | SpecimenDefinition.title | StructureDefinition.title | StructureMap.title | SubscriptionTopic.title | TerminologyCapabilities.title | TestScript.title | ValueSet.title</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
+
+ /**
+   * Search parameter: <b>url</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [ActivityDefinition](activitydefinition.html): The uri that identifies the activity definition
+* [ActorDefinition](actordefinition.html): The uri that identifies the Actor Definition
+* [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement
+* [ChargeItemDefinition](chargeitemdefinition.html): The uri that identifies the charge item definition
+* [Citation](citation.html): The uri that identifies the citation
+* [CodeSystem](codesystem.html): The uri that identifies the code system
+* [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition
+* [ConceptMap](conceptmap.html): The URI that identifies the concept map
+* [ConditionDefinition](conditiondefinition.html): The uri that identifies the condition definition
+* [EventDefinition](eventdefinition.html): The uri that identifies the event definition
+* [Evidence](evidence.html): The uri that identifies the evidence
+* [EvidenceReport](evidencereport.html): The uri that identifies the evidence report
+* [EvidenceVariable](evidencevariable.html): The uri that identifies the evidence variable
+* [ExampleScenario](examplescenario.html): The uri that identifies the example scenario
+* [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition
+* [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide
+* [Library](library.html): The uri that identifies the library
+* [Measure](measure.html): The uri that identifies the measure
+* [MessageDefinition](messagedefinition.html): The uri that identifies the message definition
+* [NamingSystem](namingsystem.html): The uri that identifies the naming system
+* [ObservationDefinition](observationdefinition.html): The uri that identifies the observation definition
+* [OperationDefinition](operationdefinition.html): The uri that identifies the operation definition
+* [PlanDefinition](plandefinition.html): The uri that identifies the plan definition
+* [Questionnaire](questionnaire.html): The uri that identifies the questionnaire
+* [Requirements](requirements.html): The uri that identifies the requirements
+* [SearchParameter](searchparameter.html): The uri that identifies the search parameter
+* [SpecimenDefinition](specimendefinition.html): The uri that identifies the specimen definition
+* [StructureDefinition](structuredefinition.html): The uri that identifies the structure definition
+* [StructureMap](structuremap.html): The uri that identifies the structure map
+* [SubscriptionTopic](subscriptiontopic.html): Logical canonical URL to reference this SubscriptionTopic (globally unique)
+* [TerminologyCapabilities](terminologycapabilities.html): The uri that identifies the terminology capabilities
+* [TestScript](testscript.html): The uri that identifies the test script
+* [ValueSet](valueset.html): The uri that identifies the value set
+</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>ActivityDefinition.url | ActorDefinition.url | CapabilityStatement.url | ChargeItemDefinition.url | Citation.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | ConditionDefinition.url | EventDefinition.url | Evidence.url | EvidenceReport.url | EvidenceVariable.url | ExampleScenario.url | GraphDefinition.url | ImplementationGuide.url | Library.url | Measure.url | MessageDefinition.url | NamingSystem.url | ObservationDefinition.url | OperationDefinition.url | PlanDefinition.url | Questionnaire.url | Requirements.url | SearchParameter.url | SpecimenDefinition.url | StructureDefinition.url | StructureMap.url | SubscriptionTopic.url | TerminologyCapabilities.url | TestScript.url | ValueSet.url</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="url", path="ActivityDefinition.url | ActorDefinition.url | CapabilityStatement.url | ChargeItemDefinition.url | Citation.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | ConditionDefinition.url | EventDefinition.url | Evidence.url | EvidenceReport.url | EvidenceVariable.url | ExampleScenario.url | GraphDefinition.url | ImplementationGuide.url | Library.url | Measure.url | MessageDefinition.url | NamingSystem.url | ObservationDefinition.url | OperationDefinition.url | PlanDefinition.url | Questionnaire.url | Requirements.url | SearchParameter.url | SpecimenDefinition.url | StructureDefinition.url | StructureMap.url | SubscriptionTopic.url | TerminologyCapabilities.url | TestScript.url | ValueSet.url", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): The uri that identifies the activity definition\r\n* [ActorDefinition](actordefinition.html): The uri that identifies the Actor Definition\r\n* [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement\r\n* [ChargeItemDefinition](chargeitemdefinition.html): The uri that identifies the charge item definition\r\n* [Citation](citation.html): The uri that identifies the citation\r\n* [CodeSystem](codesystem.html): The uri that identifies the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition\r\n* [ConceptMap](conceptmap.html): The URI that identifies the concept map\r\n* [ConditionDefinition](conditiondefinition.html): The uri that identifies the condition definition\r\n* [EventDefinition](eventdefinition.html): The uri that identifies the event definition\r\n* [Evidence](evidence.html): The uri that identifies the evidence\r\n* [EvidenceReport](evidencereport.html): The uri that identifies the evidence report\r\n* [EvidenceVariable](evidencevariable.html): The uri that identifies the evidence variable\r\n* [ExampleScenario](examplescenario.html): The uri that identifies the example scenario\r\n* [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition\r\n* [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide\r\n* [Library](library.html): The uri that identifies the library\r\n* [Measure](measure.html): The uri that identifies the measure\r\n* [MessageDefinition](messagedefinition.html): The uri that identifies the message definition\r\n* [NamingSystem](namingsystem.html): The uri that identifies the naming system\r\n* [ObservationDefinition](observationdefinition.html): The uri that identifies the observation definition\r\n* [OperationDefinition](operationdefinition.html): The uri that identifies the operation definition\r\n* [PlanDefinition](plandefinition.html): The uri that identifies the plan definition\r\n* [Questionnaire](questionnaire.html): The uri that identifies the questionnaire\r\n* [Requirements](requirements.html): The uri that identifies the requirements\r\n* [SearchParameter](searchparameter.html): The uri that identifies the search parameter\r\n* [SpecimenDefinition](specimendefinition.html): The uri that identifies the specimen definition\r\n* [StructureDefinition](structuredefinition.html): The uri that identifies the structure definition\r\n* [StructureMap](structuremap.html): The uri that identifies the structure map\r\n* [SubscriptionTopic](subscriptiontopic.html): Logical canonical URL to reference this SubscriptionTopic (globally unique)\r\n* [TerminologyCapabilities](terminologycapabilities.html): The uri that identifies the terminology capabilities\r\n* [TestScript](testscript.html): The uri that identifies the test script\r\n* [ValueSet](valueset.html): The uri that identifies the value set\r\n", type="uri" )
+  public static final String SP_URL = "url";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>url</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [ActivityDefinition](activitydefinition.html): The uri that identifies the activity definition
+* [ActorDefinition](actordefinition.html): The uri that identifies the Actor Definition
+* [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement
+* [ChargeItemDefinition](chargeitemdefinition.html): The uri that identifies the charge item definition
+* [Citation](citation.html): The uri that identifies the citation
+* [CodeSystem](codesystem.html): The uri that identifies the code system
+* [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition
+* [ConceptMap](conceptmap.html): The URI that identifies the concept map
+* [ConditionDefinition](conditiondefinition.html): The uri that identifies the condition definition
+* [EventDefinition](eventdefinition.html): The uri that identifies the event definition
+* [Evidence](evidence.html): The uri that identifies the evidence
+* [EvidenceReport](evidencereport.html): The uri that identifies the evidence report
+* [EvidenceVariable](evidencevariable.html): The uri that identifies the evidence variable
+* [ExampleScenario](examplescenario.html): The uri that identifies the example scenario
+* [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition
+* [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide
+* [Library](library.html): The uri that identifies the library
+* [Measure](measure.html): The uri that identifies the measure
+* [MessageDefinition](messagedefinition.html): The uri that identifies the message definition
+* [NamingSystem](namingsystem.html): The uri that identifies the naming system
+* [ObservationDefinition](observationdefinition.html): The uri that identifies the observation definition
+* [OperationDefinition](operationdefinition.html): The uri that identifies the operation definition
+* [PlanDefinition](plandefinition.html): The uri that identifies the plan definition
+* [Questionnaire](questionnaire.html): The uri that identifies the questionnaire
+* [Requirements](requirements.html): The uri that identifies the requirements
+* [SearchParameter](searchparameter.html): The uri that identifies the search parameter
+* [SpecimenDefinition](specimendefinition.html): The uri that identifies the specimen definition
+* [StructureDefinition](structuredefinition.html): The uri that identifies the structure definition
+* [StructureMap](structuremap.html): The uri that identifies the structure map
+* [SubscriptionTopic](subscriptiontopic.html): Logical canonical URL to reference this SubscriptionTopic (globally unique)
+* [TerminologyCapabilities](terminologycapabilities.html): The uri that identifies the terminology capabilities
+* [TestScript](testscript.html): The uri that identifies the test script
+* [ValueSet](valueset.html): The uri that identifies the value set
+</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>ActivityDefinition.url | ActorDefinition.url | CapabilityStatement.url | ChargeItemDefinition.url | Citation.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | ConditionDefinition.url | EventDefinition.url | Evidence.url | EvidenceReport.url | EvidenceVariable.url | ExampleScenario.url | GraphDefinition.url | ImplementationGuide.url | Library.url | Measure.url | MessageDefinition.url | NamingSystem.url | ObservationDefinition.url | OperationDefinition.url | PlanDefinition.url | Questionnaire.url | Requirements.url | SearchParameter.url | SpecimenDefinition.url | StructureDefinition.url | StructureMap.url | SubscriptionTopic.url | TerminologyCapabilities.url | TestScript.url | ValueSet.url</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
+
+ /**
+   * Search parameter: <b>version</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [ActivityDefinition](activitydefinition.html): The business version of the activity definition
+* [ActorDefinition](actordefinition.html): The business version of the Actor Definition
+* [CapabilityStatement](capabilitystatement.html): The business version of the capability statement
+* [ChargeItemDefinition](chargeitemdefinition.html): The business version of the charge item definition
+* [Citation](citation.html): The business version of the citation
+* [CodeSystem](codesystem.html): The business version of the code system
+* [CompartmentDefinition](compartmentdefinition.html): The business version of the compartment definition
+* [ConceptMap](conceptmap.html): The business version of the concept map
+* [ConditionDefinition](conditiondefinition.html): The business version of the condition definition
+* [EventDefinition](eventdefinition.html): The business version of the event definition
+* [Evidence](evidence.html): The business version of the evidence
+* [EvidenceVariable](evidencevariable.html): The business version of the evidence variable
+* [ExampleScenario](examplescenario.html): The business version of the example scenario
+* [GraphDefinition](graphdefinition.html): The business version of the graph definition
+* [ImplementationGuide](implementationguide.html): The business version of the implementation guide
+* [Library](library.html): The business version of the library
+* [Measure](measure.html): The business version of the measure
+* [MessageDefinition](messagedefinition.html): The business version of the message definition
+* [NamingSystem](namingsystem.html): The business version of the naming system
+* [OperationDefinition](operationdefinition.html): The business version of the operation definition
+* [PlanDefinition](plandefinition.html): The business version of the plan definition
+* [Questionnaire](questionnaire.html): The business version of the questionnaire
+* [Requirements](requirements.html): The business version of the requirements
+* [SearchParameter](searchparameter.html): The business version of the search parameter
+* [StructureDefinition](structuredefinition.html): The business version of the structure definition
+* [StructureMap](structuremap.html): The business version of the structure map
+* [SubscriptionTopic](subscriptiontopic.html): Business version of the SubscriptionTopic
+* [TerminologyCapabilities](terminologycapabilities.html): The business version of the terminology capabilities
+* [TestScript](testscript.html): The business version of the test script
+* [ValueSet](valueset.html): The business version of the value set
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ActivityDefinition.version | ActorDefinition.version | CapabilityStatement.version | ChargeItemDefinition.version | Citation.version | CodeSystem.version | CompartmentDefinition.version | ConceptMap.version | ConditionDefinition.version | EventDefinition.version | Evidence.version | EvidenceVariable.version | ExampleScenario.version | GraphDefinition.version | ImplementationGuide.version | Library.version | Measure.version | MessageDefinition.version | NamingSystem.version | OperationDefinition.version | PlanDefinition.version | Questionnaire.version | Requirements.version | SearchParameter.version | StructureDefinition.version | StructureMap.version | SubscriptionTopic.version | TerminologyCapabilities.version | TestScript.version | ValueSet.version</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="version", path="ActivityDefinition.version | ActorDefinition.version | CapabilityStatement.version | ChargeItemDefinition.version | Citation.version | CodeSystem.version | CompartmentDefinition.version | ConceptMap.version | ConditionDefinition.version | EventDefinition.version | Evidence.version | EvidenceVariable.version | ExampleScenario.version | GraphDefinition.version | ImplementationGuide.version | Library.version | Measure.version | MessageDefinition.version | NamingSystem.version | OperationDefinition.version | PlanDefinition.version | Questionnaire.version | Requirements.version | SearchParameter.version | StructureDefinition.version | StructureMap.version | SubscriptionTopic.version | TerminologyCapabilities.version | TestScript.version | ValueSet.version", description="Multiple Resources: \r\n\r\n* [ActivityDefinition](activitydefinition.html): The business version of the activity definition\r\n* [ActorDefinition](actordefinition.html): The business version of the Actor Definition\r\n* [CapabilityStatement](capabilitystatement.html): The business version of the capability statement\r\n* [ChargeItemDefinition](chargeitemdefinition.html): The business version of the charge item definition\r\n* [Citation](citation.html): The business version of the citation\r\n* [CodeSystem](codesystem.html): The business version of the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): The business version of the compartment definition\r\n* [ConceptMap](conceptmap.html): The business version of the concept map\r\n* [ConditionDefinition](conditiondefinition.html): The business version of the condition definition\r\n* [EventDefinition](eventdefinition.html): The business version of the event definition\r\n* [Evidence](evidence.html): The business version of the evidence\r\n* [EvidenceVariable](evidencevariable.html): The business version of the evidence variable\r\n* [ExampleScenario](examplescenario.html): The business version of the example scenario\r\n* [GraphDefinition](graphdefinition.html): The business version of the graph definition\r\n* [ImplementationGuide](implementationguide.html): The business version of the implementation guide\r\n* [Library](library.html): The business version of the library\r\n* [Measure](measure.html): The business version of the measure\r\n* [MessageDefinition](messagedefinition.html): The business version of the message definition\r\n* [NamingSystem](namingsystem.html): The business version of the naming system\r\n* [OperationDefinition](operationdefinition.html): The business version of the operation definition\r\n* [PlanDefinition](plandefinition.html): The business version of the plan definition\r\n* [Questionnaire](questionnaire.html): The business version of the questionnaire\r\n* [Requirements](requirements.html): The business version of the requirements\r\n* [SearchParameter](searchparameter.html): The business version of the search parameter\r\n* [StructureDefinition](structuredefinition.html): The business version of the structure definition\r\n* [StructureMap](structuremap.html): The business version of the structure map\r\n* [SubscriptionTopic](subscriptiontopic.html): Business version of the SubscriptionTopic\r\n* [TerminologyCapabilities](terminologycapabilities.html): The business version of the terminology capabilities\r\n* [TestScript](testscript.html): The business version of the test script\r\n* [ValueSet](valueset.html): The business version of the value set\r\n", type="token" )
+  public static final String SP_VERSION = "version";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>version</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [ActivityDefinition](activitydefinition.html): The business version of the activity definition
+* [ActorDefinition](actordefinition.html): The business version of the Actor Definition
+* [CapabilityStatement](capabilitystatement.html): The business version of the capability statement
+* [ChargeItemDefinition](chargeitemdefinition.html): The business version of the charge item definition
+* [Citation](citation.html): The business version of the citation
+* [CodeSystem](codesystem.html): The business version of the code system
+* [CompartmentDefinition](compartmentdefinition.html): The business version of the compartment definition
+* [ConceptMap](conceptmap.html): The business version of the concept map
+* [ConditionDefinition](conditiondefinition.html): The business version of the condition definition
+* [EventDefinition](eventdefinition.html): The business version of the event definition
+* [Evidence](evidence.html): The business version of the evidence
+* [EvidenceVariable](evidencevariable.html): The business version of the evidence variable
+* [ExampleScenario](examplescenario.html): The business version of the example scenario
+* [GraphDefinition](graphdefinition.html): The business version of the graph definition
+* [ImplementationGuide](implementationguide.html): The business version of the implementation guide
+* [Library](library.html): The business version of the library
+* [Measure](measure.html): The business version of the measure
+* [MessageDefinition](messagedefinition.html): The business version of the message definition
+* [NamingSystem](namingsystem.html): The business version of the naming system
+* [OperationDefinition](operationdefinition.html): The business version of the operation definition
+* [PlanDefinition](plandefinition.html): The business version of the plan definition
+* [Questionnaire](questionnaire.html): The business version of the questionnaire
+* [Requirements](requirements.html): The business version of the requirements
+* [SearchParameter](searchparameter.html): The business version of the search parameter
+* [StructureDefinition](structuredefinition.html): The business version of the structure definition
+* [StructureMap](structuremap.html): The business version of the structure map
+* [SubscriptionTopic](subscriptiontopic.html): Business version of the SubscriptionTopic
+* [TerminologyCapabilities](terminologycapabilities.html): The business version of the terminology capabilities
+* [TestScript](testscript.html): The business version of the test script
+* [ValueSet](valueset.html): The business version of the value set
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ActivityDefinition.version | ActorDefinition.version | CapabilityStatement.version | ChargeItemDefinition.version | Citation.version | CodeSystem.version | CompartmentDefinition.version | ConceptMap.version | ConditionDefinition.version | EventDefinition.version | Evidence.version | EvidenceVariable.version | ExampleScenario.version | GraphDefinition.version | ImplementationGuide.version | Library.version | Measure.version | MessageDefinition.version | NamingSystem.version | OperationDefinition.version | PlanDefinition.version | Questionnaire.version | Requirements.version | SearchParameter.version | StructureDefinition.version | StructureMap.version | SubscriptionTopic.version | TerminologyCapabilities.version | TestScript.version | ValueSet.version</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
  /**
    * Search parameter: <b>derived-or-self</b>
@@ -4146,26 +4747,6 @@ public class SubscriptionTopic extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.UriClientParam DERIVED_OR_SELF = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_DERIVED_OR_SELF);
 
  /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>Business Identifier for SubscriptionTopic</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>SubscriptionTopic.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="SubscriptionTopic.identifier", description="Business Identifier for SubscriptionTopic", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>Business Identifier for SubscriptionTopic</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>SubscriptionTopic.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
    * Search parameter: <b>resource</b>
    * <p>
    * Description: <b>Allowed Data type or Resource (reference to definition) for this definition, searches resourceTrigger, eventTrigger, and notificationShape for matches.</b><br>
@@ -4186,46 +4767,6 @@ public class SubscriptionTopic extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.UriClientParam RESOURCE = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_RESOURCE);
 
  /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>draft | active | retired | unknown</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>SubscriptionTopic.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="status", path="SubscriptionTopic.status", description="draft | active | retired | unknown", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>draft | active | retired | unknown</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>SubscriptionTopic.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
-
- /**
-   * Search parameter: <b>title</b>
-   * <p>
-   * Description: <b>Name for this SubscriptionTopic (Human friendly)</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>SubscriptionTopic.title</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="title", path="SubscriptionTopic.title", description="Name for this SubscriptionTopic (Human friendly)", type="string" )
-  public static final String SP_TITLE = "title";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>title</b>
-   * <p>
-   * Description: <b>Name for this SubscriptionTopic (Human friendly)</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>SubscriptionTopic.title</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
-
- /**
    * Search parameter: <b>trigger-description</b>
    * <p>
    * Description: <b>Text representation of the trigger</b><br>
@@ -4244,46 +4785,6 @@ public class SubscriptionTopic extends CanonicalResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.StringClientParam TRIGGER_DESCRIPTION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TRIGGER_DESCRIPTION);
-
- /**
-   * Search parameter: <b>url</b>
-   * <p>
-   * Description: <b>Logical canonical URL to reference this SubscriptionTopic (globally unique)</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>SubscriptionTopic.url</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="url", path="SubscriptionTopic.url", description="Logical canonical URL to reference this SubscriptionTopic (globally unique)", type="uri" )
-  public static final String SP_URL = "url";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>url</b>
-   * <p>
-   * Description: <b>Logical canonical URL to reference this SubscriptionTopic (globally unique)</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>SubscriptionTopic.url</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
-
- /**
-   * Search parameter: <b>version</b>
-   * <p>
-   * Description: <b>Business version of the SubscriptionTopic</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>SubscriptionTopic.version</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="version", path="SubscriptionTopic.version", description="Business version of the SubscriptionTopic", type="token" )
-  public static final String SP_VERSION = "version";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>version</b>
-   * <p>
-   * Description: <b>Business version of the SubscriptionTopic</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>SubscriptionTopic.version</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
 
 }

@@ -1,6 +1,18 @@
 package org.hl7.fhir.validation;
 
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -36,11 +48,17 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.JsonParser;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
-import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.DomainResource;
+import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
@@ -55,16 +73,29 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.validation.cli.utils.ValidationLevel;
 import org.hl7.fhir.validation.instance.utils.IndexedElement;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.apache.commons.lang3.StringUtils.isBlank;
-
 public class BaseValidator implements IValidationContextResourceLoader {
+
+  public class BooleanValue {
+
+    private boolean value;
+
+    public BooleanValue(boolean value) {
+      super();
+      this.value = value;
+    }
+
+    public boolean isValue() {
+      return value;
+    }
+
+    public void setValue(boolean value) {
+      this.value = value;
+    }
+
+    public void see(boolean ok) {
+      value = value && ok;
+    }
+  }
 
   public class TrackedLocationRelatedMessage {
     private Object location;
@@ -98,6 +129,8 @@ public class BaseValidator implements IValidationContextResourceLoader {
       return level;
     }
   }
+
+  public static final String NO_RULE_DATE = ValidationMessage.NO_RULE_DATE;
 
   protected final String META = "meta";
   protected final String ENTRY = "entry";
@@ -181,17 +214,17 @@ public class BaseValidator implements IValidationContextResourceLoader {
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   @Deprecated
-  protected boolean fail(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg) {
+  protected boolean fail(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, String msg) {
     if (!thePass && doingErrors()) {
-      addValidationMessage(errors, type, line, col, path, msg, IssueSeverity.FATAL, null);
+      addValidationMessage(errors, ruleDate, type, line, col, path, msg, IssueSeverity.FATAL, null);
     }
     return thePass;
   }
 
-  protected boolean fail(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
+  protected boolean fail(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass && doingErrors()) {
       String msg = context.formatMessage(theMessage, theMessageArguments);
-      addValidationMessage(errors, type, line, col, path, msg, IssueSeverity.FATAL, theMessage);
+      addValidationMessage(errors, ruleDate, type, line, col, path, msg, IssueSeverity.FATAL, theMessage);
     }
     return thePass;
   }
@@ -204,10 +237,10 @@ public class BaseValidator implements IValidationContextResourceLoader {
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   @Deprecated
-  protected boolean fail(List<ValidationMessage> errors, IssueType type, List<String> pathParts, boolean thePass, String msg) {
+  protected boolean fail(List<ValidationMessage> errors, String ruleDate, IssueType type, List<String> pathParts, boolean thePass, String msg) {
     if (!thePass && doingErrors()) {
       String path = toPath(pathParts);
-      addValidationMessage(errors, type, -1, -1, path, msg, IssueSeverity.FATAL, null);
+      addValidationMessage(errors, ruleDate, type, -1, -1, path, msg, IssueSeverity.FATAL, null);
     }
     return thePass;
   }
@@ -220,10 +253,10 @@ public class BaseValidator implements IValidationContextResourceLoader {
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   @Deprecated
-  protected boolean fail(List<ValidationMessage> errors, IssueType type, List<String> pathParts, boolean thePass, String theMessage, Object... theMessageArguments) {
+  protected boolean fail(List<ValidationMessage> errors, String ruleDate, IssueType type, List<String> pathParts, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass && doingErrors()) {
       String path = toPath(pathParts);
-      addValidationMessage(errors, type, -1, -1, path, context.formatMessage(theMessage, theMessageArguments), IssueSeverity.FATAL, theMessage);
+      addValidationMessage(errors, ruleDate, type, -1, -1, path, context.formatMessage(theMessage, theMessageArguments), IssueSeverity.FATAL, theMessage);
     }
     return thePass;
   }
@@ -236,9 +269,9 @@ public class BaseValidator implements IValidationContextResourceLoader {
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   @Deprecated
-  protected boolean fail(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg) {
+  protected boolean fail(List<ValidationMessage> errors, String ruleDate, IssueType type, String path, boolean thePass, String msg) {
     if (!thePass && doingErrors()) {
-      addValidationMessage(errors, type, -1, -1, path, msg, IssueSeverity.FATAL, null);
+      addValidationMessage(errors, ruleDate, type, -1, -1, path, msg, IssueSeverity.FATAL, null);
     }
     return thePass;
   }
@@ -254,10 +287,10 @@ public class BaseValidator implements IValidationContextResourceLoader {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean hint(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg) {
+  protected boolean hint(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, String msg) {
     if (!thePass && doingHints()) {
       String message = context.formatMessage(msg);
-      addValidationMessage(errors, type, line, col, path, message, IssueSeverity.INFORMATION, msg);
+      addValidationMessage(errors, ruleDate, type, line, col, path, message, IssueSeverity.INFORMATION, msg);
     }
     return thePass;
   }
@@ -270,9 +303,9 @@ public class BaseValidator implements IValidationContextResourceLoader {
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   //FIXME: formatMessage should be done here
-  protected boolean slicingHint(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, boolean isCritical, String msg, String html, String[] text) {
+  protected boolean slicingHint(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, boolean isCritical, String msg, String html, String[] text) {
     if (!thePass && doingHints()) {
-      addValidationMessage(errors, type, line, col, path, msg, IssueSeverity.INFORMATION, null).setSlicingHint(true).setSliceHtml(html, text).setCriticalSignpost(isCritical);
+      addValidationMessage(errors, ruleDate, type, line, col, path, msg, IssueSeverity.INFORMATION, null).setSlicingHint(true).setSliceHtml(html, text).setCriticalSignpost(isCritical);
     }
     return thePass;
   }
@@ -284,23 +317,31 @@ public class BaseValidator implements IValidationContextResourceLoader {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean hint(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
+  protected boolean hint(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass && doingHints()) {
       String message = context.formatMessage(theMessage, theMessageArguments);
-      addValidationMessage(errors, type, line, col, path, message, IssueSeverity.INFORMATION, theMessage);
+      addValidationMessage(errors, ruleDate, type, line, col, path, message, IssueSeverity.INFORMATION, theMessage);
     }
     return thePass;
   }
 
-  protected ValidationMessage signpost(List<ValidationMessage> errors, IssueType type, int line, int col, String path, String theMessage, Object... theMessageArguments) {
+  protected boolean hintPlural(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, int num, String theMessage, Object... theMessageArguments) {
+    if (!thePass && doingHints()) {
+      String message = context.formatMessagePlural(num, theMessage, theMessageArguments);
+      addValidationMessage(errors, ruleDate, type, line, col, path, message, IssueSeverity.INFORMATION, theMessage);
+    }
+    return thePass;
+  }
+
+  protected ValidationMessage signpost(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, String theMessage, Object... theMessageArguments) {
     String message = context.formatMessage(theMessage, theMessageArguments);
-    return addValidationMessage(errors, type, line, col, path, message, IssueSeverity.INFORMATION, theMessage).setSignpost(true);
+    return addValidationMessage(errors, ruleDate, type, line, col, path, message, IssueSeverity.INFORMATION, theMessage).setSignpost(true);
   }
 
-  protected boolean txHint(List<ValidationMessage> errors, String txLink, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
+  protected boolean txHint(List<ValidationMessage> errors, String ruleDate, String txLink, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass && doingHints()) {
       String message = context.formatMessage(theMessage, theMessageArguments);
-      addValidationMessage(errors, type, line, col, path, message, IssueSeverity.INFORMATION, Source.TerminologyEngine, theMessage).setTxLink(txLink);
+      addValidationMessage(errors, ruleDate, type, line, col, path, message, IssueSeverity.INFORMATION, Source.TerminologyEngine, theMessage).setTxLink(txLink);
     }
     return thePass;
   }
@@ -312,11 +353,11 @@ public class BaseValidator implements IValidationContextResourceLoader {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean hint(List<ValidationMessage> errors, IssueType type, List<String> pathParts, boolean thePass, String theMessage, Object... theMessageArguments) {
+  protected boolean hint(List<ValidationMessage> errors, String ruleDate, IssueType type, List<String> pathParts, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass && doingHints()) {
       String path = toPath(pathParts);
       String message = context.formatMessage(theMessage, theMessageArguments);
-      addValidationMessage(errors, type, -1, -1, path, message, IssueSeverity.INFORMATION, theMessage);
+      addValidationMessage(errors, ruleDate, type, -1, -1, path, message, IssueSeverity.INFORMATION, theMessage);
     }
     return thePass;
   }
@@ -328,10 +369,10 @@ public class BaseValidator implements IValidationContextResourceLoader {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean hint(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
+  protected boolean hint(List<ValidationMessage> errors, String ruleDate, IssueType type, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass && doingHints()) {
       String message = context.formatMessage(theMessage, theMessageArguments);
-      addValidationMessage(errors, type, -1, -1, path, message, IssueSeverity.INFORMATION, null);
+      addValidationMessage(errors, ruleDate, type, -1, -1, path, message, IssueSeverity.INFORMATION, null);
     }
     return thePass;
   }
@@ -343,18 +384,27 @@ public class BaseValidator implements IValidationContextResourceLoader {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean rule(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
+  protected boolean rule(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass && doingErrors()) {
       String message = context.formatMessage(theMessage, theMessageArguments);
-      addValidationMessage(errors, type, line, col, path, message, IssueSeverity.ERROR, theMessage);
+      addValidationMessage(errors, ruleDate, type, line, col, path, message, IssueSeverity.ERROR, theMessage);
     }
     return thePass;
   }
 
-  protected boolean txRule(List<ValidationMessage> errors, String txLink, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
+  protected boolean rulePlural(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, int num, String theMessage, Object... theMessageArguments) {
+    if (!thePass && doingErrors()) {
+      String message = context.formatMessagePlural(num, theMessage, theMessageArguments);
+      addValidationMessage(errors, ruleDate, type, line, col, path, message, IssueSeverity.ERROR, theMessage);
+    }
+    return thePass;
+  }
+
+  protected boolean txRule(List<ValidationMessage> errors, String ruleDate, String txLink, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass && doingErrors()) {
       String message = context.formatMessage(theMessage, theMessageArguments);
       ValidationMessage vm = new ValidationMessage(Source.TerminologyEngine, type, line, col, path, message, IssueSeverity.ERROR).setMessageId(theMessage);
+      vm.setRuleDate(ruleDate);
       if (checkMsgId(theMessage, vm)) {
         errors.add(vm.setTxLink(txLink));
       }
@@ -369,10 +419,10 @@ public class BaseValidator implements IValidationContextResourceLoader {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean rule(List<ValidationMessage> errors, IssueType type, List<String> pathParts, boolean thePass, String msg) {
+  protected boolean rule(List<ValidationMessage> errors, String ruleDate, IssueType type, List<String> pathParts, boolean thePass, String msg) {
     if (!thePass && doingErrors()) {
       String path = toPath(pathParts);
-      addValidationMessage(errors, type, -1, -1, path, msg, IssueSeverity.ERROR, null);
+      addValidationMessage(errors, ruleDate, type, -1, -1, path, msg, IssueSeverity.ERROR, null);
     }
     return thePass;
   }
@@ -384,11 +434,11 @@ public class BaseValidator implements IValidationContextResourceLoader {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean rule(List<ValidationMessage> errors, IssueType type, List<String> pathParts, boolean thePass, String theMessage, Object... theMessageArguments) {
+  protected boolean rule(List<ValidationMessage> errors, String ruleDate, IssueType type, List<String> pathParts, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass && doingErrors()) {
       String path = toPath(pathParts);
       String message = context.formatMessage(theMessage, theMessageArguments);
-      addValidationMessage(errors, type, -1, -1, path, message, IssueSeverity.ERROR, theMessage);
+      addValidationMessage(errors, ruleDate, type, -1, -1, path, message, IssueSeverity.ERROR, theMessage);
     }
     return thePass;
   }
@@ -402,17 +452,25 @@ public class BaseValidator implements IValidationContextResourceLoader {
    */
 
 
-  protected boolean rule(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
+  protected boolean rule(List<ValidationMessage> errors, String ruleDate, IssueType type, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass && doingErrors()) {
       String message = context.formatMessage(theMessage, theMessageArguments);
-      addValidationMessage(errors, type, -1, -1, path, message, IssueSeverity.ERROR, theMessage);
+      addValidationMessage(errors, ruleDate, type, -1, -1, path, message, IssueSeverity.ERROR, theMessage);
     }
     return thePass;
   }
 
-  public boolean rule(List<ValidationMessage> errors, Source source, IssueType type, String path, boolean thePass, String msg) {
+  protected boolean rulePlural(List<ValidationMessage> errors, String ruleDate, IssueType type, String path, boolean thePass, int num, String theMessage, Object... theMessageArguments) {
     if (!thePass && doingErrors()) {
-      addValidationMessage(errors, type, -1, -1, path, msg, IssueSeverity.ERROR, source, null);
+      String message = context.formatMessagePlural(num, theMessage, theMessageArguments);
+      addValidationMessage(errors, ruleDate, type, -1, -1, path, message, IssueSeverity.ERROR, theMessage);
+    }
+    return thePass;
+  }
+
+  public boolean rule(List<ValidationMessage> errors, String ruleDate, Source source, IssueType type, String path, boolean thePass, String msg) {
+    if (!thePass && doingErrors()) {
+      addValidationMessage(errors, ruleDate, type, -1, -1, path, msg, IssueSeverity.ERROR, source, null);
     }
     return thePass;
   }
@@ -424,11 +482,11 @@ public class BaseValidator implements IValidationContextResourceLoader {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean ruleHtml(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg, String html) {
+  protected boolean ruleHtml(List<ValidationMessage> errors, String ruleDate, IssueType type, String path, boolean thePass, String msg, String html) {
     if (!thePass && doingErrors()) {
       msg = context.formatMessage(msg, null);
       html = context.formatMessage(html, null);
-      addValidationMessage(errors, type, path, msg, html, IssueSeverity.ERROR, null);
+      addValidationMessage(errors, ruleDate, type, path, msg, html, IssueSeverity.ERROR, null);
     }
     return thePass;
   }
@@ -468,23 +526,34 @@ public class BaseValidator implements IValidationContextResourceLoader {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean warning(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
+  protected boolean warning(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
     if (!thePass && doingWarnings()) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
       IssueSeverity severity = IssueSeverity.WARNING;
-      addValidationMessage(errors, type, line, col, path, nmsg, severity, msg);
+      addValidationMessage(errors, ruleDate, type, line, col, path, nmsg, severity, msg);
     }
     return thePass;
 
   }
 
-  protected ValidationMessage addValidationMessage(List<ValidationMessage> errors, IssueType type, int line, int col, String path, String msg, IssueSeverity theSeverity, String id) {
-    Source source = this.source;
-    return addValidationMessage(errors, type, line, col, path, msg, theSeverity, source, id);
+  protected boolean warningPlural(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, int num, String msg, Object... theMessageArguments) {
+    if (!thePass && doingWarnings()) {
+      String nmsg = context.formatMessagePlural(num, msg, theMessageArguments);
+      IssueSeverity severity = IssueSeverity.WARNING;
+      addValidationMessage(errors, ruleDate, type, line, col, path, nmsg, severity, msg);
+    }
+    return thePass;
+
   }
 
-  protected ValidationMessage addValidationMessage(List<ValidationMessage> errors, IssueType type, int line, int col, String path, String msg, IssueSeverity theSeverity, Source theSource, String id) {
+  protected ValidationMessage addValidationMessage(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, String msg, IssueSeverity theSeverity, String id) {
+    Source source = this.source;
+    return addValidationMessage(errors, ruleDate, type, line, col, path, msg, theSeverity, source, id);
+  }
+
+  protected ValidationMessage addValidationMessage(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, String msg, IssueSeverity theSeverity, Source theSource, String id) {
     ValidationMessage validationMessage = new ValidationMessage(theSource, type, line, col, path, msg, theSeverity).setMessageId(id);
+    validationMessage.setRuleDate(ruleDate);
     if (doingLevel(theSeverity) && checkMsgId(id, validationMessage)) {
       errors.add(validationMessage);
     }
@@ -509,10 +578,11 @@ public class BaseValidator implements IValidationContextResourceLoader {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean txWarning(List<ValidationMessage> errors, String txLink, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
+  protected boolean txWarning(List<ValidationMessage> errors, String ruleDate, String txLink, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
     if (!thePass && doingWarnings()) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
       ValidationMessage vmsg = new ValidationMessage(Source.TerminologyEngine, type, line, col, path, nmsg, IssueSeverity.WARNING).setTxLink(txLink).setMessageId(msg);
+      vmsg.setRuleDate(ruleDate);
       if (checkMsgId(msg, vmsg)) {
         errors.add(vmsg);
       }
@@ -528,10 +598,11 @@ public class BaseValidator implements IValidationContextResourceLoader {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean txWarningForLaterRemoval(Object location, List<ValidationMessage> errors, String txLink, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
+  protected boolean txWarningForLaterRemoval(Object location, List<ValidationMessage> errors, String ruleDate, String txLink, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
     if (!thePass && doingWarnings()) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
       ValidationMessage vmsg = new ValidationMessage(Source.TerminologyEngine, type, line, col, path, nmsg, IssueSeverity.WARNING).setTxLink(txLink).setMessageId(msg);
+      vmsg.setRuleDate(ruleDate);
       if (checkMsgId(msg, vmsg)) {
         errors.add(vmsg);
       }
@@ -552,12 +623,12 @@ public class BaseValidator implements IValidationContextResourceLoader {
     trackedMessages.removeAll(messages);    
   }
   
-  protected boolean warningOrError(boolean isError, List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
+  protected boolean warningOrError(boolean isError, List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
     if (!thePass) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
       IssueSeverity lvl = isError ? IssueSeverity.ERROR : IssueSeverity.WARNING;
       if (doingLevel(lvl)) {
-        addValidationMessage(errors, type, line, col, path, nmsg, lvl, msg);
+        addValidationMessage(errors, ruleDate, type, line, col, path, nmsg, lvl, msg);
       }
     }
     return thePass;
@@ -571,11 +642,11 @@ public class BaseValidator implements IValidationContextResourceLoader {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean warning(List<ValidationMessage> errors, IssueType type, List<String> pathParts, boolean thePass, String theMessage, Object... theMessageArguments) {
+  protected boolean warning(List<ValidationMessage> errors, String ruleDate, IssueType type, List<String> pathParts, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass && doingWarnings()) {
       String path = toPath(pathParts);
       String message = context.formatMessage(theMessage, theMessageArguments);
-      addValidationMessage(errors, type, -1, -1, path, message, IssueSeverity.WARNING, theMessage);
+      addValidationMessage(errors, ruleDate, type, -1, -1, path, message, IssueSeverity.WARNING, theMessage);
     }
     return thePass;
   }
@@ -587,10 +658,10 @@ public class BaseValidator implements IValidationContextResourceLoader {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean warning(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg, Object... theMessageArguments) {
+  protected boolean warning(List<ValidationMessage> errors, String ruleDate, IssueType type, String path, boolean thePass, String msg, Object... theMessageArguments) {
     if (!thePass && doingWarnings()) {
       String message = context.formatMessage(msg, theMessageArguments);
-      addValidationMessage(errors, type, -1, -1, path, message, IssueSeverity.WARNING, null);
+      addValidationMessage(errors, ruleDate, type, -1, -1, path, message, IssueSeverity.WARNING, null);
     }
     return thePass;
   }
@@ -602,12 +673,12 @@ public class BaseValidator implements IValidationContextResourceLoader {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean warningOrHint(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, boolean warning, String msg, Object... theMessageArguments) {
+  protected boolean warningOrHint(List<ValidationMessage> errors, String ruleDate, IssueType type, String path, boolean thePass, boolean warning, String msg, Object... theMessageArguments) {
     if (!thePass) {
       String message = context.formatMessage(msg, theMessageArguments);
       IssueSeverity lvl = warning ? IssueSeverity.WARNING : IssueSeverity.INFORMATION;
       if  (doingLevel(lvl)) {
-        addValidationMessage(errors, type, -1, -1, path, message, lvl, null);
+        addValidationMessage(errors, ruleDate, type, -1, -1, path, message, lvl, null);
       }
     }
     return thePass;
@@ -620,9 +691,9 @@ public class BaseValidator implements IValidationContextResourceLoader {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean warningHtml(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg, String html) {
+  protected boolean warningHtml(List<ValidationMessage> errors, String ruleDate, IssueType type, String path, boolean thePass, String msg, String html) {
     if (!thePass && doingWarnings()) {
-      addValidationMessage(errors, type, path, msg, html, IssueSeverity.WARNING, null);
+      addValidationMessage(errors, ruleDate, type, path, msg, html, IssueSeverity.WARNING, null);
     }
     return thePass;
   }
@@ -634,10 +705,10 @@ public class BaseValidator implements IValidationContextResourceLoader {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean warningHtml(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg, String html, Object... theMessageArguments) {
+  protected boolean warningHtml(List<ValidationMessage> errors, String ruleDate, IssueType type, String path, boolean thePass, String msg, String html, Object... theMessageArguments) {
     if (!thePass && doingWarnings()) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
-      addValidationMessage(errors, type, path, nmsg, html, IssueSeverity.WARNING, msg);
+      addValidationMessage(errors, ruleDate, type, path, nmsg, html, IssueSeverity.WARNING, msg);
     }
     return thePass;
   }
@@ -650,10 +721,10 @@ public class BaseValidator implements IValidationContextResourceLoader {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean suppressedwarning(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
+  protected boolean suppressedwarning(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
     if (!thePass && doingWarnings()) { 
       String nmsg = context.formatMessage(msg, theMessageArguments);
-      addValidationMessage(errors, type, line, col, path, nmsg, IssueSeverity.INFORMATION, msg);
+      addValidationMessage(errors, ruleDate, type, line, col, path, nmsg, IssueSeverity.INFORMATION, msg);
     }
     return thePass;
 
@@ -666,11 +737,11 @@ public class BaseValidator implements IValidationContextResourceLoader {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean suppressedwarning(List<ValidationMessage> errors, IssueType type, List<String> pathParts, boolean thePass, String theMessage, Object... theMessageArguments) {
+  protected boolean suppressedwarning(List<ValidationMessage> errors, String ruleDate, IssueType type, List<String> pathParts, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass && doingWarnings()) {
       String path = toPath(pathParts);
       String message = context.formatMessage(theMessage, theMessageArguments);
-      addValidationMessage(errors, type, -1, -1, path, message, IssueSeverity.INFORMATION, theMessage);
+      addValidationMessage(errors, ruleDate, type, -1, -1, path, message, IssueSeverity.INFORMATION, theMessage);
     }
     return thePass;
   }
@@ -682,9 +753,9 @@ public class BaseValidator implements IValidationContextResourceLoader {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean suppressedwarning(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg) {
+  protected boolean suppressedwarning(List<ValidationMessage> errors, String ruleDate, IssueType type, String path, boolean thePass, String msg) {
     if (!thePass && doingWarnings()) {
-      addValidationMessage(errors, type, -1, -1, path, msg, IssueSeverity.INFORMATION, null);
+      addValidationMessage(errors, ruleDate, type, -1, -1, path, msg, IssueSeverity.INFORMATION, null);
     }
     return thePass;
   }
@@ -696,16 +767,17 @@ public class BaseValidator implements IValidationContextResourceLoader {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean suppressedwarning(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg, String html) {
+  protected boolean suppressedwarning(List<ValidationMessage> errors, String ruleDate, IssueType type, String path, boolean thePass, String msg, String html) {
     if (!thePass && doingWarnings()) {
       IssueSeverity severity = IssueSeverity.INFORMATION;
-      addValidationMessage(errors, type, path, msg, html, severity, null);
+      addValidationMessage(errors, ruleDate, type, path, msg, html, severity, null);
     }
     return thePass;
   }
 
-  protected void addValidationMessage(List<ValidationMessage> errors, IssueType type, String path, String msg, String html, IssueSeverity theSeverity, String id) {
+  protected void addValidationMessage(List<ValidationMessage> errors, String ruleDate, IssueType type, String path, String msg, String html, IssueSeverity theSeverity, String id) {
     ValidationMessage vm = new ValidationMessage(source, type, -1, -1, path, msg, html, theSeverity);
+    vm.setRuleDate(ruleDate);
     if (checkMsgId(id, vm)) {
       if (doingLevel(theSeverity)) {
         errors.add(vm.setMessageId(id));
@@ -720,17 +792,20 @@ public class BaseValidator implements IValidationContextResourceLoader {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean suppressedwarning(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg, String html, Object... theMessageArguments) {
+  protected boolean suppressedwarning(List<ValidationMessage> errors, String ruleDate, IssueType type, String path, boolean thePass, String msg, String html, Object... theMessageArguments) {
     if (!thePass && doingWarnings()) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
-      addValidationMessage(errors, type, path, nmsg, html, IssueSeverity.INFORMATION, msg);
+      addValidationMessage(errors, ruleDate, type, path, nmsg, html, IssueSeverity.INFORMATION, msg);
     }
     return thePass;
   }
 
 
-  protected ValueSet resolveBindingReference(DomainResource ctxt, String reference, String uri) {
+  protected ValueSet resolveBindingReference(DomainResource ctxt, String reference, String uri, Resource src) {
     if (reference != null) {
+      if (reference.equals("http://www.rfc-editor.org/bcp/bcp13.txt")) {
+        reference = "http://hl7.org/fhir/ValueSet/mimetypes";
+      }
       if (reference.startsWith("#")) {
         for (Resource c : ctxt.getContained()) {
           if (c.getId().equals(reference.substring(1)) && (c instanceof ValueSet))
@@ -739,11 +814,11 @@ public class BaseValidator implements IValidationContextResourceLoader {
         return null;
       } else {
         long t = System.nanoTime();
-        ValueSet fr = context.fetchResource(ValueSet.class, reference);
+        ValueSet fr = context.fetchResource(ValueSet.class, reference, src);
         if (fr == null) {
           if (!Utilities.isAbsoluteUrl(reference)) {
             reference = resolve(uri, reference);
-            fr = context.fetchResource(ValueSet.class, reference);
+            fr = context.fetchResource(ValueSet.class, reference, src);
           }
         }
         if (fr == null) {
@@ -880,14 +955,14 @@ public class BaseValidator implements IValidationContextResourceLoader {
     } else if (fullUrl == null) {
       //This isn't a problem for signatures - if it's a signature, we won't have a resolution for a relative reference.  For anything else, this is an error
       // but this rule doesn't apply for batches or transactions
-      rule(errors, IssueType.REQUIRED, -1, -1, path, Utilities.existsInList(type, "batch-response", "transaction-response") || path.startsWith("Bundle.signature"), I18nConstants.BUNDLE_BUNDLE_FULLURL_MISSING);
+      rule(errors, NO_RULE_DATE, IssueType.REQUIRED, -1, -1, path, Utilities.existsInList(type, "batch-response", "transaction-response") || path.startsWith("Bundle.signature"), I18nConstants.BUNDLE_BUNDLE_FULLURL_MISSING);
       return null;
 
     } else if (ref.split("/").length != 2 && ref.split("/").length != 4) {
       if (isTransaction) {
-        rule(errors, IssueType.INVALID, -1, -1, path, isSearchUrl(ref), I18nConstants.REFERENCE_REF_FORMAT1, ref);
+        rule(errors, NO_RULE_DATE, IssueType.INVALID, -1, -1, path, isSearchUrl(ref), I18nConstants.REFERENCE_REF_FORMAT1, ref);
       } else {
-        rule(errors, IssueType.INVALID, -1, -1, path, false, I18nConstants.REFERENCE_REF_FORMAT2, ref);
+        rule(errors, NO_RULE_DATE, IssueType.INVALID, -1, -1, path, false, I18nConstants.REFERENCE_REF_FORMAT2, ref);
       }
       return null;
 
@@ -930,18 +1005,18 @@ public class BaseValidator implements IValidationContextResourceLoader {
       if (targetUrl.equals(we.getChildValue(FULL_URL))) {
         Element r = we.getNamedChild(RESOURCE);
         if (version.isEmpty()) {
-          rule(errors, IssueType.FORBIDDEN, -1, -1, path, match == null, I18nConstants.BUNDLE_BUNDLE_MULTIPLEMATCHES, ref);
+          rule(errors, NO_RULE_DATE, IssueType.FORBIDDEN, -1, -1, path, match == null, I18nConstants.BUNDLE_BUNDLE_MULTIPLEMATCHES, ref);
           match = r;
           matchIndex = i;
         } else {
           try {
             if (version.equals(r.getChildren(META).get(0).getChildValue("versionId"))) {
-              rule(errors, IssueType.FORBIDDEN, -1, -1, path, match == null, I18nConstants.BUNDLE_BUNDLE_MULTIPLEMATCHES, ref);
+              rule(errors, NO_RULE_DATE, IssueType.FORBIDDEN, -1, -1, path, match == null, I18nConstants.BUNDLE_BUNDLE_MULTIPLEMATCHES, ref);
               match = r;
               matchIndex = i;
             }
           } catch (Exception e) {
-            warning(errors, IssueType.REQUIRED, -1, -1, path, r.getChildren(META).size() == 1 && r.getChildren(META).get(0).getChildValue("versionId") != null, I18nConstants.BUNDLE_BUNDLE_FULLURL_NEEDVERSION, targetUrl);
+            warning(errors, NO_RULE_DATE, IssueType.REQUIRED, -1, -1, path, r.getChildren(META).size() == 1 && r.getChildren(META).get(0).getChildValue("versionId") != null, I18nConstants.BUNDLE_BUNDLE_FULLURL_NEEDVERSION, targetUrl);
             // If one of these things is null
           }
         }
@@ -949,9 +1024,9 @@ public class BaseValidator implements IValidationContextResourceLoader {
     }
 
     if (match != null && resourceType != null)
-      rule(errors, IssueType.REQUIRED, -1, -1, path, match.getType().equals(resourceType), I18nConstants.REFERENCE_REF_RESOURCETYPE, ref, match.getType());
+      rule(errors, NO_RULE_DATE, IssueType.REQUIRED, -1, -1, path, match.getType().equals(resourceType), I18nConstants.REFERENCE_REF_RESOURCETYPE, ref, match.getType());
     if (match == null) {
-      warning(errors, IssueType.REQUIRED, -1, -1, path, !ref.startsWith("urn"), I18nConstants.BUNDLE_BUNDLE_NOT_LOCAL, ref);
+      warning(errors, NO_RULE_DATE, IssueType.REQUIRED, -1, -1, path, !ref.startsWith("urn"), I18nConstants.BUNDLE_BUNDLE_NOT_LOCAL, ref);
       if (!Utilities.isAbsoluteUrl(ref)) {
         String[] p = ref.split("\\/");
         List<Element> ml = new ArrayList<>();
@@ -965,15 +1040,15 @@ public class BaseValidator implements IValidationContextResourceLoader {
           }          
         }
         if (ml.size() > 1) {
-          warning(errors, IssueType.REQUIRED, -1, -1, path, false, I18nConstants.BUNDLE_POSSSIBLE_MATCHES, ref, targetUrl);          
+          warning(errors, NO_RULE_DATE, IssueType.REQUIRED, -1, -1, path, false, I18nConstants.BUNDLE_POSSSIBLE_MATCHES, ref, targetUrl);          
         }
         for (Element e : ml) {
           String fu = e.getChildValue(FULL_URL);
           int i = entries.indexOf(e);
           if (fu == null) {
-            warning(errors, IssueType.REQUIRED, -1, -1, path, false, I18nConstants.BUNDLE_BUNDLE_POSSIBLE_MATCH_NO_FU, i, ref, targetUrl);
+            warning(errors, NO_RULE_DATE, IssueType.REQUIRED, -1, -1, path, false, I18nConstants.BUNDLE_BUNDLE_POSSIBLE_MATCH_NO_FU, i, ref, targetUrl);
           } else {
-            warning(errors, IssueType.REQUIRED, -1, -1, path, false, I18nConstants.BUNDLE_BUNDLE_POSSIBLE_MATCH_WRONG_FU, i, ref, fu, targetUrl);            
+            warning(errors, NO_RULE_DATE, IssueType.REQUIRED, -1, -1, path, false, I18nConstants.BUNDLE_BUNDLE_POSSIBLE_MATCH_WRONG_FU, i, ref, fu, targetUrl);            
           }
         }
       }
@@ -1022,21 +1097,21 @@ public class BaseValidator implements IValidationContextResourceLoader {
     if (isXverUrl(url)) {
       switch (xverStatus(url)) {
         case BadVersion:
-          rule(errors, IssueType.BUSINESSRULE, profile.getId(), false, I18nConstants.EXTENSION_EXT_VERSION_INVALID, url, xverVersion(url));
+          rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, profile.getId(), false, I18nConstants.EXTENSION_EXT_VERSION_INVALID, url, xverVersion(url));
           return null;
         case Unknown:
-          rule(errors, IssueType.BUSINESSRULE, profile.getId(), false, I18nConstants.EXTENSION_EXT_VERSION_INVALIDID, url, xverElementId(url));
+          rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, profile.getId(), false, I18nConstants.EXTENSION_EXT_VERSION_INVALIDID, url, xverElementId(url));
           return null;
         case Invalid:
-          rule(errors, IssueType.BUSINESSRULE, profile.getId(), false, I18nConstants.EXTENSION_EXT_VERSION_NOCHANGE, url, xverElementId(url));
+          rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, profile.getId(), false, I18nConstants.EXTENSION_EXT_VERSION_NOCHANGE, url, xverElementId(url));
           return null;
         case Valid:
           StructureDefinition defn = xverDefn(url);
-          context.generateSnapshot(defn);
+          new ContextUtilities(context).generateSnapshot(defn);
           context.cacheResource(defn);
           return defn;
         default:
-          rule(errors, IssueType.INVALID, profile.getId(), false, I18nConstants.EXTENSION_EXT_VERSION_INTERNAL, url);
+          rule(errors, NO_RULE_DATE, IssueType.INVALID, profile.getId(), false, I18nConstants.EXTENSION_EXT_VERSION_INTERNAL, url);
           return null;
       }
     } else {
@@ -1048,21 +1123,21 @@ public class BaseValidator implements IValidationContextResourceLoader {
     if (isXverUrl(url)) {
       switch (xverStatus(url)) {
       case BadVersion:
-        rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXTENSION_EXT_VERSION_INVALID, url, xverVersion(url));
+        rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXTENSION_EXT_VERSION_INVALID, url, xverVersion(url));
         break;
       case Unknown:
-        rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXTENSION_EXT_VERSION_INVALIDID, url, xverElementId(url));
+        rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXTENSION_EXT_VERSION_INVALIDID, url, xverElementId(url));
         break;
       case Invalid:
-        rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXTENSION_EXT_VERSION_NOCHANGE, url, xverElementId(url));
+        rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXTENSION_EXT_VERSION_NOCHANGE, url, xverElementId(url));
         break;
       case Valid:
         StructureDefinition ex = xverDefn(url);
-        context.generateSnapshot(ex);
+        new ContextUtilities(context).generateSnapshot(ex);
         context.cacheResource(ex);
         return ex;
       default:
-        rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXTENSION_EXT_VERSION_INTERNAL, url);
+        rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXTENSION_EXT_VERSION_INTERNAL, url);
         break;
       }
     }
@@ -1108,7 +1183,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
       Resource r5 = null;
       switch (v) {
       case DSTU1:
-        rule(errors, IssueType.INVALID, resource.line(), resource.col(), path, false, I18nConstants.UNSUPPORTED_VERSION_R1, resource.getIdBase());
+        rule(errors, NO_RULE_DATE, IssueType.INVALID, resource.line(), resource.col(), path, false, I18nConstants.UNSUPPORTED_VERSION_R1, resource.getIdBase());
         return null; // this can't happen
       case DSTU2:
         org.hl7.fhir.dstu2.model.Resource r2 = new org.hl7.fhir.dstu2.formats.JsonParser().parse(json);
@@ -1135,7 +1210,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
       if (class1.isInstance(r5))
         return (Resource) r5;
       else {
-        rule(errors, IssueType.INVALID, resource.line(), resource.col(), path, false, I18nConstants.REFERENCE_REF_WRONGTARGET_LOAD, resource.getIdBase(), class1.toString(), r5.fhirType());
+        rule(errors, NO_RULE_DATE, IssueType.INVALID, resource.line(), resource.col(), path, false, I18nConstants.REFERENCE_REF_WRONGTARGET_LOAD, resource.getIdBase(), class1.toString(), r5.fhirType());
         return null;
       }
 
@@ -1152,5 +1227,8 @@ public class BaseValidator implements IValidationContextResourceLoader {
     return level;
   }
 
- 
+  protected boolean isHL7(Element cr) {
+    String url = cr.getChildValue("url");
+    return url != null && url.contains("hl7");
+  }
 }

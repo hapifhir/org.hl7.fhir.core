@@ -24,8 +24,8 @@ public class DetectedIssue30_50 {
       tgt.setCategory(CodeableConcept30_50.convertCodeableConcept(src.getCode()));
     if (src.hasSeverity())
       tgt.setSeverityElement(convertDetectedIssueSeverity(src.getSeverityElement()));
-    if (src.hasPatient())
-      tgt.setPatient(Reference30_50.convertReference(src.getPatient()));
+    if (src.hasSubject())
+      tgt.setPatient(Reference30_50.convertReference(src.getSubject()));
     if (src.hasIdentifiedDateTimeType())
       tgt.setDateElement(DateTime30_50.convertDateTime(src.getIdentifiedDateTimeType()));
     if (src.hasAuthor())
@@ -54,7 +54,7 @@ public class DetectedIssue30_50 {
     if (src.hasSeverity())
       tgt.setSeverityElement(convertDetectedIssueSeverity(src.getSeverityElement()));
     if (src.hasPatient())
-      tgt.setPatient(Reference30_50.convertReference(src.getPatient()));
+      tgt.setSubject(Reference30_50.convertReference(src.getPatient()));
     if (src.hasDate())
       tgt.setIdentified(DateTime30_50.convertDateTime(src.getDateElement()));
     if (src.hasAuthor())
@@ -142,72 +142,60 @@ public class DetectedIssue30_50 {
     return tgt;
   }
 
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ObservationStatus> convertDetectedIssueStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.DetectedIssue.DetectedIssueStatus> src) throws FHIRException {
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueStatus> convertDetectedIssueStatus(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.DetectedIssue.DetectedIssueStatus> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ObservationStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.ObservationStatusEnumFactory());
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueStatusEnumFactory());
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case REGISTERED:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ObservationStatus.REGISTERED);
+        tgt.setValue(org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueStatus.PRELIMINARY);
         break;
       case PRELIMINARY:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ObservationStatus.PRELIMINARY);
+        tgt.setValue(org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueStatus.PRELIMINARY);
         break;
       case FINAL:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ObservationStatus.FINAL);
+        tgt.setValue(org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueStatus.FINAL);
         break;
       case AMENDED:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ObservationStatus.AMENDED);
+        tgt.setValue(org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueStatus.FINAL);
         break;
       case CORRECTED:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ObservationStatus.CORRECTED);
+        tgt.setValue(org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueStatus.MITIGATED);
         break;
       case CANCELLED:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ObservationStatus.CANCELLED);
+        tgt.setValue(org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueStatus.MITIGATED);
         break;
       case ENTEREDINERROR:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ObservationStatus.ENTEREDINERROR);
+        tgt.setValue(org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueStatus.ENTEREDINERROR);
         break;
       case UNKNOWN:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ObservationStatus.UNKNOWN);
+        tgt.setValue(org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueStatus.NULL);
         break;
       default:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ObservationStatus.NULL);
+        tgt.setValue(org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueStatus.NULL);
         break;
     }
     return tgt;
   }
 
-  static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.DetectedIssue.DetectedIssueStatus> convertDetectedIssueStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ObservationStatus> src) throws FHIRException {
+  static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.DetectedIssue.DetectedIssueStatus> convertDetectedIssueStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueStatus> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.DetectedIssue.DetectedIssueStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.DetectedIssue.DetectedIssueStatusEnumFactory());
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     switch (src.getValue()) {
-      case REGISTERED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.DetectedIssue.DetectedIssueStatus.REGISTERED);
-        break;
       case PRELIMINARY:
         tgt.setValue(org.hl7.fhir.dstu3.model.DetectedIssue.DetectedIssueStatus.PRELIMINARY);
         break;
       case FINAL:
         tgt.setValue(org.hl7.fhir.dstu3.model.DetectedIssue.DetectedIssueStatus.FINAL);
         break;
-      case AMENDED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.DetectedIssue.DetectedIssueStatus.AMENDED);
-        break;
-      case CORRECTED:
+      case MITIGATED:
         tgt.setValue(org.hl7.fhir.dstu3.model.DetectedIssue.DetectedIssueStatus.CORRECTED);
-        break;
-      case CANCELLED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.DetectedIssue.DetectedIssueStatus.CANCELLED);
         break;
       case ENTEREDINERROR:
         tgt.setValue(org.hl7.fhir.dstu3.model.DetectedIssue.DetectedIssueStatus.ENTEREDINERROR);
-        break;
-      case UNKNOWN:
-        tgt.setValue(org.hl7.fhir.dstu3.model.DetectedIssue.DetectedIssueStatus.UNKNOWN);
         break;
       default:
         tgt.setValue(org.hl7.fhir.dstu3.model.DetectedIssue.DetectedIssueStatus.NULL);

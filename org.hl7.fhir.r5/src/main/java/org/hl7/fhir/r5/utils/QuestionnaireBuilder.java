@@ -14,7 +14,7 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.BooleanType;
@@ -123,11 +123,13 @@ public class QuestionnaireBuilder {
   // we don't do the intensive parts of the work (save time)
   private Questionnaire prebuiltQuestionnaire;
   private ProfileUtilities profileUtilities;
+  private String rootPath;
 
-  public QuestionnaireBuilder(IWorkerContext context) {
+  public QuestionnaireBuilder(IWorkerContext context, String rootPath) {
     super();
     this.context = context;
     profileUtilities = new ProfileUtilities(context, null, null); 
+    this.rootPath = rootPath;
   }
 
   public Resource getReference() {
@@ -235,7 +237,8 @@ public class QuestionnaireBuilder {
       questionnaire.addItem(item);
       item.setLinkId("meta");
       item.getCode().addAll(profile.getKeyword());
-      questionnaire.setId(nextId("qs"));
+      questionnaire.setId(nextId("qgen-"+profile.getId()));
+      questionnaire.setUrl(Utilities.pathURL(rootPath, "Questionnaire", questionnaire.getId()));
     }
 
     if (response != null) {

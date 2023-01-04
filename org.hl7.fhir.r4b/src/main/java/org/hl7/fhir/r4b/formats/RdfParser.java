@@ -242,7 +242,7 @@ public class RdfParser extends RdfParserBase {
   }
 
   protected void composeDataType(Complex t, String parentType, String name, DataType element, int index) {
-    composeDataType(t, parentType, name, element, index);
+    composeElement(t, parentType, name, element, index);
   }
 
 
@@ -12577,7 +12577,7 @@ public class RdfParser extends RdfParserBase {
     }
     composeBackboneElement(t, "parameter", name, element, index);
     if (element.hasCodeElement()) {
-      composeEnum(t, "ImplementationGuideDefinitionParameterComponent", "code", element.getCodeElement(), -1);
+      composeString(t, "ImplementationGuideDefinitionParameterComponent", "code", element.getCodeElement(), -1);
     }
     if (element.hasValueElement()) {
       composeString(t, "ImplementationGuideDefinitionParameterComponent", "value", element.getValueElement(), -1);

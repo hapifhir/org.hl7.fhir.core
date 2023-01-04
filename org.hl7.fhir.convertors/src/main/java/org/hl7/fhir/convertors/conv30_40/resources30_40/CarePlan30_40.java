@@ -1,15 +1,19 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
+import java.util.List;
+
 import org.hl7.fhir.convertors.context.ConversionContext30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.*;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Annotation30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.CodeableConcept30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identifier30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Period30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.SimpleQuantity30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Boolean30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
 import org.hl7.fhir.dstu3.model.Reference;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Coding;
-
-import java.util.List;
 
 public class CarePlan30_40 {
 

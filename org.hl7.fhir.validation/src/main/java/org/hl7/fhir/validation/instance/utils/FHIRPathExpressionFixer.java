@@ -1,7 +1,5 @@
 package org.hl7.fhir.validation.instance.utils;
 
-import org.hl7.fhir.utilities.Utilities;
-
 public class FHIRPathExpressionFixer {
 
 
@@ -19,7 +17,9 @@ public class FHIRPathExpressionFixer {
     if ("txt-2".equals(key)) {
       return "htmlChecks2()";
     }
-
+    if ("generated='generated' implies source.empty()".equals(expr)) {
+      return "generation='generated' implies source.empty()";
+    }
     // fixes to string functions in FHIRPath
     // ref-1
     if (expr.equals("reference.startsWith('#').not() or (reference.substring(1).trace('url') in %rootResource.contained.id.trace('ids')) or (reference='#' and %rootResource!=%resource)")) { // R5
@@ -42,6 +42,13 @@ public class FHIRPathExpressionFixer {
     if (expr.equals("name.matches('[A-Z]([A-Za-z0-9_]){0,254}')")) {
       return ("name.exists() implies name.matches('[A-Z]([A-Za-z0-9_]){0,254}')");
     }
+    
+    // R5 ballot
+    if (expr.equals("url.matches('([^|#])*')")) {
+      return ("$this.matches('([^|#])*')");
+    }
+    
+    
     
     
     // clarification in FHIRPath spec

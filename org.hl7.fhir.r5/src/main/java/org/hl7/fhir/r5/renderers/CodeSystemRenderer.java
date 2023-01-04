@@ -16,15 +16,16 @@ import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionDesignationComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyComponent;
 import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.CodeSystemNavigator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.LoincLinker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -54,10 +55,10 @@ public class CodeSystemRenderer extends TerminologyRenderer {
         generateCopyright(x, cs );
     }
 
-    generateProperties(x, cs);
+    boolean props = generateProperties(x, cs);
     generateFilters(x, cs);
     List<UsedConceptMap> maps = new ArrayList<UsedConceptMap>();
-    hasExtensions = generateCodeSystemContent(x, cs, hasExtensions, maps);
+    hasExtensions = generateCodeSystemContent(x, cs, hasExtensions, maps, props);
 
     return hasExtensions;
   }
@@ -91,7 +92,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     }
   }
 
-  private void generateProperties(XhtmlNode x, CodeSystem cs) {
+  private boolean generateProperties(XhtmlNode x, CodeSystem cs) {
     if (cs.hasProperty()) {
       boolean hasRendered = false;
       boolean hasURI = false;
@@ -103,6 +104,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       }
       
       x.para().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Properties", getContext().getLang()));
+      x.para().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "This code system  defines the following properties for its concepts", getContext().getLang()));
       XhtmlNode tbl = x.table("grid");
       XhtmlNode tr = tbl.tr();
       if (hasRendered) {
@@ -130,10 +132,16 @@ public class CodeSystemRenderer extends TerminologyRenderer {
           tr.td().tx(p.getDescription());
         }
       }
+      return true;
+    } else {
+      return false;
     }
   }
 
-  private boolean generateCodeSystemContent(XhtmlNode x, CodeSystem cs, boolean hasExtensions, List<UsedConceptMap> maps) throws FHIRFormatError, DefinitionException, IOException {
+  private boolean generateCodeSystemContent(XhtmlNode x, CodeSystem cs, boolean hasExtensions, List<UsedConceptMap> maps, boolean props) throws FHIRFormatError, DefinitionException, IOException {
+    if (props) {
+      x.para().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Concepts", getContext().getLang()));
+    }
     XhtmlNode p = x.para();
     p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), "This code system "));
     p.code().tx(cs.getUrl());
@@ -284,7 +292,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
   }
 
   private boolean conceptsHaveDisplay(ConceptDefinitionComponent c) {
-    if (c.hasDisplay())
+    if (c.hasDisplay() && !c.getDisplay().equals(c.getCode()))
       return true;
     for (ConceptDefinitionComponent g : c.getConcept())
       if (conceptsHaveDisplay(g))
@@ -315,6 +323,11 @@ public class CodeSystemRenderer extends TerminologyRenderer {
   private boolean addDefineRowToTable(XhtmlNode t, ConceptDefinitionComponent c, int level, boolean hasHierarchy, boolean hasDisplay, boolean hasDefinitions, boolean comment, boolean version, boolean deprecated, List<UsedConceptMap> maps, String system, CodeSystem cs, List<PropertyComponent> properties, CodeSystemNavigator csNav, List<String> langs, boolean isSupplement) throws FHIRFormatError, DefinitionException, IOException {
     boolean hasExtensions = false;
     XhtmlNode tr = t.tr();
+    boolean notCurrent = CodeSystemUtilities.isNotCurrent(cs, c);
+    if (notCurrent) {
+      tr.setAttribute("style", "background-color: #ffeeee");
+    }
+    
     XhtmlNode td = tr.td();
     if (hasHierarchy) {
       td.addText(Integer.toString(level+1));
@@ -391,6 +404,14 @@ public class CodeSystemRenderer extends TerminologyRenderer {
             td.tx(": "+cc.getDisplay()+")");
           } else
             td.addText(cc.getCode()+" '"+cc.getDisplay()+"' in "+cc.getSystem()+")");
+        } else {
+          Extension ext = c.getExtensionByUrl(ToolingExtensions.EXT_STANDARDS_STATUS);
+          if (ext != null) {
+            ext = ext.getValue().getExtensionByUrl(ToolingExtensions.EXT_STANDARDS_STATUS_REASON);
+            if (ext != null) {
+              addMarkdown(td, ext.getValue().primitiveValue());
+            }
+          }
         }
       }
     }
@@ -469,7 +490,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
         first = false;
         XhtmlNode span = td.span(null, mapping.comp.hasRelationship() ?  mapping.comp.getRelationship().toCode() : "");
         span.addText(getCharForRelationship(mapping.comp));
-        a = td.ah(getContext().getSpecificationLink()+m.getLink()+"#"+makeAnchor(mapping.group.getTarget(), mapping.comp.getCode()));
+        a = td.ah(getContext().getLink(KnownLinkType.SPEC)+m.getLink()+"#"+makeAnchor(mapping.group.getTarget(), mapping.comp.getCode()));
         a.addText(mapping.comp.getCode());
         if (!Utilities.noString(mapping.comp.getComment()))
           td.i().tx("("+mapping.comp.getComment()+")");
@@ -547,7 +568,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     if (cc.getSystem().equals("http://snomed.info/sct"))
       return "http://snomed.info/sct/"+cc.getCode();
     if (cc.getSystem().equals("http://loinc.org"))
-      return "http://s.details.loinc.org/LOINC/"+cc.getCode()+".html";
+      return LoincLinker.getLinkForCode(cc.getCode());
     return null;
   }
 

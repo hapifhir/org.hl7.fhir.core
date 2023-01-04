@@ -1,5 +1,12 @@
 package org.hl7.fhir.convertors.misc;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.UUID;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -32,20 +39,18 @@ package org.hl7.fhir.convertors.misc;
 
 import org.hl7.fhir.dstu3.formats.IParser.OutputStyle;
 import org.hl7.fhir.dstu3.formats.XmlParser;
-import org.hl7.fhir.dstu3.model.*;
+import org.hl7.fhir.dstu3.model.Bundle;
 import org.hl7.fhir.dstu3.model.Bundle.BundleType;
+import org.hl7.fhir.dstu3.model.DateTimeType;
+import org.hl7.fhir.dstu3.model.Observation;
 import org.hl7.fhir.dstu3.model.Observation.ObservationComponentComponent;
 import org.hl7.fhir.dstu3.model.Observation.ObservationStatus;
+import org.hl7.fhir.dstu3.model.Quantity;
+import org.hl7.fhir.dstu3.model.Reference;
+import org.hl7.fhir.dstu3.model.Type;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.Utilities;
-
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.UUID;
 
 public class ObservationStatsBuilder {
 

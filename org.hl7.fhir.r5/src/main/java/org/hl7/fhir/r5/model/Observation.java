@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1651,7 +1651,7 @@ Reflex | Repeat | Re-run.
     /**
      * A larger event of which this particular Observation is a component or step.  For example,  an observation as part of a procedure.
      */
-    @Child(name = "partOf", type = {MedicationAdministration.class, MedicationDispense.class, MedicationUsage.class, Procedure.class, Immunization.class, ImagingStudy.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "partOf", type = {MedicationAdministration.class, MedicationDispense.class, MedicationUsage.class, Procedure.class, Immunization.class, ImagingStudy.class, GenomicStudy.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Part of referenced event", formalDefinition="A larger event of which this particular Observation is a component or step.  For example,  an observation as part of a procedure." )
     protected List<Reference> partOf;
 
@@ -1777,7 +1777,7 @@ Reflex | Repeat | Re-run.
     /**
      * The specimen that was used when this observation was made.
      */
-    @Child(name = "specimen", type = {Specimen.class}, order=21, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "specimen", type = {Specimen.class, Group.class}, order=21, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Specimen used for this observation", formalDefinition="The specimen that was used when this observation was made." )
     protected Reference specimen;
 
@@ -1805,7 +1805,7 @@ Reflex | Repeat | Re-run.
     /**
      * The target resource that represents a measurement from which this observation value is derived. For example, a calculated anion gap or a fetal measurement based on an ultrasound image.
      */
-    @Child(name = "derivedFrom", type = {DocumentReference.class, ImagingStudy.class, ImagingSelection.class, QuestionnaireResponse.class, Observation.class, MolecularSequence.class}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "derivedFrom", type = {DocumentReference.class, ImagingStudy.class, ImagingSelection.class, QuestionnaireResponse.class, Observation.class, MolecularSequence.class, GenomicStudy.class}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Related resource from which the observation is made", formalDefinition="The target resource that represents a measurement from which this observation value is derived. For example, a calculated anion gap or a fetal measurement based on an ultrasound image." )
     protected List<Reference> derivedFrom;
 
@@ -3172,7 +3172,7 @@ Reflex | Repeat | Re-run.
         children.add(new Property("instantiates[x]", "canonical(ObservationDefinition)|Reference(ObservationDefinition)", "The reference to a FHIR ObservationDefinition resource that provides the definition that is adhered to in whole or in part by this Observation instance.", 0, 1, instantiates));
         children.add(new Property("basedOn", "Reference(CarePlan|DeviceRequest|ImmunizationRecommendation|MedicationRequest|NutritionOrder|ServiceRequest)", "A plan, proposal or order that is fulfilled in whole or in part by this event.  For example, a MedicationRequest may require a patient to have laboratory test performed before  it is dispensed.", 0, java.lang.Integer.MAX_VALUE, basedOn));
         children.add(new Property("triggeredBy", "", "Identifies the observation(s) that triggered the performance of this observation.", 0, java.lang.Integer.MAX_VALUE, triggeredBy));
-        children.add(new Property("partOf", "Reference(MedicationAdministration|MedicationDispense|MedicationUsage|Procedure|Immunization|ImagingStudy)", "A larger event of which this particular Observation is a component or step.  For example,  an observation as part of a procedure.", 0, java.lang.Integer.MAX_VALUE, partOf));
+        children.add(new Property("partOf", "Reference(MedicationAdministration|MedicationDispense|MedicationUsage|Procedure|Immunization|ImagingStudy|GenomicStudy)", "A larger event of which this particular Observation is a component or step.  For example,  an observation as part of a procedure.", 0, java.lang.Integer.MAX_VALUE, partOf));
         children.add(new Property("status", "code", "The status of the result value.", 0, 1, status));
         children.add(new Property("category", "CodeableConcept", "A code that classifies the general type of observation being made.", 0, java.lang.Integer.MAX_VALUE, category));
         children.add(new Property("code", "CodeableConcept", "Describes what was observed. Sometimes this is called the observation \"name\".", 0, 1, code));
@@ -3189,11 +3189,11 @@ Reflex | Repeat | Re-run.
         children.add(new Property("bodySite", "CodeableConcept", "Indicates the site on the subject's body where the observation was made (i.e. the target site).", 0, 1, bodySite));
         children.add(new Property("bodyStructure", "Reference(BodyStructure)", "Indicates the body structure on the subject's body where the observation was made (i.e. the target site).", 0, 1, bodyStructure));
         children.add(new Property("method", "CodeableConcept", "Indicates the mechanism used to perform the observation.", 0, 1, method));
-        children.add(new Property("specimen", "Reference(Specimen)", "The specimen that was used when this observation was made.", 0, 1, specimen));
+        children.add(new Property("specimen", "Reference(Specimen|Group)", "The specimen that was used when this observation was made.", 0, 1, specimen));
         children.add(new Property("device", "Reference(Device|DeviceMetric)", "The device used to generate the observation data.", 0, 1, device));
         children.add(new Property("referenceRange", "", "Guidance on how to interpret the value by comparison to a normal or recommended range.  Multiple reference ranges are interpreted as an \"OR\".   In other words, to represent two distinct target populations, two `referenceRange` elements would be used.", 0, java.lang.Integer.MAX_VALUE, referenceRange));
         children.add(new Property("hasMember", "Reference(Observation|QuestionnaireResponse|MolecularSequence)", "This observation is a group observation (e.g. a battery, a panel of tests, a set of vital sign measurements) that includes the target as a member of the group.", 0, java.lang.Integer.MAX_VALUE, hasMember));
-        children.add(new Property("derivedFrom", "Reference(DocumentReference|ImagingStudy|ImagingSelection|QuestionnaireResponse|Observation|MolecularSequence)", "The target resource that represents a measurement from which this observation value is derived. For example, a calculated anion gap or a fetal measurement based on an ultrasound image.", 0, java.lang.Integer.MAX_VALUE, derivedFrom));
+        children.add(new Property("derivedFrom", "Reference(DocumentReference|ImagingStudy|ImagingSelection|QuestionnaireResponse|Observation|MolecularSequence|GenomicStudy)", "The target resource that represents a measurement from which this observation value is derived. For example, a calculated anion gap or a fetal measurement based on an ultrasound image.", 0, java.lang.Integer.MAX_VALUE, derivedFrom));
         children.add(new Property("component", "", "Some observations have multiple component observations.  These component observations are expressed as separate code value pairs that share the same attributes.  Examples include systolic and diastolic component observations for blood pressure measurement and multiple component observations for genetics observations.", 0, java.lang.Integer.MAX_VALUE, component));
       }
 
@@ -3207,7 +3207,7 @@ Reflex | Repeat | Re-run.
         case -1744595326: /*instantiatesReference*/  return new Property("instantiates[x]", "Reference(ObservationDefinition)", "The reference to a FHIR ObservationDefinition resource that provides the definition that is adhered to in whole or in part by this Observation instance.", 0, 1, instantiates);
         case -332612366: /*basedOn*/  return new Property("basedOn", "Reference(CarePlan|DeviceRequest|ImmunizationRecommendation|MedicationRequest|NutritionOrder|ServiceRequest)", "A plan, proposal or order that is fulfilled in whole or in part by this event.  For example, a MedicationRequest may require a patient to have laboratory test performed before  it is dispensed.", 0, java.lang.Integer.MAX_VALUE, basedOn);
         case -680451314: /*triggeredBy*/  return new Property("triggeredBy", "", "Identifies the observation(s) that triggered the performance of this observation.", 0, java.lang.Integer.MAX_VALUE, triggeredBy);
-        case -995410646: /*partOf*/  return new Property("partOf", "Reference(MedicationAdministration|MedicationDispense|MedicationUsage|Procedure|Immunization|ImagingStudy)", "A larger event of which this particular Observation is a component or step.  For example,  an observation as part of a procedure.", 0, java.lang.Integer.MAX_VALUE, partOf);
+        case -995410646: /*partOf*/  return new Property("partOf", "Reference(MedicationAdministration|MedicationDispense|MedicationUsage|Procedure|Immunization|ImagingStudy|GenomicStudy)", "A larger event of which this particular Observation is a component or step.  For example,  an observation as part of a procedure.", 0, java.lang.Integer.MAX_VALUE, partOf);
         case -892481550: /*status*/  return new Property("status", "code", "The status of the result value.", 0, 1, status);
         case 50511102: /*category*/  return new Property("category", "CodeableConcept", "A code that classifies the general type of observation being made.", 0, java.lang.Integer.MAX_VALUE, category);
         case 3059181: /*code*/  return new Property("code", "CodeableConcept", "Describes what was observed. Sometimes this is called the observation \"name\".", 0, 1, code);
@@ -3242,11 +3242,11 @@ Reflex | Repeat | Re-run.
         case 1702620169: /*bodySite*/  return new Property("bodySite", "CodeableConcept", "Indicates the site on the subject's body where the observation was made (i.e. the target site).", 0, 1, bodySite);
         case -1001731599: /*bodyStructure*/  return new Property("bodyStructure", "Reference(BodyStructure)", "Indicates the body structure on the subject's body where the observation was made (i.e. the target site).", 0, 1, bodyStructure);
         case -1077554975: /*method*/  return new Property("method", "CodeableConcept", "Indicates the mechanism used to perform the observation.", 0, 1, method);
-        case -2132868344: /*specimen*/  return new Property("specimen", "Reference(Specimen)", "The specimen that was used when this observation was made.", 0, 1, specimen);
+        case -2132868344: /*specimen*/  return new Property("specimen", "Reference(Specimen|Group)", "The specimen that was used when this observation was made.", 0, 1, specimen);
         case -1335157162: /*device*/  return new Property("device", "Reference(Device|DeviceMetric)", "The device used to generate the observation data.", 0, 1, device);
         case -1912545102: /*referenceRange*/  return new Property("referenceRange", "", "Guidance on how to interpret the value by comparison to a normal or recommended range.  Multiple reference ranges are interpreted as an \"OR\".   In other words, to represent two distinct target populations, two `referenceRange` elements would be used.", 0, java.lang.Integer.MAX_VALUE, referenceRange);
         case -458019372: /*hasMember*/  return new Property("hasMember", "Reference(Observation|QuestionnaireResponse|MolecularSequence)", "This observation is a group observation (e.g. a battery, a panel of tests, a set of vital sign measurements) that includes the target as a member of the group.", 0, java.lang.Integer.MAX_VALUE, hasMember);
-        case 1077922663: /*derivedFrom*/  return new Property("derivedFrom", "Reference(DocumentReference|ImagingStudy|ImagingSelection|QuestionnaireResponse|Observation|MolecularSequence)", "The target resource that represents a measurement from which this observation value is derived. For example, a calculated anion gap or a fetal measurement based on an ultrasound image.", 0, java.lang.Integer.MAX_VALUE, derivedFrom);
+        case 1077922663: /*derivedFrom*/  return new Property("derivedFrom", "Reference(DocumentReference|ImagingStudy|ImagingSelection|QuestionnaireResponse|Observation|MolecularSequence|GenomicStudy)", "The target resource that represents a measurement from which this observation value is derived. For example, a calculated anion gap or a fetal measurement based on an ultrasound image.", 0, java.lang.Integer.MAX_VALUE, derivedFrom);
         case -1399907075: /*component*/  return new Property("component", "", "Some observations have multiple component observations.  These component observations are expressed as separate code value pairs that share the same attributes.  Examples include systolic and diastolic component observations for blood pressure measurement and multiple component observations for genetics observations.", 0, java.lang.Integer.MAX_VALUE, component);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -4023,17 +4023,17 @@ Reflex | Repeat | Re-run.
    * <p>
    * Description: <b>The value or component value of the observation, if the value is a CodeableConcept</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>(Observation.value as CodeableConcept) | (Observation.component.value as CodeableConcept)</b><br>
+   * Path: <b>Observation.value.ofType(CodeableConcept) | Observation.component.value.ofType(CodeableConcept)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="combo-value-concept", path="(Observation.value as CodeableConcept) | (Observation.component.value as CodeableConcept)", description="The value or component value of the observation, if the value is a CodeableConcept", type="token" )
+  @SearchParamDefinition(name="combo-value-concept", path="Observation.value.ofType(CodeableConcept) | Observation.component.value.ofType(CodeableConcept)", description="The value or component value of the observation, if the value is a CodeableConcept", type="token" )
   public static final String SP_COMBO_VALUE_CONCEPT = "combo-value-concept";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>combo-value-concept</b>
    * <p>
    * Description: <b>The value or component value of the observation, if the value is a CodeableConcept</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>(Observation.value as CodeableConcept) | (Observation.component.value as CodeableConcept)</b><br>
+   * Path: <b>Observation.value.ofType(CodeableConcept) | Observation.component.value.ofType(CodeableConcept)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam COMBO_VALUE_CONCEPT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_COMBO_VALUE_CONCEPT);
@@ -4043,17 +4043,17 @@ Reflex | Repeat | Re-run.
    * <p>
    * Description: <b>The value or component value of the observation, if the value is a Quantity, or a SampledData (just search on the bounds of the values in sampled data)</b><br>
    * Type: <b>quantity</b><br>
-   * Path: <b>(Observation.value as Quantity) | (Observation.value as SampledData) | (Observation.component.value as Quantity) | (Observation.component.value as SampledData)</b><br>
+   * Path: <b>Observation.value.ofType(Quantity) | Observation.value.ofType(SampledData) | Observation.component.value.ofType(Quantity) | Observation.component.value.ofType(SampledData)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="combo-value-quantity", path="(Observation.value as Quantity) | (Observation.value as SampledData) | (Observation.component.value as Quantity) | (Observation.component.value as SampledData)", description="The value or component value of the observation, if the value is a Quantity, or a SampledData (just search on the bounds of the values in sampled data)", type="quantity" )
+  @SearchParamDefinition(name="combo-value-quantity", path="Observation.value.ofType(Quantity) | Observation.value.ofType(SampledData) | Observation.component.value.ofType(Quantity) | Observation.component.value.ofType(SampledData)", description="The value or component value of the observation, if the value is a Quantity, or a SampledData (just search on the bounds of the values in sampled data)", type="quantity" )
   public static final String SP_COMBO_VALUE_QUANTITY = "combo-value-quantity";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>combo-value-quantity</b>
    * <p>
    * Description: <b>The value or component value of the observation, if the value is a Quantity, or a SampledData (just search on the bounds of the values in sampled data)</b><br>
    * Type: <b>quantity</b><br>
-   * Path: <b>(Observation.value as Quantity) | (Observation.value as SampledData) | (Observation.component.value as Quantity) | (Observation.component.value as SampledData)</b><br>
+   * Path: <b>Observation.value.ofType(Quantity) | Observation.value.ofType(SampledData) | Observation.component.value.ofType(Quantity) | Observation.component.value.ofType(SampledData)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.QuantityClientParam COMBO_VALUE_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_COMBO_VALUE_QUANTITY);
@@ -4143,17 +4143,17 @@ Reflex | Repeat | Re-run.
    * <p>
    * Description: <b>The value of the component observation, if the value is a CodeableConcept</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>(Observation.component.value as CodeableConcept)</b><br>
+   * Path: <b>Observation.component.value.ofType(CodeableConcept)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="component-value-concept", path="(Observation.component.value as CodeableConcept)", description="The value of the component observation, if the value is a CodeableConcept", type="token" )
+  @SearchParamDefinition(name="component-value-concept", path="Observation.component.value.ofType(CodeableConcept)", description="The value of the component observation, if the value is a CodeableConcept", type="token" )
   public static final String SP_COMPONENT_VALUE_CONCEPT = "component-value-concept";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>component-value-concept</b>
    * <p>
    * Description: <b>The value of the component observation, if the value is a CodeableConcept</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>(Observation.component.value as CodeableConcept)</b><br>
+   * Path: <b>Observation.component.value.ofType(CodeableConcept)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam COMPONENT_VALUE_CONCEPT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_COMPONENT_VALUE_CONCEPT);
@@ -4163,17 +4163,17 @@ Reflex | Repeat | Re-run.
    * <p>
    * Description: <b>The value of the component observation, if the value is a Quantity, or a SampledData (just search on the bounds of the values in sampled data)</b><br>
    * Type: <b>quantity</b><br>
-   * Path: <b>(Observation.component.value as Quantity) | (Observation.component.value as SampledData)</b><br>
+   * Path: <b>Observation.component.value.ofType(Quantity) | Observation.component.value.ofType(SampledData)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="component-value-quantity", path="(Observation.component.value as Quantity) | (Observation.component.value as SampledData)", description="The value of the component observation, if the value is a Quantity, or a SampledData (just search on the bounds of the values in sampled data)", type="quantity" )
+  @SearchParamDefinition(name="component-value-quantity", path="Observation.component.value.ofType(Quantity) | Observation.component.value.ofType(SampledData)", description="The value of the component observation, if the value is a Quantity, or a SampledData (just search on the bounds of the values in sampled data)", type="quantity" )
   public static final String SP_COMPONENT_VALUE_QUANTITY = "component-value-quantity";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>component-value-quantity</b>
    * <p>
    * Description: <b>The value of the component observation, if the value is a Quantity, or a SampledData (just search on the bounds of the values in sampled data)</b><br>
    * Type: <b>quantity</b><br>
-   * Path: <b>(Observation.component.value as Quantity) | (Observation.component.value as SampledData)</b><br>
+   * Path: <b>Observation.component.value.ofType(Quantity) | Observation.component.value.ofType(SampledData)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.QuantityClientParam COMPONENT_VALUE_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_COMPONENT_VALUE_QUANTITY);
@@ -4206,7 +4206,7 @@ Reflex | Repeat | Re-run.
    * Path: <b>Observation.derivedFrom</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="derived-from", path="Observation.derivedFrom", description="Related measurements the observation is made from", type="reference", target={DocumentReference.class, ImagingSelection.class, ImagingStudy.class, MolecularSequence.class, Observation.class, QuestionnaireResponse.class } )
+  @SearchParamDefinition(name="derived-from", path="Observation.derivedFrom", description="Related measurements the observation is made from", type="reference", target={DocumentReference.class, GenomicStudy.class, ImagingSelection.class, ImagingStudy.class, MolecularSequence.class, Observation.class, QuestionnaireResponse.class } )
   public static final String SP_DERIVED_FROM = "derived-from";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>derived-from</b>
@@ -4258,7 +4258,7 @@ Reflex | Repeat | Re-run.
    * Path: <b>Observation.focus</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="focus", path="Observation.focus", description="The focus of an observation when the focus is not the patient of record.", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="focus", path="Observation.focus", description="The focus of an observation when the focus is not the patient of record.", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_FOCUS = "focus";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>focus</b>
@@ -4330,7 +4330,7 @@ Reflex | Repeat | Re-run.
    * Path: <b>Observation.partOf</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="part-of", path="Observation.partOf", description="Part of referenced event", type="reference", target={ImagingStudy.class, Immunization.class, MedicationAdministration.class, MedicationDispense.class, MedicationUsage.class, Procedure.class } )
+  @SearchParamDefinition(name="part-of", path="Observation.partOf", description="Part of referenced event", type="reference", target={GenomicStudy.class, ImagingStudy.class, Immunization.class, MedicationAdministration.class, MedicationDispense.class, MedicationUsage.class, Procedure.class } )
   public static final String SP_PART_OF = "part-of";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>part-of</b>
@@ -4382,7 +4382,7 @@ Reflex | Repeat | Re-run.
    * Path: <b>Observation.specimen</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="specimen", path="Observation.specimen", description="Specimen used for this observation", type="reference", target={Specimen.class } )
+  @SearchParamDefinition(name="specimen", path="Observation.specimen", description="Specimen used for this observation", type="reference", target={Group.class, Specimen.class } )
   public static final String SP_SPECIMEN = "specimen";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>specimen</b>
@@ -4451,17 +4451,17 @@ Reflex | Repeat | Re-run.
    * <p>
    * Description: <b>The value of the observation, if the value is a CodeableConcept</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>(Observation.value as CodeableConcept)</b><br>
+   * Path: <b>Observation.value.ofType(CodeableConcept)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="value-concept", path="(Observation.value as CodeableConcept)", description="The value of the observation, if the value is a CodeableConcept", type="token" )
+  @SearchParamDefinition(name="value-concept", path="Observation.value.ofType(CodeableConcept)", description="The value of the observation, if the value is a CodeableConcept", type="token" )
   public static final String SP_VALUE_CONCEPT = "value-concept";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>value-concept</b>
    * <p>
    * Description: <b>The value of the observation, if the value is a CodeableConcept</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>(Observation.value as CodeableConcept)</b><br>
+   * Path: <b>Observation.value.ofType(CodeableConcept)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VALUE_CONCEPT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VALUE_CONCEPT);
@@ -4471,17 +4471,17 @@ Reflex | Repeat | Re-run.
    * <p>
    * Description: <b>The value of the observation, if the value is a date or period of time</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>(Observation.value as dateTime) | (Observation.value as Period)</b><br>
+   * Path: <b>Observation.value.ofType(dateTime) | Observation.value.ofType(Period)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="value-date", path="(Observation.value as dateTime) | (Observation.value as Period)", description="The value of the observation, if the value is a date or period of time", type="date" )
+  @SearchParamDefinition(name="value-date", path="Observation.value.ofType(dateTime) | Observation.value.ofType(Period)", description="The value of the observation, if the value is a date or period of time", type="date" )
   public static final String SP_VALUE_DATE = "value-date";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>value-date</b>
    * <p>
    * Description: <b>The value of the observation, if the value is a date or period of time</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>(Observation.value as dateTime) | (Observation.value as Period)</b><br>
+   * Path: <b>Observation.value.ofType(dateTime) | Observation.value.ofType(Period)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam VALUE_DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_VALUE_DATE);
@@ -4491,17 +4491,17 @@ Reflex | Repeat | Re-run.
    * <p>
    * Description: <b>The value of the observation, if the value is a Quantity, or a SampledData (just search on the bounds of the values in sampled data)</b><br>
    * Type: <b>quantity</b><br>
-   * Path: <b>(Observation.value as Quantity) | (Observation.value as SampledData)</b><br>
+   * Path: <b>Observation.value.ofType(Quantity) | Observation.value.ofType(SampledData)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="value-quantity", path="(Observation.value as Quantity) | (Observation.value as SampledData)", description="The value of the observation, if the value is a Quantity, or a SampledData (just search on the bounds of the values in sampled data)", type="quantity" )
+  @SearchParamDefinition(name="value-quantity", path="Observation.value.ofType(Quantity) | Observation.value.ofType(SampledData)", description="The value of the observation, if the value is a Quantity, or a SampledData (just search on the bounds of the values in sampled data)", type="quantity" )
   public static final String SP_VALUE_QUANTITY = "value-quantity";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>value-quantity</b>
    * <p>
    * Description: <b>The value of the observation, if the value is a Quantity, or a SampledData (just search on the bounds of the values in sampled data)</b><br>
    * Type: <b>quantity</b><br>
-   * Path: <b>(Observation.value as Quantity) | (Observation.value as SampledData)</b><br>
+   * Path: <b>Observation.value.ofType(Quantity) | Observation.value.ofType(SampledData)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.QuantityClientParam VALUE_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_VALUE_QUANTITY);
@@ -4511,17 +4511,17 @@ Reflex | Repeat | Re-run.
    * <p>
    * Description: <b>The value of the observation, if the value is a string, and also searches in CodeableConcept.text</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>(Observation.value as string) | (Observation.value as CodeableConcept).text</b><br>
+   * Path: <b>Observation.value.ofType(string) | Observation.value.ofType(CodeableConcept).text</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="value-string", path="(Observation.value as string) | (Observation.value as CodeableConcept).text", description="The value of the observation, if the value is a string, and also searches in CodeableConcept.text", type="string" )
+  @SearchParamDefinition(name="value-string", path="Observation.value.ofType(string) | Observation.value.ofType(CodeableConcept).text", description="The value of the observation, if the value is a string, and also searches in CodeableConcept.text", type="string" )
   public static final String SP_VALUE_STRING = "value-string";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>value-string</b>
    * <p>
    * Description: <b>The value of the observation, if the value is a string, and also searches in CodeableConcept.text</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>(Observation.value as string) | (Observation.value as CodeableConcept).text</b><br>
+   * Path: <b>Observation.value.ofType(string) | Observation.value.ofType(CodeableConcept).text</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.StringClientParam VALUE_STRING = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_VALUE_STRING);
@@ -4544,13 +4544,12 @@ Reflex | Repeat | Re-run.
 * [MedicationUsage](medicationusage.html): Return statements of this medication code
 * [Observation](observation.html): The code of the observation type
 * [Procedure](procedure.html): A code to identify a  procedure
-* [ServiceRequest](servicerequest.html): What is being requested/ordered
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | DeviceRequest.code.concept | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | MedicationAdministration.medication.concept | MedicationDispense.medication.concept | MedicationRequest.medication.concept | MedicationUsage.medication.concept | Observation.code | Procedure.code | ServiceRequest.code</b><br>
+   * Path: <b>AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | DeviceRequest.code.concept | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | MedicationAdministration.medication.concept | MedicationDispense.medication.concept | MedicationRequest.medication.concept | MedicationUsage.medication.concept | Observation.code | Procedure.code</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="code", path="AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | DeviceRequest.code.concept | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | MedicationAdministration.medication.concept | MedicationDispense.medication.concept | MedicationRequest.medication.concept | MedicationUsage.medication.concept | Observation.code | Procedure.code | ServiceRequest.code", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Code that identifies the allergy or intolerance\r\n* [Condition](condition.html): Code for the condition\r\n* [DeviceRequest](devicerequest.html): Code for what is being requested/ordered\r\n* [DiagnosticReport](diagnosticreport.html): The code for the report, as opposed to codes for the atomic results, which are the names on the observation resource referred to from the result\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a condition code\r\n* [List](list.html): What the purpose of this list is\r\n* [Medication](medication.html): Returns medications for a specific code\r\n* [MedicationAdministration](medicationadministration.html): Return administrations of this medication code\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses of this medicine code\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions of this medication code\r\n* [MedicationUsage](medicationusage.html): Return statements of this medication code\r\n* [Observation](observation.html): The code of the observation type\r\n* [Procedure](procedure.html): A code to identify a  procedure\r\n* [ServiceRequest](servicerequest.html): What is being requested/ordered\r\n", type="token" )
+  @SearchParamDefinition(name="code", path="AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | DeviceRequest.code.concept | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | MedicationAdministration.medication.concept | MedicationDispense.medication.concept | MedicationRequest.medication.concept | MedicationUsage.medication.concept | Observation.code | Procedure.code", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Code that identifies the allergy or intolerance\r\n* [Condition](condition.html): Code for the condition\r\n* [DeviceRequest](devicerequest.html): Code for what is being requested/ordered\r\n* [DiagnosticReport](diagnosticreport.html): The code for the report, as opposed to codes for the atomic results, which are the names on the observation resource referred to from the result\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a condition code\r\n* [List](list.html): What the purpose of this list is\r\n* [Medication](medication.html): Returns medications for a specific code\r\n* [MedicationAdministration](medicationadministration.html): Return administrations of this medication code\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses of this medicine code\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions of this medication code\r\n* [MedicationUsage](medicationusage.html): Return statements of this medication code\r\n* [Observation](observation.html): The code of the observation type\r\n* [Procedure](procedure.html): A code to identify a  procedure\r\n", type="token" )
   public static final String SP_CODE = "code";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>code</b>
@@ -4570,10 +4569,9 @@ Reflex | Repeat | Re-run.
 * [MedicationUsage](medicationusage.html): Return statements of this medication code
 * [Observation](observation.html): The code of the observation type
 * [Procedure](procedure.html): A code to identify a  procedure
-* [ServiceRequest](servicerequest.html): What is being requested/ordered
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | DeviceRequest.code.concept | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | MedicationAdministration.medication.concept | MedicationDispense.medication.concept | MedicationRequest.medication.concept | MedicationUsage.medication.concept | Observation.code | Procedure.code | ServiceRequest.code</b><br>
+   * Path: <b>AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | DeviceRequest.code.concept | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | MedicationAdministration.medication.concept | MedicationDispense.medication.concept | MedicationRequest.medication.concept | MedicationUsage.medication.concept | Observation.code | Procedure.code</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
@@ -4602,10 +4600,10 @@ Reflex | Repeat | Re-run.
 * [SupplyRequest](supplyrequest.html): When the request was made
 </b><br>
    * Type: <b>date</b><br>
-   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
+   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.as(dateTime) | DiagnosticReport.effective.as(Period) | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective.as(dateTime) | Observation.effective.as(Period) | Observation.effective.as(Timing) | Observation.effective.as(instant) | Procedure.occurrence.as(dateTime) | Procedure.occurrence.as(Period) | Procedure.occurrence.as(Timing) | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="date", path="AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded\r\n* [CarePlan](careplan.html): Time period plan covers\r\n* [CareTeam](careteam.html): A date within the coverage time period.\r\n* [ClinicalImpression](clinicalimpression.html): When the assessment was documented\r\n* [Composition](composition.html): Composition editing time\r\n* [Consent](consent.html): When consent was agreed to\r\n* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report\r\n* [Encounter](encounter.html): A date within the actualPeriod the Encounter lasted\r\n* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period\r\n* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated\r\n* [Flag](flag.html): Time period when flag is active\r\n* [Immunization](immunization.html): Vaccination  (non)-Administration Date\r\n* [List](list.html): When the list was prepared\r\n* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period\r\n* [Procedure](procedure.html): When the procedure occurred or is occurring\r\n* [RiskAssessment](riskassessment.html): When was assessment made?\r\n* [SupplyRequest](supplyrequest.html): When the request was made\r\n", type="date" )
+  @SearchParamDefinition(name="date", path="AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.as(dateTime) | DiagnosticReport.effective.as(Period) | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective.as(dateTime) | Observation.effective.as(Period) | Observation.effective.as(Timing) | Observation.effective.as(instant) | Procedure.occurrence.as(dateTime) | Procedure.occurrence.as(Period) | Procedure.occurrence.as(Timing) | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded\r\n* [CarePlan](careplan.html): Time period plan covers\r\n* [CareTeam](careteam.html): A date within the coverage time period.\r\n* [ClinicalImpression](clinicalimpression.html): When the assessment was documented\r\n* [Composition](composition.html): Composition editing time\r\n* [Consent](consent.html): When consent was agreed to\r\n* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report\r\n* [Encounter](encounter.html): A date within the actualPeriod the Encounter lasted\r\n* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period\r\n* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated\r\n* [Flag](flag.html): Time period when flag is active\r\n* [Immunization](immunization.html): Vaccination  (non)-Administration Date\r\n* [List](list.html): When the list was prepared\r\n* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period\r\n* [Procedure](procedure.html): When the procedure occurred or is occurring\r\n* [RiskAssessment](riskassessment.html): When was assessment made?\r\n* [SupplyRequest](supplyrequest.html): When the request was made\r\n", type="date" )
   public static final String SP_DATE = "date";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>date</b>
@@ -4631,7 +4629,7 @@ Reflex | Repeat | Re-run.
 * [SupplyRequest](supplyrequest.html): When the request was made
 </b><br>
    * Type: <b>date</b><br>
-   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
+   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.as(dateTime) | DiagnosticReport.effective.as(Period) | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective.as(dateTime) | Observation.effective.as(Period) | Observation.effective.as(Timing) | Observation.effective.as(instant) | Procedure.occurrence.as(dateTime) | Procedure.occurrence.as(Period) | Procedure.occurrence.as(Timing) | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
@@ -4802,19 +4800,20 @@ Reflex | Repeat | Re-run.
 * [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
 * [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
 * [MedicationUsage](medicationusage.html): Returns statements for a specific patient.
-* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement
+* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement
 * [Observation](observation.html): The subject that the observation is about (if patient)
 * [Procedure](procedure.html): Search by subject - a patient
 * [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
 * [ServiceRequest](servicerequest.html): Search by subject - a patient
 * [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
+* [SupplyRequest](supplyrequest.html): The patient or subject for whom the supply is destined
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | SupplyRequest.deliverFor | VisionPrescription.patient</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", target={Patient.class } )
+  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | SupplyRequest.deliverFor | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [SupplyRequest](supplyrequest.html): The patient or subject for whom the supply is destined\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", target={BiologicallyDerivedProduct.class, Device.class, Group.class, Location.class, Medication.class, NutritionProduct.class, Organization.class, Patient.class, Practitioner.class, Procedure.class, Substance.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
@@ -4846,16 +4845,17 @@ Reflex | Repeat | Re-run.
 * [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
 * [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
 * [MedicationUsage](medicationusage.html): Returns statements for a specific patient.
-* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement
+* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement
 * [Observation](observation.html): The subject that the observation is about (if patient)
 * [Procedure](procedure.html): Search by subject - a patient
 * [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
 * [ServiceRequest](servicerequest.html): Search by subject - a patient
 * [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
+* [SupplyRequest](supplyrequest.html): The patient or subject for whom the supply is destined
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | SupplyRequest.deliverFor | VisionPrescription.patient</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);

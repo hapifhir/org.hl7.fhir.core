@@ -4,6 +4,13 @@ package org.hl7.fhir.convertors.misc;
 
 
 
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -38,12 +45,6 @@ import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 public class CDAUtilities {
 

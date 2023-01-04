@@ -1,5 +1,8 @@
 package org.hl7.fhir.utilities.validation;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -61,6 +64,7 @@ package org.hl7.fhir.utilities.validation;
  */
 
 import java.util.Comparator;
+import java.util.Date;
 import java.util.EnumMap;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -516,6 +520,8 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   private boolean slicingHint;
   private boolean signpost;
   private boolean criticalSignpost;
+  private Date ruleDate;
+  public static final String NO_RULE_DATE = null;
 
 
   /**
@@ -807,5 +813,28 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
     return this;
   }
 
+  public Date getRuleDate() {
+    return ruleDate;
+  }
 
+  public ValidationMessage setRuleDate(Date ruleDate) {
+    this.ruleDate = ruleDate;
+    return this;
+  }
+
+
+  public ValidationMessage setRuleDate(String value) {
+    if (value == null) {
+      ruleDate = null;
+    } else {
+      Date d = null;
+      try {
+        d = new SimpleDateFormat("yyyy-MM-dd").parse(value);
+      } catch (ParseException e) {
+        e.printStackTrace();
+      }
+      ruleDate = d;
+    }
+    return this;
+  }
 }

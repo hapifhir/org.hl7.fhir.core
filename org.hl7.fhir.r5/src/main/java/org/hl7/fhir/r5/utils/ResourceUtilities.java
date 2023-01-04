@@ -1,5 +1,7 @@
 package org.hl7.fhir.r5.utils;
 
+import java.util.ArrayList;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -33,7 +35,9 @@ package org.hl7.fhir.r5.utils;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
+import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleLinkComponent;
@@ -49,6 +53,7 @@ import org.hl7.fhir.r5.model.Meta;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ResourceType;
@@ -160,4 +165,45 @@ public class ResourceUtilities {
       return new Locale(l);
     }
  }
+
+  public static String listUrls(List<? extends CanonicalResource> list) {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+    for (CanonicalResource t : list) {
+      b.append(t.getVUrl());
+    }
+    return b.toString();
+  }
+
+  public static String listStrings(Set<String> set) {
+    List<String> list = Utilities.sorted(set);
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+    for (String s : list) {
+      b.append(s);
+    }
+    return b.toString();
+  }
+
+  public static boolean hasURL(String uri, Resource src) {
+    for (Property p : src.children()) {
+      if (hasURL(uri, p)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private static boolean hasURL(String uri, Property p) {
+    for (Base b : p.getValues()) {
+      if (b.isPrimitive()) {
+        return uri.equals(b.primitiveValue());
+      } else {
+        for (Property c : b.children()) {
+          if (hasURL(uri, c)) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
 }

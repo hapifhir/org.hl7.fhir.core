@@ -2,7 +2,9 @@ package org.hl7.fhir.r5.renderers;
 
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
+import org.hl7.fhir.r5.utils.TranslatingUtilities;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -24,7 +26,7 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
  * @author graha
  *
  */
-public class Renderer {
+public class Renderer extends TranslatingUtilities {
 
   protected RenderingContext context;
   
@@ -33,7 +35,7 @@ public class Renderer {
   }
 
   public Renderer(IWorkerContext worker) {
-    this.context = new RenderingContext(worker, new MarkDownProcessor(Dialect.COMMON_MARK), ValidationOptions.defaults(), "http://hl7.org/fhir/R5", "", null, ResourceRendererMode.END_USER);
+    this.context = new RenderingContext(worker, new MarkDownProcessor(Dialect.COMMON_MARK), ValidationOptions.defaults(), "http://hl7.org/fhir/R5", "", null, ResourceRendererMode.END_USER, GenerationRules.IG_PUBLISHER);
   }
 
 

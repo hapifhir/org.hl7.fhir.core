@@ -1,12 +1,30 @@
 package org.hl7.fhir.validation;
 
-import org.hl7.fhir.convertors.loaders.loaderR5.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.hl7.fhir.convertors.loaders.loaderR5.NullLoaderKnowledgeProviderR5;
+import org.hl7.fhir.convertors.loaders.loaderR5.R2016MayToR5Loader;
+import org.hl7.fhir.convertors.loaders.loaderR5.R2ToR5Loader;
+import org.hl7.fhir.convertors.loaders.loaderR5.R3ToR5Loader;
+import org.hl7.fhir.convertors.loaders.loaderR5.R4BToR5Loader;
+import org.hl7.fhir.convertors.loaders.loaderR5.R4ToR5Loader;
+import org.hl7.fhir.convertors.loaders.loaderR5.R5ToR5Loader;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
@@ -18,16 +36,6 @@ import org.hl7.fhir.validation.cli.utils.AsteriskFilter;
 import org.hl7.fhir.validation.cli.utils.Common;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 //TODO find a home for these and clean it up
 public class ValidatorUtils {
@@ -101,7 +109,7 @@ public class ValidatorUtils {
     if (!op.hasIssue()) {
       op.addIssue().setSeverity(OperationOutcome.IssueSeverity.INFORMATION).setCode(OperationOutcome.IssueType.INFORMATIONAL).getDetails().setText(context.formatMessage(I18nConstants.ALL_OK));
     }
-    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, RenderingContext.ResourceRendererMode.END_USER);
+    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, RenderingContext.ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     RendererFactory.factory(op, rc).render(op);
     return op;
   }

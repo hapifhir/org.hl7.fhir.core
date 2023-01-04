@@ -1,0 +1,52 @@
+{
+  "resourceType": "Requirements",
+  "id": "example1",
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative: Requirements</b><a name=\"example1\"> </a></p><div style=\"display: inline-block; background-color: #d9e0e7; padding: 6px; margin: 4px; border: 1px solid #8da1b4; border-radius: 5px; line-height: 60%\"><p style=\"margin-bottom: 0px\">Resource Requirements &quot;example1&quot; </p></div><p><b>url</b>: <a href=\"http://hl7.org/fhir/Requirements/example1\">http://hl7.org/fhir/Requirements/example1</a></p><p><b>identifier</b>: id: urn:oid:2.16.840.1.113883.4.642.18.1</p><p><b>name</b>: ExampleRequirements1</p><p><b>title</b>: Example Requirements Set 1</p><p><b>status</b>: active</p><p><b>date</b>: 2021-11-02T14:31:30.239Z</p><p><b>actor</b>: <a href=\"http://hl7.org/fhir/ActorDefinition/server\">http://hl7.org/fhir/ActorDefinition/server</a></p><blockquote><p><b>statement</b></p><p><b>key</b>: req-1</p><p><b>conformance</b>: <span title=\"  \n\t\t&lt;label value=&quot;requirement-1&quot;/&gt;\n\t\tsince this is commented out, it's simply 'req-1'\n\t\t \">SHALL</span></p><p><b>requirement</b>: The server SHALL support expanding value sets</p><p><b>satisfiedBy</b>: <a href=\"http://hl7.org/fhir/terminology-service.html#expand\">http://hl7.org/fhir/terminology-service.html#expand</a></p><p><b>source</b>: <span>: Grahame Grieve</span></p></blockquote><blockquote><p><b>statement</b></p><p><b>key</b>: 46f77dcd-d51e-4738-b61f-22506d0cb0ac</p><p><b>label</b>: requirement-2</p><p><b>conformance</b>: SHALL</p><p><b>requirement</b>: Operations based on the codeSystem resource SHALL have the same result whether or not the relationships are represented explicitly as properties or implicitly using the CodeSystem resource hierarchy</p><p><b>source</b>: <span>: Jose Costa Teixeira</span></p></blockquote></div>"
+  },
+  "url": "http://hl7.org/fhir/Requirements/example1",
+  "identifier": [
+    {
+      "system": "urn:ietf:rfc:3986",
+      "value": "urn:oid:2.16.840.1.113883.4.642.18.1"
+    }
+  ],
+  "name": "ExampleRequirements1",
+  "title": "Example Requirements Set 1",
+  "status": "active",
+  "date": "2021-11-02T14:31:30.239Z",
+  "actor": [
+    "http://hl7.org/fhir/ActorDefinition/server"
+  ],
+  "statement": [
+    {
+      "key": "req-1",
+      "conformance": [
+        "SHALL"
+      ],
+      "requirement": "The server SHALL support expanding value sets",
+      "satisfiedBy": [
+        "http://hl7.org/fhir/terminology-service.html#expand"
+      ],
+      "source": [
+        {
+          "display": "Grahame Grieve"
+        }
+      ]
+    },
+    {
+      "key": "46f77dcd-d51e-4738-b61f-22506d0cb0ac",
+      "label": "requirement-2",
+      "conformance": [
+        "SHALL"
+      ],
+      "requirement": "Operations based on the codeSystem resource SHALL have the same result whether or not the relationships are represented explicitly as properties or implicitly using the CodeSystem resource hierarchy",
+      "source": [
+        {
+          "display": "Jose Costa Teixeira"
+        }
+      ]
+    }
+  ]
+}

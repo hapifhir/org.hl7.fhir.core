@@ -103,6 +103,7 @@ import org.hl7.fhir.r4.utils.formats.XLSXWriter;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
@@ -776,7 +777,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           if (typeList.get(0).type != null) {
             // this is the short cut method, we've just dived in and specified a type slice. 
             // in R3 (and unpatched R4, as a workaround right now...
-            if (!FHIRVersion.isR4Plus(context.getVersion()) || !newSlicingProcessing) { // newSlicingProcessing is a work around for editorial loop dependency
+            if (!VersionUtilities.isR4Plus(context.getVersion()) || !newSlicingProcessing) { // newSlicingProcessing is a work around for editorial loop dependency
               // we insert a cloned element with the right types at the start of the diffMatches
               ElementDefinition ed = new ElementDefinition();
               ed.setPath(determineTypeSlicePath(diffMatches.get(0).getPath(), cpath));
@@ -1718,7 +1719,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
       if (derived.hasDefinitionElement()) {
         if (derived.getDefinition().startsWith("..."))
-          base.setDefinition(base.getDefinition()+"\r\n"+derived.getDefinition().substring(3));
+          base.setDefinition(Utilities.appendDerivedTextToBase(base.getDefinition(), derived.getDefinition()));
         else if (!Base.compareDeep(derived.getDefinitionElement(), base.getDefinitionElement(), false))
           base.setDefinitionElement(derived.getDefinitionElement().copy());
         else if (trimDifferential)
@@ -1729,7 +1730,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
       if (derived.hasCommentElement()) {
         if (derived.getComment().startsWith("..."))
-          base.setComment(base.getComment()+"\r\n"+derived.getComment().substring(3));
+          base.setComment(Utilities.appendDerivedTextToBase(base.getComment(), derived.getComment()));
         else if (derived.hasCommentElement()!= base.hasCommentElement() || !Base.compareDeep(derived.getCommentElement(), base.getCommentElement(), false))
           base.setCommentElement(derived.getCommentElement().copy());
         else if (trimDifferential)
@@ -1740,7 +1741,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
       if (derived.hasLabelElement()) {
         if (derived.getLabel().startsWith("..."))
-          base.setLabel(base.getLabel()+"\r\n"+derived.getLabel().substring(3));
+          base.setLabel(Utilities.appendDerivedTextToBase(base.getLabel(), derived.getLabel()));
         else if (!base.hasLabelElement() || !Base.compareDeep(derived.getLabelElement(), base.getLabelElement(), false))
           base.setLabelElement(derived.getLabelElement().copy());
         else if (trimDifferential)
@@ -1751,7 +1752,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
       if (derived.hasRequirementsElement()) {
         if (derived.getRequirements().startsWith("..."))
-          base.setRequirements(base.getRequirements()+"\r\n"+derived.getRequirements().substring(3));
+          base.setRequirements(Utilities.appendDerivedTextToBase(base.getRequirements(), derived.getRequirements()));
         else if (!base.hasRequirementsElement() || !Base.compareDeep(derived.getRequirementsElement(), base.getRequirementsElement(), false))
           base.setRequirementsElement(derived.getRequirementsElement().copy());
         else if (trimDifferential)
@@ -4679,6 +4680,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     case PROFILE: return t.getPath()+"/@profile";
     case TYPE: return t.getPath()+"/@type";
     case VALUE: return t.getPath();
+    case PATTERN: return t.getPath();
     case EXISTS: return t.getPath(); // determination of value vs. exists is based on whether there's only 2 slices - one with minOccurs=1 and other with maxOccur=0
     default: throw new FHIRException("Unable to represent "+t.getType().toCode()+":"+t.getPath()+" in R2");    
     }

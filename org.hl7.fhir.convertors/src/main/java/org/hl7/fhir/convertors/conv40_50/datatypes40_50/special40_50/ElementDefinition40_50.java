@@ -1,13 +1,21 @@
 package org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50;
 
+import java.util.stream.Collectors;
+
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.BackboneElement40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Coding40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Boolean40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Canonical40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Code40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Id40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Integer40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.MarkDown40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.UnsignedInt40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.convertors.conv40_50.resources40_50.Enumerations40_50;
 import org.hl7.fhir.exceptions.FHIRException;
-
-import java.util.stream.Collectors;
 
 public class ElementDefinition40_50 {
   public static org.hl7.fhir.r5.model.ElementDefinition convertElementDefinition(org.hl7.fhir.r4.model.ElementDefinition src) throws FHIRException {
@@ -507,7 +515,7 @@ public class ElementDefinition40_50 {
     org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent tgt = new org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasKey()) tgt.setKeyElement(Id40_50.convertId(src.getKeyElement()));
-    if (src.hasRequirements()) tgt.setRequirementsElement(String40_50.convertString(src.getRequirementsElement()));
+    if (src.hasRequirements()) tgt.setRequirementsElement(String40_50.convertStringToMarkdown(src.getRequirementsElement()));
     if (src.hasSeverity()) tgt.setSeverityElement(convertConstraintSeverity(src.getSeverityElement()));
     if (src.hasHuman()) tgt.setHumanElement(String40_50.convertString(src.getHumanElement()));
     if (src.hasExpression()) tgt.setExpressionElement(String40_50.convertString(src.getExpressionElement()));
@@ -519,7 +527,7 @@ public class ElementDefinition40_50 {
   public static org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionConstraintComponent convertElementDefinitionConstraintComponent(org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionConstraintComponent tgt = new org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionConstraintComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt, org.hl7.fhir.r5.utils.ToolingExtensions.EXT_XPATH_CONSTRAINT);
     if (src.hasKey()) tgt.setKeyElement(Id40_50.convertId(src.getKeyElement()));
     if (src.hasRequirements()) tgt.setRequirementsElement(String40_50.convertString(src.getRequirementsElement()));
     if (src.hasSeverity()) tgt.setSeverityElement(convertConstraintSeverity(src.getSeverityElement()));
@@ -579,7 +587,7 @@ public class ElementDefinition40_50 {
     org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent tgt = new org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasStrength()) tgt.setStrengthElement(Enumerations40_50.convertBindingStrength(src.getStrengthElement()));
-    if (src.hasDescription()) tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
+    if (src.hasDescription()) tgt.setDescriptionElement(String40_50.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasValueSet()) tgt.setValueSetElement(Canonical40_50.convertCanonical(src.getValueSetElement()));
     return tgt;
   }
@@ -601,7 +609,7 @@ public class ElementDefinition40_50 {
     if (src.hasIdentity()) tgt.setIdentityElement(Id40_50.convertId(src.getIdentityElement()));
     if (src.hasLanguage()) tgt.setLanguageElement(Code40_50.convertCode(src.getLanguageElement()));
     if (src.hasMap()) tgt.setMapElement(String40_50.convertString(src.getMapElement()));
-    if (src.hasComment()) tgt.setCommentElement(String40_50.convertString(src.getCommentElement()));
+    if (src.hasComment()) tgt.setCommentElement(String40_50.convertStringToMarkdown(src.getCommentElement()));
     return tgt;
   }
 

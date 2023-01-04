@@ -1,8 +1,8 @@
 package org.hl7.fhir.utilities.i18n;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,7 +10,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 class I18nBaseTest {
 
@@ -41,6 +47,37 @@ class I18nBaseTest {
   }
 
   @Test
+  @DisplayName("Test pluralization works without initializing Locale.")
+  void testFormatMessagePluralWithoutInitLocale() {
+    I18nTestClass testClass = new I18nTestClass();
+
+    //Answer value must be of the type {1}
+    String resultOne = testClass.formatMessagePlural(1, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE);
+    assertThat(resultOne, containsString("be of the type"));
+
+    //Answer value must be one of the {0} types {1}
+    String resultMany = testClass.formatMessagePlural(3, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE);
+    assertThat(resultMany, containsString("one of the 3 types "));
+
+  }
+
+  @Test
+  @DisplayName("Test pluralization works with initializing Locale.")
+  void testFormatMessagePluralWithInitLocale() {
+    I18nTestClass testClass = new I18nTestClass();
+
+    testClass.setLocale(Locale.GERMAN);
+    //Answer value muss vom Typ {0} sein.
+    String resultOne = testClass.formatMessagePlural(1, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE);
+    assertThat(resultOne, containsString("muss vom Typ"));
+
+    //Answer value muss einer der Typen {1} sein
+    String resultMany = testClass.formatMessagePlural(3, I18nConstants.QUESTIONNAIRE_QR_ITEM_WRONGTYPE);
+    assertThat(resultMany, containsString("einer der Typen "));
+
+  }
+
+  @Test
   @DisplayName("Assert no string modification is done when no match is found.")
   void testFormatMessageForNonExistentMessage() {
     I18nTestClass testClass = new I18nTestClass();
@@ -68,7 +105,7 @@ class I18nBaseTest {
         String line;
         while ((line = reader.readLine()) != null) {
 //          System.out.println("Searching for umlauts -> " + line);
-          Assertions.assertFalse(stringContainsItemFromList(line, UMLAUTS));
+          assertFalse(stringContainsItemFromList(line, UMLAUTS));
         }
     } catch (IOException e) {
       e.printStackTrace();
@@ -80,4 +117,6 @@ class I18nBaseTest {
   public static boolean stringContainsItemFromList(String inputStr, String[] items) {
     return Arrays.stream(items).anyMatch(inputStr::contains);
   }
+
+
 }

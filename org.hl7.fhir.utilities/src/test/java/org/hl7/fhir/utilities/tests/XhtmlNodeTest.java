@@ -1,17 +1,19 @@
 package org.hl7.fhir.utilities.tests;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 
 public class XhtmlNodeTest {
 
@@ -110,8 +112,43 @@ public class XhtmlNodeTest {
   @Test
   public void testParseEntities() throws FHIRFormatError, IOException {
     XhtmlNode x = new XhtmlParser().parse(BaseTestingUtilities.loadTestResource("xhtml", "entities.html"), "div");
+
   }
+
+  @Test
+  public void testParseSvg() throws FHIRFormatError, IOException {
+    XhtmlNode x = new XhtmlParser().parse(BaseTestingUtilities.loadTestResource("xhtml", "svg.html"), "svg");
+
+    Assertions.assertEquals("http://www.w3.org/2000/svg", x.getChildNodes().get(1).getAttributes().get("xmlns"));
+    Assertions.assertEquals("http://www.w3.org/1999/xlink", x.getChildNodes().get(1).getAttributes().get("xmlns:xlink"));
+  }
+
+  @Test
+  public void testParseSvgNotRoot() throws FHIRFormatError, IOException {
+    XhtmlNode x = new XhtmlParser().parse(BaseTestingUtilities.loadTestResource("xhtml", "non-root-svg.html"), "div");
+
+    Assertions.assertEquals("http://www.w3.org/2000/svg", x.getChildNodes().get(0).getChildNodes().get(1).getAttributes().get("xmlns"));
+    Assertions.assertEquals("http://www.w3.org/1999/xlink", x.getChildNodes().get(0).getChildNodes().get(1).getAttributes().get("xmlns:xlink"));
+  }
+
+  @Test
+  public void testParseNamespacedSvgNotRoot() throws FHIRFormatError, IOException {
+    XhtmlNode x = new XhtmlParser().parse(BaseTestingUtilities.loadTestResource("xhtml", "namespaced-non-root-svg.html"), "div");
+
+    Assertions.assertEquals("http://www.w3.org/2000/svg", x.getChildNodes().get(0).getChildNodes().get(1).getAttributes().get("xmlns"));
+    Assertions.assertEquals("http://www.w3.org/1999/xlink", x.getChildNodes().get(0).getChildNodes().get(1).getAttributes().get("xmlns:xlink"));
+  }
+
+
+  @Test
+  public void testParseSvgElements() throws FHIRFormatError, IOException {
+    String src = BaseTestingUtilities.loadTestResource("xhtml", "xhtml-empty-elements.xml");
+    XhtmlNode x = new XhtmlParser().parse(src, "xml");
+   
     
+    String xml = new XhtmlComposer(false, false).compose(x);
+    Assertions.assertEquals(src.trim(), xml.trim());
+  }
 
-
+  
 }

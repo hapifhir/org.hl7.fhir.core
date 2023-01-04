@@ -42,7 +42,6 @@ import org.hl7.fhir.r5.model.ExpressionNode;
 import org.hl7.fhir.r5.model.Factory;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Quantity;
-import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.Questionnaire.EnableWhenBehavior;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemEnableWhenComponent;

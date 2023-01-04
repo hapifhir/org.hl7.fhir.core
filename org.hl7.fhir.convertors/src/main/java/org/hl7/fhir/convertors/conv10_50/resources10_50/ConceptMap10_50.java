@@ -1,5 +1,9 @@
 package org.hl7.fhir.convertors.conv10_50.resources10_50;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 import org.hl7.fhir.convertors.SourceElementComponentWrapper;
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext10_50;
@@ -7,21 +11,21 @@ import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.CodeableConcept10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.ContactPoint10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Identifier10_50;
-import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.*;
-import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.String14_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Boolean10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Code10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.DateTime10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.String10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Uri10_50;
 import org.hl7.fhir.dstu2.model.Enumerations.ConceptMapEquivalence;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ConceptMap10_50 {
 
@@ -59,10 +63,14 @@ public class ConceptMap10_50 {
       tgt.setPurpose(src.getRequirements());
     if (src.hasCopyright())
       tgt.setCopyright(src.getCopyright());
-    org.hl7.fhir.r5.model.DataType r = ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getSource());
-    tgt.setSourceScope(r instanceof org.hl7.fhir.r5.model.Reference ? new CanonicalType(((org.hl7.fhir.r5.model.Reference) r).getReference()) : r);
-    r = ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getTarget());
-    tgt.setTargetScope(r instanceof org.hl7.fhir.r5.model.Reference ? new CanonicalType(((org.hl7.fhir.r5.model.Reference) r).getReference()) : r);
+    if (src.hasSource()) {
+      org.hl7.fhir.r5.model.DataType r = ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getSource());
+      tgt.setSourceScope(r instanceof org.hl7.fhir.r5.model.Reference ? new CanonicalType(((org.hl7.fhir.r5.model.Reference) r).getReference()) : r);
+    }
+    if (src.hasTarget()) {
+      DataType r = ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getTarget());
+      tgt.setTargetScope(r instanceof org.hl7.fhir.r5.model.Reference ? new CanonicalType(((org.hl7.fhir.r5.model.Reference) r).getReference()) : r);
+    }
     for (org.hl7.fhir.dstu2.model.ConceptMap.SourceElementComponent t : src.getElement()) {
       List<SourceElementComponentWrapper<ConceptMap.SourceElementComponent>> ws = convertSourceElementComponent(t);
       for (SourceElementComponentWrapper<ConceptMap.SourceElementComponent> w : ws)
@@ -310,7 +318,7 @@ public class ConceptMap10_50 {
 
   static public ConceptMapGroupComponent getGroup(ConceptMap map, String srcs, String tgts) {
     for (ConceptMapGroupComponent grp : map.getGroup()) {
-      if (grp.getSource().equals(srcs) && grp.getTarget().equals(tgts))
+      if (Objects.equals(grp.getSource(), srcs) && Objects.equals(grp.getTarget(), tgts))
         return grp;
     }
     ConceptMapGroupComponent grp = map.addGroup();

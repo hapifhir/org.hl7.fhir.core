@@ -115,7 +115,7 @@ public class VocabTests {
     /* Do NOT get a shared worker context from Testing Utilities or else the terminology package loaded below
        will appear in tests where it causes failures.
      */
-    context = TestingUtilities.getSharedWorkerContext(VersionUtilities.getMajMin(TestingUtilities.DEFAULT_CONTEXT_VERSION));
+    context = TestingUtilities.getSharedWorkerContext(TestingUtilities.DEFAULT_CONTEXT_VERSION);
 
   }
 

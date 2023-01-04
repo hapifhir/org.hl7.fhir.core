@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,7 +48,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
 import org.hl7.fhir.instance.model.api.IBaseElement;
 import  org.hl7.fhir.instance.model.api.IBaseHasExtensions;
 /**
- * Base StructureDefinition for Element Type: Base definition for all elements in a resource.
+ * Element Type: Base definition for all elements in a resource.
  */
 @DatatypeDef(name="Element")
 public abstract class Element extends Base implements IBaseHasExtensions, IBaseElement {

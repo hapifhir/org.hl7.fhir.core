@@ -66,7 +66,7 @@ public class CodeSystemValidator extends BaseValidator {
   private void checkCodes(Set<String> codes, List<ConceptDefinitionComponent> list, String path, List<ValidationMessage> errors) {
     for (ConceptDefinitionComponent cc : list) {
       String npath = path+".concept.descendents().where(code = '"+cc.getCode()+"')";
-      rule(errors, IssueType.BUSINESSRULE, npath, !codes.contains(cc.getCode()), "Duplicate Code "+cc.getCode());
+      rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, npath, !codes.contains(cc.getCode()), "Duplicate Code "+cc.getCode());
       codes.add(cc.getCode());
       checkCodes(codes, cc.getConcept(), npath, errors);
     }

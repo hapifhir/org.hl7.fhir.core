@@ -34,6 +34,7 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.utilities.MergedList.IMatcher;
 
 /**
@@ -187,5 +188,5 @@ public class Property {
   public String toString() {
     return name; 
   }
-	
+
 }

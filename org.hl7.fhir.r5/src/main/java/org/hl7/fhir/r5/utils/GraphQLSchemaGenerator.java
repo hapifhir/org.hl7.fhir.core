@@ -35,7 +35,8 @@ package org.hl7.fhir.r5.utils;
 // - generate inherited search parameters
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
@@ -96,11 +97,14 @@ public class GraphQLSchemaGenerator {
     Map<String, StructureDefinition> pl = new HashMap<>();
     Map<String, StructureDefinition> tl = new HashMap<>();
     Map<String, String> existingTypeNames = new HashMap<>();
-    for (StructureDefinition sd : context.allStructures()) {
+    for (StructureDefinition sd : new ContextUtilities(context).allStructures()) {
       if (sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
         pl.put(sd.getName(), sd);
       }
       if (sd.getKind() == StructureDefinitionKind.COMPLEXTYPE && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+        tl.put(sd.getName(), sd);
+      }
+      if (sd.getKind() == StructureDefinitionKind.RESOURCE && sd.getDerivation() != TypeDerivationRule.CONSTRAINT && sd.getAbstract()) {
         tl.put(sd.getName(), sd);
       }
     }
@@ -273,8 +277,14 @@ public class GraphQLSchemaGenerator {
 
   private void generateElementBase(Writer writer, EnumSet<FHIROperationType> operations) throws IOException {
     if (operations.contains(FHIROperationType.READ) || operations.contains(FHIROperationType.SEARCH)) {
+      writer.write("interface IElement {\r\n");
+      writer.write("  id: String\r\n");
+      writer.write("  extension: [Extension]\r\n");
+      writer.write("}\r\n");
+      writer.write("\r\n");
+
       writer.write("type ElementBase {\r\n");
-      writer.write("  id: ID\r\n");
+      writer.write("  id: String\r\n");
       writer.write("  extension: [Extension]\r\n");
       writer.write("}\r\n");
       writer.write("\r\n");
@@ -290,22 +300,29 @@ public class GraphQLSchemaGenerator {
   }
 
   private void generateType(Map<String, String> existingTypeNames, Writer writer, StructureDefinition sd, EnumSet<FHIROperationType> operations) throws IOException {
-    if (sd.getAbstract()) {
-      return;
-    }
-
     if (operations.contains(FHIROperationType.READ) || operations.contains(FHIROperationType.SEARCH)) {
       List<StringBuilder> list = new ArrayList<>();
       StringBuilder b = new StringBuilder();
       list.add(b);
-      b.append("type ");
-      b.append(sd.getName());
+      b.append("interface ");
+      b.append("I" + sd.getName());
+      generateTypeSuperinterfaceDeclaration(sd, b);
       b.append(" {\r\n");
       ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
       generateProperties(existingTypeNames, list, b, sd.getName(), sd, ed, "type", "");
       b.append("}");
       b.append("\r\n");
       b.append("\r\n");
+
+      b.append("type ");
+      b.append(sd.getName());
+      generateTypeSuperinterfaceDeclaration(sd, b);
+      b.append(" {\r\n");
+      generateProperties(existingTypeNames, list, b, sd.getName(), sd, ed, "type", "");
+      b.append("}");
+      b.append("\r\n");
+      b.append("\r\n");
+
       for (StringBuilder bs : list) {
         writer.write(bs.toString());
       }
@@ -329,6 +346,23 @@ public class GraphQLSchemaGenerator {
       }
     }
 
+  }
+
+  private void generateTypeSuperinterfaceDeclaration(StructureDefinition theParentSd, StringBuilder theBuilder) {
+    StructureDefinition baseSd = theParentSd;
+    boolean first = true;
+    while (baseSd != null && baseSd.getBaseDefinition() != null) {
+      baseSd = context.fetchResource(StructureDefinition.class, baseSd.getBaseDefinition());
+      if (baseSd != null) {
+        if (first) {
+          theBuilder.append(" implements ");
+          first = false;
+        } else {
+          theBuilder.append(" & ");
+        }
+        theBuilder.append("I" + baseSd.getType());
+      }
+    }
   }
 
   private void generateProperties(Map<String, String> existingTypeNames, List<StringBuilder> list, StringBuilder b, String typeName, StructureDefinition sd, ElementDefinition ed, String mode, String suffix) throws IOException {
@@ -370,7 +404,13 @@ public class GraphQLSchemaGenerator {
       if (suffix)
         b.append(Utilities.capitalize(typeDetails.getWorkingCode()));
       b.append(": ");
-      b.append(n);
+      if (!child.getMax().equals("1")) {
+        b.append("[");
+        b.append(n);
+        b.append("]");
+      } else {
+        b.append(n);
+      }
       if (!child.getPath().endsWith(".id")) {
         b.append("  _");
         b.append(tail(child.getPath(), suffix));
@@ -492,7 +532,7 @@ public class GraphQLSchemaGenerator {
   private String getJsonFormat(StructureDefinition sd) throws FHIRException {
     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
       if (!ed.getType().isEmpty() && ed.getType().get(0).getCodeElement().hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type"))
-        return ed.getType().get(0).getCodeElement().getExtensionString("http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type");
+        return ed.getType().get(0).getCodeElement().getExtensionString(" http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type");
     }
     // all primitives but JSON_NUMBER_TYPES are represented as JSON strings
     if (JSON_NUMBER_TYPES.contains(sd.getName())) {

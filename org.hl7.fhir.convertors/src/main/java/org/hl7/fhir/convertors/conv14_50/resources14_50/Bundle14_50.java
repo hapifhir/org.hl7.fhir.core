@@ -2,8 +2,13 @@ package org.hl7.fhir.convertors.conv14_50.resources14_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.complextypes14_50.Signature14_50;
-import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.*;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.Decimal14_50;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.Instant14_50;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.String14_50;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.UnsignedInt14_50;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.Uri14_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Bundle.LinkRelationTypes;
 
 public class Bundle14_50 {
 
@@ -183,7 +188,7 @@ public class Bundle14_50 {
     org.hl7.fhir.dstu2016may.model.Bundle.BundleLinkComponent tgt = new org.hl7.fhir.dstu2016may.model.Bundle.BundleLinkComponent();
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyBackboneElement(src,tgt);
     if (src.hasRelationElement())
-      tgt.setRelationElement(String14_50.convertString(src.getRelationElement()));
+      tgt.setRelation((src.getRelation().toCode()));
     if (src.hasUrlElement())
       tgt.setUrlElement(Uri14_50.convertUri(src.getUrlElement()));
     return tgt;
@@ -195,7 +200,7 @@ public class Bundle14_50 {
     org.hl7.fhir.r5.model.Bundle.BundleLinkComponent tgt = new org.hl7.fhir.r5.model.Bundle.BundleLinkComponent();
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyBackboneElement(src,tgt);
     if (src.hasRelationElement())
-      tgt.setRelationElement(String14_50.convertString(src.getRelationElement()));
+      tgt.setRelation(LinkRelationTypes.fromCode(src.getRelation()));
     if (src.hasUrlElement())
       tgt.setUrlElement(Uri14_50.convertUri(src.getUrlElement()));
     return tgt;

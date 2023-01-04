@@ -1,17 +1,20 @@
 package org.hl7.fhir.convertors.conv14_50.resources14_50;
 
+import java.util.stream.Collectors;
+
 import org.hl7.fhir.convertors.context.ConversionContext14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.complextypes14_50.CodeableConcept14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.complextypes14_50.ContactPoint14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.complextypes14_50.Identifier14_50;
-import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.*;
-import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.Boolean14_50;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.DateTime14_50;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.Id14_50;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.String14_50;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.Uri14_50;
 import org.hl7.fhir.dstu2016may.model.StructureMap;
 import org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapContextType;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetParameterComponent;
-
-import java.util.stream.Collectors;
 
 public class StructureMap14_50 {
 

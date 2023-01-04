@@ -1,5 +1,6 @@
 package org.hl7.fhir.r5.terminologies;
 
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -48,9 +49,11 @@ import org.hl7.fhir.r5.model.Meta;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
+import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
+import org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionPropertyComponent;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.ConceptDefinitionComponentSorter;
@@ -270,6 +273,42 @@ public class ValueSetUtilities {
 
   public static void sortInclude(ConceptSetComponent inc) {
     Collections.sort(inc.getConcept(), new ConceptReferenceComponentSorter());
+  }
+
+  public static String getAllCodesSystem(ValueSet vs) {
+    if (vs.hasCompose()) {
+      ValueSetComposeComponent c = vs.getCompose();
+      if (c.getExclude().isEmpty() && c.getInclude().size() == 1) {
+        ConceptSetComponent i = c.getIncludeFirstRep();
+        if (i.hasSystem() && !i.hasValueSet() && !i.hasConcept() && !i.hasFilter()) {
+          return i.getSystem();
+        }
+      }
+    }
+    return null;
+  }
+
+  public static boolean isDeprecated(ValueSet vs, ValueSetExpansionContainsComponent c) {
+    try {
+      for (org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent p : c.getProperty()) {
+        if ("status".equals(p.getCode()) && p.hasValue() && p.hasValueCodeType() && "deprecated".equals(p.getValueCodeType().getCode())) {
+          return true;
+        }      
+        // this, though status should also be set
+        if ("deprecationDate".equals(p.getCode()) && p.hasValue() && p.getValue() instanceof DateTimeType) 
+          return ((DateTimeType) p.getValue()).before(new DateTimeType(Calendar.getInstance()));
+        // legacy  
+        if ("deprecated".equals(p.getCode()) && p.hasValue() && p.getValue() instanceof BooleanType) 
+          return ((BooleanType) p.getValue()).getValue();
+      }
+      StandardsStatus ss = ToolingExtensions.getStandardsStatus(c);
+      if (ss == StandardsStatus.DEPRECATED) {
+        return true;
+      }
+      return false;
+    } catch (FHIRException e) {
+      return false;
+    }  
   }
 
 

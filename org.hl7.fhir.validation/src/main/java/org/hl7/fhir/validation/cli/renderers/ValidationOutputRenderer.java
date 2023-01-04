@@ -1,7 +1,6 @@
 package org.hl7.fhir.validation.cli.renderers;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintStream;
 
 import org.hl7.fhir.r5.model.Bundle;

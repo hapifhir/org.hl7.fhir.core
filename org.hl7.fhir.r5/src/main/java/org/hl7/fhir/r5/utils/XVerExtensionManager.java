@@ -19,11 +19,10 @@ import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.json.JsonTrackingParser;
+import org.hl7.fhir.utilities.json.model.JsonElement;
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.PackageHacker;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 public class XVerExtensionManager {
 
@@ -54,7 +53,7 @@ public class XVerExtensionManager {
     if (!lists.containsKey(v)) {
       if (context.hasBinaryKey("xver-paths-"+v+".json")) {
         try {
-          lists.put(v, JsonTrackingParser.parseJson(context.getBinaryForKey("xver-paths-"+v+".json")));
+          lists.put(v, JsonParser.parseObject(context.getBinaryForKey("xver-paths-"+v+".json")));
         } catch (IOException e1) {
           throw new FHIRException(e);
         }
@@ -63,9 +62,9 @@ public class XVerExtensionManager {
       }
     }
     JsonObject root = lists.get(v);
-    JsonObject path = root.getAsJsonObject(e);
+    JsonObject path = root.getJsonObject(e);
     if (path == null) {
-      path = root.getAsJsonObject(e+"[x]");      
+      path = root.getJsonObject(e+"[x]");      
     }
     if (path == null) {
       return XVerExtensionStatus.Unknown;
@@ -86,9 +85,9 @@ public class XVerExtensionManager {
     String verTarget = VersionUtilities.getMajMin(context.getVersion());
     String e = url.substring(54);
     JsonObject root = lists.get(verSource);
-    JsonObject path = root.getAsJsonObject(e);
+    JsonObject path = root.getJsonObject(e);
     if (path == null) {
-      path = root.getAsJsonObject(e+"[x]");
+      path = root.getJsonObject(e+"[x]");
     }
     
     StructureDefinition sd = new StructureDefinition();
@@ -116,18 +115,11 @@ public class XVerExtensionManager {
       ElementDefinition val = sd.getDifferential().addElement().setPath("Extension.value[x]").setMin(1);
       populateTypes(path, val, verSource, verTarget);
     } else if (path.has("elements")) {
-      for (JsonElement i : path.getAsJsonArray("elements")) {
-        JsonObject elt = root.getAsJsonObject(e+"."+i.getAsString());
+      for (JsonElement i : path.forceArray("elements").getItems()) {
+        String apath = e+"."+i.asString();
+        JsonObject elt = root.getJsonObject(apath);
         if (elt != null) {
-        String s = i.getAsString().replace("[x]", "");
-        sd.getDifferential().addElement().setPath("Extension.extension").setSliceName(s);
-        sd.getDifferential().addElement().setPath("Extension.extension.extension").setMax("0");
-        sd.getDifferential().addElement().setPath("Extension.extension.url").setFixed(new UriType(s));
-        ElementDefinition val = sd.getDifferential().addElement().setPath("Extension.extension.value[x]").setMin(1);
-        if (!elt.has("types")) {
-          throw new FHIRException("Internal error - nested elements not supported yet");
-        }
-        populateTypes(elt, val, verSource, verTarget);
+          genExtensionContents(root, apath, verSource, verTarget, sd, i, elt, "Extension.extension");
         }
       }      
       sd.getDifferential().addElement().setPath("Extension.url").setFixed(new UriType(url));
@@ -135,7 +127,7 @@ public class XVerExtensionManager {
     } else {
       throw new FHIRException("Internal error - attempt to define extension for "+url+" when it is invalid");
     }
-    if (path.has("modifier") && path.get("modifier").getAsBoolean()) {
+    if (path.has("modifier") && path.asBoolean("modifier")) {
       ElementDefinition baseDef = new ElementDefinition("Extension");
       sd.getDifferential().getElement().add(0, baseDef);
       baseDef.setIsModifier(true);
@@ -143,9 +135,32 @@ public class XVerExtensionManager {
     return sd;
   }
 
+  private void genExtensionContents(JsonObject root, String apath, String verSource, String verTarget, StructureDefinition sd, JsonElement i, JsonObject elt, String epath) {
+    String s = i.asString().replace("[x]", "");
+    sd.getDifferential().addElement().setPath(epath).setSliceName(s);
+    if (elt.has("types")) {            
+      sd.getDifferential().addElement().setPath(epath+".extension").setMax("0");
+      sd.getDifferential().addElement().setPath(epath+".url").setFixed(new UriType(s));
+      ElementDefinition val = sd.getDifferential().addElement().setPath(epath+".value[x]").setMin(1);
+      populateTypes(elt, val, verSource, verTarget);
+    } else if (elt.has("elements")) {
+      for (JsonElement ic : elt.forceArray("elements").getItems()) { 
+        String apathC = apath+"."+ic.asString();
+        JsonObject eltC = root.getJsonObject(apathC);
+        if (eltC != null) {
+          genExtensionContents(root, apathC, verSource, verTarget, sd, ic, eltC, epath+".extension");
+        }
+      }
+      sd.getDifferential().addElement().setPath(epath+".url").setFixed(new UriType(s));
+      sd.getDifferential().addElement().setPath(epath+".value[x]").setMax("0");
+    } else {
+      throw new FHIRException("Internal error - unknown element "+apath);
+    }
+  }
+
   public void populateTypes(JsonObject path, ElementDefinition val, String verSource, String verTarget) {
-    for (JsonElement i : path.getAsJsonArray("types")) {
-      String s = i.getAsString();
+    for (JsonElement i : path.forceArray("types").getItems()) {
+      String s = i.asString();
       if (!s.startsWith("!")) {
         if (s.contains("(")) {
           String t = s.substring(0, s.indexOf("("));

@@ -109,6 +109,16 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://unitsofmeasure.org",
+  "code" : "/min"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "/min",
+  "code" : "/min",
+  "system" : "http://unitsofmeasure.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://unitsofmeasure.org",
   "code" : "mg"
 }, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
@@ -178,11 +188,69 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://unitsofmeasure.org",
-  "code" : "/min"
+  "code" : "mm[Hg]"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-vitals-common--0", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "millimeter of mercury",
+  "code" : "mm[Hg]",
+  "system" : "http://unitsofmeasure.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://unitsofmeasure.org",
+  "code" : "m"
+}, "url": "http://hl7.org/fhir/ValueSet/age-units--0", "version": "5.0.0-ballot", "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "The code provided (http://unitsofmeasure.org#m) is not valid (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://unitsofmeasure.org",
+  "code" : "{patch}"
 }, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
-  "display" : "/min",
-  "code" : "/min",
+  "display" : "{patch}",
+  "code" : "{patch}",
   "system" : "http://unitsofmeasure.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://unitsofmeasure.org",
+  "code" : "{capsule}"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "{capsule}",
+  "code" : "{capsule}",
+  "system" : "http://unitsofmeasure.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://unitsofmeasure.org",
+  "code" : "L/min"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "L/min",
+  "code" : "L/min",
+  "system" : "http://unitsofmeasure.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://unitsofmeasure.org",
+  "code" : "%"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-vitals-common--0", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "percent",
+  "code" : "%",
+  "system" : "http://unitsofmeasure.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://unitsofmeasure.org",
+  "code" : "L/min"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-vitals-common--0", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "The code provided (http://unitsofmeasure.org#L/min) is not valid (from http://tx.fhir.org/r4)"
 }
 -------------------------------------------------------------------------------------

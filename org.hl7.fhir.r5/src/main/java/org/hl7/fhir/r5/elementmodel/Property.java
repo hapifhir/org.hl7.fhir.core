@@ -36,17 +36,21 @@ import java.util.List;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.SourcedChildDefinitions;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.TypesUtilities;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.Utilities;
 
 public class Property {
@@ -54,8 +58,8 @@ public class Property {
 	private IWorkerContext context;
 	private ElementDefinition definition;
 	private StructureDefinition structure;
-	private Boolean canBePrimitive;
-  private ProfileUtilities profileUtilities; 
+  private ProfileUtilities profileUtilities;
+  private TypeRefComponent type;
 
   public Property(IWorkerContext context, ElementDefinition definition, StructureDefinition structure, ProfileUtilities profileUtilities) {
 		this.context = context;
@@ -65,6 +69,18 @@ public class Property {
 	}
 
 
+  public Property(IWorkerContext context, ElementDefinition definition, StructureDefinition structure, ProfileUtilities profileUtilities, String type) {
+    this.context = context;
+    this.definition = definition;
+    this.structure = structure;
+    this.profileUtilities = profileUtilities;
+    for (TypeRefComponent tr : definition.getType()) {
+      if (tr.getWorkingCode().equals(type)) {
+        this.type = tr;
+      }
+    }
+  }
+  
 	public Property(IWorkerContext context, ElementDefinition definition, StructureDefinition structure) {
     this(context, definition, structure, new ProfileUtilities(context, null, null));
 	}
@@ -73,9 +89,17 @@ public class Property {
 		return definition.getPath().substring(definition.getPath().lastIndexOf(".")+1);
 	}
 
+  public String getJsonName() {
+    if (definition.hasExtension(ToolingExtensions.EXT_JSON_NAME)) {
+      return ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_JSON_NAME);
+    } else {
+      return getName();
+    }
+  }
+
   public String getXmlName() {
-    if (definition.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-xml-name")) {
-      return ToolingExtensions.readStringExtension(definition, "http://hl7.org/fhir/StructureDefinition/elementdefinition-xml-name");
+    if (definition.hasExtension(ToolingExtensions.EXT_XML_NAME)) {
+      return ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_XML_NAME);
     } else {
       return getName();
     }
@@ -96,7 +120,9 @@ public class Property {
 	}
 
 	public String getType() {
-		if (definition.getType().size() == 0)
+	  if (type != null) {
+	    return type.getWorkingCode();
+	  } else  if (definition.getType().size() == 0)
 			return null;
 		else if (definition.getType().size() > 1) {
 			String tn = definition.getType().get(0).getWorkingCode();
@@ -110,7 +136,10 @@ public class Property {
 	}
 
 	public String getType(String elementName) {
-    if (!definition.getPath().contains("."))
+	  if (type != null) {
+      return type.getWorkingCode();
+    } 
+	  if (!definition.getPath().contains("."))
       return definition.getPath();
     ElementDefinition ed = definition;
     if (definition.hasContentReference()) {
@@ -170,9 +199,18 @@ public class Property {
 	}
 
   public boolean hasType(String elementName) {
-    if (definition.getType().size() == 0)
+    if (type != null) {
+      return false; // ?
+    } else if (definition.getType().size() == 0) {
       return false;
-    else if (definition.getType().size() > 1) {
+    } else if (isJsonPrimitiveChoice()) { 
+      for (TypeRefComponent tr : definition.getType()) {
+        if (elementName.equals(tr.getWorkingCode())) {
+          return true;
+        }
+      }
+      return false;
+    } else if (definition.getType().size() > 1) {
       String t = definition.getType().get(0).getCode();
       boolean all = true;
       for (TypeRefComponent tr : definition.getType()) {
@@ -183,7 +221,7 @@ public class Property {
         return true;
       String tail = definition.getPath().substring(definition.getPath().lastIndexOf(".")+1);
       if (tail.endsWith("[x]") && elementName.startsWith(tail.substring(0, tail.length()-3))) {
-        String name = elementName.substring(tail.length()-3);
+//        String name = elementName.substring(tail.length()-3);
         return true;        
       } else
         return false;
@@ -217,13 +255,21 @@ public class Property {
 //      return sd != null && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;
 	}
 
+	public boolean isPrimitive() {
+	  return isPrimitive(getType());
+	}
 	private String lowFirst(String t) {
 		return t.substring(0, 1).toLowerCase()+t.substring(1);
 	}
 
 	public boolean isResource() {
-	  if (definition.getType().size() > 0)
-	    return definition.getType().size() == 1 && ("Resource".equals(definition.getType().get(0).getCode()) || "DomainResource".equals(definition.getType().get(0).getCode()));
+	  if (type != null) {
+	    String tc = type.getCode();
+      return (("Resource".equals(tc) || "DomainResource".equals(tc)) ||  Utilities.existsInList(tc, context.getResourceNames()));
+	  } else if (definition.getType().size() > 0) {
+      String tc = definition.getType().get(0).getCode();
+      return definition.getType().size() == 1 && (("Resource".equals(tc) || "DomainResource".equals(tc)) ||  Utilities.existsInList(tc, context.getResourceNames()));
+    }
 	  else
 	    return !definition.getPath().contains(".") && (structure.getKind() == StructureDefinitionKind.RESOURCE);
 	}
@@ -258,21 +304,19 @@ public class Property {
 //		if (canBePrimitive!= null)
 //			return canBePrimitive;
 		
-		canBePrimitive = false;
   	if (structure.getKind() != StructureDefinitionKind.LOGICAL)
   		return false;
   	if (!hasType(name))
   		return false;
   	StructureDefinition sd = context.fetchResource(StructureDefinition.class, structure.getUrl().substring(0, structure.getUrl().lastIndexOf("/")+1)+getType(name));
   	if (sd == null)
-  	  sd = context.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(getType(name), context.getOverrideVersionNs()));
+  	  sd = context.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(getType(name), null));
     if (sd != null && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE)
       return true;
   	if (sd == null || sd.getKind() != StructureDefinitionKind.LOGICAL)
   		return false;
   	for (ElementDefinition ed : sd.getSnapshot().getElement()) {
   		if (ed.getPath().equals(sd.getId()+".value") && ed.getType().size() == 1 && isPrimitive(ed.getType().get(0).getCode())) {
-  			canBePrimitive = true;
   			return true;
   		}
   	}
@@ -280,6 +324,9 @@ public class Property {
 	}
 
   public boolean isChoice() {
+    if (type != null) {
+      return true;
+    }
     if (definition.getType().size() <= 1)
       return false;
     String tn = definition.getType().get(0).getCode();
@@ -290,12 +337,12 @@ public class Property {
   }
 
 
-  protected List<Property> getChildProperties(String elementName, String statedType) throws FHIRException {
+  public List<Property> getChildProperties(String elementName, String statedType) throws FHIRException {
     ElementDefinition ed = definition;
     StructureDefinition sd = structure;
-    List<ElementDefinition> children = profileUtilities.getChildMap(sd, ed);
+    SourcedChildDefinitions children = profileUtilities.getChildMap(sd, ed);
     String url = null;
-    if (children.isEmpty() || isElementWithOnlyExtension(ed, children)) {
+    if (children.getList().isEmpty() || isElementWithOnlyExtension(ed, children.getList())) {
       // ok, find the right definitions
       String t = null;
       if (ed.getType().size() == 1)
@@ -348,7 +395,7 @@ public class Property {
               assert aType.getProfile().size() == 1; 
               url = aType.getProfile().get(0).getValue();
             } else {
-              url = ProfileUtilities.sdNs(t, context.getOverrideVersionNs());
+              url = ProfileUtilities.sdNs(t, null);
             }
             break;
           }
@@ -362,7 +409,7 @@ public class Property {
       }
     }
     List<Property> properties = new ArrayList<Property>();
-    for (ElementDefinition child : children) {
+    for (ElementDefinition child : children.getList()) {
       properties.add(new Property(context, child, sd, this.profileUtilities));
     }
     return properties;
@@ -371,8 +418,8 @@ public class Property {
   protected List<Property> getChildProperties(TypeDetails type) throws DefinitionException {
     ElementDefinition ed = definition;
     StructureDefinition sd = structure;
-    List<ElementDefinition> children = profileUtilities.getChildMap(sd, ed);
-    if (children.isEmpty()) {
+    SourcedChildDefinitions children = profileUtilities.getChildMap(sd, ed);
+    if (children.getList().isEmpty()) {
       // ok, find the right definitions
       String t = null;
       if (ed.getType().size() == 1)
@@ -401,7 +448,7 @@ public class Property {
       }
     }
     List<Property> properties = new ArrayList<Property>();
-    for (ElementDefinition child : children) {
+    for (ElementDefinition child : children.getList()) {
       properties.add(new Property(context, child, sd, this.profileUtilities));
     }
     return properties;
@@ -461,4 +508,92 @@ public class Property {
   }
 
 
+  public boolean isJsonKeyArray() {
+    return definition.hasExtension(ToolingExtensions.EXT_JSON_PROP_KEY);
+  }
+
+
+  public String getJsonKeyProperty() {
+    return ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_JSON_PROP_KEY);
+  }
+
+
+  public boolean hasTypeSpecifier() {
+    return definition.hasExtension(ToolingExtensions.EXT_TYPE_SPEC);
+  }
+
+
+  public List<StringPair> getTypeSpecifiers() {
+    List<StringPair> res = new ArrayList<>();
+    for (Extension e : definition.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_SPEC)) {
+      res.add(new StringPair(ToolingExtensions.readStringExtension(e,  "condition"), ToolingExtensions.readStringExtension(e,  "type")));
+    }
+    return res;
+  }
+
+
+  public Property cloneToType(StructureDefinition sd) {
+    Property res = new Property(context, definition.copy(), sd);
+    res.definition.getType().clear();
+    res.definition.getType().add(new TypeRefComponent(sd.getUrl()));
+    return res;
+  }
+
+
+  public boolean hasImpliedPrefix() {
+    return definition.hasExtension(ToolingExtensions.EXT_IMPLIED_PREFIX);
+  }
+
+
+  public String getImpliedPrefix() {
+    return ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_IMPLIED_PREFIX);
+  }
+
+
+  public boolean isNullable() {    
+    return ToolingExtensions.readBoolExtension(definition, ToolingExtensions.EXT_JSON_NULLABLE);
+  }
+
+
+  public String summary() {
+    return structure.getUrl()+"#"+definition.getId();
+  }
+
+
+  public boolean canBeEmpty() {
+    if (definition.hasExtension(ToolingExtensions.EXT_JSON_EMPTY)) {
+      return !"absent".equals(ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_JSON_EMPTY));
+    } else {
+      return false;
+    }
+  }
+
+
+  public boolean isLogical() {
+    return structure.getKind() == StructureDefinitionKind.LOGICAL;
+  }
+
+
+  public ProfileUtilities getUtils() {
+    return profileUtilities;
+  }
+
+  public boolean isJsonPrimitiveChoice() {
+    return ToolingExtensions.readBoolExtension(definition, ToolingExtensions.EXT_JSON_PRIMITIVE_CHOICE);
+  }
+
+  public Object typeSummary() {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(" | ");
+    for (TypeRefComponent t : definition.getType()) {
+      b.append(t.getCode());
+    }
+    return b.toString();
+  }
+
+
+  public boolean hasJsonName() {
+    return definition.hasExtension(ToolingExtensions.EXT_JSON_NAME);
+  }
+
+  
 }

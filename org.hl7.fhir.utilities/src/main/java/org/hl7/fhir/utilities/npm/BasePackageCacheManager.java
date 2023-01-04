@@ -1,24 +1,25 @@
 package org.hl7.fhir.utilities.npm;
 
-import org.apache.commons.lang3.Validate;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.Utilities;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.apache.commons.lang3.Validate;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.Utilities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public abstract class BasePackageCacheManager implements IPackageCacheManager {
 
   private static final Logger ourLog = LoggerFactory.getLogger(BasePackageCacheManager.class);
   private List<String> myPackageServers = new ArrayList<>();
-  private Function<String, PackageClient> myClientFactory = address -> new CachingPackageClient(address);
+  private Function<String, PackageClient> myClientFactory = address -> new PackageClient(address);
   protected boolean silent;
 
   /**

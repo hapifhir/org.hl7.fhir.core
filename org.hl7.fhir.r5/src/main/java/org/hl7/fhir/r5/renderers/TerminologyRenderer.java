@@ -18,7 +18,6 @@ import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
 import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent;
-import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -34,6 +33,9 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public abstract class TerminologyRenderer extends ResourceRenderer {
   
+  private static final boolean DEBUG = false;
+
+
   public TerminologyRenderer(RenderingContext context) {
     super(context);
   }
@@ -115,7 +117,8 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     for (UsedConceptMap m : maps) {
       XhtmlNode td = tr.td();
       XhtmlNode b = td.b();
-      XhtmlNode a = b.ah(getContext().getSpecificationLink()+m.getLink());
+      String link = m.getLink();
+      XhtmlNode a = b.ah(link);
       a.addText(m.getDetails().getName());
       if (m.getDetails().isDoDescription() && m.getMap().hasDescription())
         addMarkdown(td, m.getMap().getDescription());
@@ -266,7 +269,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
   }
 
 
-  protected void AddVsRef(String value, XhtmlNode li) {
+  protected void AddVsRef(String value, XhtmlNode li, Resource source) {
     Resource res = null;
     if (rcontext != null) {
       BundleEntryComponent be = rcontext.resolve(value);
@@ -280,13 +283,11 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     }      
     CanonicalResource vs = (CanonicalResource) res;
     if (vs == null)
-      vs = getContext().getWorker().fetchResource(ValueSet.class, value);
+      vs = getContext().getWorker().fetchResource(ValueSet.class, value, source);
     if (vs == null)
-      vs = getContext().getWorker().fetchResource(StructureDefinition.class, value);
-    //    if (vs == null)
-    //      vs = context.getWorker().fetchResource(DataElement.class, value);
+      vs = getContext().getWorker().fetchResource(StructureDefinition.class, value, source);
     if (vs == null)
-      vs = getContext().getWorker().fetchResource(Questionnaire.class, value);
+      vs = getContext().getWorker().fetchResource(Questionnaire.class, value, source);
     if (vs != null) {
       String ref = (String) vs.getUserData("path");
 
@@ -305,8 +306,11 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
         a.tx("SNOMED-CT");
       }
       else {
-        if (value.startsWith("http://hl7.org") && !Utilities.existsInList(value, "http://hl7.org/fhir/sid/icd-10-us"))
-          System.out.println("Unable to resolve value set "+value);
+        if (value.startsWith("http://hl7.org") && !Utilities.existsInList(value, "http://hl7.org/fhir/sid/icd-10-us")) {
+          if (DEBUG) {
+            System.out.println("Unable to resolve value set "+value);
+          }
+        }
         li.addText(value);
       }
     }
@@ -323,7 +327,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
   protected void clipboard(XhtmlNode x, String img, String title, String source) {
     XhtmlNode span = x.span("cursor: pointer", "Copy "+title+" Format to clipboard");
     span.attribute("onClick", "navigator.clipboard.writeText('"+Utilities.escapeJson(source)+"');");
-    span.img(img).setAttribute("width", "24px").setAttribute("height", "16px");
+    span.img(img, "btn").setAttribute("width", "24px").setAttribute("height", "16px");
   }
   
 

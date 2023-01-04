@@ -5,7 +5,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>hapi-deployable-pom</artifactId>
-        <version>5.4.0</version>
+        <version>6.2.1</version>
     </parent>
 
     <!--
@@ -14,21 +14,28 @@
     HAPI FHIR
     -->
     <artifactId>org.hl7.fhir.core</artifactId>
-    <version>5.6.59-SNAPSHOT</version>
+    <version>5.6.89-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
-        <hapi_fhir_version>5.4.0</hapi_fhir_version>
-        <validator_test_case_version>1.1.104</validator_test_case_version>
+        <hapi_fhir_version>6.2.1</hapi_fhir_version>
+        <validator_test_case_version>1.2.5-SNAPSHOT</validator_test_case_version>
         <junit_jupiter_version>5.7.1</junit_jupiter_version>
         <junit_platform_launcher_version>1.8.2</junit_platform_launcher_version>
         <maven_surefire_version>3.0.0-M5</maven_surefire_version>
         <maven_clean_version>3.1.0</maven_clean_version>
-        <jacoco_version>0.8.7</jacoco_version>
+        <jacoco_version>0.8.8</jacoco_version>
         <info_cqframework_version>1.5.1</info_cqframework_version>
         <lombok_version>1.18.22</lombok_version>
-        <byte_buddy_version>1.10.21</byte_buddy_version>
+        <byte_buddy_version>1.12.14</byte_buddy_version>
         <apache_poi_version>4.1.1</apache_poi_version>
+        <saxon_he_version>9.8.0-15</saxon_he_version>
+        <maven.compiler.release>11</maven.compiler.release>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.testRelease>11</maven.compiler.testRelease>
+        <maven.compiler.testSource>11</maven.compiler.testSource>
+        <maven.compiler.testTarget>11</maven.compiler.testTarget>
     </properties>
 
     <name>HL7 Core Artifacts</name>
@@ -111,12 +118,12 @@
             <dependency>
                 <groupId>com.atlassian.commonmark</groupId>
                 <artifactId>commonmark</artifactId>
-                <version>0.12.1</version>
+                <version>0.17.0</version>
             </dependency>
             <dependency>
                 <groupId>com.atlassian.commonmark</groupId>
                 <artifactId>commonmark-ext-gfm-tables</artifactId>
-                <version>0.12.1</version>
+                <version>0.17.0</version>
             </dependency>
             <dependency>
                 <groupId>com.github.rjeschke</groupId>
@@ -147,6 +154,12 @@
                 <version>${byte_buddy_version}</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>net.sf.saxon</groupId>
+                <artifactId>Saxon-HE</artifactId>
+                <version>${saxon_he_version}</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -161,11 +174,18 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
+                <artifactId>maven-checkstyle-plugin</artifactId>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.10.1</version>
+                <configuration>
+                    <release>11</release>
+
                     <forceJavacCompilerUse>false</forceJavacCompilerUse>
                     <encoding>UTF-8</encoding>
                     <!-- Allows running the compiler in a separate process. If false it uses the built in compiler,
@@ -368,64 +388,30 @@
     </build>
 
     <profiles>
-        <profile>
-            <id>surefire-java-8</id>
-            <activation>
-                <jdk>(,1.8]</jdk>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>${maven_surefire_version}</version>
-                        <configuration>
-                            <forkCount>1</forkCount>
-                            <reuseForks>true</reuseForks>
-                            <parallel>classes</parallel>
-                            <trimStackTrace>false</trimStackTrace>
-                            <testFailureIgnore>false</testFailureIgnore>
-                            <!-- We need to include the ${argLine} here so the Jacoco test arguments are included in the
-                             Surefire testing run. This may appear as an error in some IDEs, but it will run regardless.
-                            -->
-                            <!-- UseConcMarkSweepGC is required for Java 8 builds, or else garbage collection will fail
-                            for forked tests -->
-                            <argLine>${argLine} -Xmx4096m -XX:+UseConcMarkSweepGC</argLine>
-                            <redirectTestOutputToFile>false</redirectTestOutputToFile>
-                            <excludes>
-                                <exclude>org/hl7/fhir/validation/cli/**</exclude>
-                            </excludes>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>surefire-java-9-plus</id>
-            <activation>
-                <jdk>[9,)</jdk>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>${maven_surefire_version}</version>
-                        <configuration>
-                            <forkCount>1</forkCount>
-                            <reuseForks>true</reuseForks>
-                            <parallel>classes</parallel>
-                            <trimStackTrace>false</trimStackTrace>
-                            <testFailureIgnore>false</testFailureIgnore>
-                            <!-- We need to include the ${argLine} here so the Jacoco test arguments are included in the
-                             Surefire testing run. This may appear as an error in some IDEs, but it will run regardless.
-                            -->
+    <profile>
+        <id>surefire-java-9-plus</id>
+        <activation>
+            <jdk>[9,)</jdk>
+        </activation>
+        <build>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven_surefire_version}</version>
+                    <configuration>
+                        <forkCount>1</forkCount>
+                        <reuseForks>true</reuseForks>
+                        <parallel>classes</parallel>
+                        <trimStackTrace>false</trimStackTrace>
+                        <testFailureIgnore>false</testFailureIgnore>
+                        <!-- We need to include the ${argLine} here so the Jacoco test arguments are included in the
+                         Surefire testing run. This may appear as an error in some IDEs, but it will run regardless.
+                        -->
                             <argLine>${argLine} -Xmx4096m</argLine>
                             <systemPropertyVariables>
                                 <java.locale.providers>COMPAT</java.locale.providers>
                             </systemPropertyVariables>
                             <redirectTestOutputToFile>false</redirectTestOutputToFile>
-                            <excludes>
-                                <exclude>org/hl7/fhir/validation/cli/**</exclude>
-                            </excludes>
                         </configuration>
                     </plugin>
                 </plugins>

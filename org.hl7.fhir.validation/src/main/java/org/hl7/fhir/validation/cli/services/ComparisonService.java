@@ -7,7 +7,6 @@ import java.io.IOException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.comparison.ComparisonRenderer;
 import org.hl7.fhir.r5.comparison.ComparisonSession;
-import org.hl7.fhir.r5.comparison.ProfileComparer;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.Resource;

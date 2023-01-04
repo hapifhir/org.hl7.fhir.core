@@ -1,12 +1,12 @@
 package org.hl7.fhir.convertors.conv30_50;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 public class StructureDefinition30_50Test {
   @Test

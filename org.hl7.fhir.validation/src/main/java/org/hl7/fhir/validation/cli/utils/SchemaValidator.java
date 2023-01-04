@@ -1,12 +1,12 @@
 package org.hl7.fhir.validation.cli.utils;
 
-import org.hl7.fhir.r5.elementmodel.Manager;
-import org.hl7.fhir.utilities.validation.ValidationMessage;
-import org.xml.sax.SAXException;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
+
+import org.hl7.fhir.r5.elementmodel.Manager;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.xml.sax.SAXException;
 
 public class SchemaValidator {
 

@@ -1,14 +1,14 @@
 package org.hl7.fhir.convertors.conv10_40;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_40;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_40;
 import org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 public class Procedure10_40Test {
   @Test

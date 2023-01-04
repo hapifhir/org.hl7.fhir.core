@@ -7,20 +7,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.conformance.ProfileUtilities.ElementDefinitionResolution;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.XmlParser;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Property;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.renderers.ResourceRenderer;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.PropertyWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.RendererWrapperImpl;
@@ -239,11 +237,9 @@ public class ElementWrappers {
       if (div == null) {
         div = new org.hl7.fhir.r5.elementmodel.Element("div", txt.getProperty().getChild(null, "div"));
         txt.getChildren().add(div);
-        div.setValue(new XhtmlComposer(XhtmlComposer.XML, context.isPretty()).compose(x));
-      }
-      div.setValue(x.toString());
+      } 
+      div.setValue(new XhtmlComposer(XhtmlComposer.XML, context.isPretty()).compose(x));
       div.setXhtml(x);
-
     }
 
     @Override
@@ -268,7 +264,7 @@ public class ElementWrappers {
         if ("DomainResource".equals(sd.getType())) {
           return true;
         }
-        sd = context.getWorker().fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+        sd = context.getWorker().fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
       }
       return false;
     }
@@ -283,6 +279,15 @@ public class ElementWrappers {
       for (PropertyWrapper p : children())
         if (p.getName().equals(name))
           return p;
+      return null;
+    }
+
+    public Element getElement() {
+      return wrapped;
+    }
+
+    @Override
+    public Resource getResource() {
       return null;
     }
 

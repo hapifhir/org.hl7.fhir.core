@@ -1,26 +1,23 @@
 package org.hl7.fhir.r5.renderers.utils;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
+import java.util.Map;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
-import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider;
+import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DomainResource;
-import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r5.renderers.utils.Resolver.IReferenceResolver;
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.MarkDownProcessor;
@@ -63,6 +60,26 @@ public class RenderingContext {
     TECHNICAL
   }
 
+  public enum GenerationRules {
+    /**
+     * The output must be valid XHTML for a resource: no active content, etc. The only external dependency allowed is fhir.css 
+     */
+    VALID_RESOURCE,
+    
+    /**
+     * The output must be valid for an implementation guide according ot the base FHIR template. 
+     * This means active content is allowed, though the default presentation must be *show everything* for balloting purposes
+     * Active content is allowed 
+     */
+    IG_PUBLISHER
+  }
+  
+  public enum StructureDefinitionRendererMode {
+    SUMMARY, // 5 cells: tree/name | flags | cardinality | type | details
+    BINDINGS, // tree/name + column for each kind of binding found, cells are lists of bindings 
+    OBLIGATIONS, // tree/name + column for each actor that has obligations
+  }
+  
   public enum QuestionnaireRendererMode {
     /**
      * A visual presentation of the questionnaire, with a set of property panes that can be toggled on and off.
@@ -91,9 +108,16 @@ public class RenderingContext {
     LINKS
   }
 
+  public enum KnownLinkType {
+    SELF,  // absolute link to where the content is to be found (only used in a few circumstances when making external references to tools)
+    SPEC,  // version specific link to core specification
+    JSON_NAMES
+    
+  }
   private IWorkerContext worker;
   private MarkDownProcessor markdown;
   private ResourceRendererMode mode;
+  private GenerationRules rules;
   private IReferenceResolver resolver;
   private ILiquidTemplateProvider templateProvider;
   private IEvaluationContext services;
@@ -101,8 +125,6 @@ public class RenderingContext {
 
   private String lang;
   private String localPrefix; // relative link within local context
-  private String specificationLink;
-  private String selfLink; // absolute link to where the content is to be found (only used in a few circumstances when making external references to tools)
   private int headerLevelContext;
   private boolean canonicalUrlsAsLinks;
   private boolean pretty;
@@ -123,6 +145,8 @@ public class RenderingContext {
   private boolean inlineGraphics;
 
   private QuestionnaireRendererMode questionnaireMode = QuestionnaireRendererMode.FORM;
+  private StructureDefinitionRendererMode structureMode = StructureDefinitionRendererMode.SUMMARY;
+  
   private boolean addGeneratedNarrativeHeader = true;
   private boolean showComments = false;
 
@@ -134,7 +158,9 @@ public class RenderingContext {
   private DateTimeFormatter dateYearFormat;
   private DateTimeFormatter dateYearMonthFormat;
   private boolean copyButton;
+  private ProfileKnowledgeProvider pkp;
   
+  private Map<KnownLinkType, String> links = new HashMap<>();
   /**
    * 
    * @param context - access to all related resources that might be needed
@@ -143,14 +169,15 @@ public class RenderingContext {
    * @param specLink - path to FHIR specification
    * @param lang - langauage to render in
    */
-  public RenderingContext(IWorkerContext worker, MarkDownProcessor markdown, ValidationOptions terminologyServiceOptions, String specLink, String localPrefix, String lang, ResourceRendererMode mode) {
+  public RenderingContext(IWorkerContext worker, MarkDownProcessor markdown, ValidationOptions terminologyServiceOptions, String specLink, String localPrefix, String lang, ResourceRendererMode mode, GenerationRules rules) {
     super();
     this.worker = worker;
     this.markdown = markdown;
     this.lang = lang;
-    this.specificationLink = specLink;
+    this.links.put(KnownLinkType.SPEC, specLink);
     this.localPrefix = localPrefix;
     this.mode = mode;
+    this.rules = rules;
     if (terminologyServiceOptions != null) {
       this.terminologyServiceOptions = terminologyServiceOptions;
     }
@@ -158,7 +185,7 @@ public class RenderingContext {
     this.locale = new Locale.Builder().setLanguageTag("en-US").build(); 
   }
   public RenderingContext copy() {
-    RenderingContext res = new RenderingContext(worker, markdown, terminologyServiceOptions, specificationLink, localPrefix, lang, mode);
+    RenderingContext res = new RenderingContext(worker, markdown, terminologyServiceOptions, getLink(KnownLinkType.SPEC), localPrefix, lang, mode, rules);
 
     res.resolver = resolver;
     res.templateProvider = templateProvider;
@@ -182,8 +209,9 @@ public class RenderingContext {
     res.destDir = destDir;
     res.addGeneratedNarrativeHeader = addGeneratedNarrativeHeader;
     res.questionnaireMode = questionnaireMode;
+    res.structureMode = structureMode;
     res.header = header;
-    res.selfLink = selfLink;
+    res.links.putAll(links);
     res.inlineGraphics = inlineGraphics;
     res.timeZoneId = timeZoneId;
     res.dateTimeFormat = dateTimeFormat;
@@ -194,6 +222,7 @@ public class RenderingContext {
     res.locale = locale;
     res.showComments = showComments;
     res.copyButton = copyButton;
+    res.pkp = pkp;
 
     res.terminologyServiceOptions = terminologyServiceOptions.copy();
     return res;
@@ -210,7 +239,7 @@ public class RenderingContext {
 
   public ProfileUtilities getProfileUtilities() {
     if (profileUtilitiesR == null) {
-      profileUtilitiesR = new ProfileUtilities(worker, null, null);
+      profileUtilitiesR = new ProfileUtilities(worker, null, pkp);
     }
     return profileUtilitiesR;
   }
@@ -237,10 +266,6 @@ public class RenderingContext {
 
   public String getLang() {
     return lang;
-  }
-
-  public String getSpecificationLink() {
-    return specificationLink;
   }
 
   public String getLocalPrefix() {
@@ -340,6 +365,9 @@ public class RenderingContext {
 
   public RenderingContext setProfileUtilities(ProfileUtilities profileUtilities) {
     this.profileUtilitiesR = profileUtilities;
+    if (pkp == null && profileUtilities.getPkp() != null) {
+      pkp = profileUtilities.getPkp();
+    }
     return this;
   }
 
@@ -416,13 +444,13 @@ public class RenderingContext {
     this.questionnaireMode = questionnaireMode;
     return this;
   }
-
-  public String getSelfLink() {
-    return selfLink;
+  
+  public StructureDefinitionRendererMode getStructureMode() {
+    return structureMode;
   }
 
-  public RenderingContext setSelfLink(String selfLink) {
-    this.selfLink = selfLink;
+  public RenderingContext setStructureMode(StructureDefinitionRendererMode structureMode) {
+    this.structureMode = structureMode;
     return this;
   }
 
@@ -431,7 +459,7 @@ public class RenderingContext {
       return (localPrefix == null ? "" : localPrefix)+ref;
     }
     if (ref.startsWith("http://hl7.org/fhir") && !ref.substring(20).contains("/")) {
-      return specificationLink+ref.substring(20);
+      return getLink(KnownLinkType.SPEC)+ref.substring(20);
     }
     return ref;
   }
@@ -608,5 +636,29 @@ public class RenderingContext {
     return this;
   }
   
+  public void setPkp(ProfileKnowledgeProvider pkp) {
+    this.pkp = pkp;
+  }
+  public ProfileKnowledgeProvider getPkp() {
+    return pkp;
+  }
   
+  public boolean hasLink(KnownLinkType link) {
+    return links.containsKey(link);
+  }
+  
+  public String getLink(KnownLinkType link) {
+    return links.get(link);
+  }
+  public void addLink(KnownLinkType type, String link) {
+    links.put(type, link);
+    
+  }
+  public GenerationRules getRules() {
+    return rules;
+  }
+  public void setRules(GenerationRules rules) {
+    this.rules = rules;
+  }
+
 }

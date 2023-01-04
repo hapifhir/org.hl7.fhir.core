@@ -45,7 +45,6 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r4b.context.TerminologyCache.CacheToken;
-import org.hl7.fhir.r4b.elementmodel.Element;
 import org.hl7.fhir.r4b.formats.IParser;
 import org.hl7.fhir.r4b.formats.ParserType;
 import org.hl7.fhir.r4b.model.Bundle;
@@ -71,7 +70,6 @@ import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
-import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 import com.google.gson.JsonSyntaxException;
@@ -554,6 +552,7 @@ public interface IWorkerContext {
   void setLocale(Locale locale);
 
   String formatMessage(String theMessage, Object... theMessageArguments);
+  String formatMessagePlural(Integer pl, String theMessage, Object... theMessageArguments);
 
   void setValidationMessageLanguage(Locale locale);
 

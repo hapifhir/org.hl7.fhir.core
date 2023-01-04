@@ -1,5 +1,12 @@
 package org.hl7.fhir.validation;
 
+import java.io.File;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -61,6 +68,7 @@ POSSIBILITY OF SUCH DAMAGE.
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
+import org.hl7.fhir.utilities.FileFormat;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -68,15 +76,11 @@ import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.services.ComparisonService;
 import org.hl7.fhir.validation.cli.services.ValidationService;
-import org.hl7.fhir.validation.cli.utils.*;
+import org.hl7.fhir.validation.cli.utils.Display;
+import org.hl7.fhir.validation.cli.utils.EngineMode;
+import org.hl7.fhir.validation.cli.utils.Params;
 import org.hl7.fhir.validation.testexecutor.TestExecutor;
 import org.hl7.fhir.validation.testexecutor.TestExecutorParams;
-
-import java.io.File;
-import java.net.Authenticator;
-import java.net.PasswordAuthentication;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A executable class that will validate one or more FHIR resources against
@@ -95,6 +99,10 @@ public class ValidatorCli {
 
   public static final String HTTP_PROXY_HOST = "http.proxyHost";
   public static final String HTTP_PROXY_PORT = "http.proxyPort";
+
+  public static final String HTTPS_PROXY_HOST = "https.proxyHost";
+
+  public static final String HTTPS_PROXY_PORT = "https.proxyPort";
   public static final String HTTP_PROXY_USER = "http.proxyUser";
   public static final String HTTP_PROXY_PASS = "http.proxyPassword";
   public static final String JAVA_DISABLED_TUNNELING_SCHEMES = "jdk.http.auth.tunneling.disabledSchemes";
@@ -107,17 +115,34 @@ public class ValidatorCli {
     TimeTracker tt = new TimeTracker();
     TimeTracker.Session tts = tt.start("Loading");
 
-    args = preProcessArgs(args);
-    
+    args = addAdditionalParamsForIpsParam(args);
+    setJavaSystemProxyParamsFromParams(args);
+
     Display.displayVersion();
     Display.displaySystemInfo();
 
-    if (Params.hasParam(args, Params.PROXY)) {
-      assert Params.getParam(args, Params.PROXY) != null : "PROXY arg passed in was NULL";
-      String[] p = Params.getParam(args, Params.PROXY).split(":");
-      System.setProperty(HTTP_PROXY_HOST, p[0]);
-      System.setProperty(HTTP_PROXY_PORT, p[1]);
+    CliContext cliContext = Params.loadCliContext(args);
+    FileFormat.checkCharsetAndWarnIfNotUTF8(System.out);
+
+    if (shouldDisplayHelpToUser(args)) {
+      Display.displayHelpDetails();
+    } else if (Params.hasParam(args, Params.COMPARE)) {
+      if (destinationDirectoryValid(Params.getParam(args, Params.DESTINATION))) {
+        doLeftRightComparison(args, cliContext, tt);
+      }
+    } else if (Params.hasParam(args, Params.TEST)) {
+      parseTestParamsAndExecute(args);
     }
+    else {
+      Display.printCliArgumentsAndInfo(args);
+      doValidation(tt, tts, cliContext);
+    }
+  }
+
+  private static void setJavaSystemProxyParamsFromParams(String[] args) {
+
+    setJavaSystemProxyHostFromParams(args, Params.PROXY, HTTP_PROXY_HOST, HTTP_PROXY_PORT);
+    setJavaSystemProxyHostFromParams(args, Params.HTTPS_PROXY, HTTPS_PROXY_HOST, HTTPS_PROXY_PORT);
 
     if (Params.hasParam(args, Params.PROXY_AUTH)) {
       assert Params.getParam(args, Params.PROXY) != null : "Cannot set PROXY_AUTH without setting PROXY...";
@@ -151,21 +176,15 @@ public class ValidatorCli {
       System.setProperty(JAVA_DISABLED_TUNNELING_SCHEMES, "");
       System.setProperty(JAVA_DISABLED_PROXY_SCHEMES, "");
     }
+  }
 
-    CliContext cliContext = Params.loadCliContext(args);
+  private static void setJavaSystemProxyHostFromParams(String[] args, String proxyParam, String proxyHostProperty, String proxyPortProperty) {
+    if (Params.hasParam(args, proxyParam)) {
+      assert Params.getParam(args, proxyParam) != null : "PROXY arg passed in was NULL";
+      String[] p = Params.getParam(args, proxyParam).split(":");
 
-    if (shouldDisplayHelpToUser(args)) {
-      Display.displayHelpDetails();
-    } else if (Params.hasParam(args, Params.COMPARE)) {
-      if (destinationDirectoryValid(Params.getParam(args, Params.DESTINATION))) {
-        doLeftRightComparison(args, cliContext, tt);
-      }
-    } else if (Params.hasParam(args, Params.TEST)) {
-      parseTestParamsAndExecute(args);
-    }
-    else {
-      Display.printCliArgumentsAndInfo(args);
-      doValidation(tt, tts, cliContext);
+      System.setProperty(proxyHostProperty, p[0]);
+      System.setProperty(proxyPortProperty, p[1]);
     }
   }
 
@@ -184,7 +203,7 @@ public class ValidatorCli {
     System.exit(0);
   }
 
-  private static String[] preProcessArgs(String[] args) {
+  private static String[] addAdditionalParamsForIpsParam(String[] args) {
     // ips$branch --> -version 4.0 -ig hl7.fhir.uv.ips#current$connectathon-2 -profile http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips
     List<String> res = new ArrayList<>();
     for (String a : args) {
@@ -250,7 +269,12 @@ public class ValidatorCli {
     if (cliContext.getSv() == null) {
       cliContext.setSv(validationService.determineVersion(cliContext));
     }
-    System.out.println("  Jurisdiction: "+JurisdictionUtilities.displayJurisdiction(cliContext.getJurisdiction()));
+    if (cliContext.getJurisdiction() == null) {
+      System.out.println("  Jurisdiction: None specified (locale = "+Locale.getDefault().getCountry()+")");      
+      System.out.println("  Note that exceptions and validation failures may happen in the absense of a locale");      
+    } else {
+      System.out.println("  Jurisdiction: "+JurisdictionUtilities.displayJurisdiction(cliContext.getJurisdiction()));
+    }
 
     System.out.println("Loading");
     // Comment this out because definitions filename doesn't necessarily contain version (and many not even be 14 characters long).

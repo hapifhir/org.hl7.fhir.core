@@ -1,22 +1,5 @@
 package org.hl7.fhir.convertors.misc;
 
-import com.google.common.base.Charsets;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
-import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
-import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
-import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
-import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
-import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_40;
-import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_50;
-import org.hl7.fhir.convertors.factory.*;
-import org.hl7.fhir.utilities.TextFile;
-import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.json.JsonUtilities;
-import org.hl7.fhir.utilities.json.JsonTrackingParser;
-import org.hl7.fhir.utilities.npm.NpmPackageIndexBuilder;
-
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -27,6 +10,35 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
+import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
+import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
+import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_40;
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_30;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_40;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_30;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_40;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations.FHIRVersionEnumFactory;
+import org.hl7.fhir.r5.model.ImplementationGuide;
+import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.json.model.JsonArray;
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
+import org.hl7.fhir.utilities.npm.NpmPackageIndexBuilder;
+
+import com.google.common.base.Charsets;
 
 public class NpmPackageVersionConverter {
 
@@ -39,16 +51,19 @@ public class NpmPackageVersionConverter {
   private final List<String> errors = new ArrayList<>();
   private String currentVersion;
 
-  public NpmPackageVersionConverter(String source, String dest, String version) {
+  private String packageId;
+
+  public NpmPackageVersionConverter(String source, String dest, String version, String packageId) {
     super();
     this.source = source;
     this.dest = dest;
     this.vCode = version;
+    this.packageId = packageId;
     this.version = VersionUtilities.versionFromCode(version);
   }
 
   public static void main(String[] args) throws IOException {
-    NpmPackageVersionConverter self = new NpmPackageVersionConverter(args[0], args[1], args[2]);
+    NpmPackageVersionConverter self = new NpmPackageVersionConverter(args[0], args[1], args[2], args[3]);
     self.execute();
     System.out.println("Finished");
     for (String s : self.errors) {
@@ -91,12 +106,13 @@ public class NpmPackageVersionConverter {
 
     Map<String, byte[]> output = new HashMap<>();
     output.put("package/package.json", convertPackage(content.get("package/package.json")));
+    output.put("package/other/spec.internals", convertSpec(content.get("package/other/spec.internals")));
 
     for (Entry<String, byte[]> e : content.entrySet()) {
-      if (!e.getKey().equals("package/package.json")) {
+      if (!e.getKey().equals("package/package.json") && !e.getKey().equals("package/other/spec.internals")) {
         byte[] cnv = e.getValue();
         try {
-          JsonObject json = JsonTrackingParser.parseJson(e.getValue());
+          JsonObject json = JsonParser.parseObject(e.getValue());
           if (json.has("resourceType")) {
             cnv = convertResource(e.getKey(), e.getValue());
           }
@@ -165,11 +181,12 @@ public class NpmPackageVersionConverter {
   }
 
   private byte[] convertPackage(byte[] cnt) throws IOException {
-    JsonObject json = JsonTrackingParser.parseJson(cnt);
-    currentVersion = json.getAsJsonArray("fhirVersions").get(0).getAsString();
-    String name = JsonUtilities.str(json, "name");
+    JsonObject json = JsonParser.parseObject(cnt);
+    currentVersion = json.getJsonArray("fhirVersions").get(0).asString();
+    String name = json.asString("name");
+    assert(packageId.equals(name + "." + vCode));
     json.remove("name");
-    json.addProperty("name", name + "." + vCode);
+    json.add("name", name + "." + vCode);
     json.remove("fhirVersions");
     json.remove("dependencies");
     JsonArray fv = new JsonArray();
@@ -177,14 +194,22 @@ public class NpmPackageVersionConverter {
     fv.add(version);
     JsonObject dep = new JsonObject();
     json.add("dependencies", dep);
-    dep.addProperty(VersionUtilities.packageForVersion(version), version);
-    return JsonTrackingParser.write(json).getBytes(Charsets.UTF_8);
+    dep.add(VersionUtilities.packageForVersion(version), version);
+    return JsonParser.composeBytes(json);
+  }
+
+  private byte[] convertSpec(byte[] cnt) throws IOException {
+    JsonObject json = JsonParser.parseObject(cnt);
+    json.set("ig-version", version);
+    json.set("npm-name", packageId);
+    return JsonParser.composeBytes(json, true);
   }
 
   private byte[] convertResource(String n, byte[] cnt) {
     try {
       if (VersionUtilities.isR2Ver(currentVersion)) {
         org.hl7.fhir.dstu2.model.Resource res = new org.hl7.fhir.dstu2.formats.JsonParser().parse(cnt);
+        convertResourceR2(res);
         if (VersionUtilities.isR2Ver(version)) {
           return new org.hl7.fhir.dstu2.formats.JsonParser().composeBytes(res);
         } else if (VersionUtilities.isR2BVer(version)) {
@@ -198,6 +223,7 @@ public class NpmPackageVersionConverter {
         }
       } else if (VersionUtilities.isR2BVer(currentVersion)) {
         org.hl7.fhir.dstu2016may.model.Resource res = new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(cnt);
+        convertResourceR2B(res);
         if (VersionUtilities.isR2Ver(version)) {
           return new org.hl7.fhir.dstu2.formats.JsonParser().composeBytes(VersionConvertorFactory_10_30.convertResource(VersionConvertorFactory_14_30.convertResource(res)));
         } else if (VersionUtilities.isR2BVer(version)) {
@@ -211,6 +237,7 @@ public class NpmPackageVersionConverter {
         }
       } else if (VersionUtilities.isR3Ver(currentVersion)) {
         org.hl7.fhir.dstu3.model.Resource res = new org.hl7.fhir.dstu3.formats.JsonParser().parse(cnt);
+        convertResourceR3(res);
         if (VersionUtilities.isR2Ver(version)) {
           return new org.hl7.fhir.dstu2.formats.JsonParser().composeBytes(VersionConvertorFactory_10_30.convertResource(res));
         } else if (VersionUtilities.isR2BVer(version)) {
@@ -224,6 +251,7 @@ public class NpmPackageVersionConverter {
         }
       } else if (VersionUtilities.isR4Ver(currentVersion)) {
         org.hl7.fhir.r4.model.Resource res = new org.hl7.fhir.r4.formats.JsonParser().parse(cnt);
+        convertResourceR4(res);
         if (VersionUtilities.isR2Ver(version)) {
           return new org.hl7.fhir.dstu2.formats.JsonParser().composeBytes(VersionConvertorFactory_10_40.convertResource(res, new PR2Handler()));
         } else if (VersionUtilities.isR2BVer(version)) {
@@ -237,6 +265,7 @@ public class NpmPackageVersionConverter {
         }
       } else if (VersionUtilities.isR5Ver(currentVersion)) {
         org.hl7.fhir.r5.model.Resource res = new org.hl7.fhir.r5.formats.JsonParser().parse(cnt);
+        convertResourceR5(res);
         if (VersionUtilities.isR2Ver(version)) {
           return new org.hl7.fhir.dstu2.formats.JsonParser().composeBytes(VersionConvertorFactory_10_50.convertResource(res));
         } else if (VersionUtilities.isR2BVer(version)) {
@@ -254,6 +283,45 @@ public class NpmPackageVersionConverter {
       ex.printStackTrace();
       errors.add("Error converting " + n + ": " + ex.getMessage());
       return null;
+    }
+  }
+
+  private void convertResourceR2(org.hl7.fhir.dstu2.model.Resource res) {
+    if (res instanceof org.hl7.fhir.dstu2.model.ImplementationGuide) {
+      org.hl7.fhir.dstu2.model.ImplementationGuide ig = (org.hl7.fhir.dstu2.model.ImplementationGuide) res;
+      ig.setFhirVersion(version);
+    } 
+  }
+
+  private void convertResourceR2B(org.hl7.fhir.dstu2016may.model.Resource res) {
+    if (res instanceof org.hl7.fhir.dstu2016may.model.ImplementationGuide) {
+      org.hl7.fhir.dstu2016may.model.ImplementationGuide ig = (org.hl7.fhir.dstu2016may.model.ImplementationGuide) res;
+      ig.setFhirVersion(version);
+    } 
+  }
+
+  private void convertResourceR3(org.hl7.fhir.dstu3.model.Resource res) {
+    if (res instanceof org.hl7.fhir.dstu3.model.ImplementationGuide) {
+      org.hl7.fhir.dstu3.model.ImplementationGuide ig = (org.hl7.fhir.dstu3.model.ImplementationGuide) res;
+      ig.setFhirVersion(version);
+    }    
+  }
+
+  private void convertResourceR4(org.hl7.fhir.r4.model.Resource res) {
+    if (res instanceof org.hl7.fhir.r4.model.ImplementationGuide) {
+      org.hl7.fhir.r4.model.ImplementationGuide ig = (org.hl7.fhir.r4.model.ImplementationGuide) res;
+      ig.getFhirVersion().clear();
+      ig.getFhirVersion().add(new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Enumerations.FHIRVersionEnumFactory(), version));
+      ig.setPackageId(packageId);
+    }
+  }
+
+  private void convertResourceR5(Resource res) {
+    if (res instanceof ImplementationGuide) {
+      ImplementationGuide ig = (ImplementationGuide) res;
+      ig.getFhirVersion().clear();
+      ig.getFhirVersion().add(new Enumeration<>(new FHIRVersionEnumFactory(), version));
+      ig.setPackageId(packageId);
     }
   }
 

@@ -1,5 +1,11 @@
 package org.hl7.fhir.convertors.loaders.loaderR5;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -38,18 +44,18 @@ import org.hl7.fhir.r4.formats.XmlParser;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r5.conformance.StructureDefinitionHacker;
 import org.hl7.fhir.r5.context.IWorkerContext.IContextResourceLoader;
-import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleType;
+import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.CanonicalType;
+import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.utilities.VersionUtilities;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 public class R4ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader {
 
@@ -154,4 +160,11 @@ public class R4ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
       }
     }
   }
+  
+  @Override
+  public List<CodeSystem> getCodeSystems() {
+    return new ArrayList<>();
+  }
+
+
 }

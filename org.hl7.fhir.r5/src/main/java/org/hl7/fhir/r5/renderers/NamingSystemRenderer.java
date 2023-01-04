@@ -5,18 +5,14 @@ import java.io.UnsupportedEncodingException;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.NamingSystem;
 import org.hl7.fhir.r5.model.NamingSystem.NamingSystemUniqueIdComponent;
-import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
-import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class NamingSystemRenderer extends ResourceRenderer {

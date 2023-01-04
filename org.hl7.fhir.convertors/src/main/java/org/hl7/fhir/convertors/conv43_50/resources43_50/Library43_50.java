@@ -5,8 +5,17 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Attachment4
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableConcept43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Identifier43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Period43_50;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.*;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.*;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.ContactDetail43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.DataRequirement43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.ParameterDefinition43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.RelatedArtifact43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.UsageContext43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Boolean43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Date43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.DateTime43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.MarkDown43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*

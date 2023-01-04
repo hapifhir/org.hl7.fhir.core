@@ -304,14 +304,19 @@ public class VersionUtilities {
   public static boolean isMajMinOrLaterPatch(String test, String current) {
     String t = getMajMin(test);
     String c = getMajMin(current);
-    if (c != null && c.compareTo(t) == 0) {
+    if (c != null && t != null && c.compareTo(t) == 0) {
       String pt = getPatch(test);
       String pc = getPatch(current);
       if (pt==null || "x".equals(pt)) {
         return true;
       }
       if (pc!=null) {
-        return compareVersionPart(pt, pc);
+        if (pt.contains("-") && !pc.contains("-")) {
+          pt = pt.substring(0, pt.indexOf("-"));
+          return pt.compareTo(pc) >= 0;
+        } else {
+          return compareVersionPart(pt, pc);          
+        }
       }
     }
     return false;
@@ -487,7 +492,6 @@ public class VersionUtilities {
 
       res.add("ActivityDefinition");
       res.add("CapabilityStatement");
-      res.add("CapabilityStatement2");
       res.add("ChargeItemDefinition");
       res.add("Citation");
       res.add("CodeSystem");
@@ -563,6 +567,39 @@ public class VersionUtilities {
       v = v.substring(0, refVer.length());
     }
     return refVer.equals(v);
+  }
+
+  public static String getSpecUrl(String v) {
+    if (v.contains("-cibuild")) {
+      return "http://build.fhir.org";
+    }
+    if (v.contains("-")) {
+      return "http://hl7.org/fhir/"+v;
+    }
+    
+    switch (getMajMin(v)) {
+    case "1.0" : return "http://hl7.org/fhir/DSTU1";
+    case "1.4" : return "http://hl7.org/fhir/DSTU2";
+    case "3.0" : return "http://hl7.org/fhir/STU3";
+    case "4.0" : return "http://hl7.org/fhir/R4";
+    case "4.3" : return "http://hl7.org/fhir/R4B";
+    case "5.0" : return "http://hl7.org/fhir/5.0.0-snapshot3";
+    default:
+      return "http://hl7.org/fhir";
+    }
+  }
+
+  public static String getNameForVersion(String v) {
+    switch (getMajMin(v)) {
+    case "1.0" : return "R2";
+    case "1.4" : return "R2B";
+    case "3.0" : return "R3";
+    case "4.0" : return "R4";
+    case "4.3" : return "R4B";
+    case "5.0" : return "R5";
+    default:
+      return "R?";
+    }
   }
 
 
