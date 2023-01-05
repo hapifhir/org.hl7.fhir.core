@@ -78,6 +78,7 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.ExtensionContextType;
+import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionContextComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionDifferentialComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
@@ -2523,109 +2524,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     return !p.contains(".");
   }
 
-//  public XhtmlNode generateExtensionTable(String defFile, StructureDefinition ed, String imageFolder, boolean inlineGraphics, boolean full, String corePath, String imagePath, Set<String> outputTracker, RenderingContext rc) throws IOException, FHIRException {
-//    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(imageFolder, inlineGraphics, true);
-//    gen.setTranslator(getTranslator());
-//    TableModel model = gen.initNormalTable(corePath, false, true, ed.getId()+(full ? "f" : "n"), true);
-//
-//    boolean deep = false;
-//    String m = "";
-//    boolean vdeep = false;
-//    if (ed.getSnapshot().getElementFirstRep().getIsModifier())
-//      m = "modifier_";
-//    for (ElementDefinition eld : ed.getSnapshot().getElement()) {
-//      deep = deep || eld.getPath().contains("Extension.extension.");
-//      vdeep = vdeep || eld.getPath().contains("Extension.extension.extension.");
-//    }
-//    Row r = gen.new Row();
-//    model.getRows().add(r);
-//    String en;
-//    if (!full)
-//      en = ed.getName();
-//    else if (ed.getSnapshot().getElement().get(0).getIsModifier())
-//      en = "modifierExtension";
-//    else 
-//      en = "extension";
-//    
-//    r.getCells().add(gen.new Cell(null, defFile == null ? "" : defFile+"-definitions.html#extension."+ed.getName(), en, null, null));
-//    r.getCells().add(gen.new Cell());
-//    r.getCells().add(gen.new Cell(null, null, describeCardinality(ed.getSnapshot().getElement().get(0), null, new UnusedTracker()), null, null));
-//
-//    ElementDefinition ved = null;
-//    if (full || vdeep) {
-//      r.getCells().add(gen.new Cell("", "", "Extension", null, null));
-//
-//      r.setIcon(deep ? "icon_"+m+"extension_complex.png" : "icon_extension_simple.png", deep ? HierarchicalTableGenerator.TEXT_ICON_EXTENSION_COMPLEX : HierarchicalTableGenerator.TEXT_ICON_EXTENSION_SIMPLE);
-//      List<ElementDefinition> children = getChildren(ed.getSnapshot().getElement(), ed.getSnapshot().getElement().get(0));
-//      for (ElementDefinition child : children)
-//        if (!child.getPath().endsWith(".id")) {
-//          List<StructureDefinition> sdl = new ArrayList<>();
-//          sdl.add(ed);
-//          genElement(defFile == null ? "" : defFile+"-definitions.html#extension.", gen, r.getSubRows(), child, ed.getSnapshot().getElement(), sdl, true, defFile, true, full, corePath, imagePath, true, false, false, false, null, false, rc, "", ed);
-//        }
-//    } else if (deep) {
-//      List<ElementDefinition> children = new ArrayList<ElementDefinition>();
-//      for (ElementDefinition ted : ed.getSnapshot().getElement()) {
-//        if (ted.getPath().equals("Extension.extension"))
-//          children.add(ted);
-//      }
-//
-//      r.getCells().add(gen.new Cell("", "", "Extension", null, null));
-//      r.setIcon("icon_"+m+"extension_complex.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_COMPLEX);
-//      
-//      for (ElementDefinition c : children) {
-//        ved = getValueFor(ed, c);
-//        ElementDefinition ued = getUrlFor(ed, c);
-//        if (ved != null && ued != null) {
-//          Row r1 = gen.new Row();
-//          r.getSubRows().add(r1);
-//          r1.getCells().add(gen.new Cell(null, defFile == null ? "" : defFile+"-definitions.html#"+ed.getId()+"."+c.getId(), ((UriType) ued.getFixed()).getValue(), null, null));
-//          r1.getCells().add(gen.new Cell());
-//          r1.getCells().add(gen.new Cell(null, null, describeCardinality(c, null, new UnusedTracker()), null, null));
-//          genTypes(gen, r1, ved, defFile, ed, corePath, imagePath, false, false);
-//          r1.setIcon("icon_"+m+"extension_simple.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_SIMPLE);      
-//          generateDescription(gen, r1, c, null, true, corePath, corePath, ed, corePath, imagePath, false, false, false, ved, false, false, false, rc);
-//        }
-//      }
-//    } else  {
-//      for (ElementDefinition ted : ed.getSnapshot().getElement()) {
-//        if (ted.getPath().startsWith("Extension.value"))
-//          ved = ted;
-//      }
-//
-//      genTypes(gen, r, ved, defFile, ed, corePath, imagePath, false, false);
-//
-//      r.setIcon("icon_"+m+"extension_simple.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_SIMPLE);      
-//    }
-//    Cell c = gen.new Cell("", "", "URL = "+ed.getUrl(), null, null);
-//    Piece cc = gen.new Piece(null, ed.getName()+": ", null);
-//    c.addPiece(gen.new Piece("br")).addPiece(cc);
-//    c.addMarkdown(ed.getDescription());
-//    
-//    if (!full && !(deep || vdeep) && ved != null && ved.hasBinding()) {  
-//        c.addPiece(gen.new Piece("br"));
-//      BindingResolution br = pkp.resolveBinding(ed, ved.getBinding(), ved.getPath());
-//      c.getPieces().add(checkForNoChange(ved.getBinding(), gen.new Piece(null, translate("sd.table", "Binding")+": ", null).addStyle("font-weight:bold")));
-//      c.getPieces().add(checkForNoChange(ved.getBinding(), gen.new Piece(br.url == null ? null : Utilities.isAbsoluteUrl(br.url) || !pkp.prependLinks() ? br.url : corePath+br.url, br.display, null)));
-//      if (ved.getBinding().hasStrength()) {
-//        c.getPieces().add(checkForNoChange(ved.getBinding(), gen.new Piece(null, " (", null)));
-//        c.getPieces().add(checkForNoChange(ved.getBinding(), gen.new Piece(corePath+"terminologies.html#"+ved.getBinding().getStrength().toCode(), egt(ved.getBinding().getStrengthElement()), ved.getBinding().getStrength().getDefinition())));              
-//        c.getPieces().add(gen.new Piece(null, ")", null));
-//      }
-//      if (ved.getBinding().hasDescription() && MarkDownProcessor.isSimpleMarkdown(ved.getBinding().getDescription())) {
-//        c.getPieces().add(gen.new Piece(null, ": ", null));
-//        c.addMarkdownNoPara(PublicationHacker.fixBindingDescriptions(context, ved.getBinding().getDescriptionElement()).asStringValue());
-//      }
-//    }
-//    c.addPiece(gen.new Piece("br")).addPiece(gen.new Piece(null, describeExtensionContext(ed), null));
-//    r.getCells().add(c);
-//    
-//    try {
-//      return gen.generate(model, corePath, 0, outputTracker);
-//  	} catch (org.hl7.fhir.exceptions.FHIRException e) {
-//  		throw new FHIRException(e.getMessage(), e);
-//  	}
-//  }
+
 
   private ElementDefinition getUrlFor(StructureDefinition ed, ElementDefinition c) {
     int i = ed.getSnapshot().getElement().indexOf(c) + 1;
@@ -2636,17 +2535,6 @@ public class ProfileUtilities extends TranslatingUtilities {
     }
     return null;
   }
-//
-//  private ElementDefinition getValueFor(StructureDefinition ed, ElementDefinition c) {
-//    int i = ed.getSnapshot().getElement().indexOf(c) + 1;
-//    while (i < ed.getSnapshot().getElement().size() && ed.getSnapshot().getElement().get(i).getPath().startsWith(c.getPath()+".")) {
-//      if (ed.getSnapshot().getElement().get(i).getPath().startsWith(c.getPath()+".value"))
-//        return ed.getSnapshot().getElement().get(i);
-//      i++;
-//    }
-//    return null;
-//  }
-
 
 
 
@@ -2668,31 +2556,31 @@ public class ProfileUtilities extends TranslatingUtilities {
     return null;
   }
 
-//
-//  public static String describeExtensionContext(StructureDefinition ext) {
-//    StringBuilder b = new StringBuilder();
-//    b.append("Use on ");
-//    for (int i = 0; i < ext.getContext().size(); i++) {
-//      StructureDefinitionContextComponent ec = ext.getContext().get(i);
-//      if (i > 0) 
-//        b.append(i < ext.getContext().size() - 1 ? ", " : " or ");
-//      b.append(ec.getType().getDisplay());
-//      b.append(" ");
-//      b.append(ec.getExpression());
-//    }
-//    if (ext.hasContextInvariant()) {
-//      b.append(", with <a href=\"structuredefinition-definitions.html#StructureDefinition.contextInvariant\">Context Invariant</a> = ");
-//      boolean first = true;
-//      for (StringType s : ext.getContextInvariant()) {
-//        if (first)
-//          first = false;
-//        else
-//          b.append(", ");
-//        b.append("<code>"+s.getValue()+"</code>");
-//      }
-//    }
-//    return b.toString(); 
-//  }
+
+  public static String describeExtensionContext(StructureDefinition ext) {
+    StringBuilder b = new StringBuilder();
+    b.append("Use on ");
+    for (int i = 0; i < ext.getContext().size(); i++) {
+      StructureDefinitionContextComponent ec = ext.getContext().get(i);
+      if (i > 0) 
+        b.append(i < ext.getContext().size() - 1 ? ", " : " or ");
+      b.append(ec.getType().getDisplay());
+      b.append(" ");
+      b.append(ec.getExpression());
+    }
+    if (ext.hasContextInvariant()) {
+      b.append(", with <a href=\"structuredefinition-definitions.html#StructureDefinition.contextInvariant\">Context Invariant</a> = ");
+      boolean first = true;
+      for (StringType s : ext.getContextInvariant()) {
+        if (first)
+          first = false;
+        else
+          b.append(", ");
+        b.append("<code>"+s.getValue()+"</code>");
+      }
+    }
+    return b.toString(); 
+  }
 
 
 
