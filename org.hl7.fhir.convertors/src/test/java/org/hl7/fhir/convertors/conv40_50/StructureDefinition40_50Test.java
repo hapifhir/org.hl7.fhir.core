@@ -3,14 +3,9 @@ package org.hl7.fhir.convertors.conv40_50;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
-import org.apache.commons.codec.binary.Base64;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
-import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.junit.jupiter.api.DisplayName;
@@ -29,10 +24,8 @@ public class StructureDefinition40_50Test {
     org.hl7.fhir.r4.model.StructureDefinition r4_conv = (org.hl7.fhir.r4.model.StructureDefinition) VersionConvertorFactory_40_50.convertResource(r5_actual);
     byte[] r4_output = new org.hl7.fhir.r4.formats.XmlParser().setOutputStyle(org.hl7.fhir.r4.formats.IParser.OutputStyle.PRETTY).composeBytes(r4_conv);
 
-    if (!r4_input.equals(r4_output)) {
-      TextFile.bytesToFile(r4_output, Utilities.path("[tmp]", "r4-sd-out.xml"));
-      TextFile.bytesToFile(r4_input, Utilities.path("[tmp]", "r4-sd-in.xml"));
-    }
+    printBytes("r4_input", r4_input);
+    printBytes("r4_output", r4_output);
     assertArrayEquals(r4_input, r4_output);
   }
 
@@ -46,13 +39,15 @@ public class StructureDefinition40_50Test {
     org.hl7.fhir.r4.model.StructureDefinition r4_actual = (org.hl7.fhir.r4.model.StructureDefinition) new org.hl7.fhir.r4.formats.XmlParser().parse(r4_input);
     org.hl7.fhir.r5.model.StructureDefinition r5_conv = (org.hl7.fhir.r5.model.StructureDefinition) VersionConvertorFactory_40_50.convertResource(r4_actual);
     byte[] r5_output = new org.hl7.fhir.r5.formats.XmlParser().setOutputStyle(org.hl7.fhir.r5.formats.IParser.OutputStyle.PRETTY).composeBytes(r5_conv);
-
-
-    if (!r5_input.equals(r5_output)) {
-      TextFile.bytesToFile(r5_output, Utilities.path("[tmp]", "r5-sd-out.xml"));
-      TextFile.bytesToFile(r5_input, Utilities.path("[tmp]", "r5-sd-in.xml"));
-    }
+    
+    printBytes("r5_input", r5_input);
+    printBytes("r5_output", r5_output);
     assertArrayEquals(r5_input, r5_output);
   }
 
+  private void printBytes(String nameOfVariable, byte[] bytes) {
+    System.out.println("---MY PERSONAL DEBUG (" + nameOfVariable + ") START---";
+    System.out.println(new String(bytes));
+    System.out.println("---MY PERSONAL DEBUG (" + nameOfVariable + ") END---");
+  }
 }
