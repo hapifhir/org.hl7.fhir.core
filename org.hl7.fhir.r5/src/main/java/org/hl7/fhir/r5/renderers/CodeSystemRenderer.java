@@ -112,7 +112,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       }
       tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Code", getContext().getLang()));
       if (hasURI) {
-        tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "URL", getContext().getLang()));
+        tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "URI", getContext().getLang()));
       }
       tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Type", getContext().getLang()));
       if (hasDescription) {
