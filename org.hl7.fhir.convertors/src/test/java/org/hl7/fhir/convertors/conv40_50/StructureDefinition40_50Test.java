@@ -46,7 +46,7 @@ public class StructureDefinition40_50Test {
   }
 
   private void printBytes(String nameOfVariable, byte[] bytes) {
-    System.out.println("---MY PERSONAL DEBUG (" + nameOfVariable + ") START---";
+    System.out.println("---MY PERSONAL DEBUG (" + nameOfVariable + ") START---");
     System.out.println(new String(bytes));
     System.out.println("---MY PERSONAL DEBUG (" + nameOfVariable + ") END---");
   }
