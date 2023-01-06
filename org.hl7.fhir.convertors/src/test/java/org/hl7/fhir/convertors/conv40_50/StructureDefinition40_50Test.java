@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -46,8 +47,8 @@ public class StructureDefinition40_50Test {
   }
 
   private void printBytes(String nameOfVariable, byte[] bytes) {
-    System.out.println("---MY PERSONAL DEBUG (" + nameOfVariable + ") START---");
-    System.out.println(new String(bytes));
+    System.out.println("---MY PERSONAL DEBUG START name=" + nameOfVariable + " length=" + bytes.length +" ---");
+    System.out.println(StringEscapeUtils.escapeJava(new String(bytes)));
     System.out.println("---MY PERSONAL DEBUG (" + nameOfVariable + ") END---");
   }
 }
