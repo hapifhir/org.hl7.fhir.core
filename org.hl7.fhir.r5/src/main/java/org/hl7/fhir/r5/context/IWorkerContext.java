@@ -65,6 +65,9 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
+import org.hl7.fhir.r5.profilemodel.PEDefinition;
+import org.hl7.fhir.r5.profilemodel.PEBuilder.PEElementPropertiesPolicy;
+import org.hl7.fhir.r5.profilemodel.PEBuilder;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
@@ -799,4 +802,8 @@ public interface IWorkerContext {
   public IWorkerContextManager.IPackageLoadingTracker getPackageTracker();
   public IWorkerContext setPackageTracker(IWorkerContextManager.IPackageLoadingTracker packageTracker);
 
+  public String getSpecUrl();
+
+  public PEBuilder getProfiledElementBuilder(PEElementPropertiesPolicy elementProps, boolean fixedProps);
+  
 }

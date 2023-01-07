@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -2798,13 +2798,13 @@ public class Bundle extends Resource implements IBaseBundle {
         protected List<BundleLinkComponent> link;
 
         /**
-         * The Absolute URL for the resource.  The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. Even when not required, fullUrl MAY be set to a urn:uuid to allow referencing entries in a transaction. The fullUrl can be an arbitrary URI and is not limited to urn:uuid, urn:oid, http, and https. The fullUrl element SHALL have a value except when: 
+         * The Absolute URL for the resource. Except for transactions and batches, each entry in a Bundle must have a fullUrl. The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. Even when not required, fullUrl MAY be set to a urn:uuid to allow referencing entries in a transaction. The fullUrl can be an arbitrary URI and is not limited to urn:uuid, urn:oid, http, and https. The fullUrl element SHALL have a value except when: 
 * invoking a create
 * invoking or responding to an operation where the body is not a single identified resource
 * invoking or returning the results of a search or history operation.
          */
         @Child(name = "fullUrl", type = {UriType.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="URI for resource (e.g. the absolute URL server address, URI for UUID/OID, etc.)", formalDefinition="The Absolute URL for the resource.  The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. Even when not required, fullUrl MAY be set to a urn:uuid to allow referencing entries in a transaction. The fullUrl can be an arbitrary URI and is not limited to urn:uuid, urn:oid, http, and https. The fullUrl element SHALL have a value except when: \n* invoking a create\n* invoking or responding to an operation where the body is not a single identified resource\n* invoking or returning the results of a search or history operation." )
+        @Description(shortDefinition="URI for resource (e.g. the absolute URL server address, URI for UUID/OID, etc.)", formalDefinition="The Absolute URL for the resource. Except for transactions and batches, each entry in a Bundle must have a fullUrl. The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. Even when not required, fullUrl MAY be set to a urn:uuid to allow referencing entries in a transaction. The fullUrl can be an arbitrary URI and is not limited to urn:uuid, urn:oid, http, and https. The fullUrl element SHALL have a value except when: \n* invoking a create\n* invoking or responding to an operation where the body is not a single identified resource\n* invoking or returning the results of a search or history operation." )
         protected UriType fullUrl;
 
         /**
@@ -2898,7 +2898,7 @@ public class Bundle extends Resource implements IBaseBundle {
         }
 
         /**
-         * @return {@link #fullUrl} (The Absolute URL for the resource.  The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. Even when not required, fullUrl MAY be set to a urn:uuid to allow referencing entries in a transaction. The fullUrl can be an arbitrary URI and is not limited to urn:uuid, urn:oid, http, and https. The fullUrl element SHALL have a value except when: 
+         * @return {@link #fullUrl} (The Absolute URL for the resource. Except for transactions and batches, each entry in a Bundle must have a fullUrl. The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. Even when not required, fullUrl MAY be set to a urn:uuid to allow referencing entries in a transaction. The fullUrl can be an arbitrary URI and is not limited to urn:uuid, urn:oid, http, and https. The fullUrl element SHALL have a value except when: 
 * invoking a create
 * invoking or responding to an operation where the body is not a single identified resource
 * invoking or returning the results of a search or history operation.). This is the underlying object with id, value and extensions. The accessor "getFullUrl" gives direct access to the value
@@ -2921,7 +2921,7 @@ public class Bundle extends Resource implements IBaseBundle {
         }
 
         /**
-         * @param value {@link #fullUrl} (The Absolute URL for the resource.  The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. Even when not required, fullUrl MAY be set to a urn:uuid to allow referencing entries in a transaction. The fullUrl can be an arbitrary URI and is not limited to urn:uuid, urn:oid, http, and https. The fullUrl element SHALL have a value except when: 
+         * @param value {@link #fullUrl} (The Absolute URL for the resource. Except for transactions and batches, each entry in a Bundle must have a fullUrl. The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. Even when not required, fullUrl MAY be set to a urn:uuid to allow referencing entries in a transaction. The fullUrl can be an arbitrary URI and is not limited to urn:uuid, urn:oid, http, and https. The fullUrl element SHALL have a value except when: 
 * invoking a create
 * invoking or responding to an operation where the body is not a single identified resource
 * invoking or returning the results of a search or history operation.). This is the underlying object with id, value and extensions. The accessor "getFullUrl" gives direct access to the value
@@ -2932,7 +2932,7 @@ public class Bundle extends Resource implements IBaseBundle {
         }
 
         /**
-         * @return The Absolute URL for the resource.  The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. Even when not required, fullUrl MAY be set to a urn:uuid to allow referencing entries in a transaction. The fullUrl can be an arbitrary URI and is not limited to urn:uuid, urn:oid, http, and https. The fullUrl element SHALL have a value except when: 
+         * @return The Absolute URL for the resource. Except for transactions and batches, each entry in a Bundle must have a fullUrl. The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. Even when not required, fullUrl MAY be set to a urn:uuid to allow referencing entries in a transaction. The fullUrl can be an arbitrary URI and is not limited to urn:uuid, urn:oid, http, and https. The fullUrl element SHALL have a value except when: 
 * invoking a create
 * invoking or responding to an operation where the body is not a single identified resource
 * invoking or returning the results of a search or history operation.
@@ -2942,7 +2942,7 @@ public class Bundle extends Resource implements IBaseBundle {
         }
 
         /**
-         * @param value The Absolute URL for the resource.  The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. Even when not required, fullUrl MAY be set to a urn:uuid to allow referencing entries in a transaction. The fullUrl can be an arbitrary URI and is not limited to urn:uuid, urn:oid, http, and https. The fullUrl element SHALL have a value except when: 
+         * @param value The Absolute URL for the resource. Except for transactions and batches, each entry in a Bundle must have a fullUrl. The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. Even when not required, fullUrl MAY be set to a urn:uuid to allow referencing entries in a transaction. The fullUrl can be an arbitrary URI and is not limited to urn:uuid, urn:oid, http, and https. The fullUrl element SHALL have a value except when: 
 * invoking a create
 * invoking or responding to an operation where the body is not a single identified resource
 * invoking or returning the results of a search or history operation.
@@ -3052,7 +3052,7 @@ public class Bundle extends Resource implements IBaseBundle {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("link", "@Bundle.link", "A series of links that provide context to this entry.", 0, java.lang.Integer.MAX_VALUE, link));
-          children.add(new Property("fullUrl", "uri", "The Absolute URL for the resource.  The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. Even when not required, fullUrl MAY be set to a urn:uuid to allow referencing entries in a transaction. The fullUrl can be an arbitrary URI and is not limited to urn:uuid, urn:oid, http, and https. The fullUrl element SHALL have a value except when: \n* invoking a create\n* invoking or responding to an operation where the body is not a single identified resource\n* invoking or returning the results of a search or history operation.", 0, 1, fullUrl));
+          children.add(new Property("fullUrl", "uri", "The Absolute URL for the resource. Except for transactions and batches, each entry in a Bundle must have a fullUrl. The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. Even when not required, fullUrl MAY be set to a urn:uuid to allow referencing entries in a transaction. The fullUrl can be an arbitrary URI and is not limited to urn:uuid, urn:oid, http, and https. The fullUrl element SHALL have a value except when: \n* invoking a create\n* invoking or responding to an operation where the body is not a single identified resource\n* invoking or returning the results of a search or history operation.", 0, 1, fullUrl));
           children.add(new Property("resource", "Resource", "The Resource for the entry. The purpose/meaning of the resource is determined by the Bundle.type. This is allowed to be a Parameters resource if and only if it is referenced by something else within the Bundle that provides context/meaning.", 0, 1, resource));
           children.add(new Property("search", "", "Information about the search process that lead to the creation of this entry.", 0, 1, search));
           children.add(new Property("request", "", "Additional information about how this entry should be processed as part of a transaction or batch.  For history, it shows how the entry was processed to create the version contained in the entry.", 0, 1, request));
@@ -3063,7 +3063,7 @@ public class Bundle extends Resource implements IBaseBundle {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3321850: /*link*/  return new Property("link", "@Bundle.link", "A series of links that provide context to this entry.", 0, java.lang.Integer.MAX_VALUE, link);
-          case -511251360: /*fullUrl*/  return new Property("fullUrl", "uri", "The Absolute URL for the resource.  The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. Even when not required, fullUrl MAY be set to a urn:uuid to allow referencing entries in a transaction. The fullUrl can be an arbitrary URI and is not limited to urn:uuid, urn:oid, http, and https. The fullUrl element SHALL have a value except when: \n* invoking a create\n* invoking or responding to an operation where the body is not a single identified resource\n* invoking or returning the results of a search or history operation.", 0, 1, fullUrl);
+          case -511251360: /*fullUrl*/  return new Property("fullUrl", "uri", "The Absolute URL for the resource. Except for transactions and batches, each entry in a Bundle must have a fullUrl. The fullUrl SHALL NOT disagree with the id in the resource - i.e. if the fullUrl is not a urn:uuid, the URL shall be version-independent URL consistent with the Resource.id. The fullUrl is a version independent reference to the resource. Even when not required, fullUrl MAY be set to a urn:uuid to allow referencing entries in a transaction. The fullUrl can be an arbitrary URI and is not limited to urn:uuid, urn:oid, http, and https. The fullUrl element SHALL have a value except when: \n* invoking a create\n* invoking or responding to an operation where the body is not a single identified resource\n* invoking or returning the results of a search or history operation.", 0, 1, fullUrl);
           case -341064690: /*resource*/  return new Property("resource", "Resource", "The Resource for the entry. The purpose/meaning of the resource is determined by the Bundle.type. This is allowed to be a Parameters resource if and only if it is referenced by something else within the Bundle that provides context/meaning.", 0, 1, resource);
           case -906336856: /*search*/  return new Property("search", "", "Information about the search process that lead to the creation of this entry.", 0, 1, search);
           case 1095692943: /*request*/  return new Property("request", "", "Additional information about how this entry should be processed as part of a transaction or batch.  For history, it shows how the entry was processed to create the version contained in the entry.", 0, 1, request);
@@ -3255,7 +3255,7 @@ public class Bundle extends Resource implements IBaseBundle {
   public BundleLinkComponent getLink(String theRelation) { 
     org.apache.commons.lang3.Validate.notBlank(theRelation, "theRelation may not be null or empty"); 
     for (BundleLinkComponent next : getLink()) { 
-      if (theRelation.equals(next.getRelation())) { 
+      if (theRelation.equals(next.getRelation().toCode())) { 
         return next; 
       } 
     } 
@@ -3278,12 +3278,12 @@ public class Bundle extends Resource implements IBaseBundle {
   public BundleLinkComponent getLinkOrCreate(String theRelation) { 
     org.apache.commons.lang3.Validate.notBlank(theRelation, "theRelation may not be null or empty"); 
     for (BundleLinkComponent next : getLink()) { 
-      if (theRelation.equals(next.getRelation())) { 
+      if (theRelation.equals(next.getRelation().toCode())) { 
         return next; 
       } 
     } 
     BundleLinkComponent retVal = new BundleLinkComponent(); 
-    retVal.setRelation(Bundle.LinkRelationTypes.fromCode(theRelation)); 
+    retVal.setRelation(LinkRelationTypes.fromCode(theRelation)); 
     getLink().add(retVal); 
     return retVal; 
   }
@@ -3296,7 +3296,7 @@ public class Bundle extends Resource implements IBaseBundle {
          * Why this entry is in the result set - whether it's included as a match or because of an _include requirement, or to convey information or warning information about the search process.
          */
         @Child(name = "mode", type = {CodeType.class}, order=1, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="match | include | outcome - why this is in the result set", formalDefinition="Why this entry is in the result set - whether it's included as a match or because of an _include requirement, or to convey information or warning information about the search process." )
+        @Description(shortDefinition="match | include - why this is in the result set", formalDefinition="Why this entry is in the result set - whether it's included as a match or because of an _include requirement, or to convey information or warning information about the search process." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/search-entry-mode")
         protected Enumeration<SearchEntryMode> mode;
 
@@ -5330,12 +5330,12 @@ public class Bundle extends Resource implements IBaseBundle {
   public BundleLinkComponent getLinkOrCreate(String theRelation) { 
     org.apache.commons.lang3.Validate.notBlank(theRelation, "theRelation may not be null or empty"); 
     for (BundleLinkComponent next : getLink()) { 
-      if (theRelation.equals(next.getRelation())) { 
+      if (theRelation.equals(next.getRelation().toCode())) { 
         return next; 
       } 
     } 
     BundleLinkComponent retVal = new BundleLinkComponent(); 
-    retVal.setRelation(Bundle.LinkRelationTypes.fromCode(theRelation)); 
+    retVal.setRelation(LinkRelationTypes.fromCode(theRelation)); 
     getLink().add(retVal); 
     return retVal; 
   }

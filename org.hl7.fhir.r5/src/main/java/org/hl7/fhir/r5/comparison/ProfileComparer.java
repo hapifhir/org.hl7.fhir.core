@@ -9,10 +9,8 @@ import java.util.List;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.comparison.ResourceComparer.MessageCounts;
 import org.hl7.fhir.r5.comparison.ValueSetComparer.ValueSetComparison;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
-import org.hl7.fhir.r5.conformance.ProfileUtilities.UnusedTracker;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.JsonParser;
@@ -34,10 +32,16 @@ import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.utils.DefinitionNavigator;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
@@ -849,7 +853,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
     for (ElementDefinitionConstraintComponent l : left) {
       boolean found = false;
       for (ElementDefinitionConstraintComponent r : right)
-        if (Utilities.equals(r.getId(), l.getId()) || (Utilities.equals(r.getXpath(), l.getXpath()) && r.getSeverity() == l.getSeverity()))
+        if (Utilities.equals(r.getId(), l.getId()) || (Utilities.equals(r.getExpression(), l.getExpression()) && r.getSeverity() == l.getSeverity()))
           found = true;
       if (found)
         result.add(l);
@@ -863,7 +867,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
     for (ElementDefinitionConstraintComponent l : left) {
       boolean found = false;
       for (ElementDefinitionConstraintComponent r : right)
-        if (Utilities.equals(r.getId(), l.getId()) || (Utilities.equals(r.getXpath(), l.getXpath()) && r.getSeverity() == l.getSeverity()))
+        if (Utilities.equals(r.getId(), l.getId()) || (Utilities.equals(r.getExpression(), l.getExpression()) && r.getSeverity() == l.getSeverity()))
           found = true;
       if (!found) {
         if (!Utilities.existsInList(l.getExpression(), "hasValue() or (children().count() > id.count())", "extension.exists() != value.exists()")) {
@@ -875,7 +879,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
     for (ElementDefinitionConstraintComponent r : right) {
       boolean found = false;
       for (ElementDefinitionConstraintComponent l : left)
-        if (Utilities.equals(r.getId(), l.getId()) || (Utilities.equals(r.getXpath(), l.getXpath()) && r.getSeverity() == l.getSeverity()))
+        if (Utilities.equals(r.getId(), l.getId()) || (Utilities.equals(r.getExpression(), l.getExpression()) && r.getSeverity() == l.getSeverity()))
           found = true;
       if (!found) {
         if (!Utilities.existsInList(r.getExpression(), "hasValue() or (children().count() > id.count())", "extension.exists() != value.exists()")) {
@@ -989,22 +993,27 @@ public class ProfileComparer extends CanonicalResourceComparer {
       String sn = getSliceName(combined);
       if (sn != null)
         sName = sName +":"+sn;
-      UnusedTracker used = new UnusedTracker();
+      StructureDefinitionRenderer.UnusedTracker used = new StructureDefinitionRenderer.UnusedTracker();
+      StructureDefinitionRenderer sdrLeft = new StructureDefinitionRenderer(new RenderingContext(utilsLeft.getContext(), null, utilsLeft.getTerminologyServiceOptions(), corePath, prefix, null, ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER));
+      StructureDefinitionRenderer sdrRight= new StructureDefinitionRenderer(new RenderingContext(utilsRight.getContext(), null, utilsRight.getTerminologyServiceOptions(), corePath, prefix, null, ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER));
+
+
+        
       Cell nc;
       String leftColor = !combined.hasLeft() ? COLOR_NO_ROW_LEFT : combined.hasErrors() ? COLOR_DIFFERENT : null;
       String rightColor = !combined.hasRight() ? COLOR_NO_ROW_LEFT : combined.hasErrors() ? COLOR_DIFFERENT : null;
       if (combined.hasLeft()) {
-        nc = utilsLeft.genElementNameCell(gen, combined.getLeft().getDef(),  "??", true, corePath, prefix, root, false, false, combined.getLeft().getSrc(), typesRow, row, false, ext, used , ref, sName, null);
+        nc = sdrLeft.genElementNameCell(gen, combined.getLeft().getDef(),  "??", true, corePath, prefix, root, false, false, combined.getLeft().getSrc(), typesRow, row, false, ext, used , ref, sName, null);
       } else {
-        nc = utilsRight.genElementNameCell(gen, combined.getRight().getDef(),  "??", true, corePath, prefix, root, false, false, combined.getRight().getSrc(), typesRow, row, false, ext, used , ref, sName, null);
+        nc = sdrRight.genElementNameCell(gen, combined.getRight().getDef(),  "??", true, corePath, prefix, root, false, false, combined.getRight().getSrc(), typesRow, row, false, ext, used , ref, sName, null);
       }
       if (combined.hasLeft()) {
-        frame(utilsLeft.genElementCells(gen, combined.getLeft().getDef(),  "??", true, corePath, prefix, root, false, false, combined.getLeft().getSrc(), typesRow, row, true, ext, used , ref, sName, nc, false, false, null), leftColor);
+        frame(sdrLeft.genElementCells(gen, combined.getLeft().getDef(),  "??", true, corePath, prefix, root, false, false, combined.getLeft().getSrc(), typesRow, row, true, ext, used , ref, sName, nc, false, false, null), leftColor);
       } else {
         frame(spacers(row, 4, gen), leftColor);
       }
       if (combined.hasRight()) {
-        frame(utilsRight.genElementCells(gen, combined.getRight().getDef(), "??", true, corePath, prefix, root, false, false, combined.getRight().getSrc(), typesRow, row, true, ext, used, ref, sName, nc, false, false, null), rightColor);
+        frame(sdrRight.genElementCells(gen, combined.getRight().getDef(), "??", true, corePath, prefix, root, false, false, combined.getRight().getSrc(), typesRow, row, true, ext, used, ref, sName, nc, false, false, null), rightColor);
       } else {
         frame(spacers(row, 4, gen), rightColor);
       }

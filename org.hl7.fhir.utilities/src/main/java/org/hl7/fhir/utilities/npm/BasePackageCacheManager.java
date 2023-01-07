@@ -19,7 +19,7 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
 
   private static final Logger ourLog = LoggerFactory.getLogger(BasePackageCacheManager.class);
   private List<String> myPackageServers = new ArrayList<>();
-  private Function<String, PackageClient> myClientFactory = address -> new CachingPackageClient(address);
+  private Function<String, PackageClient> myClientFactory = address -> new PackageClient(address);
   protected boolean silent;
 
   /**

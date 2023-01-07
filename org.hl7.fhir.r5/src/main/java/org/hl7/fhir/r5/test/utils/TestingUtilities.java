@@ -93,7 +93,10 @@ public class TestingUtilities extends BaseTestingUtilities {
    * @return
    */
   public static IWorkerContext getSharedWorkerContext(String version) {
-
+    if (!Utilities.existsInList(version, "1.0.2", "3.0.1", "4.0.1", "4.3.0", "5.0.0")) {
+      throw new Error("illegal version: "+version);
+      
+    }
     
     String v = VersionUtilities.getMajMin(version);
     if (fcontexts == null) {
@@ -107,6 +110,7 @@ public class TestingUtilities extends BaseTestingUtilities {
   }
 
   public static IWorkerContext getWorkerContext(String version) {
+
     FilesystemPackageCacheManager pcm;
     try {
       pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);

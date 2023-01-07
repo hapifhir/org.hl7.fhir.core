@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -853,32 +853,32 @@ public class Consent extends DomainResource {
     @Block()
     public static class ProvisionComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Action  to take - permit or deny - when the rule conditions are met.  Not permitted in root rule, required in all nested rules.
+         * Action  to take - permit or deny - when the provision conditions are met.
          */
         @Child(name = "type", type = {CodeType.class}, order=1, min=0, max=1, modifier=true, summary=true)
-        @Description(shortDefinition="deny | permit", formalDefinition="Action  to take - permit or deny - when the rule conditions are met.  Not permitted in root rule, required in all nested rules." )
+        @Description(shortDefinition="deny | permit", formalDefinition="Action  to take - permit or deny - when the provision conditions are met." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/consent-provision-type")
         protected Enumeration<ConsentProvisionType> type;
 
         /**
-         * The timeframe in this rule is valid.
+         * Timeframe for this provision.
          */
         @Child(name = "period", type = {Period.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Timeframe for this rule", formalDefinition="The timeframe in this rule is valid." )
+        @Description(shortDefinition="Timeframe for this provision", formalDefinition="Timeframe for this provision." )
         protected Period period;
 
         /**
-         * Who or what is controlled by this rule. Use group to identify a set of actors by some property they share (e.g. 'admitting officers').
+         * Who or what is controlled by this provision. Use group to identify a set of actors by some property they share (e.g. 'admitting officers').
          */
         @Child(name = "actor", type = {}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Who|what controlled by this rule (or group, by role)", formalDefinition="Who or what is controlled by this rule. Use group to identify a set of actors by some property they share (e.g. 'admitting officers')." )
+        @Description(shortDefinition="Who|what controlled by this provision (or group, by role)", formalDefinition="Who or what is controlled by this provision. Use group to identify a set of actors by some property they share (e.g. 'admitting officers')." )
         protected List<ProvisionActorComponent> actor;
 
         /**
-         * Actions controlled by this Rule.
+         * Actions controlled by this provision.
          */
         @Child(name = "action", type = {CodeableConcept.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Actions controlled by this rule", formalDefinition="Actions controlled by this Rule." )
+        @Description(shortDefinition="Actions controlled by this provision", formalDefinition="Actions controlled by this provision." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/consent-action")
         protected List<CodeableConcept> action;
 
@@ -891,58 +891,66 @@ public class Consent extends DomainResource {
         protected List<Coding> securityLabel;
 
         /**
-         * The context of the activities a user is taking - why the user is accessing the data - that are controlled by this rule.
+         * The context of the activities a user is taking - why the user is accessing the data - that are controlled by this provision.
          */
         @Child(name = "purpose", type = {Coding.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Context of activities covered by this rule", formalDefinition="The context of the activities a user is taking - why the user is accessing the data - that are controlled by this rule." )
+        @Description(shortDefinition="Context of activities covered by this provision", formalDefinition="The context of the activities a user is taking - why the user is accessing the data - that are controlled by this provision." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/v3-PurposeOfUse")
         protected List<Coding> purpose;
 
         /**
-         * The class of information covered by this rule. The type can be a FHIR resource type, a profile on a type, or a CDA document, or some other type that indicates what sort of information the consent relates to.
+         * The documentType(s) covered by this provision. The type can be a CDA document, or some other type that indicates what sort of information the consent relates to.
          */
-        @Child(name = "class", type = {Coding.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="e.g. Resource Type, Profile, CDA, etc.", formalDefinition="The class of information covered by this rule. The type can be a FHIR resource type, a profile on a type, or a CDA document, or some other type that indicates what sort of information the consent relates to." )
+        @Child(name = "documentType", type = {Coding.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Description(shortDefinition="e.g. Resource Type, Profile, CDA, etc.", formalDefinition="The documentType(s) covered by this provision. The type can be a CDA document, or some other type that indicates what sort of information the consent relates to." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/consent-content-class")
-        protected List<Coding> class_;
+        protected List<Coding> documentType;
 
         /**
-         * If this code is found in an instance, then the rule applies.
+         * The resourceType(s) covered by this provision. The type can be a FHIR resource type or a profile on a type that indicates what information the consent relates to.
          */
-        @Child(name = "code", type = {CodeableConcept.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="e.g. LOINC or SNOMED CT code, etc. in the content", formalDefinition="If this code is found in an instance, then the rule applies." )
+        @Child(name = "resourceType", type = {Coding.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Description(shortDefinition="e.g. Resource Type, Profile, etc.", formalDefinition="The resourceType(s) covered by this provision. The type can be a FHIR resource type or a profile on a type that indicates what information the consent relates to." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/resource-types")
+        protected List<Coding> resourceType;
+
+        /**
+         * If this code is found in an instance, then the provision applies.
+         */
+        @Child(name = "code", type = {CodeableConcept.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Description(shortDefinition="e.g. LOINC or SNOMED CT code, etc. in the content", formalDefinition="If this code is found in an instance, then the provision applies." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/consent-content-code")
         protected List<CodeableConcept> code;
 
         /**
-         * Clinical or Operational Relevant period of time that bounds the data controlled by this rule.
+         * Clinical or Operational Relevant period of time that bounds the data controlled by this provision.
          */
-        @Child(name = "dataPeriod", type = {Period.class}, order=9, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Timeframe for data controlled by this rule", formalDefinition="Clinical or Operational Relevant period of time that bounds the data controlled by this rule." )
+        @Child(name = "dataPeriod", type = {Period.class}, order=10, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Timeframe for data controlled by this provision", formalDefinition="Clinical or Operational Relevant period of time that bounds the data controlled by this provision." )
         protected Period dataPeriod;
 
         /**
-         * The resources controlled by this rule if specific resources are referenced.
+         * The resources controlled by this provision if specific resources are referenced.
          */
-        @Child(name = "data", type = {}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Data controlled by this rule", formalDefinition="The resources controlled by this rule if specific resources are referenced." )
+        @Child(name = "data", type = {}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Description(shortDefinition="Data controlled by this provision", formalDefinition="The resources controlled by this provision if specific resources are referenced." )
         protected List<ProvisionDataComponent> data;
 
         /**
          * A computable (FHIRPath or other) definition of what is controlled by this consent.
          */
-        @Child(name = "expression", type = {Expression.class}, order=11, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "expression", type = {Expression.class}, order=12, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="A computable expression of the consent", formalDefinition="A computable (FHIRPath or other) definition of what is controlled by this consent." )
         protected Expression expression;
 
         /**
-         * Rules which provide exceptions to the base rule or subrules.
+         * Provisions which provide exceptions to the base provision or subprovisions.
          */
-        @Child(name = "provision", type = {ProvisionComponent.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Nested Exception Rules", formalDefinition="Rules which provide exceptions to the base rule or subrules." )
+        @Child(name = "provision", type = {ProvisionComponent.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Nested Exception Provisions", formalDefinition="Provisions which provide exceptions to the base provision or subprovisions." )
         protected List<ProvisionComponent> provision;
 
-        private static final long serialVersionUID = 649023539L;
+        private static final long serialVersionUID = -1668990115L;
 
     /**
      * Constructor
@@ -952,7 +960,7 @@ public class Consent extends DomainResource {
       }
 
         /**
-         * @return {@link #type} (Action  to take - permit or deny - when the rule conditions are met.  Not permitted in root rule, required in all nested rules.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
+         * @return {@link #type} (Action  to take - permit or deny - when the provision conditions are met.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
          */
         public Enumeration<ConsentProvisionType> getTypeElement() { 
           if (this.type == null)
@@ -972,7 +980,7 @@ public class Consent extends DomainResource {
         }
 
         /**
-         * @param value {@link #type} (Action  to take - permit or deny - when the rule conditions are met.  Not permitted in root rule, required in all nested rules.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
+         * @param value {@link #type} (Action  to take - permit or deny - when the provision conditions are met.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
          */
         public ProvisionComponent setTypeElement(Enumeration<ConsentProvisionType> value) { 
           this.type = value;
@@ -980,14 +988,14 @@ public class Consent extends DomainResource {
         }
 
         /**
-         * @return Action  to take - permit or deny - when the rule conditions are met.  Not permitted in root rule, required in all nested rules.
+         * @return Action  to take - permit or deny - when the provision conditions are met.
          */
         public ConsentProvisionType getType() { 
           return this.type == null ? null : this.type.getValue();
         }
 
         /**
-         * @param value Action  to take - permit or deny - when the rule conditions are met.  Not permitted in root rule, required in all nested rules.
+         * @param value Action  to take - permit or deny - when the provision conditions are met.
          */
         public ProvisionComponent setType(ConsentProvisionType value) { 
           if (value == null)
@@ -1001,7 +1009,7 @@ public class Consent extends DomainResource {
         }
 
         /**
-         * @return {@link #period} (The timeframe in this rule is valid.)
+         * @return {@link #period} (Timeframe for this provision.)
          */
         public Period getPeriod() { 
           if (this.period == null)
@@ -1017,7 +1025,7 @@ public class Consent extends DomainResource {
         }
 
         /**
-         * @param value {@link #period} (The timeframe in this rule is valid.)
+         * @param value {@link #period} (Timeframe for this provision.)
          */
         public ProvisionComponent setPeriod(Period value) { 
           this.period = value;
@@ -1025,7 +1033,7 @@ public class Consent extends DomainResource {
         }
 
         /**
-         * @return {@link #actor} (Who or what is controlled by this rule. Use group to identify a set of actors by some property they share (e.g. 'admitting officers').)
+         * @return {@link #actor} (Who or what is controlled by this provision. Use group to identify a set of actors by some property they share (e.g. 'admitting officers').)
          */
         public List<ProvisionActorComponent> getActor() { 
           if (this.actor == null)
@@ -1078,7 +1086,7 @@ public class Consent extends DomainResource {
         }
 
         /**
-         * @return {@link #action} (Actions controlled by this Rule.)
+         * @return {@link #action} (Actions controlled by this provision.)
          */
         public List<CodeableConcept> getAction() { 
           if (this.action == null)
@@ -1184,7 +1192,7 @@ public class Consent extends DomainResource {
         }
 
         /**
-         * @return {@link #purpose} (The context of the activities a user is taking - why the user is accessing the data - that are controlled by this rule.)
+         * @return {@link #purpose} (The context of the activities a user is taking - why the user is accessing the data - that are controlled by this provision.)
          */
         public List<Coding> getPurpose() { 
           if (this.purpose == null)
@@ -1237,60 +1245,113 @@ public class Consent extends DomainResource {
         }
 
         /**
-         * @return {@link #class_} (The class of information covered by this rule. The type can be a FHIR resource type, a profile on a type, or a CDA document, or some other type that indicates what sort of information the consent relates to.)
+         * @return {@link #documentType} (The documentType(s) covered by this provision. The type can be a CDA document, or some other type that indicates what sort of information the consent relates to.)
          */
-        public List<Coding> getClass_() { 
-          if (this.class_ == null)
-            this.class_ = new ArrayList<Coding>();
-          return this.class_;
+        public List<Coding> getDocumentType() { 
+          if (this.documentType == null)
+            this.documentType = new ArrayList<Coding>();
+          return this.documentType;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public ProvisionComponent setClass_(List<Coding> theClass_) { 
-          this.class_ = theClass_;
+        public ProvisionComponent setDocumentType(List<Coding> theDocumentType) { 
+          this.documentType = theDocumentType;
           return this;
         }
 
-        public boolean hasClass_() { 
-          if (this.class_ == null)
+        public boolean hasDocumentType() { 
+          if (this.documentType == null)
             return false;
-          for (Coding item : this.class_)
+          for (Coding item : this.documentType)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public Coding addClass_() { //3
+        public Coding addDocumentType() { //3
           Coding t = new Coding();
-          if (this.class_ == null)
-            this.class_ = new ArrayList<Coding>();
-          this.class_.add(t);
+          if (this.documentType == null)
+            this.documentType = new ArrayList<Coding>();
+          this.documentType.add(t);
           return t;
         }
 
-        public ProvisionComponent addClass_(Coding t) { //3
+        public ProvisionComponent addDocumentType(Coding t) { //3
           if (t == null)
             return this;
-          if (this.class_ == null)
-            this.class_ = new ArrayList<Coding>();
-          this.class_.add(t);
+          if (this.documentType == null)
+            this.documentType = new ArrayList<Coding>();
+          this.documentType.add(t);
           return this;
         }
 
         /**
-         * @return The first repetition of repeating field {@link #class_}, creating it if it does not already exist {3}
+         * @return The first repetition of repeating field {@link #documentType}, creating it if it does not already exist {3}
          */
-        public Coding getClass_FirstRep() { 
-          if (getClass_().isEmpty()) {
-            addClass_();
+        public Coding getDocumentTypeFirstRep() { 
+          if (getDocumentType().isEmpty()) {
+            addDocumentType();
           }
-          return getClass_().get(0);
+          return getDocumentType().get(0);
         }
 
         /**
-         * @return {@link #code} (If this code is found in an instance, then the rule applies.)
+         * @return {@link #resourceType} (The resourceType(s) covered by this provision. The type can be a FHIR resource type or a profile on a type that indicates what information the consent relates to.)
+         */
+        public List<Coding> getResourceType() { 
+          if (this.resourceType == null)
+            this.resourceType = new ArrayList<Coding>();
+          return this.resourceType;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public ProvisionComponent setResourceType(List<Coding> theResourceType) { 
+          this.resourceType = theResourceType;
+          return this;
+        }
+
+        public boolean hasResourceType() { 
+          if (this.resourceType == null)
+            return false;
+          for (Coding item : this.resourceType)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public Coding addResourceType() { //3
+          Coding t = new Coding();
+          if (this.resourceType == null)
+            this.resourceType = new ArrayList<Coding>();
+          this.resourceType.add(t);
+          return t;
+        }
+
+        public ProvisionComponent addResourceType(Coding t) { //3
+          if (t == null)
+            return this;
+          if (this.resourceType == null)
+            this.resourceType = new ArrayList<Coding>();
+          this.resourceType.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #resourceType}, creating it if it does not already exist {3}
+         */
+        public Coding getResourceTypeFirstRep() { 
+          if (getResourceType().isEmpty()) {
+            addResourceType();
+          }
+          return getResourceType().get(0);
+        }
+
+        /**
+         * @return {@link #code} (If this code is found in an instance, then the provision applies.)
          */
         public List<CodeableConcept> getCode() { 
           if (this.code == null)
@@ -1343,7 +1404,7 @@ public class Consent extends DomainResource {
         }
 
         /**
-         * @return {@link #dataPeriod} (Clinical or Operational Relevant period of time that bounds the data controlled by this rule.)
+         * @return {@link #dataPeriod} (Clinical or Operational Relevant period of time that bounds the data controlled by this provision.)
          */
         public Period getDataPeriod() { 
           if (this.dataPeriod == null)
@@ -1359,7 +1420,7 @@ public class Consent extends DomainResource {
         }
 
         /**
-         * @param value {@link #dataPeriod} (Clinical or Operational Relevant period of time that bounds the data controlled by this rule.)
+         * @param value {@link #dataPeriod} (Clinical or Operational Relevant period of time that bounds the data controlled by this provision.)
          */
         public ProvisionComponent setDataPeriod(Period value) { 
           this.dataPeriod = value;
@@ -1367,7 +1428,7 @@ public class Consent extends DomainResource {
         }
 
         /**
-         * @return {@link #data} (The resources controlled by this rule if specific resources are referenced.)
+         * @return {@link #data} (The resources controlled by this provision if specific resources are referenced.)
          */
         public List<ProvisionDataComponent> getData() { 
           if (this.data == null)
@@ -1444,7 +1505,7 @@ public class Consent extends DomainResource {
         }
 
         /**
-         * @return {@link #provision} (Rules which provide exceptions to the base rule or subrules.)
+         * @return {@link #provision} (Provisions which provide exceptions to the base provision or subprovisions.)
          */
         public List<ProvisionComponent> getProvision() { 
           if (this.provision == null)
@@ -1498,35 +1559,37 @@ public class Consent extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("type", "code", "Action  to take - permit or deny - when the rule conditions are met.  Not permitted in root rule, required in all nested rules.", 0, 1, type));
-          children.add(new Property("period", "Period", "The timeframe in this rule is valid.", 0, 1, period));
-          children.add(new Property("actor", "", "Who or what is controlled by this rule. Use group to identify a set of actors by some property they share (e.g. 'admitting officers').", 0, java.lang.Integer.MAX_VALUE, actor));
-          children.add(new Property("action", "CodeableConcept", "Actions controlled by this Rule.", 0, java.lang.Integer.MAX_VALUE, action));
+          children.add(new Property("type", "code", "Action  to take - permit or deny - when the provision conditions are met.", 0, 1, type));
+          children.add(new Property("period", "Period", "Timeframe for this provision.", 0, 1, period));
+          children.add(new Property("actor", "", "Who or what is controlled by this provision. Use group to identify a set of actors by some property they share (e.g. 'admitting officers').", 0, java.lang.Integer.MAX_VALUE, actor));
+          children.add(new Property("action", "CodeableConcept", "Actions controlled by this provision.", 0, java.lang.Integer.MAX_VALUE, action));
           children.add(new Property("securityLabel", "Coding", "A security label, comprised of 0..* security label fields (Privacy tags), which define which resources are controlled by this exception.", 0, java.lang.Integer.MAX_VALUE, securityLabel));
-          children.add(new Property("purpose", "Coding", "The context of the activities a user is taking - why the user is accessing the data - that are controlled by this rule.", 0, java.lang.Integer.MAX_VALUE, purpose));
-          children.add(new Property("class", "Coding", "The class of information covered by this rule. The type can be a FHIR resource type, a profile on a type, or a CDA document, or some other type that indicates what sort of information the consent relates to.", 0, java.lang.Integer.MAX_VALUE, class_));
-          children.add(new Property("code", "CodeableConcept", "If this code is found in an instance, then the rule applies.", 0, java.lang.Integer.MAX_VALUE, code));
-          children.add(new Property("dataPeriod", "Period", "Clinical or Operational Relevant period of time that bounds the data controlled by this rule.", 0, 1, dataPeriod));
-          children.add(new Property("data", "", "The resources controlled by this rule if specific resources are referenced.", 0, java.lang.Integer.MAX_VALUE, data));
+          children.add(new Property("purpose", "Coding", "The context of the activities a user is taking - why the user is accessing the data - that are controlled by this provision.", 0, java.lang.Integer.MAX_VALUE, purpose));
+          children.add(new Property("documentType", "Coding", "The documentType(s) covered by this provision. The type can be a CDA document, or some other type that indicates what sort of information the consent relates to.", 0, java.lang.Integer.MAX_VALUE, documentType));
+          children.add(new Property("resourceType", "Coding", "The resourceType(s) covered by this provision. The type can be a FHIR resource type or a profile on a type that indicates what information the consent relates to.", 0, java.lang.Integer.MAX_VALUE, resourceType));
+          children.add(new Property("code", "CodeableConcept", "If this code is found in an instance, then the provision applies.", 0, java.lang.Integer.MAX_VALUE, code));
+          children.add(new Property("dataPeriod", "Period", "Clinical or Operational Relevant period of time that bounds the data controlled by this provision.", 0, 1, dataPeriod));
+          children.add(new Property("data", "", "The resources controlled by this provision if specific resources are referenced.", 0, java.lang.Integer.MAX_VALUE, data));
           children.add(new Property("expression", "Expression", "A computable (FHIRPath or other) definition of what is controlled by this consent.", 0, 1, expression));
-          children.add(new Property("provision", "@Consent.provision", "Rules which provide exceptions to the base rule or subrules.", 0, java.lang.Integer.MAX_VALUE, provision));
+          children.add(new Property("provision", "@Consent.provision", "Provisions which provide exceptions to the base provision or subprovisions.", 0, java.lang.Integer.MAX_VALUE, provision));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3575610: /*type*/  return new Property("type", "code", "Action  to take - permit or deny - when the rule conditions are met.  Not permitted in root rule, required in all nested rules.", 0, 1, type);
-          case -991726143: /*period*/  return new Property("period", "Period", "The timeframe in this rule is valid.", 0, 1, period);
-          case 92645877: /*actor*/  return new Property("actor", "", "Who or what is controlled by this rule. Use group to identify a set of actors by some property they share (e.g. 'admitting officers').", 0, java.lang.Integer.MAX_VALUE, actor);
-          case -1422950858: /*action*/  return new Property("action", "CodeableConcept", "Actions controlled by this Rule.", 0, java.lang.Integer.MAX_VALUE, action);
+          case 3575610: /*type*/  return new Property("type", "code", "Action  to take - permit or deny - when the provision conditions are met.", 0, 1, type);
+          case -991726143: /*period*/  return new Property("period", "Period", "Timeframe for this provision.", 0, 1, period);
+          case 92645877: /*actor*/  return new Property("actor", "", "Who or what is controlled by this provision. Use group to identify a set of actors by some property they share (e.g. 'admitting officers').", 0, java.lang.Integer.MAX_VALUE, actor);
+          case -1422950858: /*action*/  return new Property("action", "CodeableConcept", "Actions controlled by this provision.", 0, java.lang.Integer.MAX_VALUE, action);
           case -722296940: /*securityLabel*/  return new Property("securityLabel", "Coding", "A security label, comprised of 0..* security label fields (Privacy tags), which define which resources are controlled by this exception.", 0, java.lang.Integer.MAX_VALUE, securityLabel);
-          case -220463842: /*purpose*/  return new Property("purpose", "Coding", "The context of the activities a user is taking - why the user is accessing the data - that are controlled by this rule.", 0, java.lang.Integer.MAX_VALUE, purpose);
-          case 94742904: /*class*/  return new Property("class", "Coding", "The class of information covered by this rule. The type can be a FHIR resource type, a profile on a type, or a CDA document, or some other type that indicates what sort of information the consent relates to.", 0, java.lang.Integer.MAX_VALUE, class_);
-          case 3059181: /*code*/  return new Property("code", "CodeableConcept", "If this code is found in an instance, then the rule applies.", 0, java.lang.Integer.MAX_VALUE, code);
-          case 1177250315: /*dataPeriod*/  return new Property("dataPeriod", "Period", "Clinical or Operational Relevant period of time that bounds the data controlled by this rule.", 0, 1, dataPeriod);
-          case 3076010: /*data*/  return new Property("data", "", "The resources controlled by this rule if specific resources are referenced.", 0, java.lang.Integer.MAX_VALUE, data);
+          case -220463842: /*purpose*/  return new Property("purpose", "Coding", "The context of the activities a user is taking - why the user is accessing the data - that are controlled by this provision.", 0, java.lang.Integer.MAX_VALUE, purpose);
+          case -1473196299: /*documentType*/  return new Property("documentType", "Coding", "The documentType(s) covered by this provision. The type can be a CDA document, or some other type that indicates what sort of information the consent relates to.", 0, java.lang.Integer.MAX_VALUE, documentType);
+          case -384364440: /*resourceType*/  return new Property("resourceType", "Coding", "The resourceType(s) covered by this provision. The type can be a FHIR resource type or a profile on a type that indicates what information the consent relates to.", 0, java.lang.Integer.MAX_VALUE, resourceType);
+          case 3059181: /*code*/  return new Property("code", "CodeableConcept", "If this code is found in an instance, then the provision applies.", 0, java.lang.Integer.MAX_VALUE, code);
+          case 1177250315: /*dataPeriod*/  return new Property("dataPeriod", "Period", "Clinical or Operational Relevant period of time that bounds the data controlled by this provision.", 0, 1, dataPeriod);
+          case 3076010: /*data*/  return new Property("data", "", "The resources controlled by this provision if specific resources are referenced.", 0, java.lang.Integer.MAX_VALUE, data);
           case -1795452264: /*expression*/  return new Property("expression", "Expression", "A computable (FHIRPath or other) definition of what is controlled by this consent.", 0, 1, expression);
-          case -547120939: /*provision*/  return new Property("provision", "@Consent.provision", "Rules which provide exceptions to the base rule or subrules.", 0, java.lang.Integer.MAX_VALUE, provision);
+          case -547120939: /*provision*/  return new Property("provision", "@Consent.provision", "Provisions which provide exceptions to the base provision or subprovisions.", 0, java.lang.Integer.MAX_VALUE, provision);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1541,7 +1604,8 @@ public class Consent extends DomainResource {
         case -1422950858: /*action*/ return this.action == null ? new Base[0] : this.action.toArray(new Base[this.action.size()]); // CodeableConcept
         case -722296940: /*securityLabel*/ return this.securityLabel == null ? new Base[0] : this.securityLabel.toArray(new Base[this.securityLabel.size()]); // Coding
         case -220463842: /*purpose*/ return this.purpose == null ? new Base[0] : this.purpose.toArray(new Base[this.purpose.size()]); // Coding
-        case 94742904: /*class*/ return this.class_ == null ? new Base[0] : this.class_.toArray(new Base[this.class_.size()]); // Coding
+        case -1473196299: /*documentType*/ return this.documentType == null ? new Base[0] : this.documentType.toArray(new Base[this.documentType.size()]); // Coding
+        case -384364440: /*resourceType*/ return this.resourceType == null ? new Base[0] : this.resourceType.toArray(new Base[this.resourceType.size()]); // Coding
         case 3059181: /*code*/ return this.code == null ? new Base[0] : this.code.toArray(new Base[this.code.size()]); // CodeableConcept
         case 1177250315: /*dataPeriod*/ return this.dataPeriod == null ? new Base[0] : new Base[] {this.dataPeriod}; // Period
         case 3076010: /*data*/ return this.data == null ? new Base[0] : this.data.toArray(new Base[this.data.size()]); // ProvisionDataComponent
@@ -1574,8 +1638,11 @@ public class Consent extends DomainResource {
         case -220463842: // purpose
           this.getPurpose().add(TypeConvertor.castToCoding(value)); // Coding
           return value;
-        case 94742904: // class
-          this.getClass_().add(TypeConvertor.castToCoding(value)); // Coding
+        case -1473196299: // documentType
+          this.getDocumentType().add(TypeConvertor.castToCoding(value)); // Coding
+          return value;
+        case -384364440: // resourceType
+          this.getResourceType().add(TypeConvertor.castToCoding(value)); // Coding
           return value;
         case 3059181: // code
           this.getCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
@@ -1612,8 +1679,10 @@ public class Consent extends DomainResource {
           this.getSecurityLabel().add(TypeConvertor.castToCoding(value));
         } else if (name.equals("purpose")) {
           this.getPurpose().add(TypeConvertor.castToCoding(value));
-        } else if (name.equals("class")) {
-          this.getClass_().add(TypeConvertor.castToCoding(value));
+        } else if (name.equals("documentType")) {
+          this.getDocumentType().add(TypeConvertor.castToCoding(value));
+        } else if (name.equals("resourceType")) {
+          this.getResourceType().add(TypeConvertor.castToCoding(value));
         } else if (name.equals("code")) {
           this.getCode().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("dataPeriod")) {
@@ -1638,7 +1707,8 @@ public class Consent extends DomainResource {
         case -1422950858:  return addAction(); 
         case -722296940:  return addSecurityLabel(); 
         case -220463842:  return addPurpose(); 
-        case 94742904:  return addClass_(); 
+        case -1473196299:  return addDocumentType(); 
+        case -384364440:  return addResourceType(); 
         case 3059181:  return addCode(); 
         case 1177250315:  return getDataPeriod();
         case 3076010:  return addData(); 
@@ -1658,7 +1728,8 @@ public class Consent extends DomainResource {
         case -1422950858: /*action*/ return new String[] {"CodeableConcept"};
         case -722296940: /*securityLabel*/ return new String[] {"Coding"};
         case -220463842: /*purpose*/ return new String[] {"Coding"};
-        case 94742904: /*class*/ return new String[] {"Coding"};
+        case -1473196299: /*documentType*/ return new String[] {"Coding"};
+        case -384364440: /*resourceType*/ return new String[] {"Coding"};
         case 3059181: /*code*/ return new String[] {"CodeableConcept"};
         case 1177250315: /*dataPeriod*/ return new String[] {"Period"};
         case 3076010: /*data*/ return new String[] {};
@@ -1690,8 +1761,11 @@ public class Consent extends DomainResource {
         else if (name.equals("purpose")) {
           return addPurpose();
         }
-        else if (name.equals("class")) {
-          return addClass_();
+        else if (name.equals("documentType")) {
+          return addDocumentType();
+        }
+        else if (name.equals("resourceType")) {
+          return addResourceType();
         }
         else if (name.equals("code")) {
           return addCode();
@@ -1744,10 +1818,15 @@ public class Consent extends DomainResource {
           for (Coding i : purpose)
             dst.purpose.add(i.copy());
         };
-        if (class_ != null) {
-          dst.class_ = new ArrayList<Coding>();
-          for (Coding i : class_)
-            dst.class_.add(i.copy());
+        if (documentType != null) {
+          dst.documentType = new ArrayList<Coding>();
+          for (Coding i : documentType)
+            dst.documentType.add(i.copy());
+        };
+        if (resourceType != null) {
+          dst.resourceType = new ArrayList<Coding>();
+          for (Coding i : resourceType)
+            dst.resourceType.add(i.copy());
         };
         if (code != null) {
           dst.code = new ArrayList<CodeableConcept>();
@@ -1777,9 +1856,9 @@ public class Consent extends DomainResource {
         ProvisionComponent o = (ProvisionComponent) other_;
         return compareDeep(type, o.type, true) && compareDeep(period, o.period, true) && compareDeep(actor, o.actor, true)
            && compareDeep(action, o.action, true) && compareDeep(securityLabel, o.securityLabel, true) && compareDeep(purpose, o.purpose, true)
-           && compareDeep(class_, o.class_, true) && compareDeep(code, o.code, true) && compareDeep(dataPeriod, o.dataPeriod, true)
-           && compareDeep(data, o.data, true) && compareDeep(expression, o.expression, true) && compareDeep(provision, o.provision, true)
-          ;
+           && compareDeep(documentType, o.documentType, true) && compareDeep(resourceType, o.resourceType, true)
+           && compareDeep(code, o.code, true) && compareDeep(dataPeriod, o.dataPeriod, true) && compareDeep(data, o.data, true)
+           && compareDeep(expression, o.expression, true) && compareDeep(provision, o.provision, true);
       }
 
       @Override
@@ -1794,8 +1873,8 @@ public class Consent extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, period, actor, action
-          , securityLabel, purpose, class_, code, dataPeriod, data, expression, provision
-          );
+          , securityLabel, purpose, documentType, resourceType, code, dataPeriod, data, expression
+          , provision);
       }
 
   public String fhirType() {
@@ -2271,58 +2350,65 @@ public class Consent extends DomainResource {
     protected Reference subject;
 
     /**
-     * Date and time the consent instance was agreed to.
+     * Date the consent instance was agreed to.
      */
-    @Child(name = "dateTime", type = {DateTimeType.class}, order=4, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="When consent was agreed to", formalDefinition="Date and time the consent instance was agreed to." )
-    protected DateTimeType dateTime;
+    @Child(name = "date", type = {DateType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Fully executed date of the consent", formalDefinition="Date the consent instance was agreed to." )
+    protected DateType date;
+
+    /**
+     * Effective period for this Consent Resource and all provisions unless specified in that provision.
+     */
+    @Child(name = "period", type = {Period.class}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Effective period for this Consent", formalDefinition="Effective period for this Consent Resource and all provisions unless specified in that provision." )
+    protected Period period;
 
     /**
      * The entity responsible for granting the rights listed in a Consent Directive.
      */
-    @Child(name = "grantor", type = {CareTeam.class, HealthcareService.class, Organization.class, Patient.class, Practitioner.class, RelatedPerson.class, PractitionerRole.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "grantor", type = {CareTeam.class, HealthcareService.class, Organization.class, Patient.class, Practitioner.class, RelatedPerson.class, PractitionerRole.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Who is granting rights according to the policy and rules", formalDefinition="The entity responsible for granting the rights listed in a Consent Directive." )
     protected List<Reference> grantor;
 
     /**
      * The entity responsible for complying with the Consent Directive, including any obligations or limitations on authorizations and enforcement of prohibitions.
      */
-    @Child(name = "grantee", type = {CareTeam.class, HealthcareService.class, Organization.class, Patient.class, Practitioner.class, RelatedPerson.class, PractitionerRole.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "grantee", type = {CareTeam.class, HealthcareService.class, Organization.class, Patient.class, Practitioner.class, RelatedPerson.class, PractitionerRole.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Who is agreeing to the policy and rules", formalDefinition="The entity responsible for complying with the Consent Directive, including any obligations or limitations on authorizations and enforcement of prohibitions." )
     protected List<Reference> grantee;
 
     /**
      * The actor that manages the consent through its lifecycle.
      */
-    @Child(name = "manager", type = {HealthcareService.class, Organization.class, Patient.class, Practitioner.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "manager", type = {HealthcareService.class, Organization.class, Patient.class, Practitioner.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Consent workflow management", formalDefinition="The actor that manages the consent through its lifecycle." )
     protected List<Reference> manager;
 
     /**
      * The actor that controls/enforces the access according to the consent.
      */
-    @Child(name = "controller", type = {HealthcareService.class, Organization.class, Patient.class, Practitioner.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "controller", type = {HealthcareService.class, Organization.class, Patient.class, Practitioner.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Consent Enforcer", formalDefinition="The actor that controls/enforces the access according to the consent." )
     protected List<Reference> controller;
 
     /**
      * The source on which this consent statement is based. The source might be a scanned original paper form.
      */
-    @Child(name = "sourceAttachment", type = {Attachment.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "sourceAttachment", type = {Attachment.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Source from which this consent is taken", formalDefinition="The source on which this consent statement is based. The source might be a scanned original paper form." )
     protected List<Attachment> sourceAttachment;
 
     /**
      * A reference to a consent that links back to such a source, a reference to a document repository (e.g. XDS) that stores the original consent document.
      */
-    @Child(name = "sourceReference", type = {Consent.class, DocumentReference.class, Contract.class, QuestionnaireResponse.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "sourceReference", type = {Consent.class, DocumentReference.class, Contract.class, QuestionnaireResponse.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Source from which this consent is taken", formalDefinition="A reference to a consent that links back to such a source, a reference to a document repository (e.g. XDS) that stores the original consent document." )
     protected List<Reference> sourceReference;
 
     /**
      * A set of codes that indicate the regulatory basis (if any) that this consent supports.
      */
-    @Child(name = "regulatoryBasis", type = {CodeableConcept.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "regulatoryBasis", type = {CodeableConcept.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Regulations establishing base Consent", formalDefinition="A set of codes that indicate the regulatory basis (if any) that this consent supports." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/consent-policy")
     protected List<CodeableConcept> regulatoryBasis;
@@ -2330,32 +2416,32 @@ public class Consent extends DomainResource {
     /**
      * A Reference or URL used to uniquely identify the policy the organization will enforce for this Consent. This Reference or URL should be specific to the version of the policy and should be dereferencable to a computable policy of some form.
      */
-    @Child(name = "policyBasis", type = {}, order=12, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "policyBasis", type = {}, order=13, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Computable version of the backing policy", formalDefinition="A Reference or URL used to uniquely identify the policy the organization will enforce for this Consent. This Reference or URL should be specific to the version of the policy and should be dereferencable to a computable policy of some form." )
     protected ConsentPolicyBasisComponent policyBasis;
 
     /**
      * A Reference to the human readable policy explaining the basis for the Consent.
      */
-    @Child(name = "policyText", type = {DocumentReference.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "policyText", type = {DocumentReference.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Human Readable Policy", formalDefinition="A Reference to the human readable policy explaining the basis for the Consent." )
     protected List<Reference> policyText;
 
     /**
      * Whether a treatment instruction (e.g. artificial respiration: yes or no) was verified with the patient, his/her family or another authorized person.
      */
-    @Child(name = "verification", type = {}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "verification", type = {}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Consent Verified by patient or family", formalDefinition="Whether a treatment instruction (e.g. artificial respiration: yes or no) was verified with the patient, his/her family or another authorized person." )
     protected List<ConsentVerificationComponent> verification;
 
     /**
      * An exception to the base policy of this consent. An exception can be an addition or removal of access permissions.
      */
-    @Child(name = "provision", type = {}, order=15, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "provision", type = {}, order=16, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Constraints to the base Consent.policyRule/Consent.policy", formalDefinition="An exception to the base policy of this consent. An exception can be an addition or removal of access permissions." )
     protected ProvisionComponent provision;
 
-    private static final long serialVersionUID = 1252772004L;
+    private static final long serialVersionUID = -1425171494L;
 
   /**
    * Constructor
@@ -2548,51 +2634,75 @@ public class Consent extends DomainResource {
     }
 
     /**
-     * @return {@link #dateTime} (Date and time the consent instance was agreed to.). This is the underlying object with id, value and extensions. The accessor "getDateTime" gives direct access to the value
+     * @return {@link #date} (Date the consent instance was agreed to.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
      */
-    public DateTimeType getDateTimeElement() { 
-      if (this.dateTime == null)
+    public DateType getDateElement() { 
+      if (this.date == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Consent.dateTime");
+          throw new Error("Attempt to auto-create Consent.date");
         else if (Configuration.doAutoCreate())
-          this.dateTime = new DateTimeType(); // bb
-      return this.dateTime;
+          this.date = new DateType(); // bb
+      return this.date;
     }
 
-    public boolean hasDateTimeElement() { 
-      return this.dateTime != null && !this.dateTime.isEmpty();
+    public boolean hasDateElement() { 
+      return this.date != null && !this.date.isEmpty();
     }
 
-    public boolean hasDateTime() { 
-      return this.dateTime != null && !this.dateTime.isEmpty();
+    public boolean hasDate() { 
+      return this.date != null && !this.date.isEmpty();
     }
 
     /**
-     * @param value {@link #dateTime} (Date and time the consent instance was agreed to.). This is the underlying object with id, value and extensions. The accessor "getDateTime" gives direct access to the value
+     * @param value {@link #date} (Date the consent instance was agreed to.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
      */
-    public Consent setDateTimeElement(DateTimeType value) { 
-      this.dateTime = value;
+    public Consent setDateElement(DateType value) { 
+      this.date = value;
       return this;
     }
 
     /**
-     * @return Date and time the consent instance was agreed to.
+     * @return Date the consent instance was agreed to.
      */
-    public Date getDateTime() { 
-      return this.dateTime == null ? null : this.dateTime.getValue();
+    public Date getDate() { 
+      return this.date == null ? null : this.date.getValue();
     }
 
     /**
-     * @param value Date and time the consent instance was agreed to.
+     * @param value Date the consent instance was agreed to.
      */
-    public Consent setDateTime(Date value) { 
+    public Consent setDate(Date value) { 
       if (value == null)
-        this.dateTime = null;
+        this.date = null;
       else {
-        if (this.dateTime == null)
-          this.dateTime = new DateTimeType();
-        this.dateTime.setValue(value);
+        if (this.date == null)
+          this.date = new DateType();
+        this.date.setValue(value);
       }
+      return this;
+    }
+
+    /**
+     * @return {@link #period} (Effective period for this Consent Resource and all provisions unless specified in that provision.)
+     */
+    public Period getPeriod() { 
+      if (this.period == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Consent.period");
+        else if (Configuration.doAutoCreate())
+          this.period = new Period(); // cc
+      return this.period;
+    }
+
+    public boolean hasPeriod() { 
+      return this.period != null && !this.period.isEmpty();
+    }
+
+    /**
+     * @param value {@link #period} (Effective period for this Consent Resource and all provisions unless specified in that provision.)
+     */
+    public Consent setPeriod(Period value) { 
+      this.period = value;
       return this;
     }
 
@@ -3127,7 +3237,8 @@ public class Consent extends DomainResource {
         children.add(new Property("status", "code", "Indicates the current state of this Consent resource.", 0, 1, status));
         children.add(new Property("category", "CodeableConcept", "A classification of the type of consents found in the statement. This element supports indexing and retrieval of consent statements.", 0, java.lang.Integer.MAX_VALUE, category));
         children.add(new Property("subject", "Reference(Patient|Practitioner|Group)", "The patient/healthcare practitioner or group of persons to whom this consent applies.", 0, 1, subject));
-        children.add(new Property("dateTime", "dateTime", "Date and time the consent instance was agreed to.", 0, 1, dateTime));
+        children.add(new Property("date", "date", "Date the consent instance was agreed to.", 0, 1, date));
+        children.add(new Property("period", "Period", "Effective period for this Consent Resource and all provisions unless specified in that provision.", 0, 1, period));
         children.add(new Property("grantor", "Reference(CareTeam|HealthcareService|Organization|Patient|Practitioner|RelatedPerson|PractitionerRole)", "The entity responsible for granting the rights listed in a Consent Directive.", 0, java.lang.Integer.MAX_VALUE, grantor));
         children.add(new Property("grantee", "Reference(CareTeam|HealthcareService|Organization|Patient|Practitioner|RelatedPerson|PractitionerRole)", "The entity responsible for complying with the Consent Directive, including any obligations or limitations on authorizations and enforcement of prohibitions.", 0, java.lang.Integer.MAX_VALUE, grantee));
         children.add(new Property("manager", "Reference(HealthcareService|Organization|Patient|Practitioner)", "The actor that manages the consent through its lifecycle.", 0, java.lang.Integer.MAX_VALUE, manager));
@@ -3148,7 +3259,8 @@ public class Consent extends DomainResource {
         case -892481550: /*status*/  return new Property("status", "code", "Indicates the current state of this Consent resource.", 0, 1, status);
         case 50511102: /*category*/  return new Property("category", "CodeableConcept", "A classification of the type of consents found in the statement. This element supports indexing and retrieval of consent statements.", 0, java.lang.Integer.MAX_VALUE, category);
         case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Practitioner|Group)", "The patient/healthcare practitioner or group of persons to whom this consent applies.", 0, 1, subject);
-        case 1792749467: /*dateTime*/  return new Property("dateTime", "dateTime", "Date and time the consent instance was agreed to.", 0, 1, dateTime);
+        case 3076014: /*date*/  return new Property("date", "date", "Date the consent instance was agreed to.", 0, 1, date);
+        case -991726143: /*period*/  return new Property("period", "Period", "Effective period for this Consent Resource and all provisions unless specified in that provision.", 0, 1, period);
         case 280295423: /*grantor*/  return new Property("grantor", "Reference(CareTeam|HealthcareService|Organization|Patient|Practitioner|RelatedPerson|PractitionerRole)", "The entity responsible for granting the rights listed in a Consent Directive.", 0, java.lang.Integer.MAX_VALUE, grantor);
         case 280295100: /*grantee*/  return new Property("grantee", "Reference(CareTeam|HealthcareService|Organization|Patient|Practitioner|RelatedPerson|PractitionerRole)", "The entity responsible for complying with the Consent Directive, including any obligations or limitations on authorizations and enforcement of prohibitions.", 0, java.lang.Integer.MAX_VALUE, grantee);
         case 835260333: /*manager*/  return new Property("manager", "Reference(HealthcareService|Organization|Patient|Practitioner)", "The actor that manages the consent through its lifecycle.", 0, java.lang.Integer.MAX_VALUE, manager);
@@ -3172,7 +3284,8 @@ public class Consent extends DomainResource {
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<ConsentState>
         case 50511102: /*category*/ return this.category == null ? new Base[0] : this.category.toArray(new Base[this.category.size()]); // CodeableConcept
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Reference
-        case 1792749467: /*dateTime*/ return this.dateTime == null ? new Base[0] : new Base[] {this.dateTime}; // DateTimeType
+        case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // DateType
+        case -991726143: /*period*/ return this.period == null ? new Base[0] : new Base[] {this.period}; // Period
         case 280295423: /*grantor*/ return this.grantor == null ? new Base[0] : this.grantor.toArray(new Base[this.grantor.size()]); // Reference
         case 280295100: /*grantee*/ return this.grantee == null ? new Base[0] : this.grantee.toArray(new Base[this.grantee.size()]); // Reference
         case 835260333: /*manager*/ return this.manager == null ? new Base[0] : this.manager.toArray(new Base[this.manager.size()]); // Reference
@@ -3205,8 +3318,11 @@ public class Consent extends DomainResource {
         case -1867885268: // subject
           this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
-        case 1792749467: // dateTime
-          this.dateTime = TypeConvertor.castToDateTime(value); // DateTimeType
+        case 3076014: // date
+          this.date = TypeConvertor.castToDate(value); // DateType
+          return value;
+        case -991726143: // period
+          this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
         case 280295423: // grantor
           this.getGrantor().add(TypeConvertor.castToReference(value)); // Reference
@@ -3257,8 +3373,10 @@ public class Consent extends DomainResource {
           this.getCategory().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("subject")) {
           this.subject = TypeConvertor.castToReference(value); // Reference
-        } else if (name.equals("dateTime")) {
-          this.dateTime = TypeConvertor.castToDateTime(value); // DateTimeType
+        } else if (name.equals("date")) {
+          this.date = TypeConvertor.castToDate(value); // DateType
+        } else if (name.equals("period")) {
+          this.period = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("grantor")) {
           this.getGrantor().add(TypeConvertor.castToReference(value));
         } else if (name.equals("grantee")) {
@@ -3293,7 +3411,8 @@ public class Consent extends DomainResource {
         case -892481550:  return getStatusElement();
         case 50511102:  return addCategory(); 
         case -1867885268:  return getSubject();
-        case 1792749467:  return getDateTimeElement();
+        case 3076014:  return getDateElement();
+        case -991726143:  return getPeriod();
         case 280295423:  return addGrantor(); 
         case 280295100:  return addGrantee(); 
         case 835260333:  return addManager(); 
@@ -3317,7 +3436,8 @@ public class Consent extends DomainResource {
         case -892481550: /*status*/ return new String[] {"code"};
         case 50511102: /*category*/ return new String[] {"CodeableConcept"};
         case -1867885268: /*subject*/ return new String[] {"Reference"};
-        case 1792749467: /*dateTime*/ return new String[] {"dateTime"};
+        case 3076014: /*date*/ return new String[] {"date"};
+        case -991726143: /*period*/ return new String[] {"Period"};
         case 280295423: /*grantor*/ return new String[] {"Reference"};
         case 280295100: /*grantee*/ return new String[] {"Reference"};
         case 835260333: /*manager*/ return new String[] {"Reference"};
@@ -3349,8 +3469,12 @@ public class Consent extends DomainResource {
           this.subject = new Reference();
           return this.subject;
         }
-        else if (name.equals("dateTime")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Consent.dateTime");
+        else if (name.equals("date")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Consent.date");
+        }
+        else if (name.equals("period")) {
+          this.period = new Period();
+          return this.period;
         }
         else if (name.equals("grantor")) {
           return addGrantor();
@@ -3416,7 +3540,8 @@ public class Consent extends DomainResource {
             dst.category.add(i.copy());
         };
         dst.subject = subject == null ? null : subject.copy();
-        dst.dateTime = dateTime == null ? null : dateTime.copy();
+        dst.date = date == null ? null : date.copy();
+        dst.period = period == null ? null : period.copy();
         if (grantor != null) {
           dst.grantor = new ArrayList<Reference>();
           for (Reference i : grantor)
@@ -3478,12 +3603,13 @@ public class Consent extends DomainResource {
           return false;
         Consent o = (Consent) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(category, o.category, true)
-           && compareDeep(subject, o.subject, true) && compareDeep(dateTime, o.dateTime, true) && compareDeep(grantor, o.grantor, true)
-           && compareDeep(grantee, o.grantee, true) && compareDeep(manager, o.manager, true) && compareDeep(controller, o.controller, true)
-           && compareDeep(sourceAttachment, o.sourceAttachment, true) && compareDeep(sourceReference, o.sourceReference, true)
-           && compareDeep(regulatoryBasis, o.regulatoryBasis, true) && compareDeep(policyBasis, o.policyBasis, true)
-           && compareDeep(policyText, o.policyText, true) && compareDeep(verification, o.verification, true)
-           && compareDeep(provision, o.provision, true);
+           && compareDeep(subject, o.subject, true) && compareDeep(date, o.date, true) && compareDeep(period, o.period, true)
+           && compareDeep(grantor, o.grantor, true) && compareDeep(grantee, o.grantee, true) && compareDeep(manager, o.manager, true)
+           && compareDeep(controller, o.controller, true) && compareDeep(sourceAttachment, o.sourceAttachment, true)
+           && compareDeep(sourceReference, o.sourceReference, true) && compareDeep(regulatoryBasis, o.regulatoryBasis, true)
+           && compareDeep(policyBasis, o.policyBasis, true) && compareDeep(policyText, o.policyText, true)
+           && compareDeep(verification, o.verification, true) && compareDeep(provision, o.provision, true)
+          ;
       }
 
       @Override
@@ -3493,13 +3619,14 @@ public class Consent extends DomainResource {
         if (!(other_ instanceof Consent))
           return false;
         Consent o = (Consent) other_;
-        return compareValues(status, o.status, true) && compareValues(dateTime, o.dateTime, true);
+        return compareValues(status, o.status, true) && compareValues(date, o.date, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, category
-          , subject, dateTime, grantor, grantee, manager, controller, sourceAttachment, sourceReference
-          , regulatoryBasis, policyBasis, policyText, verification, provision);
+          , subject, date, period, grantor, grantee, manager, controller, sourceAttachment
+          , sourceReference, regulatoryBasis, policyBasis, policyText, verification, provision
+          );
       }
 
   @Override
@@ -3873,10 +4000,10 @@ public class Consent extends DomainResource {
 * [SupplyRequest](supplyrequest.html): When the request was made
 </b><br>
    * Type: <b>date</b><br>
-   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
+   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.as(dateTime) | DiagnosticReport.effective.as(Period) | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective.as(dateTime) | Observation.effective.as(Period) | Observation.effective.as(Timing) | Observation.effective.as(instant) | Procedure.occurrence.as(dateTime) | Procedure.occurrence.as(Period) | Procedure.occurrence.as(Timing) | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="date", path="AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded\r\n* [CarePlan](careplan.html): Time period plan covers\r\n* [CareTeam](careteam.html): A date within the coverage time period.\r\n* [ClinicalImpression](clinicalimpression.html): When the assessment was documented\r\n* [Composition](composition.html): Composition editing time\r\n* [Consent](consent.html): When consent was agreed to\r\n* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report\r\n* [Encounter](encounter.html): A date within the actualPeriod the Encounter lasted\r\n* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period\r\n* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated\r\n* [Flag](flag.html): Time period when flag is active\r\n* [Immunization](immunization.html): Vaccination  (non)-Administration Date\r\n* [List](list.html): When the list was prepared\r\n* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period\r\n* [Procedure](procedure.html): When the procedure occurred or is occurring\r\n* [RiskAssessment](riskassessment.html): When was assessment made?\r\n* [SupplyRequest](supplyrequest.html): When the request was made\r\n", type="date" )
+  @SearchParamDefinition(name="date", path="AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.as(dateTime) | DiagnosticReport.effective.as(Period) | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective.as(dateTime) | Observation.effective.as(Period) | Observation.effective.as(Timing) | Observation.effective.as(instant) | Procedure.occurrence.as(dateTime) | Procedure.occurrence.as(Period) | Procedure.occurrence.as(Timing) | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded\r\n* [CarePlan](careplan.html): Time period plan covers\r\n* [CareTeam](careteam.html): A date within the coverage time period.\r\n* [ClinicalImpression](clinicalimpression.html): When the assessment was documented\r\n* [Composition](composition.html): Composition editing time\r\n* [Consent](consent.html): When consent was agreed to\r\n* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report\r\n* [Encounter](encounter.html): A date within the actualPeriod the Encounter lasted\r\n* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period\r\n* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated\r\n* [Flag](flag.html): Time period when flag is active\r\n* [Immunization](immunization.html): Vaccination  (non)-Administration Date\r\n* [List](list.html): When the list was prepared\r\n* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period\r\n* [Procedure](procedure.html): When the procedure occurred or is occurring\r\n* [RiskAssessment](riskassessment.html): When was assessment made?\r\n* [SupplyRequest](supplyrequest.html): When the request was made\r\n", type="date" )
   public static final String SP_DATE = "date";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>date</b>
@@ -3902,7 +4029,7 @@ public class Consent extends DomainResource {
 * [SupplyRequest](supplyrequest.html): When the request was made
 </b><br>
    * Type: <b>date</b><br>
-   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
+   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.as(dateTime) | DiagnosticReport.effective.as(Period) | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective.as(dateTime) | Observation.effective.as(Period) | Observation.effective.as(Timing) | Observation.effective.as(instant) | Procedure.occurrence.as(dateTime) | Procedure.occurrence.as(Period) | Procedure.occurrence.as(Timing) | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
@@ -4027,13 +4154,14 @@ public class Consent extends DomainResource {
 * [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
 * [ServiceRequest](servicerequest.html): Search by subject - a patient
 * [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
+* [SupplyRequest](supplyrequest.html): The patient or subject for whom the supply is destined
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | SupplyRequest.deliverFor | VisionPrescription.patient</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", target={BiologicallyDerivedProduct.class, Device.class, Group.class, Location.class, Medication.class, NutritionProduct.class, Organization.class, Patient.class, Practitioner.class, Procedure.class, Substance.class } )
+  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | SupplyRequest.deliverFor | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [SupplyRequest](supplyrequest.html): The patient or subject for whom the supply is destined\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", target={BiologicallyDerivedProduct.class, Device.class, Group.class, Location.class, Medication.class, NutritionProduct.class, Organization.class, Patient.class, Practitioner.class, Procedure.class, Substance.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
@@ -4071,10 +4199,11 @@ public class Consent extends DomainResource {
 * [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
 * [ServiceRequest](servicerequest.html): Search by subject - a patient
 * [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
+* [SupplyRequest](supplyrequest.html): The patient or subject for whom the supply is destined
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | SupplyRequest.deliverFor | VisionPrescription.patient</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);

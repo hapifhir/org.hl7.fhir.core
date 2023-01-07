@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -2443,17 +2443,17 @@ public class ChargeItem extends DomainResource {
    * <p>
    * Description: <b>When the charged service was applied</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>ChargeItem.occurrence</b><br>
+   * Path: <b>ChargeItem.occurrence.as(dateTime) | ChargeItem.occurrence.as(Period) | ChargeItem.occurrence.as(Timing)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="occurrence", path="ChargeItem.occurrence", description="When the charged service was applied", type="date" )
+  @SearchParamDefinition(name="occurrence", path="ChargeItem.occurrence.as(dateTime) | ChargeItem.occurrence.as(Period) | ChargeItem.occurrence.as(Timing)", description="When the charged service was applied", type="date" )
   public static final String SP_OCCURRENCE = "occurrence";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>occurrence</b>
    * <p>
    * Description: <b>When the charged service was applied</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>ChargeItem.occurrence</b><br>
+   * Path: <b>ChargeItem.occurrence.as(dateTime) | ChargeItem.occurrence.as(Period) | ChargeItem.occurrence.as(Timing)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam OCCURRENCE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_OCCURRENCE);

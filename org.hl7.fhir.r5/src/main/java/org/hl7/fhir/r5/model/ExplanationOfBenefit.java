@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -3266,7 +3266,7 @@ public class ExplanationOfBenefit extends DomainResource {
          */
         @Child(name = "bodySite", type = {}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Anatomical location", formalDefinition="Physical location where the service is performed or applies." )
-        protected List<BodySiteComponent> bodySite;
+        protected List<ItemBodySiteComponent> bodySite;
 
         /**
          * A billed item may include goods or services provided in multiple encounters.
@@ -3304,7 +3304,7 @@ public class ExplanationOfBenefit extends DomainResource {
         @Description(shortDefinition="Additional items", formalDefinition="Second-tier of goods and services." )
         protected List<DetailComponent> detail;
 
-        private static final long serialVersionUID = -1358223284L;
+        private static final long serialVersionUID = 889927807L;
 
     /**
      * Constructor
@@ -4172,16 +4172,16 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * @return {@link #bodySite} (Physical location where the service is performed or applies.)
          */
-        public List<BodySiteComponent> getBodySite() { 
+        public List<ItemBodySiteComponent> getBodySite() { 
           if (this.bodySite == null)
-            this.bodySite = new ArrayList<BodySiteComponent>();
+            this.bodySite = new ArrayList<ItemBodySiteComponent>();
           return this.bodySite;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public ItemComponent setBodySite(List<BodySiteComponent> theBodySite) { 
+        public ItemComponent setBodySite(List<ItemBodySiteComponent> theBodySite) { 
           this.bodySite = theBodySite;
           return this;
         }
@@ -4189,25 +4189,25 @@ public class ExplanationOfBenefit extends DomainResource {
         public boolean hasBodySite() { 
           if (this.bodySite == null)
             return false;
-          for (BodySiteComponent item : this.bodySite)
+          for (ItemBodySiteComponent item : this.bodySite)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public BodySiteComponent addBodySite() { //3
-          BodySiteComponent t = new BodySiteComponent();
+        public ItemBodySiteComponent addBodySite() { //3
+          ItemBodySiteComponent t = new ItemBodySiteComponent();
           if (this.bodySite == null)
-            this.bodySite = new ArrayList<BodySiteComponent>();
+            this.bodySite = new ArrayList<ItemBodySiteComponent>();
           this.bodySite.add(t);
           return t;
         }
 
-        public ItemComponent addBodySite(BodySiteComponent t) { //3
+        public ItemComponent addBodySite(ItemBodySiteComponent t) { //3
           if (t == null)
             return this;
           if (this.bodySite == null)
-            this.bodySite = new ArrayList<BodySiteComponent>();
+            this.bodySite = new ArrayList<ItemBodySiteComponent>();
           this.bodySite.add(t);
           return this;
         }
@@ -4215,7 +4215,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * @return The first repetition of repeating field {@link #bodySite}, creating it if it does not already exist {3}
          */
-        public BodySiteComponent getBodySiteFirstRep() { 
+        public ItemBodySiteComponent getBodySiteFirstRep() { 
           if (getBodySite().isEmpty()) {
             addBodySite();
           }
@@ -4560,7 +4560,7 @@ public class ExplanationOfBenefit extends DomainResource {
         case 114603: /*tax*/ return this.tax == null ? new Base[0] : new Base[] {this.tax}; // Money
         case 108957: /*net*/ return this.net == null ? new Base[0] : new Base[] {this.net}; // Money
         case 115642: /*udi*/ return this.udi == null ? new Base[0] : this.udi.toArray(new Base[this.udi.size()]); // Reference
-        case 1702620169: /*bodySite*/ return this.bodySite == null ? new Base[0] : this.bodySite.toArray(new Base[this.bodySite.size()]); // BodySiteComponent
+        case 1702620169: /*bodySite*/ return this.bodySite == null ? new Base[0] : this.bodySite.toArray(new Base[this.bodySite.size()]); // ItemBodySiteComponent
         case 1524132147: /*encounter*/ return this.encounter == null ? new Base[0] : this.encounter.toArray(new Base[this.encounter.size()]); // Reference
         case -1110033957: /*noteNumber*/ return this.noteNumber == null ? new Base[0] : this.noteNumber.toArray(new Base[this.noteNumber.size()]); // PositiveIntType
         case 565719004: /*decision*/ return this.decision == null ? new Base[0] : new Base[] {this.decision}; // CodeableConcept
@@ -4635,7 +4635,7 @@ public class ExplanationOfBenefit extends DomainResource {
           this.getUdi().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1702620169: // bodySite
-          this.getBodySite().add((BodySiteComponent) value); // BodySiteComponent
+          this.getBodySite().add((ItemBodySiteComponent) value); // ItemBodySiteComponent
           return value;
         case 1524132147: // encounter
           this.getEncounter().add(TypeConvertor.castToReference(value)); // Reference
@@ -4700,7 +4700,7 @@ public class ExplanationOfBenefit extends DomainResource {
         } else if (name.equals("udi")) {
           this.getUdi().add(TypeConvertor.castToReference(value));
         } else if (name.equals("bodySite")) {
-          this.getBodySite().add((BodySiteComponent) value);
+          this.getBodySite().add((ItemBodySiteComponent) value);
         } else if (name.equals("encounter")) {
           this.getEncounter().add(TypeConvertor.castToReference(value));
         } else if (name.equals("noteNumber")) {
@@ -4951,8 +4951,8 @@ public class ExplanationOfBenefit extends DomainResource {
             dst.udi.add(i.copy());
         };
         if (bodySite != null) {
-          dst.bodySite = new ArrayList<BodySiteComponent>();
-          for (BodySiteComponent i : bodySite)
+          dst.bodySite = new ArrayList<ItemBodySiteComponent>();
+          for (ItemBodySiteComponent i : bodySite)
             dst.bodySite.add(i.copy());
         };
         if (encounter != null) {
@@ -5027,7 +5027,7 @@ public class ExplanationOfBenefit extends DomainResource {
   }
 
     @Block()
-    public static class BodySiteComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class ItemBodySiteComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * Physical service site on the patient (limb, tooth, etc.).
          */
@@ -5049,14 +5049,14 @@ public class ExplanationOfBenefit extends DomainResource {
     /**
      * Constructor
      */
-      public BodySiteComponent() {
+      public ItemBodySiteComponent() {
         super();
       }
 
     /**
      * Constructor
      */
-      public BodySiteComponent(CodeableReference site) {
+      public ItemBodySiteComponent(CodeableReference site) {
         super();
         this.addSite(site);
       }
@@ -5073,7 +5073,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public BodySiteComponent setSite(List<CodeableReference> theSite) { 
+        public ItemBodySiteComponent setSite(List<CodeableReference> theSite) { 
           this.site = theSite;
           return this;
         }
@@ -5095,7 +5095,7 @@ public class ExplanationOfBenefit extends DomainResource {
           return t;
         }
 
-        public BodySiteComponent addSite(CodeableReference t) { //3
+        public ItemBodySiteComponent addSite(CodeableReference t) { //3
           if (t == null)
             return this;
           if (this.site == null)
@@ -5126,7 +5126,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public BodySiteComponent setSubSite(List<CodeableConcept> theSubSite) { 
+        public ItemBodySiteComponent setSubSite(List<CodeableConcept> theSubSite) { 
           this.subSite = theSubSite;
           return this;
         }
@@ -5148,7 +5148,7 @@ public class ExplanationOfBenefit extends DomainResource {
           return t;
         }
 
-        public BodySiteComponent addSubSite(CodeableConcept t) { //3
+        public ItemBodySiteComponent addSubSite(CodeableConcept t) { //3
           if (t == null)
             return this;
           if (this.subSite == null)
@@ -5250,13 +5250,13 @@ public class ExplanationOfBenefit extends DomainResource {
           return super.addChild(name);
       }
 
-      public BodySiteComponent copy() {
-        BodySiteComponent dst = new BodySiteComponent();
+      public ItemBodySiteComponent copy() {
+        ItemBodySiteComponent dst = new ItemBodySiteComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(BodySiteComponent dst) {
+      public void copyValues(ItemBodySiteComponent dst) {
         super.copyValues(dst);
         if (site != null) {
           dst.site = new ArrayList<CodeableReference>();
@@ -5274,9 +5274,9 @@ public class ExplanationOfBenefit extends DomainResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof BodySiteComponent))
+        if (!(other_ instanceof ItemBodySiteComponent))
           return false;
-        BodySiteComponent o = (BodySiteComponent) other_;
+        ItemBodySiteComponent o = (ItemBodySiteComponent) other_;
         return compareDeep(site, o.site, true) && compareDeep(subSite, o.subSite, true);
       }
 
@@ -5284,9 +5284,9 @@ public class ExplanationOfBenefit extends DomainResource {
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof BodySiteComponent))
+        if (!(other_ instanceof ItemBodySiteComponent))
           return false;
-        BodySiteComponent o = (BodySiteComponent) other_;
+        ItemBodySiteComponent o = (ItemBodySiteComponent) other_;
         return true;
       }
 
@@ -8149,7 +8149,7 @@ public class ExplanationOfBenefit extends DomainResource {
          */
         @Child(name = "bodySite", type = {}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Anatomical location", formalDefinition="Physical location where the service is performed or applies." )
-        protected List<BodySiteComponentA> bodySite;
+        protected List<AddedItemBodySiteComponent> bodySite;
 
         /**
          * The numbers associated with notes below which apply to the adjudication of this item.
@@ -8180,7 +8180,7 @@ public class ExplanationOfBenefit extends DomainResource {
         @Description(shortDefinition="Insurer added line items", formalDefinition="The second-tier service adjudications for payor added services." )
         protected List<AddedItemDetailComponent> detail;
 
-        private static final long serialVersionUID = -256167577L;
+        private static final long serialVersionUID = 468363163L;
 
     /**
      * Constructor
@@ -8910,16 +8910,16 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * @return {@link #bodySite} (Physical location where the service is performed or applies.)
          */
-        public List<BodySiteComponentA> getBodySite() { 
+        public List<AddedItemBodySiteComponent> getBodySite() { 
           if (this.bodySite == null)
-            this.bodySite = new ArrayList<BodySiteComponentA>();
+            this.bodySite = new ArrayList<AddedItemBodySiteComponent>();
           return this.bodySite;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public AddedItemComponent setBodySite(List<BodySiteComponentA> theBodySite) { 
+        public AddedItemComponent setBodySite(List<AddedItemBodySiteComponent> theBodySite) { 
           this.bodySite = theBodySite;
           return this;
         }
@@ -8927,25 +8927,25 @@ public class ExplanationOfBenefit extends DomainResource {
         public boolean hasBodySite() { 
           if (this.bodySite == null)
             return false;
-          for (BodySiteComponentA item : this.bodySite)
+          for (AddedItemBodySiteComponent item : this.bodySite)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public BodySiteComponentA addBodySite() { //3
-          BodySiteComponentA t = new BodySiteComponentA();
+        public AddedItemBodySiteComponent addBodySite() { //3
+          AddedItemBodySiteComponent t = new AddedItemBodySiteComponent();
           if (this.bodySite == null)
-            this.bodySite = new ArrayList<BodySiteComponentA>();
+            this.bodySite = new ArrayList<AddedItemBodySiteComponent>();
           this.bodySite.add(t);
           return t;
         }
 
-        public AddedItemComponent addBodySite(BodySiteComponentA t) { //3
+        public AddedItemComponent addBodySite(AddedItemBodySiteComponent t) { //3
           if (t == null)
             return this;
           if (this.bodySite == null)
-            this.bodySite = new ArrayList<BodySiteComponentA>();
+            this.bodySite = new ArrayList<AddedItemBodySiteComponent>();
           this.bodySite.add(t);
           return this;
         }
@@ -8953,7 +8953,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * @return The first repetition of repeating field {@link #bodySite}, creating it if it does not already exist {3}
          */
-        public BodySiteComponentA getBodySiteFirstRep() { 
+        public AddedItemBodySiteComponent getBodySiteFirstRep() { 
           if (getBodySite().isEmpty()) {
             addBodySite();
           }
@@ -9234,7 +9234,7 @@ public class ExplanationOfBenefit extends DomainResource {
         case -1282148017: /*factor*/ return this.factor == null ? new Base[0] : new Base[] {this.factor}; // DecimalType
         case 114603: /*tax*/ return this.tax == null ? new Base[0] : new Base[] {this.tax}; // Money
         case 108957: /*net*/ return this.net == null ? new Base[0] : new Base[] {this.net}; // Money
-        case 1702620169: /*bodySite*/ return this.bodySite == null ? new Base[0] : this.bodySite.toArray(new Base[this.bodySite.size()]); // BodySiteComponentA
+        case 1702620169: /*bodySite*/ return this.bodySite == null ? new Base[0] : this.bodySite.toArray(new Base[this.bodySite.size()]); // AddedItemBodySiteComponent
         case -1110033957: /*noteNumber*/ return this.noteNumber == null ? new Base[0] : this.noteNumber.toArray(new Base[this.noteNumber.size()]); // PositiveIntType
         case 565719004: /*decision*/ return this.decision == null ? new Base[0] : new Base[] {this.decision}; // CodeableConcept
         case -231349275: /*adjudication*/ return this.adjudication == null ? new Base[0] : this.adjudication.toArray(new Base[this.adjudication.size()]); // AdjudicationComponent
@@ -9299,7 +9299,7 @@ public class ExplanationOfBenefit extends DomainResource {
           this.net = TypeConvertor.castToMoney(value); // Money
           return value;
         case 1702620169: // bodySite
-          this.getBodySite().add((BodySiteComponentA) value); // BodySiteComponentA
+          this.getBodySite().add((AddedItemBodySiteComponent) value); // AddedItemBodySiteComponent
           return value;
         case -1110033957: // noteNumber
           this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value)); // PositiveIntType
@@ -9355,7 +9355,7 @@ public class ExplanationOfBenefit extends DomainResource {
         } else if (name.equals("net")) {
           this.net = TypeConvertor.castToMoney(value); // Money
         } else if (name.equals("bodySite")) {
-          this.getBodySite().add((BodySiteComponentA) value);
+          this.getBodySite().add((AddedItemBodySiteComponent) value);
         } else if (name.equals("noteNumber")) {
           this.getNoteNumber().add(TypeConvertor.castToPositiveInt(value));
         } else if (name.equals("decision")) {
@@ -9576,8 +9576,8 @@ public class ExplanationOfBenefit extends DomainResource {
         dst.tax = tax == null ? null : tax.copy();
         dst.net = net == null ? null : net.copy();
         if (bodySite != null) {
-          dst.bodySite = new ArrayList<BodySiteComponentA>();
-          for (BodySiteComponentA i : bodySite)
+          dst.bodySite = new ArrayList<AddedItemBodySiteComponent>();
+          for (AddedItemBodySiteComponent i : bodySite)
             dst.bodySite.add(i.copy());
         };
         if (noteNumber != null) {
@@ -9643,7 +9643,7 @@ public class ExplanationOfBenefit extends DomainResource {
   }
 
     @Block()
-    public static class BodySiteComponentA extends BackboneElement implements IBaseBackboneElement {
+    public static class AddedItemBodySiteComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * Physical service site on the patient (limb, tooth, etc.).
          */
@@ -9665,14 +9665,14 @@ public class ExplanationOfBenefit extends DomainResource {
     /**
      * Constructor
      */
-      public BodySiteComponentA() {
+      public AddedItemBodySiteComponent() {
         super();
       }
 
     /**
      * Constructor
      */
-      public BodySiteComponentA(CodeableReference site) {
+      public AddedItemBodySiteComponent(CodeableReference site) {
         super();
         this.addSite(site);
       }
@@ -9689,7 +9689,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public BodySiteComponentA setSite(List<CodeableReference> theSite) { 
+        public AddedItemBodySiteComponent setSite(List<CodeableReference> theSite) { 
           this.site = theSite;
           return this;
         }
@@ -9711,7 +9711,7 @@ public class ExplanationOfBenefit extends DomainResource {
           return t;
         }
 
-        public BodySiteComponentA addSite(CodeableReference t) { //3
+        public AddedItemBodySiteComponent addSite(CodeableReference t) { //3
           if (t == null)
             return this;
           if (this.site == null)
@@ -9742,7 +9742,7 @@ public class ExplanationOfBenefit extends DomainResource {
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public BodySiteComponentA setSubSite(List<CodeableConcept> theSubSite) { 
+        public AddedItemBodySiteComponent setSubSite(List<CodeableConcept> theSubSite) { 
           this.subSite = theSubSite;
           return this;
         }
@@ -9764,7 +9764,7 @@ public class ExplanationOfBenefit extends DomainResource {
           return t;
         }
 
-        public BodySiteComponentA addSubSite(CodeableConcept t) { //3
+        public AddedItemBodySiteComponent addSubSite(CodeableConcept t) { //3
           if (t == null)
             return this;
           if (this.subSite == null)
@@ -9866,13 +9866,13 @@ public class ExplanationOfBenefit extends DomainResource {
           return super.addChild(name);
       }
 
-      public BodySiteComponentA copy() {
-        BodySiteComponentA dst = new BodySiteComponentA();
+      public AddedItemBodySiteComponent copy() {
+        AddedItemBodySiteComponent dst = new AddedItemBodySiteComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(BodySiteComponentA dst) {
+      public void copyValues(AddedItemBodySiteComponent dst) {
         super.copyValues(dst);
         if (site != null) {
           dst.site = new ArrayList<CodeableReference>();
@@ -9890,9 +9890,9 @@ public class ExplanationOfBenefit extends DomainResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof BodySiteComponentA))
+        if (!(other_ instanceof AddedItemBodySiteComponent))
           return false;
-        BodySiteComponentA o = (BodySiteComponentA) other_;
+        AddedItemBodySiteComponent o = (AddedItemBodySiteComponent) other_;
         return compareDeep(site, o.site, true) && compareDeep(subSite, o.subSite, true);
       }
 
@@ -9900,9 +9900,9 @@ public class ExplanationOfBenefit extends DomainResource {
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof BodySiteComponentA))
+        if (!(other_ instanceof AddedItemBodySiteComponent))
           return false;
-        BodySiteComponentA o = (BodySiteComponentA) other_;
+        AddedItemBodySiteComponent o = (AddedItemBodySiteComponent) other_;
         return true;
       }
 

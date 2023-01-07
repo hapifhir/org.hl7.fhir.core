@@ -65,6 +65,8 @@ import org.apache.commons.io.FileUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.FileNotifier.FileNotifier2;
 
+import javax.annotation.Nullable;
+
 public class Utilities {
 
   private static final String UUID_REGEX = "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}";
@@ -1467,6 +1469,10 @@ public class Utilities {
     return byteArrays;
   }
 
+  public static void unzip(InputStream zip, String target) throws IOException {
+    unzip(zip, Path.of(target));
+  }
+  
   public static void unzip(InputStream zip, Path target) throws IOException {
     try (ZipInputStream zis = new ZipInputStream(zip)) {
       ZipEntry zipEntry = zis.getNextEntry();
@@ -1492,7 +1498,7 @@ public class Utilities {
     }
   }
 
-  private static Path zipSlipProtect(ZipEntry zipEntry, Path targetDir)
+  public static Path zipSlipProtect(ZipEntry zipEntry, Path targetDir)
       throws IOException {
 
     // test zip slip vulnerability
@@ -1799,4 +1805,61 @@ public class Utilities {
     }
   }
 
+  /**
+   * Appends a text from a derived element to its base element.
+   *
+   * @param baseText The text set in the base element, or {@code null}.
+   * @param derivedText The text set in the derived element, starting with "...".
+   * @return The resulting text.
+   */
+  public static String appendDerivedTextToBase(@Nullable final String baseText,
+                                               final String derivedText) {
+    if (baseText == null) {
+      return derivedText.substring(3);
+    }
+    return baseText + "\r\n" + derivedText.substring(3);
+  }
+
+  public static void deleteEmptyFolders(File df) {
+    for (File f : df.listFiles()) {
+      if (f.isDirectory()) {
+        deleteEmptyFolders(f);
+      }
+    }
+    boolean empty = true;
+    for (File f : df.listFiles()) {
+      empty = false;
+      break;
+    }
+    if (empty) {
+      df.delete();
+    }
+  }
+
+  public static String getRelativePath(String root, String path) {
+    String res = path.substring(root.length());
+    if (res.startsWith(File.separator)) {
+      res = res.substring(1);
+    }
+    return res;
+  }
+
+  public static List<String> listAllFiles(String path, List<String> ignoreList) {
+    List<String> res = new ArrayList<>();
+    addAllFiles(res, path, new File(path), ignoreList);
+    return res;
+  }
+
+  private static void addAllFiles(List<String> res, String root, File dir, List<String> ignoreList) {
+    for (File f : dir.listFiles()) {
+      if (ignoreList == null || !ignoreList.contains(f.getAbsolutePath())) {
+        if (f.isDirectory()) {
+          addAllFiles(res, root, f, ignoreList);
+        } else {
+          res.add(getRelativePath(root, f.getAbsolutePath()));
+        }
+      }
+    }
+    
+  }
 }

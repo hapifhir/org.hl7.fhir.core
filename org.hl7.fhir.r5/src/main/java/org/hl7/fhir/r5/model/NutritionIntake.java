@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -2541,17 +2541,17 @@ public class NutritionIntake extends DomainResource {
    * <p>
    * Description: <b>Date when patient was taking (or not taking) the medication</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>NutritionIntake.occurrence</b><br>
+   * Path: <b>NutritionIntake.occurrence.as(dateTime) | NutritionIntake.occurrence.as(Period)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="date", path="NutritionIntake.occurrence", description="Date when patient was taking (or not taking) the medication", type="date" )
+  @SearchParamDefinition(name="date", path="NutritionIntake.occurrence.as(dateTime) | NutritionIntake.occurrence.as(Period)", description="Date when patient was taking (or not taking) the medication", type="date" )
   public static final String SP_DATE = "date";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>date</b>
    * <p>
    * Description: <b>Date when patient was taking (or not taking) the medication</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>NutritionIntake.occurrence</b><br>
+   * Path: <b>NutritionIntake.occurrence.as(dateTime) | NutritionIntake.occurrence.as(Period)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -949,10 +949,10 @@ public class MessageHeader extends DomainResource {
     @Block()
     public static class MessageHeaderResponseComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * The MessageHeader.id of the message to which this message is a response.
+         * The Bundle.identifier of the message to which this message is a response.
          */
         @Child(name = "identifier", type = {Identifier.class}, order=1, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Id of original message", formalDefinition="The MessageHeader.id of the message to which this message is a response." )
+        @Description(shortDefinition="Bundle.identifier of original message", formalDefinition="The Bundle.identifier of the message to which this message is a response." )
         protected Identifier identifier;
 
         /**
@@ -989,7 +989,7 @@ public class MessageHeader extends DomainResource {
       }
 
         /**
-         * @return {@link #identifier} (The MessageHeader.id of the message to which this message is a response.)
+         * @return {@link #identifier} (The Bundle.identifier of the message to which this message is a response.)
          */
         public Identifier getIdentifier() { 
           if (this.identifier == null)
@@ -1005,7 +1005,7 @@ public class MessageHeader extends DomainResource {
         }
 
         /**
-         * @param value {@link #identifier} (The MessageHeader.id of the message to which this message is a response.)
+         * @param value {@link #identifier} (The Bundle.identifier of the message to which this message is a response.)
          */
         public MessageHeaderResponseComponent setIdentifier(Identifier value) { 
           this.identifier = value;
@@ -1083,7 +1083,7 @@ public class MessageHeader extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("identifier", "Identifier", "The MessageHeader.id of the message to which this message is a response.", 0, 1, identifier));
+          children.add(new Property("identifier", "Identifier", "The Bundle.identifier of the message to which this message is a response.", 0, 1, identifier));
           children.add(new Property("code", "code", "Code that identifies the type of response to the message - whether it was successful or not, and whether it should be resent or not.", 0, 1, code));
           children.add(new Property("details", "Reference(OperationOutcome)", "Full details of any issues found in the message.", 0, 1, details));
         }
@@ -1091,7 +1091,7 @@ public class MessageHeader extends DomainResource {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "The MessageHeader.id of the message to which this message is a response.", 0, 1, identifier);
+          case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "The Bundle.identifier of the message to which this message is a response.", 0, 1, identifier);
           case 3059181: /*code*/  return new Property("code", "code", "Code that identifies the type of response to the message - whether it was successful or not, and whether it should be resent or not.", 0, 1, code);
           case 1557721666: /*details*/  return new Property("details", "Reference(OperationOutcome)", "Full details of any issues found in the message.", 0, 1, details);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -2103,17 +2103,17 @@ public class MessageHeader extends DomainResource {
    * <p>
    * Description: <b>Code for the event this message represents or link to event definition</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>MessageHeader.event</b><br>
+   * Path: <b>MessageHeader.event.as(Coding) | MessageHeader.event.as(canonical)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="event", path="MessageHeader.event", description="Code for the event this message represents or link to event definition", type="token" )
+  @SearchParamDefinition(name="event", path="MessageHeader.event.as(Coding) | MessageHeader.event.as(canonical)", description="Code for the event this message represents or link to event definition", type="token" )
   public static final String SP_EVENT = "event";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>event</b>
    * <p>
    * Description: <b>Code for the event this message represents or link to event definition</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>MessageHeader.event</b><br>
+   * Path: <b>MessageHeader.event.as(Coding) | MessageHeader.event.as(canonical)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam EVENT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EVENT);

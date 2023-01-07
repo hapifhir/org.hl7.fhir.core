@@ -39,7 +39,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -47,7 +46,7 @@ import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
@@ -55,17 +54,14 @@ import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonCreator;
 import org.hl7.fhir.r5.formats.JsonCreatorCanonical;
 import org.hl7.fhir.r5.formats.JsonCreatorDirect;
-import org.hl7.fhir.r5.formats.JsonCreatorGson;
-import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonComment;
@@ -236,6 +232,18 @@ public class JsonParser extends ParserBase {
           if (sd != null) {
             Property property = new Property(context, sd.getSnapshot().getElementFirstRep(), sd, element.getProperty().getUtils());
             parseChildItem(path, recognisedChildren, element, null, property);
+          } else if ("fhir_comments".equals(e.getKey()) && (VersionUtilities.isR2BVer(context.getVersion()) || VersionUtilities.isR2Ver(context.getVersion()))) {
+            if (!e.getValue().getValue().isJsonArray()) {
+              logError("2022-12-17", line(e.getValue().getValue()), col(e.getValue().getValue()), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.ILLEGAL_COMMENT_TYPE, e.getValue().getValue().type().toName()), IssueSeverity.ERROR);
+            } else {
+              for (JsonElement c : e.getValue().getValue().asJsonArray()) {
+                if (!c.isJsonString()) {
+                  logError("2022-12-17", line(e.getValue().getValue()), col(e.getValue().getValue()), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.ILLEGAL_COMMENT_TYPE, c.type().toName()), IssueSeverity.ERROR);
+                } else {
+                  element.getComments().add(c.asString());
+                }
+              }
+            }
           } else {
             logError(ValidationMessage.NO_RULE_DATE, line(e.getValue().getValue()), col(e.getValue().getValue()), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_, e.getKey()), IssueSeverity.ERROR);
           }

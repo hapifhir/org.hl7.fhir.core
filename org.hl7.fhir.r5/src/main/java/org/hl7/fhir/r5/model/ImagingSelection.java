@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -714,9 +714,9 @@ public class ImagingSelection extends DomainResource {
          */
         @Child(name = "imageRegion", type = {}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="A specific 2D region in a DICOM image / frame", formalDefinition="Each imaging selection instance or frame list might includes an image region, specified by a region type and a set of 2D coordinates.\n       If the parent imagingSelection.instance contains a subset element of type frame, the image region applies to all frames in the subset list." )
-        protected List<ImagingSelectionInstanceImageRegionComponent> imageRegion;
+        protected List<ImageRegion2DComponent> imageRegion;
 
-        private static final long serialVersionUID = -1933369423L;
+        private static final long serialVersionUID = -1352866506L;
 
     /**
      * Constructor
@@ -932,16 +932,16 @@ public class ImagingSelection extends DomainResource {
          * @return {@link #imageRegion} (Each imaging selection instance or frame list might includes an image region, specified by a region type and a set of 2D coordinates.
        If the parent imagingSelection.instance contains a subset element of type frame, the image region applies to all frames in the subset list.)
          */
-        public List<ImagingSelectionInstanceImageRegionComponent> getImageRegion() { 
+        public List<ImageRegion2DComponent> getImageRegion() { 
           if (this.imageRegion == null)
-            this.imageRegion = new ArrayList<ImagingSelectionInstanceImageRegionComponent>();
+            this.imageRegion = new ArrayList<ImageRegion2DComponent>();
           return this.imageRegion;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public ImagingSelectionInstanceComponent setImageRegion(List<ImagingSelectionInstanceImageRegionComponent> theImageRegion) { 
+        public ImagingSelectionInstanceComponent setImageRegion(List<ImageRegion2DComponent> theImageRegion) { 
           this.imageRegion = theImageRegion;
           return this;
         }
@@ -949,25 +949,25 @@ public class ImagingSelection extends DomainResource {
         public boolean hasImageRegion() { 
           if (this.imageRegion == null)
             return false;
-          for (ImagingSelectionInstanceImageRegionComponent item : this.imageRegion)
+          for (ImageRegion2DComponent item : this.imageRegion)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public ImagingSelectionInstanceImageRegionComponent addImageRegion() { //3
-          ImagingSelectionInstanceImageRegionComponent t = new ImagingSelectionInstanceImageRegionComponent();
+        public ImageRegion2DComponent addImageRegion() { //3
+          ImageRegion2DComponent t = new ImageRegion2DComponent();
           if (this.imageRegion == null)
-            this.imageRegion = new ArrayList<ImagingSelectionInstanceImageRegionComponent>();
+            this.imageRegion = new ArrayList<ImageRegion2DComponent>();
           this.imageRegion.add(t);
           return t;
         }
 
-        public ImagingSelectionInstanceComponent addImageRegion(ImagingSelectionInstanceImageRegionComponent t) { //3
+        public ImagingSelectionInstanceComponent addImageRegion(ImageRegion2DComponent t) { //3
           if (t == null)
             return this;
           if (this.imageRegion == null)
-            this.imageRegion = new ArrayList<ImagingSelectionInstanceImageRegionComponent>();
+            this.imageRegion = new ArrayList<ImageRegion2DComponent>();
           this.imageRegion.add(t);
           return this;
         }
@@ -975,7 +975,7 @@ public class ImagingSelection extends DomainResource {
         /**
          * @return The first repetition of repeating field {@link #imageRegion}, creating it if it does not already exist {3}
          */
-        public ImagingSelectionInstanceImageRegionComponent getImageRegionFirstRep() { 
+        public ImageRegion2DComponent getImageRegionFirstRep() { 
           if (getImageRegion().isEmpty()) {
             addImageRegion();
           }
@@ -1011,7 +1011,7 @@ public class ImagingSelection extends DomainResource {
         case -1034364087: /*number*/ return this.number == null ? new Base[0] : new Base[] {this.number}; // UnsignedIntType
         case 1560041540: /*sopClass*/ return this.sopClass == null ? new Base[0] : new Base[] {this.sopClass}; // Coding
         case -891529694: /*subset*/ return this.subset == null ? new Base[0] : this.subset.toArray(new Base[this.subset.size()]); // StringType
-        case 2132544559: /*imageRegion*/ return this.imageRegion == null ? new Base[0] : this.imageRegion.toArray(new Base[this.imageRegion.size()]); // ImagingSelectionInstanceImageRegionComponent
+        case 2132544559: /*imageRegion*/ return this.imageRegion == null ? new Base[0] : this.imageRegion.toArray(new Base[this.imageRegion.size()]); // ImageRegion2DComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1033,7 +1033,7 @@ public class ImagingSelection extends DomainResource {
           this.getSubset().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case 2132544559: // imageRegion
-          this.getImageRegion().add((ImagingSelectionInstanceImageRegionComponent) value); // ImagingSelectionInstanceImageRegionComponent
+          this.getImageRegion().add((ImageRegion2DComponent) value); // ImageRegion2DComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1051,7 +1051,7 @@ public class ImagingSelection extends DomainResource {
         } else if (name.equals("subset")) {
           this.getSubset().add(TypeConvertor.castToString(value));
         } else if (name.equals("imageRegion")) {
-          this.getImageRegion().add((ImagingSelectionInstanceImageRegionComponent) value);
+          this.getImageRegion().add((ImageRegion2DComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -1122,8 +1122,8 @@ public class ImagingSelection extends DomainResource {
             dst.subset.add(i.copy());
         };
         if (imageRegion != null) {
-          dst.imageRegion = new ArrayList<ImagingSelectionInstanceImageRegionComponent>();
-          for (ImagingSelectionInstanceImageRegionComponent i : imageRegion)
+          dst.imageRegion = new ArrayList<ImageRegion2DComponent>();
+          for (ImageRegion2DComponent i : imageRegion)
             dst.imageRegion.add(i.copy());
         };
       }
@@ -1163,7 +1163,7 @@ public class ImagingSelection extends DomainResource {
   }
 
     @Block()
-    public static class ImagingSelectionInstanceImageRegionComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class ImageRegion2DComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * Specifies the type of image region.
          */
@@ -1185,14 +1185,14 @@ public class ImagingSelection extends DomainResource {
     /**
      * Constructor
      */
-      public ImagingSelectionInstanceImageRegionComponent() {
+      public ImageRegion2DComponent() {
         super();
       }
 
     /**
      * Constructor
      */
-      public ImagingSelectionInstanceImageRegionComponent(ImagingSelection2DGraphicType regionType, BigDecimal coordinate) {
+      public ImageRegion2DComponent(ImagingSelection2DGraphicType regionType, BigDecimal coordinate) {
         super();
         this.setRegionType(regionType);
         this.addCoordinate(coordinate);
@@ -1204,7 +1204,7 @@ public class ImagingSelection extends DomainResource {
         public Enumeration<ImagingSelection2DGraphicType> getRegionTypeElement() { 
           if (this.regionType == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ImagingSelectionInstanceImageRegionComponent.regionType");
+              throw new Error("Attempt to auto-create ImageRegion2DComponent.regionType");
             else if (Configuration.doAutoCreate())
               this.regionType = new Enumeration<ImagingSelection2DGraphicType>(new ImagingSelection2DGraphicTypeEnumFactory()); // bb
           return this.regionType;
@@ -1221,7 +1221,7 @@ public class ImagingSelection extends DomainResource {
         /**
          * @param value {@link #regionType} (Specifies the type of image region.). This is the underlying object with id, value and extensions. The accessor "getRegionType" gives direct access to the value
          */
-        public ImagingSelectionInstanceImageRegionComponent setRegionTypeElement(Enumeration<ImagingSelection2DGraphicType> value) { 
+        public ImageRegion2DComponent setRegionTypeElement(Enumeration<ImagingSelection2DGraphicType> value) { 
           this.regionType = value;
           return this;
         }
@@ -1236,7 +1236,7 @@ public class ImagingSelection extends DomainResource {
         /**
          * @param value Specifies the type of image region.
          */
-        public ImagingSelectionInstanceImageRegionComponent setRegionType(ImagingSelection2DGraphicType value) { 
+        public ImageRegion2DComponent setRegionType(ImagingSelection2DGraphicType value) { 
             if (this.regionType == null)
               this.regionType = new Enumeration<ImagingSelection2DGraphicType>(new ImagingSelection2DGraphicTypeEnumFactory());
             this.regionType.setValue(value);
@@ -1256,7 +1256,7 @@ public class ImagingSelection extends DomainResource {
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public ImagingSelectionInstanceImageRegionComponent setCoordinate(List<DecimalType> theCoordinate) { 
+        public ImageRegion2DComponent setCoordinate(List<DecimalType> theCoordinate) { 
           this.coordinate = theCoordinate;
           return this;
         }
@@ -1286,7 +1286,7 @@ public class ImagingSelection extends DomainResource {
          * @param value {@link #coordinate} (The coordinates describing the image region. Encoded as a set of (column, row) pairs that denote positions in the selected image / frames specified with sub-pixel resolution.
        The origin at the TLHC of the TLHC pixel is 0.0\0.0, the BRHC of the TLHC pixel is 1.0\1.0, and the BRHC of the BRHC pixel is the number of columns\rows in the image / frames. The values must be within the range 0\0 to the number of columns\rows in the image / frames.)
          */
-        public ImagingSelectionInstanceImageRegionComponent addCoordinate(BigDecimal value) { //1
+        public ImageRegion2DComponent addCoordinate(BigDecimal value) { //1
           DecimalType t = new DecimalType();
           t.setValue(value);
           if (this.coordinate == null)
@@ -1393,13 +1393,13 @@ public class ImagingSelection extends DomainResource {
           return super.addChild(name);
       }
 
-      public ImagingSelectionInstanceImageRegionComponent copy() {
-        ImagingSelectionInstanceImageRegionComponent dst = new ImagingSelectionInstanceImageRegionComponent();
+      public ImageRegion2DComponent copy() {
+        ImageRegion2DComponent dst = new ImageRegion2DComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(ImagingSelectionInstanceImageRegionComponent dst) {
+      public void copyValues(ImageRegion2DComponent dst) {
         super.copyValues(dst);
         dst.regionType = regionType == null ? null : regionType.copy();
         if (coordinate != null) {
@@ -1413,9 +1413,9 @@ public class ImagingSelection extends DomainResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof ImagingSelectionInstanceImageRegionComponent))
+        if (!(other_ instanceof ImageRegion2DComponent))
           return false;
-        ImagingSelectionInstanceImageRegionComponent o = (ImagingSelectionInstanceImageRegionComponent) other_;
+        ImageRegion2DComponent o = (ImageRegion2DComponent) other_;
         return compareDeep(regionType, o.regionType, true) && compareDeep(coordinate, o.coordinate, true)
           ;
       }
@@ -1424,9 +1424,9 @@ public class ImagingSelection extends DomainResource {
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof ImagingSelectionInstanceImageRegionComponent))
+        if (!(other_ instanceof ImageRegion2DComponent))
           return false;
-        ImagingSelectionInstanceImageRegionComponent o = (ImagingSelectionInstanceImageRegionComponent) other_;
+        ImageRegion2DComponent o = (ImageRegion2DComponent) other_;
         return compareValues(regionType, o.regionType, true) && compareValues(coordinate, o.coordinate, true)
           ;
       }
@@ -1443,7 +1443,7 @@ public class ImagingSelection extends DomainResource {
   }
 
     @Block()
-    public static class ImageRegionComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class ImageRegion3DComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * Specifies the type of image region.
          */
@@ -1464,14 +1464,14 @@ public class ImagingSelection extends DomainResource {
     /**
      * Constructor
      */
-      public ImageRegionComponent() {
+      public ImageRegion3DComponent() {
         super();
       }
 
     /**
      * Constructor
      */
-      public ImageRegionComponent(ImagingSelection3DGraphicType regionType, BigDecimal coordinate) {
+      public ImageRegion3DComponent(ImagingSelection3DGraphicType regionType, BigDecimal coordinate) {
         super();
         this.setRegionType(regionType);
         this.addCoordinate(coordinate);
@@ -1483,7 +1483,7 @@ public class ImagingSelection extends DomainResource {
         public Enumeration<ImagingSelection3DGraphicType> getRegionTypeElement() { 
           if (this.regionType == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ImageRegionComponent.regionType");
+              throw new Error("Attempt to auto-create ImageRegion3DComponent.regionType");
             else if (Configuration.doAutoCreate())
               this.regionType = new Enumeration<ImagingSelection3DGraphicType>(new ImagingSelection3DGraphicTypeEnumFactory()); // bb
           return this.regionType;
@@ -1500,7 +1500,7 @@ public class ImagingSelection extends DomainResource {
         /**
          * @param value {@link #regionType} (Specifies the type of image region.). This is the underlying object with id, value and extensions. The accessor "getRegionType" gives direct access to the value
          */
-        public ImageRegionComponent setRegionTypeElement(Enumeration<ImagingSelection3DGraphicType> value) { 
+        public ImageRegion3DComponent setRegionTypeElement(Enumeration<ImagingSelection3DGraphicType> value) { 
           this.regionType = value;
           return this;
         }
@@ -1515,7 +1515,7 @@ public class ImagingSelection extends DomainResource {
         /**
          * @param value Specifies the type of image region.
          */
-        public ImageRegionComponent setRegionType(ImagingSelection3DGraphicType value) { 
+        public ImageRegion3DComponent setRegionType(ImagingSelection3DGraphicType value) { 
             if (this.regionType == null)
               this.regionType = new Enumeration<ImagingSelection3DGraphicType>(new ImagingSelection3DGraphicTypeEnumFactory());
             this.regionType.setValue(value);
@@ -1534,7 +1534,7 @@ public class ImagingSelection extends DomainResource {
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public ImageRegionComponent setCoordinate(List<DecimalType> theCoordinate) { 
+        public ImageRegion3DComponent setCoordinate(List<DecimalType> theCoordinate) { 
           this.coordinate = theCoordinate;
           return this;
         }
@@ -1562,7 +1562,7 @@ public class ImagingSelection extends DomainResource {
         /**
          * @param value {@link #coordinate} (The coordinates describing the image region. Encoded as an ordered set of (x,y,z) triplets (in mm and may be negative) that define a region of interest in the patient-relative Reference Coordinate System defined by ImagingSelection.frameOfReferenceUid element.)
          */
-        public ImageRegionComponent addCoordinate(BigDecimal value) { //1
+        public ImageRegion3DComponent addCoordinate(BigDecimal value) { //1
           DecimalType t = new DecimalType();
           t.setValue(value);
           if (this.coordinate == null)
@@ -1668,13 +1668,13 @@ public class ImagingSelection extends DomainResource {
           return super.addChild(name);
       }
 
-      public ImageRegionComponent copy() {
-        ImageRegionComponent dst = new ImageRegionComponent();
+      public ImageRegion3DComponent copy() {
+        ImageRegion3DComponent dst = new ImageRegion3DComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(ImageRegionComponent dst) {
+      public void copyValues(ImageRegion3DComponent dst) {
         super.copyValues(dst);
         dst.regionType = regionType == null ? null : regionType.copy();
         if (coordinate != null) {
@@ -1688,9 +1688,9 @@ public class ImagingSelection extends DomainResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof ImageRegionComponent))
+        if (!(other_ instanceof ImageRegion3DComponent))
           return false;
-        ImageRegionComponent o = (ImageRegionComponent) other_;
+        ImageRegion3DComponent o = (ImageRegion3DComponent) other_;
         return compareDeep(regionType, o.regionType, true) && compareDeep(coordinate, o.coordinate, true)
           ;
       }
@@ -1699,9 +1699,9 @@ public class ImagingSelection extends DomainResource {
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof ImageRegionComponent))
+        if (!(other_ instanceof ImageRegion3DComponent))
           return false;
-        ImageRegionComponent o = (ImageRegionComponent) other_;
+        ImageRegion3DComponent o = (ImageRegion3DComponent) other_;
         return compareValues(regionType, o.regionType, true) && compareValues(coordinate, o.coordinate, true)
           ;
       }
@@ -1845,9 +1845,9 @@ public class ImagingSelection extends DomainResource {
      */
     @Child(name = "imageRegion", type = {}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="A specific 3D region in a DICOM frame of reference", formalDefinition="Each imaging selection might includes a 3D image region, specified by a region type and a set of 3D coordinates." )
-    protected List<ImageRegionComponent> imageRegion;
+    protected List<ImageRegion3DComponent> imageRegion;
 
-    private static final long serialVersionUID = -347117045L;
+    private static final long serialVersionUID = 1594179578L;
 
   /**
    * Constructor
@@ -2650,16 +2650,16 @@ public class ImagingSelection extends DomainResource {
     /**
      * @return {@link #imageRegion} (Each imaging selection might includes a 3D image region, specified by a region type and a set of 3D coordinates.)
      */
-    public List<ImageRegionComponent> getImageRegion() { 
+    public List<ImageRegion3DComponent> getImageRegion() { 
       if (this.imageRegion == null)
-        this.imageRegion = new ArrayList<ImageRegionComponent>();
+        this.imageRegion = new ArrayList<ImageRegion3DComponent>();
       return this.imageRegion;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public ImagingSelection setImageRegion(List<ImageRegionComponent> theImageRegion) { 
+    public ImagingSelection setImageRegion(List<ImageRegion3DComponent> theImageRegion) { 
       this.imageRegion = theImageRegion;
       return this;
     }
@@ -2667,25 +2667,25 @@ public class ImagingSelection extends DomainResource {
     public boolean hasImageRegion() { 
       if (this.imageRegion == null)
         return false;
-      for (ImageRegionComponent item : this.imageRegion)
+      for (ImageRegion3DComponent item : this.imageRegion)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public ImageRegionComponent addImageRegion() { //3
-      ImageRegionComponent t = new ImageRegionComponent();
+    public ImageRegion3DComponent addImageRegion() { //3
+      ImageRegion3DComponent t = new ImageRegion3DComponent();
       if (this.imageRegion == null)
-        this.imageRegion = new ArrayList<ImageRegionComponent>();
+        this.imageRegion = new ArrayList<ImageRegion3DComponent>();
       this.imageRegion.add(t);
       return t;
     }
 
-    public ImagingSelection addImageRegion(ImageRegionComponent t) { //3
+    public ImagingSelection addImageRegion(ImageRegion3DComponent t) { //3
       if (t == null)
         return this;
       if (this.imageRegion == null)
-        this.imageRegion = new ArrayList<ImageRegionComponent>();
+        this.imageRegion = new ArrayList<ImageRegion3DComponent>();
       this.imageRegion.add(t);
       return this;
     }
@@ -2693,7 +2693,7 @@ public class ImagingSelection extends DomainResource {
     /**
      * @return The first repetition of repeating field {@link #imageRegion}, creating it if it does not already exist {3}
      */
-    public ImageRegionComponent getImageRegionFirstRep() { 
+    public ImageRegion3DComponent getImageRegionFirstRep() { 
       if (getImageRegion().isEmpty()) {
         addImageRegion();
       }
@@ -2768,7 +2768,7 @@ public class ImagingSelection extends DomainResource {
         case 1702620169: /*bodySite*/ return this.bodySite == null ? new Base[0] : new Base[] {this.bodySite}; // CodeableReference
         case 97604824: /*focus*/ return this.focus == null ? new Base[0] : this.focus.toArray(new Base[this.focus.size()]); // Reference
         case 555127957: /*instance*/ return this.instance == null ? new Base[0] : this.instance.toArray(new Base[this.instance.size()]); // ImagingSelectionInstanceComponent
-        case 2132544559: /*imageRegion*/ return this.imageRegion == null ? new Base[0] : this.imageRegion.toArray(new Base[this.imageRegion.size()]); // ImageRegionComponent
+        case 2132544559: /*imageRegion*/ return this.imageRegion == null ? new Base[0] : this.imageRegion.toArray(new Base[this.imageRegion.size()]); // ImageRegion3DComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -2830,7 +2830,7 @@ public class ImagingSelection extends DomainResource {
           this.getInstance().add((ImagingSelectionInstanceComponent) value); // ImagingSelectionInstanceComponent
           return value;
         case 2132544559: // imageRegion
-          this.getImageRegion().add((ImageRegionComponent) value); // ImageRegionComponent
+          this.getImageRegion().add((ImageRegion3DComponent) value); // ImageRegion3DComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2875,7 +2875,7 @@ public class ImagingSelection extends DomainResource {
         } else if (name.equals("instance")) {
           this.getInstance().add((ImagingSelectionInstanceComponent) value);
         } else if (name.equals("imageRegion")) {
-          this.getImageRegion().add((ImageRegionComponent) value);
+          this.getImageRegion().add((ImageRegion3DComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -3059,8 +3059,8 @@ public class ImagingSelection extends DomainResource {
             dst.instance.add(i.copy());
         };
         if (imageRegion != null) {
-          dst.imageRegion = new ArrayList<ImageRegionComponent>();
-          for (ImageRegionComponent i : imageRegion)
+          dst.imageRegion = new ArrayList<ImageRegion3DComponent>();
+          for (ImageRegion3DComponent i : imageRegion)
             dst.imageRegion.add(i.copy());
         };
       }

@@ -134,7 +134,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     private String hint;
     private String style;
     private Map<String, String> attributes;
-    private List<XhtmlNode> children;
+    private XhtmlNodeList children;
     
     public Piece(String tag) {
       super();
@@ -205,9 +205,9 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       return children != null && !children.isEmpty();
     }
 
-    public List<XhtmlNode> getChildren() {
+    public XhtmlNodeList getChildren() {
       if (children == null)
-        children = new ArrayList<XhtmlNode>();
+        children = new XhtmlNodeList();
       return children;
     }
 
@@ -631,7 +631,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     
     model.setAlternating(alternating);
     model.setDocoImg(Utilities.pathURL(prefix, "help16.png"));
-    model.setDocoRef(Utilities.pathURL("http://build.fhir.org/ig/FHIR/ig-guidance", "readingIgs.html#table-views"));
+    model.setDocoRef(Utilities.pathURL("https://build.fhir.org/ig/FHIR/ig-guidance", "readingIgs.html#table-views"));
     model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Name"), translate("sd.hint", "The logical name of the element"), null, 0));
     model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Flags"), translate("sd.hint", "Information about the use of the element"), null, 0));
     model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Card."), translate("sd.hint", "Minimum and Maximum # of times the the element can appear in the instance"), null, 0));
@@ -853,8 +853,9 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
         } else if (p.getStyle() != null) {
           XhtmlNode s = addStyle(tc.addTag("span"), p);
           s.addText(p.getText());
-        } else
+        } else {
           tc.addText(p.getText());
+        }
         if (p.hasChildren()) {
           tc.getChildNodes().addAll(p.getChildren());
         }

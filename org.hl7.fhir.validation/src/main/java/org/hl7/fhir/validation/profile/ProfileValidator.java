@@ -101,13 +101,13 @@ public class ProfileValidator extends BaseValidator {
         for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
           if (forBuild) {
             if (!inExemptList(inv.getKey())) {
-              if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, profile.getId()+"::"+ed.getPath()+"::"+inv.getKey(), inv.hasExpression(), "The invariant has no FHIR Path expression ("+inv.getXpath()+")")) {
+//              if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, profile.getId()+"::"+ed.getPath()+"::"+inv.getKey(), inv.hasExpression(), "The invariant has no FHIR Path expression ("+inv.getXpath()+")")) {
 //                try {
 //                  fpe.check(null, profile.getType(), ed.getPath(), inv.getExpression()); // , inv.hasXpath() && inv.getXpath().startsWith("@value")
 //                } catch (Exception e) {
 //                  // rule(errors, UNKNOWN_DATE_TIME, IssueType.STRUCTURE, profile.getId()+"::"+ed.getPath()+"::"+inv.getId(), false, e.getMessage());
 //                }
-              } 
+//              } 
             }
           }
         }

@@ -2,6 +2,8 @@ package org.hl7.fhir.utilities.npm;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +47,8 @@ public class PackageList {
    }
 
     public String fhirVersion() {
+      if (json.has("fhir-version")) // legacy
+        return json.asString("fhir-version");
       return json.asString("fhirversion");
     }
 
@@ -113,6 +117,14 @@ public class PackageList {
       if (!Utilities.noString(changes)) {
         json.set("changes", changes);
       }
+    }
+
+    public JsonObject json() {
+      return json;
+    }
+
+    public Instant instant() throws ParseException {
+      return json.asInstant("date");
     }
   }
   
@@ -250,5 +262,22 @@ public class PackageList {
     } else {
       return null;
     }
+  }
+
+  public String title() {
+    return json.asString("title");
+  }
+
+  public PackageListEntry current() {
+    for (PackageListEntry e : list) {
+      if (e.current() && !"ci-build".equals(e.status())) {
+        return e;
+      }
+    }
+    return null;
+  }
+
+  public String intro() {
+    return json.asString("introduction");
   }
 }

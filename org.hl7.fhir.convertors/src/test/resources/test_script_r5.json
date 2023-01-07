@@ -44,12 +44,10 @@
       }
     ]
   },
-  "profile": [
-    {
-      "id": "patient-profile",
-      "reference": "http://hl7.org/fhir/StructureDefinition/Patient"
-    }
-  ],
+  "profile" : ["http://hl7.org/fhir/StructureDefinition/Patient"],
+  "_profile" : [{
+    "id" : "patient-profile"
+  }],
   "variable": [
     {
       "name": "KnownPatientResourceId",

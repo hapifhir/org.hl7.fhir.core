@@ -31,7 +31,7 @@ package org.hl7.fhir.r5.formats;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 
 
@@ -901,8 +901,17 @@ public class RdfParser extends RdfParserBase {
     for (int i = 0; i < element.getConstraint().size(); i++) {
       composeElementDefinitionConstraintComponent(t, "ElementDefinition", "constraint", element.getConstraint().get(i), i);
     }
+    if (element.hasMustHaveValueElement()) {
+      composeBoolean(t, "ElementDefinition", "mustHaveValue", element.getMustHaveValueElement(), -1);
+    }
+    for (int i = 0; i < element.getValueAlternatives().size(); i++) {
+      composeCanonical(t, "ElementDefinition", "valueAlternatives", element.getValueAlternatives().get(i), i);
+    }
     if (element.hasMustSupportElement()) {
       composeBoolean(t, "ElementDefinition", "mustSupport", element.getMustSupportElement(), -1);
+    }
+    for (int i = 0; i < element.getObligation().size(); i++) {
+      composeElementDefinitionObligationComponent(t, "ElementDefinition", "obligation", element.getObligation().get(i), i);
     }
     if (element.hasIsModifierElement()) {
       composeBoolean(t, "ElementDefinition", "isModifier", element.getIsModifierElement(), -1);
@@ -1057,11 +1066,41 @@ public class RdfParser extends RdfParserBase {
     if (element.hasExpressionElement()) {
       composeString(t, "ElementDefinitionConstraintComponent", "expression", element.getExpressionElement(), -1);
     }
-    if (element.hasXpathElement()) {
-      composeString(t, "ElementDefinitionConstraintComponent", "xpath", element.getXpathElement(), -1);
-    }
     if (element.hasSourceElement()) {
       composeCanonical(t, "ElementDefinitionConstraintComponent", "source", element.getSourceElement(), -1);
+    }
+  }
+
+  protected void composeElementDefinitionObligationComponent(Complex parent, String parentType, String name, ElementDefinition.ElementDefinitionObligationComponent element, int index) {
+    if (element == null) 
+      return;
+    Complex t;
+    if (Utilities.noString(parentType))
+      t = parent;
+    else {
+      t = parent.predicate("fhir:"+parentType+'.'+name);
+    }
+    composeElement(t, "obligation", name, element, index);
+    if (element.hasCode()) {
+      composeCoding(t, "ElementDefinitionObligationComponent", "code", element.getCode(), -1);
+    }
+    for (int i = 0; i < element.getActor().size(); i++) {
+      composeCanonical(t, "ElementDefinitionObligationComponent", "actor", element.getActor().get(i), i);
+    }
+    if (element.hasDocumentationElement()) {
+      composeMarkdown(t, "ElementDefinitionObligationComponent", "documentation", element.getDocumentationElement(), -1);
+    }
+    for (int i = 0; i < element.getUsage().size(); i++) {
+      composeUsageContext(t, "ElementDefinitionObligationComponent", "usage", element.getUsage().get(i), i);
+    }
+    if (element.hasFilterElement()) {
+      composeString(t, "ElementDefinitionObligationComponent", "filter", element.getFilterElement(), -1);
+    }
+    if (element.hasFilterDocumentationElement()) {
+      composeString(t, "ElementDefinitionObligationComponent", "filterDocumentation", element.getFilterDocumentationElement(), -1);
+    }
+    for (int i = 0; i < element.getProcess().size(); i++) {
+      composeUri(t, "ElementDefinitionObligationComponent", "process", element.getProcess().get(i), i);
     }
   }
 
@@ -1083,6 +1122,39 @@ public class RdfParser extends RdfParserBase {
     }
     if (element.hasValueSetElement()) {
       composeCanonical(t, "ElementDefinitionBindingComponent", "valueSet", element.getValueSetElement(), -1);
+    }
+    for (int i = 0; i < element.getAdditional().size(); i++) {
+      composeElementDefinitionBindingAdditionalComponent(t, "ElementDefinitionBindingComponent", "additional", element.getAdditional().get(i), i);
+    }
+  }
+
+  protected void composeElementDefinitionBindingAdditionalComponent(Complex parent, String parentType, String name, ElementDefinition.ElementDefinitionBindingAdditionalComponent element, int index) {
+    if (element == null) 
+      return;
+    Complex t;
+    if (Utilities.noString(parentType))
+      t = parent;
+    else {
+      t = parent.predicate("fhir:"+parentType+'.'+name);
+    }
+    composeElement(t, "additional", name, element, index);
+    if (element.hasPurposeElement()) {
+      composeEnum(t, "ElementDefinitionBindingAdditionalComponent", "purpose", element.getPurposeElement(), -1);
+    }
+    if (element.hasValueSetElement()) {
+      composeCanonical(t, "ElementDefinitionBindingAdditionalComponent", "valueSet", element.getValueSetElement(), -1);
+    }
+    if (element.hasDocumentationElement()) {
+      composeMarkdown(t, "ElementDefinitionBindingAdditionalComponent", "documentation", element.getDocumentationElement(), -1);
+    }
+    if (element.hasShortDocoElement()) {
+      composeString(t, "ElementDefinitionBindingAdditionalComponent", "shortDoco", element.getShortDocoElement(), -1);
+    }
+    for (int i = 0; i < element.getUsage().size(); i++) {
+      composeUsageContext(t, "ElementDefinitionBindingAdditionalComponent", "usage", element.getUsage().get(i), i);
+    }
+    if (element.hasAnyElement()) {
+      composeBoolean(t, "ElementDefinitionBindingAdditionalComponent", "any", element.getAnyElement(), -1);
     }
   }
 
@@ -2540,8 +2612,8 @@ public class RdfParser extends RdfParserBase {
     if (element.hasRecordedDateElement()) {
       composeDateTime(t, "AdverseEvent", "recordedDate", element.getRecordedDateElement(), -1);
     }
-    for (int i = 0; i < element.getResultingCondition().size(); i++) {
-      composeReference(t, "AdverseEvent", "resultingCondition", element.getResultingCondition().get(i), i);
+    for (int i = 0; i < element.getResultingEffect().size(); i++) {
+      composeReference(t, "AdverseEvent", "resultingEffect", element.getResultingEffect().get(i), i);
     }
     if (element.hasLocation()) {
       composeReference(t, "AdverseEvent", "location", element.getLocation(), -1);
@@ -2720,8 +2792,8 @@ public class RdfParser extends RdfParserBase {
     if (element.hasVerificationStatus()) {
       composeCodeableConcept(t, "AllergyIntolerance", "verificationStatus", element.getVerificationStatus(), -1);
     }
-    if (element.hasTypeElement()) {
-      composeEnum(t, "AllergyIntolerance", "type", element.getTypeElement(), -1);
+    if (element.hasType()) {
+      composeCodeableConcept(t, "AllergyIntolerance", "type", element.getType(), -1);
     }
     for (int i = 0; i < element.getCategory().size(); i++) {
       composeEnum(t, "AllergyIntolerance", "category", element.getCategory().get(i), i);
@@ -6374,6 +6446,9 @@ public class RdfParser extends RdfParserBase {
     for (int i = 0; i < element.getPopulation().size(); i++) {
       composeReference(t, "ClinicalUseDefinition", "population", element.getPopulation().get(i), i);
     }
+    for (int i = 0; i < element.getLibrary().size(); i++) {
+      composeCanonical(t, "ClinicalUseDefinition", "library", element.getLibrary().get(i), i);
+    }
     if (element.hasUndesirableEffect()) {
       composeClinicalUseDefinitionUndesirableEffectComponent(t, "ClinicalUseDefinition", "undesirableEffect", element.getUndesirableEffect(), -1);
     }
@@ -6403,6 +6478,9 @@ public class RdfParser extends RdfParserBase {
     }
     for (int i = 0; i < element.getIndication().size(); i++) {
       composeReference(t, "ClinicalUseDefinitionContraindicationComponent", "indication", element.getIndication().get(i), i);
+    }
+    if (element.hasApplicability()) {
+      composeExpression(t, "ClinicalUseDefinitionContraindicationComponent", "applicability", element.getApplicability(), -1);
     }
     for (int i = 0; i < element.getOtherTherapy().size(); i++) {
       composeClinicalUseDefinitionContraindicationOtherTherapyComponent(t, "ClinicalUseDefinitionContraindicationComponent", "otherTherapy", element.getOtherTherapy().get(i), i);
@@ -6454,6 +6532,9 @@ public class RdfParser extends RdfParserBase {
     }
     for (int i = 0; i < element.getUndesirableEffect().size(); i++) {
       composeReference(t, "ClinicalUseDefinitionIndicationComponent", "undesirableEffect", element.getUndesirableEffect().get(i), i);
+    }
+    if (element.hasApplicability()) {
+      composeExpression(t, "ClinicalUseDefinitionIndicationComponent", "applicability", element.getApplicability(), -1);
     }
     for (int i = 0; i < element.getOtherTherapy().size(); i++) {
       composeClinicalUseDefinitionContraindicationOtherTherapyComponent(t, "ClinicalUseDefinitionIndicationComponent", "otherTherapy", element.getOtherTherapy().get(i), i);
@@ -7742,8 +7823,11 @@ public class RdfParser extends RdfParserBase {
     if (element.hasSubject()) {
       composeReference(t, "Consent", "subject", element.getSubject(), -1);
     }
-    if (element.hasDateTimeElement()) {
-      composeDateTime(t, "Consent", "dateTime", element.getDateTimeElement(), -1);
+    if (element.hasDateElement()) {
+      composeDate(t, "Consent", "date", element.getDateElement(), -1);
+    }
+    if (element.hasPeriod()) {
+      composePeriod(t, "Consent", "period", element.getPeriod(), -1);
     }
     for (int i = 0; i < element.getGrantor().size(); i++) {
       composeReference(t, "Consent", "grantor", element.getGrantor().get(i), i);
@@ -7853,8 +7937,11 @@ public class RdfParser extends RdfParserBase {
     for (int i = 0; i < element.getPurpose().size(); i++) {
       composeCoding(t, "ProvisionComponent", "purpose", element.getPurpose().get(i), i);
     }
-    for (int i = 0; i < element.getClass_().size(); i++) {
-      composeCoding(t, "ProvisionComponent", "class", element.getClass_().get(i), i);
+    for (int i = 0; i < element.getDocumentType().size(); i++) {
+      composeCoding(t, "ProvisionComponent", "documentType", element.getDocumentType().get(i), i);
+    }
+    for (int i = 0; i < element.getResourceType().size(); i++) {
+      composeCoding(t, "ProvisionComponent", "resourceType", element.getResourceType().get(i), i);
     }
     for (int i = 0; i < element.getCode().size(); i++) {
       composeCodeableConcept(t, "ProvisionComponent", "code", element.getCode().get(i), i);
@@ -9445,7 +9532,7 @@ public class RdfParser extends RdfParserBase {
     }
   }
 
-  protected void composeDeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent(Complex parent, String parentType, String name, DeviceDefinition.DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent element, int index) {
+  protected void composeDeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent(Complex parent, String parentType, String name, DeviceDefinition.UdiDeviceIdentifierMarketDistributionComponent element, int index) {
     if (element == null) 
       return;
     Complex t;
@@ -9456,10 +9543,10 @@ public class RdfParser extends RdfParserBase {
     }
     composeBackboneElement(t, "marketDistribution", name, element, index);
     if (element.hasMarketPeriod()) {
-      composePeriod(t, "DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent", "marketPeriod", element.getMarketPeriod(), -1);
+      composePeriod(t, "UdiDeviceIdentifierMarketDistributionComponent", "marketPeriod", element.getMarketPeriod(), -1);
     }
     if (element.hasSubJurisdictionElement()) {
-      composeUri(t, "DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent", "subJurisdiction", element.getSubJurisdictionElement(), -1);
+      composeUri(t, "UdiDeviceIdentifierMarketDistributionComponent", "subJurisdiction", element.getSubJurisdictionElement(), -1);
     }
   }
 
@@ -9571,7 +9658,7 @@ public class RdfParser extends RdfParserBase {
     }
   }
 
-  protected void composeDeviceDefinitionPackagingDistributorComponent(Complex parent, String parentType, String name, DeviceDefinition.DeviceDefinitionPackagingDistributorComponent element, int index) {
+  protected void composeDeviceDefinitionPackagingDistributorComponent(Complex parent, String parentType, String name, DeviceDefinition.PackagingDistributorComponent element, int index) {
     if (element == null) 
       return;
     Complex t;
@@ -9582,10 +9669,10 @@ public class RdfParser extends RdfParserBase {
     }
     composeBackboneElement(t, "distributor", name, element, index);
     if (element.hasNameElement()) {
-      composeString(t, "DeviceDefinitionPackagingDistributorComponent", "name", element.getNameElement(), -1);
+      composeString(t, "PackagingDistributorComponent", "name", element.getNameElement(), -1);
     }
     for (int i = 0; i < element.getOrganizationReference().size(); i++) {
-      composeReference(t, "DeviceDefinitionPackagingDistributorComponent", "organizationReference", element.getOrganizationReference().get(i), i);
+      composeReference(t, "PackagingDistributorComponent", "organizationReference", element.getOrganizationReference().get(i), i);
     }
   }
 
@@ -11837,6 +11924,9 @@ public class RdfParser extends RdfParserBase {
     if (element.hasKeyElement()) {
       composeString(t, "ExampleScenarioInstanceVersionComponent", "key", element.getKeyElement(), -1);
     }
+    if (element.hasTitleElement()) {
+      composeString(t, "ExampleScenarioInstanceVersionComponent", "title", element.getTitleElement(), -1);
+    }
     if (element.hasDescriptionElement()) {
       composeMarkdown(t, "ExampleScenarioInstanceVersionComponent", "description", element.getDescriptionElement(), -1);
     }
@@ -12393,7 +12483,7 @@ public class RdfParser extends RdfParserBase {
       composeReference(t, "ItemComponent", "udi", element.getUdi().get(i), i);
     }
     for (int i = 0; i < element.getBodySite().size(); i++) {
-      composeExplanationOfBenefitBodySiteComponent(t, "ItemComponent", "bodySite", element.getBodySite().get(i), i);
+      composeExplanationOfBenefitItemBodySiteComponent(t, "ItemComponent", "bodySite", element.getBodySite().get(i), i);
     }
     for (int i = 0; i < element.getEncounter().size(); i++) {
       composeReference(t, "ItemComponent", "encounter", element.getEncounter().get(i), i);
@@ -12412,7 +12502,7 @@ public class RdfParser extends RdfParserBase {
     }
   }
 
-  protected void composeExplanationOfBenefitBodySiteComponent(Complex parent, String parentType, String name, ExplanationOfBenefit.BodySiteComponent element, int index) {
+  protected void composeExplanationOfBenefitItemBodySiteComponent(Complex parent, String parentType, String name, ExplanationOfBenefit.ItemBodySiteComponent element, int index) {
     if (element == null) 
       return;
     Complex t;
@@ -12423,10 +12513,10 @@ public class RdfParser extends RdfParserBase {
     }
     composeBackboneElement(t, "bodySite", name, element, index);
     for (int i = 0; i < element.getSite().size(); i++) {
-      composeCodeableReference(t, "BodySiteComponent", "site", element.getSite().get(i), i);
+      composeCodeableReference(t, "ItemBodySiteComponent", "site", element.getSite().get(i), i);
     }
     for (int i = 0; i < element.getSubSite().size(); i++) {
-      composeCodeableConcept(t, "BodySiteComponent", "subSite", element.getSubSite().get(i), i);
+      composeCodeableConcept(t, "ItemBodySiteComponent", "subSite", element.getSubSite().get(i), i);
     }
   }
 
@@ -12645,7 +12735,7 @@ public class RdfParser extends RdfParserBase {
       composeMoney(t, "AddedItemComponent", "net", element.getNet(), -1);
     }
     for (int i = 0; i < element.getBodySite().size(); i++) {
-      composeExplanationOfBenefitBodySiteComponentA(t, "AddedItemComponent", "bodySite", element.getBodySite().get(i), i);
+      composeExplanationOfBenefitAddedItemBodySiteComponent(t, "AddedItemComponent", "bodySite", element.getBodySite().get(i), i);
     }
     for (int i = 0; i < element.getNoteNumber().size(); i++) {
       composePositiveInt(t, "AddedItemComponent", "noteNumber", element.getNoteNumber().get(i), i);
@@ -12661,7 +12751,7 @@ public class RdfParser extends RdfParserBase {
     }
   }
 
-  protected void composeExplanationOfBenefitBodySiteComponentA(Complex parent, String parentType, String name, ExplanationOfBenefit.BodySiteComponentA element, int index) {
+  protected void composeExplanationOfBenefitAddedItemBodySiteComponent(Complex parent, String parentType, String name, ExplanationOfBenefit.AddedItemBodySiteComponent element, int index) {
     if (element == null) 
       return;
     Complex t;
@@ -12672,10 +12762,10 @@ public class RdfParser extends RdfParserBase {
     }
     composeBackboneElement(t, "bodySite", name, element, index);
     for (int i = 0; i < element.getSite().size(); i++) {
-      composeCodeableReference(t, "BodySiteComponentA", "site", element.getSite().get(i), i);
+      composeCodeableReference(t, "AddedItemBodySiteComponent", "site", element.getSite().get(i), i);
     }
     for (int i = 0; i < element.getSubSite().size(); i++) {
-      composeCodeableConcept(t, "BodySiteComponentA", "subSite", element.getSubSite().get(i), i);
+      composeCodeableConcept(t, "AddedItemBodySiteComponent", "subSite", element.getSubSite().get(i), i);
     }
   }
 
@@ -12944,6 +13034,9 @@ public class RdfParser extends RdfParserBase {
     if (element.hasDateElement()) {
       composeDateTime(t, "FamilyMemberHistory", "date", element.getDateElement(), -1);
     }
+    for (int i = 0; i < element.getParticipant().size(); i++) {
+      composeFamilyMemberHistoryParticipantComponent(t, "FamilyMemberHistory", "participant", element.getParticipant().get(i), i);
+    }
     if (element.hasNameElement()) {
       composeString(t, "FamilyMemberHistory", "name", element.getNameElement(), -1);
     }
@@ -12976,6 +13069,24 @@ public class RdfParser extends RdfParserBase {
     }
     for (int i = 0; i < element.getProcedure().size(); i++) {
       composeFamilyMemberHistoryProcedureComponent(t, "FamilyMemberHistory", "procedure", element.getProcedure().get(i), i);
+    }
+  }
+
+  protected void composeFamilyMemberHistoryParticipantComponent(Complex parent, String parentType, String name, FamilyMemberHistory.FamilyMemberHistoryParticipantComponent element, int index) {
+    if (element == null) 
+      return;
+    Complex t;
+    if (Utilities.noString(parentType))
+      t = parent;
+    else {
+      t = parent.predicate("fhir:"+parentType+'.'+name);
+    }
+    composeBackboneElement(t, "participant", name, element, index);
+    if (element.hasFunction()) {
+      composeCodeableConcept(t, "FamilyMemberHistoryParticipantComponent", "function", element.getFunction(), -1);
+    }
+    if (element.hasActor()) {
+      composeReference(t, "FamilyMemberHistoryParticipantComponent", "actor", element.getActor(), -1);
     }
   }
 
@@ -13422,13 +13533,37 @@ public class RdfParser extends RdfParserBase {
       composeMarkdown(t, "GraphDefinition", "purpose", element.getPurposeElement(), -1);
     }
     if (element.hasStartElement()) {
-      composeCode(t, "GraphDefinition", "start", element.getStartElement(), -1);
+      composeId(t, "GraphDefinition", "start", element.getStartElement(), -1);
     }
-    if (element.hasProfileElement()) {
-      composeCanonical(t, "GraphDefinition", "profile", element.getProfileElement(), -1);
+    for (int i = 0; i < element.getNode().size(); i++) {
+      composeGraphDefinitionNodeComponent(t, "GraphDefinition", "node", element.getNode().get(i), i);
     }
     for (int i = 0; i < element.getLink().size(); i++) {
       composeGraphDefinitionLinkComponent(t, "GraphDefinition", "link", element.getLink().get(i), i);
+    }
+  }
+
+  protected void composeGraphDefinitionNodeComponent(Complex parent, String parentType, String name, GraphDefinition.GraphDefinitionNodeComponent element, int index) {
+    if (element == null) 
+      return;
+    Complex t;
+    if (Utilities.noString(parentType))
+      t = parent;
+    else {
+      t = parent.predicate("fhir:"+parentType+'.'+name);
+    }
+    composeBackboneElement(t, "node", name, element, index);
+    if (element.hasNodeIdElement()) {
+      composeId(t, "GraphDefinitionNodeComponent", "nodeId", element.getNodeIdElement(), -1);
+    }
+    if (element.hasDescriptionElement()) {
+      composeString(t, "GraphDefinitionNodeComponent", "description", element.getDescriptionElement(), -1);
+    }
+    if (element.hasTypeElement()) {
+      composeEnum(t, "GraphDefinitionNodeComponent", "type", element.getTypeElement(), -1);
+    }
+    if (element.hasProfileElement()) {
+      composeCanonical(t, "GraphDefinitionNodeComponent", "profile", element.getProfileElement(), -1);
     }
   }
 
@@ -13442,11 +13577,8 @@ public class RdfParser extends RdfParserBase {
       t = parent.predicate("fhir:"+parentType+'.'+name);
     }
     composeBackboneElement(t, "link", name, element, index);
-    if (element.hasPathElement()) {
-      composeString(t, "GraphDefinitionLinkComponent", "path", element.getPathElement(), -1);
-    }
-    if (element.hasSliceNameElement()) {
-      composeString(t, "GraphDefinitionLinkComponent", "sliceName", element.getSliceNameElement(), -1);
+    if (element.hasDescriptionElement()) {
+      composeString(t, "GraphDefinitionLinkComponent", "description", element.getDescriptionElement(), -1);
     }
     if (element.hasMinElement()) {
       composeInteger(t, "GraphDefinitionLinkComponent", "min", element.getMinElement(), -1);
@@ -13454,42 +13586,27 @@ public class RdfParser extends RdfParserBase {
     if (element.hasMaxElement()) {
       composeString(t, "GraphDefinitionLinkComponent", "max", element.getMaxElement(), -1);
     }
-    if (element.hasDescriptionElement()) {
-      composeString(t, "GraphDefinitionLinkComponent", "description", element.getDescriptionElement(), -1);
+    if (element.hasSourceIdElement()) {
+      composeId(t, "GraphDefinitionLinkComponent", "sourceId", element.getSourceIdElement(), -1);
     }
-    for (int i = 0; i < element.getTarget().size(); i++) {
-      composeGraphDefinitionLinkTargetComponent(t, "GraphDefinitionLinkComponent", "target", element.getTarget().get(i), i);
+    if (element.hasPathElement()) {
+      composeString(t, "GraphDefinitionLinkComponent", "path", element.getPathElement(), -1);
     }
-  }
-
-  protected void composeGraphDefinitionLinkTargetComponent(Complex parent, String parentType, String name, GraphDefinition.GraphDefinitionLinkTargetComponent element, int index) {
-    if (element == null) 
-      return;
-    Complex t;
-    if (Utilities.noString(parentType))
-      t = parent;
-    else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
+    if (element.hasSliceNameElement()) {
+      composeString(t, "GraphDefinitionLinkComponent", "sliceName", element.getSliceNameElement(), -1);
     }
-    composeBackboneElement(t, "target", name, element, index);
-    if (element.hasTypeElement()) {
-      composeEnum(t, "GraphDefinitionLinkTargetComponent", "type", element.getTypeElement(), -1);
+    if (element.hasTargetIdElement()) {
+      composeId(t, "GraphDefinitionLinkComponent", "targetId", element.getTargetIdElement(), -1);
     }
     if (element.hasParamsElement()) {
-      composeString(t, "GraphDefinitionLinkTargetComponent", "params", element.getParamsElement(), -1);
-    }
-    if (element.hasProfileElement()) {
-      composeCanonical(t, "GraphDefinitionLinkTargetComponent", "profile", element.getProfileElement(), -1);
+      composeString(t, "GraphDefinitionLinkComponent", "params", element.getParamsElement(), -1);
     }
     for (int i = 0; i < element.getCompartment().size(); i++) {
-      composeGraphDefinitionLinkTargetCompartmentComponent(t, "GraphDefinitionLinkTargetComponent", "compartment", element.getCompartment().get(i), i);
-    }
-    for (int i = 0; i < element.getLink().size(); i++) {
-      composeGraphDefinitionLinkComponent(t, "GraphDefinitionLinkTargetComponent", "link", element.getLink().get(i), i);
+      composeGraphDefinitionLinkCompartmentComponent(t, "GraphDefinitionLinkComponent", "compartment", element.getCompartment().get(i), i);
     }
   }
 
-  protected void composeGraphDefinitionLinkTargetCompartmentComponent(Complex parent, String parentType, String name, GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent element, int index) {
+  protected void composeGraphDefinitionLinkCompartmentComponent(Complex parent, String parentType, String name, GraphDefinition.GraphDefinitionLinkCompartmentComponent element, int index) {
     if (element == null) 
       return;
     Complex t;
@@ -13500,19 +13617,19 @@ public class RdfParser extends RdfParserBase {
     }
     composeBackboneElement(t, "compartment", name, element, index);
     if (element.hasUseElement()) {
-      composeEnum(t, "GraphDefinitionLinkTargetCompartmentComponent", "use", element.getUseElement(), -1);
-    }
-    if (element.hasCodeElement()) {
-      composeEnum(t, "GraphDefinitionLinkTargetCompartmentComponent", "code", element.getCodeElement(), -1);
+      composeEnum(t, "GraphDefinitionLinkCompartmentComponent", "use", element.getUseElement(), -1);
     }
     if (element.hasRuleElement()) {
-      composeEnum(t, "GraphDefinitionLinkTargetCompartmentComponent", "rule", element.getRuleElement(), -1);
+      composeEnum(t, "GraphDefinitionLinkCompartmentComponent", "rule", element.getRuleElement(), -1);
+    }
+    if (element.hasCodeElement()) {
+      composeEnum(t, "GraphDefinitionLinkCompartmentComponent", "code", element.getCodeElement(), -1);
     }
     if (element.hasExpressionElement()) {
-      composeString(t, "GraphDefinitionLinkTargetCompartmentComponent", "expression", element.getExpressionElement(), -1);
+      composeString(t, "GraphDefinitionLinkCompartmentComponent", "expression", element.getExpressionElement(), -1);
     }
     if (element.hasDescriptionElement()) {
-      composeString(t, "GraphDefinitionLinkTargetCompartmentComponent", "description", element.getDescriptionElement(), -1);
+      composeString(t, "GraphDefinitionLinkCompartmentComponent", "description", element.getDescriptionElement(), -1);
     }
   }
 
@@ -13821,7 +13938,7 @@ public class RdfParser extends RdfParserBase {
       composeImagingSelectionInstanceComponent(t, "ImagingSelection", "instance", element.getInstance().get(i), i);
     }
     for (int i = 0; i < element.getImageRegion().size(); i++) {
-      composeImagingSelectionImageRegionComponent(t, "ImagingSelection", "imageRegion", element.getImageRegion().get(i), i);
+      composeImagingSelectionImageRegion3DComponent(t, "ImagingSelection", "imageRegion", element.getImageRegion().get(i), i);
     }
   }
 
@@ -13866,11 +13983,11 @@ public class RdfParser extends RdfParserBase {
       composeString(t, "ImagingSelectionInstanceComponent", "subset", element.getSubset().get(i), i);
     }
     for (int i = 0; i < element.getImageRegion().size(); i++) {
-      composeImagingSelectionInstanceImageRegionComponent(t, "ImagingSelectionInstanceComponent", "imageRegion", element.getImageRegion().get(i), i);
+      composeImagingSelectionImageRegion2DComponent(t, "ImagingSelectionInstanceComponent", "imageRegion", element.getImageRegion().get(i), i);
     }
   }
 
-  protected void composeImagingSelectionInstanceImageRegionComponent(Complex parent, String parentType, String name, ImagingSelection.ImagingSelectionInstanceImageRegionComponent element, int index) {
+  protected void composeImagingSelectionImageRegion2DComponent(Complex parent, String parentType, String name, ImagingSelection.ImageRegion2DComponent element, int index) {
     if (element == null) 
       return;
     Complex t;
@@ -13881,14 +13998,14 @@ public class RdfParser extends RdfParserBase {
     }
     composeBackboneElement(t, "imageRegion", name, element, index);
     if (element.hasRegionTypeElement()) {
-      composeEnum(t, "ImagingSelectionInstanceImageRegionComponent", "regionType", element.getRegionTypeElement(), -1);
+      composeEnum(t, "ImageRegion2DComponent", "regionType", element.getRegionTypeElement(), -1);
     }
     for (int i = 0; i < element.getCoordinate().size(); i++) {
-      composeDecimal(t, "ImagingSelectionInstanceImageRegionComponent", "coordinate", element.getCoordinate().get(i), i);
+      composeDecimal(t, "ImageRegion2DComponent", "coordinate", element.getCoordinate().get(i), i);
     }
   }
 
-  protected void composeImagingSelectionImageRegionComponent(Complex parent, String parentType, String name, ImagingSelection.ImageRegionComponent element, int index) {
+  protected void composeImagingSelectionImageRegion3DComponent(Complex parent, String parentType, String name, ImagingSelection.ImageRegion3DComponent element, int index) {
     if (element == null) 
       return;
     Complex t;
@@ -13899,10 +14016,10 @@ public class RdfParser extends RdfParserBase {
     }
     composeBackboneElement(t, "imageRegion", name, element, index);
     if (element.hasRegionTypeElement()) {
-      composeEnum(t, "ImageRegionComponent", "regionType", element.getRegionTypeElement(), -1);
+      composeEnum(t, "ImageRegion3DComponent", "regionType", element.getRegionTypeElement(), -1);
     }
     for (int i = 0; i < element.getCoordinate().size(); i++) {
-      composeDecimal(t, "ImageRegionComponent", "coordinate", element.getCoordinate().get(i), i);
+      composeDecimal(t, "ImageRegion3DComponent", "coordinate", element.getCoordinate().get(i), i);
     }
   }
 
@@ -15707,8 +15824,8 @@ public class RdfParser extends RdfParserBase {
     for (int i = 0; i < element.getFunction().size(); i++) {
       composeCodeableConcept(t, "ManufacturedItemDefinitionComponentConstituentComponent", "function", element.getFunction().get(i), i);
     }
-    for (int i = 0; i < element.getLocationForIngredient().size(); i++) {
-      composeCodeableReference(t, "ManufacturedItemDefinitionComponentConstituentComponent", "locationForIngredient", element.getLocationForIngredient().get(i), i);
+    for (int i = 0; i < element.getHasIngredient().size(); i++) {
+      composeCodeableReference(t, "ManufacturedItemDefinitionComponentConstituentComponent", "hasIngredient", element.getHasIngredient().get(i), i);
     }
   }
 
@@ -18150,7 +18267,7 @@ public class RdfParser extends RdfParserBase {
       composeEnum(t, "NutritionOrder", "intent", element.getIntentElement(), -1);
     }
     if (element.hasPriorityElement()) {
-      composeEnum(t, "NutritionOrder", "priority", element.getPriorityElement(), -1);
+      composeCode(t, "NutritionOrder", "priority", element.getPriorityElement(), -1);
     }
     if (element.hasSubject()) {
       composeReference(t, "NutritionOrder", "subject", element.getSubject(), -1);
@@ -18226,7 +18343,7 @@ public class RdfParser extends RdfParserBase {
     }
   }
 
-  protected void composeNutritionOrderOralDietScheduleComponent(Complex parent, String parentType, String name, NutritionOrder.NutritionOrderOralDietScheduleComponent element, int index) {
+  protected void composeNutritionOrderOralDietScheduleComponent(Complex parent, String parentType, String name, NutritionOrder.OralDietScheduleComponent element, int index) {
     if (element == null) 
       return;
     Complex t;
@@ -18237,13 +18354,13 @@ public class RdfParser extends RdfParserBase {
     }
     composeBackboneElement(t, "schedule", name, element, index);
     for (int i = 0; i < element.getTiming().size(); i++) {
-      composeTiming(t, "NutritionOrderOralDietScheduleComponent", "timing", element.getTiming().get(i), i);
+      composeTiming(t, "OralDietScheduleComponent", "timing", element.getTiming().get(i), i);
     }
     if (element.hasAsNeededElement()) {
-      composeBoolean(t, "NutritionOrderOralDietScheduleComponent", "asNeeded", element.getAsNeededElement(), -1);
+      composeBoolean(t, "OralDietScheduleComponent", "asNeeded", element.getAsNeededElement(), -1);
     }
     if (element.hasAsNeededFor()) {
-      composeCodeableConcept(t, "NutritionOrderOralDietScheduleComponent", "asNeededFor", element.getAsNeededFor(), -1);
+      composeCodeableConcept(t, "OralDietScheduleComponent", "asNeededFor", element.getAsNeededFor(), -1);
     }
   }
 
@@ -18310,7 +18427,7 @@ public class RdfParser extends RdfParserBase {
     }
   }
 
-  protected void composeNutritionOrderSupplementScheduleComponent(Complex parent, String parentType, String name, NutritionOrder.NutritionOrderSupplementScheduleComponent element, int index) {
+  protected void composeNutritionOrderSupplementScheduleComponent(Complex parent, String parentType, String name, NutritionOrder.SupplementScheduleComponent element, int index) {
     if (element == null) 
       return;
     Complex t;
@@ -18321,13 +18438,13 @@ public class RdfParser extends RdfParserBase {
     }
     composeBackboneElement(t, "schedule", name, element, index);
     for (int i = 0; i < element.getTiming().size(); i++) {
-      composeTiming(t, "NutritionOrderSupplementScheduleComponent", "timing", element.getTiming().get(i), i);
+      composeTiming(t, "SupplementScheduleComponent", "timing", element.getTiming().get(i), i);
     }
     if (element.hasAsNeededElement()) {
-      composeBoolean(t, "NutritionOrderSupplementScheduleComponent", "asNeeded", element.getAsNeededElement(), -1);
+      composeBoolean(t, "SupplementScheduleComponent", "asNeeded", element.getAsNeededElement(), -1);
     }
     if (element.hasAsNeededFor()) {
-      composeCodeableConcept(t, "NutritionOrderSupplementScheduleComponent", "asNeededFor", element.getAsNeededFor(), -1);
+      composeCodeableConcept(t, "SupplementScheduleComponent", "asNeededFor", element.getAsNeededFor(), -1);
     }
   }
 
@@ -18402,7 +18519,7 @@ public class RdfParser extends RdfParserBase {
     }
     composeBackboneElement(t, "administration", name, element, index);
     if (element.hasSchedule()) {
-      composeNutritionOrderEnteralFormulaAdministrationScheduleComponent(t, "NutritionOrderEnteralFormulaAdministrationComponent", "schedule", element.getSchedule(), -1);
+      composeNutritionOrderEnteralFormulaScheduleComponent(t, "NutritionOrderEnteralFormulaAdministrationComponent", "schedule", element.getSchedule(), -1);
     }
     if (element.hasQuantity()) {
       composeQuantity(t, "NutritionOrderEnteralFormulaAdministrationComponent", "quantity", element.getQuantity(), -1);
@@ -18412,7 +18529,7 @@ public class RdfParser extends RdfParserBase {
     }
   }
 
-  protected void composeNutritionOrderEnteralFormulaAdministrationScheduleComponent(Complex parent, String parentType, String name, NutritionOrder.NutritionOrderEnteralFormulaAdministrationScheduleComponent element, int index) {
+  protected void composeNutritionOrderEnteralFormulaScheduleComponent(Complex parent, String parentType, String name, NutritionOrder.EnteralFormulaScheduleComponent element, int index) {
     if (element == null) 
       return;
     Complex t;
@@ -18423,13 +18540,13 @@ public class RdfParser extends RdfParserBase {
     }
     composeBackboneElement(t, "schedule", name, element, index);
     for (int i = 0; i < element.getTiming().size(); i++) {
-      composeTiming(t, "NutritionOrderEnteralFormulaAdministrationScheduleComponent", "timing", element.getTiming().get(i), i);
+      composeTiming(t, "EnteralFormulaScheduleComponent", "timing", element.getTiming().get(i), i);
     }
     if (element.hasAsNeededElement()) {
-      composeBoolean(t, "NutritionOrderEnteralFormulaAdministrationScheduleComponent", "asNeeded", element.getAsNeededElement(), -1);
+      composeBoolean(t, "EnteralFormulaScheduleComponent", "asNeeded", element.getAsNeededElement(), -1);
     }
     if (element.hasAsNeededFor()) {
-      composeCodeableConcept(t, "NutritionOrderEnteralFormulaAdministrationScheduleComponent", "asNeededFor", element.getAsNeededFor(), -1);
+      composeCodeableConcept(t, "EnteralFormulaScheduleComponent", "asNeededFor", element.getAsNeededFor(), -1);
     }
   }
 
@@ -18770,8 +18887,8 @@ public class RdfParser extends RdfParserBase {
     if (element.hasDateElement()) {
       composeDateTime(t, "ObservationDefinition", "date", element.getDateElement(), -1);
     }
-    if (element.hasPublisher()) {
-      composeReference(t, "ObservationDefinition", "publisher", element.getPublisher(), -1);
+    if (element.hasPublisherElement()) {
+      composeString(t, "ObservationDefinition", "publisher", element.getPublisherElement(), -1);
     }
     for (int i = 0; i < element.getContact().size(); i++) {
       composeContactDetail(t, "ObservationDefinition", "contact", element.getContact().get(i), i);
@@ -19352,9 +19469,6 @@ public class RdfParser extends RdfParserBase {
     for (int i = 0; i < element.getMarketingStatus().size(); i++) {
       composeMarketingStatus(t, "PackagedProductDefinition", "marketingStatus", element.getMarketingStatus().get(i), i);
     }
-    for (int i = 0; i < element.getCharacteristic().size(); i++) {
-      composeCodeableConcept(t, "PackagedProductDefinition", "characteristic", element.getCharacteristic().get(i), i);
-    }
     if (element.hasCopackagedIndicatorElement()) {
       composeBoolean(t, "PackagedProductDefinition", "copackagedIndicator", element.getCopackagedIndicatorElement(), -1);
     }
@@ -19366,6 +19480,9 @@ public class RdfParser extends RdfParserBase {
     }
     if (element.hasPackaging()) {
       composePackagedProductDefinitionPackagingComponent(t, "PackagedProductDefinition", "packaging", element.getPackaging(), -1);
+    }
+    for (int i = 0; i < element.getCharacteristic().size(); i++) {
+      composePackagedProductDefinitionPackagingPropertyComponent(t, "PackagedProductDefinition", "characteristic", element.getCharacteristic().get(i), i);
     }
   }
 
@@ -19402,6 +19519,9 @@ public class RdfParser extends RdfParserBase {
     }
     if (element.hasType()) {
       composeCodeableConcept(t, "PackagedProductDefinitionPackagingComponent", "type", element.getType(), -1);
+    }
+    if (element.hasComponentPartElement()) {
+      composeBoolean(t, "PackagedProductDefinitionPackagingComponent", "componentPart", element.getComponentPartElement(), -1);
     }
     if (element.hasQuantityElement()) {
       composeInteger(t, "PackagedProductDefinitionPackagingComponent", "quantity", element.getQuantityElement(), -1);
@@ -19878,7 +19998,7 @@ public class RdfParser extends RdfParserBase {
       composeEnum(t, "Permission", "combining", element.getCombiningElement(), -1);
     }
     for (int i = 0; i < element.getRule().size(); i++) {
-      composePermissionRuleComponent(t, "Permission", "rule", element.getRule().get(i), i);
+      composePermissionrRuleComponent(t, "Permission", "rule", element.getRule().get(i), i);
     }
   }
 
@@ -19900,7 +20020,7 @@ public class RdfParser extends RdfParserBase {
     }
   }
 
-  protected void composePermissionRuleComponent(Complex parent, String parentType, String name, Permission.RuleComponent element, int index) {
+  protected void composePermissionrRuleComponent(Complex parent, String parentType, String name, Permission.RuleComponent element, int index) {
     if (element == null) 
       return;
     Complex t;
@@ -19914,17 +20034,17 @@ public class RdfParser extends RdfParserBase {
       composeEnum(t, "RuleComponent", "type", element.getTypeElement(), -1);
     }
     for (int i = 0; i < element.getData().size(); i++) {
-      composePermissionRuleDataComponent(t, "RuleComponent", "data", element.getData().get(i), i);
+      composePermissionrRuleDataComponent(t, "RuleComponent", "data", element.getData().get(i), i);
     }
     for (int i = 0; i < element.getActivity().size(); i++) {
-      composePermissionRuleActivityComponent(t, "RuleComponent", "activity", element.getActivity().get(i), i);
+      composePermissionrRuleActivityComponent(t, "RuleComponent", "activity", element.getActivity().get(i), i);
     }
     for (int i = 0; i < element.getLimit().size(); i++) {
       composeCodeableConcept(t, "RuleComponent", "limit", element.getLimit().get(i), i);
     }
   }
 
-  protected void composePermissionRuleDataComponent(Complex parent, String parentType, String name, Permission.RuleDataComponent element, int index) {
+  protected void composePermissionrRuleDataComponent(Complex parent, String parentType, String name, Permission.RuleDataComponent element, int index) {
     if (element == null) 
       return;
     Complex t;
@@ -19935,7 +20055,7 @@ public class RdfParser extends RdfParserBase {
     }
     composeBackboneElement(t, "data", name, element, index);
     for (int i = 0; i < element.getResource().size(); i++) {
-      composePermissionRuleDataResourceComponent(t, "RuleDataComponent", "resource", element.getResource().get(i), i);
+      composePermissionrRuleDataResourceComponent(t, "RuleDataComponent", "resource", element.getResource().get(i), i);
     }
     for (int i = 0; i < element.getSecurity().size(); i++) {
       composeCoding(t, "RuleDataComponent", "security", element.getSecurity().get(i), i);
@@ -19948,7 +20068,7 @@ public class RdfParser extends RdfParserBase {
     }
   }
 
-  protected void composePermissionRuleDataResourceComponent(Complex parent, String parentType, String name, Permission.RuleDataResourceComponent element, int index) {
+  protected void composePermissionrRuleDataResourceComponent(Complex parent, String parentType, String name, Permission.RuleDataResourceComponent element, int index) {
     if (element == null) 
       return;
     Complex t;
@@ -19966,7 +20086,7 @@ public class RdfParser extends RdfParserBase {
     }
   }
 
-  protected void composePermissionRuleActivityComponent(Complex parent, String parentType, String name, Permission.RuleActivityComponent element, int index) {
+  protected void composePermissionrRuleActivityComponent(Complex parent, String parentType, String name, Permission.RuleActivityComponent element, int index) {
     if (element == null) 
       return;
     Complex t;
@@ -20706,10 +20826,7 @@ public class RdfParser extends RdfParserBase {
       composeReference(t, "Procedure", "report", element.getReport().get(i), i);
     }
     for (int i = 0; i < element.getComplication().size(); i++) {
-      composeCodeableConcept(t, "Procedure", "complication", element.getComplication().get(i), i);
-    }
-    for (int i = 0; i < element.getComplicationDetail().size(); i++) {
-      composeReference(t, "Procedure", "complicationDetail", element.getComplicationDetail().get(i), i);
+      composeCodeableReference(t, "Procedure", "complication", element.getComplication().get(i), i);
     }
     for (int i = 0; i < element.getFollowUp().size(); i++) {
       composeCodeableConcept(t, "Procedure", "followUp", element.getFollowUp().get(i), i);
@@ -21310,216 +21427,6 @@ public class RdfParser extends RdfParserBase {
     }
   }
 
-  protected void composeRequestGroup(Complex parent, String parentType, String name, RequestGroup element, int index) {
-    if (element == null) 
-      return;
-    Complex t;
-    if (Utilities.noString(parentType))
-      t = parent;
-    else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
-    }
-    composeDomainResource(t, "RequestGroup", name, element, index);
-    for (int i = 0; i < element.getIdentifier().size(); i++) {
-      composeIdentifier(t, "RequestGroup", "identifier", element.getIdentifier().get(i), i);
-    }
-    for (int i = 0; i < element.getInstantiatesCanonical().size(); i++) {
-      composeCanonical(t, "RequestGroup", "instantiatesCanonical", element.getInstantiatesCanonical().get(i), i);
-    }
-    for (int i = 0; i < element.getInstantiatesUri().size(); i++) {
-      composeUri(t, "RequestGroup", "instantiatesUri", element.getInstantiatesUri().get(i), i);
-    }
-    for (int i = 0; i < element.getBasedOn().size(); i++) {
-      composeReference(t, "RequestGroup", "basedOn", element.getBasedOn().get(i), i);
-    }
-    for (int i = 0; i < element.getReplaces().size(); i++) {
-      composeReference(t, "RequestGroup", "replaces", element.getReplaces().get(i), i);
-    }
-    if (element.hasGroupIdentifier()) {
-      composeIdentifier(t, "RequestGroup", "groupIdentifier", element.getGroupIdentifier(), -1);
-    }
-    if (element.hasStatusElement()) {
-      composeCode(t, "RequestGroup", "status", element.getStatusElement(), -1);
-    }
-    if (element.hasIntentElement()) {
-      composeCode(t, "RequestGroup", "intent", element.getIntentElement(), -1);
-    }
-    if (element.hasPriorityElement()) {
-      composeCode(t, "RequestGroup", "priority", element.getPriorityElement(), -1);
-    }
-    if (element.hasCode()) {
-      composeCodeableConcept(t, "RequestGroup", "code", element.getCode(), -1);
-    }
-    if (element.hasSubject()) {
-      composeReference(t, "RequestGroup", "subject", element.getSubject(), -1);
-    }
-    if (element.hasEncounter()) {
-      composeReference(t, "RequestGroup", "encounter", element.getEncounter(), -1);
-    }
-    if (element.hasAuthoredOnElement()) {
-      composeDateTime(t, "RequestGroup", "authoredOn", element.getAuthoredOnElement(), -1);
-    }
-    if (element.hasAuthor()) {
-      composeReference(t, "RequestGroup", "author", element.getAuthor(), -1);
-    }
-    for (int i = 0; i < element.getReason().size(); i++) {
-      composeCodeableReference(t, "RequestGroup", "reason", element.getReason().get(i), i);
-    }
-    for (int i = 0; i < element.getGoal().size(); i++) {
-      composeReference(t, "RequestGroup", "goal", element.getGoal().get(i), i);
-    }
-    for (int i = 0; i < element.getNote().size(); i++) {
-      composeAnnotation(t, "RequestGroup", "note", element.getNote().get(i), i);
-    }
-    for (int i = 0; i < element.getAction().size(); i++) {
-      composeRequestGroupActionComponent(t, "RequestGroup", "action", element.getAction().get(i), i);
-    }
-  }
-
-  protected void composeRequestGroupActionComponent(Complex parent, String parentType, String name, RequestGroup.RequestGroupActionComponent element, int index) {
-    if (element == null) 
-      return;
-    Complex t;
-    if (Utilities.noString(parentType))
-      t = parent;
-    else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
-    }
-    composeBackboneElement(t, "action", name, element, index);
-    if (element.hasLinkIdElement()) {
-      composeString(t, "RequestGroupActionComponent", "linkId", element.getLinkIdElement(), -1);
-    }
-    if (element.hasPrefixElement()) {
-      composeString(t, "RequestGroupActionComponent", "prefix", element.getPrefixElement(), -1);
-    }
-    if (element.hasTitleElement()) {
-      composeString(t, "RequestGroupActionComponent", "title", element.getTitleElement(), -1);
-    }
-    if (element.hasDescriptionElement()) {
-      composeString(t, "RequestGroupActionComponent", "description", element.getDescriptionElement(), -1);
-    }
-    if (element.hasTextEquivalentElement()) {
-      composeString(t, "RequestGroupActionComponent", "textEquivalent", element.getTextEquivalentElement(), -1);
-    }
-    if (element.hasPriorityElement()) {
-      composeCode(t, "RequestGroupActionComponent", "priority", element.getPriorityElement(), -1);
-    }
-    for (int i = 0; i < element.getCode().size(); i++) {
-      composeCodeableConcept(t, "RequestGroupActionComponent", "code", element.getCode().get(i), i);
-    }
-    for (int i = 0; i < element.getDocumentation().size(); i++) {
-      composeRelatedArtifact(t, "RequestGroupActionComponent", "documentation", element.getDocumentation().get(i), i);
-    }
-    for (int i = 0; i < element.getGoal().size(); i++) {
-      composeReference(t, "RequestGroupActionComponent", "goal", element.getGoal().get(i), i);
-    }
-    for (int i = 0; i < element.getCondition().size(); i++) {
-      composeRequestGroupActionConditionComponent(t, "RequestGroupActionComponent", "condition", element.getCondition().get(i), i);
-    }
-    for (int i = 0; i < element.getRelatedAction().size(); i++) {
-      composeRequestGroupActionRelatedActionComponent(t, "RequestGroupActionComponent", "relatedAction", element.getRelatedAction().get(i), i);
-    }
-    if (element.hasTiming()) {
-      composeType(t, "RequestGroupActionComponent", "timing", element.getTiming(), -1);
-    }
-    if (element.hasLocation()) {
-      composeCodeableReference(t, "RequestGroupActionComponent", "location", element.getLocation(), -1);
-    }
-    for (int i = 0; i < element.getParticipant().size(); i++) {
-      composeRequestGroupActionParticipantComponent(t, "RequestGroupActionComponent", "participant", element.getParticipant().get(i), i);
-    }
-    if (element.hasType()) {
-      composeCodeableConcept(t, "RequestGroupActionComponent", "type", element.getType(), -1);
-    }
-    if (element.hasGroupingBehaviorElement()) {
-      composeCode(t, "RequestGroupActionComponent", "groupingBehavior", element.getGroupingBehaviorElement(), -1);
-    }
-    if (element.hasSelectionBehaviorElement()) {
-      composeCode(t, "RequestGroupActionComponent", "selectionBehavior", element.getSelectionBehaviorElement(), -1);
-    }
-    if (element.hasRequiredBehaviorElement()) {
-      composeCode(t, "RequestGroupActionComponent", "requiredBehavior", element.getRequiredBehaviorElement(), -1);
-    }
-    if (element.hasPrecheckBehaviorElement()) {
-      composeCode(t, "RequestGroupActionComponent", "precheckBehavior", element.getPrecheckBehaviorElement(), -1);
-    }
-    if (element.hasCardinalityBehaviorElement()) {
-      composeCode(t, "RequestGroupActionComponent", "cardinalityBehavior", element.getCardinalityBehaviorElement(), -1);
-    }
-    if (element.hasResource()) {
-      composeReference(t, "RequestGroupActionComponent", "resource", element.getResource(), -1);
-    }
-    for (int i = 0; i < element.getAction().size(); i++) {
-      composeRequestGroupActionComponent(t, "RequestGroupActionComponent", "action", element.getAction().get(i), i);
-    }
-  }
-
-  protected void composeRequestGroupActionConditionComponent(Complex parent, String parentType, String name, RequestGroup.RequestGroupActionConditionComponent element, int index) {
-    if (element == null) 
-      return;
-    Complex t;
-    if (Utilities.noString(parentType))
-      t = parent;
-    else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
-    }
-    composeBackboneElement(t, "condition", name, element, index);
-    if (element.hasKindElement()) {
-      composeCode(t, "RequestGroupActionConditionComponent", "kind", element.getKindElement(), -1);
-    }
-    if (element.hasExpression()) {
-      composeExpression(t, "RequestGroupActionConditionComponent", "expression", element.getExpression(), -1);
-    }
-  }
-
-  protected void composeRequestGroupActionRelatedActionComponent(Complex parent, String parentType, String name, RequestGroup.RequestGroupActionRelatedActionComponent element, int index) {
-    if (element == null) 
-      return;
-    Complex t;
-    if (Utilities.noString(parentType))
-      t = parent;
-    else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
-    }
-    composeBackboneElement(t, "relatedAction", name, element, index);
-    if (element.hasTargetIdElement()) {
-      composeId(t, "RequestGroupActionRelatedActionComponent", "targetId", element.getTargetIdElement(), -1);
-    }
-    if (element.hasRelationshipElement()) {
-      composeCode(t, "RequestGroupActionRelatedActionComponent", "relationship", element.getRelationshipElement(), -1);
-    }
-    if (element.hasOffset()) {
-      composeType(t, "RequestGroupActionRelatedActionComponent", "offset", element.getOffset(), -1);
-    }
-  }
-
-  protected void composeRequestGroupActionParticipantComponent(Complex parent, String parentType, String name, RequestGroup.RequestGroupActionParticipantComponent element, int index) {
-    if (element == null) 
-      return;
-    Complex t;
-    if (Utilities.noString(parentType))
-      t = parent;
-    else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
-    }
-    composeBackboneElement(t, "participant", name, element, index);
-    if (element.hasTypeElement()) {
-      composeCode(t, "RequestGroupActionParticipantComponent", "type", element.getTypeElement(), -1);
-    }
-    if (element.hasTypeReference()) {
-      composeReference(t, "RequestGroupActionParticipantComponent", "typeReference", element.getTypeReference(), -1);
-    }
-    if (element.hasRole()) {
-      composeCodeableConcept(t, "RequestGroupActionParticipantComponent", "role", element.getRole(), -1);
-    }
-    if (element.hasFunction()) {
-      composeCodeableConcept(t, "RequestGroupActionParticipantComponent", "function", element.getFunction(), -1);
-    }
-    if (element.hasActor()) {
-      composeReference(t, "RequestGroupActionParticipantComponent", "actor", element.getActor(), -1);
-    }
-  }
-
   protected void composeRequestOrchestration(Complex parent, String parentType, String name, RequestOrchestration element, int index) {
     if (element == null) 
       return;
@@ -21896,11 +21803,17 @@ public class RdfParser extends RdfParserBase {
     for (int i = 0; i < element.getConformance().size(); i++) {
       composeEnum(t, "RequirementsStatementComponent", "conformance", element.getConformance().get(i), i);
     }
+    if (element.hasConditionalityElement()) {
+      composeBoolean(t, "RequirementsStatementComponent", "conditionality", element.getConditionalityElement(), -1);
+    }
     if (element.hasRequirementElement()) {
       composeMarkdown(t, "RequirementsStatementComponent", "requirement", element.getRequirementElement(), -1);
     }
     if (element.hasDerivedFromElement()) {
       composeString(t, "RequirementsStatementComponent", "derivedFrom", element.getDerivedFromElement(), -1);
+    }
+    if (element.hasParentElement()) {
+      composeString(t, "RequirementsStatementComponent", "parent", element.getParentElement(), -1);
     }
     for (int i = 0; i < element.getSatisfiedBy().size(); i++) {
       composeUrl(t, "RequirementsStatementComponent", "satisfiedBy", element.getSatisfiedBy().get(i), i);
@@ -21966,7 +21879,7 @@ public class RdfParser extends RdfParserBase {
       composeCodeableConcept(t, "ResearchStudy", "studyDesign", element.getStudyDesign().get(i), i);
     }
     for (int i = 0; i < element.getFocus().size(); i++) {
-      composeResearchStudyFocusComponent(t, "ResearchStudy", "focus", element.getFocus().get(i), i);
+      composeCodeableReference(t, "ResearchStudy", "focus", element.getFocus().get(i), i);
     }
     for (int i = 0; i < element.getCondition().size(); i++) {
       composeCodeableConcept(t, "ResearchStudy", "condition", element.getCondition().get(i), i);
@@ -22019,9 +21932,6 @@ public class RdfParser extends RdfParserBase {
     for (int i = 0; i < element.getResult().size(); i++) {
       composeReference(t, "ResearchStudy", "result", element.getResult().get(i), i);
     }
-    for (int i = 0; i < element.getWebLocation().size(); i++) {
-      composeResearchStudyWebLocationComponent(t, "ResearchStudy", "webLocation", element.getWebLocation().get(i), i);
-    }
   }
 
   protected void composeResearchStudyLabelComponent(Complex parent, String parentType, String name, ResearchStudy.ResearchStudyLabelComponent element, int index) {
@@ -22039,27 +21949,6 @@ public class RdfParser extends RdfParserBase {
     }
     if (element.hasValueElement()) {
       composeString(t, "ResearchStudyLabelComponent", "value", element.getValueElement(), -1);
-    }
-  }
-
-  protected void composeResearchStudyFocusComponent(Complex parent, String parentType, String name, ResearchStudy.ResearchStudyFocusComponent element, int index) {
-    if (element == null) 
-      return;
-    Complex t;
-    if (Utilities.noString(parentType))
-      t = parent;
-    else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
-    }
-    composeBackboneElement(t, "focus", name, element, index);
-    if (element.hasProductCode()) {
-      composeCodeableConcept(t, "ResearchStudyFocusComponent", "productCode", element.getProductCode(), -1);
-    }
-    for (int i = 0; i < element.getFocusType().size(); i++) {
-      composeCodeableConcept(t, "ResearchStudyFocusComponent", "focusType", element.getFocusType().get(i), i);
-    }
-    if (element.hasFactorElement()) {
-      composeMarkdown(t, "ResearchStudyFocusComponent", "factor", element.getFactorElement(), -1);
     }
   }
 
@@ -22145,8 +22034,8 @@ public class RdfParser extends RdfParserBase {
       t = parent.predicate("fhir:"+parentType+'.'+name);
     }
     composeBackboneElement(t, "comparisonGroup", name, element, index);
-    if (element.hasIdentifier()) {
-      composeType(t, "ResearchStudyComparisonGroupComponent", "identifier", element.getIdentifier(), -1);
+    for (int i = 0; i < element.getIdentifier().size(); i++) {
+      composeIdentifier(t, "ResearchStudyComparisonGroupComponent", "identifier", element.getIdentifier().get(i), i);
     }
     if (element.hasNameElement()) {
       composeString(t, "ResearchStudyComparisonGroupComponent", "name", element.getNameElement(), -1);
@@ -22207,24 +22096,6 @@ public class RdfParser extends RdfParserBase {
     }
     if (element.hasReference()) {
       composeReference(t, "ResearchStudyOutcomeMeasureComponent", "reference", element.getReference(), -1);
-    }
-  }
-
-  protected void composeResearchStudyWebLocationComponent(Complex parent, String parentType, String name, ResearchStudy.ResearchStudyWebLocationComponent element, int index) {
-    if (element == null) 
-      return;
-    Complex t;
-    if (Utilities.noString(parentType))
-      t = parent;
-    else {
-      t = parent.predicate("fhir:"+parentType+'.'+name);
-    }
-    composeBackboneElement(t, "webLocation", name, element, index);
-    if (element.hasClassifier()) {
-      composeCodeableConcept(t, "ResearchStudyWebLocationComponent", "classifier", element.getClassifier(), -1);
-    }
-    if (element.hasUrlElement()) {
-      composeUri(t, "ResearchStudyWebLocationComponent", "url", element.getUrlElement(), -1);
     }
   }
 
@@ -22872,7 +22743,7 @@ public class RdfParser extends RdfParserBase {
       composeUri(t, "SpecimenDefinition", "url", element.getUrlElement(), -1);
     }
     if (element.hasIdentifier()) {
-      composeIdentifier(t, "SpecimenDefinition", "identifier", element.getIdentifierFirstRep(), -1);
+      composeIdentifier(t, "SpecimenDefinition", "identifier", element.getIdentifier(), -1);
     }
     if (element.hasVersionElement()) {
       composeString(t, "SpecimenDefinition", "version", element.getVersionElement(), -1);
@@ -22898,8 +22769,8 @@ public class RdfParser extends RdfParserBase {
     if (element.hasDateElement()) {
       composeDateTime(t, "SpecimenDefinition", "date", element.getDateElement(), -1);
     }
-    if (element.hasPublisher()) {
-      composeReference(t, "SpecimenDefinition", "publisher", element.getPublisher(), -1);
+    if (element.hasPublisherElement()) {
+      composeString(t, "SpecimenDefinition", "publisher", element.getPublisherElement(), -1);
     }
     for (int i = 0; i < element.getContact().size(); i++) {
       composeContactDetail(t, "SpecimenDefinition", "contact", element.getContact().get(i), i);
@@ -23975,6 +23846,9 @@ public class RdfParser extends RdfParserBase {
     for (int i = 0; i < element.getMoiety().size(); i++) {
       composeSubstanceDefinitionMoietyComponent(t, "SubstanceDefinition", "moiety", element.getMoiety().get(i), i);
     }
+    for (int i = 0; i < element.getCharacterization().size(); i++) {
+      composeSubstanceDefinitionCharacterizationComponent(t, "SubstanceDefinition", "characterization", element.getCharacterization().get(i), i);
+    }
     for (int i = 0; i < element.getProperty().size(); i++) {
       composeSubstanceDefinitionPropertyComponent(t, "SubstanceDefinition", "property", element.getProperty().get(i), i);
     }
@@ -24043,6 +23917,30 @@ public class RdfParser extends RdfParserBase {
     }
     if (element.hasMeasurementType()) {
       composeCodeableConcept(t, "SubstanceDefinitionMoietyComponent", "measurementType", element.getMeasurementType(), -1);
+    }
+  }
+
+  protected void composeSubstanceDefinitionCharacterizationComponent(Complex parent, String parentType, String name, SubstanceDefinition.SubstanceDefinitionCharacterizationComponent element, int index) {
+    if (element == null) 
+      return;
+    Complex t;
+    if (Utilities.noString(parentType))
+      t = parent;
+    else {
+      t = parent.predicate("fhir:"+parentType+'.'+name);
+    }
+    composeBackboneElement(t, "characterization", name, element, index);
+    if (element.hasTechnique()) {
+      composeCodeableConcept(t, "SubstanceDefinitionCharacterizationComponent", "technique", element.getTechnique(), -1);
+    }
+    if (element.hasForm()) {
+      composeCodeableConcept(t, "SubstanceDefinitionCharacterizationComponent", "form", element.getForm(), -1);
+    }
+    if (element.hasDescriptionElement()) {
+      composeMarkdown(t, "SubstanceDefinitionCharacterizationComponent", "description", element.getDescriptionElement(), -1);
+    }
+    for (int i = 0; i < element.getFile().size(); i++) {
+      composeAttachment(t, "SubstanceDefinitionCharacterizationComponent", "file", element.getFile().get(i), i);
     }
   }
 
@@ -25019,6 +24917,9 @@ public class RdfParser extends RdfParserBase {
     if (element.hasPriorityElement()) {
       composeEnum(t, "SupplyRequest", "priority", element.getPriorityElement(), -1);
     }
+    if (element.hasDeliverFor()) {
+      composeReference(t, "SupplyRequest", "deliverFor", element.getDeliverFor(), -1);
+    }
     if (element.hasItem()) {
       composeCodeableReference(t, "SupplyRequest", "item", element.getItem(), -1);
     }
@@ -25809,7 +25710,7 @@ public class RdfParser extends RdfParserBase {
       composeTestScriptFixtureComponent(t, "TestScript", "fixture", element.getFixture().get(i), i);
     }
     for (int i = 0; i < element.getProfile().size(); i++) {
-      composeReference(t, "TestScript", "profile", element.getProfile().get(i), i);
+      composeCanonical(t, "TestScript", "profile", element.getProfile().get(i), i);
     }
     for (int i = 0; i < element.getVariable().size(); i++) {
       composeTestScriptVariableComponent(t, "TestScript", "variable", element.getVariable().get(i), i);
@@ -25841,6 +25742,9 @@ public class RdfParser extends RdfParserBase {
     if (element.hasProfile()) {
       composeCoding(t, "TestScriptOriginComponent", "profile", element.getProfile(), -1);
     }
+    if (element.hasUrlElement()) {
+      composeUrl(t, "TestScriptOriginComponent", "url", element.getUrlElement(), -1);
+    }
   }
 
   protected void composeTestScriptDestinationComponent(Complex parent, String parentType, String name, TestScript.TestScriptDestinationComponent element, int index) {
@@ -25858,6 +25762,9 @@ public class RdfParser extends RdfParserBase {
     }
     if (element.hasProfile()) {
       composeCoding(t, "TestScriptDestinationComponent", "profile", element.getProfile(), -1);
+    }
+    if (element.hasUrlElement()) {
+      composeUrl(t, "TestScriptDestinationComponent", "url", element.getUrlElement(), -1);
     }
   }
 
@@ -26348,12 +26255,6 @@ public class RdfParser extends RdfParserBase {
     if (element.hasLocation()) {
       composeReference(t, "Transport", "location", element.getLocation(), -1);
     }
-    if (element.hasReasonCode()) {
-      composeCodeableConcept(t, "Transport", "reasonCode", element.getReasonCode(), -1);
-    }
-    if (element.hasReasonReference()) {
-      composeReference(t, "Transport", "reasonReference", element.getReasonReference(), -1);
-    }
     for (int i = 0; i < element.getInsurance().size(); i++) {
       composeReference(t, "Transport", "insurance", element.getInsurance().get(i), i);
     }
@@ -26377,6 +26278,12 @@ public class RdfParser extends RdfParserBase {
     }
     if (element.hasCurrentLocation()) {
       composeReference(t, "Transport", "currentLocation", element.getCurrentLocation(), -1);
+    }
+    if (element.hasReasonCode()) {
+      composeCodeableConcept(t, "Transport", "reasonCode", element.getReasonCode(), -1);
+    }
+    if (element.hasReasonReference()) {
+      composeReference(t, "Transport", "reasonReference", element.getReasonReference(), -1);
     }
     if (element.hasHistory()) {
       composeReference(t, "Transport", "history", element.getHistory(), -1);
@@ -27330,8 +27237,6 @@ public class RdfParser extends RdfParserBase {
       composeRegulatedAuthorization(parent, null, "RegulatedAuthorization", (RegulatedAuthorization)resource, -1);
     } else if (resource instanceof RelatedPerson) {
       composeRelatedPerson(parent, null, "RelatedPerson", (RelatedPerson)resource, -1);
-    } else if (resource instanceof RequestGroup) {
-      composeRequestGroup(parent, null, "RequestGroup", (RequestGroup)resource, -1);
     } else if (resource instanceof RequestOrchestration) {
       composeRequestOrchestration(parent, null, "RequestOrchestration", (RequestOrchestration)resource, -1);
     } else if (resource instanceof Requirements) {

@@ -228,6 +228,9 @@ public abstract class Base implements Serializable, IBase, IElement {
     throw new FHIRException("Attempt to add child with unknown name "+name);
   }
 
+	public boolean removeChild(String name, Base value) {
+    throw new FHIRException("Attempt to remove child with unknown name "+name);
+	}
   /**
    * Supports iterating the children elements in some generic processor or browser
    * All defined children will be listed, even if they have no value on this instance

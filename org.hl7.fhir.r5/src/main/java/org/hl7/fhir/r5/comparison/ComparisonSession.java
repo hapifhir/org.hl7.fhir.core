@@ -13,8 +13,8 @@ import org.hl7.fhir.r5.comparison.CodeSystemComparer.CodeSystemComparison;
 import org.hl7.fhir.r5.comparison.ProfileComparer.ProfileComparison;
 import org.hl7.fhir.r5.comparison.ResourceComparer.ResourceComparison;
 import org.hl7.fhir.r5.comparison.ValueSetComparer.ValueSetComparison;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
-import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider;
+import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CapabilityStatement;
@@ -22,7 +22,6 @@ import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.utilities.Utilities;
 
 public class ComparisonSession {
 

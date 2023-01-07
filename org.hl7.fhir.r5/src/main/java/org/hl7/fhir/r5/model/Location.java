@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -2192,9 +2192,7 @@ public class Location extends DomainResource {
    * <p>
    * Description: <b>Search for locations where the location.position is near to, or within a specified distance of, the provided coordinates expressed as [latitude]|[longitude]|[distance]|[units] (using the WGS84 datum, see notes).
 
-Servers which support the near parameter SHALL support the unit string 'km' for kilometers and SHOULD support '[mi_us]' for miles, support for other units is optional. If the units are omitted, then kms should be assumed. If the distance is omitted, then the server can use its own discretion as to what distances should be considered near (and units are irrelevant).
-
-If the server is unable to understand the units (and does support the near search parameter), it MIGHT return an OperationOutcome and fail the search with a http status 400 BadRequest. If the server does not support the near parameter, the parameter MIGHT report the unused parameter in a bundled OperationOutcome and still perform the search ignoring the near parameter.
+Servers which support the near parameter SHALL support the unit string 'km' for kilometers and SHOULD support '[mi_us]' for miles, support for other units is optional. If the units are omitted, then kms should be assumed. If the distance is omitted, then the server can use its own discretion as to what distances should be considered near (and units are irrelevant).If the server is unable to understand the units (and does support the near search parameter), it MIGHT return an OperationOutcome and fail the search with a http status 400 BadRequest. If the server does not support the near parameter, the parameter MIGHT report the unused parameter in a bundled OperationOutcome and still perform the search ignoring the near parameter.
 
 Note: The algorithm to determine the distance is not defined by the specification, and systems might have different engines that calculate things differently. They could consider geographic point to point, or path via road, or including current traffic conditions, or just simple neighboring postcodes/localities if that's all it had access to.</b><br>
    * Type: <b>special</b><br>
@@ -2208,9 +2206,7 @@ Note: The algorithm to determine the distance is not defined by the specificatio
    * <p>
    * Description: <b>Search for locations where the location.position is near to, or within a specified distance of, the provided coordinates expressed as [latitude]|[longitude]|[distance]|[units] (using the WGS84 datum, see notes).
 
-Servers which support the near parameter SHALL support the unit string 'km' for kilometers and SHOULD support '[mi_us]' for miles, support for other units is optional. If the units are omitted, then kms should be assumed. If the distance is omitted, then the server can use its own discretion as to what distances should be considered near (and units are irrelevant).
-
-If the server is unable to understand the units (and does support the near search parameter), it MIGHT return an OperationOutcome and fail the search with a http status 400 BadRequest. If the server does not support the near parameter, the parameter MIGHT report the unused parameter in a bundled OperationOutcome and still perform the search ignoring the near parameter.
+Servers which support the near parameter SHALL support the unit string 'km' for kilometers and SHOULD support '[mi_us]' for miles, support for other units is optional. If the units are omitted, then kms should be assumed. If the distance is omitted, then the server can use its own discretion as to what distances should be considered near (and units are irrelevant).If the server is unable to understand the units (and does support the near search parameter), it MIGHT return an OperationOutcome and fail the search with a http status 400 BadRequest. If the server does not support the near parameter, the parameter MIGHT report the unused parameter in a bundled OperationOutcome and still perform the search ignoring the near parameter.
 
 Note: The algorithm to determine the distance is not defined by the specification, and systems might have different engines that calculate things differently. They could consider geographic point to point, or path via road, or including current traffic conditions, or just simple neighboring postcodes/localities if that's all it had access to.</b><br>
    * Type: <b>special</b><br>

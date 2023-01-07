@@ -58,7 +58,7 @@ public class AllergyIntolerance43_50 {
     if (src.hasVerificationStatus())
       tgt.setVerificationStatus(CodeableConcept43_50.convertCodeableConcept(src.getVerificationStatus()));
     if (src.hasType())
-      tgt.setTypeElement(convertAllergyIntoleranceType(src.getTypeElement()));
+      tgt.setType(convertAllergyIntoleranceType(src.getTypeElement()));
     tgt.setCategory(src.getCategory().stream()
       .map(AllergyIntolerance43_50::convertAllergyIntoleranceCategory)
       .collect(Collectors.toList()));
@@ -102,7 +102,7 @@ public class AllergyIntolerance43_50 {
     if (src.hasVerificationStatus())
       tgt.setVerificationStatus(CodeableConcept43_50.convertCodeableConcept(src.getVerificationStatus()));
     if (src.hasType())
-      tgt.setTypeElement(convertAllergyIntoleranceType(src.getTypeElement()));
+      tgt.setTypeElement(convertAllergyIntoleranceType(src.getType()));
     tgt.setCategory(src.getCategory().stream()
       .map(AllergyIntolerance43_50::convertAllergyIntoleranceCategory)
       .collect(Collectors.toList()));
@@ -132,40 +132,33 @@ public class AllergyIntolerance43_50 {
     return tgt;
   }
 
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.AllergyIntolerance.AllergyIntoleranceType> convertAllergyIntoleranceType(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.AllergyIntolerance.AllergyIntoleranceType> src) throws FHIRException {
+  static public org.hl7.fhir.r5.model.CodeableConcept convertAllergyIntoleranceType(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.AllergyIntolerance.AllergyIntoleranceType> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.AllergyIntolerance.AllergyIntoleranceType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.AllergyIntolerance.AllergyIntoleranceTypeEnumFactory());
+    org.hl7.fhir.r5.model.CodeableConcept tgt = new org.hl7.fhir.r5.model.CodeableConcept();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case ALLERGY:
-        tgt.setValue(org.hl7.fhir.r5.model.AllergyIntolerance.AllergyIntoleranceType.ALLERGY);
+        tgt.addCoding("http://hl7.org/fhir/allergy-intolerance-type", "allergy", "Allergy");
         break;
       case INTOLERANCE:
-        tgt.setValue(org.hl7.fhir.r5.model.AllergyIntolerance.AllergyIntoleranceType.INTOLERANCE);
+        tgt.addCoding("http://hl7.org/fhir/allergy-intolerance-type", "intolerance", "Intolerance");
         break;
       default:
-        tgt.setValue(org.hl7.fhir.r5.model.AllergyIntolerance.AllergyIntoleranceType.NULL);
         break;
     }
     return tgt;
   }
 
-  static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.AllergyIntolerance.AllergyIntoleranceType> convertAllergyIntoleranceType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.AllergyIntolerance.AllergyIntoleranceType> src) throws FHIRException {
+  static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.AllergyIntolerance.AllergyIntoleranceType> convertAllergyIntoleranceType(org.hl7.fhir.r5.model.CodeableConcept src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.AllergyIntolerance.AllergyIntoleranceType> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.AllergyIntolerance.AllergyIntoleranceTypeEnumFactory());
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case ALLERGY:
+    if (src.hasCoding("http://hl7.org/fhir/allergy-intolerance-type", "allergy")) {
         tgt.setValue(org.hl7.fhir.r4b.model.AllergyIntolerance.AllergyIntoleranceType.ALLERGY);
-        break;
-      case INTOLERANCE:
+    } else if (src.hasCoding("http://hl7.org/fhir/allergy-intolerance-type", "intolerance")) {
         tgt.setValue(org.hl7.fhir.r4b.model.AllergyIntolerance.AllergyIntoleranceType.INTOLERANCE);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4b.model.AllergyIntolerance.AllergyIntoleranceType.NULL);
-        break;
     }
     return tgt;
   }

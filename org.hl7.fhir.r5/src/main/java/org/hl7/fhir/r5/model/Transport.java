@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -67,7 +67,7 @@ public class Transport extends DomainResource {
          */
         PLAN, 
         /**
-         * The request represents a request/demand and authorization for action by a Practitioner.
+         * The request represents a request/demand and authorization for action by the requestor.
          */
         ORDER, 
         /**
@@ -155,7 +155,7 @@ public class Transport extends DomainResource {
             case UNKNOWN: return "The intent is not known.  When dealing with Transport, it's not always known (or relevant) how the transport was initiated - i.e. whether it was proposed, planned, ordered or just done spontaneously.";
             case PROPOSAL: return "The request is a suggestion made by someone/something that does not have an intention to ensure it occurs and without providing an authorization to act.";
             case PLAN: return "The request represents an intention to ensure something occurs without providing an authorization for others to act.";
-            case ORDER: return "The request represents a request/demand and authorization for action by a Practitioner.";
+            case ORDER: return "The request represents a request/demand and authorization for action by the requestor.";
             case ORIGINALORDER: return "The request represents an original authorization for action.";
             case REFLEXORDER: return "The request represents an automatically generated supplemental authorization for action based on a parent authorization together with initial results of the action taken against that parent authorization.";
             case FILLERORDER: return "The request represents the view of an authorization instantiated by a fulfilling system representing the details of the fulfiller's intention to act upon a submitted order.";
@@ -3453,74 +3453,74 @@ public class Transport extends DomainResource {
     protected Reference location;
 
     /**
-     * A description or code indicating why this transport needs to be performed.
-     */
-    @Child(name = "reasonCode", type = {CodeableConcept.class}, order=22, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Why transport is needed", formalDefinition="A description or code indicating why this transport needs to be performed." )
-    protected CodeableConcept reasonCode;
-
-    /**
-     * A resource reference indicating why this transport needs to be performed.
-     */
-    @Child(name = "reasonReference", type = {Reference.class}, order=23, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Why transport is needed", formalDefinition="A resource reference indicating why this transport needs to be performed." )
-    protected Reference reasonReference;
-
-    /**
      * Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be relevant to the Transport.
      */
-    @Child(name = "insurance", type = {Coverage.class, ClaimResponse.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "insurance", type = {Coverage.class, ClaimResponse.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Associated insurance coverage", formalDefinition="Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be relevant to the Transport." )
     protected List<Reference> insurance;
 
     /**
      * Free-text information captured about the transport as it progresses.
      */
-    @Child(name = "note", type = {Annotation.class}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "note", type = {Annotation.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Comments made about the transport", formalDefinition="Free-text information captured about the transport as it progresses." )
     protected List<Annotation> note;
 
     /**
      * Links to Provenance records for past versions of this Transport that identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the transport.
      */
-    @Child(name = "relevantHistory", type = {Provenance.class}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "relevantHistory", type = {Provenance.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Key events in history of the Transport", formalDefinition="Links to Provenance records for past versions of this Transport that identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the transport." )
     protected List<Reference> relevantHistory;
 
     /**
      * If the Transport.focus is a request resource and the transport is seeking fulfillment (i.e. is asking for the request to be actioned), this element identifies any limitations on what parts of the referenced request should be actioned.
      */
-    @Child(name = "restriction", type = {}, order=27, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "restriction", type = {}, order=25, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Constraints on fulfillment transports", formalDefinition="If the Transport.focus is a request resource and the transport is seeking fulfillment (i.e. is asking for the request to be actioned), this element identifies any limitations on what parts of the referenced request should be actioned." )
     protected TransportRestrictionComponent restriction;
 
     /**
      * Additional information that may be needed in the execution of the transport.
      */
-    @Child(name = "input", type = {}, order=28, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "input", type = {}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Information used to perform transport", formalDefinition="Additional information that may be needed in the execution of the transport." )
     protected List<ParameterComponent> input;
 
     /**
      * Outputs produced by the Transport.
      */
-    @Child(name = "output", type = {}, order=29, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "output", type = {}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Information produced as part of transport", formalDefinition="Outputs produced by the Transport." )
     protected List<TransportOutputComponent> output;
 
     /**
      * The desired or final location for the transport.
      */
-    @Child(name = "requestedLocation", type = {Location.class}, order=30, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "requestedLocation", type = {Location.class}, order=28, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The desired location", formalDefinition="The desired or final location for the transport." )
     protected Reference requestedLocation;
 
     /**
      * The current location for the entity to be transported.
      */
-    @Child(name = "currentLocation", type = {Location.class}, order=31, min=1, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="The current location", formalDefinition="The current location for the entity to be transported." )
+    @Child(name = "currentLocation", type = {Location.class}, order=29, min=1, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="The entity current location", formalDefinition="The current location for the entity to be transported." )
     protected Reference currentLocation;
+
+    /**
+     * A description or code indicating why this transport needs to be performed.
+     */
+    @Child(name = "reasonCode", type = {CodeableConcept.class}, order=30, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Why transport is needed", formalDefinition="A description or code indicating why this transport needs to be performed." )
+    protected CodeableConcept reasonCode;
+
+    /**
+     * A resource reference indicating why this transport needs to be performed.
+     */
+    @Child(name = "reasonReference", type = {Reference.class}, order=31, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Why transport is needed", formalDefinition="A resource reference indicating why this transport needs to be performed." )
+    protected Reference reasonReference;
 
     /**
      * The transport event prior to this one.
@@ -3529,7 +3529,7 @@ public class Transport extends DomainResource {
     @Description(shortDefinition="Parent (or preceding) transport", formalDefinition="The transport event prior to this one." )
     protected Reference history;
 
-    private static final long serialVersionUID = 991678619L;
+    private static final long serialVersionUID = -1897671987L;
 
   /**
    * Constructor
@@ -4414,54 +4414,6 @@ public class Transport extends DomainResource {
     }
 
     /**
-     * @return {@link #reasonCode} (A description or code indicating why this transport needs to be performed.)
-     */
-    public CodeableConcept getReasonCode() { 
-      if (this.reasonCode == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Transport.reasonCode");
-        else if (Configuration.doAutoCreate())
-          this.reasonCode = new CodeableConcept(); // cc
-      return this.reasonCode;
-    }
-
-    public boolean hasReasonCode() { 
-      return this.reasonCode != null && !this.reasonCode.isEmpty();
-    }
-
-    /**
-     * @param value {@link #reasonCode} (A description or code indicating why this transport needs to be performed.)
-     */
-    public Transport setReasonCode(CodeableConcept value) { 
-      this.reasonCode = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #reasonReference} (A resource reference indicating why this transport needs to be performed.)
-     */
-    public Reference getReasonReference() { 
-      if (this.reasonReference == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Transport.reasonReference");
-        else if (Configuration.doAutoCreate())
-          this.reasonReference = new Reference(); // cc
-      return this.reasonReference;
-    }
-
-    public boolean hasReasonReference() { 
-      return this.reasonReference != null && !this.reasonReference.isEmpty();
-    }
-
-    /**
-     * @param value {@link #reasonReference} (A resource reference indicating why this transport needs to be performed.)
-     */
-    public Transport setReasonReference(Reference value) { 
-      this.reasonReference = value;
-      return this;
-    }
-
-    /**
      * @return {@link #insurance} (Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be relevant to the Transport.)
      */
     public List<Reference> getInsurance() { 
@@ -4799,6 +4751,54 @@ public class Transport extends DomainResource {
     }
 
     /**
+     * @return {@link #reasonCode} (A description or code indicating why this transport needs to be performed.)
+     */
+    public CodeableConcept getReasonCode() { 
+      if (this.reasonCode == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Transport.reasonCode");
+        else if (Configuration.doAutoCreate())
+          this.reasonCode = new CodeableConcept(); // cc
+      return this.reasonCode;
+    }
+
+    public boolean hasReasonCode() { 
+      return this.reasonCode != null && !this.reasonCode.isEmpty();
+    }
+
+    /**
+     * @param value {@link #reasonCode} (A description or code indicating why this transport needs to be performed.)
+     */
+    public Transport setReasonCode(CodeableConcept value) { 
+      this.reasonCode = value;
+      return this;
+    }
+
+    /**
+     * @return {@link #reasonReference} (A resource reference indicating why this transport needs to be performed.)
+     */
+    public Reference getReasonReference() { 
+      if (this.reasonReference == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Transport.reasonReference");
+        else if (Configuration.doAutoCreate())
+          this.reasonReference = new Reference(); // cc
+      return this.reasonReference;
+    }
+
+    public boolean hasReasonReference() { 
+      return this.reasonReference != null && !this.reasonReference.isEmpty();
+    }
+
+    /**
+     * @param value {@link #reasonReference} (A resource reference indicating why this transport needs to be performed.)
+     */
+    public Transport setReasonReference(Reference value) { 
+      this.reasonReference = value;
+      return this;
+    }
+
+    /**
      * @return {@link #history} (The transport event prior to this one.)
      */
     public Reference getHistory() { 
@@ -4846,8 +4846,6 @@ public class Transport extends DomainResource {
         children.add(new Property("performerType", "CodeableConcept", "The kind of participant that should perform the transport.", 0, java.lang.Integer.MAX_VALUE, performerType));
         children.add(new Property("owner", "Reference(Practitioner|PractitionerRole|Organization|CareTeam|HealthcareService|Patient|Device|RelatedPerson)", "Individual organization or Device currently responsible for transport execution.", 0, 1, owner));
         children.add(new Property("location", "Reference(Location)", "Principal physical location where this transport is performed.", 0, 1, location));
-        children.add(new Property("reasonCode", "CodeableConcept", "A description or code indicating why this transport needs to be performed.", 0, 1, reasonCode));
-        children.add(new Property("reasonReference", "Reference(Any)", "A resource reference indicating why this transport needs to be performed.", 0, 1, reasonReference));
         children.add(new Property("insurance", "Reference(Coverage|ClaimResponse)", "Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be relevant to the Transport.", 0, java.lang.Integer.MAX_VALUE, insurance));
         children.add(new Property("note", "Annotation", "Free-text information captured about the transport as it progresses.", 0, java.lang.Integer.MAX_VALUE, note));
         children.add(new Property("relevantHistory", "Reference(Provenance)", "Links to Provenance records for past versions of this Transport that identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the transport.", 0, java.lang.Integer.MAX_VALUE, relevantHistory));
@@ -4856,6 +4854,8 @@ public class Transport extends DomainResource {
         children.add(new Property("output", "", "Outputs produced by the Transport.", 0, java.lang.Integer.MAX_VALUE, output));
         children.add(new Property("requestedLocation", "Reference(Location)", "The desired or final location for the transport.", 0, 1, requestedLocation));
         children.add(new Property("currentLocation", "Reference(Location)", "The current location for the entity to be transported.", 0, 1, currentLocation));
+        children.add(new Property("reasonCode", "CodeableConcept", "A description or code indicating why this transport needs to be performed.", 0, 1, reasonCode));
+        children.add(new Property("reasonReference", "Reference(Any)", "A resource reference indicating why this transport needs to be performed.", 0, 1, reasonReference));
         children.add(new Property("history", "Reference(Transport)", "The transport event prior to this one.", 0, 1, history));
       }
 
@@ -4884,8 +4884,6 @@ public class Transport extends DomainResource {
         case -901444568: /*performerType*/  return new Property("performerType", "CodeableConcept", "The kind of participant that should perform the transport.", 0, java.lang.Integer.MAX_VALUE, performerType);
         case 106164915: /*owner*/  return new Property("owner", "Reference(Practitioner|PractitionerRole|Organization|CareTeam|HealthcareService|Patient|Device|RelatedPerson)", "Individual organization or Device currently responsible for transport execution.", 0, 1, owner);
         case 1901043637: /*location*/  return new Property("location", "Reference(Location)", "Principal physical location where this transport is performed.", 0, 1, location);
-        case 722137681: /*reasonCode*/  return new Property("reasonCode", "CodeableConcept", "A description or code indicating why this transport needs to be performed.", 0, 1, reasonCode);
-        case -1146218137: /*reasonReference*/  return new Property("reasonReference", "Reference(Any)", "A resource reference indicating why this transport needs to be performed.", 0, 1, reasonReference);
         case 73049818: /*insurance*/  return new Property("insurance", "Reference(Coverage|ClaimResponse)", "Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be relevant to the Transport.", 0, java.lang.Integer.MAX_VALUE, insurance);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Free-text information captured about the transport as it progresses.", 0, java.lang.Integer.MAX_VALUE, note);
         case 1538891575: /*relevantHistory*/  return new Property("relevantHistory", "Reference(Provenance)", "Links to Provenance records for past versions of this Transport that identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the transport.", 0, java.lang.Integer.MAX_VALUE, relevantHistory);
@@ -4894,6 +4892,8 @@ public class Transport extends DomainResource {
         case -1005512447: /*output*/  return new Property("output", "", "Outputs produced by the Transport.", 0, java.lang.Integer.MAX_VALUE, output);
         case -1788392125: /*requestedLocation*/  return new Property("requestedLocation", "Reference(Location)", "The desired or final location for the transport.", 0, 1, requestedLocation);
         case -140429234: /*currentLocation*/  return new Property("currentLocation", "Reference(Location)", "The current location for the entity to be transported.", 0, 1, currentLocation);
+        case 722137681: /*reasonCode*/  return new Property("reasonCode", "CodeableConcept", "A description or code indicating why this transport needs to be performed.", 0, 1, reasonCode);
+        case -1146218137: /*reasonReference*/  return new Property("reasonReference", "Reference(Any)", "A resource reference indicating why this transport needs to be performed.", 0, 1, reasonReference);
         case 926934164: /*history*/  return new Property("history", "Reference(Transport)", "The transport event prior to this one.", 0, 1, history);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -4925,8 +4925,6 @@ public class Transport extends DomainResource {
         case -901444568: /*performerType*/ return this.performerType == null ? new Base[0] : this.performerType.toArray(new Base[this.performerType.size()]); // CodeableConcept
         case 106164915: /*owner*/ return this.owner == null ? new Base[0] : new Base[] {this.owner}; // Reference
         case 1901043637: /*location*/ return this.location == null ? new Base[0] : new Base[] {this.location}; // Reference
-        case 722137681: /*reasonCode*/ return this.reasonCode == null ? new Base[0] : new Base[] {this.reasonCode}; // CodeableConcept
-        case -1146218137: /*reasonReference*/ return this.reasonReference == null ? new Base[0] : new Base[] {this.reasonReference}; // Reference
         case 73049818: /*insurance*/ return this.insurance == null ? new Base[0] : this.insurance.toArray(new Base[this.insurance.size()]); // Reference
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
         case 1538891575: /*relevantHistory*/ return this.relevantHistory == null ? new Base[0] : this.relevantHistory.toArray(new Base[this.relevantHistory.size()]); // Reference
@@ -4935,6 +4933,8 @@ public class Transport extends DomainResource {
         case -1005512447: /*output*/ return this.output == null ? new Base[0] : this.output.toArray(new Base[this.output.size()]); // TransportOutputComponent
         case -1788392125: /*requestedLocation*/ return this.requestedLocation == null ? new Base[0] : new Base[] {this.requestedLocation}; // Reference
         case -140429234: /*currentLocation*/ return this.currentLocation == null ? new Base[0] : new Base[] {this.currentLocation}; // Reference
+        case 722137681: /*reasonCode*/ return this.reasonCode == null ? new Base[0] : new Base[] {this.reasonCode}; // CodeableConcept
+        case -1146218137: /*reasonReference*/ return this.reasonReference == null ? new Base[0] : new Base[] {this.reasonReference}; // Reference
         case 926934164: /*history*/ return this.history == null ? new Base[0] : new Base[] {this.history}; // Reference
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -5013,12 +5013,6 @@ public class Transport extends DomainResource {
         case 1901043637: // location
           this.location = TypeConvertor.castToReference(value); // Reference
           return value;
-        case 722137681: // reasonCode
-          this.reasonCode = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case -1146218137: // reasonReference
-          this.reasonReference = TypeConvertor.castToReference(value); // Reference
-          return value;
         case 73049818: // insurance
           this.getInsurance().add(TypeConvertor.castToReference(value)); // Reference
           return value;
@@ -5042,6 +5036,12 @@ public class Transport extends DomainResource {
           return value;
         case -140429234: // currentLocation
           this.currentLocation = TypeConvertor.castToReference(value); // Reference
+          return value;
+        case 722137681: // reasonCode
+          this.reasonCode = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -1146218137: // reasonReference
+          this.reasonReference = TypeConvertor.castToReference(value); // Reference
           return value;
         case 926934164: // history
           this.history = TypeConvertor.castToReference(value); // Reference
@@ -5100,10 +5100,6 @@ public class Transport extends DomainResource {
           this.owner = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("location")) {
           this.location = TypeConvertor.castToReference(value); // Reference
-        } else if (name.equals("reasonCode")) {
-          this.reasonCode = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("reasonReference")) {
-          this.reasonReference = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("insurance")) {
           this.getInsurance().add(TypeConvertor.castToReference(value));
         } else if (name.equals("note")) {
@@ -5120,6 +5116,10 @@ public class Transport extends DomainResource {
           this.requestedLocation = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("currentLocation")) {
           this.currentLocation = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("reasonCode")) {
+          this.reasonCode = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("reasonReference")) {
+          this.reasonReference = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("history")) {
           this.history = TypeConvertor.castToReference(value); // Reference
         } else
@@ -5152,8 +5152,6 @@ public class Transport extends DomainResource {
         case -901444568:  return addPerformerType(); 
         case 106164915:  return getOwner();
         case 1901043637:  return getLocation();
-        case 722137681:  return getReasonCode();
-        case -1146218137:  return getReasonReference();
         case 73049818:  return addInsurance(); 
         case 3387378:  return addNote(); 
         case 1538891575:  return addRelevantHistory(); 
@@ -5162,6 +5160,8 @@ public class Transport extends DomainResource {
         case -1005512447:  return addOutput(); 
         case -1788392125:  return getRequestedLocation();
         case -140429234:  return getCurrentLocation();
+        case 722137681:  return getReasonCode();
+        case -1146218137:  return getReasonReference();
         case 926934164:  return getHistory();
         default: return super.makeProperty(hash, name);
         }
@@ -5193,8 +5193,6 @@ public class Transport extends DomainResource {
         case -901444568: /*performerType*/ return new String[] {"CodeableConcept"};
         case 106164915: /*owner*/ return new String[] {"Reference"};
         case 1901043637: /*location*/ return new String[] {"Reference"};
-        case 722137681: /*reasonCode*/ return new String[] {"CodeableConcept"};
-        case -1146218137: /*reasonReference*/ return new String[] {"Reference"};
         case 73049818: /*insurance*/ return new String[] {"Reference"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
         case 1538891575: /*relevantHistory*/ return new String[] {"Reference"};
@@ -5203,6 +5201,8 @@ public class Transport extends DomainResource {
         case -1005512447: /*output*/ return new String[] {};
         case -1788392125: /*requestedLocation*/ return new String[] {"Reference"};
         case -140429234: /*currentLocation*/ return new String[] {"Reference"};
+        case 722137681: /*reasonCode*/ return new String[] {"CodeableConcept"};
+        case -1146218137: /*reasonReference*/ return new String[] {"Reference"};
         case 926934164: /*history*/ return new String[] {"Reference"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -5286,14 +5286,6 @@ public class Transport extends DomainResource {
           this.location = new Reference();
           return this.location;
         }
-        else if (name.equals("reasonCode")) {
-          this.reasonCode = new CodeableConcept();
-          return this.reasonCode;
-        }
-        else if (name.equals("reasonReference")) {
-          this.reasonReference = new Reference();
-          return this.reasonReference;
-        }
         else if (name.equals("insurance")) {
           return addInsurance();
         }
@@ -5320,6 +5312,14 @@ public class Transport extends DomainResource {
         else if (name.equals("currentLocation")) {
           this.currentLocation = new Reference();
           return this.currentLocation;
+        }
+        else if (name.equals("reasonCode")) {
+          this.reasonCode = new CodeableConcept();
+          return this.reasonCode;
+        }
+        else if (name.equals("reasonReference")) {
+          this.reasonReference = new Reference();
+          return this.reasonReference;
         }
         else if (name.equals("history")) {
           this.history = new Reference();
@@ -5380,8 +5380,6 @@ public class Transport extends DomainResource {
         };
         dst.owner = owner == null ? null : owner.copy();
         dst.location = location == null ? null : location.copy();
-        dst.reasonCode = reasonCode == null ? null : reasonCode.copy();
-        dst.reasonReference = reasonReference == null ? null : reasonReference.copy();
         if (insurance != null) {
           dst.insurance = new ArrayList<Reference>();
           for (Reference i : insurance)
@@ -5410,6 +5408,8 @@ public class Transport extends DomainResource {
         };
         dst.requestedLocation = requestedLocation == null ? null : requestedLocation.copy();
         dst.currentLocation = currentLocation == null ? null : currentLocation.copy();
+        dst.reasonCode = reasonCode == null ? null : reasonCode.copy();
+        dst.reasonReference = reasonReference == null ? null : reasonReference.copy();
         dst.history = history == null ? null : history.copy();
       }
 
@@ -5433,10 +5433,10 @@ public class Transport extends DomainResource {
            && compareDeep(completionTime, o.completionTime, true) && compareDeep(authoredOn, o.authoredOn, true)
            && compareDeep(lastModified, o.lastModified, true) && compareDeep(requester, o.requester, true)
            && compareDeep(performerType, o.performerType, true) && compareDeep(owner, o.owner, true) && compareDeep(location, o.location, true)
-           && compareDeep(reasonCode, o.reasonCode, true) && compareDeep(reasonReference, o.reasonReference, true)
            && compareDeep(insurance, o.insurance, true) && compareDeep(note, o.note, true) && compareDeep(relevantHistory, o.relevantHistory, true)
            && compareDeep(restriction, o.restriction, true) && compareDeep(input, o.input, true) && compareDeep(output, o.output, true)
            && compareDeep(requestedLocation, o.requestedLocation, true) && compareDeep(currentLocation, o.currentLocation, true)
+           && compareDeep(reasonCode, o.reasonCode, true) && compareDeep(reasonReference, o.reasonReference, true)
            && compareDeep(history, o.history, true);
       }
 
@@ -5458,9 +5458,9 @@ public class Transport extends DomainResource {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, instantiatesCanonical
           , instantiatesUri, basedOn, groupIdentifier, partOf, status, statusReason, intent
           , priority, code, description, focus, for_, encounter, completionTime, authoredOn
-          , lastModified, requester, performerType, owner, location, reasonCode, reasonReference
-          , insurance, note, relevantHistory, restriction, input, output, requestedLocation
-          , currentLocation, history);
+          , lastModified, requester, performerType, owner, location, insurance, note, relevantHistory
+          , restriction, input, output, requestedLocation, currentLocation, reasonCode, reasonReference
+          , history);
       }
 
   @Override

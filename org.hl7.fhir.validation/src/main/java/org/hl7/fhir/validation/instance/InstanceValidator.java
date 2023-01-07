@@ -61,8 +61,8 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
-import org.hl7.fhir.r5.conformance.ProfileUtilities.SourcedChildDefinitions;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.SourcedChildDefinitions;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
@@ -1826,15 +1826,35 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private StructureDefinition checkExtension(ValidatorHostContext hostContext, List<ValidationMessage> errors, String path, Element resource, Element container, Element element, ElementDefinition def, StructureDefinition profile, NodeStack stack, NodeStack containerStack, String extensionUrl, PercentageTracker pct, ValidationMode mode) throws FHIRException {
     String url = element.getNamedChildValue("url");
+    String u = url.contains("|") ? url.substring(0, url.indexOf("|")) : url;
     boolean isModifier = element.getName().equals("modifierExtension");
     assert def.getIsModifier() == isModifier;
     
     long t = System.nanoTime();
-    StructureDefinition ex = Utilities.isAbsoluteUrl(url) ? context.fetchResource(StructureDefinition.class, url) : null;
-    timeTracker.sd(t);
+    StructureDefinition ex = Utilities.isAbsoluteUrl(u) ? context.fetchResource(StructureDefinition.class, u) : null;
     if (ex == null) {
       ex = getXverExt(errors, path, element, url);
     }
+    if (url.contains("|")) {
+      if (ex == null) {
+        ex = Utilities.isAbsoluteUrl(url) ? context.fetchResource(StructureDefinition.class, url) : null;
+        if (ex == null) {
+          warning(errors, "2022-12-17", IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXT_VER_URL_NO_MATCH);
+        } else {
+          rule(errors, "2022-12-17", IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXT_VER_URL_IGNORE);
+        }      
+      } else {
+        if (url.equals(ex.getUrl())) { 
+          warning(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXT_VER_URL_MISLEADING);
+        } else if (url.equals(ex.getVersionedUrl())) {
+          rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXT_VER_URL_NOT_ALLOWED);
+        } else { // 
+          rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXT_VER_URL_REVERSION, ex.getVersion());
+        }
+      }
+    }
+        
+    timeTracker.sd(t);
     if (ex == null) {
       if (extensionUrl != null && !isAbsolute(url)) {
         if (extensionUrl.equals(profile.getUrl())) {

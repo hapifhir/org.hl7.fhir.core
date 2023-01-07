@@ -77,7 +77,7 @@ public class StructureDefinitionSpreadsheetGenerator extends CanonicalSpreadshee
   private List<StructureDefinitionMappingComponent> mapKeys = new ArrayList<StructureDefinitionMappingComponent>();
 
   private static String[] titles = {
-      "Path", "Slice Name", "Alias(s)", "Label", "Min", "Max", "Must Support?", "Is Modifier?", "Is Summary?", "Type(s)", "Short", 
+      "ID", "Path", "Slice Name", "Alias(s)", "Label", "Min", "Max", "Must Support?", "Is Modifier?", "Is Summary?", "Type(s)", "Short", 
       "Definition", "Comments", "Requirements", "Default Value", "Meaning When Missing", "Fixed Value", "Pattern", "Example",
       "Minimum Value", "Maximum Value", "Maximum Length", "Binding Strength", "Binding Description", "Binding Value Set", "Code",
       "Slicing Discriminator", "Slicing Description", "Slicing Ordered", "Slicing Rules", "Base Path", "Base Min", "Base Max",
@@ -104,7 +104,7 @@ public class StructureDefinitionSpreadsheetGenerator extends CanonicalSpreadshee
       int coffset = forMultiple ? 1 : 0;
       for (int i = 0; i < titles.length; i++) {
         if (forMultiple) {
-          addCell(headerRow, 0, "ID", styles.get("header"));        
+          addCell(headerRow, 0, "Structure.ID", styles.get("header"));        
         }
         addCell(headerRow, i+coffset, titles[i], styles.get("header"));
       }
@@ -149,7 +149,8 @@ public class StructureDefinitionSpreadsheetGenerator extends CanonicalSpreadshee
     if (forMultiple) {
       addCell(row, i++, sd.getId(), styles.get("body"));
     }
-    addCell(row, i++, ed.getPath(), styles.get("body"));
+    addCell(row, i++, ed.getId(), styles.get("body"));
+    addCell(row, i++, ed.getPath());
     addCell(row, i++, ed.getSliceName());
     addCell(row, i++, itemList(ed.getAlias()));
     addCell(row, i++, ed.getLabel());

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.conformance;
+package org.hl7.fhir.r5.conformance.profile;
 
 import org.hl7.fhir.r5.model.ElementDefinition;
 

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -68,7 +68,7 @@ public class NutritionOrder extends DomainResource {
          */
         @Child(name = "schedule", type = {}, order=2, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Scheduling information for oral diets", formalDefinition="Schedule information for an oral diet." )
-        protected NutritionOrderOralDietScheduleComponent schedule;
+        protected OralDietScheduleComponent schedule;
 
         /**
          * Class that defines the quantity and type of nutrient modifications (for example carbohydrate, fiber or sodium) required for the oral diet.
@@ -99,7 +99,7 @@ public class NutritionOrder extends DomainResource {
         @Description(shortDefinition="Instructions or additional information about the oral diet", formalDefinition="Free text or additional instructions or information pertaining to the oral diet." )
         protected StringType instruction;
 
-        private static final long serialVersionUID = 997920978L;
+        private static final long serialVersionUID = -1779061880L;
 
     /**
      * Constructor
@@ -164,12 +164,12 @@ public class NutritionOrder extends DomainResource {
         /**
          * @return {@link #schedule} (Schedule information for an oral diet.)
          */
-        public NutritionOrderOralDietScheduleComponent getSchedule() { 
+        public OralDietScheduleComponent getSchedule() { 
           if (this.schedule == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create NutritionOrderOralDietComponent.schedule");
             else if (Configuration.doAutoCreate())
-              this.schedule = new NutritionOrderOralDietScheduleComponent(); // cc
+              this.schedule = new OralDietScheduleComponent(); // cc
           return this.schedule;
         }
 
@@ -180,7 +180,7 @@ public class NutritionOrder extends DomainResource {
         /**
          * @param value {@link #schedule} (Schedule information for an oral diet.)
          */
-        public NutritionOrderOralDietComponent setSchedule(NutritionOrderOralDietScheduleComponent value) { 
+        public NutritionOrderOralDietComponent setSchedule(OralDietScheduleComponent value) { 
           this.schedule = value;
           return this;
         }
@@ -421,7 +421,7 @@ public class NutritionOrder extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return this.type == null ? new Base[0] : this.type.toArray(new Base[this.type.size()]); // CodeableConcept
-        case -697920873: /*schedule*/ return this.schedule == null ? new Base[0] : new Base[] {this.schedule}; // NutritionOrderOralDietScheduleComponent
+        case -697920873: /*schedule*/ return this.schedule == null ? new Base[0] : new Base[] {this.schedule}; // OralDietScheduleComponent
         case -1671151641: /*nutrient*/ return this.nutrient == null ? new Base[0] : this.nutrient.toArray(new Base[this.nutrient.size()]); // NutritionOrderOralDietNutrientComponent
         case -1417816805: /*texture*/ return this.texture == null ? new Base[0] : this.texture.toArray(new Base[this.texture.size()]); // NutritionOrderOralDietTextureComponent
         case -525105592: /*fluidConsistencyType*/ return this.fluidConsistencyType == null ? new Base[0] : this.fluidConsistencyType.toArray(new Base[this.fluidConsistencyType.size()]); // CodeableConcept
@@ -438,7 +438,7 @@ public class NutritionOrder extends DomainResource {
           this.getType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -697920873: // schedule
-          this.schedule = (NutritionOrderOralDietScheduleComponent) value; // NutritionOrderOralDietScheduleComponent
+          this.schedule = (OralDietScheduleComponent) value; // OralDietScheduleComponent
           return value;
         case -1671151641: // nutrient
           this.getNutrient().add((NutritionOrderOralDietNutrientComponent) value); // NutritionOrderOralDietNutrientComponent
@@ -462,7 +462,7 @@ public class NutritionOrder extends DomainResource {
         if (name.equals("type")) {
           this.getType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("schedule")) {
-          this.schedule = (NutritionOrderOralDietScheduleComponent) value; // NutritionOrderOralDietScheduleComponent
+          this.schedule = (OralDietScheduleComponent) value; // OralDietScheduleComponent
         } else if (name.equals("nutrient")) {
           this.getNutrient().add((NutritionOrderOralDietNutrientComponent) value);
         } else if (name.equals("texture")) {
@@ -510,7 +510,7 @@ public class NutritionOrder extends DomainResource {
           return addType();
         }
         else if (name.equals("schedule")) {
-          this.schedule = new NutritionOrderOralDietScheduleComponent();
+          this.schedule = new OralDietScheduleComponent();
           return this.schedule;
         }
         else if (name.equals("nutrient")) {
@@ -596,7 +596,7 @@ public class NutritionOrder extends DomainResource {
   }
 
     @Block()
-    public static class NutritionOrderOralDietScheduleComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class OralDietScheduleComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * The time period and frequency at which the diet should be given.  The diet should be given for the combination of all schedules if more than one schedule is present.
          */
@@ -624,7 +624,7 @@ public class NutritionOrder extends DomainResource {
     /**
      * Constructor
      */
-      public NutritionOrderOralDietScheduleComponent() {
+      public OralDietScheduleComponent() {
         super();
       }
 
@@ -640,7 +640,7 @@ public class NutritionOrder extends DomainResource {
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public NutritionOrderOralDietScheduleComponent setTiming(List<Timing> theTiming) { 
+        public OralDietScheduleComponent setTiming(List<Timing> theTiming) { 
           this.timing = theTiming;
           return this;
         }
@@ -662,7 +662,7 @@ public class NutritionOrder extends DomainResource {
           return t;
         }
 
-        public NutritionOrderOralDietScheduleComponent addTiming(Timing t) { //3
+        public OralDietScheduleComponent addTiming(Timing t) { //3
           if (t == null)
             return this;
           if (this.timing == null)
@@ -687,7 +687,7 @@ public class NutritionOrder extends DomainResource {
         public BooleanType getAsNeededElement() { 
           if (this.asNeeded == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create NutritionOrderOralDietScheduleComponent.asNeeded");
+              throw new Error("Attempt to auto-create OralDietScheduleComponent.asNeeded");
             else if (Configuration.doAutoCreate())
               this.asNeeded = new BooleanType(); // bb
           return this.asNeeded;
@@ -704,7 +704,7 @@ public class NutritionOrder extends DomainResource {
         /**
          * @param value {@link #asNeeded} (Indicates whether the product is only taken when needed within a specific dosing schedule.). This is the underlying object with id, value and extensions. The accessor "getAsNeeded" gives direct access to the value
          */
-        public NutritionOrderOralDietScheduleComponent setAsNeededElement(BooleanType value) { 
+        public OralDietScheduleComponent setAsNeededElement(BooleanType value) { 
           this.asNeeded = value;
           return this;
         }
@@ -719,7 +719,7 @@ public class NutritionOrder extends DomainResource {
         /**
          * @param value Indicates whether the product is only taken when needed within a specific dosing schedule.
          */
-        public NutritionOrderOralDietScheduleComponent setAsNeeded(boolean value) { 
+        public OralDietScheduleComponent setAsNeeded(boolean value) { 
             if (this.asNeeded == null)
               this.asNeeded = new BooleanType();
             this.asNeeded.setValue(value);
@@ -732,7 +732,7 @@ public class NutritionOrder extends DomainResource {
         public CodeableConcept getAsNeededFor() { 
           if (this.asNeededFor == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create NutritionOrderOralDietScheduleComponent.asNeededFor");
+              throw new Error("Attempt to auto-create OralDietScheduleComponent.asNeededFor");
             else if (Configuration.doAutoCreate())
               this.asNeededFor = new CodeableConcept(); // cc
           return this.asNeededFor;
@@ -745,7 +745,7 @@ public class NutritionOrder extends DomainResource {
         /**
          * @param value {@link #asNeededFor} (Indicates whether the product is only taken based on a precondition for taking the product.)
          */
-        public NutritionOrderOralDietScheduleComponent setAsNeededFor(CodeableConcept value) { 
+        public OralDietScheduleComponent setAsNeededFor(CodeableConcept value) { 
           this.asNeededFor = value;
           return this;
         }
@@ -847,13 +847,13 @@ public class NutritionOrder extends DomainResource {
           return super.addChild(name);
       }
 
-      public NutritionOrderOralDietScheduleComponent copy() {
-        NutritionOrderOralDietScheduleComponent dst = new NutritionOrderOralDietScheduleComponent();
+      public OralDietScheduleComponent copy() {
+        OralDietScheduleComponent dst = new OralDietScheduleComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(NutritionOrderOralDietScheduleComponent dst) {
+      public void copyValues(OralDietScheduleComponent dst) {
         super.copyValues(dst);
         if (timing != null) {
           dst.timing = new ArrayList<Timing>();
@@ -868,9 +868,9 @@ public class NutritionOrder extends DomainResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof NutritionOrderOralDietScheduleComponent))
+        if (!(other_ instanceof OralDietScheduleComponent))
           return false;
-        NutritionOrderOralDietScheduleComponent o = (NutritionOrderOralDietScheduleComponent) other_;
+        OralDietScheduleComponent o = (OralDietScheduleComponent) other_;
         return compareDeep(timing, o.timing, true) && compareDeep(asNeeded, o.asNeeded, true) && compareDeep(asNeededFor, o.asNeededFor, true)
           ;
       }
@@ -879,9 +879,9 @@ public class NutritionOrder extends DomainResource {
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof NutritionOrderOralDietScheduleComponent))
+        if (!(other_ instanceof OralDietScheduleComponent))
           return false;
-        NutritionOrderOralDietScheduleComponent o = (NutritionOrderOralDietScheduleComponent) other_;
+        OralDietScheduleComponent o = (OralDietScheduleComponent) other_;
         return compareValues(asNeeded, o.asNeeded, true);
       }
 
@@ -1324,7 +1324,7 @@ public class NutritionOrder extends DomainResource {
          */
         @Child(name = "schedule", type = {}, order=3, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Scheduling information for supplements", formalDefinition="Schedule information for a supplement." )
-        protected NutritionOrderSupplementScheduleComponent schedule;
+        protected SupplementScheduleComponent schedule;
 
         /**
          * The amount of the nutritional supplement to be given.
@@ -1340,7 +1340,7 @@ public class NutritionOrder extends DomainResource {
         @Description(shortDefinition="Instructions or additional information about the oral supplement", formalDefinition="Free text or additional instructions or information pertaining to the oral supplement." )
         protected StringType instruction;
 
-        private static final long serialVersionUID = 1799596174L;
+        private static final long serialVersionUID = 648731928L;
 
     /**
      * Constructor
@@ -1425,12 +1425,12 @@ public class NutritionOrder extends DomainResource {
         /**
          * @return {@link #schedule} (Schedule information for a supplement.)
          */
-        public NutritionOrderSupplementScheduleComponent getSchedule() { 
+        public SupplementScheduleComponent getSchedule() { 
           if (this.schedule == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create NutritionOrderSupplementComponent.schedule");
             else if (Configuration.doAutoCreate())
-              this.schedule = new NutritionOrderSupplementScheduleComponent(); // cc
+              this.schedule = new SupplementScheduleComponent(); // cc
           return this.schedule;
         }
 
@@ -1441,7 +1441,7 @@ public class NutritionOrder extends DomainResource {
         /**
          * @param value {@link #schedule} (Schedule information for a supplement.)
          */
-        public NutritionOrderSupplementComponent setSchedule(NutritionOrderSupplementScheduleComponent value) { 
+        public NutritionOrderSupplementComponent setSchedule(SupplementScheduleComponent value) { 
           this.schedule = value;
           return this;
         }
@@ -1546,7 +1546,7 @@ public class NutritionOrder extends DomainResource {
         switch (hash) {
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableReference
         case -1491817446: /*productName*/ return this.productName == null ? new Base[0] : new Base[] {this.productName}; // StringType
-        case -697920873: /*schedule*/ return this.schedule == null ? new Base[0] : new Base[] {this.schedule}; // NutritionOrderSupplementScheduleComponent
+        case -697920873: /*schedule*/ return this.schedule == null ? new Base[0] : new Base[] {this.schedule}; // SupplementScheduleComponent
         case -1285004149: /*quantity*/ return this.quantity == null ? new Base[0] : new Base[] {this.quantity}; // Quantity
         case 301526158: /*instruction*/ return this.instruction == null ? new Base[0] : new Base[] {this.instruction}; // StringType
         default: return super.getProperty(hash, name, checkValid);
@@ -1564,7 +1564,7 @@ public class NutritionOrder extends DomainResource {
           this.productName = TypeConvertor.castToString(value); // StringType
           return value;
         case -697920873: // schedule
-          this.schedule = (NutritionOrderSupplementScheduleComponent) value; // NutritionOrderSupplementScheduleComponent
+          this.schedule = (SupplementScheduleComponent) value; // SupplementScheduleComponent
           return value;
         case -1285004149: // quantity
           this.quantity = TypeConvertor.castToQuantity(value); // Quantity
@@ -1584,7 +1584,7 @@ public class NutritionOrder extends DomainResource {
         } else if (name.equals("productName")) {
           this.productName = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("schedule")) {
-          this.schedule = (NutritionOrderSupplementScheduleComponent) value; // NutritionOrderSupplementScheduleComponent
+          this.schedule = (SupplementScheduleComponent) value; // SupplementScheduleComponent
         } else if (name.equals("quantity")) {
           this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("instruction")) {
@@ -1630,7 +1630,7 @@ public class NutritionOrder extends DomainResource {
           throw new FHIRException("Cannot call addChild on a primitive type NutritionOrder.supplement.productName");
         }
         else if (name.equals("schedule")) {
-          this.schedule = new NutritionOrderSupplementScheduleComponent();
+          this.schedule = new SupplementScheduleComponent();
           return this.schedule;
         }
         else if (name.equals("quantity")) {
@@ -1694,7 +1694,7 @@ public class NutritionOrder extends DomainResource {
   }
 
     @Block()
-    public static class NutritionOrderSupplementScheduleComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class SupplementScheduleComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * The time period and frequency at which the supplement should be given.  The supplement should be given for the combination of all schedules if more than one schedule is present.
          */
@@ -1722,7 +1722,7 @@ public class NutritionOrder extends DomainResource {
     /**
      * Constructor
      */
-      public NutritionOrderSupplementScheduleComponent() {
+      public SupplementScheduleComponent() {
         super();
       }
 
@@ -1738,7 +1738,7 @@ public class NutritionOrder extends DomainResource {
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public NutritionOrderSupplementScheduleComponent setTiming(List<Timing> theTiming) { 
+        public SupplementScheduleComponent setTiming(List<Timing> theTiming) { 
           this.timing = theTiming;
           return this;
         }
@@ -1760,7 +1760,7 @@ public class NutritionOrder extends DomainResource {
           return t;
         }
 
-        public NutritionOrderSupplementScheduleComponent addTiming(Timing t) { //3
+        public SupplementScheduleComponent addTiming(Timing t) { //3
           if (t == null)
             return this;
           if (this.timing == null)
@@ -1785,7 +1785,7 @@ public class NutritionOrder extends DomainResource {
         public BooleanType getAsNeededElement() { 
           if (this.asNeeded == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create NutritionOrderSupplementScheduleComponent.asNeeded");
+              throw new Error("Attempt to auto-create SupplementScheduleComponent.asNeeded");
             else if (Configuration.doAutoCreate())
               this.asNeeded = new BooleanType(); // bb
           return this.asNeeded;
@@ -1802,7 +1802,7 @@ public class NutritionOrder extends DomainResource {
         /**
          * @param value {@link #asNeeded} (Indicates whether the supplement is only taken when needed within a specific dosing schedule.). This is the underlying object with id, value and extensions. The accessor "getAsNeeded" gives direct access to the value
          */
-        public NutritionOrderSupplementScheduleComponent setAsNeededElement(BooleanType value) { 
+        public SupplementScheduleComponent setAsNeededElement(BooleanType value) { 
           this.asNeeded = value;
           return this;
         }
@@ -1817,7 +1817,7 @@ public class NutritionOrder extends DomainResource {
         /**
          * @param value Indicates whether the supplement is only taken when needed within a specific dosing schedule.
          */
-        public NutritionOrderSupplementScheduleComponent setAsNeeded(boolean value) { 
+        public SupplementScheduleComponent setAsNeeded(boolean value) { 
             if (this.asNeeded == null)
               this.asNeeded = new BooleanType();
             this.asNeeded.setValue(value);
@@ -1830,7 +1830,7 @@ public class NutritionOrder extends DomainResource {
         public CodeableConcept getAsNeededFor() { 
           if (this.asNeededFor == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create NutritionOrderSupplementScheduleComponent.asNeededFor");
+              throw new Error("Attempt to auto-create SupplementScheduleComponent.asNeededFor");
             else if (Configuration.doAutoCreate())
               this.asNeededFor = new CodeableConcept(); // cc
           return this.asNeededFor;
@@ -1843,7 +1843,7 @@ public class NutritionOrder extends DomainResource {
         /**
          * @param value {@link #asNeededFor} (Indicates whether the supplement is only taken based on a precondition for taking the supplement.)
          */
-        public NutritionOrderSupplementScheduleComponent setAsNeededFor(CodeableConcept value) { 
+        public SupplementScheduleComponent setAsNeededFor(CodeableConcept value) { 
           this.asNeededFor = value;
           return this;
         }
@@ -1945,13 +1945,13 @@ public class NutritionOrder extends DomainResource {
           return super.addChild(name);
       }
 
-      public NutritionOrderSupplementScheduleComponent copy() {
-        NutritionOrderSupplementScheduleComponent dst = new NutritionOrderSupplementScheduleComponent();
+      public SupplementScheduleComponent copy() {
+        SupplementScheduleComponent dst = new SupplementScheduleComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(NutritionOrderSupplementScheduleComponent dst) {
+      public void copyValues(SupplementScheduleComponent dst) {
         super.copyValues(dst);
         if (timing != null) {
           dst.timing = new ArrayList<Timing>();
@@ -1966,9 +1966,9 @@ public class NutritionOrder extends DomainResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof NutritionOrderSupplementScheduleComponent))
+        if (!(other_ instanceof SupplementScheduleComponent))
           return false;
-        NutritionOrderSupplementScheduleComponent o = (NutritionOrderSupplementScheduleComponent) other_;
+        SupplementScheduleComponent o = (SupplementScheduleComponent) other_;
         return compareDeep(timing, o.timing, true) && compareDeep(asNeeded, o.asNeeded, true) && compareDeep(asNeededFor, o.asNeededFor, true)
           ;
       }
@@ -1977,9 +1977,9 @@ public class NutritionOrder extends DomainResource {
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof NutritionOrderSupplementScheduleComponent))
+        if (!(other_ instanceof SupplementScheduleComponent))
           return false;
-        NutritionOrderSupplementScheduleComponent o = (NutritionOrderSupplementScheduleComponent) other_;
+        SupplementScheduleComponent o = (SupplementScheduleComponent) other_;
         return compareValues(asNeeded, o.asNeeded, true);
       }
 
@@ -2952,7 +2952,7 @@ public class NutritionOrder extends DomainResource {
          */
         @Child(name = "schedule", type = {}, order=1, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Scheduling information for enteral formula products", formalDefinition="Schedule information for an enteral formula." )
-        protected NutritionOrderEnteralFormulaAdministrationScheduleComponent schedule;
+        protected EnteralFormulaScheduleComponent schedule;
 
         /**
          * The volume of formula to provide to the patient per the specified administration schedule.
@@ -2968,7 +2968,7 @@ public class NutritionOrder extends DomainResource {
         @Description(shortDefinition="Speed with which the formula is provided per period of time", formalDefinition="The rate of administration of formula via a feeding pump, e.g. 60 mL per hour, according to the specified schedule." )
         protected DataType rate;
 
-        private static final long serialVersionUID = -1648388394L;
+        private static final long serialVersionUID = 42374218L;
 
     /**
      * Constructor
@@ -2980,12 +2980,12 @@ public class NutritionOrder extends DomainResource {
         /**
          * @return {@link #schedule} (Schedule information for an enteral formula.)
          */
-        public NutritionOrderEnteralFormulaAdministrationScheduleComponent getSchedule() { 
+        public EnteralFormulaScheduleComponent getSchedule() { 
           if (this.schedule == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create NutritionOrderEnteralFormulaAdministrationComponent.schedule");
             else if (Configuration.doAutoCreate())
-              this.schedule = new NutritionOrderEnteralFormulaAdministrationScheduleComponent(); // cc
+              this.schedule = new EnteralFormulaScheduleComponent(); // cc
           return this.schedule;
         }
 
@@ -2996,7 +2996,7 @@ public class NutritionOrder extends DomainResource {
         /**
          * @param value {@link #schedule} (Schedule information for an enteral formula.)
          */
-        public NutritionOrderEnteralFormulaAdministrationComponent setSchedule(NutritionOrderEnteralFormulaAdministrationScheduleComponent value) { 
+        public NutritionOrderEnteralFormulaAdministrationComponent setSchedule(EnteralFormulaScheduleComponent value) { 
           this.schedule = value;
           return this;
         }
@@ -3100,7 +3100,7 @@ public class NutritionOrder extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -697920873: /*schedule*/ return this.schedule == null ? new Base[0] : new Base[] {this.schedule}; // NutritionOrderEnteralFormulaAdministrationScheduleComponent
+        case -697920873: /*schedule*/ return this.schedule == null ? new Base[0] : new Base[] {this.schedule}; // EnteralFormulaScheduleComponent
         case -1285004149: /*quantity*/ return this.quantity == null ? new Base[0] : new Base[] {this.quantity}; // Quantity
         case 3493088: /*rate*/ return this.rate == null ? new Base[0] : new Base[] {this.rate}; // DataType
         default: return super.getProperty(hash, name, checkValid);
@@ -3112,7 +3112,7 @@ public class NutritionOrder extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -697920873: // schedule
-          this.schedule = (NutritionOrderEnteralFormulaAdministrationScheduleComponent) value; // NutritionOrderEnteralFormulaAdministrationScheduleComponent
+          this.schedule = (EnteralFormulaScheduleComponent) value; // EnteralFormulaScheduleComponent
           return value;
         case -1285004149: // quantity
           this.quantity = TypeConvertor.castToQuantity(value); // Quantity
@@ -3128,7 +3128,7 @@ public class NutritionOrder extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("schedule")) {
-          this.schedule = (NutritionOrderEnteralFormulaAdministrationScheduleComponent) value; // NutritionOrderEnteralFormulaAdministrationScheduleComponent
+          this.schedule = (EnteralFormulaScheduleComponent) value; // EnteralFormulaScheduleComponent
         } else if (name.equals("quantity")) {
           this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("rate[x]")) {
@@ -3164,7 +3164,7 @@ public class NutritionOrder extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("schedule")) {
-          this.schedule = new NutritionOrderEnteralFormulaAdministrationScheduleComponent();
+          this.schedule = new EnteralFormulaScheduleComponent();
           return this.schedule;
         }
         else if (name.equals("quantity")) {
@@ -3230,7 +3230,7 @@ public class NutritionOrder extends DomainResource {
   }
 
     @Block()
-    public static class NutritionOrderEnteralFormulaAdministrationScheduleComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class EnteralFormulaScheduleComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * The time period and frequency at which the enteral formula should be given.  The enteral formula should be given for the combination of all schedules if more than one schedule is present.
          */
@@ -3258,7 +3258,7 @@ public class NutritionOrder extends DomainResource {
     /**
      * Constructor
      */
-      public NutritionOrderEnteralFormulaAdministrationScheduleComponent() {
+      public EnteralFormulaScheduleComponent() {
         super();
       }
 
@@ -3274,7 +3274,7 @@ public class NutritionOrder extends DomainResource {
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public NutritionOrderEnteralFormulaAdministrationScheduleComponent setTiming(List<Timing> theTiming) { 
+        public EnteralFormulaScheduleComponent setTiming(List<Timing> theTiming) { 
           this.timing = theTiming;
           return this;
         }
@@ -3296,7 +3296,7 @@ public class NutritionOrder extends DomainResource {
           return t;
         }
 
-        public NutritionOrderEnteralFormulaAdministrationScheduleComponent addTiming(Timing t) { //3
+        public EnteralFormulaScheduleComponent addTiming(Timing t) { //3
           if (t == null)
             return this;
           if (this.timing == null)
@@ -3321,7 +3321,7 @@ public class NutritionOrder extends DomainResource {
         public BooleanType getAsNeededElement() { 
           if (this.asNeeded == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create NutritionOrderEnteralFormulaAdministrationScheduleComponent.asNeeded");
+              throw new Error("Attempt to auto-create EnteralFormulaScheduleComponent.asNeeded");
             else if (Configuration.doAutoCreate())
               this.asNeeded = new BooleanType(); // bb
           return this.asNeeded;
@@ -3338,7 +3338,7 @@ public class NutritionOrder extends DomainResource {
         /**
          * @param value {@link #asNeeded} (Indicates whether the enteral formula is only taken when needed within a specific dosing schedule.). This is the underlying object with id, value and extensions. The accessor "getAsNeeded" gives direct access to the value
          */
-        public NutritionOrderEnteralFormulaAdministrationScheduleComponent setAsNeededElement(BooleanType value) { 
+        public EnteralFormulaScheduleComponent setAsNeededElement(BooleanType value) { 
           this.asNeeded = value;
           return this;
         }
@@ -3353,7 +3353,7 @@ public class NutritionOrder extends DomainResource {
         /**
          * @param value Indicates whether the enteral formula is only taken when needed within a specific dosing schedule.
          */
-        public NutritionOrderEnteralFormulaAdministrationScheduleComponent setAsNeeded(boolean value) { 
+        public EnteralFormulaScheduleComponent setAsNeeded(boolean value) { 
             if (this.asNeeded == null)
               this.asNeeded = new BooleanType();
             this.asNeeded.setValue(value);
@@ -3366,7 +3366,7 @@ public class NutritionOrder extends DomainResource {
         public CodeableConcept getAsNeededFor() { 
           if (this.asNeededFor == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create NutritionOrderEnteralFormulaAdministrationScheduleComponent.asNeededFor");
+              throw new Error("Attempt to auto-create EnteralFormulaScheduleComponent.asNeededFor");
             else if (Configuration.doAutoCreate())
               this.asNeededFor = new CodeableConcept(); // cc
           return this.asNeededFor;
@@ -3379,7 +3379,7 @@ public class NutritionOrder extends DomainResource {
         /**
          * @param value {@link #asNeededFor} (Indicates whether the enteral formula is only taken based on a precondition for taking the enteral formula.)
          */
-        public NutritionOrderEnteralFormulaAdministrationScheduleComponent setAsNeededFor(CodeableConcept value) { 
+        public EnteralFormulaScheduleComponent setAsNeededFor(CodeableConcept value) { 
           this.asNeededFor = value;
           return this;
         }
@@ -3481,13 +3481,13 @@ public class NutritionOrder extends DomainResource {
           return super.addChild(name);
       }
 
-      public NutritionOrderEnteralFormulaAdministrationScheduleComponent copy() {
-        NutritionOrderEnteralFormulaAdministrationScheduleComponent dst = new NutritionOrderEnteralFormulaAdministrationScheduleComponent();
+      public EnteralFormulaScheduleComponent copy() {
+        EnteralFormulaScheduleComponent dst = new EnteralFormulaScheduleComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(NutritionOrderEnteralFormulaAdministrationScheduleComponent dst) {
+      public void copyValues(EnteralFormulaScheduleComponent dst) {
         super.copyValues(dst);
         if (timing != null) {
           dst.timing = new ArrayList<Timing>();
@@ -3502,9 +3502,9 @@ public class NutritionOrder extends DomainResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof NutritionOrderEnteralFormulaAdministrationScheduleComponent))
+        if (!(other_ instanceof EnteralFormulaScheduleComponent))
           return false;
-        NutritionOrderEnteralFormulaAdministrationScheduleComponent o = (NutritionOrderEnteralFormulaAdministrationScheduleComponent) other_;
+        EnteralFormulaScheduleComponent o = (EnteralFormulaScheduleComponent) other_;
         return compareDeep(timing, o.timing, true) && compareDeep(asNeeded, o.asNeeded, true) && compareDeep(asNeededFor, o.asNeededFor, true)
           ;
       }
@@ -3513,9 +3513,9 @@ public class NutritionOrder extends DomainResource {
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof NutritionOrderEnteralFormulaAdministrationScheduleComponent))
+        if (!(other_ instanceof EnteralFormulaScheduleComponent))
           return false;
-        NutritionOrderEnteralFormulaAdministrationScheduleComponent o = (NutritionOrderEnteralFormulaAdministrationScheduleComponent) other_;
+        EnteralFormulaScheduleComponent o = (EnteralFormulaScheduleComponent) other_;
         return compareValues(asNeeded, o.asNeeded, true);
       }
 
@@ -3588,7 +3588,7 @@ public class NutritionOrder extends DomainResource {
     @Child(name = "priority", type = {CodeType.class}, order=7, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="routine | urgent | asap | stat", formalDefinition="Indicates how quickly the Nutrition Order should be addressed with respect to other        requests." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/request-priority")
-    protected Enumeration<RequestPriority> priority;
+    protected CodeType priority;
 
     /**
      * The person or set of individuals who needs the nutrition order for an oral diet, nutritional supplement and/or enteral or formula feeding.
@@ -3690,7 +3690,7 @@ public class NutritionOrder extends DomainResource {
     @Description(shortDefinition="Comments", formalDefinition="Comments made about the nutrition order by the requester, performer, subject or other participants." )
     protected List<Annotation> note;
 
-    private static final long serialVersionUID = 1579586862L;
+    private static final long serialVersionUID = 1069794549L;
 
   /**
    * Constructor
@@ -4092,12 +4092,12 @@ public class NutritionOrder extends DomainResource {
     /**
      * @return {@link #priority} (Indicates how quickly the Nutrition Order should be addressed with respect to other        requests.). This is the underlying object with id, value and extensions. The accessor "getPriority" gives direct access to the value
      */
-    public Enumeration<RequestPriority> getPriorityElement() { 
+    public CodeType getPriorityElement() { 
       if (this.priority == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create NutritionOrder.priority");
         else if (Configuration.doAutoCreate())
-          this.priority = new Enumeration<RequestPriority>(new RequestPriorityEnumFactory()); // bb
+          this.priority = new CodeType(); // bb
       return this.priority;
     }
 
@@ -4112,7 +4112,7 @@ public class NutritionOrder extends DomainResource {
     /**
      * @param value {@link #priority} (Indicates how quickly the Nutrition Order should be addressed with respect to other        requests.). This is the underlying object with id, value and extensions. The accessor "getPriority" gives direct access to the value
      */
-    public NutritionOrder setPriorityElement(Enumeration<RequestPriority> value) { 
+    public NutritionOrder setPriorityElement(CodeType value) { 
       this.priority = value;
       return this;
     }
@@ -4120,19 +4120,19 @@ public class NutritionOrder extends DomainResource {
     /**
      * @return Indicates how quickly the Nutrition Order should be addressed with respect to other        requests.
      */
-    public RequestPriority getPriority() { 
+    public String getPriority() { 
       return this.priority == null ? null : this.priority.getValue();
     }
 
     /**
      * @param value Indicates how quickly the Nutrition Order should be addressed with respect to other        requests.
      */
-    public NutritionOrder setPriority(RequestPriority value) { 
-      if (value == null)
+    public NutritionOrder setPriority(String value) { 
+      if (Utilities.noString(value))
         this.priority = null;
       else {
         if (this.priority == null)
-          this.priority = new Enumeration<RequestPriority>(new RequestPriorityEnumFactory());
+          this.priority = new CodeType();
         this.priority.setValue(value);
       }
       return this;
@@ -4785,7 +4785,7 @@ public class NutritionOrder extends DomainResource {
         case -332612366: /*basedOn*/ return this.basedOn == null ? new Base[0] : this.basedOn.toArray(new Base[this.basedOn.size()]); // Reference
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<RequestStatus>
         case -1183762788: /*intent*/ return this.intent == null ? new Base[0] : new Base[] {this.intent}; // Enumeration<RequestIntent>
-        case -1165461084: /*priority*/ return this.priority == null ? new Base[0] : new Base[] {this.priority}; // Enumeration<RequestPriority>
+        case -1165461084: /*priority*/ return this.priority == null ? new Base[0] : new Base[] {this.priority}; // CodeType
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Reference
         case 1524132147: /*encounter*/ return this.encounter == null ? new Base[0] : new Base[] {this.encounter}; // Reference
         case -1248768647: /*supportingInformation*/ return this.supportingInformation == null ? new Base[0] : this.supportingInformation.toArray(new Base[this.supportingInformation.size()]); // Reference
@@ -4832,8 +4832,7 @@ public class NutritionOrder extends DomainResource {
           this.intent = (Enumeration) value; // Enumeration<RequestIntent>
           return value;
         case -1165461084: // priority
-          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.priority = (Enumeration) value; // Enumeration<RequestPriority>
+          this.priority = TypeConvertor.castToCode(value); // CodeType
           return value;
         case -1867885268: // subject
           this.subject = TypeConvertor.castToReference(value); // Reference
@@ -4901,8 +4900,7 @@ public class NutritionOrder extends DomainResource {
           value = new RequestIntentEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.intent = (Enumeration) value; // Enumeration<RequestIntent>
         } else if (name.equals("priority")) {
-          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.priority = (Enumeration) value; // Enumeration<RequestPriority>
+          this.priority = TypeConvertor.castToCode(value); // CodeType
         } else if (name.equals("subject")) {
           this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("encounter")) {
@@ -5551,13 +5549,14 @@ public class NutritionOrder extends DomainResource {
 * [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
 * [ServiceRequest](servicerequest.html): Search by subject - a patient
 * [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
+* [SupplyRequest](supplyrequest.html): The patient or subject for whom the supply is destined
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | SupplyRequest.deliverFor | VisionPrescription.patient</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={BiologicallyDerivedProduct.class, Device.class, Group.class, Location.class, Medication.class, NutritionProduct.class, Organization.class, Patient.class, Practitioner.class, Procedure.class, Substance.class } )
+  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | SupplyRequest.deliverFor | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [SupplyRequest](supplyrequest.html): The patient or subject for whom the supply is destined\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={BiologicallyDerivedProduct.class, Device.class, Group.class, Location.class, Medication.class, NutritionProduct.class, Organization.class, Patient.class, Practitioner.class, Procedure.class, Substance.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
@@ -5595,10 +5594,11 @@ public class NutritionOrder extends DomainResource {
 * [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
 * [ServiceRequest](servicerequest.html): Search by subject - a patient
 * [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
+* [SupplyRequest](supplyrequest.html): The patient or subject for whom the supply is destined
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | SupplyRequest.deliverFor | VisionPrescription.patient</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);

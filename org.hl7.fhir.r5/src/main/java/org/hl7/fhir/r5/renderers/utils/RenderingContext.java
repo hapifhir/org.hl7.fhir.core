@@ -1,28 +1,23 @@
 package org.hl7.fhir.r5.renderers.utils;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
-import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider;
+import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DomainResource;
-import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r5.renderers.utils.Resolver.IReferenceResolver;
-import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.MarkDownProcessor;
@@ -77,6 +72,12 @@ public class RenderingContext {
      * Active content is allowed 
      */
     IG_PUBLISHER
+  }
+  
+  public enum StructureDefinitionRendererMode {
+    SUMMARY, // 5 cells: tree/name | flags | cardinality | type | details
+    BINDINGS, // tree/name + column for each kind of binding found, cells are lists of bindings 
+    OBLIGATIONS, // tree/name + column for each actor that has obligations
   }
   
   public enum QuestionnaireRendererMode {
@@ -144,6 +145,8 @@ public class RenderingContext {
   private boolean inlineGraphics;
 
   private QuestionnaireRendererMode questionnaireMode = QuestionnaireRendererMode.FORM;
+  private StructureDefinitionRendererMode structureMode = StructureDefinitionRendererMode.SUMMARY;
+  
   private boolean addGeneratedNarrativeHeader = true;
   private boolean showComments = false;
 
@@ -206,6 +209,7 @@ public class RenderingContext {
     res.destDir = destDir;
     res.addGeneratedNarrativeHeader = addGeneratedNarrativeHeader;
     res.questionnaireMode = questionnaireMode;
+    res.structureMode = structureMode;
     res.header = header;
     res.links.putAll(links);
     res.inlineGraphics = inlineGraphics;
@@ -361,6 +365,9 @@ public class RenderingContext {
 
   public RenderingContext setProfileUtilities(ProfileUtilities profileUtilities) {
     this.profileUtilitiesR = profileUtilities;
+    if (pkp == null && profileUtilities.getPkp() != null) {
+      pkp = profileUtilities.getPkp();
+    }
     return this;
   }
 
@@ -435,6 +442,15 @@ public class RenderingContext {
 
   public RenderingContext setQuestionnaireMode(QuestionnaireRendererMode questionnaireMode) {
     this.questionnaireMode = questionnaireMode;
+    return this;
+  }
+  
+  public StructureDefinitionRendererMode getStructureMode() {
+    return structureMode;
+  }
+
+  public RenderingContext setStructureMode(StructureDefinitionRendererMode structureMode) {
+    this.structureMode = structureMode;
     return this;
   }
 

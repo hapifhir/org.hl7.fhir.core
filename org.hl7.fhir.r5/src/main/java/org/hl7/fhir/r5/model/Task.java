@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -67,7 +67,7 @@ public class Task extends DomainResource {
          */
         PLAN, 
         /**
-         * The request represents a request/demand and authorization for action by a Practitioner.
+         * The request represents a request/demand and authorization for action by the requestor.
          */
         ORDER, 
         /**
@@ -155,7 +155,7 @@ public class Task extends DomainResource {
             case UNKNOWN: return "The intent is not known.  When dealing with Task, it's not always known (or relevant) how the task was initiated - i.e. whether it was proposed, planned, ordered or just done spontaneously.";
             case PROPOSAL: return "The request is a suggestion made by someone/something that does not have an intention to ensure it occurs and without providing an authorization to act.";
             case PLAN: return "The request represents an intention to ensure something occurs without providing an authorization for others to act.";
-            case ORDER: return "The request represents a request/demand and authorization for action by a Practitioner.";
+            case ORDER: return "The request represents a request/demand and authorization for action by the requestor.";
             case ORIGINALORDER: return "The request represents an original authorization for action.";
             case REFLEXORDER: return "The request represents an automatically generated supplemental authorization for action based on a parent authorization together with initial results of the action taken against that parent authorization.";
             case FILLERORDER: return "The request represents the view of an authorization instantiated by a fulfilling system representing the details of the fulfiller's intention to act upon a submitted order.";

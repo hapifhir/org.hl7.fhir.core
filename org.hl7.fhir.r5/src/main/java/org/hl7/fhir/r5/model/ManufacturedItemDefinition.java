@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -375,10 +375,10 @@ public class ManufacturedItemDefinition extends DomainResource {
         protected List<CodeableConcept> function;
 
         /**
-         * The measurable amount of substance in this component, expressable in different ways (e.g. by mass or volume).
+         * The measurable amount of total quantity of all substances in the component, expressable in different ways (e.g. by mass or volume).
          */
         @Child(name = "amount", type = {Quantity.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="The measurable amount of substance in this component, expressable in different ways (e.g. by mass or volume)", formalDefinition="The measurable amount of substance in this component, expressable in different ways (e.g. by mass or volume)." )
+        @Description(shortDefinition="The measurable amount of total quantity of all substances in the component, expressable in different ways (e.g. by mass or volume)", formalDefinition="The measurable amount of total quantity of all substances in the component, expressable in different ways (e.g. by mass or volume)." )
         protected List<Quantity> amount;
 
         /**
@@ -497,7 +497,7 @@ public class ManufacturedItemDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #amount} (The measurable amount of substance in this component, expressable in different ways (e.g. by mass or volume).)
+         * @return {@link #amount} (The measurable amount of total quantity of all substances in the component, expressable in different ways (e.g. by mass or volume).)
          */
         public List<Quantity> getAmount() { 
           if (this.amount == null)
@@ -712,7 +712,7 @@ public class ManufacturedItemDefinition extends DomainResource {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "Defining type of the component e.g. shell, layer, ink.", 0, 1, type));
           children.add(new Property("function", "CodeableConcept", "The function of this component within the item e.g. delivers active ingredient, masks taste.", 0, java.lang.Integer.MAX_VALUE, function));
-          children.add(new Property("amount", "Quantity", "The measurable amount of substance in this component, expressable in different ways (e.g. by mass or volume).", 0, java.lang.Integer.MAX_VALUE, amount));
+          children.add(new Property("amount", "Quantity", "The measurable amount of total quantity of all substances in the component, expressable in different ways (e.g. by mass or volume).", 0, java.lang.Integer.MAX_VALUE, amount));
           children.add(new Property("constituent", "", "A reference to an constituent of the manufactured item as a whole, linked here so that its component location within the item can be indicated. This not where the item's ingredient are primarily stated (for which see Ingredient.for or ManufacturedItemDefinition.ingredient).", 0, java.lang.Integer.MAX_VALUE, constituent));
           children.add(new Property("property", "@ManufacturedItemDefinition.property", "General characteristics of this component.", 0, java.lang.Integer.MAX_VALUE, property));
           children.add(new Property("component", "@ManufacturedItemDefinition.component", "A component that this component contains or is made from.", 0, java.lang.Integer.MAX_VALUE, component));
@@ -723,7 +723,7 @@ public class ManufacturedItemDefinition extends DomainResource {
           switch (_hash) {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Defining type of the component e.g. shell, layer, ink.", 0, 1, type);
           case 1380938712: /*function*/  return new Property("function", "CodeableConcept", "The function of this component within the item e.g. delivers active ingredient, masks taste.", 0, java.lang.Integer.MAX_VALUE, function);
-          case -1413853096: /*amount*/  return new Property("amount", "Quantity", "The measurable amount of substance in this component, expressable in different ways (e.g. by mass or volume).", 0, java.lang.Integer.MAX_VALUE, amount);
+          case -1413853096: /*amount*/  return new Property("amount", "Quantity", "The measurable amount of total quantity of all substances in the component, expressable in different ways (e.g. by mass or volume).", 0, java.lang.Integer.MAX_VALUE, amount);
           case -1846470364: /*constituent*/  return new Property("constituent", "", "A reference to an constituent of the manufactured item as a whole, linked here so that its component location within the item can be indicated. This not where the item's ingredient are primarily stated (for which see Ingredient.for or ManufacturedItemDefinition.ingredient).", 0, java.lang.Integer.MAX_VALUE, constituent);
           case -993141291: /*property*/  return new Property("property", "@ManufacturedItemDefinition.property", "General characteristics of this component.", 0, java.lang.Integer.MAX_VALUE, property);
           case -1399907075: /*component*/  return new Property("component", "@ManufacturedItemDefinition.component", "A component that this component contains or is made from.", 0, java.lang.Integer.MAX_VALUE, component);
@@ -917,17 +917,17 @@ public class ManufacturedItemDefinition extends DomainResource {
     @Block()
     public static class ManufacturedItemDefinitionComponentConstituentComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * The measurable amount of this constituent in this component, expressable in different ways (e.g. by mass or volume).
+         * The measurable amount of the substance, expressable in different ways (e.g. by mass or volume).
          */
         @Child(name = "amount", type = {Quantity.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="The measurable amount of this constituent in this component, expressable in different ways (e.g. by mass or volume)", formalDefinition="The measurable amount of this constituent in this component, expressable in different ways (e.g. by mass or volume)." )
+        @Description(shortDefinition="The measurable amount of the substance, expressable in different ways (e.g. by mass or volume)", formalDefinition="The measurable amount of the substance, expressable in different ways (e.g. by mass or volume)." )
         protected List<Quantity> amount;
 
         /**
-         * The type of location of the constituent within this component e.g. intragranular, blend.
+         * The physical location of the constituent/ingredient within the component. Example – if the component is the bead in the capsule, then the location would be where the ingredient resides within the product part – intragranular, extra-granular, etc.
          */
         @Child(name = "location", type = {CodeableConcept.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="The type of location of the constituent within this component e.g. intragranular, blend", formalDefinition="The type of location of the constituent within this component e.g. intragranular, blend." )
+        @Description(shortDefinition="The physical location of the constituent/ingredient within the component", formalDefinition="The physical location of the constituent/ingredient within the component. Example – if the component is the bead in the capsule, then the location would be where the ingredient resides within the product part – intragranular, extra-granular, etc." )
         protected List<CodeableConcept> location;
 
         /**
@@ -938,13 +938,13 @@ public class ManufacturedItemDefinition extends DomainResource {
         protected List<CodeableConcept> function;
 
         /**
-         * An ingredient that this component is the location for in this manufactured item. The component is physically made of this ingredient (and possibly others), rather than just being a container for it.
+         * The ingredient that is the constituent of the given component.
          */
-        @Child(name = "locationForIngredient", type = {CodeableReference.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="An ingredient that this component is the location of in this manufactured item. The component is physically made of this ingredient (and possibly others), rather than just being a container for it", formalDefinition="An ingredient that this component is the location for in this manufactured item. The component is physically made of this ingredient (and possibly others), rather than just being a container for it." )
-        protected List<CodeableReference> locationForIngredient;
+        @Child(name = "hasIngredient", type = {CodeableReference.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Description(shortDefinition="The ingredient that is the constituent of the given component", formalDefinition="The ingredient that is the constituent of the given component." )
+        protected List<CodeableReference> hasIngredient;
 
-        private static final long serialVersionUID = -33501583L;
+        private static final long serialVersionUID = -708786069L;
 
     /**
      * Constructor
@@ -954,7 +954,7 @@ public class ManufacturedItemDefinition extends DomainResource {
       }
 
         /**
-         * @return {@link #amount} (The measurable amount of this constituent in this component, expressable in different ways (e.g. by mass or volume).)
+         * @return {@link #amount} (The measurable amount of the substance, expressable in different ways (e.g. by mass or volume).)
          */
         public List<Quantity> getAmount() { 
           if (this.amount == null)
@@ -1007,7 +1007,7 @@ public class ManufacturedItemDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #location} (The type of location of the constituent within this component e.g. intragranular, blend.)
+         * @return {@link #location} (The physical location of the constituent/ingredient within the component. Example – if the component is the bead in the capsule, then the location would be where the ingredient resides within the product part – intragranular, extra-granular, etc.)
          */
         public List<CodeableConcept> getLocation() { 
           if (this.location == null)
@@ -1113,73 +1113,73 @@ public class ManufacturedItemDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #locationForIngredient} (An ingredient that this component is the location for in this manufactured item. The component is physically made of this ingredient (and possibly others), rather than just being a container for it.)
+         * @return {@link #hasIngredient} (The ingredient that is the constituent of the given component.)
          */
-        public List<CodeableReference> getLocationForIngredient() { 
-          if (this.locationForIngredient == null)
-            this.locationForIngredient = new ArrayList<CodeableReference>();
-          return this.locationForIngredient;
+        public List<CodeableReference> getHasIngredient() { 
+          if (this.hasIngredient == null)
+            this.hasIngredient = new ArrayList<CodeableReference>();
+          return this.hasIngredient;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public ManufacturedItemDefinitionComponentConstituentComponent setLocationForIngredient(List<CodeableReference> theLocationForIngredient) { 
-          this.locationForIngredient = theLocationForIngredient;
+        public ManufacturedItemDefinitionComponentConstituentComponent setHasIngredient(List<CodeableReference> theHasIngredient) { 
+          this.hasIngredient = theHasIngredient;
           return this;
         }
 
-        public boolean hasLocationForIngredient() { 
-          if (this.locationForIngredient == null)
+        public boolean hasHasIngredient() { 
+          if (this.hasIngredient == null)
             return false;
-          for (CodeableReference item : this.locationForIngredient)
+          for (CodeableReference item : this.hasIngredient)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public CodeableReference addLocationForIngredient() { //3
+        public CodeableReference addHasIngredient() { //3
           CodeableReference t = new CodeableReference();
-          if (this.locationForIngredient == null)
-            this.locationForIngredient = new ArrayList<CodeableReference>();
-          this.locationForIngredient.add(t);
+          if (this.hasIngredient == null)
+            this.hasIngredient = new ArrayList<CodeableReference>();
+          this.hasIngredient.add(t);
           return t;
         }
 
-        public ManufacturedItemDefinitionComponentConstituentComponent addLocationForIngredient(CodeableReference t) { //3
+        public ManufacturedItemDefinitionComponentConstituentComponent addHasIngredient(CodeableReference t) { //3
           if (t == null)
             return this;
-          if (this.locationForIngredient == null)
-            this.locationForIngredient = new ArrayList<CodeableReference>();
-          this.locationForIngredient.add(t);
+          if (this.hasIngredient == null)
+            this.hasIngredient = new ArrayList<CodeableReference>();
+          this.hasIngredient.add(t);
           return this;
         }
 
         /**
-         * @return The first repetition of repeating field {@link #locationForIngredient}, creating it if it does not already exist {3}
+         * @return The first repetition of repeating field {@link #hasIngredient}, creating it if it does not already exist {3}
          */
-        public CodeableReference getLocationForIngredientFirstRep() { 
-          if (getLocationForIngredient().isEmpty()) {
-            addLocationForIngredient();
+        public CodeableReference getHasIngredientFirstRep() { 
+          if (getHasIngredient().isEmpty()) {
+            addHasIngredient();
           }
-          return getLocationForIngredient().get(0);
+          return getHasIngredient().get(0);
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("amount", "Quantity", "The measurable amount of this constituent in this component, expressable in different ways (e.g. by mass or volume).", 0, java.lang.Integer.MAX_VALUE, amount));
-          children.add(new Property("location", "CodeableConcept", "The type of location of the constituent within this component e.g. intragranular, blend.", 0, java.lang.Integer.MAX_VALUE, location));
+          children.add(new Property("amount", "Quantity", "The measurable amount of the substance, expressable in different ways (e.g. by mass or volume).", 0, java.lang.Integer.MAX_VALUE, amount));
+          children.add(new Property("location", "CodeableConcept", "The physical location of the constituent/ingredient within the component. Example – if the component is the bead in the capsule, then the location would be where the ingredient resides within the product part – intragranular, extra-granular, etc.", 0, java.lang.Integer.MAX_VALUE, location));
           children.add(new Property("function", "CodeableConcept", "The function of this constituent within the component e.g. binder.", 0, java.lang.Integer.MAX_VALUE, function));
-          children.add(new Property("locationForIngredient", "CodeableReference(Ingredient)", "An ingredient that this component is the location for in this manufactured item. The component is physically made of this ingredient (and possibly others), rather than just being a container for it.", 0, java.lang.Integer.MAX_VALUE, locationForIngredient));
+          children.add(new Property("hasIngredient", "CodeableReference(Ingredient)", "The ingredient that is the constituent of the given component.", 0, java.lang.Integer.MAX_VALUE, hasIngredient));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -1413853096: /*amount*/  return new Property("amount", "Quantity", "The measurable amount of this constituent in this component, expressable in different ways (e.g. by mass or volume).", 0, java.lang.Integer.MAX_VALUE, amount);
-          case 1901043637: /*location*/  return new Property("location", "CodeableConcept", "The type of location of the constituent within this component e.g. intragranular, blend.", 0, java.lang.Integer.MAX_VALUE, location);
+          case -1413853096: /*amount*/  return new Property("amount", "Quantity", "The measurable amount of the substance, expressable in different ways (e.g. by mass or volume).", 0, java.lang.Integer.MAX_VALUE, amount);
+          case 1901043637: /*location*/  return new Property("location", "CodeableConcept", "The physical location of the constituent/ingredient within the component. Example – if the component is the bead in the capsule, then the location would be where the ingredient resides within the product part – intragranular, extra-granular, etc.", 0, java.lang.Integer.MAX_VALUE, location);
           case 1380938712: /*function*/  return new Property("function", "CodeableConcept", "The function of this constituent within the component e.g. binder.", 0, java.lang.Integer.MAX_VALUE, function);
-          case 525382085: /*locationForIngredient*/  return new Property("locationForIngredient", "CodeableReference(Ingredient)", "An ingredient that this component is the location for in this manufactured item. The component is physically made of this ingredient (and possibly others), rather than just being a container for it.", 0, java.lang.Integer.MAX_VALUE, locationForIngredient);
+          case 483059723: /*hasIngredient*/  return new Property("hasIngredient", "CodeableReference(Ingredient)", "The ingredient that is the constituent of the given component.", 0, java.lang.Integer.MAX_VALUE, hasIngredient);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1191,7 +1191,7 @@ public class ManufacturedItemDefinition extends DomainResource {
         case -1413853096: /*amount*/ return this.amount == null ? new Base[0] : this.amount.toArray(new Base[this.amount.size()]); // Quantity
         case 1901043637: /*location*/ return this.location == null ? new Base[0] : this.location.toArray(new Base[this.location.size()]); // CodeableConcept
         case 1380938712: /*function*/ return this.function == null ? new Base[0] : this.function.toArray(new Base[this.function.size()]); // CodeableConcept
-        case 525382085: /*locationForIngredient*/ return this.locationForIngredient == null ? new Base[0] : this.locationForIngredient.toArray(new Base[this.locationForIngredient.size()]); // CodeableReference
+        case 483059723: /*hasIngredient*/ return this.hasIngredient == null ? new Base[0] : this.hasIngredient.toArray(new Base[this.hasIngredient.size()]); // CodeableReference
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1209,8 +1209,8 @@ public class ManufacturedItemDefinition extends DomainResource {
         case 1380938712: // function
           this.getFunction().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
-        case 525382085: // locationForIngredient
-          this.getLocationForIngredient().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
+        case 483059723: // hasIngredient
+          this.getHasIngredient().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1225,8 +1225,8 @@ public class ManufacturedItemDefinition extends DomainResource {
           this.getLocation().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("function")) {
           this.getFunction().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("locationForIngredient")) {
-          this.getLocationForIngredient().add(TypeConvertor.castToCodeableReference(value));
+        } else if (name.equals("hasIngredient")) {
+          this.getHasIngredient().add(TypeConvertor.castToCodeableReference(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -1238,7 +1238,7 @@ public class ManufacturedItemDefinition extends DomainResource {
         case -1413853096:  return addAmount(); 
         case 1901043637:  return addLocation(); 
         case 1380938712:  return addFunction(); 
-        case 525382085:  return addLocationForIngredient(); 
+        case 483059723:  return addHasIngredient(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -1250,7 +1250,7 @@ public class ManufacturedItemDefinition extends DomainResource {
         case -1413853096: /*amount*/ return new String[] {"Quantity"};
         case 1901043637: /*location*/ return new String[] {"CodeableConcept"};
         case 1380938712: /*function*/ return new String[] {"CodeableConcept"};
-        case 525382085: /*locationForIngredient*/ return new String[] {"CodeableReference"};
+        case 483059723: /*hasIngredient*/ return new String[] {"CodeableReference"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1267,8 +1267,8 @@ public class ManufacturedItemDefinition extends DomainResource {
         else if (name.equals("function")) {
           return addFunction();
         }
-        else if (name.equals("locationForIngredient")) {
-          return addLocationForIngredient();
+        else if (name.equals("hasIngredient")) {
+          return addHasIngredient();
         }
         else
           return super.addChild(name);
@@ -1297,10 +1297,10 @@ public class ManufacturedItemDefinition extends DomainResource {
           for (CodeableConcept i : function)
             dst.function.add(i.copy());
         };
-        if (locationForIngredient != null) {
-          dst.locationForIngredient = new ArrayList<CodeableReference>();
-          for (CodeableReference i : locationForIngredient)
-            dst.locationForIngredient.add(i.copy());
+        if (hasIngredient != null) {
+          dst.hasIngredient = new ArrayList<CodeableReference>();
+          for (CodeableReference i : hasIngredient)
+            dst.hasIngredient.add(i.copy());
         };
       }
 
@@ -1312,7 +1312,7 @@ public class ManufacturedItemDefinition extends DomainResource {
           return false;
         ManufacturedItemDefinitionComponentConstituentComponent o = (ManufacturedItemDefinitionComponentConstituentComponent) other_;
         return compareDeep(amount, o.amount, true) && compareDeep(location, o.location, true) && compareDeep(function, o.function, true)
-           && compareDeep(locationForIngredient, o.locationForIngredient, true);
+           && compareDeep(hasIngredient, o.hasIngredient, true);
       }
 
       @Override
@@ -1327,7 +1327,7 @@ public class ManufacturedItemDefinition extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(amount, location, function
-          , locationForIngredient);
+          , hasIngredient);
       }
 
   public String fhirType() {

@@ -105,7 +105,23 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   /**
    * Constructor
    */
+  @Deprecated
   public FilesystemPackageCacheManager(boolean userMode, int toolsVersion) throws IOException {
+    addPackageServer(PackageClient.PRIMARY_SERVER);
+    addPackageServer(PackageClient.SECONDARY_SERVER);
+
+    if (userMode)
+      cacheFolder = Utilities.path(System.getProperty("user.home"), ".fhir", "packages");
+    else
+      cacheFolder = Utilities.path("var", "lib", ".fhir", "packages");
+    if (!(new File(cacheFolder).exists()))
+      Utilities.createDirectory(cacheFolder);
+    if (!(new File(Utilities.path(cacheFolder, "packages.ini")).exists()))
+      TextFile.stringToFile("[cache]\r\nversion=" + CACHE_VERSION + "\r\n\r\n[urls]\r\n\r\n[local]\r\n\r\n", Utilities.path(cacheFolder, "packages.ini"), false);
+    createIniFile();
+  }
+
+  public FilesystemPackageCacheManager(boolean userMode) throws IOException {
     addPackageServer(PackageClient.PRIMARY_SERVER);
     addPackageServer(PackageClient.SECONDARY_SERVER);
 
@@ -203,7 +219,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   private void listSpecs(Map<String, String> specList, String server) throws IOException {
-    CachingPackageClient pc = new CachingPackageClient(server);
+    PackageClient pc = new PackageClient(server);
     List<PackageInfo> matches = pc.search(null, null, null, false);
     for (PackageInfo m : matches) {
       if (!specList.containsKey(m.getId())) {
@@ -231,7 +247,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     for (String nextPackageServer : getPackageServers()) {
       // special case:
       if (!(Utilities.existsInList(id,CommonPackages.ID_PUBPACK, "hl7.terminology.r5") && PackageClient.PRIMARY_SERVER.equals(nextPackageServer))) {
-        CachingPackageClient pc = new CachingPackageClient(nextPackageServer);
+        PackageClient pc = new PackageClient(nextPackageServer);
         try {
           return pc.getLatestVersion(id);
         } catch (IOException e) {
@@ -416,7 +432,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           if (progress)
             log(" done.");
         }
-        pck = loadPackageInfo(packRoot);
         if (!id.equals(npm.getNpm().asString("name")) || !v.equals(npm.getNpm().asString("version"))) {
           if (!id.equals(npm.getNpm().asString("name"))) {
             npm.getNpm().add("original-name", npm.getNpm().asString("name"));
@@ -430,6 +445,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           }
           TextFile.stringToFile(JsonParser.compose(npm.getNpm(), true), Utilities.path(cacheFolder, id + "#" + v, "package", "package.json"), false);
         }
+        pck = loadPackageInfo(packRoot);
       } catch (Exception e) {
         try {
           // don't leave a half extracted package behind

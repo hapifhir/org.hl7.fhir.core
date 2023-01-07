@@ -374,3 +374,63 @@ v: {
   "system" : "http://snomed.info/sct"
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "90655003"
+}, "url": "http://hl7.org/fhir/ValueSet/c80-practice-codes--0", "version": "5.0.0-snapshot3", "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+v: {
+  "severity" : "error",
+  "error" : "The code provided (http://snomed.info/sct#90655003) is not valid (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "24484000"
+}, "url": "http://hl7.org/fhir/ValueSet/condition-severity--0", "version": "5.0.0-snapshot3", "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+v: {
+  "display" : "Severe",
+  "code" : "24484000",
+  "system" : "http://snomed.info/sct"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "24484000",
+  "display" : "Severe"
+}, "url": "http://hl7.org/fhir/ValueSet/condition-severity", "version": "5.0.0-snapshot3", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"true"}####
+v: {
+  "display" : "Severe",
+  "code" : "24484000",
+  "system" : "http://snomed.info/sct"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "109006"
+}, "url": "http://hl7.org/fhir/ValueSet/clinical-findings--0", "version": "5.0.0-snapshot3", "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Anxiety disorder of childhood OR adolescence",
+  "code" : "109006",
+  "system" : "http://snomed.info/sct"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "109006",
+  "display" : "Anxiety disorder of childhood OR adolescence"
+}, "url": "http://hl7.org/fhir/ValueSet/clinical-findings", "version": "5.0.0-snapshot3", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+v: {
+  "display" : "Anxiety disorder of childhood OR adolescence",
+  "code" : "109006",
+  "system" : "http://snomed.info/sct"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "106004"
+}, "url": "http://hl7.org/fhir/ValueSet/clinical-findings--0", "version": "5.0.0-snapshot3", "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "The code provided (http://snomed.info/sct#106004) is not valid (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------

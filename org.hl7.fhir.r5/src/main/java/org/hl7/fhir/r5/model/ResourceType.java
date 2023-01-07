@@ -28,7 +28,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 
 
@@ -156,7 +156,6 @@ Account,
     QuestionnaireResponse,
     RegulatedAuthorization,
     RelatedPerson,
-    RequestGroup,
     RequestOrchestration,
     Requirements,
     ResearchStudy,
@@ -436,8 +435,6 @@ Account,
       return "regulatedauthorization";
     case RelatedPerson:
       return "relatedperson";
-    case RequestGroup:
-      return "requestgroup";
     case RequestOrchestration:
       return "requestorchestration";
     case Requirements:
@@ -753,8 +750,6 @@ Account,
       return RegulatedAuthorization;
     if ("RelatedPerson".equals(code))
       return RelatedPerson;
-    if ("RequestGroup".equals(code))
-      return RequestGroup;
     if ("RequestOrchestration".equals(code))
       return RequestOrchestration;
     if ("Requirements".equals(code))

@@ -202,7 +202,7 @@ public class VersionConvertorResourceNameMapper {
       case "RelatedPerson":
         return org.hl7.fhir.r5.model.RelatedPerson.class.getSimpleName();
       case "RequestGroup":
-        return org.hl7.fhir.r5.model.RequestGroup.class.getSimpleName();
+        return org.hl7.fhir.r5.model.RequestOrchestration.class.getSimpleName();
       case "ResearchStudy":
         return org.hl7.fhir.r5.model.ResearchStudy.class.getSimpleName();
       case "ResearchSubject":

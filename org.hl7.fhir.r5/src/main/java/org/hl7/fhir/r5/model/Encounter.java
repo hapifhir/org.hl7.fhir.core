@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -229,7 +229,7 @@ public class Encounter extends DomainResource {
           return PLANNED;
         if ("in-progress".equals(codeString))
           return INPROGRESS;
-        if ("onhold".equals(codeString))
+        if ("on-hold".equals(codeString))
           return ONHOLD;
         if ("discharged".equals(codeString))
           return DISCHARGED;
@@ -252,7 +252,7 @@ public class Encounter extends DomainResource {
           switch (this) {
             case PLANNED: return "planned";
             case INPROGRESS: return "in-progress";
-            case ONHOLD: return "onhold";
+            case ONHOLD: return "on-hold";
             case DISCHARGED: return "discharged";
             case COMPLETED: return "completed";
             case CANCELLED: return "cancelled";
@@ -319,7 +319,7 @@ public class Encounter extends DomainResource {
           return EncounterStatus.PLANNED;
         if ("in-progress".equals(codeString))
           return EncounterStatus.INPROGRESS;
-        if ("onhold".equals(codeString))
+        if ("on-hold".equals(codeString))
           return EncounterStatus.ONHOLD;
         if ("discharged".equals(codeString))
           return EncounterStatus.DISCHARGED;
@@ -347,7 +347,7 @@ public class Encounter extends DomainResource {
           return new Enumeration<EncounterStatus>(this, EncounterStatus.PLANNED);
         if ("in-progress".equals(codeString))
           return new Enumeration<EncounterStatus>(this, EncounterStatus.INPROGRESS);
-        if ("onhold".equals(codeString))
+        if ("on-hold".equals(codeString))
           return new Enumeration<EncounterStatus>(this, EncounterStatus.ONHOLD);
         if ("discharged".equals(codeString))
           return new Enumeration<EncounterStatus>(this, EncounterStatus.DISCHARGED);
@@ -369,7 +369,7 @@ public class Encounter extends DomainResource {
       if (code == EncounterStatus.INPROGRESS)
         return "in-progress";
       if (code == EncounterStatus.ONHOLD)
-        return "onhold";
+        return "on-hold";
       if (code == EncounterStatus.DISCHARGED)
         return "discharged";
       if (code == EncounterStatus.COMPLETED)
@@ -392,10 +392,10 @@ public class Encounter extends DomainResource {
     @Block()
     public static class StatusHistoryComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * planned | in-progress | onhold | discharged | completed | cancelled | discontinued | entered-in-error | unknown.
+         * planned | in-progress | on-hold | discharged | completed | cancelled | discontinued | entered-in-error | unknown.
          */
         @Child(name = "status", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="planned | in-progress | onhold | discharged | completed | cancelled | discontinued | entered-in-error | unknown", formalDefinition="planned | in-progress | onhold | discharged | completed | cancelled | discontinued | entered-in-error | unknown." )
+        @Description(shortDefinition="planned | in-progress | on-hold | discharged | completed | cancelled | discontinued | entered-in-error | unknown", formalDefinition="planned | in-progress | on-hold | discharged | completed | cancelled | discontinued | entered-in-error | unknown." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/encounter-status")
         protected Enumeration<EncounterStatus> status;
 
@@ -425,7 +425,7 @@ public class Encounter extends DomainResource {
       }
 
         /**
-         * @return {@link #status} (planned | in-progress | onhold | discharged | completed | cancelled | discontinued | entered-in-error | unknown.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+         * @return {@link #status} (planned | in-progress | on-hold | discharged | completed | cancelled | discontinued | entered-in-error | unknown.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
          */
         public Enumeration<EncounterStatus> getStatusElement() { 
           if (this.status == null)
@@ -445,7 +445,7 @@ public class Encounter extends DomainResource {
         }
 
         /**
-         * @param value {@link #status} (planned | in-progress | onhold | discharged | completed | cancelled | discontinued | entered-in-error | unknown.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+         * @param value {@link #status} (planned | in-progress | on-hold | discharged | completed | cancelled | discontinued | entered-in-error | unknown.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
          */
         public StatusHistoryComponent setStatusElement(Enumeration<EncounterStatus> value) { 
           this.status = value;
@@ -453,14 +453,14 @@ public class Encounter extends DomainResource {
         }
 
         /**
-         * @return planned | in-progress | onhold | discharged | completed | cancelled | discontinued | entered-in-error | unknown.
+         * @return planned | in-progress | on-hold | discharged | completed | cancelled | discontinued | entered-in-error | unknown.
          */
         public EncounterStatus getStatus() { 
           return this.status == null ? null : this.status.getValue();
         }
 
         /**
-         * @param value planned | in-progress | onhold | discharged | completed | cancelled | discontinued | entered-in-error | unknown.
+         * @param value planned | in-progress | on-hold | discharged | completed | cancelled | discontinued | entered-in-error | unknown.
          */
         public StatusHistoryComponent setStatus(EncounterStatus value) { 
             if (this.status == null)
@@ -495,14 +495,14 @@ public class Encounter extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("status", "code", "planned | in-progress | onhold | discharged | completed | cancelled | discontinued | entered-in-error | unknown.", 0, 1, status));
+          children.add(new Property("status", "code", "planned | in-progress | on-hold | discharged | completed | cancelled | discontinued | entered-in-error | unknown.", 0, 1, status));
           children.add(new Property("period", "Period", "The time that the episode was in the specified status.", 0, 1, period));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -892481550: /*status*/  return new Property("status", "code", "planned | in-progress | onhold | discharged | completed | cancelled | discontinued | entered-in-error | unknown.", 0, 1, status);
+          case -892481550: /*status*/  return new Property("status", "code", "planned | in-progress | on-hold | discharged | completed | cancelled | discontinued | entered-in-error | unknown.", 0, 1, status);
           case -991726143: /*period*/  return new Property("period", "Period", "The time that the episode was in the specified status.", 0, 1, period);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -629,7 +629,7 @@ public class Encounter extends DomainResource {
          */
         @Child(name = "class", type = {Coding.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="inpatient | outpatient | ambulatory | emergency +", formalDefinition="inpatient | outpatient | ambulatory | emergency +." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/EncounterClass")
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/encounter-class")
         protected Coding class_;
 
         /**
@@ -2361,10 +2361,10 @@ public class Encounter extends DomainResource {
     protected List<Identifier> identifier;
 
     /**
-     * planned | in-progress | onhold | discharged | completed | cancelled | discontinued | entered-in-error | unknown.
+     * planned | in-progress | on-hold | discharged | completed | cancelled | discontinued | entered-in-error | unknown.
      */
     @Child(name = "status", type = {CodeType.class}, order=1, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="planned | in-progress | onhold | discharged | completed | cancelled | discontinued | entered-in-error | unknown", formalDefinition="planned | in-progress | onhold | discharged | completed | cancelled | discontinued | entered-in-error | unknown." )
+    @Description(shortDefinition="planned | in-progress | on-hold | discharged | completed | cancelled | discontinued | entered-in-error | unknown", formalDefinition="planned | in-progress | on-hold | discharged | completed | cancelled | discontinued | entered-in-error | unknown." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/encounter-status")
     protected Enumeration<EncounterStatus> status;
 
@@ -2379,8 +2379,8 @@ public class Encounter extends DomainResource {
      * Concepts representing classification of patient encounter such as ambulatory (outpatient), inpatient, emergency, home health or others due to local variations.
      */
     @Child(name = "class", type = {CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Classification of patient encounter", formalDefinition="Concepts representing classification of patient encounter such as ambulatory (outpatient), inpatient, emergency, home health or others due to local variations." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/EncounterClass")
+    @Description(shortDefinition="Classification of patient encounter context - e.g. Inpatient, outpatient", formalDefinition="Concepts representing classification of patient encounter such as ambulatory (outpatient), inpatient, emergency, home health or others due to local variations." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/encounter-class")
     protected List<CodeableConcept> class_;
 
     /**
@@ -2402,7 +2402,7 @@ public class Encounter extends DomainResource {
      * Specific type of encounter (e.g. e-mail consultation, surgical day-care, skilled nursing, rehabilitation).
      */
     @Child(name = "type", type = {CodeableConcept.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Specific type of encounter", formalDefinition="Specific type of encounter (e.g. e-mail consultation, surgical day-care, skilled nursing, rehabilitation)." )
+    @Description(shortDefinition="Specific type of encounter (e.g. e-mail consultation, surgical day-care, ...)", formalDefinition="Specific type of encounter (e.g. e-mail consultation, surgical day-care, skilled nursing, rehabilitation)." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/encounter-type")
     protected List<CodeableConcept> type;
 
@@ -2507,9 +2507,7 @@ public class Encounter extends DomainResource {
     protected DateTimeType plannedEndDate;
 
     /**
-     * Actual quantity of time the encounter lasted. This excludes the time during leaves of absence.
-
-When missing it is the time in between the start and end values.
+     * Actual quantity of time the encounter lasted. This excludes the time during leaves of absence.When missing it is the time in between the start and end values.
      */
     @Child(name = "length", type = {Duration.class}, order=21, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Actual quantity of time the encounter lasted (less time absent)", formalDefinition="Actual quantity of time the encounter lasted. This excludes the time during leaves of absence.\r\rWhen missing it is the time in between the start and end values." )
@@ -2622,7 +2620,7 @@ When missing it is the time in between the start and end values.
     }
 
     /**
-     * @return {@link #status} (planned | in-progress | onhold | discharged | completed | cancelled | discontinued | entered-in-error | unknown.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     * @return {@link #status} (planned | in-progress | on-hold | discharged | completed | cancelled | discontinued | entered-in-error | unknown.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
     public Enumeration<EncounterStatus> getStatusElement() { 
       if (this.status == null)
@@ -2642,7 +2640,7 @@ When missing it is the time in between the start and end values.
     }
 
     /**
-     * @param value {@link #status} (planned | in-progress | onhold | discharged | completed | cancelled | discontinued | entered-in-error | unknown.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     * @param value {@link #status} (planned | in-progress | on-hold | discharged | completed | cancelled | discontinued | entered-in-error | unknown.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
     public Encounter setStatusElement(Enumeration<EncounterStatus> value) { 
       this.status = value;
@@ -2650,14 +2648,14 @@ When missing it is the time in between the start and end values.
     }
 
     /**
-     * @return planned | in-progress | onhold | discharged | completed | cancelled | discontinued | entered-in-error | unknown.
+     * @return planned | in-progress | on-hold | discharged | completed | cancelled | discontinued | entered-in-error | unknown.
      */
     public EncounterStatus getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
-     * @param value planned | in-progress | onhold | discharged | completed | cancelled | discontinued | entered-in-error | unknown.
+     * @param value planned | in-progress | on-hold | discharged | completed | cancelled | discontinued | entered-in-error | unknown.
      */
     public Encounter setStatus(EncounterStatus value) { 
         if (this.status == null)
@@ -3492,9 +3490,7 @@ When missing it is the time in between the start and end values.
     }
 
     /**
-     * @return {@link #length} (Actual quantity of time the encounter lasted. This excludes the time during leaves of absence.
-
-When missing it is the time in between the start and end values.)
+     * @return {@link #length} (Actual quantity of time the encounter lasted. This excludes the time during leaves of absence.When missing it is the time in between the start and end values.)
      */
     public Duration getLength() { 
       if (this.length == null)
@@ -3510,9 +3506,7 @@ When missing it is the time in between the start and end values.)
     }
 
     /**
-     * @param value {@link #length} (Actual quantity of time the encounter lasted. This excludes the time during leaves of absence.
-
-When missing it is the time in between the start and end values.)
+     * @param value {@link #length} (Actual quantity of time the encounter lasted. This excludes the time during leaves of absence.When missing it is the time in between the start and end values.)
      */
     public Encounter setLength(Duration value) { 
       this.length = value;
@@ -3758,7 +3752,7 @@ When missing it is the time in between the start and end values.)
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Identifier(s) by which this encounter is known.", 0, java.lang.Integer.MAX_VALUE, identifier));
-        children.add(new Property("status", "code", "planned | in-progress | onhold | discharged | completed | cancelled | discontinued | entered-in-error | unknown.", 0, 1, status));
+        children.add(new Property("status", "code", "planned | in-progress | on-hold | discharged | completed | cancelled | discontinued | entered-in-error | unknown.", 0, 1, status));
         children.add(new Property("statusHistory", "", "The status history permits the encounter resource to contain the status history without needing to read through the historical versions of the resource, or even have the server store them.", 0, java.lang.Integer.MAX_VALUE, statusHistory));
         children.add(new Property("class", "CodeableConcept", "Concepts representing classification of patient encounter such as ambulatory (outpatient), inpatient, emergency, home health or others due to local variations.", 0, java.lang.Integer.MAX_VALUE, class_));
         children.add(new Property("classHistory", "", "The class history permits the tracking of the encounters transitions without needing to go  through the resource history.  This would be used for a case where an admission starts of as an emergency encounter, then transitions into an inpatient scenario. Doing this and not restarting a new encounter ensures that any lab/diagnostic results can more easily follow the patient and not require re-processing and not get lost or cancelled during a kind of discharge from emergency to inpatient.", 0, java.lang.Integer.MAX_VALUE, classHistory));
@@ -3790,7 +3784,7 @@ When missing it is the time in between the start and end values.)
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Identifier(s) by which this encounter is known.", 0, java.lang.Integer.MAX_VALUE, identifier);
-        case -892481550: /*status*/  return new Property("status", "code", "planned | in-progress | onhold | discharged | completed | cancelled | discontinued | entered-in-error | unknown.", 0, 1, status);
+        case -892481550: /*status*/  return new Property("status", "code", "planned | in-progress | on-hold | discharged | completed | cancelled | discontinued | entered-in-error | unknown.", 0, 1, status);
         case -986695614: /*statusHistory*/  return new Property("statusHistory", "", "The status history permits the encounter resource to contain the status history without needing to read through the historical versions of the resource, or even have the server store them.", 0, java.lang.Integer.MAX_VALUE, statusHistory);
         case 94742904: /*class*/  return new Property("class", "CodeableConcept", "Concepts representing classification of patient encounter such as ambulatory (outpatient), inpatient, emergency, home health or others due to local variations.", 0, java.lang.Integer.MAX_VALUE, class_);
         case 962575356: /*classHistory*/  return new Property("classHistory", "", "The class history permits the tracking of the encounters transitions without needing to go  through the resource history.  This would be used for a case where an admission starts of as an emergency encounter, then transitions into an inpatient scenario. Doing this and not restarting a new encounter ensures that any lab/diagnostic results can more easily follow the patient and not require re-processing and not get lost or cancelled during a kind of discharge from emergency to inpatient.", 0, java.lang.Integer.MAX_VALUE, classHistory);
@@ -4802,17 +4796,17 @@ When missing it is the time in between the start and end values.)
  /**
    * Search parameter: <b>status</b>
    * <p>
-   * Description: <b>planned | in-progress | onhold | completed | cancelled | entered-in-error | unknown</b><br>
+   * Description: <b>planned | in-progress | on-hold | completed | cancelled | entered-in-error | unknown</b><br>
    * Type: <b>token</b><br>
    * Path: <b>Encounter.status</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="status", path="Encounter.status", description="planned | in-progress | onhold | completed | cancelled | entered-in-error | unknown", type="token" )
+  @SearchParamDefinition(name="status", path="Encounter.status", description="planned | in-progress | on-hold | completed | cancelled | entered-in-error | unknown", type="token" )
   public static final String SP_STATUS = "status";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>status</b>
    * <p>
-   * Description: <b>planned | in-progress | onhold | completed | cancelled | entered-in-error | unknown</b><br>
+   * Description: <b>planned | in-progress | on-hold | completed | cancelled | entered-in-error | unknown</b><br>
    * Type: <b>token</b><br>
    * Path: <b>Encounter.status</b><br>
    * </p>
@@ -4889,10 +4883,10 @@ When missing it is the time in between the start and end values.)
 * [SupplyRequest](supplyrequest.html): When the request was made
 </b><br>
    * Type: <b>date</b><br>
-   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
+   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.as(dateTime) | DiagnosticReport.effective.as(Period) | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective.as(dateTime) | Observation.effective.as(Period) | Observation.effective.as(Timing) | Observation.effective.as(instant) | Procedure.occurrence.as(dateTime) | Procedure.occurrence.as(Period) | Procedure.occurrence.as(Timing) | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="date", path="AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded\r\n* [CarePlan](careplan.html): Time period plan covers\r\n* [CareTeam](careteam.html): A date within the coverage time period.\r\n* [ClinicalImpression](clinicalimpression.html): When the assessment was documented\r\n* [Composition](composition.html): Composition editing time\r\n* [Consent](consent.html): When consent was agreed to\r\n* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report\r\n* [Encounter](encounter.html): A date within the actualPeriod the Encounter lasted\r\n* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period\r\n* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated\r\n* [Flag](flag.html): Time period when flag is active\r\n* [Immunization](immunization.html): Vaccination  (non)-Administration Date\r\n* [List](list.html): When the list was prepared\r\n* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period\r\n* [Procedure](procedure.html): When the procedure occurred or is occurring\r\n* [RiskAssessment](riskassessment.html): When was assessment made?\r\n* [SupplyRequest](supplyrequest.html): When the request was made\r\n", type="date" )
+  @SearchParamDefinition(name="date", path="AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.as(dateTime) | DiagnosticReport.effective.as(Period) | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective.as(dateTime) | Observation.effective.as(Period) | Observation.effective.as(Timing) | Observation.effective.as(instant) | Procedure.occurrence.as(dateTime) | Procedure.occurrence.as(Period) | Procedure.occurrence.as(Timing) | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded\r\n* [CarePlan](careplan.html): Time period plan covers\r\n* [CareTeam](careteam.html): A date within the coverage time period.\r\n* [ClinicalImpression](clinicalimpression.html): When the assessment was documented\r\n* [Composition](composition.html): Composition editing time\r\n* [Consent](consent.html): When consent was agreed to\r\n* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report\r\n* [Encounter](encounter.html): A date within the actualPeriod the Encounter lasted\r\n* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period\r\n* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated\r\n* [Flag](flag.html): Time period when flag is active\r\n* [Immunization](immunization.html): Vaccination  (non)-Administration Date\r\n* [List](list.html): When the list was prepared\r\n* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period\r\n* [Procedure](procedure.html): When the procedure occurred or is occurring\r\n* [RiskAssessment](riskassessment.html): When was assessment made?\r\n* [SupplyRequest](supplyrequest.html): When the request was made\r\n", type="date" )
   public static final String SP_DATE = "date";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>date</b>
@@ -4918,7 +4912,7 @@ When missing it is the time in between the start and end values.)
 * [SupplyRequest](supplyrequest.html): When the request was made
 </b><br>
    * Type: <b>date</b><br>
-   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
+   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.as(dateTime) | DiagnosticReport.effective.as(Period) | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective.as(dateTime) | Observation.effective.as(Period) | Observation.effective.as(Timing) | Observation.effective.as(instant) | Procedure.occurrence.as(dateTime) | Procedure.occurrence.as(Period) | Procedure.occurrence.as(Timing) | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
@@ -5043,13 +5037,14 @@ When missing it is the time in between the start and end values.)
 * [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
 * [ServiceRequest](servicerequest.html): Search by subject - a patient
 * [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
+* [SupplyRequest](supplyrequest.html): The patient or subject for whom the supply is destined
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | SupplyRequest.deliverFor | VisionPrescription.patient</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={BiologicallyDerivedProduct.class, Device.class, Group.class, Location.class, Medication.class, NutritionProduct.class, Organization.class, Patient.class, Practitioner.class, Procedure.class, Substance.class } )
+  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | SupplyRequest.deliverFor | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the individual or set of individuals who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [SupplyRequest](supplyrequest.html): The patient or subject for whom the supply is destined\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={BiologicallyDerivedProduct.class, Device.class, Group.class, Location.class, Medication.class, NutritionProduct.class, Organization.class, Patient.class, Practitioner.class, Procedure.class, Substance.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
@@ -5087,10 +5082,11 @@ When missing it is the time in between the start and end values.)
 * [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
 * [ServiceRequest](servicerequest.html): Search by subject - a patient
 * [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
+* [SupplyRequest](supplyrequest.html): The patient or subject for whom the supply is destined
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.subject | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.subject.where(resolve() is Patient) | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | SupplyRequest.deliverFor | VisionPrescription.patient</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);

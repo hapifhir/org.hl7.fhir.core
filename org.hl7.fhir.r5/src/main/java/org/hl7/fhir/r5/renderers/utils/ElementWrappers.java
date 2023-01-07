@@ -7,10 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.conformance.ProfileUtilities.ElementDefinitionResolution;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.XmlParser;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
@@ -21,7 +19,6 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.renderers.ResourceRenderer;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.PropertyWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.RendererWrapperImpl;

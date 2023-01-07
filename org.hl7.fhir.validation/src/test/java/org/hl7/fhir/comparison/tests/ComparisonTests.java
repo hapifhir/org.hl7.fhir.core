@@ -32,7 +32,7 @@ import org.hl7.fhir.r5.comparison.ProfileComparer;
 import org.hl7.fhir.r5.comparison.ProfileComparer.ProfileComparison;
 import org.hl7.fhir.r5.comparison.ValueSetComparer;
 import org.hl7.fhir.r5.comparison.ValueSetComparer.ValueSetComparison;
-import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.BaseWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;

@@ -29,7 +29,7 @@ public class PackageHacker {
   private static boolean useSecureReferences = false;
   
   public static void main(String[] args) throws FileNotFoundException, IOException {
-    new PackageHacker().edit("/Users/grahamegrieve/work/www.fhir.org/source/guides/chile/hl7.fhir.cl.corecl#1.0.0.tgz");
+    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/5.0.0-snapshot3/hl7.fhir.r5.expansions.tgz");
   }
 
   private void edit(String name) throws FileNotFoundException, IOException {
@@ -49,7 +49,7 @@ public class PackageHacker {
     if (pck.getFolders().containsKey("xml")) {
       fixContent(pck.getFolders().get("xml").getContent());
     }
-    fixExampleContent(pck.getFolders().get("example").getContent());
+//    fixExampleContent(pck.getFolders().get("example").getContent());
     
     System.out.println("Revised Package");
     System.out.println("=======================");
@@ -64,9 +64,9 @@ public class PackageHacker {
   }
 
   private void fixExampleContent(Map<String, byte[]> content) {
-    byte[] cnt = content.get("ServiceRequest-SDOHCC-ServiceRequestCompletedFoodPantryApplicationAssistExample.json");
-    content.put("ServiceRequest-SDOHCC-ServiceRequestCompletedFoodPantryApplicationAssist.json", cnt);
-    content.remove("ServiceRequest-SDOHCC-ServiceRequestCompletedFoodPantryApplicationAssistExample.json");
+//    byte[] cnt = content.get("ServiceRequest-SDOHCC-ServiceRequestCompletedFoodPantryApplicationAssistExample.json");
+//    content.put("ServiceRequest-SDOHCC-ServiceRequestCompletedFoodPantryApplicationAssist.json", cnt);
+//    content.remove("ServiceRequest-SDOHCC-ServiceRequestCompletedFoodPantryApplicationAssistExample.json");
   }
 
   private void fixContent(Map<String, byte[]> content) {
@@ -80,9 +80,9 @@ public class PackageHacker {
 
   private void change(JsonObject npm) throws FileNotFoundException, IOException {
 //    fixVersions(npm);
-//    npm.remove("notForPublication");
-    npm.remove("url");
-    npm.add("url", "https://hl7chile.cl/fhir/ig/CoreCL/1.7.0");
+    npm.remove("notForPublication");
+//    npm.remove("url");
+//    npm.add("url", "https://hl7chile.cl/fhir/ig/CoreCL/1.7.0");
 //    npm.remove("name");
 //    npm.addProperty("name", "hl7.fhir.uv.smart-app-launch");
 //    npm.remove("canonical");

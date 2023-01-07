@@ -55,10 +55,10 @@ public class CodeSystemRenderer extends TerminologyRenderer {
         generateCopyright(x, cs );
     }
 
-    generateProperties(x, cs);
+    boolean props = generateProperties(x, cs);
     generateFilters(x, cs);
     List<UsedConceptMap> maps = new ArrayList<UsedConceptMap>();
-    hasExtensions = generateCodeSystemContent(x, cs, hasExtensions, maps);
+    hasExtensions = generateCodeSystemContent(x, cs, hasExtensions, maps, props);
 
     return hasExtensions;
   }
@@ -92,7 +92,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     }
   }
 
-  private void generateProperties(XhtmlNode x, CodeSystem cs) {
+  private boolean generateProperties(XhtmlNode x, CodeSystem cs) {
     if (cs.hasProperty()) {
       boolean hasRendered = false;
       boolean hasURI = false;
@@ -104,6 +104,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       }
       
       x.para().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Properties", getContext().getLang()));
+      x.para().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "This code system  defines the following properties for its concepts", getContext().getLang()));
       XhtmlNode tbl = x.table("grid");
       XhtmlNode tr = tbl.tr();
       if (hasRendered) {
@@ -111,7 +112,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       }
       tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Code", getContext().getLang()));
       if (hasURI) {
-        tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "URL", getContext().getLang()));
+        tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "URI", getContext().getLang()));
       }
       tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Type", getContext().getLang()));
       if (hasDescription) {
@@ -131,10 +132,16 @@ public class CodeSystemRenderer extends TerminologyRenderer {
           tr.td().tx(p.getDescription());
         }
       }
+      return true;
+    } else {
+      return false;
     }
   }
 
-  private boolean generateCodeSystemContent(XhtmlNode x, CodeSystem cs, boolean hasExtensions, List<UsedConceptMap> maps) throws FHIRFormatError, DefinitionException, IOException {
+  private boolean generateCodeSystemContent(XhtmlNode x, CodeSystem cs, boolean hasExtensions, List<UsedConceptMap> maps, boolean props) throws FHIRFormatError, DefinitionException, IOException {
+    if (props) {
+      x.para().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Concepts", getContext().getLang()));
+    }
     XhtmlNode p = x.para();
     p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), "This code system "));
     p.code().tx(cs.getUrl());

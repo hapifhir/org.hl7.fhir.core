@@ -28,7 +28,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Sat, Nov 5, 2022 10:47+1100 for FHIR v5.0.0-ballot
+// Generated on Tue, Dec 13, 2022 17:53+1100 for FHIR vcurrent
 
 
   
@@ -279,8 +279,6 @@ public class ResourceFactory extends Factory {
             return new RegulatedAuthorization();
         if ("RelatedPerson".equals(name))
             return new RelatedPerson();
-        if ("RequestGroup".equals(name))
-            return new RequestGroup();
         if ("RequestOrchestration".equals(name))
             return new RequestOrchestration();
         if ("Requirements".equals(name))
@@ -625,7 +623,6 @@ public class ResourceFactory extends Factory {
         case 269058788: return new QuestionnaireResponse();
         case 2137545436: return new RegulatedAuthorization();
         case 846088000: return new RelatedPerson();
-        case 1445374288: return new RequestGroup();
         case 1880382482: return new RequestOrchestration();
         case -1455554384: return new Requirements();
         case 1312904398: return new ResearchStudy();
