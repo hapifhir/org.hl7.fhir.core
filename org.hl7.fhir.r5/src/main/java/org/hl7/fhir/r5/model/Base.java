@@ -124,6 +124,7 @@ public abstract class Base implements Serializable, IBase, IElement {
     if (userData != null)
       userData.remove(name);
   }
+ 
   
   public void setUserDataINN(String name, Object value) {
     if (value == null)
