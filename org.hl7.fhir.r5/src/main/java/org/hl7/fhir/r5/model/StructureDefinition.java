@@ -5179,9 +5179,27 @@ public class StructureDefinition extends CanonicalResource {
     } else { 
       return getType(); 
     } 
-  } 
+  }
 
+  private boolean generatedSnapshot;
+  private boolean generatingSnapshot;
 
+  public boolean isGeneratedSnapshot() {
+    return generatedSnapshot;
+  }
+
+  public void setGeneratedSnapshot(boolean generatedSnapshot) {
+    this.generatedSnapshot = generatedSnapshot;
+  }
+
+  public boolean isGeneratingSnapshot() {
+    return generatingSnapshot;
+  }
+
+  public void setGeneratingSnapshot(boolean generatingSnapshot) {
+    this.generatingSnapshot = generatingSnapshot;
+  }
+  
 // end addition
 
 }
