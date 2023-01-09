@@ -11,12 +11,12 @@ import org.mockftpserver.fake.filesystem.FileEntry;
 import org.mockftpserver.fake.filesystem.FileSystem;
 import org.mockftpserver.fake.filesystem.UnixFakeFileSystem;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static org.hl7.fhir.utilities.tests.ResourceLoaderTests.getResourceAsInputStream;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -44,11 +44,22 @@ public class FTPClientTest implements ResourceLoaderTests {
 
   Path dummyFileToDeletePath;
 
+
   Path dummyFileToUploadPath;
+  Path dummyUploadedFilePath;
 
   @BeforeAll
-  public void setupFakeFtpServer() throws IOException {
+  public void setup() throws IOException {
+    setupDummyFileToUpload();
     setupFakeFtpDirectory();
+    setupFakeFtpServer();
+  }
+
+  private void setupDummyFileToUpload() throws IOException {
+    dummyFileToUploadPath = Files.createTempFile("dummyFtpFileToUpload", "dummy");
+  }
+
+  public void setupFakeFtpServer() throws IOException {
 
     fakeFtpServer = new FakeFtpServer();
     fakeFtpServer.addUserAccount(new UserAccount(DUMMY_USER, DUMMY_PASSWORD, fakeFtpDirectory.toFile().getAbsolutePath()));
@@ -71,7 +82,7 @@ public class FTPClientTest implements ResourceLoaderTests {
     Files.createDirectory(relativePath2);
 
     dummyFileToDeletePath = Files.createFile(relativePath2.resolve(DUMMY_FILE_TO_DELETE));
-    dummyFileToUploadPath = relativePath2.resolve(DUMMY_FILE_TO_UPLOAD);
+    dummyUploadedFilePath = relativePath2.resolve(DUMMY_FILE_TO_UPLOAD);
   }
 
   @AfterAll
@@ -125,9 +136,9 @@ public class FTPClientTest implements ResourceLoaderTests {
 
     assertTrue(loginSuccess);
 
-    String uploadFilePath = dummyFileToUploadPath.toFile().getAbsolutePath();
+    String uploadFilePath = dummyUploadedFilePath.toFile().getAbsolutePath();
 
-    InputStream localStream = getResourceAsInputStream("npm", "PackageClient-testCaseWithId.json");
+    InputStream localStream = new FileInputStream(dummyFileToUploadPath.toFile());
 
     assertFalse(fakeFtpServer.getFileSystem().exists(uploadFilePath));
 
