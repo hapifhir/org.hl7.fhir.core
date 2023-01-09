@@ -271,6 +271,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
         throw new FHIRException(context.formatMessage(I18nConstants.PROFILE___ERROR_GENERATING_SNAPSHOT, p.getName(), p.getUrl()));
       pu = null;
     }
+    p.setGeneratedSnapshot(true);
   }
   
 
