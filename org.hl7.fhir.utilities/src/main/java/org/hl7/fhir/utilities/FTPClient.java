@@ -41,6 +41,8 @@ public class FTPClient {
     clientImpl.connect(server);
     clientImpl.login(user, password);
 
+    clientImpl.getSystemType();
+
     int reply = clientImpl.getReplyCode();
 
     if(!FTPReply.isPositiveCompletion(reply)) {
@@ -58,9 +60,9 @@ public class FTPClient {
     String resolvedPath = resolveRemotePath(path);
     clientImpl.deleteFile(resolvedPath);
   }
-  
+
   private String resolveRemotePath(String path) {
-    return String.join("/", this.path, path);
+    return String.join("", this.path, path);
   }
 
   /**
@@ -71,7 +73,7 @@ public class FTPClient {
   public void upload(String source, String path) throws IOException {
     String resolvedPath = resolveRemotePath(path);
     FileInputStream localStream = new FileInputStream(new File(source));
-    clientImpl.appendFile( resolvedPath, localStream);
+    clientImpl.storeFile( resolvedPath, localStream);
   }
 
 }

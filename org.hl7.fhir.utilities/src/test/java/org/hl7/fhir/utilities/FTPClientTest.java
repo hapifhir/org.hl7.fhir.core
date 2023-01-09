@@ -3,7 +3,10 @@ package org.hl7.fhir.utilities;
 
 import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.mockftpserver.fake.FakeFtpServer;
 import org.mockftpserver.fake.UserAccount;
 import org.mockftpserver.fake.filesystem.DirectoryEntry;
@@ -11,9 +14,7 @@ import org.mockftpserver.fake.filesystem.FileEntry;
 import org.mockftpserver.fake.filesystem.FileSystem;
 import org.mockftpserver.fake.filesystem.UnixFakeFileSystem;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -110,7 +111,7 @@ public class FTPClientTest implements ResourceLoaderTests {
 
   @NotNull
   private static FTPClient connectToFTPClient() throws IOException {
-    FTPClient client = new FTPClient("localhost", RELATIVE_PATH_1, DUMMY_USER, DUMMY_PASSWORD);
+    FTPClient client = new FTPClient("localhost", RELATIVE_PATH_1 + "/", DUMMY_USER, DUMMY_PASSWORD);
     client.connect();
     return client;
   }
