@@ -65,7 +65,9 @@ public class FTPClientTest implements ResourceLoaderTests {
     fakeFtpServer.setServerControlPort(FAKE_FTP_PORT);
     fakeFtpServer.addUserAccount(new UserAccount(DUMMY_USER, DUMMY_PASSWORD, fakeFtpDirectory.toFile().getAbsolutePath()));
 
-    FileSystem fileSystem = System.getProperty("os.name") != null && System.getProperty("os.name").startsWith("Windows") ? new WindowsFakeFileSystem() : new UnixFakeFileSystem();
+    FileSystem fileSystem = useWindowsFileSystem()
+      ? new WindowsFakeFileSystem()
+      : new UnixFakeFileSystem();
     fileSystem.add(new DirectoryEntry(fakeFtpDirectory.toFile().getAbsolutePath()));
     fileSystem.add(new DirectoryEntry(relativePath1.toFile().getAbsolutePath()));
     fileSystem.add(new DirectoryEntry(relativePath2.toFile().getAbsolutePath()));
@@ -73,6 +75,10 @@ public class FTPClientTest implements ResourceLoaderTests {
     //fileSystem.add(new FileEntry("c:\\data\\run.exe"));
     fakeFtpServer.setFileSystem(fileSystem);
     fakeFtpServer.start();
+  }
+
+  private static boolean useWindowsFileSystem() {
+    return System.getProperty("os.name") != null && System.getProperty("os.name").startsWith("Windows");
   }
 
   private void setupFakeFtpDirectory() throws IOException {
