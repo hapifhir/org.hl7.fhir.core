@@ -24,8 +24,6 @@ public class StructureDefinition40_50Test {
   @Test
   @DisplayName("Test r5 -> r4 AuditEvent conversion.")
   public void testR5_R4() throws IOException {
-    //FIXME Do not keep this line separator output
-    System.out.println("SYSTEM LINE SEPARATOR: " + StringEscapeUtils.escapeJava(System.lineSeparator()));
     byte[] r4_input = getLineSeparatorNormalizedBytes("/sd-xpath-constraint-r4.xml");
     byte[] r5_input = getLineSeparatorNormalizedBytes("/sd-xpath-constraint-r5.xml");
 
