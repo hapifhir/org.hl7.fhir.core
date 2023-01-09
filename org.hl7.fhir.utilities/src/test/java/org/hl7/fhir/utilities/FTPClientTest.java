@@ -32,6 +32,7 @@ public class FTPClientTest implements ResourceLoaderTests {
   public static final String DUMMY_FILE_TO_DELETE = "dummyFileToDelete";
 
   public static final String DUMMY_FILE_TO_UPLOAD = "dummyFileToUpload";
+  public static final int FAKE_FTP_PORT = 8021;
 
 
   FakeFtpServer fakeFtpServer;
@@ -62,7 +63,9 @@ public class FTPClientTest implements ResourceLoaderTests {
 
   public void setupFakeFtpServer() throws IOException {
 
+
     fakeFtpServer = new FakeFtpServer();
+    fakeFtpServer.setServerControlPort(FAKE_FTP_PORT);
     fakeFtpServer.addUserAccount(new UserAccount(DUMMY_USER, DUMMY_PASSWORD, fakeFtpDirectory.toFile().getAbsolutePath()));
 
     FileSystem fileSystem = new UnixFakeFileSystem();
@@ -111,7 +114,7 @@ public class FTPClientTest implements ResourceLoaderTests {
 
   @NotNull
   private static FTPClient connectToFTPClient() throws IOException {
-    FTPClient client = new FTPClient("localhost", RELATIVE_PATH_1 + "/", DUMMY_USER, DUMMY_PASSWORD);
+    FTPClient client = new FTPClient("localhost", FAKE_FTP_PORT, RELATIVE_PATH_1 + "/", DUMMY_USER, DUMMY_PASSWORD);
     client.connect();
     return client;
   }

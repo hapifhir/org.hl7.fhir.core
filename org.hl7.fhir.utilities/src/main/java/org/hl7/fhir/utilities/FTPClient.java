@@ -19,6 +19,8 @@ public class FTPClient {
 
   final String password;
 
+  final int port;
+
   /**
    * Connect to an FTP server
    * @param server - the server to connect to (usually just an IP address). It's up to the system to figure out access (VPN etc)
@@ -27,10 +29,16 @@ public class FTPClient {
    * @param password - password for the FTP server
    */
   public FTPClient(String server, String path, String user, String password) {
+    this (server, -1, path, user, password);
+  }
+
+  protected FTPClient(String server, int port, String path, String user, String password) {
     this.server = server;
+    this.port = port;
     this.path = path;
     this.user = user;
     this.password = password;
+
     clientImpl = new org.apache.commons.net.ftp.FTPClient();
   }
 
@@ -38,7 +46,12 @@ public class FTPClient {
    * Connect to the server, throw an exception if it fails
    */
   public void connect() throws IOException {
-    clientImpl.connect(server);
+    if (port != -1) {
+      clientImpl.connect(server, port);
+    }
+    else {
+      clientImpl.connect(server);
+    }
     clientImpl.login(user, password);
 
     clientImpl.getSystemType();
