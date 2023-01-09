@@ -1,8 +1,8 @@
 package org.hl7.fhir.utilities;
 
-import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPReply;
+
 import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.*;
 import org.mockftpserver.fake.FakeFtpServer;
 import org.mockftpserver.fake.UserAccount;
@@ -93,60 +93,40 @@ public class FTPClientTest implements ResourceLoaderTests {
   @Test
  public void testDelete() throws IOException {
 
-    FTPClient client = new FTPClient();
-    client.connect("localhost");
-    boolean loginSuccess = client.login(DUMMY_USER, DUMMY_PASSWORD);
+    FTPClient client = connectToFTPClient();
 
-    int reply = client.getReplyCode();
-
-    if(!FTPReply.isPositiveCompletion(reply)) {
-      client.disconnect();
-      System.err.println("FTP server refused connection.");
-      System.exit(1);
-    }
-
-    assertTrue(loginSuccess);
 
     String deleteFilePath = dummyFileToDeletePath.toFile().getAbsolutePath();
 
     assertTrue(fakeFtpServer.getFileSystem().exists(deleteFilePath));
 
-    client.deleteFile(RELATIVE_PATH_1 + "/"+ RELATIVE_PATH_2 + "/" + DUMMY_FILE_TO_DELETE);
+    client.delete( RELATIVE_PATH_2 + "/" + DUMMY_FILE_TO_DELETE);
 
     assertFalse(fakeFtpServer.getFileSystem().exists(deleteFilePath));
 
-    client.disconnect();
+
 
  }
+
+  @NotNull
+  private static FTPClient connectToFTPClient() throws IOException {
+    FTPClient client = new FTPClient("localhost", RELATIVE_PATH_1, DUMMY_USER, DUMMY_PASSWORD);
+    client.connect();
+    return client;
+  }
 
   @Test
   public void testUpload() throws IOException {
 
-    FTPClient client = new FTPClient();
-    client.connect("localhost");
-    boolean loginSuccess = client.login(DUMMY_USER, DUMMY_PASSWORD);
-
-    int reply = client.getReplyCode();
-
-    if(!FTPReply.isPositiveCompletion(reply)) {
-      client.disconnect();
-      System.err.println("FTP server refused connection.");
-      System.exit(1);
-    }
-
-    assertTrue(loginSuccess);
+    FTPClient client = connectToFTPClient();
 
     String uploadFilePath = dummyUploadedFilePath.toFile().getAbsolutePath();
 
-    InputStream localStream = new FileInputStream(dummyFileToUploadPath.toFile());
-
     assertFalse(fakeFtpServer.getFileSystem().exists(uploadFilePath));
 
-    client.appendFile(RELATIVE_PATH_1 + "/"+ RELATIVE_PATH_2 + "/" + DUMMY_FILE_TO_UPLOAD, localStream);
+    client.upload(dummyFileToUploadPath.toFile().getAbsolutePath(), RELATIVE_PATH_2 + "/" + DUMMY_FILE_TO_UPLOAD);
 
     assertTrue(fakeFtpServer.getFileSystem().exists(uploadFilePath));
-
-    client.disconnect();
 
   }
 

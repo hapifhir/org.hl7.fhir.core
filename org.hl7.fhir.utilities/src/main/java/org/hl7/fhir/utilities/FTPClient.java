@@ -1,6 +1,20 @@
 package org.hl7.fhir.utilities;
 
+import org.apache.commons.net.ftp.FTPReply;
+
+import java.io.IOException;
+
 public class FTPClient {
+
+  private final org.apache.commons.net.ftp.FTPClient clientImpl;
+
+  final String server;
+
+  final String path;
+
+  final String user;
+
+  final String password;
 
   /**
    * Connect to an FTP server
@@ -10,12 +24,26 @@ public class FTPClient {
    * @param password - password for the FTP server
    */
   public FTPClient(String server, String path, String user, String password) {
+    this.server = server;
+    this.path = path;
+    this.user = user;
+    this.password = password;
+    clientImpl = new org.apache.commons.net.ftp.FTPClient();
   }
 
   /**
    * Connect to the server, throw an exception if it fails
    */
-  public void connect() {    
+  public void connect() throws IOException {
+    clientImpl.connect(server);
+    clientImpl.login(user, password);
+
+    int reply = clientImpl.getReplyCode();
+
+    if(!FTPReply.isPositiveCompletion(reply)) {
+      clientImpl.disconnect();
+      throw new IOException("FTP server refused connection.");
+    }
   }
 
   /**
