@@ -80,9 +80,8 @@ public class AuditEvent40_50Test {
 
     org.hl7.fhir.r5.model.Resource r5_streamed = (org.hl7.fhir.r5.model.AuditEvent) new org.hl7.fhir.r5.formats.XmlParser().parse(new ByteArrayInputStream(stream.toByteArray()));
 
-    System.out.println(((org.hl7.fhir.r5.model.AuditEvent)r5_conv).getEntity().get(0).getQueryElement().getValueAsString());
+  
 
-    //FIXME we should not be even getting this far.
     assertArrayEquals(((org.hl7.fhir.r5.model.AuditEvent)r5_conv).getEntity().get(0).getQuery(), INVALID_BASE_64_BINARY_BYTE_ARRAY);
     assertArrayEquals(((org.hl7.fhir.r5.model.AuditEvent)r5_streamed).getEntity().get(0).getQuery(), INVALID_BASE_64_BINARY_BYTE_ARRAY);
 
