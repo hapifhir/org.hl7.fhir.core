@@ -9,10 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.mockftpserver.fake.FakeFtpServer;
 import org.mockftpserver.fake.UserAccount;
-import org.mockftpserver.fake.filesystem.DirectoryEntry;
-import org.mockftpserver.fake.filesystem.FileEntry;
-import org.mockftpserver.fake.filesystem.FileSystem;
-import org.mockftpserver.fake.filesystem.UnixFakeFileSystem;
+import org.mockftpserver.fake.filesystem.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -68,7 +65,7 @@ public class FTPClientTest implements ResourceLoaderTests {
     fakeFtpServer.setServerControlPort(FAKE_FTP_PORT);
     fakeFtpServer.addUserAccount(new UserAccount(DUMMY_USER, DUMMY_PASSWORD, fakeFtpDirectory.toFile().getAbsolutePath()));
 
-    FileSystem fileSystem = new UnixFakeFileSystem();
+    FileSystem fileSystem = System.getProperty("os.name") != null && System.getProperty("os.name").startsWith("Windows") ? new WindowsFakeFileSystem() : new UnixFakeFileSystem();
     fileSystem.add(new DirectoryEntry(fakeFtpDirectory.toFile().getAbsolutePath()));
     fileSystem.add(new DirectoryEntry(relativePath1.toFile().getAbsolutePath()));
     fileSystem.add(new DirectoryEntry(relativePath2.toFile().getAbsolutePath()));
