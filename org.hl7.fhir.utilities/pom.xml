@@ -86,6 +86,12 @@
             <version>72.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>3.6</version>
+        </dependency>
+
         <!-- JUnit Jupiter -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -142,7 +148,12 @@
             <scope>provided</scope>
         </dependency>
 
-
+        <dependency>
+            <groupId>org.mockftpserver</groupId>
+            <artifactId>MockFtpServer</artifactId>
+            <version>3.1.0</version>
+            <scope>test</scope>
+        </dependency>
 
         <!--
         <dependency>
