@@ -68,7 +68,6 @@
             <groupId>net.sf.saxon</groupId>
             <artifactId>Saxon-HE</artifactId>
             <optional>true</optional>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>xpp3</groupId>
@@ -85,6 +84,12 @@
             <groupId>com.ibm.icu</groupId>
             <artifactId>icu4j</artifactId>
             <version>72.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>3.6</version>
         </dependency>
 
         <!-- JUnit Jupiter -->
@@ -143,7 +148,12 @@
             <scope>provided</scope>
         </dependency>
 
-
+        <dependency>
+            <groupId>org.mockftpserver</groupId>
+            <artifactId>MockFtpServer</artifactId>
+            <version>3.1.0</version>
+            <scope>test</scope>
+        </dependency>
 
         <!--
         <dependency>
