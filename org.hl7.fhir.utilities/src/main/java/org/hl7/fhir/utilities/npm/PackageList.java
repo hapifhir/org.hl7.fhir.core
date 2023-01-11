@@ -104,7 +104,9 @@ public class PackageList {
       json.set("path", path);
       json.set("status", status);
       json.set("sequence", sequence);
-      json.set("fhirversion", fhirVersion.toCode());    
+      if (fhirVersion != null) {
+        json.set("fhirversion", fhirVersion.toCode());
+      }
     }
     
     public void describe(String desc, String descMD, String changes) {
@@ -239,6 +241,7 @@ public class PackageList {
       json.getJsonArray("list").remove(cibuild.json);
     }
     cibuild = new PackageListEntry(new JsonObject());
+    cibuild.init(version, path, status, status, null);
     json.getJsonArray("list").add(0, cibuild.json);    
   }
 

@@ -75,7 +75,7 @@ public class FTPClient {
   }
 
   private String resolveRemotePath(String path) {
-    return String.join("", this.path, path);
+    return String.join("/", this.path, path);
   }
 
   /**
