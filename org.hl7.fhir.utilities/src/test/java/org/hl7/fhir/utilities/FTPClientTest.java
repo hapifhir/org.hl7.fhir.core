@@ -131,6 +131,25 @@ public class FTPClientTest implements ResourceLoaderTests {
   }
 
   @Test
+ public void testDelete2() throws IOException {
+
+    FTPClient client = connectToFTPClient2();
+
+    String deleteFilePath = dummyFileToDeletePath.toFile().getAbsolutePath();
+    assertTrue(fakeFtpServer.getFileSystem().exists(deleteFilePath));
+
+    client.delete( RELATIVE_PATH_2 + "/" + DUMMY_FILE_TO_DELETE);
+    assertFalse(fakeFtpServer.getFileSystem().exists(deleteFilePath));
+ }
+
+  @NotNull
+  private static FTPClient connectToFTPClient2() throws IOException {
+    FTPClient client = new FTPClient("localhost", FAKE_FTP_PORT, RELATIVE_PATH_1, DUMMY_USER, DUMMY_PASSWORD);
+    client.connect();
+    return client;
+  }
+
+  @Test
   public void testUpload() throws IOException {
 
     FTPClient client = connectToFTPClient();
