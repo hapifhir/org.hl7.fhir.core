@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities;
 
+import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPReply;
 
 
@@ -52,15 +53,16 @@ public class FTPClient {
     else {
       clientImpl.connect(server);
     }
+    //clientImpl.setFileTransferMode(FTP.BINARY_FILE_TYPE);
+
     clientImpl.login(user, password);
 
-    clientImpl.getSystemType();
 
     int reply = clientImpl.getReplyCode();
 
     if(!FTPReply.isPositiveCompletion(reply)) {
       clientImpl.disconnect();
-      throw new IOException("FTP server refused connection.");
+      throw new IOException("FTP server refused connection. Reply code: " + reply);
     }
   }
 
@@ -85,8 +87,20 @@ public class FTPClient {
    */
   public void upload(String source, String path) throws IOException {
     String resolvedPath = resolveRemotePath(path);
-    FileInputStream localStream = new FileInputStream(new File(source));
+    FileInputStream localStream = new FileInputStream(source);
+    clientImpl.setFileType(FTP.BINARY_FILE_TYPE);
     clientImpl.storeFile( resolvedPath, localStream);
+    localStream.close();
+
+    int reply = clientImpl.getReplyCode();
+
+    if(!FTPReply.isPositiveCompletion(reply)) {
+      throw new IOException("Error uploading file. Reply code: " + reply);
+    }
+  }
+
+  public void disconnect() throws IOException {
+    clientImpl.disconnect();
   }
 
 }
