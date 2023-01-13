@@ -36,7 +36,11 @@ public class FTPClient {
   protected FTPClient(String server, int port, String path, String user, String password) {
     this.server = server;
     this.port = port;
-    this.path = path;
+    if (path.endsWith("/")) {
+      this.path = path;
+    } else {
+      this.path = path + "/";
+    }
     this.user = user;
     this.password = password;
 
@@ -77,7 +81,7 @@ public class FTPClient {
   }
 
   private String resolveRemotePath(String path) {
-    return String.join("/", this.path, path);
+    return String.join("", this.path, path);
   }
 
   /**
