@@ -4,10 +4,7 @@ package org.hl7.fhir.utilities;
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.mockftpserver.fake.FakeFtpServer;
 import org.mockftpserver.fake.UserAccount;
 import org.mockftpserver.fake.filesystem.*;
@@ -53,7 +50,7 @@ public class FTPClientTest implements ResourceLoaderTests {
 
   String dummyFileContent;
 
-  @BeforeAll
+  @BeforeEach
   public void setup() throws IOException {
     setupDummyFileToUpload();
     setupFakeFtpDirectory();
@@ -106,7 +103,7 @@ public class FTPClientTest implements ResourceLoaderTests {
     dummyUploadedFilePath = relativePath2.resolve(DUMMY_FILE_TO_UPLOAD);
   }
 
-  @AfterAll
+  @AfterEach
   public void tearDownFakeFtpServer() {
     fakeFtpServer.stop();
   }
@@ -126,6 +123,26 @@ public class FTPClientTest implements ResourceLoaderTests {
   @NotNull
   private static FTPClient connectToFTPClient() throws IOException {
     FTPClient client = new FTPClient("localhost", FAKE_FTP_PORT, RELATIVE_PATH_1 + "/", DUMMY_USER, DUMMY_PASSWORD);
+    client.connect();
+    return client;
+  }
+
+  @Test
+ public void testDelete2() throws IOException {
+
+    FTPClient client = connectToFTPClient2();
+
+    String deleteFilePath = dummyFileToDeletePath.toFile().getAbsolutePath();
+    assertTrue(fakeFtpServer.getFileSystem().exists(deleteFilePath));
+
+    client.delete( RELATIVE_PATH_2 + "/" + DUMMY_FILE_TO_DELETE);
+    assertFalse(fakeFtpServer.getFileSystem().exists(deleteFilePath));
+    client.disconnect();
+ }
+
+  @NotNull
+  private static FTPClient connectToFTPClient2() throws IOException {
+    FTPClient client = new FTPClient("localhost", FAKE_FTP_PORT, RELATIVE_PATH_1, DUMMY_USER, DUMMY_PASSWORD);
     client.connect();
     return client;
   }

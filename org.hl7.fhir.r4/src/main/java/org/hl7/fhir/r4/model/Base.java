@@ -849,4 +849,8 @@ private Map<String, Object> userData;
     return null; 
   }
 
+  public XhtmlNode getXhtml() {
+    return null;
+  }
+
 }
