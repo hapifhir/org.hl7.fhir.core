@@ -331,7 +331,7 @@ public class SnapShotGenerationTests {
     }
 
     @Override
-    public Base resolveReference(Object appContext, String url) {
+    public Base resolveReference(Object appContext, String url, Base base) {
       // TODO Auto-generated method stub
       return null;
     }

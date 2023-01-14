@@ -32,6 +32,7 @@ package org.hl7.fhir.r4.model;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -57,6 +58,7 @@ public class TypeDetails {
   public static final String FP_Time = "http://hl7.org/fhirpath/Time";
   public static final String FP_SimpleTypeInfo = "http://hl7.org/fhirpath/SimpleTypeInfo";
   public static final String FP_ClassInfo = "http://hl7.org/fhirpath/ClassInfo";
+  public static final Set<String> FP_NUMBERS = new HashSet<String>(Arrays.asList(FP_Integer, FP_Decimal));
 
   public static class ProfiledType {
     private String uri;
@@ -207,7 +209,7 @@ public class TypeDetails {
         if (tail != null && typesContains(sd.getUrl()+"#"+sd.getType()+tail))
           return true;
         if (sd.hasBaseDefinition()) {
-          if (sd.getBaseDefinition().equals("http://hl7.org/fhir/StructureDefinition/Element") && !sd.getType().equals("string") && sd.getType().equals("uri"))
+          if (sd.getType().equals("uri"))
             sd = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/string");
           else
             sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
@@ -296,7 +298,7 @@ public class TypeDetails {
     String t = ProfiledType.ns(n);
     if (typesContains(t))
       return true;
-    if (Utilities.existsInList(n, "boolean", "string", "integer", "decimal", "Quantity", "dateTime", "time", "ClassInfo", "SimpleTypeInfo")) {
+    if (Utilities.existsInList(n, "boolean", "string", "integer", "decimal", "Quantity", "date", "dateTime", "time", "ClassInfo", "SimpleTypeInfo")) {
       t = FP_NS+Utilities.capitalize(n);
       if (typesContains(t))
         return true;

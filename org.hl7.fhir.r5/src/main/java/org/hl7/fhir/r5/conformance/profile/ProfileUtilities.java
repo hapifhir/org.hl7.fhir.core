@@ -1703,24 +1703,24 @@ public class ProfileUtilities extends TranslatingUtilities {
   private static boolean isLikelySourceURLReference(String url, List<String> resourceNames, Set<String> baseFilenames, Set<String> localFilenames) {
     if (resourceNames != null) {
       for (String n : resourceNames) {
-        if (url.startsWith(n.toLowerCase()+".html")) {
+        if (n != null && url.startsWith(n.toLowerCase()+".html")) {
           return true;
         }
-        if (url.startsWith(n.toLowerCase()+"-definitions.html")) {
+        if (n != null && url.startsWith(n.toLowerCase()+"-definitions.html")) {
           return true;
         }
       }
     }
     if (localFilenames != null) {
       for (String n : localFilenames) {
-        if (url.startsWith(n.toLowerCase())) {
+        if (n != null && url.startsWith(n.toLowerCase())) {
           return false;
         }
       }
     }
     if (baseFilenames != null) {
       for (String n : baseFilenames) {
-        if (url.startsWith(n.toLowerCase())) {
+        if (n != null && url.startsWith(n.toLowerCase())) {
           return true;
         }
       }
