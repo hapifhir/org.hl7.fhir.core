@@ -382,7 +382,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   
   public void scanBindings(Set<String> cols, List<ElementDefinition> list, ElementDefinition ed) {
     if (ed.hasBinding()) {
-      if (ed.getBinding().hasValueSet()) {
+      if (ed.getBinding().hasValueSet() && ed.getBinding().hasStrength()) {
         switch (ed.getBinding().getStrength()) {
         case EXAMPLE:
           cols.add("example");
@@ -770,7 +770,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     List<ElementDefinitionBindingAdditionalComponent> res = new ArrayList<>();
     if (element.hasBinding()) {
       ElementDefinitionBindingComponent b = element.getBinding();
-      if (type.equals(b.getStrength().toCode())) {
+      if (b.hasStrength() && type.equals(b.getStrength().toCode())) {
         ElementDefinitionBindingAdditionalComponent ab = new ElementDefinitionBindingAdditionalComponent();
         res.add(ab.setAny(false).setDocumentation(b.getDescription()).setValueSet(b.getValueSet()));
       }
@@ -990,6 +990,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
 
   private Row makeChoiceElementRow(HierarchicalTableGenerator gen, Row prow, ElementChoiceGroup grp, ElementDefinition parent, boolean isConstraintMode) {
+    if (context.getStructureMode() != StructureDefinitionRendererMode.SUMMARY) {
+      return prow;
+    }
     Row row = gen.new Row();
     row.setAnchor(parent.getPath()+"-"+grp.getName());
     row.setColor(context.getProfileUtilities().getRowColor(parent, isConstraintMode));
