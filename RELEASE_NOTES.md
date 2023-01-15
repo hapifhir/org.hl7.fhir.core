@@ -5,9 +5,4 @@
 
 ## Other code changes
 
-* Inclusion of SAXON dependency for processing XSLT
-* Error message spacing correction
-* Basic FTPClient implementation
-* test NPE in markdown processing
-* go-publish support
-* Start implementing loading structure maps with validation
+* no changes
