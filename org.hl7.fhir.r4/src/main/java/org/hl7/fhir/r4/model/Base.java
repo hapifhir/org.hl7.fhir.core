@@ -319,6 +319,9 @@ private Map<String, Object> userData;
 	// -- converters for property setters
 	
   public Type castToType(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
     if (b instanceof Type)
       return (Type) b;
     else if (b.isMetadataBased())
@@ -329,6 +332,9 @@ private Map<String, Object> userData;
   
 
 	public BooleanType castToBoolean(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof BooleanType)
 			return (BooleanType) b;
 		else
@@ -336,6 +342,9 @@ private Map<String, Object> userData;
 	}
 	
 	public IntegerType castToInteger(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof IntegerType)
 			return (IntegerType) b;
 		else
@@ -343,6 +352,9 @@ private Map<String, Object> userData;
 	}
 	
 	public DecimalType castToDecimal(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof DecimalType)
 			return (DecimalType) b;
     else if (b.hasPrimitiveValue())
@@ -352,6 +364,9 @@ private Map<String, Object> userData;
 	}
 	
 	public Base64BinaryType castToBase64Binary(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof Base64BinaryType)
 			return (Base64BinaryType) b;
 		else
@@ -359,6 +374,9 @@ private Map<String, Object> userData;
 	}
 	
 	public InstantType castToInstant(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof InstantType)
 			return (InstantType) b;
 		else
@@ -366,6 +384,9 @@ private Map<String, Object> userData;
 	}
 	
 	public StringType castToString(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof StringType)
 			return (StringType) b;
 		else if (b.hasPrimitiveValue())
@@ -375,6 +396,9 @@ private Map<String, Object> userData;
 	}
 	
   public UriType castToUri(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
     if (b instanceof UriType)
       return (UriType) b;
     else if (b.hasPrimitiveValue())
@@ -384,6 +408,9 @@ private Map<String, Object> userData;
   }
   
   public UrlType castToUrl(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
     if (b instanceof UrlType)
       return (UrlType) b;
     else if (b.hasPrimitiveValue())
@@ -393,6 +420,9 @@ private Map<String, Object> userData;
   }
   
   public CanonicalType castToCanonical(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
     if (b instanceof CanonicalType)
       return (CanonicalType) b;
     else if (b.hasPrimitiveValue())
@@ -402,6 +432,9 @@ private Map<String, Object> userData;
   }
   
 	public DateType castToDate(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof DateType)
 			return (DateType) b;
 		else if (b.hasPrimitiveValue())
@@ -411,6 +444,9 @@ private Map<String, Object> userData;
 	}
 	
 	public DateTimeType castToDateTime(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof DateTimeType)
 			return (DateTimeType) b;
 		else if (b.fhirType().equals("dateTime"))
@@ -420,6 +456,9 @@ private Map<String, Object> userData;
 	}
 	
 	public TimeType castToTime(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof TimeType)
 			return (TimeType) b;
 		else
@@ -427,6 +466,9 @@ private Map<String, Object> userData;
 	}
 	
 	public CodeType castToCode(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof CodeType)
 			return (CodeType) b;
 		else if (b.isPrimitive())
@@ -436,6 +478,9 @@ private Map<String, Object> userData;
 	}
 	
 	public OidType castToOid(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof OidType)
 			return (OidType) b;
 		else
@@ -443,6 +488,9 @@ private Map<String, Object> userData;
 	}
 	
 	public IdType castToId(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof IdType)
 			return (IdType) b;
 		else
@@ -450,6 +498,9 @@ private Map<String, Object> userData;
 	}
 	
 	public UnsignedIntType castToUnsignedInt(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof UnsignedIntType)
 			return (UnsignedIntType) b;
 		else
@@ -457,6 +508,9 @@ private Map<String, Object> userData;
 	}
 	
 	public PositiveIntType castToPositiveInt(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof PositiveIntType)
 			return (PositiveIntType) b;
 		else
@@ -464,6 +518,9 @@ private Map<String, Object> userData;
 	}
 	
   public MarkdownType castToMarkdown(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof MarkdownType)
 			return (MarkdownType) b;
     else if (b.hasPrimitiveValue())
@@ -473,6 +530,9 @@ private Map<String, Object> userData;
 	}
 		
   public Annotation castToAnnotation(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
     if (b instanceof Annotation)
       return (Annotation) b;
     else
@@ -480,13 +540,20 @@ private Map<String, Object> userData;
   }
   
   public Dosage castToDosage(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
     if (b instanceof Dosage)
       return (Dosage) b;
-    else      throw new FHIRException("Unable to convert a "+b.getClass().getName()+" to an DosageInstruction");
+    else      
+      throw new FHIRException("Unable to convert a "+b.getClass().getName()+" to an DosageInstruction");
   }
   
 	
 	public Attachment castToAttachment(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof Attachment)
 			return (Attachment) b;
 		else
@@ -494,6 +561,9 @@ private Map<String, Object> userData;
 	}
 	
 	public Identifier castToIdentifier(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof Identifier)
 			return (Identifier) b;
 		else
@@ -501,6 +571,9 @@ private Map<String, Object> userData;
 	}
 	
   public CodeableConcept castToCodeableConcept(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
     if (b instanceof CodeableConcept)
       return (CodeableConcept) b;
     else if (b instanceof Element) {
@@ -514,6 +587,9 @@ private Map<String, Object> userData;
   }
   
   public Population castToPopulation(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
     if (b instanceof Population)
       return (Population) b;
     else
@@ -522,6 +598,9 @@ private Map<String, Object> userData;
   
 	
 	public Coding castToCoding(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
     if (b instanceof Coding)
       return (Coding) b;
     else if (b instanceof Element) {
@@ -537,6 +616,9 @@ private Map<String, Object> userData;
 	}
 	
 	public Quantity castToQuantity(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof Quantity)
 			return (Quantity) b;
 		else
@@ -544,6 +626,9 @@ private Map<String, Object> userData;
 	}
 	
 	public Money castToMoney(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof Money)
 			return (Money) b;
 		else
@@ -551,6 +636,9 @@ private Map<String, Object> userData;
 	}
 	
 	public Duration castToDuration(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof Duration)
 			return (Duration) b;
 		else
@@ -558,6 +646,9 @@ private Map<String, Object> userData;
 	}
 	
 	public SimpleQuantity castToSimpleQuantity(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof SimpleQuantity)
 			return (SimpleQuantity) b;
 		else if (b instanceof Quantity) {
@@ -574,6 +665,9 @@ private Map<String, Object> userData;
 	}
 	
 	public Range castToRange(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof Range)
 			return (Range) b;
 		else
@@ -581,6 +675,9 @@ private Map<String, Object> userData;
 	}
 	
 	public Period castToPeriod(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof Period)
 			return (Period) b;
 		else
@@ -588,6 +685,9 @@ private Map<String, Object> userData;
 	}
 	
 	public Ratio castToRatio(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof Ratio)
 			return (Ratio) b;
 		else
@@ -595,6 +695,9 @@ private Map<String, Object> userData;
 	}
 	
 	public SampledData castToSampledData(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof SampledData)
 			return (SampledData) b;
 		else
@@ -602,6 +705,9 @@ private Map<String, Object> userData;
 	}
 	
 	public Signature castToSignature(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof Signature)
 			return (Signature) b;
 		else
@@ -609,6 +715,9 @@ private Map<String, Object> userData;
 	}
 	
 	public HumanName castToHumanName(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof HumanName)
 			return (HumanName) b;
 		else
@@ -616,6 +725,9 @@ private Map<String, Object> userData;
 	}
 	
 	public Address castToAddress(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof Address)
 			return (Address) b;
 		else
@@ -623,6 +735,9 @@ private Map<String, Object> userData;
 	}
 	
 	public ContactDetail castToContactDetail(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof ContactDetail)
 			return (ContactDetail) b;
 		else
@@ -630,6 +745,9 @@ private Map<String, Object> userData;
 	}
 
 	public Contributor castToContributor(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof Contributor)
 			return (Contributor) b;
 		else
@@ -637,6 +755,9 @@ private Map<String, Object> userData;
 	}
 
 	public UsageContext castToUsageContext(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof UsageContext)
 			return (UsageContext) b;
 		else
@@ -644,6 +765,9 @@ private Map<String, Object> userData;
 	}
 
 	public RelatedArtifact castToRelatedArtifact(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof RelatedArtifact)
 			return (RelatedArtifact) b;
 		else
@@ -651,6 +775,9 @@ private Map<String, Object> userData;
 	}
 
 	public ContactPoint castToContactPoint(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof ContactPoint)
 			return (ContactPoint) b;
 		else
@@ -658,6 +785,9 @@ private Map<String, Object> userData;
 	}
 	
 	public Timing castToTiming(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof Timing)
 			return (Timing) b;
 		else
@@ -665,6 +795,9 @@ private Map<String, Object> userData;
 	}
 	
 	public Reference castToReference(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof Reference)
 			return (Reference) b;
 		else if (b.isPrimitive() && Utilities.isURL(b.primitiveValue()))
@@ -677,6 +810,9 @@ private Map<String, Object> userData;
 	}
 	
 	public Meta castToMeta(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof Meta)
 			return (Meta) b;
 		else
@@ -685,6 +821,9 @@ private Map<String, Object> userData;
 		
 	
   public MarketingStatus castToMarketingStatus(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
     if (b instanceof MarketingStatus)
       return (MarketingStatus) b;
     else
@@ -692,6 +831,9 @@ private Map<String, Object> userData;
   }
     
   public ProductShelfLife castToProductShelfLife(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
     if (b instanceof ProductShelfLife)
       return (ProductShelfLife) b;
     else
@@ -699,6 +841,9 @@ private Map<String, Object> userData;
   }
     
   public ProdCharacteristic castToProdCharacteristic(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
     if (b instanceof ProdCharacteristic)
       return (ProdCharacteristic) b;
     else
@@ -707,6 +852,9 @@ private Map<String, Object> userData;
     
   
   public SubstanceAmount castToSubstanceAmount(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
     if (b instanceof SubstanceAmount)
       return (SubstanceAmount) b;
     else
@@ -714,6 +862,9 @@ private Map<String, Object> userData;
   }
     
 	public Extension castToExtension(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof Extension)
 			return (Extension) b;
 		else
@@ -721,6 +872,9 @@ private Map<String, Object> userData;
 	}
 	
 	public Resource castToResource(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof Resource)
 			return (Resource) b;
 		else
@@ -728,6 +882,9 @@ private Map<String, Object> userData;
 	}
 	
 	public Narrative castToNarrative(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof Narrative)
 			return (Narrative) b;
 		else
@@ -736,6 +893,9 @@ private Map<String, Object> userData;
 	
 	
 	public ElementDefinition castToElementDefinition(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof ElementDefinition)
 			return (ElementDefinition) b;
 		else
@@ -743,6 +903,9 @@ private Map<String, Object> userData;
 	}
 
   public DataRequirement castToDataRequirement(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
     if (b instanceof DataRequirement)
       return (DataRequirement) b;
     else
@@ -750,6 +913,9 @@ private Map<String, Object> userData;
   }
 
   public Expression castToExpression(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
     if (b instanceof Expression)
       return (Expression) b;
     else
@@ -758,6 +924,9 @@ private Map<String, Object> userData;
 
 	
 	public ParameterDefinition castToParameterDefinition(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof ParameterDefinition)
 			return (ParameterDefinition) b;
 		else
@@ -765,6 +934,9 @@ private Map<String, Object> userData;
 	}
 
 	public TriggerDefinition castToTriggerDefinition(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
 		if (b instanceof TriggerDefinition)
 			return (TriggerDefinition) b;
 		else
@@ -772,6 +944,9 @@ private Map<String, Object> userData;
 	}
 
   public XhtmlNode castToXhtml(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
     if (b instanceof Element) {
       return ((Element) b).getXhtml();
     } else if (b instanceof XhtmlType) {
@@ -787,6 +962,9 @@ private Map<String, Object> userData;
   }
   
   public String castToXhtmlString(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
     if (b instanceof Element) {
       return ((Element) b).getValue();
     } else if (b instanceof XhtmlType) {
