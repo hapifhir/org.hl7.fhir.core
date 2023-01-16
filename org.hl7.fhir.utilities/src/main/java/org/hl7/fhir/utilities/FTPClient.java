@@ -57,17 +57,12 @@ public class FTPClient {
     else {
       clientImpl.connect(server);
     }
-    //clientImpl.setFileTransferMode(FTP.BINARY_FILE_TYPE);
 
     clientImpl.login(user, password);
 
 
-    int reply = clientImpl.getReplyCode();
+      checkForPositiveCompletionAndLogErrors("FTP server could not connect.", true);
 
-    if(!FTPReply.isPositiveCompletion(reply)) {
-      clientImpl.disconnect();
-      throw new IOException("FTP server refused connection. Reply code: " + reply);
-    }
   }
 
   /**
@@ -78,6 +73,8 @@ public class FTPClient {
   public void delete(String path) throws IOException {
     String resolvedPath = resolveRemotePath(path);
     clientImpl.deleteFile(resolvedPath);
+
+    checkForPositiveCompletionAndLogErrors("Error deleting file.", false);
   }
 
   private String resolveRemotePath(String path) {
@@ -96,11 +93,23 @@ public class FTPClient {
     clientImpl.storeFile( resolvedPath, localStream);
     localStream.close();
 
+    checkForPositiveCompletionAndLogErrors("Error uploading file.", false);
+  }
+
+  private void checkForPositiveCompletionAndLogErrors(String localErrorMessage, boolean disconnectOnError) throws IOException {
     int reply = clientImpl.getReplyCode();
 
-    if(!FTPReply.isPositiveCompletion(reply)) {
-      throw new IOException("Error uploading file. Reply code: " + reply);
+    if (FTPReply.isPositiveCompletion(reply)) {
+      return;
     }
+
+    String remoteErrorMessage = clientImpl.getReplyString();
+    if (disconnectOnError) {
+      clientImpl.disconnect();
+    }
+    throw new IOException(localErrorMessage + " Reply code: " + reply + " Message: " + remoteErrorMessage);
+
+
   }
 
   public void disconnect() throws IOException {

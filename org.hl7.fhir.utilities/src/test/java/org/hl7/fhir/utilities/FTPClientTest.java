@@ -3,13 +3,12 @@ package org.hl7.fhir.utilities;
 
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
-import org.jetbrains.annotations.NotNull;
+
 import org.junit.jupiter.api.*;
 import org.mockftpserver.fake.FakeFtpServer;
 import org.mockftpserver.fake.UserAccount;
 import org.mockftpserver.fake.filesystem.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -111,7 +110,7 @@ public class FTPClientTest implements ResourceLoaderTests {
   @Test
  public void testDelete() throws IOException {
 
-    FTPClient client = connectToFTPClient();
+    FTPClient client = connectToFTPClient(RELATIVE_PATH_1 + "/");
 
     String deleteFilePath = dummyFileToDeletePath.toFile().getAbsolutePath();
     assertTrue(fakeFtpServer.getFileSystem().exists(deleteFilePath));
@@ -120,9 +119,8 @@ public class FTPClientTest implements ResourceLoaderTests {
     assertFalse(fakeFtpServer.getFileSystem().exists(deleteFilePath));
  }
 
-  @NotNull
-  private static FTPClient connectToFTPClient() throws IOException {
-    FTPClient client = new FTPClient("localhost", FAKE_FTP_PORT, RELATIVE_PATH_1 + "/", DUMMY_USER, DUMMY_PASSWORD);
+  private static FTPClient connectToFTPClient(String defaultPath) throws IOException {
+    FTPClient client = new FTPClient("localhost", FAKE_FTP_PORT, defaultPath, DUMMY_USER, DUMMY_PASSWORD);
     client.connect();
     return client;
   }
@@ -130,7 +128,7 @@ public class FTPClientTest implements ResourceLoaderTests {
   @Test
  public void testDelete2() throws IOException {
 
-    FTPClient client = connectToFTPClient2();
+    FTPClient client = connectToFTPClient(RELATIVE_PATH_1);
 
     String deleteFilePath = dummyFileToDeletePath.toFile().getAbsolutePath();
     assertTrue(fakeFtpServer.getFileSystem().exists(deleteFilePath));
@@ -140,17 +138,11 @@ public class FTPClientTest implements ResourceLoaderTests {
     client.disconnect();
  }
 
-  @NotNull
-  private static FTPClient connectToFTPClient2() throws IOException {
-    FTPClient client = new FTPClient("localhost", FAKE_FTP_PORT, RELATIVE_PATH_1, DUMMY_USER, DUMMY_PASSWORD);
-    client.connect();
-    return client;
-  }
 
   @Test
   public void testUpload() throws IOException {
 
-    FTPClient client = connectToFTPClient();
+    FTPClient client = connectToFTPClient(RELATIVE_PATH_1 + "/");
 
     String uploadFilePath = dummyUploadedFilePath.toFile().getAbsolutePath();
 
@@ -160,10 +152,12 @@ public class FTPClientTest implements ResourceLoaderTests {
 
     assertTrue(fakeFtpServer.getFileSystem().exists(uploadFilePath));
 
-    FileEntry fileEntry=  (FileEntry)fakeFtpServer.getFileSystem().getEntry(uploadFilePath);
+    FileEntry fileEntry = (FileEntry)fakeFtpServer.getFileSystem().getEntry(uploadFilePath);
     InputStream inputStream = fileEntry.createInputStream();
     byte[] bytes = IOUtils.toByteArray(inputStream);
     String actualContent = new String(bytes, StandardCharsets.UTF_8);
     assertEquals(DUMMY_FILE_CONTENT,actualContent);
   }
+
+ 
 }
