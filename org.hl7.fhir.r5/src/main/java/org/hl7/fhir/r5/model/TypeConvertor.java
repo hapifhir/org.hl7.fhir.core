@@ -15,6 +15,9 @@ public class TypeConvertor {
   // -- converters for property setters
   
   public static DataType castToType(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
     if (b instanceof DataType)
       return (DataType) b;
     else if (b.isMetadataBased())
@@ -25,6 +28,9 @@ public class TypeConvertor {
   
 
   public static BooleanType castToBoolean(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
     if (b instanceof BooleanType)
       return (BooleanType) b;
     else
@@ -32,6 +38,9 @@ public class TypeConvertor {
   }
   
   public static IntegerType castToInteger(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
     if (b instanceof IntegerType)
       return (IntegerType) b;
     else
@@ -39,6 +48,9 @@ public class TypeConvertor {
   }
   
   public static Integer64Type castToInteger64(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
     if (b instanceof Integer64Type)
       return (Integer64Type) b;
     else
@@ -46,6 +58,9 @@ public class TypeConvertor {
   }
   
   public static DecimalType castToDecimal(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
     if (b instanceof DecimalType)
       return (DecimalType) b;
     else if (b.hasPrimitiveValue())
@@ -55,6 +70,9 @@ public class TypeConvertor {
   }
   
   public static Base64BinaryType castToBase64Binary(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
     if (b instanceof Base64BinaryType)
       return (Base64BinaryType) b;
     else
@@ -62,6 +80,9 @@ public class TypeConvertor {
   }
   
   public static InstantType castToInstant(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
     if (b instanceof InstantType)
       return (InstantType) b;
     else
@@ -69,6 +90,10 @@ public class TypeConvertor {
   }
   
   public static StringType castToString(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof StringType)
       return (StringType) b;
     else if (b.hasPrimitiveValue())
@@ -78,6 +103,10 @@ public class TypeConvertor {
   }
   
   public static UriType castToUri(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof UriType)
       return (UriType) b;
     else if (b.hasPrimitiveValue())
@@ -87,6 +116,10 @@ public class TypeConvertor {
   }
   
   public static UrlType castToUrl(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof UrlType)
       return (UrlType) b;
     else if (b.hasPrimitiveValue())
@@ -96,6 +129,10 @@ public class TypeConvertor {
   }
   
   public static CanonicalType castToCanonical(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof CanonicalType)
       return (CanonicalType) b;
     else if (b.hasPrimitiveValue())
@@ -105,6 +142,10 @@ public class TypeConvertor {
   }
   
   public static DateType castToDate(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof DateType)
       return (DateType) b;
     else if (b.hasPrimitiveValue())
@@ -114,6 +155,10 @@ public class TypeConvertor {
   }
   
   public static DateTimeType castToDateTime(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof DateTimeType)
       return (DateTimeType) b;
     else if (b.fhirType().equals("dateTime"))
@@ -123,6 +168,10 @@ public class TypeConvertor {
   }
   
   public static TimeType castToTime(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof TimeType)
       return (TimeType) b;
     else
@@ -130,6 +179,10 @@ public class TypeConvertor {
   }
   
   public static CodeType castToCode(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof CodeType)
       return (CodeType) b;
     else if (b.isPrimitive())
@@ -139,6 +192,10 @@ public class TypeConvertor {
   }
   
   public static OidType castToOid(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof OidType)
       return (OidType) b;
     else
@@ -146,6 +203,10 @@ public class TypeConvertor {
   }
   
   public static IdType castToId(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof IdType)
       return (IdType) b;
     else
@@ -153,6 +214,10 @@ public class TypeConvertor {
   }
   
   public static UnsignedIntType castToUnsignedInt(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof UnsignedIntType)
       return (UnsignedIntType) b;
     else
@@ -160,6 +225,10 @@ public class TypeConvertor {
   }
   
   public static PositiveIntType castToPositiveInt(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof PositiveIntType)
       return (PositiveIntType) b;
     else
@@ -167,6 +236,10 @@ public class TypeConvertor {
   }
   
   public static MarkdownType castToMarkdown(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof MarkdownType)
       return (MarkdownType) b;
     else if (b.hasPrimitiveValue())
@@ -176,6 +249,10 @@ public class TypeConvertor {
   }
     
   public static Annotation castToAnnotation(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof Annotation)
       return (Annotation) b;
     else
@@ -183,13 +260,22 @@ public class TypeConvertor {
   }
   
   public static Dosage castToDosage(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof Dosage)
       return (Dosage) b;
-    else      throw new FHIRException("Unable to convert a "+b.getClass().getName()+" to an DosageInstruction");
+    else      
+      throw new FHIRException("Unable to convert a "+b.getClass().getName()+" to an DosageInstruction");
   }
   
   
   public static Attachment castToAttachment(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof Attachment)
       return (Attachment) b;
     else
@@ -197,6 +283,10 @@ public class TypeConvertor {
   }
   
   public static Identifier castToIdentifier(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof Identifier)
       return (Identifier) b;
     else
@@ -204,6 +294,10 @@ public class TypeConvertor {
   }
   
   public static CodeableConcept castToCodeableConcept(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof CodeableConcept)
       return (CodeableConcept) b;
     else if (b instanceof Element) {
@@ -221,6 +315,10 @@ public class TypeConvertor {
   }
   
   public static CodeableReference castToCodeableReference(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof CodeableReference) {
       return (CodeableReference) b;
     } else if (b instanceof CodeType) {
@@ -240,6 +338,10 @@ public class TypeConvertor {
   }
   
   public static Population castToPopulation(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof Population)
       return (Population) b;
     else
@@ -248,6 +350,10 @@ public class TypeConvertor {
   
   
   public static Coding castToCoding(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof Coding)
       return (Coding) b;
     else if (b instanceof Element) {
@@ -270,6 +376,10 @@ public class TypeConvertor {
   }
   
   public static Quantity castToQuantity(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof Quantity)
       return (Quantity) b;
     else
@@ -277,6 +387,10 @@ public class TypeConvertor {
   }
   
   public static Count castToCount(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof Count)
       return (Count) b;
     else
@@ -284,6 +398,10 @@ public class TypeConvertor {
   }
   
   public static Money castToMoney(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof Money)
       return (Money) b;
     else
@@ -291,6 +409,10 @@ public class TypeConvertor {
   }
   
   public static Duration castToDuration(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof Duration)
       return (Duration) b;
     else
@@ -298,6 +420,10 @@ public class TypeConvertor {
   }
   
   public static SimpleQuantity castToSimpleQuantity(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof SimpleQuantity)
       return (SimpleQuantity) b;
     else if (b instanceof Quantity) {
@@ -314,6 +440,10 @@ public class TypeConvertor {
   }
   
   public static Range castToRange(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof Range)
       return (Range) b;
     else
@@ -321,6 +451,10 @@ public class TypeConvertor {
   }
   
   public static Period castToPeriod(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof Period)
       return (Period) b;
     else
@@ -328,6 +462,10 @@ public class TypeConvertor {
   }
   
   public static Ratio castToRatio(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof Ratio)
       return (Ratio) b;
     else
@@ -335,6 +473,10 @@ public class TypeConvertor {
   }
   
   public static SampledData castToSampledData(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof SampledData)
       return (SampledData) b;
     else
@@ -342,6 +484,10 @@ public class TypeConvertor {
   }
   
   public static Signature castToSignature(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof Signature)
       return (Signature) b;
     else
@@ -349,6 +495,10 @@ public class TypeConvertor {
   }
   
   public static HumanName castToHumanName(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof HumanName)
       return (HumanName) b;
     else
@@ -356,6 +506,10 @@ public class TypeConvertor {
   }
   
   public static Address castToAddress(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof Address)
       return (Address) b;
     else
@@ -363,6 +517,10 @@ public class TypeConvertor {
   }
   
   public static ContactDetail castToContactDetail(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof ContactDetail)
       return (ContactDetail) b;
     else
@@ -370,6 +528,10 @@ public class TypeConvertor {
   }
 
   public static Contributor castToContributor(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof Contributor)
       return (Contributor) b;
     else
@@ -377,6 +539,10 @@ public class TypeConvertor {
   }
 
   public static UsageContext castToUsageContext(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof UsageContext)
       return (UsageContext) b;
     else
@@ -384,6 +550,10 @@ public class TypeConvertor {
   }
 
   public static RelatedArtifact castToRelatedArtifact(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof RelatedArtifact)
       return (RelatedArtifact) b;
     else
@@ -391,6 +561,10 @@ public class TypeConvertor {
   }
 
   public static ContactPoint castToContactPoint(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof ContactPoint)
       return (ContactPoint) b;
     else
@@ -398,6 +572,10 @@ public class TypeConvertor {
   }
   
   public static Timing castToTiming(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof Timing)
       return (Timing) b;
     else
@@ -405,6 +583,10 @@ public class TypeConvertor {
   }
   
   public static Reference castToReference(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof Reference)
       return (Reference) b;
     else if (b.isPrimitive() && Utilities.isURL(b.primitiveValue()))
@@ -417,6 +599,10 @@ public class TypeConvertor {
   }
   
   public static Meta castToMeta(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof Meta)
       return (Meta) b;
     else
@@ -425,6 +611,10 @@ public class TypeConvertor {
     
   
   public static MarketingStatus castToMarketingStatus(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof MarketingStatus)
       return (MarketingStatus) b;
     else
@@ -432,6 +622,10 @@ public class TypeConvertor {
   }
     
   public static Statistic castToStatistic(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof Statistic)
       return (Statistic) b;
     else
@@ -440,13 +634,21 @@ public class TypeConvertor {
    
   
   public static OrderedDistribution castToOrderedDistribution(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof OrderedDistribution)
       return (OrderedDistribution) b;
     else
       throw new FHIRException("Unable to convert a "+b.getClass().getName()+" to a OrderedDistribution");
   }
   
-  public static ProductShelfLife castToProductShelfLife(Base b) throws FHIRException {
+  public static ProductShelfLife castToProductShelfLife(Base b) throws FHIRException {   
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof ProductShelfLife)
       return (ProductShelfLife) b;
     else
@@ -454,6 +656,10 @@ public class TypeConvertor {
   }
     
   public static ProdCharacteristic castToProdCharacteristic(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof ProdCharacteristic)
       return (ProdCharacteristic) b;
     else
@@ -462,6 +668,10 @@ public class TypeConvertor {
     
   
   public static SubstanceAmount castToSubstanceAmount(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof SubstanceAmount)
       return (SubstanceAmount) b;
     else
@@ -469,6 +679,10 @@ public class TypeConvertor {
   }
     
   public static Extension castToExtension(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof Extension)
       return (Extension) b;
     else
@@ -476,6 +690,10 @@ public class TypeConvertor {
   }
   
   public static Resource castToResource(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof Resource)
       return (Resource) b;
     else
@@ -483,6 +701,10 @@ public class TypeConvertor {
   }
   
   public static Narrative castToNarrative(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof Narrative)
       return (Narrative) b;
     else
@@ -491,6 +713,10 @@ public class TypeConvertor {
   
   
   public static ElementDefinition castToElementDefinition(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof ElementDefinition)
       return (ElementDefinition) b;
     else
@@ -498,6 +724,10 @@ public class TypeConvertor {
   }
 
   public static DataRequirement castToDataRequirement(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof DataRequirement)
       return (DataRequirement) b;
     else
@@ -505,6 +735,10 @@ public class TypeConvertor {
   }
 
   public static Expression castToExpression(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof Expression)
       return (Expression) b;
     else
@@ -513,6 +747,10 @@ public class TypeConvertor {
 
   
   public static ParameterDefinition castToParameterDefinition(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof ParameterDefinition)
       return (ParameterDefinition) b;
     else
@@ -520,6 +758,10 @@ public class TypeConvertor {
   }
 
   public static TriggerDefinition castToTriggerDefinition(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof TriggerDefinition)
       return (TriggerDefinition) b;
     else
@@ -527,6 +769,10 @@ public class TypeConvertor {
   }
   
   public static ExtendedContactDetail castToExtendedContactDetail(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof ExtendedContactDetail)
       return (ExtendedContactDetail) b;
     else
@@ -537,6 +783,10 @@ public class TypeConvertor {
   
 
   public static XhtmlNode castToXhtml(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof Element) {
       return ((Element) b).getXhtml();
     } else if (b instanceof XhtmlType) {
@@ -552,6 +802,10 @@ public class TypeConvertor {
   }
   
   public static String castToXhtmlString(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof Element) {
       return ((Element) b).getValue();
     } else if (b instanceof XhtmlType) {
@@ -568,6 +822,10 @@ public class TypeConvertor {
 
 
   public static VirtualServiceDetail castToVirtualServiceDetail(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof VirtualServiceDetail)
       return (VirtualServiceDetail) b;
     else
@@ -576,6 +834,10 @@ public class TypeConvertor {
 
 
   public static Availability castToAvailability(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof Availability)
       return (Availability) b;
     else
@@ -584,6 +846,10 @@ public class TypeConvertor {
 
 
   public static MonetaryComponent castToMonetaryComponent(Base b) throws FHIRException {
+    if (b == null) {
+      return null;
+    }
+
     if (b instanceof MonetaryComponent)
       return (MonetaryComponent) b;
     else
