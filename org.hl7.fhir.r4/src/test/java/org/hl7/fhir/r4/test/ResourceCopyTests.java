@@ -1,21 +1,11 @@
 package org.hl7.fhir.r4.test;
 
-import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4.formats.IParser;
-import org.hl7.fhir.r4.formats.IParser.OutputStyle;
-import org.hl7.fhir.r4.formats.JsonParser;
-import org.hl7.fhir.r4.formats.XmlParser;
 import org.hl7.fhir.r4.model.*;
-import org.hl7.fhir.r4.test.utils.TestingUtilities;
-import org.hl7.fhir.r4.utils.EOperationOutcome;
-import org.hl7.fhir.r4.utils.NarrativeGenerator;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
+import java.io.IOException;
 
 public class ResourceCopyTests {
 
@@ -52,5 +42,18 @@ public class ResourceCopyTests {
     //Verify the object at toplevel using equals Deep
     Assertions.assertEquals(obs.equalsDeep(copyObs),true,"DeepEquals fails");
 
+  }
+
+  @Test
+  void missingExtension()
+  {
+
+    Patient patient1 = new Patient().setGender(Enumerations.AdministrativeGender.FEMALE);
+    Enumeration genderElement = patient1.getGenderElement();
+    genderElement.addExtension(new Extension(("1"),new StringType("2")));
+    genderElement.addExtension(new Extension(("3"),new StringType("4")));
+    Patient patient2 = new Patient();
+    patient2.setProperty("gender", genderElement);
+    Assertions.assertEquals(2, patient2.getGenderElement().getExtension().size());
   }
 }
