@@ -57,7 +57,6 @@ public class FTPClient {
     else {
       clientImpl.connect(server);
     }
-    //clientImpl.setFileTransferMode(FTP.BINARY_FILE_TYPE);
 
     clientImpl.login(user, password);
 
@@ -93,6 +92,7 @@ public class FTPClient {
     String resolvedPath = resolveRemotePath(path);
     FileInputStream localStream = new FileInputStream(source);
     clientImpl.setFileType(FTP.BINARY_FILE_TYPE);
+    clientImpl.enterLocalPassiveMode();
     clientImpl.storeFile( resolvedPath, localStream);
     localStream.close();
 
