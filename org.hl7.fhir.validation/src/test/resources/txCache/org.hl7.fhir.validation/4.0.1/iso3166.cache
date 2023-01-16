@@ -49,3 +49,14 @@ v: {
   "system" : "urn:iso:std:iso:3166"
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:iso:std:iso:3166",
+  "code" : "NO",
+  "display" : "Norway"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Norway",
+  "code" : "NO",
+  "system" : "urn:iso:std:iso:3166"
+}
+-------------------------------------------------------------------------------------

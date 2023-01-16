@@ -2319,7 +2319,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
 
       if (url != null && url.startsWith("urn:uuid:")) {
-        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, Utilities.isValidUUID(url.substring(9)), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_UUID_VALID) && ok;
+        String s = url.substring(9);
+        if (s.contains("#")) {
+          s = s.substring(0, s.indexOf("#"));
+        }
+        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, Utilities.isValidUUID(s), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_UUID_VALID, s) && ok;
       }
       if (url != null && url.startsWith("urn:oid:")) {
         String cc = url.substring(8);
