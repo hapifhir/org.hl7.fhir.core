@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities;
 
+import lombok.Getter;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
@@ -14,15 +15,22 @@ public class FTPClient {
 
   private final org.apache.commons.net.ftp.FTPClient clientImpl;
 
-  final String server;
+  @Getter
+  private final String server;
 
-  final String path;
+  @Getter
+  private final String path;
 
-  final String user;
+  private String resolvedPath = null;
 
-  final String password;
+  @Getter
+  private final String user;
 
-  final int port;
+  @Getter
+  private final String password;
+
+  @Getter
+  private final int port;
 
   private final String remoteSeparator;
 
@@ -41,14 +49,12 @@ public class FTPClient {
     this.server = server;
     this.port = port;
     this.remoteSeparator = "/";
-    if (!path.startsWith(remoteSeparator)) {
-      throw new IllegalArgumentException("Absolute remote path is required. Path: " + path);
-    }
-    this.path = path + (!path.endsWith(remoteSeparator) ? remoteSeparator : "");
+    this.path = path.endsWith(remoteSeparator)
+      ? path
+      : path + remoteSeparator;
 
     this.user = user;
     this.password = password;
-
 
     clientImpl = new org.apache.commons.net.ftp.FTPClient();
   }
@@ -68,7 +74,13 @@ public class FTPClient {
 
     checkForPositiveCompletionAndLogErrors("FTP server could not connect.", true);
 
+    System.out.println("Working directory:  " + clientImpl.printWorkingDirectory());
+
     clientImpl.changeWorkingDirectory(path);
+
+    checkForPositiveCompletionAndLogErrors("FTP server could not establish default working directory", true);
+
+    resolvedPath = clientImpl.printWorkingDirectory();
   }
 
   /**
@@ -96,7 +108,7 @@ public class FTPClient {
     }} catch (IOException e) {
       e.printStackTrace();
     } finally {
-      clientImpl.changeWorkingDirectory(this.path);
+      clientImpl.changeWorkingDirectory(this.resolvedPath);
       System.out.println(clientImpl.printWorkingDirectory());
     }
   }
@@ -106,7 +118,7 @@ public class FTPClient {
     try {
       output = clientImpl.changeWorkingDirectory(path);
     } finally {
-      clientImpl.changeWorkingDirectory(this.path);
+      clientImpl.changeWorkingDirectory(this.resolvedPath);
     }
     return output;
   }
