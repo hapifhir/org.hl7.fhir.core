@@ -181,12 +181,12 @@ public class DeviceRequest extends DomainResource {
           return DeviceRequestStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown DeviceRequestStatus code '"+codeString+"'");
         }
-        public Enumeration<DeviceRequestStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<DeviceRequestStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<DeviceRequestStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("draft".equals(codeString))
@@ -321,12 +321,12 @@ public class DeviceRequest extends DomainResource {
           return RequestPriority.STAT;
         throw new IllegalArgumentException("Unknown RequestPriority code '"+codeString+"'");
         }
-        public Enumeration<RequestPriority> fromType(Base code) throws FHIRException {
+        public Enumeration<RequestPriority> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<RequestPriority>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("routine".equals(codeString))

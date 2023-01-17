@@ -135,20 +135,20 @@ public class FormularyItem extends DomainResource {
           return FormularyItemStatusCodes.INACTIVE;
         throw new IllegalArgumentException("Unknown FormularyItemStatusCodes code '"+codeString+"'");
         }
-        public Enumeration<FormularyItemStatusCodes> fromType(Base code) throws FHIRException {
+        public Enumeration<FormularyItemStatusCodes> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<FormularyItemStatusCodes>(this);
+            return new Enumeration<FormularyItemStatusCodes>(this, FormularyItemStatusCodes.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<FormularyItemStatusCodes>(this, FormularyItemStatusCodes.NULL, code);
         if ("active".equals(codeString))
-          return new Enumeration<FormularyItemStatusCodes>(this, FormularyItemStatusCodes.ACTIVE);
+          return new Enumeration<FormularyItemStatusCodes>(this, FormularyItemStatusCodes.ACTIVE, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<FormularyItemStatusCodes>(this, FormularyItemStatusCodes.ENTEREDINERROR);
+          return new Enumeration<FormularyItemStatusCodes>(this, FormularyItemStatusCodes.ENTEREDINERROR, code);
         if ("inactive".equals(codeString))
-          return new Enumeration<FormularyItemStatusCodes>(this, FormularyItemStatusCodes.INACTIVE);
+          return new Enumeration<FormularyItemStatusCodes>(this, FormularyItemStatusCodes.INACTIVE, code);
         throw new FHIRException("Unknown FormularyItemStatusCodes code '"+codeString+"'");
         }
     public String toCode(FormularyItemStatusCodes code) {
@@ -521,4 +521,3 @@ public class FormularyItem extends DomainResource {
 
 
 }
-

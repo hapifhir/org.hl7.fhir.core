@@ -231,36 +231,36 @@ public class ResearchStudy extends DomainResource {
           return ResearchStudyStatus.WITHDRAWN;
         throw new IllegalArgumentException("Unknown ResearchStudyStatus code '"+codeString+"'");
         }
-        public Enumeration<ResearchStudyStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ResearchStudyStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ResearchStudyStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ResearchStudyStatus>(this, ResearchStudyStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ResearchStudyStatus>(this, ResearchStudyStatus.NULL, code);
         if ("active".equals(codeString))
-          return new Enumeration<ResearchStudyStatus>(this, ResearchStudyStatus.ACTIVE);
+          return new Enumeration<ResearchStudyStatus>(this, ResearchStudyStatus.ACTIVE, code);
         if ("administratively-completed".equals(codeString))
-          return new Enumeration<ResearchStudyStatus>(this, ResearchStudyStatus.ADMINISTRATIVELYCOMPLETED);
+          return new Enumeration<ResearchStudyStatus>(this, ResearchStudyStatus.ADMINISTRATIVELYCOMPLETED, code);
         if ("approved".equals(codeString))
-          return new Enumeration<ResearchStudyStatus>(this, ResearchStudyStatus.APPROVED);
+          return new Enumeration<ResearchStudyStatus>(this, ResearchStudyStatus.APPROVED, code);
         if ("closed-to-accrual".equals(codeString))
-          return new Enumeration<ResearchStudyStatus>(this, ResearchStudyStatus.CLOSEDTOACCRUAL);
+          return new Enumeration<ResearchStudyStatus>(this, ResearchStudyStatus.CLOSEDTOACCRUAL, code);
         if ("closed-to-accrual-and-intervention".equals(codeString))
-          return new Enumeration<ResearchStudyStatus>(this, ResearchStudyStatus.CLOSEDTOACCRUALANDINTERVENTION);
+          return new Enumeration<ResearchStudyStatus>(this, ResearchStudyStatus.CLOSEDTOACCRUALANDINTERVENTION, code);
         if ("completed".equals(codeString))
-          return new Enumeration<ResearchStudyStatus>(this, ResearchStudyStatus.COMPLETED);
+          return new Enumeration<ResearchStudyStatus>(this, ResearchStudyStatus.COMPLETED, code);
         if ("disapproved".equals(codeString))
-          return new Enumeration<ResearchStudyStatus>(this, ResearchStudyStatus.DISAPPROVED);
+          return new Enumeration<ResearchStudyStatus>(this, ResearchStudyStatus.DISAPPROVED, code);
         if ("in-review".equals(codeString))
-          return new Enumeration<ResearchStudyStatus>(this, ResearchStudyStatus.INREVIEW);
+          return new Enumeration<ResearchStudyStatus>(this, ResearchStudyStatus.INREVIEW, code);
         if ("temporarily-closed-to-accrual".equals(codeString))
-          return new Enumeration<ResearchStudyStatus>(this, ResearchStudyStatus.TEMPORARILYCLOSEDTOACCRUAL);
+          return new Enumeration<ResearchStudyStatus>(this, ResearchStudyStatus.TEMPORARILYCLOSEDTOACCRUAL, code);
         if ("temporarily-closed-to-accrual-and-intervention".equals(codeString))
-          return new Enumeration<ResearchStudyStatus>(this, ResearchStudyStatus.TEMPORARILYCLOSEDTOACCRUALANDINTERVENTION);
+          return new Enumeration<ResearchStudyStatus>(this, ResearchStudyStatus.TEMPORARILYCLOSEDTOACCRUALANDINTERVENTION, code);
         if ("withdrawn".equals(codeString))
-          return new Enumeration<ResearchStudyStatus>(this, ResearchStudyStatus.WITHDRAWN);
+          return new Enumeration<ResearchStudyStatus>(this, ResearchStudyStatus.WITHDRAWN, code);
         throw new FHIRException("Unknown ResearchStudyStatus code '"+codeString+"'");
         }
     public String toCode(ResearchStudyStatus code) {
@@ -2906,4 +2906,3 @@ public class ResearchStudy extends DomainResource {
 
 
 }
-

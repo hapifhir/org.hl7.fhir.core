@@ -764,9 +764,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         makeSnapshot(sd);
       } catch (Exception e) {
         System.out.println("Process Note: Unable to generate snapshot for " + sd.present() + ": " + e.getMessage());
-//        if (debug) {
+        if (context.getLogger().isDebugLogging()) {
           e.printStackTrace();
-//        }
+        }
       }
     }
   }

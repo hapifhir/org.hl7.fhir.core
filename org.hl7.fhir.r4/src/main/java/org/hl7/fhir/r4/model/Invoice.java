@@ -158,24 +158,24 @@ public class Invoice extends DomainResource {
           return InvoiceStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown InvoiceStatus code '"+codeString+"'");
         }
-        public Enumeration<InvoiceStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<InvoiceStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<InvoiceStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<InvoiceStatus>(this, InvoiceStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<InvoiceStatus>(this, InvoiceStatus.NULL, code);
         if ("draft".equals(codeString))
-          return new Enumeration<InvoiceStatus>(this, InvoiceStatus.DRAFT);
+          return new Enumeration<InvoiceStatus>(this, InvoiceStatus.DRAFT, code);
         if ("issued".equals(codeString))
-          return new Enumeration<InvoiceStatus>(this, InvoiceStatus.ISSUED);
+          return new Enumeration<InvoiceStatus>(this, InvoiceStatus.ISSUED, code);
         if ("balanced".equals(codeString))
-          return new Enumeration<InvoiceStatus>(this, InvoiceStatus.BALANCED);
+          return new Enumeration<InvoiceStatus>(this, InvoiceStatus.BALANCED, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<InvoiceStatus>(this, InvoiceStatus.CANCELLED);
+          return new Enumeration<InvoiceStatus>(this, InvoiceStatus.CANCELLED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<InvoiceStatus>(this, InvoiceStatus.ENTEREDINERROR);
+          return new Enumeration<InvoiceStatus>(this, InvoiceStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown InvoiceStatus code '"+codeString+"'");
         }
     public String toCode(InvoiceStatus code) {
@@ -314,26 +314,26 @@ public class Invoice extends DomainResource {
           return InvoicePriceComponentType.INFORMATIONAL;
         throw new IllegalArgumentException("Unknown InvoicePriceComponentType code '"+codeString+"'");
         }
-        public Enumeration<InvoicePriceComponentType> fromType(Base code) throws FHIRException {
+        public Enumeration<InvoicePriceComponentType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<InvoicePriceComponentType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.NULL, code);
         if ("base".equals(codeString))
-          return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.BASE);
+          return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.BASE, code);
         if ("surcharge".equals(codeString))
-          return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.SURCHARGE);
+          return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.SURCHARGE, code);
         if ("deduction".equals(codeString))
-          return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.DEDUCTION);
+          return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.DEDUCTION, code);
         if ("discount".equals(codeString))
-          return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.DISCOUNT);
+          return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.DISCOUNT, code);
         if ("tax".equals(codeString))
-          return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.TAX);
+          return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.TAX, code);
         if ("informational".equals(codeString))
-          return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.INFORMATIONAL);
+          return new Enumeration<InvoicePriceComponentType>(this, InvoicePriceComponentType.INFORMATIONAL, code);
         throw new FHIRException("Unknown InvoicePriceComponentType code '"+codeString+"'");
         }
     public String toCode(InvoicePriceComponentType code) {

@@ -133,20 +133,20 @@ public class Immunization extends DomainResource {
           return ImmunizationStatus.NOTDONE;
         throw new IllegalArgumentException("Unknown ImmunizationStatus code '"+codeString+"'");
         }
-        public Enumeration<ImmunizationStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ImmunizationStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ImmunizationStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ImmunizationStatus>(this, ImmunizationStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ImmunizationStatus>(this, ImmunizationStatus.NULL, code);
         if ("completed".equals(codeString))
-          return new Enumeration<ImmunizationStatus>(this, ImmunizationStatus.COMPLETED);
+          return new Enumeration<ImmunizationStatus>(this, ImmunizationStatus.COMPLETED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<ImmunizationStatus>(this, ImmunizationStatus.ENTEREDINERROR);
+          return new Enumeration<ImmunizationStatus>(this, ImmunizationStatus.ENTEREDINERROR, code);
         if ("not-done".equals(codeString))
-          return new Enumeration<ImmunizationStatus>(this, ImmunizationStatus.NOTDONE);
+          return new Enumeration<ImmunizationStatus>(this, ImmunizationStatus.NOTDONE, code);
         throw new FHIRException("Unknown ImmunizationStatus code '"+codeString+"'");
         }
     public String toCode(ImmunizationStatus code) {

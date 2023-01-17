@@ -134,12 +134,12 @@ public class Sequence extends DomainResource {
           return SequenceType.RNA;
         throw new IllegalArgumentException("Unknown SequenceType code '"+codeString+"'");
         }
-        public Enumeration<SequenceType> fromType(Base code) throws FHIRException {
+        public Enumeration<SequenceType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<SequenceType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("aa".equals(codeString))
@@ -246,12 +246,12 @@ public class Sequence extends DomainResource {
           return QualityType.UNKNOWN;
         throw new IllegalArgumentException("Unknown QualityType code '"+codeString+"'");
         }
-        public Enumeration<QualityType> fromType(Base code) throws FHIRException {
+        public Enumeration<QualityType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<QualityType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("indel".equals(codeString))
@@ -382,12 +382,12 @@ public class Sequence extends DomainResource {
           return RepositoryType.OTHER;
         throw new IllegalArgumentException("Unknown RepositoryType code '"+codeString+"'");
         }
-        public Enumeration<RepositoryType> fromType(Base code) throws FHIRException {
+        public Enumeration<RepositoryType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<RepositoryType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("directlink".equals(codeString))

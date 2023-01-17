@@ -147,22 +147,22 @@ public class EnrollmentResponse extends DomainResource {
           return EnrollmentOutcome.PARTIAL;
         throw new IllegalArgumentException("Unknown EnrollmentOutcome code '"+codeString+"'");
         }
-        public Enumeration<EnrollmentOutcome> fromType(Base code) throws FHIRException {
+        public Enumeration<EnrollmentOutcome> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<EnrollmentOutcome>(this);
+            return new Enumeration<EnrollmentOutcome>(this, EnrollmentOutcome.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<EnrollmentOutcome>(this, EnrollmentOutcome.NULL, code);
         if ("queued".equals(codeString))
-          return new Enumeration<EnrollmentOutcome>(this, EnrollmentOutcome.QUEUED);
+          return new Enumeration<EnrollmentOutcome>(this, EnrollmentOutcome.QUEUED, code);
         if ("complete".equals(codeString))
-          return new Enumeration<EnrollmentOutcome>(this, EnrollmentOutcome.COMPLETE);
+          return new Enumeration<EnrollmentOutcome>(this, EnrollmentOutcome.COMPLETE, code);
         if ("error".equals(codeString))
-          return new Enumeration<EnrollmentOutcome>(this, EnrollmentOutcome.ERROR);
+          return new Enumeration<EnrollmentOutcome>(this, EnrollmentOutcome.ERROR, code);
         if ("partial".equals(codeString))
-          return new Enumeration<EnrollmentOutcome>(this, EnrollmentOutcome.PARTIAL);
+          return new Enumeration<EnrollmentOutcome>(this, EnrollmentOutcome.PARTIAL, code);
         throw new FHIRException("Unknown EnrollmentOutcome code '"+codeString+"'");
         }
     public String toCode(EnrollmentOutcome code) {
@@ -870,4 +870,3 @@ public class EnrollmentResponse extends DomainResource {
 
 
 }
-

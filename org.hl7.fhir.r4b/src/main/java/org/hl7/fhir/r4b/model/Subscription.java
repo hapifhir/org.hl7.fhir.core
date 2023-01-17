@@ -159,24 +159,24 @@ public class Subscription extends DomainResource {
           return SubscriptionChannelType.MESSAGE;
         throw new IllegalArgumentException("Unknown SubscriptionChannelType code '"+codeString+"'");
         }
-        public Enumeration<SubscriptionChannelType> fromType(Base code) throws FHIRException {
+        public Enumeration<SubscriptionChannelType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<SubscriptionChannelType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<SubscriptionChannelType>(this, SubscriptionChannelType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<SubscriptionChannelType>(this, SubscriptionChannelType.NULL, code);
         if ("rest-hook".equals(codeString))
-          return new Enumeration<SubscriptionChannelType>(this, SubscriptionChannelType.RESTHOOK);
+          return new Enumeration<SubscriptionChannelType>(this, SubscriptionChannelType.RESTHOOK, code);
         if ("websocket".equals(codeString))
-          return new Enumeration<SubscriptionChannelType>(this, SubscriptionChannelType.WEBSOCKET);
+          return new Enumeration<SubscriptionChannelType>(this, SubscriptionChannelType.WEBSOCKET, code);
         if ("email".equals(codeString))
-          return new Enumeration<SubscriptionChannelType>(this, SubscriptionChannelType.EMAIL);
+          return new Enumeration<SubscriptionChannelType>(this, SubscriptionChannelType.EMAIL, code);
         if ("sms".equals(codeString))
-          return new Enumeration<SubscriptionChannelType>(this, SubscriptionChannelType.SMS);
+          return new Enumeration<SubscriptionChannelType>(this, SubscriptionChannelType.SMS, code);
         if ("message".equals(codeString))
-          return new Enumeration<SubscriptionChannelType>(this, SubscriptionChannelType.MESSAGE);
+          return new Enumeration<SubscriptionChannelType>(this, SubscriptionChannelType.MESSAGE, code);
         throw new FHIRException("Unknown SubscriptionChannelType code '"+codeString+"'");
         }
     public String toCode(SubscriptionChannelType code) {
@@ -1329,4 +1329,3 @@ public class Subscription extends DomainResource {
 
 
 }
-

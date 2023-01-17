@@ -148,12 +148,12 @@ public class FamilyMemberHistory extends DomainResource {
           return FamilyHistoryStatus.HEALTHUNKNOWN;
         throw new IllegalArgumentException("Unknown FamilyHistoryStatus code '"+codeString+"'");
         }
-        public Enumeration<FamilyHistoryStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<FamilyHistoryStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<FamilyHistoryStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("partial".equals(codeString))

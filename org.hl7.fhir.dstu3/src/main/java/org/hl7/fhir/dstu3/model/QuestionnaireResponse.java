@@ -159,12 +159,12 @@ public class QuestionnaireResponse extends DomainResource {
           return QuestionnaireResponseStatus.STOPPED;
         throw new IllegalArgumentException("Unknown QuestionnaireResponseStatus code '"+codeString+"'");
         }
-        public Enumeration<QuestionnaireResponseStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<QuestionnaireResponseStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<QuestionnaireResponseStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("in-progress".equals(codeString))

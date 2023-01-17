@@ -147,22 +147,22 @@ public class CoverageEligibilityResponse extends DomainResource {
           return EligibilityOutcome.PARTIAL;
         throw new IllegalArgumentException("Unknown EligibilityOutcome code '"+codeString+"'");
         }
-        public Enumeration<EligibilityOutcome> fromType(Base code) throws FHIRException {
+        public Enumeration<EligibilityOutcome> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<EligibilityOutcome>(this);
+            return new Enumeration<EligibilityOutcome>(this, EligibilityOutcome.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<EligibilityOutcome>(this, EligibilityOutcome.NULL, code);
         if ("queued".equals(codeString))
-          return new Enumeration<EligibilityOutcome>(this, EligibilityOutcome.QUEUED);
+          return new Enumeration<EligibilityOutcome>(this, EligibilityOutcome.QUEUED, code);
         if ("complete".equals(codeString))
-          return new Enumeration<EligibilityOutcome>(this, EligibilityOutcome.COMPLETE);
+          return new Enumeration<EligibilityOutcome>(this, EligibilityOutcome.COMPLETE, code);
         if ("error".equals(codeString))
-          return new Enumeration<EligibilityOutcome>(this, EligibilityOutcome.ERROR);
+          return new Enumeration<EligibilityOutcome>(this, EligibilityOutcome.ERROR, code);
         if ("partial".equals(codeString))
-          return new Enumeration<EligibilityOutcome>(this, EligibilityOutcome.PARTIAL);
+          return new Enumeration<EligibilityOutcome>(this, EligibilityOutcome.PARTIAL, code);
         throw new FHIRException("Unknown EligibilityOutcome code '"+codeString+"'");
         }
     public String toCode(EligibilityOutcome code) {
@@ -275,22 +275,22 @@ public class CoverageEligibilityResponse extends DomainResource {
           return EligibilityResponsePurpose.VALIDATION;
         throw new IllegalArgumentException("Unknown EligibilityResponsePurpose code '"+codeString+"'");
         }
-        public Enumeration<EligibilityResponsePurpose> fromType(Base code) throws FHIRException {
+        public Enumeration<EligibilityResponsePurpose> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<EligibilityResponsePurpose>(this);
+            return new Enumeration<EligibilityResponsePurpose>(this, EligibilityResponsePurpose.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<EligibilityResponsePurpose>(this, EligibilityResponsePurpose.NULL, code);
         if ("auth-requirements".equals(codeString))
-          return new Enumeration<EligibilityResponsePurpose>(this, EligibilityResponsePurpose.AUTHREQUIREMENTS);
+          return new Enumeration<EligibilityResponsePurpose>(this, EligibilityResponsePurpose.AUTHREQUIREMENTS, code);
         if ("benefits".equals(codeString))
-          return new Enumeration<EligibilityResponsePurpose>(this, EligibilityResponsePurpose.BENEFITS);
+          return new Enumeration<EligibilityResponsePurpose>(this, EligibilityResponsePurpose.BENEFITS, code);
         if ("discovery".equals(codeString))
-          return new Enumeration<EligibilityResponsePurpose>(this, EligibilityResponsePurpose.DISCOVERY);
+          return new Enumeration<EligibilityResponsePurpose>(this, EligibilityResponsePurpose.DISCOVERY, code);
         if ("validation".equals(codeString))
-          return new Enumeration<EligibilityResponsePurpose>(this, EligibilityResponsePurpose.VALIDATION);
+          return new Enumeration<EligibilityResponsePurpose>(this, EligibilityResponsePurpose.VALIDATION, code);
         throw new FHIRException("Unknown EligibilityResponsePurpose code '"+codeString+"'");
         }
     public String toCode(EligibilityResponsePurpose code) {
@@ -3494,4 +3494,3 @@ public class CoverageEligibilityResponse extends DomainResource {
 
 
 }
-

@@ -147,22 +147,22 @@ public class Person extends DomainResource {
           return IdentityAssuranceLevel.LEVEL4;
         throw new IllegalArgumentException("Unknown IdentityAssuranceLevel code '"+codeString+"'");
         }
-        public Enumeration<IdentityAssuranceLevel> fromType(Base code) throws FHIRException {
+        public Enumeration<IdentityAssuranceLevel> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<IdentityAssuranceLevel>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<IdentityAssuranceLevel>(this, IdentityAssuranceLevel.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<IdentityAssuranceLevel>(this, IdentityAssuranceLevel.NULL, code);
         if ("level1".equals(codeString))
-          return new Enumeration<IdentityAssuranceLevel>(this, IdentityAssuranceLevel.LEVEL1);
+          return new Enumeration<IdentityAssuranceLevel>(this, IdentityAssuranceLevel.LEVEL1, code);
         if ("level2".equals(codeString))
-          return new Enumeration<IdentityAssuranceLevel>(this, IdentityAssuranceLevel.LEVEL2);
+          return new Enumeration<IdentityAssuranceLevel>(this, IdentityAssuranceLevel.LEVEL2, code);
         if ("level3".equals(codeString))
-          return new Enumeration<IdentityAssuranceLevel>(this, IdentityAssuranceLevel.LEVEL3);
+          return new Enumeration<IdentityAssuranceLevel>(this, IdentityAssuranceLevel.LEVEL3, code);
         if ("level4".equals(codeString))
-          return new Enumeration<IdentityAssuranceLevel>(this, IdentityAssuranceLevel.LEVEL4);
+          return new Enumeration<IdentityAssuranceLevel>(this, IdentityAssuranceLevel.LEVEL4, code);
         throw new FHIRException("Unknown IdentityAssuranceLevel code '"+codeString+"'");
         }
     public String toCode(IdentityAssuranceLevel code) {
@@ -1787,4 +1787,3 @@ public class Person extends DomainResource {
 
 
 }
-

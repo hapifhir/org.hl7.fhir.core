@@ -159,24 +159,24 @@ public class QuestionnaireResponse extends DomainResource {
           return QuestionnaireResponseStatus.STOPPED;
         throw new IllegalArgumentException("Unknown QuestionnaireResponseStatus code '"+codeString+"'");
         }
-        public Enumeration<QuestionnaireResponseStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<QuestionnaireResponseStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<QuestionnaireResponseStatus>(this);
+            return new Enumeration<QuestionnaireResponseStatus>(this, QuestionnaireResponseStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<QuestionnaireResponseStatus>(this, QuestionnaireResponseStatus.NULL, code);
         if ("in-progress".equals(codeString))
-          return new Enumeration<QuestionnaireResponseStatus>(this, QuestionnaireResponseStatus.INPROGRESS);
+          return new Enumeration<QuestionnaireResponseStatus>(this, QuestionnaireResponseStatus.INPROGRESS, code);
         if ("completed".equals(codeString))
-          return new Enumeration<QuestionnaireResponseStatus>(this, QuestionnaireResponseStatus.COMPLETED);
+          return new Enumeration<QuestionnaireResponseStatus>(this, QuestionnaireResponseStatus.COMPLETED, code);
         if ("amended".equals(codeString))
-          return new Enumeration<QuestionnaireResponseStatus>(this, QuestionnaireResponseStatus.AMENDED);
+          return new Enumeration<QuestionnaireResponseStatus>(this, QuestionnaireResponseStatus.AMENDED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<QuestionnaireResponseStatus>(this, QuestionnaireResponseStatus.ENTEREDINERROR);
+          return new Enumeration<QuestionnaireResponseStatus>(this, QuestionnaireResponseStatus.ENTEREDINERROR, code);
         if ("stopped".equals(codeString))
-          return new Enumeration<QuestionnaireResponseStatus>(this, QuestionnaireResponseStatus.STOPPED);
+          return new Enumeration<QuestionnaireResponseStatus>(this, QuestionnaireResponseStatus.STOPPED, code);
         throw new FHIRException("Unknown QuestionnaireResponseStatus code '"+codeString+"'");
         }
     public String toCode(QuestionnaireResponseStatus code) {
@@ -2282,4 +2282,3 @@ public class QuestionnaireResponse extends DomainResource {
 
 
 }
-

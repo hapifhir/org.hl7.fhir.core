@@ -148,12 +148,12 @@ public class ExplanationOfBenefit extends DomainResource {
           return ExplanationOfBenefitStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown ExplanationOfBenefitStatus code '"+codeString+"'");
         }
-        public Enumeration<ExplanationOfBenefitStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ExplanationOfBenefitStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ExplanationOfBenefitStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("active".equals(codeString))

@@ -185,7 +185,9 @@ public class TypeConvertor {
 
     if (b instanceof CodeType)
       return (CodeType) b;
-    else if (b.isPrimitive())
+    else if (b instanceof PrimitiveType<?>) {      
+      return new CodeType(b.primitiveValue(), (PrimitiveType<?>) b);
+    } else if (b.isPrimitive())
       return new CodeType(b.primitiveValue());
     else
       throw new FHIRException("Unable to convert a "+b.getClass().getName()+" to a Code");
@@ -360,6 +362,11 @@ public class TypeConvertor {
       ICoding c = ((Element) b).getAsICoding();
       if (c != null) {
         return new Coding().setCode(c.getCode()).setSystem(c.getSystem()).setVersion(c.getVersion()).setDisplay(c.getDisplay());
+      } else if (b instanceof PrimitiveType<?>) {
+        PrimitiveType<?> p = (PrimitiveType<?>) b;
+        Coding cc = new Coding();
+        cc.setCode(b.primitiveValue()).setId(p.getId()).getExtension().addAll(p.getExtension());
+        return cc;
       } else if (b.isPrimitive()) {  
         return new Coding().setCode(b.primitiveValue());
       } else {
@@ -368,6 +375,11 @@ public class TypeConvertor {
     } else if (b instanceof ICoding) {
       ICoding c = (ICoding) b;
       return new Coding().setCode(c.getCode()).setSystem(c.getSystem()).setVersion(c.getVersion()).setDisplay(c.getDisplay());
+    } else if (b instanceof PrimitiveType<?>) {
+      PrimitiveType<?> p = (PrimitiveType<?>) b;
+      Coding cc = new Coding();
+      cc.setCode(b.primitiveValue()).setId(p.getId()).getExtension().addAll(p.getExtension());
+      return cc;
     } else if (b.isPrimitive()) {  
       return new Coding().setCode(b.primitiveValue());
     } else {

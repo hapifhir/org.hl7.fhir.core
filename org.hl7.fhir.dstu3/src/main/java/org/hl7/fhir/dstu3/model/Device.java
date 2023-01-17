@@ -170,12 +170,12 @@ public class Device extends DomainResource {
           return UDIEntryType.UNKNOWN;
         throw new IllegalArgumentException("Unknown UDIEntryType code '"+codeString+"'");
         }
-        public Enumeration<UDIEntryType> fromType(Base code) throws FHIRException {
+        public Enumeration<UDIEntryType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<UDIEntryType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("barcode".equals(codeString))
@@ -306,12 +306,12 @@ public class Device extends DomainResource {
           return FHIRDeviceStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown FHIRDeviceStatus code '"+codeString+"'");
         }
-        public Enumeration<FHIRDeviceStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<FHIRDeviceStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<FHIRDeviceStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("active".equals(codeString))

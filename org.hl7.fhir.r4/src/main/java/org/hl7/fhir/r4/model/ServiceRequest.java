@@ -181,28 +181,28 @@ public class ServiceRequest extends DomainResource {
           return ServiceRequestStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown ServiceRequestStatus code '"+codeString+"'");
         }
-        public Enumeration<ServiceRequestStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ServiceRequestStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ServiceRequestStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ServiceRequestStatus>(this, ServiceRequestStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ServiceRequestStatus>(this, ServiceRequestStatus.NULL, code);
         if ("draft".equals(codeString))
-          return new Enumeration<ServiceRequestStatus>(this, ServiceRequestStatus.DRAFT);
+          return new Enumeration<ServiceRequestStatus>(this, ServiceRequestStatus.DRAFT, code);
         if ("active".equals(codeString))
-          return new Enumeration<ServiceRequestStatus>(this, ServiceRequestStatus.ACTIVE);
+          return new Enumeration<ServiceRequestStatus>(this, ServiceRequestStatus.ACTIVE, code);
         if ("on-hold".equals(codeString))
-          return new Enumeration<ServiceRequestStatus>(this, ServiceRequestStatus.ONHOLD);
+          return new Enumeration<ServiceRequestStatus>(this, ServiceRequestStatus.ONHOLD, code);
         if ("revoked".equals(codeString))
-          return new Enumeration<ServiceRequestStatus>(this, ServiceRequestStatus.REVOKED);
+          return new Enumeration<ServiceRequestStatus>(this, ServiceRequestStatus.REVOKED, code);
         if ("completed".equals(codeString))
-          return new Enumeration<ServiceRequestStatus>(this, ServiceRequestStatus.COMPLETED);
+          return new Enumeration<ServiceRequestStatus>(this, ServiceRequestStatus.COMPLETED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<ServiceRequestStatus>(this, ServiceRequestStatus.ENTEREDINERROR);
+          return new Enumeration<ServiceRequestStatus>(this, ServiceRequestStatus.ENTEREDINERROR, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<ServiceRequestStatus>(this, ServiceRequestStatus.UNKNOWN);
+          return new Enumeration<ServiceRequestStatus>(this, ServiceRequestStatus.UNKNOWN, code);
         throw new FHIRException("Unknown ServiceRequestStatus code '"+codeString+"'");
         }
     public String toCode(ServiceRequestStatus code) {
@@ -381,32 +381,32 @@ public class ServiceRequest extends DomainResource {
           return ServiceRequestIntent.OPTION;
         throw new IllegalArgumentException("Unknown ServiceRequestIntent code '"+codeString+"'");
         }
-        public Enumeration<ServiceRequestIntent> fromType(Base code) throws FHIRException {
+        public Enumeration<ServiceRequestIntent> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ServiceRequestIntent>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ServiceRequestIntent>(this, ServiceRequestIntent.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ServiceRequestIntent>(this, ServiceRequestIntent.NULL, code);
         if ("proposal".equals(codeString))
-          return new Enumeration<ServiceRequestIntent>(this, ServiceRequestIntent.PROPOSAL);
+          return new Enumeration<ServiceRequestIntent>(this, ServiceRequestIntent.PROPOSAL, code);
         if ("plan".equals(codeString))
-          return new Enumeration<ServiceRequestIntent>(this, ServiceRequestIntent.PLAN);
+          return new Enumeration<ServiceRequestIntent>(this, ServiceRequestIntent.PLAN, code);
         if ("directive".equals(codeString))
-          return new Enumeration<ServiceRequestIntent>(this, ServiceRequestIntent.DIRECTIVE);
+          return new Enumeration<ServiceRequestIntent>(this, ServiceRequestIntent.DIRECTIVE, code);
         if ("order".equals(codeString))
-          return new Enumeration<ServiceRequestIntent>(this, ServiceRequestIntent.ORDER);
+          return new Enumeration<ServiceRequestIntent>(this, ServiceRequestIntent.ORDER, code);
         if ("original-order".equals(codeString))
-          return new Enumeration<ServiceRequestIntent>(this, ServiceRequestIntent.ORIGINALORDER);
+          return new Enumeration<ServiceRequestIntent>(this, ServiceRequestIntent.ORIGINALORDER, code);
         if ("reflex-order".equals(codeString))
-          return new Enumeration<ServiceRequestIntent>(this, ServiceRequestIntent.REFLEXORDER);
+          return new Enumeration<ServiceRequestIntent>(this, ServiceRequestIntent.REFLEXORDER, code);
         if ("filler-order".equals(codeString))
-          return new Enumeration<ServiceRequestIntent>(this, ServiceRequestIntent.FILLERORDER);
+          return new Enumeration<ServiceRequestIntent>(this, ServiceRequestIntent.FILLERORDER, code);
         if ("instance-order".equals(codeString))
-          return new Enumeration<ServiceRequestIntent>(this, ServiceRequestIntent.INSTANCEORDER);
+          return new Enumeration<ServiceRequestIntent>(this, ServiceRequestIntent.INSTANCEORDER, code);
         if ("option".equals(codeString))
-          return new Enumeration<ServiceRequestIntent>(this, ServiceRequestIntent.OPTION);
+          return new Enumeration<ServiceRequestIntent>(this, ServiceRequestIntent.OPTION, code);
         throw new FHIRException("Unknown ServiceRequestIntent code '"+codeString+"'");
         }
     public String toCode(ServiceRequestIntent code) {
@@ -529,22 +529,22 @@ public class ServiceRequest extends DomainResource {
           return ServiceRequestPriority.STAT;
         throw new IllegalArgumentException("Unknown ServiceRequestPriority code '"+codeString+"'");
         }
-        public Enumeration<ServiceRequestPriority> fromType(Base code) throws FHIRException {
+        public Enumeration<ServiceRequestPriority> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ServiceRequestPriority>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ServiceRequestPriority>(this, ServiceRequestPriority.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ServiceRequestPriority>(this, ServiceRequestPriority.NULL, code);
         if ("routine".equals(codeString))
-          return new Enumeration<ServiceRequestPriority>(this, ServiceRequestPriority.ROUTINE);
+          return new Enumeration<ServiceRequestPriority>(this, ServiceRequestPriority.ROUTINE, code);
         if ("urgent".equals(codeString))
-          return new Enumeration<ServiceRequestPriority>(this, ServiceRequestPriority.URGENT);
+          return new Enumeration<ServiceRequestPriority>(this, ServiceRequestPriority.URGENT, code);
         if ("asap".equals(codeString))
-          return new Enumeration<ServiceRequestPriority>(this, ServiceRequestPriority.ASAP);
+          return new Enumeration<ServiceRequestPriority>(this, ServiceRequestPriority.ASAP, code);
         if ("stat".equals(codeString))
-          return new Enumeration<ServiceRequestPriority>(this, ServiceRequestPriority.STAT);
+          return new Enumeration<ServiceRequestPriority>(this, ServiceRequestPriority.STAT, code);
         throw new FHIRException("Unknown ServiceRequestPriority code '"+codeString+"'");
         }
     public String toCode(ServiceRequestPriority code) {
