@@ -1,12 +1,14 @@
 package org.hl7.fhir.utilities;
 
 import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class FTPClient {
 
@@ -22,6 +24,8 @@ public class FTPClient {
 
   final int port;
 
+  private final String remoteSeparator;
+
   /**
    * Connect to an FTP server
    * @param server - the server to connect to (usually just an IP address). It's up to the system to figure out access (VPN etc)
@@ -36,13 +40,15 @@ public class FTPClient {
   protected FTPClient(String server, int port, String path, String user, String password) {
     this.server = server;
     this.port = port;
-    if (path.endsWith("/")) {
-      this.path = path;
-    } else {
-      this.path = path + "/";
+    this.remoteSeparator = "/";
+    if (!path.startsWith(remoteSeparator)) {
+      throw new IllegalArgumentException("Absolute remote path is required. Path: " + path);
     }
+    this.path = path + (!path.endsWith(remoteSeparator) ? remoteSeparator : "");
+
     this.user = user;
     this.password = password;
+
 
     clientImpl = new org.apache.commons.net.ftp.FTPClient();
   }
@@ -60,9 +66,9 @@ public class FTPClient {
 
     clientImpl.login(user, password);
 
+    checkForPositiveCompletionAndLogErrors("FTP server could not connect.", true);
 
-      checkForPositiveCompletionAndLogErrors("FTP server could not connect.", true);
-
+    clientImpl.changeWorkingDirectory(path);
   }
 
   /**
@@ -77,8 +83,36 @@ public class FTPClient {
     checkForPositiveCompletionAndLogErrors("Error deleting file.", false);
   }
 
-  private String resolveRemotePath(String path) {
-    return String.join("", this.path, path);
+  protected void createRemotePathIfNotExists(String path) throws IOException {
+    String[] subPath = path.split(remoteSeparator);
+    try {
+    for (int i = 0 ; i < subPath.length - 1; i++){
+      boolean exists = clientImpl.changeWorkingDirectory(subPath[i]);
+      System.out.println(clientImpl.printWorkingDirectory());
+      if (!exists) {
+        clientImpl.makeDirectory(subPath[i]);
+        clientImpl.changeWorkingDirectory(subPath[i]);
+      }
+    }} catch (IOException e) {
+      e.printStackTrace();
+    } finally {
+      clientImpl.changeWorkingDirectory(this.path);
+      System.out.println(clientImpl.printWorkingDirectory());
+    }
+  }
+
+  protected boolean remotePathExists(String path) throws IOException {
+    boolean output;
+    try {
+      output = clientImpl.changeWorkingDirectory(path);
+    } finally {
+      clientImpl.changeWorkingDirectory(this.path);
+    }
+    return output;
+  }
+
+  private String resolveRemotePath(String... path) {
+    return String.join(remoteSeparator, path);
   }
 
   /**
@@ -87,7 +121,13 @@ public class FTPClient {
    * @param path - relative to the path provided in the constructor
    */
   public void upload(String source, String path) throws IOException {
+    if (path.startsWith(remoteSeparator)) {
+      throw new IllegalArgumentException("Absolute remote path is not permitted. Path: " + path);
+    }
     String resolvedPath = resolveRemotePath(path);
+
+    createRemotePathIfNotExists(path);
+
     FileInputStream localStream = new FileInputStream(source);
     clientImpl.setFileType(FTP.BINARY_FILE_TYPE);
     clientImpl.storeFile( resolvedPath, localStream);
