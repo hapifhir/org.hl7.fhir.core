@@ -232,36 +232,36 @@ public class ObservationDefinition extends DomainResource {
           return ObservationDataType.PERIOD;
         throw new IllegalArgumentException("Unknown ObservationDataType code '"+codeString+"'");
         }
-        public Enumeration<ObservationDataType> fromType(Base code) throws FHIRException {
+        public Enumeration<ObservationDataType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ObservationDataType>(this);
+            return new Enumeration<ObservationDataType>(this, ObservationDataType.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ObservationDataType>(this, ObservationDataType.NULL, code);
         if ("Quantity".equals(codeString))
-          return new Enumeration<ObservationDataType>(this, ObservationDataType.QUANTITY);
+          return new Enumeration<ObservationDataType>(this, ObservationDataType.QUANTITY, code);
         if ("CodeableConcept".equals(codeString))
-          return new Enumeration<ObservationDataType>(this, ObservationDataType.CODEABLECONCEPT);
+          return new Enumeration<ObservationDataType>(this, ObservationDataType.CODEABLECONCEPT, code);
         if ("string".equals(codeString))
-          return new Enumeration<ObservationDataType>(this, ObservationDataType.STRING);
+          return new Enumeration<ObservationDataType>(this, ObservationDataType.STRING, code);
         if ("boolean".equals(codeString))
-          return new Enumeration<ObservationDataType>(this, ObservationDataType.BOOLEAN);
+          return new Enumeration<ObservationDataType>(this, ObservationDataType.BOOLEAN, code);
         if ("integer".equals(codeString))
-          return new Enumeration<ObservationDataType>(this, ObservationDataType.INTEGER);
+          return new Enumeration<ObservationDataType>(this, ObservationDataType.INTEGER, code);
         if ("Range".equals(codeString))
-          return new Enumeration<ObservationDataType>(this, ObservationDataType.RANGE);
+          return new Enumeration<ObservationDataType>(this, ObservationDataType.RANGE, code);
         if ("Ratio".equals(codeString))
-          return new Enumeration<ObservationDataType>(this, ObservationDataType.RATIO);
+          return new Enumeration<ObservationDataType>(this, ObservationDataType.RATIO, code);
         if ("SampledData".equals(codeString))
-          return new Enumeration<ObservationDataType>(this, ObservationDataType.SAMPLEDDATA);
+          return new Enumeration<ObservationDataType>(this, ObservationDataType.SAMPLEDDATA, code);
         if ("time".equals(codeString))
-          return new Enumeration<ObservationDataType>(this, ObservationDataType.TIME);
+          return new Enumeration<ObservationDataType>(this, ObservationDataType.TIME, code);
         if ("dateTime".equals(codeString))
-          return new Enumeration<ObservationDataType>(this, ObservationDataType.DATETIME);
+          return new Enumeration<ObservationDataType>(this, ObservationDataType.DATETIME, code);
         if ("Period".equals(codeString))
-          return new Enumeration<ObservationDataType>(this, ObservationDataType.PERIOD);
+          return new Enumeration<ObservationDataType>(this, ObservationDataType.PERIOD, code);
         throw new FHIRException("Unknown ObservationDataType code '"+codeString+"'");
         }
     public String toCode(ObservationDataType code) {
@@ -376,20 +376,20 @@ public class ObservationDefinition extends DomainResource {
           return ObservationRangeCategory.ABSOLUTE;
         throw new IllegalArgumentException("Unknown ObservationRangeCategory code '"+codeString+"'");
         }
-        public Enumeration<ObservationRangeCategory> fromType(Base code) throws FHIRException {
+        public Enumeration<ObservationRangeCategory> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ObservationRangeCategory>(this);
+            return new Enumeration<ObservationRangeCategory>(this, ObservationRangeCategory.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ObservationRangeCategory>(this, ObservationRangeCategory.NULL, code);
         if ("reference".equals(codeString))
-          return new Enumeration<ObservationRangeCategory>(this, ObservationRangeCategory.REFERENCE);
+          return new Enumeration<ObservationRangeCategory>(this, ObservationRangeCategory.REFERENCE, code);
         if ("critical".equals(codeString))
-          return new Enumeration<ObservationRangeCategory>(this, ObservationRangeCategory.CRITICAL);
+          return new Enumeration<ObservationRangeCategory>(this, ObservationRangeCategory.CRITICAL, code);
         if ("absolute".equals(codeString))
-          return new Enumeration<ObservationRangeCategory>(this, ObservationRangeCategory.ABSOLUTE);
+          return new Enumeration<ObservationRangeCategory>(this, ObservationRangeCategory.ABSOLUTE, code);
         throw new FHIRException("Unknown ObservationRangeCategory code '"+codeString+"'");
         }
     public String toCode(ObservationRangeCategory code) {
@@ -5004,4 +5004,3 @@ public class ObservationDefinition extends DomainResource {
 
 
 }
-

@@ -123,18 +123,18 @@ public class ExampleScenario extends MetadataResource {
           return ExampleScenarioActorType.ENTITY;
         throw new IllegalArgumentException("Unknown ExampleScenarioActorType code '"+codeString+"'");
         }
-        public Enumeration<ExampleScenarioActorType> fromType(Base code) throws FHIRException {
+        public Enumeration<ExampleScenarioActorType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ExampleScenarioActorType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ExampleScenarioActorType>(this, ExampleScenarioActorType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ExampleScenarioActorType>(this, ExampleScenarioActorType.NULL, code);
         if ("person".equals(codeString))
-          return new Enumeration<ExampleScenarioActorType>(this, ExampleScenarioActorType.PERSON);
+          return new Enumeration<ExampleScenarioActorType>(this, ExampleScenarioActorType.PERSON, code);
         if ("entity".equals(codeString))
-          return new Enumeration<ExampleScenarioActorType>(this, ExampleScenarioActorType.ENTITY);
+          return new Enumeration<ExampleScenarioActorType>(this, ExampleScenarioActorType.ENTITY, code);
         throw new FHIRException("Unknown ExampleScenarioActorType code '"+codeString+"'");
         }
     public String toCode(ExampleScenarioActorType code) {
@@ -1974,310 +1974,310 @@ The primary difference between a medication statement and a medication administr
           return FHIRResourceType.VISIONPRESCRIPTION;
         throw new IllegalArgumentException("Unknown FHIRResourceType code '"+codeString+"'");
         }
-        public Enumeration<FHIRResourceType> fromType(Base code) throws FHIRException {
+        public Enumeration<FHIRResourceType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<FHIRResourceType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<FHIRResourceType>(this, FHIRResourceType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<FHIRResourceType>(this, FHIRResourceType.NULL, code);
         if ("Account".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.ACCOUNT);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.ACCOUNT, code);
         if ("ActivityDefinition".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.ACTIVITYDEFINITION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.ACTIVITYDEFINITION, code);
         if ("AdverseEvent".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.ADVERSEEVENT);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.ADVERSEEVENT, code);
         if ("AllergyIntolerance".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.ALLERGYINTOLERANCE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.ALLERGYINTOLERANCE, code);
         if ("Appointment".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.APPOINTMENT);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.APPOINTMENT, code);
         if ("AppointmentResponse".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.APPOINTMENTRESPONSE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.APPOINTMENTRESPONSE, code);
         if ("AuditEvent".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.AUDITEVENT);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.AUDITEVENT, code);
         if ("Basic".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.BASIC);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.BASIC, code);
         if ("Binary".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.BINARY);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.BINARY, code);
         if ("BiologicallyDerivedProduct".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.BIOLOGICALLYDERIVEDPRODUCT);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.BIOLOGICALLYDERIVEDPRODUCT, code);
         if ("BodyStructure".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.BODYSTRUCTURE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.BODYSTRUCTURE, code);
         if ("Bundle".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.BUNDLE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.BUNDLE, code);
         if ("CapabilityStatement".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.CAPABILITYSTATEMENT);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.CAPABILITYSTATEMENT, code);
         if ("CarePlan".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.CAREPLAN);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.CAREPLAN, code);
         if ("CareTeam".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.CARETEAM);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.CARETEAM, code);
         if ("CatalogEntry".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.CATALOGENTRY);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.CATALOGENTRY, code);
         if ("ChargeItem".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.CHARGEITEM);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.CHARGEITEM, code);
         if ("ChargeItemDefinition".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.CHARGEITEMDEFINITION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.CHARGEITEMDEFINITION, code);
         if ("Claim".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.CLAIM);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.CLAIM, code);
         if ("ClaimResponse".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.CLAIMRESPONSE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.CLAIMRESPONSE, code);
         if ("ClinicalImpression".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.CLINICALIMPRESSION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.CLINICALIMPRESSION, code);
         if ("CodeSystem".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.CODESYSTEM);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.CODESYSTEM, code);
         if ("Communication".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.COMMUNICATION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.COMMUNICATION, code);
         if ("CommunicationRequest".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.COMMUNICATIONREQUEST);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.COMMUNICATIONREQUEST, code);
         if ("CompartmentDefinition".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.COMPARTMENTDEFINITION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.COMPARTMENTDEFINITION, code);
         if ("Composition".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.COMPOSITION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.COMPOSITION, code);
         if ("ConceptMap".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.CONCEPTMAP);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.CONCEPTMAP, code);
         if ("Condition".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.CONDITION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.CONDITION, code);
         if ("Consent".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.CONSENT);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.CONSENT, code);
         if ("Contract".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.CONTRACT);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.CONTRACT, code);
         if ("Coverage".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.COVERAGE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.COVERAGE, code);
         if ("CoverageEligibilityRequest".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.COVERAGEELIGIBILITYREQUEST);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.COVERAGEELIGIBILITYREQUEST, code);
         if ("CoverageEligibilityResponse".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.COVERAGEELIGIBILITYRESPONSE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.COVERAGEELIGIBILITYRESPONSE, code);
         if ("DetectedIssue".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.DETECTEDISSUE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.DETECTEDISSUE, code);
         if ("Device".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.DEVICE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.DEVICE, code);
         if ("DeviceDefinition".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.DEVICEDEFINITION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.DEVICEDEFINITION, code);
         if ("DeviceMetric".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.DEVICEMETRIC);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.DEVICEMETRIC, code);
         if ("DeviceRequest".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.DEVICEREQUEST);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.DEVICEREQUEST, code);
         if ("DeviceUseStatement".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.DEVICEUSESTATEMENT);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.DEVICEUSESTATEMENT, code);
         if ("DiagnosticReport".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.DIAGNOSTICREPORT);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.DIAGNOSTICREPORT, code);
         if ("DocumentManifest".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.DOCUMENTMANIFEST);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.DOCUMENTMANIFEST, code);
         if ("DocumentReference".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.DOCUMENTREFERENCE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.DOCUMENTREFERENCE, code);
         if ("DomainResource".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.DOMAINRESOURCE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.DOMAINRESOURCE, code);
         if ("EffectEvidenceSynthesis".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.EFFECTEVIDENCESYNTHESIS);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.EFFECTEVIDENCESYNTHESIS, code);
         if ("Encounter".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.ENCOUNTER);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.ENCOUNTER, code);
         if ("Endpoint".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.ENDPOINT);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.ENDPOINT, code);
         if ("EnrollmentRequest".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.ENROLLMENTREQUEST);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.ENROLLMENTREQUEST, code);
         if ("EnrollmentResponse".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.ENROLLMENTRESPONSE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.ENROLLMENTRESPONSE, code);
         if ("EpisodeOfCare".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.EPISODEOFCARE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.EPISODEOFCARE, code);
         if ("EventDefinition".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.EVENTDEFINITION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.EVENTDEFINITION, code);
         if ("Evidence".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.EVIDENCE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.EVIDENCE, code);
         if ("EvidenceVariable".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.EVIDENCEVARIABLE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.EVIDENCEVARIABLE, code);
         if ("ExampleScenario".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.EXAMPLESCENARIO);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.EXAMPLESCENARIO, code);
         if ("ExplanationOfBenefit".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.EXPLANATIONOFBENEFIT);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.EXPLANATIONOFBENEFIT, code);
         if ("FamilyMemberHistory".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.FAMILYMEMBERHISTORY);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.FAMILYMEMBERHISTORY, code);
         if ("Flag".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.FLAG);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.FLAG, code);
         if ("Goal".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.GOAL);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.GOAL, code);
         if ("GraphDefinition".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.GRAPHDEFINITION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.GRAPHDEFINITION, code);
         if ("Group".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.GROUP);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.GROUP, code);
         if ("GuidanceResponse".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.GUIDANCERESPONSE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.GUIDANCERESPONSE, code);
         if ("HealthcareService".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.HEALTHCARESERVICE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.HEALTHCARESERVICE, code);
         if ("ImagingStudy".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.IMAGINGSTUDY);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.IMAGINGSTUDY, code);
         if ("Immunization".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.IMMUNIZATION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.IMMUNIZATION, code);
         if ("ImmunizationEvaluation".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.IMMUNIZATIONEVALUATION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.IMMUNIZATIONEVALUATION, code);
         if ("ImmunizationRecommendation".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.IMMUNIZATIONRECOMMENDATION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.IMMUNIZATIONRECOMMENDATION, code);
         if ("ImplementationGuide".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.IMPLEMENTATIONGUIDE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.IMPLEMENTATIONGUIDE, code);
         if ("InsurancePlan".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.INSURANCEPLAN);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.INSURANCEPLAN, code);
         if ("Invoice".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.INVOICE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.INVOICE, code);
         if ("Library".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.LIBRARY);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.LIBRARY, code);
         if ("Linkage".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.LINKAGE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.LINKAGE, code);
         if ("List".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.LIST);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.LIST, code);
         if ("Location".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.LOCATION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.LOCATION, code);
         if ("Measure".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEASURE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEASURE, code);
         if ("MeasureReport".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEASUREREPORT);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEASUREREPORT, code);
         if ("Media".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDIA);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDIA, code);
         if ("Medication".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICATION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICATION, code);
         if ("MedicationAdministration".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICATIONADMINISTRATION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICATIONADMINISTRATION, code);
         if ("MedicationDispense".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICATIONDISPENSE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICATIONDISPENSE, code);
         if ("MedicationKnowledge".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICATIONKNOWLEDGE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICATIONKNOWLEDGE, code);
         if ("MedicationRequest".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICATIONREQUEST);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICATIONREQUEST, code);
         if ("MedicationStatement".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICATIONSTATEMENT);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICATIONSTATEMENT, code);
         if ("MedicinalProduct".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICINALPRODUCT);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICINALPRODUCT, code);
         if ("MedicinalProductAuthorization".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICINALPRODUCTAUTHORIZATION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICINALPRODUCTAUTHORIZATION, code);
         if ("MedicinalProductContraindication".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICINALPRODUCTCONTRAINDICATION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICINALPRODUCTCONTRAINDICATION, code);
         if ("MedicinalProductIndication".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICINALPRODUCTINDICATION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICINALPRODUCTINDICATION, code);
         if ("MedicinalProductIngredient".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICINALPRODUCTINGREDIENT);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICINALPRODUCTINGREDIENT, code);
         if ("MedicinalProductInteraction".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICINALPRODUCTINTERACTION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICINALPRODUCTINTERACTION, code);
         if ("MedicinalProductManufactured".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICINALPRODUCTMANUFACTURED);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICINALPRODUCTMANUFACTURED, code);
         if ("MedicinalProductPackaged".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICINALPRODUCTPACKAGED);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICINALPRODUCTPACKAGED, code);
         if ("MedicinalProductPharmaceutical".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICINALPRODUCTPHARMACEUTICAL);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICINALPRODUCTPHARMACEUTICAL, code);
         if ("MedicinalProductUndesirableEffect".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICINALPRODUCTUNDESIRABLEEFFECT);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MEDICINALPRODUCTUNDESIRABLEEFFECT, code);
         if ("MessageDefinition".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MESSAGEDEFINITION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MESSAGEDEFINITION, code);
         if ("MessageHeader".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MESSAGEHEADER);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MESSAGEHEADER, code);
         if ("MolecularSequence".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MOLECULARSEQUENCE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.MOLECULARSEQUENCE, code);
         if ("NamingSystem".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.NAMINGSYSTEM);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.NAMINGSYSTEM, code);
         if ("NutritionOrder".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.NUTRITIONORDER);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.NUTRITIONORDER, code);
         if ("Observation".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.OBSERVATION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.OBSERVATION, code);
         if ("ObservationDefinition".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.OBSERVATIONDEFINITION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.OBSERVATIONDEFINITION, code);
         if ("OperationDefinition".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.OPERATIONDEFINITION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.OPERATIONDEFINITION, code);
         if ("OperationOutcome".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.OPERATIONOUTCOME);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.OPERATIONOUTCOME, code);
         if ("Organization".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.ORGANIZATION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.ORGANIZATION, code);
         if ("OrganizationAffiliation".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.ORGANIZATIONAFFILIATION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.ORGANIZATIONAFFILIATION, code);
         if ("Parameters".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.PARAMETERS);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.PARAMETERS, code);
         if ("Patient".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.PATIENT);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.PATIENT, code);
         if ("PaymentNotice".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.PAYMENTNOTICE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.PAYMENTNOTICE, code);
         if ("PaymentReconciliation".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.PAYMENTRECONCILIATION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.PAYMENTRECONCILIATION, code);
         if ("Person".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.PERSON);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.PERSON, code);
         if ("PlanDefinition".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.PLANDEFINITION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.PLANDEFINITION, code);
         if ("Practitioner".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.PRACTITIONER);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.PRACTITIONER, code);
         if ("PractitionerRole".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.PRACTITIONERROLE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.PRACTITIONERROLE, code);
         if ("Procedure".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.PROCEDURE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.PROCEDURE, code);
         if ("Provenance".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.PROVENANCE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.PROVENANCE, code);
         if ("Questionnaire".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.QUESTIONNAIRE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.QUESTIONNAIRE, code);
         if ("QuestionnaireResponse".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.QUESTIONNAIRERESPONSE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.QUESTIONNAIRERESPONSE, code);
         if ("RelatedPerson".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.RELATEDPERSON);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.RELATEDPERSON, code);
         if ("RequestGroup".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.REQUESTGROUP);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.REQUESTGROUP, code);
         if ("ResearchDefinition".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.RESEARCHDEFINITION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.RESEARCHDEFINITION, code);
         if ("ResearchElementDefinition".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.RESEARCHELEMENTDEFINITION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.RESEARCHELEMENTDEFINITION, code);
         if ("ResearchStudy".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.RESEARCHSTUDY);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.RESEARCHSTUDY, code);
         if ("ResearchSubject".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.RESEARCHSUBJECT);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.RESEARCHSUBJECT, code);
         if ("Resource".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.RESOURCE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.RESOURCE, code);
         if ("RiskAssessment".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.RISKASSESSMENT);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.RISKASSESSMENT, code);
         if ("RiskEvidenceSynthesis".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.RISKEVIDENCESYNTHESIS);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.RISKEVIDENCESYNTHESIS, code);
         if ("Schedule".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SCHEDULE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SCHEDULE, code);
         if ("SearchParameter".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SEARCHPARAMETER);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SEARCHPARAMETER, code);
         if ("ServiceRequest".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SERVICEREQUEST);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SERVICEREQUEST, code);
         if ("Slot".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SLOT);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SLOT, code);
         if ("Specimen".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SPECIMEN);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SPECIMEN, code);
         if ("SpecimenDefinition".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SPECIMENDEFINITION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SPECIMENDEFINITION, code);
         if ("StructureDefinition".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.STRUCTUREDEFINITION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.STRUCTUREDEFINITION, code);
         if ("StructureMap".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.STRUCTUREMAP);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.STRUCTUREMAP, code);
         if ("Subscription".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SUBSCRIPTION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SUBSCRIPTION, code);
         if ("Substance".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SUBSTANCE);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SUBSTANCE, code);
         if ("SubstanceNucleicAcid".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SUBSTANCENUCLEICACID);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SUBSTANCENUCLEICACID, code);
         if ("SubstancePolymer".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SUBSTANCEPOLYMER);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SUBSTANCEPOLYMER, code);
         if ("SubstanceProtein".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SUBSTANCEPROTEIN);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SUBSTANCEPROTEIN, code);
         if ("SubstanceReferenceInformation".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SUBSTANCEREFERENCEINFORMATION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SUBSTANCEREFERENCEINFORMATION, code);
         if ("SubstanceSourceMaterial".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SUBSTANCESOURCEMATERIAL);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SUBSTANCESOURCEMATERIAL, code);
         if ("SubstanceSpecification".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SUBSTANCESPECIFICATION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SUBSTANCESPECIFICATION, code);
         if ("SupplyDelivery".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SUPPLYDELIVERY);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SUPPLYDELIVERY, code);
         if ("SupplyRequest".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SUPPLYREQUEST);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.SUPPLYREQUEST, code);
         if ("Task".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.TASK);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.TASK, code);
         if ("TerminologyCapabilities".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.TERMINOLOGYCAPABILITIES);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.TERMINOLOGYCAPABILITIES, code);
         if ("TestReport".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.TESTREPORT);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.TESTREPORT, code);
         if ("TestScript".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.TESTSCRIPT);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.TESTSCRIPT, code);
         if ("ValueSet".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.VALUESET);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.VALUESET, code);
         if ("VerificationResult".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.VERIFICATIONRESULT);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.VERIFICATIONRESULT, code);
         if ("VisionPrescription".equals(codeString))
-          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.VISIONPRESCRIPTION);
+          return new Enumeration<FHIRResourceType>(this, FHIRResourceType.VISIONPRESCRIPTION, code);
         throw new FHIRException("Unknown FHIRResourceType code '"+codeString+"'");
         }
     public String toCode(FHIRResourceType code) {

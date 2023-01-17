@@ -206,12 +206,12 @@ public class NutritionOrder extends DomainResource {
           return NutritionOrderStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown NutritionOrderStatus code '"+codeString+"'");
         }
-        public Enumeration<NutritionOrderStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<NutritionOrderStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<NutritionOrderStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("proposed".equals(codeString))

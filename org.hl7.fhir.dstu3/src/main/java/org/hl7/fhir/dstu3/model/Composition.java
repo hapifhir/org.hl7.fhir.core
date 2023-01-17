@@ -146,12 +146,12 @@ public class Composition extends DomainResource {
           return CompositionStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown CompositionStatus code '"+codeString+"'");
         }
-        public Enumeration<CompositionStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<CompositionStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<CompositionStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("preliminary".equals(codeString))
@@ -298,12 +298,12 @@ public class Composition extends DomainResource {
           return DocumentConfidentiality.V;
         throw new IllegalArgumentException("Unknown DocumentConfidentiality code '"+codeString+"'");
         }
-        public Enumeration<DocumentConfidentiality> fromType(Base code) throws FHIRException {
+        public Enumeration<DocumentConfidentiality> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<DocumentConfidentiality>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("U".equals(codeString))
@@ -434,12 +434,12 @@ public class Composition extends DomainResource {
           return CompositionAttestationMode.OFFICIAL;
         throw new IllegalArgumentException("Unknown CompositionAttestationMode code '"+codeString+"'");
         }
-        public Enumeration<CompositionAttestationMode> fromType(Base code) throws FHIRException {
+        public Enumeration<CompositionAttestationMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<CompositionAttestationMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("personal".equals(codeString))
@@ -562,12 +562,12 @@ public class Composition extends DomainResource {
           return DocumentRelationshipType.APPENDS;
         throw new IllegalArgumentException("Unknown DocumentRelationshipType code '"+codeString+"'");
         }
-        public Enumeration<DocumentRelationshipType> fromType(Base code) throws FHIRException {
+        public Enumeration<DocumentRelationshipType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<DocumentRelationshipType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("replaces".equals(codeString))
@@ -678,12 +678,12 @@ public class Composition extends DomainResource {
           return SectionMode.CHANGES;
         throw new IllegalArgumentException("Unknown SectionMode code '"+codeString+"'");
         }
-        public Enumeration<SectionMode> fromType(Base code) throws FHIRException {
+        public Enumeration<SectionMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<SectionMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("working".equals(codeString))

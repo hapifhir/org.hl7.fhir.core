@@ -169,12 +169,12 @@ public class Group extends DomainResource {
           return GroupType.SUBSTANCE;
         throw new IllegalArgumentException("Unknown GroupType code '"+codeString+"'");
         }
-        public Enumeration<GroupType> fromType(Base code) throws FHIRException {
+        public Enumeration<GroupType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<GroupType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("person".equals(codeString))

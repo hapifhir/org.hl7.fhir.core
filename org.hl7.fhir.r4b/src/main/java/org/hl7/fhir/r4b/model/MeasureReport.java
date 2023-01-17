@@ -135,20 +135,20 @@ public class MeasureReport extends DomainResource {
           return MeasureReportStatus.ERROR;
         throw new IllegalArgumentException("Unknown MeasureReportStatus code '"+codeString+"'");
         }
-        public Enumeration<MeasureReportStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<MeasureReportStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<MeasureReportStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<MeasureReportStatus>(this, MeasureReportStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<MeasureReportStatus>(this, MeasureReportStatus.NULL, code);
         if ("complete".equals(codeString))
-          return new Enumeration<MeasureReportStatus>(this, MeasureReportStatus.COMPLETE);
+          return new Enumeration<MeasureReportStatus>(this, MeasureReportStatus.COMPLETE, code);
         if ("pending".equals(codeString))
-          return new Enumeration<MeasureReportStatus>(this, MeasureReportStatus.PENDING);
+          return new Enumeration<MeasureReportStatus>(this, MeasureReportStatus.PENDING, code);
         if ("error".equals(codeString))
-          return new Enumeration<MeasureReportStatus>(this, MeasureReportStatus.ERROR);
+          return new Enumeration<MeasureReportStatus>(this, MeasureReportStatus.ERROR, code);
         throw new FHIRException("Unknown MeasureReportStatus code '"+codeString+"'");
         }
     public String toCode(MeasureReportStatus code) {
@@ -259,22 +259,22 @@ public class MeasureReport extends DomainResource {
           return MeasureReportType.DATACOLLECTION;
         throw new IllegalArgumentException("Unknown MeasureReportType code '"+codeString+"'");
         }
-        public Enumeration<MeasureReportType> fromType(Base code) throws FHIRException {
+        public Enumeration<MeasureReportType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<MeasureReportType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<MeasureReportType>(this, MeasureReportType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<MeasureReportType>(this, MeasureReportType.NULL, code);
         if ("individual".equals(codeString))
-          return new Enumeration<MeasureReportType>(this, MeasureReportType.INDIVIDUAL);
+          return new Enumeration<MeasureReportType>(this, MeasureReportType.INDIVIDUAL, code);
         if ("subject-list".equals(codeString))
-          return new Enumeration<MeasureReportType>(this, MeasureReportType.SUBJECTLIST);
+          return new Enumeration<MeasureReportType>(this, MeasureReportType.SUBJECTLIST, code);
         if ("summary".equals(codeString))
-          return new Enumeration<MeasureReportType>(this, MeasureReportType.SUMMARY);
+          return new Enumeration<MeasureReportType>(this, MeasureReportType.SUMMARY, code);
         if ("data-collection".equals(codeString))
-          return new Enumeration<MeasureReportType>(this, MeasureReportType.DATACOLLECTION);
+          return new Enumeration<MeasureReportType>(this, MeasureReportType.DATACOLLECTION, code);
         throw new FHIRException("Unknown MeasureReportType code '"+codeString+"'");
         }
     public String toCode(MeasureReportType code) {
@@ -3068,4 +3068,3 @@ public class MeasureReport extends DomainResource {
 
 
 }
-

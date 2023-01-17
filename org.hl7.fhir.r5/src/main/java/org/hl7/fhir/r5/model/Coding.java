@@ -613,5 +613,6 @@ public class Coding extends DataType implements IBaseCoding, ICompositeType, ICo
       }      
 // end addition
 
+
 }
 

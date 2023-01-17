@@ -183,12 +183,12 @@ public class RequestGroup extends DomainResource {
           return RequestStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown RequestStatus code '"+codeString+"'");
         }
-        public Enumeration<RequestStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<RequestStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<RequestStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("draft".equals(codeString))
@@ -373,12 +373,12 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return RequestIntent.OPTION;
         throw new IllegalArgumentException("Unknown RequestIntent code '"+codeString+"'");
         }
-        public Enumeration<RequestIntent> fromType(Base code) throws FHIRException {
+        public Enumeration<RequestIntent> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<RequestIntent>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("proposal".equals(codeString))
@@ -517,12 +517,12 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return RequestPriority.STAT;
         throw new IllegalArgumentException("Unknown RequestPriority code '"+codeString+"'");
         }
-        public Enumeration<RequestPriority> fromType(Base code) throws FHIRException {
+        public Enumeration<RequestPriority> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<RequestPriority>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("routine".equals(codeString))
@@ -633,12 +633,12 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return ActionConditionKind.STOP;
         throw new IllegalArgumentException("Unknown ActionConditionKind code '"+codeString+"'");
         }
-        public Enumeration<ActionConditionKind> fromType(Base code) throws FHIRException {
+        public Enumeration<ActionConditionKind> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ActionConditionKind>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("applicability".equals(codeString))
@@ -817,12 +817,12 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return ActionRelationshipType.AFTEREND;
         throw new IllegalArgumentException("Unknown ActionRelationshipType code '"+codeString+"'");
         }
-        public Enumeration<ActionRelationshipType> fromType(Base code) throws FHIRException {
+        public Enumeration<ActionRelationshipType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ActionRelationshipType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("before-start".equals(codeString))
@@ -953,12 +953,12 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return ActionGroupingBehavior.SENTENCEGROUP;
         throw new IllegalArgumentException("Unknown ActionGroupingBehavior code '"+codeString+"'");
         }
-        public Enumeration<ActionGroupingBehavior> fromType(Base code) throws FHIRException {
+        public Enumeration<ActionGroupingBehavior> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ActionGroupingBehavior>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("visual-group".equals(codeString))
@@ -1101,12 +1101,12 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return ActionSelectionBehavior.ONEORMORE;
         throw new IllegalArgumentException("Unknown ActionSelectionBehavior code '"+codeString+"'");
         }
-        public Enumeration<ActionSelectionBehavior> fromType(Base code) throws FHIRException {
+        public Enumeration<ActionSelectionBehavior> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ActionSelectionBehavior>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("any".equals(codeString))
@@ -1225,12 +1225,12 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return ActionRequiredBehavior.MUSTUNLESSDOCUMENTED;
         throw new IllegalArgumentException("Unknown ActionRequiredBehavior code '"+codeString+"'");
         }
-        public Enumeration<ActionRequiredBehavior> fromType(Base code) throws FHIRException {
+        public Enumeration<ActionRequiredBehavior> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ActionRequiredBehavior>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("must".equals(codeString))
@@ -1325,12 +1325,12 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return ActionPrecheckBehavior.NO;
         throw new IllegalArgumentException("Unknown ActionPrecheckBehavior code '"+codeString+"'");
         }
-        public Enumeration<ActionPrecheckBehavior> fromType(Base code) throws FHIRException {
+        public Enumeration<ActionPrecheckBehavior> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ActionPrecheckBehavior>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("yes".equals(codeString))
@@ -1421,12 +1421,12 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return ActionCardinalityBehavior.MULTIPLE;
         throw new IllegalArgumentException("Unknown ActionCardinalityBehavior code '"+codeString+"'");
         }
-        public Enumeration<ActionCardinalityBehavior> fromType(Base code) throws FHIRException {
+        public Enumeration<ActionCardinalityBehavior> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ActionCardinalityBehavior>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("single".equals(codeString))

@@ -212,7 +212,7 @@ public class StructureMapUtilities {
     }
 
     @Override
-    public Base resolveReference(Object appContext, String url) throws FHIRException {
+    public Base resolveReference(Object appContext, String url, Base base) throws FHIRException {
       if (services == null)
         return null;
       return services.resolveReference(appContext, url);

@@ -410,11 +410,11 @@ public class LiquidEngine implements IEvaluationContext {
   }
 
   @Override
-  public Base resolveReference(Object appContext, String url) throws FHIRException {
+  public Base resolveReference(Object appContext, String url, Base base) throws FHIRException {
     if (externalHostServices == null)
       return null;
     LiquidEngineContext ctxt = (LiquidEngineContext) appContext;
-    return resolveReference(ctxt.externalContext, url);
+    return resolveReference(ctxt.externalContext, url, base);
   }
 
   @Override

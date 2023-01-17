@@ -157,12 +157,12 @@ public class AuditEvent extends DomainResource {
           return AuditEventAction.E;
         throw new IllegalArgumentException("Unknown AuditEventAction code '"+codeString+"'");
         }
-        public Enumeration<AuditEventAction> fromType(Base code) throws FHIRException {
+        public Enumeration<AuditEventAction> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<AuditEventAction>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("C".equals(codeString))
@@ -289,12 +289,12 @@ public class AuditEvent extends DomainResource {
           return AuditEventOutcome._12;
         throw new IllegalArgumentException("Unknown AuditEventOutcome code '"+codeString+"'");
         }
-        public Enumeration<AuditEventOutcome> fromType(Base code) throws FHIRException {
+        public Enumeration<AuditEventOutcome> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<AuditEventOutcome>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("0".equals(codeString))
@@ -429,12 +429,12 @@ public class AuditEvent extends DomainResource {
           return AuditEventAgentNetworkType._5;
         throw new IllegalArgumentException("Unknown AuditEventAgentNetworkType code '"+codeString+"'");
         }
-        public Enumeration<AuditEventAgentNetworkType> fromType(Base code) throws FHIRException {
+        public Enumeration<AuditEventAgentNetworkType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<AuditEventAgentNetworkType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("1".equals(codeString))

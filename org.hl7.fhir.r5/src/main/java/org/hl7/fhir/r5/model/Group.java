@@ -123,18 +123,18 @@ public class Group extends DomainResource {
           return GroupMembershipBasis.ENUMERATED;
         throw new IllegalArgumentException("Unknown GroupMembershipBasis code '"+codeString+"'");
         }
-        public Enumeration<GroupMembershipBasis> fromType(Base code) throws FHIRException {
+        public Enumeration<GroupMembershipBasis> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<GroupMembershipBasis>(this);
+            return new Enumeration<GroupMembershipBasis>(this, GroupMembershipBasis.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<GroupMembershipBasis>(this, GroupMembershipBasis.NULL, code);
         if ("definitional".equals(codeString))
-          return new Enumeration<GroupMembershipBasis>(this, GroupMembershipBasis.DEFINITIONAL);
+          return new Enumeration<GroupMembershipBasis>(this, GroupMembershipBasis.DEFINITIONAL, code);
         if ("enumerated".equals(codeString))
-          return new Enumeration<GroupMembershipBasis>(this, GroupMembershipBasis.ENUMERATED);
+          return new Enumeration<GroupMembershipBasis>(this, GroupMembershipBasis.ENUMERATED, code);
         throw new FHIRException("Unknown GroupMembershipBasis code '"+codeString+"'");
         }
     public String toCode(GroupMembershipBasis code) {
@@ -315,34 +315,34 @@ public class Group extends DomainResource {
           return GroupType.SPECIMEN;
         throw new IllegalArgumentException("Unknown GroupType code '"+codeString+"'");
         }
-        public Enumeration<GroupType> fromType(Base code) throws FHIRException {
+        public Enumeration<GroupType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<GroupType>(this);
+            return new Enumeration<GroupType>(this, GroupType.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<GroupType>(this, GroupType.NULL, code);
         if ("person".equals(codeString))
-          return new Enumeration<GroupType>(this, GroupType.PERSON);
+          return new Enumeration<GroupType>(this, GroupType.PERSON, code);
         if ("animal".equals(codeString))
-          return new Enumeration<GroupType>(this, GroupType.ANIMAL);
+          return new Enumeration<GroupType>(this, GroupType.ANIMAL, code);
         if ("practitioner".equals(codeString))
-          return new Enumeration<GroupType>(this, GroupType.PRACTITIONER);
+          return new Enumeration<GroupType>(this, GroupType.PRACTITIONER, code);
         if ("device".equals(codeString))
-          return new Enumeration<GroupType>(this, GroupType.DEVICE);
+          return new Enumeration<GroupType>(this, GroupType.DEVICE, code);
         if ("careteam".equals(codeString))
-          return new Enumeration<GroupType>(this, GroupType.CARETEAM);
+          return new Enumeration<GroupType>(this, GroupType.CARETEAM, code);
         if ("healthcareservice".equals(codeString))
-          return new Enumeration<GroupType>(this, GroupType.HEALTHCARESERVICE);
+          return new Enumeration<GroupType>(this, GroupType.HEALTHCARESERVICE, code);
         if ("location".equals(codeString))
-          return new Enumeration<GroupType>(this, GroupType.LOCATION);
+          return new Enumeration<GroupType>(this, GroupType.LOCATION, code);
         if ("organization".equals(codeString))
-          return new Enumeration<GroupType>(this, GroupType.ORGANIZATION);
+          return new Enumeration<GroupType>(this, GroupType.ORGANIZATION, code);
         if ("relatedperson".equals(codeString))
-          return new Enumeration<GroupType>(this, GroupType.RELATEDPERSON);
+          return new Enumeration<GroupType>(this, GroupType.RELATEDPERSON, code);
         if ("specimen".equals(codeString))
-          return new Enumeration<GroupType>(this, GroupType.SPECIMEN);
+          return new Enumeration<GroupType>(this, GroupType.SPECIMEN, code);
         throw new FHIRException("Unknown GroupType code '"+codeString+"'");
         }
     public String toCode(GroupType code) {
@@ -2211,4 +2211,3 @@ public class Group extends DomainResource {
 
 
 }
-

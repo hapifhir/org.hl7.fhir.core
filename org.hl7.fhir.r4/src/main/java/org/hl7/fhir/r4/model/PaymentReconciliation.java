@@ -146,22 +146,22 @@ public class PaymentReconciliation extends DomainResource {
           return PaymentReconciliationStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown PaymentReconciliationStatus code '"+codeString+"'");
         }
-        public Enumeration<PaymentReconciliationStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<PaymentReconciliationStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<PaymentReconciliationStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<PaymentReconciliationStatus>(this, PaymentReconciliationStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<PaymentReconciliationStatus>(this, PaymentReconciliationStatus.NULL, code);
         if ("active".equals(codeString))
-          return new Enumeration<PaymentReconciliationStatus>(this, PaymentReconciliationStatus.ACTIVE);
+          return new Enumeration<PaymentReconciliationStatus>(this, PaymentReconciliationStatus.ACTIVE, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<PaymentReconciliationStatus>(this, PaymentReconciliationStatus.CANCELLED);
+          return new Enumeration<PaymentReconciliationStatus>(this, PaymentReconciliationStatus.CANCELLED, code);
         if ("draft".equals(codeString))
-          return new Enumeration<PaymentReconciliationStatus>(this, PaymentReconciliationStatus.DRAFT);
+          return new Enumeration<PaymentReconciliationStatus>(this, PaymentReconciliationStatus.DRAFT, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<PaymentReconciliationStatus>(this, PaymentReconciliationStatus.ENTEREDINERROR);
+          return new Enumeration<PaymentReconciliationStatus>(this, PaymentReconciliationStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown PaymentReconciliationStatus code '"+codeString+"'");
         }
     public String toCode(PaymentReconciliationStatus code) {

@@ -143,12 +143,12 @@ public class Quantity extends Type implements ICompositeType {
           return QuantityComparator.GREATER_THAN;
         throw new IllegalArgumentException("Unknown QuantityComparator code '"+codeString+"'");
         }
-        public Enumeration<QuantityComparator> fromType(Base code) throws FHIRException {
+        public Enumeration<QuantityComparator> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<QuantityComparator>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("<".equals(codeString))

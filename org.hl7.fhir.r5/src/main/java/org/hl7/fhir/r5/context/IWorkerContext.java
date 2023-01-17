@@ -65,8 +65,9 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
-import org.hl7.fhir.r5.profilemodel.ProfiledElement;
-import org.hl7.fhir.r5.profilemodel.ProfiledElementBuilder;
+import org.hl7.fhir.r5.profilemodel.PEDefinition;
+import org.hl7.fhir.r5.profilemodel.PEBuilder.PEElementPropertiesPolicy;
+import org.hl7.fhir.r5.profilemodel.PEBuilder;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
@@ -704,6 +705,7 @@ public interface IWorkerContext {
     }
     public void logMessage(String message); // status messages, always display
     public void logDebugMessage(LogCategory category, String message); // verbose; only when debugging 
+    public boolean isDebugLogging(); // whether to log debug information
   }
   public void setLogger(@Nonnull ILoggingService logger);
   public ILoggingService getLogger();
@@ -803,6 +805,6 @@ public interface IWorkerContext {
 
   public String getSpecUrl();
 
-  public ProfiledElementBuilder getProfiledElementBuilder();
+  public PEBuilder getProfiledElementBuilder(PEElementPropertiesPolicy elementProps, boolean fixedProps);
   
 }

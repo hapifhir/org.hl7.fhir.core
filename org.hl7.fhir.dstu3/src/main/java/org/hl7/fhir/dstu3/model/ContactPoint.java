@@ -177,12 +177,12 @@ public class ContactPoint extends Type implements ICompositeType {
           return ContactPointSystem.OTHER;
         throw new IllegalArgumentException("Unknown ContactPointSystem code '"+codeString+"'");
         }
-        public Enumeration<ContactPointSystem> fromType(Base code) throws FHIRException {
+        public Enumeration<ContactPointSystem> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ContactPointSystem>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("phone".equals(codeString))
@@ -329,12 +329,12 @@ public class ContactPoint extends Type implements ICompositeType {
           return ContactPointUse.MOBILE;
         throw new IllegalArgumentException("Unknown ContactPointUse code '"+codeString+"'");
         }
-        public Enumeration<ContactPointUse> fromType(Base code) throws FHIRException {
+        public Enumeration<ContactPointUse> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ContactPointUse>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("home".equals(codeString))
