@@ -155,12 +155,12 @@ public class Slot extends DomainResource {
           return SlotStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown SlotStatus code '"+codeString+"'");
         }
-        public Enumeration<SlotStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<SlotStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<SlotStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("busy".equals(codeString))

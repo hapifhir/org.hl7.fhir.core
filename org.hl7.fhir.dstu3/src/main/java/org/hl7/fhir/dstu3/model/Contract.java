@@ -281,12 +281,12 @@ public class Contract extends DomainResource {
           return ContractStatus.TERMINATED;
         throw new IllegalArgumentException("Unknown ContractStatus code '"+codeString+"'");
         }
-        public Enumeration<ContractStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ContractStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ContractStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("amended".equals(codeString))

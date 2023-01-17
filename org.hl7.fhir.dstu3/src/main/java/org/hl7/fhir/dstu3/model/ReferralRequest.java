@@ -183,12 +183,12 @@ public class ReferralRequest extends DomainResource {
           return ReferralRequestStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown ReferralRequestStatus code '"+codeString+"'");
         }
-        public Enumeration<ReferralRequestStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ReferralRequestStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ReferralRequestStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("draft".equals(codeString))
@@ -373,12 +373,12 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return ReferralCategory.OPTION;
         throw new IllegalArgumentException("Unknown ReferralCategory code '"+codeString+"'");
         }
-        public Enumeration<ReferralCategory> fromType(Base code) throws FHIRException {
+        public Enumeration<ReferralCategory> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ReferralCategory>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("proposal".equals(codeString))
@@ -517,12 +517,12 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return ReferralPriority.STAT;
         throw new IllegalArgumentException("Unknown ReferralPriority code '"+codeString+"'");
         }
-        public Enumeration<ReferralPriority> fromType(Base code) throws FHIRException {
+        public Enumeration<ReferralPriority> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ReferralPriority>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("routine".equals(codeString))

@@ -135,12 +135,12 @@ public class Substance extends DomainResource {
           return FHIRSubstanceStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown FHIRSubstanceStatus code '"+codeString+"'");
         }
-        public Enumeration<FHIRSubstanceStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<FHIRSubstanceStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<FHIRSubstanceStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("active".equals(codeString))

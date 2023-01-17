@@ -193,30 +193,30 @@ public class Procedure extends DomainResource {
           return ProcedureStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown ProcedureStatus code '"+codeString+"'");
         }
-        public Enumeration<ProcedureStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ProcedureStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ProcedureStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ProcedureStatus>(this, ProcedureStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ProcedureStatus>(this, ProcedureStatus.NULL, code);
         if ("preparation".equals(codeString))
-          return new Enumeration<ProcedureStatus>(this, ProcedureStatus.PREPARATION);
+          return new Enumeration<ProcedureStatus>(this, ProcedureStatus.PREPARATION, code);
         if ("in-progress".equals(codeString))
-          return new Enumeration<ProcedureStatus>(this, ProcedureStatus.INPROGRESS);
+          return new Enumeration<ProcedureStatus>(this, ProcedureStatus.INPROGRESS, code);
         if ("not-done".equals(codeString))
-          return new Enumeration<ProcedureStatus>(this, ProcedureStatus.NOTDONE);
+          return new Enumeration<ProcedureStatus>(this, ProcedureStatus.NOTDONE, code);
         if ("on-hold".equals(codeString))
-          return new Enumeration<ProcedureStatus>(this, ProcedureStatus.ONHOLD);
+          return new Enumeration<ProcedureStatus>(this, ProcedureStatus.ONHOLD, code);
         if ("stopped".equals(codeString))
-          return new Enumeration<ProcedureStatus>(this, ProcedureStatus.STOPPED);
+          return new Enumeration<ProcedureStatus>(this, ProcedureStatus.STOPPED, code);
         if ("completed".equals(codeString))
-          return new Enumeration<ProcedureStatus>(this, ProcedureStatus.COMPLETED);
+          return new Enumeration<ProcedureStatus>(this, ProcedureStatus.COMPLETED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<ProcedureStatus>(this, ProcedureStatus.ENTEREDINERROR);
+          return new Enumeration<ProcedureStatus>(this, ProcedureStatus.ENTEREDINERROR, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<ProcedureStatus>(this, ProcedureStatus.UNKNOWN);
+          return new Enumeration<ProcedureStatus>(this, ProcedureStatus.UNKNOWN, code);
         throw new FHIRException("Unknown ProcedureStatus code '"+codeString+"'");
         }
     public String toCode(ProcedureStatus code) {

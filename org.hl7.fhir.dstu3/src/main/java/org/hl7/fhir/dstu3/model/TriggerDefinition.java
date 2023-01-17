@@ -179,12 +179,12 @@ public class TriggerDefinition extends Type implements ICompositeType {
           return TriggerType.DATAACCESSENDED;
         throw new IllegalArgumentException("Unknown TriggerType code '"+codeString+"'");
         }
-        public Enumeration<TriggerType> fromType(Base code) throws FHIRException {
+        public Enumeration<TriggerType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<TriggerType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("named-event".equals(codeString))

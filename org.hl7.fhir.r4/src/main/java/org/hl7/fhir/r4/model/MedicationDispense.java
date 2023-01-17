@@ -205,32 +205,32 @@ public class MedicationDispense extends DomainResource {
           return MedicationDispenseStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown MedicationDispenseStatus code '"+codeString+"'");
         }
-        public Enumeration<MedicationDispenseStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<MedicationDispenseStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<MedicationDispenseStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<MedicationDispenseStatus>(this, MedicationDispenseStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<MedicationDispenseStatus>(this, MedicationDispenseStatus.NULL, code);
         if ("preparation".equals(codeString))
-          return new Enumeration<MedicationDispenseStatus>(this, MedicationDispenseStatus.PREPARATION);
+          return new Enumeration<MedicationDispenseStatus>(this, MedicationDispenseStatus.PREPARATION, code);
         if ("in-progress".equals(codeString))
-          return new Enumeration<MedicationDispenseStatus>(this, MedicationDispenseStatus.INPROGRESS);
+          return new Enumeration<MedicationDispenseStatus>(this, MedicationDispenseStatus.INPROGRESS, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<MedicationDispenseStatus>(this, MedicationDispenseStatus.CANCELLED);
+          return new Enumeration<MedicationDispenseStatus>(this, MedicationDispenseStatus.CANCELLED, code);
         if ("on-hold".equals(codeString))
-          return new Enumeration<MedicationDispenseStatus>(this, MedicationDispenseStatus.ONHOLD);
+          return new Enumeration<MedicationDispenseStatus>(this, MedicationDispenseStatus.ONHOLD, code);
         if ("completed".equals(codeString))
-          return new Enumeration<MedicationDispenseStatus>(this, MedicationDispenseStatus.COMPLETED);
+          return new Enumeration<MedicationDispenseStatus>(this, MedicationDispenseStatus.COMPLETED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<MedicationDispenseStatus>(this, MedicationDispenseStatus.ENTEREDINERROR);
+          return new Enumeration<MedicationDispenseStatus>(this, MedicationDispenseStatus.ENTEREDINERROR, code);
         if ("stopped".equals(codeString))
-          return new Enumeration<MedicationDispenseStatus>(this, MedicationDispenseStatus.STOPPED);
+          return new Enumeration<MedicationDispenseStatus>(this, MedicationDispenseStatus.STOPPED, code);
         if ("declined".equals(codeString))
-          return new Enumeration<MedicationDispenseStatus>(this, MedicationDispenseStatus.DECLINED);
+          return new Enumeration<MedicationDispenseStatus>(this, MedicationDispenseStatus.DECLINED, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<MedicationDispenseStatus>(this, MedicationDispenseStatus.UNKNOWN);
+          return new Enumeration<MedicationDispenseStatus>(this, MedicationDispenseStatus.UNKNOWN, code);
         throw new FHIRException("Unknown MedicationDispenseStatus code '"+codeString+"'");
         }
     public String toCode(MedicationDispenseStatus code) {

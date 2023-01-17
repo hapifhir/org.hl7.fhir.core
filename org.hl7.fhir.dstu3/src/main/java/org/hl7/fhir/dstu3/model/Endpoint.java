@@ -166,12 +166,12 @@ public class Endpoint extends DomainResource {
           return EndpointStatus.TEST;
         throw new IllegalArgumentException("Unknown EndpointStatus code '"+codeString+"'");
         }
-        public Enumeration<EndpointStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<EndpointStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<EndpointStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("active".equals(codeString))

@@ -181,12 +181,12 @@ public class CarePlan extends DomainResource {
           return CarePlanStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown CarePlanStatus code '"+codeString+"'");
         }
-        public Enumeration<CarePlanStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<CarePlanStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<CarePlanStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("draft".equals(codeString))
@@ -323,12 +323,12 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return CarePlanIntent.OPTION;
         throw new IllegalArgumentException("Unknown CarePlanIntent code '"+codeString+"'");
         }
-        public Enumeration<CarePlanIntent> fromType(Base code) throws FHIRException {
+        public Enumeration<CarePlanIntent> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<CarePlanIntent>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("proposal".equals(codeString))
@@ -487,12 +487,12 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return CarePlanActivityStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown CarePlanActivityStatus code '"+codeString+"'");
         }
-        public Enumeration<CarePlanActivityStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<CarePlanActivityStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<CarePlanActivityStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("not-started".equals(codeString))

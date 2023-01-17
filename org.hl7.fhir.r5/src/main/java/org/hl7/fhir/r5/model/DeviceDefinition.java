@@ -135,20 +135,20 @@ public class DeviceDefinition extends DomainResource {
           return DeviceCorrectiveActionScope.SERIALNUMBERS;
         throw new IllegalArgumentException("Unknown DeviceCorrectiveActionScope code '"+codeString+"'");
         }
-        public Enumeration<DeviceCorrectiveActionScope> fromType(Base code) throws FHIRException {
+        public Enumeration<DeviceCorrectiveActionScope> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<DeviceCorrectiveActionScope>(this);
+            return new Enumeration<DeviceCorrectiveActionScope>(this, DeviceCorrectiveActionScope.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<DeviceCorrectiveActionScope>(this, DeviceCorrectiveActionScope.NULL, code);
         if ("model".equals(codeString))
-          return new Enumeration<DeviceCorrectiveActionScope>(this, DeviceCorrectiveActionScope.MODEL);
+          return new Enumeration<DeviceCorrectiveActionScope>(this, DeviceCorrectiveActionScope.MODEL, code);
         if ("lot-numbers".equals(codeString))
-          return new Enumeration<DeviceCorrectiveActionScope>(this, DeviceCorrectiveActionScope.LOTNUMBERS);
+          return new Enumeration<DeviceCorrectiveActionScope>(this, DeviceCorrectiveActionScope.LOTNUMBERS, code);
         if ("serial-numbers".equals(codeString))
-          return new Enumeration<DeviceCorrectiveActionScope>(this, DeviceCorrectiveActionScope.SERIALNUMBERS);
+          return new Enumeration<DeviceCorrectiveActionScope>(this, DeviceCorrectiveActionScope.SERIALNUMBERS, code);
         throw new FHIRException("Unknown DeviceCorrectiveActionScope code '"+codeString+"'");
         }
     public String toCode(DeviceCorrectiveActionScope code) {
@@ -247,20 +247,20 @@ public class DeviceDefinition extends DomainResource {
           return DeviceDefinitionRegulatoryIdentifierType.LICENSE;
         throw new IllegalArgumentException("Unknown DeviceDefinitionRegulatoryIdentifierType code '"+codeString+"'");
         }
-        public Enumeration<DeviceDefinitionRegulatoryIdentifierType> fromType(Base code) throws FHIRException {
+        public Enumeration<DeviceDefinitionRegulatoryIdentifierType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<DeviceDefinitionRegulatoryIdentifierType>(this);
+            return new Enumeration<DeviceDefinitionRegulatoryIdentifierType>(this, DeviceDefinitionRegulatoryIdentifierType.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<DeviceDefinitionRegulatoryIdentifierType>(this, DeviceDefinitionRegulatoryIdentifierType.NULL, code);
         if ("basic".equals(codeString))
-          return new Enumeration<DeviceDefinitionRegulatoryIdentifierType>(this, DeviceDefinitionRegulatoryIdentifierType.BASIC);
+          return new Enumeration<DeviceDefinitionRegulatoryIdentifierType>(this, DeviceDefinitionRegulatoryIdentifierType.BASIC, code);
         if ("master".equals(codeString))
-          return new Enumeration<DeviceDefinitionRegulatoryIdentifierType>(this, DeviceDefinitionRegulatoryIdentifierType.MASTER);
+          return new Enumeration<DeviceDefinitionRegulatoryIdentifierType>(this, DeviceDefinitionRegulatoryIdentifierType.MASTER, code);
         if ("license".equals(codeString))
-          return new Enumeration<DeviceDefinitionRegulatoryIdentifierType>(this, DeviceDefinitionRegulatoryIdentifierType.LICENSE);
+          return new Enumeration<DeviceDefinitionRegulatoryIdentifierType>(this, DeviceDefinitionRegulatoryIdentifierType.LICENSE, code);
         throw new FHIRException("Unknown DeviceDefinitionRegulatoryIdentifierType code '"+codeString+"'");
         }
     public String toCode(DeviceDefinitionRegulatoryIdentifierType code) {
@@ -395,26 +395,26 @@ public class DeviceDefinition extends DomainResource {
           return DeviceProductionIdentifierInUDI.SOFTWAREVERSION;
         throw new IllegalArgumentException("Unknown DeviceProductionIdentifierInUDI code '"+codeString+"'");
         }
-        public Enumeration<DeviceProductionIdentifierInUDI> fromType(Base code) throws FHIRException {
+        public Enumeration<DeviceProductionIdentifierInUDI> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<DeviceProductionIdentifierInUDI>(this);
+            return new Enumeration<DeviceProductionIdentifierInUDI>(this, DeviceProductionIdentifierInUDI.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<DeviceProductionIdentifierInUDI>(this, DeviceProductionIdentifierInUDI.NULL, code);
         if ("lot-number".equals(codeString))
-          return new Enumeration<DeviceProductionIdentifierInUDI>(this, DeviceProductionIdentifierInUDI.LOTNUMBER);
+          return new Enumeration<DeviceProductionIdentifierInUDI>(this, DeviceProductionIdentifierInUDI.LOTNUMBER, code);
         if ("manufactured-date".equals(codeString))
-          return new Enumeration<DeviceProductionIdentifierInUDI>(this, DeviceProductionIdentifierInUDI.MANUFACTUREDDATE);
+          return new Enumeration<DeviceProductionIdentifierInUDI>(this, DeviceProductionIdentifierInUDI.MANUFACTUREDDATE, code);
         if ("serial-number".equals(codeString))
-          return new Enumeration<DeviceProductionIdentifierInUDI>(this, DeviceProductionIdentifierInUDI.SERIALNUMBER);
+          return new Enumeration<DeviceProductionIdentifierInUDI>(this, DeviceProductionIdentifierInUDI.SERIALNUMBER, code);
         if ("expiration-date".equals(codeString))
-          return new Enumeration<DeviceProductionIdentifierInUDI>(this, DeviceProductionIdentifierInUDI.EXPIRATIONDATE);
+          return new Enumeration<DeviceProductionIdentifierInUDI>(this, DeviceProductionIdentifierInUDI.EXPIRATIONDATE, code);
         if ("biological-source".equals(codeString))
-          return new Enumeration<DeviceProductionIdentifierInUDI>(this, DeviceProductionIdentifierInUDI.BIOLOGICALSOURCE);
+          return new Enumeration<DeviceProductionIdentifierInUDI>(this, DeviceProductionIdentifierInUDI.BIOLOGICALSOURCE, code);
         if ("software-version".equals(codeString))
-          return new Enumeration<DeviceProductionIdentifierInUDI>(this, DeviceProductionIdentifierInUDI.SOFTWAREVERSION);
+          return new Enumeration<DeviceProductionIdentifierInUDI>(this, DeviceProductionIdentifierInUDI.SOFTWAREVERSION, code);
         throw new FHIRException("Unknown DeviceProductionIdentifierInUDI code '"+codeString+"'");
         }
     public String toCode(DeviceProductionIdentifierInUDI code) {
@@ -7499,4 +7499,3 @@ RegisteredName | UserFriendlyName | PatientReportedName.
 
 
 }
-

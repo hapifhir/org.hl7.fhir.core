@@ -135,20 +135,20 @@ public class Ingredient extends DomainResource {
           return IngredientManufacturerRole.ACTUAL;
         throw new IllegalArgumentException("Unknown IngredientManufacturerRole code '"+codeString+"'");
         }
-        public Enumeration<IngredientManufacturerRole> fromType(Base code) throws FHIRException {
+        public Enumeration<IngredientManufacturerRole> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<IngredientManufacturerRole>(this);
+            return new Enumeration<IngredientManufacturerRole>(this, IngredientManufacturerRole.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<IngredientManufacturerRole>(this, IngredientManufacturerRole.NULL, code);
         if ("allowed".equals(codeString))
-          return new Enumeration<IngredientManufacturerRole>(this, IngredientManufacturerRole.ALLOWED);
+          return new Enumeration<IngredientManufacturerRole>(this, IngredientManufacturerRole.ALLOWED, code);
         if ("possible".equals(codeString))
-          return new Enumeration<IngredientManufacturerRole>(this, IngredientManufacturerRole.POSSIBLE);
+          return new Enumeration<IngredientManufacturerRole>(this, IngredientManufacturerRole.POSSIBLE, code);
         if ("actual".equals(codeString))
-          return new Enumeration<IngredientManufacturerRole>(this, IngredientManufacturerRole.ACTUAL);
+          return new Enumeration<IngredientManufacturerRole>(this, IngredientManufacturerRole.ACTUAL, code);
         throw new FHIRException("Unknown IngredientManufacturerRole code '"+codeString+"'");
         }
     public String toCode(IngredientManufacturerRole code) {
@@ -2720,4 +2720,3 @@ public class Ingredient extends DomainResource {
 
 
 }
-

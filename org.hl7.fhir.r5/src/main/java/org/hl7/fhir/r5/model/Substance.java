@@ -135,20 +135,20 @@ public class Substance extends DomainResource {
           return FHIRSubstanceStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown FHIRSubstanceStatus code '"+codeString+"'");
         }
-        public Enumeration<FHIRSubstanceStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<FHIRSubstanceStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<FHIRSubstanceStatus>(this);
+            return new Enumeration<FHIRSubstanceStatus>(this, FHIRSubstanceStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<FHIRSubstanceStatus>(this, FHIRSubstanceStatus.NULL, code);
         if ("active".equals(codeString))
-          return new Enumeration<FHIRSubstanceStatus>(this, FHIRSubstanceStatus.ACTIVE);
+          return new Enumeration<FHIRSubstanceStatus>(this, FHIRSubstanceStatus.ACTIVE, code);
         if ("inactive".equals(codeString))
-          return new Enumeration<FHIRSubstanceStatus>(this, FHIRSubstanceStatus.INACTIVE);
+          return new Enumeration<FHIRSubstanceStatus>(this, FHIRSubstanceStatus.INACTIVE, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<FHIRSubstanceStatus>(this, FHIRSubstanceStatus.ENTEREDINERROR);
+          return new Enumeration<FHIRSubstanceStatus>(this, FHIRSubstanceStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown FHIRSubstanceStatus code '"+codeString+"'");
         }
     public String toCode(FHIRSubstanceStatus code) {
@@ -1319,4 +1319,3 @@ public class Substance extends DomainResource {
 
 
 }
-

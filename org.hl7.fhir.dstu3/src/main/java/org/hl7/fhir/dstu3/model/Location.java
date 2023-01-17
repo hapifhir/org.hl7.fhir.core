@@ -135,12 +135,12 @@ public class Location extends DomainResource {
           return LocationStatus.INACTIVE;
         throw new IllegalArgumentException("Unknown LocationStatus code '"+codeString+"'");
         }
-        public Enumeration<LocationStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<LocationStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<LocationStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("active".equals(codeString))
@@ -235,12 +235,12 @@ public class Location extends DomainResource {
           return LocationMode.KIND;
         throw new IllegalArgumentException("Unknown LocationMode code '"+codeString+"'");
         }
-        public Enumeration<LocationMode> fromType(Base code) throws FHIRException {
+        public Enumeration<LocationMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<LocationMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("instance".equals(codeString))

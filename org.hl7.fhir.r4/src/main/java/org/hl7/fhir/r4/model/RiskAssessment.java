@@ -194,30 +194,30 @@ public class RiskAssessment extends DomainResource {
           return RiskAssessmentStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown RiskAssessmentStatus code '"+codeString+"'");
         }
-        public Enumeration<RiskAssessmentStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<RiskAssessmentStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<RiskAssessmentStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<RiskAssessmentStatus>(this, RiskAssessmentStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<RiskAssessmentStatus>(this, RiskAssessmentStatus.NULL, code);
         if ("registered".equals(codeString))
-          return new Enumeration<RiskAssessmentStatus>(this, RiskAssessmentStatus.REGISTERED);
+          return new Enumeration<RiskAssessmentStatus>(this, RiskAssessmentStatus.REGISTERED, code);
         if ("preliminary".equals(codeString))
-          return new Enumeration<RiskAssessmentStatus>(this, RiskAssessmentStatus.PRELIMINARY);
+          return new Enumeration<RiskAssessmentStatus>(this, RiskAssessmentStatus.PRELIMINARY, code);
         if ("final".equals(codeString))
-          return new Enumeration<RiskAssessmentStatus>(this, RiskAssessmentStatus.FINAL);
+          return new Enumeration<RiskAssessmentStatus>(this, RiskAssessmentStatus.FINAL, code);
         if ("amended".equals(codeString))
-          return new Enumeration<RiskAssessmentStatus>(this, RiskAssessmentStatus.AMENDED);
+          return new Enumeration<RiskAssessmentStatus>(this, RiskAssessmentStatus.AMENDED, code);
         if ("corrected".equals(codeString))
-          return new Enumeration<RiskAssessmentStatus>(this, RiskAssessmentStatus.CORRECTED);
+          return new Enumeration<RiskAssessmentStatus>(this, RiskAssessmentStatus.CORRECTED, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<RiskAssessmentStatus>(this, RiskAssessmentStatus.CANCELLED);
+          return new Enumeration<RiskAssessmentStatus>(this, RiskAssessmentStatus.CANCELLED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<RiskAssessmentStatus>(this, RiskAssessmentStatus.ENTEREDINERROR);
+          return new Enumeration<RiskAssessmentStatus>(this, RiskAssessmentStatus.ENTEREDINERROR, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<RiskAssessmentStatus>(this, RiskAssessmentStatus.UNKNOWN);
+          return new Enumeration<RiskAssessmentStatus>(this, RiskAssessmentStatus.UNKNOWN, code);
         throw new FHIRException("Unknown RiskAssessmentStatus code '"+codeString+"'");
         }
     public String toCode(RiskAssessmentStatus code) {

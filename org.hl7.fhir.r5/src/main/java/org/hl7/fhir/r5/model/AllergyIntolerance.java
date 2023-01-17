@@ -147,22 +147,22 @@ public class AllergyIntolerance extends DomainResource {
           return AllergyIntoleranceCategory.BIOLOGIC;
         throw new IllegalArgumentException("Unknown AllergyIntoleranceCategory code '"+codeString+"'");
         }
-        public Enumeration<AllergyIntoleranceCategory> fromType(Base code) throws FHIRException {
+        public Enumeration<AllergyIntoleranceCategory> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<AllergyIntoleranceCategory>(this);
+            return new Enumeration<AllergyIntoleranceCategory>(this, AllergyIntoleranceCategory.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<AllergyIntoleranceCategory>(this, AllergyIntoleranceCategory.NULL, code);
         if ("food".equals(codeString))
-          return new Enumeration<AllergyIntoleranceCategory>(this, AllergyIntoleranceCategory.FOOD);
+          return new Enumeration<AllergyIntoleranceCategory>(this, AllergyIntoleranceCategory.FOOD, code);
         if ("medication".equals(codeString))
-          return new Enumeration<AllergyIntoleranceCategory>(this, AllergyIntoleranceCategory.MEDICATION);
+          return new Enumeration<AllergyIntoleranceCategory>(this, AllergyIntoleranceCategory.MEDICATION, code);
         if ("environment".equals(codeString))
-          return new Enumeration<AllergyIntoleranceCategory>(this, AllergyIntoleranceCategory.ENVIRONMENT);
+          return new Enumeration<AllergyIntoleranceCategory>(this, AllergyIntoleranceCategory.ENVIRONMENT, code);
         if ("biologic".equals(codeString))
-          return new Enumeration<AllergyIntoleranceCategory>(this, AllergyIntoleranceCategory.BIOLOGIC);
+          return new Enumeration<AllergyIntoleranceCategory>(this, AllergyIntoleranceCategory.BIOLOGIC, code);
         throw new FHIRException("Unknown AllergyIntoleranceCategory code '"+codeString+"'");
         }
     public String toCode(AllergyIntoleranceCategory code) {
@@ -263,20 +263,20 @@ public class AllergyIntolerance extends DomainResource {
           return AllergyIntoleranceCriticality.UNABLETOASSESS;
         throw new IllegalArgumentException("Unknown AllergyIntoleranceCriticality code '"+codeString+"'");
         }
-        public Enumeration<AllergyIntoleranceCriticality> fromType(Base code) throws FHIRException {
+        public Enumeration<AllergyIntoleranceCriticality> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<AllergyIntoleranceCriticality>(this);
+            return new Enumeration<AllergyIntoleranceCriticality>(this, AllergyIntoleranceCriticality.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<AllergyIntoleranceCriticality>(this, AllergyIntoleranceCriticality.NULL, code);
         if ("low".equals(codeString))
-          return new Enumeration<AllergyIntoleranceCriticality>(this, AllergyIntoleranceCriticality.LOW);
+          return new Enumeration<AllergyIntoleranceCriticality>(this, AllergyIntoleranceCriticality.LOW, code);
         if ("high".equals(codeString))
-          return new Enumeration<AllergyIntoleranceCriticality>(this, AllergyIntoleranceCriticality.HIGH);
+          return new Enumeration<AllergyIntoleranceCriticality>(this, AllergyIntoleranceCriticality.HIGH, code);
         if ("unable-to-assess".equals(codeString))
-          return new Enumeration<AllergyIntoleranceCriticality>(this, AllergyIntoleranceCriticality.UNABLETOASSESS);
+          return new Enumeration<AllergyIntoleranceCriticality>(this, AllergyIntoleranceCriticality.UNABLETOASSESS, code);
         throw new FHIRException("Unknown AllergyIntoleranceCriticality code '"+codeString+"'");
         }
     public String toCode(AllergyIntoleranceCriticality code) {
@@ -375,20 +375,20 @@ public class AllergyIntolerance extends DomainResource {
           return AllergyIntoleranceSeverity.SEVERE;
         throw new IllegalArgumentException("Unknown AllergyIntoleranceSeverity code '"+codeString+"'");
         }
-        public Enumeration<AllergyIntoleranceSeverity> fromType(Base code) throws FHIRException {
+        public Enumeration<AllergyIntoleranceSeverity> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<AllergyIntoleranceSeverity>(this);
+            return new Enumeration<AllergyIntoleranceSeverity>(this, AllergyIntoleranceSeverity.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<AllergyIntoleranceSeverity>(this, AllergyIntoleranceSeverity.NULL, code);
         if ("mild".equals(codeString))
-          return new Enumeration<AllergyIntoleranceSeverity>(this, AllergyIntoleranceSeverity.MILD);
+          return new Enumeration<AllergyIntoleranceSeverity>(this, AllergyIntoleranceSeverity.MILD, code);
         if ("moderate".equals(codeString))
-          return new Enumeration<AllergyIntoleranceSeverity>(this, AllergyIntoleranceSeverity.MODERATE);
+          return new Enumeration<AllergyIntoleranceSeverity>(this, AllergyIntoleranceSeverity.MODERATE, code);
         if ("severe".equals(codeString))
-          return new Enumeration<AllergyIntoleranceSeverity>(this, AllergyIntoleranceSeverity.SEVERE);
+          return new Enumeration<AllergyIntoleranceSeverity>(this, AllergyIntoleranceSeverity.SEVERE, code);
         throw new FHIRException("Unknown AllergyIntoleranceSeverity code '"+codeString+"'");
         }
     public String toCode(AllergyIntoleranceSeverity code) {
@@ -2905,4 +2905,3 @@ public class AllergyIntolerance extends DomainResource {
 
 
 }
-

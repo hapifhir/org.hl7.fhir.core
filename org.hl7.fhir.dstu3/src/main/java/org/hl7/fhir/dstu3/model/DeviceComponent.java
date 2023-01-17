@@ -229,12 +229,12 @@ public class DeviceComponent extends DomainResource {
           return MeasmntPrinciple.MANUAL;
         throw new IllegalArgumentException("Unknown MeasmntPrinciple code '"+codeString+"'");
         }
-        public Enumeration<MeasmntPrinciple> fromType(Base code) throws FHIRException {
+        public Enumeration<MeasmntPrinciple> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<MeasmntPrinciple>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("other".equals(codeString))

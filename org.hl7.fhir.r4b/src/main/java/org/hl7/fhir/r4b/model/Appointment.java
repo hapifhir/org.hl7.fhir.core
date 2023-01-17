@@ -219,34 +219,34 @@ public class Appointment extends DomainResource {
           return AppointmentStatus.WAITLIST;
         throw new IllegalArgumentException("Unknown AppointmentStatus code '"+codeString+"'");
         }
-        public Enumeration<AppointmentStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<AppointmentStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<AppointmentStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<AppointmentStatus>(this, AppointmentStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<AppointmentStatus>(this, AppointmentStatus.NULL, code);
         if ("proposed".equals(codeString))
-          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.PROPOSED);
+          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.PROPOSED, code);
         if ("pending".equals(codeString))
-          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.PENDING);
+          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.PENDING, code);
         if ("booked".equals(codeString))
-          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.BOOKED);
+          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.BOOKED, code);
         if ("arrived".equals(codeString))
-          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.ARRIVED);
+          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.ARRIVED, code);
         if ("fulfilled".equals(codeString))
-          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.FULFILLED);
+          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.FULFILLED, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.CANCELLED);
+          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.CANCELLED, code);
         if ("noshow".equals(codeString))
-          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.NOSHOW);
+          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.NOSHOW, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.ENTEREDINERROR);
+          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.ENTEREDINERROR, code);
         if ("checked-in".equals(codeString))
-          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.CHECKEDIN);
+          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.CHECKEDIN, code);
         if ("waitlist".equals(codeString))
-          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.WAITLIST);
+          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.WAITLIST, code);
         throw new FHIRException("Unknown AppointmentStatus code '"+codeString+"'");
         }
     public String toCode(AppointmentStatus code) {
@@ -359,20 +359,20 @@ public class Appointment extends DomainResource {
           return ParticipantRequired.INFORMATIONONLY;
         throw new IllegalArgumentException("Unknown ParticipantRequired code '"+codeString+"'");
         }
-        public Enumeration<ParticipantRequired> fromType(Base code) throws FHIRException {
+        public Enumeration<ParticipantRequired> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ParticipantRequired>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ParticipantRequired>(this, ParticipantRequired.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ParticipantRequired>(this, ParticipantRequired.NULL, code);
         if ("required".equals(codeString))
-          return new Enumeration<ParticipantRequired>(this, ParticipantRequired.REQUIRED);
+          return new Enumeration<ParticipantRequired>(this, ParticipantRequired.REQUIRED, code);
         if ("optional".equals(codeString))
-          return new Enumeration<ParticipantRequired>(this, ParticipantRequired.OPTIONAL);
+          return new Enumeration<ParticipantRequired>(this, ParticipantRequired.OPTIONAL, code);
         if ("information-only".equals(codeString))
-          return new Enumeration<ParticipantRequired>(this, ParticipantRequired.INFORMATIONONLY);
+          return new Enumeration<ParticipantRequired>(this, ParticipantRequired.INFORMATIONONLY, code);
         throw new FHIRException("Unknown ParticipantRequired code '"+codeString+"'");
         }
     public String toCode(ParticipantRequired code) {
@@ -2930,4 +2930,3 @@ The duration (usually in minutes) could also be provided to indicate the length 
 
 
 }
-

@@ -148,12 +148,12 @@ public class VisionPrescription extends DomainResource {
           return VisionStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown VisionStatus code '"+codeString+"'");
         }
-        public Enumeration<VisionStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<VisionStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<VisionStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("active".equals(codeString))
@@ -252,12 +252,12 @@ public class VisionPrescription extends DomainResource {
           return VisionEyes.LEFT;
         throw new IllegalArgumentException("Unknown VisionEyes code '"+codeString+"'");
         }
-        public Enumeration<VisionEyes> fromType(Base code) throws FHIRException {
+        public Enumeration<VisionEyes> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<VisionEyes>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("right".equals(codeString))
@@ -372,12 +372,12 @@ public class VisionPrescription extends DomainResource {
           return VisionBase.OUT;
         throw new IllegalArgumentException("Unknown VisionBase code '"+codeString+"'");
         }
-        public Enumeration<VisionBase> fromType(Base code) throws FHIRException {
+        public Enumeration<VisionBase> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<VisionBase>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("up".equals(codeString))
