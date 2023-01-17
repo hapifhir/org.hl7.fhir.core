@@ -135,20 +135,20 @@ public class StructureDefinition extends CanonicalResource {
           return ExtensionContextType.EXTENSION;
         throw new IllegalArgumentException("Unknown ExtensionContextType code '"+codeString+"'");
         }
-        public Enumeration<ExtensionContextType> fromType(Base code) throws FHIRException {
+        public Enumeration<ExtensionContextType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ExtensionContextType>(this);
+            return new Enumeration<ExtensionContextType>(this, ExtensionContextType.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ExtensionContextType>(this, ExtensionContextType.NULL, code);
         if ("fhirpath".equals(codeString))
-          return new Enumeration<ExtensionContextType>(this, ExtensionContextType.FHIRPATH);
+          return new Enumeration<ExtensionContextType>(this, ExtensionContextType.FHIRPATH, code);
         if ("element".equals(codeString))
-          return new Enumeration<ExtensionContextType>(this, ExtensionContextType.ELEMENT);
+          return new Enumeration<ExtensionContextType>(this, ExtensionContextType.ELEMENT, code);
         if ("extension".equals(codeString))
-          return new Enumeration<ExtensionContextType>(this, ExtensionContextType.EXTENSION);
+          return new Enumeration<ExtensionContextType>(this, ExtensionContextType.EXTENSION, code);
         throw new FHIRException("Unknown ExtensionContextType code '"+codeString+"'");
         }
     public String toCode(ExtensionContextType code) {
@@ -259,22 +259,22 @@ public class StructureDefinition extends CanonicalResource {
           return StructureDefinitionKind.LOGICAL;
         throw new IllegalArgumentException("Unknown StructureDefinitionKind code '"+codeString+"'");
         }
-        public Enumeration<StructureDefinitionKind> fromType(Base code) throws FHIRException {
+        public Enumeration<StructureDefinitionKind> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<StructureDefinitionKind>(this);
+            return new Enumeration<StructureDefinitionKind>(this, StructureDefinitionKind.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<StructureDefinitionKind>(this, StructureDefinitionKind.NULL, code);
         if ("primitive-type".equals(codeString))
-          return new Enumeration<StructureDefinitionKind>(this, StructureDefinitionKind.PRIMITIVETYPE);
+          return new Enumeration<StructureDefinitionKind>(this, StructureDefinitionKind.PRIMITIVETYPE, code);
         if ("complex-type".equals(codeString))
-          return new Enumeration<StructureDefinitionKind>(this, StructureDefinitionKind.COMPLEXTYPE);
+          return new Enumeration<StructureDefinitionKind>(this, StructureDefinitionKind.COMPLEXTYPE, code);
         if ("resource".equals(codeString))
-          return new Enumeration<StructureDefinitionKind>(this, StructureDefinitionKind.RESOURCE);
+          return new Enumeration<StructureDefinitionKind>(this, StructureDefinitionKind.RESOURCE, code);
         if ("logical".equals(codeString))
-          return new Enumeration<StructureDefinitionKind>(this, StructureDefinitionKind.LOGICAL);
+          return new Enumeration<StructureDefinitionKind>(this, StructureDefinitionKind.LOGICAL, code);
         throw new FHIRException("Unknown StructureDefinitionKind code '"+codeString+"'");
         }
     public String toCode(StructureDefinitionKind code) {
@@ -363,18 +363,18 @@ public class StructureDefinition extends CanonicalResource {
           return TypeDerivationRule.CONSTRAINT;
         throw new IllegalArgumentException("Unknown TypeDerivationRule code '"+codeString+"'");
         }
-        public Enumeration<TypeDerivationRule> fromType(Base code) throws FHIRException {
+        public Enumeration<TypeDerivationRule> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<TypeDerivationRule>(this);
+            return new Enumeration<TypeDerivationRule>(this, TypeDerivationRule.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<TypeDerivationRule>(this, TypeDerivationRule.NULL, code);
         if ("specialization".equals(codeString))
-          return new Enumeration<TypeDerivationRule>(this, TypeDerivationRule.SPECIALIZATION);
+          return new Enumeration<TypeDerivationRule>(this, TypeDerivationRule.SPECIALIZATION, code);
         if ("constraint".equals(codeString))
-          return new Enumeration<TypeDerivationRule>(this, TypeDerivationRule.CONSTRAINT);
+          return new Enumeration<TypeDerivationRule>(this, TypeDerivationRule.CONSTRAINT, code);
         throw new FHIRException("Unknown TypeDerivationRule code '"+codeString+"'");
         }
     public String toCode(TypeDerivationRule code) {
@@ -5203,4 +5203,3 @@ public class StructureDefinition extends CanonicalResource {
 // end addition
 
 }
-

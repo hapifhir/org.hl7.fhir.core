@@ -163,12 +163,12 @@ public class SearchParameter extends MetadataResource {
           return XPathUsageType.OTHER;
         throw new IllegalArgumentException("Unknown XPathUsageType code '"+codeString+"'");
         }
-        public Enumeration<XPathUsageType> fromType(Base code) throws FHIRException {
+        public Enumeration<XPathUsageType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<XPathUsageType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("normal".equals(codeString))
@@ -355,12 +355,12 @@ public class SearchParameter extends MetadataResource {
           return SearchComparator.AP;
         throw new IllegalArgumentException("Unknown SearchComparator code '"+codeString+"'");
         }
-        public Enumeration<SearchComparator> fromType(Base code) throws FHIRException {
+        public Enumeration<SearchComparator> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<SearchComparator>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("eq".equals(codeString))
@@ -575,12 +575,12 @@ public class SearchParameter extends MetadataResource {
           return SearchModifierCode.TYPE;
         throw new IllegalArgumentException("Unknown SearchModifierCode code '"+codeString+"'");
         }
-        public Enumeration<SearchModifierCode> fromType(Base code) throws FHIRException {
+        public Enumeration<SearchModifierCode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<SearchModifierCode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("missing".equals(codeString))

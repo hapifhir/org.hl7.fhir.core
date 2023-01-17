@@ -181,12 +181,12 @@ public class Communication extends DomainResource {
           return CommunicationStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown CommunicationStatus code '"+codeString+"'");
         }
-        public Enumeration<CommunicationStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<CommunicationStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<CommunicationStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("preparation".equals(codeString))

@@ -470,9 +470,11 @@ private Map<String, Object> userData;
       return null;
     }
 		if (b instanceof CodeType)
-			return (CodeType) b;
+		  return (CodeType) b;
+		else if (b instanceof PrimitiveType<?>) 
+		  return new CodeType(b.primitiveValue(), (PrimitiveType<?>) b);
 		else if (b.isPrimitive())
-			return new CodeType(b.primitiveValue());
+		  return new CodeType(b.primitiveValue());
 		else
 			throw new FHIRException("Unable to convert a "+b.getClass().getName()+" to a Code");
 	}
@@ -596,7 +598,6 @@ private Map<String, Object> userData;
       throw new FHIRException("Unable to convert a "+b.getClass().getName()+" to a Population");
   }
   
-	
 	public Coding castToCoding(Base b) throws FHIRException {
     if (b == null) {
       return null;

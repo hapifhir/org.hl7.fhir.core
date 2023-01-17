@@ -193,12 +193,12 @@ public class DetectedIssue extends DomainResource {
           return DetectedIssueStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown DetectedIssueStatus code '"+codeString+"'");
         }
-        public Enumeration<DetectedIssueStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<DetectedIssueStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<DetectedIssueStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("registered".equals(codeString))
@@ -325,12 +325,12 @@ public class DetectedIssue extends DomainResource {
           return DetectedIssueSeverity.LOW;
         throw new IllegalArgumentException("Unknown DetectedIssueSeverity code '"+codeString+"'");
         }
-        public Enumeration<DetectedIssueSeverity> fromType(Base code) throws FHIRException {
+        public Enumeration<DetectedIssueSeverity> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<DetectedIssueSeverity>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("high".equals(codeString))

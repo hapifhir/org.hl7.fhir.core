@@ -121,12 +121,12 @@ public class Immunization extends DomainResource {
           return ImmunizationStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown ImmunizationStatus code '"+codeString+"'");
         }
-        public Enumeration<ImmunizationStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ImmunizationStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ImmunizationStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("completed".equals(codeString))

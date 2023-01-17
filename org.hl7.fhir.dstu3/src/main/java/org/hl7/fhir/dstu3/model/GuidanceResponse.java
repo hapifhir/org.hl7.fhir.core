@@ -168,12 +168,12 @@ public class GuidanceResponse extends DomainResource {
           return GuidanceResponseStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown GuidanceResponseStatus code '"+codeString+"'");
         }
-        public Enumeration<GuidanceResponseStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<GuidanceResponseStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<GuidanceResponseStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("success".equals(codeString))

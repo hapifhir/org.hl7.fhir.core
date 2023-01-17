@@ -135,20 +135,20 @@ public class MessageHeader extends DomainResource {
           return ResponseType.FATALERROR;
         throw new IllegalArgumentException("Unknown ResponseType code '"+codeString+"'");
         }
-        public Enumeration<ResponseType> fromType(Base code) throws FHIRException {
+        public Enumeration<ResponseType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ResponseType>(this);
+            return new Enumeration<ResponseType>(this, ResponseType.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ResponseType>(this, ResponseType.NULL, code);
         if ("ok".equals(codeString))
-          return new Enumeration<ResponseType>(this, ResponseType.OK);
+          return new Enumeration<ResponseType>(this, ResponseType.OK, code);
         if ("transient-error".equals(codeString))
-          return new Enumeration<ResponseType>(this, ResponseType.TRANSIENTERROR);
+          return new Enumeration<ResponseType>(this, ResponseType.TRANSIENTERROR, code);
         if ("fatal-error".equals(codeString))
-          return new Enumeration<ResponseType>(this, ResponseType.FATALERROR);
+          return new Enumeration<ResponseType>(this, ResponseType.FATALERROR, code);
         throw new FHIRException("Unknown ResponseType code '"+codeString+"'");
         }
     public String toCode(ResponseType code) {
@@ -2310,4 +2310,3 @@ public class MessageHeader extends DomainResource {
 
 
 }
-

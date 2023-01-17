@@ -144,12 +144,12 @@ public class SupplyDelivery extends DomainResource {
           return SupplyDeliveryStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown SupplyDeliveryStatus code '"+codeString+"'");
         }
-        public Enumeration<SupplyDeliveryStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<SupplyDeliveryStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<SupplyDeliveryStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("in-progress".equals(codeString))

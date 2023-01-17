@@ -181,12 +181,12 @@ public class HealthcareService extends DomainResource {
           return DaysOfWeek.SUN;
         throw new IllegalArgumentException("Unknown DaysOfWeek code '"+codeString+"'");
         }
-        public Enumeration<DaysOfWeek> fromType(Base code) throws FHIRException {
+        public Enumeration<DaysOfWeek> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<DaysOfWeek>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("mon".equals(codeString))

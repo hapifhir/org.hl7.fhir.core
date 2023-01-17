@@ -123,18 +123,18 @@ public class TerminologyCapabilities extends CanonicalResource {
           return CodeSearchSupport.ALL;
         throw new IllegalArgumentException("Unknown CodeSearchSupport code '"+codeString+"'");
         }
-        public Enumeration<CodeSearchSupport> fromType(Base code) throws FHIRException {
+        public Enumeration<CodeSearchSupport> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<CodeSearchSupport>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<CodeSearchSupport>(this, CodeSearchSupport.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<CodeSearchSupport>(this, CodeSearchSupport.NULL, code);
         if ("explicit".equals(codeString))
-          return new Enumeration<CodeSearchSupport>(this, CodeSearchSupport.EXPLICIT);
+          return new Enumeration<CodeSearchSupport>(this, CodeSearchSupport.EXPLICIT, code);
         if ("all".equals(codeString))
-          return new Enumeration<CodeSearchSupport>(this, CodeSearchSupport.ALL);
+          return new Enumeration<CodeSearchSupport>(this, CodeSearchSupport.ALL, code);
         throw new FHIRException("Unknown CodeSearchSupport code '"+codeString+"'");
         }
     public String toCode(CodeSearchSupport code) {
@@ -5510,4 +5510,3 @@ public class TerminologyCapabilities extends CanonicalResource {
       
 
 }
-

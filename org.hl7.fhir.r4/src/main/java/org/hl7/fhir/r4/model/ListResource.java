@@ -133,20 +133,20 @@ public class ListResource extends DomainResource {
           return ListStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown ListStatus code '"+codeString+"'");
         }
-        public Enumeration<ListStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ListStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ListStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ListStatus>(this, ListStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ListStatus>(this, ListStatus.NULL, code);
         if ("current".equals(codeString))
-          return new Enumeration<ListStatus>(this, ListStatus.CURRENT);
+          return new Enumeration<ListStatus>(this, ListStatus.CURRENT, code);
         if ("retired".equals(codeString))
-          return new Enumeration<ListStatus>(this, ListStatus.RETIRED);
+          return new Enumeration<ListStatus>(this, ListStatus.RETIRED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<ListStatus>(this, ListStatus.ENTEREDINERROR);
+          return new Enumeration<ListStatus>(this, ListStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown ListStatus code '"+codeString+"'");
         }
     public String toCode(ListStatus code) {
@@ -245,20 +245,20 @@ public class ListResource extends DomainResource {
           return ListMode.CHANGES;
         throw new IllegalArgumentException("Unknown ListMode code '"+codeString+"'");
         }
-        public Enumeration<ListMode> fromType(Base code) throws FHIRException {
+        public Enumeration<ListMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ListMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ListMode>(this, ListMode.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ListMode>(this, ListMode.NULL, code);
         if ("working".equals(codeString))
-          return new Enumeration<ListMode>(this, ListMode.WORKING);
+          return new Enumeration<ListMode>(this, ListMode.WORKING, code);
         if ("snapshot".equals(codeString))
-          return new Enumeration<ListMode>(this, ListMode.SNAPSHOT);
+          return new Enumeration<ListMode>(this, ListMode.SNAPSHOT, code);
         if ("changes".equals(codeString))
-          return new Enumeration<ListMode>(this, ListMode.CHANGES);
+          return new Enumeration<ListMode>(this, ListMode.CHANGES, code);
         throw new FHIRException("Unknown ListMode code '"+codeString+"'");
         }
     public String toCode(ListMode code) {

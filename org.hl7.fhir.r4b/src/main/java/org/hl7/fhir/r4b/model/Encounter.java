@@ -147,22 +147,22 @@ public class Encounter extends DomainResource {
           return EncounterLocationStatus.COMPLETED;
         throw new IllegalArgumentException("Unknown EncounterLocationStatus code '"+codeString+"'");
         }
-        public Enumeration<EncounterLocationStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<EncounterLocationStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<EncounterLocationStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<EncounterLocationStatus>(this, EncounterLocationStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<EncounterLocationStatus>(this, EncounterLocationStatus.NULL, code);
         if ("planned".equals(codeString))
-          return new Enumeration<EncounterLocationStatus>(this, EncounterLocationStatus.PLANNED);
+          return new Enumeration<EncounterLocationStatus>(this, EncounterLocationStatus.PLANNED, code);
         if ("active".equals(codeString))
-          return new Enumeration<EncounterLocationStatus>(this, EncounterLocationStatus.ACTIVE);
+          return new Enumeration<EncounterLocationStatus>(this, EncounterLocationStatus.ACTIVE, code);
         if ("reserved".equals(codeString))
-          return new Enumeration<EncounterLocationStatus>(this, EncounterLocationStatus.RESERVED);
+          return new Enumeration<EncounterLocationStatus>(this, EncounterLocationStatus.RESERVED, code);
         if ("completed".equals(codeString))
-          return new Enumeration<EncounterLocationStatus>(this, EncounterLocationStatus.COMPLETED);
+          return new Enumeration<EncounterLocationStatus>(this, EncounterLocationStatus.COMPLETED, code);
         throw new FHIRException("Unknown EncounterLocationStatus code '"+codeString+"'");
         }
     public String toCode(EncounterLocationStatus code) {
@@ -335,32 +335,32 @@ public class Encounter extends DomainResource {
           return EncounterStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown EncounterStatus code '"+codeString+"'");
         }
-        public Enumeration<EncounterStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<EncounterStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<EncounterStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<EncounterStatus>(this, EncounterStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<EncounterStatus>(this, EncounterStatus.NULL, code);
         if ("planned".equals(codeString))
-          return new Enumeration<EncounterStatus>(this, EncounterStatus.PLANNED);
+          return new Enumeration<EncounterStatus>(this, EncounterStatus.PLANNED, code);
         if ("arrived".equals(codeString))
-          return new Enumeration<EncounterStatus>(this, EncounterStatus.ARRIVED);
+          return new Enumeration<EncounterStatus>(this, EncounterStatus.ARRIVED, code);
         if ("triaged".equals(codeString))
-          return new Enumeration<EncounterStatus>(this, EncounterStatus.TRIAGED);
+          return new Enumeration<EncounterStatus>(this, EncounterStatus.TRIAGED, code);
         if ("in-progress".equals(codeString))
-          return new Enumeration<EncounterStatus>(this, EncounterStatus.INPROGRESS);
+          return new Enumeration<EncounterStatus>(this, EncounterStatus.INPROGRESS, code);
         if ("onleave".equals(codeString))
-          return new Enumeration<EncounterStatus>(this, EncounterStatus.ONLEAVE);
+          return new Enumeration<EncounterStatus>(this, EncounterStatus.ONLEAVE, code);
         if ("finished".equals(codeString))
-          return new Enumeration<EncounterStatus>(this, EncounterStatus.FINISHED);
+          return new Enumeration<EncounterStatus>(this, EncounterStatus.FINISHED, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<EncounterStatus>(this, EncounterStatus.CANCELLED);
+          return new Enumeration<EncounterStatus>(this, EncounterStatus.CANCELLED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<EncounterStatus>(this, EncounterStatus.ENTEREDINERROR);
+          return new Enumeration<EncounterStatus>(this, EncounterStatus.ENTEREDINERROR, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<EncounterStatus>(this, EncounterStatus.UNKNOWN);
+          return new Enumeration<EncounterStatus>(this, EncounterStatus.UNKNOWN, code);
         throw new FHIRException("Unknown EncounterStatus code '"+codeString+"'");
         }
     public String toCode(EncounterStatus code) {
@@ -4716,4 +4716,3 @@ public class Encounter extends DomainResource {
 
 
 }
-
