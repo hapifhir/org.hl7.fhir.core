@@ -145,22 +145,22 @@ public class SupplyDelivery extends DomainResource {
           return SupplyDeliveryStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown SupplyDeliveryStatus code '"+codeString+"'");
         }
-        public Enumeration<SupplyDeliveryStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<SupplyDeliveryStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<SupplyDeliveryStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<SupplyDeliveryStatus>(this, SupplyDeliveryStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<SupplyDeliveryStatus>(this, SupplyDeliveryStatus.NULL, code);
         if ("in-progress".equals(codeString))
-          return new Enumeration<SupplyDeliveryStatus>(this, SupplyDeliveryStatus.INPROGRESS);
+          return new Enumeration<SupplyDeliveryStatus>(this, SupplyDeliveryStatus.INPROGRESS, code);
         if ("completed".equals(codeString))
-          return new Enumeration<SupplyDeliveryStatus>(this, SupplyDeliveryStatus.COMPLETED);
+          return new Enumeration<SupplyDeliveryStatus>(this, SupplyDeliveryStatus.COMPLETED, code);
         if ("abandoned".equals(codeString))
-          return new Enumeration<SupplyDeliveryStatus>(this, SupplyDeliveryStatus.ABANDONED);
+          return new Enumeration<SupplyDeliveryStatus>(this, SupplyDeliveryStatus.ABANDONED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<SupplyDeliveryStatus>(this, SupplyDeliveryStatus.ENTEREDINERROR);
+          return new Enumeration<SupplyDeliveryStatus>(this, SupplyDeliveryStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown SupplyDeliveryStatus code '"+codeString+"'");
         }
     public String toCode(SupplyDeliveryStatus code) {

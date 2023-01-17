@@ -150,12 +150,12 @@ public class CodeSystem extends MetadataResource {
           return CodeSystemHierarchyMeaning.CLASSIFIEDWITH;
         throw new IllegalArgumentException("Unknown CodeSystemHierarchyMeaning code '"+codeString+"'");
         }
-        public Enumeration<CodeSystemHierarchyMeaning> fromType(Base code) throws FHIRException {
+        public Enumeration<CodeSystemHierarchyMeaning> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<CodeSystemHierarchyMeaning>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("grouped-by".equals(codeString))
@@ -278,12 +278,12 @@ public class CodeSystem extends MetadataResource {
           return CodeSystemContentMode.COMPLETE;
         throw new IllegalArgumentException("Unknown CodeSystemContentMode code '"+codeString+"'");
         }
-        public Enumeration<CodeSystemContentMode> fromType(Base code) throws FHIRException {
+        public Enumeration<CodeSystemContentMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<CodeSystemContentMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("not-present".equals(codeString))
@@ -466,12 +466,12 @@ public class CodeSystem extends MetadataResource {
           return FilterOperator.EXISTS;
         throw new IllegalArgumentException("Unknown FilterOperator code '"+codeString+"'");
         }
-        public Enumeration<FilterOperator> fromType(Base code) throws FHIRException {
+        public Enumeration<FilterOperator> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<FilterOperator>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("=".equals(codeString))
@@ -638,12 +638,12 @@ public class CodeSystem extends MetadataResource {
           return PropertyType.DATETIME;
         throw new IllegalArgumentException("Unknown PropertyType code '"+codeString+"'");
         }
-        public Enumeration<PropertyType> fromType(Base code) throws FHIRException {
+        public Enumeration<PropertyType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<PropertyType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("code".equals(codeString))

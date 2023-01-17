@@ -141,12 +141,12 @@ public class Identifier extends Type implements ICompositeType {
           return IdentifierUse.SECONDARY;
         throw new IllegalArgumentException("Unknown IdentifierUse code '"+codeString+"'");
         }
-        public Enumeration<IdentifierUse> fromType(Base code) throws FHIRException {
+        public Enumeration<IdentifierUse> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<IdentifierUse>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("usual".equals(codeString))

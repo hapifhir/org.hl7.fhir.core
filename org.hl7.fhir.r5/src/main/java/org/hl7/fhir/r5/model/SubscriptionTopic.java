@@ -123,18 +123,18 @@ public class SubscriptionTopic extends CanonicalResource {
           return CriteriaNotExistsBehavior.TESTFAILS;
         throw new IllegalArgumentException("Unknown CriteriaNotExistsBehavior code '"+codeString+"'");
         }
-        public Enumeration<CriteriaNotExistsBehavior> fromType(Base code) throws FHIRException {
+        public Enumeration<CriteriaNotExistsBehavior> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<CriteriaNotExistsBehavior>(this);
+            return new Enumeration<CriteriaNotExistsBehavior>(this, CriteriaNotExistsBehavior.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<CriteriaNotExistsBehavior>(this, CriteriaNotExistsBehavior.NULL, code);
         if ("test-passes".equals(codeString))
-          return new Enumeration<CriteriaNotExistsBehavior>(this, CriteriaNotExistsBehavior.TESTPASSES);
+          return new Enumeration<CriteriaNotExistsBehavior>(this, CriteriaNotExistsBehavior.TESTPASSES, code);
         if ("test-fails".equals(codeString))
-          return new Enumeration<CriteriaNotExistsBehavior>(this, CriteriaNotExistsBehavior.TESTFAILS);
+          return new Enumeration<CriteriaNotExistsBehavior>(this, CriteriaNotExistsBehavior.TESTFAILS, code);
         throw new FHIRException("Unknown CriteriaNotExistsBehavior code '"+codeString+"'");
         }
     public String toCode(CriteriaNotExistsBehavior code) {
@@ -231,20 +231,20 @@ public class SubscriptionTopic extends CanonicalResource {
           return InteractionTrigger.DELETE;
         throw new IllegalArgumentException("Unknown InteractionTrigger code '"+codeString+"'");
         }
-        public Enumeration<InteractionTrigger> fromType(Base code) throws FHIRException {
+        public Enumeration<InteractionTrigger> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<InteractionTrigger>(this);
+            return new Enumeration<InteractionTrigger>(this, InteractionTrigger.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<InteractionTrigger>(this, InteractionTrigger.NULL, code);
         if ("create".equals(codeString))
-          return new Enumeration<InteractionTrigger>(this, InteractionTrigger.CREATE);
+          return new Enumeration<InteractionTrigger>(this, InteractionTrigger.CREATE, code);
         if ("update".equals(codeString))
-          return new Enumeration<InteractionTrigger>(this, InteractionTrigger.UPDATE);
+          return new Enumeration<InteractionTrigger>(this, InteractionTrigger.UPDATE, code);
         if ("delete".equals(codeString))
-          return new Enumeration<InteractionTrigger>(this, InteractionTrigger.DELETE);
+          return new Enumeration<InteractionTrigger>(this, InteractionTrigger.DELETE, code);
         throw new FHIRException("Unknown InteractionTrigger code '"+codeString+"'");
         }
     public String toCode(InteractionTrigger code) {
@@ -4788,4 +4788,3 @@ public class SubscriptionTopic extends CanonicalResource {
 
 
 }
-

@@ -209,32 +209,32 @@ public class Bundle extends Resource implements IBaseBundle {
           return BundleType.COLLECTION;
         throw new IllegalArgumentException("Unknown BundleType code '"+codeString+"'");
         }
-        public Enumeration<BundleType> fromType(Base code) throws FHIRException {
+        public Enumeration<BundleType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<BundleType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<BundleType>(this, BundleType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<BundleType>(this, BundleType.NULL, code);
         if ("document".equals(codeString))
-          return new Enumeration<BundleType>(this, BundleType.DOCUMENT);
+          return new Enumeration<BundleType>(this, BundleType.DOCUMENT, code);
         if ("message".equals(codeString))
-          return new Enumeration<BundleType>(this, BundleType.MESSAGE);
+          return new Enumeration<BundleType>(this, BundleType.MESSAGE, code);
         if ("transaction".equals(codeString))
-          return new Enumeration<BundleType>(this, BundleType.TRANSACTION);
+          return new Enumeration<BundleType>(this, BundleType.TRANSACTION, code);
         if ("transaction-response".equals(codeString))
-          return new Enumeration<BundleType>(this, BundleType.TRANSACTIONRESPONSE);
+          return new Enumeration<BundleType>(this, BundleType.TRANSACTIONRESPONSE, code);
         if ("batch".equals(codeString))
-          return new Enumeration<BundleType>(this, BundleType.BATCH);
+          return new Enumeration<BundleType>(this, BundleType.BATCH, code);
         if ("batch-response".equals(codeString))
-          return new Enumeration<BundleType>(this, BundleType.BATCHRESPONSE);
+          return new Enumeration<BundleType>(this, BundleType.BATCHRESPONSE, code);
         if ("history".equals(codeString))
-          return new Enumeration<BundleType>(this, BundleType.HISTORY);
+          return new Enumeration<BundleType>(this, BundleType.HISTORY, code);
         if ("searchset".equals(codeString))
-          return new Enumeration<BundleType>(this, BundleType.SEARCHSET);
+          return new Enumeration<BundleType>(this, BundleType.SEARCHSET, code);
         if ("collection".equals(codeString))
-          return new Enumeration<BundleType>(this, BundleType.COLLECTION);
+          return new Enumeration<BundleType>(this, BundleType.COLLECTION, code);
         throw new FHIRException("Unknown BundleType code '"+codeString+"'");
         }
     public String toCode(BundleType code) {
@@ -381,26 +381,26 @@ public class Bundle extends Resource implements IBaseBundle {
           return HTTPVerb.PATCH;
         throw new IllegalArgumentException("Unknown HTTPVerb code '"+codeString+"'");
         }
-        public Enumeration<HTTPVerb> fromType(Base code) throws FHIRException {
+        public Enumeration<HTTPVerb> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<HTTPVerb>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<HTTPVerb>(this, HTTPVerb.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<HTTPVerb>(this, HTTPVerb.NULL, code);
         if ("GET".equals(codeString))
-          return new Enumeration<HTTPVerb>(this, HTTPVerb.GET);
+          return new Enumeration<HTTPVerb>(this, HTTPVerb.GET, code);
         if ("HEAD".equals(codeString))
-          return new Enumeration<HTTPVerb>(this, HTTPVerb.HEAD);
+          return new Enumeration<HTTPVerb>(this, HTTPVerb.HEAD, code);
         if ("POST".equals(codeString))
-          return new Enumeration<HTTPVerb>(this, HTTPVerb.POST);
+          return new Enumeration<HTTPVerb>(this, HTTPVerb.POST, code);
         if ("PUT".equals(codeString))
-          return new Enumeration<HTTPVerb>(this, HTTPVerb.PUT);
+          return new Enumeration<HTTPVerb>(this, HTTPVerb.PUT, code);
         if ("DELETE".equals(codeString))
-          return new Enumeration<HTTPVerb>(this, HTTPVerb.DELETE);
+          return new Enumeration<HTTPVerb>(this, HTTPVerb.DELETE, code);
         if ("PATCH".equals(codeString))
-          return new Enumeration<HTTPVerb>(this, HTTPVerb.PATCH);
+          return new Enumeration<HTTPVerb>(this, HTTPVerb.PATCH, code);
         throw new FHIRException("Unknown HTTPVerb code '"+codeString+"'");
         }
     public String toCode(HTTPVerb code) {
@@ -505,20 +505,20 @@ public class Bundle extends Resource implements IBaseBundle {
           return SearchEntryMode.OUTCOME;
         throw new IllegalArgumentException("Unknown SearchEntryMode code '"+codeString+"'");
         }
-        public Enumeration<SearchEntryMode> fromType(Base code) throws FHIRException {
+        public Enumeration<SearchEntryMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<SearchEntryMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<SearchEntryMode>(this, SearchEntryMode.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<SearchEntryMode>(this, SearchEntryMode.NULL, code);
         if ("match".equals(codeString))
-          return new Enumeration<SearchEntryMode>(this, SearchEntryMode.MATCH);
+          return new Enumeration<SearchEntryMode>(this, SearchEntryMode.MATCH, code);
         if ("include".equals(codeString))
-          return new Enumeration<SearchEntryMode>(this, SearchEntryMode.INCLUDE);
+          return new Enumeration<SearchEntryMode>(this, SearchEntryMode.INCLUDE, code);
         if ("outcome".equals(codeString))
-          return new Enumeration<SearchEntryMode>(this, SearchEntryMode.OUTCOME);
+          return new Enumeration<SearchEntryMode>(this, SearchEntryMode.OUTCOME, code);
         throw new FHIRException("Unknown SearchEntryMode code '"+codeString+"'");
         }
     public String toCode(SearchEntryMode code) {
@@ -3268,4 +3268,3 @@ public class Bundle extends Resource implements IBaseBundle {
 // end addition
 
 }
-

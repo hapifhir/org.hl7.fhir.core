@@ -135,20 +135,20 @@ public class TerminologyCapabilities extends CanonicalResource {
           return CodeSearchSupport.INCOMPOSEOREXPANSION;
         throw new IllegalArgumentException("Unknown CodeSearchSupport code '"+codeString+"'");
         }
-        public Enumeration<CodeSearchSupport> fromType(Base code) throws FHIRException {
+        public Enumeration<CodeSearchSupport> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<CodeSearchSupport>(this);
+            return new Enumeration<CodeSearchSupport>(this, CodeSearchSupport.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<CodeSearchSupport>(this, CodeSearchSupport.NULL, code);
         if ("in-compose".equals(codeString))
-          return new Enumeration<CodeSearchSupport>(this, CodeSearchSupport.INCOMPOSE);
+          return new Enumeration<CodeSearchSupport>(this, CodeSearchSupport.INCOMPOSE, code);
         if ("in-expansion".equals(codeString))
-          return new Enumeration<CodeSearchSupport>(this, CodeSearchSupport.INEXPANSION);
+          return new Enumeration<CodeSearchSupport>(this, CodeSearchSupport.INEXPANSION, code);
         if ("in-compose-or-expansion".equals(codeString))
-          return new Enumeration<CodeSearchSupport>(this, CodeSearchSupport.INCOMPOSEOREXPANSION);
+          return new Enumeration<CodeSearchSupport>(this, CodeSearchSupport.INCOMPOSEOREXPANSION, code);
         throw new FHIRException("Unknown CodeSearchSupport code '"+codeString+"'");
         }
     public String toCode(CodeSearchSupport code) {
@@ -895,128 +895,128 @@ public class TerminologyCapabilities extends CanonicalResource {
           return CommonLanguages.ZHTW;
         throw new IllegalArgumentException("Unknown CommonLanguages code '"+codeString+"'");
         }
-        public Enumeration<CommonLanguages> fromType(Base code) throws FHIRException {
+        public Enumeration<CommonLanguages> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<CommonLanguages>(this);
+            return new Enumeration<CommonLanguages>(this, CommonLanguages.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<CommonLanguages>(this, CommonLanguages.NULL, code);
         if ("ar".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.AR);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.AR, code);
         if ("bn".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.BN);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.BN, code);
         if ("cs".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.CS);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.CS, code);
         if ("da".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.DA);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.DA, code);
         if ("de".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.DE);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.DE, code);
         if ("de-AT".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.DEAT);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.DEAT, code);
         if ("de-CH".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.DECH);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.DECH, code);
         if ("de-DE".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.DEDE);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.DEDE, code);
         if ("el".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.EL);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.EL, code);
         if ("en".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.EN);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.EN, code);
         if ("en-AU".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ENAU);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ENAU, code);
         if ("en-CA".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ENCA);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ENCA, code);
         if ("en-GB".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ENGB);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ENGB, code);
         if ("en-IN".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ENIN);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ENIN, code);
         if ("en-NZ".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ENNZ);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ENNZ, code);
         if ("en-SG".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ENSG);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ENSG, code);
         if ("en-US".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ENUS);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ENUS, code);
         if ("es".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ES);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ES, code);
         if ("es-AR".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ESAR);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ESAR, code);
         if ("es-ES".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ESES);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ESES, code);
         if ("es-UY".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ESUY);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ESUY, code);
         if ("fi".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.FI);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.FI, code);
         if ("fr".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.FR);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.FR, code);
         if ("fr-BE".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.FRBE);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.FRBE, code);
         if ("fr-CH".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.FRCH);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.FRCH, code);
         if ("fr-FR".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.FRFR);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.FRFR, code);
         if ("fr-CA".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.FRCA);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.FRCA, code);
         if ("fy".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.FY);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.FY, code);
         if ("fy-NL".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.FYNL);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.FYNL, code);
         if ("hi".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.HI);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.HI, code);
         if ("hr".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.HR);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.HR, code);
         if ("it".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.IT);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.IT, code);
         if ("it-CH".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ITCH);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ITCH, code);
         if ("it-IT".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ITIT);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ITIT, code);
         if ("ja".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.JA);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.JA, code);
         if ("ko".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.KO);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.KO, code);
         if ("nl".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.NL);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.NL, code);
         if ("nl-BE".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.NLBE);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.NLBE, code);
         if ("nl-NL".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.NLNL);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.NLNL, code);
         if ("no".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.NO);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.NO, code);
         if ("no-NO".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.NONO);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.NONO, code);
         if ("pa".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.PA);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.PA, code);
         if ("pl".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.PL);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.PL, code);
         if ("pt".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.PT);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.PT, code);
         if ("pt-BR".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.PTBR);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.PTBR, code);
         if ("ru".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.RU);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.RU, code);
         if ("ru-RU".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.RURU);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.RURU, code);
         if ("sr".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.SR);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.SR, code);
         if ("sr-RS".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.SRRS);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.SRRS, code);
         if ("sv".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.SV);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.SV, code);
         if ("sv-SE".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.SVSE);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.SVSE, code);
         if ("te".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.TE);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.TE, code);
         if ("zh".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ZH);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ZH, code);
         if ("zh-CN".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ZHCN);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ZHCN, code);
         if ("zh-HK".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ZHHK);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ZHHK, code);
         if ("zh-SG".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ZHSG);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ZHSG, code);
         if ("zh-TW".equals(codeString))
-          return new Enumeration<CommonLanguages>(this, CommonLanguages.ZHTW);
+          return new Enumeration<CommonLanguages>(this, CommonLanguages.ZHTW, code);
         throw new FHIRException("Unknown CommonLanguages code '"+codeString+"'");
         }
     public String toCode(CommonLanguages code) {
@@ -7236,4 +7236,3 @@ public class TerminologyCapabilities extends CanonicalResource {
 
 
 }
-

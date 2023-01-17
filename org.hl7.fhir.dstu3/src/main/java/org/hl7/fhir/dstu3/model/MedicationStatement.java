@@ -169,12 +169,12 @@ public class MedicationStatement extends DomainResource {
           return MedicationStatementStatus.ONHOLD;
         throw new IllegalArgumentException("Unknown MedicationStatementStatus code '"+codeString+"'");
         }
-        public Enumeration<MedicationStatementStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<MedicationStatementStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<MedicationStatementStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("active".equals(codeString))
@@ -305,12 +305,12 @@ public class MedicationStatement extends DomainResource {
           return MedicationStatementTaken.NA;
         throw new IllegalArgumentException("Unknown MedicationStatementTaken code '"+codeString+"'");
         }
-        public Enumeration<MedicationStatementTaken> fromType(Base code) throws FHIRException {
+        public Enumeration<MedicationStatementTaken> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<MedicationStatementTaken>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("y".equals(codeString))

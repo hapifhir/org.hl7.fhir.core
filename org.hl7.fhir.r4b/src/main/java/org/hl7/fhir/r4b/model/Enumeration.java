@@ -118,6 +118,19 @@ public class Enumeration<T extends Enum<?>> extends PrimitiveType<T> implements 
 		setValue(theValue);
 	}
 
+
+  /**
+   * Constructor
+   */
+  public Enumeration(EnumFactory<T> theEnumFactory, T theValue, Element source) {
+    if (theEnumFactory == null)
+      throw new IllegalArgumentException("An enumeration factory must be provided");
+    myEnumFactory = theEnumFactory;
+    setValue(theValue);
+    setId(source.getId());
+    getExtension().addAll(source.getExtension());
+  }
+
   @Override
   public Enumeration<T> copy() {
     Enumeration dst= new Enumeration(this.myEnumFactory, (Enum)this.getValue());

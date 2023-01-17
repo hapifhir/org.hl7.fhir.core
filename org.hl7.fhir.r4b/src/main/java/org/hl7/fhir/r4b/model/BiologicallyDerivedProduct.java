@@ -161,24 +161,24 @@ public class BiologicallyDerivedProduct extends DomainResource {
           return BiologicallyDerivedProductCategory.BIOLOGICALAGENT;
         throw new IllegalArgumentException("Unknown BiologicallyDerivedProductCategory code '"+codeString+"'");
         }
-        public Enumeration<BiologicallyDerivedProductCategory> fromType(Base code) throws FHIRException {
+        public Enumeration<BiologicallyDerivedProductCategory> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<BiologicallyDerivedProductCategory>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<BiologicallyDerivedProductCategory>(this, BiologicallyDerivedProductCategory.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<BiologicallyDerivedProductCategory>(this, BiologicallyDerivedProductCategory.NULL, code);
         if ("organ".equals(codeString))
-          return new Enumeration<BiologicallyDerivedProductCategory>(this, BiologicallyDerivedProductCategory.ORGAN);
+          return new Enumeration<BiologicallyDerivedProductCategory>(this, BiologicallyDerivedProductCategory.ORGAN, code);
         if ("tissue".equals(codeString))
-          return new Enumeration<BiologicallyDerivedProductCategory>(this, BiologicallyDerivedProductCategory.TISSUE);
+          return new Enumeration<BiologicallyDerivedProductCategory>(this, BiologicallyDerivedProductCategory.TISSUE, code);
         if ("fluid".equals(codeString))
-          return new Enumeration<BiologicallyDerivedProductCategory>(this, BiologicallyDerivedProductCategory.FLUID);
+          return new Enumeration<BiologicallyDerivedProductCategory>(this, BiologicallyDerivedProductCategory.FLUID, code);
         if ("cells".equals(codeString))
-          return new Enumeration<BiologicallyDerivedProductCategory>(this, BiologicallyDerivedProductCategory.CELLS);
+          return new Enumeration<BiologicallyDerivedProductCategory>(this, BiologicallyDerivedProductCategory.CELLS, code);
         if ("biologicalAgent".equals(codeString))
-          return new Enumeration<BiologicallyDerivedProductCategory>(this, BiologicallyDerivedProductCategory.BIOLOGICALAGENT);
+          return new Enumeration<BiologicallyDerivedProductCategory>(this, BiologicallyDerivedProductCategory.BIOLOGICALAGENT, code);
         throw new FHIRException("Unknown BiologicallyDerivedProductCategory code '"+codeString+"'");
         }
     public String toCode(BiologicallyDerivedProductCategory code) {
@@ -269,18 +269,18 @@ public class BiologicallyDerivedProduct extends DomainResource {
           return BiologicallyDerivedProductStatus.UNAVAILABLE;
         throw new IllegalArgumentException("Unknown BiologicallyDerivedProductStatus code '"+codeString+"'");
         }
-        public Enumeration<BiologicallyDerivedProductStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<BiologicallyDerivedProductStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<BiologicallyDerivedProductStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<BiologicallyDerivedProductStatus>(this, BiologicallyDerivedProductStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<BiologicallyDerivedProductStatus>(this, BiologicallyDerivedProductStatus.NULL, code);
         if ("available".equals(codeString))
-          return new Enumeration<BiologicallyDerivedProductStatus>(this, BiologicallyDerivedProductStatus.AVAILABLE);
+          return new Enumeration<BiologicallyDerivedProductStatus>(this, BiologicallyDerivedProductStatus.AVAILABLE, code);
         if ("unavailable".equals(codeString))
-          return new Enumeration<BiologicallyDerivedProductStatus>(this, BiologicallyDerivedProductStatus.UNAVAILABLE);
+          return new Enumeration<BiologicallyDerivedProductStatus>(this, BiologicallyDerivedProductStatus.UNAVAILABLE, code);
         throw new FHIRException("Unknown BiologicallyDerivedProductStatus code '"+codeString+"'");
         }
     public String toCode(BiologicallyDerivedProductStatus code) {
@@ -377,20 +377,20 @@ public class BiologicallyDerivedProduct extends DomainResource {
           return BiologicallyDerivedProductStorageScale.KELVIN;
         throw new IllegalArgumentException("Unknown BiologicallyDerivedProductStorageScale code '"+codeString+"'");
         }
-        public Enumeration<BiologicallyDerivedProductStorageScale> fromType(Base code) throws FHIRException {
+        public Enumeration<BiologicallyDerivedProductStorageScale> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<BiologicallyDerivedProductStorageScale>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<BiologicallyDerivedProductStorageScale>(this, BiologicallyDerivedProductStorageScale.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<BiologicallyDerivedProductStorageScale>(this, BiologicallyDerivedProductStorageScale.NULL, code);
         if ("farenheit".equals(codeString))
-          return new Enumeration<BiologicallyDerivedProductStorageScale>(this, BiologicallyDerivedProductStorageScale.FARENHEIT);
+          return new Enumeration<BiologicallyDerivedProductStorageScale>(this, BiologicallyDerivedProductStorageScale.FARENHEIT, code);
         if ("celsius".equals(codeString))
-          return new Enumeration<BiologicallyDerivedProductStorageScale>(this, BiologicallyDerivedProductStorageScale.CELSIUS);
+          return new Enumeration<BiologicallyDerivedProductStorageScale>(this, BiologicallyDerivedProductStorageScale.CELSIUS, code);
         if ("kelvin".equals(codeString))
-          return new Enumeration<BiologicallyDerivedProductStorageScale>(this, BiologicallyDerivedProductStorageScale.KELVIN);
+          return new Enumeration<BiologicallyDerivedProductStorageScale>(this, BiologicallyDerivedProductStorageScale.KELVIN, code);
         throw new FHIRException("Unknown BiologicallyDerivedProductStorageScale code '"+codeString+"'");
         }
     public String toCode(BiologicallyDerivedProductStorageScale code) {
@@ -2558,4 +2558,3 @@ public class BiologicallyDerivedProduct extends DomainResource {
 
 
 }
-

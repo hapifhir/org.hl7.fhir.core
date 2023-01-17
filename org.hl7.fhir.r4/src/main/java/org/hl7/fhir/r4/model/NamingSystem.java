@@ -135,20 +135,20 @@ public class NamingSystem extends MetadataResource {
           return NamingSystemType.ROOT;
         throw new IllegalArgumentException("Unknown NamingSystemType code '"+codeString+"'");
         }
-        public Enumeration<NamingSystemType> fromType(Base code) throws FHIRException {
+        public Enumeration<NamingSystemType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<NamingSystemType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<NamingSystemType>(this, NamingSystemType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<NamingSystemType>(this, NamingSystemType.NULL, code);
         if ("codesystem".equals(codeString))
-          return new Enumeration<NamingSystemType>(this, NamingSystemType.CODESYSTEM);
+          return new Enumeration<NamingSystemType>(this, NamingSystemType.CODESYSTEM, code);
         if ("identifier".equals(codeString))
-          return new Enumeration<NamingSystemType>(this, NamingSystemType.IDENTIFIER);
+          return new Enumeration<NamingSystemType>(this, NamingSystemType.IDENTIFIER, code);
         if ("root".equals(codeString))
-          return new Enumeration<NamingSystemType>(this, NamingSystemType.ROOT);
+          return new Enumeration<NamingSystemType>(this, NamingSystemType.ROOT, code);
         throw new FHIRException("Unknown NamingSystemType code '"+codeString+"'");
         }
     public String toCode(NamingSystemType code) {
@@ -259,22 +259,22 @@ public class NamingSystem extends MetadataResource {
           return NamingSystemIdentifierType.OTHER;
         throw new IllegalArgumentException("Unknown NamingSystemIdentifierType code '"+codeString+"'");
         }
-        public Enumeration<NamingSystemIdentifierType> fromType(Base code) throws FHIRException {
+        public Enumeration<NamingSystemIdentifierType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<NamingSystemIdentifierType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<NamingSystemIdentifierType>(this, NamingSystemIdentifierType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<NamingSystemIdentifierType>(this, NamingSystemIdentifierType.NULL, code);
         if ("oid".equals(codeString))
-          return new Enumeration<NamingSystemIdentifierType>(this, NamingSystemIdentifierType.OID);
+          return new Enumeration<NamingSystemIdentifierType>(this, NamingSystemIdentifierType.OID, code);
         if ("uuid".equals(codeString))
-          return new Enumeration<NamingSystemIdentifierType>(this, NamingSystemIdentifierType.UUID);
+          return new Enumeration<NamingSystemIdentifierType>(this, NamingSystemIdentifierType.UUID, code);
         if ("uri".equals(codeString))
-          return new Enumeration<NamingSystemIdentifierType>(this, NamingSystemIdentifierType.URI);
+          return new Enumeration<NamingSystemIdentifierType>(this, NamingSystemIdentifierType.URI, code);
         if ("other".equals(codeString))
-          return new Enumeration<NamingSystemIdentifierType>(this, NamingSystemIdentifierType.OTHER);
+          return new Enumeration<NamingSystemIdentifierType>(this, NamingSystemIdentifierType.OTHER, code);
         throw new FHIRException("Unknown NamingSystemIdentifierType code '"+codeString+"'");
         }
     public String toCode(NamingSystemIdentifierType code) {

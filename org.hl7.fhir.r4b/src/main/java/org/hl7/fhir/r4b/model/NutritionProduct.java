@@ -135,20 +135,20 @@ public class NutritionProduct extends DomainResource {
           return NutritionProductStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown NutritionProductStatus code '"+codeString+"'");
         }
-        public Enumeration<NutritionProductStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<NutritionProductStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<NutritionProductStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<NutritionProductStatus>(this, NutritionProductStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<NutritionProductStatus>(this, NutritionProductStatus.NULL, code);
         if ("active".equals(codeString))
-          return new Enumeration<NutritionProductStatus>(this, NutritionProductStatus.ACTIVE);
+          return new Enumeration<NutritionProductStatus>(this, NutritionProductStatus.ACTIVE, code);
         if ("inactive".equals(codeString))
-          return new Enumeration<NutritionProductStatus>(this, NutritionProductStatus.INACTIVE);
+          return new Enumeration<NutritionProductStatus>(this, NutritionProductStatus.INACTIVE, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<NutritionProductStatus>(this, NutritionProductStatus.ENTEREDINERROR);
+          return new Enumeration<NutritionProductStatus>(this, NutritionProductStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown NutritionProductStatus code '"+codeString+"'");
         }
     public String toCode(NutritionProductStatus code) {
@@ -2290,4 +2290,3 @@ public class NutritionProduct extends DomainResource {
 
 
 }
-

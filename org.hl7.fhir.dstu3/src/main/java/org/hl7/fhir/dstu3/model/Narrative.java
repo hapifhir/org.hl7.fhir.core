@@ -141,12 +141,12 @@ public class Narrative extends BaseNarrative implements INarrative {
           return NarrativeStatus.EMPTY;
         throw new IllegalArgumentException("Unknown NarrativeStatus code '"+codeString+"'");
         }
-        public Enumeration<NarrativeStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<NarrativeStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<NarrativeStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("generated".equals(codeString))

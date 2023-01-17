@@ -121,18 +121,18 @@ public class DataRequirement extends DataType implements ICompositeType {
           return SortDirection.DESCENDING;
         throw new IllegalArgumentException("Unknown SortDirection code '"+codeString+"'");
         }
-        public Enumeration<SortDirection> fromType(Base code) throws FHIRException {
+        public Enumeration<SortDirection> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<SortDirection>(this);
+            return new Enumeration<SortDirection>(this, SortDirection.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<SortDirection>(this, SortDirection.NULL, code);
         if ("ascending".equals(codeString))
-          return new Enumeration<SortDirection>(this, SortDirection.ASCENDING);
+          return new Enumeration<SortDirection>(this, SortDirection.ASCENDING, code);
         if ("descending".equals(codeString))
-          return new Enumeration<SortDirection>(this, SortDirection.DESCENDING);
+          return new Enumeration<SortDirection>(this, SortDirection.DESCENDING, code);
         throw new FHIRException("Unknown SortDirection code '"+codeString+"'");
         }
     public String toCode(SortDirection code) {
@@ -277,28 +277,28 @@ public class DataRequirement extends DataType implements ICompositeType {
           return ValueFilterComparator.EB;
         throw new IllegalArgumentException("Unknown ValueFilterComparator code '"+codeString+"'");
         }
-        public Enumeration<ValueFilterComparator> fromType(Base code) throws FHIRException {
+        public Enumeration<ValueFilterComparator> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ValueFilterComparator>(this);
+            return new Enumeration<ValueFilterComparator>(this, ValueFilterComparator.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ValueFilterComparator>(this, ValueFilterComparator.NULL, code);
         if ("eq".equals(codeString))
-          return new Enumeration<ValueFilterComparator>(this, ValueFilterComparator.EQ);
+          return new Enumeration<ValueFilterComparator>(this, ValueFilterComparator.EQ, code);
         if ("gt".equals(codeString))
-          return new Enumeration<ValueFilterComparator>(this, ValueFilterComparator.GT);
+          return new Enumeration<ValueFilterComparator>(this, ValueFilterComparator.GT, code);
         if ("lt".equals(codeString))
-          return new Enumeration<ValueFilterComparator>(this, ValueFilterComparator.LT);
+          return new Enumeration<ValueFilterComparator>(this, ValueFilterComparator.LT, code);
         if ("ge".equals(codeString))
-          return new Enumeration<ValueFilterComparator>(this, ValueFilterComparator.GE);
+          return new Enumeration<ValueFilterComparator>(this, ValueFilterComparator.GE, code);
         if ("le".equals(codeString))
-          return new Enumeration<ValueFilterComparator>(this, ValueFilterComparator.LE);
+          return new Enumeration<ValueFilterComparator>(this, ValueFilterComparator.LE, code);
         if ("sa".equals(codeString))
-          return new Enumeration<ValueFilterComparator>(this, ValueFilterComparator.SA);
+          return new Enumeration<ValueFilterComparator>(this, ValueFilterComparator.SA, code);
         if ("eb".equals(codeString))
-          return new Enumeration<ValueFilterComparator>(this, ValueFilterComparator.EB);
+          return new Enumeration<ValueFilterComparator>(this, ValueFilterComparator.EB, code);
         throw new FHIRException("Unknown ValueFilterComparator code '"+codeString+"'");
         }
     public String toCode(ValueFilterComparator code) {
@@ -2589,4 +2589,3 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
 
 
 }
-

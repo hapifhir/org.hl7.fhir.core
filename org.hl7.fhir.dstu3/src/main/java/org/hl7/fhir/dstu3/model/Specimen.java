@@ -146,12 +146,12 @@ public class Specimen extends DomainResource {
           return SpecimenStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown SpecimenStatus code '"+codeString+"'");
         }
-        public Enumeration<SpecimenStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<SpecimenStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<SpecimenStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("available".equals(codeString))
