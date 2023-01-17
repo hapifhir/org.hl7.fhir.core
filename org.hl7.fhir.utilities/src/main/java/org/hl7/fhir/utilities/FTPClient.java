@@ -2,17 +2,13 @@ package org.hl7.fhir.utilities;
 
 import lombok.Getter;
 import org.apache.commons.net.ftp.FTP;
-import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
-import org.jetbrains.annotations.NotNull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Arrays;
 
 public class FTPClient {
 
@@ -62,7 +58,6 @@ public class FTPClient {
     clientImpl = new org.apache.commons.net.ftp.FTPClient();
   }
 
-  @NotNull
   private String buildPath(String path) {
     if (path.length() == 0) {
       return "";
