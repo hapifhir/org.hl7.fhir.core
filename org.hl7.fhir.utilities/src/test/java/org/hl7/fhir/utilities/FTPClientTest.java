@@ -33,6 +33,7 @@ public class FTPClientTest implements ResourceLoaderTests {
   public static final String DUMMY_FILE_TO_UPLOAD = "dummyFileToUpload";
   public static final int FAKE_FTP_PORT = 8021;
   public static final String DUMMY_FILE_CONTENT = "Dummy file content\nMore content\n";
+  public static final String LOCALHOST = "localhost";
 
 
   FakeFtpServer fakeFtpServer;
@@ -71,8 +72,6 @@ public class FTPClientTest implements ResourceLoaderTests {
   }
 
   public void setupFakeFtpServer() throws IOException {
-
-
     fakeFtpServer = new FakeFtpServer();
     fakeFtpServer.setServerControlPort(FAKE_FTP_PORT);
     fakeFtpServer.addUserAccount(new UserAccount(DUMMY_USER, DUMMY_PASSWORD, fakeFtpDirectory.toFile().getAbsolutePath()));
@@ -122,7 +121,7 @@ public class FTPClientTest implements ResourceLoaderTests {
   @Test
   public void testEmptyRelativePath() {
     FTPClient client = new FTPClient("localhost", "", DUMMY_USER, DUMMY_PASSWORD);
-    assertEquals( client.getPath(), "/");
+    assertEquals("", client.getPath());
   }
 
   @Test
@@ -138,7 +137,7 @@ public class FTPClientTest implements ResourceLoaderTests {
  }
 
   private static FTPClient connectToFTPClient() throws IOException {
-    FTPClient client = new FTPClient("localhost", FAKE_FTP_PORT,  RELATIVE_PATH_1, DUMMY_USER, DUMMY_PASSWORD);
+    FTPClient client = new FTPClient(LOCALHOST, FAKE_FTP_PORT,  RELATIVE_PATH_1, DUMMY_USER, DUMMY_PASSWORD);
     client.connect();
     return client;
   }
@@ -166,9 +165,14 @@ public class FTPClientTest implements ResourceLoaderTests {
     assertFalse(fakeFtpServer.getFileSystem().exists(uploadFilePath));
 
     client.upload(dummyFileToUploadPath.toFile().getAbsolutePath(), RELATIVE_PATH_2 + "/" + DUMMY_FILE_TO_UPLOAD);
-    assertTrue(fakeFtpServer.getFileSystem().exists(uploadFilePath));
 
-    FileEntry fileEntry = (FileEntry)fakeFtpServer.getFileSystem().getEntry(uploadFilePath);
+    assertUploadedFileCorrect(uploadFilePath);
+  }
+
+  private void assertUploadedFileCorrect(String uploadedFilePath) throws IOException {
+    assertTrue(fakeFtpServer.getFileSystem().exists(uploadedFilePath));
+    FileEntry fileEntry = (FileEntry)fakeFtpServer.getFileSystem().getEntry(uploadedFilePath);
+    assertNotNull(fileEntry);
     InputStream inputStream = fileEntry.createInputStream();
     byte[] bytes = IOUtils.toByteArray(inputStream);
     String actualContent = new String(bytes, StandardCharsets.UTF_8);
@@ -179,6 +183,37 @@ public class FTPClientTest implements ResourceLoaderTests {
   public void testCreateRemotePathIfNotExists() throws IOException {
     FTPClient client = connectToFTPClient();
 
-    client.createRemotePathIfNotExists("/path/to/another/path");
+    Path newPath1 = relativePath2.resolve("newPath1");
+    Path newPath2 = newPath1.resolve("newPath2");
+
+    assertFalse(fakeFtpServer.getFileSystem().exists(newPath1.toFile().getAbsolutePath()));
+    assertFalse(fakeFtpServer.getFileSystem().exists(newPath2.toFile().getAbsolutePath()));
+
+    client.createRemotePathIfNotExists(RELATIVE_PATH_2 + "/newPath1/newPath2/newFile.txt");
+
+    assertTrue(fakeFtpServer.getFileSystem().exists(newPath1.toFile().getAbsolutePath()));
+    assertTrue(fakeFtpServer.getFileSystem().exists(newPath2.toFile().getAbsolutePath()));
+
+  }
+
+  @Test
+  public void testUploadWherePathDoesntExist() throws IOException {
+    Path newPath1 = relativePath2.resolve("newPath1");
+    Path newPath2 = newPath1.resolve("newPath2");
+
+    FTPClient client = connectToFTPClient();
+
+    Path uploadFilePath = newPath2.resolve(DUMMY_FILE_TO_UPLOAD);
+    assertFalse(fakeFtpServer.getFileSystem().exists(uploadFilePath.toFile().getAbsolutePath()));
+
+    assertFalse(fakeFtpServer.getFileSystem().exists(newPath1.toFile().getAbsolutePath()));
+    assertFalse(fakeFtpServer.getFileSystem().exists(newPath2.toFile().getAbsolutePath()));
+
+    client.upload(dummyFileToUploadPath.toFile().getAbsolutePath(),RELATIVE_PATH_2 + "/newPath1/newPath2/" + DUMMY_FILE_TO_UPLOAD);
+
+    assertTrue(fakeFtpServer.getFileSystem().exists(newPath1.toFile().getAbsolutePath()));
+    assertTrue(fakeFtpServer.getFileSystem().exists(newPath2.toFile().getAbsolutePath()));
+
+    assertUploadedFileCorrect(uploadFilePath.toFile().getAbsolutePath());
   }
 }
