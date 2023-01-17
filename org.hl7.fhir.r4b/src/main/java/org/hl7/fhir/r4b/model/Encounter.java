@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r4b.model;
+package org.hl7.fhir.r4b.model;
 
 
 /*

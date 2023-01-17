@@ -1,4 +1,4 @@
-﻿package org.hl7.fhir.r5.utils;
+package org.hl7.fhir.r5.utils;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Base;
