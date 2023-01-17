@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.model;
+﻿package org.hl7.fhir.r4.model;
 
 
 
@@ -180,28 +180,28 @@ public class HumanName extends Type implements ICompositeType {
           return NameUse.MAIDEN;
         throw new IllegalArgumentException("Unknown NameUse code '"+codeString+"'");
         }
-        public Enumeration<NameUse> fromType(Base code) throws FHIRException {
+        public Enumeration<NameUse> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<NameUse>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<NameUse>(this, NameUse.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<NameUse>(this, NameUse.NULL, code);
         if ("usual".equals(codeString))
-          return new Enumeration<NameUse>(this, NameUse.USUAL);
+          return new Enumeration<NameUse>(this, NameUse.USUAL, code);
         if ("official".equals(codeString))
-          return new Enumeration<NameUse>(this, NameUse.OFFICIAL);
+          return new Enumeration<NameUse>(this, NameUse.OFFICIAL, code);
         if ("temp".equals(codeString))
-          return new Enumeration<NameUse>(this, NameUse.TEMP);
+          return new Enumeration<NameUse>(this, NameUse.TEMP, code);
         if ("nickname".equals(codeString))
-          return new Enumeration<NameUse>(this, NameUse.NICKNAME);
+          return new Enumeration<NameUse>(this, NameUse.NICKNAME, code);
         if ("anonymous".equals(codeString))
-          return new Enumeration<NameUse>(this, NameUse.ANONYMOUS);
+          return new Enumeration<NameUse>(this, NameUse.ANONYMOUS, code);
         if ("old".equals(codeString))
-          return new Enumeration<NameUse>(this, NameUse.OLD);
+          return new Enumeration<NameUse>(this, NameUse.OLD, code);
         if ("maiden".equals(codeString))
-          return new Enumeration<NameUse>(this, NameUse.MAIDEN);
+          return new Enumeration<NameUse>(this, NameUse.MAIDEN, code);
         throw new FHIRException("Unknown NameUse code '"+codeString+"'");
         }
     public String toCode(NameUse code) {

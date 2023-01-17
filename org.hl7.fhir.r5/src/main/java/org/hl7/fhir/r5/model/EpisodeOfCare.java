@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -183,28 +183,28 @@ public class EpisodeOfCare extends DomainResource {
           return EpisodeOfCareStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown EpisodeOfCareStatus code '"+codeString+"'");
         }
-        public Enumeration<EpisodeOfCareStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<EpisodeOfCareStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<EpisodeOfCareStatus>(this);
+            return new Enumeration<EpisodeOfCareStatus>(this, EpisodeOfCareStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<EpisodeOfCareStatus>(this, EpisodeOfCareStatus.NULL, code);
         if ("planned".equals(codeString))
-          return new Enumeration<EpisodeOfCareStatus>(this, EpisodeOfCareStatus.PLANNED);
+          return new Enumeration<EpisodeOfCareStatus>(this, EpisodeOfCareStatus.PLANNED, code);
         if ("waitlist".equals(codeString))
-          return new Enumeration<EpisodeOfCareStatus>(this, EpisodeOfCareStatus.WAITLIST);
+          return new Enumeration<EpisodeOfCareStatus>(this, EpisodeOfCareStatus.WAITLIST, code);
         if ("active".equals(codeString))
-          return new Enumeration<EpisodeOfCareStatus>(this, EpisodeOfCareStatus.ACTIVE);
+          return new Enumeration<EpisodeOfCareStatus>(this, EpisodeOfCareStatus.ACTIVE, code);
         if ("onhold".equals(codeString))
-          return new Enumeration<EpisodeOfCareStatus>(this, EpisodeOfCareStatus.ONHOLD);
+          return new Enumeration<EpisodeOfCareStatus>(this, EpisodeOfCareStatus.ONHOLD, code);
         if ("finished".equals(codeString))
-          return new Enumeration<EpisodeOfCareStatus>(this, EpisodeOfCareStatus.FINISHED);
+          return new Enumeration<EpisodeOfCareStatus>(this, EpisodeOfCareStatus.FINISHED, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<EpisodeOfCareStatus>(this, EpisodeOfCareStatus.CANCELLED);
+          return new Enumeration<EpisodeOfCareStatus>(this, EpisodeOfCareStatus.CANCELLED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<EpisodeOfCareStatus>(this, EpisodeOfCareStatus.ENTEREDINERROR);
+          return new Enumeration<EpisodeOfCareStatus>(this, EpisodeOfCareStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown EpisodeOfCareStatus code '"+codeString+"'");
         }
     public String toCode(EpisodeOfCareStatus code) {
@@ -2115,4 +2115,3 @@ public class EpisodeOfCare extends DomainResource {
 
 
 }
-

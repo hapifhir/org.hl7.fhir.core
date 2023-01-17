@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4b.model;
+﻿package org.hl7.fhir.r4b.model;
 
 
 /*
@@ -184,28 +184,28 @@ public class ChargeItem extends DomainResource {
           return ChargeItemStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown ChargeItemStatus code '"+codeString+"'");
         }
-        public Enumeration<ChargeItemStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ChargeItemStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ChargeItemStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ChargeItemStatus>(this, ChargeItemStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ChargeItemStatus>(this, ChargeItemStatus.NULL, code);
         if ("planned".equals(codeString))
-          return new Enumeration<ChargeItemStatus>(this, ChargeItemStatus.PLANNED);
+          return new Enumeration<ChargeItemStatus>(this, ChargeItemStatus.PLANNED, code);
         if ("billable".equals(codeString))
-          return new Enumeration<ChargeItemStatus>(this, ChargeItemStatus.BILLABLE);
+          return new Enumeration<ChargeItemStatus>(this, ChargeItemStatus.BILLABLE, code);
         if ("not-billable".equals(codeString))
-          return new Enumeration<ChargeItemStatus>(this, ChargeItemStatus.NOTBILLABLE);
+          return new Enumeration<ChargeItemStatus>(this, ChargeItemStatus.NOTBILLABLE, code);
         if ("aborted".equals(codeString))
-          return new Enumeration<ChargeItemStatus>(this, ChargeItemStatus.ABORTED);
+          return new Enumeration<ChargeItemStatus>(this, ChargeItemStatus.ABORTED, code);
         if ("billed".equals(codeString))
-          return new Enumeration<ChargeItemStatus>(this, ChargeItemStatus.BILLED);
+          return new Enumeration<ChargeItemStatus>(this, ChargeItemStatus.BILLED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<ChargeItemStatus>(this, ChargeItemStatus.ENTEREDINERROR);
+          return new Enumeration<ChargeItemStatus>(this, ChargeItemStatus.ENTEREDINERROR, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<ChargeItemStatus>(this, ChargeItemStatus.UNKNOWN);
+          return new Enumeration<ChargeItemStatus>(this, ChargeItemStatus.UNKNOWN, code);
         throw new FHIRException("Unknown ChargeItemStatus code '"+codeString+"'");
         }
     public String toCode(ChargeItemStatus code) {
@@ -2747,4 +2747,3 @@ public class ChargeItem extends DomainResource {
 
 
 }
-

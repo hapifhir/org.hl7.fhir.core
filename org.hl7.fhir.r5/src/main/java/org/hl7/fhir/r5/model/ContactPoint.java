@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -181,28 +181,28 @@ public class ContactPoint extends DataType implements ICompositeType {
           return ContactPointSystem.OTHER;
         throw new IllegalArgumentException("Unknown ContactPointSystem code '"+codeString+"'");
         }
-        public Enumeration<ContactPointSystem> fromType(Base code) throws FHIRException {
+        public Enumeration<ContactPointSystem> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ContactPointSystem>(this);
+            return new Enumeration<ContactPointSystem>(this, ContactPointSystem.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ContactPointSystem>(this, ContactPointSystem.NULL, code);
         if ("phone".equals(codeString))
-          return new Enumeration<ContactPointSystem>(this, ContactPointSystem.PHONE);
+          return new Enumeration<ContactPointSystem>(this, ContactPointSystem.PHONE, code);
         if ("fax".equals(codeString))
-          return new Enumeration<ContactPointSystem>(this, ContactPointSystem.FAX);
+          return new Enumeration<ContactPointSystem>(this, ContactPointSystem.FAX, code);
         if ("email".equals(codeString))
-          return new Enumeration<ContactPointSystem>(this, ContactPointSystem.EMAIL);
+          return new Enumeration<ContactPointSystem>(this, ContactPointSystem.EMAIL, code);
         if ("pager".equals(codeString))
-          return new Enumeration<ContactPointSystem>(this, ContactPointSystem.PAGER);
+          return new Enumeration<ContactPointSystem>(this, ContactPointSystem.PAGER, code);
         if ("url".equals(codeString))
-          return new Enumeration<ContactPointSystem>(this, ContactPointSystem.URL);
+          return new Enumeration<ContactPointSystem>(this, ContactPointSystem.URL, code);
         if ("sms".equals(codeString))
-          return new Enumeration<ContactPointSystem>(this, ContactPointSystem.SMS);
+          return new Enumeration<ContactPointSystem>(this, ContactPointSystem.SMS, code);
         if ("other".equals(codeString))
-          return new Enumeration<ContactPointSystem>(this, ContactPointSystem.OTHER);
+          return new Enumeration<ContactPointSystem>(this, ContactPointSystem.OTHER, code);
         throw new FHIRException("Unknown ContactPointSystem code '"+codeString+"'");
         }
     public String toCode(ContactPointSystem code) {
@@ -333,24 +333,24 @@ public class ContactPoint extends DataType implements ICompositeType {
           return ContactPointUse.MOBILE;
         throw new IllegalArgumentException("Unknown ContactPointUse code '"+codeString+"'");
         }
-        public Enumeration<ContactPointUse> fromType(Base code) throws FHIRException {
+        public Enumeration<ContactPointUse> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ContactPointUse>(this);
+            return new Enumeration<ContactPointUse>(this, ContactPointUse.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ContactPointUse>(this, ContactPointUse.NULL, code);
         if ("home".equals(codeString))
-          return new Enumeration<ContactPointUse>(this, ContactPointUse.HOME);
+          return new Enumeration<ContactPointUse>(this, ContactPointUse.HOME, code);
         if ("work".equals(codeString))
-          return new Enumeration<ContactPointUse>(this, ContactPointUse.WORK);
+          return new Enumeration<ContactPointUse>(this, ContactPointUse.WORK, code);
         if ("temp".equals(codeString))
-          return new Enumeration<ContactPointUse>(this, ContactPointUse.TEMP);
+          return new Enumeration<ContactPointUse>(this, ContactPointUse.TEMP, code);
         if ("old".equals(codeString))
-          return new Enumeration<ContactPointUse>(this, ContactPointUse.OLD);
+          return new Enumeration<ContactPointUse>(this, ContactPointUse.OLD, code);
         if ("mobile".equals(codeString))
-          return new Enumeration<ContactPointUse>(this, ContactPointUse.MOBILE);
+          return new Enumeration<ContactPointUse>(this, ContactPointUse.MOBILE, code);
         throw new FHIRException("Unknown ContactPointUse code '"+codeString+"'");
         }
     public String toCode(ContactPointUse code) {
@@ -813,4 +813,3 @@ public class ContactPoint extends DataType implements ICompositeType {
 
 
 }
-

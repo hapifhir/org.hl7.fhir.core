@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4b.model;
+﻿package org.hl7.fhir.r4b.model;
 
 
 /*
@@ -183,28 +183,28 @@ public class SupplyRequest extends DomainResource {
           return SupplyRequestStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown SupplyRequestStatus code '"+codeString+"'");
         }
-        public Enumeration<SupplyRequestStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<SupplyRequestStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<SupplyRequestStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.NULL, code);
         if ("draft".equals(codeString))
-          return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.DRAFT);
+          return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.DRAFT, code);
         if ("active".equals(codeString))
-          return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.ACTIVE);
+          return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.ACTIVE, code);
         if ("suspended".equals(codeString))
-          return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.SUSPENDED);
+          return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.SUSPENDED, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.CANCELLED);
+          return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.CANCELLED, code);
         if ("completed".equals(codeString))
-          return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.COMPLETED);
+          return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.COMPLETED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.ENTEREDINERROR);
+          return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.ENTEREDINERROR, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.UNKNOWN);
+          return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.UNKNOWN, code);
         throw new FHIRException("Unknown SupplyRequestStatus code '"+codeString+"'");
         }
     public String toCode(SupplyRequestStatus code) {
@@ -1919,4 +1919,3 @@ public class SupplyRequest extends DomainResource {
 
 
 }
-

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -123,18 +123,18 @@ public class ConditionDefinition extends MetadataResource {
           return ConditionPreconditionType.SPECIFIC;
         throw new IllegalArgumentException("Unknown ConditionPreconditionType code '"+codeString+"'");
         }
-        public Enumeration<ConditionPreconditionType> fromType(Base code) throws FHIRException {
+        public Enumeration<ConditionPreconditionType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ConditionPreconditionType>(this);
+            return new Enumeration<ConditionPreconditionType>(this, ConditionPreconditionType.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ConditionPreconditionType>(this, ConditionPreconditionType.NULL, code);
         if ("sensitive".equals(codeString))
-          return new Enumeration<ConditionPreconditionType>(this, ConditionPreconditionType.SENSITIVE);
+          return new Enumeration<ConditionPreconditionType>(this, ConditionPreconditionType.SENSITIVE, code);
         if ("specific".equals(codeString))
-          return new Enumeration<ConditionPreconditionType>(this, ConditionPreconditionType.SPECIFIC);
+          return new Enumeration<ConditionPreconditionType>(this, ConditionPreconditionType.SPECIFIC, code);
         throw new FHIRException("Unknown ConditionPreconditionType code '"+codeString+"'");
         }
     public String toCode(ConditionPreconditionType code) {
@@ -231,20 +231,20 @@ public class ConditionDefinition extends MetadataResource {
           return ConditionQuestionnairePurpose.OUTCOME;
         throw new IllegalArgumentException("Unknown ConditionQuestionnairePurpose code '"+codeString+"'");
         }
-        public Enumeration<ConditionQuestionnairePurpose> fromType(Base code) throws FHIRException {
+        public Enumeration<ConditionQuestionnairePurpose> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ConditionQuestionnairePurpose>(this);
+            return new Enumeration<ConditionQuestionnairePurpose>(this, ConditionQuestionnairePurpose.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ConditionQuestionnairePurpose>(this, ConditionQuestionnairePurpose.NULL, code);
         if ("preadmit".equals(codeString))
-          return new Enumeration<ConditionQuestionnairePurpose>(this, ConditionQuestionnairePurpose.PREADMIT);
+          return new Enumeration<ConditionQuestionnairePurpose>(this, ConditionQuestionnairePurpose.PREADMIT, code);
         if ("diff-diagnosis".equals(codeString))
-          return new Enumeration<ConditionQuestionnairePurpose>(this, ConditionQuestionnairePurpose.DIFFDIAGNOSIS);
+          return new Enumeration<ConditionQuestionnairePurpose>(this, ConditionQuestionnairePurpose.DIFFDIAGNOSIS, code);
         if ("outcome".equals(codeString))
-          return new Enumeration<ConditionQuestionnairePurpose>(this, ConditionQuestionnairePurpose.OUTCOME);
+          return new Enumeration<ConditionQuestionnairePurpose>(this, ConditionQuestionnairePurpose.OUTCOME, code);
         throw new FHIRException("Unknown ConditionQuestionnairePurpose code '"+codeString+"'");
         }
     public String toCode(ConditionQuestionnairePurpose code) {
@@ -5215,4 +5215,3 @@ public class ConditionDefinition extends MetadataResource {
 
 
 }
-

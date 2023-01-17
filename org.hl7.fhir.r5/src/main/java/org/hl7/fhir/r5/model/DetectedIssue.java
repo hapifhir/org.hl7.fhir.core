@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -135,20 +135,20 @@ public class DetectedIssue extends DomainResource {
           return DetectedIssueSeverity.LOW;
         throw new IllegalArgumentException("Unknown DetectedIssueSeverity code '"+codeString+"'");
         }
-        public Enumeration<DetectedIssueSeverity> fromType(Base code) throws FHIRException {
+        public Enumeration<DetectedIssueSeverity> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<DetectedIssueSeverity>(this);
+            return new Enumeration<DetectedIssueSeverity>(this, DetectedIssueSeverity.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<DetectedIssueSeverity>(this, DetectedIssueSeverity.NULL, code);
         if ("high".equals(codeString))
-          return new Enumeration<DetectedIssueSeverity>(this, DetectedIssueSeverity.HIGH);
+          return new Enumeration<DetectedIssueSeverity>(this, DetectedIssueSeverity.HIGH, code);
         if ("moderate".equals(codeString))
-          return new Enumeration<DetectedIssueSeverity>(this, DetectedIssueSeverity.MODERATE);
+          return new Enumeration<DetectedIssueSeverity>(this, DetectedIssueSeverity.MODERATE, code);
         if ("low".equals(codeString))
-          return new Enumeration<DetectedIssueSeverity>(this, DetectedIssueSeverity.LOW);
+          return new Enumeration<DetectedIssueSeverity>(this, DetectedIssueSeverity.LOW, code);
         throw new FHIRException("Unknown DetectedIssueSeverity code '"+codeString+"'");
         }
     public String toCode(DetectedIssueSeverity code) {
@@ -259,22 +259,22 @@ public class DetectedIssue extends DomainResource {
           return DetectedIssueStatus.MITIGATED;
         throw new IllegalArgumentException("Unknown DetectedIssueStatus code '"+codeString+"'");
         }
-        public Enumeration<DetectedIssueStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<DetectedIssueStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<DetectedIssueStatus>(this);
+            return new Enumeration<DetectedIssueStatus>(this, DetectedIssueStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<DetectedIssueStatus>(this, DetectedIssueStatus.NULL, code);
         if ("preliminary".equals(codeString))
-          return new Enumeration<DetectedIssueStatus>(this, DetectedIssueStatus.PRELIMINARY);
+          return new Enumeration<DetectedIssueStatus>(this, DetectedIssueStatus.PRELIMINARY, code);
         if ("final".equals(codeString))
-          return new Enumeration<DetectedIssueStatus>(this, DetectedIssueStatus.FINAL);
+          return new Enumeration<DetectedIssueStatus>(this, DetectedIssueStatus.FINAL, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<DetectedIssueStatus>(this, DetectedIssueStatus.ENTEREDINERROR);
+          return new Enumeration<DetectedIssueStatus>(this, DetectedIssueStatus.ENTEREDINERROR, code);
         if ("mitigated".equals(codeString))
-          return new Enumeration<DetectedIssueStatus>(this, DetectedIssueStatus.MITIGATED);
+          return new Enumeration<DetectedIssueStatus>(this, DetectedIssueStatus.MITIGATED, code);
         throw new FHIRException("Unknown DetectedIssueStatus code '"+codeString+"'");
         }
     public String toCode(DetectedIssueStatus code) {
@@ -2202,4 +2202,3 @@ public class DetectedIssue extends DomainResource {
 
 
 }
-

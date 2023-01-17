@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -147,22 +147,22 @@ public class FamilyMemberHistory extends DomainResource {
           return FamilyHistoryStatus.HEALTHUNKNOWN;
         throw new IllegalArgumentException("Unknown FamilyHistoryStatus code '"+codeString+"'");
         }
-        public Enumeration<FamilyHistoryStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<FamilyHistoryStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<FamilyHistoryStatus>(this);
+            return new Enumeration<FamilyHistoryStatus>(this, FamilyHistoryStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<FamilyHistoryStatus>(this, FamilyHistoryStatus.NULL, code);
         if ("partial".equals(codeString))
-          return new Enumeration<FamilyHistoryStatus>(this, FamilyHistoryStatus.PARTIAL);
+          return new Enumeration<FamilyHistoryStatus>(this, FamilyHistoryStatus.PARTIAL, code);
         if ("completed".equals(codeString))
-          return new Enumeration<FamilyHistoryStatus>(this, FamilyHistoryStatus.COMPLETED);
+          return new Enumeration<FamilyHistoryStatus>(this, FamilyHistoryStatus.COMPLETED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<FamilyHistoryStatus>(this, FamilyHistoryStatus.ENTEREDINERROR);
+          return new Enumeration<FamilyHistoryStatus>(this, FamilyHistoryStatus.ENTEREDINERROR, code);
         if ("health-unknown".equals(codeString))
-          return new Enumeration<FamilyHistoryStatus>(this, FamilyHistoryStatus.HEALTHUNKNOWN);
+          return new Enumeration<FamilyHistoryStatus>(this, FamilyHistoryStatus.HEALTHUNKNOWN, code);
         throw new FHIRException("Unknown FamilyHistoryStatus code '"+codeString+"'");
         }
     public String toCode(FamilyHistoryStatus code) {
@@ -3345,4 +3345,3 @@ public class FamilyMemberHistory extends DomainResource {
 
 
 }
-

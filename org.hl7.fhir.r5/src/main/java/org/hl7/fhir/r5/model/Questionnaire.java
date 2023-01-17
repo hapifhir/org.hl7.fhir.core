@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -123,18 +123,18 @@ public class Questionnaire extends MetadataResource {
           return EnableWhenBehavior.ANY;
         throw new IllegalArgumentException("Unknown EnableWhenBehavior code '"+codeString+"'");
         }
-        public Enumeration<EnableWhenBehavior> fromType(Base code) throws FHIRException {
+        public Enumeration<EnableWhenBehavior> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<EnableWhenBehavior>(this);
+            return new Enumeration<EnableWhenBehavior>(this, EnableWhenBehavior.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<EnableWhenBehavior>(this, EnableWhenBehavior.NULL, code);
         if ("all".equals(codeString))
-          return new Enumeration<EnableWhenBehavior>(this, EnableWhenBehavior.ALL);
+          return new Enumeration<EnableWhenBehavior>(this, EnableWhenBehavior.ALL, code);
         if ("any".equals(codeString))
-          return new Enumeration<EnableWhenBehavior>(this, EnableWhenBehavior.ANY);
+          return new Enumeration<EnableWhenBehavior>(this, EnableWhenBehavior.ANY, code);
         throw new FHIRException("Unknown EnableWhenBehavior code '"+codeString+"'");
         }
     public String toCode(EnableWhenBehavior code) {
@@ -231,20 +231,20 @@ public class Questionnaire extends MetadataResource {
           return QuestionnaireAnswerConstraint.OPTIONSORSTRING;
         throw new IllegalArgumentException("Unknown QuestionnaireAnswerConstraint code '"+codeString+"'");
         }
-        public Enumeration<QuestionnaireAnswerConstraint> fromType(Base code) throws FHIRException {
+        public Enumeration<QuestionnaireAnswerConstraint> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<QuestionnaireAnswerConstraint>(this);
+            return new Enumeration<QuestionnaireAnswerConstraint>(this, QuestionnaireAnswerConstraint.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<QuestionnaireAnswerConstraint>(this, QuestionnaireAnswerConstraint.NULL, code);
         if ("optionsOnly".equals(codeString))
-          return new Enumeration<QuestionnaireAnswerConstraint>(this, QuestionnaireAnswerConstraint.OPTIONSONLY);
+          return new Enumeration<QuestionnaireAnswerConstraint>(this, QuestionnaireAnswerConstraint.OPTIONSONLY, code);
         if ("optionsOrType".equals(codeString))
-          return new Enumeration<QuestionnaireAnswerConstraint>(this, QuestionnaireAnswerConstraint.OPTIONSORTYPE);
+          return new Enumeration<QuestionnaireAnswerConstraint>(this, QuestionnaireAnswerConstraint.OPTIONSORTYPE, code);
         if ("optionsOrString".equals(codeString))
-          return new Enumeration<QuestionnaireAnswerConstraint>(this, QuestionnaireAnswerConstraint.OPTIONSORSTRING);
+          return new Enumeration<QuestionnaireAnswerConstraint>(this, QuestionnaireAnswerConstraint.OPTIONSORSTRING, code);
         throw new FHIRException("Unknown QuestionnaireAnswerConstraint code '"+codeString+"'");
         }
     public String toCode(QuestionnaireAnswerConstraint code) {
@@ -331,18 +331,18 @@ public class Questionnaire extends MetadataResource {
           return QuestionnaireItemDisabledDisplay.PROTECTED;
         throw new IllegalArgumentException("Unknown QuestionnaireItemDisabledDisplay code '"+codeString+"'");
         }
-        public Enumeration<QuestionnaireItemDisabledDisplay> fromType(Base code) throws FHIRException {
+        public Enumeration<QuestionnaireItemDisabledDisplay> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<QuestionnaireItemDisabledDisplay>(this);
+            return new Enumeration<QuestionnaireItemDisabledDisplay>(this, QuestionnaireItemDisabledDisplay.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<QuestionnaireItemDisabledDisplay>(this, QuestionnaireItemDisabledDisplay.NULL, code);
         if ("hidden".equals(codeString))
-          return new Enumeration<QuestionnaireItemDisabledDisplay>(this, QuestionnaireItemDisabledDisplay.HIDDEN);
+          return new Enumeration<QuestionnaireItemDisabledDisplay>(this, QuestionnaireItemDisabledDisplay.HIDDEN, code);
         if ("protected".equals(codeString))
-          return new Enumeration<QuestionnaireItemDisabledDisplay>(this, QuestionnaireItemDisabledDisplay.PROTECTED);
+          return new Enumeration<QuestionnaireItemDisabledDisplay>(this, QuestionnaireItemDisabledDisplay.PROTECTED, code);
         throw new FHIRException("Unknown QuestionnaireItemDisabledDisplay code '"+codeString+"'");
         }
     public String toCode(QuestionnaireItemDisabledDisplay code) {
@@ -487,28 +487,28 @@ public class Questionnaire extends MetadataResource {
           return QuestionnaireItemOperator.LESS_OR_EQUAL;
         throw new IllegalArgumentException("Unknown QuestionnaireItemOperator code '"+codeString+"'");
         }
-        public Enumeration<QuestionnaireItemOperator> fromType(Base code) throws FHIRException {
+        public Enumeration<QuestionnaireItemOperator> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<QuestionnaireItemOperator>(this);
+            return new Enumeration<QuestionnaireItemOperator>(this, QuestionnaireItemOperator.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<QuestionnaireItemOperator>(this, QuestionnaireItemOperator.NULL, code);
         if ("exists".equals(codeString))
-          return new Enumeration<QuestionnaireItemOperator>(this, QuestionnaireItemOperator.EXISTS);
+          return new Enumeration<QuestionnaireItemOperator>(this, QuestionnaireItemOperator.EXISTS, code);
         if ("=".equals(codeString))
-          return new Enumeration<QuestionnaireItemOperator>(this, QuestionnaireItemOperator.EQUAL);
+          return new Enumeration<QuestionnaireItemOperator>(this, QuestionnaireItemOperator.EQUAL, code);
         if ("!=".equals(codeString))
-          return new Enumeration<QuestionnaireItemOperator>(this, QuestionnaireItemOperator.NOT_EQUAL);
+          return new Enumeration<QuestionnaireItemOperator>(this, QuestionnaireItemOperator.NOT_EQUAL, code);
         if (">".equals(codeString))
-          return new Enumeration<QuestionnaireItemOperator>(this, QuestionnaireItemOperator.GREATER_THAN);
+          return new Enumeration<QuestionnaireItemOperator>(this, QuestionnaireItemOperator.GREATER_THAN, code);
         if ("<".equals(codeString))
-          return new Enumeration<QuestionnaireItemOperator>(this, QuestionnaireItemOperator.LESS_THAN);
+          return new Enumeration<QuestionnaireItemOperator>(this, QuestionnaireItemOperator.LESS_THAN, code);
         if (">=".equals(codeString))
-          return new Enumeration<QuestionnaireItemOperator>(this, QuestionnaireItemOperator.GREATER_OR_EQUAL);
+          return new Enumeration<QuestionnaireItemOperator>(this, QuestionnaireItemOperator.GREATER_OR_EQUAL, code);
         if ("<=".equals(codeString))
-          return new Enumeration<QuestionnaireItemOperator>(this, QuestionnaireItemOperator.LESS_OR_EQUAL);
+          return new Enumeration<QuestionnaireItemOperator>(this, QuestionnaireItemOperator.LESS_OR_EQUAL, code);
         throw new FHIRException("Unknown QuestionnaireItemOperator code '"+codeString+"'");
         }
     public String toCode(QuestionnaireItemOperator code) {
@@ -771,46 +771,46 @@ public class Questionnaire extends MetadataResource {
           return QuestionnaireItemType.QUANTITY;
         throw new IllegalArgumentException("Unknown QuestionnaireItemType code '"+codeString+"'");
         }
-        public Enumeration<QuestionnaireItemType> fromType(Base code) throws FHIRException {
+        public Enumeration<QuestionnaireItemType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<QuestionnaireItemType>(this);
+            return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.NULL, code);
         if ("group".equals(codeString))
-          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.GROUP);
+          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.GROUP, code);
         if ("display".equals(codeString))
-          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.DISPLAY);
+          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.DISPLAY, code);
         if ("question".equals(codeString))
-          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.QUESTION);
+          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.QUESTION, code);
         if ("boolean".equals(codeString))
-          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.BOOLEAN);
+          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.BOOLEAN, code);
         if ("decimal".equals(codeString))
-          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.DECIMAL);
+          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.DECIMAL, code);
         if ("integer".equals(codeString))
-          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.INTEGER);
+          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.INTEGER, code);
         if ("date".equals(codeString))
-          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.DATE);
+          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.DATE, code);
         if ("dateTime".equals(codeString))
-          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.DATETIME);
+          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.DATETIME, code);
         if ("time".equals(codeString))
-          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.TIME);
+          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.TIME, code);
         if ("string".equals(codeString))
-          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.STRING);
+          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.STRING, code);
         if ("text".equals(codeString))
-          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.TEXT);
+          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.TEXT, code);
         if ("url".equals(codeString))
-          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.URL);
+          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.URL, code);
         if ("coding".equals(codeString))
-          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.CODING);
+          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.CODING, code);
         if ("attachment".equals(codeString))
-          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.ATTACHMENT);
+          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.ATTACHMENT, code);
         if ("reference".equals(codeString))
-          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.REFERENCE);
+          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.REFERENCE, code);
         if ("quantity".equals(codeString))
-          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.QUANTITY);
+          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.QUANTITY, code);
         throw new FHIRException("Unknown QuestionnaireItemType code '"+codeString+"'");
         }
     public String toCode(QuestionnaireItemType code) {
@@ -7067,4 +7067,3 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
 // end addition
 
 }
-

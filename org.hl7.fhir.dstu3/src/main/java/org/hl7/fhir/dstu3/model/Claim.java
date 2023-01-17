@@ -148,12 +148,12 @@ public class Claim extends DomainResource {
           return ClaimStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown ClaimStatus code '"+codeString+"'");
         }
-        public Enumeration<ClaimStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ClaimStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ClaimStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("active".equals(codeString))
@@ -276,12 +276,12 @@ public class Claim extends DomainResource {
           return Use.OTHER;
         throw new IllegalArgumentException("Unknown Use code '"+codeString+"'");
         }
-        public Enumeration<Use> fromType(Base code) throws FHIRException {
+        public Enumeration<Use> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<Use>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("complete".equals(codeString))

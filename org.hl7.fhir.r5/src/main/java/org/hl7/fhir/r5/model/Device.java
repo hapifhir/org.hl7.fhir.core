@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -135,20 +135,20 @@ public class Device extends DomainResource {
           return FHIRDeviceStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown FHIRDeviceStatus code '"+codeString+"'");
         }
-        public Enumeration<FHIRDeviceStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<FHIRDeviceStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<FHIRDeviceStatus>(this);
+            return new Enumeration<FHIRDeviceStatus>(this, FHIRDeviceStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<FHIRDeviceStatus>(this, FHIRDeviceStatus.NULL, code);
         if ("active".equals(codeString))
-          return new Enumeration<FHIRDeviceStatus>(this, FHIRDeviceStatus.ACTIVE);
+          return new Enumeration<FHIRDeviceStatus>(this, FHIRDeviceStatus.ACTIVE, code);
         if ("inactive".equals(codeString))
-          return new Enumeration<FHIRDeviceStatus>(this, FHIRDeviceStatus.INACTIVE);
+          return new Enumeration<FHIRDeviceStatus>(this, FHIRDeviceStatus.INACTIVE, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<FHIRDeviceStatus>(this, FHIRDeviceStatus.ENTEREDINERROR);
+          return new Enumeration<FHIRDeviceStatus>(this, FHIRDeviceStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown FHIRDeviceStatus code '"+codeString+"'");
         }
     public String toCode(FHIRDeviceStatus code) {
@@ -295,28 +295,28 @@ public class Device extends DomainResource {
           return UDIEntryType.UNKNOWN;
         throw new IllegalArgumentException("Unknown UDIEntryType code '"+codeString+"'");
         }
-        public Enumeration<UDIEntryType> fromType(Base code) throws FHIRException {
+        public Enumeration<UDIEntryType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<UDIEntryType>(this);
+            return new Enumeration<UDIEntryType>(this, UDIEntryType.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<UDIEntryType>(this, UDIEntryType.NULL, code);
         if ("barcode".equals(codeString))
-          return new Enumeration<UDIEntryType>(this, UDIEntryType.BARCODE);
+          return new Enumeration<UDIEntryType>(this, UDIEntryType.BARCODE, code);
         if ("rfid".equals(codeString))
-          return new Enumeration<UDIEntryType>(this, UDIEntryType.RFID);
+          return new Enumeration<UDIEntryType>(this, UDIEntryType.RFID, code);
         if ("manual".equals(codeString))
-          return new Enumeration<UDIEntryType>(this, UDIEntryType.MANUAL);
+          return new Enumeration<UDIEntryType>(this, UDIEntryType.MANUAL, code);
         if ("card".equals(codeString))
-          return new Enumeration<UDIEntryType>(this, UDIEntryType.CARD);
+          return new Enumeration<UDIEntryType>(this, UDIEntryType.CARD, code);
         if ("self-reported".equals(codeString))
-          return new Enumeration<UDIEntryType>(this, UDIEntryType.SELFREPORTED);
+          return new Enumeration<UDIEntryType>(this, UDIEntryType.SELFREPORTED, code);
         if ("electronic-transmission".equals(codeString))
-          return new Enumeration<UDIEntryType>(this, UDIEntryType.ELECTRONICTRANSMISSION);
+          return new Enumeration<UDIEntryType>(this, UDIEntryType.ELECTRONICTRANSMISSION, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<UDIEntryType>(this, UDIEntryType.UNKNOWN);
+          return new Enumeration<UDIEntryType>(this, UDIEntryType.UNKNOWN, code);
         throw new FHIRException("Unknown UDIEntryType code '"+codeString+"'");
         }
     public String toCode(UDIEntryType code) {
@@ -5698,4 +5698,3 @@ RegisteredName | UserFriendlyName | PatientReportedName.
 
 
 }
-

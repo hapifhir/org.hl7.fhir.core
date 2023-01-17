@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4b.model;
+﻿package org.hl7.fhir.r4b.model;
 
 
 /*
@@ -410,66 +410,66 @@ public class Timing extends BackboneType implements ICompositeType {
           return EventTiming.PCV;
         throw new IllegalArgumentException("Unknown EventTiming code '"+codeString+"'");
         }
-        public Enumeration<EventTiming> fromType(Base code) throws FHIRException {
+        public Enumeration<EventTiming> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<EventTiming>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<EventTiming>(this, EventTiming.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<EventTiming>(this, EventTiming.NULL, code);
         if ("MORN".equals(codeString))
-          return new Enumeration<EventTiming>(this, EventTiming.MORN);
+          return new Enumeration<EventTiming>(this, EventTiming.MORN, code);
         if ("MORN.early".equals(codeString))
-          return new Enumeration<EventTiming>(this, EventTiming.MORN_EARLY);
+          return new Enumeration<EventTiming>(this, EventTiming.MORN_EARLY, code);
         if ("MORN.late".equals(codeString))
-          return new Enumeration<EventTiming>(this, EventTiming.MORN_LATE);
+          return new Enumeration<EventTiming>(this, EventTiming.MORN_LATE, code);
         if ("NOON".equals(codeString))
-          return new Enumeration<EventTiming>(this, EventTiming.NOON);
+          return new Enumeration<EventTiming>(this, EventTiming.NOON, code);
         if ("AFT".equals(codeString))
-          return new Enumeration<EventTiming>(this, EventTiming.AFT);
+          return new Enumeration<EventTiming>(this, EventTiming.AFT, code);
         if ("AFT.early".equals(codeString))
-          return new Enumeration<EventTiming>(this, EventTiming.AFT_EARLY);
+          return new Enumeration<EventTiming>(this, EventTiming.AFT_EARLY, code);
         if ("AFT.late".equals(codeString))
-          return new Enumeration<EventTiming>(this, EventTiming.AFT_LATE);
+          return new Enumeration<EventTiming>(this, EventTiming.AFT_LATE, code);
         if ("EVE".equals(codeString))
-          return new Enumeration<EventTiming>(this, EventTiming.EVE);
+          return new Enumeration<EventTiming>(this, EventTiming.EVE, code);
         if ("EVE.early".equals(codeString))
-          return new Enumeration<EventTiming>(this, EventTiming.EVE_EARLY);
+          return new Enumeration<EventTiming>(this, EventTiming.EVE_EARLY, code);
         if ("EVE.late".equals(codeString))
-          return new Enumeration<EventTiming>(this, EventTiming.EVE_LATE);
+          return new Enumeration<EventTiming>(this, EventTiming.EVE_LATE, code);
         if ("NIGHT".equals(codeString))
-          return new Enumeration<EventTiming>(this, EventTiming.NIGHT);
+          return new Enumeration<EventTiming>(this, EventTiming.NIGHT, code);
         if ("PHS".equals(codeString))
-          return new Enumeration<EventTiming>(this, EventTiming.PHS);
+          return new Enumeration<EventTiming>(this, EventTiming.PHS, code);
         if ("HS".equals(codeString))
-          return new Enumeration<EventTiming>(this, EventTiming.HS);
+          return new Enumeration<EventTiming>(this, EventTiming.HS, code);
         if ("WAKE".equals(codeString))
-          return new Enumeration<EventTiming>(this, EventTiming.WAKE);
+          return new Enumeration<EventTiming>(this, EventTiming.WAKE, code);
         if ("C".equals(codeString))
-          return new Enumeration<EventTiming>(this, EventTiming.C);
+          return new Enumeration<EventTiming>(this, EventTiming.C, code);
         if ("CM".equals(codeString))
-          return new Enumeration<EventTiming>(this, EventTiming.CM);
+          return new Enumeration<EventTiming>(this, EventTiming.CM, code);
         if ("CD".equals(codeString))
-          return new Enumeration<EventTiming>(this, EventTiming.CD);
+          return new Enumeration<EventTiming>(this, EventTiming.CD, code);
         if ("CV".equals(codeString))
-          return new Enumeration<EventTiming>(this, EventTiming.CV);
+          return new Enumeration<EventTiming>(this, EventTiming.CV, code);
         if ("AC".equals(codeString))
-          return new Enumeration<EventTiming>(this, EventTiming.AC);
+          return new Enumeration<EventTiming>(this, EventTiming.AC, code);
         if ("ACM".equals(codeString))
-          return new Enumeration<EventTiming>(this, EventTiming.ACM);
+          return new Enumeration<EventTiming>(this, EventTiming.ACM, code);
         if ("ACD".equals(codeString))
-          return new Enumeration<EventTiming>(this, EventTiming.ACD);
+          return new Enumeration<EventTiming>(this, EventTiming.ACD, code);
         if ("ACV".equals(codeString))
-          return new Enumeration<EventTiming>(this, EventTiming.ACV);
+          return new Enumeration<EventTiming>(this, EventTiming.ACV, code);
         if ("PC".equals(codeString))
-          return new Enumeration<EventTiming>(this, EventTiming.PC);
+          return new Enumeration<EventTiming>(this, EventTiming.PC, code);
         if ("PCM".equals(codeString))
-          return new Enumeration<EventTiming>(this, EventTiming.PCM);
+          return new Enumeration<EventTiming>(this, EventTiming.PCM, code);
         if ("PCD".equals(codeString))
-          return new Enumeration<EventTiming>(this, EventTiming.PCD);
+          return new Enumeration<EventTiming>(this, EventTiming.PCD, code);
         if ("PCV".equals(codeString))
-          return new Enumeration<EventTiming>(this, EventTiming.PCV);
+          return new Enumeration<EventTiming>(this, EventTiming.PCV, code);
         throw new FHIRException("Unknown EventTiming code '"+codeString+"'");
         }
     public String toCode(EventTiming code) {
@@ -662,28 +662,28 @@ public class Timing extends BackboneType implements ICompositeType {
           return UnitsOfTime.A;
         throw new IllegalArgumentException("Unknown UnitsOfTime code '"+codeString+"'");
         }
-        public Enumeration<UnitsOfTime> fromType(Base code) throws FHIRException {
+        public Enumeration<UnitsOfTime> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<UnitsOfTime>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<UnitsOfTime>(this, UnitsOfTime.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<UnitsOfTime>(this, UnitsOfTime.NULL, code);
         if ("s".equals(codeString))
-          return new Enumeration<UnitsOfTime>(this, UnitsOfTime.S);
+          return new Enumeration<UnitsOfTime>(this, UnitsOfTime.S, code);
         if ("min".equals(codeString))
-          return new Enumeration<UnitsOfTime>(this, UnitsOfTime.MIN);
+          return new Enumeration<UnitsOfTime>(this, UnitsOfTime.MIN, code);
         if ("h".equals(codeString))
-          return new Enumeration<UnitsOfTime>(this, UnitsOfTime.H);
+          return new Enumeration<UnitsOfTime>(this, UnitsOfTime.H, code);
         if ("d".equals(codeString))
-          return new Enumeration<UnitsOfTime>(this, UnitsOfTime.D);
+          return new Enumeration<UnitsOfTime>(this, UnitsOfTime.D, code);
         if ("wk".equals(codeString))
-          return new Enumeration<UnitsOfTime>(this, UnitsOfTime.WK);
+          return new Enumeration<UnitsOfTime>(this, UnitsOfTime.WK, code);
         if ("mo".equals(codeString))
-          return new Enumeration<UnitsOfTime>(this, UnitsOfTime.MO);
+          return new Enumeration<UnitsOfTime>(this, UnitsOfTime.MO, code);
         if ("a".equals(codeString))
-          return new Enumeration<UnitsOfTime>(this, UnitsOfTime.A);
+          return new Enumeration<UnitsOfTime>(this, UnitsOfTime.A, code);
         throw new FHIRException("Unknown UnitsOfTime code '"+codeString+"'");
         }
     public String toCode(UnitsOfTime code) {
@@ -2313,4 +2313,3 @@ public class Timing extends BackboneType implements ICompositeType {
 
 
 }
-

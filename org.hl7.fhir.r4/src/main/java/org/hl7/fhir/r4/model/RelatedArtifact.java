@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.model;
+﻿package org.hl7.fhir.r4.model;
 
 
 
@@ -192,30 +192,30 @@ public class RelatedArtifact extends Type implements ICompositeType {
           return RelatedArtifactType.COMPOSEDOF;
         throw new IllegalArgumentException("Unknown RelatedArtifactType code '"+codeString+"'");
         }
-        public Enumeration<RelatedArtifactType> fromType(Base code) throws FHIRException {
+        public Enumeration<RelatedArtifactType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<RelatedArtifactType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.NULL, code);
         if ("documentation".equals(codeString))
-          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.DOCUMENTATION);
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.DOCUMENTATION, code);
         if ("justification".equals(codeString))
-          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.JUSTIFICATION);
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.JUSTIFICATION, code);
         if ("citation".equals(codeString))
-          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.CITATION);
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.CITATION, code);
         if ("predecessor".equals(codeString))
-          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.PREDECESSOR);
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.PREDECESSOR, code);
         if ("successor".equals(codeString))
-          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.SUCCESSOR);
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.SUCCESSOR, code);
         if ("derived-from".equals(codeString))
-          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.DERIVEDFROM);
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.DERIVEDFROM, code);
         if ("depends-on".equals(codeString))
-          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.DEPENDSON);
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.DEPENDSON, code);
         if ("composed-of".equals(codeString))
-          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.COMPOSEDOF);
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.COMPOSEDOF, code);
         throw new FHIRException("Unknown RelatedArtifactType code '"+codeString+"'");
         }
     public String toCode(RelatedArtifactType code) {

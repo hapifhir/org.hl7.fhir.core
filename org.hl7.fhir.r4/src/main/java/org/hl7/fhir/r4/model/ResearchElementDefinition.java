@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.model;
+﻿package org.hl7.fhir.r4.model;
 
 
 
@@ -135,20 +135,20 @@ public class ResearchElementDefinition extends MetadataResource {
           return ResearchElementType.OUTCOME;
         throw new IllegalArgumentException("Unknown ResearchElementType code '"+codeString+"'");
         }
-        public Enumeration<ResearchElementType> fromType(Base code) throws FHIRException {
+        public Enumeration<ResearchElementType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ResearchElementType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ResearchElementType>(this, ResearchElementType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ResearchElementType>(this, ResearchElementType.NULL, code);
         if ("population".equals(codeString))
-          return new Enumeration<ResearchElementType>(this, ResearchElementType.POPULATION);
+          return new Enumeration<ResearchElementType>(this, ResearchElementType.POPULATION, code);
         if ("exposure".equals(codeString))
-          return new Enumeration<ResearchElementType>(this, ResearchElementType.EXPOSURE);
+          return new Enumeration<ResearchElementType>(this, ResearchElementType.EXPOSURE, code);
         if ("outcome".equals(codeString))
-          return new Enumeration<ResearchElementType>(this, ResearchElementType.OUTCOME);
+          return new Enumeration<ResearchElementType>(this, ResearchElementType.OUTCOME, code);
         throw new FHIRException("Unknown ResearchElementType code '"+codeString+"'");
         }
     public String toCode(ResearchElementType code) {
@@ -247,20 +247,20 @@ public class ResearchElementDefinition extends MetadataResource {
           return VariableType.DESCRIPTIVE;
         throw new IllegalArgumentException("Unknown VariableType code '"+codeString+"'");
         }
-        public Enumeration<VariableType> fromType(Base code) throws FHIRException {
+        public Enumeration<VariableType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<VariableType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<VariableType>(this, VariableType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<VariableType>(this, VariableType.NULL, code);
         if ("dichotomous".equals(codeString))
-          return new Enumeration<VariableType>(this, VariableType.DICHOTOMOUS);
+          return new Enumeration<VariableType>(this, VariableType.DICHOTOMOUS, code);
         if ("continuous".equals(codeString))
-          return new Enumeration<VariableType>(this, VariableType.CONTINUOUS);
+          return new Enumeration<VariableType>(this, VariableType.CONTINUOUS, code);
         if ("descriptive".equals(codeString))
-          return new Enumeration<VariableType>(this, VariableType.DESCRIPTIVE);
+          return new Enumeration<VariableType>(this, VariableType.DESCRIPTIVE, code);
         throw new FHIRException("Unknown VariableType code '"+codeString+"'");
         }
     public String toCode(VariableType code) {
@@ -395,26 +395,26 @@ public class ResearchElementDefinition extends MetadataResource {
           return GroupMeasure.MEDIANOFMEDIAN;
         throw new IllegalArgumentException("Unknown GroupMeasure code '"+codeString+"'");
         }
-        public Enumeration<GroupMeasure> fromType(Base code) throws FHIRException {
+        public Enumeration<GroupMeasure> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<GroupMeasure>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<GroupMeasure>(this, GroupMeasure.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<GroupMeasure>(this, GroupMeasure.NULL, code);
         if ("mean".equals(codeString))
-          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEAN);
+          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEAN, code);
         if ("median".equals(codeString))
-          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEDIAN);
+          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEDIAN, code);
         if ("mean-of-mean".equals(codeString))
-          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEANOFMEAN);
+          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEANOFMEAN, code);
         if ("mean-of-median".equals(codeString))
-          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEANOFMEDIAN);
+          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEANOFMEDIAN, code);
         if ("median-of-mean".equals(codeString))
-          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEDIANOFMEAN);
+          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEDIANOFMEAN, code);
         if ("median-of-median".equals(codeString))
-          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEDIANOFMEDIAN);
+          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEDIANOFMEDIAN, code);
         throw new FHIRException("Unknown GroupMeasure code '"+codeString+"'");
         }
     public String toCode(GroupMeasure code) {

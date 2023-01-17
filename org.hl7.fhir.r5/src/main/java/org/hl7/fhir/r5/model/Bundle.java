@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -221,34 +221,34 @@ public class Bundle extends Resource implements IBaseBundle {
           return BundleType.SUBSCRIPTIONNOTIFICATION;
         throw new IllegalArgumentException("Unknown BundleType code '"+codeString+"'");
         }
-        public Enumeration<BundleType> fromType(Base code) throws FHIRException {
+        public Enumeration<BundleType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<BundleType>(this);
+            return new Enumeration<BundleType>(this, BundleType.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<BundleType>(this, BundleType.NULL, code);
         if ("document".equals(codeString))
-          return new Enumeration<BundleType>(this, BundleType.DOCUMENT);
+          return new Enumeration<BundleType>(this, BundleType.DOCUMENT, code);
         if ("message".equals(codeString))
-          return new Enumeration<BundleType>(this, BundleType.MESSAGE);
+          return new Enumeration<BundleType>(this, BundleType.MESSAGE, code);
         if ("transaction".equals(codeString))
-          return new Enumeration<BundleType>(this, BundleType.TRANSACTION);
+          return new Enumeration<BundleType>(this, BundleType.TRANSACTION, code);
         if ("transaction-response".equals(codeString))
-          return new Enumeration<BundleType>(this, BundleType.TRANSACTIONRESPONSE);
+          return new Enumeration<BundleType>(this, BundleType.TRANSACTIONRESPONSE, code);
         if ("batch".equals(codeString))
-          return new Enumeration<BundleType>(this, BundleType.BATCH);
+          return new Enumeration<BundleType>(this, BundleType.BATCH, code);
         if ("batch-response".equals(codeString))
-          return new Enumeration<BundleType>(this, BundleType.BATCHRESPONSE);
+          return new Enumeration<BundleType>(this, BundleType.BATCHRESPONSE, code);
         if ("history".equals(codeString))
-          return new Enumeration<BundleType>(this, BundleType.HISTORY);
+          return new Enumeration<BundleType>(this, BundleType.HISTORY, code);
         if ("searchset".equals(codeString))
-          return new Enumeration<BundleType>(this, BundleType.SEARCHSET);
+          return new Enumeration<BundleType>(this, BundleType.SEARCHSET, code);
         if ("collection".equals(codeString))
-          return new Enumeration<BundleType>(this, BundleType.COLLECTION);
+          return new Enumeration<BundleType>(this, BundleType.COLLECTION, code);
         if ("subscription-notification".equals(codeString))
-          return new Enumeration<BundleType>(this, BundleType.SUBSCRIPTIONNOTIFICATION);
+          return new Enumeration<BundleType>(this, BundleType.SUBSCRIPTIONNOTIFICATION, code);
         throw new FHIRException("Unknown BundleType code '"+codeString+"'");
         }
     public String toCode(BundleType code) {
@@ -397,26 +397,26 @@ public class Bundle extends Resource implements IBaseBundle {
           return HTTPVerb.PATCH;
         throw new IllegalArgumentException("Unknown HTTPVerb code '"+codeString+"'");
         }
-        public Enumeration<HTTPVerb> fromType(Base code) throws FHIRException {
+        public Enumeration<HTTPVerb> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<HTTPVerb>(this);
+            return new Enumeration<HTTPVerb>(this, HTTPVerb.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<HTTPVerb>(this, HTTPVerb.NULL, code);
         if ("GET".equals(codeString))
-          return new Enumeration<HTTPVerb>(this, HTTPVerb.GET);
+          return new Enumeration<HTTPVerb>(this, HTTPVerb.GET, code);
         if ("HEAD".equals(codeString))
-          return new Enumeration<HTTPVerb>(this, HTTPVerb.HEAD);
+          return new Enumeration<HTTPVerb>(this, HTTPVerb.HEAD, code);
         if ("POST".equals(codeString))
-          return new Enumeration<HTTPVerb>(this, HTTPVerb.POST);
+          return new Enumeration<HTTPVerb>(this, HTTPVerb.POST, code);
         if ("PUT".equals(codeString))
-          return new Enumeration<HTTPVerb>(this, HTTPVerb.PUT);
+          return new Enumeration<HTTPVerb>(this, HTTPVerb.PUT, code);
         if ("DELETE".equals(codeString))
-          return new Enumeration<HTTPVerb>(this, HTTPVerb.DELETE);
+          return new Enumeration<HTTPVerb>(this, HTTPVerb.DELETE, code);
         if ("PATCH".equals(codeString))
-          return new Enumeration<HTTPVerb>(this, HTTPVerb.PATCH);
+          return new Enumeration<HTTPVerb>(this, HTTPVerb.PATCH, code);
         throw new FHIRException("Unknown HTTPVerb code '"+codeString+"'");
         }
     public String toCode(HTTPVerb code) {
@@ -1925,254 +1925,254 @@ public class Bundle extends Resource implements IBaseBundle {
           return LinkRelationTypes.WORKINGCOPYOF;
         throw new IllegalArgumentException("Unknown LinkRelationTypes code '"+codeString+"'");
         }
-        public Enumeration<LinkRelationTypes> fromType(Base code) throws FHIRException {
+        public Enumeration<LinkRelationTypes> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<LinkRelationTypes>(this);
+            return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.NULL, code);
         if ("about".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.ABOUT);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.ABOUT, code);
         if ("acl".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.ACL);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.ACL, code);
         if ("alternate".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.ALTERNATE);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.ALTERNATE, code);
         if ("amphtml".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.AMPHTML);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.AMPHTML, code);
         if ("appendix".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.APPENDIX);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.APPENDIX, code);
         if ("apple-touch-icon".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.APPLETOUCHICON);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.APPLETOUCHICON, code);
         if ("apple-touch-startup-image".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.APPLETOUCHSTARTUPIMAGE);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.APPLETOUCHSTARTUPIMAGE, code);
         if ("archives".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.ARCHIVES);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.ARCHIVES, code);
         if ("author".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.AUTHOR);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.AUTHOR, code);
         if ("blocked-by".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.BLOCKEDBY);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.BLOCKEDBY, code);
         if ("bookmark".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.BOOKMARK);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.BOOKMARK, code);
         if ("canonical".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.CANONICAL);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.CANONICAL, code);
         if ("chapter".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.CHAPTER);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.CHAPTER, code);
         if ("cite-as".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.CITEAS);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.CITEAS, code);
         if ("collection".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.COLLECTION);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.COLLECTION, code);
         if ("contents".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.CONTENTS);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.CONTENTS, code);
         if ("convertedFrom".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.CONVERTEDFROM);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.CONVERTEDFROM, code);
         if ("copyright".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.COPYRIGHT);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.COPYRIGHT, code);
         if ("create-form".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.CREATEFORM);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.CREATEFORM, code);
         if ("current".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.CURRENT);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.CURRENT, code);
         if ("describedby".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.DESCRIBEDBY);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.DESCRIBEDBY, code);
         if ("describes".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.DESCRIBES);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.DESCRIBES, code);
         if ("disclosure".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.DISCLOSURE);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.DISCLOSURE, code);
         if ("dns-prefetch".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.DNSPREFETCH);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.DNSPREFETCH, code);
         if ("duplicate".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.DUPLICATE);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.DUPLICATE, code);
         if ("edit".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.EDIT);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.EDIT, code);
         if ("edit-form".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.EDITFORM);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.EDITFORM, code);
         if ("edit-media".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.EDITMEDIA);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.EDITMEDIA, code);
         if ("enclosure".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.ENCLOSURE);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.ENCLOSURE, code);
         if ("external".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.EXTERNAL);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.EXTERNAL, code);
         if ("first".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.FIRST);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.FIRST, code);
         if ("glossary".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.GLOSSARY);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.GLOSSARY, code);
         if ("help".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.HELP);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.HELP, code);
         if ("hosts".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.HOSTS);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.HOSTS, code);
         if ("hub".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.HUB);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.HUB, code);
         if ("icon".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.ICON);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.ICON, code);
         if ("index".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INDEX);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INDEX, code);
         if ("intervalAfter".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALAFTER);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALAFTER, code);
         if ("intervalBefore".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALBEFORE);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALBEFORE, code);
         if ("intervalContains".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALCONTAINS);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALCONTAINS, code);
         if ("intervalDisjoint".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALDISJOINT);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALDISJOINT, code);
         if ("intervalDuring".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALDURING);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALDURING, code);
         if ("intervalEquals".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALEQUALS);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALEQUALS, code);
         if ("intervalFinishedBy".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALFINISHEDBY);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALFINISHEDBY, code);
         if ("intervalFinishes".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALFINISHES);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALFINISHES, code);
         if ("intervalIn".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALIN);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALIN, code);
         if ("intervalMeets".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALMEETS);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALMEETS, code);
         if ("intervalMetBy".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALMETBY);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALMETBY, code);
         if ("intervalOverlappedBy".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALOVERLAPPEDBY);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALOVERLAPPEDBY, code);
         if ("intervalOverlaps".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALOVERLAPS);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALOVERLAPS, code);
         if ("intervalStartedBy".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALSTARTEDBY);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALSTARTEDBY, code);
         if ("intervalStarts".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALSTARTS);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.INTERVALSTARTS, code);
         if ("item".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.ITEM);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.ITEM, code);
         if ("last".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.LAST);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.LAST, code);
         if ("latest-version".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.LATESTVERSION);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.LATESTVERSION, code);
         if ("license".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.LICENSE);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.LICENSE, code);
         if ("linkset".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.LINKSET);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.LINKSET, code);
         if ("lrdd".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.LRDD);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.LRDD, code);
         if ("manifest".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.MANIFEST);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.MANIFEST, code);
         if ("mask-icon".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.MASKICON);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.MASKICON, code);
         if ("media-feed".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.MEDIAFEED);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.MEDIAFEED, code);
         if ("memento".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.MEMENTO);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.MEMENTO, code);
         if ("micropub".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.MICROPUB);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.MICROPUB, code);
         if ("modulepreload".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.MODULEPRELOAD);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.MODULEPRELOAD, code);
         if ("monitor".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.MONITOR);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.MONITOR, code);
         if ("monitor-group".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.MONITORGROUP);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.MONITORGROUP, code);
         if ("next".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.NEXT);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.NEXT, code);
         if ("next-archive".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.NEXTARCHIVE);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.NEXTARCHIVE, code);
         if ("nofollow".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.NOFOLLOW);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.NOFOLLOW, code);
         if ("noopener".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.NOOPENER);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.NOOPENER, code);
         if ("noreferrer".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.NOREFERRER);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.NOREFERRER, code);
         if ("opener".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.OPENER);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.OPENER, code);
         if ("openid2.local_id".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.OPENID2_LOCALID);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.OPENID2_LOCALID, code);
         if ("openid2.provider".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.OPENID2_PROVIDER);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.OPENID2_PROVIDER, code);
         if ("original".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.ORIGINAL);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.ORIGINAL, code);
         if ("P3Pv1".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.P3PV1);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.P3PV1, code);
         if ("payment".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PAYMENT);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PAYMENT, code);
         if ("pingback".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PINGBACK);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PINGBACK, code);
         if ("preconnect".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PRECONNECT);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PRECONNECT, code);
         if ("predecessor-version".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PREDECESSORVERSION);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PREDECESSORVERSION, code);
         if ("prefetch".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PREFETCH);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PREFETCH, code);
         if ("preload".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PRELOAD);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PRELOAD, code);
         if ("prerender".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PRERENDER);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PRERENDER, code);
         if ("prev".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PREV);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PREV, code);
         if ("preview".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PREVIEW);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PREVIEW, code);
         if ("previous".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PREVIOUS);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PREVIOUS, code);
         if ("prev-archive".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PREVARCHIVE);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PREVARCHIVE, code);
         if ("privacy-policy".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PRIVACYPOLICY);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PRIVACYPOLICY, code);
         if ("profile".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PROFILE);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PROFILE, code);
         if ("publication".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PUBLICATION);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.PUBLICATION, code);
         if ("related".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.RELATED);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.RELATED, code);
         if ("restconf".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.RESTCONF);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.RESTCONF, code);
         if ("replies".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.REPLIES);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.REPLIES, code);
         if ("ruleinput".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.RULEINPUT);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.RULEINPUT, code);
         if ("search".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SEARCH);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SEARCH, code);
         if ("section".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SECTION);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SECTION, code);
         if ("self".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SELF);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SELF, code);
         if ("service".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SERVICE);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SERVICE, code);
         if ("service-desc".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SERVICEDESC);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SERVICEDESC, code);
         if ("service-doc".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SERVICEDOC);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SERVICEDOC, code);
         if ("service-meta".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SERVICEMETA);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SERVICEMETA, code);
         if ("sponsored".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SPONSORED);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SPONSORED, code);
         if ("start".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.START);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.START, code);
         if ("status".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.STATUS);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.STATUS, code);
         if ("stylesheet".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.STYLESHEET);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.STYLESHEET, code);
         if ("subsection".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SUBSECTION);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SUBSECTION, code);
         if ("successor-version".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SUCCESSORVERSION);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SUCCESSORVERSION, code);
         if ("sunset".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SUNSET);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.SUNSET, code);
         if ("tag".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.TAG);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.TAG, code);
         if ("terms-of-service".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.TERMSOFSERVICE);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.TERMSOFSERVICE, code);
         if ("timegate".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.TIMEGATE);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.TIMEGATE, code);
         if ("timemap".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.TIMEMAP);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.TIMEMAP, code);
         if ("type".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.TYPE);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.TYPE, code);
         if ("ugc".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.UGC);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.UGC, code);
         if ("up".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.UP);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.UP, code);
         if ("version-history".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.VERSIONHISTORY);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.VERSIONHISTORY, code);
         if ("via".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.VIA);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.VIA, code);
         if ("webmention".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.WEBMENTION);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.WEBMENTION, code);
         if ("working-copy".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.WORKINGCOPY);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.WORKINGCOPY, code);
         if ("working-copy-of".equals(codeString))
-          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.WORKINGCOPYOF);
+          return new Enumeration<LinkRelationTypes>(this, LinkRelationTypes.WORKINGCOPYOF, code);
         throw new FHIRException("Unknown LinkRelationTypes code '"+codeString+"'");
         }
     public String toCode(LinkRelationTypes code) {
@@ -2505,20 +2505,20 @@ public class Bundle extends Resource implements IBaseBundle {
           return SearchEntryMode.OUTCOME;
         throw new IllegalArgumentException("Unknown SearchEntryMode code '"+codeString+"'");
         }
-        public Enumeration<SearchEntryMode> fromType(Base code) throws FHIRException {
+        public Enumeration<SearchEntryMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<SearchEntryMode>(this);
+            return new Enumeration<SearchEntryMode>(this, SearchEntryMode.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<SearchEntryMode>(this, SearchEntryMode.NULL, code);
         if ("match".equals(codeString))
-          return new Enumeration<SearchEntryMode>(this, SearchEntryMode.MATCH);
+          return new Enumeration<SearchEntryMode>(this, SearchEntryMode.MATCH, code);
         if ("include".equals(codeString))
-          return new Enumeration<SearchEntryMode>(this, SearchEntryMode.INCLUDE);
+          return new Enumeration<SearchEntryMode>(this, SearchEntryMode.INCLUDE, code);
         if ("outcome".equals(codeString))
-          return new Enumeration<SearchEntryMode>(this, SearchEntryMode.OUTCOME);
+          return new Enumeration<SearchEntryMode>(this, SearchEntryMode.OUTCOME, code);
         throw new FHIRException("Unknown SearchEntryMode code '"+codeString+"'");
         }
     public String toCode(SearchEntryMode code) {
@@ -5342,4 +5342,3 @@ public class Bundle extends Resource implements IBaseBundle {
 // end addition
 
 }
-

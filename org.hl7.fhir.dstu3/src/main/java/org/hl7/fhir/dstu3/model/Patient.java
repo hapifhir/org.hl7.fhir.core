@@ -147,12 +147,12 @@ public class Patient extends DomainResource {
           return LinkType.SEEALSO;
         throw new IllegalArgumentException("Unknown LinkType code '"+codeString+"'");
         }
-        public Enumeration<LinkType> fromType(Base code) throws FHIRException {
+        public Enumeration<LinkType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<LinkType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("replaced-by".equals(codeString))

@@ -133,12 +133,12 @@ public class ListResource extends DomainResource {
           return ListStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown ListStatus code '"+codeString+"'");
         }
-        public Enumeration<ListStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ListStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ListStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("current".equals(codeString))
@@ -245,12 +245,12 @@ public class ListResource extends DomainResource {
           return ListMode.CHANGES;
         throw new IllegalArgumentException("Unknown ListMode code '"+codeString+"'");
         }
-        public Enumeration<ListMode> fromType(Base code) throws FHIRException {
+        public Enumeration<ListMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ListMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("working".equals(codeString))

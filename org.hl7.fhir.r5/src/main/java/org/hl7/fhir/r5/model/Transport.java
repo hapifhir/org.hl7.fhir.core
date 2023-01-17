@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -207,32 +207,32 @@ public class Transport extends DomainResource {
           return TransportIntent.OPTION;
         throw new IllegalArgumentException("Unknown TransportIntent code '"+codeString+"'");
         }
-        public Enumeration<TransportIntent> fromType(Base code) throws FHIRException {
+        public Enumeration<TransportIntent> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<TransportIntent>(this);
+            return new Enumeration<TransportIntent>(this, TransportIntent.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<TransportIntent>(this, TransportIntent.NULL, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<TransportIntent>(this, TransportIntent.UNKNOWN);
+          return new Enumeration<TransportIntent>(this, TransportIntent.UNKNOWN, code);
         if ("proposal".equals(codeString))
-          return new Enumeration<TransportIntent>(this, TransportIntent.PROPOSAL);
+          return new Enumeration<TransportIntent>(this, TransportIntent.PROPOSAL, code);
         if ("plan".equals(codeString))
-          return new Enumeration<TransportIntent>(this, TransportIntent.PLAN);
+          return new Enumeration<TransportIntent>(this, TransportIntent.PLAN, code);
         if ("order".equals(codeString))
-          return new Enumeration<TransportIntent>(this, TransportIntent.ORDER);
+          return new Enumeration<TransportIntent>(this, TransportIntent.ORDER, code);
         if ("original-order".equals(codeString))
-          return new Enumeration<TransportIntent>(this, TransportIntent.ORIGINALORDER);
+          return new Enumeration<TransportIntent>(this, TransportIntent.ORIGINALORDER, code);
         if ("reflex-order".equals(codeString))
-          return new Enumeration<TransportIntent>(this, TransportIntent.REFLEXORDER);
+          return new Enumeration<TransportIntent>(this, TransportIntent.REFLEXORDER, code);
         if ("filler-order".equals(codeString))
-          return new Enumeration<TransportIntent>(this, TransportIntent.FILLERORDER);
+          return new Enumeration<TransportIntent>(this, TransportIntent.FILLERORDER, code);
         if ("instance-order".equals(codeString))
-          return new Enumeration<TransportIntent>(this, TransportIntent.INSTANCEORDER);
+          return new Enumeration<TransportIntent>(this, TransportIntent.INSTANCEORDER, code);
         if ("option".equals(codeString))
-          return new Enumeration<TransportIntent>(this, TransportIntent.OPTION);
+          return new Enumeration<TransportIntent>(this, TransportIntent.OPTION, code);
         throw new FHIRException("Unknown TransportIntent code '"+codeString+"'");
         }
     public String toCode(TransportIntent code) {
@@ -379,26 +379,26 @@ public class Transport extends DomainResource {
           return TransportStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown TransportStatus code '"+codeString+"'");
         }
-        public Enumeration<TransportStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<TransportStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<TransportStatus>(this);
+            return new Enumeration<TransportStatus>(this, TransportStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<TransportStatus>(this, TransportStatus.NULL, code);
         if ("in-progress".equals(codeString))
-          return new Enumeration<TransportStatus>(this, TransportStatus.INPROGRESS);
+          return new Enumeration<TransportStatus>(this, TransportStatus.INPROGRESS, code);
         if ("completed".equals(codeString))
-          return new Enumeration<TransportStatus>(this, TransportStatus.COMPLETED);
+          return new Enumeration<TransportStatus>(this, TransportStatus.COMPLETED, code);
         if ("abandoned".equals(codeString))
-          return new Enumeration<TransportStatus>(this, TransportStatus.ABANDONED);
+          return new Enumeration<TransportStatus>(this, TransportStatus.ABANDONED, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<TransportStatus>(this, TransportStatus.CANCELLED);
+          return new Enumeration<TransportStatus>(this, TransportStatus.CANCELLED, code);
         if ("planned".equals(codeString))
-          return new Enumeration<TransportStatus>(this, TransportStatus.PLANNED);
+          return new Enumeration<TransportStatus>(this, TransportStatus.PLANNED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<TransportStatus>(this, TransportStatus.ENTEREDINERROR);
+          return new Enumeration<TransportStatus>(this, TransportStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown TransportStatus code '"+codeString+"'");
         }
     public String toCode(TransportStatus code) {
@@ -5510,4 +5510,3 @@ public class Transport extends DomainResource {
 
 
 }
-

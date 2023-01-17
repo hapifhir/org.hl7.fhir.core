@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -159,24 +159,24 @@ public class Account extends DomainResource {
           return AccountStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown AccountStatus code '"+codeString+"'");
         }
-        public Enumeration<AccountStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<AccountStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<AccountStatus>(this);
+            return new Enumeration<AccountStatus>(this, AccountStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<AccountStatus>(this, AccountStatus.NULL, code);
         if ("active".equals(codeString))
-          return new Enumeration<AccountStatus>(this, AccountStatus.ACTIVE);
+          return new Enumeration<AccountStatus>(this, AccountStatus.ACTIVE, code);
         if ("inactive".equals(codeString))
-          return new Enumeration<AccountStatus>(this, AccountStatus.INACTIVE);
+          return new Enumeration<AccountStatus>(this, AccountStatus.INACTIVE, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<AccountStatus>(this, AccountStatus.ENTEREDINERROR);
+          return new Enumeration<AccountStatus>(this, AccountStatus.ENTEREDINERROR, code);
         if ("on-hold".equals(codeString))
-          return new Enumeration<AccountStatus>(this, AccountStatus.ONHOLD);
+          return new Enumeration<AccountStatus>(this, AccountStatus.ONHOLD, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<AccountStatus>(this, AccountStatus.UNKNOWN);
+          return new Enumeration<AccountStatus>(this, AccountStatus.UNKNOWN, code);
         throw new FHIRException("Unknown AccountStatus code '"+codeString+"'");
         }
     public String toCode(AccountStatus code) {
@@ -1340,7 +1340,9 @@ A coverage may only be responsible for specific types of charges, and the sequen
     protected CodeableConcept currency;
 
     /**
-     * The calculated account balances - these are calculated and processed by the finance system.The balances with a `term` that is not current are usually generated/updated by an invoicing or similar process.
+     * The calculated account balances - these are calculated and processed by the finance system.
+
+The balances with a `term` that is not current are usually generated/updated by an invoicing or similar process.
      */
     @Child(name = "balance", type = {}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Calculated account balance(s)", formalDefinition="The calculated account balances - these are calculated and processed by the finance system.\r\rThe balances with a `term` that is not current are usually generated/updated by an invoicing or similar process." )
@@ -1899,7 +1901,9 @@ A coverage may only be responsible for specific types of charges, and the sequen
     }
 
     /**
-     * @return {@link #balance} (The calculated account balances - these are calculated and processed by the finance system.The balances with a `term` that is not current are usually generated/updated by an invoicing or similar process.)
+     * @return {@link #balance} (The calculated account balances - these are calculated and processed by the finance system.
+
+The balances with a `term` that is not current are usually generated/updated by an invoicing or similar process.)
      */
     public List<AccountBalanceComponent> getBalance() { 
       if (this.balance == null)
@@ -2586,4 +2590,3 @@ A coverage may only be responsible for specific types of charges, and the sequen
 
 
 }
-

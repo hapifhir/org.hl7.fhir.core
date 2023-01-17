@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4b.model;
+﻿package org.hl7.fhir.r4b.model;
 
 
 /*
@@ -124,18 +124,18 @@ public class MolecularSequence extends DomainResource {
           return OrientationType.ANTISENSE;
         throw new IllegalArgumentException("Unknown OrientationType code '"+codeString+"'");
         }
-        public Enumeration<OrientationType> fromType(Base code) throws FHIRException {
+        public Enumeration<OrientationType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<OrientationType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<OrientationType>(this, OrientationType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<OrientationType>(this, OrientationType.NULL, code);
         if ("sense".equals(codeString))
-          return new Enumeration<OrientationType>(this, OrientationType.SENSE);
+          return new Enumeration<OrientationType>(this, OrientationType.SENSE, code);
         if ("antisense".equals(codeString))
-          return new Enumeration<OrientationType>(this, OrientationType.ANTISENSE);
+          return new Enumeration<OrientationType>(this, OrientationType.ANTISENSE, code);
         throw new FHIRException("Unknown OrientationType code '"+codeString+"'");
         }
     public String toCode(OrientationType code) {
@@ -232,20 +232,20 @@ public class MolecularSequence extends DomainResource {
           return QualityType.UNKNOWN;
         throw new IllegalArgumentException("Unknown QualityType code '"+codeString+"'");
         }
-        public Enumeration<QualityType> fromType(Base code) throws FHIRException {
+        public Enumeration<QualityType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<QualityType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<QualityType>(this, QualityType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<QualityType>(this, QualityType.NULL, code);
         if ("indel".equals(codeString))
-          return new Enumeration<QualityType>(this, QualityType.INDEL);
+          return new Enumeration<QualityType>(this, QualityType.INDEL, code);
         if ("snp".equals(codeString))
-          return new Enumeration<QualityType>(this, QualityType.SNP);
+          return new Enumeration<QualityType>(this, QualityType.SNP, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<QualityType>(this, QualityType.UNKNOWN);
+          return new Enumeration<QualityType>(this, QualityType.UNKNOWN, code);
         throw new FHIRException("Unknown QualityType code '"+codeString+"'");
         }
     public String toCode(QualityType code) {
@@ -368,24 +368,24 @@ public class MolecularSequence extends DomainResource {
           return RepositoryType.OTHER;
         throw new IllegalArgumentException("Unknown RepositoryType code '"+codeString+"'");
         }
-        public Enumeration<RepositoryType> fromType(Base code) throws FHIRException {
+        public Enumeration<RepositoryType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<RepositoryType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<RepositoryType>(this, RepositoryType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<RepositoryType>(this, RepositoryType.NULL, code);
         if ("directlink".equals(codeString))
-          return new Enumeration<RepositoryType>(this, RepositoryType.DIRECTLINK);
+          return new Enumeration<RepositoryType>(this, RepositoryType.DIRECTLINK, code);
         if ("openapi".equals(codeString))
-          return new Enumeration<RepositoryType>(this, RepositoryType.OPENAPI);
+          return new Enumeration<RepositoryType>(this, RepositoryType.OPENAPI, code);
         if ("login".equals(codeString))
-          return new Enumeration<RepositoryType>(this, RepositoryType.LOGIN);
+          return new Enumeration<RepositoryType>(this, RepositoryType.LOGIN, code);
         if ("oauth".equals(codeString))
-          return new Enumeration<RepositoryType>(this, RepositoryType.OAUTH);
+          return new Enumeration<RepositoryType>(this, RepositoryType.OAUTH, code);
         if ("other".equals(codeString))
-          return new Enumeration<RepositoryType>(this, RepositoryType.OTHER);
+          return new Enumeration<RepositoryType>(this, RepositoryType.OTHER, code);
         throw new FHIRException("Unknown RepositoryType code '"+codeString+"'");
         }
     public String toCode(RepositoryType code) {
@@ -488,20 +488,20 @@ public class MolecularSequence extends DomainResource {
           return SequenceType.RNA;
         throw new IllegalArgumentException("Unknown SequenceType code '"+codeString+"'");
         }
-        public Enumeration<SequenceType> fromType(Base code) throws FHIRException {
+        public Enumeration<SequenceType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<SequenceType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<SequenceType>(this, SequenceType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<SequenceType>(this, SequenceType.NULL, code);
         if ("aa".equals(codeString))
-          return new Enumeration<SequenceType>(this, SequenceType.AA);
+          return new Enumeration<SequenceType>(this, SequenceType.AA, code);
         if ("dna".equals(codeString))
-          return new Enumeration<SequenceType>(this, SequenceType.DNA);
+          return new Enumeration<SequenceType>(this, SequenceType.DNA, code);
         if ("rna".equals(codeString))
-          return new Enumeration<SequenceType>(this, SequenceType.RNA);
+          return new Enumeration<SequenceType>(this, SequenceType.RNA, code);
         throw new FHIRException("Unknown SequenceType code '"+codeString+"'");
         }
     public String toCode(SequenceType code) {
@@ -588,18 +588,18 @@ public class MolecularSequence extends DomainResource {
           return StrandType.CRICK;
         throw new IllegalArgumentException("Unknown StrandType code '"+codeString+"'");
         }
-        public Enumeration<StrandType> fromType(Base code) throws FHIRException {
+        public Enumeration<StrandType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<StrandType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<StrandType>(this, StrandType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<StrandType>(this, StrandType.NULL, code);
         if ("watson".equals(codeString))
-          return new Enumeration<StrandType>(this, StrandType.WATSON);
+          return new Enumeration<StrandType>(this, StrandType.WATSON, code);
         if ("crick".equals(codeString))
-          return new Enumeration<StrandType>(this, StrandType.CRICK);
+          return new Enumeration<StrandType>(this, StrandType.CRICK, code);
         throw new FHIRException("Unknown StrandType code '"+codeString+"'");
         }
     public String toCode(StrandType code) {
@@ -6548,4 +6548,3 @@ public class MolecularSequence extends DomainResource {
 
 
 }
-

@@ -143,12 +143,12 @@ public class Address extends Type implements ICompositeType {
           return AddressUse.OLD;
         throw new IllegalArgumentException("Unknown AddressUse code '"+codeString+"'");
         }
-        public Enumeration<AddressUse> fromType(Base code) throws FHIRException {
+        public Enumeration<AddressUse> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<AddressUse>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("home".equals(codeString))
@@ -259,12 +259,12 @@ public class Address extends Type implements ICompositeType {
           return AddressType.BOTH;
         throw new IllegalArgumentException("Unknown AddressType code '"+codeString+"'");
         }
-        public Enumeration<AddressType> fromType(Base code) throws FHIRException {
+        public Enumeration<AddressType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<AddressType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("postal".equals(codeString))

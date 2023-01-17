@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -183,28 +183,28 @@ public class DeviceUsage extends DomainResource {
           return DeviceUsageStatus.ONHOLD;
         throw new IllegalArgumentException("Unknown DeviceUsageStatus code '"+codeString+"'");
         }
-        public Enumeration<DeviceUsageStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<DeviceUsageStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<DeviceUsageStatus>(this);
+            return new Enumeration<DeviceUsageStatus>(this, DeviceUsageStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<DeviceUsageStatus>(this, DeviceUsageStatus.NULL, code);
         if ("active".equals(codeString))
-          return new Enumeration<DeviceUsageStatus>(this, DeviceUsageStatus.ACTIVE);
+          return new Enumeration<DeviceUsageStatus>(this, DeviceUsageStatus.ACTIVE, code);
         if ("completed".equals(codeString))
-          return new Enumeration<DeviceUsageStatus>(this, DeviceUsageStatus.COMPLETED);
+          return new Enumeration<DeviceUsageStatus>(this, DeviceUsageStatus.COMPLETED, code);
         if ("not-done".equals(codeString))
-          return new Enumeration<DeviceUsageStatus>(this, DeviceUsageStatus.NOTDONE);
+          return new Enumeration<DeviceUsageStatus>(this, DeviceUsageStatus.NOTDONE, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<DeviceUsageStatus>(this, DeviceUsageStatus.ENTEREDINERROR);
+          return new Enumeration<DeviceUsageStatus>(this, DeviceUsageStatus.ENTEREDINERROR, code);
         if ("intended".equals(codeString))
-          return new Enumeration<DeviceUsageStatus>(this, DeviceUsageStatus.INTENDED);
+          return new Enumeration<DeviceUsageStatus>(this, DeviceUsageStatus.INTENDED, code);
         if ("stopped".equals(codeString))
-          return new Enumeration<DeviceUsageStatus>(this, DeviceUsageStatus.STOPPED);
+          return new Enumeration<DeviceUsageStatus>(this, DeviceUsageStatus.STOPPED, code);
         if ("on-hold".equals(codeString))
-          return new Enumeration<DeviceUsageStatus>(this, DeviceUsageStatus.ONHOLD);
+          return new Enumeration<DeviceUsageStatus>(this, DeviceUsageStatus.ONHOLD, code);
         throw new FHIRException("Unknown DeviceUsageStatus code '"+codeString+"'");
         }
     public String toCode(DeviceUsageStatus code) {
@@ -1853,4 +1853,3 @@ public class DeviceUsage extends DomainResource {
 
 
 }
-

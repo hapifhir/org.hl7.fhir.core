@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4b.model;
+﻿package org.hl7.fhir.r4b.model;
 
 
 /*
@@ -123,18 +123,18 @@ public class SubscriptionTopic extends DomainResource {
           return CriteriaNotExistsBehavior.TESTFAILS;
         throw new IllegalArgumentException("Unknown CriteriaNotExistsBehavior code '"+codeString+"'");
         }
-        public Enumeration<CriteriaNotExistsBehavior> fromType(Base code) throws FHIRException {
+        public Enumeration<CriteriaNotExistsBehavior> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<CriteriaNotExistsBehavior>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<CriteriaNotExistsBehavior>(this, CriteriaNotExistsBehavior.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<CriteriaNotExistsBehavior>(this, CriteriaNotExistsBehavior.NULL, code);
         if ("test-passes".equals(codeString))
-          return new Enumeration<CriteriaNotExistsBehavior>(this, CriteriaNotExistsBehavior.TESTPASSES);
+          return new Enumeration<CriteriaNotExistsBehavior>(this, CriteriaNotExistsBehavior.TESTPASSES, code);
         if ("test-fails".equals(codeString))
-          return new Enumeration<CriteriaNotExistsBehavior>(this, CriteriaNotExistsBehavior.TESTFAILS);
+          return new Enumeration<CriteriaNotExistsBehavior>(this, CriteriaNotExistsBehavior.TESTFAILS, code);
         throw new FHIRException("Unknown CriteriaNotExistsBehavior code '"+codeString+"'");
         }
     public String toCode(CriteriaNotExistsBehavior code) {
@@ -231,20 +231,20 @@ public class SubscriptionTopic extends DomainResource {
           return InteractionTrigger.DELETE;
         throw new IllegalArgumentException("Unknown InteractionTrigger code '"+codeString+"'");
         }
-        public Enumeration<InteractionTrigger> fromType(Base code) throws FHIRException {
+        public Enumeration<InteractionTrigger> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<InteractionTrigger>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<InteractionTrigger>(this, InteractionTrigger.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<InteractionTrigger>(this, InteractionTrigger.NULL, code);
         if ("create".equals(codeString))
-          return new Enumeration<InteractionTrigger>(this, InteractionTrigger.CREATE);
+          return new Enumeration<InteractionTrigger>(this, InteractionTrigger.CREATE, code);
         if ("update".equals(codeString))
-          return new Enumeration<InteractionTrigger>(this, InteractionTrigger.UPDATE);
+          return new Enumeration<InteractionTrigger>(this, InteractionTrigger.UPDATE, code);
         if ("delete".equals(codeString))
-          return new Enumeration<InteractionTrigger>(this, InteractionTrigger.DELETE);
+          return new Enumeration<InteractionTrigger>(this, InteractionTrigger.DELETE, code);
         throw new FHIRException("Unknown InteractionTrigger code '"+codeString+"'");
         }
     public String toCode(InteractionTrigger code) {
@@ -487,44 +487,44 @@ public class SubscriptionTopic extends DomainResource {
           return SubscriptionSearchModifier.OFTYPE;
         throw new IllegalArgumentException("Unknown SubscriptionSearchModifier code '"+codeString+"'");
         }
-        public Enumeration<SubscriptionSearchModifier> fromType(Base code) throws FHIRException {
+        public Enumeration<SubscriptionSearchModifier> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<SubscriptionSearchModifier>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.NULL, code);
         if ("=".equals(codeString))
-          return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.EQUAL);
+          return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.EQUAL, code);
         if ("eq".equals(codeString))
-          return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.EQ);
+          return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.EQ, code);
         if ("ne".equals(codeString))
-          return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.NE);
+          return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.NE, code);
         if ("gt".equals(codeString))
-          return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.GT);
+          return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.GT, code);
         if ("lt".equals(codeString))
-          return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.LT);
+          return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.LT, code);
         if ("ge".equals(codeString))
-          return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.GE);
+          return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.GE, code);
         if ("le".equals(codeString))
-          return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.LE);
+          return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.LE, code);
         if ("sa".equals(codeString))
-          return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.SA);
+          return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.SA, code);
         if ("eb".equals(codeString))
-          return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.EB);
+          return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.EB, code);
         if ("ap".equals(codeString))
-          return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.AP);
+          return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.AP, code);
         if ("above".equals(codeString))
-          return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.ABOVE);
+          return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.ABOVE, code);
         if ("below".equals(codeString))
-          return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.BELOW);
+          return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.BELOW, code);
         if ("in".equals(codeString))
-          return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.IN);
+          return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.IN, code);
         if ("not-in".equals(codeString))
-          return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.NOTIN);
+          return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.NOTIN, code);
         if ("of-type".equals(codeString))
-          return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.OFTYPE);
+          return new Enumeration<SubscriptionSearchModifier>(this, SubscriptionSearchModifier.OFTYPE, code);
         throw new FHIRException("Unknown SubscriptionSearchModifier code '"+codeString+"'");
         }
     public String toCode(SubscriptionSearchModifier code) {
@@ -4481,4 +4481,3 @@ public class SubscriptionTopic extends DomainResource {
 
 
 }
-

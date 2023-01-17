@@ -121,12 +121,12 @@ public class AdverseEvent extends DomainResource {
           return AdverseEventCategory.PAE;
         throw new IllegalArgumentException("Unknown AdverseEventCategory code '"+codeString+"'");
         }
-        public Enumeration<AdverseEventCategory> fromType(Base code) throws FHIRException {
+        public Enumeration<AdverseEventCategory> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<AdverseEventCategory>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("AE".equals(codeString))
@@ -217,12 +217,12 @@ public class AdverseEvent extends DomainResource {
           return AdverseEventCausality.CAUSALITY2;
         throw new IllegalArgumentException("Unknown AdverseEventCausality code '"+codeString+"'");
         }
-        public Enumeration<AdverseEventCausality> fromType(Base code) throws FHIRException {
+        public Enumeration<AdverseEventCausality> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<AdverseEventCausality>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("causality1".equals(codeString))

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.model;
+﻿package org.hl7.fhir.r4.model;
 
 
 
@@ -121,18 +121,18 @@ public class ImmunizationEvaluation extends DomainResource {
           return ImmunizationEvaluationStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown ImmunizationEvaluationStatus code '"+codeString+"'");
         }
-        public Enumeration<ImmunizationEvaluationStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ImmunizationEvaluationStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ImmunizationEvaluationStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ImmunizationEvaluationStatus>(this, ImmunizationEvaluationStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ImmunizationEvaluationStatus>(this, ImmunizationEvaluationStatus.NULL, code);
         if ("completed".equals(codeString))
-          return new Enumeration<ImmunizationEvaluationStatus>(this, ImmunizationEvaluationStatus.COMPLETED);
+          return new Enumeration<ImmunizationEvaluationStatus>(this, ImmunizationEvaluationStatus.COMPLETED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<ImmunizationEvaluationStatus>(this, ImmunizationEvaluationStatus.ENTEREDINERROR);
+          return new Enumeration<ImmunizationEvaluationStatus>(this, ImmunizationEvaluationStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown ImmunizationEvaluationStatus code '"+codeString+"'");
         }
     public String toCode(ImmunizationEvaluationStatus code) {

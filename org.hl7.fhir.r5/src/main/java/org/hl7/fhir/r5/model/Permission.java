@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -171,26 +171,26 @@ public class Permission extends DomainResource {
           return PermissionRuleCombining.PERMITUNLESSDENY;
         throw new IllegalArgumentException("Unknown PermissionRuleCombining code '"+codeString+"'");
         }
-        public Enumeration<PermissionRuleCombining> fromType(Base code) throws FHIRException {
+        public Enumeration<PermissionRuleCombining> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<PermissionRuleCombining>(this);
+            return new Enumeration<PermissionRuleCombining>(this, PermissionRuleCombining.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<PermissionRuleCombining>(this, PermissionRuleCombining.NULL, code);
         if ("deny-overrides".equals(codeString))
-          return new Enumeration<PermissionRuleCombining>(this, PermissionRuleCombining.DENYOVERRIDES);
+          return new Enumeration<PermissionRuleCombining>(this, PermissionRuleCombining.DENYOVERRIDES, code);
         if ("permit-overrides".equals(codeString))
-          return new Enumeration<PermissionRuleCombining>(this, PermissionRuleCombining.PERMITOVERRIDES);
+          return new Enumeration<PermissionRuleCombining>(this, PermissionRuleCombining.PERMITOVERRIDES, code);
         if ("ordered-deny-overrides".equals(codeString))
-          return new Enumeration<PermissionRuleCombining>(this, PermissionRuleCombining.ORDEREDDENYOVERRIDES);
+          return new Enumeration<PermissionRuleCombining>(this, PermissionRuleCombining.ORDEREDDENYOVERRIDES, code);
         if ("ordered-permit-overrides".equals(codeString))
-          return new Enumeration<PermissionRuleCombining>(this, PermissionRuleCombining.ORDEREDPERMITOVERRIDES);
+          return new Enumeration<PermissionRuleCombining>(this, PermissionRuleCombining.ORDEREDPERMITOVERRIDES, code);
         if ("deny-unless-permit".equals(codeString))
-          return new Enumeration<PermissionRuleCombining>(this, PermissionRuleCombining.DENYUNLESSPERMIT);
+          return new Enumeration<PermissionRuleCombining>(this, PermissionRuleCombining.DENYUNLESSPERMIT, code);
         if ("permit-unless-deny".equals(codeString))
-          return new Enumeration<PermissionRuleCombining>(this, PermissionRuleCombining.PERMITUNLESSDENY);
+          return new Enumeration<PermissionRuleCombining>(this, PermissionRuleCombining.PERMITUNLESSDENY, code);
         throw new FHIRException("Unknown PermissionRuleCombining code '"+codeString+"'");
         }
     public String toCode(PermissionRuleCombining code) {
@@ -307,22 +307,22 @@ public class Permission extends DomainResource {
           return PermissionStatus.REJECTED;
         throw new IllegalArgumentException("Unknown PermissionStatus code '"+codeString+"'");
         }
-        public Enumeration<PermissionStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<PermissionStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<PermissionStatus>(this);
+            return new Enumeration<PermissionStatus>(this, PermissionStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<PermissionStatus>(this, PermissionStatus.NULL, code);
         if ("active".equals(codeString))
-          return new Enumeration<PermissionStatus>(this, PermissionStatus.ACTIVE);
+          return new Enumeration<PermissionStatus>(this, PermissionStatus.ACTIVE, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<PermissionStatus>(this, PermissionStatus.ENTEREDINERROR);
+          return new Enumeration<PermissionStatus>(this, PermissionStatus.ENTEREDINERROR, code);
         if ("draft".equals(codeString))
-          return new Enumeration<PermissionStatus>(this, PermissionStatus.DRAFT);
+          return new Enumeration<PermissionStatus>(this, PermissionStatus.DRAFT, code);
         if ("rejected".equals(codeString))
-          return new Enumeration<PermissionStatus>(this, PermissionStatus.REJECTED);
+          return new Enumeration<PermissionStatus>(this, PermissionStatus.REJECTED, code);
         throw new FHIRException("Unknown PermissionStatus code '"+codeString+"'");
         }
     public String toCode(PermissionStatus code) {
@@ -2585,4 +2585,3 @@ public class Permission extends DomainResource {
 
 
 }
-

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.model;
+﻿package org.hl7.fhir.r4.model;
 
 
 
@@ -146,22 +146,22 @@ public class DocumentReference extends DomainResource {
           return ReferredDocumentStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown ReferredDocumentStatus code '"+codeString+"'");
         }
-        public Enumeration<ReferredDocumentStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ReferredDocumentStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ReferredDocumentStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ReferredDocumentStatus>(this, ReferredDocumentStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ReferredDocumentStatus>(this, ReferredDocumentStatus.NULL, code);
         if ("preliminary".equals(codeString))
-          return new Enumeration<ReferredDocumentStatus>(this, ReferredDocumentStatus.PRELIMINARY);
+          return new Enumeration<ReferredDocumentStatus>(this, ReferredDocumentStatus.PRELIMINARY, code);
         if ("final".equals(codeString))
-          return new Enumeration<ReferredDocumentStatus>(this, ReferredDocumentStatus.FINAL);
+          return new Enumeration<ReferredDocumentStatus>(this, ReferredDocumentStatus.FINAL, code);
         if ("amended".equals(codeString))
-          return new Enumeration<ReferredDocumentStatus>(this, ReferredDocumentStatus.AMENDED);
+          return new Enumeration<ReferredDocumentStatus>(this, ReferredDocumentStatus.AMENDED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<ReferredDocumentStatus>(this, ReferredDocumentStatus.ENTEREDINERROR);
+          return new Enumeration<ReferredDocumentStatus>(this, ReferredDocumentStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown ReferredDocumentStatus code '"+codeString+"'");
         }
     public String toCode(ReferredDocumentStatus code) {
@@ -274,22 +274,22 @@ public class DocumentReference extends DomainResource {
           return DocumentRelationshipType.APPENDS;
         throw new IllegalArgumentException("Unknown DocumentRelationshipType code '"+codeString+"'");
         }
-        public Enumeration<DocumentRelationshipType> fromType(Base code) throws FHIRException {
+        public Enumeration<DocumentRelationshipType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<DocumentRelationshipType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.NULL, code);
         if ("replaces".equals(codeString))
-          return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.REPLACES);
+          return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.REPLACES, code);
         if ("transforms".equals(codeString))
-          return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.TRANSFORMS);
+          return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.TRANSFORMS, code);
         if ("signs".equals(codeString))
-          return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.SIGNS);
+          return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.SIGNS, code);
         if ("appends".equals(codeString))
-          return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.APPENDS);
+          return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.APPENDS, code);
         throw new FHIRException("Unknown DocumentRelationshipType code '"+codeString+"'");
         }
     public String toCode(DocumentRelationshipType code) {

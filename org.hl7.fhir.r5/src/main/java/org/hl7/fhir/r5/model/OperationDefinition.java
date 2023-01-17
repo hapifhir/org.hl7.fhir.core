@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -123,18 +123,18 @@ public class OperationDefinition extends CanonicalResource {
           return OperationKind.QUERY;
         throw new IllegalArgumentException("Unknown OperationKind code '"+codeString+"'");
         }
-        public Enumeration<OperationKind> fromType(Base code) throws FHIRException {
+        public Enumeration<OperationKind> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<OperationKind>(this);
+            return new Enumeration<OperationKind>(this, OperationKind.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<OperationKind>(this, OperationKind.NULL, code);
         if ("operation".equals(codeString))
-          return new Enumeration<OperationKind>(this, OperationKind.OPERATION);
+          return new Enumeration<OperationKind>(this, OperationKind.OPERATION, code);
         if ("query".equals(codeString))
-          return new Enumeration<OperationKind>(this, OperationKind.QUERY);
+          return new Enumeration<OperationKind>(this, OperationKind.QUERY, code);
         throw new FHIRException("Unknown OperationKind code '"+codeString+"'");
         }
     public String toCode(OperationKind code) {
@@ -231,20 +231,20 @@ public class OperationDefinition extends CanonicalResource {
           return OperationParameterScope.SYSTEM;
         throw new IllegalArgumentException("Unknown OperationParameterScope code '"+codeString+"'");
         }
-        public Enumeration<OperationParameterScope> fromType(Base code) throws FHIRException {
+        public Enumeration<OperationParameterScope> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<OperationParameterScope>(this);
+            return new Enumeration<OperationParameterScope>(this, OperationParameterScope.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<OperationParameterScope>(this, OperationParameterScope.NULL, code);
         if ("instance".equals(codeString))
-          return new Enumeration<OperationParameterScope>(this, OperationParameterScope.INSTANCE);
+          return new Enumeration<OperationParameterScope>(this, OperationParameterScope.INSTANCE, code);
         if ("type".equals(codeString))
-          return new Enumeration<OperationParameterScope>(this, OperationParameterScope.TYPE);
+          return new Enumeration<OperationParameterScope>(this, OperationParameterScope.TYPE, code);
         if ("system".equals(codeString))
-          return new Enumeration<OperationParameterScope>(this, OperationParameterScope.SYSTEM);
+          return new Enumeration<OperationParameterScope>(this, OperationParameterScope.SYSTEM, code);
         throw new FHIRException("Unknown OperationParameterScope code '"+codeString+"'");
         }
     public String toCode(OperationParameterScope code) {
@@ -5717,4 +5717,3 @@ public class OperationDefinition extends CanonicalResource {
 // end addition
 
 }
-

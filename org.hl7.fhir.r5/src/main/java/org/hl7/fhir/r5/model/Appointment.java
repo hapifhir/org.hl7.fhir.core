@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -219,34 +219,34 @@ public class Appointment extends DomainResource {
           return AppointmentStatus.WAITLIST;
         throw new IllegalArgumentException("Unknown AppointmentStatus code '"+codeString+"'");
         }
-        public Enumeration<AppointmentStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<AppointmentStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<AppointmentStatus>(this);
+            return new Enumeration<AppointmentStatus>(this, AppointmentStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<AppointmentStatus>(this, AppointmentStatus.NULL, code);
         if ("proposed".equals(codeString))
-          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.PROPOSED);
+          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.PROPOSED, code);
         if ("pending".equals(codeString))
-          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.PENDING);
+          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.PENDING, code);
         if ("booked".equals(codeString))
-          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.BOOKED);
+          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.BOOKED, code);
         if ("arrived".equals(codeString))
-          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.ARRIVED);
+          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.ARRIVED, code);
         if ("fulfilled".equals(codeString))
-          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.FULFILLED);
+          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.FULFILLED, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.CANCELLED);
+          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.CANCELLED, code);
         if ("noshow".equals(codeString))
-          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.NOSHOW);
+          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.NOSHOW, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.ENTEREDINERROR);
+          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.ENTEREDINERROR, code);
         if ("checked-in".equals(codeString))
-          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.CHECKEDIN);
+          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.CHECKEDIN, code);
         if ("waitlist".equals(codeString))
-          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.WAITLIST);
+          return new Enumeration<AppointmentStatus>(this, AppointmentStatus.WAITLIST, code);
         throw new FHIRException("Unknown AppointmentStatus code '"+codeString+"'");
         }
     public String toCode(AppointmentStatus code) {
@@ -1506,7 +1506,9 @@ public class Appointment extends DomainResource {
         protected BooleanType sunday;
 
         /**
-         * The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.
+         * The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.
+
+e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.
          */
         @Child(name = "weekInterval", type = {PositiveIntType.class}, order=8, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Recurs every nth week", formalDefinition="The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.\r\re.g. For recurring every second week this interval would be 2, or every third week the interval would be 3." )
@@ -1837,7 +1839,9 @@ public class Appointment extends DomainResource {
         }
 
         /**
-         * @return {@link #weekInterval} (The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.). This is the underlying object with id, value and extensions. The accessor "getWeekInterval" gives direct access to the value
+         * @return {@link #weekInterval} (The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.
+
+e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.). This is the underlying object with id, value and extensions. The accessor "getWeekInterval" gives direct access to the value
          */
         public PositiveIntType getWeekIntervalElement() { 
           if (this.weekInterval == null)
@@ -1857,7 +1861,9 @@ public class Appointment extends DomainResource {
         }
 
         /**
-         * @param value {@link #weekInterval} (The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.). This is the underlying object with id, value and extensions. The accessor "getWeekInterval" gives direct access to the value
+         * @param value {@link #weekInterval} (The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.
+
+e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.). This is the underlying object with id, value and extensions. The accessor "getWeekInterval" gives direct access to the value
          */
         public AppointmentRecurrenceTemplateWeeklyTemplateComponent setWeekIntervalElement(PositiveIntType value) { 
           this.weekInterval = value;
@@ -1865,14 +1871,18 @@ public class Appointment extends DomainResource {
         }
 
         /**
-         * @return The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.
+         * @return The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.
+
+e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.
          */
         public int getWeekInterval() { 
           return this.weekInterval == null || this.weekInterval.isEmpty() ? 0 : this.weekInterval.getValue();
         }
 
         /**
-         * @param value The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.
+         * @param value The interval defines if the recurrence is every nth week. The default is every week, so it is expected that this value will be 2 or more.
+
+e.g. For recurring every second week this interval would be 2, or every third week the interval would be 3.
          */
         public AppointmentRecurrenceTemplateWeeklyTemplateComponent setWeekInterval(int value) { 
             if (this.weekInterval == null)
@@ -5418,4 +5428,3 @@ The duration (usually in minutes) could also be provided to indicate the length 
 
 
 }
-

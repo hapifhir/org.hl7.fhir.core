@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -195,30 +195,30 @@ public class CarePlan extends DomainResource {
           return CarePlanActivityKind.VISIONPRESCRIPTION;
         throw new IllegalArgumentException("Unknown CarePlanActivityKind code '"+codeString+"'");
         }
-        public Enumeration<CarePlanActivityKind> fromType(Base code) throws FHIRException {
+        public Enumeration<CarePlanActivityKind> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<CarePlanActivityKind>(this);
+            return new Enumeration<CarePlanActivityKind>(this, CarePlanActivityKind.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<CarePlanActivityKind>(this, CarePlanActivityKind.NULL, code);
         if ("Appointment".equals(codeString))
-          return new Enumeration<CarePlanActivityKind>(this, CarePlanActivityKind.APPOINTMENT);
+          return new Enumeration<CarePlanActivityKind>(this, CarePlanActivityKind.APPOINTMENT, code);
         if ("CommunicationRequest".equals(codeString))
-          return new Enumeration<CarePlanActivityKind>(this, CarePlanActivityKind.COMMUNICATIONREQUEST);
+          return new Enumeration<CarePlanActivityKind>(this, CarePlanActivityKind.COMMUNICATIONREQUEST, code);
         if ("DeviceRequest".equals(codeString))
-          return new Enumeration<CarePlanActivityKind>(this, CarePlanActivityKind.DEVICEREQUEST);
+          return new Enumeration<CarePlanActivityKind>(this, CarePlanActivityKind.DEVICEREQUEST, code);
         if ("MedicationRequest".equals(codeString))
-          return new Enumeration<CarePlanActivityKind>(this, CarePlanActivityKind.MEDICATIONREQUEST);
+          return new Enumeration<CarePlanActivityKind>(this, CarePlanActivityKind.MEDICATIONREQUEST, code);
         if ("NutritionOrder".equals(codeString))
-          return new Enumeration<CarePlanActivityKind>(this, CarePlanActivityKind.NUTRITIONORDER);
+          return new Enumeration<CarePlanActivityKind>(this, CarePlanActivityKind.NUTRITIONORDER, code);
         if ("Task".equals(codeString))
-          return new Enumeration<CarePlanActivityKind>(this, CarePlanActivityKind.TASK);
+          return new Enumeration<CarePlanActivityKind>(this, CarePlanActivityKind.TASK, code);
         if ("ServiceRequest".equals(codeString))
-          return new Enumeration<CarePlanActivityKind>(this, CarePlanActivityKind.SERVICEREQUEST);
+          return new Enumeration<CarePlanActivityKind>(this, CarePlanActivityKind.SERVICEREQUEST, code);
         if ("VisionPrescription".equals(codeString))
-          return new Enumeration<CarePlanActivityKind>(this, CarePlanActivityKind.VISIONPRESCRIPTION);
+          return new Enumeration<CarePlanActivityKind>(this, CarePlanActivityKind.VISIONPRESCRIPTION, code);
         throw new FHIRException("Unknown CarePlanActivityKind code '"+codeString+"'");
         }
     public String toCode(CarePlanActivityKind code) {
@@ -399,32 +399,32 @@ public class CarePlan extends DomainResource {
           return CarePlanActivityStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown CarePlanActivityStatus code '"+codeString+"'");
         }
-        public Enumeration<CarePlanActivityStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<CarePlanActivityStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<CarePlanActivityStatus>(this);
+            return new Enumeration<CarePlanActivityStatus>(this, CarePlanActivityStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<CarePlanActivityStatus>(this, CarePlanActivityStatus.NULL, code);
         if ("not-started".equals(codeString))
-          return new Enumeration<CarePlanActivityStatus>(this, CarePlanActivityStatus.NOTSTARTED);
+          return new Enumeration<CarePlanActivityStatus>(this, CarePlanActivityStatus.NOTSTARTED, code);
         if ("scheduled".equals(codeString))
-          return new Enumeration<CarePlanActivityStatus>(this, CarePlanActivityStatus.SCHEDULED);
+          return new Enumeration<CarePlanActivityStatus>(this, CarePlanActivityStatus.SCHEDULED, code);
         if ("in-progress".equals(codeString))
-          return new Enumeration<CarePlanActivityStatus>(this, CarePlanActivityStatus.INPROGRESS);
+          return new Enumeration<CarePlanActivityStatus>(this, CarePlanActivityStatus.INPROGRESS, code);
         if ("on-hold".equals(codeString))
-          return new Enumeration<CarePlanActivityStatus>(this, CarePlanActivityStatus.ONHOLD);
+          return new Enumeration<CarePlanActivityStatus>(this, CarePlanActivityStatus.ONHOLD, code);
         if ("completed".equals(codeString))
-          return new Enumeration<CarePlanActivityStatus>(this, CarePlanActivityStatus.COMPLETED);
+          return new Enumeration<CarePlanActivityStatus>(this, CarePlanActivityStatus.COMPLETED, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<CarePlanActivityStatus>(this, CarePlanActivityStatus.CANCELLED);
+          return new Enumeration<CarePlanActivityStatus>(this, CarePlanActivityStatus.CANCELLED, code);
         if ("stopped".equals(codeString))
-          return new Enumeration<CarePlanActivityStatus>(this, CarePlanActivityStatus.STOPPED);
+          return new Enumeration<CarePlanActivityStatus>(this, CarePlanActivityStatus.STOPPED, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<CarePlanActivityStatus>(this, CarePlanActivityStatus.UNKNOWN);
+          return new Enumeration<CarePlanActivityStatus>(this, CarePlanActivityStatus.UNKNOWN, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<CarePlanActivityStatus>(this, CarePlanActivityStatus.ENTEREDINERROR);
+          return new Enumeration<CarePlanActivityStatus>(this, CarePlanActivityStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown CarePlanActivityStatus code '"+codeString+"'");
         }
     public String toCode(CarePlanActivityStatus code) {
@@ -559,24 +559,24 @@ public class CarePlan extends DomainResource {
           return CarePlanIntent.DIRECTIVE;
         throw new IllegalArgumentException("Unknown CarePlanIntent code '"+codeString+"'");
         }
-        public Enumeration<CarePlanIntent> fromType(Base code) throws FHIRException {
+        public Enumeration<CarePlanIntent> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<CarePlanIntent>(this);
+            return new Enumeration<CarePlanIntent>(this, CarePlanIntent.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<CarePlanIntent>(this, CarePlanIntent.NULL, code);
         if ("proposal".equals(codeString))
-          return new Enumeration<CarePlanIntent>(this, CarePlanIntent.PROPOSAL);
+          return new Enumeration<CarePlanIntent>(this, CarePlanIntent.PROPOSAL, code);
         if ("plan".equals(codeString))
-          return new Enumeration<CarePlanIntent>(this, CarePlanIntent.PLAN);
+          return new Enumeration<CarePlanIntent>(this, CarePlanIntent.PLAN, code);
         if ("order".equals(codeString))
-          return new Enumeration<CarePlanIntent>(this, CarePlanIntent.ORDER);
+          return new Enumeration<CarePlanIntent>(this, CarePlanIntent.ORDER, code);
         if ("option".equals(codeString))
-          return new Enumeration<CarePlanIntent>(this, CarePlanIntent.OPTION);
+          return new Enumeration<CarePlanIntent>(this, CarePlanIntent.OPTION, code);
         if ("directive".equals(codeString))
-          return new Enumeration<CarePlanIntent>(this, CarePlanIntent.DIRECTIVE);
+          return new Enumeration<CarePlanIntent>(this, CarePlanIntent.DIRECTIVE, code);
         throw new FHIRException("Unknown CarePlanIntent code '"+codeString+"'");
         }
     public String toCode(CarePlanIntent code) {
@@ -4739,4 +4739,3 @@ public class CarePlan extends DomainResource {
 
 
 }
-

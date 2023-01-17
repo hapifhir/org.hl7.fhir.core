@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4b.model;
+﻿package org.hl7.fhir.r4b.model;
 
 
 /*
@@ -159,24 +159,24 @@ public class ImagingStudy extends DomainResource {
           return ImagingStudyStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown ImagingStudyStatus code '"+codeString+"'");
         }
-        public Enumeration<ImagingStudyStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ImagingStudyStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ImagingStudyStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ImagingStudyStatus>(this, ImagingStudyStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ImagingStudyStatus>(this, ImagingStudyStatus.NULL, code);
         if ("registered".equals(codeString))
-          return new Enumeration<ImagingStudyStatus>(this, ImagingStudyStatus.REGISTERED);
+          return new Enumeration<ImagingStudyStatus>(this, ImagingStudyStatus.REGISTERED, code);
         if ("available".equals(codeString))
-          return new Enumeration<ImagingStudyStatus>(this, ImagingStudyStatus.AVAILABLE);
+          return new Enumeration<ImagingStudyStatus>(this, ImagingStudyStatus.AVAILABLE, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<ImagingStudyStatus>(this, ImagingStudyStatus.CANCELLED);
+          return new Enumeration<ImagingStudyStatus>(this, ImagingStudyStatus.CANCELLED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<ImagingStudyStatus>(this, ImagingStudyStatus.ENTEREDINERROR);
+          return new Enumeration<ImagingStudyStatus>(this, ImagingStudyStatus.ENTEREDINERROR, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<ImagingStudyStatus>(this, ImagingStudyStatus.UNKNOWN);
+          return new Enumeration<ImagingStudyStatus>(this, ImagingStudyStatus.UNKNOWN, code);
         throw new FHIRException("Unknown ImagingStudyStatus code '"+codeString+"'");
         }
     public String toCode(ImagingStudyStatus code) {
@@ -3706,4 +3706,3 @@ public class ImagingStudy extends DomainResource {
 
 
 }
-

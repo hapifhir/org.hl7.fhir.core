@@ -309,12 +309,12 @@ There is an extension 'http://hl7.org/fhir/StructureDefinition/questionnaire-uni
           return QuestionnaireItemType.QUANTITY;
         throw new IllegalArgumentException("Unknown QuestionnaireItemType code '"+codeString+"'");
         }
-        public Enumeration<QuestionnaireItemType> fromType(Base code) throws FHIRException {
+        public Enumeration<QuestionnaireItemType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<QuestionnaireItemType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("group".equals(codeString))

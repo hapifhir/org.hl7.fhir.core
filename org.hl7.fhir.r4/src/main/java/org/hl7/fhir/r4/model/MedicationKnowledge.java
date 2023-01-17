@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.model;
+﻿package org.hl7.fhir.r4.model;
 
 
 
@@ -133,20 +133,20 @@ public class MedicationKnowledge extends DomainResource {
           return MedicationKnowledgeStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown MedicationKnowledgeStatus code '"+codeString+"'");
         }
-        public Enumeration<MedicationKnowledgeStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<MedicationKnowledgeStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<MedicationKnowledgeStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<MedicationKnowledgeStatus>(this, MedicationKnowledgeStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<MedicationKnowledgeStatus>(this, MedicationKnowledgeStatus.NULL, code);
         if ("active".equals(codeString))
-          return new Enumeration<MedicationKnowledgeStatus>(this, MedicationKnowledgeStatus.ACTIVE);
+          return new Enumeration<MedicationKnowledgeStatus>(this, MedicationKnowledgeStatus.ACTIVE, code);
         if ("inactive".equals(codeString))
-          return new Enumeration<MedicationKnowledgeStatus>(this, MedicationKnowledgeStatus.INACTIVE);
+          return new Enumeration<MedicationKnowledgeStatus>(this, MedicationKnowledgeStatus.INACTIVE, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<MedicationKnowledgeStatus>(this, MedicationKnowledgeStatus.ENTEREDINERROR);
+          return new Enumeration<MedicationKnowledgeStatus>(this, MedicationKnowledgeStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown MedicationKnowledgeStatus code '"+codeString+"'");
         }
     public String toCode(MedicationKnowledgeStatus code) {

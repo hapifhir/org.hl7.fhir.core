@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -135,20 +135,20 @@ public class MeasureReport extends DomainResource {
           return MeasureReportStatus.ERROR;
         throw new IllegalArgumentException("Unknown MeasureReportStatus code '"+codeString+"'");
         }
-        public Enumeration<MeasureReportStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<MeasureReportStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<MeasureReportStatus>(this);
+            return new Enumeration<MeasureReportStatus>(this, MeasureReportStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<MeasureReportStatus>(this, MeasureReportStatus.NULL, code);
         if ("complete".equals(codeString))
-          return new Enumeration<MeasureReportStatus>(this, MeasureReportStatus.COMPLETE);
+          return new Enumeration<MeasureReportStatus>(this, MeasureReportStatus.COMPLETE, code);
         if ("pending".equals(codeString))
-          return new Enumeration<MeasureReportStatus>(this, MeasureReportStatus.PENDING);
+          return new Enumeration<MeasureReportStatus>(this, MeasureReportStatus.PENDING, code);
         if ("error".equals(codeString))
-          return new Enumeration<MeasureReportStatus>(this, MeasureReportStatus.ERROR);
+          return new Enumeration<MeasureReportStatus>(this, MeasureReportStatus.ERROR, code);
         throw new FHIRException("Unknown MeasureReportStatus code '"+codeString+"'");
         }
     public String toCode(MeasureReportStatus code) {
@@ -259,22 +259,22 @@ public class MeasureReport extends DomainResource {
           return MeasureReportType.DATAEXCHANGE;
         throw new IllegalArgumentException("Unknown MeasureReportType code '"+codeString+"'");
         }
-        public Enumeration<MeasureReportType> fromType(Base code) throws FHIRException {
+        public Enumeration<MeasureReportType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<MeasureReportType>(this);
+            return new Enumeration<MeasureReportType>(this, MeasureReportType.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<MeasureReportType>(this, MeasureReportType.NULL, code);
         if ("individual".equals(codeString))
-          return new Enumeration<MeasureReportType>(this, MeasureReportType.INDIVIDUAL);
+          return new Enumeration<MeasureReportType>(this, MeasureReportType.INDIVIDUAL, code);
         if ("subject-list".equals(codeString))
-          return new Enumeration<MeasureReportType>(this, MeasureReportType.SUBJECTLIST);
+          return new Enumeration<MeasureReportType>(this, MeasureReportType.SUBJECTLIST, code);
         if ("summary".equals(codeString))
-          return new Enumeration<MeasureReportType>(this, MeasureReportType.SUMMARY);
+          return new Enumeration<MeasureReportType>(this, MeasureReportType.SUMMARY, code);
         if ("data-exchange".equals(codeString))
-          return new Enumeration<MeasureReportType>(this, MeasureReportType.DATAEXCHANGE);
+          return new Enumeration<MeasureReportType>(this, MeasureReportType.DATAEXCHANGE, code);
         throw new FHIRException("Unknown MeasureReportType code '"+codeString+"'");
         }
     public String toCode(MeasureReportType code) {
@@ -363,18 +363,18 @@ public class MeasureReport extends DomainResource {
           return SubmitDataUpdateType.SNAPSHOT;
         throw new IllegalArgumentException("Unknown SubmitDataUpdateType code '"+codeString+"'");
         }
-        public Enumeration<SubmitDataUpdateType> fromType(Base code) throws FHIRException {
+        public Enumeration<SubmitDataUpdateType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<SubmitDataUpdateType>(this);
+            return new Enumeration<SubmitDataUpdateType>(this, SubmitDataUpdateType.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<SubmitDataUpdateType>(this, SubmitDataUpdateType.NULL, code);
         if ("incremental".equals(codeString))
-          return new Enumeration<SubmitDataUpdateType>(this, SubmitDataUpdateType.INCREMENTAL);
+          return new Enumeration<SubmitDataUpdateType>(this, SubmitDataUpdateType.INCREMENTAL, code);
         if ("snapshot".equals(codeString))
-          return new Enumeration<SubmitDataUpdateType>(this, SubmitDataUpdateType.SNAPSHOT);
+          return new Enumeration<SubmitDataUpdateType>(this, SubmitDataUpdateType.SNAPSHOT, code);
         throw new FHIRException("Unknown SubmitDataUpdateType code '"+codeString+"'");
         }
     public String toCode(SubmitDataUpdateType code) {
@@ -3843,4 +3843,3 @@ public class MeasureReport extends DomainResource {
 
 
 }
-

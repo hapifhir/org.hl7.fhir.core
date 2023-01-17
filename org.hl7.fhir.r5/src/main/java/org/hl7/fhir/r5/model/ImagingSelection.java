@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -160,24 +160,24 @@ public class ImagingSelection extends DomainResource {
           return ImagingSelection2DGraphicType.ELLIPSE;
         throw new IllegalArgumentException("Unknown ImagingSelection2DGraphicType code '"+codeString+"'");
         }
-        public Enumeration<ImagingSelection2DGraphicType> fromType(Base code) throws FHIRException {
+        public Enumeration<ImagingSelection2DGraphicType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ImagingSelection2DGraphicType>(this);
+            return new Enumeration<ImagingSelection2DGraphicType>(this, ImagingSelection2DGraphicType.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ImagingSelection2DGraphicType>(this, ImagingSelection2DGraphicType.NULL, code);
         if ("point".equals(codeString))
-          return new Enumeration<ImagingSelection2DGraphicType>(this, ImagingSelection2DGraphicType.POINT);
+          return new Enumeration<ImagingSelection2DGraphicType>(this, ImagingSelection2DGraphicType.POINT, code);
         if ("polyline".equals(codeString))
-          return new Enumeration<ImagingSelection2DGraphicType>(this, ImagingSelection2DGraphicType.POLYLINE);
+          return new Enumeration<ImagingSelection2DGraphicType>(this, ImagingSelection2DGraphicType.POLYLINE, code);
         if ("interpolated".equals(codeString))
-          return new Enumeration<ImagingSelection2DGraphicType>(this, ImagingSelection2DGraphicType.INTERPOLATED);
+          return new Enumeration<ImagingSelection2DGraphicType>(this, ImagingSelection2DGraphicType.INTERPOLATED, code);
         if ("circle".equals(codeString))
-          return new Enumeration<ImagingSelection2DGraphicType>(this, ImagingSelection2DGraphicType.CIRCLE);
+          return new Enumeration<ImagingSelection2DGraphicType>(this, ImagingSelection2DGraphicType.CIRCLE, code);
         if ("ellipse".equals(codeString))
-          return new Enumeration<ImagingSelection2DGraphicType>(this, ImagingSelection2DGraphicType.ELLIPSE);
+          return new Enumeration<ImagingSelection2DGraphicType>(this, ImagingSelection2DGraphicType.ELLIPSE, code);
         throw new FHIRException("Unknown ImagingSelection2DGraphicType code '"+codeString+"'");
         }
     public String toCode(ImagingSelection2DGraphicType code) {
@@ -316,26 +316,26 @@ public class ImagingSelection extends DomainResource {
           return ImagingSelection3DGraphicType.ELLIPSOID;
         throw new IllegalArgumentException("Unknown ImagingSelection3DGraphicType code '"+codeString+"'");
         }
-        public Enumeration<ImagingSelection3DGraphicType> fromType(Base code) throws FHIRException {
+        public Enumeration<ImagingSelection3DGraphicType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ImagingSelection3DGraphicType>(this);
+            return new Enumeration<ImagingSelection3DGraphicType>(this, ImagingSelection3DGraphicType.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ImagingSelection3DGraphicType>(this, ImagingSelection3DGraphicType.NULL, code);
         if ("point".equals(codeString))
-          return new Enumeration<ImagingSelection3DGraphicType>(this, ImagingSelection3DGraphicType.POINT);
+          return new Enumeration<ImagingSelection3DGraphicType>(this, ImagingSelection3DGraphicType.POINT, code);
         if ("multipoint".equals(codeString))
-          return new Enumeration<ImagingSelection3DGraphicType>(this, ImagingSelection3DGraphicType.MULTIPOINT);
+          return new Enumeration<ImagingSelection3DGraphicType>(this, ImagingSelection3DGraphicType.MULTIPOINT, code);
         if ("polyline".equals(codeString))
-          return new Enumeration<ImagingSelection3DGraphicType>(this, ImagingSelection3DGraphicType.POLYLINE);
+          return new Enumeration<ImagingSelection3DGraphicType>(this, ImagingSelection3DGraphicType.POLYLINE, code);
         if ("polygon".equals(codeString))
-          return new Enumeration<ImagingSelection3DGraphicType>(this, ImagingSelection3DGraphicType.POLYGON);
+          return new Enumeration<ImagingSelection3DGraphicType>(this, ImagingSelection3DGraphicType.POLYGON, code);
         if ("ellipse".equals(codeString))
-          return new Enumeration<ImagingSelection3DGraphicType>(this, ImagingSelection3DGraphicType.ELLIPSE);
+          return new Enumeration<ImagingSelection3DGraphicType>(this, ImagingSelection3DGraphicType.ELLIPSE, code);
         if ("ellipsoid".equals(codeString))
-          return new Enumeration<ImagingSelection3DGraphicType>(this, ImagingSelection3DGraphicType.ELLIPSOID);
+          return new Enumeration<ImagingSelection3DGraphicType>(this, ImagingSelection3DGraphicType.ELLIPSOID, code);
         throw new FHIRException("Unknown ImagingSelection3DGraphicType code '"+codeString+"'");
         }
     public String toCode(ImagingSelection3DGraphicType code) {
@@ -440,20 +440,20 @@ public class ImagingSelection extends DomainResource {
           return ImagingSelectionStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown ImagingSelectionStatus code '"+codeString+"'");
         }
-        public Enumeration<ImagingSelectionStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ImagingSelectionStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ImagingSelectionStatus>(this);
+            return new Enumeration<ImagingSelectionStatus>(this, ImagingSelectionStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ImagingSelectionStatus>(this, ImagingSelectionStatus.NULL, code);
         if ("available".equals(codeString))
-          return new Enumeration<ImagingSelectionStatus>(this, ImagingSelectionStatus.AVAILABLE);
+          return new Enumeration<ImagingSelectionStatus>(this, ImagingSelectionStatus.AVAILABLE, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<ImagingSelectionStatus>(this, ImagingSelectionStatus.ENTEREDINERROR);
+          return new Enumeration<ImagingSelectionStatus>(this, ImagingSelectionStatus.ENTEREDINERROR, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<ImagingSelectionStatus>(this, ImagingSelectionStatus.UNKNOWN);
+          return new Enumeration<ImagingSelectionStatus>(this, ImagingSelectionStatus.UNKNOWN, code);
         throw new FHIRException("Unknown ImagingSelectionStatus code '"+codeString+"'");
         }
     public String toCode(ImagingSelectionStatus code) {
@@ -3315,4 +3315,3 @@ public class ImagingSelection extends DomainResource {
 
 
 }
-

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.model;
+﻿package org.hl7.fhir.r4.model;
 
 
 
@@ -159,24 +159,24 @@ public class CompartmentDefinition extends MetadataResource {
           return CompartmentType.DEVICE;
         throw new IllegalArgumentException("Unknown CompartmentType code '"+codeString+"'");
         }
-        public Enumeration<CompartmentType> fromType(Base code) throws FHIRException {
+        public Enumeration<CompartmentType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<CompartmentType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<CompartmentType>(this, CompartmentType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<CompartmentType>(this, CompartmentType.NULL, code);
         if ("Patient".equals(codeString))
-          return new Enumeration<CompartmentType>(this, CompartmentType.PATIENT);
+          return new Enumeration<CompartmentType>(this, CompartmentType.PATIENT, code);
         if ("Encounter".equals(codeString))
-          return new Enumeration<CompartmentType>(this, CompartmentType.ENCOUNTER);
+          return new Enumeration<CompartmentType>(this, CompartmentType.ENCOUNTER, code);
         if ("RelatedPerson".equals(codeString))
-          return new Enumeration<CompartmentType>(this, CompartmentType.RELATEDPERSON);
+          return new Enumeration<CompartmentType>(this, CompartmentType.RELATEDPERSON, code);
         if ("Practitioner".equals(codeString))
-          return new Enumeration<CompartmentType>(this, CompartmentType.PRACTITIONER);
+          return new Enumeration<CompartmentType>(this, CompartmentType.PRACTITIONER, code);
         if ("Device".equals(codeString))
-          return new Enumeration<CompartmentType>(this, CompartmentType.DEVICE);
+          return new Enumeration<CompartmentType>(this, CompartmentType.DEVICE, code);
         throw new FHIRException("Unknown CompartmentType code '"+codeString+"'");
         }
     public String toCode(CompartmentType code) {

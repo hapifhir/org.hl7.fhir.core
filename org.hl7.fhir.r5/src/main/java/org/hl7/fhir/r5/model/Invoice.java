@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -159,24 +159,24 @@ public class Invoice extends DomainResource {
           return InvoiceStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown InvoiceStatus code '"+codeString+"'");
         }
-        public Enumeration<InvoiceStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<InvoiceStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<InvoiceStatus>(this);
+            return new Enumeration<InvoiceStatus>(this, InvoiceStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<InvoiceStatus>(this, InvoiceStatus.NULL, code);
         if ("draft".equals(codeString))
-          return new Enumeration<InvoiceStatus>(this, InvoiceStatus.DRAFT);
+          return new Enumeration<InvoiceStatus>(this, InvoiceStatus.DRAFT, code);
         if ("issued".equals(codeString))
-          return new Enumeration<InvoiceStatus>(this, InvoiceStatus.ISSUED);
+          return new Enumeration<InvoiceStatus>(this, InvoiceStatus.ISSUED, code);
         if ("balanced".equals(codeString))
-          return new Enumeration<InvoiceStatus>(this, InvoiceStatus.BALANCED);
+          return new Enumeration<InvoiceStatus>(this, InvoiceStatus.BALANCED, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<InvoiceStatus>(this, InvoiceStatus.CANCELLED);
+          return new Enumeration<InvoiceStatus>(this, InvoiceStatus.CANCELLED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<InvoiceStatus>(this, InvoiceStatus.ENTEREDINERROR);
+          return new Enumeration<InvoiceStatus>(this, InvoiceStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown InvoiceStatus code '"+codeString+"'");
         }
     public String toCode(InvoiceStatus code) {
@@ -2403,4 +2403,3 @@ public class Invoice extends DomainResource {
 
 
 }
-

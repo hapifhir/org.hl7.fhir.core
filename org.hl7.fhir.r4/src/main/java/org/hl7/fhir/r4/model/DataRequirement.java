@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.model;
+﻿package org.hl7.fhir.r4.model;
 
 
 
@@ -121,18 +121,18 @@ public class DataRequirement extends Type implements ICompositeType {
           return SortDirection.DESCENDING;
         throw new IllegalArgumentException("Unknown SortDirection code '"+codeString+"'");
         }
-        public Enumeration<SortDirection> fromType(Base code) throws FHIRException {
+        public Enumeration<SortDirection> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<SortDirection>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<SortDirection>(this, SortDirection.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<SortDirection>(this, SortDirection.NULL, code);
         if ("ascending".equals(codeString))
-          return new Enumeration<SortDirection>(this, SortDirection.ASCENDING);
+          return new Enumeration<SortDirection>(this, SortDirection.ASCENDING, code);
         if ("descending".equals(codeString))
-          return new Enumeration<SortDirection>(this, SortDirection.DESCENDING);
+          return new Enumeration<SortDirection>(this, SortDirection.DESCENDING, code);
         throw new FHIRException("Unknown SortDirection code '"+codeString+"'");
         }
     public String toCode(SortDirection code) {

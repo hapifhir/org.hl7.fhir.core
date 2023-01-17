@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.model;
+﻿package org.hl7.fhir.r4.model;
 
 
 
@@ -145,22 +145,22 @@ public class Quantity extends Type implements ICompositeType, ICoding {
           return QuantityComparator.GREATER_THAN;
         throw new IllegalArgumentException("Unknown QuantityComparator code '"+codeString+"'");
         }
-        public Enumeration<QuantityComparator> fromType(Base code) throws FHIRException {
+        public Enumeration<QuantityComparator> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<QuantityComparator>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<QuantityComparator>(this, QuantityComparator.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<QuantityComparator>(this, QuantityComparator.NULL, code);
         if ("<".equals(codeString))
-          return new Enumeration<QuantityComparator>(this, QuantityComparator.LESS_THAN);
+          return new Enumeration<QuantityComparator>(this, QuantityComparator.LESS_THAN, code);
         if ("<=".equals(codeString))
-          return new Enumeration<QuantityComparator>(this, QuantityComparator.LESS_OR_EQUAL);
+          return new Enumeration<QuantityComparator>(this, QuantityComparator.LESS_OR_EQUAL, code);
         if (">=".equals(codeString))
-          return new Enumeration<QuantityComparator>(this, QuantityComparator.GREATER_OR_EQUAL);
+          return new Enumeration<QuantityComparator>(this, QuantityComparator.GREATER_OR_EQUAL, code);
         if (">".equals(codeString))
-          return new Enumeration<QuantityComparator>(this, QuantityComparator.GREATER_THAN);
+          return new Enumeration<QuantityComparator>(this, QuantityComparator.GREATER_THAN, code);
         throw new FHIRException("Unknown QuantityComparator code '"+codeString+"'");
         }
     public String toCode(QuantityComparator code) {

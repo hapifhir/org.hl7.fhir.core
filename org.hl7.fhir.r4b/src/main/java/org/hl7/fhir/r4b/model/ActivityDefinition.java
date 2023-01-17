@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4b.model;
+﻿package org.hl7.fhir.r4b.model;
 
 
 /*
@@ -279,44 +279,44 @@ public class ActivityDefinition extends CanonicalResource {
           return RequestResourceType.VISIONPRESCRIPTION;
         throw new IllegalArgumentException("Unknown RequestResourceType code '"+codeString+"'");
         }
-        public Enumeration<RequestResourceType> fromType(Base code) throws FHIRException {
+        public Enumeration<RequestResourceType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<RequestResourceType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<RequestResourceType>(this, RequestResourceType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<RequestResourceType>(this, RequestResourceType.NULL, code);
         if ("Appointment".equals(codeString))
-          return new Enumeration<RequestResourceType>(this, RequestResourceType.APPOINTMENT);
+          return new Enumeration<RequestResourceType>(this, RequestResourceType.APPOINTMENT, code);
         if ("AppointmentResponse".equals(codeString))
-          return new Enumeration<RequestResourceType>(this, RequestResourceType.APPOINTMENTRESPONSE);
+          return new Enumeration<RequestResourceType>(this, RequestResourceType.APPOINTMENTRESPONSE, code);
         if ("CarePlan".equals(codeString))
-          return new Enumeration<RequestResourceType>(this, RequestResourceType.CAREPLAN);
+          return new Enumeration<RequestResourceType>(this, RequestResourceType.CAREPLAN, code);
         if ("Claim".equals(codeString))
-          return new Enumeration<RequestResourceType>(this, RequestResourceType.CLAIM);
+          return new Enumeration<RequestResourceType>(this, RequestResourceType.CLAIM, code);
         if ("CommunicationRequest".equals(codeString))
-          return new Enumeration<RequestResourceType>(this, RequestResourceType.COMMUNICATIONREQUEST);
+          return new Enumeration<RequestResourceType>(this, RequestResourceType.COMMUNICATIONREQUEST, code);
         if ("Contract".equals(codeString))
-          return new Enumeration<RequestResourceType>(this, RequestResourceType.CONTRACT);
+          return new Enumeration<RequestResourceType>(this, RequestResourceType.CONTRACT, code);
         if ("DeviceRequest".equals(codeString))
-          return new Enumeration<RequestResourceType>(this, RequestResourceType.DEVICEREQUEST);
+          return new Enumeration<RequestResourceType>(this, RequestResourceType.DEVICEREQUEST, code);
         if ("EnrollmentRequest".equals(codeString))
-          return new Enumeration<RequestResourceType>(this, RequestResourceType.ENROLLMENTREQUEST);
+          return new Enumeration<RequestResourceType>(this, RequestResourceType.ENROLLMENTREQUEST, code);
         if ("ImmunizationRecommendation".equals(codeString))
-          return new Enumeration<RequestResourceType>(this, RequestResourceType.IMMUNIZATIONRECOMMENDATION);
+          return new Enumeration<RequestResourceType>(this, RequestResourceType.IMMUNIZATIONRECOMMENDATION, code);
         if ("MedicationRequest".equals(codeString))
-          return new Enumeration<RequestResourceType>(this, RequestResourceType.MEDICATIONREQUEST);
+          return new Enumeration<RequestResourceType>(this, RequestResourceType.MEDICATIONREQUEST, code);
         if ("NutritionOrder".equals(codeString))
-          return new Enumeration<RequestResourceType>(this, RequestResourceType.NUTRITIONORDER);
+          return new Enumeration<RequestResourceType>(this, RequestResourceType.NUTRITIONORDER, code);
         if ("ServiceRequest".equals(codeString))
-          return new Enumeration<RequestResourceType>(this, RequestResourceType.SERVICEREQUEST);
+          return new Enumeration<RequestResourceType>(this, RequestResourceType.SERVICEREQUEST, code);
         if ("SupplyRequest".equals(codeString))
-          return new Enumeration<RequestResourceType>(this, RequestResourceType.SUPPLYREQUEST);
+          return new Enumeration<RequestResourceType>(this, RequestResourceType.SUPPLYREQUEST, code);
         if ("Task".equals(codeString))
-          return new Enumeration<RequestResourceType>(this, RequestResourceType.TASK);
+          return new Enumeration<RequestResourceType>(this, RequestResourceType.TASK, code);
         if ("VisionPrescription".equals(codeString))
-          return new Enumeration<RequestResourceType>(this, RequestResourceType.VISIONPRESCRIPTION);
+          return new Enumeration<RequestResourceType>(this, RequestResourceType.VISIONPRESCRIPTION, code);
         throw new FHIRException("Unknown RequestResourceType code '"+codeString+"'");
         }
     public String toCode(RequestResourceType code) {
@@ -4860,4 +4860,3 @@ public class ActivityDefinition extends CanonicalResource {
 
 
 }
-

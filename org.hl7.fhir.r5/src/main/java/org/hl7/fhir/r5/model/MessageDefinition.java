@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -135,20 +135,20 @@ public class MessageDefinition extends CanonicalResource {
           return MessageSignificanceCategory.NOTIFICATION;
         throw new IllegalArgumentException("Unknown MessageSignificanceCategory code '"+codeString+"'");
         }
-        public Enumeration<MessageSignificanceCategory> fromType(Base code) throws FHIRException {
+        public Enumeration<MessageSignificanceCategory> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<MessageSignificanceCategory>(this);
+            return new Enumeration<MessageSignificanceCategory>(this, MessageSignificanceCategory.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<MessageSignificanceCategory>(this, MessageSignificanceCategory.NULL, code);
         if ("consequence".equals(codeString))
-          return new Enumeration<MessageSignificanceCategory>(this, MessageSignificanceCategory.CONSEQUENCE);
+          return new Enumeration<MessageSignificanceCategory>(this, MessageSignificanceCategory.CONSEQUENCE, code);
         if ("currency".equals(codeString))
-          return new Enumeration<MessageSignificanceCategory>(this, MessageSignificanceCategory.CURRENCY);
+          return new Enumeration<MessageSignificanceCategory>(this, MessageSignificanceCategory.CURRENCY, code);
         if ("notification".equals(codeString))
-          return new Enumeration<MessageSignificanceCategory>(this, MessageSignificanceCategory.NOTIFICATION);
+          return new Enumeration<MessageSignificanceCategory>(this, MessageSignificanceCategory.NOTIFICATION, code);
         throw new FHIRException("Unknown MessageSignificanceCategory code '"+codeString+"'");
         }
     public String toCode(MessageSignificanceCategory code) {
@@ -259,22 +259,22 @@ public class MessageDefinition extends CanonicalResource {
           return MessageheaderResponseRequest.ONSUCCESS;
         throw new IllegalArgumentException("Unknown MessageheaderResponseRequest code '"+codeString+"'");
         }
-        public Enumeration<MessageheaderResponseRequest> fromType(Base code) throws FHIRException {
+        public Enumeration<MessageheaderResponseRequest> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<MessageheaderResponseRequest>(this);
+            return new Enumeration<MessageheaderResponseRequest>(this, MessageheaderResponseRequest.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<MessageheaderResponseRequest>(this, MessageheaderResponseRequest.NULL, code);
         if ("always".equals(codeString))
-          return new Enumeration<MessageheaderResponseRequest>(this, MessageheaderResponseRequest.ALWAYS);
+          return new Enumeration<MessageheaderResponseRequest>(this, MessageheaderResponseRequest.ALWAYS, code);
         if ("on-error".equals(codeString))
-          return new Enumeration<MessageheaderResponseRequest>(this, MessageheaderResponseRequest.ONERROR);
+          return new Enumeration<MessageheaderResponseRequest>(this, MessageheaderResponseRequest.ONERROR, code);
         if ("never".equals(codeString))
-          return new Enumeration<MessageheaderResponseRequest>(this, MessageheaderResponseRequest.NEVER);
+          return new Enumeration<MessageheaderResponseRequest>(this, MessageheaderResponseRequest.NEVER, code);
         if ("on-success".equals(codeString))
-          return new Enumeration<MessageheaderResponseRequest>(this, MessageheaderResponseRequest.ONSUCCESS);
+          return new Enumeration<MessageheaderResponseRequest>(this, MessageheaderResponseRequest.ONSUCCESS, code);
         throw new FHIRException("Unknown MessageheaderResponseRequest code '"+codeString+"'");
         }
     public String toCode(MessageheaderResponseRequest code) {
@@ -4260,4 +4260,3 @@ public class MessageDefinition extends CanonicalResource {
 
 
 }
-

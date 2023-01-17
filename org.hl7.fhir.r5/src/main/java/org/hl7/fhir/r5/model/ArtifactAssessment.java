@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -159,24 +159,24 @@ public class ArtifactAssessment extends DomainResource {
           return ArtifactAssessmentDisposition.NOTPERSUASIVEWITHMODIFICATION;
         throw new IllegalArgumentException("Unknown ArtifactAssessmentDisposition code '"+codeString+"'");
         }
-        public Enumeration<ArtifactAssessmentDisposition> fromType(Base code) throws FHIRException {
+        public Enumeration<ArtifactAssessmentDisposition> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ArtifactAssessmentDisposition>(this);
+            return new Enumeration<ArtifactAssessmentDisposition>(this, ArtifactAssessmentDisposition.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ArtifactAssessmentDisposition>(this, ArtifactAssessmentDisposition.NULL, code);
         if ("unresolved".equals(codeString))
-          return new Enumeration<ArtifactAssessmentDisposition>(this, ArtifactAssessmentDisposition.UNRESOLVED);
+          return new Enumeration<ArtifactAssessmentDisposition>(this, ArtifactAssessmentDisposition.UNRESOLVED, code);
         if ("not-persuasive".equals(codeString))
-          return new Enumeration<ArtifactAssessmentDisposition>(this, ArtifactAssessmentDisposition.NOTPERSUASIVE);
+          return new Enumeration<ArtifactAssessmentDisposition>(this, ArtifactAssessmentDisposition.NOTPERSUASIVE, code);
         if ("persuasive".equals(codeString))
-          return new Enumeration<ArtifactAssessmentDisposition>(this, ArtifactAssessmentDisposition.PERSUASIVE);
+          return new Enumeration<ArtifactAssessmentDisposition>(this, ArtifactAssessmentDisposition.PERSUASIVE, code);
         if ("persuasive-with-modification".equals(codeString))
-          return new Enumeration<ArtifactAssessmentDisposition>(this, ArtifactAssessmentDisposition.PERSUASIVEWITHMODIFICATION);
+          return new Enumeration<ArtifactAssessmentDisposition>(this, ArtifactAssessmentDisposition.PERSUASIVEWITHMODIFICATION, code);
         if ("not-persuasive-with-modification".equals(codeString))
-          return new Enumeration<ArtifactAssessmentDisposition>(this, ArtifactAssessmentDisposition.NOTPERSUASIVEWITHMODIFICATION);
+          return new Enumeration<ArtifactAssessmentDisposition>(this, ArtifactAssessmentDisposition.NOTPERSUASIVEWITHMODIFICATION, code);
         throw new FHIRException("Unknown ArtifactAssessmentDisposition code '"+codeString+"'");
         }
     public String toCode(ArtifactAssessmentDisposition code) {
@@ -315,26 +315,26 @@ public class ArtifactAssessment extends DomainResource {
           return ArtifactAssessmentInformationType.CHANGEREQUEST;
         throw new IllegalArgumentException("Unknown ArtifactAssessmentInformationType code '"+codeString+"'");
         }
-        public Enumeration<ArtifactAssessmentInformationType> fromType(Base code) throws FHIRException {
+        public Enumeration<ArtifactAssessmentInformationType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ArtifactAssessmentInformationType>(this);
+            return new Enumeration<ArtifactAssessmentInformationType>(this, ArtifactAssessmentInformationType.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ArtifactAssessmentInformationType>(this, ArtifactAssessmentInformationType.NULL, code);
         if ("comment".equals(codeString))
-          return new Enumeration<ArtifactAssessmentInformationType>(this, ArtifactAssessmentInformationType.COMMENT);
+          return new Enumeration<ArtifactAssessmentInformationType>(this, ArtifactAssessmentInformationType.COMMENT, code);
         if ("classifier".equals(codeString))
-          return new Enumeration<ArtifactAssessmentInformationType>(this, ArtifactAssessmentInformationType.CLASSIFIER);
+          return new Enumeration<ArtifactAssessmentInformationType>(this, ArtifactAssessmentInformationType.CLASSIFIER, code);
         if ("rating".equals(codeString))
-          return new Enumeration<ArtifactAssessmentInformationType>(this, ArtifactAssessmentInformationType.RATING);
+          return new Enumeration<ArtifactAssessmentInformationType>(this, ArtifactAssessmentInformationType.RATING, code);
         if ("container".equals(codeString))
-          return new Enumeration<ArtifactAssessmentInformationType>(this, ArtifactAssessmentInformationType.CONTAINER);
+          return new Enumeration<ArtifactAssessmentInformationType>(this, ArtifactAssessmentInformationType.CONTAINER, code);
         if ("response".equals(codeString))
-          return new Enumeration<ArtifactAssessmentInformationType>(this, ArtifactAssessmentInformationType.RESPONSE);
+          return new Enumeration<ArtifactAssessmentInformationType>(this, ArtifactAssessmentInformationType.RESPONSE, code);
         if ("change-request".equals(codeString))
-          return new Enumeration<ArtifactAssessmentInformationType>(this, ArtifactAssessmentInformationType.CHANGEREQUEST);
+          return new Enumeration<ArtifactAssessmentInformationType>(this, ArtifactAssessmentInformationType.CHANGEREQUEST, code);
         throw new FHIRException("Unknown ArtifactAssessmentInformationType code '"+codeString+"'");
         }
     public String toCode(ArtifactAssessmentInformationType code) {
@@ -511,32 +511,32 @@ public class ArtifactAssessment extends DomainResource {
           return ArtifactAssessmentWorkflowStatus.PUBLISHED;
         throw new IllegalArgumentException("Unknown ArtifactAssessmentWorkflowStatus code '"+codeString+"'");
         }
-        public Enumeration<ArtifactAssessmentWorkflowStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ArtifactAssessmentWorkflowStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ArtifactAssessmentWorkflowStatus>(this);
+            return new Enumeration<ArtifactAssessmentWorkflowStatus>(this, ArtifactAssessmentWorkflowStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ArtifactAssessmentWorkflowStatus>(this, ArtifactAssessmentWorkflowStatus.NULL, code);
         if ("submitted".equals(codeString))
-          return new Enumeration<ArtifactAssessmentWorkflowStatus>(this, ArtifactAssessmentWorkflowStatus.SUBMITTED);
+          return new Enumeration<ArtifactAssessmentWorkflowStatus>(this, ArtifactAssessmentWorkflowStatus.SUBMITTED, code);
         if ("triaged".equals(codeString))
-          return new Enumeration<ArtifactAssessmentWorkflowStatus>(this, ArtifactAssessmentWorkflowStatus.TRIAGED);
+          return new Enumeration<ArtifactAssessmentWorkflowStatus>(this, ArtifactAssessmentWorkflowStatus.TRIAGED, code);
         if ("waiting-for-input".equals(codeString))
-          return new Enumeration<ArtifactAssessmentWorkflowStatus>(this, ArtifactAssessmentWorkflowStatus.WAITINGFORINPUT);
+          return new Enumeration<ArtifactAssessmentWorkflowStatus>(this, ArtifactAssessmentWorkflowStatus.WAITINGFORINPUT, code);
         if ("resolved-no-change".equals(codeString))
-          return new Enumeration<ArtifactAssessmentWorkflowStatus>(this, ArtifactAssessmentWorkflowStatus.RESOLVEDNOCHANGE);
+          return new Enumeration<ArtifactAssessmentWorkflowStatus>(this, ArtifactAssessmentWorkflowStatus.RESOLVEDNOCHANGE, code);
         if ("resolved-change-required".equals(codeString))
-          return new Enumeration<ArtifactAssessmentWorkflowStatus>(this, ArtifactAssessmentWorkflowStatus.RESOLVEDCHANGEREQUIRED);
+          return new Enumeration<ArtifactAssessmentWorkflowStatus>(this, ArtifactAssessmentWorkflowStatus.RESOLVEDCHANGEREQUIRED, code);
         if ("deferred".equals(codeString))
-          return new Enumeration<ArtifactAssessmentWorkflowStatus>(this, ArtifactAssessmentWorkflowStatus.DEFERRED);
+          return new Enumeration<ArtifactAssessmentWorkflowStatus>(this, ArtifactAssessmentWorkflowStatus.DEFERRED, code);
         if ("duplicate".equals(codeString))
-          return new Enumeration<ArtifactAssessmentWorkflowStatus>(this, ArtifactAssessmentWorkflowStatus.DUPLICATE);
+          return new Enumeration<ArtifactAssessmentWorkflowStatus>(this, ArtifactAssessmentWorkflowStatus.DUPLICATE, code);
         if ("applied".equals(codeString))
-          return new Enumeration<ArtifactAssessmentWorkflowStatus>(this, ArtifactAssessmentWorkflowStatus.APPLIED);
+          return new Enumeration<ArtifactAssessmentWorkflowStatus>(this, ArtifactAssessmentWorkflowStatus.APPLIED, code);
         if ("published".equals(codeString))
-          return new Enumeration<ArtifactAssessmentWorkflowStatus>(this, ArtifactAssessmentWorkflowStatus.PUBLISHED);
+          return new Enumeration<ArtifactAssessmentWorkflowStatus>(this, ArtifactAssessmentWorkflowStatus.PUBLISHED, code);
         throw new FHIRException("Unknown ArtifactAssessmentWorkflowStatus code '"+codeString+"'");
         }
     public String toCode(ArtifactAssessmentWorkflowStatus code) {
@@ -2218,4 +2218,3 @@ public class ArtifactAssessment extends DomainResource {
 
 
 }
-

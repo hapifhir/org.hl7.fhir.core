@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.model;
+﻿package org.hl7.fhir.r4.model;
 
 
 
@@ -182,28 +182,28 @@ public class HealthcareService extends DomainResource {
           return DaysOfWeek.SUN;
         throw new IllegalArgumentException("Unknown DaysOfWeek code '"+codeString+"'");
         }
-        public Enumeration<DaysOfWeek> fromType(Base code) throws FHIRException {
+        public Enumeration<DaysOfWeek> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<DaysOfWeek>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<DaysOfWeek>(this, DaysOfWeek.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<DaysOfWeek>(this, DaysOfWeek.NULL, code);
         if ("mon".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.MON);
+          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.MON, code);
         if ("tue".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.TUE);
+          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.TUE, code);
         if ("wed".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.WED);
+          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.WED, code);
         if ("thu".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.THU);
+          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.THU, code);
         if ("fri".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.FRI);
+          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.FRI, code);
         if ("sat".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.SAT);
+          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.SAT, code);
         if ("sun".equals(codeString))
-          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.SUN);
+          return new Enumeration<DaysOfWeek>(this, DaysOfWeek.SUN, code);
         throw new FHIRException("Unknown DaysOfWeek code '"+codeString+"'");
         }
     public String toCode(DaysOfWeek code) {

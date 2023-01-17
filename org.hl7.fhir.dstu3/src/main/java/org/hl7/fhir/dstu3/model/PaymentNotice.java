@@ -142,12 +142,12 @@ public class PaymentNotice extends DomainResource {
           return PaymentNoticeStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown PaymentNoticeStatus code '"+codeString+"'");
         }
-        public Enumeration<PaymentNoticeStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<PaymentNoticeStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<PaymentNoticeStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("active".equals(codeString))

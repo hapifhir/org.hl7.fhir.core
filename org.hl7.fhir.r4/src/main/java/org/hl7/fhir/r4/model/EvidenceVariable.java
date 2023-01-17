@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.model;
+﻿package org.hl7.fhir.r4.model;
 
 
 
@@ -135,20 +135,20 @@ public class EvidenceVariable extends MetadataResource {
           return EvidenceVariableType.DESCRIPTIVE;
         throw new IllegalArgumentException("Unknown EvidenceVariableType code '"+codeString+"'");
         }
-        public Enumeration<EvidenceVariableType> fromType(Base code) throws FHIRException {
+        public Enumeration<EvidenceVariableType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<EvidenceVariableType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<EvidenceVariableType>(this, EvidenceVariableType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<EvidenceVariableType>(this, EvidenceVariableType.NULL, code);
         if ("dichotomous".equals(codeString))
-          return new Enumeration<EvidenceVariableType>(this, EvidenceVariableType.DICHOTOMOUS);
+          return new Enumeration<EvidenceVariableType>(this, EvidenceVariableType.DICHOTOMOUS, code);
         if ("continuous".equals(codeString))
-          return new Enumeration<EvidenceVariableType>(this, EvidenceVariableType.CONTINUOUS);
+          return new Enumeration<EvidenceVariableType>(this, EvidenceVariableType.CONTINUOUS, code);
         if ("descriptive".equals(codeString))
-          return new Enumeration<EvidenceVariableType>(this, EvidenceVariableType.DESCRIPTIVE);
+          return new Enumeration<EvidenceVariableType>(this, EvidenceVariableType.DESCRIPTIVE, code);
         throw new FHIRException("Unknown EvidenceVariableType code '"+codeString+"'");
         }
     public String toCode(EvidenceVariableType code) {
@@ -283,26 +283,26 @@ public class EvidenceVariable extends MetadataResource {
           return GroupMeasure.MEDIANOFMEDIAN;
         throw new IllegalArgumentException("Unknown GroupMeasure code '"+codeString+"'");
         }
-        public Enumeration<GroupMeasure> fromType(Base code) throws FHIRException {
+        public Enumeration<GroupMeasure> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<GroupMeasure>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<GroupMeasure>(this, GroupMeasure.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<GroupMeasure>(this, GroupMeasure.NULL, code);
         if ("mean".equals(codeString))
-          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEAN);
+          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEAN, code);
         if ("median".equals(codeString))
-          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEDIAN);
+          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEDIAN, code);
         if ("mean-of-mean".equals(codeString))
-          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEANOFMEAN);
+          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEANOFMEAN, code);
         if ("mean-of-median".equals(codeString))
-          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEANOFMEDIAN);
+          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEANOFMEDIAN, code);
         if ("median-of-mean".equals(codeString))
-          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEDIANOFMEAN);
+          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEDIANOFMEAN, code);
         if ("median-of-median".equals(codeString))
-          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEDIANOFMEDIAN);
+          return new Enumeration<GroupMeasure>(this, GroupMeasure.MEDIANOFMEDIAN, code);
         throw new FHIRException("Unknown GroupMeasure code '"+codeString+"'");
         }
     public String toCode(GroupMeasure code) {

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4b.model;
+﻿package org.hl7.fhir.r4b.model;
 
 
 /*
@@ -197,30 +197,30 @@ public class MedicationStatement extends DomainResource {
           return MedicationStatusCodes.NOTTAKEN;
         throw new IllegalArgumentException("Unknown MedicationStatusCodes code '"+codeString+"'");
         }
-        public Enumeration<MedicationStatusCodes> fromType(Base code) throws FHIRException {
+        public Enumeration<MedicationStatusCodes> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<MedicationStatusCodes>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<MedicationStatusCodes>(this, MedicationStatusCodes.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<MedicationStatusCodes>(this, MedicationStatusCodes.NULL, code);
         if ("active".equals(codeString))
-          return new Enumeration<MedicationStatusCodes>(this, MedicationStatusCodes.ACTIVE);
+          return new Enumeration<MedicationStatusCodes>(this, MedicationStatusCodes.ACTIVE, code);
         if ("completed".equals(codeString))
-          return new Enumeration<MedicationStatusCodes>(this, MedicationStatusCodes.COMPLETED);
+          return new Enumeration<MedicationStatusCodes>(this, MedicationStatusCodes.COMPLETED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<MedicationStatusCodes>(this, MedicationStatusCodes.ENTEREDINERROR);
+          return new Enumeration<MedicationStatusCodes>(this, MedicationStatusCodes.ENTEREDINERROR, code);
         if ("intended".equals(codeString))
-          return new Enumeration<MedicationStatusCodes>(this, MedicationStatusCodes.INTENDED);
+          return new Enumeration<MedicationStatusCodes>(this, MedicationStatusCodes.INTENDED, code);
         if ("stopped".equals(codeString))
-          return new Enumeration<MedicationStatusCodes>(this, MedicationStatusCodes.STOPPED);
+          return new Enumeration<MedicationStatusCodes>(this, MedicationStatusCodes.STOPPED, code);
         if ("on-hold".equals(codeString))
-          return new Enumeration<MedicationStatusCodes>(this, MedicationStatusCodes.ONHOLD);
+          return new Enumeration<MedicationStatusCodes>(this, MedicationStatusCodes.ONHOLD, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<MedicationStatusCodes>(this, MedicationStatusCodes.UNKNOWN);
+          return new Enumeration<MedicationStatusCodes>(this, MedicationStatusCodes.UNKNOWN, code);
         if ("not-taken".equals(codeString))
-          return new Enumeration<MedicationStatusCodes>(this, MedicationStatusCodes.NOTTAKEN);
+          return new Enumeration<MedicationStatusCodes>(this, MedicationStatusCodes.NOTTAKEN, code);
         throw new FHIRException("Unknown MedicationStatusCodes code '"+codeString+"'");
         }
     public String toCode(MedicationStatusCodes code) {
@@ -2016,4 +2016,3 @@ public class MedicationStatement extends DomainResource {
 
 
 }
-

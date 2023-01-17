@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -123,18 +123,18 @@ public class Specimen extends DomainResource {
           return SpecimenCombined.POOLED;
         throw new IllegalArgumentException("Unknown SpecimenCombined code '"+codeString+"'");
         }
-        public Enumeration<SpecimenCombined> fromType(Base code) throws FHIRException {
+        public Enumeration<SpecimenCombined> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<SpecimenCombined>(this);
+            return new Enumeration<SpecimenCombined>(this, SpecimenCombined.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<SpecimenCombined>(this, SpecimenCombined.NULL, code);
         if ("grouped".equals(codeString))
-          return new Enumeration<SpecimenCombined>(this, SpecimenCombined.GROUPED);
+          return new Enumeration<SpecimenCombined>(this, SpecimenCombined.GROUPED, code);
         if ("pooled".equals(codeString))
-          return new Enumeration<SpecimenCombined>(this, SpecimenCombined.POOLED);
+          return new Enumeration<SpecimenCombined>(this, SpecimenCombined.POOLED, code);
         throw new FHIRException("Unknown SpecimenCombined code '"+codeString+"'");
         }
     public String toCode(SpecimenCombined code) {
@@ -243,22 +243,22 @@ public class Specimen extends DomainResource {
           return SpecimenStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown SpecimenStatus code '"+codeString+"'");
         }
-        public Enumeration<SpecimenStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<SpecimenStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<SpecimenStatus>(this);
+            return new Enumeration<SpecimenStatus>(this, SpecimenStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<SpecimenStatus>(this, SpecimenStatus.NULL, code);
         if ("available".equals(codeString))
-          return new Enumeration<SpecimenStatus>(this, SpecimenStatus.AVAILABLE);
+          return new Enumeration<SpecimenStatus>(this, SpecimenStatus.AVAILABLE, code);
         if ("unavailable".equals(codeString))
-          return new Enumeration<SpecimenStatus>(this, SpecimenStatus.UNAVAILABLE);
+          return new Enumeration<SpecimenStatus>(this, SpecimenStatus.UNAVAILABLE, code);
         if ("unsatisfactory".equals(codeString))
-          return new Enumeration<SpecimenStatus>(this, SpecimenStatus.UNSATISFACTORY);
+          return new Enumeration<SpecimenStatus>(this, SpecimenStatus.UNSATISFACTORY, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<SpecimenStatus>(this, SpecimenStatus.ENTEREDINERROR);
+          return new Enumeration<SpecimenStatus>(this, SpecimenStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown SpecimenStatus code '"+codeString+"'");
         }
     public String toCode(SpecimenStatus code) {
@@ -3263,4 +3263,3 @@ public class Specimen extends DomainResource {
 
 
 }
-

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -171,26 +171,26 @@ public class Consent extends DomainResource {
           return ConsentState.UNKNOWN;
         throw new IllegalArgumentException("Unknown ConsentState code '"+codeString+"'");
         }
-        public Enumeration<ConsentState> fromType(Base code) throws FHIRException {
+        public Enumeration<ConsentState> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ConsentState>(this);
+            return new Enumeration<ConsentState>(this, ConsentState.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ConsentState>(this, ConsentState.NULL, code);
         if ("draft".equals(codeString))
-          return new Enumeration<ConsentState>(this, ConsentState.DRAFT);
+          return new Enumeration<ConsentState>(this, ConsentState.DRAFT, code);
         if ("active".equals(codeString))
-          return new Enumeration<ConsentState>(this, ConsentState.ACTIVE);
+          return new Enumeration<ConsentState>(this, ConsentState.ACTIVE, code);
         if ("inactive".equals(codeString))
-          return new Enumeration<ConsentState>(this, ConsentState.INACTIVE);
+          return new Enumeration<ConsentState>(this, ConsentState.INACTIVE, code);
         if ("not-done".equals(codeString))
-          return new Enumeration<ConsentState>(this, ConsentState.NOTDONE);
+          return new Enumeration<ConsentState>(this, ConsentState.NOTDONE, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<ConsentState>(this, ConsentState.ENTEREDINERROR);
+          return new Enumeration<ConsentState>(this, ConsentState.ENTEREDINERROR, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<ConsentState>(this, ConsentState.UNKNOWN);
+          return new Enumeration<ConsentState>(this, ConsentState.UNKNOWN, code);
         throw new FHIRException("Unknown ConsentState code '"+codeString+"'");
         }
     public String toCode(ConsentState code) {
@@ -4216,4 +4216,3 @@ public class Consent extends DomainResource {
 
 
 }
-

@@ -132,12 +132,12 @@ public class Account extends DomainResource {
           return AccountStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown AccountStatus code '"+codeString+"'");
         }
-        public Enumeration<AccountStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<AccountStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<AccountStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("active".equals(codeString))

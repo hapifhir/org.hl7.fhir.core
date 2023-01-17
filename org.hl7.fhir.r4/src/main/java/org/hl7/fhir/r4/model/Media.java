@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.model;
+﻿package org.hl7.fhir.r4.model;
 
 
 
@@ -194,30 +194,30 @@ public class Media extends DomainResource {
           return MediaStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown MediaStatus code '"+codeString+"'");
         }
-        public Enumeration<MediaStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<MediaStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<MediaStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<MediaStatus>(this, MediaStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<MediaStatus>(this, MediaStatus.NULL, code);
         if ("preparation".equals(codeString))
-          return new Enumeration<MediaStatus>(this, MediaStatus.PREPARATION);
+          return new Enumeration<MediaStatus>(this, MediaStatus.PREPARATION, code);
         if ("in-progress".equals(codeString))
-          return new Enumeration<MediaStatus>(this, MediaStatus.INPROGRESS);
+          return new Enumeration<MediaStatus>(this, MediaStatus.INPROGRESS, code);
         if ("not-done".equals(codeString))
-          return new Enumeration<MediaStatus>(this, MediaStatus.NOTDONE);
+          return new Enumeration<MediaStatus>(this, MediaStatus.NOTDONE, code);
         if ("on-hold".equals(codeString))
-          return new Enumeration<MediaStatus>(this, MediaStatus.ONHOLD);
+          return new Enumeration<MediaStatus>(this, MediaStatus.ONHOLD, code);
         if ("stopped".equals(codeString))
-          return new Enumeration<MediaStatus>(this, MediaStatus.STOPPED);
+          return new Enumeration<MediaStatus>(this, MediaStatus.STOPPED, code);
         if ("completed".equals(codeString))
-          return new Enumeration<MediaStatus>(this, MediaStatus.COMPLETED);
+          return new Enumeration<MediaStatus>(this, MediaStatus.COMPLETED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<MediaStatus>(this, MediaStatus.ENTEREDINERROR);
+          return new Enumeration<MediaStatus>(this, MediaStatus.ENTEREDINERROR, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<MediaStatus>(this, MediaStatus.UNKNOWN);
+          return new Enumeration<MediaStatus>(this, MediaStatus.UNKNOWN, code);
         throw new FHIRException("Unknown MediaStatus code '"+codeString+"'");
         }
     public String toCode(MediaStatus code) {
