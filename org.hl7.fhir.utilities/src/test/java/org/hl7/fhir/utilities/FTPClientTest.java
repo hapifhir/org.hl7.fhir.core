@@ -179,7 +179,7 @@ public class FTPClientTest implements ResourceLoaderTests {
   }
 
   @Test
-  public void testCreateRemotePathIfNotExists() throws IOException {
+  public void testCreateRemotePathDoesntExist() throws IOException {
     FTPClient client = connectToFTPClient();
 
     Path newPath1 = relativePath2.resolve("newPath1");
