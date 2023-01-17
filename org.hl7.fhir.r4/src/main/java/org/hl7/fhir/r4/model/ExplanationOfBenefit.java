@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.model;
+﻿package org.hl7.fhir.r4.model;
 
 
 
@@ -147,22 +147,22 @@ public class ExplanationOfBenefit extends DomainResource {
           return ExplanationOfBenefitStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown ExplanationOfBenefitStatus code '"+codeString+"'");
         }
-        public Enumeration<ExplanationOfBenefitStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ExplanationOfBenefitStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ExplanationOfBenefitStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ExplanationOfBenefitStatus>(this, ExplanationOfBenefitStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ExplanationOfBenefitStatus>(this, ExplanationOfBenefitStatus.NULL, code);
         if ("active".equals(codeString))
-          return new Enumeration<ExplanationOfBenefitStatus>(this, ExplanationOfBenefitStatus.ACTIVE);
+          return new Enumeration<ExplanationOfBenefitStatus>(this, ExplanationOfBenefitStatus.ACTIVE, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<ExplanationOfBenefitStatus>(this, ExplanationOfBenefitStatus.CANCELLED);
+          return new Enumeration<ExplanationOfBenefitStatus>(this, ExplanationOfBenefitStatus.CANCELLED, code);
         if ("draft".equals(codeString))
-          return new Enumeration<ExplanationOfBenefitStatus>(this, ExplanationOfBenefitStatus.DRAFT);
+          return new Enumeration<ExplanationOfBenefitStatus>(this, ExplanationOfBenefitStatus.DRAFT, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<ExplanationOfBenefitStatus>(this, ExplanationOfBenefitStatus.ENTEREDINERROR);
+          return new Enumeration<ExplanationOfBenefitStatus>(this, ExplanationOfBenefitStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown ExplanationOfBenefitStatus code '"+codeString+"'");
         }
     public String toCode(ExplanationOfBenefitStatus code) {
@@ -263,20 +263,20 @@ public class ExplanationOfBenefit extends DomainResource {
           return Use.PREDETERMINATION;
         throw new IllegalArgumentException("Unknown Use code '"+codeString+"'");
         }
-        public Enumeration<Use> fromType(Base code) throws FHIRException {
+        public Enumeration<Use> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<Use>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<Use>(this, Use.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<Use>(this, Use.NULL, code);
         if ("claim".equals(codeString))
-          return new Enumeration<Use>(this, Use.CLAIM);
+          return new Enumeration<Use>(this, Use.CLAIM, code);
         if ("preauthorization".equals(codeString))
-          return new Enumeration<Use>(this, Use.PREAUTHORIZATION);
+          return new Enumeration<Use>(this, Use.PREAUTHORIZATION, code);
         if ("predetermination".equals(codeString))
-          return new Enumeration<Use>(this, Use.PREDETERMINATION);
+          return new Enumeration<Use>(this, Use.PREDETERMINATION, code);
         throw new FHIRException("Unknown Use code '"+codeString+"'");
         }
     public String toCode(Use code) {
@@ -387,22 +387,22 @@ public class ExplanationOfBenefit extends DomainResource {
           return RemittanceOutcome.PARTIAL;
         throw new IllegalArgumentException("Unknown RemittanceOutcome code '"+codeString+"'");
         }
-        public Enumeration<RemittanceOutcome> fromType(Base code) throws FHIRException {
+        public Enumeration<RemittanceOutcome> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<RemittanceOutcome>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<RemittanceOutcome>(this, RemittanceOutcome.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<RemittanceOutcome>(this, RemittanceOutcome.NULL, code);
         if ("queued".equals(codeString))
-          return new Enumeration<RemittanceOutcome>(this, RemittanceOutcome.QUEUED);
+          return new Enumeration<RemittanceOutcome>(this, RemittanceOutcome.QUEUED, code);
         if ("complete".equals(codeString))
-          return new Enumeration<RemittanceOutcome>(this, RemittanceOutcome.COMPLETE);
+          return new Enumeration<RemittanceOutcome>(this, RemittanceOutcome.COMPLETE, code);
         if ("error".equals(codeString))
-          return new Enumeration<RemittanceOutcome>(this, RemittanceOutcome.ERROR);
+          return new Enumeration<RemittanceOutcome>(this, RemittanceOutcome.ERROR, code);
         if ("partial".equals(codeString))
-          return new Enumeration<RemittanceOutcome>(this, RemittanceOutcome.PARTIAL);
+          return new Enumeration<RemittanceOutcome>(this, RemittanceOutcome.PARTIAL, code);
         throw new FHIRException("Unknown RemittanceOutcome code '"+codeString+"'");
         }
     public String toCode(RemittanceOutcome code) {

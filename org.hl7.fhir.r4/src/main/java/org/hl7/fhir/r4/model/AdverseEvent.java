@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.model;
+﻿package org.hl7.fhir.r4.model;
 
 
 
@@ -121,18 +121,18 @@ public class AdverseEvent extends DomainResource {
           return AdverseEventActuality.POTENTIAL;
         throw new IllegalArgumentException("Unknown AdverseEventActuality code '"+codeString+"'");
         }
-        public Enumeration<AdverseEventActuality> fromType(Base code) throws FHIRException {
+        public Enumeration<AdverseEventActuality> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<AdverseEventActuality>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<AdverseEventActuality>(this, AdverseEventActuality.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<AdverseEventActuality>(this, AdverseEventActuality.NULL, code);
         if ("actual".equals(codeString))
-          return new Enumeration<AdverseEventActuality>(this, AdverseEventActuality.ACTUAL);
+          return new Enumeration<AdverseEventActuality>(this, AdverseEventActuality.ACTUAL, code);
         if ("potential".equals(codeString))
-          return new Enumeration<AdverseEventActuality>(this, AdverseEventActuality.POTENTIAL);
+          return new Enumeration<AdverseEventActuality>(this, AdverseEventActuality.POTENTIAL, code);
         throw new FHIRException("Unknown AdverseEventActuality code '"+codeString+"'");
         }
     public String toCode(AdverseEventActuality code) {

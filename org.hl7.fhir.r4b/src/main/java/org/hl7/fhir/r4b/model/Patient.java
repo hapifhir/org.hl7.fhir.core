@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4b.model;
+﻿package org.hl7.fhir.r4b.model;
 
 
 /*
@@ -147,22 +147,22 @@ public class Patient extends DomainResource {
           return LinkType.SEEALSO;
         throw new IllegalArgumentException("Unknown LinkType code '"+codeString+"'");
         }
-        public Enumeration<LinkType> fromType(Base code) throws FHIRException {
+        public Enumeration<LinkType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<LinkType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<LinkType>(this, LinkType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<LinkType>(this, LinkType.NULL, code);
         if ("replaced-by".equals(codeString))
-          return new Enumeration<LinkType>(this, LinkType.REPLACEDBY);
+          return new Enumeration<LinkType>(this, LinkType.REPLACEDBY, code);
         if ("replaces".equals(codeString))
-          return new Enumeration<LinkType>(this, LinkType.REPLACES);
+          return new Enumeration<LinkType>(this, LinkType.REPLACES, code);
         if ("refer".equals(codeString))
-          return new Enumeration<LinkType>(this, LinkType.REFER);
+          return new Enumeration<LinkType>(this, LinkType.REFER, code);
         if ("seealso".equals(codeString))
-          return new Enumeration<LinkType>(this, LinkType.SEEALSO);
+          return new Enumeration<LinkType>(this, LinkType.SEEALSO, code);
         throw new FHIRException("Unknown LinkType code '"+codeString+"'");
         }
     public String toCode(LinkType code) {
@@ -3215,4 +3215,3 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
 
 
 }
-

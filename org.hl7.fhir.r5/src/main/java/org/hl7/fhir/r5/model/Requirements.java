@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -147,22 +147,22 @@ public class Requirements extends CanonicalResource {
           return ConformanceExpectation.SHOULDNOT;
         throw new IllegalArgumentException("Unknown ConformanceExpectation code '"+codeString+"'");
         }
-        public Enumeration<ConformanceExpectation> fromType(Base code) throws FHIRException {
+        public Enumeration<ConformanceExpectation> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ConformanceExpectation>(this);
+            return new Enumeration<ConformanceExpectation>(this, ConformanceExpectation.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ConformanceExpectation>(this, ConformanceExpectation.NULL, code);
         if ("SHALL".equals(codeString))
-          return new Enumeration<ConformanceExpectation>(this, ConformanceExpectation.SHALL);
+          return new Enumeration<ConformanceExpectation>(this, ConformanceExpectation.SHALL, code);
         if ("SHOULD".equals(codeString))
-          return new Enumeration<ConformanceExpectation>(this, ConformanceExpectation.SHOULD);
+          return new Enumeration<ConformanceExpectation>(this, ConformanceExpectation.SHOULD, code);
         if ("MAY".equals(codeString))
-          return new Enumeration<ConformanceExpectation>(this, ConformanceExpectation.MAY);
+          return new Enumeration<ConformanceExpectation>(this, ConformanceExpectation.MAY, code);
         if ("SHOULD-NOT".equals(codeString))
-          return new Enumeration<ConformanceExpectation>(this, ConformanceExpectation.SHOULDNOT);
+          return new Enumeration<ConformanceExpectation>(this, ConformanceExpectation.SHOULDNOT, code);
         throw new FHIRException("Unknown ConformanceExpectation code '"+codeString+"'");
         }
     public String toCode(ConformanceExpectation code) {
@@ -3936,4 +3936,3 @@ public class Requirements extends CanonicalResource {
 
 
 }
-

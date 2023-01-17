@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4b.model;
+﻿package org.hl7.fhir.r4b.model;
 
 
 /*
@@ -219,34 +219,34 @@ public class ConceptMap extends CanonicalResource {
           return ConceptMapEquivalence.DISJOINT;
         throw new IllegalArgumentException("Unknown ConceptMapEquivalence code '"+codeString+"'");
         }
-        public Enumeration<ConceptMapEquivalence> fromType(Base code) throws FHIRException {
+        public Enumeration<ConceptMapEquivalence> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ConceptMapEquivalence>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.NULL, code);
         if ("relatedto".equals(codeString))
-          return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.RELATEDTO);
+          return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.RELATEDTO, code);
         if ("equivalent".equals(codeString))
-          return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.EQUIVALENT);
+          return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.EQUIVALENT, code);
         if ("equal".equals(codeString))
-          return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.EQUAL);
+          return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.EQUAL, code);
         if ("wider".equals(codeString))
-          return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.WIDER);
+          return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.WIDER, code);
         if ("subsumes".equals(codeString))
-          return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.SUBSUMES);
+          return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.SUBSUMES, code);
         if ("narrower".equals(codeString))
-          return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.NARROWER);
+          return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.NARROWER, code);
         if ("specializes".equals(codeString))
-          return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.SPECIALIZES);
+          return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.SPECIALIZES, code);
         if ("inexact".equals(codeString))
-          return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.INEXACT);
+          return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.INEXACT, code);
         if ("unmatched".equals(codeString))
-          return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.UNMATCHED);
+          return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.UNMATCHED, code);
         if ("disjoint".equals(codeString))
-          return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.DISJOINT);
+          return new Enumeration<ConceptMapEquivalence>(this, ConceptMapEquivalence.DISJOINT, code);
         throw new FHIRException("Unknown ConceptMapEquivalence code '"+codeString+"'");
         }
     public String toCode(ConceptMapEquivalence code) {
@@ -359,20 +359,20 @@ public class ConceptMap extends CanonicalResource {
           return ConceptMapGroupUnmappedMode.OTHERMAP;
         throw new IllegalArgumentException("Unknown ConceptMapGroupUnmappedMode code '"+codeString+"'");
         }
-        public Enumeration<ConceptMapGroupUnmappedMode> fromType(Base code) throws FHIRException {
+        public Enumeration<ConceptMapGroupUnmappedMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ConceptMapGroupUnmappedMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ConceptMapGroupUnmappedMode>(this, ConceptMapGroupUnmappedMode.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ConceptMapGroupUnmappedMode>(this, ConceptMapGroupUnmappedMode.NULL, code);
         if ("provided".equals(codeString))
-          return new Enumeration<ConceptMapGroupUnmappedMode>(this, ConceptMapGroupUnmappedMode.PROVIDED);
+          return new Enumeration<ConceptMapGroupUnmappedMode>(this, ConceptMapGroupUnmappedMode.PROVIDED, code);
         if ("fixed".equals(codeString))
-          return new Enumeration<ConceptMapGroupUnmappedMode>(this, ConceptMapGroupUnmappedMode.FIXED);
+          return new Enumeration<ConceptMapGroupUnmappedMode>(this, ConceptMapGroupUnmappedMode.FIXED, code);
         if ("other-map".equals(codeString))
-          return new Enumeration<ConceptMapGroupUnmappedMode>(this, ConceptMapGroupUnmappedMode.OTHERMAP);
+          return new Enumeration<ConceptMapGroupUnmappedMode>(this, ConceptMapGroupUnmappedMode.OTHERMAP, code);
         throw new FHIRException("Unknown ConceptMapGroupUnmappedMode code '"+codeString+"'");
         }
     public String toCode(ConceptMapGroupUnmappedMode code) {
@@ -5051,4 +5051,3 @@ public class ConceptMap extends CanonicalResource {
 
 
 }
-

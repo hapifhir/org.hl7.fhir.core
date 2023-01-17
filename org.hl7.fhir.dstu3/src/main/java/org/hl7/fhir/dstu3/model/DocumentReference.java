@@ -147,12 +147,12 @@ public class DocumentReference extends DomainResource {
           return ReferredDocumentStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown ReferredDocumentStatus code '"+codeString+"'");
         }
-        public Enumeration<ReferredDocumentStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ReferredDocumentStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ReferredDocumentStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("preliminary".equals(codeString))
@@ -275,12 +275,12 @@ public class DocumentReference extends DomainResource {
           return DocumentRelationshipType.APPENDS;
         throw new IllegalArgumentException("Unknown DocumentRelationshipType code '"+codeString+"'");
         }
-        public Enumeration<DocumentRelationshipType> fromType(Base code) throws FHIRException {
+        public Enumeration<DocumentRelationshipType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<DocumentRelationshipType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("replaces".equals(codeString))

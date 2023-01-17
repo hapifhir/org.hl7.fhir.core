@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -135,20 +135,20 @@ public class MedicationKnowledge extends DomainResource {
           return MedicationKnowledgeStatusCodes.INACTIVE;
         throw new IllegalArgumentException("Unknown MedicationKnowledgeStatusCodes code '"+codeString+"'");
         }
-        public Enumeration<MedicationKnowledgeStatusCodes> fromType(Base code) throws FHIRException {
+        public Enumeration<MedicationKnowledgeStatusCodes> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<MedicationKnowledgeStatusCodes>(this);
+            return new Enumeration<MedicationKnowledgeStatusCodes>(this, MedicationKnowledgeStatusCodes.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<MedicationKnowledgeStatusCodes>(this, MedicationKnowledgeStatusCodes.NULL, code);
         if ("active".equals(codeString))
-          return new Enumeration<MedicationKnowledgeStatusCodes>(this, MedicationKnowledgeStatusCodes.ACTIVE);
+          return new Enumeration<MedicationKnowledgeStatusCodes>(this, MedicationKnowledgeStatusCodes.ACTIVE, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<MedicationKnowledgeStatusCodes>(this, MedicationKnowledgeStatusCodes.ENTEREDINERROR);
+          return new Enumeration<MedicationKnowledgeStatusCodes>(this, MedicationKnowledgeStatusCodes.ENTEREDINERROR, code);
         if ("inactive".equals(codeString))
-          return new Enumeration<MedicationKnowledgeStatusCodes>(this, MedicationKnowledgeStatusCodes.INACTIVE);
+          return new Enumeration<MedicationKnowledgeStatusCodes>(this, MedicationKnowledgeStatusCodes.INACTIVE, code);
         throw new FHIRException("Unknown MedicationKnowledgeStatusCodes code '"+codeString+"'");
         }
     public String toCode(MedicationKnowledgeStatusCodes code) {
@@ -7510,4 +7510,3 @@ public class MedicationKnowledge extends DomainResource {
 
 
 }
-

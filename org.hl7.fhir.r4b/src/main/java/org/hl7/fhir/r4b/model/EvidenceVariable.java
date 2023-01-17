@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4b.model;
+﻿package org.hl7.fhir.r4b.model;
 
 
 /*
@@ -123,18 +123,18 @@ public class EvidenceVariable extends DomainResource {
           return CharacteristicCombination.UNION;
         throw new IllegalArgumentException("Unknown CharacteristicCombination code '"+codeString+"'");
         }
-        public Enumeration<CharacteristicCombination> fromType(Base code) throws FHIRException {
+        public Enumeration<CharacteristicCombination> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<CharacteristicCombination>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<CharacteristicCombination>(this, CharacteristicCombination.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<CharacteristicCombination>(this, CharacteristicCombination.NULL, code);
         if ("intersection".equals(codeString))
-          return new Enumeration<CharacteristicCombination>(this, CharacteristicCombination.INTERSECTION);
+          return new Enumeration<CharacteristicCombination>(this, CharacteristicCombination.INTERSECTION, code);
         if ("union".equals(codeString))
-          return new Enumeration<CharacteristicCombination>(this, CharacteristicCombination.UNION);
+          return new Enumeration<CharacteristicCombination>(this, CharacteristicCombination.UNION, code);
         throw new FHIRException("Unknown CharacteristicCombination code '"+codeString+"'");
         }
     public String toCode(CharacteristicCombination code) {
@@ -3559,4 +3559,3 @@ public class EvidenceVariable extends DomainResource {
 
 
 }
-

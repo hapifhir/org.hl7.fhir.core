@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4b.model;
+﻿package org.hl7.fhir.r4b.model;
 
 
 /*
@@ -159,24 +159,24 @@ public class ClinicalUseDefinition extends DomainResource {
           return ClinicalUseIssueType.WARNING;
         throw new IllegalArgumentException("Unknown ClinicalUseIssueType code '"+codeString+"'");
         }
-        public Enumeration<ClinicalUseIssueType> fromType(Base code) throws FHIRException {
+        public Enumeration<ClinicalUseIssueType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ClinicalUseIssueType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ClinicalUseIssueType>(this, ClinicalUseIssueType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ClinicalUseIssueType>(this, ClinicalUseIssueType.NULL, code);
         if ("indication".equals(codeString))
-          return new Enumeration<ClinicalUseIssueType>(this, ClinicalUseIssueType.INDICATION);
+          return new Enumeration<ClinicalUseIssueType>(this, ClinicalUseIssueType.INDICATION, code);
         if ("contraindication".equals(codeString))
-          return new Enumeration<ClinicalUseIssueType>(this, ClinicalUseIssueType.CONTRAINDICATION);
+          return new Enumeration<ClinicalUseIssueType>(this, ClinicalUseIssueType.CONTRAINDICATION, code);
         if ("interaction".equals(codeString))
-          return new Enumeration<ClinicalUseIssueType>(this, ClinicalUseIssueType.INTERACTION);
+          return new Enumeration<ClinicalUseIssueType>(this, ClinicalUseIssueType.INTERACTION, code);
         if ("undesirable-effect".equals(codeString))
-          return new Enumeration<ClinicalUseIssueType>(this, ClinicalUseIssueType.UNDESIRABLEEFFECT);
+          return new Enumeration<ClinicalUseIssueType>(this, ClinicalUseIssueType.UNDESIRABLEEFFECT, code);
         if ("warning".equals(codeString))
-          return new Enumeration<ClinicalUseIssueType>(this, ClinicalUseIssueType.WARNING);
+          return new Enumeration<ClinicalUseIssueType>(this, ClinicalUseIssueType.WARNING, code);
         throw new FHIRException("Unknown ClinicalUseIssueType code '"+codeString+"'");
         }
     public String toCode(ClinicalUseIssueType code) {
@@ -3493,4 +3493,3 @@ public class ClinicalUseDefinition extends DomainResource {
 
 
 }
-

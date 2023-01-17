@@ -137,12 +137,12 @@ public class ExpansionProfile extends MetadataResource {
           return SystemVersionProcessingMode.OVERRIDE;
         throw new IllegalArgumentException("Unknown SystemVersionProcessingMode code '"+codeString+"'");
         }
-        public Enumeration<SystemVersionProcessingMode> fromType(Base code) throws FHIRException {
+        public Enumeration<SystemVersionProcessingMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<SystemVersionProcessingMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("default".equals(codeString))

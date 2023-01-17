@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4b.model;
+﻿package org.hl7.fhir.r4b.model;
 
 
 /*
@@ -147,22 +147,22 @@ public class Composition extends DomainResource {
           return CompositionAttestationMode.OFFICIAL;
         throw new IllegalArgumentException("Unknown CompositionAttestationMode code '"+codeString+"'");
         }
-        public Enumeration<CompositionAttestationMode> fromType(Base code) throws FHIRException {
+        public Enumeration<CompositionAttestationMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<CompositionAttestationMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<CompositionAttestationMode>(this, CompositionAttestationMode.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<CompositionAttestationMode>(this, CompositionAttestationMode.NULL, code);
         if ("personal".equals(codeString))
-          return new Enumeration<CompositionAttestationMode>(this, CompositionAttestationMode.PERSONAL);
+          return new Enumeration<CompositionAttestationMode>(this, CompositionAttestationMode.PERSONAL, code);
         if ("professional".equals(codeString))
-          return new Enumeration<CompositionAttestationMode>(this, CompositionAttestationMode.PROFESSIONAL);
+          return new Enumeration<CompositionAttestationMode>(this, CompositionAttestationMode.PROFESSIONAL, code);
         if ("legal".equals(codeString))
-          return new Enumeration<CompositionAttestationMode>(this, CompositionAttestationMode.LEGAL);
+          return new Enumeration<CompositionAttestationMode>(this, CompositionAttestationMode.LEGAL, code);
         if ("official".equals(codeString))
-          return new Enumeration<CompositionAttestationMode>(this, CompositionAttestationMode.OFFICIAL);
+          return new Enumeration<CompositionAttestationMode>(this, CompositionAttestationMode.OFFICIAL, code);
         throw new FHIRException("Unknown CompositionAttestationMode code '"+codeString+"'");
         }
     public String toCode(CompositionAttestationMode code) {
@@ -3512,4 +3512,3 @@ public class Composition extends DomainResource {
 
 
 }
-

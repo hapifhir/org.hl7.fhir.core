@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.model;
+﻿package org.hl7.fhir.r4.model;
 
 
 
@@ -181,28 +181,28 @@ public class SupplyRequest extends DomainResource {
           return SupplyRequestStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown SupplyRequestStatus code '"+codeString+"'");
         }
-        public Enumeration<SupplyRequestStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<SupplyRequestStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<SupplyRequestStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.NULL, code);
         if ("draft".equals(codeString))
-          return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.DRAFT);
+          return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.DRAFT, code);
         if ("active".equals(codeString))
-          return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.ACTIVE);
+          return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.ACTIVE, code);
         if ("suspended".equals(codeString))
-          return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.SUSPENDED);
+          return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.SUSPENDED, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.CANCELLED);
+          return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.CANCELLED, code);
         if ("completed".equals(codeString))
-          return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.COMPLETED);
+          return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.COMPLETED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.ENTEREDINERROR);
+          return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.ENTEREDINERROR, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.UNKNOWN);
+          return new Enumeration<SupplyRequestStatus>(this, SupplyRequestStatus.UNKNOWN, code);
         throw new FHIRException("Unknown SupplyRequestStatus code '"+codeString+"'");
         }
     public String toCode(SupplyRequestStatus code) {
@@ -321,22 +321,22 @@ public class SupplyRequest extends DomainResource {
           return RequestPriority.STAT;
         throw new IllegalArgumentException("Unknown RequestPriority code '"+codeString+"'");
         }
-        public Enumeration<RequestPriority> fromType(Base code) throws FHIRException {
+        public Enumeration<RequestPriority> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<RequestPriority>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<RequestPriority>(this, RequestPriority.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<RequestPriority>(this, RequestPriority.NULL, code);
         if ("routine".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.ROUTINE);
+          return new Enumeration<RequestPriority>(this, RequestPriority.ROUTINE, code);
         if ("urgent".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.URGENT);
+          return new Enumeration<RequestPriority>(this, RequestPriority.URGENT, code);
         if ("asap".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.ASAP);
+          return new Enumeration<RequestPriority>(this, RequestPriority.ASAP, code);
         if ("stat".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.STAT);
+          return new Enumeration<RequestPriority>(this, RequestPriority.STAT, code);
         throw new FHIRException("Unknown RequestPriority code '"+codeString+"'");
         }
     public String toCode(RequestPriority code) {

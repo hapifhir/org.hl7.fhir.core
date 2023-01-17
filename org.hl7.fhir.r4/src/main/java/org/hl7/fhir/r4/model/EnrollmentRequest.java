@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.model;
+﻿package org.hl7.fhir.r4.model;
 
 
 
@@ -145,22 +145,22 @@ public class EnrollmentRequest extends DomainResource {
           return EnrollmentRequestStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown EnrollmentRequestStatus code '"+codeString+"'");
         }
-        public Enumeration<EnrollmentRequestStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<EnrollmentRequestStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<EnrollmentRequestStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<EnrollmentRequestStatus>(this, EnrollmentRequestStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<EnrollmentRequestStatus>(this, EnrollmentRequestStatus.NULL, code);
         if ("active".equals(codeString))
-          return new Enumeration<EnrollmentRequestStatus>(this, EnrollmentRequestStatus.ACTIVE);
+          return new Enumeration<EnrollmentRequestStatus>(this, EnrollmentRequestStatus.ACTIVE, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<EnrollmentRequestStatus>(this, EnrollmentRequestStatus.CANCELLED);
+          return new Enumeration<EnrollmentRequestStatus>(this, EnrollmentRequestStatus.CANCELLED, code);
         if ("draft".equals(codeString))
-          return new Enumeration<EnrollmentRequestStatus>(this, EnrollmentRequestStatus.DRAFT);
+          return new Enumeration<EnrollmentRequestStatus>(this, EnrollmentRequestStatus.DRAFT, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<EnrollmentRequestStatus>(this, EnrollmentRequestStatus.ENTEREDINERROR);
+          return new Enumeration<EnrollmentRequestStatus>(this, EnrollmentRequestStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown EnrollmentRequestStatus code '"+codeString+"'");
         }
     public String toCode(EnrollmentRequestStatus code) {

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4b.model;
+﻿package org.hl7.fhir.r4b.model;
 
 
 /*
@@ -135,20 +135,20 @@ public class DetectedIssue extends DomainResource {
           return DetectedIssueSeverity.LOW;
         throw new IllegalArgumentException("Unknown DetectedIssueSeverity code '"+codeString+"'");
         }
-        public Enumeration<DetectedIssueSeverity> fromType(Base code) throws FHIRException {
+        public Enumeration<DetectedIssueSeverity> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<DetectedIssueSeverity>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<DetectedIssueSeverity>(this, DetectedIssueSeverity.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<DetectedIssueSeverity>(this, DetectedIssueSeverity.NULL, code);
         if ("high".equals(codeString))
-          return new Enumeration<DetectedIssueSeverity>(this, DetectedIssueSeverity.HIGH);
+          return new Enumeration<DetectedIssueSeverity>(this, DetectedIssueSeverity.HIGH, code);
         if ("moderate".equals(codeString))
-          return new Enumeration<DetectedIssueSeverity>(this, DetectedIssueSeverity.MODERATE);
+          return new Enumeration<DetectedIssueSeverity>(this, DetectedIssueSeverity.MODERATE, code);
         if ("low".equals(codeString))
-          return new Enumeration<DetectedIssueSeverity>(this, DetectedIssueSeverity.LOW);
+          return new Enumeration<DetectedIssueSeverity>(this, DetectedIssueSeverity.LOW, code);
         throw new FHIRException("Unknown DetectedIssueSeverity code '"+codeString+"'");
         }
     public String toCode(DetectedIssueSeverity code) {
@@ -1927,4 +1927,3 @@ public class DetectedIssue extends DomainResource {
 
 
 }
-

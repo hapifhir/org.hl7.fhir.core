@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4b.model;
+﻿package org.hl7.fhir.r4b.model;
 
 
 /*
@@ -159,24 +159,24 @@ public class Provenance extends DomainResource {
           return ProvenanceEntityRole.REMOVAL;
         throw new IllegalArgumentException("Unknown ProvenanceEntityRole code '"+codeString+"'");
         }
-        public Enumeration<ProvenanceEntityRole> fromType(Base code) throws FHIRException {
+        public Enumeration<ProvenanceEntityRole> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ProvenanceEntityRole>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ProvenanceEntityRole>(this, ProvenanceEntityRole.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ProvenanceEntityRole>(this, ProvenanceEntityRole.NULL, code);
         if ("derivation".equals(codeString))
-          return new Enumeration<ProvenanceEntityRole>(this, ProvenanceEntityRole.DERIVATION);
+          return new Enumeration<ProvenanceEntityRole>(this, ProvenanceEntityRole.DERIVATION, code);
         if ("revision".equals(codeString))
-          return new Enumeration<ProvenanceEntityRole>(this, ProvenanceEntityRole.REVISION);
+          return new Enumeration<ProvenanceEntityRole>(this, ProvenanceEntityRole.REVISION, code);
         if ("quotation".equals(codeString))
-          return new Enumeration<ProvenanceEntityRole>(this, ProvenanceEntityRole.QUOTATION);
+          return new Enumeration<ProvenanceEntityRole>(this, ProvenanceEntityRole.QUOTATION, code);
         if ("source".equals(codeString))
-          return new Enumeration<ProvenanceEntityRole>(this, ProvenanceEntityRole.SOURCE);
+          return new Enumeration<ProvenanceEntityRole>(this, ProvenanceEntityRole.SOURCE, code);
         if ("removal".equals(codeString))
-          return new Enumeration<ProvenanceEntityRole>(this, ProvenanceEntityRole.REMOVAL);
+          return new Enumeration<ProvenanceEntityRole>(this, ProvenanceEntityRole.REMOVAL, code);
         throw new FHIRException("Unknown ProvenanceEntityRole code '"+codeString+"'");
         }
     public String toCode(ProvenanceEntityRole code) {
@@ -1923,4 +1923,3 @@ public class Provenance extends DomainResource {
 
 
 }
-

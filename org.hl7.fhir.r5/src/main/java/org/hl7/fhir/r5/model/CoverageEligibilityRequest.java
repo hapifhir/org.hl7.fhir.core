@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -147,22 +147,22 @@ public class CoverageEligibilityRequest extends DomainResource {
           return EligibilityRequestPurpose.VALIDATION;
         throw new IllegalArgumentException("Unknown EligibilityRequestPurpose code '"+codeString+"'");
         }
-        public Enumeration<EligibilityRequestPurpose> fromType(Base code) throws FHIRException {
+        public Enumeration<EligibilityRequestPurpose> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<EligibilityRequestPurpose>(this);
+            return new Enumeration<EligibilityRequestPurpose>(this, EligibilityRequestPurpose.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<EligibilityRequestPurpose>(this, EligibilityRequestPurpose.NULL, code);
         if ("auth-requirements".equals(codeString))
-          return new Enumeration<EligibilityRequestPurpose>(this, EligibilityRequestPurpose.AUTHREQUIREMENTS);
+          return new Enumeration<EligibilityRequestPurpose>(this, EligibilityRequestPurpose.AUTHREQUIREMENTS, code);
         if ("benefits".equals(codeString))
-          return new Enumeration<EligibilityRequestPurpose>(this, EligibilityRequestPurpose.BENEFITS);
+          return new Enumeration<EligibilityRequestPurpose>(this, EligibilityRequestPurpose.BENEFITS, code);
         if ("discovery".equals(codeString))
-          return new Enumeration<EligibilityRequestPurpose>(this, EligibilityRequestPurpose.DISCOVERY);
+          return new Enumeration<EligibilityRequestPurpose>(this, EligibilityRequestPurpose.DISCOVERY, code);
         if ("validation".equals(codeString))
-          return new Enumeration<EligibilityRequestPurpose>(this, EligibilityRequestPurpose.VALIDATION);
+          return new Enumeration<EligibilityRequestPurpose>(this, EligibilityRequestPurpose.VALIDATION, code);
         throw new FHIRException("Unknown EligibilityRequestPurpose code '"+codeString+"'");
         }
     public String toCode(EligibilityRequestPurpose code) {
@@ -2880,4 +2880,3 @@ public class CoverageEligibilityRequest extends DomainResource {
 
 
 }
-

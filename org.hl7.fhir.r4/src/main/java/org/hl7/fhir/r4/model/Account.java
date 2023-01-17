@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.model;
+﻿package org.hl7.fhir.r4.model;
 
 
 
@@ -157,24 +157,24 @@ public class Account extends DomainResource {
           return AccountStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown AccountStatus code '"+codeString+"'");
         }
-        public Enumeration<AccountStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<AccountStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<AccountStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<AccountStatus>(this, AccountStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<AccountStatus>(this, AccountStatus.NULL, code);
         if ("active".equals(codeString))
-          return new Enumeration<AccountStatus>(this, AccountStatus.ACTIVE);
+          return new Enumeration<AccountStatus>(this, AccountStatus.ACTIVE, code);
         if ("inactive".equals(codeString))
-          return new Enumeration<AccountStatus>(this, AccountStatus.INACTIVE);
+          return new Enumeration<AccountStatus>(this, AccountStatus.INACTIVE, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<AccountStatus>(this, AccountStatus.ENTEREDINERROR);
+          return new Enumeration<AccountStatus>(this, AccountStatus.ENTEREDINERROR, code);
         if ("on-hold".equals(codeString))
-          return new Enumeration<AccountStatus>(this, AccountStatus.ONHOLD);
+          return new Enumeration<AccountStatus>(this, AccountStatus.ONHOLD, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<AccountStatus>(this, AccountStatus.UNKNOWN);
+          return new Enumeration<AccountStatus>(this, AccountStatus.UNKNOWN, code);
         throw new FHIRException("Unknown AccountStatus code '"+codeString+"'");
         }
     public String toCode(AccountStatus code) {

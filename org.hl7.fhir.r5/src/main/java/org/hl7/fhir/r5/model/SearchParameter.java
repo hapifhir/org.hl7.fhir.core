@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -207,32 +207,32 @@ public class SearchParameter extends CanonicalResource {
           return SearchComparator.AP;
         throw new IllegalArgumentException("Unknown SearchComparator code '"+codeString+"'");
         }
-        public Enumeration<SearchComparator> fromType(Base code) throws FHIRException {
+        public Enumeration<SearchComparator> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<SearchComparator>(this);
+            return new Enumeration<SearchComparator>(this, SearchComparator.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<SearchComparator>(this, SearchComparator.NULL, code);
         if ("eq".equals(codeString))
-          return new Enumeration<SearchComparator>(this, SearchComparator.EQ);
+          return new Enumeration<SearchComparator>(this, SearchComparator.EQ, code);
         if ("ne".equals(codeString))
-          return new Enumeration<SearchComparator>(this, SearchComparator.NE);
+          return new Enumeration<SearchComparator>(this, SearchComparator.NE, code);
         if ("gt".equals(codeString))
-          return new Enumeration<SearchComparator>(this, SearchComparator.GT);
+          return new Enumeration<SearchComparator>(this, SearchComparator.GT, code);
         if ("lt".equals(codeString))
-          return new Enumeration<SearchComparator>(this, SearchComparator.LT);
+          return new Enumeration<SearchComparator>(this, SearchComparator.LT, code);
         if ("ge".equals(codeString))
-          return new Enumeration<SearchComparator>(this, SearchComparator.GE);
+          return new Enumeration<SearchComparator>(this, SearchComparator.GE, code);
         if ("le".equals(codeString))
-          return new Enumeration<SearchComparator>(this, SearchComparator.LE);
+          return new Enumeration<SearchComparator>(this, SearchComparator.LE, code);
         if ("sa".equals(codeString))
-          return new Enumeration<SearchComparator>(this, SearchComparator.SA);
+          return new Enumeration<SearchComparator>(this, SearchComparator.SA, code);
         if ("eb".equals(codeString))
-          return new Enumeration<SearchComparator>(this, SearchComparator.EB);
+          return new Enumeration<SearchComparator>(this, SearchComparator.EB, code);
         if ("ap".equals(codeString))
-          return new Enumeration<SearchComparator>(this, SearchComparator.AP);
+          return new Enumeration<SearchComparator>(this, SearchComparator.AP, code);
         throw new FHIRException("Unknown SearchComparator code '"+codeString+"'");
         }
     public String toCode(SearchComparator code) {
@@ -487,44 +487,44 @@ public class SearchParameter extends CanonicalResource {
           return SearchModifierCode.ITERATE;
         throw new IllegalArgumentException("Unknown SearchModifierCode code '"+codeString+"'");
         }
-        public Enumeration<SearchModifierCode> fromType(Base code) throws FHIRException {
+        public Enumeration<SearchModifierCode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<SearchModifierCode>(this);
+            return new Enumeration<SearchModifierCode>(this, SearchModifierCode.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<SearchModifierCode>(this, SearchModifierCode.NULL, code);
         if ("missing".equals(codeString))
-          return new Enumeration<SearchModifierCode>(this, SearchModifierCode.MISSING);
+          return new Enumeration<SearchModifierCode>(this, SearchModifierCode.MISSING, code);
         if ("exact".equals(codeString))
-          return new Enumeration<SearchModifierCode>(this, SearchModifierCode.EXACT);
+          return new Enumeration<SearchModifierCode>(this, SearchModifierCode.EXACT, code);
         if ("contains".equals(codeString))
-          return new Enumeration<SearchModifierCode>(this, SearchModifierCode.CONTAINS);
+          return new Enumeration<SearchModifierCode>(this, SearchModifierCode.CONTAINS, code);
         if ("not".equals(codeString))
-          return new Enumeration<SearchModifierCode>(this, SearchModifierCode.NOT);
+          return new Enumeration<SearchModifierCode>(this, SearchModifierCode.NOT, code);
         if ("text".equals(codeString))
-          return new Enumeration<SearchModifierCode>(this, SearchModifierCode.TEXT);
+          return new Enumeration<SearchModifierCode>(this, SearchModifierCode.TEXT, code);
         if ("in".equals(codeString))
-          return new Enumeration<SearchModifierCode>(this, SearchModifierCode.IN);
+          return new Enumeration<SearchModifierCode>(this, SearchModifierCode.IN, code);
         if ("not-in".equals(codeString))
-          return new Enumeration<SearchModifierCode>(this, SearchModifierCode.NOTIN);
+          return new Enumeration<SearchModifierCode>(this, SearchModifierCode.NOTIN, code);
         if ("below".equals(codeString))
-          return new Enumeration<SearchModifierCode>(this, SearchModifierCode.BELOW);
+          return new Enumeration<SearchModifierCode>(this, SearchModifierCode.BELOW, code);
         if ("above".equals(codeString))
-          return new Enumeration<SearchModifierCode>(this, SearchModifierCode.ABOVE);
+          return new Enumeration<SearchModifierCode>(this, SearchModifierCode.ABOVE, code);
         if ("type".equals(codeString))
-          return new Enumeration<SearchModifierCode>(this, SearchModifierCode.TYPE);
+          return new Enumeration<SearchModifierCode>(this, SearchModifierCode.TYPE, code);
         if ("identifier".equals(codeString))
-          return new Enumeration<SearchModifierCode>(this, SearchModifierCode.IDENTIFIER);
+          return new Enumeration<SearchModifierCode>(this, SearchModifierCode.IDENTIFIER, code);
         if ("of-type".equals(codeString))
-          return new Enumeration<SearchModifierCode>(this, SearchModifierCode.OFTYPE);
+          return new Enumeration<SearchModifierCode>(this, SearchModifierCode.OFTYPE, code);
         if ("code-text".equals(codeString))
-          return new Enumeration<SearchModifierCode>(this, SearchModifierCode.CODETEXT);
+          return new Enumeration<SearchModifierCode>(this, SearchModifierCode.CODETEXT, code);
         if ("text-advanced".equals(codeString))
-          return new Enumeration<SearchModifierCode>(this, SearchModifierCode.TEXTADVANCED);
+          return new Enumeration<SearchModifierCode>(this, SearchModifierCode.TEXTADVANCED, code);
         if ("iterate".equals(codeString))
-          return new Enumeration<SearchModifierCode>(this, SearchModifierCode.ITERATE);
+          return new Enumeration<SearchModifierCode>(this, SearchModifierCode.ITERATE, code);
         throw new FHIRException("Unknown SearchModifierCode code '"+codeString+"'");
         }
     public String toCode(SearchModifierCode code) {
@@ -647,20 +647,20 @@ public class SearchParameter extends CanonicalResource {
           return SearchProcessingModeType.OTHER;
         throw new IllegalArgumentException("Unknown SearchProcessingModeType code '"+codeString+"'");
         }
-        public Enumeration<SearchProcessingModeType> fromType(Base code) throws FHIRException {
+        public Enumeration<SearchProcessingModeType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<SearchProcessingModeType>(this);
+            return new Enumeration<SearchProcessingModeType>(this, SearchProcessingModeType.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<SearchProcessingModeType>(this, SearchProcessingModeType.NULL, code);
         if ("normal".equals(codeString))
-          return new Enumeration<SearchProcessingModeType>(this, SearchProcessingModeType.NORMAL);
+          return new Enumeration<SearchProcessingModeType>(this, SearchProcessingModeType.NORMAL, code);
         if ("phonetic".equals(codeString))
-          return new Enumeration<SearchProcessingModeType>(this, SearchProcessingModeType.PHONETIC);
+          return new Enumeration<SearchProcessingModeType>(this, SearchProcessingModeType.PHONETIC, code);
         if ("other".equals(codeString))
-          return new Enumeration<SearchProcessingModeType>(this, SearchProcessingModeType.OTHER);
+          return new Enumeration<SearchProcessingModeType>(this, SearchProcessingModeType.OTHER, code);
         throw new FHIRException("Unknown SearchProcessingModeType code '"+codeString+"'");
         }
     public String toCode(SearchProcessingModeType code) {
@@ -4480,4 +4480,3 @@ public class SearchParameter extends CanonicalResource {
 // end addition
 
 }
-

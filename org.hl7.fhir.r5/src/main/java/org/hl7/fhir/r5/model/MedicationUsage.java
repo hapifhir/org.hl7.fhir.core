@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -137,20 +137,20 @@ public class MedicationUsage extends DomainResource {
           return MedicationUsageStatusCodes.DRAFT;
         throw new IllegalArgumentException("Unknown MedicationUsageStatusCodes code '"+codeString+"'");
         }
-        public Enumeration<MedicationUsageStatusCodes> fromType(Base code) throws FHIRException {
+        public Enumeration<MedicationUsageStatusCodes> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<MedicationUsageStatusCodes>(this);
+            return new Enumeration<MedicationUsageStatusCodes>(this, MedicationUsageStatusCodes.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<MedicationUsageStatusCodes>(this, MedicationUsageStatusCodes.NULL, code);
         if ("recorded".equals(codeString))
-          return new Enumeration<MedicationUsageStatusCodes>(this, MedicationUsageStatusCodes.RECORDED);
+          return new Enumeration<MedicationUsageStatusCodes>(this, MedicationUsageStatusCodes.RECORDED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<MedicationUsageStatusCodes>(this, MedicationUsageStatusCodes.ENTEREDINERROR);
+          return new Enumeration<MedicationUsageStatusCodes>(this, MedicationUsageStatusCodes.ENTEREDINERROR, code);
         if ("draft".equals(codeString))
-          return new Enumeration<MedicationUsageStatusCodes>(this, MedicationUsageStatusCodes.DRAFT);
+          return new Enumeration<MedicationUsageStatusCodes>(this, MedicationUsageStatusCodes.DRAFT, code);
         throw new FHIRException("Unknown MedicationUsageStatusCodes code '"+codeString+"'");
         }
     public String toCode(MedicationUsageStatusCodes code) {
@@ -2131,4 +2131,3 @@ public class MedicationUsage extends DomainResource {
 
 
 }
-

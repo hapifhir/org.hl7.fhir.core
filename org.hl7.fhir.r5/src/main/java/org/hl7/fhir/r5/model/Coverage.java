@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -135,20 +135,20 @@ public class Coverage extends DomainResource {
           return Kind.OTHER;
         throw new IllegalArgumentException("Unknown Kind code '"+codeString+"'");
         }
-        public Enumeration<Kind> fromType(Base code) throws FHIRException {
+        public Enumeration<Kind> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<Kind>(this);
+            return new Enumeration<Kind>(this, Kind.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<Kind>(this, Kind.NULL, code);
         if ("insurance".equals(codeString))
-          return new Enumeration<Kind>(this, Kind.INSURANCE);
+          return new Enumeration<Kind>(this, Kind.INSURANCE, code);
         if ("self-pay".equals(codeString))
-          return new Enumeration<Kind>(this, Kind.SELFPAY);
+          return new Enumeration<Kind>(this, Kind.SELFPAY, code);
         if ("other".equals(codeString))
-          return new Enumeration<Kind>(this, Kind.OTHER);
+          return new Enumeration<Kind>(this, Kind.OTHER, code);
         throw new FHIRException("Unknown Kind code '"+codeString+"'");
         }
     public String toCode(Kind code) {
@@ -3079,4 +3079,3 @@ public class Coverage extends DomainResource {
 
 
 }
-

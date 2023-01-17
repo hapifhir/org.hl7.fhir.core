@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -555,90 +555,90 @@ public class Citation extends MetadataResource {
           return RelatedArtifactTypeExpanded.REPRINTOF;
         throw new IllegalArgumentException("Unknown RelatedArtifactTypeExpanded code '"+codeString+"'");
         }
-        public Enumeration<RelatedArtifactTypeExpanded> fromType(Base code) throws FHIRException {
+        public Enumeration<RelatedArtifactTypeExpanded> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<RelatedArtifactTypeExpanded>(this);
+            return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.NULL, code);
         if ("documentation".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.DOCUMENTATION);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.DOCUMENTATION, code);
         if ("justification".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.JUSTIFICATION);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.JUSTIFICATION, code);
         if ("citation".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.CITATION);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.CITATION, code);
         if ("predecessor".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.PREDECESSOR);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.PREDECESSOR, code);
         if ("successor".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.SUCCESSOR);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.SUCCESSOR, code);
         if ("derived-from".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.DERIVEDFROM);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.DERIVEDFROM, code);
         if ("depends-on".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.DEPENDSON);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.DEPENDSON, code);
         if ("composed-of".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.COMPOSEDOF);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.COMPOSEDOF, code);
         if ("part-of".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.PARTOF);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.PARTOF, code);
         if ("amends".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.AMENDS);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.AMENDS, code);
         if ("amended-with".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.AMENDEDWITH);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.AMENDEDWITH, code);
         if ("appends".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.APPENDS);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.APPENDS, code);
         if ("appended-with".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.APPENDEDWITH);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.APPENDEDWITH, code);
         if ("cites".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.CITES);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.CITES, code);
         if ("cited-by".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.CITEDBY);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.CITEDBY, code);
         if ("comments-on".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.COMMENTSON);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.COMMENTSON, code);
         if ("comment-in".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.COMMENTIN);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.COMMENTIN, code);
         if ("contains".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.CONTAINS);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.CONTAINS, code);
         if ("contained-in".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.CONTAINEDIN);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.CONTAINEDIN, code);
         if ("corrects".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.CORRECTS);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.CORRECTS, code);
         if ("correction-in".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.CORRECTIONIN);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.CORRECTIONIN, code);
         if ("replaces".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.REPLACES);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.REPLACES, code);
         if ("replaced-with".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.REPLACEDWITH);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.REPLACEDWITH, code);
         if ("retracts".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.RETRACTS);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.RETRACTS, code);
         if ("retracted-by".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.RETRACTEDBY);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.RETRACTEDBY, code);
         if ("signs".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.SIGNS);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.SIGNS, code);
         if ("similar-to".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.SIMILARTO);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.SIMILARTO, code);
         if ("supports".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.SUPPORTS);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.SUPPORTS, code);
         if ("supported-with".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.SUPPORTEDWITH);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.SUPPORTEDWITH, code);
         if ("transforms".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.TRANSFORMS);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.TRANSFORMS, code);
         if ("transformed-into".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.TRANSFORMEDINTO);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.TRANSFORMEDINTO, code);
         if ("transformed-with".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.TRANSFORMEDWITH);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.TRANSFORMEDWITH, code);
         if ("documents".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.DOCUMENTS);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.DOCUMENTS, code);
         if ("specification-of".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.SPECIFICATIONOF);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.SPECIFICATIONOF, code);
         if ("created-with".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.CREATEDWITH);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.CREATEDWITH, code);
         if ("cite-as".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.CITEAS);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.CITEAS, code);
         if ("reprint".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.REPRINT);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.REPRINT, code);
         if ("reprint-of".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.REPRINTOF);
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.REPRINTOF, code);
         throw new FHIRException("Unknown RelatedArtifactTypeExpanded code '"+codeString+"'");
         }
     public String toCode(RelatedArtifactTypeExpanded code) {
@@ -12264,4 +12264,3 @@ public class Citation extends MetadataResource {
 
 
 }
-

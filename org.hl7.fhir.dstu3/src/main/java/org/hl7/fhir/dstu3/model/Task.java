@@ -242,12 +242,12 @@ public class Task extends DomainResource {
           return TaskStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown TaskStatus code '"+codeString+"'");
         }
-        public Enumeration<TaskStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<TaskStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<TaskStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("draft".equals(codeString))
@@ -452,12 +452,12 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return TaskIntent.OPTION;
         throw new IllegalArgumentException("Unknown TaskIntent code '"+codeString+"'");
         }
-        public Enumeration<TaskIntent> fromType(Base code) throws FHIRException {
+        public Enumeration<TaskIntent> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<TaskIntent>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("proposal".equals(codeString))
@@ -596,12 +596,12 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return TaskPriority.STAT;
         throw new IllegalArgumentException("Unknown TaskPriority code '"+codeString+"'");
         }
-        public Enumeration<TaskPriority> fromType(Base code) throws FHIRException {
+        public Enumeration<TaskPriority> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<TaskPriority>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("routine".equals(codeString))

@@ -132,12 +132,12 @@ public class Linkage extends DomainResource {
           return LinkageType.HISTORICAL;
         throw new IllegalArgumentException("Unknown LinkageType code '"+codeString+"'");
         }
-        public Enumeration<LinkageType> fromType(Base code) throws FHIRException {
+        public Enumeration<LinkageType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<LinkageType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("source".equals(codeString))

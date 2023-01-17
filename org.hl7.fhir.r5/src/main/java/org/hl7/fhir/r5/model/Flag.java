@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -135,20 +135,20 @@ public class Flag extends DomainResource {
           return FlagStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown FlagStatus code '"+codeString+"'");
         }
-        public Enumeration<FlagStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<FlagStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<FlagStatus>(this);
+            return new Enumeration<FlagStatus>(this, FlagStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<FlagStatus>(this, FlagStatus.NULL, code);
         if ("active".equals(codeString))
-          return new Enumeration<FlagStatus>(this, FlagStatus.ACTIVE);
+          return new Enumeration<FlagStatus>(this, FlagStatus.ACTIVE, code);
         if ("inactive".equals(codeString))
-          return new Enumeration<FlagStatus>(this, FlagStatus.INACTIVE);
+          return new Enumeration<FlagStatus>(this, FlagStatus.INACTIVE, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<FlagStatus>(this, FlagStatus.ENTEREDINERROR);
+          return new Enumeration<FlagStatus>(this, FlagStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown FlagStatus code '"+codeString+"'");
         }
     public String toCode(FlagStatus code) {
@@ -1069,4 +1069,3 @@ public class Flag extends DomainResource {
 
 
 }
-

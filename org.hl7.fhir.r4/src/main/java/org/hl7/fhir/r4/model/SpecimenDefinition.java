@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.model;
+﻿package org.hl7.fhir.r4.model;
 
 
 
@@ -121,18 +121,18 @@ public class SpecimenDefinition extends DomainResource {
           return SpecimenContainedPreference.ALTERNATE;
         throw new IllegalArgumentException("Unknown SpecimenContainedPreference code '"+codeString+"'");
         }
-        public Enumeration<SpecimenContainedPreference> fromType(Base code) throws FHIRException {
+        public Enumeration<SpecimenContainedPreference> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<SpecimenContainedPreference>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<SpecimenContainedPreference>(this, SpecimenContainedPreference.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<SpecimenContainedPreference>(this, SpecimenContainedPreference.NULL, code);
         if ("preferred".equals(codeString))
-          return new Enumeration<SpecimenContainedPreference>(this, SpecimenContainedPreference.PREFERRED);
+          return new Enumeration<SpecimenContainedPreference>(this, SpecimenContainedPreference.PREFERRED, code);
         if ("alternate".equals(codeString))
-          return new Enumeration<SpecimenContainedPreference>(this, SpecimenContainedPreference.ALTERNATE);
+          return new Enumeration<SpecimenContainedPreference>(this, SpecimenContainedPreference.ALTERNATE, code);
         throw new FHIRException("Unknown SpecimenContainedPreference code '"+codeString+"'");
         }
     public String toCode(SpecimenContainedPreference code) {

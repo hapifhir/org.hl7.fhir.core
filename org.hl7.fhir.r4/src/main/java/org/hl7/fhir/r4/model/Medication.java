@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.model;
+﻿package org.hl7.fhir.r4.model;
 
 
 
@@ -133,20 +133,20 @@ public class Medication extends DomainResource {
           return MedicationStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown MedicationStatus code '"+codeString+"'");
         }
-        public Enumeration<MedicationStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<MedicationStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<MedicationStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<MedicationStatus>(this, MedicationStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<MedicationStatus>(this, MedicationStatus.NULL, code);
         if ("active".equals(codeString))
-          return new Enumeration<MedicationStatus>(this, MedicationStatus.ACTIVE);
+          return new Enumeration<MedicationStatus>(this, MedicationStatus.ACTIVE, code);
         if ("inactive".equals(codeString))
-          return new Enumeration<MedicationStatus>(this, MedicationStatus.INACTIVE);
+          return new Enumeration<MedicationStatus>(this, MedicationStatus.INACTIVE, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<MedicationStatus>(this, MedicationStatus.ENTEREDINERROR);
+          return new Enumeration<MedicationStatus>(this, MedicationStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown MedicationStatus code '"+codeString+"'");
         }
     public String toCode(MedicationStatus code) {

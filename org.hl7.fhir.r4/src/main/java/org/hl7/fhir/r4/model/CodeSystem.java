@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.model;
+﻿package org.hl7.fhir.r4.model;
 
 
 
@@ -148,22 +148,22 @@ public class CodeSystem extends MetadataResource {
           return CodeSystemHierarchyMeaning.CLASSIFIEDWITH;
         throw new IllegalArgumentException("Unknown CodeSystemHierarchyMeaning code '"+codeString+"'");
         }
-        public Enumeration<CodeSystemHierarchyMeaning> fromType(Base code) throws FHIRException {
+        public Enumeration<CodeSystemHierarchyMeaning> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<CodeSystemHierarchyMeaning>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<CodeSystemHierarchyMeaning>(this, CodeSystemHierarchyMeaning.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<CodeSystemHierarchyMeaning>(this, CodeSystemHierarchyMeaning.NULL, code);
         if ("grouped-by".equals(codeString))
-          return new Enumeration<CodeSystemHierarchyMeaning>(this, CodeSystemHierarchyMeaning.GROUPEDBY);
+          return new Enumeration<CodeSystemHierarchyMeaning>(this, CodeSystemHierarchyMeaning.GROUPEDBY, code);
         if ("is-a".equals(codeString))
-          return new Enumeration<CodeSystemHierarchyMeaning>(this, CodeSystemHierarchyMeaning.ISA);
+          return new Enumeration<CodeSystemHierarchyMeaning>(this, CodeSystemHierarchyMeaning.ISA, code);
         if ("part-of".equals(codeString))
-          return new Enumeration<CodeSystemHierarchyMeaning>(this, CodeSystemHierarchyMeaning.PARTOF);
+          return new Enumeration<CodeSystemHierarchyMeaning>(this, CodeSystemHierarchyMeaning.PARTOF, code);
         if ("classified-with".equals(codeString))
-          return new Enumeration<CodeSystemHierarchyMeaning>(this, CodeSystemHierarchyMeaning.CLASSIFIEDWITH);
+          return new Enumeration<CodeSystemHierarchyMeaning>(this, CodeSystemHierarchyMeaning.CLASSIFIEDWITH, code);
         throw new FHIRException("Unknown CodeSystemHierarchyMeaning code '"+codeString+"'");
         }
     public String toCode(CodeSystemHierarchyMeaning code) {
@@ -288,24 +288,24 @@ public class CodeSystem extends MetadataResource {
           return CodeSystemContentMode.SUPPLEMENT;
         throw new IllegalArgumentException("Unknown CodeSystemContentMode code '"+codeString+"'");
         }
-        public Enumeration<CodeSystemContentMode> fromType(Base code) throws FHIRException {
+        public Enumeration<CodeSystemContentMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<CodeSystemContentMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<CodeSystemContentMode>(this, CodeSystemContentMode.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<CodeSystemContentMode>(this, CodeSystemContentMode.NULL, code);
         if ("not-present".equals(codeString))
-          return new Enumeration<CodeSystemContentMode>(this, CodeSystemContentMode.NOTPRESENT);
+          return new Enumeration<CodeSystemContentMode>(this, CodeSystemContentMode.NOTPRESENT, code);
         if ("example".equals(codeString))
-          return new Enumeration<CodeSystemContentMode>(this, CodeSystemContentMode.EXAMPLE);
+          return new Enumeration<CodeSystemContentMode>(this, CodeSystemContentMode.EXAMPLE, code);
         if ("fragment".equals(codeString))
-          return new Enumeration<CodeSystemContentMode>(this, CodeSystemContentMode.FRAGMENT);
+          return new Enumeration<CodeSystemContentMode>(this, CodeSystemContentMode.FRAGMENT, code);
         if ("complete".equals(codeString))
-          return new Enumeration<CodeSystemContentMode>(this, CodeSystemContentMode.COMPLETE);
+          return new Enumeration<CodeSystemContentMode>(this, CodeSystemContentMode.COMPLETE, code);
         if ("supplement".equals(codeString))
-          return new Enumeration<CodeSystemContentMode>(this, CodeSystemContentMode.SUPPLEMENT);
+          return new Enumeration<CodeSystemContentMode>(this, CodeSystemContentMode.SUPPLEMENT, code);
         throw new FHIRException("Unknown CodeSystemContentMode code '"+codeString+"'");
         }
     public String toCode(CodeSystemContentMode code) {
@@ -480,32 +480,32 @@ public class CodeSystem extends MetadataResource {
           return FilterOperator.EXISTS;
         throw new IllegalArgumentException("Unknown FilterOperator code '"+codeString+"'");
         }
-        public Enumeration<FilterOperator> fromType(Base code) throws FHIRException {
+        public Enumeration<FilterOperator> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<FilterOperator>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<FilterOperator>(this, FilterOperator.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<FilterOperator>(this, FilterOperator.NULL, code);
         if ("=".equals(codeString))
-          return new Enumeration<FilterOperator>(this, FilterOperator.EQUAL);
+          return new Enumeration<FilterOperator>(this, FilterOperator.EQUAL, code);
         if ("is-a".equals(codeString))
-          return new Enumeration<FilterOperator>(this, FilterOperator.ISA);
+          return new Enumeration<FilterOperator>(this, FilterOperator.ISA, code);
         if ("descendent-of".equals(codeString))
-          return new Enumeration<FilterOperator>(this, FilterOperator.DESCENDENTOF);
+          return new Enumeration<FilterOperator>(this, FilterOperator.DESCENDENTOF, code);
         if ("is-not-a".equals(codeString))
-          return new Enumeration<FilterOperator>(this, FilterOperator.ISNOTA);
+          return new Enumeration<FilterOperator>(this, FilterOperator.ISNOTA, code);
         if ("regex".equals(codeString))
-          return new Enumeration<FilterOperator>(this, FilterOperator.REGEX);
+          return new Enumeration<FilterOperator>(this, FilterOperator.REGEX, code);
         if ("in".equals(codeString))
-          return new Enumeration<FilterOperator>(this, FilterOperator.IN);
+          return new Enumeration<FilterOperator>(this, FilterOperator.IN, code);
         if ("not-in".equals(codeString))
-          return new Enumeration<FilterOperator>(this, FilterOperator.NOTIN);
+          return new Enumeration<FilterOperator>(this, FilterOperator.NOTIN, code);
         if ("generalizes".equals(codeString))
-          return new Enumeration<FilterOperator>(this, FilterOperator.GENERALIZES);
+          return new Enumeration<FilterOperator>(this, FilterOperator.GENERALIZES, code);
         if ("exists".equals(codeString))
-          return new Enumeration<FilterOperator>(this, FilterOperator.EXISTS);
+          return new Enumeration<FilterOperator>(this, FilterOperator.EXISTS, code);
         throw new FHIRException("Unknown FilterOperator code '"+codeString+"'");
         }
     public String toCode(FilterOperator code) {
@@ -664,28 +664,28 @@ public class CodeSystem extends MetadataResource {
           return PropertyType.DECIMAL;
         throw new IllegalArgumentException("Unknown PropertyType code '"+codeString+"'");
         }
-        public Enumeration<PropertyType> fromType(Base code) throws FHIRException {
+        public Enumeration<PropertyType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<PropertyType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<PropertyType>(this, PropertyType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<PropertyType>(this, PropertyType.NULL, code);
         if ("code".equals(codeString))
-          return new Enumeration<PropertyType>(this, PropertyType.CODE);
+          return new Enumeration<PropertyType>(this, PropertyType.CODE, code);
         if ("Coding".equals(codeString))
-          return new Enumeration<PropertyType>(this, PropertyType.CODING);
+          return new Enumeration<PropertyType>(this, PropertyType.CODING, code);
         if ("string".equals(codeString))
-          return new Enumeration<PropertyType>(this, PropertyType.STRING);
+          return new Enumeration<PropertyType>(this, PropertyType.STRING, code);
         if ("integer".equals(codeString))
-          return new Enumeration<PropertyType>(this, PropertyType.INTEGER);
+          return new Enumeration<PropertyType>(this, PropertyType.INTEGER, code);
         if ("boolean".equals(codeString))
-          return new Enumeration<PropertyType>(this, PropertyType.BOOLEAN);
+          return new Enumeration<PropertyType>(this, PropertyType.BOOLEAN, code);
         if ("dateTime".equals(codeString))
-          return new Enumeration<PropertyType>(this, PropertyType.DATETIME);
+          return new Enumeration<PropertyType>(this, PropertyType.DATETIME, code);
         if ("decimal".equals(codeString))
-          return new Enumeration<PropertyType>(this, PropertyType.DECIMAL);
+          return new Enumeration<PropertyType>(this, PropertyType.DECIMAL, code);
         throw new FHIRException("Unknown PropertyType code '"+codeString+"'");
         }
     public String toCode(PropertyType code) {

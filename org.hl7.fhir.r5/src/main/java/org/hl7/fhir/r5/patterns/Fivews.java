@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.patterns;
+﻿package org.hl7.fhir.r5.patterns;
 
 
 
@@ -475,76 +475,76 @@ public interface Fivews extends PatternBase {
           return CanonicalStatus.HWDISCON;
         throw new IllegalArgumentException("Unknown CanonicalStatus code '"+codeString+"'");
         }
-        public Enumeration<CanonicalStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<CanonicalStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<CanonicalStatus>(this);
+            return new Enumeration<CanonicalStatus>(this, CanonicalStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<CanonicalStatus>(this, CanonicalStatus.NULL, code);
         if ("error".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.ERROR);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.ERROR, code);
         if ("proposed".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.PROPOSED);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.PROPOSED, code);
         if ("planned".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.PLANNED);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.PLANNED, code);
         if ("draft".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.DRAFT);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.DRAFT, code);
         if ("requested".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.REQUESTED);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.REQUESTED, code);
         if ("received".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.RECEIVED);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.RECEIVED, code);
         if ("declined".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.DECLINED);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.DECLINED, code);
         if ("accepted".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.ACCEPTED);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.ACCEPTED, code);
         if ("arrived".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.ARRIVED);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.ARRIVED, code);
         if ("active".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.ACTIVE);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.ACTIVE, code);
         if ("suspended".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.SUSPENDED);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.SUSPENDED, code);
         if ("failed".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.FAILED);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.FAILED, code);
         if ("replaced".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.REPLACED);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.REPLACED, code);
         if ("complete".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.COMPLETE);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.COMPLETE, code);
         if ("inactive".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.INACTIVE);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.INACTIVE, code);
         if ("abandoned".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.ABANDONED);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.ABANDONED, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.UNKNOWN);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.UNKNOWN, code);
         if ("unconfirmed".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.UNCONFIRMED);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.UNCONFIRMED, code);
         if ("confirmed".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.CONFIRMED);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.CONFIRMED, code);
         if ("resolved".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.RESOLVED);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.RESOLVED, code);
         if ("refuted".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.REFUTED);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.REFUTED, code);
         if ("differential".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.DIFFERENTIAL);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.DIFFERENTIAL, code);
         if ("partial".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.PARTIAL);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.PARTIAL, code);
         if ("busy-unavailable".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.BUSYUNAVAILABLE);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.BUSYUNAVAILABLE, code);
         if ("free".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.FREE);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.FREE, code);
         if ("on-target".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.ONTARGET);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.ONTARGET, code);
         if ("ahead-of-target".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.AHEADOFTARGET);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.AHEADOFTARGET, code);
         if ("behind-target".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.BEHINDTARGET);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.BEHINDTARGET, code);
         if ("not-ready".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.NOTREADY);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.NOTREADY, code);
         if ("transduc-discon".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.TRANSDUCDISCON);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.TRANSDUCDISCON, code);
         if ("hw-discon".equals(codeString))
-          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.HWDISCON);
+          return new Enumeration<CanonicalStatus>(this, CanonicalStatus.HWDISCON, code);
         throw new FHIRException("Unknown CanonicalStatus code '"+codeString+"'");
         }
     public String toCode(CanonicalStatus code) {

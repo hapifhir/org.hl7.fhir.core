@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -147,22 +147,22 @@ public class Encounter extends DomainResource {
           return EncounterLocationStatus.COMPLETED;
         throw new IllegalArgumentException("Unknown EncounterLocationStatus code '"+codeString+"'");
         }
-        public Enumeration<EncounterLocationStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<EncounterLocationStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<EncounterLocationStatus>(this);
+            return new Enumeration<EncounterLocationStatus>(this, EncounterLocationStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<EncounterLocationStatus>(this, EncounterLocationStatus.NULL, code);
         if ("planned".equals(codeString))
-          return new Enumeration<EncounterLocationStatus>(this, EncounterLocationStatus.PLANNED);
+          return new Enumeration<EncounterLocationStatus>(this, EncounterLocationStatus.PLANNED, code);
         if ("active".equals(codeString))
-          return new Enumeration<EncounterLocationStatus>(this, EncounterLocationStatus.ACTIVE);
+          return new Enumeration<EncounterLocationStatus>(this, EncounterLocationStatus.ACTIVE, code);
         if ("reserved".equals(codeString))
-          return new Enumeration<EncounterLocationStatus>(this, EncounterLocationStatus.RESERVED);
+          return new Enumeration<EncounterLocationStatus>(this, EncounterLocationStatus.RESERVED, code);
         if ("completed".equals(codeString))
-          return new Enumeration<EncounterLocationStatus>(this, EncounterLocationStatus.COMPLETED);
+          return new Enumeration<EncounterLocationStatus>(this, EncounterLocationStatus.COMPLETED, code);
         throw new FHIRException("Unknown EncounterLocationStatus code '"+codeString+"'");
         }
     public String toCode(EncounterLocationStatus code) {
@@ -335,32 +335,32 @@ public class Encounter extends DomainResource {
           return EncounterStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown EncounterStatus code '"+codeString+"'");
         }
-        public Enumeration<EncounterStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<EncounterStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<EncounterStatus>(this);
+            return new Enumeration<EncounterStatus>(this, EncounterStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<EncounterStatus>(this, EncounterStatus.NULL, code);
         if ("planned".equals(codeString))
-          return new Enumeration<EncounterStatus>(this, EncounterStatus.PLANNED);
+          return new Enumeration<EncounterStatus>(this, EncounterStatus.PLANNED, code);
         if ("in-progress".equals(codeString))
-          return new Enumeration<EncounterStatus>(this, EncounterStatus.INPROGRESS);
+          return new Enumeration<EncounterStatus>(this, EncounterStatus.INPROGRESS, code);
         if ("on-hold".equals(codeString))
-          return new Enumeration<EncounterStatus>(this, EncounterStatus.ONHOLD);
+          return new Enumeration<EncounterStatus>(this, EncounterStatus.ONHOLD, code);
         if ("discharged".equals(codeString))
-          return new Enumeration<EncounterStatus>(this, EncounterStatus.DISCHARGED);
+          return new Enumeration<EncounterStatus>(this, EncounterStatus.DISCHARGED, code);
         if ("completed".equals(codeString))
-          return new Enumeration<EncounterStatus>(this, EncounterStatus.COMPLETED);
+          return new Enumeration<EncounterStatus>(this, EncounterStatus.COMPLETED, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<EncounterStatus>(this, EncounterStatus.CANCELLED);
+          return new Enumeration<EncounterStatus>(this, EncounterStatus.CANCELLED, code);
         if ("discontinued".equals(codeString))
-          return new Enumeration<EncounterStatus>(this, EncounterStatus.DISCONTINUED);
+          return new Enumeration<EncounterStatus>(this, EncounterStatus.DISCONTINUED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<EncounterStatus>(this, EncounterStatus.ENTEREDINERROR);
+          return new Enumeration<EncounterStatus>(this, EncounterStatus.ENTEREDINERROR, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<EncounterStatus>(this, EncounterStatus.UNKNOWN);
+          return new Enumeration<EncounterStatus>(this, EncounterStatus.UNKNOWN, code);
         throw new FHIRException("Unknown EncounterStatus code '"+codeString+"'");
         }
     public String toCode(EncounterStatus code) {
@@ -2507,7 +2507,9 @@ public class Encounter extends DomainResource {
     protected DateTimeType plannedEndDate;
 
     /**
-     * Actual quantity of time the encounter lasted. This excludes the time during leaves of absence.When missing it is the time in between the start and end values.
+     * Actual quantity of time the encounter lasted. This excludes the time during leaves of absence.
+
+When missing it is the time in between the start and end values.
      */
     @Child(name = "length", type = {Duration.class}, order=21, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Actual quantity of time the encounter lasted (less time absent)", formalDefinition="Actual quantity of time the encounter lasted. This excludes the time during leaves of absence.\r\rWhen missing it is the time in between the start and end values." )
@@ -3490,7 +3492,9 @@ public class Encounter extends DomainResource {
     }
 
     /**
-     * @return {@link #length} (Actual quantity of time the encounter lasted. This excludes the time during leaves of absence.When missing it is the time in between the start and end values.)
+     * @return {@link #length} (Actual quantity of time the encounter lasted. This excludes the time during leaves of absence.
+
+When missing it is the time in between the start and end values.)
      */
     public Duration getLength() { 
       if (this.length == null)
@@ -3506,7 +3510,9 @@ public class Encounter extends DomainResource {
     }
 
     /**
-     * @param value {@link #length} (Actual quantity of time the encounter lasted. This excludes the time during leaves of absence.When missing it is the time in between the start and end values.)
+     * @param value {@link #length} (Actual quantity of time the encounter lasted. This excludes the time during leaves of absence.
+
+When missing it is the time in between the start and end values.)
      */
     public Encounter setLength(Duration value) { 
       this.length = value;
@@ -5135,4 +5141,3 @@ public class Encounter extends DomainResource {
 
 
 }
-

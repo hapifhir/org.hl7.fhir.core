@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -135,20 +135,20 @@ public class Observation extends DomainResource {
           return TriggeredBytype.RERUN;
         throw new IllegalArgumentException("Unknown TriggeredBytype code '"+codeString+"'");
         }
-        public Enumeration<TriggeredBytype> fromType(Base code) throws FHIRException {
+        public Enumeration<TriggeredBytype> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<TriggeredBytype>(this);
+            return new Enumeration<TriggeredBytype>(this, TriggeredBytype.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<TriggeredBytype>(this, TriggeredBytype.NULL, code);
         if ("reflex".equals(codeString))
-          return new Enumeration<TriggeredBytype>(this, TriggeredBytype.REFLEX);
+          return new Enumeration<TriggeredBytype>(this, TriggeredBytype.REFLEX, code);
         if ("repeat".equals(codeString))
-          return new Enumeration<TriggeredBytype>(this, TriggeredBytype.REPEAT);
+          return new Enumeration<TriggeredBytype>(this, TriggeredBytype.REPEAT, code);
         if ("re-run".equals(codeString))
-          return new Enumeration<TriggeredBytype>(this, TriggeredBytype.RERUN);
+          return new Enumeration<TriggeredBytype>(this, TriggeredBytype.RERUN, code);
         throw new FHIRException("Unknown TriggeredBytype code '"+codeString+"'");
         }
     public String toCode(TriggeredBytype code) {
@@ -4868,4 +4868,3 @@ Reflex | Repeat | Re-run.
 
 
 }
-

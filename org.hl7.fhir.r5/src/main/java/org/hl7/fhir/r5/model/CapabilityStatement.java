@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -136,20 +136,20 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
           return ConditionalDeleteStatus.MULTIPLE;
         throw new IllegalArgumentException("Unknown ConditionalDeleteStatus code '"+codeString+"'");
         }
-        public Enumeration<ConditionalDeleteStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ConditionalDeleteStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ConditionalDeleteStatus>(this);
+            return new Enumeration<ConditionalDeleteStatus>(this, ConditionalDeleteStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ConditionalDeleteStatus>(this, ConditionalDeleteStatus.NULL, code);
         if ("not-supported".equals(codeString))
-          return new Enumeration<ConditionalDeleteStatus>(this, ConditionalDeleteStatus.NOTSUPPORTED);
+          return new Enumeration<ConditionalDeleteStatus>(this, ConditionalDeleteStatus.NOTSUPPORTED, code);
         if ("single".equals(codeString))
-          return new Enumeration<ConditionalDeleteStatus>(this, ConditionalDeleteStatus.SINGLE);
+          return new Enumeration<ConditionalDeleteStatus>(this, ConditionalDeleteStatus.SINGLE, code);
         if ("multiple".equals(codeString))
-          return new Enumeration<ConditionalDeleteStatus>(this, ConditionalDeleteStatus.MULTIPLE);
+          return new Enumeration<ConditionalDeleteStatus>(this, ConditionalDeleteStatus.MULTIPLE, code);
         throw new FHIRException("Unknown ConditionalDeleteStatus code '"+codeString+"'");
         }
     public String toCode(ConditionalDeleteStatus code) {
@@ -260,22 +260,22 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
           return ConditionalReadStatus.FULLSUPPORT;
         throw new IllegalArgumentException("Unknown ConditionalReadStatus code '"+codeString+"'");
         }
-        public Enumeration<ConditionalReadStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ConditionalReadStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ConditionalReadStatus>(this);
+            return new Enumeration<ConditionalReadStatus>(this, ConditionalReadStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ConditionalReadStatus>(this, ConditionalReadStatus.NULL, code);
         if ("not-supported".equals(codeString))
-          return new Enumeration<ConditionalReadStatus>(this, ConditionalReadStatus.NOTSUPPORTED);
+          return new Enumeration<ConditionalReadStatus>(this, ConditionalReadStatus.NOTSUPPORTED, code);
         if ("modified-since".equals(codeString))
-          return new Enumeration<ConditionalReadStatus>(this, ConditionalReadStatus.MODIFIEDSINCE);
+          return new Enumeration<ConditionalReadStatus>(this, ConditionalReadStatus.MODIFIEDSINCE, code);
         if ("not-match".equals(codeString))
-          return new Enumeration<ConditionalReadStatus>(this, ConditionalReadStatus.NOTMATCH);
+          return new Enumeration<ConditionalReadStatus>(this, ConditionalReadStatus.NOTMATCH, code);
         if ("full-support".equals(codeString))
-          return new Enumeration<ConditionalReadStatus>(this, ConditionalReadStatus.FULLSUPPORT);
+          return new Enumeration<ConditionalReadStatus>(this, ConditionalReadStatus.FULLSUPPORT, code);
         throw new FHIRException("Unknown ConditionalReadStatus code '"+codeString+"'");
         }
     public String toCode(ConditionalReadStatus code) {
@@ -364,18 +364,18 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
           return DocumentMode.CONSUMER;
         throw new IllegalArgumentException("Unknown DocumentMode code '"+codeString+"'");
         }
-        public Enumeration<DocumentMode> fromType(Base code) throws FHIRException {
+        public Enumeration<DocumentMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<DocumentMode>(this);
+            return new Enumeration<DocumentMode>(this, DocumentMode.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<DocumentMode>(this, DocumentMode.NULL, code);
         if ("producer".equals(codeString))
-          return new Enumeration<DocumentMode>(this, DocumentMode.PRODUCER);
+          return new Enumeration<DocumentMode>(this, DocumentMode.PRODUCER, code);
         if ("consumer".equals(codeString))
-          return new Enumeration<DocumentMode>(this, DocumentMode.CONSUMER);
+          return new Enumeration<DocumentMode>(this, DocumentMode.CONSUMER, code);
         throw new FHIRException("Unknown DocumentMode code '"+codeString+"'");
         }
     public String toCode(DocumentMode code) {
@@ -460,18 +460,18 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
           return EventCapabilityMode.RECEIVER;
         throw new IllegalArgumentException("Unknown EventCapabilityMode code '"+codeString+"'");
         }
-        public Enumeration<EventCapabilityMode> fromType(Base code) throws FHIRException {
+        public Enumeration<EventCapabilityMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<EventCapabilityMode>(this);
+            return new Enumeration<EventCapabilityMode>(this, EventCapabilityMode.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<EventCapabilityMode>(this, EventCapabilityMode.NULL, code);
         if ("sender".equals(codeString))
-          return new Enumeration<EventCapabilityMode>(this, EventCapabilityMode.SENDER);
+          return new Enumeration<EventCapabilityMode>(this, EventCapabilityMode.SENDER, code);
         if ("receiver".equals(codeString))
-          return new Enumeration<EventCapabilityMode>(this, EventCapabilityMode.RECEIVER);
+          return new Enumeration<EventCapabilityMode>(this, EventCapabilityMode.RECEIVER, code);
         throw new FHIRException("Unknown EventCapabilityMode code '"+codeString+"'");
         }
     public String toCode(EventCapabilityMode code) {
@@ -592,24 +592,24 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
           return ReferenceHandlingPolicy.LOCAL;
         throw new IllegalArgumentException("Unknown ReferenceHandlingPolicy code '"+codeString+"'");
         }
-        public Enumeration<ReferenceHandlingPolicy> fromType(Base code) throws FHIRException {
+        public Enumeration<ReferenceHandlingPolicy> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ReferenceHandlingPolicy>(this);
+            return new Enumeration<ReferenceHandlingPolicy>(this, ReferenceHandlingPolicy.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ReferenceHandlingPolicy>(this, ReferenceHandlingPolicy.NULL, code);
         if ("literal".equals(codeString))
-          return new Enumeration<ReferenceHandlingPolicy>(this, ReferenceHandlingPolicy.LITERAL);
+          return new Enumeration<ReferenceHandlingPolicy>(this, ReferenceHandlingPolicy.LITERAL, code);
         if ("logical".equals(codeString))
-          return new Enumeration<ReferenceHandlingPolicy>(this, ReferenceHandlingPolicy.LOGICAL);
+          return new Enumeration<ReferenceHandlingPolicy>(this, ReferenceHandlingPolicy.LOGICAL, code);
         if ("resolves".equals(codeString))
-          return new Enumeration<ReferenceHandlingPolicy>(this, ReferenceHandlingPolicy.RESOLVES);
+          return new Enumeration<ReferenceHandlingPolicy>(this, ReferenceHandlingPolicy.RESOLVES, code);
         if ("enforced".equals(codeString))
-          return new Enumeration<ReferenceHandlingPolicy>(this, ReferenceHandlingPolicy.ENFORCED);
+          return new Enumeration<ReferenceHandlingPolicy>(this, ReferenceHandlingPolicy.ENFORCED, code);
         if ("local".equals(codeString))
-          return new Enumeration<ReferenceHandlingPolicy>(this, ReferenceHandlingPolicy.LOCAL);
+          return new Enumeration<ReferenceHandlingPolicy>(this, ReferenceHandlingPolicy.LOCAL, code);
         throw new FHIRException("Unknown ReferenceHandlingPolicy code '"+codeString+"'");
         }
     public String toCode(ReferenceHandlingPolicy code) {
@@ -712,20 +712,20 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
           return ResourceVersionPolicy.VERSIONEDUPDATE;
         throw new IllegalArgumentException("Unknown ResourceVersionPolicy code '"+codeString+"'");
         }
-        public Enumeration<ResourceVersionPolicy> fromType(Base code) throws FHIRException {
+        public Enumeration<ResourceVersionPolicy> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ResourceVersionPolicy>(this);
+            return new Enumeration<ResourceVersionPolicy>(this, ResourceVersionPolicy.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ResourceVersionPolicy>(this, ResourceVersionPolicy.NULL, code);
         if ("no-version".equals(codeString))
-          return new Enumeration<ResourceVersionPolicy>(this, ResourceVersionPolicy.NOVERSION);
+          return new Enumeration<ResourceVersionPolicy>(this, ResourceVersionPolicy.NOVERSION, code);
         if ("versioned".equals(codeString))
-          return new Enumeration<ResourceVersionPolicy>(this, ResourceVersionPolicy.VERSIONED);
+          return new Enumeration<ResourceVersionPolicy>(this, ResourceVersionPolicy.VERSIONED, code);
         if ("versioned-update".equals(codeString))
-          return new Enumeration<ResourceVersionPolicy>(this, ResourceVersionPolicy.VERSIONEDUPDATE);
+          return new Enumeration<ResourceVersionPolicy>(this, ResourceVersionPolicy.VERSIONEDUPDATE, code);
         throw new FHIRException("Unknown ResourceVersionPolicy code '"+codeString+"'");
         }
     public String toCode(ResourceVersionPolicy code) {
@@ -812,18 +812,18 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
           return RestfulCapabilityMode.SERVER;
         throw new IllegalArgumentException("Unknown RestfulCapabilityMode code '"+codeString+"'");
         }
-        public Enumeration<RestfulCapabilityMode> fromType(Base code) throws FHIRException {
+        public Enumeration<RestfulCapabilityMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<RestfulCapabilityMode>(this);
+            return new Enumeration<RestfulCapabilityMode>(this, RestfulCapabilityMode.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<RestfulCapabilityMode>(this, RestfulCapabilityMode.NULL, code);
         if ("client".equals(codeString))
-          return new Enumeration<RestfulCapabilityMode>(this, RestfulCapabilityMode.CLIENT);
+          return new Enumeration<RestfulCapabilityMode>(this, RestfulCapabilityMode.CLIENT, code);
         if ("server".equals(codeString))
-          return new Enumeration<RestfulCapabilityMode>(this, RestfulCapabilityMode.SERVER);
+          return new Enumeration<RestfulCapabilityMode>(this, RestfulCapabilityMode.SERVER, code);
         throw new FHIRException("Unknown RestfulCapabilityMode code '"+codeString+"'");
         }
     public String toCode(RestfulCapabilityMode code) {
@@ -932,22 +932,22 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
           return SystemRestfulInteraction.HISTORYSYSTEM;
         throw new IllegalArgumentException("Unknown SystemRestfulInteraction code '"+codeString+"'");
         }
-        public Enumeration<SystemRestfulInteraction> fromType(Base code) throws FHIRException {
+        public Enumeration<SystemRestfulInteraction> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<SystemRestfulInteraction>(this);
+            return new Enumeration<SystemRestfulInteraction>(this, SystemRestfulInteraction.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<SystemRestfulInteraction>(this, SystemRestfulInteraction.NULL, code);
         if ("transaction".equals(codeString))
-          return new Enumeration<SystemRestfulInteraction>(this, SystemRestfulInteraction.TRANSACTION);
+          return new Enumeration<SystemRestfulInteraction>(this, SystemRestfulInteraction.TRANSACTION, code);
         if ("batch".equals(codeString))
-          return new Enumeration<SystemRestfulInteraction>(this, SystemRestfulInteraction.BATCH);
+          return new Enumeration<SystemRestfulInteraction>(this, SystemRestfulInteraction.BATCH, code);
         if ("search-system".equals(codeString))
-          return new Enumeration<SystemRestfulInteraction>(this, SystemRestfulInteraction.SEARCHSYSTEM);
+          return new Enumeration<SystemRestfulInteraction>(this, SystemRestfulInteraction.SEARCHSYSTEM, code);
         if ("history-system".equals(codeString))
-          return new Enumeration<SystemRestfulInteraction>(this, SystemRestfulInteraction.HISTORYSYSTEM);
+          return new Enumeration<SystemRestfulInteraction>(this, SystemRestfulInteraction.HISTORYSYSTEM, code);
         throw new FHIRException("Unknown SystemRestfulInteraction code '"+codeString+"'");
         }
     public String toCode(SystemRestfulInteraction code) {
@@ -1120,32 +1120,32 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
           return TypeRestfulInteraction.SEARCHTYPE;
         throw new IllegalArgumentException("Unknown TypeRestfulInteraction code '"+codeString+"'");
         }
-        public Enumeration<TypeRestfulInteraction> fromType(Base code) throws FHIRException {
+        public Enumeration<TypeRestfulInteraction> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<TypeRestfulInteraction>(this);
+            return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.NULL, code);
         if ("read".equals(codeString))
-          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.READ);
+          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.READ, code);
         if ("vread".equals(codeString))
-          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.VREAD);
+          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.VREAD, code);
         if ("update".equals(codeString))
-          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.UPDATE);
+          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.UPDATE, code);
         if ("patch".equals(codeString))
-          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.PATCH);
+          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.PATCH, code);
         if ("delete".equals(codeString))
-          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.DELETE);
+          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.DELETE, code);
         if ("history-instance".equals(codeString))
-          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.HISTORYINSTANCE);
+          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.HISTORYINSTANCE, code);
         if ("history-type".equals(codeString))
-          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.HISTORYTYPE);
+          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.HISTORYTYPE, code);
         if ("create".equals(codeString))
-          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.CREATE);
+          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.CREATE, code);
         if ("search-type".equals(codeString))
-          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.SEARCHTYPE);
+          return new Enumeration<TypeRestfulInteraction>(this, TypeRestfulInteraction.SEARCHTYPE, code);
         throw new FHIRException("Unknown TypeRestfulInteraction code '"+codeString+"'");
         }
     public String toCode(TypeRestfulInteraction code) {
@@ -10429,4 +10429,3 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
 // end addition
 
 }
-

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -123,18 +123,18 @@ public class TestScript extends CanonicalResource {
           return AssertionDirectionType.REQUEST;
         throw new IllegalArgumentException("Unknown AssertionDirectionType code '"+codeString+"'");
         }
-        public Enumeration<AssertionDirectionType> fromType(Base code) throws FHIRException {
+        public Enumeration<AssertionDirectionType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<AssertionDirectionType>(this);
+            return new Enumeration<AssertionDirectionType>(this, AssertionDirectionType.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<AssertionDirectionType>(this, AssertionDirectionType.NULL, code);
         if ("response".equals(codeString))
-          return new Enumeration<AssertionDirectionType>(this, AssertionDirectionType.RESPONSE);
+          return new Enumeration<AssertionDirectionType>(this, AssertionDirectionType.RESPONSE, code);
         if ("request".equals(codeString))
-          return new Enumeration<AssertionDirectionType>(this, AssertionDirectionType.REQUEST);
+          return new Enumeration<AssertionDirectionType>(this, AssertionDirectionType.REQUEST, code);
         throw new FHIRException("Unknown AssertionDirectionType code '"+codeString+"'");
         }
     public String toCode(AssertionDirectionType code) {
@@ -327,36 +327,36 @@ public class TestScript extends CanonicalResource {
           return AssertionOperatorType.EVAL;
         throw new IllegalArgumentException("Unknown AssertionOperatorType code '"+codeString+"'");
         }
-        public Enumeration<AssertionOperatorType> fromType(Base code) throws FHIRException {
+        public Enumeration<AssertionOperatorType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<AssertionOperatorType>(this);
+            return new Enumeration<AssertionOperatorType>(this, AssertionOperatorType.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<AssertionOperatorType>(this, AssertionOperatorType.NULL, code);
         if ("equals".equals(codeString))
-          return new Enumeration<AssertionOperatorType>(this, AssertionOperatorType.EQUALS);
+          return new Enumeration<AssertionOperatorType>(this, AssertionOperatorType.EQUALS, code);
         if ("notEquals".equals(codeString))
-          return new Enumeration<AssertionOperatorType>(this, AssertionOperatorType.NOTEQUALS);
+          return new Enumeration<AssertionOperatorType>(this, AssertionOperatorType.NOTEQUALS, code);
         if ("in".equals(codeString))
-          return new Enumeration<AssertionOperatorType>(this, AssertionOperatorType.IN);
+          return new Enumeration<AssertionOperatorType>(this, AssertionOperatorType.IN, code);
         if ("notIn".equals(codeString))
-          return new Enumeration<AssertionOperatorType>(this, AssertionOperatorType.NOTIN);
+          return new Enumeration<AssertionOperatorType>(this, AssertionOperatorType.NOTIN, code);
         if ("greaterThan".equals(codeString))
-          return new Enumeration<AssertionOperatorType>(this, AssertionOperatorType.GREATERTHAN);
+          return new Enumeration<AssertionOperatorType>(this, AssertionOperatorType.GREATERTHAN, code);
         if ("lessThan".equals(codeString))
-          return new Enumeration<AssertionOperatorType>(this, AssertionOperatorType.LESSTHAN);
+          return new Enumeration<AssertionOperatorType>(this, AssertionOperatorType.LESSTHAN, code);
         if ("empty".equals(codeString))
-          return new Enumeration<AssertionOperatorType>(this, AssertionOperatorType.EMPTY);
+          return new Enumeration<AssertionOperatorType>(this, AssertionOperatorType.EMPTY, code);
         if ("notEmpty".equals(codeString))
-          return new Enumeration<AssertionOperatorType>(this, AssertionOperatorType.NOTEMPTY);
+          return new Enumeration<AssertionOperatorType>(this, AssertionOperatorType.NOTEMPTY, code);
         if ("contains".equals(codeString))
-          return new Enumeration<AssertionOperatorType>(this, AssertionOperatorType.CONTAINS);
+          return new Enumeration<AssertionOperatorType>(this, AssertionOperatorType.CONTAINS, code);
         if ("notContains".equals(codeString))
-          return new Enumeration<AssertionOperatorType>(this, AssertionOperatorType.NOTCONTAINS);
+          return new Enumeration<AssertionOperatorType>(this, AssertionOperatorType.NOTCONTAINS, code);
         if ("eval".equals(codeString))
-          return new Enumeration<AssertionOperatorType>(this, AssertionOperatorType.EVAL);
+          return new Enumeration<AssertionOperatorType>(this, AssertionOperatorType.EVAL, code);
         throw new FHIRException("Unknown AssertionOperatorType code '"+codeString+"'");
         }
     public String toCode(AssertionOperatorType code) {
@@ -579,38 +579,38 @@ public class TestScript extends CanonicalResource {
           return AssertionResponseTypes.UNPROCESSABLE;
         throw new IllegalArgumentException("Unknown AssertionResponseTypes code '"+codeString+"'");
         }
-        public Enumeration<AssertionResponseTypes> fromType(Base code) throws FHIRException {
+        public Enumeration<AssertionResponseTypes> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<AssertionResponseTypes>(this);
+            return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.NULL, code);
         if ("okay".equals(codeString))
-          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.OKAY);
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.OKAY, code);
         if ("created".equals(codeString))
-          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.CREATED);
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.CREATED, code);
         if ("noContent".equals(codeString))
-          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.NOCONTENT);
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.NOCONTENT, code);
         if ("notModified".equals(codeString))
-          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.NOTMODIFIED);
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.NOTMODIFIED, code);
         if ("bad".equals(codeString))
-          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.BAD);
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.BAD, code);
         if ("forbidden".equals(codeString))
-          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.FORBIDDEN);
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.FORBIDDEN, code);
         if ("notFound".equals(codeString))
-          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.NOTFOUND);
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.NOTFOUND, code);
         if ("methodNotAllowed".equals(codeString))
-          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.METHODNOTALLOWED);
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.METHODNOTALLOWED, code);
         if ("conflict".equals(codeString))
-          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.CONFLICT);
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.CONFLICT, code);
         if ("gone".equals(codeString))
-          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.GONE);
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.GONE, code);
         if ("preconditionFailed".equals(codeString))
-          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.PRECONDITIONFAILED);
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.PRECONDITIONFAILED, code);
         if ("unprocessable".equals(codeString))
-          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.UNPROCESSABLE);
+          return new Enumeration<AssertionResponseTypes>(this, AssertionResponseTypes.UNPROCESSABLE, code);
         throw new FHIRException("Unknown AssertionResponseTypes code '"+codeString+"'");
         }
     public String toCode(AssertionResponseTypes code) {
@@ -775,28 +775,28 @@ public class TestScript extends CanonicalResource {
           return TestScriptRequestMethodCode.HEAD;
         throw new IllegalArgumentException("Unknown TestScriptRequestMethodCode code '"+codeString+"'");
         }
-        public Enumeration<TestScriptRequestMethodCode> fromType(Base code) throws FHIRException {
+        public Enumeration<TestScriptRequestMethodCode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<TestScriptRequestMethodCode>(this);
+            return new Enumeration<TestScriptRequestMethodCode>(this, TestScriptRequestMethodCode.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<TestScriptRequestMethodCode>(this, TestScriptRequestMethodCode.NULL, code);
         if ("delete".equals(codeString))
-          return new Enumeration<TestScriptRequestMethodCode>(this, TestScriptRequestMethodCode.DELETE);
+          return new Enumeration<TestScriptRequestMethodCode>(this, TestScriptRequestMethodCode.DELETE, code);
         if ("get".equals(codeString))
-          return new Enumeration<TestScriptRequestMethodCode>(this, TestScriptRequestMethodCode.GET);
+          return new Enumeration<TestScriptRequestMethodCode>(this, TestScriptRequestMethodCode.GET, code);
         if ("options".equals(codeString))
-          return new Enumeration<TestScriptRequestMethodCode>(this, TestScriptRequestMethodCode.OPTIONS);
+          return new Enumeration<TestScriptRequestMethodCode>(this, TestScriptRequestMethodCode.OPTIONS, code);
         if ("patch".equals(codeString))
-          return new Enumeration<TestScriptRequestMethodCode>(this, TestScriptRequestMethodCode.PATCH);
+          return new Enumeration<TestScriptRequestMethodCode>(this, TestScriptRequestMethodCode.PATCH, code);
         if ("post".equals(codeString))
-          return new Enumeration<TestScriptRequestMethodCode>(this, TestScriptRequestMethodCode.POST);
+          return new Enumeration<TestScriptRequestMethodCode>(this, TestScriptRequestMethodCode.POST, code);
         if ("put".equals(codeString))
-          return new Enumeration<TestScriptRequestMethodCode>(this, TestScriptRequestMethodCode.PUT);
+          return new Enumeration<TestScriptRequestMethodCode>(this, TestScriptRequestMethodCode.PUT, code);
         if ("head".equals(codeString))
-          return new Enumeration<TestScriptRequestMethodCode>(this, TestScriptRequestMethodCode.HEAD);
+          return new Enumeration<TestScriptRequestMethodCode>(this, TestScriptRequestMethodCode.HEAD, code);
         throw new FHIRException("Unknown TestScriptRequestMethodCode code '"+codeString+"'");
         }
     public String toCode(TestScriptRequestMethodCode code) {
@@ -11782,4 +11782,3 @@ public class TestScript extends CanonicalResource {
 
 
 }
-

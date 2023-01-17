@@ -134,12 +134,12 @@ public class AllergyIntolerance extends DomainResource {
           return AllergyIntoleranceClinicalStatus.RESOLVED;
         throw new IllegalArgumentException("Unknown AllergyIntoleranceClinicalStatus code '"+codeString+"'");
         }
-        public Enumeration<AllergyIntoleranceClinicalStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<AllergyIntoleranceClinicalStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<AllergyIntoleranceClinicalStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("active".equals(codeString))
@@ -258,12 +258,12 @@ public class AllergyIntolerance extends DomainResource {
           return AllergyIntoleranceVerificationStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown AllergyIntoleranceVerificationStatus code '"+codeString+"'");
         }
-        public Enumeration<AllergyIntoleranceVerificationStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<AllergyIntoleranceVerificationStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<AllergyIntoleranceVerificationStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("unconfirmed".equals(codeString))
@@ -362,12 +362,12 @@ public class AllergyIntolerance extends DomainResource {
           return AllergyIntoleranceType.INTOLERANCE;
         throw new IllegalArgumentException("Unknown AllergyIntoleranceType code '"+codeString+"'");
         }
-        public Enumeration<AllergyIntoleranceType> fromType(Base code) throws FHIRException {
+        public Enumeration<AllergyIntoleranceType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<AllergyIntoleranceType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("allergy".equals(codeString))
@@ -482,12 +482,12 @@ public class AllergyIntolerance extends DomainResource {
           return AllergyIntoleranceCategory.BIOLOGIC;
         throw new IllegalArgumentException("Unknown AllergyIntoleranceCategory code '"+codeString+"'");
         }
-        public Enumeration<AllergyIntoleranceCategory> fromType(Base code) throws FHIRException {
+        public Enumeration<AllergyIntoleranceCategory> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<AllergyIntoleranceCategory>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("food".equals(codeString))
@@ -598,12 +598,12 @@ public class AllergyIntolerance extends DomainResource {
           return AllergyIntoleranceCriticality.UNABLETOASSESS;
         throw new IllegalArgumentException("Unknown AllergyIntoleranceCriticality code '"+codeString+"'");
         }
-        public Enumeration<AllergyIntoleranceCriticality> fromType(Base code) throws FHIRException {
+        public Enumeration<AllergyIntoleranceCriticality> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<AllergyIntoleranceCriticality>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("low".equals(codeString))
@@ -710,12 +710,12 @@ public class AllergyIntolerance extends DomainResource {
           return AllergyIntoleranceSeverity.SEVERE;
         throw new IllegalArgumentException("Unknown AllergyIntoleranceSeverity code '"+codeString+"'");
         }
-        public Enumeration<AllergyIntoleranceSeverity> fromType(Base code) throws FHIRException {
+        public Enumeration<AllergyIntoleranceSeverity> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<AllergyIntoleranceSeverity>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("mild".equals(codeString))

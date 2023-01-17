@@ -137,12 +137,12 @@ public class NamingSystem extends MetadataResource {
           return NamingSystemType.ROOT;
         throw new IllegalArgumentException("Unknown NamingSystemType code '"+codeString+"'");
         }
-        public Enumeration<NamingSystemType> fromType(Base code) throws FHIRException {
+        public Enumeration<NamingSystemType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<NamingSystemType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("codesystem".equals(codeString))
@@ -261,12 +261,12 @@ public class NamingSystem extends MetadataResource {
           return NamingSystemIdentifierType.OTHER;
         throw new IllegalArgumentException("Unknown NamingSystemIdentifierType code '"+codeString+"'");
         }
-        public Enumeration<NamingSystemIdentifierType> fromType(Base code) throws FHIRException {
+        public Enumeration<NamingSystemIdentifierType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<NamingSystemIdentifierType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("oid".equals(codeString))

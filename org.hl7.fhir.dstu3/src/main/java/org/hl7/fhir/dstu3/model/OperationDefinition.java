@@ -130,12 +130,12 @@ public class OperationDefinition extends MetadataResource {
           return OperationKind.QUERY;
         throw new IllegalArgumentException("Unknown OperationKind code '"+codeString+"'");
         }
-        public Enumeration<OperationKind> fromType(Base code) throws FHIRException {
+        public Enumeration<OperationKind> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<OperationKind>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("operation".equals(codeString))
@@ -226,12 +226,12 @@ public class OperationDefinition extends MetadataResource {
           return OperationParameterUse.OUT;
         throw new IllegalArgumentException("Unknown OperationParameterUse code '"+codeString+"'");
         }
-        public Enumeration<OperationParameterUse> fromType(Base code) throws FHIRException {
+        public Enumeration<OperationParameterUse> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<OperationParameterUse>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("in".equals(codeString))

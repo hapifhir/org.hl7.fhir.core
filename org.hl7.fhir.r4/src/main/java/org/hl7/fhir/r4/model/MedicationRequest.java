@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.model;
+﻿package org.hl7.fhir.r4.model;
 
 
 
@@ -193,30 +193,30 @@ public class MedicationRequest extends DomainResource {
           return MedicationRequestStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown MedicationRequestStatus code '"+codeString+"'");
         }
-        public Enumeration<MedicationRequestStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<MedicationRequestStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<MedicationRequestStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<MedicationRequestStatus>(this, MedicationRequestStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<MedicationRequestStatus>(this, MedicationRequestStatus.NULL, code);
         if ("active".equals(codeString))
-          return new Enumeration<MedicationRequestStatus>(this, MedicationRequestStatus.ACTIVE);
+          return new Enumeration<MedicationRequestStatus>(this, MedicationRequestStatus.ACTIVE, code);
         if ("on-hold".equals(codeString))
-          return new Enumeration<MedicationRequestStatus>(this, MedicationRequestStatus.ONHOLD);
+          return new Enumeration<MedicationRequestStatus>(this, MedicationRequestStatus.ONHOLD, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<MedicationRequestStatus>(this, MedicationRequestStatus.CANCELLED);
+          return new Enumeration<MedicationRequestStatus>(this, MedicationRequestStatus.CANCELLED, code);
         if ("completed".equals(codeString))
-          return new Enumeration<MedicationRequestStatus>(this, MedicationRequestStatus.COMPLETED);
+          return new Enumeration<MedicationRequestStatus>(this, MedicationRequestStatus.COMPLETED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<MedicationRequestStatus>(this, MedicationRequestStatus.ENTEREDINERROR);
+          return new Enumeration<MedicationRequestStatus>(this, MedicationRequestStatus.ENTEREDINERROR, code);
         if ("stopped".equals(codeString))
-          return new Enumeration<MedicationRequestStatus>(this, MedicationRequestStatus.STOPPED);
+          return new Enumeration<MedicationRequestStatus>(this, MedicationRequestStatus.STOPPED, code);
         if ("draft".equals(codeString))
-          return new Enumeration<MedicationRequestStatus>(this, MedicationRequestStatus.DRAFT);
+          return new Enumeration<MedicationRequestStatus>(this, MedicationRequestStatus.DRAFT, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<MedicationRequestStatus>(this, MedicationRequestStatus.UNKNOWN);
+          return new Enumeration<MedicationRequestStatus>(this, MedicationRequestStatus.UNKNOWN, code);
         throw new FHIRException("Unknown MedicationRequestStatus code '"+codeString+"'");
         }
     public String toCode(MedicationRequestStatus code) {
@@ -385,30 +385,30 @@ public class MedicationRequest extends DomainResource {
           return MedicationRequestIntent.OPTION;
         throw new IllegalArgumentException("Unknown MedicationRequestIntent code '"+codeString+"'");
         }
-        public Enumeration<MedicationRequestIntent> fromType(Base code) throws FHIRException {
+        public Enumeration<MedicationRequestIntent> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<MedicationRequestIntent>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<MedicationRequestIntent>(this, MedicationRequestIntent.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<MedicationRequestIntent>(this, MedicationRequestIntent.NULL, code);
         if ("proposal".equals(codeString))
-          return new Enumeration<MedicationRequestIntent>(this, MedicationRequestIntent.PROPOSAL);
+          return new Enumeration<MedicationRequestIntent>(this, MedicationRequestIntent.PROPOSAL, code);
         if ("plan".equals(codeString))
-          return new Enumeration<MedicationRequestIntent>(this, MedicationRequestIntent.PLAN);
+          return new Enumeration<MedicationRequestIntent>(this, MedicationRequestIntent.PLAN, code);
         if ("order".equals(codeString))
-          return new Enumeration<MedicationRequestIntent>(this, MedicationRequestIntent.ORDER);
+          return new Enumeration<MedicationRequestIntent>(this, MedicationRequestIntent.ORDER, code);
         if ("original-order".equals(codeString))
-          return new Enumeration<MedicationRequestIntent>(this, MedicationRequestIntent.ORIGINALORDER);
+          return new Enumeration<MedicationRequestIntent>(this, MedicationRequestIntent.ORIGINALORDER, code);
         if ("reflex-order".equals(codeString))
-          return new Enumeration<MedicationRequestIntent>(this, MedicationRequestIntent.REFLEXORDER);
+          return new Enumeration<MedicationRequestIntent>(this, MedicationRequestIntent.REFLEXORDER, code);
         if ("filler-order".equals(codeString))
-          return new Enumeration<MedicationRequestIntent>(this, MedicationRequestIntent.FILLERORDER);
+          return new Enumeration<MedicationRequestIntent>(this, MedicationRequestIntent.FILLERORDER, code);
         if ("instance-order".equals(codeString))
-          return new Enumeration<MedicationRequestIntent>(this, MedicationRequestIntent.INSTANCEORDER);
+          return new Enumeration<MedicationRequestIntent>(this, MedicationRequestIntent.INSTANCEORDER, code);
         if ("option".equals(codeString))
-          return new Enumeration<MedicationRequestIntent>(this, MedicationRequestIntent.OPTION);
+          return new Enumeration<MedicationRequestIntent>(this, MedicationRequestIntent.OPTION, code);
         throw new FHIRException("Unknown MedicationRequestIntent code '"+codeString+"'");
         }
     public String toCode(MedicationRequestIntent code) {
@@ -529,22 +529,22 @@ public class MedicationRequest extends DomainResource {
           return MedicationRequestPriority.STAT;
         throw new IllegalArgumentException("Unknown MedicationRequestPriority code '"+codeString+"'");
         }
-        public Enumeration<MedicationRequestPriority> fromType(Base code) throws FHIRException {
+        public Enumeration<MedicationRequestPriority> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<MedicationRequestPriority>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<MedicationRequestPriority>(this, MedicationRequestPriority.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<MedicationRequestPriority>(this, MedicationRequestPriority.NULL, code);
         if ("routine".equals(codeString))
-          return new Enumeration<MedicationRequestPriority>(this, MedicationRequestPriority.ROUTINE);
+          return new Enumeration<MedicationRequestPriority>(this, MedicationRequestPriority.ROUTINE, code);
         if ("urgent".equals(codeString))
-          return new Enumeration<MedicationRequestPriority>(this, MedicationRequestPriority.URGENT);
+          return new Enumeration<MedicationRequestPriority>(this, MedicationRequestPriority.URGENT, code);
         if ("asap".equals(codeString))
-          return new Enumeration<MedicationRequestPriority>(this, MedicationRequestPriority.ASAP);
+          return new Enumeration<MedicationRequestPriority>(this, MedicationRequestPriority.ASAP, code);
         if ("stat".equals(codeString))
-          return new Enumeration<MedicationRequestPriority>(this, MedicationRequestPriority.STAT);
+          return new Enumeration<MedicationRequestPriority>(this, MedicationRequestPriority.STAT, code);
         throw new FHIRException("Unknown MedicationRequestPriority code '"+codeString+"'");
         }
     public String toCode(MedicationRequestPriority code) {

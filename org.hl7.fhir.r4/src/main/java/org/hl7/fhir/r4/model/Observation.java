@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.model;
+﻿package org.hl7.fhir.r4.model;
 
 
 
@@ -193,30 +193,30 @@ public class Observation extends DomainResource {
           return ObservationStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown ObservationStatus code '"+codeString+"'");
         }
-        public Enumeration<ObservationStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ObservationStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ObservationStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ObservationStatus>(this, ObservationStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ObservationStatus>(this, ObservationStatus.NULL, code);
         if ("registered".equals(codeString))
-          return new Enumeration<ObservationStatus>(this, ObservationStatus.REGISTERED);
+          return new Enumeration<ObservationStatus>(this, ObservationStatus.REGISTERED, code);
         if ("preliminary".equals(codeString))
-          return new Enumeration<ObservationStatus>(this, ObservationStatus.PRELIMINARY);
+          return new Enumeration<ObservationStatus>(this, ObservationStatus.PRELIMINARY, code);
         if ("final".equals(codeString))
-          return new Enumeration<ObservationStatus>(this, ObservationStatus.FINAL);
+          return new Enumeration<ObservationStatus>(this, ObservationStatus.FINAL, code);
         if ("amended".equals(codeString))
-          return new Enumeration<ObservationStatus>(this, ObservationStatus.AMENDED);
+          return new Enumeration<ObservationStatus>(this, ObservationStatus.AMENDED, code);
         if ("corrected".equals(codeString))
-          return new Enumeration<ObservationStatus>(this, ObservationStatus.CORRECTED);
+          return new Enumeration<ObservationStatus>(this, ObservationStatus.CORRECTED, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<ObservationStatus>(this, ObservationStatus.CANCELLED);
+          return new Enumeration<ObservationStatus>(this, ObservationStatus.CANCELLED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<ObservationStatus>(this, ObservationStatus.ENTEREDINERROR);
+          return new Enumeration<ObservationStatus>(this, ObservationStatus.ENTEREDINERROR, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<ObservationStatus>(this, ObservationStatus.UNKNOWN);
+          return new Enumeration<ObservationStatus>(this, ObservationStatus.UNKNOWN, code);
         throw new FHIRException("Unknown ObservationStatus code '"+codeString+"'");
         }
     public String toCode(ObservationStatus code) {

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4b.model;
+﻿package org.hl7.fhir.r4b.model;
 
 
 /*
@@ -139,20 +139,20 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
           return AggregationMode.BUNDLED;
         throw new IllegalArgumentException("Unknown AggregationMode code '"+codeString+"'");
         }
-        public Enumeration<AggregationMode> fromType(Base code) throws FHIRException {
+        public Enumeration<AggregationMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<AggregationMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<AggregationMode>(this, AggregationMode.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<AggregationMode>(this, AggregationMode.NULL, code);
         if ("contained".equals(codeString))
-          return new Enumeration<AggregationMode>(this, AggregationMode.CONTAINED);
+          return new Enumeration<AggregationMode>(this, AggregationMode.CONTAINED, code);
         if ("referenced".equals(codeString))
-          return new Enumeration<AggregationMode>(this, AggregationMode.REFERENCED);
+          return new Enumeration<AggregationMode>(this, AggregationMode.REFERENCED, code);
         if ("bundled".equals(codeString))
-          return new Enumeration<AggregationMode>(this, AggregationMode.BUNDLED);
+          return new Enumeration<AggregationMode>(this, AggregationMode.BUNDLED, code);
         throw new FHIRException("Unknown AggregationMode code '"+codeString+"'");
         }
     public String toCode(AggregationMode code) {
@@ -239,18 +239,18 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
           return ConstraintSeverity.WARNING;
         throw new IllegalArgumentException("Unknown ConstraintSeverity code '"+codeString+"'");
         }
-        public Enumeration<ConstraintSeverity> fromType(Base code) throws FHIRException {
+        public Enumeration<ConstraintSeverity> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ConstraintSeverity>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ConstraintSeverity>(this, ConstraintSeverity.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ConstraintSeverity>(this, ConstraintSeverity.NULL, code);
         if ("error".equals(codeString))
-          return new Enumeration<ConstraintSeverity>(this, ConstraintSeverity.ERROR);
+          return new Enumeration<ConstraintSeverity>(this, ConstraintSeverity.ERROR, code);
         if ("warning".equals(codeString))
-          return new Enumeration<ConstraintSeverity>(this, ConstraintSeverity.WARNING);
+          return new Enumeration<ConstraintSeverity>(this, ConstraintSeverity.WARNING, code);
         throw new FHIRException("Unknown ConstraintSeverity code '"+codeString+"'");
         }
     public String toCode(ConstraintSeverity code) {
@@ -371,24 +371,24 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
           return DiscriminatorType.PROFILE;
         throw new IllegalArgumentException("Unknown DiscriminatorType code '"+codeString+"'");
         }
-        public Enumeration<DiscriminatorType> fromType(Base code) throws FHIRException {
+        public Enumeration<DiscriminatorType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<DiscriminatorType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<DiscriminatorType>(this, DiscriminatorType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<DiscriminatorType>(this, DiscriminatorType.NULL, code);
         if ("value".equals(codeString))
-          return new Enumeration<DiscriminatorType>(this, DiscriminatorType.VALUE);
+          return new Enumeration<DiscriminatorType>(this, DiscriminatorType.VALUE, code);
         if ("exists".equals(codeString))
-          return new Enumeration<DiscriminatorType>(this, DiscriminatorType.EXISTS);
+          return new Enumeration<DiscriminatorType>(this, DiscriminatorType.EXISTS, code);
         if ("pattern".equals(codeString))
-          return new Enumeration<DiscriminatorType>(this, DiscriminatorType.PATTERN);
+          return new Enumeration<DiscriminatorType>(this, DiscriminatorType.PATTERN, code);
         if ("type".equals(codeString))
-          return new Enumeration<DiscriminatorType>(this, DiscriminatorType.TYPE);
+          return new Enumeration<DiscriminatorType>(this, DiscriminatorType.TYPE, code);
         if ("profile".equals(codeString))
-          return new Enumeration<DiscriminatorType>(this, DiscriminatorType.PROFILE);
+          return new Enumeration<DiscriminatorType>(this, DiscriminatorType.PROFILE, code);
         throw new FHIRException("Unknown DiscriminatorType code '"+codeString+"'");
         }
     public String toCode(DiscriminatorType code) {
@@ -515,24 +515,24 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
           return PropertyRepresentation.XHTML;
         throw new IllegalArgumentException("Unknown PropertyRepresentation code '"+codeString+"'");
         }
-        public Enumeration<PropertyRepresentation> fromType(Base code) throws FHIRException {
+        public Enumeration<PropertyRepresentation> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<PropertyRepresentation>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<PropertyRepresentation>(this, PropertyRepresentation.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<PropertyRepresentation>(this, PropertyRepresentation.NULL, code);
         if ("xmlAttr".equals(codeString))
-          return new Enumeration<PropertyRepresentation>(this, PropertyRepresentation.XMLATTR);
+          return new Enumeration<PropertyRepresentation>(this, PropertyRepresentation.XMLATTR, code);
         if ("xmlText".equals(codeString))
-          return new Enumeration<PropertyRepresentation>(this, PropertyRepresentation.XMLTEXT);
+          return new Enumeration<PropertyRepresentation>(this, PropertyRepresentation.XMLTEXT, code);
         if ("typeAttr".equals(codeString))
-          return new Enumeration<PropertyRepresentation>(this, PropertyRepresentation.TYPEATTR);
+          return new Enumeration<PropertyRepresentation>(this, PropertyRepresentation.TYPEATTR, code);
         if ("cdaText".equals(codeString))
-          return new Enumeration<PropertyRepresentation>(this, PropertyRepresentation.CDATEXT);
+          return new Enumeration<PropertyRepresentation>(this, PropertyRepresentation.CDATEXT, code);
         if ("xhtml".equals(codeString))
-          return new Enumeration<PropertyRepresentation>(this, PropertyRepresentation.XHTML);
+          return new Enumeration<PropertyRepresentation>(this, PropertyRepresentation.XHTML, code);
         throw new FHIRException("Unknown PropertyRepresentation code '"+codeString+"'");
         }
     public String toCode(PropertyRepresentation code) {
@@ -635,20 +635,20 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
           return ReferenceVersionRules.SPECIFIC;
         throw new IllegalArgumentException("Unknown ReferenceVersionRules code '"+codeString+"'");
         }
-        public Enumeration<ReferenceVersionRules> fromType(Base code) throws FHIRException {
+        public Enumeration<ReferenceVersionRules> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ReferenceVersionRules>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ReferenceVersionRules>(this, ReferenceVersionRules.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ReferenceVersionRules>(this, ReferenceVersionRules.NULL, code);
         if ("either".equals(codeString))
-          return new Enumeration<ReferenceVersionRules>(this, ReferenceVersionRules.EITHER);
+          return new Enumeration<ReferenceVersionRules>(this, ReferenceVersionRules.EITHER, code);
         if ("independent".equals(codeString))
-          return new Enumeration<ReferenceVersionRules>(this, ReferenceVersionRules.INDEPENDENT);
+          return new Enumeration<ReferenceVersionRules>(this, ReferenceVersionRules.INDEPENDENT, code);
         if ("specific".equals(codeString))
-          return new Enumeration<ReferenceVersionRules>(this, ReferenceVersionRules.SPECIFIC);
+          return new Enumeration<ReferenceVersionRules>(this, ReferenceVersionRules.SPECIFIC, code);
         throw new FHIRException("Unknown ReferenceVersionRules code '"+codeString+"'");
         }
     public String toCode(ReferenceVersionRules code) {
@@ -747,20 +747,20 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
           return SlicingRules.OPENATEND;
         throw new IllegalArgumentException("Unknown SlicingRules code '"+codeString+"'");
         }
-        public Enumeration<SlicingRules> fromType(Base code) throws FHIRException {
+        public Enumeration<SlicingRules> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<SlicingRules>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<SlicingRules>(this, SlicingRules.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<SlicingRules>(this, SlicingRules.NULL, code);
         if ("closed".equals(codeString))
-          return new Enumeration<SlicingRules>(this, SlicingRules.CLOSED);
+          return new Enumeration<SlicingRules>(this, SlicingRules.CLOSED, code);
         if ("open".equals(codeString))
-          return new Enumeration<SlicingRules>(this, SlicingRules.OPEN);
+          return new Enumeration<SlicingRules>(this, SlicingRules.OPEN, code);
         if ("openAtEnd".equals(codeString))
-          return new Enumeration<SlicingRules>(this, SlicingRules.OPENATEND);
+          return new Enumeration<SlicingRules>(this, SlicingRules.OPENATEND, code);
         throw new FHIRException("Unknown SlicingRules code '"+codeString+"'");
         }
     public String toCode(SlicingRules code) {
@@ -11488,4 +11488,3 @@ When pattern[x] is used to constrain a complex object, it means that each proper
 // end addition
 
 }
-

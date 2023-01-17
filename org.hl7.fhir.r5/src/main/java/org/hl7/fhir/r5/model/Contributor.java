@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -145,22 +145,22 @@ public class Contributor extends DataType implements ICompositeType {
           return ContributorType.ENDORSER;
         throw new IllegalArgumentException("Unknown ContributorType code '"+codeString+"'");
         }
-        public Enumeration<ContributorType> fromType(Base code) throws FHIRException {
+        public Enumeration<ContributorType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ContributorType>(this);
+            return new Enumeration<ContributorType>(this, ContributorType.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ContributorType>(this, ContributorType.NULL, code);
         if ("author".equals(codeString))
-          return new Enumeration<ContributorType>(this, ContributorType.AUTHOR);
+          return new Enumeration<ContributorType>(this, ContributorType.AUTHOR, code);
         if ("editor".equals(codeString))
-          return new Enumeration<ContributorType>(this, ContributorType.EDITOR);
+          return new Enumeration<ContributorType>(this, ContributorType.EDITOR, code);
         if ("reviewer".equals(codeString))
-          return new Enumeration<ContributorType>(this, ContributorType.REVIEWER);
+          return new Enumeration<ContributorType>(this, ContributorType.REVIEWER, code);
         if ("endorser".equals(codeString))
-          return new Enumeration<ContributorType>(this, ContributorType.ENDORSER);
+          return new Enumeration<ContributorType>(this, ContributorType.ENDORSER, code);
         throw new FHIRException("Unknown ContributorType code '"+codeString+"'");
         }
     public String toCode(ContributorType code) {
@@ -513,4 +513,3 @@ public class Contributor extends DataType implements ICompositeType {
 
 
 }
-

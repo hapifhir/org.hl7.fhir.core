@@ -143,12 +143,12 @@ public class AppointmentResponse extends DomainResource {
           return ParticipantStatus.NEEDSACTION;
         throw new IllegalArgumentException("Unknown ParticipantStatus code '"+codeString+"'");
         }
-        public Enumeration<ParticipantStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ParticipantStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ParticipantStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("accepted".equals(codeString))

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -123,18 +123,18 @@ public class AdverseEvent extends DomainResource {
           return AdverseEventActuality.POTENTIAL;
         throw new IllegalArgumentException("Unknown AdverseEventActuality code '"+codeString+"'");
         }
-        public Enumeration<AdverseEventActuality> fromType(Base code) throws FHIRException {
+        public Enumeration<AdverseEventActuality> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<AdverseEventActuality>(this);
+            return new Enumeration<AdverseEventActuality>(this, AdverseEventActuality.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<AdverseEventActuality>(this, AdverseEventActuality.NULL, code);
         if ("actual".equals(codeString))
-          return new Enumeration<AdverseEventActuality>(this, AdverseEventActuality.ACTUAL);
+          return new Enumeration<AdverseEventActuality>(this, AdverseEventActuality.ACTUAL, code);
         if ("potential".equals(codeString))
-          return new Enumeration<AdverseEventActuality>(this, AdverseEventActuality.POTENTIAL);
+          return new Enumeration<AdverseEventActuality>(this, AdverseEventActuality.POTENTIAL, code);
         throw new FHIRException("Unknown AdverseEventActuality code '"+codeString+"'");
         }
     public String toCode(AdverseEventActuality code) {
@@ -243,22 +243,22 @@ public class AdverseEvent extends DomainResource {
           return AdverseEventStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown AdverseEventStatus code '"+codeString+"'");
         }
-        public Enumeration<AdverseEventStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<AdverseEventStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<AdverseEventStatus>(this);
+            return new Enumeration<AdverseEventStatus>(this, AdverseEventStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<AdverseEventStatus>(this, AdverseEventStatus.NULL, code);
         if ("in-progress".equals(codeString))
-          return new Enumeration<AdverseEventStatus>(this, AdverseEventStatus.INPROGRESS);
+          return new Enumeration<AdverseEventStatus>(this, AdverseEventStatus.INPROGRESS, code);
         if ("completed".equals(codeString))
-          return new Enumeration<AdverseEventStatus>(this, AdverseEventStatus.COMPLETED);
+          return new Enumeration<AdverseEventStatus>(this, AdverseEventStatus.COMPLETED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<AdverseEventStatus>(this, AdverseEventStatus.ENTEREDINERROR);
+          return new Enumeration<AdverseEventStatus>(this, AdverseEventStatus.ENTEREDINERROR, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<AdverseEventStatus>(this, AdverseEventStatus.UNKNOWN);
+          return new Enumeration<AdverseEventStatus>(this, AdverseEventStatus.UNKNOWN, code);
         throw new FHIRException("Unknown AdverseEventStatus code '"+codeString+"'");
         }
     public String toCode(AdverseEventStatus code) {
@@ -3902,4 +3902,3 @@ public class AdverseEvent extends DomainResource {
 
 
 }
-

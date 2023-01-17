@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -148,22 +148,22 @@ public class ExplanationOfBenefit extends DomainResource {
           return ExplanationOfBenefitStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown ExplanationOfBenefitStatus code '"+codeString+"'");
         }
-        public Enumeration<ExplanationOfBenefitStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ExplanationOfBenefitStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ExplanationOfBenefitStatus>(this);
+            return new Enumeration<ExplanationOfBenefitStatus>(this, ExplanationOfBenefitStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ExplanationOfBenefitStatus>(this, ExplanationOfBenefitStatus.NULL, code);
         if ("active".equals(codeString))
-          return new Enumeration<ExplanationOfBenefitStatus>(this, ExplanationOfBenefitStatus.ACTIVE);
+          return new Enumeration<ExplanationOfBenefitStatus>(this, ExplanationOfBenefitStatus.ACTIVE, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<ExplanationOfBenefitStatus>(this, ExplanationOfBenefitStatus.CANCELLED);
+          return new Enumeration<ExplanationOfBenefitStatus>(this, ExplanationOfBenefitStatus.CANCELLED, code);
         if ("draft".equals(codeString))
-          return new Enumeration<ExplanationOfBenefitStatus>(this, ExplanationOfBenefitStatus.DRAFT);
+          return new Enumeration<ExplanationOfBenefitStatus>(this, ExplanationOfBenefitStatus.DRAFT, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<ExplanationOfBenefitStatus>(this, ExplanationOfBenefitStatus.ENTEREDINERROR);
+          return new Enumeration<ExplanationOfBenefitStatus>(this, ExplanationOfBenefitStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown ExplanationOfBenefitStatus code '"+codeString+"'");
         }
     public String toCode(ExplanationOfBenefitStatus code) {
@@ -17054,4 +17054,3 @@ public class ExplanationOfBenefit extends DomainResource {
 
 
 }
-

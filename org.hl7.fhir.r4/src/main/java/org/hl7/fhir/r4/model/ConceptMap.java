@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.model;
+﻿package org.hl7.fhir.r4.model;
 
 
 
@@ -135,20 +135,20 @@ public class ConceptMap extends MetadataResource {
           return ConceptMapGroupUnmappedMode.OTHERMAP;
         throw new IllegalArgumentException("Unknown ConceptMapGroupUnmappedMode code '"+codeString+"'");
         }
-        public Enumeration<ConceptMapGroupUnmappedMode> fromType(Base code) throws FHIRException {
+        public Enumeration<ConceptMapGroupUnmappedMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ConceptMapGroupUnmappedMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ConceptMapGroupUnmappedMode>(this, ConceptMapGroupUnmappedMode.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ConceptMapGroupUnmappedMode>(this, ConceptMapGroupUnmappedMode.NULL, code);
         if ("provided".equals(codeString))
-          return new Enumeration<ConceptMapGroupUnmappedMode>(this, ConceptMapGroupUnmappedMode.PROVIDED);
+          return new Enumeration<ConceptMapGroupUnmappedMode>(this, ConceptMapGroupUnmappedMode.PROVIDED, code);
         if ("fixed".equals(codeString))
-          return new Enumeration<ConceptMapGroupUnmappedMode>(this, ConceptMapGroupUnmappedMode.FIXED);
+          return new Enumeration<ConceptMapGroupUnmappedMode>(this, ConceptMapGroupUnmappedMode.FIXED, code);
         if ("other-map".equals(codeString))
-          return new Enumeration<ConceptMapGroupUnmappedMode>(this, ConceptMapGroupUnmappedMode.OTHERMAP);
+          return new Enumeration<ConceptMapGroupUnmappedMode>(this, ConceptMapGroupUnmappedMode.OTHERMAP, code);
         throw new FHIRException("Unknown ConceptMapGroupUnmappedMode code '"+codeString+"'");
         }
     public String toCode(ConceptMapGroupUnmappedMode code) {

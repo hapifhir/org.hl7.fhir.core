@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -135,20 +135,20 @@ public class Linkage extends DomainResource {
           return LinkageType.HISTORICAL;
         throw new IllegalArgumentException("Unknown LinkageType code '"+codeString+"'");
         }
-        public Enumeration<LinkageType> fromType(Base code) throws FHIRException {
+        public Enumeration<LinkageType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<LinkageType>(this);
+            return new Enumeration<LinkageType>(this, LinkageType.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<LinkageType>(this, LinkageType.NULL, code);
         if ("source".equals(codeString))
-          return new Enumeration<LinkageType>(this, LinkageType.SOURCE);
+          return new Enumeration<LinkageType>(this, LinkageType.SOURCE, code);
         if ("alternate".equals(codeString))
-          return new Enumeration<LinkageType>(this, LinkageType.ALTERNATE);
+          return new Enumeration<LinkageType>(this, LinkageType.ALTERNATE, code);
         if ("historical".equals(codeString))
-          return new Enumeration<LinkageType>(this, LinkageType.HISTORICAL);
+          return new Enumeration<LinkageType>(this, LinkageType.HISTORICAL, code);
         throw new FHIRException("Unknown LinkageType code '"+codeString+"'");
         }
     public String toCode(LinkageType code) {
@@ -791,4 +791,3 @@ public class Linkage extends DomainResource {
 
 
 }
-

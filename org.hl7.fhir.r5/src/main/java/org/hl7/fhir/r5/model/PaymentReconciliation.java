@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -147,22 +147,22 @@ public class PaymentReconciliation extends DomainResource {
           return PaymentOutcome.PARTIAL;
         throw new IllegalArgumentException("Unknown PaymentOutcome code '"+codeString+"'");
         }
-        public Enumeration<PaymentOutcome> fromType(Base code) throws FHIRException {
+        public Enumeration<PaymentOutcome> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<PaymentOutcome>(this);
+            return new Enumeration<PaymentOutcome>(this, PaymentOutcome.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<PaymentOutcome>(this, PaymentOutcome.NULL, code);
         if ("queued".equals(codeString))
-          return new Enumeration<PaymentOutcome>(this, PaymentOutcome.QUEUED);
+          return new Enumeration<PaymentOutcome>(this, PaymentOutcome.QUEUED, code);
         if ("complete".equals(codeString))
-          return new Enumeration<PaymentOutcome>(this, PaymentOutcome.COMPLETE);
+          return new Enumeration<PaymentOutcome>(this, PaymentOutcome.COMPLETE, code);
         if ("error".equals(codeString))
-          return new Enumeration<PaymentOutcome>(this, PaymentOutcome.ERROR);
+          return new Enumeration<PaymentOutcome>(this, PaymentOutcome.ERROR, code);
         if ("partial".equals(codeString))
-          return new Enumeration<PaymentOutcome>(this, PaymentOutcome.PARTIAL);
+          return new Enumeration<PaymentOutcome>(this, PaymentOutcome.PARTIAL, code);
         throw new FHIRException("Unknown PaymentOutcome code '"+codeString+"'");
         }
     public String toCode(PaymentOutcome code) {
@@ -3296,4 +3296,3 @@ public class PaymentReconciliation extends DomainResource {
 
 
 }
-

@@ -141,12 +141,12 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           return CapabilityStatementKind.REQUIREMENTS;
         throw new IllegalArgumentException("Unknown CapabilityStatementKind code '"+codeString+"'");
         }
-        public Enumeration<CapabilityStatementKind> fromType(Base code) throws FHIRException {
+        public Enumeration<CapabilityStatementKind> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<CapabilityStatementKind>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("instance".equals(codeString))
@@ -265,12 +265,12 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           return UnknownContentCode.BOTH;
         throw new IllegalArgumentException("Unknown UnknownContentCode code '"+codeString+"'");
         }
-        public Enumeration<UnknownContentCode> fromType(Base code) throws FHIRException {
+        public Enumeration<UnknownContentCode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<UnknownContentCode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("no".equals(codeString))
@@ -369,12 +369,12 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           return RestfulCapabilityMode.SERVER;
         throw new IllegalArgumentException("Unknown RestfulCapabilityMode code '"+codeString+"'");
         }
-        public Enumeration<RestfulCapabilityMode> fromType(Base code) throws FHIRException {
+        public Enumeration<RestfulCapabilityMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<RestfulCapabilityMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("client".equals(codeString))
@@ -549,12 +549,12 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           return TypeRestfulInteraction.SEARCHTYPE;
         throw new IllegalArgumentException("Unknown TypeRestfulInteraction code '"+codeString+"'");
         }
-        public Enumeration<TypeRestfulInteraction> fromType(Base code) throws FHIRException {
+        public Enumeration<TypeRestfulInteraction> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<TypeRestfulInteraction>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("read".equals(codeString))
@@ -685,12 +685,12 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           return ResourceVersionPolicy.VERSIONEDUPDATE;
         throw new IllegalArgumentException("Unknown ResourceVersionPolicy code '"+codeString+"'");
         }
-        public Enumeration<ResourceVersionPolicy> fromType(Base code) throws FHIRException {
+        public Enumeration<ResourceVersionPolicy> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ResourceVersionPolicy>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("no-version".equals(codeString))
@@ -809,12 +809,12 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           return ConditionalReadStatus.FULLSUPPORT;
         throw new IllegalArgumentException("Unknown ConditionalReadStatus code '"+codeString+"'");
         }
-        public Enumeration<ConditionalReadStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ConditionalReadStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ConditionalReadStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("not-supported".equals(codeString))
@@ -925,12 +925,12 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           return ConditionalDeleteStatus.MULTIPLE;
         throw new IllegalArgumentException("Unknown ConditionalDeleteStatus code '"+codeString+"'");
         }
-        public Enumeration<ConditionalDeleteStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ConditionalDeleteStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ConditionalDeleteStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("not-supported".equals(codeString))
@@ -1061,12 +1061,12 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           return ReferenceHandlingPolicy.LOCAL;
         throw new IllegalArgumentException("Unknown ReferenceHandlingPolicy code '"+codeString+"'");
         }
-        public Enumeration<ReferenceHandlingPolicy> fromType(Base code) throws FHIRException {
+        public Enumeration<ReferenceHandlingPolicy> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ReferenceHandlingPolicy>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("literal".equals(codeString))
@@ -1193,12 +1193,12 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           return SystemRestfulInteraction.HISTORYSYSTEM;
         throw new IllegalArgumentException("Unknown SystemRestfulInteraction code '"+codeString+"'");
         }
-        public Enumeration<SystemRestfulInteraction> fromType(Base code) throws FHIRException {
+        public Enumeration<SystemRestfulInteraction> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<SystemRestfulInteraction>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("transaction".equals(codeString))
@@ -1297,12 +1297,12 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           return EventCapabilityMode.RECEIVER;
         throw new IllegalArgumentException("Unknown EventCapabilityMode code '"+codeString+"'");
         }
-        public Enumeration<EventCapabilityMode> fromType(Base code) throws FHIRException {
+        public Enumeration<EventCapabilityMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<EventCapabilityMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("sender".equals(codeString))
@@ -1405,12 +1405,12 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           return MessageSignificanceCategory.NOTIFICATION;
         throw new IllegalArgumentException("Unknown MessageSignificanceCategory code '"+codeString+"'");
         }
-        public Enumeration<MessageSignificanceCategory> fromType(Base code) throws FHIRException {
+        public Enumeration<MessageSignificanceCategory> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<MessageSignificanceCategory>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("Consequence".equals(codeString))
@@ -1505,12 +1505,12 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           return DocumentMode.CONSUMER;
         throw new IllegalArgumentException("Unknown DocumentMode code '"+codeString+"'");
         }
-        public Enumeration<DocumentMode> fromType(Base code) throws FHIRException {
+        public Enumeration<DocumentMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<DocumentMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("producer".equals(codeString))

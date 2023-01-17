@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -170,26 +170,26 @@ public class MonetaryComponent extends DataType implements ICompositeType {
           return PriceComponentType.INFORMATIONAL;
         throw new IllegalArgumentException("Unknown PriceComponentType code '"+codeString+"'");
         }
-        public Enumeration<PriceComponentType> fromType(Base code) throws FHIRException {
+        public Enumeration<PriceComponentType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<PriceComponentType>(this);
+            return new Enumeration<PriceComponentType>(this, PriceComponentType.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<PriceComponentType>(this, PriceComponentType.NULL, code);
         if ("base".equals(codeString))
-          return new Enumeration<PriceComponentType>(this, PriceComponentType.BASE);
+          return new Enumeration<PriceComponentType>(this, PriceComponentType.BASE, code);
         if ("surcharge".equals(codeString))
-          return new Enumeration<PriceComponentType>(this, PriceComponentType.SURCHARGE);
+          return new Enumeration<PriceComponentType>(this, PriceComponentType.SURCHARGE, code);
         if ("deduction".equals(codeString))
-          return new Enumeration<PriceComponentType>(this, PriceComponentType.DEDUCTION);
+          return new Enumeration<PriceComponentType>(this, PriceComponentType.DEDUCTION, code);
         if ("discount".equals(codeString))
-          return new Enumeration<PriceComponentType>(this, PriceComponentType.DISCOUNT);
+          return new Enumeration<PriceComponentType>(this, PriceComponentType.DISCOUNT, code);
         if ("tax".equals(codeString))
-          return new Enumeration<PriceComponentType>(this, PriceComponentType.TAX);
+          return new Enumeration<PriceComponentType>(this, PriceComponentType.TAX, code);
         if ("informational".equals(codeString))
-          return new Enumeration<PriceComponentType>(this, PriceComponentType.INFORMATIONAL);
+          return new Enumeration<PriceComponentType>(this, PriceComponentType.INFORMATIONAL, code);
         throw new FHIRException("Unknown PriceComponentType code '"+codeString+"'");
         }
     public String toCode(PriceComponentType code) {
@@ -582,4 +582,3 @@ public class MonetaryComponent extends DataType implements ICompositeType {
 
 
 }
-

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.model;
+﻿package org.hl7.fhir.r4.model;
 
 
 
@@ -255,40 +255,40 @@ responding, withdrawal, non-compliance and/or adverse event.
           return ResearchSubjectStatus.WITHDRAWN;
         throw new IllegalArgumentException("Unknown ResearchSubjectStatus code '"+codeString+"'");
         }
-        public Enumeration<ResearchSubjectStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ResearchSubjectStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ResearchSubjectStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.NULL, code);
         if ("candidate".equals(codeString))
-          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.CANDIDATE);
+          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.CANDIDATE, code);
         if ("eligible".equals(codeString))
-          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.ELIGIBLE);
+          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.ELIGIBLE, code);
         if ("follow-up".equals(codeString))
-          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.FOLLOWUP);
+          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.FOLLOWUP, code);
         if ("ineligible".equals(codeString))
-          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.INELIGIBLE);
+          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.INELIGIBLE, code);
         if ("not-registered".equals(codeString))
-          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.NOTREGISTERED);
+          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.NOTREGISTERED, code);
         if ("off-study".equals(codeString))
-          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.OFFSTUDY);
+          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.OFFSTUDY, code);
         if ("on-study".equals(codeString))
-          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.ONSTUDY);
+          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.ONSTUDY, code);
         if ("on-study-intervention".equals(codeString))
-          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.ONSTUDYINTERVENTION);
+          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.ONSTUDYINTERVENTION, code);
         if ("on-study-observation".equals(codeString))
-          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.ONSTUDYOBSERVATION);
+          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.ONSTUDYOBSERVATION, code);
         if ("pending-on-study".equals(codeString))
-          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.PENDINGONSTUDY);
+          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.PENDINGONSTUDY, code);
         if ("potential-candidate".equals(codeString))
-          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.POTENTIALCANDIDATE);
+          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.POTENTIALCANDIDATE, code);
         if ("screening".equals(codeString))
-          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.SCREENING);
+          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.SCREENING, code);
         if ("withdrawn".equals(codeString))
-          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.WITHDRAWN);
+          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.WITHDRAWN, code);
         throw new FHIRException("Unknown ResearchSubjectStatus code '"+codeString+"'");
         }
     public String toCode(ResearchSubjectStatus code) {

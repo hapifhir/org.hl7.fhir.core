@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.model;
+﻿package org.hl7.fhir.r4.model;
 
 
 
@@ -121,18 +121,18 @@ public class ParameterDefinition extends Type implements ICompositeType {
           return ParameterUse.OUT;
         throw new IllegalArgumentException("Unknown ParameterUse code '"+codeString+"'");
         }
-        public Enumeration<ParameterUse> fromType(Base code) throws FHIRException {
+        public Enumeration<ParameterUse> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ParameterUse>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ParameterUse>(this, ParameterUse.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ParameterUse>(this, ParameterUse.NULL, code);
         if ("in".equals(codeString))
-          return new Enumeration<ParameterUse>(this, ParameterUse.IN);
+          return new Enumeration<ParameterUse>(this, ParameterUse.IN, code);
         if ("out".equals(codeString))
-          return new Enumeration<ParameterUse>(this, ParameterUse.OUT);
+          return new Enumeration<ParameterUse>(this, ParameterUse.OUT, code);
         throw new FHIRException("Unknown ParameterUse code '"+codeString+"'");
         }
     public String toCode(ParameterUse code) {

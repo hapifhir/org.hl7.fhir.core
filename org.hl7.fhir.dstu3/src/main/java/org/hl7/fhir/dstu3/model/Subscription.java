@@ -145,12 +145,12 @@ public class Subscription extends DomainResource {
           return SubscriptionStatus.OFF;
         throw new IllegalArgumentException("Unknown SubscriptionStatus code '"+codeString+"'");
         }
-        public Enumeration<SubscriptionStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<SubscriptionStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<SubscriptionStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("requested".equals(codeString))
@@ -285,12 +285,12 @@ public class Subscription extends DomainResource {
           return SubscriptionChannelType.MESSAGE;
         throw new IllegalArgumentException("Unknown SubscriptionChannelType code '"+codeString+"'");
         }
-        public Enumeration<SubscriptionChannelType> fromType(Base code) throws FHIRException {
+        public Enumeration<SubscriptionChannelType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<SubscriptionChannelType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("rest-hook".equals(codeString))

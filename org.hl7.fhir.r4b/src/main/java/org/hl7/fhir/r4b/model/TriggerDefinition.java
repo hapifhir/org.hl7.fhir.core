@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4b.model;
+﻿package org.hl7.fhir.r4b.model;
 
 
 /*
@@ -193,30 +193,30 @@ public class TriggerDefinition extends DataType implements ICompositeType {
           return TriggerType.DATAACCESSENDED;
         throw new IllegalArgumentException("Unknown TriggerType code '"+codeString+"'");
         }
-        public Enumeration<TriggerType> fromType(Base code) throws FHIRException {
+        public Enumeration<TriggerType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<TriggerType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<TriggerType>(this, TriggerType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<TriggerType>(this, TriggerType.NULL, code);
         if ("named-event".equals(codeString))
-          return new Enumeration<TriggerType>(this, TriggerType.NAMEDEVENT);
+          return new Enumeration<TriggerType>(this, TriggerType.NAMEDEVENT, code);
         if ("periodic".equals(codeString))
-          return new Enumeration<TriggerType>(this, TriggerType.PERIODIC);
+          return new Enumeration<TriggerType>(this, TriggerType.PERIODIC, code);
         if ("data-changed".equals(codeString))
-          return new Enumeration<TriggerType>(this, TriggerType.DATACHANGED);
+          return new Enumeration<TriggerType>(this, TriggerType.DATACHANGED, code);
         if ("data-added".equals(codeString))
-          return new Enumeration<TriggerType>(this, TriggerType.DATAADDED);
+          return new Enumeration<TriggerType>(this, TriggerType.DATAADDED, code);
         if ("data-modified".equals(codeString))
-          return new Enumeration<TriggerType>(this, TriggerType.DATAMODIFIED);
+          return new Enumeration<TriggerType>(this, TriggerType.DATAMODIFIED, code);
         if ("data-removed".equals(codeString))
-          return new Enumeration<TriggerType>(this, TriggerType.DATAREMOVED);
+          return new Enumeration<TriggerType>(this, TriggerType.DATAREMOVED, code);
         if ("data-accessed".equals(codeString))
-          return new Enumeration<TriggerType>(this, TriggerType.DATAACCESSED);
+          return new Enumeration<TriggerType>(this, TriggerType.DATAACCESSED, code);
         if ("data-access-ended".equals(codeString))
-          return new Enumeration<TriggerType>(this, TriggerType.DATAACCESSENDED);
+          return new Enumeration<TriggerType>(this, TriggerType.DATAACCESSENDED, code);
         throw new FHIRException("Unknown TriggerType code '"+codeString+"'");
         }
     public String toCode(TriggerType code) {
@@ -748,4 +748,3 @@ public class TriggerDefinition extends DataType implements ICompositeType {
 
 
 }
-
