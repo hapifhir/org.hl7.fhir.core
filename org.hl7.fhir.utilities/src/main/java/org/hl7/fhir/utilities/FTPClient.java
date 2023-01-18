@@ -3,7 +3,7 @@ package org.hl7.fhir.utilities;
 import lombok.Getter;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPReply;
-
+import org.hl7.fhir.exceptions.FHIRException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -163,6 +163,8 @@ public class FTPClient {
 
     FileInputStream localStream = new FileInputStream(source);
     clientImpl.setFileType(FTP.BINARY_FILE_TYPE);
+//    clientImpl.enterRemotePassiveMode();
+    clientImpl.enterLocalPassiveMode();
     clientImpl.storeFile( resolvedPath, localStream);
     localStream.close();
 
@@ -190,4 +192,26 @@ public class FTPClient {
     clientImpl.disconnect();
   }
 
+
+  public static void main(String[] args) throws IOException, FHIRException {
+    FTPClient ftp = new FTPClient(getNamedParam(args, "-upload-server"), getNamedParam(args, "-upload-path"), getNamedParam(args, "-upload-user"), getNamedParam(args, "-upload-password"));
+    ftp.connect();
+    ftp.upload("/Users/grahamegrieve/temp/test.xml", "testing/test.xml");
+    ftp.delete("testing/test.xml");
+    ftp.disconnect();
+  }
+
+  private static String getNamedParam(String[] args, String param) {
+    boolean found = false;
+    for (String a : args) {
+      if (found)
+        return a;
+      if (a.equals(param)) {
+        found = true;
+      }
+    }
+    return null;
+  }
+
+  
 }
