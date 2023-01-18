@@ -1782,6 +1782,12 @@ public class FHIRPathEngine {
       return result;
     } else {
       String tn = convertToString(right);
+      if (!isKnownType(tn)) {
+        throw new PathEngineException("The type "+tn+" is not valid");
+      }
+      if (left.size() > 1) {
+        throw new PathEngineException("Attempt to use as on more than one item ("+left.size()+")");
+      }
       for (Base nextLeft : left) {
         if (tn.equals(nextLeft.fhirType())) {
           result.add(nextLeft);
@@ -1791,6 +1797,31 @@ public class FHIRPathEngine {
     return result;
   }
 
+
+  private boolean isKnownType(String tn) {
+    if (!tn.contains(".")) {
+      try {
+        return worker.fetchTypeDefinition(tn) != null;
+      } catch (Exception e) {
+        return false;
+      }
+    }
+    String[] t = tn.split("\\.");
+    if (t.length != 2) {
+      return false;
+    }
+    if ("System".equals(t[0])) {
+      return Utilities.existsInList(t[1], "String", "Boolean", "Integer", "Decimal", "Quantity", "DateTime", "Time", "SimpleTypeInfo", "ClassInfo");
+    } else if ("FHIR".equals(t[0])) {      
+      try {
+        return worker.fetchTypeDefinition(t[1]) != null;
+      } catch (Exception e) {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
 
   private List<Base> opIs(List<Base> left, List<Base> right, ExpressionNode expr) {
     List<Base> result = new ArrayList<Base>();
@@ -3516,7 +3547,7 @@ public class FHIRPathEngine {
     case Aggregate : return funcAggregate(context, focus, exp);
     case Item : return funcItem(context, focus, exp);
     case As : return funcAs(context, focus, exp);
-    case OfType : return funcAs(context, focus, exp);
+    case OfType : return funcOfType(context, focus, exp);
     case Type : return funcType(context, focus, exp);
     case Is : return funcIs(context, focus, exp);
     case Single : return funcSingle(context, focus, exp);
@@ -4546,6 +4577,13 @@ public class FHIRPathEngine {
     } else {
       tn = "FHIR."+expr.getParameters().get(0).getName();
     }
+    if (!isKnownType(tn)) {
+      throw new PathEngineException("The type "+tn+" is not valid");
+    }
+    if (focus.size() > 1) {
+      throw new PathEngineException("Attempt to use as() on more than one item ("+focus.size()+")");
+    }
+    
     for (Base b : focus) {
       if (tn.startsWith("System.")) {
         if (b instanceof Element &&((Element) b).isDisallowExtensions()) { 
@@ -4565,7 +4603,48 @@ public class FHIRPathEngine {
               result.add(b);
               break;
             }
-            sd = worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+            sd = sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE ? null : worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
+          }
+        }
+      }
+    }
+    return result;
+  }
+  
+
+  private List<Base> funcOfType(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    List<Base> result = new ArrayList<Base>();
+    String tn;
+    if (expr.getParameters().get(0).getInner() != null) {
+      tn = expr.getParameters().get(0).getName()+"."+expr.getParameters().get(0).getInner().getName();
+    } else {
+      tn = "FHIR."+expr.getParameters().get(0).getName();
+    }
+    if (!isKnownType(tn)) {
+      throw new PathEngineException("The type "+tn+" is not valid");
+    }
+
+    
+    for (Base b : focus) {
+      if (tn.startsWith("System.")) {
+        if (b instanceof Element &&((Element) b).isDisallowExtensions()) { 
+          if (b.hasType(tn.substring(7))) {
+            result.add(b);
+          }
+        }
+
+      } else if (tn.startsWith("FHIR.")) {
+        String tnp = tn.substring(5);
+        if (b.fhirType().equals(tnp)) {
+          result.add(b);          
+        } else {
+          StructureDefinition sd = worker.fetchTypeDefinition(b.fhirType());
+          while (sd != null) {
+            if (tnp.equals(sd.getType())) {
+              result.add(b);
+              break;
+            }
+            sd = sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE ? null : worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
           }
         }
       }
