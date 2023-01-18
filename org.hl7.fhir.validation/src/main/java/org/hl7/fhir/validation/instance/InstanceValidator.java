@@ -480,6 +480,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (theContext.getVersion().startsWith("3.0") || theContext.getVersion().startsWith("1.0"))
       fpe.setLegacyMode(true);
     source = Source.InstanceValidator;
+    fpe.setDoNotEnforceAsSingletonRule(!VersionUtilities.isR5VerOrLater(theContext.getVersion()));
   }
 
   @Override
