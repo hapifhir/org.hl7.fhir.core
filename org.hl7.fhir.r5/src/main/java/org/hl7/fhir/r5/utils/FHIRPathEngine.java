@@ -263,6 +263,7 @@ public class FHIRPathEngine {
   private boolean allowPolymorphicNames;
   private boolean doImplicitStringConversion;
   private boolean liquidMode; // in liquid mode, || terminates the expression and hands the parser back to the host
+  private boolean doNotEnforceAsSingletonRule;
 
   // if the fhir path expressions are allowed to use constants beyond those defined in the specification
   // the application can implement them by providing a constant resolver 
@@ -454,6 +455,14 @@ public class FHIRPathEngine {
 
   public void setDoImplicitStringConversion(boolean doImplicitStringConversion) {
     this.doImplicitStringConversion = doImplicitStringConversion;
+  }
+
+  public boolean isDoNotEnforceAsSingletonRule() {
+    return doNotEnforceAsSingletonRule;
+  }
+
+  public void setDoNotEnforceAsSingletonRule(boolean doNotEnforceAsSingletonRule) {
+    this.doNotEnforceAsSingletonRule = doNotEnforceAsSingletonRule;
   }
 
   // --- public API -------------------------------------------------------
@@ -1791,7 +1800,7 @@ public class FHIRPathEngine {
       if (!isKnownType(tn)) {
         throw new PathEngineException("The type "+tn+" is not valid");
       }
-      if (left.size() > 1) {
+      if (!doNotEnforceAsSingletonRule && left.size() > 1) {
         throw new PathEngineException("Attempt to use as on more than one item ("+left.size()+")");
       }
       for (Base nextLeft : left) {
@@ -1806,6 +1815,9 @@ public class FHIRPathEngine {
 
   private boolean isKnownType(String tn) {
     if (!tn.contains(".")) {
+      if (Utilities.existsInList(tn, "String", "Boolean", "Integer", "Decimal", "Quantity", "DateTime", "Time", "SimpleTypeInfo", "ClassInfo")) {
+        return true;
+      }
       try {
         return worker.fetchTypeDefinition(tn) != null;
       } catch (Exception e) {
@@ -4586,7 +4598,7 @@ public class FHIRPathEngine {
     if (!isKnownType(tn)) {
       throw new PathEngineException("The type "+tn+" is not valid");
     }
-    if (focus.size() > 1) {
+    if (!doNotEnforceAsSingletonRule && focus.size() > 1) {
       throw new PathEngineException("Attempt to use as() on more than one item ("+focus.size()+")");
     }
     
