@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* FTP Client upload and logging improvements
