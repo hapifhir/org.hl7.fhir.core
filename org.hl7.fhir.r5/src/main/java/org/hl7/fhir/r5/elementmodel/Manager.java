@@ -122,7 +122,7 @@ public class Manager {
   
   public static Element build(IWorkerContext context, StructureDefinition sd) {
     Property p = new Property(context, sd.getSnapshot().getElementFirstRep(), sd);
-    Element e = new Element(null, p);
+    Element e = new Element(p.getName(), p);
     return e;
   }
 
