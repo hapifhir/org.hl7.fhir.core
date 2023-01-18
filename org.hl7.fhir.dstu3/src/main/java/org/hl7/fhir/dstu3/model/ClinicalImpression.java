@@ -135,12 +135,12 @@ public class ClinicalImpression extends DomainResource {
           return ClinicalImpressionStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown ClinicalImpressionStatus code '"+codeString+"'");
         }
-        public Enumeration<ClinicalImpressionStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ClinicalImpressionStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ClinicalImpressionStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("draft".equals(codeString))

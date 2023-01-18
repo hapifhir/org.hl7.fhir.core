@@ -124,18 +124,18 @@ public class EffectEvidenceSynthesis extends MetadataResource {
           return ExposureState.EXPOSUREALTERNATIVE;
         throw new IllegalArgumentException("Unknown ExposureState code '"+codeString+"'");
         }
-        public Enumeration<ExposureState> fromType(Base code) throws FHIRException {
+        public Enumeration<ExposureState> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ExposureState>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ExposureState>(this, ExposureState.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ExposureState>(this, ExposureState.NULL, code);
         if ("exposure".equals(codeString))
-          return new Enumeration<ExposureState>(this, ExposureState.EXPOSURE);
+          return new Enumeration<ExposureState>(this, ExposureState.EXPOSURE, code);
         if ("exposure-alternative".equals(codeString))
-          return new Enumeration<ExposureState>(this, ExposureState.EXPOSUREALTERNATIVE);
+          return new Enumeration<ExposureState>(this, ExposureState.EXPOSUREALTERNATIVE, code);
         throw new FHIRException("Unknown ExposureState code '"+codeString+"'");
         }
     public String toCode(ExposureState code) {

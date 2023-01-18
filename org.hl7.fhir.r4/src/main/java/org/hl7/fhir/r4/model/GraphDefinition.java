@@ -123,18 +123,18 @@ public class GraphDefinition extends MetadataResource {
           return GraphCompartmentUse.REQUIREMENT;
         throw new IllegalArgumentException("Unknown GraphCompartmentUse code '"+codeString+"'");
         }
-        public Enumeration<GraphCompartmentUse> fromType(Base code) throws FHIRException {
+        public Enumeration<GraphCompartmentUse> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<GraphCompartmentUse>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<GraphCompartmentUse>(this, GraphCompartmentUse.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<GraphCompartmentUse>(this, GraphCompartmentUse.NULL, code);
         if ("condition".equals(codeString))
-          return new Enumeration<GraphCompartmentUse>(this, GraphCompartmentUse.CONDITION);
+          return new Enumeration<GraphCompartmentUse>(this, GraphCompartmentUse.CONDITION, code);
         if ("requirement".equals(codeString))
-          return new Enumeration<GraphCompartmentUse>(this, GraphCompartmentUse.REQUIREMENT);
+          return new Enumeration<GraphCompartmentUse>(this, GraphCompartmentUse.REQUIREMENT, code);
         throw new FHIRException("Unknown GraphCompartmentUse code '"+codeString+"'");
         }
     public String toCode(GraphCompartmentUse code) {
@@ -255,24 +255,24 @@ public class GraphDefinition extends MetadataResource {
           return CompartmentCode.DEVICE;
         throw new IllegalArgumentException("Unknown CompartmentCode code '"+codeString+"'");
         }
-        public Enumeration<CompartmentCode> fromType(Base code) throws FHIRException {
+        public Enumeration<CompartmentCode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<CompartmentCode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<CompartmentCode>(this, CompartmentCode.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<CompartmentCode>(this, CompartmentCode.NULL, code);
         if ("Patient".equals(codeString))
-          return new Enumeration<CompartmentCode>(this, CompartmentCode.PATIENT);
+          return new Enumeration<CompartmentCode>(this, CompartmentCode.PATIENT, code);
         if ("Encounter".equals(codeString))
-          return new Enumeration<CompartmentCode>(this, CompartmentCode.ENCOUNTER);
+          return new Enumeration<CompartmentCode>(this, CompartmentCode.ENCOUNTER, code);
         if ("RelatedPerson".equals(codeString))
-          return new Enumeration<CompartmentCode>(this, CompartmentCode.RELATEDPERSON);
+          return new Enumeration<CompartmentCode>(this, CompartmentCode.RELATEDPERSON, code);
         if ("Practitioner".equals(codeString))
-          return new Enumeration<CompartmentCode>(this, CompartmentCode.PRACTITIONER);
+          return new Enumeration<CompartmentCode>(this, CompartmentCode.PRACTITIONER, code);
         if ("Device".equals(codeString))
-          return new Enumeration<CompartmentCode>(this, CompartmentCode.DEVICE);
+          return new Enumeration<CompartmentCode>(this, CompartmentCode.DEVICE, code);
         throw new FHIRException("Unknown CompartmentCode code '"+codeString+"'");
         }
     public String toCode(CompartmentCode code) {
@@ -387,22 +387,22 @@ public class GraphDefinition extends MetadataResource {
           return GraphCompartmentRule.CUSTOM;
         throw new IllegalArgumentException("Unknown GraphCompartmentRule code '"+codeString+"'");
         }
-        public Enumeration<GraphCompartmentRule> fromType(Base code) throws FHIRException {
+        public Enumeration<GraphCompartmentRule> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<GraphCompartmentRule>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<GraphCompartmentRule>(this, GraphCompartmentRule.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<GraphCompartmentRule>(this, GraphCompartmentRule.NULL, code);
         if ("identical".equals(codeString))
-          return new Enumeration<GraphCompartmentRule>(this, GraphCompartmentRule.IDENTICAL);
+          return new Enumeration<GraphCompartmentRule>(this, GraphCompartmentRule.IDENTICAL, code);
         if ("matching".equals(codeString))
-          return new Enumeration<GraphCompartmentRule>(this, GraphCompartmentRule.MATCHING);
+          return new Enumeration<GraphCompartmentRule>(this, GraphCompartmentRule.MATCHING, code);
         if ("different".equals(codeString))
-          return new Enumeration<GraphCompartmentRule>(this, GraphCompartmentRule.DIFFERENT);
+          return new Enumeration<GraphCompartmentRule>(this, GraphCompartmentRule.DIFFERENT, code);
         if ("custom".equals(codeString))
-          return new Enumeration<GraphCompartmentRule>(this, GraphCompartmentRule.CUSTOM);
+          return new Enumeration<GraphCompartmentRule>(this, GraphCompartmentRule.CUSTOM, code);
         throw new FHIRException("Unknown GraphCompartmentRule code '"+codeString+"'");
         }
     public String toCode(GraphCompartmentRule code) {

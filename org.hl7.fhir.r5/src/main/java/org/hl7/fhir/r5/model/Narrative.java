@@ -148,22 +148,22 @@ public class Narrative extends BaseNarrative implements INarrative {
           return NarrativeStatus.EMPTY;
         throw new IllegalArgumentException("Unknown NarrativeStatus code '"+codeString+"'");
         }
-        public Enumeration<NarrativeStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<NarrativeStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<NarrativeStatus>(this);
+            return new Enumeration<NarrativeStatus>(this, NarrativeStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<NarrativeStatus>(this, NarrativeStatus.NULL, code);
         if ("generated".equals(codeString))
-          return new Enumeration<NarrativeStatus>(this, NarrativeStatus.GENERATED);
+          return new Enumeration<NarrativeStatus>(this, NarrativeStatus.GENERATED, code);
         if ("extensions".equals(codeString))
-          return new Enumeration<NarrativeStatus>(this, NarrativeStatus.EXTENSIONS);
+          return new Enumeration<NarrativeStatus>(this, NarrativeStatus.EXTENSIONS, code);
         if ("additional".equals(codeString))
-          return new Enumeration<NarrativeStatus>(this, NarrativeStatus.ADDITIONAL);
+          return new Enumeration<NarrativeStatus>(this, NarrativeStatus.ADDITIONAL, code);
         if ("empty".equals(codeString))
-          return new Enumeration<NarrativeStatus>(this, NarrativeStatus.EMPTY);
+          return new Enumeration<NarrativeStatus>(this, NarrativeStatus.EMPTY, code);
         throw new FHIRException("Unknown NarrativeStatus code '"+codeString+"'");
         }
     public String toCode(NarrativeStatus code) {
@@ -415,4 +415,3 @@ public class Narrative extends BaseNarrative implements INarrative {
 
 
 }
-

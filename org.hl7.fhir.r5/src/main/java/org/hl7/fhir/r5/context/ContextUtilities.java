@@ -207,7 +207,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
         } catch (Exception e) {
           if (!isSuppressDebugMessages()) {
             System.out.println("Unable to generate snapshot for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
-            if (true) {
+            if (context.getLogger().isDebugLogging()) {
               e.printStackTrace();
             }
           }

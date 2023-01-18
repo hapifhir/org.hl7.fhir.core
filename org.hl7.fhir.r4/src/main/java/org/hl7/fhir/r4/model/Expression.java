@@ -132,20 +132,20 @@ public class Expression extends Type implements ICompositeType {
           return ExpressionLanguage.APPLICATION_XFHIRQUERY;
         throw new IllegalArgumentException("Unknown ExpressionLanguage code '"+codeString+"'");
         }
-        public Enumeration<ExpressionLanguage> fromType(Base code) throws FHIRException {
+        public Enumeration<ExpressionLanguage> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ExpressionLanguage>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ExpressionLanguage>(this, ExpressionLanguage.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ExpressionLanguage>(this, ExpressionLanguage.NULL, code);
         if ("text/cql".equals(codeString))
-          return new Enumeration<ExpressionLanguage>(this, ExpressionLanguage.TEXT_CQL);
+          return new Enumeration<ExpressionLanguage>(this, ExpressionLanguage.TEXT_CQL, code);
         if ("text/fhirpath".equals(codeString))
-          return new Enumeration<ExpressionLanguage>(this, ExpressionLanguage.TEXT_FHIRPATH);
+          return new Enumeration<ExpressionLanguage>(this, ExpressionLanguage.TEXT_FHIRPATH, code);
         if ("application/x-fhir-query".equals(codeString))
-          return new Enumeration<ExpressionLanguage>(this, ExpressionLanguage.APPLICATION_XFHIRQUERY);
+          return new Enumeration<ExpressionLanguage>(this, ExpressionLanguage.APPLICATION_XFHIRQUERY, code);
         throw new FHIRException("Unknown ExpressionLanguage code '"+codeString+"'");
         }
     public String toCode(ExpressionLanguage code) {

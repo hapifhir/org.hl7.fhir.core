@@ -147,12 +147,12 @@ public class ClaimResponse extends DomainResource {
           return ClaimResponseStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown ClaimResponseStatus code '"+codeString+"'");
         }
-        public Enumeration<ClaimResponseStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ClaimResponseStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ClaimResponseStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("active".equals(codeString))

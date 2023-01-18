@@ -203,12 +203,12 @@ public class Encounter extends DomainResource {
           return EncounterStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown EncounterStatus code '"+codeString+"'");
         }
-        public Enumeration<EncounterStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<EncounterStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<EncounterStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("planned".equals(codeString))
@@ -355,12 +355,12 @@ Not to be used when the patient is currently at the location
           return EncounterLocationStatus.COMPLETED;
         throw new IllegalArgumentException("Unknown EncounterLocationStatus code '"+codeString+"'");
         }
-        public Enumeration<EncounterLocationStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<EncounterLocationStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<EncounterLocationStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("planned".equals(codeString))

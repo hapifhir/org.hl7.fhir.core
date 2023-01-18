@@ -92,6 +92,22 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
   }
 
 
+  @Test
+  public void testSyntaxEM() throws IOException, FHIRException {
+    StructureMapUtilities scu = new StructureMapUtilities(context, this);
+    String fileMap = TestingUtilities.loadTestResource("r5", "structure-mapping", "syntax.map");
+    System.out.println(fileMap);
+
+    Element structureMap = scu.parseEM(fileMap, "Syntax");
+//    assertSerializeDeserialize(structureMap);
+//
+//    String renderedMap = StructureMapUtilities.render(structureMap);
+//    StructureMap map = scu.parse(renderedMap, "Syntax");
+//    System.out.println(map);
+//    assertSerializeDeserialize(map);
+  }
+
+
 
   @Override
   public void log(String message) {

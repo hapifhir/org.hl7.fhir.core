@@ -129,12 +129,12 @@ public class Flag extends DomainResource {
           return FlagStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown FlagStatus code '"+codeString+"'");
         }
-        public Enumeration<FlagStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<FlagStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<FlagStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("active".equals(codeString))

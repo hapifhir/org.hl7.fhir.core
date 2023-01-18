@@ -146,12 +146,12 @@ public class ProcessRequest extends DomainResource {
           return ProcessRequestStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown ProcessRequestStatus code '"+codeString+"'");
         }
-        public Enumeration<ProcessRequestStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ProcessRequestStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ProcessRequestStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("active".equals(codeString))
@@ -274,12 +274,12 @@ public class ProcessRequest extends DomainResource {
           return ActionList.STATUS;
         throw new IllegalArgumentException("Unknown ActionList code '"+codeString+"'");
         }
-        public Enumeration<ActionList> fromType(Base code) throws FHIRException {
+        public Enumeration<ActionList> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ActionList>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("cancel".equals(codeString))

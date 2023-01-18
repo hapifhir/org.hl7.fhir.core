@@ -162,12 +162,12 @@ public class GraphDefinition extends MetadataResource {
           return CompartmentCode.DEVICE;
         throw new IllegalArgumentException("Unknown CompartmentCode code '"+codeString+"'");
         }
-        public Enumeration<CompartmentCode> fromType(Base code) throws FHIRException {
+        public Enumeration<CompartmentCode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<CompartmentCode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("Patient".equals(codeString))
@@ -294,12 +294,12 @@ public class GraphDefinition extends MetadataResource {
           return GraphCompartmentRule.CUSTOM;
         throw new IllegalArgumentException("Unknown GraphCompartmentRule code '"+codeString+"'");
         }
-        public Enumeration<GraphCompartmentRule> fromType(Base code) throws FHIRException {
+        public Enumeration<GraphCompartmentRule> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<GraphCompartmentRule>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("identical".equals(codeString))

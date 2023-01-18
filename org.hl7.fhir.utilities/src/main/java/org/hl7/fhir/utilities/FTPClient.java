@@ -163,7 +163,6 @@ public class FTPClient {
 
     FileInputStream localStream = new FileInputStream(source);
     clientImpl.setFileType(FTP.BINARY_FILE_TYPE);
-//    clientImpl.enterRemotePassiveMode();
     clientImpl.enterLocalPassiveMode();
     clientImpl.storeFile( resolvedPath, localStream);
     localStream.close();

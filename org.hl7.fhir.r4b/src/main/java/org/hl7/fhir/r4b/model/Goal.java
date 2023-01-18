@@ -207,32 +207,32 @@ public class Goal extends DomainResource {
           return GoalLifecycleStatus.REJECTED;
         throw new IllegalArgumentException("Unknown GoalLifecycleStatus code '"+codeString+"'");
         }
-        public Enumeration<GoalLifecycleStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<GoalLifecycleStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<GoalLifecycleStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<GoalLifecycleStatus>(this, GoalLifecycleStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<GoalLifecycleStatus>(this, GoalLifecycleStatus.NULL, code);
         if ("proposed".equals(codeString))
-          return new Enumeration<GoalLifecycleStatus>(this, GoalLifecycleStatus.PROPOSED);
+          return new Enumeration<GoalLifecycleStatus>(this, GoalLifecycleStatus.PROPOSED, code);
         if ("planned".equals(codeString))
-          return new Enumeration<GoalLifecycleStatus>(this, GoalLifecycleStatus.PLANNED);
+          return new Enumeration<GoalLifecycleStatus>(this, GoalLifecycleStatus.PLANNED, code);
         if ("accepted".equals(codeString))
-          return new Enumeration<GoalLifecycleStatus>(this, GoalLifecycleStatus.ACCEPTED);
+          return new Enumeration<GoalLifecycleStatus>(this, GoalLifecycleStatus.ACCEPTED, code);
         if ("active".equals(codeString))
-          return new Enumeration<GoalLifecycleStatus>(this, GoalLifecycleStatus.ACTIVE);
+          return new Enumeration<GoalLifecycleStatus>(this, GoalLifecycleStatus.ACTIVE, code);
         if ("on-hold".equals(codeString))
-          return new Enumeration<GoalLifecycleStatus>(this, GoalLifecycleStatus.ONHOLD);
+          return new Enumeration<GoalLifecycleStatus>(this, GoalLifecycleStatus.ONHOLD, code);
         if ("completed".equals(codeString))
-          return new Enumeration<GoalLifecycleStatus>(this, GoalLifecycleStatus.COMPLETED);
+          return new Enumeration<GoalLifecycleStatus>(this, GoalLifecycleStatus.COMPLETED, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<GoalLifecycleStatus>(this, GoalLifecycleStatus.CANCELLED);
+          return new Enumeration<GoalLifecycleStatus>(this, GoalLifecycleStatus.CANCELLED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<GoalLifecycleStatus>(this, GoalLifecycleStatus.ENTEREDINERROR);
+          return new Enumeration<GoalLifecycleStatus>(this, GoalLifecycleStatus.ENTEREDINERROR, code);
         if ("rejected".equals(codeString))
-          return new Enumeration<GoalLifecycleStatus>(this, GoalLifecycleStatus.REJECTED);
+          return new Enumeration<GoalLifecycleStatus>(this, GoalLifecycleStatus.REJECTED, code);
         throw new FHIRException("Unknown GoalLifecycleStatus code '"+codeString+"'");
         }
     public String toCode(GoalLifecycleStatus code) {
@@ -2191,4 +2191,3 @@ public class Goal extends DomainResource {
 
 
 }
-

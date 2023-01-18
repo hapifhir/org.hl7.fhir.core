@@ -123,18 +123,18 @@ public class CatalogEntry extends DomainResource {
           return CatalogEntryRelationType.ISREPLACEDBY;
         throw new IllegalArgumentException("Unknown CatalogEntryRelationType code '"+codeString+"'");
         }
-        public Enumeration<CatalogEntryRelationType> fromType(Base code) throws FHIRException {
+        public Enumeration<CatalogEntryRelationType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<CatalogEntryRelationType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<CatalogEntryRelationType>(this, CatalogEntryRelationType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<CatalogEntryRelationType>(this, CatalogEntryRelationType.NULL, code);
         if ("triggers".equals(codeString))
-          return new Enumeration<CatalogEntryRelationType>(this, CatalogEntryRelationType.TRIGGERS);
+          return new Enumeration<CatalogEntryRelationType>(this, CatalogEntryRelationType.TRIGGERS, code);
         if ("is-replaced-by".equals(codeString))
-          return new Enumeration<CatalogEntryRelationType>(this, CatalogEntryRelationType.ISREPLACEDBY);
+          return new Enumeration<CatalogEntryRelationType>(this, CatalogEntryRelationType.ISREPLACEDBY, code);
         throw new FHIRException("Unknown CatalogEntryRelationType code '"+codeString+"'");
         }
     public String toCode(CatalogEntryRelationType code) {
@@ -1400,4 +1400,3 @@ public class CatalogEntry extends DomainResource {
 
 
 }
-

@@ -170,12 +170,12 @@ public class MedicationDispense extends DomainResource {
           return MedicationDispenseStatus.STOPPED;
         throw new IllegalArgumentException("Unknown MedicationDispenseStatus code '"+codeString+"'");
         }
-        public Enumeration<MedicationDispenseStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<MedicationDispenseStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<MedicationDispenseStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("preparation".equals(codeString))
