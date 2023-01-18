@@ -54,6 +54,13 @@ public class CodeType extends StringType implements Comparable<CodeType>, ICodin
 		setValue(theCode);
 	}
 
+  public CodeType(String theCode, Element source) {
+    setValue(theCode);
+    setId(source.getId());
+    getExtension().addAll(source.getExtension());
+  }
+
+
 	public int compareTo(CodeType theCode) {
 		if (theCode == null) {
 			return 1;

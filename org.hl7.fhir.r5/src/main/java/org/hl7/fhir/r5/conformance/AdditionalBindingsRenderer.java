@@ -4,18 +4,29 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.conformance.profile.BindingResolution;
+import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
-import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ProfileKnowledgeProvider;
-import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ProfileKnowledgeProvider.BindingResolution;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingAdditionalComponent;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
+import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Extension;
+import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.UsageContext;
+import org.hl7.fhir.r5.renderers.CodeResolver;
+import org.hl7.fhir.r5.renderers.CodeResolver.CodeResolution;
 import org.hl7.fhir.r5.renderers.DataRenderer;
 import org.hl7.fhir.r5.renderers.IMarkdownProcessor;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.utils.PublicationHacker;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
@@ -23,6 +34,7 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
+import org.hl7.fhir.utilities.xhtml.XhtmlNodeList;
 
 public class AdditionalBindingsRenderer {
   public class AdditionalBindingDetail {
@@ -78,14 +90,16 @@ public class AdditionalBindingsRenderer {
   private String path;
   private RenderingContext context;
   private IMarkdownProcessor md;
+  private CodeResolver cr;
 
-  public AdditionalBindingsRenderer(ProfileKnowledgeProvider pkp, String corePath, StructureDefinition profile, String path, RenderingContext context, IMarkdownProcessor md) {
+  public AdditionalBindingsRenderer(ProfileKnowledgeProvider pkp, String corePath, StructureDefinition profile, String path, RenderingContext context, IMarkdownProcessor md, CodeResolver cr) {
     this.pkp = pkp;
     this.corePath = corePath;
     this.profile = profile;
     this.path = path;
     this.context = context;
     this.md = md;
+    this.cr = cr;
   }
 
   public void seeMaxBinding(Extension ext) {
@@ -106,7 +120,7 @@ public class AdditionalBindingsRenderer {
       abr.compare = new AdditionalBindingDetail();
       abr.compare.valueSet = compExt==null ? null : compExt.getValue().primitiveValue();
     } else {
-      abr.isUnchanged = ext.hasUserData(ProfileUtilities.DERIVATION_EQUALS);
+      abr.isUnchanged = ext.hasUserData(ProfileUtilities.UD_DERIVATION_EQUALS);
     }
     bindings.add(abr);
   }
@@ -166,7 +180,7 @@ public class AdditionalBindingsRenderer {
       abr.docoShort =  ext.getExtensionString("shortDoco");
     abr.usage =  (ext.hasExtension("usage")) && ext.getExtensionByUrl("usage").hasValueUsageContext() ? ext.getExtensionByUrl("usage").getValueUsageContext() : null;
     abr.any = "any".equals(ext.getExtensionString("scope"));
-    abr.isUnchanged = ext.hasUserData(ProfileUtilities.DERIVATION_EQUALS);
+    abr.isUnchanged = ext.hasUserData(ProfileUtilities.UD_DERIVATION_EQUALS);
     return abr;
   }
 
@@ -309,8 +323,11 @@ public class AdditionalBindingsRenderer {
     case "minimum": 
       td.ah(corePath+"extension-elementdefinition-minvalueset.html", "The minimum allowable value set - any conformant system SHALL support all these codes").tx("Min Binding");
       break;
-    case "conformance" :
+    case "required" :
       td.ah(corePath+"terminologies.html#strength", "Validators will check this binding (strength = required)").tx("Validation Binding");
+      break;
+    case "extensible" :
+      td.ah(corePath+"terminologies.html#strength", "Validators will check this binding (strength = extensible)").tx("Validation Binding");
       break;
     case "candidate" :
       td.ah(corePath+"terminologies.html#strength", "This is a candidate binding that constraints on this profile may consider (see doco)").tx("Candidate Validation Binding");
@@ -318,7 +335,7 @@ public class AdditionalBindingsRenderer {
     case "current" :
       td.span(null, "New records are required to use this value set, but legacy records may use other codes").tx("Required");
       break;
-    case "recommended" :
+    case "preferred" :
       td.span(null, "This is the value set that is recommended (documentation should explain why)").tx("Recommended");
       break;
     case "ui" :
@@ -346,5 +363,60 @@ public class AdditionalBindingsRenderer {
     return !bindings.isEmpty();
   }
 
+  public void render(XhtmlNodeList children, List<ElementDefinitionBindingAdditionalComponent> list) {
+    if (list.size() == 1) {
+      render(children, list.get(0));
+    } else {
+      XhtmlNode ul = children.ul();
+      for (ElementDefinitionBindingAdditionalComponent b : list) {
+        render(ul.li().getChildNodes(), b);
+      }
+    }
+  }
+
+  private void render(XhtmlNodeList children, ElementDefinitionBindingAdditionalComponent b) {
+    if (b.getValueSet() == null) {
+      return; // what should happen?
+    }
+    BindingResolution br = pkp.resolveBinding(profile, b.getValueSet(), corePath);
+    XhtmlNode a = children.ah(br.url == null ? null : Utilities.isAbsoluteUrl(br.url) || !context.getPkp().prependLinks() ? br.url : corePath+br.url, b.hasDocumentation() ? b.getDocumentation() : null);
+    if (b.hasDocumentation()) {
+      a.attribute("title", b.getDocumentation());
+    } 
+    a.tx(br.display);
+
+    if (b.hasShortDoco()) {
+      children.tx(": ");
+      children.tx(b.getShortDoco());
+    } 
+    if (b.getAny() || b.hasUsage()) {
+      children.tx(" (");
+      boolean ffirst = !b.getAny();
+      if (b.getAny()) {
+        children.tx("any repeat");
+      }
+      for (UsageContext uc : b.getUsage()) {
+        if (ffirst) ffirst = false; else children.tx(",");
+        if (!uc.getCode().is("http://terminology.hl7.org/CodeSystem/usage-context-type", "jurisdiction")) {
+          children.tx(displayForUsage(uc.getCode()));
+          children.tx("=");
+        }
+        CodeResolution ccr = cr.resolveCode(uc.getValueCodeableConcept());
+        children.ah(ccr.getLink(), ccr.getHint()).tx(ccr.getDisplay());
+      }
+      children.tx(")");
+    }
+  }
+
+  
+  private String displayForUsage(Coding c) {
+    if (c.hasDisplay()) {
+      return c.getDisplay();
+    }
+    if ("http://terminology.hl7.org/CodeSystem/usage-context-type".equals(c.getSystem())) {
+      return c.getCode();
+    }
+    return c.getCode();
+  }
 
 }

@@ -1,8 +1,7 @@
 ## Validator Changes
 
-* Add support for fhir_comments in R2/R2B
-* Add validator checking around versions in extension URLs
+* no changes
 
 ## Other code changes
 
-* no changes
+* FTP Client upload and logging improvements

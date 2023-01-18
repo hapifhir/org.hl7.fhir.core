@@ -135,20 +135,20 @@ public class TerminologyCapabilities extends MetadataResource {
           return CapabilityStatementKind.REQUIREMENTS;
         throw new IllegalArgumentException("Unknown CapabilityStatementKind code '"+codeString+"'");
         }
-        public Enumeration<CapabilityStatementKind> fromType(Base code) throws FHIRException {
+        public Enumeration<CapabilityStatementKind> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<CapabilityStatementKind>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<CapabilityStatementKind>(this, CapabilityStatementKind.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<CapabilityStatementKind>(this, CapabilityStatementKind.NULL, code);
         if ("instance".equals(codeString))
-          return new Enumeration<CapabilityStatementKind>(this, CapabilityStatementKind.INSTANCE);
+          return new Enumeration<CapabilityStatementKind>(this, CapabilityStatementKind.INSTANCE, code);
         if ("capability".equals(codeString))
-          return new Enumeration<CapabilityStatementKind>(this, CapabilityStatementKind.CAPABILITY);
+          return new Enumeration<CapabilityStatementKind>(this, CapabilityStatementKind.CAPABILITY, code);
         if ("requirements".equals(codeString))
-          return new Enumeration<CapabilityStatementKind>(this, CapabilityStatementKind.REQUIREMENTS);
+          return new Enumeration<CapabilityStatementKind>(this, CapabilityStatementKind.REQUIREMENTS, code);
         throw new FHIRException("Unknown CapabilityStatementKind code '"+codeString+"'");
         }
     public String toCode(CapabilityStatementKind code) {
@@ -235,18 +235,18 @@ public class TerminologyCapabilities extends MetadataResource {
           return CodeSearchSupport.ALL;
         throw new IllegalArgumentException("Unknown CodeSearchSupport code '"+codeString+"'");
         }
-        public Enumeration<CodeSearchSupport> fromType(Base code) throws FHIRException {
+        public Enumeration<CodeSearchSupport> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<CodeSearchSupport>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<CodeSearchSupport>(this, CodeSearchSupport.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<CodeSearchSupport>(this, CodeSearchSupport.NULL, code);
         if ("explicit".equals(codeString))
-          return new Enumeration<CodeSearchSupport>(this, CodeSearchSupport.EXPLICIT);
+          return new Enumeration<CodeSearchSupport>(this, CodeSearchSupport.EXPLICIT, code);
         if ("all".equals(codeString))
-          return new Enumeration<CodeSearchSupport>(this, CodeSearchSupport.ALL);
+          return new Enumeration<CodeSearchSupport>(this, CodeSearchSupport.ALL, code);
         throw new FHIRException("Unknown CodeSearchSupport code '"+codeString+"'");
         }
     public String toCode(CodeSearchSupport code) {

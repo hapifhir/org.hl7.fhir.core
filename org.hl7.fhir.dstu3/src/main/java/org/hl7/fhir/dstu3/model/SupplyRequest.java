@@ -182,12 +182,12 @@ public class SupplyRequest extends DomainResource {
           return SupplyRequestStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown SupplyRequestStatus code '"+codeString+"'");
         }
-        public Enumeration<SupplyRequestStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<SupplyRequestStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<SupplyRequestStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("draft".equals(codeString))
@@ -322,12 +322,12 @@ public class SupplyRequest extends DomainResource {
           return RequestPriority.STAT;
         throw new IllegalArgumentException("Unknown RequestPriority code '"+codeString+"'");
         }
-        public Enumeration<RequestPriority> fromType(Base code) throws FHIRException {
+        public Enumeration<RequestPriority> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<RequestPriority>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("routine".equals(codeString))

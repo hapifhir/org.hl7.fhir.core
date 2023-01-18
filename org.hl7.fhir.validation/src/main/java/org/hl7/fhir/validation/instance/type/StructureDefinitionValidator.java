@@ -147,6 +147,10 @@ public class StructureDefinitionValidator extends BaseValidator {
     boolean typeMustSupport = false;
     String path = element.getNamedChildValue("path");
     rule(errors, "2022-11-02", IssueType.NOTFOUND, stack.getLiteralPath(), typeName == null || path == null || path.equals(typeName) || path.startsWith(typeName+"."), I18nConstants.SD_PATH_TYPE_MISMATCH, typeName, path);
+    if (!snapshot) {
+      rule(errors, "2023-01-17", IssueType.INVALID, stack.getLiteralPath(), path.contains(".") || !element.hasChild("slicing"), I18nConstants.SD_NO_SLICING_ON_ROOT, path);
+      
+    }
     List<Element> types = element.getChildrenByName("type");
     Set<String> typeCodes = new HashSet<>();
     Set<String> characteristics = new HashSet<>();

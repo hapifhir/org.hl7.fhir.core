@@ -158,12 +158,12 @@ public class Provenance extends DomainResource {
           return ProvenanceEntityRole.REMOVAL;
         throw new IllegalArgumentException("Unknown ProvenanceEntityRole code '"+codeString+"'");
         }
-        public Enumeration<ProvenanceEntityRole> fromType(Base code) throws FHIRException {
+        public Enumeration<ProvenanceEntityRole> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ProvenanceEntityRole>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("derivation".equals(codeString))

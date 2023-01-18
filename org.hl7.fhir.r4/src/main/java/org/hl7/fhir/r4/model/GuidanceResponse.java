@@ -169,26 +169,26 @@ public class GuidanceResponse extends DomainResource {
           return GuidanceResponseStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown GuidanceResponseStatus code '"+codeString+"'");
         }
-        public Enumeration<GuidanceResponseStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<GuidanceResponseStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<GuidanceResponseStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<GuidanceResponseStatus>(this, GuidanceResponseStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<GuidanceResponseStatus>(this, GuidanceResponseStatus.NULL, code);
         if ("success".equals(codeString))
-          return new Enumeration<GuidanceResponseStatus>(this, GuidanceResponseStatus.SUCCESS);
+          return new Enumeration<GuidanceResponseStatus>(this, GuidanceResponseStatus.SUCCESS, code);
         if ("data-requested".equals(codeString))
-          return new Enumeration<GuidanceResponseStatus>(this, GuidanceResponseStatus.DATAREQUESTED);
+          return new Enumeration<GuidanceResponseStatus>(this, GuidanceResponseStatus.DATAREQUESTED, code);
         if ("data-required".equals(codeString))
-          return new Enumeration<GuidanceResponseStatus>(this, GuidanceResponseStatus.DATAREQUIRED);
+          return new Enumeration<GuidanceResponseStatus>(this, GuidanceResponseStatus.DATAREQUIRED, code);
         if ("in-progress".equals(codeString))
-          return new Enumeration<GuidanceResponseStatus>(this, GuidanceResponseStatus.INPROGRESS);
+          return new Enumeration<GuidanceResponseStatus>(this, GuidanceResponseStatus.INPROGRESS, code);
         if ("failure".equals(codeString))
-          return new Enumeration<GuidanceResponseStatus>(this, GuidanceResponseStatus.FAILURE);
+          return new Enumeration<GuidanceResponseStatus>(this, GuidanceResponseStatus.FAILURE, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<GuidanceResponseStatus>(this, GuidanceResponseStatus.ENTEREDINERROR);
+          return new Enumeration<GuidanceResponseStatus>(this, GuidanceResponseStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown GuidanceResponseStatus code '"+codeString+"'");
         }
     public String toCode(GuidanceResponseStatus code) {

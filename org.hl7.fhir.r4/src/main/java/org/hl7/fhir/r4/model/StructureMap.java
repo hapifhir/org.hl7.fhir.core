@@ -151,22 +151,22 @@ public class StructureMap extends MetadataResource {
           return StructureMapModelMode.PRODUCED;
         throw new IllegalArgumentException("Unknown StructureMapModelMode code '"+codeString+"'");
         }
-        public Enumeration<StructureMapModelMode> fromType(Base code) throws FHIRException {
+        public Enumeration<StructureMapModelMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<StructureMapModelMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<StructureMapModelMode>(this, StructureMapModelMode.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<StructureMapModelMode>(this, StructureMapModelMode.NULL, code);
         if ("source".equals(codeString))
-          return new Enumeration<StructureMapModelMode>(this, StructureMapModelMode.SOURCE);
+          return new Enumeration<StructureMapModelMode>(this, StructureMapModelMode.SOURCE, code);
         if ("queried".equals(codeString))
-          return new Enumeration<StructureMapModelMode>(this, StructureMapModelMode.QUERIED);
+          return new Enumeration<StructureMapModelMode>(this, StructureMapModelMode.QUERIED, code);
         if ("target".equals(codeString))
-          return new Enumeration<StructureMapModelMode>(this, StructureMapModelMode.TARGET);
+          return new Enumeration<StructureMapModelMode>(this, StructureMapModelMode.TARGET, code);
         if ("produced".equals(codeString))
-          return new Enumeration<StructureMapModelMode>(this, StructureMapModelMode.PRODUCED);
+          return new Enumeration<StructureMapModelMode>(this, StructureMapModelMode.PRODUCED, code);
         throw new FHIRException("Unknown StructureMapModelMode code '"+codeString+"'");
         }
     public String toCode(StructureMapModelMode code) {
@@ -267,20 +267,20 @@ public class StructureMap extends MetadataResource {
           return StructureMapGroupTypeMode.TYPEANDTYPES;
         throw new IllegalArgumentException("Unknown StructureMapGroupTypeMode code '"+codeString+"'");
         }
-        public Enumeration<StructureMapGroupTypeMode> fromType(Base code) throws FHIRException {
+        public Enumeration<StructureMapGroupTypeMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<StructureMapGroupTypeMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<StructureMapGroupTypeMode>(this, StructureMapGroupTypeMode.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<StructureMapGroupTypeMode>(this, StructureMapGroupTypeMode.NULL, code);
         if ("none".equals(codeString))
-          return new Enumeration<StructureMapGroupTypeMode>(this, StructureMapGroupTypeMode.NONE);
+          return new Enumeration<StructureMapGroupTypeMode>(this, StructureMapGroupTypeMode.NONE, code);
         if ("types".equals(codeString))
-          return new Enumeration<StructureMapGroupTypeMode>(this, StructureMapGroupTypeMode.TYPES);
+          return new Enumeration<StructureMapGroupTypeMode>(this, StructureMapGroupTypeMode.TYPES, code);
         if ("type-and-types".equals(codeString))
-          return new Enumeration<StructureMapGroupTypeMode>(this, StructureMapGroupTypeMode.TYPEANDTYPES);
+          return new Enumeration<StructureMapGroupTypeMode>(this, StructureMapGroupTypeMode.TYPEANDTYPES, code);
         throw new FHIRException("Unknown StructureMapGroupTypeMode code '"+codeString+"'");
         }
     public String toCode(StructureMapGroupTypeMode code) {
@@ -367,18 +367,18 @@ public class StructureMap extends MetadataResource {
           return StructureMapInputMode.TARGET;
         throw new IllegalArgumentException("Unknown StructureMapInputMode code '"+codeString+"'");
         }
-        public Enumeration<StructureMapInputMode> fromType(Base code) throws FHIRException {
+        public Enumeration<StructureMapInputMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<StructureMapInputMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<StructureMapInputMode>(this, StructureMapInputMode.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<StructureMapInputMode>(this, StructureMapInputMode.NULL, code);
         if ("source".equals(codeString))
-          return new Enumeration<StructureMapInputMode>(this, StructureMapInputMode.SOURCE);
+          return new Enumeration<StructureMapInputMode>(this, StructureMapInputMode.SOURCE, code);
         if ("target".equals(codeString))
-          return new Enumeration<StructureMapInputMode>(this, StructureMapInputMode.TARGET);
+          return new Enumeration<StructureMapInputMode>(this, StructureMapInputMode.TARGET, code);
         throw new FHIRException("Unknown StructureMapInputMode code '"+codeString+"'");
         }
     public String toCode(StructureMapInputMode code) {
@@ -499,24 +499,24 @@ public class StructureMap extends MetadataResource {
           return StructureMapSourceListMode.ONLYONE;
         throw new IllegalArgumentException("Unknown StructureMapSourceListMode code '"+codeString+"'");
         }
-        public Enumeration<StructureMapSourceListMode> fromType(Base code) throws FHIRException {
+        public Enumeration<StructureMapSourceListMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<StructureMapSourceListMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<StructureMapSourceListMode>(this, StructureMapSourceListMode.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<StructureMapSourceListMode>(this, StructureMapSourceListMode.NULL, code);
         if ("first".equals(codeString))
-          return new Enumeration<StructureMapSourceListMode>(this, StructureMapSourceListMode.FIRST);
+          return new Enumeration<StructureMapSourceListMode>(this, StructureMapSourceListMode.FIRST, code);
         if ("not_first".equals(codeString))
-          return new Enumeration<StructureMapSourceListMode>(this, StructureMapSourceListMode.NOTFIRST);
+          return new Enumeration<StructureMapSourceListMode>(this, StructureMapSourceListMode.NOTFIRST, code);
         if ("last".equals(codeString))
-          return new Enumeration<StructureMapSourceListMode>(this, StructureMapSourceListMode.LAST);
+          return new Enumeration<StructureMapSourceListMode>(this, StructureMapSourceListMode.LAST, code);
         if ("not_last".equals(codeString))
-          return new Enumeration<StructureMapSourceListMode>(this, StructureMapSourceListMode.NOTLAST);
+          return new Enumeration<StructureMapSourceListMode>(this, StructureMapSourceListMode.NOTLAST, code);
         if ("only_one".equals(codeString))
-          return new Enumeration<StructureMapSourceListMode>(this, StructureMapSourceListMode.ONLYONE);
+          return new Enumeration<StructureMapSourceListMode>(this, StructureMapSourceListMode.ONLYONE, code);
         throw new FHIRException("Unknown StructureMapSourceListMode code '"+codeString+"'");
         }
     public String toCode(StructureMapSourceListMode code) {
@@ -607,18 +607,18 @@ public class StructureMap extends MetadataResource {
           return StructureMapContextType.VARIABLE;
         throw new IllegalArgumentException("Unknown StructureMapContextType code '"+codeString+"'");
         }
-        public Enumeration<StructureMapContextType> fromType(Base code) throws FHIRException {
+        public Enumeration<StructureMapContextType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<StructureMapContextType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<StructureMapContextType>(this, StructureMapContextType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<StructureMapContextType>(this, StructureMapContextType.NULL, code);
         if ("type".equals(codeString))
-          return new Enumeration<StructureMapContextType>(this, StructureMapContextType.TYPE);
+          return new Enumeration<StructureMapContextType>(this, StructureMapContextType.TYPE, code);
         if ("variable".equals(codeString))
-          return new Enumeration<StructureMapContextType>(this, StructureMapContextType.VARIABLE);
+          return new Enumeration<StructureMapContextType>(this, StructureMapContextType.VARIABLE, code);
         throw new FHIRException("Unknown StructureMapContextType code '"+codeString+"'");
         }
     public String toCode(StructureMapContextType code) {
@@ -727,22 +727,22 @@ public class StructureMap extends MetadataResource {
           return StructureMapTargetListMode.COLLATE;
         throw new IllegalArgumentException("Unknown StructureMapTargetListMode code '"+codeString+"'");
         }
-        public Enumeration<StructureMapTargetListMode> fromType(Base code) throws FHIRException {
+        public Enumeration<StructureMapTargetListMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<StructureMapTargetListMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<StructureMapTargetListMode>(this, StructureMapTargetListMode.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<StructureMapTargetListMode>(this, StructureMapTargetListMode.NULL, code);
         if ("first".equals(codeString))
-          return new Enumeration<StructureMapTargetListMode>(this, StructureMapTargetListMode.FIRST);
+          return new Enumeration<StructureMapTargetListMode>(this, StructureMapTargetListMode.FIRST, code);
         if ("share".equals(codeString))
-          return new Enumeration<StructureMapTargetListMode>(this, StructureMapTargetListMode.SHARE);
+          return new Enumeration<StructureMapTargetListMode>(this, StructureMapTargetListMode.SHARE, code);
         if ("last".equals(codeString))
-          return new Enumeration<StructureMapTargetListMode>(this, StructureMapTargetListMode.LAST);
+          return new Enumeration<StructureMapTargetListMode>(this, StructureMapTargetListMode.LAST, code);
         if ("collate".equals(codeString))
-          return new Enumeration<StructureMapTargetListMode>(this, StructureMapTargetListMode.COLLATE);
+          return new Enumeration<StructureMapTargetListMode>(this, StructureMapTargetListMode.COLLATE, code);
         throw new FHIRException("Unknown StructureMapTargetListMode code '"+codeString+"'");
         }
     public String toCode(StructureMapTargetListMode code) {
@@ -1011,48 +1011,48 @@ public class StructureMap extends MetadataResource {
           return StructureMapTransform.CP;
         throw new IllegalArgumentException("Unknown StructureMapTransform code '"+codeString+"'");
         }
-        public Enumeration<StructureMapTransform> fromType(Base code) throws FHIRException {
+        public Enumeration<StructureMapTransform> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<StructureMapTransform>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<StructureMapTransform>(this, StructureMapTransform.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<StructureMapTransform>(this, StructureMapTransform.NULL, code);
         if ("create".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.CREATE);
+          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.CREATE, code);
         if ("copy".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.COPY);
+          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.COPY, code);
         if ("truncate".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.TRUNCATE);
+          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.TRUNCATE, code);
         if ("escape".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.ESCAPE);
+          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.ESCAPE, code);
         if ("cast".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.CAST);
+          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.CAST, code);
         if ("append".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.APPEND);
+          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.APPEND, code);
         if ("translate".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.TRANSLATE);
+          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.TRANSLATE, code);
         if ("reference".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.REFERENCE);
+          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.REFERENCE, code);
         if ("dateOp".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.DATEOP);
+          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.DATEOP, code);
         if ("uuid".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.UUID);
+          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.UUID, code);
         if ("pointer".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.POINTER);
+          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.POINTER, code);
         if ("evaluate".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.EVALUATE);
+          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.EVALUATE, code);
         if ("cc".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.CC);
+          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.CC, code);
         if ("c".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.C);
+          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.C, code);
         if ("qty".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.QTY);
+          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.QTY, code);
         if ("id".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.ID);
+          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.ID, code);
         if ("cp".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.CP);
+          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.CP, code);
         throw new FHIRException("Unknown StructureMapTransform code '"+codeString+"'");
         }
     public String toCode(StructureMapTransform code) {

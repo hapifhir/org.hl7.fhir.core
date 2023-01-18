@@ -207,32 +207,32 @@ public class ValueSet extends MetadataResource {
           return FilterOperator.EXISTS;
         throw new IllegalArgumentException("Unknown FilterOperator code '"+codeString+"'");
         }
-        public Enumeration<FilterOperator> fromType(Base code) throws FHIRException {
+        public Enumeration<FilterOperator> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<FilterOperator>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<FilterOperator>(this, FilterOperator.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<FilterOperator>(this, FilterOperator.NULL, code);
         if ("=".equals(codeString))
-          return new Enumeration<FilterOperator>(this, FilterOperator.EQUAL);
+          return new Enumeration<FilterOperator>(this, FilterOperator.EQUAL, code);
         if ("is-a".equals(codeString))
-          return new Enumeration<FilterOperator>(this, FilterOperator.ISA);
+          return new Enumeration<FilterOperator>(this, FilterOperator.ISA, code);
         if ("descendent-of".equals(codeString))
-          return new Enumeration<FilterOperator>(this, FilterOperator.DESCENDENTOF);
+          return new Enumeration<FilterOperator>(this, FilterOperator.DESCENDENTOF, code);
         if ("is-not-a".equals(codeString))
-          return new Enumeration<FilterOperator>(this, FilterOperator.ISNOTA);
+          return new Enumeration<FilterOperator>(this, FilterOperator.ISNOTA, code);
         if ("regex".equals(codeString))
-          return new Enumeration<FilterOperator>(this, FilterOperator.REGEX);
+          return new Enumeration<FilterOperator>(this, FilterOperator.REGEX, code);
         if ("in".equals(codeString))
-          return new Enumeration<FilterOperator>(this, FilterOperator.IN);
+          return new Enumeration<FilterOperator>(this, FilterOperator.IN, code);
         if ("not-in".equals(codeString))
-          return new Enumeration<FilterOperator>(this, FilterOperator.NOTIN);
+          return new Enumeration<FilterOperator>(this, FilterOperator.NOTIN, code);
         if ("generalizes".equals(codeString))
-          return new Enumeration<FilterOperator>(this, FilterOperator.GENERALIZES);
+          return new Enumeration<FilterOperator>(this, FilterOperator.GENERALIZES, code);
         if ("exists".equals(codeString))
-          return new Enumeration<FilterOperator>(this, FilterOperator.EXISTS);
+          return new Enumeration<FilterOperator>(this, FilterOperator.EXISTS, code);
         throw new FHIRException("Unknown FilterOperator code '"+codeString+"'");
         }
     public String toCode(FilterOperator code) {

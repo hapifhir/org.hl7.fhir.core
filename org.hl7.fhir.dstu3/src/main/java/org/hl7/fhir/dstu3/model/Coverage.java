@@ -144,12 +144,12 @@ public class Coverage extends DomainResource {
           return CoverageStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown CoverageStatus code '"+codeString+"'");
         }
-        public Enumeration<CoverageStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<CoverageStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<CoverageStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("active".equals(codeString))

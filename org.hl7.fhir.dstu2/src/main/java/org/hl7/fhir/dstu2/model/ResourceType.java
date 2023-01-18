@@ -517,7 +517,7 @@ public enum ResourceType {
     if ("VisionPrescription".equals(code))
       return VisionPrescription;
 
-    throw new FHIRException("Unknown resource type"+code);
+    throw new FHIRException("Unknown resource type "+code);
   }
 
 }

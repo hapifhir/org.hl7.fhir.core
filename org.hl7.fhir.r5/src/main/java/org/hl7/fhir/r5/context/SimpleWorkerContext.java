@@ -61,8 +61,8 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapModelMode;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapStructureComponent;
-import org.hl7.fhir.r5.profilemodel.ProfiledElement;
-import org.hl7.fhir.r5.profilemodel.ProfiledElementBuilder;
+import org.hl7.fhir.r5.profilemodel.PEDefinition;
+import org.hl7.fhir.r5.profilemodel.PEBuilder;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
@@ -660,6 +660,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       } catch (Exception e) {
         // not sure what to do in this case?
         System.out.println("Unable to generate snapshot for "+uri+": "+e.getMessage());
+        if (logger.isDebugLogging()) {
+          e.printStackTrace();          
+        }
       }
     }
     return r;
@@ -670,11 +673,27 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     T r = super.fetchResource(class_, uri, source);
     if (r instanceof StructureDefinition) {
       StructureDefinition p = (StructureDefinition)r;
-      try {
-        new ContextUtilities(this).generateSnapshot(p);
-      } catch (Exception e) {
-        // not sure what to do in this case?
-        System.out.println("Unable to generate snapshot for "+uri+": "+e.getMessage());
+      if (!p.isGeneratedSnapshot()) {
+        if (p.isGeneratingSnapshot()) {
+          throw new FHIRException("Attempt to fetch the profile "+p.getVersionedUrl()+" while generating the snapshot for it");
+        }
+        try {
+          if (logger.isDebugLogging()) {
+            System.out.println("Generating snapshot for "+p.getVersionedUrl());
+          }
+          p.setGeneratingSnapshot(true);
+          try {
+            new ContextUtilities(this).generateSnapshot(p);
+          } finally {
+            p.setGeneratingSnapshot(false);      
+          }
+        } catch (Exception e) {
+          // not sure what to do in this case?
+          System.out.println("Unable to generate snapshot for "+p.getVersionedUrl()+": "+e.getMessage());
+          if (logger.isDebugLogging()) {
+            e.printStackTrace();
+          }
+        }
       }
     }
     return r;

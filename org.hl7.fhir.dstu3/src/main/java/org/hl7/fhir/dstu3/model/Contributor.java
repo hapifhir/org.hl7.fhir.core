@@ -142,12 +142,12 @@ public class Contributor extends Type implements ICompositeType {
           return ContributorType.ENDORSER;
         throw new IllegalArgumentException("Unknown ContributorType code '"+codeString+"'");
         }
-        public Enumeration<ContributorType> fromType(Base code) throws FHIRException {
+        public Enumeration<ContributorType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ContributorType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("author".equals(codeString))

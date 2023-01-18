@@ -183,28 +183,28 @@ public class EvidenceVariable extends MetadataResource {
           return CharacteristicCombination.DATASET;
         throw new IllegalArgumentException("Unknown CharacteristicCombination code '"+codeString+"'");
         }
-        public Enumeration<CharacteristicCombination> fromType(Base code) throws FHIRException {
+        public Enumeration<CharacteristicCombination> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<CharacteristicCombination>(this);
+            return new Enumeration<CharacteristicCombination>(this, CharacteristicCombination.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<CharacteristicCombination>(this, CharacteristicCombination.NULL, code);
         if ("all-of".equals(codeString))
-          return new Enumeration<CharacteristicCombination>(this, CharacteristicCombination.ALLOF);
+          return new Enumeration<CharacteristicCombination>(this, CharacteristicCombination.ALLOF, code);
         if ("any-of".equals(codeString))
-          return new Enumeration<CharacteristicCombination>(this, CharacteristicCombination.ANYOF);
+          return new Enumeration<CharacteristicCombination>(this, CharacteristicCombination.ANYOF, code);
         if ("at-least".equals(codeString))
-          return new Enumeration<CharacteristicCombination>(this, CharacteristicCombination.ATLEAST);
+          return new Enumeration<CharacteristicCombination>(this, CharacteristicCombination.ATLEAST, code);
         if ("at-most".equals(codeString))
-          return new Enumeration<CharacteristicCombination>(this, CharacteristicCombination.ATMOST);
+          return new Enumeration<CharacteristicCombination>(this, CharacteristicCombination.ATMOST, code);
         if ("statistical".equals(codeString))
-          return new Enumeration<CharacteristicCombination>(this, CharacteristicCombination.STATISTICAL);
+          return new Enumeration<CharacteristicCombination>(this, CharacteristicCombination.STATISTICAL, code);
         if ("net-effect".equals(codeString))
-          return new Enumeration<CharacteristicCombination>(this, CharacteristicCombination.NETEFFECT);
+          return new Enumeration<CharacteristicCombination>(this, CharacteristicCombination.NETEFFECT, code);
         if ("dataset".equals(codeString))
-          return new Enumeration<CharacteristicCombination>(this, CharacteristicCombination.DATASET);
+          return new Enumeration<CharacteristicCombination>(this, CharacteristicCombination.DATASET, code);
         throw new FHIRException("Unknown CharacteristicCombination code '"+codeString+"'");
         }
     public String toCode(CharacteristicCombination code) {
@@ -6447,4 +6447,3 @@ public class EvidenceVariable extends MetadataResource {
 
 
 }
-

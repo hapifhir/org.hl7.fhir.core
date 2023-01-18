@@ -145,12 +145,12 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
           return IssueSeverity.INFORMATION;
         throw new IllegalArgumentException("Unknown IssueSeverity code '"+codeString+"'");
         }
-        public Enumeration<IssueSeverity> fromType(Base code) throws FHIRException {
+        public Enumeration<IssueSeverity> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<IssueSeverity>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("fatal".equals(codeString))
@@ -573,12 +573,12 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
           return IssueType.INFORMATIONAL;
         throw new IllegalArgumentException("Unknown IssueType code '"+codeString+"'");
         }
-        public Enumeration<IssueType> fromType(Base code) throws FHIRException {
+        public Enumeration<IssueType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<IssueType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("invalid".equals(codeString))

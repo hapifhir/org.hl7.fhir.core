@@ -171,26 +171,26 @@ public class VerificationResult extends DomainResource {
           return Status.REVALFAIL;
         throw new IllegalArgumentException("Unknown Status code '"+codeString+"'");
         }
-        public Enumeration<Status> fromType(Base code) throws FHIRException {
+        public Enumeration<Status> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<Status>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<Status>(this, Status.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<Status>(this, Status.NULL, code);
         if ("attested".equals(codeString))
-          return new Enumeration<Status>(this, Status.ATTESTED);
+          return new Enumeration<Status>(this, Status.ATTESTED, code);
         if ("validated".equals(codeString))
-          return new Enumeration<Status>(this, Status.VALIDATED);
+          return new Enumeration<Status>(this, Status.VALIDATED, code);
         if ("in-process".equals(codeString))
-          return new Enumeration<Status>(this, Status.INPROCESS);
+          return new Enumeration<Status>(this, Status.INPROCESS, code);
         if ("req-revalid".equals(codeString))
-          return new Enumeration<Status>(this, Status.REQREVALID);
+          return new Enumeration<Status>(this, Status.REQREVALID, code);
         if ("val-fail".equals(codeString))
-          return new Enumeration<Status>(this, Status.VALFAIL);
+          return new Enumeration<Status>(this, Status.VALFAIL, code);
         if ("reval-fail".equals(codeString))
-          return new Enumeration<Status>(this, Status.REVALFAIL);
+          return new Enumeration<Status>(this, Status.REVALFAIL, code);
         throw new FHIRException("Unknown Status code '"+codeString+"'");
         }
     public String toCode(Status code) {
@@ -2681,4 +2681,3 @@ public class VerificationResult extends DomainResource {
 
 
 }
-

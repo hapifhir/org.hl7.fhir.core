@@ -208,12 +208,12 @@ public class Bundle extends Resource implements IBaseBundle {
           return BundleType.COLLECTION;
         throw new IllegalArgumentException("Unknown BundleType code '"+codeString+"'");
         }
-        public Enumeration<BundleType> fromType(Base code) throws FHIRException {
+        public Enumeration<BundleType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<BundleType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("document".equals(codeString))
@@ -344,12 +344,12 @@ public class Bundle extends Resource implements IBaseBundle {
           return SearchEntryMode.OUTCOME;
         throw new IllegalArgumentException("Unknown SearchEntryMode code '"+codeString+"'");
         }
-        public Enumeration<SearchEntryMode> fromType(Base code) throws FHIRException {
+        public Enumeration<SearchEntryMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<SearchEntryMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("match".equals(codeString))
@@ -468,12 +468,12 @@ public class Bundle extends Resource implements IBaseBundle {
           return HTTPVerb.DELETE;
         throw new IllegalArgumentException("Unknown HTTPVerb code '"+codeString+"'");
         }
-        public Enumeration<HTTPVerb> fromType(Base code) throws FHIRException {
+        public Enumeration<HTTPVerb> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<HTTPVerb>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("GET".equals(codeString))

@@ -194,12 +194,12 @@ public class MedicationRequest extends DomainResource {
           return MedicationRequestStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown MedicationRequestStatus code '"+codeString+"'");
         }
-        public Enumeration<MedicationRequestStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<MedicationRequestStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<MedicationRequestStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("active".equals(codeString))
@@ -338,12 +338,12 @@ public class MedicationRequest extends DomainResource {
           return MedicationRequestIntent.INSTANCEORDER;
         throw new IllegalArgumentException("Unknown MedicationRequestIntent code '"+codeString+"'");
         }
-        public Enumeration<MedicationRequestIntent> fromType(Base code) throws FHIRException {
+        public Enumeration<MedicationRequestIntent> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<MedicationRequestIntent>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("proposal".equals(codeString))
@@ -466,12 +466,12 @@ public class MedicationRequest extends DomainResource {
           return MedicationRequestPriority.ASAP;
         throw new IllegalArgumentException("Unknown MedicationRequestPriority code '"+codeString+"'");
         }
-        public Enumeration<MedicationRequestPriority> fromType(Base code) throws FHIRException {
+        public Enumeration<MedicationRequestPriority> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<MedicationRequestPriority>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("routine".equals(codeString))

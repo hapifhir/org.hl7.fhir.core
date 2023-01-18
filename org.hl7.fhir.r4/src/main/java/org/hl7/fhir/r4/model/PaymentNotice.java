@@ -145,22 +145,22 @@ public class PaymentNotice extends DomainResource {
           return PaymentNoticeStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown PaymentNoticeStatus code '"+codeString+"'");
         }
-        public Enumeration<PaymentNoticeStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<PaymentNoticeStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<PaymentNoticeStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<PaymentNoticeStatus>(this, PaymentNoticeStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<PaymentNoticeStatus>(this, PaymentNoticeStatus.NULL, code);
         if ("active".equals(codeString))
-          return new Enumeration<PaymentNoticeStatus>(this, PaymentNoticeStatus.ACTIVE);
+          return new Enumeration<PaymentNoticeStatus>(this, PaymentNoticeStatus.ACTIVE, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<PaymentNoticeStatus>(this, PaymentNoticeStatus.CANCELLED);
+          return new Enumeration<PaymentNoticeStatus>(this, PaymentNoticeStatus.CANCELLED, code);
         if ("draft".equals(codeString))
-          return new Enumeration<PaymentNoticeStatus>(this, PaymentNoticeStatus.DRAFT);
+          return new Enumeration<PaymentNoticeStatus>(this, PaymentNoticeStatus.DRAFT, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<PaymentNoticeStatus>(this, PaymentNoticeStatus.ENTEREDINERROR);
+          return new Enumeration<PaymentNoticeStatus>(this, PaymentNoticeStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown PaymentNoticeStatus code '"+codeString+"'");
         }
     public String toCode(PaymentNoticeStatus code) {

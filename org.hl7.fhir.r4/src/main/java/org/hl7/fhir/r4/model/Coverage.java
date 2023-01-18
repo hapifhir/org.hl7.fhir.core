@@ -145,22 +145,22 @@ public class Coverage extends DomainResource {
           return CoverageStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown CoverageStatus code '"+codeString+"'");
         }
-        public Enumeration<CoverageStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<CoverageStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<CoverageStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<CoverageStatus>(this, CoverageStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<CoverageStatus>(this, CoverageStatus.NULL, code);
         if ("active".equals(codeString))
-          return new Enumeration<CoverageStatus>(this, CoverageStatus.ACTIVE);
+          return new Enumeration<CoverageStatus>(this, CoverageStatus.ACTIVE, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<CoverageStatus>(this, CoverageStatus.CANCELLED);
+          return new Enumeration<CoverageStatus>(this, CoverageStatus.CANCELLED, code);
         if ("draft".equals(codeString))
-          return new Enumeration<CoverageStatus>(this, CoverageStatus.DRAFT);
+          return new Enumeration<CoverageStatus>(this, CoverageStatus.DRAFT, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<CoverageStatus>(this, CoverageStatus.ENTEREDINERROR);
+          return new Enumeration<CoverageStatus>(this, CoverageStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown CoverageStatus code '"+codeString+"'");
         }
     public String toCode(CoverageStatus code) {

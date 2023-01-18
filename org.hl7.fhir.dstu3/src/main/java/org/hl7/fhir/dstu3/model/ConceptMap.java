@@ -141,12 +141,12 @@ public class ConceptMap extends MetadataResource {
           return ConceptMapGroupUnmappedMode.OTHERMAP;
         throw new IllegalArgumentException("Unknown ConceptMapGroupUnmappedMode code '"+codeString+"'");
         }
-        public Enumeration<ConceptMapGroupUnmappedMode> fromType(Base code) throws FHIRException {
+        public Enumeration<ConceptMapGroupUnmappedMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ConceptMapGroupUnmappedMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("provided".equals(codeString))

@@ -131,12 +131,12 @@ public class Media extends DomainResource {
           return DigitalMediaType.AUDIO;
         throw new IllegalArgumentException("Unknown DigitalMediaType code '"+codeString+"'");
         }
-        public Enumeration<DigitalMediaType> fromType(Base code) throws FHIRException {
+        public Enumeration<DigitalMediaType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<DigitalMediaType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("photo".equals(codeString))

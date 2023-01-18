@@ -172,26 +172,26 @@ public class ChargeItemDefinition extends MetadataResource {
           return ChargeItemDefinitionPriceComponentType.INFORMATIONAL;
         throw new IllegalArgumentException("Unknown ChargeItemDefinitionPriceComponentType code '"+codeString+"'");
         }
-        public Enumeration<ChargeItemDefinitionPriceComponentType> fromType(Base code) throws FHIRException {
+        public Enumeration<ChargeItemDefinitionPriceComponentType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ChargeItemDefinitionPriceComponentType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ChargeItemDefinitionPriceComponentType>(this, ChargeItemDefinitionPriceComponentType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ChargeItemDefinitionPriceComponentType>(this, ChargeItemDefinitionPriceComponentType.NULL, code);
         if ("base".equals(codeString))
-          return new Enumeration<ChargeItemDefinitionPriceComponentType>(this, ChargeItemDefinitionPriceComponentType.BASE);
+          return new Enumeration<ChargeItemDefinitionPriceComponentType>(this, ChargeItemDefinitionPriceComponentType.BASE, code);
         if ("surcharge".equals(codeString))
-          return new Enumeration<ChargeItemDefinitionPriceComponentType>(this, ChargeItemDefinitionPriceComponentType.SURCHARGE);
+          return new Enumeration<ChargeItemDefinitionPriceComponentType>(this, ChargeItemDefinitionPriceComponentType.SURCHARGE, code);
         if ("deduction".equals(codeString))
-          return new Enumeration<ChargeItemDefinitionPriceComponentType>(this, ChargeItemDefinitionPriceComponentType.DEDUCTION);
+          return new Enumeration<ChargeItemDefinitionPriceComponentType>(this, ChargeItemDefinitionPriceComponentType.DEDUCTION, code);
         if ("discount".equals(codeString))
-          return new Enumeration<ChargeItemDefinitionPriceComponentType>(this, ChargeItemDefinitionPriceComponentType.DISCOUNT);
+          return new Enumeration<ChargeItemDefinitionPriceComponentType>(this, ChargeItemDefinitionPriceComponentType.DISCOUNT, code);
         if ("tax".equals(codeString))
-          return new Enumeration<ChargeItemDefinitionPriceComponentType>(this, ChargeItemDefinitionPriceComponentType.TAX);
+          return new Enumeration<ChargeItemDefinitionPriceComponentType>(this, ChargeItemDefinitionPriceComponentType.TAX, code);
         if ("informational".equals(codeString))
-          return new Enumeration<ChargeItemDefinitionPriceComponentType>(this, ChargeItemDefinitionPriceComponentType.INFORMATIONAL);
+          return new Enumeration<ChargeItemDefinitionPriceComponentType>(this, ChargeItemDefinitionPriceComponentType.INFORMATIONAL, code);
         throw new FHIRException("Unknown ChargeItemDefinitionPriceComponentType code '"+codeString+"'");
         }
     public String toCode(ChargeItemDefinitionPriceComponentType code) {

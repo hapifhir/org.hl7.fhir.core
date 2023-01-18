@@ -77,6 +77,7 @@ public class FHIRLexer {
   private int id;
   private String name;
   private boolean liquidMode; // in liquid mode, || terminates the expression and hands the parser back to the host
+  private SourceLocation commentLocation;
 
   public FHIRLexer(String source, String name) throws FHIRLexerException {
     this.source = source == null ? "" : source;
@@ -298,12 +299,14 @@ public class FHIRLexer {
     boolean done = false;
     while (cursor < source.length() && !done) {
       if (cursor < source.length() -1 && "//".equals(source.substring(cursor, cursor+2))) {
+        commentLocation = currentLocation;
         int start = cursor+2;
         while (cursor < source.length() && !((source.charAt(cursor) == '\r') || source.charAt(cursor) == '\n')) { 
           cursor++;        
         }
         comments.add(source.substring(start, cursor).trim());
       } else if (cursor < source.length() - 1 && "/*".equals(source.substring(cursor, cursor+2))) {
+        commentLocation = currentLocation;
         int start = cursor+2;
         while (cursor < source.length() - 1 && !"*/".equals(source.substring(cursor, cursor+2))) { 
           last13 = currentLocation.checkChar(source.charAt(cursor), last13);
@@ -532,6 +535,9 @@ public class FHIRLexer {
   }
   public void setLiquidMode(boolean liquidMode) {
     this.liquidMode = liquidMode;
+  }
+  public SourceLocation getCommentLocation() {
+    return this.commentLocation;
   }
 
 }

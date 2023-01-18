@@ -19,7 +19,13 @@ public class SystemOutLoggingService implements IWorkerContext.ILoggingService {
   @Override
   public void logDebugMessage(LogCategory category, String message) {
     if (debug) {
-        System.out.println(" -" + category.name().toLowerCase() + ": " + message);
-      }
+      System.out.println(" -" + category.name().toLowerCase() + ": " + message);
     }
+  }
+
+  @Override
+  public boolean isDebugLogging() {
+    return debug;
+  }  
+  
 }

@@ -169,26 +169,26 @@ public class DeviceDefinition extends DomainResource {
           return DeviceNameType.OTHER;
         throw new IllegalArgumentException("Unknown DeviceNameType code '"+codeString+"'");
         }
-        public Enumeration<DeviceNameType> fromType(Base code) throws FHIRException {
+        public Enumeration<DeviceNameType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<DeviceNameType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<DeviceNameType>(this, DeviceNameType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<DeviceNameType>(this, DeviceNameType.NULL, code);
         if ("udi-label-name".equals(codeString))
-          return new Enumeration<DeviceNameType>(this, DeviceNameType.UDILABELNAME);
+          return new Enumeration<DeviceNameType>(this, DeviceNameType.UDILABELNAME, code);
         if ("user-friendly-name".equals(codeString))
-          return new Enumeration<DeviceNameType>(this, DeviceNameType.USERFRIENDLYNAME);
+          return new Enumeration<DeviceNameType>(this, DeviceNameType.USERFRIENDLYNAME, code);
         if ("patient-reported-name".equals(codeString))
-          return new Enumeration<DeviceNameType>(this, DeviceNameType.PATIENTREPORTEDNAME);
+          return new Enumeration<DeviceNameType>(this, DeviceNameType.PATIENTREPORTEDNAME, code);
         if ("manufacturer-name".equals(codeString))
-          return new Enumeration<DeviceNameType>(this, DeviceNameType.MANUFACTURERNAME);
+          return new Enumeration<DeviceNameType>(this, DeviceNameType.MANUFACTURERNAME, code);
         if ("model-name".equals(codeString))
-          return new Enumeration<DeviceNameType>(this, DeviceNameType.MODELNAME);
+          return new Enumeration<DeviceNameType>(this, DeviceNameType.MODELNAME, code);
         if ("other".equals(codeString))
-          return new Enumeration<DeviceNameType>(this, DeviceNameType.OTHER);
+          return new Enumeration<DeviceNameType>(this, DeviceNameType.OTHER, code);
         throw new FHIRException("Unknown DeviceNameType code '"+codeString+"'");
         }
     public String toCode(DeviceNameType code) {

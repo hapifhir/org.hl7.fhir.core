@@ -3,9 +3,12 @@ package org.hl7.fhir.r5.test;
 import java.io.IOException;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.Observation;
+import org.hl7.fhir.r5.model.Patient;
+import org.hl7.fhir.r5.model.StringType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -45,4 +48,17 @@ public class ResourceCopyTests {
     Assertions.assertEquals(obs.equalsDeep(copyObs),true,"DeepEquals fails");
 
   }
+  
+
+  @Test
+  void missingExtension() {
+    Patient patient1 = new Patient().setGender(Enumerations.AdministrativeGender.FEMALE);
+    Enumeration genderElement = patient1.getGenderElement();
+    genderElement.addExtension(new Extension(("1"),new StringType("2")));
+    genderElement.addExtension(new Extension(("3"),new StringType("4")));
+    Patient patient2 = new Patient();
+    patient2.setProperty("gender", genderElement);
+    Assertions.assertEquals(2, patient2.getGenderElement().getExtension().size());
+  }
+  
 }
