@@ -97,7 +97,7 @@ public class TerminologyCacheManager {
   public static void unzip(InputStream is, String targetDir) throws IOException {
     try (ZipInputStream zipIn = new ZipInputStream(is)) {
       for (ZipEntry ze; (ze = zipIn.getNextEntry()) != null; ) {
-        String path = Utilities.path(targetDir, ze.getName());
+        String path = Path.of(Utilities.path(targetDir, ze.getName())).normalize().toFile().getAbsolutePath();
         if (!path.startsWith(targetDir)) {
           // see: https://snyk.io/research/zip-slip-vulnerability
           throw new RuntimeException("Entry with an illegal path: " + ze.getName());
