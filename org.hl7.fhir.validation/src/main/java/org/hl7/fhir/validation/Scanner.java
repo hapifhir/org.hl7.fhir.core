@@ -345,7 +345,7 @@ public class Scanner {
 
       final File zipEntryFile = new File(destDirectory, entry.getName());
       if (!zipEntryFile.toPath().normalize().startsWith(destDirectory)) {
-        throw new RuntimeException("Bad zip entry");
+        throw new RuntimeException("Entry with an illegal path: " + entry.getName());
       }
 
       if (!entry.isDirectory()) {
