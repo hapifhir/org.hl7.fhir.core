@@ -22,6 +22,8 @@ public class TerminologyCacheManagerTests implements ResourceLoaderTests {
   public static final String ZIP_SLIP_ZIP = "zip-slip.zip";
 
   public static final String ZIP_SLIP_2_ZIP = "zip-slip-2.zip";
+
+  public static final String ZIP_SLIP_WIN_ZIP = "zip-slip-win.zip";
   Path tempDir;
 
   @BeforeAll
@@ -63,4 +65,14 @@ public class TerminologyCacheManagerTests implements ResourceLoaderTests {
     assertEquals("Entry with an illegal path: child/../../evil.txt", thrown.getMessage());
   }
 
+  @Test
+  public void testSlipZipWin() throws IOException {
+    RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
+      InputStream slipInputStream = getResourceAsInputStream( "terminologyCacheManager", ZIP_SLIP_WIN_ZIP);
+      TerminologyCacheManager.unzip( slipInputStream, tempDir.toFile().getAbsolutePath());
+      //Code under test
+    });
+    assertNotNull(thrown);
+    assertEquals("Entry with an illegal path: ../evil.txt", thrown.getMessage());
+  }
 }
