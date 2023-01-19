@@ -1,9 +1,6 @@
 package org.hl7.fhir.convertors.misc;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,6 +36,7 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.NpmPackageIndexBuilder;
 
 import com.google.common.base.Charsets;
+import org.jetbrains.annotations.NotNull;
 
 public class NpmPackageVersionConverter {
 
@@ -76,33 +74,7 @@ public class NpmPackageVersionConverter {
   }
 
   public void execute() throws IOException {
-    GzipCompressorInputStream gzipIn;
-    try {
-      gzipIn = new GzipCompressorInputStream(new FileInputStream(source));
-    } catch (Exception e) {
-      throw new IOException("Error reading " + source + ": " + e.getMessage(), e);
-    }
-    Map<String, byte[]> content = new HashMap<>();
-
-    try (TarArchiveInputStream tarIn = new TarArchiveInputStream(gzipIn)) {
-      TarArchiveEntry entry;
-
-      while ((entry = (TarArchiveEntry) tarIn.getNextEntry()) != null) {
-        String n = entry.getName();
-        if (!entry.isDirectory()) {
-          int count;
-          byte[] data = new byte[BUFFER_SIZE];
-          ByteArrayOutputStream fos = new ByteArrayOutputStream();
-          try (BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER_SIZE)) {
-            while ((count = tarIn.read(data, 0, BUFFER_SIZE)) != -1) {
-              dest.write(data, 0, count);
-            }
-          }
-          fos.close();
-          content.put(n, fos.toByteArray());
-        }
-      }
-    }
+    Map<String, byte[]> content = loadContentMap(new FileInputStream(source));
 
     Map<String, byte[]> output = new HashMap<>();
     output.put("package/package.json", convertPackage(content.get("package/package.json")));
@@ -178,6 +150,41 @@ public class NpmPackageVersionConverter {
     OutputStream.close();
     byte[] b = OutputStream.toByteArray();
     TextFile.bytesToFile(b, dest);
+  }
+
+  @NotNull
+  protected Map<String, byte[]> loadContentMap(InputStream inputStream) throws IOException {
+    GzipCompressorInputStream gzipIn;
+    try {
+      gzipIn = new GzipCompressorInputStream(inputStream);
+    } catch (Exception e) {
+      throw new IOException("Error reading " + source + ": " + e.getMessage(), e);
+    }
+    Map<String, byte[]> content = new HashMap<>();
+
+    try (TarArchiveInputStream tarIn = new TarArchiveInputStream(gzipIn)) {
+      TarArchiveEntry entry;
+
+      while ((entry = (TarArchiveEntry) tarIn.getNextEntry()) != null) {
+        String n = entry.getName();
+        if (n.contains("..")) {
+          throw new RuntimeException("Entry with an illegal name: " + n);
+        }
+        if (!entry.isDirectory()) {
+          int count;
+          byte[] data = new byte[BUFFER_SIZE];
+          ByteArrayOutputStream fos = new ByteArrayOutputStream();
+          try (BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER_SIZE)) {
+            while ((count = tarIn.read(data, 0, BUFFER_SIZE)) != -1) {
+              dest.write(data, 0, count);
+            }
+          }
+          fos.close();
+          content.put(n, fos.toByteArray());
+        }
+      }
+    }
+    return content;
   }
 
   private byte[] convertPackage(byte[] cnt) throws IOException {
