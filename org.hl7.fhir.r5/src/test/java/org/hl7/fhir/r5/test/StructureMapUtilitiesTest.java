@@ -98,7 +98,7 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
     String fileMap = TestingUtilities.loadTestResource("r5", "structure-mapping", "syntax.map");
     System.out.println(fileMap);
 
-    Element structureMap = scu.parseEM(fileMap, "Syntax");
+    Element structureMap = scu.parseEM(fileMap, "Syntax", null);
 //    assertSerializeDeserialize(structureMap);
 //
 //    String renderedMap = StructureMapUtilities.render(structureMap);
