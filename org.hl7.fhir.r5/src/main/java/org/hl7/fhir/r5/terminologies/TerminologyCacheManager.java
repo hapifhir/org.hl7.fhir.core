@@ -65,11 +65,11 @@ public class TerminologyCacheManager {
     }
     if (!version.equals(getCacheVersion())) {
       clearCache();
-      fillCache("http://tx.fhir.org/tx-cache/"+ghOrg+"/"+ghRepo+"/"+ghBranch+".zip");
+      fillCache("https://tx.fhir.org/tx-cache/"+ghOrg+"/"+ghRepo+"/"+ghBranch+".zip");
     }
     if (!version.equals(getCacheVersion())) {
       clearCache();
-      fillCache("http://tx.fhir.org/tx-cache/"+ghOrg+"/"+ghRepo+"/default.zip");
+      fillCache("https://tx.fhir.org/tx-cache/"+ghOrg+"/"+ghRepo+"/default.zip");
     }
     if (!version.equals(getCacheVersion())) {
       clearCache();

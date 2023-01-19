@@ -133,7 +133,7 @@ public class Scanner {
 
   protected void genScanOutput(String folder, List<ScanOutputItem> items) throws IOException, FHIRException, EOperationOutcome {
     String f = Utilities.path(folder, "comparison.zip");
-    download("http://fhir.org/archive/comparison.zip", f);
+    download("https://fhir.org/archive/comparison.zip", f);
     unzip(f, folder);
 
     for (int i = 0; i < items.size(); i++) {
