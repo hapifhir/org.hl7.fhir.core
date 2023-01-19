@@ -27,7 +27,6 @@ public class TerminologyCacheManagerTests implements ResourceLoaderTests {
   @BeforeAll
   public void beforeAll() throws IOException {
     tempDir = Files.createTempDirectory("terminology-cache-manager");
-
     tempDir.resolve("child").toFile().mkdir();
     getResourceAsInputStream("terminologyCacheManager", ZIP_SLIP_ZIP);
   }
