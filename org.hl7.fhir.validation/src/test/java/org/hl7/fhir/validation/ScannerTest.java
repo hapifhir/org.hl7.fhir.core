@@ -28,7 +28,7 @@ public class ScannerTest implements ResourceLoaderTests {
   @BeforeAll
   public void beforeAll() throws IOException {
     tempDir = Files.createTempDirectory("scanner-zip");
-
+    tempDir.resolve("child").toFile().mkdir();
     zipNormalPath = tempDir.resolve(ZIP_NORMAL_ZIP);
     zipSlipPath = tempDir.resolve(ZIP_SLIP_ZIP);
     zipSlip2Path = tempDir.resolve(ZIP_SLIP_2_ZIP);
