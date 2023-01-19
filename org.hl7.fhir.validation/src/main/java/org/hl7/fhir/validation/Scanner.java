@@ -342,13 +342,18 @@ public class Scanner {
     // iterates over entries in the zip file
     while (entry != null) {
       String filePath = destDirectory + File.separator + entry.getName();
+
+      final File zipEntryFile = new File(destDirectory, entry.getName());
+      if (!zipEntryFile.toPath().normalize().startsWith(destDirectory)) {
+        throw new RuntimeException("Bad zip entry");
+      }
+
       if (!entry.isDirectory()) {
-        // if the entry is a file, extracts it
+        // if the entry is a file, extract it
         extractFile(zipIn, filePath);
       } else {
         // if the entry is a directory, make the directory
-        File dir = new File(filePath);
-        dir.mkdir();
+        zipEntryFile.mkdir();
       }
       zipIn.closeEntry();
       entry = zipIn.getNextEntry();
