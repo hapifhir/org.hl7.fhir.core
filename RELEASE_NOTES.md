@@ -1,6 +1,7 @@
 ## Validator Changes
 
 * update FHIRPath implementation for corrections to 'as' (R5 only in validator)
+* Critical Security fix: enforce correct paths when unpacking archives (SecurityAdvisory-1082, CVE TBA)
 
 ## Other code changes
 
