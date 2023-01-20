@@ -72,6 +72,7 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.model.JsonProperty;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * info and loader for a package 
@@ -377,7 +378,7 @@ public class NpmPackage {
 
   private static final int BUFFER_SIZE = 1024;
 
-  public static NpmPackage fromPackage(InputStream tgz) throws IOException {
+  public static @NotNull NpmPackage fromPackage(InputStream tgz) throws IOException {
     return fromPackage(tgz, null, false);
   }
 
@@ -406,6 +407,9 @@ public class NpmPackage {
       while ((entry = (TarArchiveEntry) tarIn.getNextEntry()) != null) {
         i++;
         String n = entry.getName();
+        if (n.contains("..")) {
+          throw new RuntimeException("Entry with an illegal name: " + n);
+        }
         if (entry.isDirectory()) {
           String dir = n.substring(0, n.length()-1);
           if (dir.startsWith("package/")) {
