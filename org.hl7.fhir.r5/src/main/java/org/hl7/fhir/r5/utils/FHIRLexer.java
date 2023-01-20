@@ -50,20 +50,31 @@ import org.hl7.fhir.utilities.Utilities;
 public class FHIRLexer {
   public class FHIRLexerException extends FHIRException {
 
-    public FHIRLexerException() {
-      super();
-    }
+    private SourceLocation location;
 
-    public FHIRLexerException(String message, Throwable cause) {
-      super(message, cause);
-    }
+//    public FHIRLexerException() {
+//      super();
+//    }
+//
+//    public FHIRLexerException(String message, Throwable cause) {
+//      super(message, cause);
+//    }
+//
+//    public FHIRLexerException(String message) {
+//      super(message);
+//    }
+//
+//    public FHIRLexerException(Throwable cause) {
+//      super(cause);
+//    }
 
-    public FHIRLexerException(String message) {
+    public FHIRLexerException(String message, SourceLocation location) {
       super(message);
+      this.location = location;
     }
 
-    public FHIRLexerException(Throwable cause) {
-      super(cause);
+    public SourceLocation getLocation() {
+      return location;
     }
 
   }
@@ -145,11 +156,11 @@ public class FHIRLexer {
   }
 
   public FHIRLexerException error(String msg) {
-    return error(msg, currentLocation.toString());
+    return error(msg, currentLocation.toString(), currentLocation);
   }
 
-  public FHIRLexerException error(String msg, String location) {
-    return new FHIRLexerException("Error @"+location+": "+msg);
+  public FHIRLexerException error(String msg, String location, SourceLocation loc) {
+    return new FHIRLexerException("Error @"+location+": "+msg, loc);
   }
 
   public void next() throws FHIRLexerException {
@@ -450,7 +461,7 @@ public class FHIRLexer {
           i = i + 4;
           break;
         default:
-          throw new FHIRLexerException("Unknown character escape \\"+s.charAt(i));
+          throw new FHIRLexerException("Unknown character escape \\"+s.charAt(i), currentLocation);
         }
       } else {
         b.append(ch);
@@ -499,7 +510,7 @@ public class FHIRLexer {
           i = i + 4;
           break;
         default:
-          throw new FHIRLexerException("Unknown character escape \\"+s.charAt(i));
+          throw new FHIRLexerException("Unknown character escape \\"+s.charAt(i), currentLocation);
         }
       } else {
         b.append(ch);

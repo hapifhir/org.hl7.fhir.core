@@ -72,6 +72,9 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.SourceLocation;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
+import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -640,26 +643,32 @@ public class StructureMapUtilities {
     return result;
   }
 
-  public Element parseEM(String text, String srcName) throws FHIRException {
+  public Element parseEM(String text, String srcName, List<ValidationMessage> list) throws FHIRException {
     FHIRLexer lexer = new FHIRLexer(text, srcName);
     if (lexer.done())
       throw lexer.error("Map Input cannot be empty");
     lexer.token("map");
     Element result = Manager.build(worker, worker.fetchTypeDefinition("StructureMap"));
-    result.makeElement("url").markLocation(lexer.getCurrentLocation()).setValue(lexer.readConstant("url"));
-    lexer.token("=");
-    result.makeElement("name").markLocation(lexer.getCurrentLocation()).setValue(lexer.readConstant("name"));
-    result.makeElement("description").markLocation(lexer.getCurrentLocation()).setValue(lexer.getAllComments());
-    while (lexer.hasToken("conceptmap"))
-      parseConceptMapEM(result, lexer);
+    try {
+      result.makeElement("url").markLocation(lexer.getCurrentLocation()).setValue(lexer.readConstant("url"));
+      lexer.token("=");
+      result.makeElement("name").markLocation(lexer.getCurrentLocation()).setValue(lexer.readConstant("name"));
+      result.makeElement("description").markLocation(lexer.getCurrentLocation()).setValue(lexer.getAllComments());
+      while (lexer.hasToken("conceptmap"))
+        parseConceptMapEM(result, lexer);
 
-    while (lexer.hasToken("uses"))
-      parseUsesEM(result, lexer);
-    while (lexer.hasToken("imports"))
-      parseImportsEM(result, lexer);
+      while (lexer.hasToken("uses"))
+        parseUsesEM(result, lexer);
+      while (lexer.hasToken("imports"))
+        parseImportsEM(result, lexer);
 
-    while (!lexer.done()) {
-      parseGroupEM(result, lexer);
+      while (!lexer.done()) {
+        parseGroupEM(result, lexer);
+      }
+    } catch (FHIRLexerException e) {
+      list.add(new ValidationMessage(Source.InstanceValidator, IssueType.INVALID, e.getLocation().getLine(), e.getLocation().getColumn(), null, e.getMessage(), IssueSeverity.FATAL));
+    } catch (Exception e) {
+      list.add(new ValidationMessage(Source.InstanceValidator, IssueType.INVALID, null, e.getMessage(), IssueSeverity.FATAL));
     }
 
     return result;
@@ -3074,10 +3083,6 @@ public class StructureMapUtilities {
 
   public void setTerminologyServiceOptions(ValidationOptions terminologyServiceOptions) {
     this.terminologyServiceOptions = terminologyServiceOptions;
-  }
-
-  public Element parseForValidation(ByteArrayInputStream byteArrayInputStream, String version, List<ValidationMessage> errors) {
-    return null;
   }
 
 }
