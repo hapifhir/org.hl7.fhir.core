@@ -1801,7 +1801,7 @@ public class FHIRPathEngine {
         throw new PathEngineException("The type "+tn+" is not valid");
       }
       if (!doNotEnforceAsSingletonRule && left.size() > 1) {
-        throw new PathEngineException("Attempt to use as on more than one item ("+left.size()+")");
+        throw new PathEngineException("Attempt to use as on more than one item ("+left.size()+", '"+expr.toString()+"')");
       }
       for (Base nextLeft : left) {
         if (tn.equals(nextLeft.fhirType())) {
