@@ -333,13 +333,6 @@ public class TurtleParser extends ParserBase {
     }
     String subjId = genSubjectId(e);
 
-    String ontologyId = subjId.replace(">", ".ttl>");
-    Section ontology = ttl.section("ontology header");
-    ontology.triple(ontologyId, "a", "owl:Ontology");
-    ontology.triple(ontologyId, "owl:imports", "fhir:fhir.ttl");
-    if(ontologyId.startsWith("<" + FHIR_URI_BASE))
-      ontology.triple(ontologyId, "owl:versionIRI", ontologyId.replace(FHIR_URI_BASE, FHIR_VERSION_BASE));
-
     Subject subject = section.triple(subjId, "a", "fhir:" + e.getType());
 		subject.linkedPredicate("fhir:nodeRole", "fhir:treeRoot", linkResolver == null ? null : linkResolver.resolvePage("rdf.html#tree-root"), null);
 
