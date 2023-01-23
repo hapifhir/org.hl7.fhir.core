@@ -416,7 +416,7 @@ public class TurtleParser extends ParserBase {
     if (element.getSpecial() != null)
       t.linkedPredicate("a", "fhir:"+element.fhirType(), linkResolver == null ? null : linkResolver.resolveType(element.fhirType()), null);
 	  if (element.hasValue())
-	  	t.linkedPredicate("fhir:value", ttlLiteral(element.getValue(), element.getType()), linkResolver == null ? null : linkResolver.resolveType(element.getType()), null);
+	  	t.linkedPredicate("fhir:v", ttlLiteral(element.getValue(), element.getType()), linkResolver == null ? null : linkResolver.resolveType(element.getType()), null);
 	  if (element.getProperty().isList() && (!element.isResource() || element.getSpecial() == SpecialElement.CONTAINED))
 	  	t.linkedPredicate("fhir:index", Integer.toString(element.getIndex()), linkResolver == null ? null : linkResolver.resolvePage("rdf.html#index"), null);
 
