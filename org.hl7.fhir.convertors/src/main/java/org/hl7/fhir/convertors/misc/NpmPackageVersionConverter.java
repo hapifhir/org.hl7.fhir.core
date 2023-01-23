@@ -36,7 +36,7 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.NpmPackageIndexBuilder;
 
 import com.google.common.base.Charsets;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 public class NpmPackageVersionConverter {
 
@@ -152,7 +152,7 @@ public class NpmPackageVersionConverter {
     TextFile.bytesToFile(b, dest);
   }
 
-  @NotNull
+  @Nonnull
   protected Map<String, byte[]> loadContentMap(InputStream inputStream) throws IOException {
     GzipCompressorInputStream gzipIn;
     try {

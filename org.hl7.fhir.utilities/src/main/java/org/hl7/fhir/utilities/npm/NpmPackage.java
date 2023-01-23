@@ -72,7 +72,7 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.model.JsonProperty;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * info and loader for a package 
@@ -378,7 +378,7 @@ public class NpmPackage {
 
   private static final int BUFFER_SIZE = 1024;
 
-  public static @NotNull NpmPackage fromPackage(InputStream tgz) throws IOException {
+  public static @Nonnull NpmPackage fromPackage(InputStream tgz) throws IOException {
     return fromPackage(tgz, null, false);
   }
 
@@ -576,7 +576,7 @@ public class NpmPackage {
   /**
    * use the name from listResources()
    * 
-   * @param id
+   * @param file
    * @return
    * @throws IOException
    */
@@ -588,7 +588,7 @@ public class NpmPackage {
   /**
    * get a stream that contains the contents of a resource in the base folder, by it's canonical URL
    * 
-   * @param url - the canonical URL of the resource (exact match only)
+   * @param canonical - the canonical URL of the resource (exact match only)
    * @return null if it is not found
    * @throws IOException
    */
@@ -600,7 +600,7 @@ public class NpmPackage {
    * get a stream that contains the contents of a resource in the nominated folder, by it's canonical URL
    * 
    * @param folder - one of the folders in the package (main folder is "package")
-   * @param url - the canonical URL of the resource (exact match only)
+   * @param canonical - the canonical URL of the resource (exact match only)
    * @return null if it is not found
    * @throws IOException
    */
@@ -611,7 +611,7 @@ public class NpmPackage {
   /**
    * get a stream that contains the contents of a resource in the base folder, by it's canonical URL
    * 
-   * @param url - the canonical URL of the resource (exact match only)
+   * @param canonical - the canonical URL of the resource (exact match only)
    * @param version - the specified version (or null if the most recent)
    * 
    * @return null if it is not found
@@ -625,7 +625,7 @@ public class NpmPackage {
    * get a stream that contains the contents of a resource in the nominated folder, by it's canonical URL
    * 
    * @param folder - one of the folders in the package (main folder is "package")
-   * @param url - the canonical URL of the resource (exact match only)
+   * @param canonical - the canonical URL of the resource (exact match only)
    * @param version - the specified version (or null if the most recent)
    * 
    * @return null if it is not found
