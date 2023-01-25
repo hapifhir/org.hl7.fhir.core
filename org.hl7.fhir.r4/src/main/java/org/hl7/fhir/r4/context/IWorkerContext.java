@@ -299,6 +299,8 @@ public interface IWorkerContext {
 
   String formatMessage(String theMessage, Object... theMessageArguments);
 
+  String formatMessagePlural(Integer pl, String theMessage, Object... theMessageArguments);
+
   void setValidationMessageLanguage(Locale locale);
 
   public class ValidationResult {
