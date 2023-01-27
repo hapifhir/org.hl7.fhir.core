@@ -413,6 +413,9 @@ public class TurtleParser extends ParserBase {
 	  } else {
 	    t = ctxt.linkedPredicate("fhir:"+en, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()), comment);
 	  }
+	if (element.getProperty().getName().endsWith("[x]") && !element.hasValue()) {
+	  t.linkedPredicate("a", "fhir:" + element.fhirType(), linkResolver == null ? null : linkResolver.resolveType(element.fhirType()), null);
+	}
     if (element.getSpecial() != null)
       t.linkedPredicate("a", "fhir:"+element.fhirType(), linkResolver == null ? null : linkResolver.resolveType(element.fhirType()), null);
 	  if (element.hasValue())
@@ -456,37 +459,24 @@ public class TurtleParser extends ParserBase {
 
   private String getFormalName(Element element) {
     String en = null;
-    if (element.getSpecial() == null) {
-      if (element.getProperty().getDefinition().hasBase())
-        en = element.getProperty().getDefinition().getBase().getPath();
-    }
+    if (element.getSpecial() == null) 
+    	en = element.getProperty().getName();
     else if (element.getSpecial() == SpecialElement.BUNDLE_ENTRY)
-      en = "Bundle.entry.resource";
+      en = "resource";
     else if (element.getSpecial() == SpecialElement.BUNDLE_OUTCOME)
-      en = "Bundle.entry.response.outcome";
+      en = "outcome";
     else if (element.getSpecial() == SpecialElement.PARAMETER)
       en = element.getElementProperty().getDefinition().getPath();
     else // CONTAINED
-      en = "DomainResource.contained";
+      en = "contained";
 
-    if (en == null)
-      en = element.getProperty().getDefinition().getPath();
-    boolean doType = false;
-      if (en.endsWith("[x]")) {
-        en = en.substring(0, en.length()-3);
-        doType = true;
-      }
-     if (doType || (element.getProperty().getDefinition().getType().size() > 1 && !allReference(element.getProperty().getDefinition().getType())))
-       en = en + Utilities.capitalize(element.getType());
+    if (en == null) 
+      en = element.getProperty().getName();
+    
+    if (en.endsWith("[x]")) 
+      en = en.substring(0, en.length()-3);
+      
     return en;
-  }
-
-	private boolean allReference(List<TypeRefComponent> types) {
-	  for (TypeRefComponent t : types) {
-	    if (!t.getCode().equals("Reference"))
-	      return false;
-	  }
-    return true;
   }
 
   static public String ttlLiteral(String value, String type) {
