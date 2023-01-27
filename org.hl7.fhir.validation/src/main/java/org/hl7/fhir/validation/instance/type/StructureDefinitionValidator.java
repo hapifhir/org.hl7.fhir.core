@@ -164,7 +164,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         tc = type.getExtensionValue(ToolingExtensions.EXT_FHIR_TYPE).primitiveValue();
       }
       if (Utilities.noString(tc) && type.hasChild("code")) {
-        throw new Error("WTF?");
+        throw new Error("Snapshot for " + sd.getId() +" element " + path + " has type.code without a value ");
 //        if (type.getNamedChild("code").hasExtension(" http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type")) {
 //          tc = "*";
 //        }
