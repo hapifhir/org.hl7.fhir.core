@@ -26,16 +26,15 @@ public class PackageClient {
 
 
 
-  public static final String PRIMARY_SERVER = "http://packages.fhir.org";
-  public static final String SECONDARY_SERVER = "https://packages2.fhir.org/packages";
-
-  private String address;
+  private PackageServer server;
   private String cacheFolder;
+  private String address;
 
 
-  public PackageClient(String address) {
+  public PackageClient(PackageServer server) {
     super();
-    this.address = address;
+    this.server = server;
+    address = server.getUrl();
     try {
       cacheFolder = Utilities.path(System.getProperty("user.home"), ".fhir", "package-client");
       Utilities.createDirectory(cacheFolder);
