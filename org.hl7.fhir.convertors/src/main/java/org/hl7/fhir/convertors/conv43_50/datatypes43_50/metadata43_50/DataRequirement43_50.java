@@ -53,9 +53,6 @@ public class DataRequirement43_50 {
 
   private static String convertResourceName4to5(String name) {
     if (name == null) return null;
-    if (name.equals("MedicationStatement")) {
-      return "MedicationUsage";
-    }
     if (name.equals("DeviceUseStatement")) {
       return "DeviceUsage";
     }
@@ -64,9 +61,6 @@ public class DataRequirement43_50 {
 
   private static String convertResourceName5to4(String name) {
     if (name == null) return null;
-    if (name.equals("MedicationUsage")) {
-      return "MedicationStatement";
-    }
     if (name.equals("DeviceUsage")) {
       return "DeviceUseStatement";
     }
