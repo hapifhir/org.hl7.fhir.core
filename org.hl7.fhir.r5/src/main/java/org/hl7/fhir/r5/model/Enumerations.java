@@ -2135,6 +2135,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return MEDICATIONREQUEST;
         if ("MedicationUsage".equals(codeString))
           return MEDICATIONUSAGE;
+        if ("MedicationStatement".equals(codeString))
+          return MEDICATIONUSAGE;
         if ("MedicinalProductDefinition".equals(codeString))
           return MEDICINALPRODUCTDEFINITION;
         if ("MessageDefinition".equals(codeString))
@@ -3116,6 +3118,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return AllResourceTypes.MEDICATIONREQUEST;
         if ("MedicationUsage".equals(codeString))
           return AllResourceTypes.MEDICATIONUSAGE;
+        if ("MedicationStatement".equals(codeString))
+          return AllResourceTypes.MEDICATIONUSAGE;
         if ("MedicinalProductDefinition".equals(codeString))
           return AllResourceTypes.MEDICINALPRODUCTDEFINITION;
         if ("MessageDefinition".equals(codeString))
@@ -3441,6 +3445,8 @@ The primary difference between a medicationusage and a medicationadministration 
         if ("MedicationRequest".equals(codeString))
           return new Enumeration<AllResourceTypes>(this, AllResourceTypes.MEDICATIONREQUEST, code);
         if ("MedicationUsage".equals(codeString))
+          return new Enumeration<AllResourceTypes>(this, AllResourceTypes.MEDICATIONUSAGE, code);
+        if ("MedicationStatement".equals(codeString))
           return new Enumeration<AllResourceTypes>(this, AllResourceTypes.MEDICATIONUSAGE, code);
         if ("MedicinalProductDefinition".equals(codeString))
           return new Enumeration<AllResourceTypes>(this, AllResourceTypes.MEDICINALPRODUCTDEFINITION, code);
@@ -10016,6 +10022,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return MEDICATIONREQUEST;
         if ("MedicationUsage".equals(codeString))
           return MEDICATIONUSAGE;
+        if ("MedicationStatement".equals(codeString))
+          return MEDICATIONUSAGE;
         if ("MedicinalProductDefinition".equals(codeString))
           return MEDICINALPRODUCTDEFINITION;
         if ("MessageDefinition".equals(codeString))
@@ -11419,6 +11427,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return FHIRTypes.MEDICATIONREQUEST;
         if ("MedicationUsage".equals(codeString))
           return FHIRTypes.MEDICATIONUSAGE;
+        if ("MedicationStatement".equals(codeString))
+          return FHIRTypes.MEDICATIONUSAGE;
         if ("MedicinalProductDefinition".equals(codeString))
           return FHIRTypes.MEDICINALPRODUCTDEFINITION;
         if ("MessageDefinition".equals(codeString))
@@ -11886,6 +11896,8 @@ The primary difference between a medicationusage and a medicationadministration 
         if ("MedicationRequest".equals(codeString))
           return new Enumeration<FHIRTypes>(this, FHIRTypes.MEDICATIONREQUEST, code);
         if ("MedicationUsage".equals(codeString))
+          return new Enumeration<FHIRTypes>(this, FHIRTypes.MEDICATIONUSAGE, code);
+        if ("MedicationStatement".equals(codeString))
           return new Enumeration<FHIRTypes>(this, FHIRTypes.MEDICATIONUSAGE, code);
         if ("MedicinalProductDefinition".equals(codeString))
           return new Enumeration<FHIRTypes>(this, FHIRTypes.MEDICINALPRODUCTDEFINITION, code);
@@ -16282,6 +16294,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return MEDICATIONREQUEST;
         if ("MedicationUsage".equals(codeString))
           return MEDICATIONUSAGE;
+        if ("MedicationStatement".equals(codeString))
+          return MEDICATIONUSAGE;
         if ("MedicinalProductDefinition".equals(codeString))
           return MEDICINALPRODUCTDEFINITION;
         if ("MessageDefinition".equals(codeString))
@@ -17239,6 +17253,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return ResourceTypeEnum.MEDICATIONREQUEST;
         if ("MedicationUsage".equals(codeString))
           return ResourceTypeEnum.MEDICATIONUSAGE;
+        if ("MedicationStatement".equals(codeString))
+          return ResourceTypeEnum.MEDICATIONUSAGE;
         if ("MedicinalProductDefinition".equals(codeString))
           return ResourceTypeEnum.MEDICINALPRODUCTDEFINITION;
         if ("MessageDefinition".equals(codeString))
@@ -17556,6 +17572,8 @@ The primary difference between a medicationusage and a medicationadministration 
         if ("MedicationRequest".equals(codeString))
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEDICATIONREQUEST, code);
         if ("MedicationUsage".equals(codeString))
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEDICATIONUSAGE, code);
+        if ("MedicationStatement".equals(codeString))
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEDICATIONUSAGE, code);
         if ("MedicinalProductDefinition".equals(codeString))
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEDICINALPRODUCTDEFINITION, code);

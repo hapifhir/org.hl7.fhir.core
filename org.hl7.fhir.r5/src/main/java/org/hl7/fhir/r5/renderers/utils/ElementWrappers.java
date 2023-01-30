@@ -69,7 +69,7 @@ public class ElementWrappers {
         try {
           return context.getParser().parseType(xml.toString(StandardCharsets.UTF_8), type);
         } catch (Exception e) {
-          return new StringType("Illegal syntax: "+e.getMessage()); 
+          throw new FHIRException(e.getMessage(), e);
         }
       }
     }
