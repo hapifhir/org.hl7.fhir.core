@@ -630,7 +630,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     StructureDefinition sourceSD = getSourceResourceFromStructureMap(map);
     ParserBase parser = Manager.makeParser(context, cntType);
     if (sourceSD.getKind() == StructureDefinition.StructureDefinitionKind.LOGICAL) {
-    	parser.setLogical(sourceSD);
+      parser.setLogical(sourceSD);
     }
     org.hl7.fhir.r5.elementmodel.Element src = parser.parseSingle(new ByteArrayInputStream(source));    
     scu.transform(null, src, map, resource);
