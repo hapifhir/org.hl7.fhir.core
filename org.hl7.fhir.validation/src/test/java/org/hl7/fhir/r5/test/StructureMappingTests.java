@@ -27,6 +27,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.instance.InstanceValidatorFactory;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -127,26 +128,47 @@ public class StructureMappingTests {
     assertTrue(msg, Utilities.noString(msg));
   }
   @Test
+  void testTransformLogicalSource() throws Exception {
+    String map = "map \"http://github.com/hapifhir/org.hl7.fhir.core/org.hl7.fhir.r4.tests/cda2qr\" = \"cda2qr\"\n"
+    		+ "\n"
+    		+ "uses \"http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse\" alias QuestionnaireResponse as target\n"
+    		+ "uses \"http://hl7.org/fhir/cdatest/StructureDefinition/ClinicalDocument\" alias ClinicalDocument as source\n"
+    		+ "\n"
+    		+ "group ClinicalDocument(source src : ClinicalDocument, target tgt : QuestionnaireResponse) {\n"
+    		+ "  src -> tgt.status = 'in-progress' \"code\";\n"
+    		+ "}";
+    StructureMap r = null;   
+	try {
+	  r = new StructureMapUtilities(context).parse(map, "cda2qr");
+	  context.cacheResource(r);	      
+	  byte[] byteSource = "{}".getBytes();
+	  org.hl7.fhir.r5.elementmodel.Element element = validationEngine.transform(byteSource, FhirFormat.JSON, r.getUrl());
+	  Assertions.assertNotNull(element);
+	} finally {
+	  context.dropResource(r);
+	}      
+  }  
+  @Test
   void testGetSourceResourceFromStructureMapDefinitionException() {
-      StructureMap r = new StructureMap().setUrl("testGetSourceResourceFromStructureMapDefinitionException");      
-      StructureMap.StructureMapGroupComponent g = r.addGroup();
-      g.addInput().setMode(StructureMap.StructureMapInputMode.SOURCE).setType("input");
-      g.addInput().setMode(StructureMap.StructureMapInputMode.SOURCE).setType("input");
-      r.addStructure()
-      	.setMode(StructureMap.StructureMapModelMode.TARGET)
-      	.setUrl("testGetSourceResourceFromStructureMapDefinitionExceptionTarget");
-      context.cacheResource(r);
-      StructureDefinition structureDefinition = new StructureDefinition();
-      structureDefinition.setUrl("testGetSourceResourceFromStructureMapDefinitionExceptionTarget");
-      structureDefinition.getSnapshot().addElement().setPath("testGetSourceResourceFromStructureMapDefinitionExceptionTarget");
-      context.cacheResource(structureDefinition);
-      byte[] byteSource = "testGetSourceResourceFromStructureMapDefinitionException".getBytes();
-	  DefinitionException thrown = assertThrows(
-			 DefinitionException.class,
-             () -> validationEngine.transform(byteSource, FhirFormat.JSON, r.getUrl()),
-             "Expected transform() to throw DefinitionException"
-      );
-
-      assertTrue(thrown.getMessage().contentEquals("This engine does not support multiple source inputs"));
+    StructureMap r = new StructureMap().setUrl("testGetSourceResourceFromStructureMapDefinitionException");      
+    StructureMap.StructureMapGroupComponent g = r.addGroup();
+    g.addInput().setMode(StructureMap.StructureMapInputMode.SOURCE).setType("input");
+    g.addInput().setMode(StructureMap.StructureMapInputMode.SOURCE).setType("input");
+    r.addStructure()
+      .setMode(StructureMap.StructureMapModelMode.TARGET)
+      .setUrl("testGetSourceResourceFromStructureMapDefinitionExceptionTarget");
+    context.cacheResource(r);
+    StructureDefinition structureDefinition = new StructureDefinition().setUrl("testGetSourceResourceFromStructureMapDefinitionExceptionTarget");
+    structureDefinition.getSnapshot().addElement().setPath("testGetSourceResourceFromStructureMapDefinitionExceptionTarget");
+    context.cacheResource(structureDefinition);
+    byte[] byteSource = "testGetSourceResourceFromStructureMapDefinitionException".getBytes();
+    DefinitionException thrown = assertThrows(
+    		DefinitionException.class,
+    		() -> validationEngine.transform(byteSource, FhirFormat.JSON, r.getUrl()),
+    		"Expected transform() to throw DefinitionException"
+    		);
+    context.dropResource(r);
+    context.dropResource(structureDefinition);
+    assertTrue(thrown.getMessage().contentEquals("This engine does not support multiple source inputs"));
   }
 }
