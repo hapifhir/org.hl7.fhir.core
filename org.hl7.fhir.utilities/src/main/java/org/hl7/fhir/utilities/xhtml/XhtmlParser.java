@@ -930,7 +930,7 @@ public class XhtmlParser {
 
   private boolean isNameChar(char ch)
   {
-    return Character.isLetterOrDigit(ch) || ch == '_' || ch == '-' || ch == ':';
+    return Character.isLetterOrDigit(ch) || ch == '_' || ch == '-' || ch == ':' || ch == '.';
   }
 
   private String readName() throws IOException
