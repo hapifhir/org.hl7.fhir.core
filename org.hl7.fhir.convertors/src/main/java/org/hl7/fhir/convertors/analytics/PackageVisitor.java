@@ -24,6 +24,7 @@ import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.PackageClient;
 import org.hl7.fhir.utilities.npm.PackageInfo;
+import org.hl7.fhir.utilities.npm.PackageServer;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Document;
@@ -108,7 +109,7 @@ public class PackageVisitor {
 
   public void visitPackages() throws IOException, ParserConfigurationException, SAXException {
     System.out.println("Finding packages");
-    pc = new PackageClient(PackageClient.PRIMARY_SERVER);
+    pc = new PackageClient(PackageServer.primaryServer());
     pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     
     Map<String, String> cpidMap = getAllCIPackages();
