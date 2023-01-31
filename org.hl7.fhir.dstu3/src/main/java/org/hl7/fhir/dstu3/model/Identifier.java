@@ -129,7 +129,7 @@ public class Identifier extends Type implements ICompositeType {
   public static class IdentifierUseEnumFactory implements EnumFactory<IdentifierUse> {
     public IdentifierUse fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString) || "?".equals(codeString))
                 return null;
         if ("usual".equals(codeString))
           return IdentifierUse.USUAL;
