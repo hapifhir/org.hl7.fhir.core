@@ -81,10 +81,14 @@ public class Turtle {
 			return predicate(predicate, new StringType(object), asList);
 		}
 
-    public Complex linkedPredicate(String predicate, String object, String link, String comment) {
+	public Complex linkedPredicate(String predicate, String object, String link, String comment) {
+		return linkedPredicate(predicate, object, link, comment, false);
+	}
+		
+    public Complex linkedPredicate(String predicate, String object, String link, String comment, boolean asList) {
       predicateSet.add(predicate);
       objectSet.add(object);
-      return linkedPredicate(predicate, new StringType(object), link, comment);
+      return linkedPredicate(predicate, new StringType(object), link, comment, asList);
     }
     
     public Complex predicate(String predicate, Triple object) {
@@ -112,14 +116,19 @@ public class Turtle {
           return p;
       return null;
     }
-
+    
     public Complex linkedPredicate(String predicate, Triple object, String link, String comment) {
+    	return linkedPredicate(predicate, object, link, comment, false);
+    }
+
+    public Complex linkedPredicate(String predicate, Triple object, String link, String comment, boolean asList) {
       Predicate p = getPredicate(predicate);
       if (p == null) {
         p = new Predicate();
       p.predicate = predicate;
       p.link = link;
       p.comment = comment;
+      p.asList = asList;
       predicateSet.add(predicate);
         predicates.add(p);
       }
@@ -140,10 +149,14 @@ public class Turtle {
 		return c;
 	}
 
-    public Complex linkedPredicate(String predicate, String link, String comment) {
+	public Complex linkedPredicate(String predicate, String link, String comment) {
+		return linkedPredicate(predicate, link, comment, false);
+	}
+	
+    public Complex linkedPredicate(String predicate, String link, String comment, boolean asList) {
       predicateSet.add(predicate);
       Complex c = complex();
-      linkedPredicate(predicate, c, link, comment);
+      linkedPredicate(predicate, c, link, comment, asList);
       return c;
     }
 
@@ -478,10 +491,12 @@ public class Turtle {
 				writer.write(" ");
         boolean first = true;
         for (Triple o : p.getObjects()) {
-          if (first)
+          if (first) {
             first = false;
-          else
-            writer.write(", ");
+            if (p.asList) writer.write("( ");
+          } else {
+        	  if (!p.asList) writer.write(", ");
+          }
           if (o instanceof StringType)
             writer.write(((StringType) o).value);
 				else {
@@ -493,6 +508,7 @@ public class Turtle {
 				}
         }
 				String comment = p.comment == null? "" : " # "+p.comment;
+				if (p.asList) writer.write(" )");	
 				i++;
 				if (i < sbj.predicates.size())
 					writer.write(";"+comment+"\r\n  ");
@@ -525,10 +541,11 @@ public class Turtle {
         b.append(" ");
         boolean first = true;
         for (Triple o : p.getObjects()) {
-          if (first)
-            first = false;
-          else
-            b.append(", ");
+        if (first) {
+          first = false;
+          if (p.asList) b.append("( ");
+        } else
+        	if (!p.asList) b.append(", ");
           if (o instanceof StringType)
             b.append(Utilities.escapeXml(((StringType) o).value));
           else {
@@ -540,6 +557,7 @@ public class Turtle {
           }
         }
         String comment = p.comment == null? "" : " # "+p.comment;
+        if (p.asList) b.append(" )");
         i++;
         if (i < sbj.predicates.size())
           b.append(";"+Utilities.escapeXml(comment)+"\r\n  ");
@@ -579,8 +597,8 @@ public class Turtle {
       for (Triple o : po.getObjects()) {
         if (first) {
           first = false;
-          if (po.asList) writer.write("( ");
           writer.write(left+" "+po.getPredicate()+" ");
+          if (po.asList) writer.write("( ");
         } else {
         	  if (!po.asList) writer.write(", ");
         }
