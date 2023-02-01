@@ -29,6 +29,18 @@ jobs:
    - job: get_release_version
      timeoutInMinutes: 5
      steps:
+        - task: PowerShell@2
+           # This task pulls the <version> value from the hapi-fhir project pom.xml file. All modules are released as
+           # the same version, at the same time, as defined in the root level pom.xml.
+          inputs:
+             targetType: 'inline'
+             script: |
+                [xml]$pomXml = Get-Content -Path .\pom.xml
+                # version
+                Write-Host $pomXml.project.version
+                $version_from_pom=$pomXml.project.version
+                Write-Host "##vso[task.setvariable variable=version_from_pom]$version_from_pom"
+          displayName: Save pom file version to local variable.
         - task: Bash@3
            # Prints out the build version, for debugging purposes
           inputs:
