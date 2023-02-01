@@ -326,6 +326,8 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
 
   public void drop(CachedCanonicalResource<T> cr) {
     while (map.values().remove(cr)); 
+    while (listForId.values().remove(cr)); 
+    while (listForUrl.values().remove(cr)); 
     list.remove(cr);
     List<CachedCanonicalResource<T>> set = listForUrl.get(cr.getUrl());
     if (set != null) { // it really should be
