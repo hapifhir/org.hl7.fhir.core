@@ -575,7 +575,7 @@ public class FHIRPathEngine {
   }
 
   private FHIRException makeExceptionPlural(Integer num, ExpressionNode holder, String constName, Object... args) {
-    String fmt = worker.formatMessage(constName, args);
+    String fmt = worker.formatMessagePlural(num, constName, args);
     if (location != null) {
       fmt = fmt + " "+worker.formatMessage(I18nConstants.FHIRPATH_LOCATION, location);
     }
