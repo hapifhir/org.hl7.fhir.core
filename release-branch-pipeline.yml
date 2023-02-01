@@ -129,7 +129,7 @@ jobs:
         - task: PublishPipelineArtifact@1
           displayName: 'Publish Validator jar'
           inputs:
-            targetPath: "$(System.DefaultWorkingDirectory)/org.hl7.fhir.validation/target/org.hl7.fhir.validation-$(version).jar"
+            targetPath: "$(System.DefaultWorkingDirectory)/org.hl7.fhir.validation/target/org.hl7.fhir.validation-$(version_from_pom).jar"
             artifactName: Validator
         - task: PublishBuildArtifacts@1
             # Publishes the files we've moved into the staging directory, so they can be accessed by the
