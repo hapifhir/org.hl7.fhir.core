@@ -333,12 +333,18 @@ public class TurtleParser extends ParserBase {
     }
     String subjId = genSubjectId(e);
 
-    Subject subject = section.triple(subjId, "a", "fhir:" + e.getType());
-		subject.linkedPredicate("fhir:nodeRole", "fhir:treeRoot", linkResolver == null ? null : linkResolver.resolvePage("rdf.html#tree-root"), null);
+    boolean hasModifierExtension = e.getChildren().stream().anyMatch(p -> p.getName().equals("modifierExtension"));
+    Subject subject;
+    if (hasModifierExtension) 
+    	subject = section.triple(subjId, "a", "fhir:_" + e.getType());
+     else 
+    	subject = section.triple(subjId, "a", "fhir:" + e.getType());
+     
+	subject.linkedPredicate("fhir:nodeRole", "fhir:treeRoot", linkResolver == null ? null : linkResolver.resolvePage("rdf.html#tree-root"), null);
 
-		for (Element child : e.getChildren()) {
-			composeElement(section, subject, child, null);
-		}
+	for (Element child : e.getChildren()) {
+		composeElement(section, subject, child, null);
+	}
 
   }
   
