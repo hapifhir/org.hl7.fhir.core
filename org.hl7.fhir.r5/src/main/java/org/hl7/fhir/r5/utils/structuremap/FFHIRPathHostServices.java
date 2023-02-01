@@ -96,7 +96,7 @@ public class FFHIRPathHostServices implements FHIRPathEngine.IEvaluationContext 
 
   @Override
   public ValueSet resolveValueSet(Object appContext, String url) {
-    throw new Error("Not Implemented Yet");
+	return structureMapUtilities.getWorker().fetchResource(ValueSet.class, url);
   }
 
 }
