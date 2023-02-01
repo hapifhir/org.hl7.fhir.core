@@ -124,7 +124,7 @@ jobs:
             goals: 'package'
    - job: publish_build_artifacts
      timeoutInMinutes: 5
-     dependsOn: ['buildaroni']
+     dependsOn: ['buildaroni', 'get_release_version']
      variables:
        version_from_pom: $[ dependencies.get_release_version.outputs['setOutput.version_from_pom'] ]
      steps:         
