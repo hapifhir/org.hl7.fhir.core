@@ -39,7 +39,7 @@ jobs:
                 # version
                 Write-Host $pomXml.project.version
                 $VERSION=$pomXml.project.version
-                Write-Host "##vso[task.setvariable variable=version_from_pom;isOutput=true;]$VERSION"
+                Write-Host "##vso[task.setvariable variable=version_from_pom;]$VERSION"
           displayName: Save pom file version to local variable.
         - task: Bash@3
            # Prints out the build version, for debugging purposes
