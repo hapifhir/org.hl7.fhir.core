@@ -1,12 +1,18 @@
 package org.hl7.fhir.convertors.misc;
 
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import javax.annotation.Nonnull;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
@@ -34,9 +40,6 @@ import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.NpmPackageIndexBuilder;
-
-import com.google.common.base.Charsets;
-import javax.annotation.Nonnull;
 
 public class NpmPackageVersionConverter {
 
@@ -81,7 +84,7 @@ public class NpmPackageVersionConverter {
     output.put("package/other/spec.internals", convertSpec(content.get("package/other/spec.internals")));
 
     for (Entry<String, byte[]> e : content.entrySet()) {
-      if (!e.getKey().equals("package/package.json") && !e.getKey().equals("package/other/spec.internals")) {
+      if (!e.getKey().equals("package/package.json") && !e.getKey().equals("package/other/spec.internals") && !e.getKey().endsWith("ig-r4.json")) {
         byte[] cnv = e.getValue();
         try {
           JsonObject json = JsonParser.parseObject(e.getValue());
