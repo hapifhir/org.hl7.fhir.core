@@ -38,15 +38,15 @@ jobs:
                 [xml]$pomXml = Get-Content -Path .\pom.xml
                 # version
                 Write-Host $pomXml.project.version
-                $version_from_pom=$pomXml.project.version
-                Write-Host "##vso[task.setvariable variable=version_from_pom;isOutput=true]$version_from_pom"
+                $VERSION=$pomXml.project.version
+                Write-Host "##vso[task.setvariable variable=version_from_pom;isOutput=true;]$VERSION"
           displayName: Save pom file version to local variable.
         - task: Bash@3
            # Prints out the build version, for debugging purposes
           inputs:
              targetType: 'inline'
              script: |
-                echo Pulled version from pom.xml => $(version_from_pom)
+                echo Pulled version from pom.xml => $(setOutput.version_from_pom)
           displayName: Debug print release version
         - task: Bash@3
           # Azure pipelines cannot pass variables between pipelines, but it can pass files, so we
@@ -125,7 +125,7 @@ jobs:
      timeoutInMinutes: 5
      dependsOn: ['buildaroni']
      variables:
-       version_from_pom: $[ dependencies.buildaroni.outputs['setVariable.version_from_pom'] ]
+       version_from_pom: $[ dependencies.get_release_version.outputs['passOutput.version_from_pom'] ]
      steps:         
        # Publishes the built Validator jar to build artifacts. Primarily for testing and debugging builds.
         - task: PublishPipelineArtifact@1
