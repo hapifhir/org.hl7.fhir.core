@@ -103,7 +103,7 @@ jobs:
              Contents: "$(System.DefaultWorkingDirectory)/BRANCH"
              TargetFolder: '$(build.artifactstagingdirectory)'
           displayName: Copy the branch name file to the artifact staging directory.
-   - job: build-and-publish-artifacts
+   - job: build_and_publish_artifacts
       # We're going to do a full build, including all unit and intergration tests. We do this here, before any
       # actual release pipeline kicks off, and we don't do it again at any point in the release pipeline. The assumption here
       # is that once we pull the code, it won't change again on this branch until the release is complete. We
