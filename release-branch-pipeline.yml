@@ -9,71 +9,117 @@ pool:
 variables:
   VERSION:
 
-steps:
-  # Checks if the release notes file is populated. Exits if it is not.
-  - bash: |
-      if [ -n "$(cmp RELEASE_NOTES.md RELEASE_NOTES.template.md)" ]
-      then
-          echo "RELEASE_NOTES.md has changed, proceeding to next step"
-      else
-          echo "Your RELEASE_NOTES.md file is unchanged. Please provide release notes before creating a release."
-          exit 1
-      fi
-
-  # This task pulls the <version> value from the org.hl7.fhir.r5 project pom.xml file. All modules are released as 
-  # the same version, at the same time, as defined in the root level pom.xml.
-  - task: PowerShell@2
-    inputs:
-      targetType: 'inline'
-      script: |
-        [xml]$pomXml = Get-Content -Path .\pom.xml
-        # version
-        Write-Host $pomXml.project.version
-        $version=$pomXml.project.version
-        Write-Host "##vso[task.setvariable variable=version]$version"
-
-  # Prints out the build version, for debugging purposes
-  - bash: echo Pulled version from pom.xml => $(version)
-
-  # Azure pipelines cannot pass variables between pipelines, but it can pass files, so we
-  # pass the build id (ex: 1.1.13-SNAPSHOT) as a string in a file. 
-  # This is used in the release pipeline, so we create it here.
-  - bash: |
-      echo $(version)
-      VERSION=$(version)
-      echo "$VERSION" > $(System.DefaultWorkingDirectory)/VERSION
-
-  # Copies the VERSION file containing the build id (ex: 1.1.13-SNAPSHOT) to the staging directory
-  # This is done for release versions only.
-  - task: CopyFiles@2
-    displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
-    inputs:
-      SourceFolder: '$(System.Defaultworkingdirectory)'
-      Contents: "$(System.DefaultWorkingDirectory)/VERSION"
-      TargetFolder: '$(build.artifactstagingdirectory)'
-
-  # Runs 'mvn clean package'
-  - task: Maven@3
-    inputs:
-      mavenPomFile: 'pom.xml'
-      mavenOptions: '-Xmx3072m'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '1.11'
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: true
-      testResultsFiles: '**/surefire-reports/TEST-*.xml'
-      goals: 'package'
-    
-  # Publishes the built Validator jar to build artifacts. Primarily for testing and debugging builds.
-  - task: PublishPipelineArtifact@1
-    displayName: 'Publish Validator jar'
-    inputs:
-      targetPath: "$(System.DefaultWorkingDirectory)/org.hl7.fhir.validation/target/org.hl7.fhir.validation-$(version).jar"
-      artifactName: Validator
-
-  # Publishes the files we've moved into the staging directory, so they can be accessed by the 
-  # release pipeline.
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Build Artifacts'
-    inputs:
-      PathtoPublish: '$(build.artifactstagingdirectory)'
+jobs:
+   - job: check_release_notes
+     timeoutInMinutes: 5
+     steps:
+        - task: Bash@3
+           # Checks if the release notes file is populated. Exits if it is not.
+          inputs:
+             targetType: 'inline'
+             script: |
+                if [ -n "$(cmp RELEASE_NOTES.md RELEASE_NOTES.template.md)" ]
+                then
+                    echo "RELEASE_NOTES.md has changed, proceeding to next step"
+                else
+                    echo "Your RELEASE_NOTES.md file is unchanged. Please provide release notes before creating a release."
+                    exit 1
+                fi
+          displayName: Checks if the release notes file is populated.
+   - job: get_release_version
+     timeoutInMinutes: 5
+     steps:
+        - task: Bash@3
+           # Prints out the build version, for debugging purposes
+          inputs:
+             targetType: 'inline'
+             script: |
+                echo Pulled version from pom.xml => $(version)
+          displayName: Debug print release version
+        - task: Bash@3
+          # Azure pipelines cannot pass variables between pipelines, but it can pass files, so we
+          # pass the build id (ex: 1.1.13-SNAPSHOT) as a string in a file. 
+          # This is used in the release pipeline, so we create it here.
+          inputs:
+             targetType: 'inline'
+             script: |
+                echo $(version)
+                VERSION=$(version)
+                echo "$VERSION" > $(System.DefaultWorkingDirectory)/VERSION
+          displayName: Debug print release version
+        - task: CopyFiles@2
+          # Copies the VERSION file containing the build id (ex: 1.1.13-SNAPSHOT) to the staging directory
+          # This is done for release versions only.
+          inputs:
+            SourceFolder: '$(System.Defaultworkingdirectory)'
+            Contents: "$(System.DefaultWorkingDirectory)/VERSION"
+            TargetFolder: '$(build.artifactstagingdirectory)'
+          displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+   - job: get_branch_id
+     timeoutInMinutes: 5
+     steps:
+        - task: PowerShell@2
+           # This task pulls the branch name from the azure build environment and sets as a job-level variable.
+          inputs:
+             targetType: 'inline'
+             script: |
+                $branch_name = '$(Build.SourceBranchName)'
+                Write-Host "##vso[task.setvariable variable=branch_name]$branch_name"
+          displayName: Save branch name to local variable.
+        - task: Bash@3
+           # Prints out the branch name, for debugging purposes
+          inputs:
+             targetType: 'inline'
+             script: echo Current branch name => $(branch_name)
+          displayName: Print out the branch name.
+        - task: Bash@3
+           # Azure pipelines cannot pass variables between pipelines, but it can pass files, so we
+           # pass the branch name (ex: rel_2022_05) as a string in a file.
+           # This is used in the release pipeline, so we create it here.
+          inputs:
+             targetType: 'inline'
+             script: |
+                echo $(branch_name)
+                BRANCH=$(branch_name)
+                echo "$BRANCH" > $(System.DefaultWorkingDirectory)/BRANCH
+          displayName: Save branch name to file.
+        - task: CopyFiles@2
+           # Copies the BRANCH file containing the pom version to the staging directory
+          inputs:
+             SourceFolder: '$(System.Defaultworkingdirectory)'
+             Contents: "$(System.DefaultWorkingDirectory)/BRANCH"
+             TargetFolder: '$(build.artifactstagingdirectory)'
+          displayName: Copy the branch name file to the artifact staging directory.
+   - job: buildaroni
+      # We're going to do a full build, including all unit and intergration tests. We do this here, before any
+      # actual release pipeilne kicks off, and we don't do it again at any point in the release pipeline. The assumption here
+      # is that once we pull the code, it won't change again on this branch until the release is complete. We
+      # want to fail fast if there is an issue, and avoid running the tests more than once so it doesn't take all day.
+     timeoutInMinutes: 360
+     steps:
+        # Runs 'mvn clean package'
+        - task: Maven@3
+          inputs:
+            mavenPomFile: 'pom.xml'
+            mavenOptions: '-Xmx3072m'
+            javaHomeOption: 'JDKVersion'
+            jdkVersionOption: '1.11'
+            jdkArchitectureOption: 'x64'
+            publishJUnitResults: true
+            testResultsFiles: '**/surefire-reports/TEST-*.xml'
+            goals: 'package'
+   - job: publish_build_artifacts
+     timeoutInMinutes: 5
+     steps:         
+       # Publishes the built Validator jar to build artifacts. Primarily for testing and debugging builds.
+        - task: PublishPipelineArtifact@1
+          displayName: 'Publish Validator jar'
+          inputs:
+            targetPath: "$(System.DefaultWorkingDirectory)/org.hl7.fhir.validation/target/org.hl7.fhir.validation-$(version).jar"
+            artifactName: Validator
+        - task: PublishBuildArtifacts@1
+            # Publishes the files we've moved into the staging directory, so they can be accessed by the
+            # release pipeline.
+          displayName: 'Publish Build Artifacts'
+          inputs:
+              PathtoPublish: '$(build.artifactstagingdirectory)'
