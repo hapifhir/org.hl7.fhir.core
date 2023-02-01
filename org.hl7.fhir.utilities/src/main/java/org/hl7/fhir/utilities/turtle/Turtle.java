@@ -496,6 +496,7 @@ public class Turtle {
             if (p.asList) writer.write("( ");
           } else {
         	  if (!p.asList) writer.write(", ");
+        	  else writer.write(" ");
           }
           if (o instanceof StringType)
             writer.write(((StringType) o).value);
@@ -511,7 +512,7 @@ public class Turtle {
 				if (p.asList) writer.write(" )");	
 				i++;
 				if (i < sbj.predicates.size())
-					writer.write(";"+comment+"\r\n  ");
+					writer.write(" ;"+comment+"\r\n  ");
         else {
           if (Utilities.noString(sbj.id)) 
             writer.write("]");
@@ -546,6 +547,7 @@ public class Turtle {
           if (p.asList) b.append("( ");
         } else
         	if (!p.asList) b.append(", ");
+        	else b.append(" ");
           if (o instanceof StringType)
             b.append(Utilities.escapeXml(((StringType) o).value));
           else {
@@ -560,9 +562,9 @@ public class Turtle {
         if (p.asList) b.append(" )");
         i++;
         if (i < sbj.predicates.size())
-          b.append(";"+Utilities.escapeXml(comment)+"\r\n  ");
+          b.append(" ;"+Utilities.escapeXml(comment)+"\r\n  ");
         else
-          b.append("."+Utilities.escapeXml(comment)+"\r\n\r\n");
+          b.append(" ."+Utilities.escapeXml(comment)+"\r\n\r\n");
       }
     }
   }
@@ -601,6 +603,7 @@ public class Turtle {
           if (po.asList) writer.write("( ");
         } else {
         	  if (!po.asList) writer.write(", ");
+        	  else writer.write(" ");
         }
         if (o instanceof StringType)
           writer.write(((StringType) o).value);
@@ -615,7 +618,7 @@ public class Turtle {
       if (po.asList) writer.write(" )");
 			i++;
 			if (i < complex.predicates.size())
-				writer.write(";");
+				writer.write(" ;");
 			if (!Utilities.noString(po.comment)) 
 				writer.write(" # "+escape(po.comment, false));
 		}
@@ -641,6 +644,7 @@ public class Turtle {
           b.append(po.makelink()+" ");
         } else
         	if (!po.asList) b.append(", ");
+        	else b.append(" ");
         if (o instanceof StringType)
           b.append(Utilities.escapeXml(((StringType) o).value));
       else {
@@ -654,7 +658,7 @@ public class Turtle {
       if (po.asList) b.append(" )");
       i++;
       if (i < complex.predicates.size())
-        b.append(";");
+        b.append(" ;");
       if (!Utilities.noString(po.comment)) 
         b.append(" # "+Utilities.escapeXml(escape(po.comment, false)));
     }
