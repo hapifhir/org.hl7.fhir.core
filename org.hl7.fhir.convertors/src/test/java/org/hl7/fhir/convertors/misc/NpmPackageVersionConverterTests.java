@@ -1,17 +1,16 @@
 package org.hl7.fhir.convertors.misc;
 
-import org.hl7.fhir.utilities.npm.NpmPackage;
-import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class NpmPackageVersionConverterTests implements ResourceLoaderTests {
   @org.junit.jupiter.api.Test

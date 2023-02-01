@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.misc;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -7,8 +8,10 @@ import java.util.ArrayList;
 
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.CanonicalResourceManager;
+import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingAdditionalComponent;
@@ -20,8 +23,6 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
-
-import ca.uhn.fhir.model.api.IStreamingDatatype;
 
 public class ExtensionExtractor {
 
@@ -57,9 +58,16 @@ public class ExtensionExtractor {
     for (String r : r5.listResources("StructureDefinition")) {
       StructureDefinition sd = (StructureDefinition) new JsonParser().parse(r5.load(r));
       if (sd.getType().equals("Extension") && sd.getDerivation() == TypeDerivationRule.CONSTRAINT) {
+        for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+          seeBinding(ed.getBinding().getValueSet(), vslist, "ext", sd);
+          for (ElementDefinitionBindingAdditionalComponent ab : ed.getBinding().getAdditional()) {
+            seeBinding(ab.getValueSet(), vslist, "ext", sd);
+          }
+        }
+        sd.setSnapshot(null);
         String fn;
         if (sd.getContext().size() == 0) {
-          fn = Utilities.path(dst, "null", sd.getId()+".json");          
+          save(sd, dst,"none");
         } else if (sd.getContext().size() > 1) {
           boolean dt = true;
           for (StructureDefinitionContextComponent x : sd.getContext()) {
@@ -67,24 +75,16 @@ public class ExtensionExtractor {
             dt = dt && isDataType(s);
           }
           if (dt) {
-            fn = Utilities.path(dst, "datatypes", "multiple", sd.getId()+".xml");            
+            save(sd, dst,"datatypes");
           } else {
-            fn = Utilities.path(dst, "multiple", sd.getId()+".xml");
+            save(sd, dst,"multiple");
           }
         } else {
           String s = extractType(sd.getContextFirstRep().getExpression());
           if (isDataType(s)) {
-            fn = Utilities.path(dst, "datatypes", s, sd.getId()+".xml");
+            save(sd, dst,"datatypes");
           } else {
-            fn = Utilities.path(dst, s, sd.getId()+".xml");
-          }
-          Utilities.createDirectory(Utilities.getDirectoryForFile(fn));
-          new XmlParser().compose(new FileOutputStream(fn), sd);
-        }
-        for (ElementDefinition ed : sd.getSnapshot().getElement()) {
-          seeBinding(ed.getBinding().getValueSet(), vslist, "ext", sd);
-          for (ElementDefinitionBindingAdditionalComponent ab : ed.getBinding().getAdditional()) {
-            seeBinding(ab.getValueSet(), vslist, "ext", sd);
+            save(sd, dst,s);
           }
         }
       } else {
@@ -97,13 +97,13 @@ public class ExtensionExtractor {
       }
     }
     for (ValueSet vs : vslist.getList()) {
-      if (vs.hasUserData("core") || !vs.hasUserData("ext")) {
+      if (vs.hasUserData("core") || !vs.hasUserData("ext") || vs.getUrl().startsWith("http://terminology.")) {
         vslist.drop(vs.getId());
       }
     }
     for (CodeSystem cs : cslist.getList()) {
       boolean keep = false;
-      if (cs.hasUserData("vsl" )) {
+      if (cs.hasUserData("vsl") && !cs.getUrl().startsWith("http://terminology.")) {
         keep = true;
         for (ValueSet vs : (ArrayList<ValueSet>) cs.getUserData("vsl")) {
           if (!vslist.has(vs.getUrl())) {
@@ -116,10 +116,28 @@ public class ExtensionExtractor {
       }
     }
     for (ValueSet vs : vslist.getList()) {
-      System.out.println(vs.getUrl());
+      StructureDefinition sd = (StructureDefinition) vs.getUserData("ext");
+      String s = sd.getUserString("folder");
+      save(vs, dst, s);
     }
     for (CodeSystem cs : cslist.getList()) {
-      System.out.println(cs.getUrl());
+      ValueSet vs = ((ArrayList<ValueSet>) cs.getUserData("vsl")).get(0);
+      String s = vs.getUserString("folder");
+      save(cs, dst,s);
+    }
+  }
+
+  private void save(CanonicalResource cr, String dst, String folder) throws IOException {
+    // TODO Auto-generated method stub
+    cr.setText(null);
+    if (!cr.hasTitle()) {
+      cr.setTitle(Utilities.unCamelCase(cr.getName()));
+    }
+    String fn = Utilities.path(dst, folder, cr.fhirType()+"-"+cr.getId()+".xml"); 
+    cr.setUserData("folder", folder);
+    if (!new File(fn).exists()) {
+      Utilities.createDirectory(Utilities.getDirectoryForFile(fn));
+      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(fn), cr);
     }
   }
 
