@@ -38,8 +38,8 @@ jobs:
                 [xml]$pomXml = Get-Content -Path .\pom.xml
                 # version
                 Write-Host $pomXml.project.version
-                $version_from_pom=$pomXml.project.version
-                Write-Host "##vso[task.setvariable variable=version_from_pom;isOutput=true]$version_from_pom"
+                $VERSION=$pomXml.project.version
+                Write-Host "##vso[task.setvariable variable=version_from_pom;isOutput=true;]$VERSION"
           displayName: Save pom file version to local variable.
         - task: Bash@3
            # Prints out the build version, for debugging purposes
@@ -58,7 +58,7 @@ jobs:
                 echo $(version_from_pom)
                 VERSION=$(version_from_pom)
                 echo "$VERSION" > $(System.DefaultWorkingDirectory)/VERSION
-          displayName: Debug print release version
+          displayName: Save Release Version to File
         - task: CopyFiles@2
           # Copies the VERSION file containing the build id (ex: 1.1.13-SNAPSHOT) to the staging directory
           # This is done for release versions only.
