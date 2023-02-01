@@ -55,8 +55,8 @@ jobs:
           inputs:
              targetType: 'inline'
              script: |
-                echo $(version_from_pom)
-                VERSION=$(version_from_pom)
+                echo $(setOutput.version_from_pom)
+                VERSION=$(setOutput.version_from_pom)
                 echo "$VERSION" > $(System.DefaultWorkingDirectory)/VERSION)
           displayName: Save Release Version to File
         - task: CopyFiles@2
