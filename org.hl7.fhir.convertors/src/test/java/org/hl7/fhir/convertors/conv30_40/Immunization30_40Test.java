@@ -1,16 +1,15 @@
 package org.hl7.fhir.convertors.conv30_40;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.stream.Stream;
+
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_40;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.stream.Stream;
 
 public class Immunization30_40Test {
 
