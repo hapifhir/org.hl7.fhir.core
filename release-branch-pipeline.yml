@@ -126,7 +126,7 @@ jobs:
      timeoutInMinutes: 5
      dependsOn: ['buildaroni']
      variables:
-       version_from_pom: $[ dependencies.get_release_version.outputs['passOutput.version_from_pom'] ]
+       version_from_pom: $[ dependencies.get_release_version.outputs['setOutput.version_from_pom'] ]
      steps:         
        # Publishes the built Validator jar to build artifacts. Primarily for testing and debugging builds.
         - task: PublishPipelineArtifact@1
