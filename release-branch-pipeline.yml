@@ -68,6 +68,10 @@ jobs:
             Contents: "$(System.DefaultWorkingDirectory)/VERSION"
             TargetFolder: '$(build.artifactstagingdirectory)'
           displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+        - task: PublishBuildArtifacts@1
+          displayName: 'Publish Build Artifacts'
+          inputs:
+            PathtoPublish: '$(build.artifactstagingdirectory)'
    - job: get_branch_id
      timeoutInMinutes: 5
      steps:
@@ -103,6 +107,12 @@ jobs:
              Contents: "$(System.DefaultWorkingDirectory)/BRANCH"
              TargetFolder: '$(build.artifactstagingdirectory)'
           displayName: Copy the branch name file to the artifact staging directory.
+            # Publishes the files we've moved into the staging directory, so they can be accessed by the
+            # release pipeline.
+        - task: PublishBuildArtifacts@1
+          displayName: 'Publish Build Artifacts'
+          inputs:
+            PathtoPublish: '$(build.artifactstagingdirectory)'
    - job: build_and_publish_artifacts
       # We're going to do a full build, including all unit and intergration tests. We do this here, before any
       # actual release pipeline kicks off, and we don't do it again at any point in the release pipeline. The assumption here
