@@ -108,6 +108,7 @@ jobs:
       # is that once we pull the code, it won't change again on this branch until the release is complete. We
       # want to fail fast if there is an issue, and avoid running the tests more than once so it doesn't take all day.
      timeoutInMinutes: 360
+     dependsOn: ['get_release_version', 'get_branch_id', 'check_release_notes']
      steps:
         # Runs 'mvn clean package'
         - task: Maven@3
@@ -122,6 +123,7 @@ jobs:
             goals: 'package'
    - job: publish_build_artifacts
      timeoutInMinutes: 5
+     dependsOn: ['buildaroni']
      steps:         
        # Publishes the built Validator jar to build artifacts. Primarily for testing and debugging builds.
         - task: PublishPipelineArtifact@1
