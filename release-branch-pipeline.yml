@@ -46,7 +46,7 @@ jobs:
           inputs:
              targetType: 'inline'
              script: |
-                echo Pulled version from pom.xml => $(version_from_pom)
+                echo Pulled version from pom.xml => "$(version_from_pom)"
           displayName: Debug print release version
         - task: Bash@3
           # Azure pipelines cannot pass variables between pipelines, but it can pass files, so we
