@@ -103,13 +103,15 @@ jobs:
              Contents: "$(System.DefaultWorkingDirectory)/BRANCH"
              TargetFolder: '$(build.artifactstagingdirectory)'
           displayName: Copy the branch name file to the artifact staging directory.
-   - job: buildaroni
+   - job: build-and-publish-artifacts
       # We're going to do a full build, including all unit and intergration tests. We do this here, before any
-      # actual release pipeilne kicks off, and we don't do it again at any point in the release pipeline. The assumption here
+      # actual release pipeline kicks off, and we don't do it again at any point in the release pipeline. The assumption here
       # is that once we pull the code, it won't change again on this branch until the release is complete. We
       # want to fail fast if there is an issue, and avoid running the tests more than once so it doesn't take all day.
      timeoutInMinutes: 360
      dependsOn: ['get_release_version', 'get_branch_id', 'check_release_notes']
+     variables:
+       version_from_pom: $[ dependencies.get_release_version.outputs['setOutput.version_from_pom'] ]
      steps:
         # Runs 'mvn clean package'
         - task: Maven@3
@@ -122,21 +124,15 @@ jobs:
             publishJUnitResults: true
             testResultsFiles: '**/surefire-reports/TEST-*.xml'
             goals: 'package'
-   - job: publish_build_artifacts
-     timeoutInMinutes: 5
-     dependsOn: ['buildaroni', 'get_release_version']
-     variables:
-       version_from_pom: $[ dependencies.get_release_version.outputs['setOutput.version_from_pom'] ]
-     steps:         
-       # Publishes the built Validator jar to build artifacts. Primarily for testing and debugging builds.
+        # Publishes the built Validator jar to build artifacts. Primarily for testing and debugging builds.
         - task: PublishPipelineArtifact@1
           displayName: 'Publish Validator jar'
           inputs:
             targetPath: "$(System.DefaultWorkingDirectory)/org.hl7.fhir.validation/target/org.hl7.fhir.validation-$(version_from_pom).jar"
             artifactName: Validator
+        # Publishes the files we've moved into the staging directory, so they can be accessed by the
+        # release pipeline.
         - task: PublishBuildArtifacts@1
-            # Publishes the files we've moved into the staging directory, so they can be accessed by the
-            # release pipeline.
           displayName: 'Publish Build Artifacts'
           inputs:
               PathtoPublish: '$(build.artifactstagingdirectory)'
