@@ -55,10 +55,10 @@ jobs:
           inputs:
              targetType: 'inline'
              script: |
-                echo $(version_from_pom)
-                VERSION=$(version_from_pom)
-                echo "$VERSION" > $(System.DefaultWorkingDirectory)/VERSION
-          displayName: Debug print release version
+                echo $(setOutput.version_from_pom)
+                VERSION=$(setOutput.version_from_pom)
+                echo "$VERSION" > $(System.DefaultWorkingDirectory)/VERSION)
+          displayName: Save Release Version to File
         - task: CopyFiles@2
           # Copies the VERSION file containing the build id (ex: 1.1.13-SNAPSHOT) to the staging directory
           # This is done for release versions only.
