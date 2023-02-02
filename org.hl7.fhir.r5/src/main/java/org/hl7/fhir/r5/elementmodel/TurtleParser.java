@@ -333,9 +333,8 @@ public class TurtleParser extends ParserBase {
     }
     String subjId = genSubjectId(e);
 
-    boolean hasModifierExtension = e.getChildren().stream().anyMatch(p -> p.getName().equals("modifierExtension"));
     Subject subject;
-    if (hasModifierExtension) 
+    if (hasModifierExtension(e)) 
     	subject = section.triple(subjId, "a", "fhir:_" + e.getType());
      else 
     	subject = section.triple(subjId, "a", "fhir:" + e.getType());
@@ -346,6 +345,10 @@ public class TurtleParser extends ParserBase {
 		composeElement(section, subject, child, null);
 	}
 
+  }
+  
+  private boolean hasModifierExtension(Element e) {
+	  return e.getChildren().stream().anyMatch(p -> p.getName().equals("modifierExtension"));
   }
   
   protected String getURIType(String uri) {
@@ -479,8 +482,11 @@ public class TurtleParser extends ParserBase {
     
     if (en.endsWith("[x]")) 
       en = en.substring(0, en.length()-3);
-      
-    return en;
+    
+    if (hasModifierExtension(element))
+    	return "_" + en;
+    else
+      return en;
   }
 
   static public String ttlLiteral(String value, String type) {
