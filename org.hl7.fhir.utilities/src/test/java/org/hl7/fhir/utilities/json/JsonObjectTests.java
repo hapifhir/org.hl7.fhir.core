@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 class JsonObjectTests {
 
   @Test
-  void test1() throws ParseException {
+  void asInstantReturnsNonNull() throws ParseException {
     JsonObject json = new JsonObject();
     json.set("date", "2022-10-12");
     System.out.println(json.asString("date"));
@@ -21,7 +21,7 @@ class JsonObjectTests {
   }
 
   @Test
-  void test2() throws ParseException {
+  void jsonInstantEqualsJavaInstant() throws ParseException {
     Instant instant = Instant.now();
     JsonObject json = new JsonObject();
     json.set("date", instant);
@@ -30,13 +30,18 @@ class JsonObjectTests {
   }
 
   @Test
-  void test3() {
+  void differentInstantsArentEqual() throws InterruptedException {
     Instant instant = Instant.now();
     DateTimeFormatter df = DateTimeFormatter.ofPattern("MMM-yyyy").withLocale(Locale.getDefault()).withZone(ZoneId.systemDefault());
     System.out.println(df.format(instant));
     df = DateTimeFormatter.ofPattern("yyyy-MM-dd").withLocale(Locale.getDefault()).withZone(ZoneId.systemDefault());
     System.out.println(df.format(instant));
-    Assertions.assertNotEquals(instant, Instant.now());
+
+    // We need to sleep here, as some machines are fast enough for differentInstant to have the same values to the
+    // nanosecond even after processing the above lines.
+    Thread.sleep(1);
+    Instant differentInstant = Instant.now();
+    Assertions.assertNotEquals(instant, differentInstant);
   }
 
 }
