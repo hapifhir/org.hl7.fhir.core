@@ -3864,5 +3864,9 @@ public class ProfileUtilities extends TranslatingUtilities {
       return null;
   }
 
+  public static boolean isExtensionDefinition(StructureDefinition sd) {
+    return sd.getDerivation() == TypeDerivationRule.CONSTRAINT && sd.getType().equals("Extension");
+  }
+
   
 }

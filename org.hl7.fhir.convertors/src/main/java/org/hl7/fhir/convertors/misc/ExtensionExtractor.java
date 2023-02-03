@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.CanonicalResourceManager;
@@ -21,17 +23,21 @@ import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
+import org.hl7.fhir.utilities.xml.XMLUtil;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class ExtensionExtractor {
 
   public static void main(String[] args) throws FHIRFormatError, FileNotFoundException, IOException {
     new ExtensionExtractor().process(args[0]);
-
   }
 
   private void process(String dst) throws IOException {
+    Set<String> ids = new HashSet<>();
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true);
     NpmPackage r5 = pcm.loadPackage("hl7.fhir.r5.core",  "current");
     CanonicalResourceManager<CodeSystem> cslist = new CanonicalResourceManager<CodeSystem>(true);
@@ -67,7 +73,7 @@ public class ExtensionExtractor {
         sd.setSnapshot(null);
         String fn;
         if (sd.getContext().size() == 0) {
-          save(sd, dst,"none");
+          save(sd, dst,"none", ids);
         } else if (sd.getContext().size() > 1) {
           boolean dt = true;
           for (StructureDefinitionContextComponent x : sd.getContext()) {
@@ -75,16 +81,16 @@ public class ExtensionExtractor {
             dt = dt && isDataType(s);
           }
           if (dt) {
-            save(sd, dst,"datatypes");
+            save(sd, dst,"datatypes", ids);
           } else {
-            save(sd, dst,"multiple");
+            save(sd, dst,"multiple", ids);
           }
         } else {
           String s = extractType(sd.getContextFirstRep().getExpression());
           if (isDataType(s)) {
-            save(sd, dst,"datatypes");
+            save(sd, dst,"datatypes", ids);
           } else {
-            save(sd, dst,s);
+            save(sd, dst,s, ids);
           }
         }
       } else {
@@ -118,21 +124,53 @@ public class ExtensionExtractor {
     for (ValueSet vs : vslist.getList()) {
       StructureDefinition sd = (StructureDefinition) vs.getUserData("ext");
       String s = sd.getUserString("folder");
-      save(vs, dst, s);
+      save(vs, dst, s, ids);
     }
     for (CodeSystem cs : cslist.getList()) {
       ValueSet vs = ((ArrayList<ValueSet>) cs.getUserData("vsl")).get(0);
       String s = vs.getUserString("folder");
-      save(cs, dst,s);
+      save(cs, dst,s, ids);
     }
+    
+    deleteMatchingResources(ids, new File("/Users/grahamegrieve/work/r5/source"));
   }
 
-  private void save(CanonicalResource cr, String dst, String folder) throws IOException {
+  private void deleteMatchingResources(Set<String> ids, File folder) {
+    for (File f : folder.listFiles()) {
+      if (f.isDirectory()) {
+        deleteMatchingResources(ids, f);
+      } else if (f.getName().endsWith(".json")) {
+        try {
+          JsonObject json = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(f);
+          if (json.has("resourceType") && json.has("id") && ids.contains(json.asString("id"))) {
+            System.out.println("Delete "+f.getAbsolutePath());
+            f.delete();
+          }
+        } catch (Exception e) {
+          // nothing
+        }
+      } else if (f.getName().endsWith(".xml")) {
+        try {
+          Element xml = XMLUtil.parseFileToDom(f.getAbsolutePath()).getDocumentElement();
+          if (XMLUtil.hasNamedChild(xml, "id") && ids.contains(XMLUtil.getNamedChildValue(xml, "id"))) {
+            System.out.println("Delete "+f.getAbsolutePath());
+            f.delete();
+          }
+        } catch (Exception e) {
+          // nothing
+        }
+      }
+    }
+    
+  }
+
+  private void save(CanonicalResource cr, String dst, String folder, Set<String> ids) throws IOException {
     // TODO Auto-generated method stub
     cr.setText(null);
     if (!cr.hasTitle()) {
       cr.setTitle(Utilities.unCamelCase(cr.getName()));
     }
+    ids.add(cr.getId());
     String fn = Utilities.path(dst, folder, cr.fhirType()+"-"+cr.getId()+".xml"); 
     cr.setUserData("folder", folder);
     if (!new File(fn).exists()) {
