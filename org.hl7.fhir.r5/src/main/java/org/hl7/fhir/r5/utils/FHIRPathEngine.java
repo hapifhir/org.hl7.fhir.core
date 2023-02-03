@@ -64,6 +64,7 @@ import org.hl7.fhir.utilities.MergedList;
 import org.hl7.fhir.utilities.MergedList.MergeNode;
 import org.hl7.fhir.utilities.SourceLocation;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.NodeType;
@@ -264,6 +265,7 @@ public class FHIRPathEngine {
   private boolean doImplicitStringConversion;
   private boolean liquidMode; // in liquid mode, || terminates the expression and hands the parser back to the host
   private boolean doNotEnforceAsSingletonRule;
+  private boolean doNotEnforceAsCaseSensitive;
 
   // if the fhir path expressions are allowed to use constants beyond those defined in the specification
   // the application can implement them by providing a constant resolver 
@@ -373,8 +375,15 @@ public class FHIRPathEngine {
         primitiveTypes.add(sd.getName());
       }
     }
+    initFlags();
   }
 
+  private void initFlags() {
+    if (!VersionUtilities.isR5VerOrLater(worker.getVersion())) {
+      doNotEnforceAsCaseSensitive = true;
+      doNotEnforceAsSingletonRule = true;
+    }
+  }
 
   // --- 3 methods to override in children -------------------------------------------------------
   // if you don't override, it falls through to the using the base reference implementation 
@@ -463,6 +472,14 @@ public class FHIRPathEngine {
 
   public void setDoNotEnforceAsSingletonRule(boolean doNotEnforceAsSingletonRule) {
     this.doNotEnforceAsSingletonRule = doNotEnforceAsSingletonRule;
+  }
+
+  public boolean isDoNotEnforceAsCaseSensitive() {
+    return doNotEnforceAsCaseSensitive;
+  }
+
+  public void setDoNotEnforceAsCaseSensitive(boolean doNotEnforceAsCaseSensitive) {
+    this.doNotEnforceAsCaseSensitive = doNotEnforceAsCaseSensitive;
   }
 
   // --- public API -------------------------------------------------------
@@ -1804,7 +1821,7 @@ public class FHIRPathEngine {
         throw new PathEngineException("Attempt to use as on more than one item ("+left.size()+", '"+expr.toString()+"')");
       }
       for (Base nextLeft : left) {
-        if (tn.equals(nextLeft.fhirType())) {
+        if (compareTypeNames(tn, nextLeft.fhirType())) {
           result.add(nextLeft);
         }
       }
@@ -1812,6 +1829,13 @@ public class FHIRPathEngine {
     return result;
   }
 
+  private boolean compareTypeNames(String left, String right) {
+    if (doNotEnforceAsCaseSensitive) {
+      return left.equalsIgnoreCase(right);            
+    } else {
+      return left.equals(right);      
+    }
+  }
 
   private boolean isKnownType(String tn) {
     if (!tn.contains(".")) {
@@ -4617,7 +4641,7 @@ public class FHIRPathEngine {
         } else {
           StructureDefinition sd = worker.fetchTypeDefinition(b.fhirType());
           while (sd != null) {
-            if (tnp.equals(sd.getType())) {
+            if (compareTypeNames(tnp, sd.getType())) {
               result.add(b);
               break;
             }

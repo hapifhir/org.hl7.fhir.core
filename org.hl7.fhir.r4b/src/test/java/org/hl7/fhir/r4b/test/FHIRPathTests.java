@@ -201,6 +201,9 @@ public class FHIRPathTests {
       }
     }
     
+    fp.setDoNotEnforceAsCaseSensitive(false);
+    fp.setDoNotEnforceAsSingletonRule(false);
+    
     if (node != null) {
       try {
         outcome = fp.evaluate(res, node);
