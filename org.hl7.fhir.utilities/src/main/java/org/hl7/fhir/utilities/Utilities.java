@@ -1297,7 +1297,7 @@ public class Utilities {
     return id.matches("[A-Za-z0-9\\-\\.]{1,64}");
   }
 
-  public static List<String> sorted(Set<String> set) {
+  public static List<String> sorted(Collection<String> set) {
     List<String> list = new ArrayList<>();
     list.addAll(set);
     Collections.sort(list);
