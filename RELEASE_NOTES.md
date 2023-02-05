@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* Fix bug with duplicate value in getResourceNames()
