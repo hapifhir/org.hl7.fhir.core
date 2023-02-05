@@ -37,9 +37,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -560,13 +562,12 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   @Override
   public List<String> getResourceNames() {
-    List<String> result = new ArrayList<String>();
+    Set<String> result = new HashSet<String>();
     for (StructureDefinition sd : listStructures()) {
       if (sd.getKind() == StructureDefinitionKind.RESOURCE && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION)
         result.add(sd.getName());
     }
-    Collections.sort(result);
-    return result;
+    return Utilities.sorted(result);
   }
 
  
