@@ -1280,8 +1280,10 @@ public class StructureMapUtilities {
       source.setElement(node.toString());
       lexer.token(")");
     } else if (lexer.hasToken(".")) {
-      lexer.token(".");
-      source.setElement(lexer.take());
+      lexer.token(".");      
+      String el = (lexer.getCurrent().startsWith("\"") || lexer.getCurrent().startsWith("`")) 
+    		  ? lexer.processConstant(lexer.take()) : lexer.take();
+      source.setElement(el);
     }
     if (lexer.hasToken(":")) {
       // type and cardinality
