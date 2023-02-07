@@ -1281,9 +1281,7 @@ public class StructureMapUtilities {
       lexer.token(")");
     } else if (lexer.hasToken(".")) {
       lexer.token(".");      
-      String el = (lexer.getCurrent().startsWith("\"") || lexer.getCurrent().startsWith("`")) 
-    		  ? lexer.processConstant(lexer.take()) : lexer.take();
-      source.setElement(el);
+      source.setElement(readIdentifierEM(lexer.take(), lexer));
     }
     if (lexer.hasToken(":")) {
       // type and cardinality
@@ -1589,6 +1587,13 @@ public class StructureMapUtilities {
       return s;
     else
       return lexer.processConstant(s);
+  }
+  
+  private String readIdentifierEM(String s, FHIRLexer lexer) throws FHIRLexerException {
+    if (s.startsWith("\"") || s.startsWith("`")) 
+      return lexer.processConstant(s);
+	else
+	  return s;
   }
 
   public StructureDefinition getTargetType(StructureMap map) throws FHIRException {
