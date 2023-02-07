@@ -42,15 +42,17 @@ public class R5ExtensionsLoader {
   }
 
   public class Loadable<T extends CanonicalResource> {
-    public Loadable(PackageResourceInformation info) {
+    public Loadable(PackageResourceInformation info, NpmPackage source) {
       this.info = info;
+      this.source = source;
     }
     private T resource;
+    private NpmPackage source;
     private PackageResourceInformation info;
     public T getResource() throws FHIRFormatError, FileNotFoundException, IOException {
       if (resource == null) {
-        CanonicalResource r = (CanonicalResource) json.parse(pck.load(info));
-        r.setUserData("path", Utilities.pathURL(pck.getWebLocation(), r.fhirType().toLowerCase()+ "-"+r.getId().toLowerCase()+".html"));
+        CanonicalResource r = (CanonicalResource) json.parse(source.load(info));
+        r.setUserData("path", Utilities.pathURL(source.getWebLocation(), r.fhirType().toLowerCase()+ "-"+r.getId().toLowerCase()+".html"));
         resource = (T) r;
       }
       return resource;
@@ -59,12 +61,12 @@ public class R5ExtensionsLoader {
 
   private BasePackageCacheManager pcm;
   private int count;
-  private NpmPackage pck;
+  private NpmPackage pckCore;
+  private NpmPackage pckExt;
   private Map<String, Loadable<ValueSet>> valueSets;
   private Map<String, Loadable<CodeSystem>> codeSystems;
   private List<Loadable<StructureDefinition>> structures;
   private IWorkerContext context;
-  private PackageInformation pd;
   private JsonParser json;
   
   public R5ExtensionsLoader(BasePackageCacheManager pcm, IWorkerContext context) {
@@ -78,22 +80,27 @@ public class R5ExtensionsLoader {
   }
 
   public void load() throws FHIRException, IOException {
-    pck = pcm.loadPackage("hl7.fhir.r5.core", "current");
-    pd = new PackageInformation(pck);    
+    pckCore = pcm.loadPackage("hl7.fhir.r5.core", "current");
+    loadDetails(pckCore); 
+    pckExt = pcm.loadPackage("hl7.fhir.uv.extensions", "current");
+    loadDetails(pckExt); 
+  }
+
+  private void loadDetails(NpmPackage pck) throws IOException {
+    json = new JsonParser();
 
     String[] types = new String[] { "StructureDefinition", "ValueSet", "CodeSystem" };
-    json = new JsonParser();
     for (PackageResourceInformation pri : pck.listIndexedResources(types)) {
       if (pri.getResourceType().equals("CodeSystem")) {
-        codeSystems.put(pri.getUrl(), new Loadable<CodeSystem>(pri));
-        codeSystems.put(pri.getUrl()+"|"+pri.getVersion(), new Loadable<CodeSystem>(pri));
+        codeSystems.put(pri.getUrl(), new Loadable<CodeSystem>(pri, pck));
+        codeSystems.put(pri.getUrl()+"|"+pri.getVersion(), new Loadable<CodeSystem>(pri, pck));
       } else if (pri.getResourceType().equals("ValueSet")) {
-        valueSets.put(pri.getUrl(), new Loadable<ValueSet>(pri));
-        valueSets.put(pri.getUrl()+"|"+pri.getVersion(), new Loadable<ValueSet>(pri));
+        valueSets.put(pri.getUrl(), new Loadable<ValueSet>(pri, pck));
+        valueSets.put(pri.getUrl()+"|"+pri.getVersion(), new Loadable<ValueSet>(pri, pck));
       } else if (pri.getResourceType().equals("StructureDefinition"))  {
-        structures.add(new Loadable<StructureDefinition>(pri));
+        structures.add(new Loadable<StructureDefinition>(pri, pck));
       }
-    } 
+    }
   }
   
   public void loadR5Extensions() throws FHIRException, IOException {
@@ -105,9 +112,9 @@ public class R5ExtensionsLoader {
         if (sd.getDerivation() == TypeDerivationRule.CONSTRAINT) {
           if (survivesStrippingTypes(sd, context, typeNames)) {
             count++;
-            sd.setUserData("path", Utilities.pathURL(pck.getWebLocation(), "extension-"+sd.getId().toLowerCase()+".html"));
+            sd.setUserData("path", Utilities.pathURL(pckExt.getWebLocation(), "extension-"+sd.getId().toLowerCase()+".html"));
             registerTerminologies(sd);
-            context.cacheResourceFromPackage(sd, pd);
+            context.cacheResourceFromPackage(sd, new PackageInformation(lsd.source));
           }
         }
       }
@@ -119,9 +126,9 @@ public class R5ExtensionsLoader {
       StructureDefinition sd = lsd.getResource();
       if (Utilities.existsInList(sd.getType(), types)) {
         count++;
-        sd.setUserData("path", Utilities.pathURL(pck.getWebLocation(), sd.getId().toLowerCase()+".html"));
+        sd.setUserData("path", Utilities.pathURL(lsd.source.getWebLocation(), sd.getId().toLowerCase()+".html"));
         registerTerminologies(sd);
-        context.cacheResourceFromPackage(sd, pd);
+        context.cacheResourceFromPackage(sd, new PackageInformation(lsd.source));
       }
     }    
   }
@@ -132,7 +139,7 @@ public class R5ExtensionsLoader {
         String vsu = ed.getBinding().getValueSet();
         ValueSet vs = context.fetchResource(ValueSet.class, vsu);
         if (vs == null) {
-          loadValueSet(vsu, context, valueSets, codeSystems, pd);
+          loadValueSet(vsu, context, valueSets, codeSystems);
         } else if (vs.hasVersion()) {
           ed.getBinding().setValueSet(vs.getUrl()+"|"+vs.getVersion());
         }
@@ -140,21 +147,22 @@ public class R5ExtensionsLoader {
     }
   }
 
-  private void loadValueSet(String url, IWorkerContext context, Map<String, Loadable<ValueSet>> valueSets, Map<String, Loadable<CodeSystem>> codeSystems, PackageInformation pd) throws FHIRFormatError, FileNotFoundException, IOException {
+  private void loadValueSet(String url, IWorkerContext context, Map<String, Loadable<ValueSet>> valueSets, Map<String, Loadable<CodeSystem>> codeSystems) throws FHIRFormatError, FileNotFoundException, IOException {
     if (valueSets.containsKey(url)) {
       ValueSet vs = valueSets.get(url).getResource();      
-      context.cacheResourceFromPackage(vs, pd);
+      context.cacheResourceFromPackage(vs, vs.getSourcePackage());
       for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
         for (CanonicalType t : inc.getValueSet()) {
-          loadValueSet(t.asStringValue(), context, valueSets, codeSystems, pd);
+          loadValueSet(t.asStringValue(), context, valueSets, codeSystems);
         }
         if (inc.hasSystem() && !inc.hasVersion()) {
           if (codeSystems.containsKey(inc.getSystem())) {
             CodeSystem cs = codeSystems.get(inc.getSystem()).getResource();
             inc.setVersion(cs.getVersion());
-            context.cacheResourceFromPackage(cs, pd);
+            context.cacheResourceFromPackage(cs, cs.getSourcePackage());
           } else if (!context.hasResource(CodeSystem.class, inc.getSystem()) && codeSystems.containsKey(inc.getSystem())) {
-            context.cacheResourceFromPackage(codeSystems.get(inc.getSystem()).getResource(), pd);
+            CodeSystem cs1 = codeSystems.get(inc.getSystem()).getResource();
+            context.cacheResourceFromPackage(cs1, cs1.getSourcePackage());
           }
         }
       }
@@ -202,11 +210,15 @@ public class R5ExtensionsLoader {
   }
 
   public byte[] getMap() throws IOException {
-   return pck.hasFile("other", "spec.internals") ?  TextFile.streamToBytes(pck.load("other", "spec.internals")) : null;
+   return pckCore.hasFile("other", "spec.internals") ?  TextFile.streamToBytes(pckCore.load("other", "spec.internals")) : null;
   }
 
-  public NpmPackage getPck() {
-    return pck;
+  public NpmPackage getPckCore() {
+    return pckCore;
+  }
+
+  public NpmPackage getPckExt() {
+    return pckExt;
   }
 
 
