@@ -106,6 +106,25 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
 //    System.out.println(map);
 //    assertSerializeDeserialize(map);
   }
+  
+  @Test
+  public void testSourceElementDelimiter() throws IOException, FHIRException {
+    StructureMapUtilities scu = new StructureMapUtilities(context, this);
+    String fileMap = "map \"http://github.com/FHIR/testSourceElementDelimiter\" = \"testSourceElementDelimiter\"\r\n"
+    		+ "uses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias Patient as source\r\n"
+    		+ "uses \"http://hl7.org/fhir/StructureDefinition/Basic\" alias Basic as target\r\n"
+    		+ "group Patient(source src : Patient, target tgt : Basic) {\r\n"
+    		+ "  src.identifier -> tgt.identifier;\r\n"    		
+    		+ "  src.\"-quote\" -> tgt.quote;\r\n"
+    		+ "  src.`-backtick` -> tgt.backtick;\r\n"
+    		+ "}";
+    System.out.println(fileMap);
+
+    StructureMap structureMap = scu.parse(fileMap, "testSourceElementDelimiter");
+    Assertions.assertEquals("identifier", structureMap.getGroup().get(0).getRule().get(0).getSourceFirstRep().getElement());
+    Assertions.assertEquals("-quote", structureMap.getGroup().get(0).getRule().get(1).getSourceFirstRep().getElement());
+    Assertions.assertEquals("-backtick", structureMap.getGroup().get(0).getRule().get(2).getSourceFirstRep().getElement());
+  }
 
 
 
