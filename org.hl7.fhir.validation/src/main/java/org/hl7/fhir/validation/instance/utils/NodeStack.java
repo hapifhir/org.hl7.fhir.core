@@ -111,11 +111,15 @@ public class NodeStack {
     else if (element.getProperty().isChoice()) {
       String n = res.literalPath.substring(res.literalPath.lastIndexOf(".") + 1);
       String en = element.getProperty().getName();
-      en = en.substring(0, en.length() - 3);
-      String t = n.substring(en.length());
-      if (isPrimitiveType(Utilities.uncapitalize(t)))
-        t = Utilities.uncapitalize(t);
-      res.literalPath = res.literalPath.substring(0, res.literalPath.lastIndexOf(".")) + "." + en + ".ofType(" + t + ")";
+      if (en.endsWith("[x]")) {
+        en = en.substring(0, en.length() - 3);
+        String t = n.substring(en.length());
+        if (isPrimitiveType(Utilities.uncapitalize(t)))
+          t = Utilities.uncapitalize(t);
+        res.literalPath = res.literalPath.substring(0, res.literalPath.lastIndexOf(".")) + "." + en + ".ofType(" + t + ")";
+      } else {
+        res.literalPath = res.literalPath.substring(0, res.literalPath.lastIndexOf(".")) + "." + en;;
+      }
     }
     res.logicalPaths = new ArrayList<String>();
     if (type != null) {
