@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* Fix fro Extensions moving in R5
+* Fix for Extensions moving in R5
