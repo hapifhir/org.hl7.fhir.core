@@ -1181,7 +1181,21 @@ public class Utilities {
     return fn.contains(".") ? fn.substring(fn.lastIndexOf(".") + 1) : "";
   }
 
-
+  public static String unCamelCaseKeepCapitals(String name) {
+    StringBuilder b = new StringBuilder();
+    boolean first = true;
+    for (char c : name.toCharArray()) {
+      if (Character.isUpperCase(c)) {
+        if (!first)
+          b.append(" ");
+        b.append(c);
+      } else
+        b.append(c);
+      first = false;
+    }
+    return b.toString();
+  }
+  
   public static String unCamelCase(String name) {
     StringBuilder b = new StringBuilder();
     boolean first = true;
@@ -1862,4 +1876,9 @@ public class Utilities {
     }
     
   }
+
+  public static boolean isValidCRName(String name) {
+    return name != null && name.matches("[A-Z]([A-Za-z0-9_]){1,254}");
+  }
+
 }
