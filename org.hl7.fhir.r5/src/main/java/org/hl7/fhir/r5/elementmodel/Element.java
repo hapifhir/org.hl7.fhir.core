@@ -1314,5 +1314,38 @@ public class Element extends Base {
 
     throw new Error("Unrecognised name "+name+" on "+this.name); 
   }
+
+  @Override
+  public Base copy() {
+    Element element = new Element(this);
+    this.copyValues(element);
+    return element;
+  }
+
+  @Override
+  public void copyValues(Base dst) {
+    super.copyValues(dst);
+    
+    Element dest = (Element) dst;
+    dest.comments.clear();
+    dest.comments.addAll(comments);
+    dest.value = value;
+    dest.children.clear();
+    dest.children.addAll(children);
+    dest.line = line;
+    dest.col = col;
+    dest.xhtml = xhtml;
+    dest.explicitType = explicitType;
+    dest.hasParentForValidator = false;
+    dest.path = path;
+    dest.messages.clear();
+    dest.prohibited = prohibited;
+    dest.required = required;
+    dest.childMap.clear();
+    dest.descendentCount = descendentCount;
+    dest.instanceId = instanceId;
+    dest.isNull = isNull;
+    dest.source = source;
+  }
   
 }
