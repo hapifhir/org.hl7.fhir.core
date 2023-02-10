@@ -1662,6 +1662,9 @@ public class ProfileUtilities extends TranslatingUtilities {
             if (isLikelySourceURLReference(url, resourceNames, baseFilenames, localFilenames)) {
               b.append("](");
               b.append(basePath);
+              if (!Utilities.noString(basePath) && !basePath.endsWith("/")) {
+                b.append("/");
+              }
               i = i + 1;
             } else {
               b.append("](");
@@ -1740,8 +1743,11 @@ public class ProfileUtilities extends TranslatingUtilities {
         url.startsWith("loinc.html") ||
         url.startsWith("http.html") ||
         url.startsWith("references") ||
+        url.startsWith("license.html") ||
         url.startsWith("narrative.html") || 
         url.startsWith("search.html") ||
+        url.startsWith("security.html") ||
+        url.startsWith("versions.html") ||
         url.startsWith("patient-operation-match.html") ||
         (url.startsWith("extension-") && url.contains(".html")) || 
         url.startsWith("resource-definitions.html");
