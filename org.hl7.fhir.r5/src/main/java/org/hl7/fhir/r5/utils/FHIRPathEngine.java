@@ -3894,7 +3894,10 @@ public class FHIRPathEngine {
   }
 
   private List<Base> funcLowBoundary(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
-    if (focus.size() != 1) {
+    if (focus.size() == 0) {
+      return makeNull();
+    }
+    if (focus.size() > 1) {
       throw makeExceptionPlural(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS, "lowBoundary", focus.size());
     }
     int precision = 0;
@@ -3929,7 +3932,10 @@ public class FHIRPathEngine {
   }
   
   private List<Base> funcHighBoundary(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
-    if (focus.size() != 1) {
+    if (focus.size() == 0) {
+      return makeNull();
+    }
+    if (focus.size() > 1) {
       throw makeExceptionPlural(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS, "highBoundary", focus.size());
     }
     int precision = 0;
