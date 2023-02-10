@@ -420,6 +420,8 @@ public abstract class Base implements Serializable, IBase, IElement {
     return null; 
   }
 
+  public abstract Base copy();
+  
   public void copyValues(Base dst) {   
   }
 

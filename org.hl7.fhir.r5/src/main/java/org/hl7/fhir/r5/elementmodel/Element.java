@@ -1314,5 +1314,52 @@ public class Element extends Base {
 
     throw new Error("Unrecognised name "+name+" on "+this.name); 
   }
+
+  @Override
+  public Base copy() {
+    Element element = new Element(this);
+    this.copyValues(element);
+    return element;
+  }
+
+  @Override
+  public void copyValues(Base dst) {
+    super.copyValues(dst);
+    
+    Element dest = (Element) dst;
+    if (comments != null) {
+      dest.comments = new ArrayList<>();
+      dest.comments.addAll(comments);
+    } else {
+      dest.comments = null;
+    }
+    dest.value = value;
+    if (children != null) {
+      dest.children = new ArrayList<>();
+      dest.children.addAll(children);
+    } else {
+      dest.children = null;
+    }
+    dest.line = line;
+    dest.col = col;
+    dest.xhtml = xhtml;
+    dest.explicitType = explicitType;
+    dest.hasParentForValidator = false;
+    dest.path = path;
+    dest.messages = null;
+    dest.prohibited = prohibited;
+    dest.required = required;
+    dest.childMap = null;
+    dest.descendentCount = descendentCount;
+    dest.instanceId = instanceId;
+    dest.isNull = isNull;
+    dest.source = source;
+  }
+  
+  public Base setProperty(String name, Base value) throws FHIRException {
+    setChildValue(name, value.primitiveValue());
+    return this;
+  }
+  
   
 }
