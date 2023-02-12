@@ -154,6 +154,10 @@ public class StructureDefinitionValidator extends BaseValidator {
     List<Element> types = element.getChildrenByName("type");
     Set<String> typeCodes = new HashSet<>();
     Set<String> characteristics = new HashSet<>();
+    if (!path.contains(".")) {
+      typeCodes.add(path); // root is type
+      addCharacteristics(characteristics, path);
+    }
     
     for (Element type : types) {
       if (hasMustSupportExtension(type)) {
@@ -373,7 +377,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         return tc;
       }
       StructureDefinition sd = context.fetchTypeDefinition(tc);
-      if (sd != null) {
+      while (sd != null) {
         if (sd.hasExtension(ToolingExtensions.EXT_BINDING_STYLE)) {
           return tc;          
         }
@@ -382,6 +386,10 @@ public class StructureDefinitionValidator extends BaseValidator {
             return tc;
           }
         }
+        if (Utilities.existsInList(sd.getType(), "string", "uri", "CodeableConcept", "Quantity", "CodeableReference")) {
+          return tc;
+        }
+        sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
       }
     }
     return null;
@@ -561,7 +569,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         } else if (!VersionUtilities.isR5Ver(context.getVersion())) {
           ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(t.getType()) || "Resource".equals(t.getType()), I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Canonical Resource") && ok;
         } else {
-          ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), "CanonicalResource".equals(t.getType()) || VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(t.getType()), I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Canonical Resource") && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), Utilities.existsInList(t.getType(), "Resource", "CanonicalResource") || VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(t.getType()), I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Canonical Resource") && ok;
         }  
       }
     } else {
