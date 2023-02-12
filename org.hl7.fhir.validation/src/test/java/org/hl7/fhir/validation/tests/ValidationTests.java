@@ -469,6 +469,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (fails.size() > 0) {
       logOutput("");
       logOutput("========================================================");
+      logOutput("Test: "+name);
       logOutput("");
       for (String s : fails) {
         logOutput(s);

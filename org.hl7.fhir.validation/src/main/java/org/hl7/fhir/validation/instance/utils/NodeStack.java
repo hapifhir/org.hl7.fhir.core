@@ -177,8 +177,8 @@ public class NodeStack {
     return parent;
   }
 
-  public void qualifyPath(String qualifier) {
-    literalPath = literalPath + qualifier;
+  public void pathComment(String comment) {
+    literalPath = literalPath + "/*"+comment+"*/";
     
   }
 
