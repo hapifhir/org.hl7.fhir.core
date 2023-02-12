@@ -480,6 +480,7 @@ public class VersionUtilities {
       res.add("ResearchDefinition");
       res.add("ResearchElementDefinition");
       res.add("SearchParameter");
+      res.add("SpecimenDefinition");
       res.add("StructureDefinition");
       res.add("StructureMap");
       res.add("SubscriptionTopic");
@@ -489,11 +490,12 @@ public class VersionUtilities {
     }
 
     if (isR5Ver(version) || "current".equals(version)) {
-
+      res.add("ActorDefinition");
       res.add("ActivityDefinition");
       res.add("CapabilityStatement");
       res.add("ChargeItemDefinition");
       res.add("Citation");
+      res.add("ClinicalUseDefinition");
       res.add("CodeSystem");
       res.add("CompartmentDefinition");
       res.add("ConceptMap");
@@ -509,12 +511,16 @@ public class VersionUtilities {
       res.add("Measure");
       res.add("MessageDefinition");
       res.add("NamingSystem");
+      res.add("ObservationDefinition");
       res.add("OperationDefinition");
       res.add("PlanDefinition");
       res.add("Questionnaire");
+      res.add("Requirements");
       res.add("SearchParameter");
+      res.add("SpecimenDefinition");
       res.add("StructureDefinition");
       res.add("StructureMap");
+      res.add("SubscriptionTopic");
       res.add("TerminologyCapabilities");
       res.add("TestScript");
       res.add("ValueSet");
