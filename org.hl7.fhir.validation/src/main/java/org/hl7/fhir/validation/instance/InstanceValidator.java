@@ -2028,10 +2028,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (!ok) {
       if (definition.hasUserData(XVerExtensionManager.XVER_EXT_MARKER)) {
         warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false,
-            modifier ? I18nConstants.EXTENSION_EXTP_CONTEXT_WRONG_XVER : I18nConstants.EXTENSION_EXTM_CONTEXT_WRONG_XVER, extUrl, contexts.toString(), plist.toString());
+            modifier ? I18nConstants.EXTENSION_EXTM_CONTEXT_WRONG_XVER : I18nConstants.EXTENSION_EXTP_CONTEXT_WRONG_XVER, extUrl, contexts.toString(), plist.toString());
       } else {
         rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false,
-            modifier ? I18nConstants.EXTENSION_EXTP_CONTEXT_WRONG : I18nConstants.EXTENSION_EXTM_CONTEXT_WRONG, extUrl, contexts.toString(), plist.toString());        
+            modifier ? I18nConstants.EXTENSION_EXTM_CONTEXT_WRONG : I18nConstants.EXTENSION_EXTP_CONTEXT_WRONG, extUrl, contexts.toString(), plist.toString());        
       }
       return false;
     } else {
@@ -4038,7 +4038,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             rr.setFocus(res.getMatch());
             rr.setExternal(false);
             rr.setStack(nstack.push(res.getMatch(), res.getIndex(), res.getMatch().getProperty().getDefinition(), res.getMatch().getProperty().getDefinition()));
-            rr.getStack().qualifyPath(".ofType("+nstack.getElement().fhirType()+")");
+            rr.getStack().pathComment(nstack.getElement().fhirType()+"/"+stack.getElement().getIdBase());
             return rr;
           }
         }
@@ -4057,7 +4057,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             rr.setFocus(e);
             rr.setExternal(false);
             rr.setStack(stack.push(e, -1, e.getProperty().getDefinition(), e.getProperty().getDefinition()));
-            rr.getStack().qualifyPath(".ofType("+e.fhirType()+")");
+            rr.getStack().pathComment(e.fhirType()+"/"+e.getIdBase());
             return rr;            
           }
           e = e.getParentForValidator();
@@ -4089,7 +4089,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             rr.setStack(stack.push(res.getEntry(), res.getIndex(), res.getEntry().getProperty().getDefinition(),
               res.getEntry().getProperty().getDefinition()).push(res.getMatch(), -1,
               res.getMatch().getProperty().getDefinition(), res.getMatch().getProperty().getDefinition()));
-            rr.getStack().qualifyPath(".ofType("+rr.getResource().fhirType()+")");
+            rr.getStack().pathComment(rr.getResource().fhirType()+"/"+rr.getResource().getIdBase());
             return rr;
           }
         }
@@ -4101,7 +4101,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             rr.setFocus(tgt.getElement());
             rr.setExternal(false);
             rr.setStack(tgt);
-            rr.getStack().qualifyPath(".ofType("+tgt.getElement().fhirType()+")");
+            rr.getStack().pathComment(tgt.getElement().fhirType()+"/"+tgt.getElement().getIdBase());
             return rr;            
           }
         }
@@ -4123,7 +4123,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           rr.setStack(new NodeStack(context, null, rootResource, validationLanguage).push(res.getEntry(), res.getIndex(), res.getEntry().getProperty().getDefinition(),
             res.getEntry().getProperty().getDefinition()).push(res.getMatch(), -1,
             res.getMatch().getProperty().getDefinition(), res.getMatch().getProperty().getDefinition()));
-          rr.getStack().qualifyPath(".ofType("+rr.getResource().fhirType()+")");
+          rr.getStack().pathComment(rr.getResource().fhirType()+"/"+rr.getResource().getIdBase());
           return rr;
         }
       }
@@ -5121,7 +5121,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       }
 
-      stack.qualifyPath(".ofType("+resourceName+")");
+      stack.pathComment(resourceName+"/"+element.getIdBase());
 
       if (typeForResource == null) {
         ok = rule(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(),
