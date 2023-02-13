@@ -545,8 +545,12 @@ public class TurtleParser extends ParserBase {
     } else if ("http://loinc.org".equals(system)) {
       t.prefix("loinc", "https://loinc.org/rdf/");
       t.linkedPredicate("a", "loinc:"+urlescape(code).toUpperCase(), null, null);
+    } else if ("https://www.nlm.nih.gov/mesh".equals(system)) {
+    	t.prefix("mesh", "http://id.nlm.nih.gov/mesh/");
+    	t.linkedPredicate("a", "mesh:"+urlescape(code), null, null);
     }  
   }
+
   private void generateLinkedPredicate(Complex t, String code) throws FHIRException {
     Expression expression = SnomedExpressions.parse(code);
     
