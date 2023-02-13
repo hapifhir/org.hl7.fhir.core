@@ -19,6 +19,7 @@ import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.UsageContext;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.CodeResolver;
 import org.hl7.fhir.r5.renderers.CodeResolver.CodeResolution;
 import org.hl7.fhir.r5.renderers.DataRenderer;
@@ -47,6 +48,8 @@ public class AdditionalBindingsRenderer {
     private boolean isUnchanged = false;
     private boolean matched = false;
     private boolean removed = false;
+    private ValueSet vs;
+    
     private AdditionalBindingDetail compare;
     private int count = 1;
     private String getKey() {
@@ -417,6 +420,22 @@ public class AdditionalBindingsRenderer {
       return c.getCode();
     }
     return c.getCode();
+  }
+
+  public void seeAdditionalBinding(String purpose, String doco, ValueSet valueSet) {
+    AdditionalBindingDetail abr = new AdditionalBindingDetail();
+    abr.purpose =  purpose;
+    abr.valueSet =  valueSet.getUrl();
+    abr.vs = valueSet;
+    bindings.add(abr);
+  }
+
+  public void seeAdditionalBinding(String purpose, String doco, String ref) {
+    AdditionalBindingDetail abr = new AdditionalBindingDetail();
+    abr.purpose =  purpose;
+    abr.valueSet =  ref;
+    bindings.add(abr);
+    
   }
 
 }
