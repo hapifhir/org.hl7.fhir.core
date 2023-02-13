@@ -4964,7 +4964,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else {
       ok = false;
     }
-    if (checkSpecials) {
+    if (checkSpecials) {      
       ok = checkSpecials(hostContext, errors, element, stack, checkSpecials, pct, mode) && ok;
       ok = validateResourceRules(errors, element, stack) && ok;
     }
@@ -5994,9 +5994,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private boolean checkInvariants(ValidatorHostContext hostContext, List<ValidationMessage> errors, String path, StructureDefinition profile, ElementDefinition ed, String typename, String typeProfile, Element resource, Element element, boolean onlyNonInherited) throws FHIRException, FHIRException {
-    if (noInvariantChecks)
+    if (noInvariantChecks) {
       return true;
-
+    }
+    
     boolean ok = true;
     for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
       if (inv.hasExpression() && (!onlyNonInherited || !inv.hasSource() || (!isInheritedProfile(profile, inv.getSource()) && !isInheritedProfile(ed.getType(), inv.getSource())) )) {
