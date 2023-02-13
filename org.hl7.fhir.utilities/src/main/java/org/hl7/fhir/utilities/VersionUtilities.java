@@ -608,5 +608,9 @@ public class VersionUtilities {
     }
   }
 
+  public static boolean isR5Plus(String version) {
+    return version != null && (version.startsWith("5.") || version.startsWith("6.") || "current".equals(version));
+  }
+
 
 }
