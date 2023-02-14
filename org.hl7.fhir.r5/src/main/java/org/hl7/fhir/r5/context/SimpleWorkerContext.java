@@ -37,9 +37,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -560,13 +562,12 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   @Override
   public List<String> getResourceNames() {
-    List<String> result = new ArrayList<String>();
+    Set<String> result = new HashSet<String>();
     for (StructureDefinition sd : listStructures()) {
       if (sd.getKind() == StructureDefinitionKind.RESOURCE && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION)
         result.add(sd.getName());
     }
-    Collections.sort(result);
-    return result;
+    return Utilities.sorted(result);
   }
 
  
@@ -660,6 +661,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       } catch (Exception e) {
         // not sure what to do in this case?
         System.out.println("Unable to generate snapshot for "+uri+": "+e.getMessage());
+        if (logger.isDebugLogging()) {
+          e.printStackTrace();          
+        }
       }
     }
     return r;
@@ -670,11 +674,27 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     T r = super.fetchResource(class_, uri, source);
     if (r instanceof StructureDefinition) {
       StructureDefinition p = (StructureDefinition)r;
-      try {
-        new ContextUtilities(this).generateSnapshot(p);
-      } catch (Exception e) {
-        // not sure what to do in this case?
-        System.out.println("Unable to generate snapshot for "+uri+": "+e.getMessage());
+      if (!p.isGeneratedSnapshot()) {
+        if (p.isGeneratingSnapshot()) {
+          throw new FHIRException("Attempt to fetch the profile "+p.getVersionedUrl()+" while generating the snapshot for it");
+        }
+        try {
+          if (logger.isDebugLogging()) {
+            System.out.println("Generating snapshot for "+p.getVersionedUrl());
+          }
+          p.setGeneratingSnapshot(true);
+          try {
+            new ContextUtilities(this).generateSnapshot(p);
+          } finally {
+            p.setGeneratingSnapshot(false);      
+          }
+        } catch (Exception e) {
+          // not sure what to do in this case?
+          System.out.println("Unable to generate snapshot for "+p.getVersionedUrl()+": "+e.getMessage());
+          if (logger.isDebugLogging()) {
+            e.printStackTrace();
+          }
+        }
       }
     }
     return r;

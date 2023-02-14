@@ -181,28 +181,28 @@ public class DeviceRequest extends DomainResource {
           return DeviceRequestStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown DeviceRequestStatus code '"+codeString+"'");
         }
-        public Enumeration<DeviceRequestStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<DeviceRequestStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<DeviceRequestStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<DeviceRequestStatus>(this, DeviceRequestStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<DeviceRequestStatus>(this, DeviceRequestStatus.NULL, code);
         if ("draft".equals(codeString))
-          return new Enumeration<DeviceRequestStatus>(this, DeviceRequestStatus.DRAFT);
+          return new Enumeration<DeviceRequestStatus>(this, DeviceRequestStatus.DRAFT, code);
         if ("active".equals(codeString))
-          return new Enumeration<DeviceRequestStatus>(this, DeviceRequestStatus.ACTIVE);
+          return new Enumeration<DeviceRequestStatus>(this, DeviceRequestStatus.ACTIVE, code);
         if ("on-hold".equals(codeString))
-          return new Enumeration<DeviceRequestStatus>(this, DeviceRequestStatus.ONHOLD);
+          return new Enumeration<DeviceRequestStatus>(this, DeviceRequestStatus.ONHOLD, code);
         if ("revoked".equals(codeString))
-          return new Enumeration<DeviceRequestStatus>(this, DeviceRequestStatus.REVOKED);
+          return new Enumeration<DeviceRequestStatus>(this, DeviceRequestStatus.REVOKED, code);
         if ("completed".equals(codeString))
-          return new Enumeration<DeviceRequestStatus>(this, DeviceRequestStatus.COMPLETED);
+          return new Enumeration<DeviceRequestStatus>(this, DeviceRequestStatus.COMPLETED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<DeviceRequestStatus>(this, DeviceRequestStatus.ENTEREDINERROR);
+          return new Enumeration<DeviceRequestStatus>(this, DeviceRequestStatus.ENTEREDINERROR, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<DeviceRequestStatus>(this, DeviceRequestStatus.UNKNOWN);
+          return new Enumeration<DeviceRequestStatus>(this, DeviceRequestStatus.UNKNOWN, code);
         throw new FHIRException("Unknown DeviceRequestStatus code '"+codeString+"'");
         }
     public String toCode(DeviceRequestStatus code) {
@@ -381,32 +381,32 @@ public class DeviceRequest extends DomainResource {
           return RequestIntent.OPTION;
         throw new IllegalArgumentException("Unknown RequestIntent code '"+codeString+"'");
         }
-        public Enumeration<RequestIntent> fromType(Base code) throws FHIRException {
+        public Enumeration<RequestIntent> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<RequestIntent>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<RequestIntent>(this, RequestIntent.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<RequestIntent>(this, RequestIntent.NULL, code);
         if ("proposal".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.PROPOSAL);
+          return new Enumeration<RequestIntent>(this, RequestIntent.PROPOSAL, code);
         if ("plan".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.PLAN);
+          return new Enumeration<RequestIntent>(this, RequestIntent.PLAN, code);
         if ("directive".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.DIRECTIVE);
+          return new Enumeration<RequestIntent>(this, RequestIntent.DIRECTIVE, code);
         if ("order".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.ORDER);
+          return new Enumeration<RequestIntent>(this, RequestIntent.ORDER, code);
         if ("original-order".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.ORIGINALORDER);
+          return new Enumeration<RequestIntent>(this, RequestIntent.ORIGINALORDER, code);
         if ("reflex-order".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.REFLEXORDER);
+          return new Enumeration<RequestIntent>(this, RequestIntent.REFLEXORDER, code);
         if ("filler-order".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.FILLERORDER);
+          return new Enumeration<RequestIntent>(this, RequestIntent.FILLERORDER, code);
         if ("instance-order".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.INSTANCEORDER);
+          return new Enumeration<RequestIntent>(this, RequestIntent.INSTANCEORDER, code);
         if ("option".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.OPTION);
+          return new Enumeration<RequestIntent>(this, RequestIntent.OPTION, code);
         throw new FHIRException("Unknown RequestIntent code '"+codeString+"'");
         }
     public String toCode(RequestIntent code) {
@@ -529,22 +529,22 @@ public class DeviceRequest extends DomainResource {
           return RequestPriority.STAT;
         throw new IllegalArgumentException("Unknown RequestPriority code '"+codeString+"'");
         }
-        public Enumeration<RequestPriority> fromType(Base code) throws FHIRException {
+        public Enumeration<RequestPriority> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<RequestPriority>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<RequestPriority>(this, RequestPriority.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<RequestPriority>(this, RequestPriority.NULL, code);
         if ("routine".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.ROUTINE);
+          return new Enumeration<RequestPriority>(this, RequestPriority.ROUTINE, code);
         if ("urgent".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.URGENT);
+          return new Enumeration<RequestPriority>(this, RequestPriority.URGENT, code);
         if ("asap".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.ASAP);
+          return new Enumeration<RequestPriority>(this, RequestPriority.ASAP, code);
         if ("stat".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.STAT);
+          return new Enumeration<RequestPriority>(this, RequestPriority.STAT, code);
         throw new FHIRException("Unknown RequestPriority code '"+codeString+"'");
         }
     public String toCode(RequestPriority code) {

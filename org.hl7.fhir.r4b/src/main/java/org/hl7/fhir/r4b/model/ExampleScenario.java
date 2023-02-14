@@ -123,18 +123,18 @@ public class ExampleScenario extends CanonicalResource {
           return ExampleScenarioActorType.ENTITY;
         throw new IllegalArgumentException("Unknown ExampleScenarioActorType code '"+codeString+"'");
         }
-        public Enumeration<ExampleScenarioActorType> fromType(Base code) throws FHIRException {
+        public Enumeration<ExampleScenarioActorType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ExampleScenarioActorType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ExampleScenarioActorType>(this, ExampleScenarioActorType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ExampleScenarioActorType>(this, ExampleScenarioActorType.NULL, code);
         if ("person".equals(codeString))
-          return new Enumeration<ExampleScenarioActorType>(this, ExampleScenarioActorType.PERSON);
+          return new Enumeration<ExampleScenarioActorType>(this, ExampleScenarioActorType.PERSON, code);
         if ("entity".equals(codeString))
-          return new Enumeration<ExampleScenarioActorType>(this, ExampleScenarioActorType.ENTITY);
+          return new Enumeration<ExampleScenarioActorType>(this, ExampleScenarioActorType.ENTITY, code);
         throw new FHIRException("Unknown ExampleScenarioActorType code '"+codeString+"'");
         }
     public String toCode(ExampleScenarioActorType code) {
@@ -5268,4 +5268,3 @@ public class ExampleScenario extends CanonicalResource {
       
 
 }
-

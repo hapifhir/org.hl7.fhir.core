@@ -160,24 +160,24 @@ public class TestReport extends DomainResource {
           return TestReportActionResult.ERROR;
         throw new IllegalArgumentException("Unknown TestReportActionResult code '"+codeString+"'");
         }
-        public Enumeration<TestReportActionResult> fromType(Base code) throws FHIRException {
+        public Enumeration<TestReportActionResult> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<TestReportActionResult>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<TestReportActionResult>(this, TestReportActionResult.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<TestReportActionResult>(this, TestReportActionResult.NULL, code);
         if ("pass".equals(codeString))
-          return new Enumeration<TestReportActionResult>(this, TestReportActionResult.PASS);
+          return new Enumeration<TestReportActionResult>(this, TestReportActionResult.PASS, code);
         if ("skip".equals(codeString))
-          return new Enumeration<TestReportActionResult>(this, TestReportActionResult.SKIP);
+          return new Enumeration<TestReportActionResult>(this, TestReportActionResult.SKIP, code);
         if ("fail".equals(codeString))
-          return new Enumeration<TestReportActionResult>(this, TestReportActionResult.FAIL);
+          return new Enumeration<TestReportActionResult>(this, TestReportActionResult.FAIL, code);
         if ("warning".equals(codeString))
-          return new Enumeration<TestReportActionResult>(this, TestReportActionResult.WARNING);
+          return new Enumeration<TestReportActionResult>(this, TestReportActionResult.WARNING, code);
         if ("error".equals(codeString))
-          return new Enumeration<TestReportActionResult>(this, TestReportActionResult.ERROR);
+          return new Enumeration<TestReportActionResult>(this, TestReportActionResult.ERROR, code);
         throw new FHIRException("Unknown TestReportActionResult code '"+codeString+"'");
         }
     public String toCode(TestReportActionResult code) {
@@ -280,20 +280,20 @@ public class TestReport extends DomainResource {
           return TestReportParticipantType.SERVER;
         throw new IllegalArgumentException("Unknown TestReportParticipantType code '"+codeString+"'");
         }
-        public Enumeration<TestReportParticipantType> fromType(Base code) throws FHIRException {
+        public Enumeration<TestReportParticipantType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<TestReportParticipantType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<TestReportParticipantType>(this, TestReportParticipantType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<TestReportParticipantType>(this, TestReportParticipantType.NULL, code);
         if ("test-engine".equals(codeString))
-          return new Enumeration<TestReportParticipantType>(this, TestReportParticipantType.TESTENGINE);
+          return new Enumeration<TestReportParticipantType>(this, TestReportParticipantType.TESTENGINE, code);
         if ("client".equals(codeString))
-          return new Enumeration<TestReportParticipantType>(this, TestReportParticipantType.CLIENT);
+          return new Enumeration<TestReportParticipantType>(this, TestReportParticipantType.CLIENT, code);
         if ("server".equals(codeString))
-          return new Enumeration<TestReportParticipantType>(this, TestReportParticipantType.SERVER);
+          return new Enumeration<TestReportParticipantType>(this, TestReportParticipantType.SERVER, code);
         throw new FHIRException("Unknown TestReportParticipantType code '"+codeString+"'");
         }
     public String toCode(TestReportParticipantType code) {
@@ -392,20 +392,20 @@ public class TestReport extends DomainResource {
           return TestReportResult.PENDING;
         throw new IllegalArgumentException("Unknown TestReportResult code '"+codeString+"'");
         }
-        public Enumeration<TestReportResult> fromType(Base code) throws FHIRException {
+        public Enumeration<TestReportResult> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<TestReportResult>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<TestReportResult>(this, TestReportResult.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<TestReportResult>(this, TestReportResult.NULL, code);
         if ("pass".equals(codeString))
-          return new Enumeration<TestReportResult>(this, TestReportResult.PASS);
+          return new Enumeration<TestReportResult>(this, TestReportResult.PASS, code);
         if ("fail".equals(codeString))
-          return new Enumeration<TestReportResult>(this, TestReportResult.FAIL);
+          return new Enumeration<TestReportResult>(this, TestReportResult.FAIL, code);
         if ("pending".equals(codeString))
-          return new Enumeration<TestReportResult>(this, TestReportResult.PENDING);
+          return new Enumeration<TestReportResult>(this, TestReportResult.PENDING, code);
         throw new FHIRException("Unknown TestReportResult code '"+codeString+"'");
         }
     public String toCode(TestReportResult code) {
@@ -528,24 +528,24 @@ public class TestReport extends DomainResource {
           return TestReportStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown TestReportStatus code '"+codeString+"'");
         }
-        public Enumeration<TestReportStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<TestReportStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<TestReportStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<TestReportStatus>(this, TestReportStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<TestReportStatus>(this, TestReportStatus.NULL, code);
         if ("completed".equals(codeString))
-          return new Enumeration<TestReportStatus>(this, TestReportStatus.COMPLETED);
+          return new Enumeration<TestReportStatus>(this, TestReportStatus.COMPLETED, code);
         if ("in-progress".equals(codeString))
-          return new Enumeration<TestReportStatus>(this, TestReportStatus.INPROGRESS);
+          return new Enumeration<TestReportStatus>(this, TestReportStatus.INPROGRESS, code);
         if ("waiting".equals(codeString))
-          return new Enumeration<TestReportStatus>(this, TestReportStatus.WAITING);
+          return new Enumeration<TestReportStatus>(this, TestReportStatus.WAITING, code);
         if ("stopped".equals(codeString))
-          return new Enumeration<TestReportStatus>(this, TestReportStatus.STOPPED);
+          return new Enumeration<TestReportStatus>(this, TestReportStatus.STOPPED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<TestReportStatus>(this, TestReportStatus.ENTEREDINERROR);
+          return new Enumeration<TestReportStatus>(this, TestReportStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown TestReportStatus code '"+codeString+"'");
         }
     public String toCode(TestReportStatus code) {
@@ -3877,4 +3877,3 @@ public class TestReport extends DomainResource {
 
 
 }
-

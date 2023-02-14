@@ -181,12 +181,12 @@ public class ProcedureRequest extends DomainResource {
           return ProcedureRequestStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown ProcedureRequestStatus code '"+codeString+"'");
         }
-        public Enumeration<ProcedureRequestStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ProcedureRequestStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ProcedureRequestStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("draft".equals(codeString))
@@ -371,12 +371,12 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return ProcedureRequestIntent.OPTION;
         throw new IllegalArgumentException("Unknown ProcedureRequestIntent code '"+codeString+"'");
         }
-        public Enumeration<ProcedureRequestIntent> fromType(Base code) throws FHIRException {
+        public Enumeration<ProcedureRequestIntent> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ProcedureRequestIntent>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("proposal".equals(codeString))
@@ -515,12 +515,12 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return ProcedureRequestPriority.STAT;
         throw new IllegalArgumentException("Unknown ProcedureRequestPriority code '"+codeString+"'");
         }
-        public Enumeration<ProcedureRequestPriority> fromType(Base code) throws FHIRException {
+        public Enumeration<ProcedureRequestPriority> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ProcedureRequestPriority>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("routine".equals(codeString))

@@ -696,7 +696,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
   }
 
   private boolean isBase(String code) {
-    return code.equals("Element") || code.equals("BackboneElement");
+    return code != null && (code.equals("Element") || code.equals("BackboneElement"));
   }
   
   private List<ElementDefinition> getChildrenForPath(StructureDefinition profile, List<ElementDefinition> elements, String path) throws DefinitionException {
@@ -1008,7 +1008,11 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
         // we're going to split these up, and create a property for each url
         if (p.hasValues()) {
           for (BaseWrapper v : p.getValues()) {
-            Extension ex  = (Extension) v.getBase();
+            Base b = v.getBase();
+            if (!(b instanceof Extension)) {
+              throw new FHIRException("huh?");
+            }
+            Extension ex  = (Extension) b;
             String url = ex.getUrl();
             StructureDefinition ed = getContext().getWorker().fetchResource(StructureDefinition.class, url);
             if (ed == null) {

@@ -20,8 +20,8 @@ public class PackageScanner {
     List<String> output = new ArrayList<>();
     Set<String> packages = new HashSet<>();
 
-    processServer("http://packages.fhir.org", output, packages);
-    processServer("http://packages2.fhir.org/packages", output, packages);
+    processServer(PackageServer.primaryServer(), output, packages);
+    processServer(PackageServer.secondaryServer(), output, packages);
     
     StringBuilder b = new StringBuilder();
     for (String s : output) {
@@ -32,7 +32,7 @@ public class PackageScanner {
     TextFile.stringToFile(b.toString(), Utilities.path("[tmp]", "packages.csv"));
   }
 
-  public static void processServer(String server, List<String> output, Set<String> packages) throws IOException {
+  public static void processServer(PackageServer server, List<String> output, Set<String> packages) throws IOException {
     System.out.println("Server: "+server);
     PackageClient client = new PackageClient(server);
     List<PackageInfo> list = client.search(null, null, null, false);

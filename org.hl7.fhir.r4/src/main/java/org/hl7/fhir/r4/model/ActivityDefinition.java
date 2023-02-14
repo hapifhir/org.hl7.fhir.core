@@ -279,44 +279,44 @@ public class ActivityDefinition extends MetadataResource {
           return ActivityDefinitionKind.VISIONPRESCRIPTION;
         throw new IllegalArgumentException("Unknown ActivityDefinitionKind code '"+codeString+"'");
         }
-        public Enumeration<ActivityDefinitionKind> fromType(Base code) throws FHIRException {
+        public Enumeration<ActivityDefinitionKind> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ActivityDefinitionKind>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.NULL, code);
         if ("Appointment".equals(codeString))
-          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.APPOINTMENT);
+          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.APPOINTMENT, code);
         if ("AppointmentResponse".equals(codeString))
-          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.APPOINTMENTRESPONSE);
+          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.APPOINTMENTRESPONSE, code);
         if ("CarePlan".equals(codeString))
-          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.CAREPLAN);
+          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.CAREPLAN, code);
         if ("Claim".equals(codeString))
-          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.CLAIM);
+          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.CLAIM, code);
         if ("CommunicationRequest".equals(codeString))
-          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.COMMUNICATIONREQUEST);
+          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.COMMUNICATIONREQUEST, code);
         if ("Contract".equals(codeString))
-          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.CONTRACT);
+          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.CONTRACT, code);
         if ("DeviceRequest".equals(codeString))
-          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.DEVICEREQUEST);
+          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.DEVICEREQUEST, code);
         if ("EnrollmentRequest".equals(codeString))
-          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.ENROLLMENTREQUEST);
+          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.ENROLLMENTREQUEST, code);
         if ("ImmunizationRecommendation".equals(codeString))
-          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.IMMUNIZATIONRECOMMENDATION);
+          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.IMMUNIZATIONRECOMMENDATION, code);
         if ("MedicationRequest".equals(codeString))
-          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.MEDICATIONREQUEST);
+          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.MEDICATIONREQUEST, code);
         if ("NutritionOrder".equals(codeString))
-          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.NUTRITIONORDER);
+          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.NUTRITIONORDER, code);
         if ("ServiceRequest".equals(codeString))
-          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.SERVICEREQUEST);
+          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.SERVICEREQUEST, code);
         if ("SupplyRequest".equals(codeString))
-          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.SUPPLYREQUEST);
+          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.SUPPLYREQUEST, code);
         if ("Task".equals(codeString))
-          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.TASK);
+          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.TASK, code);
         if ("VisionPrescription".equals(codeString))
-          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.VISIONPRESCRIPTION);
+          return new Enumeration<ActivityDefinitionKind>(this, ActivityDefinitionKind.VISIONPRESCRIPTION, code);
         throw new FHIRException("Unknown ActivityDefinitionKind code '"+codeString+"'");
         }
     public String toCode(ActivityDefinitionKind code) {
@@ -511,32 +511,32 @@ public class ActivityDefinition extends MetadataResource {
           return RequestIntent.OPTION;
         throw new IllegalArgumentException("Unknown RequestIntent code '"+codeString+"'");
         }
-        public Enumeration<RequestIntent> fromType(Base code) throws FHIRException {
+        public Enumeration<RequestIntent> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<RequestIntent>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<RequestIntent>(this, RequestIntent.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<RequestIntent>(this, RequestIntent.NULL, code);
         if ("proposal".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.PROPOSAL);
+          return new Enumeration<RequestIntent>(this, RequestIntent.PROPOSAL, code);
         if ("plan".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.PLAN);
+          return new Enumeration<RequestIntent>(this, RequestIntent.PLAN, code);
         if ("directive".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.DIRECTIVE);
+          return new Enumeration<RequestIntent>(this, RequestIntent.DIRECTIVE, code);
         if ("order".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.ORDER);
+          return new Enumeration<RequestIntent>(this, RequestIntent.ORDER, code);
         if ("original-order".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.ORIGINALORDER);
+          return new Enumeration<RequestIntent>(this, RequestIntent.ORIGINALORDER, code);
         if ("reflex-order".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.REFLEXORDER);
+          return new Enumeration<RequestIntent>(this, RequestIntent.REFLEXORDER, code);
         if ("filler-order".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.FILLERORDER);
+          return new Enumeration<RequestIntent>(this, RequestIntent.FILLERORDER, code);
         if ("instance-order".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.INSTANCEORDER);
+          return new Enumeration<RequestIntent>(this, RequestIntent.INSTANCEORDER, code);
         if ("option".equals(codeString))
-          return new Enumeration<RequestIntent>(this, RequestIntent.OPTION);
+          return new Enumeration<RequestIntent>(this, RequestIntent.OPTION, code);
         throw new FHIRException("Unknown RequestIntent code '"+codeString+"'");
         }
     public String toCode(RequestIntent code) {
@@ -659,22 +659,22 @@ public class ActivityDefinition extends MetadataResource {
           return RequestPriority.STAT;
         throw new IllegalArgumentException("Unknown RequestPriority code '"+codeString+"'");
         }
-        public Enumeration<RequestPriority> fromType(Base code) throws FHIRException {
+        public Enumeration<RequestPriority> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<RequestPriority>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<RequestPriority>(this, RequestPriority.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<RequestPriority>(this, RequestPriority.NULL, code);
         if ("routine".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.ROUTINE);
+          return new Enumeration<RequestPriority>(this, RequestPriority.ROUTINE, code);
         if ("urgent".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.URGENT);
+          return new Enumeration<RequestPriority>(this, RequestPriority.URGENT, code);
         if ("asap".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.ASAP);
+          return new Enumeration<RequestPriority>(this, RequestPriority.ASAP, code);
         if ("stat".equals(codeString))
-          return new Enumeration<RequestPriority>(this, RequestPriority.STAT);
+          return new Enumeration<RequestPriority>(this, RequestPriority.STAT, code);
         throw new FHIRException("Unknown RequestPriority code '"+codeString+"'");
         }
     public String toCode(RequestPriority code) {
@@ -787,22 +787,22 @@ public class ActivityDefinition extends MetadataResource {
           return ActivityParticipantType.DEVICE;
         throw new IllegalArgumentException("Unknown ActivityParticipantType code '"+codeString+"'");
         }
-        public Enumeration<ActivityParticipantType> fromType(Base code) throws FHIRException {
+        public Enumeration<ActivityParticipantType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ActivityParticipantType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ActivityParticipantType>(this, ActivityParticipantType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ActivityParticipantType>(this, ActivityParticipantType.NULL, code);
         if ("patient".equals(codeString))
-          return new Enumeration<ActivityParticipantType>(this, ActivityParticipantType.PATIENT);
+          return new Enumeration<ActivityParticipantType>(this, ActivityParticipantType.PATIENT, code);
         if ("practitioner".equals(codeString))
-          return new Enumeration<ActivityParticipantType>(this, ActivityParticipantType.PRACTITIONER);
+          return new Enumeration<ActivityParticipantType>(this, ActivityParticipantType.PRACTITIONER, code);
         if ("related-person".equals(codeString))
-          return new Enumeration<ActivityParticipantType>(this, ActivityParticipantType.RELATEDPERSON);
+          return new Enumeration<ActivityParticipantType>(this, ActivityParticipantType.RELATEDPERSON, code);
         if ("device".equals(codeString))
-          return new Enumeration<ActivityParticipantType>(this, ActivityParticipantType.DEVICE);
+          return new Enumeration<ActivityParticipantType>(this, ActivityParticipantType.DEVICE, code);
         throw new FHIRException("Unknown ActivityParticipantType code '"+codeString+"'");
         }
     public String toCode(ActivityParticipantType code) {

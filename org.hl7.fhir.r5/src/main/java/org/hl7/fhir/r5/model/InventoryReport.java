@@ -123,18 +123,18 @@ public class InventoryReport extends DomainResource {
           return InventoryCountType.DIFFERENCE;
         throw new IllegalArgumentException("Unknown InventoryCountType code '"+codeString+"'");
         }
-        public Enumeration<InventoryCountType> fromType(Base code) throws FHIRException {
+        public Enumeration<InventoryCountType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<InventoryCountType>(this);
+            return new Enumeration<InventoryCountType>(this, InventoryCountType.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<InventoryCountType>(this, InventoryCountType.NULL, code);
         if ("snapshot".equals(codeString))
-          return new Enumeration<InventoryCountType>(this, InventoryCountType.SNAPSHOT);
+          return new Enumeration<InventoryCountType>(this, InventoryCountType.SNAPSHOT, code);
         if ("difference".equals(codeString))
-          return new Enumeration<InventoryCountType>(this, InventoryCountType.DIFFERENCE);
+          return new Enumeration<InventoryCountType>(this, InventoryCountType.DIFFERENCE, code);
         throw new FHIRException("Unknown InventoryCountType code '"+codeString+"'");
         }
     public String toCode(InventoryCountType code) {
@@ -243,22 +243,22 @@ public class InventoryReport extends DomainResource {
           return InventoryReportStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown InventoryReportStatus code '"+codeString+"'");
         }
-        public Enumeration<InventoryReportStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<InventoryReportStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<InventoryReportStatus>(this);
+            return new Enumeration<InventoryReportStatus>(this, InventoryReportStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<InventoryReportStatus>(this, InventoryReportStatus.NULL, code);
         if ("draft".equals(codeString))
-          return new Enumeration<InventoryReportStatus>(this, InventoryReportStatus.DRAFT);
+          return new Enumeration<InventoryReportStatus>(this, InventoryReportStatus.DRAFT, code);
         if ("requested".equals(codeString))
-          return new Enumeration<InventoryReportStatus>(this, InventoryReportStatus.REQUESTED);
+          return new Enumeration<InventoryReportStatus>(this, InventoryReportStatus.REQUESTED, code);
         if ("active".equals(codeString))
-          return new Enumeration<InventoryReportStatus>(this, InventoryReportStatus.ACTIVE);
+          return new Enumeration<InventoryReportStatus>(this, InventoryReportStatus.ACTIVE, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<InventoryReportStatus>(this, InventoryReportStatus.ENTEREDINERROR);
+          return new Enumeration<InventoryReportStatus>(this, InventoryReportStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown InventoryReportStatus code '"+codeString+"'");
         }
     public String toCode(InventoryReportStatus code) {
@@ -1891,4 +1891,3 @@ public class InventoryReport extends DomainResource {
 
 
 }
-

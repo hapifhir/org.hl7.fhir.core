@@ -145,22 +145,22 @@ public class Composition extends DomainResource {
           return CompositionStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown CompositionStatus code '"+codeString+"'");
         }
-        public Enumeration<CompositionStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<CompositionStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<CompositionStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<CompositionStatus>(this, CompositionStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<CompositionStatus>(this, CompositionStatus.NULL, code);
         if ("preliminary".equals(codeString))
-          return new Enumeration<CompositionStatus>(this, CompositionStatus.PRELIMINARY);
+          return new Enumeration<CompositionStatus>(this, CompositionStatus.PRELIMINARY, code);
         if ("final".equals(codeString))
-          return new Enumeration<CompositionStatus>(this, CompositionStatus.FINAL);
+          return new Enumeration<CompositionStatus>(this, CompositionStatus.FINAL, code);
         if ("amended".equals(codeString))
-          return new Enumeration<CompositionStatus>(this, CompositionStatus.AMENDED);
+          return new Enumeration<CompositionStatus>(this, CompositionStatus.AMENDED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<CompositionStatus>(this, CompositionStatus.ENTEREDINERROR);
+          return new Enumeration<CompositionStatus>(this, CompositionStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown CompositionStatus code '"+codeString+"'");
         }
     public String toCode(CompositionStatus code) {
@@ -297,26 +297,26 @@ public class Composition extends DomainResource {
           return DocumentConfidentiality.V;
         throw new IllegalArgumentException("Unknown DocumentConfidentiality code '"+codeString+"'");
         }
-        public Enumeration<DocumentConfidentiality> fromType(Base code) throws FHIRException {
+        public Enumeration<DocumentConfidentiality> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<DocumentConfidentiality>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<DocumentConfidentiality>(this, DocumentConfidentiality.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<DocumentConfidentiality>(this, DocumentConfidentiality.NULL, code);
         if ("U".equals(codeString))
-          return new Enumeration<DocumentConfidentiality>(this, DocumentConfidentiality.U);
+          return new Enumeration<DocumentConfidentiality>(this, DocumentConfidentiality.U, code);
         if ("L".equals(codeString))
-          return new Enumeration<DocumentConfidentiality>(this, DocumentConfidentiality.L);
+          return new Enumeration<DocumentConfidentiality>(this, DocumentConfidentiality.L, code);
         if ("M".equals(codeString))
-          return new Enumeration<DocumentConfidentiality>(this, DocumentConfidentiality.M);
+          return new Enumeration<DocumentConfidentiality>(this, DocumentConfidentiality.M, code);
         if ("N".equals(codeString))
-          return new Enumeration<DocumentConfidentiality>(this, DocumentConfidentiality.N);
+          return new Enumeration<DocumentConfidentiality>(this, DocumentConfidentiality.N, code);
         if ("R".equals(codeString))
-          return new Enumeration<DocumentConfidentiality>(this, DocumentConfidentiality.R);
+          return new Enumeration<DocumentConfidentiality>(this, DocumentConfidentiality.R, code);
         if ("V".equals(codeString))
-          return new Enumeration<DocumentConfidentiality>(this, DocumentConfidentiality.V);
+          return new Enumeration<DocumentConfidentiality>(this, DocumentConfidentiality.V, code);
         throw new FHIRException("Unknown DocumentConfidentiality code '"+codeString+"'");
         }
     public String toCode(DocumentConfidentiality code) {
@@ -433,22 +433,22 @@ public class Composition extends DomainResource {
           return CompositionAttestationMode.OFFICIAL;
         throw new IllegalArgumentException("Unknown CompositionAttestationMode code '"+codeString+"'");
         }
-        public Enumeration<CompositionAttestationMode> fromType(Base code) throws FHIRException {
+        public Enumeration<CompositionAttestationMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<CompositionAttestationMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<CompositionAttestationMode>(this, CompositionAttestationMode.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<CompositionAttestationMode>(this, CompositionAttestationMode.NULL, code);
         if ("personal".equals(codeString))
-          return new Enumeration<CompositionAttestationMode>(this, CompositionAttestationMode.PERSONAL);
+          return new Enumeration<CompositionAttestationMode>(this, CompositionAttestationMode.PERSONAL, code);
         if ("professional".equals(codeString))
-          return new Enumeration<CompositionAttestationMode>(this, CompositionAttestationMode.PROFESSIONAL);
+          return new Enumeration<CompositionAttestationMode>(this, CompositionAttestationMode.PROFESSIONAL, code);
         if ("legal".equals(codeString))
-          return new Enumeration<CompositionAttestationMode>(this, CompositionAttestationMode.LEGAL);
+          return new Enumeration<CompositionAttestationMode>(this, CompositionAttestationMode.LEGAL, code);
         if ("official".equals(codeString))
-          return new Enumeration<CompositionAttestationMode>(this, CompositionAttestationMode.OFFICIAL);
+          return new Enumeration<CompositionAttestationMode>(this, CompositionAttestationMode.OFFICIAL, code);
         throw new FHIRException("Unknown CompositionAttestationMode code '"+codeString+"'");
         }
     public String toCode(CompositionAttestationMode code) {
@@ -561,22 +561,22 @@ public class Composition extends DomainResource {
           return DocumentRelationshipType.APPENDS;
         throw new IllegalArgumentException("Unknown DocumentRelationshipType code '"+codeString+"'");
         }
-        public Enumeration<DocumentRelationshipType> fromType(Base code) throws FHIRException {
+        public Enumeration<DocumentRelationshipType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<DocumentRelationshipType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.NULL, code);
         if ("replaces".equals(codeString))
-          return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.REPLACES);
+          return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.REPLACES, code);
         if ("transforms".equals(codeString))
-          return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.TRANSFORMS);
+          return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.TRANSFORMS, code);
         if ("signs".equals(codeString))
-          return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.SIGNS);
+          return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.SIGNS, code);
         if ("appends".equals(codeString))
-          return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.APPENDS);
+          return new Enumeration<DocumentRelationshipType>(this, DocumentRelationshipType.APPENDS, code);
         throw new FHIRException("Unknown DocumentRelationshipType code '"+codeString+"'");
         }
     public String toCode(DocumentRelationshipType code) {
@@ -677,20 +677,20 @@ public class Composition extends DomainResource {
           return SectionMode.CHANGES;
         throw new IllegalArgumentException("Unknown SectionMode code '"+codeString+"'");
         }
-        public Enumeration<SectionMode> fromType(Base code) throws FHIRException {
+        public Enumeration<SectionMode> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<SectionMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<SectionMode>(this, SectionMode.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<SectionMode>(this, SectionMode.NULL, code);
         if ("working".equals(codeString))
-          return new Enumeration<SectionMode>(this, SectionMode.WORKING);
+          return new Enumeration<SectionMode>(this, SectionMode.WORKING, code);
         if ("snapshot".equals(codeString))
-          return new Enumeration<SectionMode>(this, SectionMode.SNAPSHOT);
+          return new Enumeration<SectionMode>(this, SectionMode.SNAPSHOT, code);
         if ("changes".equals(codeString))
-          return new Enumeration<SectionMode>(this, SectionMode.CHANGES);
+          return new Enumeration<SectionMode>(this, SectionMode.CHANGES, code);
         throw new FHIRException("Unknown SectionMode code '"+codeString+"'");
         }
     public String toCode(SectionMode code) {

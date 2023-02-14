@@ -3,7 +3,6 @@ package org.hl7.fhir.convertors.misc.xver;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_30;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_40;
@@ -14,7 +13,6 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
-import org.hl7.fhir.convertors.misc.xver.CorePackageVersionConvertor.BaseConvertor;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.model.JsonArray;

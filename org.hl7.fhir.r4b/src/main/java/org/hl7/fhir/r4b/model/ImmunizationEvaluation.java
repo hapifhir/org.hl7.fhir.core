@@ -123,18 +123,18 @@ public class ImmunizationEvaluation extends DomainResource {
           return ImmunizationEvaluationStatusCodes.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown ImmunizationEvaluationStatusCodes code '"+codeString+"'");
         }
-        public Enumeration<ImmunizationEvaluationStatusCodes> fromType(Base code) throws FHIRException {
+        public Enumeration<ImmunizationEvaluationStatusCodes> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<ImmunizationEvaluationStatusCodes>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<ImmunizationEvaluationStatusCodes>(this, ImmunizationEvaluationStatusCodes.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<ImmunizationEvaluationStatusCodes>(this, ImmunizationEvaluationStatusCodes.NULL, code);
         if ("completed".equals(codeString))
-          return new Enumeration<ImmunizationEvaluationStatusCodes>(this, ImmunizationEvaluationStatusCodes.COMPLETED);
+          return new Enumeration<ImmunizationEvaluationStatusCodes>(this, ImmunizationEvaluationStatusCodes.COMPLETED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<ImmunizationEvaluationStatusCodes>(this, ImmunizationEvaluationStatusCodes.ENTEREDINERROR);
+          return new Enumeration<ImmunizationEvaluationStatusCodes>(this, ImmunizationEvaluationStatusCodes.ENTEREDINERROR, code);
         throw new FHIRException("Unknown ImmunizationEvaluationStatusCodes code '"+codeString+"'");
         }
     public String toCode(ImmunizationEvaluationStatusCodes code) {
@@ -1267,4 +1267,3 @@ public class ImmunizationEvaluation extends DomainResource {
 
 
 }
-

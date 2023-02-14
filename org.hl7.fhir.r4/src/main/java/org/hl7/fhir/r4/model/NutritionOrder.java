@@ -181,28 +181,28 @@ public class NutritionOrder extends DomainResource {
           return NutritionOrderStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown NutritionOrderStatus code '"+codeString+"'");
         }
-        public Enumeration<NutritionOrderStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<NutritionOrderStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<NutritionOrderStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<NutritionOrderStatus>(this, NutritionOrderStatus.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<NutritionOrderStatus>(this, NutritionOrderStatus.NULL, code);
         if ("draft".equals(codeString))
-          return new Enumeration<NutritionOrderStatus>(this, NutritionOrderStatus.DRAFT);
+          return new Enumeration<NutritionOrderStatus>(this, NutritionOrderStatus.DRAFT, code);
         if ("active".equals(codeString))
-          return new Enumeration<NutritionOrderStatus>(this, NutritionOrderStatus.ACTIVE);
+          return new Enumeration<NutritionOrderStatus>(this, NutritionOrderStatus.ACTIVE, code);
         if ("on-hold".equals(codeString))
-          return new Enumeration<NutritionOrderStatus>(this, NutritionOrderStatus.ONHOLD);
+          return new Enumeration<NutritionOrderStatus>(this, NutritionOrderStatus.ONHOLD, code);
         if ("revoked".equals(codeString))
-          return new Enumeration<NutritionOrderStatus>(this, NutritionOrderStatus.REVOKED);
+          return new Enumeration<NutritionOrderStatus>(this, NutritionOrderStatus.REVOKED, code);
         if ("completed".equals(codeString))
-          return new Enumeration<NutritionOrderStatus>(this, NutritionOrderStatus.COMPLETED);
+          return new Enumeration<NutritionOrderStatus>(this, NutritionOrderStatus.COMPLETED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<NutritionOrderStatus>(this, NutritionOrderStatus.ENTEREDINERROR);
+          return new Enumeration<NutritionOrderStatus>(this, NutritionOrderStatus.ENTEREDINERROR, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<NutritionOrderStatus>(this, NutritionOrderStatus.UNKNOWN);
+          return new Enumeration<NutritionOrderStatus>(this, NutritionOrderStatus.UNKNOWN, code);
         throw new FHIRException("Unknown NutritionOrderStatus code '"+codeString+"'");
         }
     public String toCode(NutritionOrderStatus code) {
@@ -381,32 +381,32 @@ public class NutritionOrder extends DomainResource {
           return NutritiionOrderIntent.OPTION;
         throw new IllegalArgumentException("Unknown NutritiionOrderIntent code '"+codeString+"'");
         }
-        public Enumeration<NutritiionOrderIntent> fromType(Base code) throws FHIRException {
+        public Enumeration<NutritiionOrderIntent> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<NutritiionOrderIntent>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<NutritiionOrderIntent>(this, NutritiionOrderIntent.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<NutritiionOrderIntent>(this, NutritiionOrderIntent.NULL, code);
         if ("proposal".equals(codeString))
-          return new Enumeration<NutritiionOrderIntent>(this, NutritiionOrderIntent.PROPOSAL);
+          return new Enumeration<NutritiionOrderIntent>(this, NutritiionOrderIntent.PROPOSAL, code);
         if ("plan".equals(codeString))
-          return new Enumeration<NutritiionOrderIntent>(this, NutritiionOrderIntent.PLAN);
+          return new Enumeration<NutritiionOrderIntent>(this, NutritiionOrderIntent.PLAN, code);
         if ("directive".equals(codeString))
-          return new Enumeration<NutritiionOrderIntent>(this, NutritiionOrderIntent.DIRECTIVE);
+          return new Enumeration<NutritiionOrderIntent>(this, NutritiionOrderIntent.DIRECTIVE, code);
         if ("order".equals(codeString))
-          return new Enumeration<NutritiionOrderIntent>(this, NutritiionOrderIntent.ORDER);
+          return new Enumeration<NutritiionOrderIntent>(this, NutritiionOrderIntent.ORDER, code);
         if ("original-order".equals(codeString))
-          return new Enumeration<NutritiionOrderIntent>(this, NutritiionOrderIntent.ORIGINALORDER);
+          return new Enumeration<NutritiionOrderIntent>(this, NutritiionOrderIntent.ORIGINALORDER, code);
         if ("reflex-order".equals(codeString))
-          return new Enumeration<NutritiionOrderIntent>(this, NutritiionOrderIntent.REFLEXORDER);
+          return new Enumeration<NutritiionOrderIntent>(this, NutritiionOrderIntent.REFLEXORDER, code);
         if ("filler-order".equals(codeString))
-          return new Enumeration<NutritiionOrderIntent>(this, NutritiionOrderIntent.FILLERORDER);
+          return new Enumeration<NutritiionOrderIntent>(this, NutritiionOrderIntent.FILLERORDER, code);
         if ("instance-order".equals(codeString))
-          return new Enumeration<NutritiionOrderIntent>(this, NutritiionOrderIntent.INSTANCEORDER);
+          return new Enumeration<NutritiionOrderIntent>(this, NutritiionOrderIntent.INSTANCEORDER, code);
         if ("option".equals(codeString))
-          return new Enumeration<NutritiionOrderIntent>(this, NutritiionOrderIntent.OPTION);
+          return new Enumeration<NutritiionOrderIntent>(this, NutritiionOrderIntent.OPTION, code);
         throw new FHIRException("Unknown NutritiionOrderIntent code '"+codeString+"'");
         }
     public String toCode(NutritiionOrderIntent code) {

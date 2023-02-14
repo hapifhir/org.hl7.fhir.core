@@ -137,12 +137,12 @@ public class MessageDefinition extends MetadataResource {
           return MessageSignificanceCategory.NOTIFICATION;
         throw new IllegalArgumentException("Unknown MessageSignificanceCategory code '"+codeString+"'");
         }
-        public Enumeration<MessageSignificanceCategory> fromType(Base code) throws FHIRException {
+        public Enumeration<MessageSignificanceCategory> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<MessageSignificanceCategory>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("Consequence".equals(codeString))

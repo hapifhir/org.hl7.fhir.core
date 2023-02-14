@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>ca.uhn.hapi.fhir</groupId>
 		<artifactId>org.hl7.fhir.core</artifactId>
-		<version>5.6.89-SNAPSHOT</version>
+		<version>5.6.98-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -70,7 +70,12 @@
 			<version>4.9.0</version>
 			<optional>true</optional>
 		</dependency>
-
+		<dependency>
+			<groupId>org.hl7.fhir.testcases</groupId>
+			<artifactId>fhir-test-cases</artifactId>
+			<version>${validator_test_case_version}</version>
+			<scope>test</scope>
+		</dependency>
 		<!-- Apache POI -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>

@@ -148,22 +148,22 @@ public class VisionPrescription extends DomainResource {
           return VisionBase.OUT;
         throw new IllegalArgumentException("Unknown VisionBase code '"+codeString+"'");
         }
-        public Enumeration<VisionBase> fromType(Base code) throws FHIRException {
+        public Enumeration<VisionBase> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<VisionBase>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<VisionBase>(this, VisionBase.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<VisionBase>(this, VisionBase.NULL, code);
         if ("up".equals(codeString))
-          return new Enumeration<VisionBase>(this, VisionBase.UP);
+          return new Enumeration<VisionBase>(this, VisionBase.UP, code);
         if ("down".equals(codeString))
-          return new Enumeration<VisionBase>(this, VisionBase.DOWN);
+          return new Enumeration<VisionBase>(this, VisionBase.DOWN, code);
         if ("in".equals(codeString))
-          return new Enumeration<VisionBase>(this, VisionBase.IN);
+          return new Enumeration<VisionBase>(this, VisionBase.IN, code);
         if ("out".equals(codeString))
-          return new Enumeration<VisionBase>(this, VisionBase.OUT);
+          return new Enumeration<VisionBase>(this, VisionBase.OUT, code);
         throw new FHIRException("Unknown VisionBase code '"+codeString+"'");
         }
     public String toCode(VisionBase code) {
@@ -252,18 +252,18 @@ public class VisionPrescription extends DomainResource {
           return VisionEyes.LEFT;
         throw new IllegalArgumentException("Unknown VisionEyes code '"+codeString+"'");
         }
-        public Enumeration<VisionEyes> fromType(Base code) throws FHIRException {
+        public Enumeration<VisionEyes> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<VisionEyes>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+            return new Enumeration<VisionEyes>(this, VisionEyes.NULL, code);
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<VisionEyes>(this, VisionEyes.NULL, code);
         if ("right".equals(codeString))
-          return new Enumeration<VisionEyes>(this, VisionEyes.RIGHT);
+          return new Enumeration<VisionEyes>(this, VisionEyes.RIGHT, code);
         if ("left".equals(codeString))
-          return new Enumeration<VisionEyes>(this, VisionEyes.LEFT);
+          return new Enumeration<VisionEyes>(this, VisionEyes.LEFT, code);
         throw new FHIRException("Unknown VisionEyes code '"+codeString+"'");
         }
     public String toCode(VisionEyes code) {
@@ -2655,4 +2655,3 @@ public class VisionPrescription extends DomainResource {
 
 
 }
-

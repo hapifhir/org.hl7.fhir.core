@@ -124,6 +124,7 @@ public abstract class Base implements Serializable, IBase, IElement {
     if (userData != null)
       userData.remove(name);
   }
+ 
   
   public void setUserDataINN(String name, Object value) {
     if (value == null)
@@ -419,6 +420,8 @@ public abstract class Base implements Serializable, IBase, IElement {
     return null; 
   }
 
+  public abstract Base copy();
+  
   public void copyValues(Base dst) {   
   }
 

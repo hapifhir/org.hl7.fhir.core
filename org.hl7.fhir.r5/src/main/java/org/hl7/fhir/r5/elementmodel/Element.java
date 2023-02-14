@@ -59,6 +59,7 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.utilities.ElementDecoration;
 import org.hl7.fhir.utilities.ElementDecoration.DecorationType;
+import org.hl7.fhir.utilities.SourceLocation;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -509,8 +510,12 @@ public class Element extends Base {
   public Base makeProperty(int hash, String name) throws FHIRException {
     if (isPrimitive() && (hash == "value".hashCode())) {
       return new StringType(value);
+    } else {
+      return makeElement(name);
     }
+  }
 
+  public Element makeElement(String name) throws FHIRException {
     if (children == null)
       children = new ArrayList<Element>();
     
@@ -538,7 +543,30 @@ public class Element extends Base {
       
     throw new Error("Unrecognised name "+name+" on "+this.name); 
   }
-  
+
+  public Element forceElement(String name) throws FHIRException {
+    if (children == null)
+      children = new ArrayList<Element>();
+    
+    // look through existing children
+    for (Element child : children) {
+      if (child.getName().equals(name)) {
+        return child;
+      }
+    }
+
+    for (Property p : property.getChildProperties(this.name, type)) {
+      if (p.getName().equals(name)) {
+        Element ne = new Element(name, p);
+        children.add(ne);
+        return ne;
+      }
+    }
+      
+    throw new Error("Unrecognised name "+name+" on "+this.name); 
+  }
+
+
 	private int maxToInt(String max) {
     if (max.equals("*"))
       return Integer.MAX_VALUE;
@@ -597,6 +625,12 @@ public class Element extends Base {
 		this.col = col;	
 		return this;
 	}
+
+  public Element markLocation(SourceLocation loc) {
+    this.line = loc.getLine();
+    this.col = loc.getColumn(); 
+    return this;
+  }
 
 	public void clearDecorations() {
 	  clearUserData("fhir.decorations");
@@ -1258,5 +1292,74 @@ public class Element extends Base {
       return fhirType();
     }
   }
+
+  public void setElement(String string, Element map) {
+    throw new Error("Not done yet");    
+  }
+
+  public Element addElement(String name) {
+    if (children == null)
+      children = new ArrayList<Element>();
+
+    for (Property p : property.getChildProperties(this.name, type)) {
+      if (p.getName().equals(name)) {
+        if (!p.isList()) {
+          throw new Error(name+" on "+this.name+" is not a list, so can't add an element"); 
+        }
+        Element ne = new Element(name, p);
+        children.add(ne);
+        return ne;
+      }
+    }
+
+    throw new Error("Unrecognised name "+name+" on "+this.name); 
+  }
+
+  @Override
+  public Base copy() {
+    Element element = new Element(this);
+    this.copyValues(element);
+    return element;
+  }
+
+  @Override
+  public void copyValues(Base dst) {
+    super.copyValues(dst);
+    
+    Element dest = (Element) dst;
+    if (comments != null) {
+      dest.comments = new ArrayList<>();
+      dest.comments.addAll(comments);
+    } else {
+      dest.comments = null;
+    }
+    dest.value = value;
+    if (children != null) {
+      dest.children = new ArrayList<>();
+      dest.children.addAll(children);
+    } else {
+      dest.children = null;
+    }
+    dest.line = line;
+    dest.col = col;
+    dest.xhtml = xhtml;
+    dest.explicitType = explicitType;
+    dest.hasParentForValidator = false;
+    dest.path = path;
+    dest.messages = null;
+    dest.prohibited = prohibited;
+    dest.required = required;
+    dest.childMap = null;
+    dest.descendentCount = descendentCount;
+    dest.instanceId = instanceId;
+    dest.isNull = isNull;
+    dest.source = source;
+  }
+  
+  public Base setProperty(String name, Base value) throws FHIRException {
+    setChildValue(name, value.primitiveValue());
+    return this;
+  }
+  
   
 }

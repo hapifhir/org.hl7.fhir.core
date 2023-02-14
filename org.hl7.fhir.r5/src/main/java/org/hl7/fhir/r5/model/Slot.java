@@ -159,24 +159,24 @@ public class Slot extends DomainResource {
           return SlotStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown SlotStatus code '"+codeString+"'");
         }
-        public Enumeration<SlotStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<SlotStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<SlotStatus>(this);
+            return new Enumeration<SlotStatus>(this, SlotStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<SlotStatus>(this, SlotStatus.NULL, code);
         if ("busy".equals(codeString))
-          return new Enumeration<SlotStatus>(this, SlotStatus.BUSY);
+          return new Enumeration<SlotStatus>(this, SlotStatus.BUSY, code);
         if ("free".equals(codeString))
-          return new Enumeration<SlotStatus>(this, SlotStatus.FREE);
+          return new Enumeration<SlotStatus>(this, SlotStatus.FREE, code);
         if ("busy-unavailable".equals(codeString))
-          return new Enumeration<SlotStatus>(this, SlotStatus.BUSYUNAVAILABLE);
+          return new Enumeration<SlotStatus>(this, SlotStatus.BUSYUNAVAILABLE, code);
         if ("busy-tentative".equals(codeString))
-          return new Enumeration<SlotStatus>(this, SlotStatus.BUSYTENTATIVE);
+          return new Enumeration<SlotStatus>(this, SlotStatus.BUSYTENTATIVE, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<SlotStatus>(this, SlotStatus.ENTEREDINERROR);
+          return new Enumeration<SlotStatus>(this, SlotStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown SlotStatus code '"+codeString+"'");
         }
     public String toCode(SlotStatus code) {
@@ -1300,4 +1300,3 @@ public class Slot extends DomainResource {
 
 
 }
-

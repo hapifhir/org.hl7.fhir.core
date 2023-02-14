@@ -18,8 +18,8 @@ import org.slf4j.LoggerFactory;
 public abstract class BasePackageCacheManager implements IPackageCacheManager {
 
   private static final Logger ourLog = LoggerFactory.getLogger(BasePackageCacheManager.class);
-  private List<String> myPackageServers = new ArrayList<>();
-  private Function<String, PackageClient> myClientFactory = address -> new PackageClient(address);
+  protected List<PackageServer> myPackageServers = new ArrayList<>();
+  private Function<PackageServer, PackageClient> myClientFactory = server -> new PackageClient(server);
   protected boolean silent;
 
   /**
@@ -32,20 +32,20 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
   /**
    * Provide a new client factory implementation
    */
-  public void setClientFactory(Function<String, PackageClient> theClientFactory) {
+  public void setClientFactory(Function<PackageServer, PackageClient> theClientFactory) {
     Validate.notNull(theClientFactory, "theClientFactory must not be null");
     myClientFactory = theClientFactory;
   }
 
-  public List<String> getPackageServers() {
+  public List<PackageServer> getPackageServers() {
     return myPackageServers;
   }
 
   /**
    * Add a package server that can be used to fetch remote packages
    */
-  public void addPackageServer(@Nonnull String thePackageServer) {
-    Validate.notBlank(thePackageServer, "thePackageServer must not be null or empty");
+  public void addPackageServer(@Nonnull PackageServer thePackageServer) {
+    Validate.notNull(thePackageServer, "thePackageServer must not be null or empty");
     if (!myPackageServers.contains(thePackageServer)) {
       myPackageServers.add(thePackageServer);
     }
@@ -66,8 +66,8 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
   @Nullable
   protected InputStreamWithSrc loadFromPackageServer(String id, String version) {
 
-    for (String nextPackageServer : getPackageServers()) {
-      if (okToUsePackageServer(nextPackageServer, id)) {
+    for (PackageServer nextPackageServer : getPackageServers()) {
+      if (okToUsePackageServer(nextPackageServer.getUrl(), id)) {
         PackageClient packageClient = myClientFactory.apply(nextPackageServer);
         try {
           if (Utilities.noString(version)) {
@@ -110,7 +110,7 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
       return npm.canonical();
     }
 
-    for (String nextPackageServer : getPackageServers()) {
+    for (PackageServer nextPackageServer : getPackageServers()) {
       result = getPackageUrl(packageId, nextPackageServer);
       if (result != null) {
         return result;
@@ -121,7 +121,7 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
   }
 
 
-  private String getPackageUrl(String packageId, String server) throws IOException {
+  private String getPackageUrl(String packageId, PackageServer server) throws IOException {
     PackageClient pc = myClientFactory.apply(server);
     List<PackageInfo> res = pc.search(packageId, null, null, false);
     if (res.size() == 0) {
@@ -136,7 +136,7 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
   public String getPackageId(String canonicalUrl) throws IOException {
     String result = null;
 
-    for (String nextPackageServer : getPackageServers()) {
+    for (PackageServer nextPackageServer : getPackageServers()) {
       result = getPackageId(canonicalUrl, nextPackageServer);
       if (result != null) {
         break;
@@ -146,7 +146,7 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
     return result;
   }
 
-  private String getPackageId(String canonical, String server) throws IOException {
+  private String getPackageId(String canonical, PackageServer server) throws IOException {
     if (canonical == null) {
       return null;
     }

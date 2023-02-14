@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.conv43_50.resources43_50;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableConcept43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Identifier43_50;
@@ -19,6 +20,7 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Dosage43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.CodeableReference;
 
 /*
@@ -295,9 +297,10 @@ public class ActivityDefinition43_50 {
       case SUPPLYREQUEST:
         tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.SUPPLYREQUEST);
         break;
-//      case TASK:
-//        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.);
-//        break;
+      case TASK:
+        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.NULL);
+        tgt.addExtension(VersionConvertorConstants.EXT_ACTUAL_RESOURCE_NAME, new CodeType("Task"));
+        break;
       case VISIONPRESCRIPTION:
         tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.VISIONPRESCRIPTION);
         break;
@@ -312,8 +315,11 @@ public class ActivityDefinition43_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.ActivityDefinition.RequestResourceType> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.ActivityDefinition.RequestResourceTypeEnumFactory());
-    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    switch (src.getValue()) {
+    ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt, VersionConvertorConstants.EXT_ACTUAL_RESOURCE_NAME);
+    if (src.hasExtension(VersionConvertorConstants.EXT_ACTUAL_RESOURCE_NAME)) {
+      tgt.setValueAsString(src.getExtensionString(VersionConvertorConstants.EXT_ACTUAL_RESOURCE_NAME));
+    } else {
+      switch (src.getValue()) {
       case APPOINTMENT:
         tgt.setValue(org.hl7.fhir.r4b.model.ActivityDefinition.RequestResourceType.APPOINTMENT);
         break;
@@ -353,15 +359,13 @@ public class ActivityDefinition43_50 {
       case SUPPLYREQUEST:
         tgt.setValue(org.hl7.fhir.r4b.model.ActivityDefinition.RequestResourceType.SUPPLYREQUEST);
         break;
-//      case TASK:
-//        tgt.setValue(org.hl7.fhir.r4b.model.ActivityDefinition.RequestResourceType.TASK);
-//        break;
       case VISIONPRESCRIPTION:
         tgt.setValue(org.hl7.fhir.r4b.model.ActivityDefinition.RequestResourceType.VISIONPRESCRIPTION);
         break;
       default:
         tgt.setValue(org.hl7.fhir.r4b.model.ActivityDefinition.RequestResourceType.NULL);
         break;
+      }
     }
     return tgt;
   }

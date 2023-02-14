@@ -184,12 +184,12 @@ public class Timing extends Type implements ICompositeType {
           return UnitsOfTime.A;
         throw new IllegalArgumentException("Unknown UnitsOfTime code '"+codeString+"'");
         }
-        public Enumeration<UnitsOfTime> fromType(Base code) throws FHIRException {
+        public Enumeration<UnitsOfTime> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<UnitsOfTime>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("s".equals(codeString))
@@ -360,12 +360,12 @@ public class Timing extends Type implements ICompositeType {
           return DayOfWeek.SUN;
         throw new IllegalArgumentException("Unknown DayOfWeek code '"+codeString+"'");
         }
-        public Enumeration<DayOfWeek> fromType(Base code) throws FHIRException {
+        public Enumeration<DayOfWeek> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<DayOfWeek>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("mon".equals(codeString))
@@ -680,12 +680,12 @@ public class Timing extends Type implements ICompositeType {
           return EventTiming.PCV;
         throw new IllegalArgumentException("Unknown EventTiming code '"+codeString+"'");
         }
-        public Enumeration<EventTiming> fromType(Base code) throws FHIRException {
+        public Enumeration<EventTiming> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<EventTiming>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("MORN".equals(codeString))

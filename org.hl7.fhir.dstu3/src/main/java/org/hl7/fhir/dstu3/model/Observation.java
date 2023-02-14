@@ -195,12 +195,12 @@ public class Observation extends DomainResource {
           return ObservationStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown ObservationStatus code '"+codeString+"'");
         }
-        public Enumeration<ObservationStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<ObservationStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ObservationStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("registered".equals(codeString))
@@ -363,12 +363,12 @@ public class Observation extends DomainResource {
           return ObservationRelationshipType.INTERFEREDBY;
         throw new IllegalArgumentException("Unknown ObservationRelationshipType code '"+codeString+"'");
         }
-        public Enumeration<ObservationRelationshipType> fromType(Base code) throws FHIRException {
+        public Enumeration<ObservationRelationshipType> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<ObservationRelationshipType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
+          String codeString = code.asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("has-member".equals(codeString))

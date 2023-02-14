@@ -405,6 +405,8 @@ public class VersionConvertorResourceNameMapper {
         return org.hl7.fhir.dstu3.model.MedicationRequest.class.getSimpleName();
       case "MedicationUsage":
         return org.hl7.fhir.dstu3.model.MedicationStatement.class.getSimpleName();
+      case "MedicationStatement":
+        return org.hl7.fhir.dstu3.model.MedicationStatement.class.getSimpleName();
       case "MessageDefinition":
         return org.hl7.fhir.dstu3.model.MessageDefinition.class.getSimpleName();
       case "MessageHeader":

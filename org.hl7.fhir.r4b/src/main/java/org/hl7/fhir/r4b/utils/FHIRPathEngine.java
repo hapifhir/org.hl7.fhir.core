@@ -62,6 +62,7 @@ import org.hl7.fhir.utilities.MergedList;
 import org.hl7.fhir.utilities.MergedList.MergeNode;
 import org.hl7.fhir.utilities.SourceLocation;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.NodeType;
@@ -257,6 +258,8 @@ public class FHIRPathEngine {
   private boolean allowPolymorphicNames;
   private boolean doImplicitStringConversion;
   private boolean liquidMode; // in liquid mode, || terminates the expression and hands the parser back to the host
+  private boolean doNotEnforceAsSingletonRule;
+  private boolean doNotEnforceAsCaseSensitive;
 
   // if the fhir path expressions are allowed to use constants beyond those defined in the specification
   // the application can implement them by providing a constant resolver 
@@ -366,8 +369,15 @@ public class FHIRPathEngine {
         primitiveTypes.add(sd.getName());
       }
     }
+    initFlags();
   }
 
+  private void initFlags() {
+    if (!VersionUtilities.isR5VerOrLater(worker.getVersion())) {
+      doNotEnforceAsCaseSensitive = true;
+      doNotEnforceAsSingletonRule = true;
+    }
+  }
 
   // --- 3 methods to override in children -------------------------------------------------------
   // if you don't override, it falls through to the using the base reference implementation 
@@ -448,6 +458,22 @@ public class FHIRPathEngine {
 
   public void setDoImplicitStringConversion(boolean doImplicitStringConversion) {
     this.doImplicitStringConversion = doImplicitStringConversion;
+  }
+
+  public boolean isDoNotEnforceAsSingletonRule() {
+    return doNotEnforceAsSingletonRule;
+  }
+
+  public void setDoNotEnforceAsSingletonRule(boolean doNotEnforceAsSingletonRule) {
+    this.doNotEnforceAsSingletonRule = doNotEnforceAsSingletonRule;
+  }
+
+  public boolean isDoNotEnforceAsCaseSensitive() {
+    return doNotEnforceAsCaseSensitive;
+  }
+
+  public void setDoNotEnforceAsCaseSensitive(boolean doNotEnforceAsCaseSensitive) {
+    this.doNotEnforceAsCaseSensitive = doNotEnforceAsCaseSensitive;
   }
 
   // --- public API -------------------------------------------------------
@@ -1782,8 +1808,14 @@ public class FHIRPathEngine {
       return result;
     } else {
       String tn = convertToString(right);
+      if (!isKnownType(tn)) {
+        throw new PathEngineException("The type "+tn+" is not valid");
+      }
+      if (!doNotEnforceAsSingletonRule && left.size() > 1) {
+        throw new PathEngineException("Attempt to use as on more than one item ("+left.size()+", '"+expr.toString()+"')");
+      }
       for (Base nextLeft : left) {
-        if (tn.equals(nextLeft.fhirType())) {
+        if (compareTypeNames(tn, nextLeft.fhirType())) {
           result.add(nextLeft);
         }
       }
@@ -1791,6 +1823,41 @@ public class FHIRPathEngine {
     return result;
   }
 
+  private boolean compareTypeNames(String left, String right) {
+    if (doNotEnforceAsCaseSensitive) {
+      return left.equalsIgnoreCase(right);            
+    } else {
+      return left.equals(right);      
+    }
+  }
+
+  private boolean isKnownType(String tn) {
+    if (!tn.contains(".")) {
+      if (Utilities.existsInList(tn, "String", "Boolean", "Integer", "Decimal", "Quantity", "DateTime", "Time", "SimpleTypeInfo", "ClassInfo")) {
+        return true;
+      }
+      try {
+        return worker.fetchTypeDefinition(tn) != null;
+      } catch (Exception e) {
+        return false;
+      }
+    }
+    String[] t = tn.split("\\.");
+    if (t.length != 2) {
+      return false;
+    }
+    if ("System".equals(t[0])) {
+      return Utilities.existsInList(t[1], "String", "Boolean", "Integer", "Decimal", "Quantity", "DateTime", "Time", "SimpleTypeInfo", "ClassInfo");
+    } else if ("FHIR".equals(t[0])) {      
+      try {
+        return worker.fetchTypeDefinition(t[1]) != null;
+      } catch (Exception e) {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
 
   private List<Base> opIs(List<Base> left, List<Base> right, ExpressionNode expr) {
     List<Base> result = new ArrayList<Base>();
@@ -3516,7 +3583,7 @@ public class FHIRPathEngine {
     case Aggregate : return funcAggregate(context, focus, exp);
     case Item : return funcItem(context, focus, exp);
     case As : return funcAs(context, focus, exp);
-    case OfType : return funcAs(context, focus, exp);
+    case OfType : return funcOfType(context, focus, exp);
     case Type : return funcType(context, focus, exp);
     case Is : return funcIs(context, focus, exp);
     case Single : return funcSingle(context, focus, exp);
@@ -4546,6 +4613,54 @@ public class FHIRPathEngine {
     } else {
       tn = "FHIR."+expr.getParameters().get(0).getName();
     }
+    if (!isKnownType(tn)) {
+      throw new PathEngineException("The type "+tn+" is not valid");
+    }
+    if (!doNotEnforceAsSingletonRule && focus.size() > 1) {
+      throw new PathEngineException("Attempt to use as() on more than one item ("+focus.size()+")");
+    }
+    
+    for (Base b : focus) {
+      if (tn.startsWith("System.")) {
+        if (b instanceof Element &&((Element) b).isDisallowExtensions()) { 
+          if (b.hasType(tn.substring(7))) {
+            result.add(b);
+          }
+        }
+
+      } else if (tn.startsWith("FHIR.")) {
+        String tnp = tn.substring(5);
+        if (b.fhirType().equals(tnp)) {
+          result.add(b);          
+        } else {
+          StructureDefinition sd = worker.fetchTypeDefinition(b.fhirType());
+          while (sd != null) {
+            if (compareTypeNames(tnp, sd.getType())) {
+              result.add(b);
+              break;
+            }
+            sd = sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE ? null : worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
+          }
+        }
+      }
+    }
+    return result;
+  }
+  
+
+  private List<Base> funcOfType(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    List<Base> result = new ArrayList<Base>();
+    String tn;
+    if (expr.getParameters().get(0).getInner() != null) {
+      tn = expr.getParameters().get(0).getName()+"."+expr.getParameters().get(0).getInner().getName();
+    } else {
+      tn = "FHIR."+expr.getParameters().get(0).getName();
+    }
+    if (!isKnownType(tn)) {
+      throw new PathEngineException("The type "+tn+" is not valid");
+    }
+
+    
     for (Base b : focus) {
       if (tn.startsWith("System.")) {
         if (b instanceof Element &&((Element) b).isDisallowExtensions()) { 
@@ -4565,7 +4680,7 @@ public class FHIRPathEngine {
               result.add(b);
               break;
             }
-            sd = worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+            sd = sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE ? null : worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
           }
         }
       }

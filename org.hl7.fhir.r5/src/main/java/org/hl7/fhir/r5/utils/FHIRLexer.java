@@ -50,20 +50,31 @@ import org.hl7.fhir.utilities.Utilities;
 public class FHIRLexer {
   public class FHIRLexerException extends FHIRException {
 
-    public FHIRLexerException() {
-      super();
-    }
+    private SourceLocation location;
 
-    public FHIRLexerException(String message, Throwable cause) {
-      super(message, cause);
-    }
+//    public FHIRLexerException() {
+//      super();
+//    }
+//
+//    public FHIRLexerException(String message, Throwable cause) {
+//      super(message, cause);
+//    }
+//
+//    public FHIRLexerException(String message) {
+//      super(message);
+//    }
+//
+//    public FHIRLexerException(Throwable cause) {
+//      super(cause);
+//    }
 
-    public FHIRLexerException(String message) {
+    public FHIRLexerException(String message, SourceLocation location) {
       super(message);
+      this.location = location;
     }
 
-    public FHIRLexerException(Throwable cause) {
-      super(cause);
+    public SourceLocation getLocation() {
+      return location;
     }
 
   }
@@ -77,6 +88,7 @@ public class FHIRLexer {
   private int id;
   private String name;
   private boolean liquidMode; // in liquid mode, || terminates the expression and hands the parser back to the host
+  private SourceLocation commentLocation;
 
   public FHIRLexer(String source, String name) throws FHIRLexerException {
     this.source = source == null ? "" : source;
@@ -144,11 +156,11 @@ public class FHIRLexer {
   }
 
   public FHIRLexerException error(String msg) {
-    return error(msg, currentLocation.toString());
+    return error(msg, currentLocation.toString(), currentLocation);
   }
 
-  public FHIRLexerException error(String msg, String location) {
-    return new FHIRLexerException("Error @"+location+": "+msg);
+  public FHIRLexerException error(String msg, String location, SourceLocation loc) {
+    return new FHIRLexerException("Error @"+location+": "+msg, loc);
   }
 
   public void next() throws FHIRLexerException {
@@ -298,12 +310,14 @@ public class FHIRLexer {
     boolean done = false;
     while (cursor < source.length() && !done) {
       if (cursor < source.length() -1 && "//".equals(source.substring(cursor, cursor+2))) {
+        commentLocation = currentLocation;
         int start = cursor+2;
         while (cursor < source.length() && !((source.charAt(cursor) == '\r') || source.charAt(cursor) == '\n')) { 
           cursor++;        
         }
         comments.add(source.substring(start, cursor).trim());
       } else if (cursor < source.length() - 1 && "/*".equals(source.substring(cursor, cursor+2))) {
+        commentLocation = currentLocation;
         int start = cursor+2;
         while (cursor < source.length() - 1 && !"*/".equals(source.substring(cursor, cursor+2))) { 
           last13 = currentLocation.checkChar(source.charAt(cursor), last13);
@@ -447,7 +461,7 @@ public class FHIRLexer {
           i = i + 4;
           break;
         default:
-          throw new FHIRLexerException("Unknown character escape \\"+s.charAt(i));
+          throw new FHIRLexerException("Unknown character escape \\"+s.charAt(i), currentLocation);
         }
       } else {
         b.append(ch);
@@ -496,7 +510,7 @@ public class FHIRLexer {
           i = i + 4;
           break;
         default:
-          throw new FHIRLexerException("Unknown character escape \\"+s.charAt(i));
+          throw new FHIRLexerException("Unknown character escape \\"+s.charAt(i), currentLocation);
         }
       } else {
         b.append(ch);
@@ -532,6 +546,9 @@ public class FHIRLexer {
   }
   public void setLiquidMode(boolean liquidMode) {
     this.liquidMode = liquidMode;
+  }
+  public SourceLocation getCommentLocation() {
+    return this.commentLocation;
   }
 
 }

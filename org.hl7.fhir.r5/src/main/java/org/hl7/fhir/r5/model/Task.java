@@ -207,32 +207,32 @@ public class Task extends DomainResource {
           return TaskIntent.OPTION;
         throw new IllegalArgumentException("Unknown TaskIntent code '"+codeString+"'");
         }
-        public Enumeration<TaskIntent> fromType(Base code) throws FHIRException {
+        public Enumeration<TaskIntent> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<TaskIntent>(this);
+            return new Enumeration<TaskIntent>(this, TaskIntent.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<TaskIntent>(this, TaskIntent.NULL, code);
         if ("unknown".equals(codeString))
-          return new Enumeration<TaskIntent>(this, TaskIntent.UNKNOWN);
+          return new Enumeration<TaskIntent>(this, TaskIntent.UNKNOWN, code);
         if ("proposal".equals(codeString))
-          return new Enumeration<TaskIntent>(this, TaskIntent.PROPOSAL);
+          return new Enumeration<TaskIntent>(this, TaskIntent.PROPOSAL, code);
         if ("plan".equals(codeString))
-          return new Enumeration<TaskIntent>(this, TaskIntent.PLAN);
+          return new Enumeration<TaskIntent>(this, TaskIntent.PLAN, code);
         if ("order".equals(codeString))
-          return new Enumeration<TaskIntent>(this, TaskIntent.ORDER);
+          return new Enumeration<TaskIntent>(this, TaskIntent.ORDER, code);
         if ("original-order".equals(codeString))
-          return new Enumeration<TaskIntent>(this, TaskIntent.ORIGINALORDER);
+          return new Enumeration<TaskIntent>(this, TaskIntent.ORIGINALORDER, code);
         if ("reflex-order".equals(codeString))
-          return new Enumeration<TaskIntent>(this, TaskIntent.REFLEXORDER);
+          return new Enumeration<TaskIntent>(this, TaskIntent.REFLEXORDER, code);
         if ("filler-order".equals(codeString))
-          return new Enumeration<TaskIntent>(this, TaskIntent.FILLERORDER);
+          return new Enumeration<TaskIntent>(this, TaskIntent.FILLERORDER, code);
         if ("instance-order".equals(codeString))
-          return new Enumeration<TaskIntent>(this, TaskIntent.INSTANCEORDER);
+          return new Enumeration<TaskIntent>(this, TaskIntent.INSTANCEORDER, code);
         if ("option".equals(codeString))
-          return new Enumeration<TaskIntent>(this, TaskIntent.OPTION);
+          return new Enumeration<TaskIntent>(this, TaskIntent.OPTION, code);
         throw new FHIRException("Unknown TaskIntent code '"+codeString+"'");
         }
     public String toCode(TaskIntent code) {
@@ -451,38 +451,38 @@ public class Task extends DomainResource {
           return TaskStatus.ENTEREDINERROR;
         throw new IllegalArgumentException("Unknown TaskStatus code '"+codeString+"'");
         }
-        public Enumeration<TaskStatus> fromType(Base code) throws FHIRException {
+        public Enumeration<TaskStatus> fromType(PrimitiveType<?> code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<TaskStatus>(this);
+            return new Enumeration<TaskStatus>(this, TaskStatus.NULL, code);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
-            return null;
+            return new Enumeration<TaskStatus>(this, TaskStatus.NULL, code);
         if ("draft".equals(codeString))
-          return new Enumeration<TaskStatus>(this, TaskStatus.DRAFT);
+          return new Enumeration<TaskStatus>(this, TaskStatus.DRAFT, code);
         if ("requested".equals(codeString))
-          return new Enumeration<TaskStatus>(this, TaskStatus.REQUESTED);
+          return new Enumeration<TaskStatus>(this, TaskStatus.REQUESTED, code);
         if ("received".equals(codeString))
-          return new Enumeration<TaskStatus>(this, TaskStatus.RECEIVED);
+          return new Enumeration<TaskStatus>(this, TaskStatus.RECEIVED, code);
         if ("accepted".equals(codeString))
-          return new Enumeration<TaskStatus>(this, TaskStatus.ACCEPTED);
+          return new Enumeration<TaskStatus>(this, TaskStatus.ACCEPTED, code);
         if ("rejected".equals(codeString))
-          return new Enumeration<TaskStatus>(this, TaskStatus.REJECTED);
+          return new Enumeration<TaskStatus>(this, TaskStatus.REJECTED, code);
         if ("ready".equals(codeString))
-          return new Enumeration<TaskStatus>(this, TaskStatus.READY);
+          return new Enumeration<TaskStatus>(this, TaskStatus.READY, code);
         if ("cancelled".equals(codeString))
-          return new Enumeration<TaskStatus>(this, TaskStatus.CANCELLED);
+          return new Enumeration<TaskStatus>(this, TaskStatus.CANCELLED, code);
         if ("in-progress".equals(codeString))
-          return new Enumeration<TaskStatus>(this, TaskStatus.INPROGRESS);
+          return new Enumeration<TaskStatus>(this, TaskStatus.INPROGRESS, code);
         if ("on-hold".equals(codeString))
-          return new Enumeration<TaskStatus>(this, TaskStatus.ONHOLD);
+          return new Enumeration<TaskStatus>(this, TaskStatus.ONHOLD, code);
         if ("failed".equals(codeString))
-          return new Enumeration<TaskStatus>(this, TaskStatus.FAILED);
+          return new Enumeration<TaskStatus>(this, TaskStatus.FAILED, code);
         if ("completed".equals(codeString))
-          return new Enumeration<TaskStatus>(this, TaskStatus.COMPLETED);
+          return new Enumeration<TaskStatus>(this, TaskStatus.COMPLETED, code);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<TaskStatus>(this, TaskStatus.ENTEREDINERROR);
+          return new Enumeration<TaskStatus>(this, TaskStatus.ENTEREDINERROR, code);
         throw new FHIRException("Unknown TaskStatus code '"+codeString+"'");
         }
     public String toCode(TaskStatus code) {
@@ -6002,4 +6002,3 @@ public class Task extends DomainResource {
 
 
 }
-

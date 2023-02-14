@@ -136,12 +136,24 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
    * @return a list of the resource and type names defined for this version
    */
   public List<String> getTypeNames() {
-    List<String> result = new ArrayList<String>();
+    Set<String> result = new HashSet<String>();
     for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
       if (sd.getKind() != StructureDefinitionKind.LOGICAL && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION)
         result.add(sd.getName());
     }
-    Collections.sort(result);
+    return Utilities.sorted(result);
+  }
+
+
+  /**
+   * @return a set of the resource and type names defined for this version
+   */
+  public Set<String> getTypeNameSet() {
+    Set<String> result = new HashSet<String>();
+    for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
+      if (sd.getKind() != StructureDefinitionKind.LOGICAL && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION)
+        result.add(sd.getName());
+    }
     return result;
   }
 
@@ -207,7 +219,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
         } catch (Exception e) {
           if (!isSuppressDebugMessages()) {
             System.out.println("Unable to generate snapshot for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
-            if (true) {
+            if (context.getLogger().isDebugLogging()) {
               e.printStackTrace();
             }
           }
@@ -271,6 +283,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
         throw new FHIRException(context.formatMessage(I18nConstants.PROFILE___ERROR_GENERATING_SNAPSHOT, p.getName(), p.getUrl()));
       pu = null;
     }
+    p.setGeneratedSnapshot(true);
   }
   
 
