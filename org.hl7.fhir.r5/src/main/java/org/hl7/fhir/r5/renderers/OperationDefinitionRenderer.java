@@ -15,6 +15,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -102,9 +103,17 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     XhtmlNode tr;
     tr = tbl.tr();
     tr.td().addText(p.getUse().toString());
-    tr.td().addText(path+p.getName());
-    tr.td().addText(Integer.toString(p.getMin())+".."+p.getMax());
     XhtmlNode td = tr.td();
+    td.addText(path+p.getName());
+    StandardsStatus ss = ToolingExtensions.getStandardsStatus(p);
+    if (ss != null) {
+      td.tx(" ");
+      XhtmlNode a = td.ah("versions.html#std-process", "Standards Status = "+ss.toDisplay());
+      a.style("padding-left: 3px; padding-right: 3px; border: 1px grey solid; font-weight: bold; color: black; background-color: "+ss.getColor());
+      a.tx(ss.getAbbrev());
+    }
+    tr.td().addText(Integer.toString(p.getMin())+".."+p.getMax());
+    td = tr.td();
     StructureDefinition sd = p.getType() != null ? context.getWorker().fetchTypeDefinition(p.getType().toCode()) : null;
     if (sd == null)
       td.tx(p.hasType() ? p.getType().toCode() : "");
